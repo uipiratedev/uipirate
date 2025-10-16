@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -99,7 +99,12 @@ const data1 = [
 const ServicesCard = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const isMobile = window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  useLayoutEffect(() => {
+    // Set initial value
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
 
   useLayoutEffect(() => {
     // GSAP ScrollTrigger animation for cards

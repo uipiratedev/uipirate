@@ -1,3 +1,4 @@
+"use client";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";

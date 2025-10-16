@@ -54,20 +54,31 @@ export async function generateStaticParams() {
   try {
     const response = await fetch("https://api.example.com/page-paths", {
       cache: "no-store",
+      // Add timeout to prevent hanging
+      signal: AbortSignal.timeout(5000),
     });
 
     if (!response.ok) {
-      console.error("Failed to fetch page paths:", response.status);
+      console.warn("Failed to fetch page paths:", response.status);
       return []; // Return an empty array if fetch fails
     }
 
     const paths = await response.json();
     return paths.map((slug: string) => ({ slug }));
   } catch (error) {
-    console.error("Error fetching static params:", error);
-    return []; // Return an empty array on error
+    // Handle network errors gracefully during build
+    if (error instanceof Error) {
+      console.warn("Error fetching static params:", error.message);
+    } else {
+      console.warn("Error fetching static params:", error);
+    }
+    // Return empty array - pages will be generated on-demand with dynamicParams: true
+    return [];
   }
 }
+
+// Allow dynamic params to be generated on-demand if not in staticParams
+export const dynamicParams = true;
 
 export default function DynamicPage({ params }: Props) {
   return (

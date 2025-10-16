@@ -1,3 +1,5 @@
+"use client";
+
 const ServiceHero = () => {
   return (
     <div>
