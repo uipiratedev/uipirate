@@ -1,0 +1,235 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "UI Pirate - Enterprise UI/UX Design & Development Agency",
+  "alternateName": "UI Pirate by Vishal Anand",
+  "url": "https://uipirate.com",
+  "logo": "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
+  "image": "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+  "description": "Leading enterprise UI/UX design and development agency serving Fortune 500 companies globally. Specializing in UI development, graphic design, motion graphics, design systems, AI/SaaS applications, and mobile app design across USA, UK, Singapore, India, and Australia.",
+  "foundingDate": "2015",
+  "founder": {
+    "@type": "Person",
+    "name": "Vishal Anand",
+    "jobTitle": "Founder & Lead UI/UX Designer",
+    "url": "https://www.linkedin.com/in/vishal-a-51bb49110",
+    "sameAs": [
+      "https://www.linkedin.com/in/vishal-a-51bb49110",
+      "https://www.behance.net/vishalanand-UI-UX",
+      "https://dribbble.com/vishalanandUIUX"
+    ]
+  },
+  "employee": [
+    {
+      "@type": "Person",
+      "name": "Kartik Kumar",
+      "jobTitle": "UI/UX Designer",
+      "sameAs": [
+        "https://www.linkedin.com/in/kartik-kuamr/",
+        "https://www.behance.net/kartikkumar58",
+        "https://dribbble.com/Kartikuidesigns"
+      ]
+    },
+    {
+      "@type": "Person",
+      "name": "Syed Musaddiq",
+      "jobTitle": "UI/UX Designer",
+      "sameAs": [
+        "https://www.linkedin.com/in/syedmusaddiq/",
+        "https://www.behance.net/syedmusaddiq_uxui",
+        "https://medium.com/@syedmusaddiq514"
+      ]
+    }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "IN"
+  },
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+919708636151",
+      "email": "vishalanand072@gmail.com",
+      "contactType": "customer service",
+      "areaServed": ["US", "GB", "SG", "IN", "AU"],
+      "availableLanguage": "English"
+    }
+  ],
+  "serviceArea": [
+    {
+      "@type": "Country",
+      "name": "United States",
+      "alternateName": "USA"
+    },
+    {
+      "@type": "Country",
+      "name": "United Kingdom",
+      "alternateName": "UK"
+    },
+    {
+      "@type": "Country",
+      "name": "Singapore"
+    },
+    {
+      "@type": "Country",
+      "name": "India"
+    },
+    {
+      "@type": "Country",
+      "name": "Australia"
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Enterprise Design Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "UI Design",
+          "description": "User interface design for enterprise applications, SaaS platforms, and mobile apps"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "UX Design",
+          "description": "User experience design and research for optimal user journeys and conversions"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "UI Development",
+          "description": "Frontend development and implementation of UI designs"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Graphic Design",
+          "description": "Brand identity, marketing materials, and visual communication design"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Motion Graphics",
+          "description": "Animated graphics, micro-interactions, and video content for digital platforms"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Design Systems",
+          "description": "Scalable design systems and component libraries for enterprise applications"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "AI/SaaS App Design",
+          "description": "Specialized design for AI-powered applications and SaaS platforms"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Mobile App Design",
+          "description": "Native and cross-platform mobile application design for iOS and Android"
+        }
+      }
+    ]
+  },
+  "audience": [
+    {
+      "@type": "Audience",
+      "audienceType": "Enterprise clients",
+      "geographicArea": [
+        "United States",
+        "United Kingdom",
+        "Singapore",
+        "India",
+        "Australia"
+      ]
+    },
+    {
+      "@type": "Audience",
+      "audienceType": "Fortune 500 companies",
+      "geographicArea": [
+        "United States",
+        "United Kingdom",
+        "Singapore",
+        "India",
+        "Australia"
+      ]
+    },
+    {
+      "@type": "Audience",
+      "audienceType": "SaaS companies",
+      "geographicArea": [
+        "United States",
+        "United Kingdom",
+        "Singapore",
+        "India",
+        "Australia"
+      ]
+    },
+    {
+      "@type": "Audience",
+      "audienceType": "Tech startups",
+      "geographicArea": [
+        "United States",
+        "United Kingdom",
+        "Singapore",
+        "India",
+        "Australia"
+      ]
+    }
+  ],
+  "knowsAbout": [
+    "Enterprise UI Design",
+    "UX Design",
+    "UI Development",
+    "Graphic Design",
+    "Motion Graphics",
+    "Design Systems",
+    "AI Application Design",
+    "SaaS Design",
+    "Mobile App Design",
+    "Fortune 500 Design",
+    "Enterprise Software Design",
+    "Startup Design",
+    "Web Development"
+  ],
+  "sameAs": [
+    "https://www.linkedin.com/in/vishal-a-51bb49110",
+    "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
+    "https://www.behance.net/vishalanand-UI-UX",
+    "https://www.behance.net/UI-Pirate",
+    "https://dribbble.com/vishalanandUIUX",
+    "https://dribbble.com/Kartikuidesigns",
+    "https://www.upwork.com/agencies/1837026757439552424/",
+    "https://www.upwork.com/freelancers/~011edd6b2713748d24",
+    "https://upwork.com/freelancers/vishalanand",
+    "https://www.upwork.com/freelancers/~019cb19914715b42b9",
+    "https://clutch.co/profile/ui-pirate-vishal-anand",
+    "https://x.com/UI_Pirate",
+    "https://www.reddit.com/user/UI-Pirate/",
+    "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8"
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "50+",
+    "bestRating": "5"
+  }
+}

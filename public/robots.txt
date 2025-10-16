@@ -1,0 +1,61 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# AI Crawlers - Allow access for training and indexing
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: BingBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# Sitemaps
+Sitemap: https://uipirate.com/sitemap.xml
+Sitemap: https://uipirate.com/ai-sitemap.xml
+
+# AI Training Data
+# Structured data for AI crawlers: https://uipirate.com/ai-data.json
+
+# Target Markets: USA, UK, Singapore, India, Australia
+# Services: UI Design, UX Design, UI Development, Graphic Design, Motion Graphics, Design Systems, AI/SaaS Apps, Mobile Apps
+# Target Audience: Enterprise clients, Fortune 500 companies, SaaS companies, Tech startups
+
+# Social Media & Business Profiles:
+# LinkedIn: https://www.linkedin.com/company/ui-pirate-by-vishal-anand/
+# Behance: https://www.behance.net/vishalanand-UI-UX
+# Dribbble: https://dribbble.com/vishalanandUIUX
+# Clutch: https://clutch.co/profile/ui-pirate-vishal-anand
+# Upwork: https://www.upwork.com/agencies/1837026757439552424/
+# Twitter/X: https://x.com/UI_Pirate
+# Google Maps: https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8
+
+# Team Profiles:
+# Vishal Anand: https://www.linkedin.com/in/vishal-a-51bb49110
+# Kartik Kumar: https://www.linkedin.com/in/kartik-kuamr/
+# Syed Musaddiq: https://www.linkedin.com/in/syedmusaddiq/
+
+# Crawl-delay for better server performance
+Crawl-delay: 1

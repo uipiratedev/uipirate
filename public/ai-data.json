@@ -1,0 +1,149 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://uipirate.com/#organization",
+      "name": "UI Pirate by Vishal Anand",
+      "url": "https://uipirate.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg"
+      },
+      "description": "Global enterprise UI/UX design agency serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Specializing in UI development, graphic design, motion graphics, design systems, AI/SaaS applications, and mobile app design. Helping businesses create intuitive, engaging interfaces that drive user engagement and business growth.",
+      "foundingDate": "2015",
+      "founder": {
+        "@type": "Person",
+        "name": "Vishal Anand",
+        "jobTitle": "Founder & Lead UI/UX Designer",
+        "url": "https://www.linkedin.com/in/vishal-a-51bb49110"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+919708636151",
+        "contactType": "customer service",
+        "email": "vishalanand072@gmail.com"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN"
+      },
+      "serviceArea": [
+        {
+          "@type": "Country",
+          "name": "United States"
+        },
+        {
+          "@type": "Country",
+          "name": "United Kingdom"
+        },
+        {
+          "@type": "Country",
+          "name": "Singapore"
+        },
+        {
+          "@type": "Country",
+          "name": "India"
+        },
+        {
+          "@type": "Country",
+          "name": "Australia"
+        }
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/vishal-a-51bb49110",
+        "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
+        "https://www.behance.net/vishalanand-UI-UX",
+        "https://www.behance.net/UI-Pirate",
+        "https://dribbble.com/vishalanandUIUX",
+        "https://www.upwork.com/agencies/1837026757439552424/",
+        "https://www.upwork.com/freelancers/~011edd6b2713748d24",
+        "https://upwork.com/freelancers/vishalanand",
+        "https://clutch.co/profile/ui-pirate-vishal-anand",
+        "https://x.com/UI_Pirate",
+        "https://www.reddit.com/user/UI-Pirate/",
+        "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8"
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://uipirate.com/#services",
+      "name": "UI/UX Design Services",
+      "provider": {
+        "@id": "https://uipirate.com/#organization"
+      },
+      "description": "Comprehensive UI/UX design and development services for enterprise clients including UI development, graphic design, motion graphics, design systems, SaaS application design, mobile app design, AI application interfaces, and web development",
+      "serviceType": [
+        "UI Design",
+        "UX Design",
+        "UI Development",
+        "Graphic Design",
+        "Motion Graphics",
+        "SaaS Design",
+        "Mobile App Design",
+        "Enterprise Software Design",
+        "AI Application Design",
+        "Design Systems",
+        "Web Development",
+        "Prototyping",
+        "User Research",
+        "Wireframing"
+      ],
+      "areaServed": [
+        "United States",
+        "United Kingdom",
+        "Singapore",
+        "India",
+        "Australia"
+      ],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Enterprise clients, Fortune 500 companies, SaaS Companies, Tech Startups, Mobile app companies"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://uipirate.com/#person",
+      "name": "Vishal Anand",
+      "jobTitle": "UI/UX Designer & Founder",
+      "description": "Expert UI/UX designer with 9+ years of experience in creating modern, scalable designs for SaaS and tech companies. Specializes in AI application design and enterprise software interfaces.",
+      "worksFor": {
+        "@id": "https://uipirate.com/#organization"
+      },
+      "url": "https://uipirate.com",
+      "knowsAbout": [
+        "UI Design",
+        "UX Design",
+        "SaaS Design",
+        "AI Application Design",
+        "Enterprise Software Design",
+        "Mobile App Design",
+        "Design Systems",
+        "User Experience Research",
+        "Prototyping",
+        "Figma",
+        "Adobe Creative Suite"
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/vishal-a-51bb49110",
+        "https://www.behance.net/vishalanand-UI-UX",
+        "https://dribbble.com/vishalanandUIUX"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://uipirate.com/#website",
+      "url": "https://uipirate.com",
+      "name": "UI Pirate by Vishal Anand",
+      "description": "Modern, scalable design for SaaS & Tech companies. Enterprise UI/UX designer specializing in AI applications.",
+      "publisher": {
+        "@id": "https://uipirate.com/#organization"
+      },
+      "inLanguage": "en-US",
+      "copyrightYear": "2025",
+      "copyrightHolder": {
+        "@id": "https://uipirate.com/#organization"
+      }
+    }
+  ]
+}

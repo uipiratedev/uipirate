@@ -1,0 +1,1327 @@
+@import "slick-carousel/slick/slick.css";
+@import "./slick-custom.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+
+  /* scroll-behavior: smooth; */
+}
+
+.button {
+  border-radius: 16px;
+  padding: 16px 32px;
+  height: 56px;
+  font-weight: 500;
+  /* box-shadow: rgba(0, 0, 0, 0.01) 0px 0.602187px 1.32481px 0px,
+    rgba(0, 0, 0, 0.047) 0px 2.28853px 5.03477px 0px,
+    rgba(0, 0, 0, 0.2) 0px 10px 22px 0px; */
+  margin-bottom: 4px;
+}
+
+.heading-center {
+  @apply text-center text-5xl max-lg:text-4xl max-md:text-3xl font-[700] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[64px];
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-reverse {
+  animation-direction: reverse;
+  animation-delay: -3s;
+}
+
+/* Star slide up animation - emerges from below container */
+@keyframes starSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+/* Testimonial image animation - faster drop from top */
+@keyframes testimonialImageDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* Trust badge animation - mobile-friendly */
+@keyframes trustBadgeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* Image hover lift animation */
+@keyframes imageLift {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    transform: translateY(-12px) scale(1.1);
+  }
+}
+
+/* Testimonial text animation - mobile-friendly */
+@keyframes testimonialTextUp {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+/* Button animations */
+
+/* 3. Button spring and firework animations */
+@keyframes button-spring-up {
+  0% {
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(-3px) scale(1.02);
+    opacity: 1;
+  }
+  85% {
+    transform: translateY(1px) scale(0.99);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes star-firework {
+  0% {
+    transform: scale(0.8) rotate(0deg);
+    opacity: 0.4;
+  }
+  25% {
+    transform: scale(0.9) rotate(90deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1) rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(1.1) rotate(270deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.9) rotate(360deg);
+    opacity: 0.5;
+  }
+}
+
+@keyframes shimmer-border {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.button-spring-animate {
+  animation: button-spring-up 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.star-firework-animate {
+  animation: star-firework 3s ease-in-out infinite;
+}
+
+.cta-button-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button-hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cta-button-hover:hover::before {
+  animation: shimmer-border 1.5s ease-in-out infinite;
+}
+
+.cta-button-hover::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta-button-hover:hover::after {
+  opacity: 1;
+  animation: shimmer-border 2s ease-in-out infinite;
+}
+
+/* loader start */
+
+/* From Uiverse.io by satyamchaudharydev */
+.spinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-left: -75px;
+}
+
+.spinner span {
+  position: absolute;
+  top: 50%;
+  left: var(--left);
+  width: 35px;
+  height: 7px;
+  /* background: #1a1919; */
+  @apply bg-[#1a1919] dark:bg-white;
+  animation: dominos 1s ease infinite;
+  box-shadow: 2px 2px 3px 0px black;
+}
+
+.spinner span:nth-child(1) {
+  --left: 80px;
+  animation-delay: 0.125s;
+}
+
+.spinner span:nth-child(2) {
+  --left: 70px;
+  animation-delay: 0.3s;
+}
+
+.spinner span:nth-child(3) {
+  left: 60px;
+  animation-delay: 0.425s;
+}
+
+.spinner span:nth-child(4) {
+  animation-delay: 0.54s;
+  left: 50px;
+}
+
+.spinner span:nth-child(5) {
+  animation-delay: 0.665s;
+  left: 40px;
+}
+
+.spinner span:nth-child(6) {
+  animation-delay: 0.79s;
+  left: 30px;
+}
+
+.spinner span:nth-child(7) {
+  animation-delay: 0.915s;
+  left: 20px;
+}
+
+.spinner span:nth-child(8) {
+  left: 10px;
+}
+
+@keyframes dominos {
+  50% {
+    opacity: 0.7;
+  }
+
+  75% {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  80% {
+    opacity: 1;
+  }
+}
+/* loader end */
+
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap"); */
+
+:root {
+  --bg: white;
+  --clr-1: #00c2ff;
+  --clr-2: #33ff8c;
+  --clr-3: #ffc640;
+  --clr-4: #e54cff;
+
+  --blur: 1rem;
+  --fs: clamp(3rem, 8vw, 7rem);
+  --ls: clamp(-1.75px, -0.25vw, -3.5px);
+}
+
+.text-anim {
+  /* min-height: 100vh; */
+  display: grid;
+  place-items: center;
+  background-color: var(--bg);
+  color: #fff;
+  font-family: "Inter", "DM Sans", Arial, sans-serif;
+  z-index: 9999;
+  background: transparent;
+}
+
+*,
+*::before,
+*::after {
+  /* font-family: inherit; */
+  box-sizing: border-box;
+}
+
+.content {
+  text-align: center;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: var(--ls);
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  color: transparent; /* Make text transparent */
+  background: var(--bg); /* Background for the effect */
+  background-clip: text; /* Clip the background to the text */
+  -webkit-background-clip: text; /* For WebKit browsers */
+  mix-blend-mode: difference; /* Make the text "cut out" effect */
+}
+
+.aurora {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Ensure the aurora is behind the text */
+  mix-blend-mode: lighten; /* Make the aurora blend with the background */
+  pointer-events: none;
+}
+
+.subtitle {
+}
+
+.aurora__item {
+  overflow: hidden;
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  background-color: var(--clr-1);
+  border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
+  filter: blur(var(--blur));
+  mix-blend-mode: overlay;
+}
+
+.aurora__item:nth-of-type(1) {
+  top: -50%;
+  animation: aurora-border 6s ease-in-out infinite,
+    aurora-1 12s ease-in-out infinite alternate;
+}
+
+.aurora__item:nth-of-type(2) {
+  background-color: var(--clr-3);
+  right: 0;
+  top: 0;
+  animation: aurora-border 6s ease-in-out infinite,
+    aurora-2 12s ease-in-out infinite alternate;
+}
+
+.aurora__item:nth-of-type(3) {
+  background-color: var(--clr-2);
+  left: 0;
+  bottom: 0;
+  animation: aurora-border 6s ease-in-out infinite,
+    aurora-3 8s ease-in-out infinite alternate;
+}
+
+.aurora__item:nth-of-type(4) {
+  background-color: var(--clr-4);
+  right: 0;
+  bottom: -50%;
+  animation: aurora-border 6s ease-in-out infinite,
+    aurora-4 24s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-1 {
+  0% {
+    top: 0;
+    right: 0;
+  }
+
+  50% {
+    top: 100%;
+    right: 75%;
+  }
+
+  75% {
+    top: 100%;
+    right: 25%;
+  }
+
+  100% {
+    top: 0;
+    right: 0;
+  }
+}
+
+@keyframes aurora-2 {
+  0% {
+    top: -50%;
+    left: 0%;
+  }
+
+  60% {
+    top: 100%;
+    left: 75%;
+  }
+
+  85% {
+    top: 100%;
+    left: 25%;
+  }
+
+  100% {
+    top: -50%;
+    left: 0%;
+  }
+}
+
+@keyframes aurora-3 {
+  0% {
+    bottom: 0;
+    left: 0;
+  }
+
+  40% {
+    bottom: 100%;
+    left: 75%;
+  }
+
+  65% {
+    bottom: 40%;
+    left: 50%;
+  }
+
+  100% {
+    bottom: 0;
+    left: 0;
+  }
+}
+
+@keyframes aurora-4 {
+  0% {
+    bottom: -50%;
+    right: 0;
+  }
+
+  50% {
+    bottom: 0%;
+    right: 40%;
+  }
+
+  90% {
+    bottom: 50%;
+    right: 25%;
+  }
+
+  100% {
+    bottom: -50%;
+    right: 0;
+  }
+}
+
+@keyframes aurora-border {
+  0% {
+    border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
+  }
+
+  25% {
+    border-radius: 47% 29% 39% 49% / 61% 19% 66% 26%;
+  }
+
+  50% {
+    border-radius: 57% 23% 47% 72% / 63% 17% 66% 33%;
+  }
+
+  75% {
+    border-radius: 28% 49% 29% 100% / 93% 20% 64% 25%;
+  }
+
+  100% {
+    border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
+  }
+}
+
+/* Hide scrollbar for all elements */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+/* 
+ */
+
+.slider-container {
+  padding: 20px 20px;
+  margin: 20px;
+}
+
+.card-item {
+  transition: all 0.3s ease-in-out;
+  opacity: 0.1;
+  filter: blur(3px);
+  transform: scale(0.8);
+  transform: scale3d(-1);
+}
+
+.slick-center .card-item {
+  opacity: 1;
+  filter: none;
+  transform: scale(1.2);
+  rotate: 0deg;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.slick-slide {
+  padding: 0 10px; /* Adjust the spacing between the cards */
+}
+
+.slick-active .card-item {
+  filter: none;
+}
+
+/* Dot styles */
+.slick-dots li button::before {
+  font-size: 12px;
+  color: gray; /* Inactive dot color */
+  opacity: 0.7;
+  transition: color 0.3s, opacity 0.3s;
+}
+
+.slick-dots li.slick-active button::before {
+  color: blue; /* Active dot color */
+  opacity: 1;
+}
+
+.buttonHero:hover {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.box-shadow {
+  border-bottom-width: 1px;
+  border-color: #ffffff;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-style: solid;
+  border-top-width: 1px;
+  box-shadow: inset 0 4px 4px -2px #0000001f, inset 0 -4px 4px -2px #0000001f,
+    inset 0 0 3px #0000003d, 0 0 0 1px #00000014,
+    0 7px 11.399999618530273px -7px #1f1c1c26, 0 16px 24px -7px #1f1c1c14;
+}
+
+/* header button  flip */
+
+.btn-flip {
+  opacity: 1;
+  outline: 0;
+  /* color: #fff; */
+  line-height: 40px;
+  position: relative;
+  text-align: center;
+  /* letter-spacing: 1px; */
+  display: inline-block;
+  text-decoration: none;
+  /* font-family: "Open Sans"; */
+  /* text-transform: uppercase; */
+}
+
+.btn-flip:hover:after {
+  opacity: 1;
+  transform: translateY(0) rotateX(0);
+}
+
+.btn-flip:hover:before {
+  opacity: 0;
+  transform: translateY(50%) rotateX(90deg);
+}
+
+.btn-flip:after {
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  /* color: #323237; */
+  display: block;
+  transition: 0.5s;
+  position: absolute;
+  background: #6b4eff;
+  content: attr(data-back);
+  transform: translateY(-50%) rotateX(90deg);
+}
+
+.btn-flip:before {
+  top: 0;
+  left: 0;
+  opacity: 1;
+  /* color: #adadaf; */
+  display: block;
+  /* padding: 0 30px; */
+  line-height: 40px;
+  transition: 0.5s;
+  position: relative;
+
+  content: attr(data-front);
+  transform: translateY(0) rotateX(0);
+}
+
+.autoShow {
+  animation: autoShowAnimation both;
+  animation-timeline: view(70% 5%);
+  transition: ease-in-out;
+}
+@keyframes autoShowAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(300px) scale(0.3);
+    transition: ease-in-out;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+    transition: ease-in-out;
+  }
+}
+
+.reveal-text {
+  margin: 0;
+  text-align: center;
+  font-size: 200px;
+  overflow: hidden;
+  line-height: 1;
+}
+reveal-text span {
+  display: block;
+  animation: reveal 2.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s;
+}
+
+@keyframes reveal {
+  0% {
+    transform: translate(0, 100%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* Styling for the paragraph */
+
+.reveal-text-anim-0 {
+  /* font-size: 1.5rem; */
+  opacity: 1;
+  transform: translateY(50px);
+  animation: reveal-anim-0 0.3s ease-out forwards;
+}
+
+/* Keyframes for reveal animation */
+@keyframes reveal-anim-0 {
+  from {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-text-anim-0-left {
+  /* font-size: 1.5rem; */
+  opacity: 1;
+  transform: translateY(50px);
+  animation: reveal-anim-0-left 0.6s ease-out forwards;
+}
+
+/* Keyframes for reveal animation */
+@keyframes reveal-anim-0-left {
+  from {
+    opacity: 1;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-text-anim {
+  /* font-size: 1.5rem; */
+  opacity: 1;
+  transform: translateY(100px);
+  animation: reveal-anim 0.2s ease-out forwards;
+}
+
+/* Keyframes for reveal animation */
+@keyframes reveal-anim {
+  from {
+    opacity: 1;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-text-anim-1 {
+  /* font-size: 1.5rem; */
+  opacity: 1;
+  transform: translateY(150px);
+  animation: reveal-anim-1 0.25s ease-out forwards;
+}
+
+/* Keyframes for reveal animation */
+@keyframes reveal-anim-1 {
+  from {
+    opacity: 1;
+    transform: translateY(150px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-text-anim-2 {
+  /* font-size: 1.5rem; */
+  z-index: 9999999;
+  opacity: 1;
+  transform: translateY(200px);
+  /* animation-duration: 2s; */
+  animation: reveal-anim-2 1.6s ease-out forwards;
+}
+
+/* Keyframes for reveal animation */
+@keyframes reveal-anim-2 {
+  from {
+    opacity: 1;
+    transform: translateY(200px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* button text chnage animation */
+
+/* Star Confetti Effect - 360° spread from circumference with rotation */
+@keyframes star-confetti-1 {
+  0% {
+    transform: translateY(-25px) translateX(0px) rotate(0deg) scale(0.3);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(-90px) translateX(0px) rotate(360deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-2 {
+  0% {
+    transform: translateY(-18px) translateX(18px) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-83px) translateX(83px) rotate(-360deg) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-3 {
+  0% {
+    transform: translateY(0px) translateX(25px) rotate(0deg) scale(0.2);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.1;
+  }
+  100% {
+    transform: translateY(0px) translateX(90px) rotate(720deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-4 {
+  0% {
+    transform: translateY(18px) translateX(18px) rotate(0deg) scale(0.4);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(83px) translateX(83px) rotate(-720deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-5 {
+  0% {
+    transform: translateY(25px) translateX(0px) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translateY(90px) translateX(0px) rotate(1080deg) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-6 {
+  0% {
+    transform: translateY(18px) translateX(-18px) rotate(0deg) scale(0.3);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(83px) translateX(-83px) rotate(-1080deg) scale(0.7);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-7 {
+  0% {
+    transform: translateY(0px) translateX(-25px) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(0px) translateX(-90px) rotate(540deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-8 {
+  0% {
+    transform: translateY(-18px) translateX(-18px) rotate(0deg) scale(0.4);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(-83px) translateX(-83px) rotate(-540deg) scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-9 {
+  0% {
+    transform: translateY(-12px) translateX(22px) rotate(0deg) scale(0.3);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(-72px) translateX(102px) rotate(900deg) scale(0.7);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-10 {
+  0% {
+    transform: translateY(22px) translateX(12px) rotate(0deg) scale(0.4);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(102px) translateX(72px) rotate(-900deg) scale(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-11 {
+  0% {
+    transform: translateY(12px) translateX(-22px) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(72px) translateX(-102px) rotate(1260deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes star-confetti-12 {
+  0% {
+    transform: translateY(-22px) translateX(-12px) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-102px) translateX(-72px) rotate(-1260deg) scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* Border Beam Animation - Moving light around perimeter */
+@keyframes border-beam {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.particle-overflow-button {
+  position: relative;
+  overflow: visible !important;
+  border-radius: 20px;
+}
+
+/* Border Beam Effect - Moving light around perimeter */
+.particle-overflow-button::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0.6),
+    transparent,
+    transparent
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle-overflow-button:hover::before {
+  opacity: 1;
+  animation: border-beam 2s linear infinite;
+}
+
+/* Subtle glow effect */
+.particle-overflow-button::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle-overflow-button:hover::after {
+  opacity: 1;
+}
+
+/* Container Revolution Animation */
+@keyframes container-revolve {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Star Confetti Container - Outer wrapper for scaling and positioning */
+.star-confetti-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: none;
+  overflow: visible;
+  z-index: -1;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, width, height;
+}
+
+/* Inner revolution wrapper - handles only rotation */
+.star-confetti-revolve {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: container-revolve 20s linear infinite;
+}
+
+/* Hover state - expand container and scale particles */
+.group:hover .star-confetti-container {
+  width: 180px;
+  height: 180px;
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+.star-confetti {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.star-confetti img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(1.2);
+}
+
+/* Continuous Star Confetti Animations - 360° Coverage with 12 Stars */
+.star-confetti-revolve .star-confetti:nth-child(1) {
+  animation: star-confetti-1 2.5s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(2) {
+  animation: star-confetti-2 2.8s ease-out infinite;
+  animation-delay: 0.25s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(3) {
+  animation: star-confetti-3 2.2s ease-out infinite;
+  animation-delay: 0.5s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(4) {
+  animation: star-confetti-4 2.6s ease-out infinite;
+  animation-delay: 0.75s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(5) {
+  animation: star-confetti-5 2.4s ease-out infinite;
+  animation-delay: 1s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(6) {
+  animation: star-confetti-6 2.7s ease-out infinite;
+  animation-delay: 1.25s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(7) {
+  animation: star-confetti-7 2.3s ease-out infinite;
+  animation-delay: 1.5s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(8) {
+  animation: star-confetti-8 2.9s ease-out infinite;
+  animation-delay: 1.75s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(9) {
+  animation: star-confetti-9 2.1s ease-out infinite;
+  animation-delay: 2s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(10) {
+  animation: star-confetti-10 2.4s ease-out infinite;
+  animation-delay: 2.25s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(11) {
+  animation: star-confetti-11 2.6s ease-out infinite;
+  animation-delay: 2.5s;
+}
+
+.star-confetti-revolve .star-confetti:nth-child(12) {
+  animation: star-confetti-12 2.8s ease-out infinite;
+  animation-delay: 2.75s;
+}
+
+/* button animation */
+
+.button-container-1 {
+  /* margin-top: 50px; */
+  color: #0000;
+  background-color: white;
+  box-shadow: 0px 0px 5px -2px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  font-weight: 500;
+
+  position: relative;
+  width: 200px;
+  height: 50px;
+  /* padding-left: 12px;
+  padding-right: 12px; */
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  /* margin-top: 6vh; */
+  overflow: hidden;
+  letter-spacing: 1px;
+}
+.button-container-1 Button {
+  width: 200px;
+  padding-left: 16px;
+  padding-right: 16px;
+  height: 50px;
+
+  letter-spacing: 1px;
+
+  /* background: #fff; */
+  background: black;
+  -webkit-mask: url("https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png");
+  mask: url("https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/nature-sprite.png");
+  -webkit-mask-size: 2300% 100%;
+  mask-size: 2300% 100%;
+  border: none;
+  color: white;
+  cursor: pointer;
+  -webkit-animation: ani2 0.7s steps(22) forwards;
+  animation: ani2 0.7s steps(22) forwards;
+}
+.button-container-1 Button:hover {
+  -webkit-animation: ani 0.7s steps(22) forwards;
+  animation: ani 1s steps(22) forwards;
+}
+
+.mas {
+  width: 100%;
+  /* padding-left: 16px;
+  padding-right: 16px; */
+  position: absolute;
+  color: black;
+  text-align: center;
+  height: 38px;
+
+  position: absolute;
+
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+@-webkit-keyframes ani {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+@keyframes ani {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+@media (max-width: 629px) {
+  Image#join {
+    display: none;
+  }
+}
+
+/* animation button reverse effect start */
+.buttonre {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  /* padding: 10px 20px; */
+  /* font-size: 16px; */
+  width: 200px;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s ease;
+  align-items: center;
+}
+
+.button-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* top: 15; */
+  text-align: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  margin-top: -15px;
+  overflow: hidden;
+}
+
+.button-text.see-more {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.button-text.recent-work {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.buttonre:hover .see-more {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.buttonre:hover .recent-work {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.backdrop-blur-lg {
+  --tw-backdrop-blur: blur(1000px);
+  background-color: #f5f5f5;
+}
+
+.pricing-tabs .bg-default-100 {
+  --tw-bg-opacity: 1;
+  background-color: #e9e9e9;
+}
