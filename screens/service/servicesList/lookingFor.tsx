@@ -3,7 +3,7 @@ import { Card, CardBody } from "@nextui-org/react";
 const data = [
   //   col 1
   {
-    gradiendt: "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)",
+    gradiendt: "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/rocket_pk7ci5.svg",
     data: [
       {

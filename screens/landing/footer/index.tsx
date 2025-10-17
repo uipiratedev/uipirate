@@ -39,12 +39,14 @@ const LandingFooter = () => {
   const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   return (
-    <div className="relative overflow-hidden bg-black">
-      {/* Desktop Background Effects */}
-      <div className="hidden md:block absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1a1a1a] via-[#0d0d0d] to-black" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_rgba(255,255,255,0.18)_0%,_transparent_60%)] opacity-70 mix-blend-overlay" />
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-20" />
+    <div className="relative overflow-hidden ">
+      {/* i want to add bg image here */}
+      <div className="absolute inset-0">
+        <img
+          src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760676342/footer_bg_kcfu7f.svg"
+          alt="app"
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Content */}
