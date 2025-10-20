@@ -112,22 +112,23 @@ export const Navbar = () => {
                   key={item.href}
                   className="hover:bg-[#E9E9E9] px-2 rounded-[0.65rem] pb-[4px] hover:font-[700]"
                 >
-                  <button
+                  <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
                       "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer"
                     )}
                     // onClick={() => smoothScrollTo(item.href.replace("#", ""))}
-                    onClick={() => {
-                      if (item.href.startsWith("#")) {
-                        smoothScrollTo(item.href.replace("#", ""));
-                      } else {
-                        window.location.href = item.href;
-                      }
-                    }}
+                    // onClick={() => {
+                    //   if (item.href.startsWith("#")) {
+                    //     smoothScrollTo(item.href.replace("#", ""));
+                    //   } else {
+                    //     window.location.href = item.href;
+                    //   }
+                    // }}
+                    href={item.href}
                   >
                     {item.label}
-                  </button>
+                  </NextLink>
                 </NavbarItem>
               ))}
             </ul>
@@ -186,16 +187,18 @@ export const Navbar = () => {
             <div className="mx-4 mt-2 flex flex-col gap-2">
               {siteConfig.navMenuItems.map((item, index) => (
                 <NavbarMenuItem key={`${item}-${index}`}>
-                  <button
+                  <NextLink
                     className="text-foreground text-lg cursor-pointer text-left w-full"
-                    onClick={() => {
-                      smoothScrollTo(item.href.replace("#", ""));
-                      // Close mobile menu after clicking
-                      setIsMenuOpen(false);
-                    }}
+                    // onClick={() => {
+                    //   smoothScrollTo(item.href.replace("#", ""));
+                    //   // Close mobile menu after clicking
+                    //   setIsMenuOpen(false);
+                    // }}
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
-                  </button>
+                  </NextLink>
                 </NavbarMenuItem>
               ))}
             </div>

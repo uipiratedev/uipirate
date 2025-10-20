@@ -11,12 +11,20 @@ const ServiceHero = () => {
             alt="icon1"
             className="w-16 md:w-32"
           />
-          <img src="/icons/icon2.png" alt="icon2" className="w-16 md:w-32" />
-          <img src="/icons/icon3.png" alt="icon3" className="w-16 md:w-32" />
+          <img
+            src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760717024/Shopping_Website_wfxxl7.png"
+            alt="icon2"
+            className="w-16 md:w-32 -mt-4"
+          />
+          <img
+            src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760717023/img3_epoumw.png"
+            alt="icon3"
+            className="w-16 md:w-32 -top-3 -mt-8"
+          />
           <img
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760602434/heroimg4_ffm4ip.svg"
             alt="icon4"
-            className="w-16 md:w-32"
+            className="w-16 md:w-32 -mt-4"
           />
           <img
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760602415/heroimg5_dolrel.svg"
