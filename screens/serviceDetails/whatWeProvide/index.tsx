@@ -13,12 +13,12 @@ const WhatWeProvide = ({ data }: any) => {
       </div>
 
       {/* card  */}
-      <div className="grid grid-cols-3 max-md:grid-cols-1 max-lg:grid-cols-2 gap-6 max-md:gap-4 mt-12">
+      <div className="grid grid-cols-3 max-md:grid-cols-1 max-lg:grid-cols-2 gap-5 max-md:gap-4 mt-12">
         {data.card.map((item: any, index: number) => {
           return (
             <div key={index}>
               <Card className="rounded-[32px] max-md:w-full bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]">
-                <CardBody className="p-3 max-md:p-2 max-lg:p-3">
+                <CardBody className="p-2 max-md:p-2 max-lg:p-3">
                   <div className="w-full p-5 bg-white rounded-[24px] max-md:p-4 box-shadow">
                     <div className="flex flex-row items-center justify-center gap-4 max-md:gap-2 mb-4">
                       <img
@@ -28,7 +28,7 @@ const WhatWeProvide = ({ data }: any) => {
                             : "https://res.cloudinary.com/damm9iwho/image/upload/v1731065510/Ellipse_1388_od4ab3.svg"
                         }
                         alt="Profile"
-                        className="w-[152px] h-[152px] min-w-[152px] min-h-[152px]"
+                        className="w-[162px] h-[162px] min-w-[162px] min-h-[162px]"
                       />
                     </div>
                     <p className="text-xl max-md:text-base font-[700]">

@@ -1,9 +1,12 @@
-const OurTeam = () => {
+"use client";
+import OurTeams from "@/screens/ourTeam";
+
+const OurTeamPage = () => {
   return (
     <div>
-      <h1>Our Team</h1>
+      <OurTeams />
     </div>
   );
 };
 
-export default OurTeam;
+export default OurTeamPage;

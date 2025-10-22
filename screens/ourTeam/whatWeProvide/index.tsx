@@ -34,7 +34,7 @@ const StarRating = ({
   );
 };
 
-const WhatWeProvide = () => {
+const WhatWeProvideOurTeam = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Simple automatic carousel rotation
@@ -53,23 +53,23 @@ const WhatWeProvide = () => {
             What we provide
           </span>
         </div>
-        <p className="heading-center">Why Work With UiPirate?</p>
+        <p className="heading-center">Why Clients Like Working With Us</p>
       </div>
 
       <div className="mt-12 grid grid-cols-2 gap-6 max-md:grid-cols-1">
         {/* Left Section */}
         <div className="flex flex-col gap-3 space-y-2 pt-12 text-lg max-md:py-6 max-md:text-base">
           <p className="text-lg font-semibold">
-            🏆 50+ successful projects delivered
+            🕘 Fast turnarounds without compromising detail
           </p>
           <p className="text-lg font-semibold">
-            🌍 Clients across 6+ countries
+            🧠 A design/dev team that actually *understands SaaS*
           </p>
           <p className="text-lg font-semibold">
-            💬 Direct access to your design/dev team
+            🧩 Clean, scalable UI and code they don’t have to redo later
           </p>
           <p className="text-lg font-semibold">
-            📈 Design that scales with your product
+            💬 Clear communication and zero fluff
           </p>
         </div>
 
@@ -147,4 +147,4 @@ const WhatWeProvide = () => {
   );
 };
 
-export default WhatWeProvide;
+export default WhatWeProvideOurTeam;

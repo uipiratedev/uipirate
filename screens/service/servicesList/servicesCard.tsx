@@ -4,6 +4,7 @@ import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import data from "@/data/servicesTopList.json";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -252,25 +253,27 @@ const ServicesCard = () => {
                         </Chip>
                       ))}
                     </div>
-
-                    <button
-                      color="primary"
-                      className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
-                      style={{ width: "100%" }}
+                    <Link
+                      href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                     >
-                      <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                        <span
-                          className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
+                      <button
+                        color="primary"
+                        className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                        style={{ width: "100%" }}
+                      >
+                        <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
+                          <span
+                            className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
                                 
                                  group-hover:translate-y-[50px] translate-y-3
                                 
                                `}
-                        >
-                          {item.ctaText}
-                        </span>
+                          >
+                            {item.ctaText}
+                          </span>
 
-                        <span
-                          className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
+                          <span
+                            className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
                                 
                                 translate-y-[50px] group-hover:-translate-y-3
                                 
@@ -278,11 +281,12 @@ const ServicesCard = () => {
                               
                               
                               `}
-                        >
-                          See More
-                        </span>
-                      </div>
-                    </button>
+                          >
+                            See More
+                          </span>
+                        </div>
+                      </button>
+                    </Link>
                   </CardBody>
                 </Card>
               </CardBody>
@@ -342,24 +346,27 @@ const ServicesCard = () => {
                       ))}
                     </div>
 
-                    <button
-                      color="primary"
-                      className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
-                      style={{ width: "100%" }}
+                    <Link
+                      href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                     >
-                      <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                        <span
-                          className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
+                      <button
+                        color="primary"
+                        className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                        style={{ width: "100%" }}
+                      >
+                        <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
+                          <span
+                            className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
                                 
                                  group-hover:translate-y-[50px] translate-y-3
                                 
                                `}
-                        >
-                          {item.ctaText}
-                        </span>
+                          >
+                            {item.ctaText}
+                          </span>
 
-                        <span
-                          className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
+                          <span
+                            className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
                                 
                                 translate-y-[50px] group-hover:-translate-y-3
                                 
@@ -367,11 +374,12 @@ const ServicesCard = () => {
                               
                               
                               `}
-                        >
-                          See More
-                        </span>
-                      </div>
-                    </button>
+                          >
+                            See More
+                          </span>
+                        </div>
+                      </button>
+                    </Link>
                   </CardBody>
                 </Card>
               </CardBody>

@@ -21,7 +21,7 @@ const StreamlinedProcess = ({ data }: any) => {
           >
             <CardBody className="p-1.5 max-md:p-1.5 max-md:gap-2">
               <Card
-                className="rounded-[40px] max-md:rounded-[30px] box-shadow"
+                className="rounded-[40px] max-md:rounded-[30px] box-shadow h-full"
                 style={{
                   background: item.gradiendt,
                 }}

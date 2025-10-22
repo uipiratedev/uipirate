@@ -11,7 +11,7 @@ export default function YouWillGet({ data }: any) {
             {data.badge}
           </span>
         </div>
-        <p className="heading-center"> {data.heading}</p>
+        <p className="heading-center">{data.heading}</p>
       </div>
 
       {/* Layout */}
@@ -21,13 +21,14 @@ export default function YouWillGet({ data }: any) {
           {data.leftBadges.map((badge: any, i: number) => (
             <div
               key={i}
-              className={`absolute left-0 flex items-center`}
+              className="absolute left-0 flex items-center"
               style={{ top: `${i * 100}px` }}
             >
               {/* Badge */}
               <div
-                className={`px-4 py-2 text-sm font-semibold  bg-gradient-to-r ${badge.color} rounded-lg text-nowrap`}
+                className="px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap"
                 style={{
+                  background: badge.color,
                   transform: `rotate(${badge.rotation}deg)`,
                   transformOrigin: "right center",
                 }}
@@ -37,16 +38,13 @@ export default function YouWillGet({ data }: any) {
 
               {/* Connector Line */}
               <div
-                className={`${badge.color}`}
                 style={{
                   width: "280px",
-
                   height: "4px",
+                  borderRadius: "9999px",
+                  background: badge.color,
                   transform: `rotate(${badge.rotation}deg)`,
                   transformOrigin: "left center",
-                  // marginLeft: "10px",
-                  borderRadius: "9999px",
-                  color: badge.color,
                 }}
               />
             </div>
@@ -54,13 +52,13 @@ export default function YouWillGet({ data }: any) {
         </div>
 
         {/* CENTER Phone Mockup */}
-        <div className="relative  flex justify-center">
+        <div className="relative flex justify-center h-full">
           <Image
             src={data.mockup}
             alt="App Mockup"
             width={320}
             height={600}
-            className="rounded-[4rem]shadow-2xl z-50 bg-[#F5F5F5]"
+            className="rounded-[1rem] shadow-2xl object-contain h-full z-50 bg-[#F5F5F5]"
           />
         </div>
 
@@ -69,26 +67,25 @@ export default function YouWillGet({ data }: any) {
           {data.rightBadges.map((badge: any, i: number) => (
             <div
               key={i}
-              className={`absolute right-0 flex items-center justify-end`}
+              className="absolute right-0 flex items-center justify-end"
               style={{ top: `${i * 100}px` }}
             >
               {/* Connector Line */}
               <div
-                className={`${badge.color}`}
                 style={{
                   width: "280px",
                   height: "4px",
-                  transform: `rotate(${badge.rotation}deg)`,
-                  transformOrigin: "right center",
-                  // marginRight: "10px",
                   borderRadius: "9999px",
                   background: badge.color,
+                  transform: `rotate(${badge.rotation}deg)`,
+                  transformOrigin: "right center",
                 }}
               />
               {/* Badge */}
               <div
-                className={`px-4 py-2 text-sm font-semibold bg-gradient-to-r ${badge.color} rounded-lg text-nowrap`}
+                className="px-4 py-2 text-sm font-semibold rounded-lg whitespace-nowrap"
                 style={{
+                  background: badge.color,
                   transform: `rotate(${badge.rotation}deg)`,
                   transformOrigin: "left center",
                 }}
@@ -105,7 +102,8 @@ export default function YouWillGet({ data }: any) {
         {[...data.leftBadges, ...data.rightBadges].map((b, i) => (
           <div
             key={i}
-            className={`px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r ${b.color} rounded-full shadow`}
+            className="px-4 py-2 text-sm font-semibold text-white rounded-full shadow"
+            style={{ background: b.color }}
           >
             {b.text}
           </div>
