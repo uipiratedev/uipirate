@@ -1325,3 +1325,26 @@ reveal-text span {
   --tw-bg-opacity: 1;
   background-color: #e9e9e9;
 }
+
+/* meteor */
+/* Dropping Meteor Animation with slight horizontal drift */
+@keyframes meteorFall {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  70% {
+    opacity: 1;
+    transform: translate(var(--drift), 90vh);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--drift), 100vh);
+  }
+}
+
+.meteor {
+  animation: meteorFall cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+/* Static Gray Grid already defined via Tailwind-style bg gradients */

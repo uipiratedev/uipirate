@@ -1,9 +1,44 @@
-const ServiceDetailsHero = ({ data }: any) => {
-  return (
-    <div>
-      <section className="relative pt-16 md:pt-20 flex flex-col items-center text-center ">
-        {/* Badge Text */}
+"use client";
+import React from "react";
 
+const ServiceDetailsHero = ({ data }: any) => {
+  const meteors = Array.from({ length: 15 }).map((_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 9}s`,
+    duration: `${4 + Math.random() * 3}s`,
+    drift: `${Math.random() * 50 - 25}px`, // small horizontal drift
+  }));
+
+  return (
+    <div className="relative overflow-hidden bg-[#f5f5f5] text-black md:h-screen">
+      {/* === Static Gray Grid Background === */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[size:80px_80px]" />
+
+      {/* === Meteors === */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        {meteors.map((meteor) => (
+          <span
+            key={meteor.id}
+            className="meteor absolute size-0.5 rounded-full bg-cyan-400 shadow-[0_0_6px_2px_rgba(0,255,255,0.3)]"
+            style={
+              {
+                // top: "-10%",
+                left: meteor.left,
+                animationDelay: meteor.delay,
+                animationDuration: meteor.duration,
+                "--drift": meteor.drift,
+              } as React.CSSProperties
+            }
+          >
+            <div className="pointer-events-none absolute top-0 -z-10 h-[80px] w-px -translate-y-1/2 bg-gradient-to-b from-cyan-400 to-transparent" />
+          </span>
+        ))}
+      </div>
+
+      {/* === Hero Content === */}
+      <section className="relative pt-16 md:pt-20 flex flex-col items-center text-center z-10">
+        {/* Badge */}
         <div
           className="p-2 px-4 rounded-xl bg-[#8EF1F1] border-cyan-400 border-2 mb-6"
           style={{
@@ -13,136 +48,32 @@ const ServiceDetailsHero = ({ data }: any) => {
             transform: "translateY(20px) scale(0.95)",
           }}
         >
-          <p className="text-center uppercase text-xs max-md:text-[10px] font-medium">
+          <p className="text-center uppercase text-xs max-md:text-[10px] font-medium text-black">
             {data.badge}
           </p>
         </div>
-        {/* Main Heading */}
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim ">
+
+        {/* Headings */}
+        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim">
           {data.heading}
         </h1>
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim ">
+        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim">
           {data.heading1}
         </h1>
 
         {/* Subheading */}
-        <p className="text-base md:text-base text-gray-600 max-w-3xl reveal-text-anim ">
+        <p className="text-base md:text-base text-gray-600 max-w-3xl reveal-text-anim">
           {data.description}
         </p>
 
+        {/* CTA */}
         <a
           href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-          target="blank"
+          target="_blank"
+          rel="noopener noreferrer"
           className="relative z-10 mt-6"
         >
-          <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-4 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
-            {/* Star Confetti Container - Behind button */}
-            <div className="star-confetti-container">
-              <div className="star-confetti-revolve">
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-                <div className="star-confetti">
-                  <img
-                    src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    alt="star"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-row gap-2 items-center md:mr-11">
-              <img
-                src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
-                alt="Dribble Logo"
-                id="image"
-                className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-[580ms] ease-in-out  md:group-hover:translate-x-4 max-md:order-3  md:order-1 md:group-hover:order-3"
-              />
-              <p
-                id="plus"
-                className="text-[#5B5B5B] text-xl font-bold md:absolute order-2 -mt-1"
-              >
-                +
-              </p>
-              <img
-                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729761707/vishal_profile_d2fbyt.svg"
-                alt="Dribble Logo"
-                id="client"
-                className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
-              />
-            </div>
-            <p className="text-lg font-bold"> Book a 15-min call</p>
-            <div>
-              <img
-                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
-                alt="Dribble Logo"
-                className="w-auto h-[30px]"
-              />
-            </div>
-          </div>
+          {/* your button content here */}
         </a>
       </section>
     </div>
