@@ -3,6 +3,7 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import NextLink from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -256,7 +257,7 @@ export default function FaqsAccordion() {
           ))}
         </Accordion>
         <div className="flex flex-row items-center justify-center mt-6">
-          <a href="/faqs" target="_blank" className="autoShow w-fit">
+          <NextLink href="/faqs" className="autoShow w-fit">
             <button
               color="primary"
               className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
@@ -277,7 +278,7 @@ export default function FaqsAccordion() {
                 </span>
               </div>
             </button>
-          </a>
+          </NextLink>
         </div>
       </div>
     </>

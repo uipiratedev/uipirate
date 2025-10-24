@@ -3,7 +3,7 @@ import { Button, Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import data from "@/data/servicesTopList.json";
-
+import NextLink from "next/link";
 gsap.registerPlugin(ScrollTrigger);
 
 const ServicesSection = () => {
@@ -183,9 +183,8 @@ const ServicesSection = () => {
                       </div>
                     </a>
 
-                    <a
+                    <NextLink
                       href="/services"
-                      target="_blank"
                       className="w-[300px] max-md:w-[250px] max-lg:mt-3 lg:ml-3"
                     >
                       <Button
@@ -207,7 +206,7 @@ const ServicesSection = () => {
                       >
                         View All Services
                       </Button>
-                    </a>
+                    </NextLink>
                   </div>
                 </div>
               </CardBody>

@@ -85,7 +85,7 @@ const LandingFooter = () => {
                 </li>
                 <li>
                   <a
-                    href="/works"
+                    href="/ourWorks"
                     className="hover:text-white transition-colors"
                   >
                     Works

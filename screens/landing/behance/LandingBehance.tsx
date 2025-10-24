@@ -1,8 +1,8 @@
 "use client";
-import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import NextLink from "next/link";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -167,7 +167,7 @@ const LandingBehanceFramor = () => {
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
-        <a href="/works" target="_blank" className="autoShow">
+        <NextLink href="/ourWorks" className="autoShow">
           <button
             color="primary"
             className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
@@ -198,7 +198,7 @@ const LandingBehanceFramor = () => {
               </span>
             </div>
           </button>
-        </a>
+        </NextLink>
       </div>
 
       {/* Image Grid with Overlap */}
