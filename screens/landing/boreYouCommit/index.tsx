@@ -41,7 +41,7 @@ const BoreYouCommit = () => {
 
   return (
     <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12">
-      <div className="text-center mb-10">
+      <div className="text-center mb-10 autoShow">
         <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
           Before You Commit
         </span>
@@ -54,13 +54,13 @@ const BoreYouCommit = () => {
         </p>
       </div>
 
-      <Card className="rounded-[48px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
-        <CardBody className=" p-4 max-md:p-2">
+      <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
+        <CardBody className=" p-3 max-md:p-2">
           <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1">
             <CardBody className="p-8 max-md:p-4 max-lg:p-6">
               <div className="flex flex-row gap-3">
                 <div>
-                  <h3 className="text-2xl font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
                     Why this works?
                   </h3>
                   <p className="text-gray-700 font-medium">
@@ -69,15 +69,17 @@ const BoreYouCommit = () => {
                     small, high-impact win first.
                   </p>
                 </div>
-                <img
-                  src="/fxemoji_rocket.svg"
-                  alt=""
-                  className="max-md:hidden"
-                />
+                <div className="">
+                  <img
+                    src="/fxemoji_rocket.svg"
+                    alt=""
+                    className="max-md:hidden"
+                  />
+                </div>
               </div>
               <div className="grid md:grid-cols-3 max-md:grid-cols-1 gap-8 mt-10">
                 <div>
-                  <h3 className="text-2xl font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
                     Your Low-Risk Investment
                   </h3>
                   <p className="text-gray-700 font-medium">
@@ -86,7 +88,7 @@ const BoreYouCommit = () => {
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
                     Zero-Risk Proof
                   </h3>
                   <p className="text-gray-700 font-medium">
@@ -96,7 +98,7 @@ const BoreYouCommit = () => {
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
                     Fast, Measurable Output
                   </h3>
                   <p className="text-gray-700 font-medium">
@@ -105,7 +107,7 @@ const BoreYouCommit = () => {
                     deliver.
                   </p>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-semibold text-center pt-6 border-t-1 col-span-3 max-md:col-span-1">
+                <h3 className="text-xl md:text-2xl font-semibold text-center pt-6 border-t-1 col-span-3 max-md:col-span-1">
                   What You Get in 3 Days?
                 </h3>
               </div>
@@ -113,15 +115,15 @@ const BoreYouCommit = () => {
           </Card>
           {/* Top Section */}
 
-          <div className="border-t border-gray-200 pt-10 mb-10">
+          <div className="border-t border-gray-200 pt-10 mb-10 max-md:pt-6 max-md:mb-6">
             {/* 3 Cards Section */}
             <div className="grid md:grid-cols-3 gap-6">
               {/* Card 1 */}
               <Card
-                ref={(el) => {
-                  if (el) cardsRef.current[0] = el;
-                }}
-                className="rounded-3xl bg-black text-white p-8 md:p-10 flex flex-col justify-between"
+                // ref={(el) => {
+                //   if (el) cardsRef.current[0] = el;
+                // }}
+                className="rounded-3xl bg-black text-white p-6 md:p-10 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
@@ -131,7 +133,7 @@ const BoreYouCommit = () => {
                     >
                       Design
                     </Chip>
-                    <h4 className="text-3xl font-bold">$150</h4>
+                    <h4 className="text-3xl font-bold max-md:text-2xl">$150</h4>
                   </div>
                   <ul className="space-y-4 text-left">
                     <li>
@@ -196,10 +198,10 @@ const BoreYouCommit = () => {
 
               {/* Card 2 */}
               <Card
-                ref={(el) => {
-                  if (el) cardsRef.current[1] = el;
-                }}
-                className="rounded-3xl bg-black text-white p-8 md:p-10 flex flex-col justify-between"
+                // ref={(el) => {
+                //   if (el) cardsRef.current[1] = el;
+                // }}
+                className="rounded-3xl bg-black text-white p-6 md:p-10 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
@@ -209,7 +211,7 @@ const BoreYouCommit = () => {
                     >
                       Development
                     </Chip>
-                    <h4 className="text-3xl font-bold">$250</h4>
+                    <h4 className="text-3xl font-bold max-md:text-2xl">$250</h4>
                   </div>
                   <ul className="space-y-4 text-left">
                     <li>
@@ -273,10 +275,10 @@ const BoreYouCommit = () => {
 
               {/* Card 3 */}
               <Card
-                ref={(el) => {
-                  if (el) cardsRef.current[2] = el;
-                }}
-                className="rounded-3xl bg-black text-white p-8 md:p-10 flex flex-col justify-between"
+                // ref={(el) => {
+                //   if (el) cardsRef.current[2] = el;
+                // }}
+                className="rounded-3xl bg-black text-white p-6 md:p-10 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
@@ -286,7 +288,7 @@ const BoreYouCommit = () => {
                     >
                       Design + Development
                     </Chip>
-                    <h4 className="text-3xl font-bold">$350</h4>
+                    <h4 className="text-3xl font-bold max-md:text-2xl">$350</h4>
                   </div>
                   <ul className="space-y-4 text-left">
                     <li>
@@ -351,26 +353,27 @@ const BoreYouCommit = () => {
               </Card>
             </div>
           </div>
-          <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1">
-            <CardBody className="p-8 max-md:p-4 max-lg:p-6 px-0">
+          <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1 bg-white/50">
+            <CardBody className="p-4 max-md:p-4 max-lg:p-6 px-0">
               {/* Bottom Buttons */}
-              <div className="flex flex-col items-center justify-center mt-12 gap-6">
+              <div className="flex flex-col items-center justify-center my-6 gap-4">
                 <Button
-                  className="bg-black text-white rounded-2xl px-8 py-6 font-semibold text-lg max-md:text-base w-full md:w-auto"
                   as="a"
                   href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
                   target="_blank"
+                  className="bg-black text-white rounded-[16px] px-8 py-6 font-bold text-base max-md:text-sm w-full md:w-auto border-4 border-[#E2E2E2] "
                 >
                   Secure Your Zero-Risk Slot Now
                 </Button>
-                <p className="my-3">or</p>
+
+                <p className="my-0 text-center">or</p>
 
                 <Link href="/pricing">
                   <Button
+                    as="a"
                     color="primary"
                     variant="bordered"
-                    className="border-2 border-gray-300 text-black font-semibold rounded-2xl px-8 py-5 w-full md:w-auto"
-                    as="a"
+                    className="bg-white text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
                   >
                     See Detailed Pricing
                   </Button>

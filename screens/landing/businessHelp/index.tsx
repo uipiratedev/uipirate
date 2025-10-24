@@ -3,7 +3,7 @@ import ServicesSection from "./servicesSection";
 const LandingBusinessHelp = () => {
   return (
     <>
-      <div className=" container mx-auto lg:px-12 max-md:px-4  pt-32 max-md:pt-24 ">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12">
         <div className="autoShow">
           <div className="flex flex-row items-center justify-center mb-6">
             <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">

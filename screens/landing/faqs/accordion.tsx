@@ -255,38 +255,30 @@ export default function FaqsAccordion() {
             </AccordionItem>
           ))}
         </Accordion>
-        <a href="/faqs" target="_blank" className="autoShow w-fit">
-          <button
-            color="primary"
-            className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
-            // style={{ width: "100%" }}
-          >
-            <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-              <span
-                className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                                
-                                 group-hover:translate-y-[50px] translate-y-3
-                                
-                               `}
-              >
-                See More
-              </span>
+        <div className="flex flex-row items-center justify-center mt-6">
+          <a href="/faqs" target="_blank" className="autoShow w-fit">
+            <button
+              color="primary"
+              className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
+            >
+              <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
+                <span
+                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
+                     group-hover:translate-y-[50px] translate-y-3`}
+                >
+                  See More
+                </span>
 
-              <span
-                className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                                
-                                translate-y-[50px] group-hover:-translate-y-3
-                                
-                               
-                              
-                              
-                              `}
-              >
-                See all FAQ’s
-              </span>
-            </div>
-          </button>
-        </a>
+                <span
+                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
+                     translate-y-[50px] group-hover:-translate-y-3`}
+                >
+                  See all FAQ’s
+                </span>
+              </div>
+            </button>
+          </a>
+        </div>
       </div>
     </>
   );
