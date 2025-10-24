@@ -118,7 +118,9 @@ const BoreYouCommit = () => {
             <div className="grid md:grid-cols-3 gap-6">
               {/* Card 1 */}
               <Card
-                ref={(el) => el && (cardsRef.current[0] = el)}
+                ref={(el) => {
+                  if (el) cardsRef.current[0] = el;
+                }}
                 className="rounded-3xl bg-black text-white p-8 md:p-10 flex flex-col justify-between"
               >
                 <div>
@@ -194,7 +196,9 @@ const BoreYouCommit = () => {
 
               {/* Card 2 */}
               <Card
-                ref={(el) => el && (cardsRef.current[1] = el)}
+                ref={(el) => {
+                  if (el) cardsRef.current[1] = el;
+                }}
                 className="rounded-3xl bg-black text-white p-8 md:p-10 flex flex-col justify-between"
               >
                 <div>
@@ -269,7 +273,9 @@ const BoreYouCommit = () => {
 
               {/* Card 3 */}
               <Card
-                ref={(el) => el && (cardsRef.current[2] = el)}
+                ref={(el) => {
+                  if (el) cardsRef.current[2] = el;
+                }}
                 className="rounded-3xl bg-black text-white p-8 md:p-10 flex flex-col justify-between"
               >
                 <div>

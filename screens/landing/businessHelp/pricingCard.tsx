@@ -112,7 +112,7 @@ const data1 = [
 const VideoWithCards = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
   useLayoutEffect(() => {
     // GSAP ScrollTrigger animation for cards

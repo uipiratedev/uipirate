@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const ServicesSection = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
   const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   useLayoutEffect(() => {
