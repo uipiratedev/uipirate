@@ -129,7 +129,7 @@ const RecentWorkCard = () => {
                 <p className="text-[3.5rem] max-md:text-4xl mb-4 font-[600] max-xl:text-[3.5rem] max-md:mt-12">
                   {item.heading}
                 </p>
-                <p className="text-[1.5rem] max-md:text-4xl mb-4 font-[600] max-xl:text-[1.5rem] max-md:mt-12">
+                <p className="text-[1.5rem] max-md:text-[1rem] mb-4 max-md:mb-2 font-[600] max-xl:text-[1rem] max-md:mt-4">
                   {item.heading1}
                 </p>
                 <div
@@ -142,8 +142,8 @@ const RecentWorkCard = () => {
                   <p
                     className={
                       index % 2 === 0
-                        ? "text-lg font-[500] max-w-[300px]"
-                        : "text-lg font-[500] max-w-[400px]"
+                        ? "text-lg font-[500] max-w-[300px] max-md:text-base"
+                        : "text-lg font-[500] max-w-[400px] max-md:text-base"
                     }
                   >
                     {item.subtitle}

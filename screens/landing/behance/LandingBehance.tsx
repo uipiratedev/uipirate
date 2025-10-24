@@ -1,8 +1,8 @@
 "use client";
-import { Button } from "@nextui-org/button";
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import NextLink from "next/link";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -133,7 +133,7 @@ const LandingBehanceFramor = () => {
 
   return (
     <div className="relative">
-      <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4 pt-32 max-md:pt-24 max-xl:px-4 max-2xl:px-0">
+      {/* <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4 pt-32 max-md:pt-24 max-xl:px-4 max-2xl:px-0">
         <div className="autoShow">
           <div className="flex flex-row items-center justify-center mb-6">
             <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
@@ -148,7 +148,7 @@ const LandingBehanceFramor = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Centered Info */}
       <div
         id="info"
@@ -167,7 +167,7 @@ const LandingBehanceFramor = () => {
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
-        <a href="/works" target="_blank" className="autoShow">
+        <NextLink href="/ourWorks" className="autoShow">
           <button
             color="primary"
             className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
@@ -198,7 +198,7 @@ const LandingBehanceFramor = () => {
               </span>
             </div>
           </button>
-        </a>
+        </NextLink>
       </div>
 
       {/* Image Grid with Overlap */}
