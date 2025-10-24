@@ -240,14 +240,17 @@ const LandingBehance = () => {
         id="info"
         className="absolute inset-0 flex flex-col items-center justify-center text-center"
       >
-        <img
+        {/* <img
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1729514725/behance_k2zcrn.svg"
           alt="behance Logo"
           className="max-md:w-[60%]"
-        />
+        /> */}
         <p className="text-center text-2xl px-12 max-md:px-4 max-lg:px-12 mb-12 mt-6 w-1/2 max-md:text-xl">
-          Explore our diverse portfolio of projects that highlight our
-          creativity and craftsmanship.
+          Recent Works
+        </p>
+        <p className="text-center text-2xl px-12 max-md:px-4 max-lg:px-12 mb-12 mt-6 w-1/2 max-md:text-xl">
+          In the world of creativity, clients consistently appreciate our work
+          and value the results we deliver.
         </p>
         <Button
           color="primary"

@@ -9,7 +9,7 @@ const LandingFaqs = () => {
   const [isHoveredEmail, setIsHoveredEmail] = useState(false);
 
   return (
-    <div className="container mx-auto  max-md:px-4 lg:px-20 pt-12 pb-32 mb-12 max-md:pb-32 max-md:mt-28 bg-white rounded-[100px] max-md:rounded-[50px]">
+    <div className="container mx-auto  max-md:px-4 lg:px-20 pt-12 pb-32 mb-12 max-md:pb-32 max-md:mt-28 ">
       {/* Left section - Sticky */}
       <div className=" flex flex-col items-center justify-center pb-12 autoShow">
         <div className="flex flex-row items-start mb-6 max-md:items-center max-md:justify-center">

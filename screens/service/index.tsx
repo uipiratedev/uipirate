@@ -1,5 +1,4 @@
 "use client";
-import LandingFaqs from "../landing/faqs";
 import ServiceHero from "./hero";
 import ServicesList from "./servicesList";
 import WhatWeProvide from "./whatWeProvide";
@@ -9,7 +8,6 @@ const Service = () => {
       <ServiceHero />
       <ServicesList />
       <WhatWeProvide />
-      <LandingFaqs />
     </div>
   );
 };

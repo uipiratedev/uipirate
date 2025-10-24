@@ -38,39 +38,6 @@ const LandingWork = () => {
         <RecentWorkCard />
       </div>
       <div>
-        {/* <p
-          className="text-center mb-6"
-          style={{
-            fontFamily: "Caveat, sans-serif",
-          }}
-        >
-          Case Studies Coming Soon…
-        </p> */}
-        {/* <div className="flex flex-row items-center justify-center">
-          <a href="https://www.behance.net/vishalanand-UI-UX" target="_blank">
-            <Button
-              color="primary"
-              className="bg-black button text-lg dark:bg-white dark:text-black px-[70px] py-[30px] cursor-pointer"
-            >
-              Explore Works
-            </Button>
-          </a>
-        </div> */}
-        {/* test button */}
-        {/* <div className="flex flex-row items-center justify-center">
-          <button className="group relative overflow-hidden rounded bg-black text-white transition-all duration-300 ease-out hover:bg-gradient-to-r hover:from-black hover:to-gray-500   button text-lg dark:bg-white dark:text-black px-[70px] py-[30px] cursor-pointer">
-            <span className="ease absolute right-0 -mt-12 h-32 w-8 translate-x-12 rotate-12 transform bg-white opacity-10 transition-all duration-700 group-hover:-translate-x-40"></span>
-            <span className="relative">Button Text</span>
-          </button>
-        </div> */}
-        {/* <div className="flex flex-row items-center justify-center">
-          <div className="button-container-1 animate__animated animate__fadeInUp animate__slow animate__delay-4s w-[150px] bg-black">
-            <span className="mas">Explore Works</span>
-            <button id="work" type="button" name="Hover">
-              Seen More!
-            </button>
-          </div>
-        </div> */}
         <div className="flex flex-row items-center justify-center">
           <a href="https://www.behance.net/vishalanand-UI-UX" target="_blank">
             {/* <button className="buttonre bg-black button text-lg dark:bg-white dark:text-black px-[70px] py-[30px] cursor-pointer">
