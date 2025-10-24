@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { Card, CardBody, Chip } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import data from "@/data/servicesTopList.json";
@@ -42,7 +42,7 @@ const data1 = [
         autoPlay
         loop
         muted
-        className="object-cover h-[250px] w-[70%]"
+        className="object-cover h-[250px] w-full"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
       ></video>
     ),
@@ -73,8 +73,7 @@ const data1 = [
         title: "Design improvement plan",
       },
     ],
-    image:
-      "https://res.cloudinary.com/damm9iwho/image/upload/v1730808993/image_39_e9ciky.svg",
+    image: "/ux-audit.svg",
     video: (
       <video
         // ref={(elvideo) => {
@@ -113,7 +112,7 @@ const data1 = [
 const VideoWithCards = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
   useLayoutEffect(() => {
     // GSAP ScrollTrigger animation for cards
@@ -279,6 +278,18 @@ const VideoWithCards = () => {
                   className="rounded-[40px] box-shadow"
                   // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
                 >
+                  <CardHeader className="px-0 pt-0">
+                    <div className=" w-full">
+                      {item.isImage && (
+                        <img
+                          src={item.image}
+                          alt="behance Logo"
+                          className="w-full object-cover  h-[250px]"
+                        />
+                      )}
+                      {!item.isImage && item.video}
+                    </div>
+                  </CardHeader>
                   <CardBody className="p-8 max-md:p-6 max-lg:p-6">
                     <p className="text-3xl max-md:text-3xl mt-0 mb-4 font-[700] pr-12 max-md:pr-4 tracking-[-0.5px] leading-[41.6px]">
                       {item.heading}
@@ -305,17 +316,6 @@ const VideoWithCards = () => {
                           </p>
                         </Chip>
                       ))}
-                    </div>
-
-                    <div className="flex flex-row items-center justify-center">
-                      {item.isImage && (
-                        <img
-                          src={item.image}
-                          alt="behance Logo"
-                          className="w-[320px] h-[250px]"
-                        />
-                      )}
-                      {!item.isImage && item.video}
                     </div>
                   </CardBody>
                 </Card>

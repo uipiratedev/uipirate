@@ -181,18 +181,19 @@ const ServicesCard = () => {
 
   return (
     <div className="min-h-screen ">
-      <div className="grid gap-4 max-md:gap-2">
+      <div className="grid grid-cols-2 gap-4 max-md:gap-2">
         {data.map((item, index) => (
           <div
             ref={(el) => {
               if (el && !isMobile) cardsRef.current[index] = el;
             }}
             key={index}
-            className={
-              index === 0
-                ? "col-span-2"
-                : "grid-cols-1 md:col-span-1 max-md:col-span-2"
-            } // first item full width
+            // className={
+            //   index === 0
+            //     ? "col-span-2"
+            //     : "grid-cols-2 md:col-span-1 max-md:col-span-2"
+            // } // first item full width
+            className="gric-cols-2"
           >
             <Card className="rounded-[48px] max-md:rounded-[38px] md:mt-12 bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
               <CardBody className="p-4 max-md:p-2 max-md:gap-2">

@@ -133,38 +133,41 @@ const LandingBehanceFramor = () => {
 
   return (
     <div className="relative">
+      <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4 pt-32 max-md:pt-24 max-xl:px-4 max-2xl:px-0">
+        <div className="autoShow">
+          <div className="flex flex-row items-center justify-center mb-6">
+            <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
+              Works
+            </span>
+          </div>
+          <p className="heading-center">Recent Works</p>
+          <div className="flex flex-row items-center justify-center mb-8 mt-3 px-40 max-lg:px-32 max-md:px-8 max-xl:px-32 ">
+            <p className="md:w-3/4 text-center content-center font-[500] ">
+              In the world of creativity, clients consistently appreciate our
+              work and value the results we deliver.
+            </p>
+          </div>
+        </div>
+      </div>
       {/* Centered Info */}
       <div
         id="info"
         style={{ zIndex: 1 }}
         className="absolute inset-1 flex flex-col items-center justify-center text-center"
       >
-        <img
+        {/* <img
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1729514725/behance_k2zcrn.svg"
           alt="behance Logo"
           className="max-md:w-[50%] md:w-[250px] autoShow"
-        />
+        /> */}
+        <p className="text-center text-6xl font-bold px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
+          Recent Works
+        </p>
         <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12 mt-6 w-1/2 max-md:text-lg autoShow">
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
-        <a
-          href="https://www.behance.net/vishalanand-UI-UX"
-          target="_blank"
-          className="autoShow"
-        >
-          {/* <Button
-            color="primary"
-            className="bg-black button text-lg dark:bg-white dark:text-black px-[70px] py-[30px] cursor-pointer"
-            // style={{
-            //   paddingRight: "70px",
-            //   paddingLeft: "70px",
-            //   paddingTop: "30px",
-            //   paddingBottom: "30px",
-            // }}
-          >
-            View Behance
-          </Button> */}
+        <a href="/works" target="_blank" className="autoShow">
           <button
             color="primary"
             className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
@@ -191,7 +194,7 @@ const LandingBehanceFramor = () => {
                               
                               `}
               >
-                View Behance
+                View Works
               </span>
             </div>
           </button>

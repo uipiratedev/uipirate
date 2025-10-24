@@ -4,10 +4,10 @@ export const siteConfig = {
   name: "UI Pirate",
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
-    {
-      label: "Our Team",
-      href: "/ourTeam",
-    },
+    // {
+    //   label: "Our Team",
+    //   href: "/ourTeam",
+    // },
     {
       label: "Services",
       href: "/services",
@@ -22,10 +22,10 @@ export const siteConfig = {
     },
   ],
   navMenuItems: [
-    {
-      label: "Our Team",
-      href: "/ourTeam",
-    },
+    // {
+    //   label: "Our Team",
+    //   href: "/ourTeam",
+    // },
     {
       label: "Services",
       href: "/services",

@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import LandingFooter from "@/screens/landing/footer";
+import VisionToLife from "@/screens/landing/visionToLife";
 
 export const metadata: Metadata = {
   title:
@@ -148,7 +149,10 @@ export default function RootLayout({
             <Navbar />
           </div>
           <main className="">{children}</main>
+          <VisionToLife />
+
           <LandingFooter />
+
           <SpeedInsights />
         </div>
       </body>

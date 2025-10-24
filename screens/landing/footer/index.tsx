@@ -1,8 +1,11 @@
 "use client";
-import { Button } from "@nextui-org/button";
-import { useState } from "react";
 
 const footerSocialLinks = [
+  {
+    name: "Google Maps",
+    url: "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1751630868/maps_icon-s_rgw06n.svg",
+  },
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
@@ -28,161 +31,179 @@ const footerSocialLinks = [
     url: "https://clutch.co/profile/ui-pirate-vishal-anand",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729665601/Frame_1000006225_bafxox.svg",
   },
-  {
-    name: "Google Maps",
-    url: "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
-    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1751630868/maps_icon-s_rgw06n.svg",
-  },
 ];
 
 const LandingFooter = () => {
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
-
   return (
-    <div className="relative overflow-hidden ">
-      {/* i want to add bg image here */}
+    <footer className="relative overflow-hidden text-white">
+      {/* Background image */}
       <div className="absolute inset-0">
         <img
           src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760676342/footer_bg_kcfu7f.svg"
-          alt="app"
+          alt="Footer background"
           className="w-full h-full object-cover"
         />
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/95"></div> */}
       </div>
-
-      {/* Content */}
-      <div className="relative text-white px-6  py-12 md:py-32  md:pb-12 flex flex-col items-center">
-        <p className="text-center text-5xl lg:w-[40%] font-bold max-md:text-3xl">
-          Ready to bring your vision to life?
-        </p>
-        <p className="text-center text-lg lg:w-[30%] max-md:text-base mt-4">
-          Schedule a call or send us a WhatsApp message, and let’s get started!
-        </p>
-
-        {/* Buttons */}
-        <div className="mt-12 flex flex-row items-center justify-center max-lg:flex-col w-full">
-          <a
-            href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-            target="blank"
-          >
-            <div className="bg-white text-black button group transform  transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-2 buttonHero md:hover:pl-12  flex flow-row items-center gap-3">
-              <div className="flex flex-row gap-2 items-center md:mr-11">
-                <img
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
-                  alt="Dribble Logo"
-                  id="image"
-                  className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-[580ms] ease-in-out  md:group-hover:translate-x-4 max-md:order-3  md:order-1 md:group-hover:order-3"
-                />
-                <p
-                  id="plus"
-                  className="text-[#5B5B5B] text-xl font-bold md:absolute order-2 -mt-1"
-                >
-                  +
-                </p>
-                <img
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729761707/vishal_profile_d2fbyt.svg"
-                  alt="Dribble Logo"
-                  id="client"
-                  className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
-                />
-              </div>
-              <p> Book a 15-min call</p>
-              <div>
-                <img
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
-                  alt="Dribble Logo"
-                  className="w-auto h-[30px]"
-                />
-              </div>
+      {/* Main Footer Content */}
+      <div className="relative container mx-auto z-50 px-8 lg:px-20 py-16 max-md:py-12 text-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-md:gap-8">
+          {/* Column 1 - Brand */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <img
+                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
+                alt="UI Pirate logo"
+                className="w-10 h-10"
+              />
+              <p className="text-xl font-semibold">UI Pirate</p>
             </div>
-          </a>
-          <a
-            href="https://wa.link/i35lma"
-            target="_blank"
-            className="w-[300px] max-lg:mt-3 lg:ml-3"
-          >
-            <Button
-              color="primary"
-              variant="bordered"
-              className=" border-gray-100 text-white font-bold w-full hover:border-gray-200 px-[70px] py-[25px]"
-              style={{ width: "100%" }}
-              onMouseEnter={() => setIsHoveredChat(true)}
-              onMouseLeave={() => setIsHoveredChat(false)}
-            >
-              <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                <span
-                  className={`text-white transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 ${
-                    isHoveredChat ? "translate-y-[50px]" : "translate-y-2"
-                  }`}
-                >
-                  <img
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
-                    alt="WhatsApp Logo"
-                  />
-                  Chat
-                </span>
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+              Scalable UI/UX design for SaaS, & AI Products
+            </p>
+          </div>
 
-                <span
-                  className={`text-white w-full transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3 ${
-                    isHoveredChat ? "-translate-y-2" : "translate-y-[50px]"
-                  }`}
-                >
-                  <img
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
-                    alt="WhatsApp Logo"
-                  />
-                  +91 97086 36151
-                </span>
-              </div>
-            </Button>
-          </a>
+          <div className=" flex flex-row justify-between w-full max-md:flex-col max-md:gap-y-4">
+            {/* Column 2 - Quick Links */}
+            <div>
+              <h4 className="font-semibold text-white mb-4 text-base">
+                Quick Links
+              </h4>
+              <ul className="space-y-3 text-gray-400 text-sm">
+                <li>
+                  <a href="/" className="hover:text-white transition-colors">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/services"
+                    className="hover:text-white transition-colors"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/works"
+                    className="hover:text-white transition-colors"
+                  >
+                    Works
+                  </a>
+                </li>
+                {/* <li>
+                  <a
+                    href="/ourTeam"
+                    className="hover:text-white transition-colors"
+                  >
+                    Our Team
+                  </a>
+                </li> */}
+                <li>
+                  <a
+                    href="/pricing"
+                    className="hover:text-white transition-colors"
+                  >
+                    Pricing
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3 - Resources */}
+            <div>
+              <h4 className="font-semibold text-white mb-4 text-base">
+                Resources
+              </h4>
+              <ul className="space-y-3 text-gray-400 text-sm">
+                <li>
+                  <a
+                    href="/resources"
+                    className="hover:text-white transition-colors"
+                  >
+                    Blogs
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/tools"
+                    className="hover:text-white transition-colors"
+                  >
+                    Tools
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/faqs"
+                    className="hover:text-white transition-colors"
+                  >
+                    FAQ’s
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 4 - Policies & Legal */}
+            <div>
+              <h4 className="font-semibold text-white mb-4 text-base">
+                Policies & Legal
+              </h4>
+              <ul className="space-y-3 text-gray-400 text-sm">
+                <li>
+                  <a
+                    href="/privacy-policy"
+                    className="hover:text-white transition-colors"
+                  >
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/terms"
+                    className="hover:text-white transition-colors"
+                  >
+                    Terms and Conditions
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/sitemap"
+                    className="hover:text-white transition-colors"
+                  >
+                    Site Map
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
 
-        {/* Social Links */}
-        <div className="flex flex-col items-center mt-10 gap-4">
-          <p className="text-center text-sm text-gray-300">Follow us on</p>
-          <div className="flex flex-wrap justify-center gap-3">
+        {/* Bottom Footer */}
+        <div className="mt-16 pt-8 border-t border-gray-700 max-md:mt-12 flex flex-row justify-between max-md:flex-col">
+          {/* Social Icons */}
+          <div className="flex flex-wrap items-center gap-3">
             {footerSocialLinks.map((item, index) => (
               <a
                 key={index}
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transform transition-all duration-300 hover:scale-110 hover:opacity-80 p-2 rounded-lg hover:bg-white/10"
-                title={`Visit UI Pirate on ${item.name}`}
+                className="hover:opacity-70 transition-opacity duration-300 hover:bg-gray-100 hover:bg-transparent/15 rounded-lg"
               >
                 <img
                   src={item.icon}
-                  alt={`${item.name} Logo`}
-                  className="w-10 h-10 max-md:w-8 max-md:h-8"
+                  alt={item.name}
+                  className="w-12 h-12  gr"
                 />
               </a>
             ))}
           </div>
-          <p className="text-center text-xs text-gray-400 mt-2">
-            LinkedIn • Upwork • Behance • Dribbble • Clutch • Google Maps
+          <p className="text-gray-400 text-sm text-center md:text-left">
+            Copyright©2023 UI Pirate. All Rights Reserved.
           </p>
         </div>
-
-        {/* Copyright */}
-        <p className="text-center mt-6 text-gray-300">
-          Copyright© 2025 UI Pirate by Vishal Anand. All Rights Reserved.
-        </p>
-
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "UI Pirate by Vishal Anand",
-              url: "https://uipirate.com",
-              sameAs: footerSocialLinks.map((link) => link.url),
-            }),
-          }}
-        />
       </div>
-    </div>
+    </footer>
   );
 };
 

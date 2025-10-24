@@ -1,4 +1,5 @@
 import PricingCard from "./pricingCard";
+import ServicesSection from "./servicesSection";
 const LandingBusinessHelp = () => {
   return (
     <>
@@ -18,7 +19,8 @@ const LandingBusinessHelp = () => {
             </p>
           </div>
         </div>
-        <PricingCard />
+        {/* <PricingCard /> */}
+        <ServicesSection />
       </div>
     </>
   );

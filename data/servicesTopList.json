@@ -35,43 +35,7 @@
     "isImage": false,
     "ctaText": "Explore SaaS Apps"
   },
-  {
-    "heading": "Design System & Component Library",
-    "subheading": "Reusable, developer-friendly UI systems for scale.",
-    "description": "We build design systems with custom tokens, visual guidelines, and a fully documented component library - ready for handoff and long-term consistency.",
-    "subheading2": "Ideal for: Growing teams, products at scale, component refactoring",
-    "chip": [
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "2-3 months delivery"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "Development Friendly"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/File_rvsuin.svg",
-        "title": "Documentation"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/Sliders_t641lz.svg",
-        "title": "Customizable UI Kits"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/Swatches_ic2xmg.svg",
-        "title": "Design Tokens"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/ArrowsCounterClockwise_a1sflh.svg",
-        "title": "Reusable Components"
-      }
-    ],
-    "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1729841104/figma-component-svgrepo-com_1_mtgewy.svg",
-    "sideImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg",
-    "video": "https://res.cloudinary.com/damm9iwho/video/upload/v1730895563/show_gtb051.mp4",
-    "isImage": true,
-    "ctaText": "Explore Design Systems"
-  },
+
   {
     "heading": "Landing Pages & Corporate Websites",
     "subheading": "Launch faster with beautiful, high-converting sites that scale with your brand.",
@@ -179,3 +143,5 @@
     "ctaText": "Explore Motion Graphics"
   }
 ]
+
+
