@@ -21,7 +21,7 @@ const data = [
     heading1: "APAC’s largest law firm",
     subtitle:
       "AI-powered legal platform to streamline document analysis, automate drafting, and support legal professionals.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1760502551/ai_legaltech_h24rin.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444013/lega_n7vqzw.svg",
     url: "https://www.xperiti.com/",
   },
   {
@@ -29,16 +29,16 @@ const data = [
     heading1: "AI Trading Platform",
     subtitle:
       "Order fulfilment SaaS platform designed to streamline medical supply chain operations",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444002/ion_xce6b5.svg",
     url: "https://arthalpha.in/",
   },
-  {
-    heading: "ArthAlpha",
-    heading1: "AI Trading Platform",
-    subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Developemt",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
-    url: "https://arthalpha.in/",
-  },
+  // {
+  //   heading: "ArthAlpha",
+  //   heading1: "AI Trading Platform",
+  //   subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Developemt",
+  //   img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
+  //   url: "https://arthalpha.in/",
+  // },
   {
     heading: "Rings & I",
     heading1: "Diamond Ring Studio",
@@ -52,7 +52,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "An all-in-one platform for business operations, customer service, verification, and financial management.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025188/frytx_mo0frx.svg",
     url: "https://ringsandi.com/",
   },
   {
@@ -60,7 +60,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "A website highlighting cutting-edge water treatment and environmental solutions.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444012/infinity_aqvvse.svg",
     url: "https://ringsandi.com/",
   },
 
@@ -69,7 +69,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "An automated software testing SaaS for efficient, high-quality releases.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444003/test_oxuysl.svg",
     url: "https://ringsandi.com/",
   },
   {
@@ -77,7 +77,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "A specialized cloud migration platform to guide and support businesses transitioning to cloud infrastructure.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444015/cloud_wawxjj.svg",
     url: "https://ringsandi.com/",
   },
   {
@@ -85,7 +85,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "A streamlined app for finding, securing, and managing rental properties throughout the entire rental lifecycle.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444021/staype_o0y07w.svg",
     url: "https://ringsandi.com/",
   },
   {
@@ -93,7 +93,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "A property management app to optimize landlord and broker operations and improve tenant relations.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443928/stayrelater_vbxkvv.svg",
     url: "https://ringsandi.com/",
   },
   {
@@ -101,7 +101,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "An AI-powered legal management system for streamlined contracts and compliance.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443926/simplo_dnrjzi.svg",
     url: "https://ringsandi.com/",
   },
 
@@ -110,7 +110,7 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "A trading platform with real-time data, advanced charting, and customizable strategies to enhance trading efficiency.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443918/brahma_jvnmc9.svg",
     url: "https://ringsandi.com/",
   },
   {
@@ -118,17 +118,17 @@ const data = [
     heading1: "Diamond Ring Studio",
     subtitle:
       "A peer-to-peer platform for local product borrowing and sharing.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443916/olso_ldpdnw.svg",
     url: "https://ringsandi.com/",
   },
-  {
-    heading: "AMUZN",
-    heading1: "Diamond Ring Studio",
-    subtitle:
-      "A peer-to-peer platform for local product borrowing and sharing.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
-    url: "https://ringsandi.com/",
-  },
+  // {
+  //   heading: "AMUZN",
+  //   heading1: "Diamond Ring Studio",
+  //   subtitle:
+  //     "A peer-to-peer platform for local product borrowing and sharing.",
+  //   img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+  //   url: "https://ringsandi.com/",
+  // },
 ];
 
 const CaseStudyCard = () => {
@@ -234,9 +234,9 @@ const CaseStudyCard = () => {
       >
         {data.map((item, index) => {
           return (
-            <Card className="rounded-[48px]  bg-[#e9e9e9]  max-md:mt-4 shadow-none border-1 border-[#0000000f]">
-              <CardBody className="p-2 max-md:p-2">
-                <Card className="rounded-[40px] box-shadow h-full">
+            <Card className="rounded-[40px] max-md:rounded-[30px]  bg-[#e9e9e9]  max-md:mt-4 shadow-none border-1 border-[#0000000f]">
+              <CardBody className="p-1.5 max-md:p-1.5">
+                <Card className="rounded-[30px] max-md:rounded-[20px] box-shadow h-full">
                   <CardHeader className="px-0 pt-0">
                     <div className=" w-full">
                       {item.img && (

@@ -172,7 +172,7 @@ const ServicesSection = () => {
                     style={{ overflow: "visible" }}
                   >
                     <a
-                      href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
+                      href="https://wa.me/919708636151"
                       target="_blank"
                       className="w-[250px] max-lg:mt-3 lg:ml-3"
                     >
