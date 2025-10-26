@@ -4,39 +4,39 @@ export const siteConfig = {
   name: "UI Pirate",
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
-    // {
-    //   label: "Our Team",
-    //   href: "/ourTeam",
-    // },
     {
       label: "Services",
       href: "/services",
     },
     {
-      label: "Resources",
-      href: "/blogs",
+      label: "Works",
+      href: "/ourWorks",
     },
     {
-      label: "Contact Us",
-      href: "/contact",
+      label: "Tools",
+      href: "/tools",
+    },
+    {
+      label: "Pricing",
+      href: "/pricing",
     },
   ],
   navMenuItems: [
-    // {
-    //   label: "Our Team",
-    //   href: "/ourTeam",
-    // },
     {
       label: "Services",
       href: "/services",
     },
     {
-      label: "Resources",
-      href: "/blogs",
+      label: "Works",
+      href: "/ourWorks",
     },
     {
-      label: "Contact Us",
-      href: "/contact",
+      label: "Tools",
+      href: "/tools",
+    },
+    {
+      label: "Pricing",
+      href: "/pricing",
     },
   ],
   links: {

@@ -41,9 +41,13 @@ function VisionToLife() {
             className="w-[250px] max-lg:mt-3 lg:ml-3 hover:scale-105 transition-transform duration-300"
           >
             <div className="  bg-black text-white rounded-xl h-auto transform transition-all duration-[600ms] ease-in-out px-6 py-4 flex flex-row items-center justify-center gap-3 relative">
-              <p className="text-lg max-md:text-sm font-bold text-center">
+              <a
+                href="https://wa.me/919708636151"
+                target="_blank"
+                className="text-lg max-md:text-sm font-bold text-center"
+              >
                 😀 Let’s Talk
-              </p>
+              </a>
             </div>
           </a>
           <a
