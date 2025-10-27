@@ -107,28 +107,28 @@ const TryBeforeCommit = (props: any) => {
 
                   <div className="grid grid-cols-3 max-md:grid-cols-1 gap-4 pt-3 mt-6 max-md:flex-col">
                     <div className="flex flex-row item-center justify-between border-1 rounded-lg p-4">
-                      <p className=" text-base text-center bg-black text-white rounded-full px-3 py-1">
+                      <p className=" text-base max-md:text-sm  text-center bg-black text-white rounded-full px-3 py-1">
                         design
                       </p>
-                      <p className=" text-2xl font-bold">
+                      <p className=" text-2xl max-md:text-xl font-bold">
                         {" "}
                         <span className="text-lg">$</span>150
                       </p>
                     </div>
                     <div className="flex flex-row item-center justify-between border-1 rounded-lg p-4">
-                      <p className=" text-base text-center bg-black text-white rounded-full px-3 py-1">
+                      <p className=" text-base max-md:text-sm text-center bg-black text-white rounded-full px-3 py-1">
                         Development
                       </p>
-                      <p className=" text-2xl font-bold">
+                      <p className=" text-2xl max-md:text-xl font-bold">
                         {" "}
                         <span className="text-lg">$</span>250
                       </p>
                     </div>
                     <div className="flex flex-row item-center justify-between border-1 rounded-lg p-4">
-                      <p className=" text-base text-center bg-black text-white rounded-full px-3 py-1">
+                      <p className=" text-base max-md:text-sm text-center bg-black text-white rounded-full px-3 py-1">
                         Design + Development
                       </p>
-                      <p className=" text-2xl font-bold">
+                      <p className=" text-2xl max-md:text-xl font-bold">
                         {" "}
                         <span className="text-lg">$</span>350
                       </p>

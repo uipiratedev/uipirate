@@ -237,13 +237,13 @@ const VideoWithCards = () => {
                   </div>
                 </CardBody>
               </Card>
-              <Card className="rounded-[40px] p-0 h-[500px] max-md:h-[300px]">
+              <Card className="rounded-[40px] max-md:rounded-[30px] p-0 h-full max-md:h-[300px]">
                 <CardBody style={{ padding: 0 }}>
                   {item.isImage && (
                     <img
                       src={item.sideImage}
                       alt="behance Logo"
-                      className="object-cover h-[500px] min-md:h-[400px] max-h-full"
+                      className="object-cover h-full min-md:h-[400px] max-h-full"
                     />
                   )}
                   {!item.isImage && (
@@ -255,7 +255,7 @@ const VideoWithCards = () => {
                       // autoPlay
                       loop
                       muted
-                      className="object-cover h-[500px] min-md:h-[400px] max-h-full"
+                      className="object-cover h-full min-md:h-[400px] max-h-full"
                       src={item.video}
                     ></video>
                   )}
@@ -270,12 +270,12 @@ const VideoWithCards = () => {
           if (el && !isMobile) cardsRef.current[3] = el;
         }}
       >
-        <Card className="rounded-[48px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
+        <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
           <CardBody className="grid grid-cols-2 gap-4 max-md:gap-2 max-xl:grid-cols-1 p-4 max-md:p-2">
             {data1.map((item, index) => {
               return (
                 <Card
-                  className="rounded-[40px] box-shadow"
+                  className="rounded-[40px] max-md:rounded-[30px] box-shadow"
                   // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
                 >
                   <CardHeader className="px-0 pt-0">

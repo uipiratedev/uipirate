@@ -73,6 +73,16 @@ export const Navbar = () => {
         >
           {/* --- Left Brand Section --- */}
           <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+            {/* --- Mobile Section with Toggle on Right --- */}
+            <NavbarContent
+              className="flex md:hidden basis-1 -ml-2"
+              justify="end"
+            >
+              <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className="text-current"
+              />
+            </NavbarContent>
             <NavbarBrand as="li" className="gap-3 max-w-fit">
               <NextLink
                 className="flex justify-start items-center gap-1 md:-ml-6 max-sm:-ml-3"
@@ -118,10 +128,7 @@ export const Navbar = () => {
           </NavbarContent>
 
           {/* --- Right Button (Desktop) --- */}
-          <NavbarContent
-            className="hidden md:flex basis-1/5 sm:basis-full"
-            justify="end"
-          >
+          <NavbarContent className=" basis-1/5 sm:basis-full" justify="end">
             <NavbarItem>
               <a
                 href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
@@ -142,14 +149,6 @@ export const Navbar = () => {
             </NavbarItem>
           </NavbarContent>
 
-          {/* --- Mobile Section with Toggle on Right --- */}
-          <NavbarContent className="flex md:hidden basis-1" justify="end">
-            <NavbarMenuToggle
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              className="text-current"
-            />
-          </NavbarContent>
-
           {/* --- Mobile Menu Content --- */}
           <NavbarMenu>
             <div className="mx-4 mt-4 flex flex-col gap-4">
@@ -164,24 +163,6 @@ export const Navbar = () => {
                   </NextLink>
                 </NavbarMenuItem>
               ))}
-
-              <div className="pt-4">
-                <a
-                  href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                  target="_blank"
-                >
-                  <Button
-                    isExternal
-                    as={Link}
-                    className="w-full btn-flip text-sm font-[500] text-white bg-black dark:bg-white dark:text-black"
-                    variant="solid"
-                    data-back="Let's Talk"
-                    data-front="Have an Idea?"
-                  >
-                    Have an Idea?
-                  </Button>
-                </a>
-              </div>
             </div>
           </NavbarMenu>
         </NextUINavbar>

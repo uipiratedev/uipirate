@@ -5,31 +5,31 @@ const ServiceHero = () => {
     <div>
       <section className="relative pt-16 md:pt-24 flex flex-col items-center text-center ">
         {/* Floating Icons */}
-        <div className="flex justify-center items-center gap-6 mb-6 relative z-10">
+        <div className="flex justify-center items-center gap-6 max-md:gap-3 mb-6 relative z-10">
           <img
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760602433/heroimg1_mhagbz.svg"
             alt="icon1"
-            className="w-16 md:w-32"
+            className="w-12 md:w-32"
           />
           <img
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760717024/Shopping_Website_wfxxl7.png"
             alt="icon2"
-            className="w-16 md:w-32 -mt-4"
+            className="w-12 md:w-32 -mt-4"
           />
           <img
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760717023/img3_epoumw.png"
             alt="icon3"
-            className="w-16 md:w-32 -top-3 -mt-8"
+            className="w-12 md:w-32 -top-3 -mt-8"
           />
           <img
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760602434/heroimg4_ffm4ip.svg"
             alt="icon4"
-            className="w-16 md:w-32 -mt-4"
+            className="w-12 md:w-32 -mt-4"
           />
           <img
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760602415/heroimg5_dolrel.svg"
             alt="icon5"
-            className="w-16 md:w-32"
+            className="w-12 md:w-32"
           />
         </div>
 
