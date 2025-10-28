@@ -17,7 +17,7 @@ export default function TestimonialCards() {
 
   // decide which testimonials to show
   const displayedTestimonials = isMobile
-    ? testimonials.slice(0, 6)
+    ? testimonials.slice(0, 7)
     : testimonials;
 
   // split into 3 columns
@@ -27,7 +27,7 @@ export default function TestimonialCards() {
 
   return (
     <section className="w-full py-12 container mx-auto px-6 md:px-12 lg:px-24 py-12">
-      <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4 max-md:gap-4 items-stretch">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {[col1, col2, col3].map((col, i) => (
           <div key={i} className="flex flex-col gap-4 flex-1">
             {col.map((item, idx) => (

@@ -104,7 +104,7 @@ const OurWorksHero = () => {
                   <img
                     src={item.profileImage}
                     alt="testimonial"
-                    className="h-20 w-20 rounded-full object-cover"
+                    className="h-12 w-12 rounded-full object-cover"
                   />
                   <p className="line-clamp-5 text-center text-base text-[#777777]">
                     {item.review}
@@ -122,45 +122,52 @@ const OurWorksHero = () => {
         <div className="flex flex-wrap justify-center items-center gap-10 text-center py-10">
           {/* Item 0 */}
           <div className="flex flex-col items-center">
-            <h3 className="text-5xl font-bold text-black">6+</h3>
-            <p className="text-lg  text-[#777777] w-fit text-center">
+            <h3 className="text-5xl max-md:text-2xl font-bold text-black">
+              6+
+            </h3>
+            <p className="text-lg max-md:text-xs  text-[#777777] w-fit text-center">
               countries served
             </p>
           </div>
           {/* Item 1 */}
           <div className="flex flex-col items-center">
-            <h3 className="text-5xl font-bold text-black">50+</h3>
-            <p className="text-lg  text-[#777777]">Countries Served</p>
+            <h3 className="text-5xl max-md:text-2xl font-bold text-black">
+              50+
+            </h3>
+            <p className="text-lg max-md:text-xs  text-[#777777]">
+              Countries Served
+            </p>
           </div>
 
           {/* Item 2 */}
           <div className="flex flex-col items-center">
-            <h3 className="text-5xl font-bold text-black">20+</h3>
-            <p className="text-lg  text-[#777777]">Projects Completed</p>
+            <h3 className="text-5xl max-md:text-2xl font-bold text-black">
+              20+
+            </h3>
+            <p className="text-lg max-md:text-xs  text-[#777777]">
+              Projects Completed
+            </p>
           </div>
 
           {/* Item 3 */}
           <div className="flex flex-col items-center">
-            <h3 className="text-5xl font-bold text-black">20+</h3>
-            <p className="text-lg  text-[#777777]">Enterprise Clients</p>
+            <h3 className="text-5xl max-md:text-2xl font-bold text-black">
+              20+
+            </h3>
+            <p className="text-lg max-md:text-xs  text-[#777777]">
+              Enterprise Clients
+            </p>
           </div>
 
           {/* Item 4 */}
           <div className="flex flex-col items-center">
-            <h3 className="text-5xl font-bold text-black">9+</h3>
-            <p className="text-lg  text-[#777777]">Years of Experience</p>
+            <h3 className="text-5xl max-md:text-2xl font-bold text-black">
+              9+
+            </h3>
+            <p className="text-lg max-md:text-xs  text-[#777777]">
+              Years of Experience
+            </p>
           </div>
-        </div>
-        <div className="space-y-2">
-          <p className="text-start text-lg font-[500]">
-            🧑‍💻 Direct access to your design + dev team
-          </p>
-          <p className="text-lg  font-[500]">
-            💬 Clear communication and fast delivery cycles
-          </p>
-          <p className="text-start text-lg  font-[500]">
-            🧩 Pixel-perfect execution that scales
-          </p>
         </div>
       </section>
     </div>

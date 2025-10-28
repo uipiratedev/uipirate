@@ -220,10 +220,10 @@ const CaseStudyCard = () => {
       <div className="autoShow">
         <div className="mb-6 flex flex-row items-center justify-center">
           <span className="rounded-xl border-2 border-cyan-400 bg-[#8EF1F1] px-4 py-2 font-semibold uppercase">
-            Team Culture
+            Featured Case Studies
           </span>
         </div>
-        <p className="heading-center">How We Work</p>
+        <p className="heading-center">What happens behind the scenes</p>
       </div>
 
       <div
