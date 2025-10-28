@@ -62,6 +62,14 @@
       "title2": "Example: You add a new feature mid-project → we rescope and move forward."
     },
     {
+      "heading": "Can I modify my project scope after starting?",
+      "title1": "Yes, we understand that needs can evolve.",
+      "list": [
+        "If you need to add or change features midway, we’ll review the new scope and adjust the timeline and budget accordingly. Our team will work closely with you to keep everything on track while accommodating the changes."
+      ],
+      "title2": "📍 Flexibility: Additional features can be billed hourly or added to the fixed budget as an agreed scope extension."
+    },
+    {
       "heading": "6. How do I choose the right pricing model?",
       "title1": "If your scope is fixed, choose fixed. If evolving, choose hourly.",
       "list": [
@@ -179,6 +187,73 @@
         "Design system management & updates"
       ],
       "title2": "Great for scaling teams who need consistent design quality."
+    }
+  ],
+  "SaaS Web & Mobile Apps": [
+    {
+      "heading": "What’s included in a web or mobile app project?",
+      "title1": "A typical web or mobile app project includes everything you need to launch a user-friendly and polished app:",
+      "list": [
+        "Initial Discovery: We’ll go through your goals, key features, and user journey.",
+        "Design & Development: Includes UX/UI design, coding, testing, and feedback rounds.",
+        "Launch Support: We’ll assist you through deployment, ensuring the app performs well on all devices."
+      ],
+      "title2": "📍 Deliverables: You’ll receive the full app code, all design assets, documentation, and testing reports."
+    }
+  ],
+  "Motion Graphics & Video Editing": [
+    {
+      "heading": "What deliverables should I expect for motion graphics?",
+      "title1": "Our motion graphics services bring static visuals to life with seamless animations.",
+      "list": [
+        "Storyboard & Concepts: You’ll receive initial concepts to align on the visual style.",
+        "Animation Files: Final deliverables in video format, optimized for web or app usage.",
+        "Revisions: Includes up to three revisions to refine and finalize the animations."
+      ],
+      "title2": "📍 Typical Uses: Great for explainer videos, app onboarding, or social media promos."
+    }
+  ],
+  "Services": [
+    {
+      "heading": "Can you help us set up a Design System and Component Library?",
+      "title1": "Yes, we specialize in creating scalable design systems and component libraries.",
+      "list": [
+        "↳ Design Systems: A comprehensive setup of styles, colors, and typography for brand consistency.",
+        "↳ Component Libraries: Reusable components for faster development and consistent design across pages."
+      ],
+      "title2": "📍 Benefits: A cohesive design system reduces redundancy and improves team efficiency by ensuring every design aligns with brand guidelines."
+    },
+    {
+      "heading": "Do you work with existing designs or wireframes?",
+      "title1": "Absolutely. We can pick up from any stage you’re at.",
+      "list": [
+        "Using your existing designs or wireframes, we can enhance the visual style, expand functionality, or build new features. Working from existing assets can save time and ensure we’re aligned with your vision from the start."
+      ],
+      "title2": "📍 Benefits: Faster turnaround and cost savings, while keeping your original vision intact."
+    }
+  ],
+  "UX Audits & Consultation": [
+    {
+      "heading": "What does a UX Audit & Consultation involve?",
+      "title1": "Our UX audits provide actionable insights to improve your product’s usability.",
+      "list": [
+        "Audit Report: An in-depth analysis of your product’s current state, highlighting user pain points and areas for improvement.",
+        "Consultation: A discussion to address the findings, offering recommendations tailored to your goals.",
+        "Actionable Roadmap: A prioritized list of suggested changes to enhance the user experience."
+      ],
+      "title2": "📍 Deliverables: A detailed report, consultation call, and an improvement roadmap, focusing on ease of use and user satisfaction."
+    }
+  ],
+  "Graphic Design": [
+    {
+      "heading": "What’s included in a 3D Animation & Rendering project?",
+      "title1": "We handle every step, from concept to final render.",
+      "list": [
+        "↳ Concept & Storyboard: A detailed plan and visuals for your 3D scenes or animations.",
+        "↳ 3D Modeling & Texturing: Creation of realistic assets, lighting, and texture to bring your vision to life.",
+        "↳ Rendering & Revisions: High-quality final renders delivered in your preferred formats."
+      ],
+      "title2": "📍 Usage: Perfect for product demos, promotional videos, and immersive web content."
     }
   ]
 }
