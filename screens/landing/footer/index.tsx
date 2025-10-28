@@ -124,14 +124,14 @@ const LandingFooter = () => {
                     Blogs
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="/tools"
                     className="hover:text-white transition-colors"
                   >
                     Tools
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <a
                     href="/faqs"
@@ -140,11 +140,20 @@ const LandingFooter = () => {
                     FAQ’s
                   </a>
                 </li>
+                {/* connect sitemap with xml file */}
+                <li>
+                  <a
+                    href="/sitemap"
+                    className="hover:text-white transition-colors"
+                  >
+                    Site Map
+                  </a>
+                </li>
               </ul>
             </div>
 
             {/* Column 4 - Policies & Legal */}
-            <div>
+            {/* <div>
               <h4 className="font-semibold text-white mb-4 text-base">
                 Policies & Legal
               </h4>
@@ -174,7 +183,7 @@ const LandingFooter = () => {
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
 

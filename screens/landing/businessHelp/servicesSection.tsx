@@ -123,30 +123,32 @@ const ServicesSection = () => {
                       )}
                     </div>
                   </CardHeader>
-                  <CardBody className="p-8 max-md:p-6 max-lg:p-6 pt-0">
-                    <p className="text-2xl max-md:text-xl mt-4 mb-4 font-[700] tracking-[-0.5px] leading-[31.6px]">
-                      {item.heading}
-                    </p>
-                    <p className="text-base max-md:text-base font-[500]">
-                      {item.subheading}
-                    </p>
-                    <p className="text-base max-md:text-base font-[500] text-[#777777] py-2">
-                      {item.description}
-                    </p>
-                    <p className="text-base max-md:text-base font-[500]">
-                      {item.subheading2}
-                    </p>
-
-                    <div className="mb-6 grid-rows-3 w-full gap-4 max-md:gap-x-3">
+                  <CardBody className="p-6 max-md:p-4 max-lg:p-6 pt-0">
+                    <div>
+                      <p className="text-2xl max-md:text-xl mt-4 mb-4 font-[700] tracking-[-0.5px] leading-[31.6px] pr-12">
+                        {item.heading}
+                      </p>
+                      <p className="text-base max-md:text-base font-[500]">
+                        {item.subheading}
+                      </p>
+                      <p className="text-base max-md:text-base font-[500] text-[#777777] py-2">
+                        {item.description}
+                      </p>
+                      <p className="text-base max-md:text-base font-[500]">
+                        {item.subheading2}
+                      </p>
+                    </div>
+                    <div className="mb-6 mt-3 flex flex-wrap gap-2 max-md:gap-2 w-full">
                       {item.chip.map((chipItem, chipIndex) => (
                         <Chip
                           key={chipIndex}
                           radius="sm"
-                          className="md:m-2 mr-2 max-md:mb-2 text-[12px] text-[#00000094] bg-[#51525E14]"
+                          className="text-[12px] text-[#00000094] bg-[#51525E14] flex items-center gap-2"
                           startContent={
                             <img
                               src={chipItem.icon}
                               className="mx-1 w-[16px]"
+                              alt={chipItem.title}
                             />
                           }
                         >
@@ -161,14 +163,14 @@ const ServicesSection = () => {
               );
             })}
             <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1 bg-white/50">
-              <CardBody className="p-4 max-md:p-4 max-lg:p-6 px-0">
+              <CardBody className="p-4 max-md:p-4 max-lg:p-4 px-0">
                 <div className="w-full text-center">
-                  <p className="text-3xl max-md:text-2xl mt-8 mb-4 font-semibold ">
+                  <p className="text-3xl max-md:text-2xl mt-4 mb-4 font-semibold ">
                     Need something custom !
                   </p>
 
                   <div
-                    className="my-12 flex flex-row items-center justify-center max-lg:flex-col w-full max-md:flex-col max-md:px-2 button-spring-animate relative"
+                    className="mb-4  mt-6 flex flex-row items-center justify-center max-lg:flex-col w-full max-md:flex-col max-md:px-2 button-spring-animate relative"
                     style={{ overflow: "visible" }}
                   >
                     <a
@@ -176,8 +178,8 @@ const ServicesSection = () => {
                       target="_blank"
                       className="w-[250px] max-lg:mt-3 lg:ml-3"
                     >
-                      <div className="border-4 border-[#E2E2E2]  bg-black text-white rounded-[20px] h-auto transform transition-all duration-[600ms] ease-in-out px-6 py-4 flex flex-row items-center justify-center gap-3 relative">
-                        <p className="text-lg max-md:text-sm font-bold text-center">
+                      <div className="border-1 border-[#E2E2E2]  bg-black text-white rounded-[16px] h-auto transform transition-all duration-[600ms] ease-in-out px-3 py-3 flex flex-row items-center justify-center gap-3 relative">
+                        <p className="text-base max-md:text-sm font-semibold text-center">
                           😀 Let’s Talk
                         </p>
                       </div>
@@ -190,10 +192,10 @@ const ServicesSection = () => {
                       <Button
                         color="primary"
                         variant="bordered"
-                        className="border-4 max-md:hidden border-[#E2E2E2] text-black font-bold w-full bg-white rounded-[16px] py-[30px]"
+                        className="border-1 max-md:hidden border-[#E2E2E2] text-black font-bold w-full bg-white rounded-[16px] py-[25px]"
                       >
                         <div className="flex flex-col items-center justify-center">
-                          <p className="text-lg max-md:text-sm font-bold text-center">
+                          <p className="text-base max-md:text-sm font-semibold text-center">
                             View All Services
                           </p>
                         </div>

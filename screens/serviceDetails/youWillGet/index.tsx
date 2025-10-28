@@ -58,7 +58,7 @@ export default function YouWillGet({ data }: any) {
             alt="App Mockup"
             width={320}
             height={600}
-            className="rounded-[1rem] shadow-2xl object-contain h-full z-50 bg-[#F5F5F5]"
+            className="rounded-[1rem] object-contain h-full z-50 bg-[#F5F5F5]"
           />
         </div>
 
@@ -102,7 +102,7 @@ export default function YouWillGet({ data }: any) {
         {[...data.leftBadges, ...data.rightBadges].map((b, i) => (
           <div
             key={i}
-            className="px-4 py-2 text-sm font-semibold text-white rounded-full shadow"
+            className="px-4 py-2 text-sm font-semibold  rounded-full shadow"
             style={{ background: b.color }}
           >
             {b.text}

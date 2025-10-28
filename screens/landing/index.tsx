@@ -2,20 +2,17 @@
 import LandingHero from "./hero";
 import LandingMarquee from "./marquee";
 import LandingAppScreen from "./appScreen";
-import LandingBehance from "./behance";
 import LandingBusinessHelp from "./businessHelp";
-import LandingOurPricing from "./ourPricing";
 import LandingFaqs from "./faqs";
 import LandingAbout from "./about";
-import LandingFooter from "./footer";
 import LandingTestimonials from "./testimonials";
-import LandingBehanceDan from "./behance/text";
 import LandingBehanceFramor from "./behance/LandingBehance";
-import LandingWork from "./works";
 import BoreYouCommit from "./boreYouCommit";
+import PageWrapper from "@/components/PageWrapper";
+import FloatingLetsTalkButton from "@/components/FloatingLetsTalkButton";
 const Landing = () => {
   return (
-    <>
+    <PageWrapper showFloatingButton={false}>
       <div>
         <LandingHero />
         <LandingMarquee />
@@ -23,13 +20,8 @@ const Landing = () => {
           <LandingAppScreen />
         </div>
         <div className="">
-          {/* <LandingBehanceDan /> */}
           <LandingBehanceFramor />
-          {/* <LandingBehance /> */}
         </div>
-        {/* <div id="Work">
-          <LandingWork />
-        </div> */}
 
         <LandingAbout />
 
@@ -42,17 +34,15 @@ const Landing = () => {
         <div className=" overflow-hidden">
           <LandingTestimonials />
         </div>
-        {/* <div id="Pricing">
-          <LandingOurPricing />
-        </div> */}
 
         <div id="FAQs">
           <LandingFaqs />
         </div>
-
-        <div>{/* <LandingFooter /> */}</div>
       </div>
-    </>
+
+      {/* Floating Let's Talk Button - Only on Landing Page */}
+      <FloatingLetsTalkButton />
+    </PageWrapper>
   );
 };
 

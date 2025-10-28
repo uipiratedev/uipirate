@@ -190,7 +190,7 @@ const LandingHero = () => {
           </p>
 
           <div
-            className="my-12 flex flex-col items-center max-md:flex-col max-md:px-2 button-spring-animate relative"
+            className="my-12 flex flex-row items-center max-md:flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
             <a
@@ -198,7 +198,7 @@ const LandingHero = () => {
               target="blank"
               className="relative z-10"
             >
-              <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-4 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
+              <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-3 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
                 {/* Star Confetti Container - Behind button */}
                 <div className="star-confetti-container">
                   <div className="star-confetti-revolve">
@@ -291,13 +291,16 @@ const LandingHero = () => {
                     +
                   </p>
                   <img
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1729761707/vishal_profile_d2fbyt.svg"
+                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                     alt="Dribble Logo"
                     id="client"
-                    className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
+                    className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
                   />
                 </div>
-                <p className="text-lg font-bold"> Book a 15-min call</p>
+                <p className="text-lg font-bold text-nowrap">
+                  {" "}
+                  Book a 15-min call
+                </p>
                 <div>
                   <img
                     src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
@@ -307,7 +310,7 @@ const LandingHero = () => {
                 </div>
               </div>
             </a>
-            <div className="w-[100%] mt-3 z-10">
+            <div className="w-[100%] z-10">
               <a
                 href="https://wa.link/i35lma"
                 target="_blank"
@@ -316,7 +319,7 @@ const LandingHero = () => {
                 <Button
                   color="primary"
                   variant="bordered"
-                  className=" border-gray-300 text-black font-bold w-full bg-white hover:border-gray-200 rounded-[16px]   py-[25px]"
+                  className=" border-gray-300 text-black font-bold w-full bg-white  hover:border-gray-200 rounded-[16px]   py-[27px]"
                   style={{ width: "100%" }}
                   onMouseEnter={() => setIsHoveredChat(true)}
                   onMouseLeave={() => setIsHoveredChat(false)}
@@ -332,9 +335,7 @@ const LandingHero = () => {
                         alt="WhatsApp Logo"
                         className="w-[30px]  h-[30px] "
                       />
-                      <p className="text-base font-semibold">
-                        Chat on WhatsApp
-                      </p>
+                      <p className="text-base font-semibold">Lets Talk</p>
                     </span>
 
                     <span

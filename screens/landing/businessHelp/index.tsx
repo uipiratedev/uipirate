@@ -12,7 +12,7 @@ const LandingBusinessHelp = () => {
           </div>
           <h2 className="heading-center">What We Design, Build, & Scale</h2>
           <div className="flex flex-row items-center justify-center mb-12 mt-3 px-28 max-lg:px-32 max-md:px-3">
-            <p className="md:w-1/2 text-center content-center font-[500] leading-[25.2px]">
+            <p className="md:w-3/4 text-center content-center font-[500] leading-[25.2px]">
               From high-performing SaaS apps to scalable design systems, we help
               founders and product teams ship clean, conversion-driven
               experiences — faster.

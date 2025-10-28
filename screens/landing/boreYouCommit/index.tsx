@@ -46,11 +46,11 @@ const BoreYouCommit = () => {
           Before You Commit
         </span>
         <h2 className="text-4xl md:text-5xl font-bold mt-6 mb-4">
-          See the difference in 3 days
+          See the difference in 5 days
         </h2>
         <p className="max-w-2xl mx-auto font-medium text-lg text-gray-700">
-          You don’t need to gamble with your product. Test how we work—and see
-          results—with a short, focused 3-Day Pilot Project.
+          You don't need to gamble with your product. Test how w work - and see
+          results, with a short, focused 5-Day Pilot Project.
         </p>
       </div>
 
@@ -60,7 +60,7 @@ const BoreYouCommit = () => {
             <CardBody className="p-8 max-md:p-4 max-lg:p-6">
               <div className="flex flex-row gap-3">
                 <div>
-                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-medium mb-3">
                     Why this works?
                   </h3>
                   <p className="text-gray-700 font-medium">
@@ -79,7 +79,7 @@ const BoreYouCommit = () => {
               </div>
               <div className="grid md:grid-cols-3 max-md:grid-cols-1 gap-8 mt-10">
                 <div>
-                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-medium mb-3">
                     Your Low-Risk Investment
                   </h3>
                   <p className="text-gray-700 font-medium">
@@ -88,7 +88,7 @@ const BoreYouCommit = () => {
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-medium mb-3">
                     Zero-Risk Proof
                   </h3>
                   <p className="text-gray-700 font-medium">
@@ -98,11 +98,11 @@ const BoreYouCommit = () => {
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-[24px] max-md:text-lg font-semibold mb-3">
+                  <h3 className="text-[24px] max-md:text-lg font-medium mb-3">
                     Fast, Measurable Output
                   </h3>
-                  <p className="text-gray-700 font-medium">
-                    In just 3 days, you get tangible results — real code, real
+                  <p className="text-gray-700 font-medium text-base">
+                    In just 3 days, you get tangible results - real code, real
                     design, and real insight into how we work, communicate, and
                     deliver.
                   </p>
@@ -117,23 +117,26 @@ const BoreYouCommit = () => {
 
           <div className="border-t border-gray-200 pt-10 mb-10 max-md:pt-6 max-md:mb-6">
             {/* 3 Cards Section */}
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-3">
               {/* Card 1 */}
               <Card
                 // ref={(el) => {
                 //   if (el) cardsRef.current[0] = el;
                 // }}
-                className="rounded-3xl bg-black text-white p-6 md:p-10 flex flex-col justify-between"
+                className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
-                      className="text-sm font-semibold bg-[#ffffff] text-[#000]"
+                      className="text-sm font-semibold border-4 border-[#262626] bg-[#ffffff] text-[#000]"
                       variant="flat"
                     >
                       Design
                     </Chip>
-                    <h4 className="text-3xl font-bold max-md:text-2xl">$150</h4>
+                    <h4 className="text-3xl font-bold max-md:text-2xl flex items-baseline gap-1">
+                      <span className="text-lg">$</span>
+                      150
+                    </h4>
                   </div>
                   <ul className="space-y-4 text-left">
                     <li>
@@ -141,7 +144,7 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 "
                         />
 
                         <div>
@@ -149,9 +152,9 @@ const BoreYouCommit = () => {
                             Research & Creative Direction
                           </span>
                           <p className="text-gray-300 text-sm">
-                            Quick discovery phase—understanding users, goals,
-                            and competitors while mapping a simple IA and user
-                            stories.
+                            Quick discovery phase - understanding your users,
+                            goals, and competitors, while mapping a simple IA
+                            and short user stories.
                           </p>
                         </div>
                       </div>
@@ -161,14 +164,15 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
                           <span className="font-semibold">1–2 Page Design</span>
                           <p className="text-gray-300 text-sm">
-                            Designing key screens to define layout, hierarchy,
-                            and visual tone.
+                            Designing 1–2 key screens (like a landing page or
+                            dashboard) to define layout, hierarchy, and visual
+                            tone.
                           </p>
                         </div>
                       </div>
@@ -178,7 +182,7 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
@@ -186,8 +190,9 @@ const BoreYouCommit = () => {
                             Styles & Visual Direction
                           </span>
                           <p className="text-gray-300 text-sm">
-                            We set your brand’s foundation — colors, typography,
-                            and tone.
+                            We establish your brand direction - colors,
+                            typography, and basic visual language, to set the
+                            foundation for your UI system.
                           </p>
                         </div>
                       </div>
@@ -201,12 +206,12 @@ const BoreYouCommit = () => {
                 // ref={(el) => {
                 //   if (el) cardsRef.current[1] = el;
                 // }}
-                className="rounded-3xl bg-black text-white p-6 md:p-10 flex flex-col justify-between"
+                className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
-                      className="text-sm font-semibold bg-white text-black"
+                      className="text-sm font-semibold border-4 border-[#262626] bg-white text-black"
                       variant="flat"
                     >
                       Development
@@ -219,7 +224,7 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
@@ -227,8 +232,9 @@ const BoreYouCommit = () => {
                             Project Setup on GitHub
                           </span>
                           <p className="text-gray-300 text-sm">
-                            Repo initialization, folder structure, dependencies,
-                            and version control — ready for future scale.
+                            We initialize your repo, configure folder structure,
+                            dependencies, and version control, clean and ready
+                            for future scale.
                           </p>
                         </div>
                       </div>
@@ -238,7 +244,7 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
@@ -246,8 +252,9 @@ const BoreYouCommit = () => {
                             1–2 Page Development
                           </span>
                           <p className="text-gray-300 text-sm">
-                            We build meaningful sections to showcase build
-                            quality and structure.
+                            We build 1–2 meaningful components or sections (like
+                            a hero, form, or navigation) to show build quality
+                            and structure.
                           </p>
                         </div>
                       </div>
@@ -257,14 +264,15 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
                           <span className="font-semibold">Hosted URL</span>
                           <p className="text-gray-300 text-sm">
-                            Get a temporary link to preview and test directly in
-                            your browser.
+                            Your pilot is deployed on a temporary link so you
+                            can test, share, and experience the build directly
+                            in your browser.
                           </p>
                         </div>
                       </div>
@@ -278,12 +286,12 @@ const BoreYouCommit = () => {
                 // ref={(el) => {
                 //   if (el) cardsRef.current[2] = el;
                 // }}
-                className="rounded-3xl bg-black text-white p-6 md:p-10 flex flex-col justify-between"
+                className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
-                      className="text-sm font-semibold bg-white text-black"
+                      className="text-sm font-semibold border-4 border-[#262626] bg-white text-black"
                       variant="flat"
                     >
                       Design + Development
@@ -296,7 +304,7 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
@@ -304,8 +312,9 @@ const BoreYouCommit = () => {
                             Hybrid Design & Build
                           </span>
                           <p className="text-gray-300 text-sm">
-                            We create 1–2 screens and code them into functional,
-                            responsive pages.
+                            We create 1–2 screens and code them into responsive,
+                            functional pages, blending both design and
+                            development seamlessly.
                           </p>
                         </div>
                       </div>
@@ -315,7 +324,7 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
@@ -323,8 +332,9 @@ const BoreYouCommit = () => {
                             Components & Visual Integration
                           </span>
                           <p className="text-gray-300 text-sm">
-                            UI elements (buttons, layouts) consistent with your
-                            design system.
+                            We implement styled UI components (like buttons,
+                            forms, or layouts) consistent with your brand
+                            direction and design preview.
                           </p>
                         </div>
                       </div>
@@ -334,7 +344,7 @@ const BoreYouCommit = () => {
                         <img
                           src="/check.svg"
                           alt=""
-                          className=" w-6 h-6 min-w-6 minh-6 max-w-6 max-h-6 "
+                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
                         />
 
                         <div>
@@ -342,8 +352,9 @@ const BoreYouCommit = () => {
                             Technical Speed Audit & Code Review
                           </span>
                           <p className="text-gray-300 text-sm">
-                            Identify and fix minor issues while ensuring
-                            maintainability.
+                            We identify and fix minor performance issues while
+                            reviewing structure and maintainability, ensuring
+                            the pilot is production-grade.
                           </p>
                         </div>
                       </div>
