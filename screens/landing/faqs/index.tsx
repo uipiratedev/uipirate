@@ -20,7 +20,7 @@ const LandingFaqs = () => {
         <h2 className="text-5xl max-lg:text-3xl max-2xl:text-4xl max-md:text-3xl font-[700] mt-3 mb-1 max-md:text-center max-md:px-8">
           Have questions?
         </h2>
-        <h2 className="text-5xl max-lg:text-3xl max-2xl:text-4xl max-md:text-3xl font-[700] mb-6 max-md:text-center max-md:px-8">
+        <h2 className="text-5xl max-lg:text-3xl max-2xl:text-4xl max-md:text-3xl font-[700] mb-0 max-md:text-center max-md:px-8">
           We've got you!
         </h2>
       </div>
