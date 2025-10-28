@@ -40,7 +40,7 @@ const BoreYouCommit = () => {
   }, [isMobile]);
 
   return (
-    <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12">
+    <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 max-md:pt-0">
       <div className="text-center mb-10 autoShow">
         <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
           Before You Commit
@@ -54,7 +54,7 @@ const BoreYouCommit = () => {
         </p>
       </div>
 
-      <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
+      <Card className="rounded-[48px] max-md:rounded-[38px] bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
         <CardBody className=" p-3 max-md:p-2">
           <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1">
             <CardBody className="p-8 max-md:p-4 max-lg:p-6">

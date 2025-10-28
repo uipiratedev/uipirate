@@ -63,7 +63,7 @@ const LandingFooter = () => {
             </p>
           </div>
 
-          <div className=" flex flex-row justify-between w-full max-md:flex-col max-md:gap-y-4">
+          <div className=" flex flex-row justify-between w-full max-md:flex-row max-md:gap-y-4">
             {/* Column 2 - Quick Links */}
             <div>
               <h4 className="font-semibold text-white mb-4 text-base">
@@ -188,9 +188,9 @@ const LandingFooter = () => {
         </div>
 
         {/* Bottom Footer */}
-        <div className="mt-16 pt-8 border-t border-gray-700 max-md:mt-12 flex flex-row justify-between max-md:flex-col">
+        <div className="mt-16 pt-8 max-md:mt-8 border-t border-gray-700  max-md:pt-4 flex flex-row justify-between max-md:flex-col">
           {/* Social Icons */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 max-md:gap-2">
             {footerSocialLinks.map((item, index) => (
               <a
                 key={index}
@@ -202,12 +202,12 @@ const LandingFooter = () => {
                 <img
                   src={item.icon}
                   alt={item.name}
-                  className="w-12 h-12  gr"
+                  className="w-12 h-12 max-md:w-10 max-md:h-10"
                 />
               </a>
             ))}
           </div>
-          <p className="text-gray-400 text-sm text-center md:text-left">
+          <p className="text-gray-400 text-sm text-center md:text-left max-md:pt-4 max-md:mb-8 max-md:pb-8">
             Copyright©2023 UI Pirate. All Rights Reserved.
           </p>
         </div>

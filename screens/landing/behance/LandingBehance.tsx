@@ -133,33 +133,12 @@ const LandingBehanceFramor = () => {
 
   return (
     <div className="relative">
-      {/* <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4 pt-32 max-md:pt-24 max-xl:px-4 max-2xl:px-0">
-        <div className="autoShow">
-          <div className="flex flex-row items-center justify-center mb-6">
-            <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-              Works
-            </span>
-          </div>
-          <p className="heading-center">Recent Works</p>
-          <div className="flex flex-row items-center justify-center mb-8 mt-3 px-40 max-lg:px-32 max-md:px-8 max-xl:px-32 ">
-            <p className="md:w-3/4 text-center content-center font-[500] ">
-              In the world of creativity, clients consistently appreciate our
-              work and value the results we deliver.
-            </p>
-          </div>
-        </div>
-      </div> */}
       {/* Centered Info */}
       <div
         id="info"
         style={{ zIndex: 1 }}
         className="absolute inset-1 flex flex-col items-center justify-center text-center"
       >
-        {/* <img
-          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729514725/behance_k2zcrn.svg"
-          alt="behance Logo"
-          className="max-md:w-[50%] md:w-[250px] autoShow"
-        /> */}
         <p className="text-center text-6xl font-bold px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
           Recent Works
         </p>
@@ -202,7 +181,7 @@ const LandingBehanceFramor = () => {
       </div>
 
       {/* Image Grid with Overlap */}
-      <div className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-40 max-md:py-32 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4">
+      <div className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-40 pb-0 max-md:py-12 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4">
         {visibleData.map((item, index) => (
           <div
             key={index}
