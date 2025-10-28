@@ -76,7 +76,7 @@ export const Navbar = () => {
             {/* --- Mobile Section with Toggle on Right --- */}
             <NavbarContent
               className="flex md:hidden basis-1 -ml-2"
-              justify="end"
+              justify="start"
             >
               <NavbarMenuToggle
                 aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -85,7 +85,7 @@ export const Navbar = () => {
             </NavbarContent>
             <NavbarBrand as="li" className="gap-3 max-w-fit">
               <NextLink
-                className="flex justify-start items-center gap-1 md:-ml-6 max-sm:-ml-3"
+                className="flex justify-start items-center gap-1 md:-ml-6 max-sm:-ml-6"
                 href="/"
               >
                 <img
@@ -151,7 +151,7 @@ export const Navbar = () => {
 
           {/* --- Mobile Menu Content --- */}
           <NavbarMenu>
-            <div className="mx-4 mt-4 flex flex-col gap-4">
+            <div className="mx-0 mt-3 flex flex-col gap-4">
               {siteConfig.navMenuItems.map((item, index) => (
                 <NavbarMenuItem key={`${item}-${index}`}>
                   <NextLink
