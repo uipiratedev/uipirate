@@ -1,5 +1,11 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Chip,
+} from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import data from "@/data/servicesTopList.json";
@@ -112,7 +118,19 @@ const data1 = [
 const VideoWithCards = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Initialize isMobile state on mount
+  useLayoutEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useLayoutEffect(() => {
     // GSAP ScrollTrigger animation for cards
@@ -120,23 +138,25 @@ const VideoWithCards = () => {
     // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
+    cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
           {
             y: 100, // Start from below
             transform: isMobile ? "scale(1)" : "scale(0.80)",
+            opacity: isMobile ? 1 : 0.8,
           },
           {
             y: 0, // Move to original position
             transform: "scale(1)",
+            opacity: 1,
             duration: 1,
             ease: "power2.out",
             scrollTrigger: {
               trigger: card,
-              start: isMobile ? "" : "top 110%",
-              end: isMobile ? "" : "bottom center",
+              start: isMobile ? "top 95%" : "top 110%",
+              end: isMobile ? "top 60%" : "bottom center",
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
@@ -144,7 +164,10 @@ const VideoWithCards = () => {
         );
       }
     });
-  }, []);
+
+    // Refresh ScrollTrigger after setup to ensure proper calculations
+    ScrollTrigger.refresh();
+  }, [isMobile]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -191,7 +214,7 @@ const VideoWithCards = () => {
       {data.map((item, index) => (
         <div
           ref={(el) => {
-            if (el && !isMobile) cardsRef.current[index] = el;
+            if (el) cardsRef.current[index] = el;
           }}
           key={index}
         >
@@ -265,60 +288,80 @@ const VideoWithCards = () => {
           </Card>
         </div>
       ))}
+
       <div
         ref={(el) => {
-          if (el && !isMobile) cardsRef.current[3] = el;
+          if (el) cardsRef.current[3] = el;
         }}
       >
         <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
           <CardBody className="grid grid-cols-2 gap-4 max-md:gap-2 max-xl:grid-cols-1 p-4 max-md:p-2">
             {data1.map((item, index) => {
               return (
-                <Card
-                  className="rounded-[40px] max-md:rounded-[30px] box-shadow"
-                  // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
-                >
-                  <CardHeader className="px-0 pt-0">
-                    <div className=" w-full">
-                      {item.isImage && (
-                        <img
-                          src={item.image}
-                          alt="behance Logo"
-                          className="w-full object-cover  h-[250px]"
-                        />
-                      )}
-                      {!item.isImage && item.video}
-                    </div>
-                  </CardHeader>
-                  <CardBody className="p-8 max-md:p-6 max-lg:p-6">
-                    <p className="text-3xl max-md:text-3xl mt-0 mb-4 font-[700] pr-12 max-md:pr-4 tracking-[-0.5px] leading-[41.6px]">
-                      {item.heading}
-                    </p>
-                    <p className="text-lg max-md:text-base mb-6 font-[500] leading-[25.2px]">
-                      {item.description}
-                    </p>
+                <div>
+                  <Card
+                    className="rounded-[40px] max-md:rounded-[30px] box-shadow"
+                    // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
+                  >
+                    <CardHeader className="px-0 pt-0 max-md:hidden">
+                      <div className=" w-full">
+                        {item.isImage && (
+                          <img
+                            src={item.image}
+                            alt="behance Logo"
+                            className="w-full object-cover  h-[250px]"
+                          />
+                        )}
+                        {!item.isImage && item.video}
+                      </div>
+                    </CardHeader>
+                    <CardBody className="p-8 max-md:p-6 max-lg:p-6">
+                      <p className="text-3xl max-md:text-3xl mt-0 mb-4 font-[700] pr-12 max-md:pr-4 tracking-[-0.5px] leading-[41.6px]">
+                        {item.heading}
+                      </p>
+                      <p className="text-lg max-md:text-base mb-6 font-[500] leading-[25.2px]">
+                        {item.description}
+                      </p>
 
-                    <div className="mb-6 grid-rows-3 w-full gap-4 max-md:gap-x-3">
-                      {item.chip.map((chipItem, chipIndex) => (
-                        <Chip
-                          key={chipIndex}
-                          radius="sm"
-                          className="md:m-2 mr-2 max-md:mb-2 text-[14px] text-[#00000094] bg-[#51525E14]"
-                          startContent={
-                            <img
-                              src={chipItem.icon}
-                              className="mx-1 w-[16px]"
-                            />
-                          }
-                        >
-                          <p className="font-[600] max-md:font-[500]">
-                            {chipItem.title}
-                          </p>
-                        </Chip>
-                      ))}
-                    </div>
-                  </CardBody>
-                </Card>
+                      <div className="mb-6 grid-rows-3 w-full gap-4 max-md:gap-x-3">
+                        {item.chip.map((chipItem, chipIndex) => (
+                          <Chip
+                            key={chipIndex}
+                            radius="sm"
+                            className="md:m-2 mr-2 max-md:mb-2 text-[14px] text-[#00000094] bg-[#51525E14]"
+                            startContent={
+                              <img
+                                src={chipItem.icon}
+                                className="mx-1 w-[16px]"
+                              />
+                            }
+                          >
+                            <p className="font-[600] max-md:font-[500]">
+                              {chipItem.title}
+                            </p>
+                          </Chip>
+                        ))}
+                      </div>
+                    </CardBody>
+                  </Card>
+                  <Card
+                    className="rounded-[40px] max-md:rounded-[30px] box-shadow mt-2"
+                    // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
+                  >
+                    <CardFooter className=" md:hidden p-0">
+                      <div className=" w-full">
+                        {item.isImage && (
+                          <img
+                            src={item.image}
+                            alt="behance Logo"
+                            className="w-full object-cover  h-[250px]"
+                          />
+                        )}
+                        {!item.isImage && item.video}
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </div>
               );
             })}
           </CardBody>

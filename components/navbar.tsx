@@ -137,13 +137,13 @@ export const Navbar = () => {
                 <Button
                   isExternal
                   as={Link}
-                  className="btn-flip text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.3rem]"
+                  className=" text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
                   variant="solid"
                   style={{ paddingTop: 0 }}
                   data-back="Let's Talk"
                   data-front="Have an Idea?"
                 >
-                  Have an Idea?
+                  😀 Let’s Talk
                 </Button>
               </a>
             </NavbarItem>

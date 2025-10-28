@@ -1,0 +1,259 @@
+{
+  "general": [
+    {
+      "heading": "0. What’s the difference between design-only, dev-only, and design + development?",
+      "title1": "Choose design-only if you just need visuals, dev-only if you already have designs, or full-service for a complete concept-to-launch solution.",
+      "list": [
+        "Design-Only: Get Figma files, UX flows, branding, and responsive UI designs, ready for your dev team",
+        "Dev-Only: We build your product based on your provided designs, handling code, testing, and launch",
+        "Design + Development: End-to-end execution: strategy, design, development, QA, and deployment"
+      ],
+      "title2": "Example: Building a fintech dashboard from scratch? Full-service is ideal. Already have a design team? Go dev-only."
+    },
+    {
+      "heading": "1. What’s the difference between hourly and fixed pricing?",
+      "title1": "Hourly is flexible and pay-as-you-go. Fixed is predictable and best for scoped projects.",
+      "list": [
+        "Hourly Pricing: Great for agile workflows and evolving scope. Billed transparently for actual time used.",
+        "Fixed Pricing: Ideal for clear, pre-scoped projects. One price, known deliverables, limited changes."
+      ],
+      "title2": "Tip: If your features might grow or change, go hourly. For a defined landing page, fixed works best."
+    },
+    {
+      "heading": "2. How long does it take to complete a project?",
+      "title1": "2–4 weeks for simple pages, 1–3 months for apps, 1–2 months for design systems.",
+      "list": [
+        "Landing Pages or Small Websites: 2–4 weeks",
+        "Web & Mobile Apps: 1–3 months depending on features",
+        "Design Systems: 1–2 months with component planning + testing"
+      ],
+      "title2": "Example: A B2B onboarding app with 8 screens typically takes ~6 weeks."
+    },
+    {
+      "heading": "3. Do you offer post-launch support?",
+      "title1": "Yes, we stay with you beyond launch. Every project includes support for fixes and refinements.",
+      "list": [
+        "Bug fixes and minor tweaks (free for X weeks/months)",
+        "Option to continue via monthly design/dev retainer",
+        "Ongoing consultation for optimization and iterations"
+      ],
+      "title2": "Tip: Most teams retain us after launch for maintenance and roadmap growth."
+    },
+    {
+      "heading": "4. What’s included in a typical web or mobile app project?",
+      "title1": "Everything from discovery to deployment.",
+      "list": [
+        "UX strategy & user flows",
+        "UI design in Figma",
+        "Frontend development (HTML/CSS/React)",
+        "Testing & responsive QA",
+        "Launch support"
+      ],
+      "title2": "Deliverables: Design files, codebase, documentation, QA reports."
+    },
+    {
+      "heading": "5. Can I change the scope once we start?",
+      "title1": "Yes, we’re built for flexibility. Scope changes are common, and we support them without bottlenecks.",
+      "list": [
+        "Scope updates = timeline + pricing adjustments",
+        "Additional features can be hourly or added to fixed quote",
+        "Clear change logs and approvals before execution"
+      ],
+      "title2": "Example: You add a new feature mid-project → we rescope and move forward."
+    },
+    {
+      "heading": "Can I modify my project scope after starting?",
+      "title1": "Yes, we understand that needs can evolve.",
+      "list": [
+        "If you need to add or change features midway, we’ll review the new scope and adjust the timeline and budget accordingly. Our team will work closely with you to keep everything on track while accommodating the changes."
+      ],
+      "title2": "📍 Flexibility: Additional features can be billed hourly or added to the fixed budget as an agreed scope extension."
+    },
+    {
+      "heading": "6. How do I choose the right pricing model?",
+      "title1": "If your scope is fixed, choose fixed. If evolving, choose hourly.",
+      "list": [
+        "Fixed Pricing: Best for simple or one-time projects",
+        "Hourly Pricing: Ideal for product teams, founders iterating fast"
+      ],
+      "title2": "Still unsure? Book a call, we’ll recommend the best path."
+    },
+    {
+      "heading": "7. What deliverables do I get with motion graphics?",
+      "title1": "Storyboard + animated video files, optimized for your product.",
+      "list": [
+        "Visual concepts and storyboarding",
+        "Lottie-compatible or MP4 formats",
+        "Up to 3 rounds of revisions"
+      ],
+      "title2": "Use case: Animated onboarding, feature explainers, launch videos."
+    },
+    {
+      "heading": "8. Can you set up a Design System and Component Library?",
+      "title1": "Absolutely, that’s one of our specialties.",
+      "list": [
+        "Design System: Colors, typography, layout rules",
+        "Component Library: Buttons, inputs, nav, cards, etc.",
+        "Handoff-ready in Figma with documentation"
+      ],
+      "title2": "Benefit: Scales faster, reduces rework, improves developer handoff."
+    },
+    {
+      "heading": "9. What’s included in a UX Audit & Consultation?",
+      "title1": "A deep review of your current UX with actionable fixes.",
+      "list": [
+        "Friction points, usability issues, design flaws",
+        "Live consultation with design recommendations",
+        "Prioritized roadmap for improvement"
+      ],
+      "title2": "Outcome: A documented strategy you can apply instantly."
+    },
+    {
+      "heading": "10. What do you offer in 3D animation and rendering projects?",
+      "title1": "We take your idea from concept to stunning 3D visuals.",
+      "list": [
+        "Storyboarding and scene planning",
+        "3D modeling, texturing, lighting",
+        "Final renders in requested formats"
+      ],
+      "title2": "Perfect for: Product showcases, promos, immersive site elements."
+    },
+    {
+      "heading": "11. Can you work with my existing designs or wireframes?",
+      "title1": "Yes, we’re happy to jump in midstream.",
+      "list": [
+        "Improve existing designs",
+        "Extend existing UI libraries",
+        "Turn wireframes into polished flows"
+      ],
+      "title2": "Result: Time-saving with continuity and improved design quality."
+    },
+    {
+      "heading": "12. How do I get started?",
+      "title1": "Simple: Book a consultation or send us your brief, we’ll take it from there.",
+      "list": [
+        "Free consult → understand your goals",
+        "Proposal within 24–48 hrs",
+        "Start within 3–5 business days (depending on capacity)"
+      ],
+      "title2": "Getting in Touch: Click on “Contact Us” to book a call or reach out via WhatsApp."
+    },
+    {
+      "heading": "13. How much does it cost to design a SaaS dashboard in 2025?",
+      "title1": "$900–$2,000 USD depending on the scope, number of screens, and functionality.",
+      "list": [
+        "MVP Dashboards: ~$900–$1,100 (6–8 screens, minimal features, basic UI/UX flows)",
+        "Mid-range Dashboards: ~$1,200–$1,600 (includes charts, auth flows, admin panels, responsive design)",
+        "Enterprise Dashboards: up to $2,000+ (advanced states, integrations, data visualizations, role-based access)"
+      ],
+      "title2": "Need a quote? Contact us with your product scope and we’ll send a custom proposal within 24 hours."
+    },
+    {
+      "heading": "14. What tools and technologies do you use?",
+      "title1": "We use Figma, Webflow, React, Tailwind, Lottie, and After Effects.",
+      "list": [
+        "Figma, Notion, Adobe, After Effects",
+        "Webflow, React, HTML/CSS, Framer",
+        "Lottie for motion, Storybook for handoff, Git for versioning"
+      ],
+      "title2": "Ask us for dev handoff examples or UI kit previews."
+    },
+    {
+      "heading": "15. Do you work with startups and founders?",
+      "title1": "Yes, we’re built for fast-moving startups.",
+      "list": [
+        "MVP packages for lean budgets",
+        "Collaborative design sprints",
+        "Help with positioning, onboarding, growth UX"
+      ],
+      "title2": "We’ve worked with 25+ startups across AI, SaaS, fintech, and e-commerce."
+    },
+    {
+      "heading": "16. Do you sign NDAs?",
+      "title1": "Yes - confidentiality is standard.",
+      "list": [
+        "We’re happy to sign your NDA before sharing any details",
+        "Or provide ours for convenience",
+        "Your product’s privacy and IP are always protected"
+      ],
+      "title2": ""
+    },
+    {
+      "heading": "17. Do you offer ongoing design support?",
+      "title1": "Yes, via retainer or on-demand.",
+      "list": [
+        "Monthly retainer plans for startups",
+        "Sprint-based support",
+        "Design system management & updates"
+      ],
+      "title2": "Great for scaling teams who need consistent design quality."
+    }
+  ],
+  "SaaS Web & Mobile Apps": [
+    {
+      "heading": "What’s included in a web or mobile app project?",
+      "title1": "A typical web or mobile app project includes everything you need to launch a user-friendly and polished app:",
+      "list": [
+        "Initial Discovery: We’ll go through your goals, key features, and user journey.",
+        "Design & Development: Includes UX/UI design, coding, testing, and feedback rounds.",
+        "Launch Support: We’ll assist you through deployment, ensuring the app performs well on all devices."
+      ],
+      "title2": "📍 Deliverables: You’ll receive the full app code, all design assets, documentation, and testing reports."
+    }
+  ],
+  "Motion Graphics & Video Editing": [
+    {
+      "heading": "What deliverables should I expect for motion graphics?",
+      "title1": "Our motion graphics services bring static visuals to life with seamless animations.",
+      "list": [
+        "Storyboard & Concepts: You’ll receive initial concepts to align on the visual style.",
+        "Animation Files: Final deliverables in video format, optimized for web or app usage.",
+        "Revisions: Includes up to three revisions to refine and finalize the animations."
+      ],
+      "title2": "📍 Typical Uses: Great for explainer videos, app onboarding, or social media promos."
+    }
+  ],
+  "Services": [
+    {
+      "heading": "Can you help us set up a Design System and Component Library?",
+      "title1": "Yes, we specialize in creating scalable design systems and component libraries.",
+      "list": [
+        "↳ Design Systems: A comprehensive setup of styles, colors, and typography for brand consistency.",
+        "↳ Component Libraries: Reusable components for faster development and consistent design across pages."
+      ],
+      "title2": "📍 Benefits: A cohesive design system reduces redundancy and improves team efficiency by ensuring every design aligns with brand guidelines."
+    },
+    {
+      "heading": "Do you work with existing designs or wireframes?",
+      "title1": "Absolutely. We can pick up from any stage you’re at.",
+      "list": [
+        "Using your existing designs or wireframes, we can enhance the visual style, expand functionality, or build new features. Working from existing assets can save time and ensure we’re aligned with your vision from the start."
+      ],
+      "title2": "📍 Benefits: Faster turnaround and cost savings, while keeping your original vision intact."
+    }
+  ],
+  "UX Audits & Consultation": [
+    {
+      "heading": "What does a UX Audit & Consultation involve?",
+      "title1": "Our UX audits provide actionable insights to improve your product’s usability.",
+      "list": [
+        "Audit Report: An in-depth analysis of your product’s current state, highlighting user pain points and areas for improvement.",
+        "Consultation: A discussion to address the findings, offering recommendations tailored to your goals.",
+        "Actionable Roadmap: A prioritized list of suggested changes to enhance the user experience."
+      ],
+      "title2": "📍 Deliverables: A detailed report, consultation call, and an improvement roadmap, focusing on ease of use and user satisfaction."
+    }
+  ],
+  "Graphic Design": [
+    {
+      "heading": "What’s included in a 3D Animation & Rendering project?",
+      "title1": "We handle every step, from concept to final render.",
+      "list": [
+        "↳ Concept & Storyboard: A detailed plan and visuals for your 3D scenes or animations.",
+        "↳ 3D Modeling & Texturing: Creation of realistic assets, lighting, and texture to bring your vision to life.",
+        "↳ Rendering & Revisions: High-quality final renders delivered in your preferred formats."
+      ],
+      "title2": "📍 Usage: Perfect for product demos, promotional videos, and immersive web content."
+    }
+  ]
+}

@@ -5,28 +5,28 @@ const data = {
   badge: "Our Process",
   card: [
     {
-      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645511/deliver_ref_vn3hye.svg",
       heading: "Deliver & Refine",
       discription:
         "We launch the pilot or live build, gather insights, and polish every detail to ensure it performs beautifully in production.",
       gradient: "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)",
     },
     {
-      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/rocket_pk7ci5.svg",
       heading: "Discover & Understand",
       discription:
         "We dive into your product goals, audience, & user needs, focusing on clarity, intent, and measurable outcomes.",
       gradient: "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)",
     },
     {
-      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645576/plan_m9mxcj.svg",
       heading: "Plan & Structure",
       discription:
         "We define the IA, visual direction, & tech stack, aligning design & development from day one for smoother execution.",
       gradient: "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)",
     },
     {
-      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645576/build_z1rwkj.svg",
       heading: "Build & Iterate",
       discription:
         "We design, develop, and test in quick, focused sprints, showing progress early and adapting fast to real feedback.",
@@ -69,7 +69,7 @@ const ProgressCard = () => {
                       <img
                         src={item.icon}
                         alt={item.heading}
-                        className="w-[40px] grayscale"
+                        className="w-[40px] min-w-[40px] max-w-[40px]  h-[40px] min-h-[40px] max-h-[40px]  p-1 asperct-square grayscale"
                       />
                     </div>
                     <p className="text-xl max-md:text-base font-bold mt-3">
