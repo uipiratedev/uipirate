@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import testimonials from "@/data/testimonials.json";
+import Avatar from "@/components/Avatar";
 
 export default function TestimonialCards() {
   const [isMobile, setIsMobile] = useState(false);
@@ -39,15 +40,12 @@ export default function TestimonialCards() {
                   <div className="w-full p-5 bg-white rounded-[24px] max-md:p-4 box-shadow">
                     <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
                       <div className="flex flex-row gap-3 items-center">
-                        <img
-                          src={
-                            item.profileImage
-                              ? item.profileImage
-                              : "https://res.cloudinary.com/damm9iwho/image/upload/v1731065510/Ellipse_1388_od4ab3.svg"
-                          }
-                          alt="Profile"
-                          className="w-[52px] h-[52px] min-w-[52px] min-h-[52px] rounded-full"
+                        <Avatar
+                          name={item.name}
+                          avatar={item.profileImage}
+                          size={52}
                         />
+
                         <div>
                           <p className="text-xl max-md:text-lg font-semibold">
                             {item.name}
