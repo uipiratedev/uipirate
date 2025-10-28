@@ -7,7 +7,7 @@
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "1-2 months delivery"
+        "title": "1-2 months"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg",
@@ -15,19 +15,19 @@
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "UI Development"
+        "title": "UX Design"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Resize_inl801.svg",
-        "title": "Scalable Architecture"
+        "title": "Interactive Prototype"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
-        "title": "Clean & Modern UI"
+        "title": "Development"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/CodeBlock_wotty4.svg",
-        "title": "Development Ready"
+        "title": "Mobile Optimized"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1729841109/widget-svgrepo-com_1_xflrym.svg",
@@ -40,35 +40,27 @@
     "heading": "Landing Pages & Corporate Websites",
     "subheading": "Launch faster with beautiful, high-converting sites that scale with your brand.",
     "description": "We design landing pages and corporate websites that communicate your value, look stunning on every device, and turn visitors into users or leads.",
-    "subheading2": "Ideal for: Startups, solo founders, product launches, enterprise marketing",
+    "subheading2": "Ideal for: Local Business, Startups, Digital Products, Professional Portfolio",
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "2-4 weeks delivery"
+        "title": "2-4 weeks"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/DeviceMobile_rfsexm.svg",
-        "title": "Mobile-friendly Design"
+        "title": "Landing Page Design"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "UI Development"
+        "title": "Local Business"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
-        "title": "Shopify"
+        "title": "Business Sites"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
-        "title": "Webflow"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ic_baseline-wordpress_gpl06j.svg",
-        "title": "Wordpress"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730808989/VectorD_nnz4jc.svg",
-        "title": "Landing Page Designs"
+        "title": "Portfolio Sites"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1729841107/Vectore_ididim.svg",
@@ -77,30 +69,30 @@
     "ctaText": "Explore Landing Pages"
   },
   {
-    "heading": "Graphic Design",
-    "subheading": "Create brand-ready visuals for social campaigns, ads, and offline print.",
-    "description": "From posters and brochures to brand assets, we deliver scroll-stopping graphics that match your identity and work across print and digital.",
-    "subheading2": "Ideal for: Social campaigns, brand collaterals, posters, brochures",
+    "heading": "Graphic Design & Motion Graphics",
+    "subheading": "Create brand-ready visuals and high-quality video motion design and animations.",
+    "description": "From infographics, newsletters, website graphics to 2D/3D animations and brand assets, we deliver creatives that match your identity and engage across web, social, and product experiences.",
+    "subheading2": "Ideal for: Brand assets, Graphic Images, onboarding or explainer videos",
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "1–3 weeks"
+        "title": "1–4 weeks"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/DeviceMobile_rfsexm.svg",
-        "title": "Posters"
+        "title": "2d/3d Animations"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "Brochures"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
         "title": "Print Assets"
       },
       {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
         "title": "Brand Design"
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
+        "title": "Motion graphic"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1760506407/desinicon_nlf2di.svg",
@@ -143,5 +135,3 @@
     "ctaText": "Explore Motion Graphics"
   }
 ]
-
-
