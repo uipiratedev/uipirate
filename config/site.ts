@@ -12,10 +12,10 @@ export const siteConfig = {
       label: "Works",
       href: "/ourWorks",
     },
-    {
-      label: "Tools",
-      href: "/tools",
-    },
+    // {
+    //   label: "Tools",
+    //   href: "/tools",
+    // },
     {
       label: "Pricing",
       href: "/pricing",
@@ -30,10 +30,10 @@ export const siteConfig = {
       label: "Works",
       href: "/ourWorks",
     },
-    {
-      label: "Tools",
-      href: "/tools",
-    },
+    // {
+    //   label: "Tools",
+    //   href: "/tools",
+    // },
     {
       label: "Pricing",
       href: "/pricing",

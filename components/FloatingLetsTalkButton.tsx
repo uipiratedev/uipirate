@@ -32,7 +32,7 @@ const FloatingLetsTalkButton = () => {
           shadow-lg hover:shadow-2xl
           transform transition-all duration-300 ease-in-out
           flex items-center gap-3
-          ${isHovered ? "scale-110 bg-[rgba(0,0,0,0.45)]" : "scale-100"}
+          ${isHovered ? "scale-110 bg-black" : "scale-100"}
           max-md:px-6 max-md:py-3
         `}
         style={{
