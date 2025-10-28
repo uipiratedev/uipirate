@@ -35,21 +35,21 @@ const StarRating = ({
 };
 const OurWorksHero = () => {
   return (
-    <div>
-      <section className="relative pt-16 md:pt-24 flex flex-col items-center text-center ">
+    <div className="flex flex-row items-center justify-center py-12 w-full max-lg:py-10 max-md:py-6 container mx-auto">
+      <section className="relative flex flex-col items-center text-center ">
         {/* Main Heading */}
         <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim ">
           Real Projects. Real Results.
         </h1>
 
         {/* Subheading */}
-        <p className="text-base md:text-lg text-gray-600 max-w-2xl reveal-text-anim ">
+        <p className="text-base md:text-lg text-gray-600 max-w-2xl reveal-text-anim mb-8">
           See how we’ve helped startups, SaaS teams, and global brands turn
           ideas into fully functional digital products.
         </p>
 
         {/* Card Section */}
-        <div className="relative flex justify-center items-center py-10 max-md:hidden">
+        <div className="relative flex justify-center items-center my-8 max-md:hidden">
           {testimonials.slice(0, 3).map((item, index) => (
             <div
               key={index}
@@ -61,13 +61,13 @@ const OurWorksHero = () => {
                   index === 0
                     ? "rotate(-10deg)"
                     : index === 1
-                    ? "rotate(10deg)"
-                    : "rotate(20deg)",
-                marginTop: index === 0 ? "0px" : index === 1 ? "-50px" : "50px",
+                    ? "rotate(5deg)"
+                    : "rotate(18deg)",
+                marginTop: index === 0 ? "0px" : index === 1 ? "-50px" : "0px",
               }}
             >
               <Card
-                className="relative overflow-hidden w-[300px] h-[300px]"
+                className="relative overflow-hidden w-[300px] h-[200px]"
                 style={{
                   borderRadius: "40px",
                   backdropFilter: "blur(10px)",
@@ -95,7 +95,7 @@ const OurWorksHero = () => {
 
                 {/* Card Content */}
                 <CardBody
-                  className="relative z-0 flex flex-col items-center justify-center gap-4 p-6"
+                  className="relative z-0 flex flex-col items-center justify-center gap-4 p-4"
                   style={{
                     borderRadius: "38px",
                     background: "rgba(255,255,255,0.85)",
@@ -107,10 +107,10 @@ const OurWorksHero = () => {
                     avatar={item.profileImage}
                     size={48}
                   />
-                  <p className="line-clamp-5 text-center text-base text-[#777777]">
-                    {item.review}
+                  <p className="line-clamp-3 text-center text-sm ">
+                    "...{item.review}..."
                   </p>
-                  <div className="flex flex-row items-start gap-1">
+                  <div className="flex flex-row items-start gap-1 overflow-hidden">
                     <StarRating delay={300} />
                   </div>
                 </CardBody>

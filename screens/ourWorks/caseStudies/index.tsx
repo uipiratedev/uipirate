@@ -32,13 +32,15 @@ const data = [
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444002/ion_xce6b5.svg",
     url: "https://arthalpha.in/",
   },
-  // {
-  //   heading: "ArthAlpha",
-  //   heading1: "AI Trading Platform",
-  //   subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Developemt",
-  //   img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
-  //   url: "https://arthalpha.in/",
-  // },
+
+  {
+    heading: "Brahmastra",
+    heading1: "Diamond Ring Studio",
+    subtitle:
+      "A trading platform with real-time data, advanced charting, and customizable strategies to enhance trading efficiency.",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443918/brahma_jvnmc9.svg",
+    url: "https://ringsandi.com/",
+  },
   {
     heading: "Rings & I",
     heading1: "Diamond Ring Studio",
@@ -56,15 +58,6 @@ const data = [
     url: "https://ringsandi.com/",
   },
   {
-    heading: "Infinity AquaSol",
-    heading1: "Diamond Ring Studio",
-    subtitle:
-      "A website highlighting cutting-edge water treatment and environmental solutions.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444012/infinity_aqvvse.svg",
-    url: "https://ringsandi.com/",
-  },
-
-  {
     heading: "Test Dynamiz",
     heading1: "Diamond Ring Studio",
     subtitle:
@@ -73,11 +66,11 @@ const data = [
     url: "https://ringsandi.com/",
   },
   {
-    heading: "Cloud Shift",
+    heading: "SimpleO",
     heading1: "Diamond Ring Studio",
     subtitle:
-      "A specialized cloud migration platform to guide and support businesses transitioning to cloud infrastructure.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444015/cloud_wawxjj.svg",
+      "An AI-powered legal management system for streamlined contracts and compliance.",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443926/simplo_dnrjzi.svg",
     url: "https://ringsandi.com/",
   },
   {
@@ -89,6 +82,24 @@ const data = [
     url: "https://ringsandi.com/",
   },
   {
+    heading: "Infinity AquaSol",
+    heading1: "Diamond Ring Studio",
+    subtitle:
+      "A website highlighting cutting-edge water treatment and environmental solutions.",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444012/infinity_aqvvse.svg",
+    url: "https://ringsandi.com/",
+  },
+
+  {
+    heading: "Cloud Shift",
+    heading1: "Diamond Ring Studio",
+    subtitle:
+      "A specialized cloud migration platform to guide and support businesses transitioning to cloud infrastructure.",
+    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761444015/cloud_wawxjj.svg",
+    url: "https://ringsandi.com/",
+  },
+
+  {
     heading: "StayRealtor",
     heading1: "Diamond Ring Studio",
     subtitle:
@@ -96,23 +107,7 @@ const data = [
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443928/stayrelater_vbxkvv.svg",
     url: "https://ringsandi.com/",
   },
-  {
-    heading: "SimpleO",
-    heading1: "Diamond Ring Studio",
-    subtitle:
-      "An AI-powered legal management system for streamlined contracts and compliance.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443926/simplo_dnrjzi.svg",
-    url: "https://ringsandi.com/",
-  },
 
-  {
-    heading: "Brahmastra",
-    heading1: "Diamond Ring Studio",
-    subtitle:
-      "A trading platform with real-time data, advanced charting, and customizable strategies to enhance trading efficiency.",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1761443918/brahma_jvnmc9.svg",
-    url: "https://ringsandi.com/",
-  },
   {
     heading: "OLSO",
     heading1: "Diamond Ring Studio",
