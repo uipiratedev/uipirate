@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Card,
@@ -38,12 +40,8 @@ const data1 = [
         title: "Development-ready exports",
       },
     ],
-
     video: (
       <video
-        // ref={(elvideo) => {
-        //   if (elvideo) videoRefs.current[index] = elvideo;
-        // }}
         width="70%"
         autoPlay
         loop
@@ -82,9 +80,6 @@ const data1 = [
     image: "/ux-audit.svg",
     video: (
       <video
-        // ref={(elvideo) => {
-        //   if (elvideo) videoRefs.current[index] = elvideo;
-        // }}
         width="100%"
         autoPlay
         loop
@@ -95,24 +90,6 @@ const data1 = [
     ),
     isImage: true,
   },
-  // {
-  //   heading: "Animated Motion Graphics",
-  //   description:
-  //     "Impactful animated motion graphics and Videos to enhance storytelling and design.",
-  //   image:
-  //     "https://res.cloudinary.com/damm9iwho/image/upload/v1730808989/view-3d-cinema-clapperboard_1_bcdsv5.svg",
-  //   video: (
-  //     <iframe
-  //       src="https://my.spline.design/componentkeyboardcopy-418b298aa595a45922ac0f0895edd81d/"
-  //       // frameBorder="0"
-  //       width="100%"
-  //       height="100%"
-  //       className="h-[250px] w-full"
-  //     ></iframe>
-  //   ),
-  //   isImage: false,
-  // },
-  // Add more data as needed...
 ];
 
 const VideoWithCards = () => {
@@ -120,108 +97,92 @@ const VideoWithCards = () => {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Initialize isMobile state on mount
+  // Set isMobile based on window size
   useLayoutEffect(() => {
-    setIsMobile(window.innerWidth <= 768);
-
-    const handleResize = () => {
+    if (typeof window !== "undefined") {
       setIsMobile(window.innerWidth <= 768);
-    };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+      const handleResize = () => setIsMobile(window.innerWidth <= 768);
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
 
+  // Animate cards on scroll
   useLayoutEffect(() => {
-    // GSAP ScrollTrigger animation for cards
-
-    // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
     cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
+          { y: 100, scale: isMobile ? 1 : 0.9, opacity: 0 },
           {
-            y: 100, // Start from below
-            transform: isMobile ? "scale(1)" : "scale(0.80)",
-            opacity: isMobile ? 1 : 0.8,
-          },
-          {
-            y: 0, // Move to original position
-            transform: "scale(1)",
+            y: 0,
+            scale: 1,
             opacity: 1,
-            duration: 1,
+            duration: 0.8,
             ease: "power2.out",
             scrollTrigger: {
               trigger: card,
-              start: isMobile ? "top 95%" : "top 110%",
-              end: isMobile ? "top 60%" : "bottom center",
+              start: "top 90%",
+              end: "bottom 70%",
               toggleActions: "play none none reverse",
-              scrub: 1.5,
             },
           }
         );
       }
     });
 
-    // Refresh ScrollTrigger after setup to ensure proper calculations
     ScrollTrigger.refresh();
   }, [isMobile]);
 
+  // Handle video autoplay/pause when in view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Find the index of the observed element in videoRefs
           const index = videoRefs.current.findIndex(
             (video) => video === entry.target
           );
+          const videoElement = videoRefs.current[index];
 
-          if (index !== -1) {
-            // Check if the index is valid
-            const videoElement = videoRefs.current[index];
-            if (videoElement) {
-              // Ensure the video element is valid
-              if (entry.isIntersecting) {
-                console.log(`Video ${index + 1} started playing.`);
-                videoElement.play();
-                videoElement.playbackRate = 0.5; // Adjust speed when in view
-              } else {
-                console.log(`Video ${index + 1} paused.`);
-                videoElement.pause();
-                videoElement.playbackRate = 1; // Reset speed when out of view
-              }
+          if (videoElement) {
+            if (entry.isIntersecting) {
+              videoElement.play();
+              videoElement.playbackRate = 0.5;
+            } else {
+              videoElement.pause();
+              videoElement.playbackRate = 1;
             }
           }
         });
       },
-      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
+      { threshold: 0.4 }
     );
 
-    // Observing all video elements
     videoRefs.current.forEach((video) => {
-      if (video) observer.observe(video); // Ensure video is not null before observing
+      if (video) observer.observe(video);
     });
 
-    return () => {
-      observer.disconnect(); // Cleanup observer on unmount
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
     <div className="min-h-screen">
+      {/* Main cards */}
       {data.map((item, index) => (
         <div
+          key={index}
           ref={(el) => {
             if (el) cardsRef.current[index] = el;
           }}
-          key={index}
         >
-          <Card className="rounded-[48px] max-md:rounded-[38px] md:mt-12 bg-[#e9e9e9]  max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
-            <CardBody className="grid grid-cols-2 gap-4 max-xl:grid-cols-1 p-4 max-md:p-2 max-md:gap-2">
+          <Card className="rounded-[48px] max-md:rounded-[38px] md:mt-12 bg-[#e9e9e9] max-md:mt-4 shadow-none border border-[#0000000f]">
+            <CardBody className="grid grid-cols-2 gap-4 max-xl:grid-cols-1 p-2.5 max-md:p-2 max-md:gap-2">
               <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow">
-                <CardBody className="p-8 max-md:p-5 max-lg:p-6 flex flex-col justify-between">
+                <CardBody className="p-6 max-md:p-4 flex flex-col justify-between">
                   <div>
                     <img
                       src={item.image}
@@ -242,43 +203,45 @@ const VideoWithCards = () => {
                     </p>
                   </div>
 
-                  <div className="mt-6 grid-rows-3 w-full gap-4 max-md:gap-x-3">
+                  <div className="mt-6 flex flex-wrap gap-2">
                     {item.chip.map((chipItem, chipIndex) => (
                       <Chip
                         key={chipIndex}
                         radius="sm"
-                        className="md:m-2 mr-2 max-md:mb-2 text-[14px] text-[#00000094] bg-[#51525E14]"
+                        className="text-[14px] text-[#00000094] bg-[#51525E14]"
                         startContent={
-                          <img src={chipItem.icon} className="mx-1 w-[16px]" />
+                          <img
+                            src={chipItem.icon}
+                            alt=""
+                            className="mx-1 w-[16px]"
+                          />
                         }
                       >
-                        <p className="font-[600] max-md:font-[500]">
-                          {chipItem.title}
-                        </p>
+                        <p className="font-[600]">{chipItem.title}</p>
                       </Chip>
                     ))}
                   </div>
                 </CardBody>
               </Card>
+
               <Card className="rounded-[40px] max-md:rounded-[30px] p-0 h-full max-md:h-[300px]">
                 <CardBody style={{ padding: 0 }}>
-                  {item.isImage && (
+                  {item.isImage && item.sideImage && (
                     <img
                       src={item.sideImage}
-                      alt="behance Logo"
-                      className="object-cover h-full min-md:h-[400px] max-h-full"
+                      alt="illustration"
+                      className="object-cover h-full w-full"
                     />
                   )}
                   {!item.isImage && (
                     <video
-                      ref={(elvideo) => {
-                        if (elvideo) videoRefs.current[index] = elvideo;
+                      ref={(el) => {
+                        if (el) videoRefs.current[index] = el;
                       }}
                       width="100%"
-                      // autoPlay
                       loop
                       muted
-                      className="object-cover h-full min-md:h-[400px] max-h-full"
+                      className="object-cover h-full w-full"
                       src={item.video}
                     ></video>
                   )}
@@ -289,81 +252,76 @@ const VideoWithCards = () => {
         </div>
       ))}
 
+      {/* Bottom cards (data1) */}
       <div
         ref={(el) => {
-          if (el) cardsRef.current[3] = el;
+          if (el) cardsRef.current[data.length] = el;
         }}
       >
-        <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
-          <CardBody className="grid grid-cols-2 gap-4 max-md:gap-2 max-xl:grid-cols-1 p-4 max-md:p-2">
-            {data1.map((item, index) => {
-              return (
-                <div>
-                  <Card
-                    className="rounded-[40px] max-md:rounded-[30px] box-shadow"
-                    // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
-                  >
-                    <CardHeader className="px-0 pt-0 max-md:hidden">
-                      <div className=" w-full">
-                        {item.isImage && (
-                          <img
-                            src={item.image}
-                            alt="behance Logo"
-                            className="w-full object-cover  h-[250px]"
-                          />
-                        )}
-                        {!item.isImage && item.video}
-                      </div>
-                    </CardHeader>
-                    <CardBody className="p-8 max-md:p-6 max-lg:p-6">
-                      <p className="text-3xl max-md:text-3xl mt-0 mb-4 font-[700] pr-12 max-md:pr-4 tracking-[-0.5px] leading-[41.6px]">
-                        {item.heading}
-                      </p>
-                      <p className="text-lg max-md:text-base mb-6 font-[500] leading-[25.2px]">
-                        {item.description}
-                      </p>
+        <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9] mt-12 max-md:mt-4 shadow-none border border-[#0000000f]">
+          <CardBody className="grid grid-cols-2 gap-4 max-md:gap-2 max-xl:grid-cols-1 p-2.5 max-md:p-2">
+            {data1.map((item, index) => (
+              <div key={index}>
+                <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow">
+                  <CardHeader className="px-0 pt-0 max-md:hidden">
+                    <div className="w-full">
+                      {item.isImage && (
+                        <img
+                          src={item.image}
+                          alt="preview"
+                          className="w-full h-[250px] object-cover"
+                        />
+                      )}
+                      {!item.isImage && item.video}
+                    </div>
+                  </CardHeader>
 
-                      <div className="mb-6 grid-rows-3 w-full gap-4 max-md:gap-x-3">
-                        {item.chip.map((chipItem, chipIndex) => (
-                          <Chip
-                            key={chipIndex}
-                            radius="sm"
-                            className="md:m-2 mr-2 max-md:mb-2 text-[14px] text-[#00000094] bg-[#51525E14]"
-                            startContent={
-                              <img
-                                src={chipItem.icon}
-                                className="mx-1 w-[16px]"
-                              />
-                            }
-                          >
-                            <p className="font-[600] max-md:font-[500]">
-                              {chipItem.title}
-                            </p>
-                          </Chip>
-                        ))}
-                      </div>
-                    </CardBody>
-                  </Card>
-                  <Card
-                    className="rounded-[40px] max-md:rounded-[30px] box-shadow mt-2"
-                    // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
-                  >
-                    <CardFooter className=" md:hidden p-0">
-                      <div className=" w-full">
-                        {item.isImage && (
-                          <img
-                            src={item.image}
-                            alt="behance Logo"
-                            className="w-full object-cover  h-[250px]"
-                          />
-                        )}
-                        {!item.isImage && item.video}
-                      </div>
-                    </CardFooter>
-                  </Card>
-                </div>
-              );
-            })}
+                  <CardBody className="p-8 max-md:p-6">
+                    <p className="text-3xl max-md:text-2xl font-[700] mb-4">
+                      {item.heading}
+                    </p>
+                    <p className="text-lg max-md:text-base mb-6 text-[#555]">
+                      {item.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {item.chip.map((chipItem, chipIndex) => (
+                        <Chip
+                          key={chipIndex}
+                          radius="sm"
+                          className="text-[14px] text-[#00000094] bg-[#51525E14]"
+                          startContent={
+                            <img
+                              src={chipItem.icon}
+                              alt=""
+                              className="mx-1 w-[16px]"
+                            />
+                          }
+                        >
+                          <p className="font-[600]">{chipItem.title}</p>
+                        </Chip>
+                      ))}
+                    </div>
+                  </CardBody>
+                </Card>
+
+                {/* Mobile Video/Footer */}
+                <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow mt-2">
+                  <CardFooter className="md:hidden p-0">
+                    <div className="w-full">
+                      {item.isImage && (
+                        <img
+                          src={item.image}
+                          alt="mobile preview"
+                          className="w-full h-[250px] object-cover"
+                        />
+                      )}
+                      {!item.isImage && item.video}
+                    </div>
+                  </CardFooter>
+                </Card>
+              </div>
+            ))}
           </CardBody>
         </Card>
       </div>

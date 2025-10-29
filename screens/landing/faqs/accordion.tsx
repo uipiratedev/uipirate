@@ -267,14 +267,14 @@ export default function FaqsAccordion() {
                   className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
                      group-hover:translate-y-[50px] translate-y-3`}
                 >
-                  See More
+                  See all FAQ’s
                 </span>
 
                 <span
                   className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
                      translate-y-[50px] group-hover:-translate-y-3`}
                 >
-                  See all FAQ’s
+                  See More
                 </span>
               </div>
             </button>

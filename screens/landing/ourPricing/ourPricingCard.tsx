@@ -721,7 +721,7 @@ const OurPricingCard = (props: any) => {
                   <a
                     href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
                     target="blank"
-                    className="w-[300px] max-lg:mt-3 lg:ml-3"
+                    className="w-[350px] max-md:w-[300px] max-lg:mt-3 lg:ml-3"
                   >
                     <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-4 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
                       <div className="flex flex-row gap-2 items-center md:mr-11">
@@ -738,10 +738,10 @@ const OurPricingCard = (props: any) => {
                           +
                         </p>
                         <img
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729761707/vishal_profile_d2fbyt.svg"
+                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                           alt="Dribble Logo"
                           id="client"
-                          className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
+                          className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
                         />
                       </div>
                       <p className="text-lg max-md:text-sm font-bold">

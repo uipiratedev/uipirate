@@ -1,6 +1,8 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
+import { motion } from "framer-motion";
 
 const data = [
   // col 1
@@ -113,18 +115,34 @@ const LookingFor = () => {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Function to check and update mobile state
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    // Initial check
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
     handleResize();
-
-    // Listen to resize
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    }),
+  };
+
+  const imageVariants = {
+    hidden: { scale: 0.9, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
 
   return (
     <div className="mt-16">
@@ -132,30 +150,39 @@ const LookingFor = () => {
 
       <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6 max-md:gap-4 items-stretch">
         {data.map((itemMain, colIndex) => {
-          const itemsToShow = isMobile
-            ? [itemMain.data[0]] // only first card on mobile
-            : itemMain.data; // show all cards on larger screens
+          const itemsToShow = isMobile ? [itemMain.data[0]] : itemMain.data;
 
           return (
             <div key={colIndex} className="flex flex-col gap-6 h-full">
               {itemsToShow.map((item, rowIndex) => (
-                <Card
+                <motion.div
                   key={rowIndex}
-                  className="rounded-[48px] max-md:rounded-[38px] bg-white group shadow-none border-1 border-[#0000000f] h-full flex flex-col"
-                  style={{
-                    boxShadow: "0px 3px 7px 3px rgba(0, 0, 0, 0.09)",
-                  }}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.2 }}
+                  custom={rowIndex + colIndex * 0.2}
                 >
-                  <CardBody className="p-1.5 max-md:p-1.5 max-md:gap-2 flex flex-col h-full">
-                    <Card
-                      className="rounded-[40px] max-md:rounded-[30px] flex flex-col h-full"
-                      style={{
-                        background: itemMain.gradiendt,
-                      }}
-                    >
-                      <CardBody className="p-7 max-md:p-5 max-lg:p-6 flex flex-col justify-between h-full">
-                        <div className="flex flex-col justify-between h-full">
-                          <div>
+                  <Card
+                    className="rounded-[48px] max-md:rounded-[38px] bg-white shadow-none border border-[#0000000f] h-full flex flex-col"
+                    style={{
+                      boxShadow: "0px 3px 7px 3px rgba(0, 0, 0, 0.09)",
+                    }}
+                  >
+                    <CardBody className="p-1.5 max-md:p-1.5 flex flex-col h-full">
+                      <Card
+                        className="rounded-[40px] max-md:rounded-[30px] flex flex-col h-full overflow-hidden"
+                        style={{
+                          background: itemMain.gradiendt,
+                        }}
+                      >
+                        <CardBody className="p-7 max-md:p-5 max-lg:p-6 flex flex-col justify-between h-full">
+                          <motion.div
+                            variants={imageVariants}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.4 }}
+                          >
                             <div className="border border-[#00000014] bg-white rounded-xl p-2 w-fit mb-3">
                               <img
                                 src={itemMain.icon}
@@ -163,18 +190,18 @@ const LookingFor = () => {
                                 className="w-[40px] grayscale"
                               />
                             </div>
-                            <p className="text-xl max-md:text-base font-[700]">
-                              {item.heading}
-                            </p>
-                            <p className="text-base max-md:text-base font-[500] py-2">
-                              {item.description}
-                            </p>
-                          </div>
-                        </div>
-                      </CardBody>
-                    </Card>
-                  </CardBody>
-                </Card>
+                          </motion.div>
+                          <p className="text-xl max-md:text-base font-[700]">
+                            {item.heading}
+                          </p>
+                          <p className="text-base max-md:text-base font-[500] py-2 text-[#555]">
+                            {item.description}
+                          </p>
+                        </CardBody>
+                      </Card>
+                    </CardBody>
+                  </Card>
+                </motion.div>
               ))}
             </div>
           );
