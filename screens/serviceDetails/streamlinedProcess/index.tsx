@@ -1,4 +1,6 @@
 import { Card, CardBody } from "@nextui-org/react";
+import { getGradientById } from "@/utils/gradientService";
+
 const StreamlinedProcess = ({ data }: any) => {
   return (
     <div className="  pt-32 max-md:pt-24">
@@ -23,7 +25,8 @@ const StreamlinedProcess = ({ data }: any) => {
               <Card
                 className="rounded-[40px] max-md:rounded-[30px] box-shadow h-full"
                 style={{
-                  background: item.gradiendt,
+                  background:
+                    getGradientById(item.gradientId)?.value || item.gradiendt,
                 }}
               >
                 <CardBody className="p-7 max-md:p-5 max-lg:p-6 flex flex-col justify-between ">

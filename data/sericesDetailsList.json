@@ -68,22 +68,22 @@
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Onboarding",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Research & Strategy",
-            "gradiendt": "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)"
+            "gradientId": 2
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Design & Prototyping",
-            "gradiendt": "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)"
+            "gradientId": 3
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "UI Development",
-            "gradiendt": "linear-gradient(180deg, #FFC8DB 29.57%, #FFF7FA 100%)"
+            "gradientId": 4
           }
         ]
       },
@@ -237,22 +237,22 @@
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Kickoff & Alignment",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Strategy & Structure",
-            "gradiendt": "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)"
+            "gradientId": 2
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Visual Design",
-            "gradiendt": "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)"
+            "gradientId": 3
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "UI Build & Launch",
-            "gradiendt": "linear-gradient(180deg, #FFC8DB 29.57%, #FFF7FA 100%)"
+            "gradientId": 4
           }
         ]
       },
@@ -413,22 +413,22 @@
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Kickoff & Alignment",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Style Foundation",
-            "gradiendt": "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)"
+            "gradientId": 2
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Component Design",
-            "gradiendt": "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)"
+            "gradientId": 3
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Documentation & Handoff",
-            "gradiendt": "linear-gradient(180deg, #FFC8DB 29.57%, #FFF7FA 100%)"
+            "gradientId": 4
           }
         ]
       },
@@ -586,22 +586,22 @@
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Brief & Scope",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Visual Direction",
-            "gradiendt": "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)"
+            "gradientId": 2
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Final Design",
-            "gradiendt": "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)"
+            "gradientId": 3
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Output & Delivery",
-            "gradiendt": "linear-gradient(180deg, #FFC8DB 29.57%, #FFF7FA 100%)"
+            "gradientId": 4
           }
         ]
       },
@@ -759,17 +759,17 @@
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Brief & Inputs",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Edit + Graphics",
-            "gradiendt": "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)"
+            "gradientId": 2
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Review & Export",
-            "gradiendt": "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)"
+            "gradientId": 3
           }
         ]
       },
@@ -927,17 +927,17 @@
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Brief & Inputs",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Edit + Graphics",
-            "gradiendt": "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)"
+            "gradientId": 2
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Review & Export",
-            "gradiendt": "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)"
+            "gradientId": 3
           }
         ]
       },
@@ -1095,22 +1095,22 @@
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Planning & References",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Modeling & Preview",
-            "gradiendt": "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)"
+            "gradientId": 2
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Animation & Review",
-            "gradiendt": "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)"
+            "gradientId": 3
           },
           {
             "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
             "heading": "Final Render & Delivery",
-            "gradiendt": "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)"
+            "gradientId": 1
           }
         ]
       },
