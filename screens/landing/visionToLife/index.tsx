@@ -2,7 +2,7 @@ import React from "react";
 
 function VisionToLife() {
   return (
-    <div className="relative w-full h-[100vh] flex justify-center items-center overflow-hidden">
+    <div className="relative w-full z-0 h-[100vh] flex justify-center items-center overflow-hidden">
       {/* Background Video */}
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"

@@ -99,7 +99,7 @@ const ServicesSection = () => {
                   className="rounded-[40px] max-md:rounded-[30px]  box-shadow"
                   // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
                 >
-                  <CardHeader className="px-0 pt-0">
+                  <CardHeader className="px-0 pt-0 z-0">
                     <div className=" w-full">
                       {item.isImage && (
                         <img

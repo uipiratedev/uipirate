@@ -53,7 +53,7 @@ const cardVariants = {
 
 const ProgressCard = () => {
   return (
-    <div className="pt-0 max-md:pt-0">
+    <div className="pt-0 max-md:pt-8">
       {/* Heading Section Animation */}
       <motion.div
         className="autoShow"
@@ -71,7 +71,7 @@ const ProgressCard = () => {
       </motion.div>
 
       {/* Cards Section */}
-      <div className="grid grid-cols-4 max-md:grid-cols-1 max-lg:grid-cols-2 gap-6 max-md:gap-4 mt-12">
+      <div className="grid grid-cols-4 max-md:grid-cols-1 max-lg:grid-cols-2 gap-6 max-md:gap-4 mt-12 max-md:mt-0">
         {data.card.map((item, index) => (
           <motion.div
             key={index}

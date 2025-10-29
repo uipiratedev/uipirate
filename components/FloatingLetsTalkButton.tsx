@@ -21,7 +21,7 @@ const FloatingLetsTalkButton = () => {
       href="https://wa.me/919708636151"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-3 left-1/2 z-[9999] -translate-x-1/2 transition-opacity duration-500"
+      className="fixed bottom-3 left-1/2 z-[1] -translate-x-1/2 transition-opacity duration-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

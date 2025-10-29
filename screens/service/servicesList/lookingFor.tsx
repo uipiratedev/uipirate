@@ -5,7 +5,6 @@ import { Card, CardBody } from "@nextui-org/react";
 import { motion } from "framer-motion";
 
 const data = [
-  // col 1
   {
     gradiendt: "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/rocket_pk7ci5.svg",
@@ -40,7 +39,6 @@ const data = [
       },
     ],
   },
-  // col 2
   {
     gradiendt: "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/reserch_hl7lpt.svg",
@@ -75,7 +73,6 @@ const data = [
       },
     ],
   },
-  // col 3
   {
     gradiendt: "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/design_loqtac.svg",
@@ -148,6 +145,7 @@ const LookingFor = () => {
     <div className="mt-16">
       <p className="heading-center mb-6">Find What You’re Looking For</p>
 
+      {/* ✅ Equal height fix: grid with items-stretch */}
       <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6 max-md:gap-4 items-stretch">
         {data.map((itemMain, colIndex) => {
           const itemsToShow = isMobile ? [itemMain.data[0]] : itemMain.data;
@@ -162,16 +160,17 @@ const LookingFor = () => {
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.2 }}
                   custom={rowIndex + colIndex * 0.2}
+                  className="flex h-full"
                 >
                   <Card
-                    className="rounded-[48px] max-md:rounded-[38px] bg-white shadow-none border border-[#0000000f] h-full flex flex-col"
+                    className="rounded-[48px] max-md:rounded-[38px] bg-white shadow-none border border-[#0000000f] flex flex-col h-full"
                     style={{
                       boxShadow: "0px 3px 7px 3px rgba(0, 0, 0, 0.09)",
                     }}
                   >
-                    <CardBody className="p-1.5 max-md:p-1.5 flex flex-col h-full">
+                    <CardBody className="p-1.5 flex flex-col h-full">
                       <Card
-                        className="rounded-[40px] max-md:rounded-[30px] flex flex-col h-full overflow-hidden"
+                        className="rounded-[40px] max-md:rounded-[30px] flex flex-col flex-grow overflow-hidden"
                         style={{
                           background: itemMain.gradiendt,
                         }}
@@ -182,21 +181,15 @@ const LookingFor = () => {
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, amount: 0.4 }}
-                          >
-                            <div className="border border-[#00000014] bg-white rounded-xl p-2 w-fit mb-3">
-                              <img
-                                src={itemMain.icon}
-                                alt="section icon"
-                                className="w-[40px] grayscale"
-                              />
-                            </div>
-                          </motion.div>
-                          <p className="text-xl max-md:text-base font-[700]">
-                            {item.heading}
-                          </p>
-                          <p className="text-base max-md:text-base font-[500] py-2 text-[#555]">
-                            {item.description}
-                          </p>
+                          />
+                          <div className="flex flex-col flex-grow justify-between">
+                            <p className="text-xl max-md:text-base font-[700]">
+                              {item.heading}
+                            </p>
+                            <p className="text-base max-md:text-base font-[500] py-2 text-[#555] flex-grow">
+                              {item.description}
+                            </p>
+                          </div>
                         </CardBody>
                       </Card>
                     </CardBody>

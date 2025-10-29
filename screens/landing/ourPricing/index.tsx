@@ -39,7 +39,7 @@ const LandingOurPricing = () => {
 
         <div className="flex w-full flex-col items-center justify-center">
           {/* Centered Sticky Tabs */}
-          <div className="sticky top-[4.5rem] max-md:top-[3.7rem] z-10 w-full flex justify-center md:px-[25rem] mx-auto">
+          <div className="sticky top-[4.5rem] max-md:top-[4.2rem] z-10 w-full flex justify-center md:px-[25rem] mx-auto">
             <Tabs
               aria-label="Dynamic tabs"
               items={tabs}

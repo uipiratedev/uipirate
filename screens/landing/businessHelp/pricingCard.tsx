@@ -182,19 +182,21 @@ const VideoWithCards = () => {
           <Card className="rounded-[48px] max-md:rounded-[38px] md:mt-12 bg-[#e9e9e9] max-md:mt-4 shadow-none border border-[#0000000f]">
             <CardBody className="grid grid-cols-2 gap-4 max-xl:grid-cols-1 p-2.5 max-md:p-2 max-md:gap-2">
               <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow">
-                <CardBody className="p-6 max-md:p-4 flex flex-col justify-between">
+                <CardBody className="p-10 max-md:p-6 flex flex-col justify-between">
                   <div>
-                    <img
+                    {/* <img
                       src={item.image}
                       alt="behance Logo"
                       className="w-[40px] grayscale "
-                    />
-                    <p className="text-3xl max-md:text-3xl mt-4 mb-4 font-[700] tracking-[-0.5px] leading-[41.6px]">
-                      {item.heading}
-                    </p>
-                    <p className="text-lg max-md:text-base font-[500]">
-                      {item.subheading}
-                    </p>
+                    /> */}
+                    <div className=" mb-3">
+                      <p className="text-3xl max-md:text-3xl mb-2 font-[700] tracking-[-0.5px] leading-[41.6px]">
+                        {item.heading}
+                      </p>
+                      <p className="text-lg max-md:text-base font-[500]">
+                        {item.subheading}
+                      </p>
+                    </div>
                     <p className="text-base max-md:text-base font-[500] text-[#777777] py-2">
                       {item.description}
                     </p>
@@ -217,7 +219,7 @@ const VideoWithCards = () => {
                           />
                         }
                       >
-                        <p className="font-[600]">{chipItem.title}</p>
+                        <p className="font-[500] text-sm">{chipItem.title}</p>
                       </Chip>
                     ))}
                   </div>
@@ -298,7 +300,7 @@ const VideoWithCards = () => {
                             />
                           }
                         >
-                          <p className="font-[600]">{chipItem.title}</p>
+                          <p className="font-[500] text-sm">{chipItem.title}</p>
                         </Chip>
                       ))}
                     </div>
