@@ -57,7 +57,7 @@ const WhatWeProvideGlobal = () => {
         <p className="heading-center">Why Clients Like Working With Us</p>
       </div>
 
-      <div className="mt-12 grid grid-cols-2 gap-6 max-md:grid-cols-1">
+      <div className="mt-12 max-md:mt-0 grid grid-cols-2 gap-6 max-md:grid-cols-1">
         {/* Left Section */}
         <div className="flex flex-col gap-3 space-y-2 pt-12 text-lg max-md:py-6 max-md:text-base">
           <p className="text-lg font-semibold">
@@ -75,7 +75,7 @@ const WhatWeProvideGlobal = () => {
         </div>
 
         {/* Right Section (Carousel) */}
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end max-md:justify-center">
           <div className="relative flex h-[400px] min-h-[400px] w-[300px] items-center justify-center max-md:justify-center">
             {testimonials.map((item, index) => {
               const isActive = index === currentIndex;

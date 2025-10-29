@@ -109,11 +109,13 @@ const CaseStudyCard = () => {
         <span className="rounded-xl border-2 border-cyan-400 bg-[#8EF1F1] px-4 py-2 font-semibold uppercase">
           Featured Case Studies
         </span>
-        <p className="heading-center mt-4">What happens behind the scenes</p>
+        <p className="heading-center mt-4 max-md:mt-6">
+          What happens behind the scenes
+        </p>
       </div>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4 mt-8">
+      <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4 mt-8 max-md:mt-0">
         {data.map((item, index) => (
           <motion.div
             key={index}

@@ -35,7 +35,7 @@ const footerSocialLinks = [
 
 const LandingFooter = () => {
   return (
-    <footer className="relative overflow-hidden text-white">
+    <footer className="relative overflow-hidden text-white z-0">
       {/* Background image */}
       <div className="absolute inset-0">
         <img

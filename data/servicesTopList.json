@@ -2,7 +2,7 @@
   {
     "heading": "SaaS Web & Mobile Apps",
     "subheading": "Design and build responsive, scalable apps that simplify complexity and drive engagement.",
-    "description": "We create intuitive user interfaces for SaaS, AI tools, dashboards, and mobile-first products — from MVP wireframes to dev-ready Figma files.",
+    "description": "We create intuitive user interfaces and working apps for SaaS, AI tools, dashboards, and mobile-first products, from MVP Figma wireframes to fully developed enterprise products.",
     "subheading2": "Ideal for: MVPs, dashboards, analytics tools, admin panels",
     "chip": [
       {
@@ -35,11 +35,10 @@
     "isImage": false,
     "ctaText": "Explore SaaS Apps"
   },
-
   {
-    "heading": "Landing Pages & Corporate Websites",
+    "heading": "Landing Pages & Business Websites",
     "subheading": "Launch faster with beautiful, high-converting sites that scale with your brand.",
-    "description": "We design landing pages and corporate websites that communicate your value, look stunning on every device, and turn visitors into users or leads.",
+    "description": "We design model landing pages & websites for small businesses to large corporations  that communicate your value, look stunning on every device, and turn visitors into users or leads.",
     "subheading2": "Ideal for: Local Business, Startups, Digital Products, Professional Portfolio",
     "chip": [
       {
@@ -69,30 +68,34 @@
     "ctaText": "Explore Landing Pages"
   },
   {
-    "heading": "Graphic Design & Motion Graphics",
-    "subheading": "Create brand-ready visuals and high-quality video motion design and animations.",
-    "description": "From infographics, newsletters, website graphics to 2D/3D animations and brand assets, we deliver creatives that match your identity and engage across web, social, and product experiences.",
+    "heading": "Graphic Design",
+    "subheading": "Create brand-ready visuals for websites, brand assets, and offline print.",
+    "description": "From infographics, newsletters, website graphics to brand assets, we deliver creatives that match your identity and engage across web, social, and product experiences.",
     "subheading2": "Ideal for: Brand assets, Graphic Images, onboarding or explainer videos",
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "1–4 weeks"
+        "title": "1–3 weeks"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/DeviceMobile_rfsexm.svg",
-        "title": "2d/3d Animations"
+        "title": "Infographics"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "Print Assets"
+        "title": "Newsletters"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
-        "title": "Brand Design"
+        "title": "Website Graphics"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
-        "title": "Motion graphic"
+        "title": "Print Assets"
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
+        "title": "Brand Design"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1760506407/desinicon_nlf2di.svg",
@@ -109,23 +112,27 @@
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "1–3 weeks"
+        "title": "1–4 weeks"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/DeviceMobile_rfsexm.svg",
-        "title": "Posters"
+        "title": "Social media reels/ads"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "Brochures"
+        "title": "Captions & subtitles"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
-        "title": "Print Assets"
+        "title": "Sound design"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
-        "title": "Brand Design"
+        "title": "Color grading"
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
+        "title": "Motion graphic"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1760506407/motionicon_uwwkm4.svg",

@@ -108,7 +108,7 @@ const TryBeforeCommit = (props: any) => {
                   <div className="grid grid-cols-3 max-md:grid-cols-1 gap-4 pt-3 mt-6 max-md:flex-col">
                     <div className="flex flex-row item-center justify-between border-1 rounded-lg p-4">
                       <p className=" text-base max-md:text-sm  text-center bg-black text-white rounded-full px-3 py-1">
-                        design
+                        Design
                       </p>
                       <p className=" text-2xl max-md:text-xl font-bold">
                         {" "}
@@ -140,7 +140,7 @@ const TryBeforeCommit = (props: any) => {
           </div>
 
           <Card className="rounded-[32px] max-md:rounded-[30px] box-shadow bg-white/50 ">
-            <CardBody className="py-6 flex flex-row items-center justify-center">
+            <CardBody className="py-6 flex flex-row max-md:flex-col gap-3 items-center justify-center">
               <Button
                 as="a"
                 href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
@@ -148,6 +148,15 @@ const TryBeforeCommit = (props: any) => {
                 className="bg-black w-fit text-white rounded-[16px] px-8 py-6 font-bold text-base max-md:text-sm  md:w-auto border-4 border-[#E2E2E2] "
               >
                 Secure Your Zero-Risk Slot Now
+              </Button>
+              <p>or</p>
+              <Button
+                as="a"
+                href="/pricing"
+                target="_blank"
+                className="bg-white w-fit text-black rounded-[16px] px-8 py-6 font-bold text-base max-md:text-sm  md:w-auto border-3 border-[#E2E2E2] "
+              >
+                See Detailed Pricing
               </Button>
             </CardBody>
           </Card>

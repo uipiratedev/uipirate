@@ -90,7 +90,7 @@ const ServiceHero = () => {
       {/* Subheading */}
       <motion.p
         variants={fadeUp}
-        className="text-base md:text-lg text-gray-600 max-w-2xl"
+        className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mb-8 px-40 max-md:px-4 font-sans leading-[25.2px]"
       >
         Scalable design, clean code, and polished visuals, all under one roof.
       </motion.p>

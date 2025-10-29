@@ -13,7 +13,7 @@ const PricingHero = () => {
           Design & Development
         </h1>
         {/* Subheading */}
-        <p className="text-base md:text-lg text-gray-600 max-w-2xl reveal-text-anim ">
+        <p className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mb-8 px-40 max-md:px-4 font-sans leading-[25.2px]">
           Choose between fixed or hourly rates, with the flexibility to mix
           design-only, dev-only, or full-service execution, tailored to your
           scope.
