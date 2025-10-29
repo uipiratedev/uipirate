@@ -68,6 +68,38 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head>
+        {/* Google Analytics */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-ZS77RQCWYM');
+            `,
+          }}
+        />
+
+        {/* Microsoft Clarity */}
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "txqkzeahh6");
+            `,
+          }}
+        />
+
+        {/* Bing Webmaster Tools Verification */}
+
         <meta name="msvalidate.01" content="367497DBA609A56C845E2A1D4ECC5F42" />
 
         {/* AI Crawler Meta Tags */}
