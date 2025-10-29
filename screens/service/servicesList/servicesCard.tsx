@@ -113,31 +113,42 @@ const ServicesCard = () => {
     // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 100, // Start from below
-            transform: isMobile ? "scale(1)" : "scale(0.80)",
-          },
-          {
-            y: 0, // Move to original position
-            transform: "scale(1)",
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "" : "top 110%",
-              end: isMobile ? "" : "bottom center",
-              toggleActions: "play none none reverse",
-              scrub: 1.5,
+    // Small delay to ensure DOM is ready, especially important for client-side navigation
+    const timeoutId = setTimeout(() => {
+      cardsRef.current.forEach((card, index) => {
+        if (card) {
+          gsap.fromTo(
+            card,
+            {
+              y: 100, // Start from below
+              transform: isMobile ? "scale(1)" : "scale(0.80)",
             },
-          }
-        );
-      }
-    });
-  }, []);
+            {
+              y: 0, // Move to original position
+              transform: "scale(1)",
+              duration: 1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: isMobile ? "" : "top 110%",
+                end: isMobile ? "" : "bottom center",
+                toggleActions: "play none none reverse",
+                scrub: 1.5,
+              },
+            }
+          );
+        }
+      });
+
+      // Force ScrollTrigger to recalculate positions after animations are set up
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [isMobile]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

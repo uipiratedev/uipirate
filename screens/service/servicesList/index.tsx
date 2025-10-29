@@ -1,4 +1,3 @@
-"use client";
 import PricingCard from "@/screens/landing/businessHelp/pricingCard";
 import LookingFor from "./lookingFor";
 import ServicesCard from "./servicesCard";

@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   Card,
@@ -111,31 +109,41 @@ const VideoWithCards = () => {
 
   // Animate cards on scroll
   useLayoutEffect(() => {
+    // Kill existing ScrollTriggers to prevent duplicates
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          { y: 100, scale: isMobile ? 1 : 0.9, opacity: 0 },
-          {
-            y: 0,
-            scale: 1,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 90%",
-              end: "bottom 70%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
-    });
+    // Small delay to ensure DOM is ready, especially important for client-side navigation
+    const timeoutId = setTimeout(() => {
+      cardsRef.current.forEach((card) => {
+        if (card) {
+          gsap.fromTo(
+            card,
+            { y: 100, scale: isMobile ? 1 : 0.9, opacity: 0 },
+            {
+              y: 0,
+              scale: 1,
+              opacity: 1,
+              duration: 0.8,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 90%",
+                end: "bottom 70%",
+                toggleActions: "play none none reverse",
+              },
+            }
+          );
+        }
+      });
 
-    ScrollTrigger.refresh();
+      // Force ScrollTrigger to recalculate positions after animations are set up
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, [isMobile]);
 
   // Handle video autoplay/pause when in view
