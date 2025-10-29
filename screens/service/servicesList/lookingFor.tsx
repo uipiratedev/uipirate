@@ -163,14 +163,14 @@ const LookingFor = () => {
                   className="flex h-full"
                 >
                   <Card
-                    className="rounded-[48px] max-md:rounded-[38px] bg-white shadow-none border border-[#0000000f] flex flex-col h-full"
+                    className="rounded-[32px] max-md:rounded-[24px] bg-white shadow-none border border-[#0000000f] flex flex-col h-full"
                     style={{
                       boxShadow: "0px 3px 7px 3px rgba(0, 0, 0, 0.09)",
                     }}
                   >
                     <CardBody className="p-1.5 flex flex-col h-full">
                       <Card
-                        className="rounded-[40px] max-md:rounded-[30px] flex flex-col flex-grow overflow-hidden"
+                        className="rounded-[28px] max-md:rounded-[18px] flex flex-col flex-grow overflow-hidden"
                         style={{
                           background: itemMain.gradiendt,
                         }}
