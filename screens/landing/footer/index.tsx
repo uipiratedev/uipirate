@@ -149,15 +149,6 @@ const LandingFooter = () => {
                     Site Map
                   </a>
                 </li>
-              </ul>
-            </div>
-
-            {/* Column 4 - Policies & Legal */}
-            {/* <div>
-              <h4 className="font-semibold text-white mb-4 text-base">
-                Policies & Legal
-              </h4>
-              <ul className="space-y-3 text-gray-400 text-sm">
                 <li>
                   <a
                     href="/privacy-policy"
@@ -166,24 +157,10 @@ const LandingFooter = () => {
                     Privacy Policy
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="/terms"
-                    className="hover:text-white transition-colors"
-                  >
-                    Terms and Conditions
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/sitemap"
-                    className="hover:text-white transition-colors"
-                  >
-                    Site Map
-                  </a>
-                </li>
               </ul>
-            </div> */}
+            </div>
+
+            {/* Column 4 - Policies & Legal */}
           </div>
         </div>
 

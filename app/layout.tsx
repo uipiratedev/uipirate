@@ -3,6 +3,7 @@ import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
+import CookieConsent from "@/components/CookieConsent";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -68,6 +69,48 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head>
+        {/* Google Analytics with Consent Mode */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+
+              // Set default consent mode
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied',
+                'wait_for_update': 500
+              });
+
+              gtag('js', new Date());
+              gtag('config', 'G-ZS77RQCWYM', {
+                'anonymize_ip': true
+              });
+            `,
+          }}
+        />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
+        ></script>
+
+        {/* Microsoft Clarity - Will be initialized after consent */}
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "txqkzeahh6");
+            `,
+          }}
+        />
+
+        {/* Bing Webmaster Tools Verification */}
+
         <meta name="msvalidate.01" content="367497DBA609A56C845E2A1D4ECC5F42" />
 
         {/* AI Crawler Meta Tags */}
@@ -148,6 +191,7 @@ export default function RootLayout({
           </div>
           <main className="">{children}</main>
           <SpeedInsights />
+          <CookieConsent />
         </div>
       </body>
     </html>
