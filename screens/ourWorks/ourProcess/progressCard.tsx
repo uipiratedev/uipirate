@@ -2,6 +2,7 @@
 
 import { Card, CardBody } from "@nextui-org/react";
 import { motion } from "framer-motion";
+import { getGradientById } from "@/utils/gradientService";
 
 const data = {
   heading: "Simple. Strategic. Results-Driven.",
@@ -12,28 +13,28 @@ const data = {
       heading: "Deliver & Refine",
       discription:
         "We launch the pilot or live build, gather insights, and polish every detail to ensure it performs beautifully in production.",
-      gradient: "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)",
+      gradientId: 1, // Pink Blush
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/rocket_pk7ci5.svg",
       heading: "Discover & Understand",
       discription:
         "We dive into your product goals, audience, & user needs, focusing on clarity, intent, and measurable outcomes.",
-      gradient: "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)",
+      gradientId: 2, // Lime Fresh
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645576/plan_m9mxcj.svg",
       heading: "Plan & Structure",
       discription:
         "We define the IA, visual direction, & tech stack, aligning design & development from day one for smoother execution.",
-      gradient: "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)",
+      gradientId: 3, // Cyan Sky
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645576/build_z1rwkj.svg",
       heading: "Build & Iterate",
       discription:
         "We design, develop, and test in quick, focused sprints, showing progress early and adapting fast to real feedback.",
-      gradient: "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)",
+      gradientId: 1, // Pink Blush
     },
   ],
 };
@@ -94,7 +95,7 @@ const ProgressCard = () => {
                 <Card
                   className="rounded-[40px] max-md:rounded-[30px] h-full flex flex-col justify-between"
                   style={{
-                    background: item.gradient,
+                    background: getGradientById(item.gradientId)?.value,
                   }}
                 >
                   <CardBody className="p-6 max-md:p-5 flex flex-col justify-between h-full">

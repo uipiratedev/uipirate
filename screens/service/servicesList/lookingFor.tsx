@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import { motion } from "framer-motion";
+import { getGradientById } from "@/utils/gradientService";
 
 const data = [
   {
-    gradiendt: "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)",
+    gradientId: 1, // Pink Blush
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/rocket_pk7ci5.svg",
     data: [
       {
@@ -40,7 +41,7 @@ const data = [
     ],
   },
   {
-    gradiendt: "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)",
+    gradientId: 2, // Lime Fresh
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/reserch_hl7lpt.svg",
     data: [
       {
@@ -74,7 +75,7 @@ const data = [
     ],
   },
   {
-    gradiendt: "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)",
+    gradientId: 3, // Cyan Sky
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/design_loqtac.svg",
     data: [
       {
@@ -177,7 +178,8 @@ const LookingFor = () => {
                         <Card
                           className="rounded-[28px] max-md:rounded-[18px] flex flex-col flex-grow overflow-hidden"
                           style={{
-                            background: itemMain.gradiendt,
+                            background: getGradientById(itemMain.gradientId)
+                              ?.value,
                           }}
                         >
                           <CardBody className="p-7 max-md:p-5 max-lg:p-6 flex flex-col justify-between h-full">
