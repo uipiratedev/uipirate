@@ -3,6 +3,7 @@ import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
+import CookieConsent from "@/components/CookieConsent";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -68,23 +69,33 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head>
-        {/* Google Analytics */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
-        ></script>
+        {/* Google Analytics with Consent Mode */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
+
+              // Set default consent mode
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied',
+                'wait_for_update': 500
+              });
+
               gtag('js', new Date());
-              gtag('config', 'G-ZS77RQCWYM');
+              gtag('config', 'G-ZS77RQCWYM', {
+                'anonymize_ip': true
+              });
             `,
           }}
         />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
+        ></script>
 
-        {/* Microsoft Clarity */}
+        {/* Microsoft Clarity - Will be initialized after consent */}
         <script
           type="text/javascript"
           dangerouslySetInnerHTML={{
@@ -180,6 +191,7 @@ export default function RootLayout({
           </div>
           <main className="">{children}</main>
           <SpeedInsights />
+          <CookieConsent />
         </div>
       </body>
     </html>
