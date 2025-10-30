@@ -18,8 +18,8 @@ const LandingOurPricing = () => {
 
   return (
     <>
-      <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4  pt-32 max-md:pt-24  max-xl:px-4 max-2xl:px-0">
-        <div className="autoShow">
+      <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4  pt-0 max-md:pt-0  max-xl:px-4 max-2xl:px-0">
+        {/* <div className="autoShow">
           <div className="flex flex-row items-center justify-center mb-6">
             <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
               pricing
@@ -35,11 +35,11 @@ const LandingOurPricing = () => {
               your scope.
             </p>
           </div>
-        </div>
+        </div> */}
 
         <div className="flex w-full flex-col items-center justify-center">
           {/* Centered Sticky Tabs */}
-          <div className="sticky top-[4.5rem] max-md:top-[3.7rem] z-10 w-full flex justify-center md:px-[25rem] mx-auto">
+          <div className="sticky top-[4.5rem] max-md:top-[4.2rem] z-10 w-full flex justify-center md:px-[25rem] mx-auto">
             <Tabs
               aria-label="Dynamic tabs"
               items={tabs}

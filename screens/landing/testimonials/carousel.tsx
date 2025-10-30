@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import { Card, CardBody } from "@nextui-org/react";
+import Avatar from "@/components/Avatar";
 
 const clients = [
   {
@@ -215,15 +216,10 @@ function ResponsiveCarousel() {
                 <div className="w-full p-5 bg-white rounded-[24px] max-md:p-4 box-shadow">
                   <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
                     <div className="flex flex-row gap-3 items-center">
-                      <img
-                        src={
-                          item.profileImage
-                            ? item.profileImage
-                            : "https://res.cloudinary.com/damm9iwho/image/upload/v1731065510/Ellipse_1388_od4ab3.svg"
-                        }
-                        // sizes="40px"
-                        alt="behance Logo"
-                        className="w-[40px] h-[40px] min-w-[40px] min-h-[40px] rounded-full"
+                      <Avatar
+                        name={item.name}
+                        avatar={item.profileImage}
+                        size={40}
                       />
                       <div className="">
                         <p className="text-xl max-md:text-lg font-semibold">

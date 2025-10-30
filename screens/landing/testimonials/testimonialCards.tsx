@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import testimonials from "@/data/testimonials.json";
+import Avatar from "@/components/Avatar";
 
 export default function TestimonialCards() {
   const [isMobile, setIsMobile] = useState(false);
@@ -17,7 +18,7 @@ export default function TestimonialCards() {
 
   // decide which testimonials to show
   const displayedTestimonials = isMobile
-    ? testimonials.slice(0, 6)
+    ? testimonials.slice(0, 7)
     : testimonials;
 
   // split into 3 columns
@@ -26,7 +27,7 @@ export default function TestimonialCards() {
   const col3 = displayedTestimonials.filter((_, i) => i % 3 === 2);
 
   return (
-    <section className="w-full py-12 container mx-auto lg:px-12 max-md:px-4">
+    <section className="w-full py-12 container mx-auto px-6 md:px-12 lg:px-24 py-12">
       <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {[col1, col2, col3].map((col, i) => (
           <div key={i} className="flex flex-col gap-4 flex-1">
@@ -35,19 +36,16 @@ export default function TestimonialCards() {
                 key={idx}
                 className="rounded-[32px] max-md:w-full bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]"
               >
-                <CardBody className="p-3 max-md:p-2 max-lg:p-3">
+                <CardBody className="p-2 max-md:p-2 max-lg:p-2">
                   <div className="w-full p-5 bg-white rounded-[24px] max-md:p-4 box-shadow">
                     <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
                       <div className="flex flex-row gap-3 items-center">
-                        <img
-                          src={
-                            item.profileImage
-                              ? item.profileImage
-                              : "https://res.cloudinary.com/damm9iwho/image/upload/v1731065510/Ellipse_1388_od4ab3.svg"
-                          }
-                          alt="Profile"
-                          className="w-[52px] h-[52px] min-w-[52px] min-h-[52px] rounded-full"
+                        <Avatar
+                          name={item.name}
+                          avatar={item.profileImage}
+                          size={52}
                         />
+
                         <div>
                           <p className="text-xl max-md:text-lg font-semibold">
                             {item.name}

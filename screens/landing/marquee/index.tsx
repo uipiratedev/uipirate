@@ -30,7 +30,7 @@ const LandingMarquee = ({ items, reverse }: any) => {
 
   return (
     <>
-      <div className="mt-12 container mx-auto max-md:mt-0">
+      <div className="my-12 container mx-auto max-md:mt-0">
         <MarqueeComp items={row1} reverse={undefined} />
         {/* <MarqueeComp items={row2} reverse /> */}
       </div>

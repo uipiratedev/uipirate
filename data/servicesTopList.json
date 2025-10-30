@@ -2,12 +2,12 @@
   {
     "heading": "SaaS Web & Mobile Apps",
     "subheading": "Design and build responsive, scalable apps that simplify complexity and drive engagement.",
-    "description": "We create intuitive user interfaces for SaaS, AI tools, dashboards, and mobile-first products — from MVP wireframes to dev-ready Figma files.",
+    "description": "We create intuitive user interfaces and working apps for SaaS, AI tools, dashboards, and mobile-first products, from MVP Figma wireframes to fully developed enterprise products.",
     "subheading2": "Ideal for: MVPs, dashboards, analytics tools, admin panels",
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "1-2 months delivery"
+        "title": "1-2 months"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg",
@@ -15,19 +15,19 @@
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "UI Development"
+        "title": "UX Design"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Resize_inl801.svg",
-        "title": "Scalable Architecture"
+        "title": "Interactive Prototype"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
-        "title": "Clean & Modern UI"
+        "title": "Development"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/CodeBlock_wotty4.svg",
-        "title": "Development Ready"
+        "title": "Mobile Optimized"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1729841109/widget-svgrepo-com_1_xflrym.svg",
@@ -36,75 +36,30 @@
     "ctaText": "Explore SaaS Apps"
   },
   {
-    "heading": "Design System & Component Library",
-    "subheading": "Reusable, developer-friendly UI systems for scale.",
-    "description": "We build design systems with custom tokens, visual guidelines, and a fully documented component library - ready for handoff and long-term consistency.",
-    "subheading2": "Ideal for: Growing teams, products at scale, component refactoring",
-    "chip": [
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "2-3 months delivery"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "Development Friendly"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/File_rvsuin.svg",
-        "title": "Documentation"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/Sliders_t641lz.svg",
-        "title": "Customizable UI Kits"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/Swatches_ic2xmg.svg",
-        "title": "Design Tokens"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801222/ArrowsCounterClockwise_a1sflh.svg",
-        "title": "Reusable Components"
-      }
-    ],
-    "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1729841104/figma-component-svgrepo-com_1_mtgewy.svg",
-    "sideImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg",
-    "video": "https://res.cloudinary.com/damm9iwho/video/upload/v1730895563/show_gtb051.mp4",
-    "isImage": true,
-    "ctaText": "Explore Design Systems"
-  },
-  {
-    "heading": "Landing Pages & Corporate Websites",
+    "heading": "Landing Pages & Business Websites",
     "subheading": "Launch faster with beautiful, high-converting sites that scale with your brand.",
-    "description": "We design landing pages and corporate websites that communicate your value, look stunning on every device, and turn visitors into users or leads.",
-    "subheading2": "Ideal for: Startups, solo founders, product launches, enterprise marketing",
+    "description": "We design model landing pages & websites for small businesses to large corporations  that communicate your value, look stunning on every device, and turn visitors into users or leads.",
+    "subheading2": "Ideal for: Local Business, Startups, Digital Products, Professional Portfolio",
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "2-4 weeks delivery"
+        "title": "2-4 weeks"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/DeviceMobile_rfsexm.svg",
-        "title": "Mobile-friendly Design"
+        "title": "Landing Page Design"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "UI Development"
+        "title": "Local Business"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
-        "title": "Shopify"
+        "title": "Business Sites"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
-        "title": "Webflow"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ic_baseline-wordpress_gpl06j.svg",
-        "title": "Wordpress"
-      },
-      {
-        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730808989/VectorD_nnz4jc.svg",
-        "title": "Landing Page Designs"
+        "title": "Portfolio Sites"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1729841107/Vectore_ididim.svg",
@@ -114,9 +69,9 @@
   },
   {
     "heading": "Graphic Design",
-    "subheading": "Create brand-ready visuals for social campaigns, ads, and offline print.",
-    "description": "From posters and brochures to brand assets, we deliver scroll-stopping graphics that match your identity and work across print and digital.",
-    "subheading2": "Ideal for: Social campaigns, brand collaterals, posters, brochures",
+    "subheading": "Create brand-ready visuals for websites, brand assets, and offline print.",
+    "description": "From infographics, newsletters, website graphics to brand assets, we deliver creatives that match your identity and engage across web, social, and product experiences.",
+    "subheading2": "Ideal for: Brand assets, Graphic Images, onboarding or explainer videos",
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
@@ -124,14 +79,18 @@
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/DeviceMobile_rfsexm.svg",
-        "title": "Posters"
+        "title": "Infographics"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "Brochures"
+        "title": "Newsletters"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
+        "title": "Website Graphics"
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
         "title": "Print Assets"
       },
       {
@@ -153,23 +112,27 @@
     "chip": [
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/CalendarDots_bqwpcd.svg",
-        "title": "1–3 weeks"
+        "title": "1–4 weeks"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/DeviceMobile_rfsexm.svg",
-        "title": "Posters"
+        "title": "Social media reels/ads"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-        "title": "Brochures"
+        "title": "Captions & subtitles"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730801507/ShoppingCart_pirfab.svg",
-        "title": "Print Assets"
+        "title": "Sound design"
       },
       {
         "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
-        "title": "Brand Design"
+        "title": "Color grading"
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Sparkle_qf0yru.svg",
+        "title": "Motion graphic"
       }
     ],
     "image": "https://res.cloudinary.com/damm9iwho/image/upload/v1760506407/motionicon_uwwkm4.svg",

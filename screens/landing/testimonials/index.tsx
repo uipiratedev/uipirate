@@ -1,10 +1,9 @@
 "use client";
-import React, { Component } from "react";
-import ResponsiveCarousel from "./carousel";
+import React from "react";
 import TestimonialCards from "./testimonialCards";
 function LandingTestimonials() {
   return (
-    <div className=" pt-32 max-md:pt-24 ">
+    <div className=" pt-20 max-md:pt-3 ">
       <div className="autoShow">
         <div className="flex flex-row items-center justify-center mb-6">
           <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
@@ -24,7 +23,7 @@ function LandingTestimonials() {
           </span>{" "}
           partners
         </p>
-        <div className="flex flex-row items-center justify-center mb-8 mt-3 px-60 max-lg:px-32 max-md:px-8">
+        <div className="flex flex-row items-center justify-center mb-0 mt-3 px-60 max-lg:px-32 max-md:px-8">
           <p className="md:w-1/2 text-center content-center px-16  max-lg:px-8 max-md:px-0 font-[500]">
             Grateful for the opportunity to collaborate and forge lasting
             connections.

@@ -73,7 +73,7 @@ const FeaturedBlogs = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex justify-center mb-12 flex-wrap gap-4 mt-12">
+      {/* <div className="flex justify-center mb-12 flex-wrap gap-4 mt-12 bg-[#EDEDED]">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -87,6 +87,25 @@ const FeaturedBlogs = () => {
             {tab}
           </button>
         ))}
+      </div> */}
+
+      {/* Tabs - Grouped with Horizontal Scroll */}
+      <div className="flex justify-center mb-12 mt-12 max-md:mt-8 overflow-x-auto hide-scrollbar px-0">
+        <div className="inline-flex bg-[#EDEDED] rounded-full p-1 gap-1 min-w-max">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-full text-sm max-md:text-xs whitespace-nowrap transition-all duration-200 ${
+                activeTab === tab
+                  ? "bg-[#0b132b] text-white shadow-md"
+                  : "bg-transparent text-[#0b132b] hover:bg-gray-200"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Blog Cards Grid */}

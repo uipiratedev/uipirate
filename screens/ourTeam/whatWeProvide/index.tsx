@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import testimonials from "@/data/testimonials.json";
+import Avatar from "@/components/Avatar";
 
 const StarRating = ({
   className = "",
@@ -124,10 +125,10 @@ const WhatWeProvideOurTeam = () => {
                         backdropFilter: "blur(10px)",
                       }}
                     >
-                      <img
-                        src={item.profileImage}
-                        alt="testimonial"
-                        className="h-20 w-20 rounded-full object-cover"
+                      <Avatar
+                        name={item.name}
+                        avatar={item.profileImage}
+                        size={80}
                       />
                       <p className="line-clamp-5 text-center text-base text-gray-700">
                         {item.review}

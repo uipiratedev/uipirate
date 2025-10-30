@@ -6,9 +6,11 @@ import ListMap from "./list";
 const data = [
   {
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841109/widget-svgrepo-com_1_xflrym.svg",
-    heading: "Web/Mobile Apps",
+    heading: "SaaS Web & Mobile Apps",
     description:
-      "Ideal for building complete app or Saas, including design and development.",
+      "Design and build responsive, scalable apps that simplify complexity and drive engagement.",
+    heading1:
+      "Ideal for MVPs, Mobile Apps, dashboards, analytics tools, and admin panels.",
     dev: "499",
     design: "1999",
     designDev: "2399",
@@ -45,39 +47,41 @@ const data = [
       "5/7 communication via Teams, Meet, or Zoom",
     ],
     listhr: [
-      "8-12 week delivery",
-      "SaaS design ready",
-      "Predefined scope of work (SOW)",
-      "End-to-end design and development",
-      "Functional prototypes for testing",
-      "Cross-platform testing",
-      "5/7 communication via Teams, Meet, or Zoom",
+      "8–10 week delivery",
+      "End-to-end design + full-stack development",
+      "Reusable components + modern architecture",
+      "Responsive + tested across all devices",
+      "Ongoing post-launch support & improvements",
+      "5/7 Communication",
     ],
     listDevhr: [
-      "6-8 week delivery",
-      "SaaS design ready",
-      "Predefined scope of work (SOW)",
-      "Fully responsive code",
-      "Custom frontend development",
-      "Backend integration (API-ready)",
-      "5/7 communication via Teams, Meet, or Zoom",
+      "6–8 week delivery",
+      "Pixel-perfect front-end build (React / Next.js )",
+      "Backend setup (Node.js / Express / Firebase)",
+      "API integration & authentication",
+      "Optimized for performance & scalability",
+      "Deployment + QA support",
+      "5/7 Communication",
     ],
     listDesignhr: [
       "4-6 week delivery",
+      "30–50 screens (UX + UI)",
       "SaaS design ready",
-      "Predefined scope of work (SOW)",
-      "Interactive prototypes",
-      "3 rounds of revisions included",
-      "Design files (Figma) provided",
-      "5/7 communication via Teams, Meet, or Zoom",
+      "MVP & feature flow design",
+      "Scalable design",
+      "Interactive Figma prototype",
+      "Handoff-ready files for dev",
+      "5/7 Communication",
     ],
     tab: true,
   },
   {
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841107/Vectore_ididim.svg",
-    heading: "Landing Pages & E-commerce",
+    heading: "Landing Pages & Business Websites",
     description:
-      "Build high-conversion landing pages or full e-commerce platforms",
+      "Launch faster with beautiful, high-converting sites that scale with your brand.",
+    heading1:
+      "Ideal for startups, small businesses, digital products, and personal brands.",
     dev: "299",
     design: "499",
     designDev: "699",
@@ -114,67 +118,72 @@ const data = [
       "5/7 communication via Teams, Meet, or Zoom",
     ],
     listhr: [
-      "4-6 week delivery",
-      "1-5 Pages",
-      "End-to-end design & development",
-      "E-commerce integrations",
-      "SEO-optimized structure",
-      "Analytics & tracking integration",
-      "5/7 communication via Teams, Meet, or Zoom",
+      "4–6 week delivery",
+      "Full responsive website design + build",
+      "SEO + analytics integration",
+      "Scalable CMS or static setup",
+      "Custom animations & micro-interactions",
+      "Launch & handoff documentation",
+      "Conversion-optimized structure",
+      "5/7 Communication",
     ],
     listDevhr: [
-      "3-4 week delivery",
-      "1-5 Pages",
-      "CMS integration (if needed)",
-      "SSL & basic security setup",
-      "Payment gateway integration (if needed)",
-      "Responsive coding (desktop & mobile)",
-      "5/7 communication via Teams, Meet, or Zoom",
+      "3–4 week delivery",
+      "CMS setup (Next.js / WordPress)",
+      "Backend + analytics integration",
+      "Hosting + domain setup",
+      "SEO & performance optimization",
+      "Integrate with analytics or 3rd party",
+      "SSL + security",
+      "5/7 Communication",
     ],
     listDesignhr: [
-      "2-3 week delivery",
-      "1-5 Pages",
-      "Up to 3 rounds of revisions",
-      "Custom, conversion-focused design",
-      "E-commerce functionality",
-      "Mobile-responsive layouts",
-      "5/7 communication via Teams, Meet, or Zoom",
+      "2–3 week delivery",
+      "1–5 page designs (Home, About, Services, etc.)",
+      "Mobile-first landing page UX",
+      "Conversion-focused visual design",
+      "Copy placement & layout strategy",
+      "Web + mobile breakpoints included",
+      "2–3 feedback cycles",
+      "5/7 Communication",
     ],
     tab: true,
   },
-  {
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841104/figma-component-svgrepo-com_1_mtgewy.svg",
-    heading: "Design Systems & Component Libraries",
-    description:
-      "Scalable design systems with reusable components for consistent UI and easy integration.",
-    designDev: "1,199",
-    designhr: "20",
-    list: [
-      "1-2 month delivery",
-      "Consistent UI components",
-      "Scalable design assets",
-      "Brand guidelines integration",
-      "Documented usage guidelines",
-      "Cross-platform consistency",
-      "50/30/20 payment schedule",
-      "5/7 communication via Teams, Meet, or Zoom",
-    ],
-    listhr: [
-      "1-2 month delivery",
-      "Consistent UI components",
-      "Scalable design assets",
-      "Brand guidelines integration",
-      "Documented usage guidelines",
-      "Cross-platform consistency",
-      "5/7 communication via Teams, Meet, or Zoom",
-    ],
-    tab: false,
-  },
+  // {
+  //   icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841104/figma-component-svgrepo-com_1_mtgewy.svg",
+  //   heading: "Design Systems & Component Libraries",
+  //   description:
+  //     "Scalable design systems with reusable components for consistent UI and easy integration.",
+  //   designDev: "1,199",
+  //   designhr: "20",
+  //   list: [
+  //     "1-2 month delivery",
+  //     "Consistent UI components",
+  //     "Scalable design assets",
+  //     "Brand guidelines integration",
+  //     "Documented usage guidelines",
+  //     "Cross-platform consistency",
+  //     "50/30/20 payment schedule",
+  //     "5/7 communication via Teams, Meet, or Zoom",
+  //   ],
+  //   listhr: [
+  //     "1-2 month delivery",
+  //     "Consistent UI components",
+  //     "Scalable design assets",
+  //     "Brand guidelines integration",
+  //     "Documented usage guidelines",
+  //     "Cross-platform consistency",
+  //     "5/7 communication via Teams, Meet, or Zoom",
+  //   ],
+  //   tab: false,
+  // },
   {
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841104/figma-component-svgrepo-com_1_mtgewy.svg",
     heading: "Graphics Design",
     description:
-      "Scalable design systems with reusable components for consistent UI & easy integration.",
+      "Create brand-ready visuals for websites, products, and print.",
+    heading1:
+      "From infographics and newsletters to brand assets and social creatives.",
     designDev: "1,199",
     designhr: "15",
     list: [
@@ -187,12 +196,11 @@ const data = [
       "5/7 Communication",
     ],
     listhr: [
-      "2-4 weeks delivery",
-      "Scalable design systems",
-      "Development-ready components",
-      "UI consistency",
-      "Reusable components",
-      "Custom design library",
+      "1–3 week delivery",
+      "Web + print-ready assets",
+      "Infographics, pitch decks, and social visuals",
+      "Consistent brand design across all touchpoints",
+      "Editable source files",
       "5/7 Communication",
     ],
     tab: false,
@@ -202,42 +210,42 @@ const data = [
 const dataPrice = [
   {
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841103/video-library-svgrepo-com_1_edfhv4.svg",
-    heading: "3D Animation + Motion Graphics",
+    heading: "3D Animation + Motion Graphics + Video Editing",
     description:
-      "Create stunning visuals and motion graphics for your digital projects with expert 3D animation and rendering.",
+      "High-impact visuals for launches, storytelling, and brand engagement.",
+    heading1:
+      "Ideal for social reels, product promos, or cinematic animations.",
     price: "49",
-    pricehr: "35",
+    pricehr: "15",
     list: [
-      "1-4 weeks delivery",
-      "Custom motion graphics",
+      "1–4 week delivery",
+      "2D/3D motion graphics, edits & renders",
       "High-end 3D rendering",
-      "Interactive animations",
-      "Development-ready assets",
-      "3 rounds of revisions",
-      "Compatible with web & social",
-      "50/30/20 payment schedule",
-      "5/7 communication via Teams, Meet, or Zoom",
+      "Sound design + color grading",
+      "Development-ready exports",
+      "High-quality social / product outputs",
+      "5/7 Communication",
     ],
     limited: false,
   },
   {
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841102/Group_jgfe_zhcljv.svg",
 
-    heading: "Partnership and Consultation ",
+    heading: "Fractional UI/UX Services (Includes UX Audits)",
     description:
-      "Perfect for ongoing design & development needs or flexible, undefined scopes. Get continuous support for your projects.",
+      "Flexible, on-demand design or consultation support for product teams.",
+    heading1:
+      "Perfect for audits, UX improvements, and continuous design help.",
     price: "999",
-    pricehr: "25",
+    pricehr: "15",
     list: [
-      "Flexible scope of work",
+      "Flexible engagement (hourly / weekly)",
+      "UX audit & heuristic evaluation",
+      "Wireframes & UI recommendations",
+      "Scalable hours based on workload",
       "End-to-end project management",
-      "Unlimited Design request & revisions",
-      "Design & dev consultation",
-      "Heuristic analysis",
-      "Recommendations for improvement",
-      "Visual/UX critique",
-      "50/30/20 payment schedule",
       "1-3 days updates + 1 sync call/week",
+      "5/7 Communication",
     ],
     limited: true,
   },
@@ -721,7 +729,7 @@ const OurPricingCard = (props: any) => {
                   <a
                     href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
                     target="blank"
-                    className="w-[300px] max-lg:mt-3 lg:ml-3"
+                    className="w-[350px] max-md:w-[300px] max-lg:mt-3 lg:ml-3"
                   >
                     <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-4 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
                       <div className="flex flex-row gap-2 items-center md:mr-11">
@@ -738,10 +746,10 @@ const OurPricingCard = (props: any) => {
                           +
                         </p>
                         <img
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729761707/vishal_profile_d2fbyt.svg"
+                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                           alt="Dribble Logo"
                           id="client"
-                          className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
+                          className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
                         />
                       </div>
                       <p className="text-lg max-md:text-sm font-bold">

@@ -113,31 +113,42 @@ const ServicesCard = () => {
     // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 100, // Start from below
-            transform: isMobile ? "scale(1)" : "scale(0.80)",
-          },
-          {
-            y: 0, // Move to original position
-            transform: "scale(1)",
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "" : "top 110%",
-              end: isMobile ? "" : "bottom center",
-              toggleActions: "play none none reverse",
-              scrub: 1.5,
+    // Small delay to ensure DOM is ready, especially important for client-side navigation
+    const timeoutId = setTimeout(() => {
+      cardsRef.current.forEach((card, index) => {
+        if (card) {
+          gsap.fromTo(
+            card,
+            {
+              y: 100, // Start from below
+              transform: isMobile ? "scale(1)" : "scale(0.80)",
             },
-          }
-        );
-      }
-    });
-  }, []);
+            {
+              y: 0, // Move to original position
+              transform: "scale(1)",
+              duration: 1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: isMobile ? "" : "top 110%",
+                end: isMobile ? "" : "bottom center",
+                toggleActions: "play none none reverse",
+                scrub: 1.5,
+              },
+            }
+          );
+        }
+      });
+
+      // Force ScrollTrigger to recalculate positions after animations are set up
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [isMobile]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -181,18 +192,19 @@ const ServicesCard = () => {
 
   return (
     <div className="min-h-screen ">
-      <div className="grid gap-4 max-md:gap-2">
+      <div className="grid grid-cols-2 gap-4 max-md:gap-2">
         {data.map((item, index) => (
           <div
             ref={(el) => {
               if (el && !isMobile) cardsRef.current[index] = el;
             }}
             key={index}
-            className={
-              index === 0
-                ? "col-span-2"
-                : "grid-cols-1 md:col-span-1 max-md:col-span-2"
-            } // first item full width
+            // className={
+            //   index === 0
+            //     ? "col-span-2"
+            //     : "grid-cols-2 md:col-span-1 max-md:col-span-2"
+            // } // first item full width
+            className="gric-cols-2"
           >
             <Card className="rounded-[48px] max-md:rounded-[38px] md:mt-12 bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
               <CardBody className="p-4 max-md:p-2 max-md:gap-2">
@@ -253,6 +265,7 @@ const ServicesCard = () => {
                         </Chip>
                       ))}
                     </div>
+                    <p>dansodiah</p>
                     <Link
                       href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                     >
@@ -344,6 +357,42 @@ const ServicesCard = () => {
                           </p>
                         </Chip>
                       ))}
+                    </div>
+                    <div>
+                      <Link
+                        href={`/services/${item.heading.replace(/\s+/g, "-")}`}
+                      >
+                        <button
+                          color="primary"
+                          className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                          style={{ width: "100%" }}
+                        >
+                          <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
+                            <span
+                              className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
+                                
+                                 group-hover:translate-y-[50px] translate-y-3
+                                
+                               `}
+                            >
+                              {item.ctaText}
+                            </span>
+
+                            <span
+                              className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
+                                
+                                translate-y-[50px] group-hover:-translate-y-3
+                                
+                               
+                              
+                              
+                              `}
+                            >
+                              See More
+                            </span>
+                          </div>
+                        </button>
+                      </Link>
                     </div>
 
                     <Link

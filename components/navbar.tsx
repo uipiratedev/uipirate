@@ -13,23 +13,18 @@ import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-
 import { siteConfig } from "@/config/site";
 import { useEffect, useState } from "react";
 
-// Smooth scroll function that works with Locomotive Scroll
 const smoothScrollTo = (elementId: string) => {
   const element = document.getElementById(elementId);
   if (element) {
-    // Calculate the offset to account for the fixed navbar
     const navbarHeight = 80;
     const elementPosition = element.offsetTop - navbarHeight;
-
-    // Use scrollIntoView with a slight delay to work better with Locomotive Scroll
     setTimeout(() => {
       window.scrollTo({
         top: elementPosition,
-        behavior: "auto", // Use 'auto' to avoid conflicts with Locomotive Scroll
+        behavior: "auto",
       });
     }, 100);
   }
@@ -38,15 +33,11 @@ const smoothScrollTo = (elementId: string) => {
 export const Navbar = () => {
   const [isDarkSection, setIsDarkSection] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(true); // Loading state to control navbar visibility
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set a timer to hide the loading state after 3 seconds
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800); // 3-second delay
-
-    return () => clearTimeout(timer); // Clean up the timer on unmount
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -58,7 +49,6 @@ export const Navbar = () => {
       { threshold: 0.1 }
     );
 
-    // Observe all elements with the "dark-section" class
     const darkSections = document.querySelectorAll(".dark-section");
     darkSections.forEach((section) => observer.observe(section));
 
@@ -68,7 +58,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <div className=" container mx-auto h-[67px] reveal-text-anim-1 overflow-hidden pb-6 relative z-[99999999]">
+    <div className="container mx-auto h-[67px] reveal-text-anim-1 overflow-hidden pb-6 relative z-[99999999] max-md:bg-[#F5F5F5]">
       {!loading && (
         <NextUINavbar
           maxWidth="xl"
@@ -76,21 +66,31 @@ export const Navbar = () => {
           isMenuOpen={isMenuOpen}
           onMenuOpenChange={setIsMenuOpen}
           className={clsx(
-            "bg-none mx-[25rem] blur-none py-0 w-auto px-0 max-lg:mx-20 max-md:mx-2 max-xl:mx-40 max-2xl:mx-[18rem] border-2 container flex flex-row items-center rounded-2xl sticky top-0 mt-3 max-md:mt-2 h-[55px] bg-transparent z-[99999999]",
+            "bg-none mx-[25rem] blur-none py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-20 max-md:mx-0 max-xl:mx-40 max-2xl:mx-[18rem] border-2 container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:border-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] bg-transparent z-[99999999]",
             { "text-white": isDarkSection, "text-black": !isDarkSection }
           )}
           style={{ zIndex: 99999999 }}
         >
+          {/* --- Left Brand Section --- */}
           <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+            {/* --- Mobile Section with Toggle on Right --- */}
+            <NavbarContent
+              className="flex md:hidden basis-1 -ml-2"
+              justify="start"
+            >
+              <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className="text-current"
+              />
+            </NavbarContent>
             <NavbarBrand as="li" className="gap-3 max-w-fit">
               <NextLink
-                className="flex justify-start items-center gap-1 md:-ml-6 max-sm:-ml-3"
+                className="flex justify-start items-center gap-1 md:-ml-6 max-sm:-ml-6"
                 href="/"
               >
-                {/* <Logo /> */}
                 <img
                   src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
-                  alt=""
+                  alt="Logo"
                   className="mt-2"
                 />
                 <p
@@ -105,6 +105,7 @@ export const Navbar = () => {
             </NavbarBrand>
           </NavbarContent>
 
+          {/* --- Center Navigation Links (Desktop Only) --- */}
           <NavbarContent className="basis-1/5 sm:basis-full" justify="center">
             <ul className="hidden lg:flex gap-0 justify-start ml-0">
               {siteConfig.navItems.map((item) => (
@@ -117,14 +118,6 @@ export const Navbar = () => {
                       linkStyles({ color: "foreground" }),
                       "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer"
                     )}
-                    // onClick={() => smoothScrollTo(item.href.replace("#", ""))}
-                    // onClick={() => {
-                    //   if (item.href.startsWith("#")) {
-                    //     smoothScrollTo(item.href.replace("#", ""));
-                    //   } else {
-                    //     window.location.href = item.href;
-                    //   }
-                    // }}
                     href={item.href}
                   >
                     {item.label}
@@ -134,68 +127,37 @@ export const Navbar = () => {
             </ul>
           </NavbarContent>
 
-          <NavbarContent
-            className="hidden sm:flex basis-1/5 sm:basis-full"
-            justify="end"
-          >
-            <NavbarItem className="hidden md:flex">
+          {/* --- Right Button (Desktop) --- */}
+          <NavbarContent className=" basis-1/5 sm:basis-full" justify="end">
+            <NavbarItem>
               <a
                 href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                target="blank"
+                target="_blank"
               >
                 <Button
                   isExternal
                   as={Link}
-                  className=" btn-flip text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.3rem]"
-                  // startContent={<HeartFilledIcon className="text-danger" />}
+                  className=" text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
                   variant="solid"
                   style={{ paddingTop: 0 }}
                   data-back="Let's Talk"
                   data-front="Have an Idea?"
                 >
-                  Have an Idea?
+                  😀 Let’s Talk
                 </Button>
               </a>
             </NavbarItem>
           </NavbarContent>
 
-          <NavbarContent className="md:hidden basis-1" justify="end">
-            <a
-              href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-              target="blank"
-            >
-              <Button
-                isExternal
-                as={Link}
-                className=" btn-flip text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.3rem]"
-                // startContent={<HeartFilledIcon className="text-danger" />}
-                variant="solid"
-                style={{ paddingTop: 0 }}
-                data-back="Let's Talk"
-                data-front="Have an Idea?"
-              >
-                Have an Idea?
-              </Button>
-            </a>
-            <NavbarMenuToggle
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              className="hidden"
-            />
-          </NavbarContent>
-
+          {/* --- Mobile Menu Content --- */}
           <NavbarMenu>
-            <div className="mx-4 mt-2 flex flex-col gap-2">
+            <div className="mx-0 mt-3 flex flex-col gap-4">
               {siteConfig.navMenuItems.map((item, index) => (
                 <NavbarMenuItem key={`${item}-${index}`}>
                   <NextLink
-                    className="text-foreground text-lg cursor-pointer text-left w-full"
-                    // onClick={() => {
-                    //   smoothScrollTo(item.href.replace("#", ""));
-                    //   // Close mobile menu after clicking
-                    //   setIsMenuOpen(false);
-                    // }}
                     href={item.href}
                     onClick={() => setIsMenuOpen(false)}
+                    className="text-lg text-foreground cursor-pointer"
                   >
                     {item.label}
                   </NextLink>

@@ -3,6 +3,7 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import NextLink from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -203,9 +204,9 @@ export default function FaqsAccordion() {
     <>
       <div
         className=""
-        ref={(el) => {
-          if (el) cardsRef.current[0] = el;
-        }}
+        // ref={(el) => {
+        //   if (el) cardsRef.current[0] = el;
+        // }}
       >
         <Accordion
           variant="splitted"
@@ -213,7 +214,7 @@ export default function FaqsAccordion() {
           className="mb-0"
           selectionMode="multiple"
         >
-          {data.map((item, index) => (
+          {data.slice(0, 4).map((item, index) => (
             <AccordionItem
               key={String(index)}
               aria-label={item.heading}
@@ -255,6 +256,30 @@ export default function FaqsAccordion() {
             </AccordionItem>
           ))}
         </Accordion>
+        <div className="flex flex-row items-center justify-center mt-6">
+          <NextLink href="/faqs" className="autoShow w-fit">
+            <button
+              color="primary"
+              className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
+            >
+              <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
+                <span
+                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
+                     group-hover:translate-y-[50px] translate-y-3`}
+                >
+                  See all FAQ’s
+                </span>
+
+                <span
+                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
+                     translate-y-[50px] group-hover:-translate-y-3`}
+                >
+                  See More
+                </span>
+              </div>
+            </button>
+          </NextLink>
+        </div>
       </div>
     </>
   );

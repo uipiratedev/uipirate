@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import testimonials from "@/data/testimonials.json";
+import Avatar from "@/components/Avatar";
 
 const StarRating = ({
   className = "",
@@ -74,7 +75,7 @@ const WhatWeProvide = () => {
         </div>
 
         {/* Right Section (Carousel) */}
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end max-md:justify-center">
           <div className="relative flex h-[400px] min-h-[400px] w-[300px] items-center justify-center max-md:justify-center">
             {testimonials.map((item, index) => {
               const isActive = index === currentIndex;
@@ -124,10 +125,10 @@ const WhatWeProvide = () => {
                         backdropFilter: "blur(10px)",
                       }}
                     >
-                      <img
-                        src={item.profileImage}
-                        alt="testimonial"
-                        className="h-20 w-20 rounded-full object-cover"
+                      <Avatar
+                        name={item.name}
+                        avatar={item.profileImage}
+                        size={52}
                       />
                       <p className="line-clamp-5 text-center text-base text-gray-700">
                         {item.review}

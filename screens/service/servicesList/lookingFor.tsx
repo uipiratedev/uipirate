@@ -1,9 +1,13 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
+import { motion } from "framer-motion";
+import { getGradientById } from "@/utils/gradientService";
 
 const data = [
-  //   col 1
   {
-    gradiendt: "linear-gradient(180deg, #FFE6F4 20.66%, #FFFAFD 100%)",
+    gradientId: 1, // Pink Blush
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/rocket_pk7ci5.svg",
     data: [
       {
@@ -36,9 +40,8 @@ const data = [
       },
     ],
   },
-  //   col 2
   {
-    gradiendt: "linear-gradient(180deg, #F5FFD9 29.57%, #FDFFF7 100%)",
+    gradientId: 2, // Lime Fresh
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/reserch_hl7lpt.svg",
     data: [
       {
@@ -71,10 +74,8 @@ const data = [
       },
     ],
   },
-
-  //   col 3
   {
-    gradiendt: "linear-gradient(180deg, #78E6F4 20.66%, #F5FEFF 100%)",
+    gradientId: 3, // Cyan Sky
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760610137/design_loqtac.svg",
     data: [
       {
@@ -109,61 +110,102 @@ const data = [
 ];
 
 const LookingFor = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Set mounted to true to trigger animations
+    setMounted(true);
+
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.95 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    }),
+  };
+
+  const imageVariants = {
+    hidden: { scale: 0.9, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
   return (
     <div className="mt-16">
       <p className="heading-center mb-6">Find What You’re Looking For</p>
-      <div className="grid grid-cols-3 max-md:grid-cols-1 max-lg:grid-cols-2 gap-6 max-md:gap-4">
-        {data.map((itemMain, index) => {
-          const itemsToShow =
-            typeof window !== "undefined" && window.innerWidth <= 768
-              ? [itemMain.data[0]] // only first card on mobile
-              : itemMain.data; // show all cards on larger screens
 
-          return (
-            <div key={index}>
-              {itemsToShow.map((item, index) => {
-                return (
-                  <Card
-                    key={index}
-                    className="rounded-[48px] max-md:rounded-[38px] mt-6   bg-white  group shadow-none border-1 border-[#0000000f]"
-                    style={{
-                      boxShadow: "0px 3px 7px 3px rgba(0, 0, 0, 0.09)",
-                    }}
+      {/* ✅ Equal height fix: grid with items-stretch */}
+      <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6 max-md:gap-4 items-stretch">
+        {mounted &&
+          data.map((itemMain, colIndex) => {
+            const itemsToShow = isMobile ? [itemMain.data[0]] : itemMain.data;
+
+            return (
+              <div key={colIndex} className="flex flex-col gap-6 h-full">
+                {itemsToShow.map((item, rowIndex) => (
+                  <motion.div
+                    key={rowIndex}
+                    variants={cardVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                    custom={rowIndex + colIndex * 0.2}
+                    className="flex h-full"
                   >
-                    <CardBody className="p-1.5 max-md:p-1.5 max-md:gap-2">
-                      <Card
-                        className="rounded-[40px] max-md:rounded-[30px] box-shadow"
-                        style={{
-                          background: itemMain.gradiendt,
-                        }}
-                      >
-                        <CardBody className="p-7 max-md:p-5 max-lg:p-6 flex flex-col justify-between ">
-                          <div className="">
-                            <div key={index}>
-                              <div className="border border-[#00000014] bg-white rounded-xl p-2 w-fit ">
-                                <img
-                                  src={itemMain.icon}
-                                  alt="behance Logo"
-                                  className="w-[40px] grayscale "
-                                />
-                              </div>
+                    <Card
+                      className="rounded-[32px] max-md:rounded-[24px] bg-white shadow-none border border-[#0000000f] flex flex-col h-full"
+                      style={{
+                        boxShadow: "0px 3px 7px 3px rgba(0, 0, 0, 0.09)",
+                      }}
+                    >
+                      <CardBody className="p-1.5 flex flex-col h-full">
+                        <Card
+                          className="rounded-[28px] max-md:rounded-[18px] flex flex-col flex-grow overflow-hidden"
+                          style={{
+                            background: getGradientById(itemMain.gradientId)
+                              ?.value,
+                          }}
+                        >
+                          <CardBody className="p-7 max-md:p-5 max-lg:p-6 flex flex-col justify-between h-full">
+                            <motion.div
+                              variants={imageVariants}
+                              initial="hidden"
+                              whileInView="visible"
+                              viewport={{ once: true, amount: 0.4 }}
+                            />
+                            <div className="flex flex-col flex-grow justify-between">
                               <p className="text-xl max-md:text-base font-[700]">
                                 {item.heading}
                               </p>
-                              <p className="text-base max-md:text-base font-[500]  py-2">
+                              <p className="text-base max-md:text-base font-[500] py-2 text-[#555] flex-grow">
                                 {item.description}
                               </p>
                             </div>
-                          </div>
-                        </CardBody>
-                      </Card>
-                    </CardBody>
-                  </Card>
-                );
-              })}
-            </div>
-          );
-        })}
+                          </CardBody>
+                        </Card>
+                      </CardBody>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            );
+          })}
       </div>
     </div>
   );
