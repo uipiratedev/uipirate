@@ -35,7 +35,7 @@
           {
             "heading": "Prototyping & Iterations",
             "description": "Mapping out user journeys, flows, and wireframes built for clarity and conversion.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg"
+            "img": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg"
           },
           {
             "heading": "Cross-platform QA",
@@ -86,25 +86,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
                 "heading": "Onboarding & Research",
                 "description": "Kickoff call, tool setup, & project alignment. We define goals, target audience, & success metrics to set the foundation.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
                 "heading": "Strategy & Structure",
                 "description": "We map the information architecture, define user journeys, and plan features that align with your product vision.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
                 "heading": "UX Design & Wireframes",
                 "description": "We create low- to mid-fidelity wireframes focusing on functionality, flow, and clarity before visual design begins.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
                 "heading": "UI Design & Prototyping",
                 "description": "We design detailed screens, define the design system, add imagery, & prepare interactive prototypes for early validation.",
                 "gradientId": 4
@@ -115,25 +115,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
                 "heading": "Setup & Planning",
                 "description": "We configure repositories, set up dev environments, & finalize the tech stack - React, Node.js, or Next.js depending on scope.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
                 "heading": "Full Stack Development",
                 "description": "We develop the complete product, pixel-perfect UI, scalable backend architecture, and secure API integration.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
                 "heading": "Testing & QA",
                 "description": "We run functional, UI, and performance tests to ensure your SaaS product works flawlessly across devices.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/streamline-plump_browser-website-1-remix_ccvkvy.svg",
                 "heading": "Launch & Post-Launch ",
                 "description": "We deploy to your chosen platform, provide detailed handoff documentation, & offer ongoing support for updates.",
                 "gradientId": 4
@@ -319,25 +319,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
                 "heading": "Onboarding & Research",
                 "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
                 "heading": "Strategy & Structure",
                 "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
                 "heading": "Visual Design & Styling",
                 "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
                 "heading": "Feedback & Finalization",
                 "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
                 "gradientId": 4
@@ -348,25 +348,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
                 "heading": "Setup & Configuration",
                 "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
                 "heading": "Full Stack Development",
                 "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "QA & SEO Optimization",
                 "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894143/solar_document-bold_jzqau9.svg",
                 "heading": "Launch & Handoff",
                 "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
                 "gradientId": 4
@@ -552,25 +552,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Onboarding & Research",
                 "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Strategy & Structure",
                 "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Visual Design & Styling",
                 "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Feedback & Finalization",
                 "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
                 "gradientId": 4
@@ -581,25 +581,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Setup & Configuration",
                 "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Full Stack Development",
                 "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "QA & SEO Optimization",
                 "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Launch & Handoff",
                 "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
                 "gradientId": 4
@@ -775,25 +775,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
                 "heading": "Onboarding & Research",
                 "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
                 "heading": "Strategy & Structure",
                 "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
                 "heading": "Visual Design & Styling",
                 "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
                 "heading": "Feedback & Finalization",
                 "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
                 "gradientId": 4
@@ -804,25 +804,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Setup & Configuration",
                 "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
                 "heading": "Full Stack Development",
                 "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
                 "heading": "QA & SEO Optimization",
                 "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/streamline-plump_browser-website-1-remix_ccvkvy.svg",
                 "heading": "Launch & Handoff",
                 "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
                 "gradientId": 4
@@ -1008,25 +1008,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
                 "heading": "Onboarding & Research",
                 "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
                 "heading": "Strategy & Structure",
                 "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
                 "heading": "Visual Design & Styling",
                 "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
                 "heading": "Feedback & Finalization",
                 "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
                 "gradientId": 4
@@ -1037,25 +1037,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
                 "heading": "Setup & Configuration",
                 "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
                 "heading": "Full Stack Development",
                 "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "QA & SEO Optimization",
                 "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Launch & Handoff",
                 "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
                 "gradientId": 4
@@ -1241,25 +1241,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Onboarding & Research",
                 "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Strategy & Structure",
                 "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Visual Design & Styling",
                 "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Feedback & Finalization",
                 "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
                 "gradientId": 4
@@ -1270,25 +1270,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Setup & Configuration",
                 "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Full Stack Development",
                 "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "QA & SEO Optimization",
                 "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Launch & Handoff",
                 "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
                 "gradientId": 4
@@ -1474,25 +1474,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Onboarding & Research",
                 "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Strategy & Structure",
                 "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Visual Design & Styling",
                 "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Feedback & Finalization",
                 "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
                 "gradientId": 4
@@ -1503,25 +1503,25 @@
             "badge": "Design Workflow",
             "card": [
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Setup & Configuration",
                 "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
                 "gradientId": 1
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Full Stack Development",
                 "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
                 "gradientId": 2
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "QA & SEO Optimization",
                 "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
                 "gradientId": 3
               },
               {
-                "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
                 "heading": "Launch & Handoff",
                 "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
                 "gradientId": 4
