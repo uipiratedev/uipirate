@@ -2,13 +2,17 @@
 import LandingFooter from "@/screens/landing/footer";
 import VisionToLife from "@/screens/landing/visionToLife";
 import FloatingLetsTalkButton from "./FloatingLetsTalkButton";
+import { Navbar } from "@nextui-org/navbar";
 
 interface PageWrapperProps {
   children: React.ReactNode;
   showFloatingButton?: boolean;
 }
 
-const PageWrapper = ({ children, showFloatingButton = true }: PageWrapperProps) => {
+const PageWrapper = ({
+  children,
+  showFloatingButton = true,
+}: PageWrapperProps) => {
   return (
     <>
       {children}
@@ -20,4 +24,3 @@ const PageWrapper = ({ children, showFloatingButton = true }: PageWrapperProps) 
 };
 
 export default PageWrapper;
-

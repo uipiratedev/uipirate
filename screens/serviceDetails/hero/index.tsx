@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/button";
 import React, { useState } from "react";
 
 const ServiceDetailsHero = ({ data }: any) => {
-  const meteors = Array.from({ length: 15 }).map((_, i) => ({
+  const meteors = Array.from({ length: 9 }).map((_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
     top: `${-5 - Math.random() * 10}%`, // Start from above the viewport
@@ -15,7 +15,7 @@ const ServiceDetailsHero = ({ data }: any) => {
   const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   return (
-    <div className="relative overflow-hidden bg-[#f5f5f5] text-black md:h-screen -mt-[67px] md:pt-[67px] ">
+    <div className="relative overflow-hidden bg-[#f5f5f5] text-black -mt-[67px] md:pt-[67px] md:pb-20">
       {/* === Static Gray Grid Background === */}
       <div
         className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[size:80px_80px]"
@@ -42,18 +42,19 @@ const ServiceDetailsHero = ({ data }: any) => {
             }
           >
             {/* Meteor head - bright glowing dot */}
-            <div className="absolute w-[3px] h-[3px] -ml-[1px] rounded-full bg-cyan-600 shadow-[0_0_8px_2px_rgba(0,255,255,0.8),0_0_4px_1px_rgba(255,255,255,0.9)]" />
+            <div className="absolute w-[3px] h-[3px] -ml-[1px] rounded-full bg-black " />
 
             {/* Meteor tail - long gradient streak */}
             <div
-              className="absolute top-0 left-0 w-[1.5px] h-[50px] -translate-y-full bg-gradient-to-b from-cyan-50 via-cyan-300 to-cyan-600 opacity-70"
-              style={{
-                boxShadow: "0 0 6px 1px rgba(0, 255, 255, 0.4)",
-              }}
+              className="absolute top-0 left-0 w-[1.5px] h-[50px] -translate-y-full bg-gradient-to-b from-gray-200 via-gray-900 to-black opacity-70"
+              // style={{
+              //   boxShadow: "0 0 6px 1px rgba(0, 255, 255, 0.4)",
+              // }}
             />
           </span>
         ))}
       </div>
+      <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-[#F5F5F5] to-transparent z-10 pointer-events-none" />
 
       {/* === Hero Content === */}
       <section className="relative pt-[83px] md:pt-[87px] flex flex-col items-center text-center z-10">

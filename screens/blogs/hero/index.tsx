@@ -1,8 +1,8 @@
 "use client";
 const BlogsHero = ({ data }: any) => {
   return (
-    <div>
-      <section className="relative pt-16 md:pt-20 flex flex-col items-center text-center ">
+    <div className="flex flex-row items-center justify-center py-12 w-full max-lg:py-10 max-md:py-6 container mx-auto">
+      <section className="relative  flex flex-col items-center text-center ">
         {/* Badge Text */}
 
         <div
@@ -27,7 +27,7 @@ const BlogsHero = ({ data }: any) => {
         </h1>
 
         {/* Subheading */}
-        <p className="text-base md:text-base text-gray-600 max-w-3xl reveal-text-anim ">
+        <p className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mt-4 px-40 max-md:px-4 max-lg:12 font-sans leading-[25.2px]">
           Real-world lessons, research-backed insights, and opinions from our
           work and the community
         </p>
