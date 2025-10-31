@@ -2,10 +2,10 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { fontSans } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
 import CookieConsent from "@/components/CookieConsent";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 
 export const metadata: Metadata = {
   title:
@@ -186,9 +186,7 @@ export default function RootLayout({
         )}
       >
         <div className="relative flex flex-col">
-          <div className="sticky top-0  " style={{ zIndex: 999999999 }}>
-            <Navbar />
-          </div>
+          <ConditionalNavbar />
           <main className="">{children}</main>
           <SpeedInsights />
           <CookieConsent />
