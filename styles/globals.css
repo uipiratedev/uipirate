@@ -27,6 +27,10 @@ body {
   @apply text-center text-5xl max-lg:text-4xl max-md:text-3xl font-[700] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[64px];
 }
 
+/* .badge-center {
+  @apply bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2;
+} */
+
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -1348,3 +1352,11 @@ reveal-text span {
 }
 
 /* Static Gray Grid already defined via Tailwind-style bg gradients */
+@keyframes slow-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

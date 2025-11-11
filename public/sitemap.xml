@@ -150,16 +150,16 @@
 
   <!-- Resources/Blog Page -->
   <url>
-    <loc>https://uipirate.com/resources</loc>
+    <loc>https://uipirate.com/blogs</loc>
     <lastmod>2025-10-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en-us" href="https://uipirate.com/resources" />
-    <xhtml:link rel="alternate" hreflang="en-gb" href="https://uipirate.com/resources" />
-    <xhtml:link rel="alternate" hreflang="en-sg" href="https://uipirate.com/resources" />
-    <xhtml:link rel="alternate" hreflang="en-in" href="https://uipirate.com/resources" />
-    <xhtml:link rel="alternate" hreflang="en-au" href="https://uipirate.com/resources" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://uipirate.com/resources" />
+    <xhtml:link rel="alternate" hreflang="en-us" href="https://uipirate.com/blogs" />
+    <xhtml:link rel="alternate" hreflang="en-gb" href="https://uipirate.com/blogs" />
+    <xhtml:link rel="alternate" hreflang="en-sg" href="https://uipirate.com/blogs" />
+    <xhtml:link rel="alternate" hreflang="en-in" href="https://uipirate.com/blogs" />
+    <xhtml:link rel="alternate" hreflang="en-au" href="https://uipirate.com/blogs" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://uipirate.com/blogs" />
   </url>
 
   <!-- Contact Page -->

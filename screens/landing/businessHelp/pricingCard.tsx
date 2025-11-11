@@ -9,6 +9,7 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import data from "@/data/servicesTopList.json";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -231,6 +232,21 @@ const VideoWithCards = () => {
                       </Chip>
                     ))}
                   </div>
+                  <div className="mt-6">
+                    <Link
+                      href={`/services/${item.heading.replace(/\s+/g, "-")}`}
+                    >
+                      <button
+                        color="primary"
+                        className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                        style={{ width: "100%" }}
+                      >
+                        <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
+                          <p>Learn More</p>
+                        </div>
+                      </button>
+                    </Link>
+                  </div>
                 </CardBody>
               </Card>
 
@@ -311,6 +327,21 @@ const VideoWithCards = () => {
                           <p className="font-[500] text-sm">{chipItem.title}</p>
                         </Chip>
                       ))}
+                    </div>
+                    <div className="mt-6">
+                      <Link
+                        href={`/services/${item.heading.replace(/\s+/g, "-")}`}
+                      >
+                        <button
+                          color="primary"
+                          className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                          style={{ width: "100%" }}
+                        >
+                          <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
+                            <p>Learn More</p>
+                          </div>
+                        </button>
+                      </Link>
                     </div>
                   </CardBody>
                 </Card>

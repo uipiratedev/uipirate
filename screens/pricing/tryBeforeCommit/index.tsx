@@ -1,5 +1,6 @@
 import { Button, Card, CardBody, Chip } from "@nextui-org/react";
 import { Tabs, Tab } from "@nextui-org/react";
+import Link from "next/link";
 import { useState } from "react";
 
 const dataPrice = [
@@ -141,14 +142,12 @@ const TryBeforeCommit = (props: any) => {
 
           <Card className="rounded-[32px] max-md:rounded-[30px] box-shadow bg-white/50 ">
             <CardBody className="py-6 flex flex-row max-md:flex-col gap-3 items-center justify-center">
-              <Button
-                as="a"
-                href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                target="_blank"
-                className="bg-black w-fit text-white rounded-[16px] px-8 py-6 font-bold text-base max-md:text-sm  md:w-auto border-4 border-[#E2E2E2] "
+              <Link
+                href="/contact"
+                className="bg-black w-fit text-white rounded-[16px] px-8 py-3 font-bold text-base max-md:text-sm  md:w-auto border-4 border-[#E2E2E2] "
               >
                 Secure Your Zero-Risk Slot Now
-              </Button>
+              </Link>
               <p>or</p>
               <Button
                 as="a"

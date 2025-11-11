@@ -9,8 +9,8 @@
         "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth."
       },
       "whatWeProvide": {
-        "heading": "What We Provide",
         "badge": "What we provide",
+        "heading": "What This Service Includes",
         "card": [
           {
             "heading": "UX & Product Flow Design",
@@ -45,74 +45,134 @@
         ]
       },
       "whoThisIsFor": {
-        "heading": "Does it sound like you?",
-        "badge": "Who This Is For",
+        "heading": "Who This Is For",
+        "badge": "Does it sound like you?",
         "card": [
-          { "heading": "🚀  SaaS startups building their first MVP" },
-          { "heading": "🏢  Enterprise teams needing dashboard redesigns" },
           {
-            "heading": "🤖  AI tools and B2B platforms seeking high-conversion UX"
+            "heading": " For Startups",
+            "description": "Bring your MVP to life fast with clean UX and modular UI that scales with your product.",
+            "QuickWins": [
+              "MVP-focused structure",
+              "SaaS and Mobile App design",
+              "Scalable React/Next.js builds"
+            ]
           },
           {
-            "heading": "🧩  Founders struggling with product complexity & user engagement"
+            "heading": "For Enterprise Teams",
+            "description": "Redesign your dashboards or admin systems for better usability and faster workflows.",
+            "QuickWins": [
+              "Advanced dashboard UX",
+              "Clean, data-driven design",
+              "Enterprise-grade performance"
+            ]
           },
           {
-            "heading": "🎨  Agencies needing white-label frontend + Figma delivery"
+            "heading": "For AI & B2B Platforms",
+            "description": "Simplify complex tools with high-conversion interfaces designed for clarity and engagement.",
+            "QuickWins": [
+              "UX for complex workflows",
+              "B2B-ready design systems",
+              "Aligned design + dev delivery"
+            ]
           }
         ]
       },
       "streamlinedProcess": {
-        "heading": "What You'll Get With Us",
-        "badge": "You Will Get",
-        "card": [
+        "heading": "Complete SaaS Web & Mobile App Workflow",
+        "badge": "Streamlined Process",
+
+        "workflow": [
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Onboarding",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
+                "heading": "Onboarding & Research",
+                "description": "Kickoff call, tool setup, & project alignment. We define goals, target audience, & success metrics to set the foundation.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
+                "heading": "Strategy & Structure",
+                "description": "We map the information architecture, define user journeys, and plan features that align with your product vision.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
+                "heading": "UX Design & Wireframes",
+                "description": "We create low- to mid-fidelity wireframes focusing on functionality, flow, and clarity before visual design begins.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
+                "heading": "UI Design & Prototyping",
+                "description": "We design detailed screens, define the design system, add imagery, & prepare interactive prototypes for early validation.",
+                "gradientId": 4
+              }
+            ]
           },
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Research & Strategy",
-            "gradientId": 2
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Design & Prototyping",
-            "gradientId": 3
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "UI Development",
-            "gradientId": 4
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
+                "heading": "Setup & Planning",
+                "description": "We configure repositories, set up dev environments, & finalize the tech stack - React, Node.js, or Next.js depending on scope.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
+                "heading": "Full Stack Development",
+                "description": "We develop the complete product, pixel-perfect UI, scalable backend architecture, and secure API integration.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
+                "heading": "Testing & QA",
+                "description": "We run functional, UI, and performance tests to ensure your SaaS product works flawlessly across devices.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/streamline-plump_browser-website-1-remix_ccvkvy.svg",
+                "heading": "Launch & Post-Launch ",
+                "description": "We deploy to your chosen platform, provide detailed handoff documentation, & offer ongoing support for updates.",
+                "gradientId": 4
+              }
+            ]
           }
         ]
       },
       "youWillGet": {
-        "heading": "Streamlined Process",
-        "badge": "Streamlined Process",
+        "heading": "What You Will Get",
+        "badge": "What we provide",
         "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
         "leftBadges": [
           {
+            "icon": "🧩",
             "text": "Responsive Figma Files",
             "color": "#8EF1F1E5",
             "rotation": 8
           },
           {
+            "icon": "🧱",
             "text": "Dev-Ready UI Components",
             "color": "#BAFFBCE5",
             "rotation": 6
           },
           {
+            "icon": "🖱️",
             "text": "Clickable Prototypes",
             "color": "#FDE2D3E5",
             "rotation": 0
           },
           {
+            "icon": "💬",
             "text": "Collaboration via Teams & Slack",
             "color": "#E8E8FFE5",
             "rotation": -6
           },
           {
+            "icon": "⚛️",
             "text": "Tailwind + React (optional)",
             "color": "#A5FEDCE5",
             "rotation": -8
@@ -120,22 +180,31 @@
         ],
         "rightBadges": [
           {
+            "icon": "📱",
             "text": "Mobile–First Layouts",
             "color": "#ECE2FFE5",
             "rotation": -10
           },
           {
+            "icon": "🔁",
             "text": "UX–Focused Flows",
             "color": "#D9ECC7E5",
             "rotation": -6
           },
           {
+            "icon": "📊",
             "text": "Dashboard & Analytics Screens",
             "color": "#FFDBDBE5",
             "rotation": 0
           },
-          { "text": "Design Tokens", "color": "#FCD6F0E5", "rotation": 6 },
           {
+            "icon": "🎨",
+            "text": "Design Tokens",
+            "color": "#FCD6F0E5",
+            "rotation": 6
+          },
+          {
+            "icon": "🧠",
             "text": "Scalable Design System",
             "color": "#FDE6ACE5",
             "rotation": 10
@@ -145,7 +214,7 @@
       },
       "optionalAdd": {
         "heading": "Optional Add-Ons",
-        "badge": "Who This Is For",
+        "badge": "What we provide",
         "card": [
           {
             "heading": "🧩  Design System & Component Library"
@@ -165,7 +234,7 @@
     }
   },
   {
-    "slug": "Landing-Pages-&-Corporate-Websites",
+    "slug": "Landing-Pages-&-Business-Websites",
     "data": {
       "hero": {
         "badge": "Design to Development | Landing and Corporate | 1–4 Week Delivery",
@@ -210,49 +279,99 @@
         ]
       },
       "whoThisIsFor": {
-        "heading": "Does it sound like you?",
-        "badge": "Who This Is For",
+        "heading": "Who This Is For",
+        "badge": "Does it sound like you? ",
         "card": [
           {
-            "heading": "🔗  Startups looking to test a new idea or validate an offer"
+            "heading": "For Local Businesses",
+            "description": "Showcase your restaurant, café, or studio with a fast, modern website that builds trust and drives more local traffic.",
+            "QuickWins": [
+              "Optimized for mobile & SEO",
+              "Simple booking or inquiry forms",
+              "Clean, professional design"
+            ]
           },
           {
-            "heading": "🧑‍💼  Solo founders or executives needing a clean, professional web presence"
+            "heading": "For SaaS & Product Teams",
+            "description": "Turn visitors into users with high-converting landing pages built for startups, corporates and tech products.",
+            "QuickWins": [
+              "Conversion-focused design",
+              "CTA-driven structure",
+              "Fast-loading and scalable layouts"
+            ]
           },
           {
-            "heading": "🚀  Teams launching new products or initiatives"
-          },
-          {
-            "heading": "📢  Agencies needing fast turnaround marketing pages"
-          },
-          {
-            "heading": "🧪  Businesses testing funnels or ad campaign landing pages"
+            "heading": "For Portfolios & Personal Brand Sites",
+            "description": "Build a sleek, minimal portfolio or brand site that highlights your story and credibility.",
+            "QuickWins": [
+              "Showcase your work beautifully",
+              "Built for easy updates",
+              "Perfect for freelancers & creators"
+            ]
           }
         ]
       },
       "streamlinedProcess": {
         "heading": "From idea to live website",
         "badge": "Streamlined Process",
-        "card": [
+        "workflow": [
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Kickoff & Alignment",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
+                "heading": "Onboarding & Research",
+                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
+                "heading": "Strategy & Structure",
+                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
+                "heading": "Visual Design & Styling",
+                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
+                "heading": "Feedback & Finalization",
+                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
+                "gradientId": 4
+              }
+            ]
           },
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Strategy & Structure",
-            "gradientId": 2
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Visual Design",
-            "gradientId": 3
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "UI Build & Launch",
-            "gradientId": 4
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
+                "heading": "Setup & Configuration",
+                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
+                "heading": "Full Stack Development",
+                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "QA & SEO Optimization",
+                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894143/solar_document-bold_jzqau9.svg",
+                "heading": "Launch & Handoff",
+                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
+                "gradientId": 4
+              }
+            ]
           }
         ]
       },
@@ -262,26 +381,31 @@
         "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
         "leftBadges": [
           {
+            "icon": "📱",
             "text": "Responsive  layout",
             "color": "#8EF1F1E5",
             "rotation": 8
           },
           {
+            "icon": "🎯",
             "text": "Conversion-focused UX",
             "color": "#BAFFBCE5",
             "rotation": 6
           },
           {
+            "icon": "✍️",
             "text": "Copywriting help",
             "color": "#FDE2D3E5",
             "rotation": 0
           },
           {
+            "icon": "📈",
             "text": "SEO-optimized structure",
             "color": "#E8E8FFE5",
             "rotation": -6
           },
           {
+            "icon": "🧩",
             "text": "Dev-ready Figma file",
             "color": "#A5FEDCE5",
             "rotation": -8
@@ -289,26 +413,31 @@
         ],
         "rightBadges": [
           {
+            "icon": "💻",
             "text": "Webflow or Framer setup",
             "color": "#ECE2FFE5",
             "rotation": -10
           },
           {
+            "icon": "🪄",
             "text": "Scroll/interactions",
             "color": "#D9ECC7E5",
             "rotation": -6
           },
           {
+            "icon": "🧪",
             "text": "Usability-tested prototype",
             "color": "#FFDBDBE5",
             "rotation": 0
           },
           {
+            "icon": "💬",
             "text": "Collaboration via Slack & Teams",
             "color": "#FCD6F0E5",
             "rotation": 6
           },
           {
+            "icon": "🧩",
             "text": "CMS integration",
             "color": "#FDE6ACE5",
             "rotation": 10
@@ -387,48 +516,95 @@
         "badge": "Who This Is For",
         "card": [
           {
-            "heading": "🧑‍💻  Product teams scaling fast"
+            "heading": "For Product Teams",
+            "description": "Need clean, consistent visuals for your app or website? We design assets that blend seamlessly into your product experience.",
+            "QuickWins": [
+              "UI illustrations & icon sets",
+              "In-app and dashboard visuals",
+              "Web graphics optimized for clarity"
+            ]
           },
           {
-            "heading": "🏢  Design-led enterprises building internal tools"
+            "heading": "For Brand & Marketing Teams",
+            "description": "Looking to strengthen your brand identity? We create visuals that align perfectly with your tone, style, and audience.",
+            "QuickWins": [
+              "Brand assets & social visuals",
+              "Presentation and pitch decks",
+              "Consistent branding all across"
+            ]
           },
           {
-            "heading": "🔁  Companies refactoring design debt"
-          },
-          {
-            "heading": "🤝  Dev teams needing pixel-perfect handoff"
-          },
-          {
-            "heading": "🧪  Teams doing regular A/B testing"
-          },
-          {
-            "heading": "📱  Multi-platform apps needing consistency"
+            "heading": "For Founders & Creators",
+            "description": "Launching a new brand or refreshing your visuals? Get polished, versatile designs that look great on web, print, and social.",
+            "QuickWins": [
+              "Logo and visual identity",
+              "Print-ready materials",
+              "Cohesive design language"
+            ]
           }
         ]
       },
       "streamlinedProcess": {
         "heading": "Built for Consistency",
         "badge": "Streamlined Process",
-        "card": [
+        "workflow": [
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Kickoff & Alignment",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Onboarding & Research",
+                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Strategy & Structure",
+                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Visual Design & Styling",
+                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Feedback & Finalization",
+                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
+                "gradientId": 4
+              }
+            ]
           },
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Style Foundation",
-            "gradientId": 2
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Component Design",
-            "gradientId": 3
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Documentation & Handoff",
-            "gradientId": 4
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Setup & Configuration",
+                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Full Stack Development",
+                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "QA & SEO Optimization",
+                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Launch & Handoff",
+                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
+                "gradientId": 4
+              }
+            ]
           }
         ]
       },
@@ -563,45 +739,95 @@
         "badge": "Who This Is For",
         "card": [
           {
-            "heading": "🎯  Marketing teams running social or print campaigns"
+            "heading": "For Product Teams",
+            "description": "Need clean, consistent visuals for your app or website? We design assets that blend seamlessly into your product experience.",
+            "QuickWins": [
+              "UI illustrations & icon sets",
+              "In-app and dashboard visuals",
+              "Web graphics optimized for clarity"
+            ]
           },
           {
-            "heading": "📦  Product launches needing ad creatives"
+            "heading": "For Brand & Marketing Teams",
+            "description": "Looking to strengthen your brand identity? We create visuals that align perfectly with your tone, style, and audience.",
+            "QuickWins": [
+              "Brand assets & social visuals",
+              "Presentation and pitch decks",
+              "Consistent branding all across"
+            ]
           },
           {
-            "heading": "🏢  Brands looking to refresh brochures, flyers, and print"
-          },
-          {
-            "heading": "💬  Founders needing promo material for investors, pitch decks"
-          },
-          {
-            "heading": "📸  Creators & startups building visual content libraries"
+            "heading": "For Founders & Creators",
+            "description": "Launching a new brand or refreshing your visuals? Get polished, versatile designs that look great on web, print, and social.",
+            "QuickWins": [
+              "Logo and visual identity",
+              "Print-ready materials",
+              "Cohesive design language"
+            ]
           }
         ]
       },
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
-        "card": [
+        "workflow": [
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Brief & Scope",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
+                "heading": "Onboarding & Research",
+                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
+                "heading": "Strategy & Structure",
+                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
+                "heading": "Visual Design & Styling",
+                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
+                "heading": "Feedback & Finalization",
+                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
+                "gradientId": 4
+              }
+            ]
           },
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Visual Direction",
-            "gradientId": 2
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Final Design",
-            "gradientId": 3
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Output & Delivery",
-            "gradientId": 4
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Setup & Configuration",
+                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
+                "heading": "Full Stack Development",
+                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
+                "heading": "QA & SEO Optimization",
+                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/streamline-plump_browser-website-1-remix_ccvkvy.svg",
+                "heading": "Launch & Handoff",
+                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
+                "gradientId": 4
+              }
+            ]
           }
         ]
       },
@@ -611,26 +837,31 @@
         "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
         "leftBadges": [
           {
+            "icon": "🎨",
             "text": "Color Consistency",
             "color": "#8EF1F1E5",
             "rotation": 8
           },
           {
+            "icon": "📐",
             "text": "Custom Layouts",
             "color": "#BAFFBCE5",
             "rotation": 6
           },
           {
+            "icon": "🎥",
             "text": "Thumbnails Design",
             "color": "#FDE2D3E5",
             "rotation": 0
           },
           {
+            "icon": "📰",
             "text": "Poster Design",
             "color": "#E8E8FFE5",
             "rotation": -6
           },
           {
+            "icon": "📓",
             "text": "Brochures & Flyers",
             "color": "#A5FEDCE5",
             "rotation": -8
@@ -638,26 +869,31 @@
         ],
         "rightBadges": [
           {
+            "icon": "🎯",
             "text": "Campaign Graphics",
             "color": "#ECE2FFE5",
             "rotation": -10
           },
           {
+            "icon": "🔤",
             "text": "Typography Styling",
             "color": "#D9ECC7E5",
             "rotation": -6
           },
           {
+            "icon": "📁",
             "text": "Source Files",
             "color": "#FFDBDBE5",
             "rotation": 0
           },
           {
+            "icon": "🖥️",
             "text": "Print + Digital Outputs",
             "color": "#FCD6F0E5",
             "rotation": 6
           },
           {
+            "icon": "🧵",
             "text": "Social Media Creatives",
             "color": "#FDE6ACE5",
             "rotation": 10
@@ -732,44 +968,99 @@
         ]
       },
       "whoThisIsFor": {
-        "heading": "Does it sound like you?",
-        "badge": "Who This Is For",
+        "heading": "Who This Is For",
+        "badge": "Does it sound like you? ",
         "card": [
           {
-            "heading": "📣  Founders or marketers promoting launches"
+            "heading": "For Founders & Marketers",
+            "description": "Promote launches or updates with engaging, story-driven motion graphics.",
+            "QuickWins": [
+              "Launch promo videos",
+              "Product explainers",
+              "Short social reels"
+            ]
           },
           {
-            "heading": "📹  Creators or YouTubers needing edits & graphics & audio polish"
+            "heading": "For Creators & YouTubers",
+            "description": "Get pro-quality video edits, graphics, and audio polish without the agency overhead.",
+            "QuickWins": [
+              "Dynamic motion overlays",
+              "Sound sync & color grading",
+              "Consistent video style"
+            ]
           },
           {
-            "heading": "🏢  Teams building explainers, sizzles, or training videos"
-          },
-          {
-            "heading": "💬  Startups turning pitch decks into motion reels"
-          },
-          {
-            "heading": "📱  Anyone needing social-ready video content"
+            "heading": "For Product Teams",
+            "description": "Add explainer or training videos that clearly communicate product value.",
+            "QuickWins": [
+              "Script-to-edit delivery",
+              "Educational flow",
+              "Brand-aligned motion"
+            ]
           }
         ]
       },
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
-        "card": [
+        "workflow": [
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Brief & Inputs",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
+                "heading": "Onboarding & Research",
+                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
+                "heading": "Strategy & Structure",
+                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
+                "heading": "Visual Design & Styling",
+                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
+                "heading": "Feedback & Finalization",
+                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
+                "gradientId": 4
+              }
+            ]
           },
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Edit + Graphics",
-            "gradientId": 2
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Review & Export",
-            "gradientId": 3
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
+                "heading": "Setup & Configuration",
+                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
+                "heading": "Full Stack Development",
+                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "QA & SEO Optimization",
+                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Launch & Handoff",
+                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
+                "gradientId": 4
+              }
+            ]
           }
         ]
       },
@@ -779,26 +1070,31 @@
         "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
         "leftBadges": [
           {
+            "icon": "✂️",
             "text": "Clean Edited Video",
             "color": "#8EF1F1E5",
             "rotation": 8
           },
           {
+            "icon": "🪄",
             "text": "Motion Overlays",
             "color": "#BAFFBCE5",
             "rotation": 6
           },
           {
+            "icon": "🎥",
             "text": "Color Grading",
             "color": "#FDE2D3E5",
             "rotation": 0
           },
           {
+            "icon": "🎧",
             "text": "Sound Design",
             "color": "#E8E8FFE5",
             "rotation": -6
           },
           {
+            "icon": "🎨",
             "text": "Brand Matched Styles",
             "color": "#A5FEDCE5",
             "rotation": -8
@@ -806,26 +1102,31 @@
         ],
         "rightBadges": [
           {
+            "icon": "📼",
             "text": "Promo Edits",
             "color": "#ECE2FFE5",
             "rotation": -10
           },
           {
+            "icon": "🔁",
             "text": "Reels & Shorts",
             "color": "#D9ECC7E5",
             "rotation": -6
           },
           {
+            "icon": "🖥️",
             "text": "Web/YouTube Cut",
             "color": "#FFDBDBE5",
             "rotation": 0
           },
           {
+            "icon": "📁️",
             "text": "Exported Clips",
             "color": "#FCD6F0E5",
             "rotation": 6
           },
           {
+            "icon": "💬",
             "text": "Captions & Subtitles",
             "color": "#FDE6ACE5",
             "rotation": 10
@@ -900,44 +1201,99 @@
         ]
       },
       "whoThisIsFor": {
-        "heading": "Does it sound like you?",
-        "badge": "Who This Is For",
+        "heading": "Who This Is For",
+        "badge": "Does it sound like you?",
         "card": [
           {
-            "heading": "🚧  Startups struggling with onboarding or activation"
+            "heading": "For Startups",
+            "description": "Fix usability issues and friction points before your next release or MVP launch.",
+            "QuickWins": [
+              "UX flaw detection",
+              "Pre-launch feedback",
+              "Actionable audit report"
+            ]
           },
           {
-            "heading": "📉  Products with churn, drop-offs, or user confusion"
+            "heading": "For Product Teams",
+            "description": "Pinpoint drop-offs, churn, and user confusion with data-backed insights.",
+            "QuickWins": [
+              "Heuristic evaluation",
+              "Usability improvement plan",
+              "Conversion UX tips"
+            ]
           },
           {
-            "heading": "🔄  Founders launching an MVP and want pre-launch feedback"
-          },
-          {
-            "heading": "🧪  Teams preparing for usability testing or redesign"
-          },
-          {
-            "heading": "🤝  Agencies wanting a white-label UX audit partner "
+            "heading": "For Agencies & Partners",
+            "description": "White-label our audit process to offer UX reviews under your own brand.",
+            "QuickWins": [
+              "White-label audit support",
+              "Client-ready reporting",
+              "Fast turnaround"
+            ]
           }
         ]
       },
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
-        "card": [
+        "workflow": [
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Brief & Inputs",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Onboarding & Research",
+                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Strategy & Structure",
+                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Visual Design & Styling",
+                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Feedback & Finalization",
+                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
+                "gradientId": 4
+              }
+            ]
           },
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Edit + Graphics",
-            "gradientId": 2
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Review & Export",
-            "gradientId": 3
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Setup & Configuration",
+                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Full Stack Development",
+                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "QA & SEO Optimization",
+                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Launch & Handoff",
+                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
+                "gradientId": 4
+              }
+            ]
           }
         ]
       },
@@ -947,54 +1303,64 @@
         "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
         "leftBadges": [
           {
-            "text": "Clean Edited Video",
+            "icon": "📄",
+            "text": "Audit Report",
             "color": "#8EF1F1E5",
             "rotation": 8
           },
           {
-            "text": "Motion Overlays",
+            "icon": "🧠",
+            "text": "UX Heuristics Applied",
             "color": "#BAFFBCE5",
             "rotation": 6
           },
           {
-            "text": "Color Grading",
+            "icon": "🔍",
+            "text": "Annotated Screens",
             "color": "#FDE2D3E5",
             "rotation": 0
           },
           {
-            "text": "Sound Design",
+            "icon": "🎯",
+            "text": "Fix Recommendations",
             "color": "#E8E8FFE5",
             "rotation": -6
           },
           {
-            "text": "Brand Matched Styles",
+            "icon": "🎥",
+            "text": "Walkthrough Video",
             "color": "#A5FEDCE5",
             "rotation": -8
           }
         ],
         "rightBadges": [
           {
-            "text": "Promo Edits",
+            "icon": "🗂️",
+            "text": "Prioritized Suggestions",
             "color": "#ECE2FFE5",
             "rotation": -10
           },
           {
-            "text": "Reels & Shorts",
+            "icon": "📌",
+            "text": "Prioritized Suggestions",
             "color": "#D9ECC7E5",
             "rotation": -6
           },
           {
-            "text": "Web/YouTube Cut",
+            "icon": "🧩️",
+            "text": "Micro UX Feedback",
             "color": "#FFDBDBE5",
             "rotation": 0
           },
           {
-            "text": "Exported Clips",
+            "icon": "📈",
+            "text": "Conversions",
             "color": "#FCD6F0E5",
             "rotation": 6
           },
           {
-            "text": "Captions & Subtitles",
+            "icon": "📞",
+            "text": "1:1 Strategy Call",
             "color": "#FDE6ACE5",
             "rotation": 10
           }
@@ -1068,49 +1434,99 @@
         ]
       },
       "whoThisIsFor": {
-        "heading": "Does it sound like you?",
-        "badge": "Who This Is For",
+        "heading": "Who This Is For",
+        "badge": "Does it sound like you?",
         "card": [
           {
-            "heading": "📦  Product startups needing launch visuals"
+            "heading": "For Product Startups",
+            "description": "Show your product in stunning 3D visuals that attract investors and customers.",
+            "QuickWins": [
+              "Realistic 3D modeling",
+              "Motion or static renders",
+              "Fast turnaround visuals"
+            ]
           },
           {
-            "heading": "🎥  Marketing teams building explainer videos"
+            "heading": "For Marketing Teams",
+            "description": "Create high-quality explainers, promos, or 3D motion for campaigns.",
+            "QuickWins": [
+              "Animated 3D scenes",
+              "Product showcase videos",
+              "Ad-ready exports"
+            ]
           },
           {
-            "heading": "🛍️  E-commerce brands showing product in 3D"
-          },
-          {
-            "heading": "🧠  Agencies offering advanced media solutions"
-          },
-          {
-            "heading": "🧑‍💼  Founders looking for premium, high-impact visuals"
+            "heading": "For Agencies & Founders",
+            "description": "Offer high-impact visuals with 3D and cinematic renders for your clients or brand.",
+            "QuickWins": [
+              "Premium 3D aesthetics",
+              "Brand integration",
+              "Multi-platform delivery"
+            ]
           }
         ]
       },
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
-        "card": [
+        "workflow": [
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Planning & References",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Onboarding & Research",
+                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Strategy & Structure",
+                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Visual Design & Styling",
+                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Feedback & Finalization",
+                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
+                "gradientId": 4
+              }
+            ]
           },
           {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Modeling & Preview",
-            "gradientId": 2
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Animation & Review",
-            "gradientId": 3
-          },
-          {
-            "icon": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg",
-            "heading": "Final Render & Delivery",
-            "gradientId": 1
+            "badge": "Design Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Setup & Configuration",
+                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Full Stack Development",
+                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "QA & SEO Optimization",
+                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
+                "gradientId": 3
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
+                "heading": "Launch & Handoff",
+                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
+                "gradientId": 4
+              }
+            ]
           }
         ]
       },
@@ -1120,26 +1536,31 @@
         "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
         "leftBadges": [
           {
+            "icon": "🧱️",
             "text": "Custom 3D Model",
             "color": "#8EF1F1E5",
             "rotation": 8
           },
           {
+            "icon": "🎨",
             "text": "Texture & Light Setup",
             "color": "#BAFFBCE5",
             "rotation": 6
           },
           {
+            "icon": "🎞️",
             "text": "Rendered Animation",
             "color": "#FDE2D3E5",
             "rotation": 0
           },
           {
+            "icon": "🖼️",
             "text": "Still Frames for Promo",
             "color": "#E8E8FFE5",
             "rotation": -6
           },
           {
+            "icon": "📽️",
             "text": "HD/4K Video Format",
             "color": "#A5FEDCE5",
             "rotation": -8
@@ -1147,26 +1568,31 @@
         ],
         "rightBadges": [
           {
+            "icon": "🖌️",
             "text": "Style & Mood Matching",
             "color": "#ECE2FFE5",
             "rotation": -10
           },
           {
+            "icon": "🧑‍💻",
             "text": "Web Optimized Export",
             "color": "#D9ECC7E5",
             "rotation": -6
           },
           {
+            "icon": "🔁",
             "text": "3 Revisions",
             "color": "#FFDBDBE5",
             "rotation": 0
           },
           {
+            "icon": "📄️",
             "text": "Source Files",
             "color": "#FCD6F0E5",
             "rotation": 6
           },
           {
+            "icon": "📦",
             "text": "Delivery-Ready Assets",
             "color": "#FDE6ACE5",
             "rotation": 10

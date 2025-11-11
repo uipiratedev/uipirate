@@ -41,7 +41,7 @@ const Sitemap = () => {
     portfolio: [{ label: "Our Works", href: "/ourWorks" }],
     pricing: [{ label: "Pricing", href: "/pricing" }],
     resources: [
-      { label: "Blogs", href: "/resources" },
+      { label: "Blogs", href: "/blogs" },
       { label: "FAQs", href: "/faqs" },
     ],
     contact: [{ label: "Contact", href: "/contact" }],
@@ -241,14 +241,13 @@ const Sitemap = () => {
               />
               Chat on WhatsApp
             </a>
-            <a
-              href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-              target="_blank"
+            <Link
+              href="/contact"
               rel="noopener noreferrer"
               className="bg-white text-black border-2 border-black px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-transform duration-300"
             >
               😀 Schedule a Call
-            </a>
+            </Link>
           </div>
         </div>
       </div>
