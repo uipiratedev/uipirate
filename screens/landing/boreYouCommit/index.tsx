@@ -368,14 +368,12 @@ const BoreYouCommit = () => {
             <CardBody className="p-4 max-md:p-4 max-lg:p-6 px-0">
               {/* Bottom Buttons */}
               <div className="flex flex-col items-center justify-center my-6 gap-4">
-                <Button
-                  as="a"
-                  href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                  target="_blank"
-                  className="bg-black text-white rounded-[16px] px-8 py-6 font-bold text-base max-md:text-sm w-full md:w-auto border-4 border-[#E2E2E2] "
+                <Link
+                  href="/contact"
+                  className="bg-black text-white rounded-[16px] px-8 py-3 font-bold text-base max-md:text-sm w-full md:w-auto border-4 border-[#E2E2E2] "
                 >
                   Secure Your Zero-Risk Slot Now
-                </Button>
+                </Link>
 
                 <p className="my-0 text-center">or</p>
 

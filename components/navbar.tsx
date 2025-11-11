@@ -63,17 +63,18 @@ export const Navbar = () => {
     <>
       {/* ✅ Banner with Close Icon */}
       {showBanner && (
-        <div className="relative bg-white text-center border-b border-gray-200">
+        <div className="relative bg-[#059669] text-center border-b border-gray-200">
           <div className="h-[40px] flex items-center justify-center px-10">
-            <p className="text-sm font-medium text-gray-600 flex items-center justify-center gap-2">
-              <span className="hidden md:inline">Get 30% off on</span> All
-              Design Services.&nbsp;
+            <p className="text-sm font-medium text-white flex items-center justify-center gap-2">
+              <span className="hidden md:inline">
+                Learn real product skills with mentorship at{" "}
+              </span>
               <a
-                href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
+                href="https://propirates.com"
                 target="_blank"
-                className="text-black font-bold"
+                className="text-white font-bold"
               >
-                Book a Call
+                ProPirates →
               </a>
             </p>
 
@@ -83,7 +84,20 @@ export const Navbar = () => {
               className="absolute right-4 text-gray-500 hover:text-gray-800 transition-all"
               aria-label="Close banner"
             >
-              ❌
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 text-white"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
         </div>
@@ -162,10 +176,7 @@ export const Navbar = () => {
             {/* --- Right Button --- */}
             <NavbarContent className=" basis-1/5 sm:basis-full" justify="end">
               <NavbarItem>
-                <a
-                  href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                  target="_blank"
-                >
+                <Link href="/contact">
                   <Button
                     isExternal
                     as={Link}
@@ -177,7 +188,7 @@ export const Navbar = () => {
                   >
                     😀 Let’s Talk
                   </Button>
-                </a>
+                </Link>
               </NavbarItem>
             </NavbarContent>
 

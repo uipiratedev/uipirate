@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 function VisionToLife() {
@@ -35,15 +36,14 @@ function VisionToLife() {
           >
             😀 Let’s Talk
           </a> */}
-          <a
-            href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-            target="_blank"
+          <Link
+            href="/contact"
             className="w-[250px] max-lg:mt-3 lg:ml-3 hover:scale-105 transition-transform duration-300"
           >
             <div className="  bg-black text-white rounded-xl h-auto transform transition-all duration-[600ms] ease-in-out px-6 py-4 flex flex-row items-center justify-center gap-3 relative">
               😀 Let’s Talk
             </div>
-          </a>
+          </Link>
           <a
             href="https://wa.me/919708636151"
             target="_blank"

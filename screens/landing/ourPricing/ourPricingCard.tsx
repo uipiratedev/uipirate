@@ -2,6 +2,7 @@ import { Button, Card, CardBody, Chip } from "@nextui-org/react";
 import { Tabs, Tab } from "@nextui-org/react";
 import { useState } from "react";
 import ListMap from "./list";
+import Link from "next/link";
 
 const data = [
   {
@@ -388,10 +389,7 @@ const OurPricingCard = (props: any) => {
                       </div>
                     </div>
                     <div className="md:hidden max-md:block">
-                      <a
-                        href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                        target="blank"
-                      >
+                      <Link href="/contact">
                         <Button
                           className="bg-black text-white button dark:bg-white dark:text-black w-full"
                           startContent={
@@ -403,7 +401,7 @@ const OurPricingCard = (props: any) => {
                         >
                           Book a 15-min call
                         </Button>
-                      </a>
+                      </Link>
                     </div>
                   </div>
 
@@ -478,10 +476,7 @@ const OurPricingCard = (props: any) => {
                   </div>
 
                   <div className="md:block max-md:hidden  -mt-6">
-                    <a
-                      href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                      target="blank"
-                    >
+                    <Link href="/contact">
                       {/* <Button
                         className="bg-black text-white button dark:bg-white dark:text-black w-full"
                         startContent={
@@ -534,7 +529,7 @@ const OurPricingCard = (props: any) => {
                           </span>
                         </div>
                       </button>
-                    </a>
+                    </Link>
                   </div>
 
                   <div className="md:block max-md:hidden -mt-4">
@@ -633,11 +628,7 @@ const OurPricingCard = (props: any) => {
                           Book a 15-min call
                         </Button>
                       </a> */}
-                      <a
-                        href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                        target="_blank"
-                        className="w-full"
-                      >
+                      <Link href="/contact" className="w-full">
                         <button
                           color="primary"
                           className="mt-3 bg-black text-white w-full  py-[16px] rounded-[16px] group"
@@ -678,7 +669,7 @@ const OurPricingCard = (props: any) => {
                             </span>
                           </div>
                         </button>
-                      </a>
+                      </Link>
                     </div>
 
                     <div className="">
@@ -726,9 +717,8 @@ const OurPricingCard = (props: any) => {
                   className="my-12 flex flex-row items-center justify-center max-lg:flex-col w-full max-md:flex-col max-md:px-2 button-spring-animate relative"
                   style={{ overflow: "visible" }}
                 >
-                  <a
-                    href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-                    target="blank"
+                  <Link
+                    href="/contact"
                     className="w-[350px] max-md:w-[300px] max-lg:mt-3 lg:ml-3"
                   >
                     <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-4 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
@@ -764,7 +754,7 @@ const OurPricingCard = (props: any) => {
                         />
                       </div>
                     </div>
-                  </a>
+                  </Link>
 
                   <a
                     href="https://wa.link/i35lma"

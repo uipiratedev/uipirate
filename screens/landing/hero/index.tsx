@@ -3,6 +3,7 @@ import { Button } from "@nextui-org/button";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Tooltip } from "@nextui-org/react";
+import Link from "next/link";
 
 const StarRating = ({
   className = "",
@@ -193,11 +194,7 @@ const LandingHero = () => {
             className="my-12 flex flex-row items-center max-md:flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
-            <a
-              href="https://cal.com/vishal-anand/introduction-and-free-ui-ux-strategy-session"
-              target="blank"
-              className="relative z-10"
-            >
+            <Link href="/contact" className="relative z-10">
               <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-3 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
                 {/* Star Confetti Container - Behind button */}
                 <div className="star-confetti-container">
@@ -309,7 +306,7 @@ const LandingHero = () => {
                   />
                 </div>
               </div>
-            </a>
+            </Link>
             <div className="w-[100%] z-10">
               <a
                 href="https://wa.link/i35lma"
