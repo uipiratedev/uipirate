@@ -7,7 +7,10 @@ export function ConditionalNavbar() {
   const pathname = usePathname();
 
   // Don't show navbar on pro-pirate page
-  if (pathname === "/pro-pirate") {
+  if (
+    pathname === "/pro-pirate"
+    //  || pathname === "/contact"
+  ) {
     return null;
   }
 
@@ -17,4 +20,3 @@ export function ConditionalNavbar() {
     </div>
   );
 }
-
