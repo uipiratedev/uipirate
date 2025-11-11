@@ -29,7 +29,7 @@ export async function GET() {
     { url: "/pricing", priority: "0.95", changefreq: "weekly", hreflang: true },
     { url: "/faqs", priority: "0.8", changefreq: "monthly", hreflang: true },
     {
-      url: "/resources",
+      url: "/blogs",
       priority: "0.8",
       changefreq: "weekly",
       hreflang: true,

@@ -41,7 +41,7 @@ const Sitemap = () => {
     portfolio: [{ label: "Our Works", href: "/ourWorks" }],
     pricing: [{ label: "Pricing", href: "/pricing" }],
     resources: [
-      { label: "Blogs", href: "/resources" },
+      { label: "Blogs", href: "/blogs" },
       { label: "FAQs", href: "/faqs" },
     ],
     contact: [{ label: "Contact", href: "/contact" }],

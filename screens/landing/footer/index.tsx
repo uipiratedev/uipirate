@@ -118,7 +118,7 @@ const LandingFooter = () => {
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li>
                   <a
-                    href="/resources"
+                    href="/blogs"
                     className="hover:text-white transition-colors"
                   >
                     Blogs
