@@ -18,7 +18,7 @@ const BlogsDetailsHero: React.FC<BlogHeroProps> = ({
       {/* Background image */}
       <div className="absolute inset-0 ">
         <Image
-          src="https://res.cloudinary.com/damm9iwho/image/upload/v1761922358/Frame_1984078765_reuxzw.svg"
+          src="https://res.cloudinary.com/damm9iwho/image/upload/v1762014955/blogbanner_n7agjs.svg"
           alt={title}
           fill
           className="object-cover rounded-none"
