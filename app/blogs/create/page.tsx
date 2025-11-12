@@ -12,6 +12,8 @@ import Typography from "@tiptap/extension-typography";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Button } from "@nextui-org/button";
+import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 // Slash command menu component
 const SlashCommandMenu = ({
@@ -258,43 +260,18 @@ const BlogEditor = () => {
   });
   const [title, setTitle] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [excerpt, setExcerpt] = useState("");
+  const [featuredImage, setFeaturedImage] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [saveStatus, setSaveStatus] = useState<string>("Draft");
   const editorRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  // Require authentication
+  const { isAuthenticated, isLoading: authLoading } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  const handleImageUpload = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>, editor: any) => {
-      const file = event.target.files?.[0];
-      if (file && editor) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const url = e.target?.result as string;
-          editor.chain().focus().setImage({ src: url }).run();
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-    []
-  );
-
-  const handleSaveDraft = useCallback(() => {
-    setIsSaving(true);
-    // Simulate save
-    setTimeout(() => {
-      setIsSaving(false);
-      alert("Draft saved!");
-    }, 1000);
-  }, []);
-
-  const handlePublish = useCallback(() => {
-    setIsSaving(true);
-    // Simulate publish
-    setTimeout(() => {
-      setIsSaving(false);
-      alert("Published!");
-    }, 1000);
   }, []);
 
   const editor = useEditor({
@@ -419,7 +396,84 @@ const BlogEditor = () => {
     immediatelyRender: false,
   });
 
-  if (!mounted || !editor) return null;
+  const handleImageUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, editor: any) => {
+      const file = event.target.files?.[0];
+      if (file && editor) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const url = e.target?.result as string;
+          editor.chain().focus().setImage({ src: url }).run();
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    []
+  );
+
+  const saveBlog = async (published: boolean) => {
+    if (!title.trim()) {
+      alert("Please enter a title for your blog");
+      return;
+    }
+
+    if (!editor?.getHTML()) {
+      alert("Please add some content to your blog");
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveStatus(published ? "Publishing..." : "Saving...");
+
+    try {
+      const response = await fetch("/api/blogs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content: editor.getHTML(),
+          excerpt,
+          featuredImage,
+          tags,
+          published,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to save blog");
+      }
+
+      setSaveStatus(published ? "Published" : "Draft Saved");
+      alert(
+        published ? "Blog published successfully!" : "Draft saved successfully!"
+      );
+
+      // Redirect to blog list or edit page
+      setTimeout(() => {
+        router.push("/admin/dashboard/blogs");
+      }, 1500);
+    } catch (error: any) {
+      console.error("Error saving blog:", error);
+      alert(error.message || "Failed to save blog");
+      setSaveStatus("Error");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveDraft = useCallback(() => {
+    saveBlog(false);
+  }, [title, editor, excerpt, featuredImage, tags]);
+
+  const handlePublish = useCallback(() => {
+    saveBlog(true);
+  }, [title, editor, excerpt, featuredImage, tags]);
+
+  if (!mounted || !editor || authLoading) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -431,7 +485,7 @@ const BlogEditor = () => {
               Create Post
             </h1>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              {isSaving ? "Saving..." : "Draft"}
+              {saveStatus}
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -470,7 +524,7 @@ const BlogEditor = () => {
         {/* Editor Container */}
         <div ref={editorRef} className="relative">
           {/* Editor Content */}
-          <div className="notion-editor-wrapper bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 min-h-[600px]">
+          <div className="notion-editor-wrapper  min-h-[600px]">
             <EditorContent editor={editor} />
           </div>
 
