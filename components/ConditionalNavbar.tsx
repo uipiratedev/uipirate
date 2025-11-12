@@ -8,7 +8,13 @@ export function ConditionalNavbar() {
 
   // Don't show navbar on pro-pirate page
   if (
-    pathname === "/pro-pirate"
+    pathname === "/pro-pirate" ||
+    pathname === "/blogs/create" ||
+    pathname === "/blogs/edit/[id]" ||
+    pathname === "/admin/dashboard" ||
+    pathname === "/admin/dashboard/blogs" ||
+    pathname === "/admin/login"
+
     //  || pathname === "/contact"
   ) {
     return null;
