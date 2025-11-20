@@ -2,6 +2,7 @@
 
 import { Card, CardBody } from "@nextui-org/react";
 import { motion } from "framer-motion";
+
 import { getGradientById } from "@/utils/gradientService";
 
 const data = {
@@ -59,9 +60,9 @@ const ProgressCard = () => {
       <motion.div
         className="autoShow"
         initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.3 }}
+        whileInView={{ opacity: 1, y: 0 }}
       >
         <div className="flex flex-row items-center justify-center mb-6">
           <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
@@ -76,14 +77,14 @@ const ProgressCard = () => {
         {data.card.map((item, index) => (
           <motion.div
             key={index}
+            className="h-full"
             custom={index}
-            variants={cardVariants}
             initial="hidden"
-            whileInView="visible"
+            transition={{ type: "spring", stiffness: 120, damping: 10 }}
+            variants={cardVariants}
             viewport={{ once: true, amount: 0.3 }}
             whileHover={{ scale: 1.03, y: -5 }}
-            transition={{ type: "spring", stiffness: 120, damping: 10 }}
-            className="h-full"
+            whileInView="visible"
           >
             <Card
               className="rounded-[48px] max-md:rounded-[38px] mt-6 bg-white group shadow-none border border-[#0000000f] h-full"
@@ -101,16 +102,16 @@ const ProgressCard = () => {
                   <CardBody className="p-6 max-md:p-5 flex flex-col justify-between h-full">
                     <div>
                       <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        whileInView={{ scale: 1, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.25, duration: 0.5 }}
                         className="border border-[#00000014] bg-white rounded-xl p-2 w-fit"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        transition={{ delay: index * 0.25, duration: 0.5 }}
+                        viewport={{ once: true }}
+                        whileInView={{ scale: 1, opacity: 1 }}
                       >
                         <img
-                          src={item.icon}
                           alt={item.heading}
                           className="w-[40px] h-[40px] p-1 grayscale"
+                          src={item.icon}
                         />
                       </motion.div>
 

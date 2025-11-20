@@ -3,8 +3,9 @@ import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import data from "@/data/servicesTopList.json";
 import Link from "next/link";
+
+import data from "@/data/servicesTopList.json";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,13 +41,13 @@ const data1 = [
         // ref={(elvideo) => {
         //   if (elvideo) videoRefs.current[index] = elvideo;
         // }}
-        width="100%"
         autoPlay
         loop
         muted
         className="object-cover h-[250px] w-[100%]"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
-      ></video>
+        width="100%"
+      />
     ),
     isImage: false,
     ctaText: "Explore 3D Animation",
@@ -83,13 +84,13 @@ const data1 = [
         // ref={(elvideo) => {
         //   if (elvideo) videoRefs.current[index] = elvideo;
         // }}
-        width="100%"
         autoPlay
         loop
         muted
         className="object-cover h-[250px] w-full"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
-      ></video>
+        width="100%"
+      />
     ),
     isImage: true,
     ctaText: "Explore UX Audits",
@@ -115,7 +116,7 @@ const ServicesCard = () => {
 
     // Small delay to ensure DOM is ready, especially important for client-side navigation
     const timeoutId = setTimeout(() => {
-      cardsRef.current.forEach((card, index) => {
+      cardsRef.current.forEach((card) => {
         if (card) {
           gsap.fromTo(
             card,
@@ -162,6 +163,7 @@ const ServicesCard = () => {
           if (index !== -1) {
             // Check if the index is valid
             const videoElement = videoRefs.current[index];
+
             if (videoElement) {
               // Ensure the video element is valid
               if (entry.isIntersecting) {
@@ -212,22 +214,22 @@ const ServicesCard = () => {
                   <CardHeader className="px-0 pt-0">
                     {item.isImage ? (
                       <img
-                        src={item.sideImage}
                         alt="behance Logo"
-                        width="100%"
                         className="object-cover h-[350px] min-md:h-[350px] max-h-full"
+                        src={item.sideImage}
+                        width="100%"
                       />
                     ) : (
                       <video
                         ref={(elvideo) => {
                           if (elvideo) videoRefs.current[index] = elvideo;
                         }}
-                        width="100%"
                         loop
                         muted
                         className="object-cover h-[350px] min-md:h-[350px] max-h-full"
                         src={item.video}
-                      ></video>
+                        width="100%"
+                      />
                     )}
                   </CardHeader>
                   <CardBody className="p-8 max-md:p-5 max-lg:p-6 flex flex-col justify-between">
@@ -250,12 +252,13 @@ const ServicesCard = () => {
                       {item.chip.map((chipItem, chipIndex) => (
                         <Chip
                           key={chipIndex}
-                          radius="sm"
                           className="md:m-2 mr-2 max-md:mb-2 text-[14px] text-[#00000094] bg-[#51525E14]"
+                          radius="sm"
                           startContent={
                             <img
-                              src={chipItem.icon}
+                              alt={chipItem.title}
                               className="mx-1 w-[16px]"
+                              src={chipItem.icon}
                             />
                           }
                         >
@@ -270,8 +273,8 @@ const ServicesCard = () => {
                       href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                     >
                       <button
-                        color="primary"
                         className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                        color="primary"
                         style={{ width: "100%" }}
                       >
                         <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
@@ -316,16 +319,19 @@ const ServicesCard = () => {
       >
         {data1.map((item, index) => {
           return (
-            <Card className="rounded-[48px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
+            <Card
+              key={index}
+              className="rounded-[48px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]"
+            >
               <CardBody className="p-4 max-md:p-2">
                 <Card className="rounded-[40px] box-shadow">
                   <CardHeader className="px-0 pt-0">
                     <div className=" w-full">
                       {item.isImage && (
                         <img
-                          src={item.image}
                           alt="behance Logo"
                           className="w-full h-[250px] object-cover"
+                          src={item.image}
                         />
                       )}
                       {!item.isImage && item.video}
@@ -343,12 +349,13 @@ const ServicesCard = () => {
                       {item.chip.map((chipItem, chipIndex) => (
                         <Chip
                           key={chipIndex}
+                          className="md:m-2 mr-2 max-md:mb-2 text-[14px] text-[00000094] bg-[#51525E14]"
                           radius="sm"
-                          className="md:m-2 mr-2 max-md:mb-2 text-[14px] text-[#00000094] bg-[#51525E14]"
                           startContent={
                             <img
-                              src={chipItem.icon}
+                              alt={chipItem.title}
                               className="mx-1 w-[16px]"
+                              src={chipItem.icon}
                             />
                           }
                         >
@@ -363,8 +370,8 @@ const ServicesCard = () => {
                         href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                       >
                         <button
-                          color="primary"
                           className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                          color="primary"
                           style={{ width: "100%" }}
                         >
                           <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
@@ -399,8 +406,8 @@ const ServicesCard = () => {
                       href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                     >
                       <button
-                        color="primary"
                         className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                        color="primary"
                         style={{ width: "100%" }}
                       >
                         <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">

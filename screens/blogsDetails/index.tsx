@@ -1,16 +1,37 @@
 import BlogsDetailsHero from "./hero";
 import BlogContents from "./blogContents";
 import SuggestedReads from "./suggestedReads";
-const BlogsDetails = () => {
+
+interface BlogData {
+  _id: string;
+  title: string;
+  content: string;
+  excerpt?: string;
+  featuredImage?: string;
+  tags?: string[];
+  author: {
+    name: string;
+    email: string;
+  };
+  createdAt: string;
+  publishedAt: string | null;
+  views?: number;
+  readTime?: number;
+}
+
+interface BlogsDetailsProps {
+  blog: BlogData;
+}
+
+const BlogsDetails = ({ blog }: BlogsDetailsProps) => {
   return (
     <div>
       <BlogsDetailsHero
-        imageUrl=""
-        tag="🔎 Research & Community Insights"
-        title="Designers vs. Developers: Why the Handoff Still Breaks (and How
-          to Fix It)"
+        imageUrl={blog.featuredImage || ""}
+        tag={blog.tags?.[0] ? `🏷️ ${blog.tags[0]}` : "📝 Blog"}
+        title={blog.title}
       />
-      <BlogContents />
+      <BlogContents blog={blog} />
       <SuggestedReads />
     </div>
   );

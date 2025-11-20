@@ -32,7 +32,10 @@ const WhoThisIsFor = ({ data }: any) => {
 
                       <ul lang="dots">
                         {item.QuickWins.map((items: any, index: number) => (
-                          <li className="text-base max-md:text-base font-[500] text-[#777777]  py-[2px]">
+                          <li
+                            key={index}
+                            className="text-base max-md:text-base font-[500] text-[#777777]  py-[2px]"
+                          >
                             {items}
                           </li>
                         ))}

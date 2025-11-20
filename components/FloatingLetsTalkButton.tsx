@@ -11,6 +11,7 @@ const FloatingLetsTalkButton = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -18,10 +19,10 @@ const FloatingLetsTalkButton = () => {
 
   return (
     <a
-      href="https://wa.me/919708636151"
-      target="_blank"
-      rel="noopener noreferrer"
       className="fixed bottom-3 left-1/2 z-[1] -translate-x-1/2 transition-opacity duration-500"
+      href="https://wa.me/919708636151"
+      rel="noopener noreferrer"
+      target="_blank"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -42,7 +43,7 @@ const FloatingLetsTalkButton = () => {
       >
         <span className="text-xl">😀</span>
         <span className="font-bold text-base max-md:text-sm whitespace-nowrap">
-          Let's Talk
+          Let&apos;s Talk
         </span>
       </div>
     </a>

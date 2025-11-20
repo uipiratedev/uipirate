@@ -48,22 +48,22 @@ const ServiceHero = () => {
 
   return (
     <motion.section
-      variants={container}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.4 }}
       className="relative pt-16 md:pt-24 flex flex-col items-center text-center overflow-hidden"
+      initial="hidden"
+      variants={container}
+      viewport={{ once: true, amount: 0.4 }}
+      whileInView="show"
     >
       {/* Floating & animated icons */}
       <div className="flex justify-center items-center gap-6 max-md:gap-3 mb-6 relative z-10">
         {icons.map((src, i) => (
           <motion.img
             key={i}
-            src={src}
             alt={`icon-${i + 1}`}
             className={`w-12 md:w-32 ${
               i === 2 ? "-mt-8" : i === 1 || i === 3 ? "-mt-4" : ""
             }`}
+            src={src}
             variants={iconMotion(i * 0.2)}
           />
         ))}
@@ -71,8 +71,8 @@ const ServiceHero = () => {
 
       {/* Badge */}
       <motion.div
-        variants={fadeUp}
         className="p-2 px-4 rounded-xl bg-[#8EF1F1] border-cyan-400 border-2 mb-6 shadow-sm"
+        variants={fadeUp}
       >
         <p className="text-center uppercase text-xs max-md:text-[10px] font-medium tracking-wider">
           7 CORE SERVICES. 1 SEAMLESS WORKFLOW
@@ -81,16 +81,16 @@ const ServiceHero = () => {
 
       {/* Heading */}
       <motion.h1
-        variants={fadeUp}
         className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 text-gray-900"
+        variants={fadeUp}
       >
         Design + Development Services for SaaS, Tech & AI Products
       </motion.h1>
 
       {/* Subheading */}
       <motion.p
-        variants={fadeUp}
         className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mb-8 px-40 max-md:px-4 font-sans leading-[25.2px]"
+        variants={fadeUp}
       >
         Scalable design, clean code, and polished visuals, all under one roof.
       </motion.p>

@@ -92,81 +92,81 @@ const ServiceDetailsHero = ({ data }: any) => {
           className="my-12 flex flex-row items-center max-md:flex-col max-md:px-2 button-spring-animate relative gap-3"
           style={{ overflow: "visible" }}
         >
-          <Link href="/contact" className="relative z-10">
+          <Link className="relative z-10" href="/contact">
             <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-3 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
               {/* Star Confetti Container - Behind button */}
               <div className="star-confetti-container">
                 <div className="star-confetti-revolve">
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                   <div className="star-confetti">
                     <img
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       alt="star"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                     />
                   </div>
                 </div>
@@ -174,22 +174,22 @@ const ServiceDetailsHero = ({ data }: any) => {
 
               <div className="flex flex-row gap-2 items-center md:mr-11">
                 <img
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
                   alt="Dribble Logo"
-                  id="image"
                   className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-[580ms] ease-in-out  md:group-hover:translate-x-4 max-md:order-3  md:order-1 md:group-hover:order-3"
+                  id="image"
+                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
                 />
                 <p
-                  id="plus"
                   className="text-[#5B5B5B] text-xl font-bold md:absolute order-2 -mt-1"
+                  id="plus"
                 >
                   +
                 </p>
                 <img
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                   alt="Dribble Logo"
-                  id="client"
                   className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
+                  id="client"
+                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                 />
               </div>
               <p className="text-lg font-bold text-nowrap">
@@ -198,24 +198,25 @@ const ServiceDetailsHero = ({ data }: any) => {
               </p>
               <div>
                 <img
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                   alt="Dribble Logo"
                   className="w-auto h-[30px]"
+                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                 />
               </div>
             </div>
           </Link>
           <div className="w-[100%] z-10">
             <a
-              href="https://wa.link/i35lma"
-              target="_blank"
               className="w-[200px]"
+              href="https://wa.link/i35lma"
+              rel="noreferrer"
+              target="_blank"
             >
               <Button
-                color="primary"
-                variant="bordered"
                 className=" border-gray-300 text-black font-bold w-full bg-white  hover:border-gray-200 rounded-[16px]   py-[27px]"
+                color="primary"
                 style={{ width: "100%" }}
+                variant="bordered"
                 onMouseEnter={() => setIsHoveredChat(true)}
                 onMouseLeave={() => setIsHoveredChat(false)}
               >
@@ -226,9 +227,9 @@ const ServiceDetailsHero = ({ data }: any) => {
                     }`}
                   >
                     <img
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                       alt="WhatsApp Logo"
                       className="w-[30px]  h-[30px] "
+                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                     />
                     <p className="text-base font-semibold">Lets Talk</p>
                   </span>
@@ -239,9 +240,9 @@ const ServiceDetailsHero = ({ data }: any) => {
                     }`}
                   >
                     <img
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                       alt="WhatsApp Logo"
                       className="w-[30px]  h-[30px]"
+                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                     />
                     <p className="text-base font-semibold"> +91 97086 36151</p>
                   </span>

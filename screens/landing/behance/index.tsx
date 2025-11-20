@@ -185,7 +185,7 @@ const LandingBehance = () => {
       endIndex: number,
       xMove: string[],
       yMove: string[],
-      rotateDeg: number[]
+      rotateDeg: number[],
     ) => {
       gsap.to(images.slice(startIndex, endIndex), {
         x: (i) => xMove[i % 2],
@@ -237,8 +237,8 @@ const LandingBehance = () => {
     <div className="relative">
       {/* Centered Info */}
       <div
-        id="info"
         className="absolute inset-0 flex flex-col items-center justify-center text-center"
+        id="info"
       >
         {/* <img
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1729514725/behance_k2zcrn.svg"
@@ -253,8 +253,8 @@ const LandingBehance = () => {
           and value the results we deliver.
         </p>
         <Button
-          color="primary"
           className=" bg-black button text-lg dark:bg-white dark:text-black"
+          color="primary"
           style={{
             paddingRight: "70px",
             paddingLeft: "70px",
@@ -272,10 +272,10 @@ const LandingBehance = () => {
           return (
             <div key={index} className="relative w-full h-full">
               <img
-                src={item.img}
                 alt={item.heading}
                 className=" w-full h-full object-fill rounded-3xl grayscale-[25%]"
                 id="img"
+                src={item.img}
               />
             </div>
           );

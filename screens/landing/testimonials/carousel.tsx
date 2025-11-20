@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import { Card, CardBody } from "@nextui-org/react";
+
 import Avatar from "@/components/Avatar";
 
 const clients = [
@@ -173,7 +174,7 @@ function ResponsiveCarousel() {
           backgroundColor: i === activeIndex ? "#545454" : "#E2E2E2", // Active and inactive colors
           transition: "background-color ease",
         }}
-      ></div>
+      />
     ),
 
     responsive: [
@@ -203,13 +204,16 @@ function ResponsiveCarousel() {
       },
     ],
   };
+
   return (
     <div className="pt-2 pb-12">
       <Slider {...settings}>
         {clients.map((item, index) => (
-          <div className=" mt-8 mb-12 py-12 transform transition-transform duration-300 ">
+          <div
+            key={index}
+            className=" mt-8 mb-12 py-12 transform transition-transform duration-300 "
+          >
             <Card
-              key={index}
               className={`rounded-[32px] max-md:w-[100%] bg-[#e9e9e9] card-item max-md:rounded-[30px] shadow-none border-1 border-[#0000000f]`}
             >
               <CardBody className="p-3 max-md:p-2 max-lg:p-4">
@@ -217,8 +221,8 @@ function ResponsiveCarousel() {
                   <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
                     <div className="flex flex-row gap-3 items-center">
                       <Avatar
-                        name={item.name}
                         avatar={item.profileImage}
+                        name={item.name}
                         size={40}
                       />
                       <div className="">
@@ -235,9 +239,9 @@ function ResponsiveCarousel() {
                     </div>
                     <div className=" max-md:hidden block">
                       <img
-                        src={item.logo}
                         alt="behance Logo"
                         className="max-w-[80px] max-md:max-w-[80px] "
+                        src={item.logo}
                       />
                     </div>
                   </div>

@@ -44,7 +44,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     };
   } catch (error) {
-    console.error("Error generating metadata:", error);
     notFound(); // Redirect to 404 if there's an error
   }
 }
@@ -59,19 +58,14 @@ export async function generateStaticParams() {
     });
 
     if (!response.ok) {
-      console.warn("Failed to fetch page paths:", response.status);
       return []; // Return an empty array if fetch fails
     }
 
     const paths = await response.json();
+
     return paths.map((slug: string) => ({ slug }));
   } catch (error) {
     // Handle network errors gracefully during build
-    if (error instanceof Error) {
-      console.warn("Error fetching static params:", error.message);
-    } else {
-      console.warn("Error fetching static params:", error);
-    }
     // Return empty array - pages will be generated on-demand with dynamicParams: true
     return [];
   }

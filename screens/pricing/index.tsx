@@ -1,11 +1,11 @@
 "use client";
-import WhatWeProvideGlobal from "@/components/whatWeProvideGlobal";
-import OurPricingCard from "../landing/ourPricing/ourPricingCard";
-import PricingHero from "./hero";
-import TeamCulture from "../ourTeam/teamCulture";
-import TryBeforeCommit from "./tryBeforeCommit";
-import PageWrapper from "@/components/PageWrapper";
 import LandingOurPricing from "../landing/ourPricing";
+
+import PricingHero from "./hero";
+import TryBeforeCommit from "./tryBeforeCommit";
+
+import PageWrapper from "@/components/PageWrapper";
+import WhatWeProvideGlobal from "@/components/whatWeProvideGlobal";
 
 const Pricing = () => {
   return (

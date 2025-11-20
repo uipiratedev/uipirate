@@ -1,10 +1,10 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import { fontSans } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
-
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 
 export const metadata: Metadata = {
@@ -93,11 +93,10 @@ export default function RootLayout({
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
-        ></script>
+        />
 
         {/* Microsoft Clarity - Will be initialized after consent */}
         <script
-          type="text/javascript"
           dangerouslySetInnerHTML={{
             __html: `
               (function(c,l,a,r,i,t,y){
@@ -107,82 +106,83 @@ export default function RootLayout({
               })(window, document, "clarity", "script", "txqkzeahh6");
             `,
           }}
+          type="text/javascript"
         />
 
         {/* Bing Webmaster Tools Verification */}
 
-        <meta name="msvalidate.01" content="367497DBA609A56C845E2A1D4ECC5F42" />
+        <meta content="367497DBA609A56C845E2A1D4ECC5F42" name="msvalidate.01" />
 
         {/* AI Crawler Meta Tags */}
         <meta
-          name="robots"
           content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+          name="robots"
         />
-        <meta name="ai-content-declaration" content="ai-assisted" />
-        <meta name="content-type" content="text/html; charset=utf-8" />
-        <meta name="language" content="English" />
-        <meta name="author" content="Vishal Anand - UI Pirate" />
+        <meta content="ai-assisted" name="ai-content-declaration" />
+        <meta content="text/html; charset=utf-8" name="content-type" />
+        <meta content="English" name="language" />
+        <meta content="Vishal Anand - UI Pirate" name="author" />
         <meta
-          name="subject"
           content="UI/UX Design Services, SaaS Design, AI Application Design"
+          name="subject"
         />
-        <meta name="classification" content="Business, Design, Technology" />
+        <meta content="Business, Design, Technology" name="classification" />
         <meta
-          name="keywords"
           content="UI design, UX design, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise design, USA UK Singapore India Australia, enterprise clients, startup design, tech company design, Vishal Anand, UI Pirate"
+          name="keywords"
         />
-        <meta name="geo.region" content="US, GB, SG, IN, AU" />
+        <meta content="US, GB, SG, IN, AU" name="geo.region" />
         <meta
-          name="geo.placename"
           content="United States, United Kingdom, Singapore, India, Australia"
+          name="geo.placename"
         />
         <meta
-          name="target-audience"
           content="Enterprise clients, SaaS companies, Tech startups, Mobile app companies"
+          name="target-audience"
         />
 
         {/* AI Data Reference */}
-        <link rel="alternate" type="application/ld+json" href="/ai-data.json" />
+        <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
         <link
+          href="/enterprise-schema.json"
           rel="alternate"
           type="application/ld+json"
-          href="/enterprise-schema.json"
         />
 
         {/* Hreflang for international targeting */}
-        <link rel="alternate" hrefLang="en-us" href="https://uipirate.com/" />
-        <link rel="alternate" hrefLang="en-gb" href="https://uipirate.com/" />
-        <link rel="alternate" hrefLang="en-sg" href="https://uipirate.com/" />
-        <link rel="alternate" hrefLang="en-in" href="https://uipirate.com/" />
-        <link rel="alternate" hrefLang="en-au" href="https://uipirate.com/" />
+        <link href="https://uipirate.com/" hrefLang="en-us" rel="alternate" />
+        <link href="https://uipirate.com/" hrefLang="en-gb" rel="alternate" />
+        <link href="https://uipirate.com/" hrefLang="en-sg" rel="alternate" />
+        <link href="https://uipirate.com/" hrefLang="en-in" rel="alternate" />
+        <link href="https://uipirate.com/" hrefLang="en-au" rel="alternate" />
         <link
-          rel="alternate"
-          hrefLang="x-default"
           href="https://uipirate.com/"
+          hrefLang="x-default"
+          rel="alternate"
         />
 
         {/* Social Media and Business Profile Links for SEO */}
         <link
-          rel="me"
           href="https://www.linkedin.com/company/ui-pirate-by-vishal-anand/"
-        />
-        <link rel="me" href="https://www.behance.net/vishalanand-UI-UX" />
-        <link rel="me" href="https://dribbble.com/vishalanandUIUX" />
-        <link rel="me" href="https://x.com/UI_Pirate" />
-        <link
           rel="me"
+        />
+        <link href="https://www.behance.net/vishalanand-UI-UX" rel="me" />
+        <link href="https://dribbble.com/vishalanandUIUX" rel="me" />
+        <link href="https://x.com/UI_Pirate" rel="me" />
+        <link
           href="https://clutch.co/profile/ui-pirate-vishal-anand"
+          rel="me"
         />
 
         <link
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
           rel="stylesheet"
-        ></link>
+        />
       </head>
       <body
         className={clsx(
           "min-h-screen  font-sans antialiased bg-[#F5F5F5]",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <div className="relative flex flex-col">

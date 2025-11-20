@@ -17,8 +17,8 @@ export default function ProPirate() {
             </span>
           </div>
           <a
-            href={APPLY_LINK}
             className="rounded-xl px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition"
+            href={APPLY_LINK}
           >
             Apply Now
           </a>
@@ -59,14 +59,14 @@ export default function ProPirate() {
             </div>
             <div className="mt-10 flex flex-wrap gap-4">
               <a
-                href={APPLY_LINK}
                 className="rounded-2xl px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition"
+                href={APPLY_LINK}
               >
                 Apply Now
               </a>
               <a
-                href="#how"
                 className="rounded-2xl px-6 py-3 border border-neutral-300 hover:border-neutral-400 transition"
+                href="#how"
               >
                 How it works
               </a>
@@ -92,8 +92,8 @@ export default function ProPirate() {
                 <li>• Portfolio that employers respect.</li>
               </ul>
               <a
-                href={APPLY_LINK}
                 className="mt-6 inline-flex rounded-xl px-4 py-2 bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition"
+                href={APPLY_LINK}
               >
                 Start Application
               </a>
@@ -103,7 +103,7 @@ export default function ProPirate() {
       </section>
 
       {/* What you'll do */}
-      <section id="how" className="border-t border-neutral-200 bg-white/70">
+      <section className="border-t border-neutral-200 bg-white/70" id="how">
         <div className="max-w-6xl mx-auto px-4 py-16">
           <h2 className="text-3xl md:text-4xl font-bold">What you will do</h2>
           <p className="mt-3 text-neutral-600 max-w-2xl">
@@ -196,8 +196,8 @@ export default function ProPirate() {
 
           <div className="mt-10">
             <a
-              href={APPLY_LINK}
               className="inline-flex rounded-2xl px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition"
+              href={APPLY_LINK}
             >
               Apply Now
             </a>
@@ -312,8 +312,8 @@ export default function ProPirate() {
 
           <div className="mt-12">
             <a
-              href={APPLY_LINK}
               className="inline-flex rounded-2xl px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition"
+              href={APPLY_LINK}
             >
               Apply Now
             </a>
@@ -329,13 +329,13 @@ export default function ProPirate() {
         <div className="max-w-6xl mx-auto px-4 py-10 text-sm text-neutral-500 flex flex-wrap items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} UI Pirate. Work. Don’t talk.</p>
           <div className="flex items-center gap-4">
-            <a href={APPLY_LINK} className="hover:text-neutral-700">
+            <a className="hover:text-neutral-700" href={APPLY_LINK}>
               Apply
             </a>
-            <a href="#how" className="hover:text-neutral-700">
+            <a className="hover:text-neutral-700" href="#how">
               How it works
             </a>
-            <a href="#" className="hover:text-neutral-700">
+            <a className="hover:text-neutral-700" href="#terms">
               Terms
             </a>
           </div>

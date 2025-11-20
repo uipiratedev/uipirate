@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Button, Card, CardBody, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,12 +11,11 @@ gsap.registerPlugin(ScrollTrigger);
 const BoreYouCommit = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   useLayoutEffect(() => {
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
+    cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
@@ -49,8 +48,8 @@ const BoreYouCommit = () => {
           See the difference in 5 days
         </h2>
         <p className="max-w-2xl mx-auto font-medium text-lg text-gray-700">
-          You don't need to gamble with your product. Test how w work - and see
-          results, with a short, focused 5-Day Pilot Project.
+          You don&apos;t need to gamble with your product. Test how w work - and
+          see results, with a short, focused 5-Day Pilot Project.
         </p>
       </div>
 
@@ -71,9 +70,9 @@ const BoreYouCommit = () => {
                 </div>
                 <div className="">
                   <img
-                    src="/fxemoji_rocket.svg"
                     alt=""
                     className="max-md:hidden"
+                    src="/fxemoji_rocket.svg"
                   />
                 </div>
               </div>
@@ -142,9 +141,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row gap-2 items-start">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 "
+                          src="/check.svg"
                         />
 
                         <div>
@@ -162,9 +161,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row gap-2 items-start">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -180,9 +179,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row  gap-2 items-start">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -222,9 +221,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row  items-start gap-2">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -242,9 +241,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row  items-start gap-2">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -262,9 +261,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row  items-start gap-2">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -302,9 +301,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row  items-start gap-2">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -322,9 +321,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row  items-start gap-2">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -342,9 +341,9 @@ const BoreYouCommit = () => {
                     <li>
                       <div className="flex flex-row  items-start gap-2">
                         <img
-                          src="/check.svg"
                           alt=""
                           className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
+                          src="/check.svg"
                         />
 
                         <div>
@@ -369,8 +368,8 @@ const BoreYouCommit = () => {
               {/* Bottom Buttons */}
               <div className="flex flex-col items-center justify-center my-6 gap-4">
                 <Link
-                  href="/contact"
                   className="bg-black text-white rounded-[16px] px-8 py-3 font-bold text-base max-md:text-sm w-full md:w-auto border-4 border-[#E2E2E2] "
+                  href="/contact"
                 >
                   Secure Your Zero-Risk Slot Now
                 </Link>
@@ -380,9 +379,9 @@ const BoreYouCommit = () => {
                 <Link href="/pricing">
                   <Button
                     as="a"
+                    className="bg-white text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
                     color="primary"
                     variant="bordered"
-                    className="bg-white text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
                   >
                     See Detailed Pricing
                   </Button>

@@ -67,7 +67,7 @@ const RecentWorkCard = () => {
             scrub: 1,
           },
           ease: "power2.out",
-        }
+        },
       );
 
       // Animate the contentDiv
@@ -87,7 +87,7 @@ const RecentWorkCard = () => {
             scrub: 1,
           },
           ease: "power2.out",
-        }
+        },
       );
     });
 
@@ -149,11 +149,11 @@ const RecentWorkCard = () => {
                     {item.subtitle}
                   </p>
                 </div>
-                <a href={item.url} target="_blank">
+                <a href={item.url} rel="noreferrer" target="_blank">
                   <Button
                     // color="primary"
-                    variant="bordered"
                     className="rounded-2xl py-6 px-12 mt-12 font-[700] text-[16px]"
+                    variant="bordered"
                   >
                     View Project
                   </Button>
@@ -164,9 +164,9 @@ const RecentWorkCard = () => {
               {" "}
               {/* Ensure images fit within the container */}
               <img
-                src={item.img}
                 alt="img"
                 className=" rounded-3xl md:-mt-12 max-md:mt-12 " // Ensure the image does not overflow
+                src={item.img}
                 style={{
                   transform:
                     index % 2 === 0 ? "rotate(-20deg)" : "rotate(20deg)", // Add initial rotation

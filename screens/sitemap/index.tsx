@@ -1,6 +1,7 @@
 "use client";
-import PageWrapper from "@/components/PageWrapper";
 import Link from "next/link";
+
+import PageWrapper from "@/components/PageWrapper";
 
 const Sitemap = () => {
   const sitemapData = {
@@ -76,8 +77,8 @@ const Sitemap = () => {
               {sitemapData.main.map((item, index) => (
                 <li key={index}>
                   <Link
-                    href={item.href}
                     className="text-gray-700 hover:text-black font-medium transition-colors flex items-center gap-2 group"
+                    href={item.href}
                   >
                     <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">
                       →
@@ -98,8 +99,8 @@ const Sitemap = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href={sitemapData.services.main.href}
                   className="text-gray-700 hover:text-black font-bold transition-colors flex items-center gap-2 group"
+                  href={sitemapData.services.main.href}
                 >
                   <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">
                     →
@@ -135,8 +136,8 @@ const Sitemap = () => {
               {sitemapData.portfolio.map((item, index) => (
                 <li key={index}>
                   <Link
-                    href={item.href}
                     className="text-gray-700 hover:text-black font-medium transition-colors flex items-center gap-2 group"
+                    href={item.href}
                   >
                     <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">
                       →
@@ -158,8 +159,8 @@ const Sitemap = () => {
               {sitemapData.pricing.map((item, index) => (
                 <li key={index}>
                   <Link
-                    href={item.href}
                     className="text-gray-700 hover:text-black font-medium transition-colors flex items-center gap-2 group"
+                    href={item.href}
                   >
                     <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">
                       →
@@ -181,8 +182,8 @@ const Sitemap = () => {
               {sitemapData.resources.map((item, index) => (
                 <li key={index}>
                   <Link
-                    href={item.href}
                     className="text-gray-700 hover:text-black font-medium transition-colors flex items-center gap-2 group"
+                    href={item.href}
                   >
                     <span className="text-cyan-400 group-hover:translate-x-1 transition-transform">
                       →
@@ -224,27 +225,27 @@ const Sitemap = () => {
             Need Help Finding Something?
           </h3>
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Can't find what you're looking for? Feel free to reach out to us
-            directly, and we'll be happy to help!
+            Can&apos;t find what you&apos;re looking for? Feel free to reach out
+            to us directly, and we&apos;ll be happy to help!
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a
-              href="https://wa.me/919708636151"
-              target="_blank"
-              rel="noopener noreferrer"
               className="bg-black text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:scale-105 transition-transform duration-300"
+              href="https://wa.me/919708636151"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <img
-                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                 alt="WhatsApp"
                 className="h-[22px] invert"
+                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
               />
               Chat on WhatsApp
             </a>
             <Link
+              className="bg-white text-black border-2 border-black px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-transform duration-300"
               href="/contact"
               rel="noopener noreferrer"
-              className="bg-white text-black border-2 border-black px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-transform duration-300"
             >
               😀 Schedule a Call
             </Link>

@@ -22,10 +22,9 @@ const normalize = (str: string) =>
 const ServicesByIdPage = ({ params }: PageProps) => {
   // URL params are automatically decoded by Next.js
   const urlSlug = decodeURIComponent(params.id);
-  console.log("📦 Server-side params (decoded):", urlSlug);
 
   const service = services.find(
-    (s: any) => normalize(s.slug) === normalize(urlSlug)
+    (s: any) => normalize(s.slug) === normalize(urlSlug),
   );
 
   if (!service) {

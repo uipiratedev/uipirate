@@ -1,4 +1,3 @@
-import PricingCard from "./pricingCard";
 import ServicesSection from "./servicesSection";
 const LandingBusinessHelp = () => {
   return (

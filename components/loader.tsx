@@ -6,14 +6,14 @@ const Loader = () => {
         style={{ zIndex: 9999999999999999999 }}
       >
         <div className="spinner">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
+          <span />
         </div>
       </div>
     </>

@@ -13,56 +13,56 @@ const socialLinks: SocialLink[] = [
     name: "LinkedIn Company",
     url: "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/linkedin_hxpv8e.svg",
-    category: "social"
+    category: "social",
   },
   {
     name: "Twitter/X",
     url: "https://x.com/UI_Pirate",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/twitter_hxpv8e.svg",
-    category: "social"
+    category: "social",
   },
   {
     name: "Reddit",
     url: "https://www.reddit.com/user/UI-Pirate/",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/reddit_hxpv8e.svg",
-    category: "social"
+    category: "social",
   },
-  
+
   // Portfolio Platforms
   {
     name: "Behance",
     url: "https://www.behance.net/vishalanand-UI-UX",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/behance_hxpv8e.svg",
-    category: "portfolio"
+    category: "portfolio",
   },
   {
     name: "Dribbble",
     url: "https://dribbble.com/vishalanandUIUX",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/dribbble_hxpv8e.svg",
-    category: "portfolio"
+    category: "portfolio",
   },
-  
+
   // Business Directories
   {
     name: "Clutch",
     url: "https://clutch.co/profile/ui-pirate-vishal-anand",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/clutch_hxpv8e.svg",
-    category: "business"
+    category: "business",
   },
   {
     name: "Google Maps",
     url: "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/google_hxpv8e.svg",
-    category: "business"
+    category: "business",
   },
-  
+
   // Marketplaces
   {
     name: "Upwork Agency",
     url: "https://www.upwork.com/agencies/1837026757439552424/",
     icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/upwork_hxpv8e.svg",
-    category: "marketplace"
-  }
+    category: "marketplace",
+  },
 ];
 
 const teamLinks = [
@@ -71,22 +71,22 @@ const teamLinks = [
     role: "Founder & Lead Designer",
     linkedin: "https://www.linkedin.com/in/vishal-a-51bb49110",
     behance: "https://www.behance.net/vishalanand-UI-UX",
-    dribbble: "https://dribbble.com/vishalanandUIUX"
+    dribbble: "https://dribbble.com/vishalanandUIUX",
   },
   {
-    name: "Kartik Kumar", 
+    name: "Kartik Kumar",
     role: "UI/UX Designer",
     linkedin: "https://www.linkedin.com/in/kartik-kuamr/",
     behance: "https://www.behance.net/kartikkumar58",
-    dribbble: "https://dribbble.com/Kartikuidesigns"
+    dribbble: "https://dribbble.com/Kartikuidesigns",
   },
   {
     name: "Syed Musaddiq",
-    role: "UI/UX Designer", 
+    role: "UI/UX Designer",
     linkedin: "https://www.linkedin.com/in/syedmusaddiq/",
     behance: "https://www.behance.net/syedmusaddiq_uxui",
-    medium: "https://medium.com/@syedmusaddiq514"
-  }
+    medium: "https://medium.com/@syedmusaddiq514",
+  },
 ];
 
 interface SocialLinksProps {
@@ -95,24 +95,24 @@ interface SocialLinksProps {
   showCategories?: boolean;
 }
 
-const SocialLinks: React.FC<SocialLinksProps> = ({ 
-  showTeam = false, 
+const SocialLinks: React.FC<SocialLinksProps> = ({
+  showTeam = false,
   layout = "horizontal",
-  showCategories = false 
+  showCategories = false,
 }) => {
   const renderSocialLink = (link: SocialLink) => (
     <a
       key={link.name}
-      href={link.url}
-      target="_blank"
-      rel="noopener noreferrer nofollow"
       className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+      href={link.url}
+      rel="noopener noreferrer nofollow"
+      target="_blank"
       title={`Visit UI Pirate on ${link.name}`}
     >
-      <img 
-        src={link.icon} 
-        alt={`${link.name} icon`} 
+      <img
+        alt={`${link.name} icon`}
         className="w-5 h-5 grayscale hover:grayscale-0 transition-all duration-200"
+        src={link.icon}
       />
       <span className="text-sm text-gray-600 hover:text-gray-900">
         {link.name}
@@ -125,12 +125,14 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
       social: "Social Media",
       portfolio: "Portfolio",
       business: "Business",
-      marketplace: "Marketplaces"
+      marketplace: "Marketplaces",
     };
 
     return Object.entries(categories).map(([category, title]) => {
-      const categoryLinks = socialLinks.filter(link => link.category === category);
-      
+      const categoryLinks = socialLinks.filter(
+        (link) => link.category === category,
+      );
+
       return (
         <div key={category} className="mb-6">
           <h4 className="text-sm font-semibold text-gray-800 mb-3">{title}</h4>
@@ -148,7 +150,9 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
       {showCategories ? (
         renderByCategory()
       ) : (
-        <div className={`flex ${layout === 'vertical' ? 'flex-col' : 'flex-wrap'} gap-2`}>
+        <div
+          className={`flex ${layout === "vertical" ? "flex-col" : "flex-wrap"} gap-2`}
+        >
           {socialLinks.map(renderSocialLink)}
         </div>
       )}
@@ -164,44 +168,44 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
                 <p className="text-xs text-gray-600 mb-2">{member.role}</p>
                 <div className="flex gap-2">
                   {member.linkedin && (
-                    <a 
-                      href={member.linkedin} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
+                    <a
                       className="text-blue-600 hover:text-blue-800"
+                      href={member.linkedin}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       title={`${member.name} on LinkedIn`}
                     >
                       <span className="text-xs">LinkedIn</span>
                     </a>
                   )}
                   {member.behance && (
-                    <a 
-                      href={member.behance} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
+                    <a
                       className="text-blue-600 hover:text-blue-800"
+                      href={member.behance}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       title={`${member.name} on Behance`}
                     >
                       <span className="text-xs">Behance</span>
                     </a>
                   )}
                   {member.dribbble && (
-                    <a 
-                      href={member.dribbble} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
+                    <a
                       className="text-pink-600 hover:text-pink-800"
+                      href={member.dribbble}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       title={`${member.name} on Dribbble`}
                     >
                       <span className="text-xs">Dribbble</span>
                     </a>
                   )}
                   {member.medium && (
-                    <a 
-                      href={member.medium} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
+                    <a
                       className="text-green-600 hover:text-green-800"
+                      href={member.medium}
+                      rel="noopener noreferrer"
+                      target="_blank"
                       title={`${member.name} on Medium`}
                     >
                       <span className="text-xs">Medium</span>
@@ -216,16 +220,16 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
 
       {/* Structured Data for SEO */}
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "UI Pirate by Vishal Anand",
-            "url": "https://uipirate.com",
-            "sameAs": socialLinks.map(link => link.url)
-          })
+            name: "UI Pirate by Vishal Anand",
+            url: "https://uipirate.com",
+            sameAs: socialLinks.map((link) => link.url),
+          }),
         }}
+        type="application/ld+json"
       />
     </div>
   );

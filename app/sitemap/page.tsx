@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import Sitemap from "@/screens/sitemap";
 
 export const metadata: Metadata = {
