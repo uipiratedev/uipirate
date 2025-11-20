@@ -44,7 +44,7 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
 
-const MarqueeComp = ({ items, reverse }: any) => {
+const MarqueeComp = ({ items }: any) => {
   return (
     <>
       <Marquee gradient gradientColor="#F5F5F5" speed={25}>

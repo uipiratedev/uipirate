@@ -170,7 +170,7 @@ export default function FaqsAccordion() {
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    cardsRef.current.forEach((card, index) => {
+    cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
@@ -195,7 +195,7 @@ export default function FaqsAccordion() {
               end: isMobile ? "botton 10%" : "top 30%", // Adjust end point for mobile
               toggleActions: "restart none none reverse",
             },
-          },
+          }
         );
       }
     });

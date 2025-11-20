@@ -262,16 +262,19 @@ const BlogEditor = () => {
   });
   const [title, setTitle] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [excerpt, _setExcerpt] = useState("");
-  const [featuredImage, _setFeaturedImage] = useState("");
-  const [tags, _setTags] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [excerpt, setExcerpt] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [featuredImage, setFeaturedImage] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [tags, setTags] = useState<string[]>([]);
   const [saveStatus, setSaveStatus] = useState<string>("Draft");
   const editorRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   // Require authentication
-  const { isAuthenticated: _isAuthenticated, isLoading: authLoading } =
-    useAuth(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isAuthenticated, isLoading: authLoading } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);

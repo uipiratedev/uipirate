@@ -2,7 +2,7 @@ import React from "react";
 
 import MarqueeComp from "./marqueeComp";
 
-const LandingMarquee = ({ items, reverse }: any) => {
+const LandingMarquee = () => {
   const row1 = [
     "https://res.cloudinary.com/damm9iwho/image/upload/v1729513140/image_34_rb6475.svg",
     "https://res.cloudinary.com/damm9iwho/image/upload/v1729513139/image_3_wjiecn.svg",

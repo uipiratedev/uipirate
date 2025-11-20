@@ -116,7 +116,7 @@ const ServicesCard = () => {
 
     // Small delay to ensure DOM is ready, especially important for client-side navigation
     const timeoutId = setTimeout(() => {
-      cardsRef.current.forEach((card, index) => {
+      cardsRef.current.forEach((card) => {
         if (card) {
           gsap.fromTo(
             card,
@@ -136,7 +136,7 @@ const ServicesCard = () => {
                 toggleActions: "play none none reverse",
                 scrub: 1.5,
               },
-            },
+            }
           );
         }
       });
@@ -157,7 +157,7 @@ const ServicesCard = () => {
         entries.forEach((entry) => {
           // Find the index of the observed element in videoRefs
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target,
+            (video) => video === entry.target
           );
 
           if (index !== -1) {
@@ -179,7 +179,7 @@ const ServicesCard = () => {
           }
         });
       },
-      { threshold: 0.5 }, // Trigger when at least 10% of the video is in view
+      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
     );
 
     // Observing all video elements

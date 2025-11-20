@@ -11,12 +11,11 @@ gsap.registerPlugin(ScrollTrigger);
 const BoreYouCommit = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   useLayoutEffect(() => {
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
+    cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
@@ -33,7 +32,7 @@ const BoreYouCommit = () => {
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
-          },
+          }
         );
       }
     });

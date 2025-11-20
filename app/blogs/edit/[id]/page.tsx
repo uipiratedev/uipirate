@@ -32,8 +32,8 @@ const BlogEditPage = () => {
   const editorRef = useRef<HTMLDivElement>(null);
 
   // Require authentication
-  const { isAuthenticated: _isAuthenticated, isLoading: authLoading } =
-    useAuth(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isAuthenticated, isLoading: authLoading } = useAuth(true);
 
   const editor = useEditor({
     extensions: [

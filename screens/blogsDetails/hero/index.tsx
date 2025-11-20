@@ -9,7 +9,7 @@ interface BlogHeroProps {
 }
 
 const BlogsDetailsHero: React.FC<BlogHeroProps> = ({
-  imageUrl,
+  imageUrl: _imageUrl,
   tag,
   title,
 }) => {

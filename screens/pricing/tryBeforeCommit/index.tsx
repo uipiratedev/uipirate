@@ -1,69 +1,7 @@
 import { Button, Card, CardBody } from "@nextui-org/react";
 import Link from "next/link";
-import { useState } from "react";
 
-const dataPrice = [
-  {
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841103/video-library-svgrepo-com_1_edfhv4.svg",
-    heading: "3D Animation + Motion Graphics",
-    description:
-      "Create stunning visuals and motion graphics for your digital projects with expert 3D animation and rendering.",
-    price: "49",
-    pricehr: "35",
-    list: [
-      "1-4 weeks delivery",
-      "Custom motion graphics",
-      "High-end 3D rendering",
-      "Interactive animations",
-      "Development-ready assets",
-      "3 rounds of revisions",
-      "Compatible with web & social",
-      "50/30/20 payment schedule",
-      "5/7 communication via Teams, Meet, or Zoom",
-    ],
-    limited: false,
-  },
-  {
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729841102/Group_jgfe_zhcljv.svg",
-
-    heading: "Partnership and Consultation ",
-    description:
-      "Perfect for ongoing design & development needs or flexible, undefined scopes. Get continuous support for your projects.",
-    price: "999",
-    pricehr: "25",
-    list: [
-      "Flexible scope of work",
-      "End-to-end project management",
-      "Unlimited Design request & revisions",
-      "Design & dev consultation",
-      "Heuristic analysis",
-      "Recommendations for improvement",
-      "Visual/UX critique",
-      "50/30/20 payment schedule",
-      "1-3 days updates + 1 sync call/week",
-    ],
-    limited: true,
-  },
-];
-
-const TryBeforeCommit = (props: any) => {
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
-
-  const tabs = [
-    {
-      id: "Design + Dev",
-      label: "Design + Dev",
-    },
-    {
-      id: "Design Only",
-      label: "Design Only",
-    },
-    {
-      id: "Dev Only",
-      label: "Dev Only",
-    },
-  ];
-
+const TryBeforeCommit = () => {
   return (
     <div>
       <Card className="rounded-[48px] max-md:rounded-[38px] mt-4 max-md:pb-2 bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]">

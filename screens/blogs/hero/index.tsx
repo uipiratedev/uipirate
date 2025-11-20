@@ -1,5 +1,5 @@
 "use client";
-const BlogsHero = ({ data }: any) => {
+const BlogsHero = ({ data: _data }: any) => {
   return (
     <div className="flex flex-row items-center justify-center py-12 w-full max-lg:py-10 max-md:py-6 container mx-auto">
       <section className="relative  flex flex-col items-center text-center ">

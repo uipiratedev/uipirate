@@ -11,7 +11,6 @@ const ServicesSection = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   useLayoutEffect(() => {
     // GSAP ScrollTrigger animation for cards
@@ -19,7 +18,7 @@ const ServicesSection = () => {
     // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
+    cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
@@ -39,7 +38,7 @@ const ServicesSection = () => {
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
-          },
+          }
         );
       }
     });
@@ -51,7 +50,7 @@ const ServicesSection = () => {
         entries.forEach((entry) => {
           // Find the index of the observed element in videoRefs
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target,
+            (video) => video === entry.target
           );
 
           if (index !== -1) {
@@ -71,7 +70,7 @@ const ServicesSection = () => {
           }
         });
       },
-      { threshold: 0.5 }, // Trigger when at least 10% of the video is in view
+      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
     );
 
     // Observing all video elements

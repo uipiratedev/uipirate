@@ -1,4 +1,4 @@
-const TeamHero = ({ data }: any) => {
+const TeamHero = ({ data: _data }: any) => {
   return (
     <div>
       <section className="relative pt-16 md:pt-20 flex flex-col items-center text-center ">

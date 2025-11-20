@@ -1,21 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
 import RecentWorkCard from "./workCard";
 
 const LandingWork = () => {
-  const [activeTab, setActiveTab] = useState("Hourly"); // Track active tab
-
-  const tabs = [
-    {
-      id: "Hourly",
-      label: "Hourly",
-    },
-    {
-      id: "Fixed",
-      label: "Fixed",
-    },
-  ];
-
   return (
     <>
       <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4 pt-32 max-md:pt-24 max-xl:px-4 max-2xl:px-0">

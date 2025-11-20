@@ -72,7 +72,7 @@ const Teams = () => {
     // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
+    cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
@@ -92,7 +92,7 @@ const Teams = () => {
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
-          },
+          }
         );
       }
     });
@@ -104,7 +104,7 @@ const Teams = () => {
         entries.forEach((entry) => {
           // Find the index of the observed element in videoRefs
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target,
+            (video) => video === entry.target
           );
 
           if (index !== -1) {
@@ -126,7 +126,7 @@ const Teams = () => {
           }
         });
       },
-      { threshold: 0.5 }, // Trigger when at least 10% of the video is in view
+      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
     );
 
     // Observing all video elements

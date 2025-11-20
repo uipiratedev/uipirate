@@ -1,12 +1,8 @@
 "use client";
-import { useState } from "react";
 
 import FaqsAccordion from "./accordion";
 
 const LandingFaqs = () => {
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
-  const [isHoveredEmail, setIsHoveredEmail] = useState(false);
-
   return (
     <div className="container mx-auto  max-md:px-4 lg:px-20 pt-12 pb-16 mb-0 max-md:pb-20 max-md:mt-6 ">
       {/* Left section - Sticky */}

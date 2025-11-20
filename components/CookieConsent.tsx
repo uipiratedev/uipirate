@@ -50,7 +50,8 @@ const GDPR_COUNTRIES = [
 const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [_isCheckingLocation, setIsCheckingLocation] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isCheckingLocation, setIsCheckingLocation] = useState(true);
   const [preferences, setPreferences] = useState({
     necessary: true, // Always true, can't be disabled
     analytics: false,

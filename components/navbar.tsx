@@ -18,22 +18,6 @@ import { useEffect, useState } from "react";
 
 import { siteConfig } from "@/config/site";
 
-const smoothScrollTo = (elementId: string) => {
-  const element = document.getElementById(elementId);
-
-  if (element) {
-    const navbarHeight = 80;
-    const elementPosition = element.offsetTop - navbarHeight;
-
-    setTimeout(() => {
-      window.scrollTo({
-        top: elementPosition,
-        behavior: "auto",
-      });
-    }, 100);
-  }
-};
-
 export const Navbar = () => {
   const [isDarkSection, setIsDarkSection] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -80,7 +80,7 @@ const CardAnimation = () => {
             scrub: 1.5,
           },
           ease: "power2.out",
-        },
+        }
       );
     });
 
@@ -102,12 +102,12 @@ const CardAnimation = () => {
           duration: 1,
           stagger: 0.2,
           ease: "power3.out",
-        },
+        }
       );
     }
   };
 
-  const handleMouseLeave = (index: number) => {
+  const handleMouseLeave = (_index: number) => {
     setHoveredIndex(null);
 
     // if (letterRefs.current[index]) {
