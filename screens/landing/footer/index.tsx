@@ -39,9 +39,9 @@ const LandingFooter = () => {
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760676342/footer_bg_kcfu7f.svg"
           alt="Footer background"
           className="w-full h-full object-cover"
+          src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760676342/footer_bg_kcfu7f.svg"
         />
         {/* <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/95"></div> */}
       </div>
@@ -52,9 +52,9 @@ const LandingFooter = () => {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <img
-                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                 alt="UI Pirate logo"
                 className="w-10 h-10"
+                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
               />
               <p className="text-xl font-semibold">UI Pirate</p>
             </div>
@@ -71,22 +71,22 @@ const LandingFooter = () => {
               </h4>
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li>
-                  <a href="/" className="hover:text-white transition-colors">
+                  <a className="hover:text-white transition-colors" href="/">
                     Home
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/services"
                     className="hover:text-white transition-colors"
+                    href="/services"
                   >
                     Services
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/ourWorks"
                     className="hover:text-white transition-colors"
+                    href="/ourWorks"
                   >
                     Works
                   </a>
@@ -101,8 +101,8 @@ const LandingFooter = () => {
                 </li> */}
                 <li>
                   <a
-                    href="/pricing"
                     className="hover:text-white transition-colors"
+                    href="/pricing"
                   >
                     Pricing
                   </a>
@@ -118,8 +118,8 @@ const LandingFooter = () => {
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li>
                   <a
-                    href="/blogs"
                     className="hover:text-white transition-colors"
+                    href="/blogs"
                   >
                     Blogs
                   </a>
@@ -134,8 +134,8 @@ const LandingFooter = () => {
                 </li> */}
                 <li>
                   <a
-                    href="/faqs"
                     className="hover:text-white transition-colors"
+                    href="/faqs"
                   >
                     FAQ’s
                   </a>
@@ -143,16 +143,16 @@ const LandingFooter = () => {
                 {/* connect sitemap with xml file */}
                 <li>
                   <a
-                    href="/sitemap"
                     className="hover:text-white transition-colors"
+                    href="/sitemap"
                   >
                     Site Map
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/privacy-policy"
                     className="hover:text-white transition-colors"
+                    href="/privacy-policy"
                   >
                     Privacy Policy
                   </a>
@@ -171,15 +171,15 @@ const LandingFooter = () => {
             {footerSocialLinks.map((item, index) => (
               <a
                 key={index}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="hover:opacity-70 transition-opacity duration-300 hover:bg-gray-100 hover:bg-transparent/15 rounded-lg"
+                href={item.url}
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 <img
-                  src={item.icon}
                   alt={item.name}
                   className="w-12 h-12 max-md:w-10 max-md:h-10"
+                  src={item.icon}
                 />
               </a>
             ))}

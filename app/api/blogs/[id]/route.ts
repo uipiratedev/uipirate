@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyAuth } from "@/lib/auth";
@@ -6,7 +7,7 @@ import { verifyAuth } from "@/lib/auth";
 // GET /api/blogs/[id] - Get a single blog by ID or slug
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     await dbConnect();
@@ -15,6 +16,7 @@ export async function GET(
 
     // Try to find by ID first, then by slug
     let blog = await Blog.findById(id);
+
     if (!blog) {
       blog = await Blog.findOne({ slug: id });
     }
@@ -22,7 +24,7 @@ export async function GET(
     if (!blog) {
       return NextResponse.json(
         { success: false, error: "Blog not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -33,7 +35,7 @@ export async function GET(
     if (!blog.published && !isAdmin) {
       return NextResponse.json(
         { success: false, error: "Blog not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -53,7 +55,7 @@ export async function GET(
         success: false,
         error: error.message || "Failed to fetch blog",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -61,15 +63,16 @@ export async function GET(
 // PUT /api/blogs/[id] - Update a blog (requires authentication)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     // Check authentication
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -84,7 +87,7 @@ export async function PUT(
     if (!blog) {
       return NextResponse.json(
         { success: false, error: "Blog not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -130,7 +133,7 @@ export async function PUT(
         success: false,
         error: error.message || "Failed to update blog",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -138,15 +141,16 @@ export async function PUT(
 // DELETE /api/blogs/[id] - Delete a blog (requires authentication)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     // Check authentication
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -159,7 +163,7 @@ export async function DELETE(
     if (!blog) {
       return NextResponse.json(
         { success: false, error: "Blog not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -174,7 +178,7 @@ export async function DELETE(
         success: false,
         error: error.message || "Failed to delete blog",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

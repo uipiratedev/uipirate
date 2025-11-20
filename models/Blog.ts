@@ -83,7 +83,7 @@ const BlogSchema: Schema = new Schema(
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt
-  }
+  },
 );
 
 // Create indexes for better query performance
@@ -104,6 +104,7 @@ BlogSchema.methods.calculateReadTime = function () {
   const wordsPerMinute = 200;
   const textContent = this.content.replace(/<[^>]*>/g, ""); // Strip HTML tags
   const wordCount = textContent.split(/\s+/).length;
+
   this.readTime = Math.ceil(wordCount / wordsPerMinute);
 };
 

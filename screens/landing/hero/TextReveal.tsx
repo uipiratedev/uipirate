@@ -11,6 +11,7 @@ const TextReveal = () => {
       // Manually split the text into lines
       const text = headingRef.current.innerHTML;
       const words = text.split(" ");
+
       headingRef.current.innerHTML = words
         .map((word) => `<span class="split-child">${word}</span>`)
         .join(" ");

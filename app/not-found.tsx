@@ -34,7 +34,7 @@ export default function NotFound() {
         y:
           Math.random() *
           (typeof window !== "undefined" ? window.innerHeight : 0),
-      }))
+      })),
   );
 
   // Floating icons move around randomly
@@ -44,9 +44,10 @@ export default function NotFound() {
         prev.map(() => ({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-        }))
+        })),
       );
     }, 3000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -67,50 +68,50 @@ export default function NotFound() {
 
       <div className="flex flex-row gap-4 max-md:flex-col z-10">
         <Image
-          src={currentGif}
           alt="Dog"
-          width={200}
-          height={200}
           className="rounded-xl mb-6 min-h-[200px] max-h-[200px]"
+          height={200}
+          src={currentGif}
+          width={200}
         />
 
         <div className="flex flex-col gap-3 mb-8">
           <button
-            onClick={() => handleTabClick("pet")}
             className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
               activeTab === "pet" ? "bg-green-100" : ""
             }`}
+            onClick={() => handleTabClick("pet")}
           >
             Pet Him
           </button>
           <button
-            onClick={() => handleTabClick("feed")}
             className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
               activeTab === "feed" ? "bg-green-100" : ""
             }`}
+            onClick={() => handleTabClick("feed")}
           >
             Feed Him
           </button>
           <button
-            onClick={() => handleTabClick("slap")}
             className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
               activeTab === "slap" ? "bg-green-100" : ""
             }`}
+            onClick={() => handleTabClick("slap")}
           >
             Slap Him
           </button>
           <button
-            onClick={() => handleTabClick("goodboy")}
             className={`border px-4 py-2 rounded-xl hover:bg-gray-100 transition ${
               activeTab === "goodboy" ? "bg-green-100" : ""
             }`}
+            onClick={() => handleTabClick("goodboy")}
           >
             Call Him a Good Boy
           </button>
         </div>
       </div>
 
-      <Link href="/" className="z-10">
+      <Link className="z-10" href="/">
         <button className="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition">
           Back to Homepage
         </button>
@@ -120,21 +121,21 @@ export default function NotFound() {
       {iconsToShow.map((icon, i) => (
         <motion.div
           key={i}
-          className="absolute text-3xl opacity-80 pointer-events-none select-none"
           animate={{
             x: floatingPositions[i]?.x || 0,
             y: floatingPositions[i]?.y || 0,
             rotate: Math.random() * 360,
+          }}
+          className="absolute text-3xl opacity-80 pointer-events-none select-none"
+          style={{
+            top: floatingPositions[i]?.y || 0,
+            left: floatingPositions[i]?.x || 0,
           }}
           transition={{
             duration: 3,
             ease: "easeInOut",
             repeat: Infinity,
             repeatType: "reverse",
-          }}
-          style={{
-            top: floatingPositions[i]?.y || 0,
-            left: floatingPositions[i]?.x || 0,
           }}
         >
           {icon}

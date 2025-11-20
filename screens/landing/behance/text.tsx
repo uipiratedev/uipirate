@@ -49,7 +49,7 @@ const LandingBehanceDan = () => {
       endIndex: number,
       xMove: string[],
       yMove: string[],
-      rotateDeg: number[]
+      rotateDeg: number[],
     ) => {
       gsap.to(images.slice(startIndex, endIndex), {
         x: (i) => xMove[i % 2],
@@ -101,21 +101,21 @@ const LandingBehanceDan = () => {
     <div className="relative">
       {/* Centered Info */}
       <div
-        id="info"
         className="absolute inset-0 flex flex-col items-center justify-center text-center"
+        id="info"
       >
         <img
-          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729514725/behance_k2zcrn.svg"
           alt="behance Logo"
           className="max-md:w-[60%]"
+          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729514725/behance_k2zcrn.svg"
         />
         <p className="text-center text-lg px-24 max-md:px-4 max-lg:px-12 mb-12 mt-6 w-1/2 max-md:text-lg">
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
         <Button
-          color="primary"
           className=" bg-black button text-lg dark:bg-white dark:text-black"
+          color="primary"
           style={{
             paddingRight: "70px",
             paddingLeft: "70px",
@@ -133,10 +133,10 @@ const LandingBehanceDan = () => {
           return (
             <div key={index} className="relative w-full h-full">
               <img
-                src={item.img}
                 alt={item.heading}
                 className=" w-full h-full object-fill rounded-3xl grayscale-[25%]"
                 id="img"
+                src={item.img}
               />
             </div>
           );

@@ -57,11 +57,11 @@ export default function YouWillGet({ data }: any) {
         {/* CENTER mockup - height matches left/right */}
         <div className="relative flex justify-center items-center h-[450px]">
           <Image
-            src={data.mockup}
             alt="App Mockup"
-            width={320}
-            height={450}
             className="rounded-[1rem] object-cover h-[450px] w-auto z-50 bg-white"
+            height={450}
+            src={data.mockup}
+            width={320}
           />
         </div>
 

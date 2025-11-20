@@ -1,14 +1,15 @@
 "use client";
 
-import LandingFaqs from "../landing/faqs";
 import LandingWork from "../landing/works";
 import TryBeforeCommit from "../pricing/tryBeforeCommit";
+
 import ServiceDetailsHero from "./hero";
 import OptionalAdd from "./optionalAdd";
 import StreamlinedProcess from "./streamlinedProcess";
 import WhatWeProvide from "./whatWeProvide";
 import WhoThisIsFor from "./whoThisIsFor";
 import YouWillGet from "./youWillGet";
+
 import PageWrapper from "@/components/PageWrapper";
 
 const ServiceDetails = ({ data }: any) => {

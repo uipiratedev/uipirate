@@ -12,7 +12,7 @@ const OurValues = () => {
           <h2 className="heading-center">What We Stand For</h2>
         </div>
       </div>{" "}
-      <div style={{ overflowX: "hidden" }} className="">
+      <div className="" style={{ overflowX: "hidden" }}>
         <CardAnimation />
       </div>
     </>

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { getCurrentUser } from "@/lib/auth";
 
 export async function GET() {
@@ -8,7 +9,7 @@ export async function GET() {
     if (!user) {
       return NextResponse.json(
         { success: false, message: "Not authenticated" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -17,11 +18,9 @@ export async function GET() {
       user,
     });
   } catch (error) {
-    console.error("Get current user error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

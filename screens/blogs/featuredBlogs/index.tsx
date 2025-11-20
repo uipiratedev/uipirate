@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import Link from "next/link";
 
 interface Blog {
@@ -37,13 +37,14 @@ const FeaturedBlogs = () => {
 
         // Extract unique tags
         const tags = new Set<string>();
+
         data.data.forEach((blog: Blog) => {
           blog.tags?.forEach((tag: string) => tags.add(tag));
         });
         setAllTags(["All", ...Array.from(tags)]);
       }
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      // Error fetching blogs
     } finally {
       setLoading(false);
     }
@@ -73,12 +74,12 @@ const FeaturedBlogs = () => {
           {allTags.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-full text-sm max-md:text-xs whitespace-nowrap transition-all duration-200 ${
                 activeTab === tab
                   ? "bg-[#0b132b] text-white shadow-md"
                   : "bg-transparent text-[#0b132b] hover:bg-gray-200"
               }`}
+              onClick={() => setActiveTab(tab)}
             >
               {tab}
             </button>
@@ -98,24 +99,24 @@ const FeaturedBlogs = () => {
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
           {filteredBlogs.map((blog) => (
-            <Link href={`/blogs/${blog.slug}`} key={blog._id}>
+            <Link key={blog._id} href={`/blogs/${blog.slug}`}>
               <Card className="rounded-[48px] max-md:rounded-[38px]  h-full bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
                 <CardBody className="p-2 max-md:p-2 max-md:gap-2">
                   <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow h-full">
                     <CardHeader className="px-0 pt-0">
                       {blog.featuredImage ? (
                         <img
-                          src={blog.featuredImage}
                           alt={blog.title}
-                          width="100%"
                           className="object-cover h-[200px] min-md:h-[200px] max-h-full rounded-t-[40px] max-md:rounded-t-[30px]"
+                          src={blog.featuredImage}
+                          width="100%"
                         />
                       ) : (
                         <img
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
                           alt={blog.title}
-                          width="100%"
                           className="object-cover h-[200px] min-md:h-[200px] max-h-full"
+                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
+                          width="100%"
                         />
                       )}
                     </CardHeader>

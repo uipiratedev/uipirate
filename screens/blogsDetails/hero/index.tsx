@@ -18,12 +18,12 @@ const BlogsDetailsHero: React.FC<BlogHeroProps> = ({
       {/* Background image */}
       <div className="absolute inset-0 ">
         <Image
-          src="https://res.cloudinary.com/damm9iwho/image/upload/v1762014955/blogbanner_n7agjs.svg"
-          alt={title}
           fill
+          priority
+          alt={title}
           className="object-cover rounded-none"
           quality={90}
-          priority
+          src="https://res.cloudinary.com/damm9iwho/image/upload/v1762014955/blogbanner_n7agjs.svg"
         />
         {/* Overlay for dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/50 to-black/50" />

@@ -14,6 +14,7 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
+
 import { useAuth } from "@/hooks/useAuth";
 
 const BlogEditPage = () => {
@@ -31,7 +32,8 @@ const BlogEditPage = () => {
   const editorRef = useRef<HTMLDivElement>(null);
 
   // Require authentication
-  const { isAuthenticated, isLoading: authLoading } = useAuth(true);
+  const { isAuthenticated: _isAuthenticated, isLoading: authLoading } =
+    useAuth(true);
 
   const editor = useEditor({
     extensions: [
@@ -86,6 +88,7 @@ const BlogEditPage = () => {
 
       if (data.success) {
         const blog = data.data;
+
         setBlogId(blog._id);
         setTitle(blog.title);
         setExcerpt(blog.excerpt || "");
@@ -102,7 +105,6 @@ const BlogEditPage = () => {
         router.push("/admin/dashboard/blogs");
       }
     } catch (error) {
-      console.error("Error fetching blog:", error);
       alert("Failed to load blog");
       router.push("/admin/dashboard/blogs");
     } finally {
@@ -113,11 +115,13 @@ const BlogEditPage = () => {
   const saveBlog = async (published: boolean) => {
     if (!title.trim()) {
       alert("Please enter a title for your blog");
+
       return;
     }
 
     if (!editor?.getHTML()) {
       alert("Please add some content to your blog");
+
       return;
     }
 
@@ -148,7 +152,9 @@ const BlogEditPage = () => {
 
       setSaveStatus(published ? "Published" : "Draft Saved");
       alert(
-        published ? "Blog updated and published!" : "Blog updated successfully!"
+        published
+          ? "Blog updated and published!"
+          : "Blog updated successfully!",
       );
 
       // Redirect to blog list
@@ -156,7 +162,6 @@ const BlogEditPage = () => {
         router.push("/admin/dashboard/blogs");
       }, 1500);
     } catch (error: any) {
-      console.error("Error updating blog:", error);
       alert(error.message || "Failed to update blog");
       setSaveStatus("Error");
     } finally {
@@ -195,17 +200,17 @@ const BlogEditPage = () => {
           </div>
           <div className="flex items-center gap-3">
             <Button
-              onClick={handleSaveDraft}
-              variant="flat"
               className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               disabled={isSaving}
+              variant="flat"
+              onClick={handleSaveDraft}
             >
               Save Draft
             </Button>
             <Button
-              onClick={handlePublish}
               className="bg-gradient-to-r from-blue-600 to-purple-600 text-white"
               disabled={isSaving}
+              onClick={handlePublish}
             >
               {isSaving ? "Saving..." : "Publish"}
             </Button>
@@ -219,15 +224,15 @@ const BlogEditPage = () => {
           {/* Title Input */}
           <div className="border-b border-gray-200 dark:border-gray-700 px-8 py-6">
             <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Blog Title"
               classNames={{
                 input:
                   "text-4xl font-bold placeholder:text-gray-400 dark:placeholder:text-gray-600",
                 inputWrapper: "shadow-none bg-transparent",
               }}
+              placeholder="Blog Title"
+              value={title}
               variant="flat"
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 

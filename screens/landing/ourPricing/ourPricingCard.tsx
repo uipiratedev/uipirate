@@ -1,8 +1,9 @@
 import { Button, Card, CardBody, Chip } from "@nextui-org/react";
 import { Tabs, Tab } from "@nextui-org/react";
 import { useState } from "react";
-import ListMap from "./list";
 import Link from "next/link";
+
+import ListMap from "./list";
 
 const data = [
   {
@@ -254,6 +255,9 @@ const dataPrice = [
 
 const OurPricingCard = (props: any) => {
   const [isHoveredChat, setIsHoveredChat] = useState(false);
+  const [selectedTabs, setSelectedTabs] = useState<{ [key: number]: string }>(
+    {},
+  );
 
   const tabs = [
     {
@@ -270,17 +274,16 @@ const OurPricingCard = (props: any) => {
     },
   ];
 
+  const handleTabChange = (index: number, id: string) => {
+    setSelectedTabs((prev) => ({ ...prev, [index]: id }));
+  };
+
   return (
     <div>
       <Card className="rounded-[48px] max-md:rounded-[38px] mt-4 max-md:pb-2 bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]">
         <CardBody className="gap-4 max-md:gap-2 max-md:grid-cols-1 p-4 max-md:p-2">
           {data.map((item, index) => {
-            const [selectedTab, setSelectedTab] = useState("Design + Dev");
-
-            const handleTabChange = (id: any) => {
-              setSelectedTab(id);
-              // console.log(`Tab for card ${index} selected:`, id);
-            };
+            const selectedTab = selectedTabs[index] || "Design + Dev";
 
             return (
               <Card
@@ -290,9 +293,9 @@ const OurPricingCard = (props: any) => {
                 <CardBody className="p-8 max-md:p-4 max-lg:p-6 grid grid-cols-2 gap-12  max-md:grid-cols-1 max-md:gap-4">
                   <div className="w-full">
                     <img
-                      src={item.icon}
                       alt="service logo"
                       className="w-[40px] grayscale"
+                      src={item.icon}
                     />
                     <p className="text-3xl max-md:text-3xl mt-4 mb-4 font-[700] tracking-[-0.5px] leading-[38.4px]">
                       {item.heading}
@@ -375,15 +378,15 @@ const OurPricingCard = (props: any) => {
                         </p>
                         {item.tab && (
                           <img
+                            alt="design dev icon"
+                            className="w-[36px] h-[32px]"
                             src={
                               selectedTab == "Design + Dev"
                                 ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/designdev_f0onqh.svg"
                                 : selectedTab == "Design Only"
-                                ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/design_oly_f4hn7l.svg"
-                                : "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/dev_grzer7.svg"
+                                  ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/design_oly_f4hn7l.svg"
+                                  : "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/dev_grzer7.svg"
                             }
-                            alt="design dev icon"
-                            className="w-[36px] h-[32px]"
                           />
                         )}
                       </div>
@@ -394,8 +397,8 @@ const OurPricingCard = (props: any) => {
                           className="bg-black text-white button dark:bg-white dark:text-black w-full"
                           startContent={
                             <img
-                              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                               alt="Dribble Logo"
+                              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                             />
                           }
                         >
@@ -453,20 +456,22 @@ const OurPricingCard = (props: any) => {
                         <div className="flex w-full flex-col items-start justify-end mt-8 max-sm:mt-6">
                           <Tabs
                             aria-label="Dynamic tabs"
-                            items={tabs}
                             classNames={{
                               cursor: "w-full bg-black text-black",
                               tab: "px-6 max-lg:px-2",
                               tabContent:
                                 "group-data-[selected=true]:text-white text-black font-[700] max-md:font-[600]",
                             }}
-                            onSelectionChange={(key) => handleTabChange(key)}
+                            items={tabs}
+                            onSelectionChange={(key) =>
+                              handleTabChange(index, key as string)
+                            }
                           >
                             {tabs.map((tabItem) => (
                               <Tab
                                 key={tabItem.id}
-                                title={tabItem.label}
                                 className="max-md:text-xs"
+                                title={tabItem.label}
                               />
                             ))}
                           </Tabs>
@@ -490,8 +495,8 @@ const OurPricingCard = (props: any) => {
                       </Button> */}
 
                       <button
-                        color="primary"
                         className="mt-3 bg-black text-white w-full  py-[16px] rounded-[16px] group"
+                        color="primary"
                         style={{ width: "100%" }}
                         onMouseEnter={() => setIsHoveredChat(true)}
                         onMouseLeave={() => setIsHoveredChat(false)}
@@ -505,8 +510,8 @@ const OurPricingCard = (props: any) => {
                                `}
                           >
                             <img
-                              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                               alt="Dribble Logo"
+                              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                             />
                             Book a 15-min call
                           </span>
@@ -522,8 +527,8 @@ const OurPricingCard = (props: any) => {
                               `}
                           >
                             <img
-                              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                               alt="Dribble Logo"
+                              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                             />
                             Lets talk!
                           </span>
@@ -537,20 +542,22 @@ const OurPricingCard = (props: any) => {
                       <div className="flex w-full flex-col items-start justify-end mt-3 max-sm:mt-0">
                         <Tabs
                           aria-label="Dynamic tabs"
-                          items={tabs}
                           classNames={{
                             cursor: "w-full bg-black text-black",
                             tab: "px-6 max-lg:px-2",
                             tabContent:
                               "group-data-[selected=true]:text-white text-black font-[700] max-md:font-[600]",
                           }}
-                          onSelectionChange={(key) => handleTabChange(key)}
+                          items={tabs}
+                          onSelectionChange={(key) =>
+                            handleTabChange(index, key as string)
+                          }
                         >
                           {tabs.map((tabItem) => (
                             <Tab
                               key={tabItem.id}
-                              title={tabItem.label}
                               className="max-md:text-xs"
+                              title={tabItem.label}
                             />
                           ))}
                         </Tabs>
@@ -564,23 +571,27 @@ const OurPricingCard = (props: any) => {
           <div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
             {dataPrice.map((item, index) => {
               return (
-                <Card className="rounded-[40px] box-shadow  shadow-none border-1 border-[#0000000f]">
+                <Card
+                  key={index}
+                  className="rounded-[40px] box-shadow  shadow-none border-1 border-[#0000000f]"
+                >
                   <CardBody className="p-8 max-md:p-4 max-lg:p-6 grid grid-cols-1 gap-4 max-md:grid-cols-1">
                     <div className="w-full">
                       <div className="flex flex-row items-center justify-between">
                         <img
-                          src={item.icon}
                           alt="behance Logo"
                           className="w-[40px]  grayscale "
+                          src={item.icon}
                         />
                         {item.limited && (
                           <Chip
-                            radius="sm"
                             className=" text-sm text-[#7B7B7B] px-2 rounded-lg bg-[#E9E9E9]"
+                            radius="sm"
                             startContent={
                               <img
-                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729841595/svg1994013495_1681_qv43ow.svg"
+                                alt="Limited availability icon"
                                 className="w-[14px]"
+                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729841595/svg1994013495_1681_qv43ow.svg"
                               />
                             }
                           >
@@ -628,10 +639,10 @@ const OurPricingCard = (props: any) => {
                           Book a 15-min call
                         </Button>
                       </a> */}
-                      <Link href="/contact" className="w-full">
+                      <Link className="w-full" href="/contact">
                         <button
-                          color="primary"
                           className="mt-3 bg-black text-white w-full  py-[16px] rounded-[16px] group"
+                          color="primary"
                           style={{ width: "100%" }}
                           onMouseEnter={() => setIsHoveredChat(true)}
                           onMouseLeave={() => setIsHoveredChat(false)}
@@ -645,8 +656,8 @@ const OurPricingCard = (props: any) => {
                                `}
                             >
                               <img
-                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                                 alt="Dribble Logo"
+                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                               />
                               Book a 15-min call
                             </span>
@@ -662,8 +673,8 @@ const OurPricingCard = (props: any) => {
                               `}
                             >
                               <img
-                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                                 alt="Dribble Logo"
+                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                               />
                               Lets talk!
                             </span>
@@ -675,12 +686,12 @@ const OurPricingCard = (props: any) => {
                     <div className="">
                       {item.list.map((items, indexs) => {
                         return (
-                          <div>
+                          <div key={indexs}>
                             {props.id == "Fixed" ? (
                               <div className="flex flex-row items-start mt-3 gap-2">
                                 <img
-                                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1730809748/mynaui_check-hexagon-solid_t7vhzg.svg"
                                   alt=""
+                                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1730809748/mynaui_check-hexagon-solid_t7vhzg.svg"
                                 />
                                 <p className="">{items}</p>
                               </div>
@@ -688,8 +699,8 @@ const OurPricingCard = (props: any) => {
                               !(items == "50/30/20 payment schedule") && (
                                 <div className="flex flex-row items-start mt-3 gap-2">
                                   <img
-                                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1730809748/mynaui_check-hexagon-solid_t7vhzg.svg"
                                     alt=""
+                                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1730809748/mynaui_check-hexagon-solid_t7vhzg.svg"
                                   />
                                   <p className="">{items}</p>
                                 </div>
@@ -718,28 +729,28 @@ const OurPricingCard = (props: any) => {
                   style={{ overflow: "visible" }}
                 >
                   <Link
-                    href="/contact"
                     className="w-[350px] max-md:w-[300px] max-lg:mt-3 lg:ml-3"
+                    href="/contact"
                   >
                     <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-4 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
                       <div className="flex flex-row gap-2 items-center md:mr-11">
                         <img
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
                           alt="Dribble Logo"
-                          id="image"
                           className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-[580ms] ease-in-out  md:group-hover:translate-x-4 max-md:order-3  md:order-1 md:group-hover:order-3"
+                          id="image"
+                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
                         />
                         <p
-                          id="plus"
                           className="text-[#5B5B5B] text-xl font-bold md:absolute order-2 -mt-1"
+                          id="plus"
                         >
                           +
                         </p>
                         <img
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                           alt="Dribble Logo"
-                          id="client"
                           className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
+                          id="client"
+                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                         />
                       </div>
                       <p className="text-lg max-md:text-sm font-bold">
@@ -748,24 +759,25 @@ const OurPricingCard = (props: any) => {
                       </p>
                       <div className="max-md:hidden">
                         <img
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                           alt="Dribble Logo"
                           className="w-auto h-[30px]"
+                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                         />
                       </div>
                     </div>
                   </Link>
 
                   <a
-                    href="https://wa.link/i35lma"
-                    target="_blank"
                     className="w-[300px] max-lg:mt-3 lg:ml-3"
+                    href="https://wa.link/i35lma"
+                    rel="noreferrer"
+                    target="_blank"
                   >
                     <Button
-                      color="primary"
-                      variant="bordered"
                       className=" border-back/50 hover:border-4 border-4 text-black font-bold w-full bg-white hover:border-gray-200 rounded-[16px]   py-[30px]"
+                      color="primary"
                       style={{ width: "100%" }}
+                      variant="bordered"
                       onMouseEnter={() => setIsHoveredChat(true)}
                       onMouseLeave={() => setIsHoveredChat(false)}
                     >
@@ -778,9 +790,9 @@ const OurPricingCard = (props: any) => {
                           }`}
                         >
                           <img
-                            src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                             alt="WhatsApp Logo"
                             className="w-[30px]  h-[30px] "
+                            src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                           />
                           <p className="text-lg max-md:text-sm font-bold">
                             Chat on WhatsApp
@@ -795,9 +807,9 @@ const OurPricingCard = (props: any) => {
                           }`}
                         >
                           <img
-                            src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                             alt="WhatsApp Logo"
                             className="w-[30px]  h-[30px]"
+                            src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                           />
                           <p className="text-base font-semibold">
                             {" "}

@@ -73,7 +73,7 @@ const AboutCardAnimation = () => {
             scrub: 1.5,
           },
           ease: "power2.out",
-        }
+        },
       );
     });
 
@@ -95,7 +95,7 @@ const AboutCardAnimation = () => {
           duration: 1,
           stagger: 0.2,
           ease: "power3.out",
-        }
+        },
       );
     }
   };
@@ -124,6 +124,11 @@ const AboutCardAnimation = () => {
         {data.map((item, index) => (
           <div
             key={index}
+            ref={(el) => {
+              if (el) {
+                cardRefs.current[index] = el;
+              }
+            }}
             className={`bg-[#E1EAEA] rounded-[40px] max-md:rounded-[20px] pt-4 pb-12 px-12 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
               index % 2 === 0 ? "lg:-mt-32" : "lg:mt-0"
             } hover:ease-in-out`}
@@ -136,11 +141,6 @@ const AboutCardAnimation = () => {
             }}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={() => handleMouseLeave(index)}
-            ref={(el) => {
-              if (el) {
-                cardRefs.current[index] = el;
-              }
-            }}
           >
             <div>
               <p className="text-8xl max-md:text-6xl mb-4 lg:pt-4 overflow-hidden font-[500] max-md:font-[500]">

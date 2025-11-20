@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Card, CardBody } from "@nextui-org/react";
+
 import testimonials from "@/data/testimonials.json";
 import Avatar from "@/components/Avatar";
 
@@ -19,9 +20,9 @@ const StarRating = ({
       {[...Array(5)].map((_, index) => (
         <div key={index} className="relative h-[14px] w-[14px]">
           <img
-            src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
             alt="5 star rating"
             className="absolute left-0 top-0 h-[14px] w-[14px] transition-transform duration-300 hover:scale-110"
+            src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
             style={{
               animation: `starSlideUp 0.5s ease-out forwards`,
               animationDelay: `${delay / 1000 + index * 0.12}s`,
@@ -43,6 +44,7 @@ const WhatWeProvide = () => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     }, 4000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -126,8 +128,8 @@ const WhatWeProvide = () => {
                       }}
                     >
                       <Avatar
-                        name={item.name}
                         avatar={item.profileImage}
+                        name={item.name}
                         size={52}
                       />
                       <p className="line-clamp-5 text-center text-base text-gray-700">

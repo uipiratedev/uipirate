@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
+
 import testimonials from "@/data/testimonials.json";
 import Avatar from "@/components/Avatar";
 
@@ -11,8 +12,10 @@ export default function TestimonialCards() {
   // detect screen size
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768); // max-md breakpoint
+
     handleResize();
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -41,8 +44,8 @@ export default function TestimonialCards() {
                     <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
                       <div className="flex flex-row gap-3 items-center">
                         <Avatar
-                          name={item.name}
                           avatar={item.profileImage}
+                          name={item.name}
                           size={52}
                         />
 
@@ -61,9 +64,9 @@ export default function TestimonialCards() {
                       <div className="max-md:hidden block">
                         {item.logo && (
                           <img
-                            src={item.logo}
                             alt="Logo"
                             className="max-w-[80px]"
+                            src={item.logo}
                           />
                         )}
                       </div>

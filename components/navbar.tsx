@@ -14,14 +14,17 @@ import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { siteConfig } from "@/config/site";
 import { useEffect, useState } from "react";
+
+import { siteConfig } from "@/config/site";
 
 const smoothScrollTo = (elementId: string) => {
   const element = document.getElementById(elementId);
+
   if (element) {
     const navbarHeight = 80;
     const elementPosition = element.offsetTop - navbarHeight;
+
     setTimeout(() => {
       window.scrollTo({
         top: elementPosition,
@@ -39,6 +42,7 @@ export const Navbar = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -46,12 +50,14 @@ export const Navbar = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         const isInView = entries.some((entry) => entry.isIntersecting);
+
         setIsDarkSection(isInView);
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const darkSections = document.querySelectorAll(".dark-section");
+
     darkSections.forEach((section) => observer.observe(section));
 
     return () => {
@@ -70,9 +76,10 @@ export const Navbar = () => {
                 Learn real product skills with mentorship at{" "}
               </span>
               <a
-                href="https://propirates.com"
-                target="_blank"
                 className="text-white font-bold"
+                href="https://propirates.com"
+                rel="noreferrer"
+                target="_blank"
               >
                 ProPirates →
               </a>
@@ -80,22 +87,22 @@ export const Navbar = () => {
 
             {/* ❌ Close Icon */}
             <button
-              onClick={() => setShowBanner(false)}
-              className="absolute right-4 text-gray-500 hover:text-gray-800 transition-all"
               aria-label="Close banner"
+              className="absolute right-4 text-gray-500 hover:text-gray-800 transition-all"
+              onClick={() => setShowBanner(false)}
             >
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
                 className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.5}
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
+                  d="M6 18L18 6M6 6l12 12"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
             </button>
@@ -107,15 +114,15 @@ export const Navbar = () => {
       <div className="container mx-auto h-[67px] reveal-text-anim-1 overflow-hidden pb-6 relative z-[99999999] max-md:bg-[#F5F5F5]">
         {!loading && (
           <NextUINavbar
-            maxWidth="xl"
-            position="sticky"
-            isMenuOpen={isMenuOpen}
-            onMenuOpenChange={setIsMenuOpen}
             className={clsx(
               "bg-none mx-[25rem] blur-none py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-20 max-md:mx-0 max-xl:mx-40 max-2xl:mx-[18rem] border-2 container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:border-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] bg-transparent z-[99999999]",
-              { "text-white": isDarkSection, "text-black": !isDarkSection }
+              { "text-white": isDarkSection, "text-black": !isDarkSection },
             )}
+            isMenuOpen={isMenuOpen}
+            maxWidth="xl"
+            position="sticky"
             style={{ zIndex: 99999999 }}
+            onMenuOpenChange={setIsMenuOpen}
           >
             {/* --- Left Brand Section --- */}
             <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -135,9 +142,9 @@ export const Navbar = () => {
                   href="/"
                 >
                   <img
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                     alt="Logo"
                     className="mt-2"
+                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                   />
                   <p
                     className={clsx("font-bold text-inherit", {
@@ -162,7 +169,7 @@ export const Navbar = () => {
                     <NextLink
                       className={clsx(
                         linkStyles({ color: "foreground" }),
-                        "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer"
+                        "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer",
                       )}
                       href={item.href}
                     >
@@ -181,10 +188,10 @@ export const Navbar = () => {
                     isExternal
                     as={Link}
                     className=" text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
-                    variant="solid"
-                    style={{ paddingTop: 0 }}
                     data-back="Let's Talk"
                     data-front="Have an Idea?"
+                    style={{ paddingTop: 0 }}
+                    variant="solid"
                   >
                     😀 Let’s Talk
                   </Button>
@@ -198,9 +205,9 @@ export const Navbar = () => {
                 {siteConfig.navMenuItems.map((item, index) => (
                   <NavbarMenuItem key={`${item}-${index}`}>
                     <NextLink
+                      className="text-lg text-foreground cursor-pointer"
                       href={item.href}
                       onClick={() => setIsMenuOpen(false)}
-                      className="text-lg text-foreground cursor-pointer"
                     >
                       {item.label}
                     </NextLink>

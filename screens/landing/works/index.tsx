@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Button } from "@nextui-org/react";
+
 import RecentWorkCard from "./workCard";
 
 const LandingWork = () => {
@@ -39,7 +39,11 @@ const LandingWork = () => {
       </div>
       <div>
         <div className="flex flex-row items-center justify-center">
-          <a href="https://www.behance.net/vishalanand-UI-UX" target="_blank">
+          <a
+            href="https://www.behance.net/vishalanand-UI-UX"
+            rel="noreferrer"
+            target="_blank"
+          >
             {/* <button className="buttonre bg-black button text-lg dark:bg-white dark:text-black px-[70px] py-[30px] cursor-pointer">
             <span className="button-text see-more">See More</span>
             <a href="https://www.behance.net/vishalanand-UI-UX" target="_blank">

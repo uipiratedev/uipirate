@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
-import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import data from "@/data/servicesTopList.json";
-import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -94,7 +92,7 @@ const Teams = () => {
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
-          }
+          },
         );
       }
     });
@@ -106,12 +104,13 @@ const Teams = () => {
         entries.forEach((entry) => {
           // Find the index of the observed element in videoRefs
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target
+            (video) => video === entry.target,
           );
 
           if (index !== -1) {
             // Check if the index is valid
             const videoElement = videoRefs.current[index];
+
             if (videoElement) {
               // Ensure the video element is valid
               if (entry.isIntersecting) {
@@ -127,7 +126,7 @@ const Teams = () => {
           }
         });
       },
-      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
+      { threshold: 0.5 }, // Trigger when at least 10% of the video is in view
     );
 
     // Observing all video elements
@@ -145,10 +144,10 @@ const Teams = () => {
       <div className="grid gap-4 max-md:gap-2">
         {data1.map((item, index) => (
           <div
+            key={index}
             ref={(el) => {
               if (el && !isMobile) cardsRef.current[index] = el;
             }}
-            key={index}
             className={
               index === 0
                 ? "col-span-2"
@@ -161,10 +160,10 @@ const Teams = () => {
                   <CardHeader className="px-0 pt-0">
                     {item.avatar && (
                       <img
-                        src={item.avatar}
                         alt="behance Logo"
-                        width="100%"
                         className="object-cover h-[350px] min-md:h-[350px] max-h-full"
+                        src={item.avatar}
+                        width="100%"
                       />
                     )}
                   </CardHeader>

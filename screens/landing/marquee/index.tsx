@@ -1,4 +1,5 @@
 import React from "react";
+
 import MarqueeComp from "./marqueeComp";
 
 const LandingMarquee = ({ items, reverse }: any) => {

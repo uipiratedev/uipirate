@@ -1,7 +1,8 @@
+import { notFound } from "next/navigation";
+
 import BlogsDetails from "@/screens/blogsDetails";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
-import { notFound } from "next/navigation";
 
 const BlogsDetailsPage = async ({ params }: any) => {
   await dbConnect();

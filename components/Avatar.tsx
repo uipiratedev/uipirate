@@ -1,4 +1,5 @@
 import React from "react";
+
 import { getAllGradients } from "@/utils/gradientService";
 
 /**
@@ -11,14 +12,17 @@ const generateGradient = (str: string): string => {
 
   // Generate a hash from the string
   let hash = 0;
+
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
+
     hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
 
   // Use absolute value and modulo to get a consistent index
   const index = Math.abs(hash) % gradients.length;
+
   return gradients[index].value;
 };
 
@@ -88,9 +92,9 @@ export const Avatar: React.FC<AvatarProps> = ({
   if (avatar) {
     return (
       <img
-        src={avatar}
         alt={altText}
         className={`rounded-full object-cover ${className}`}
+        src={avatar}
         style={{
           width: `${size}px`,
           height: `${size}px`,

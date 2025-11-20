@@ -8,6 +8,7 @@ import LandingAbout from "./about";
 import LandingTestimonials from "./testimonials";
 import LandingBehanceFramor from "./behance/LandingBehance";
 import BoreYouCommit from "./boreYouCommit";
+
 import PageWrapper from "@/components/PageWrapper";
 import FloatingLetsTalkButton from "@/components/FloatingLetsTalkButton";
 const Landing = () => {
@@ -20,23 +21,23 @@ const Landing = () => {
           <div className="relative text-center  max-w-6xl mx-auto px-4">
             {/* Left quote icon */}
             <img
-              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645971/icon_ibp1gv.svg"
               alt=""
               className="absolute left-4 top-0 -translate-y-1/2 w-12 h-12  max-md:w-6 max-md:h-6"
+              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645971/icon_ibp1gv.svg"
             />
 
             {/* Text */}
             <p className="text-2xl md:text-5xl font-[500] text-black leading-snug italic pl-8 pr-12 max-md:pr-6">
-              We design products, that Rings bell in people's heart and make us
-              feel proud.
+              We design products, that Rings bell in people&apos;s heart and
+              make us feel proud.
             </p>
 
             {/* Right quote icon */}
 
             <img
-              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645970/icon1_xyat8o.svg"
               alt=""
               className="absolute right-4 -bottom-12 max-md:-bottom-4 -translate-y-1/2 w-12 h-12 max-md:w-6 max-md:h-6"
+              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645970/icon1_xyat8o.svg"
             />
           </div>
         </div>

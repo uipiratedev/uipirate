@@ -1,5 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
+
 import Loader from "@/components/loader";
 import Seo from "@/components/seo";
 
@@ -15,7 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const locomotiveScroll = new LocomotiveScroll();
+    new LocomotiveScroll();
     const handlePageLoad = () => {
       setTimeout(() => {
         setLoading(false);
@@ -27,6 +28,7 @@ export default function Home() {
       setLoading(false);
     } else {
       window.addEventListener("load", handlePageLoad);
+
       return () => window.removeEventListener("load", handlePageLoad);
     }
   }, []);

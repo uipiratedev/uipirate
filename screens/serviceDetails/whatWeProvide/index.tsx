@@ -22,13 +22,13 @@ const WhatWeProvide = ({ data }: any) => {
                   <div className="w-full p-6  bg-white rounded-[24px] max-md:p-4 box-shadow">
                     <div className="flex flex-row items-center justify-center gap-4 max-md:gap-2 mb-4">
                       <img
+                        alt="Profile"
+                        className="w-[162px] h-[162px] min-w-[162px] min-h-[162px]"
                         src={
                           item.img
                             ? item.img
                             : "https://res.cloudinary.com/damm9iwho/image/upload/v1731065510/Ellipse_1388_od4ab3.svg"
                         }
-                        alt="Profile"
-                        className="w-[162px] h-[162px] min-w-[162px] min-h-[162px]"
                       />
                     </div>
                     <p className="text-xl max-md:text-base font-[700]">

@@ -25,8 +25,8 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
 
       {/* Blog Content */}
       <div
-        className="prose prose-lg max-w-none dark:prose-invert mt-8 mb-12"
         dangerouslySetInnerHTML={{ __html: blog.content }}
+        className="prose prose-lg max-w-none dark:prose-invert mt-8 mb-12"
       />
     </div>
   );

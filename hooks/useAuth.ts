@@ -35,7 +35,6 @@ export function useAuth(requireAuth: boolean = false) {
         }
       }
     } catch (error) {
-      console.error("Auth check failed:", error);
       setUser(null);
       if (requireAuth) {
         router.push("/admin/login");
@@ -51,7 +50,7 @@ export function useAuth(requireAuth: boolean = false) {
       setUser(null);
       router.push("/admin/login");
     } catch (error) {
-      console.error("Logout failed:", error);
+      // Logout failed
     }
   };
 

@@ -47,7 +47,7 @@ import Marquee from "react-fast-marquee";
 const MarqueeComp = ({ items, reverse }: any) => {
   return (
     <>
-      <Marquee speed={25} gradient gradientColor="#F5F5F5">
+      <Marquee gradient gradientColor="#F5F5F5" speed={25}>
         <div className="flex flex-row gap-8">
           {items.map((el: any, index: any) => (
             <div
@@ -55,9 +55,9 @@ const MarqueeComp = ({ items, reverse }: any) => {
               className="grid place-items-center  p-[calc(clamp(10rem,1rem+30vmin,30rem)/10)]"
             >
               <img
-                src={el}
                 alt={`img-${index}`}
                 className=" h-[32px]  grayscale hover:grayscale-0 max-h-[32px] "
+                src={el}
               />
             </div>
           ))}

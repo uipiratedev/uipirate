@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyAuth } from "@/lib/auth";
@@ -52,7 +53,7 @@ export async function GET(request: NextRequest) {
         success: false,
         error: error.message || "Failed to fetch blogs",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -62,10 +63,11 @@ export async function POST(request: NextRequest) {
   try {
     // Check authentication
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -82,6 +84,7 @@ export async function POST(request: NextRequest) {
 
     // Check if slug already exists
     const existingBlog = await Blog.findOne({ slug });
+
     if (existingBlog) {
       // Add timestamp to make slug unique
       const uniqueSlug = `${slug}-${Date.now()}`;
@@ -108,7 +111,7 @@ export async function POST(request: NextRequest) {
           success: true,
           data: blog,
         },
-        { status: 201 }
+        { status: 201 },
       );
     }
 
@@ -135,7 +138,7 @@ export async function POST(request: NextRequest) {
         success: true,
         data: blog,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: any) {
     return NextResponse.json(
@@ -143,7 +146,7 @@ export async function POST(request: NextRequest) {
         success: false,
         error: error.message || "Failed to create blog",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

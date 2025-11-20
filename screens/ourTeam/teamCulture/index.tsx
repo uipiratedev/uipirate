@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
-import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,13 +17,13 @@ const data1 = [
         // ref={(elvideo) => {
         //   if (elvideo) videoRefs.current[index] = elvideo;
         // }}
-        width="100%"
         autoPlay
         loop
         muted
         className="object-cover h-[250px] w-[100%]"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
-      ></video>
+        width="100%"
+      />
     ),
     isImage: false,
   },
@@ -40,13 +39,13 @@ const data1 = [
         // ref={(elvideo) => {
         //   if (elvideo) videoRefs.current[index] = elvideo;
         // }}
-        width="100%"
         autoPlay
         loop
         muted
         className="object-cover h-[250px] w-full"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
-      ></video>
+        width="100%"
+      />
     ),
     isImage: true,
   },
@@ -62,13 +61,13 @@ const data1 = [
         // ref={(elvideo) => {
         //   if (elvideo) videoRefs.current[index] = elvideo;
         // }}
-        width="100%"
         autoPlay
         loop
         muted
         className="object-cover h-[250px] w-full"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
-      ></video>
+        width="100%"
+      />
     ),
     isImage: true,
   },
@@ -113,7 +112,7 @@ const TeamCulture = () => {
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
-          }
+          },
         );
       }
     });
@@ -125,12 +124,13 @@ const TeamCulture = () => {
         entries.forEach((entry) => {
           // Find the index of the observed element in videoRefs
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target
+            (video) => video === entry.target,
           );
 
           if (index !== -1) {
             // Check if the index is valid
             const videoElement = videoRefs.current[index];
+
             if (videoElement) {
               // Ensure the video element is valid
               if (entry.isIntersecting) {
@@ -146,7 +146,7 @@ const TeamCulture = () => {
           }
         });
       },
-      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
+      { threshold: 0.5 }, // Trigger when at least 10% of the video is in view
     );
 
     // Observing all video elements
@@ -178,16 +178,19 @@ const TeamCulture = () => {
       >
         {data1.map((item, index) => {
           return (
-            <Card className="rounded-[48px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
+            <Card
+              key={index}
+              className="rounded-[48px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]"
+            >
               <CardBody className="p-2 max-md:p-2">
                 <Card className="rounded-[40px] box-shadow h-full">
                   <CardHeader className="px-0 pt-0">
                     <div className=" w-full">
                       {item.isImage && (
                         <img
-                          src={item.image}
                           alt="behance Logo"
                           className="w-full h-[250px] object-cover"
+                          src={item.image}
                         />
                       )}
                       {!item.isImage && item.video}

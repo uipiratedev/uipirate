@@ -169,6 +169,7 @@ export default function FaqsAccordion() {
 
   useEffect(() => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
     cardsRef.current.forEach((card, index) => {
       if (card) {
         gsap.fromTo(
@@ -194,7 +195,7 @@ export default function FaqsAccordion() {
               end: isMobile ? "botton 10%" : "top 30%", // Adjust end point for mobile
               toggleActions: "restart none none reverse",
             },
-          }
+          },
         );
       }
     });
@@ -209,36 +210,36 @@ export default function FaqsAccordion() {
         // }}
       >
         <Accordion
-          variant="splitted"
-          defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
           className="mb-0"
+          defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
           selectionMode="multiple"
+          variant="splitted"
         >
           {data.slice(0, 4).map((item, index) => (
             <AccordionItem
               key={String(index)}
               aria-label={item.heading}
+              className="shadow-none border-1 rounded-[1.25rem] mt-3 max-md:mt-2 items-center hover:bg-[#f2f1f1]"
+              indicator={({ isOpen }) =>
+                isOpen ? (
+                  <img
+                    alt="icon"
+                    className="rotate-45 transition-transform duration-300"
+                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
+                  />
+                ) : (
+                  <img
+                    alt="icon"
+                    className="transition-transform duration-300"
+                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
+                  />
+                )
+              }
               title={
                 <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug">
                   {item.heading}
                 </p>
               }
-              indicator={({ isOpen }) =>
-                isOpen ? (
-                  <img
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
-                    alt="icon"
-                    className="rotate-45 transition-transform duration-300"
-                  />
-                ) : (
-                  <img
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
-                    alt="icon"
-                    className="transition-transform duration-300"
-                  />
-                )
-              }
-              className="shadow-none border-1 rounded-[1.25rem] mt-3 max-md:mt-2 items-center hover:bg-[#f2f1f1]"
             >
               <div className="p-5 md:p-6 bg-white rounded-[20px]">
                 <p className="mb-5 text-[15px] text-gray-700">{item.title1}</p>
@@ -257,10 +258,10 @@ export default function FaqsAccordion() {
           ))}
         </Accordion>
         <div className="flex flex-row items-center justify-center mt-6">
-          <NextLink href="/faqs" className="autoShow w-fit">
+          <NextLink className="autoShow w-fit" href="/faqs">
             <button
-              color="primary"
               className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
+              color="primary"
             >
               <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
                 <span

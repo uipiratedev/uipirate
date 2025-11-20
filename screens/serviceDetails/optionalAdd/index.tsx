@@ -26,7 +26,7 @@ const OptionalAdd = ({ data }: any) => {
 
         <div className=" flex justify-end items-center">
           <div className="flex justify-center max-md:justify-center items-center relative w-[300px] h-[400px] min-h-[400px]">
-            <img src={data.rightImg} alt="" />
+            <img alt="" src={data.rightImg} />
           </div>
         </div>
       </div>

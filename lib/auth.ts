@@ -1,7 +1,9 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
+
 import dbConnect from "./mongodb";
+
 import Admin from "@/models/Admin";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
@@ -25,9 +27,9 @@ interface User {
 export async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+
     return decoded;
   } catch (error) {
-    console.error("Token verification failed:", error);
     return null;
   }
 }
@@ -39,9 +41,9 @@ export async function getToken(): Promise<string | null> {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("auth-token");
+
     return token?.value || null;
   } catch (error) {
-    console.error("Error getting token:", error);
     return null;
   }
 }
@@ -51,9 +53,11 @@ export async function getToken(): Promise<string | null> {
  */
 export async function isAuthenticated(): Promise<boolean> {
   const token = await getToken();
+
   if (!token) return false;
 
   const payload = await verifyToken(token);
+
   return !!payload;
 }
 
@@ -63,9 +67,11 @@ export async function isAuthenticated(): Promise<boolean> {
 export async function getCurrentUser(): Promise<User | null> {
   try {
     const token = await getToken();
+
     if (!token) return null;
 
     const payload = await verifyToken(token);
+
     if (!payload) return null;
 
     // Fetch user from database to ensure they still exist and are active
@@ -83,7 +89,6 @@ export async function getCurrentUser(): Promise<User | null> {
       role: admin.role,
     };
   } catch (error) {
-    console.error("Error getting current user:", error);
     return null;
   }
 }

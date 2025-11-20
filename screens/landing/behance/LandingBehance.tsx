@@ -45,6 +45,7 @@ const LandingBehanceFramor = () => {
 
   const updateVisibleData = () => {
     const isMobile = window.innerWidth <= 768;
+
     setVisibleData(isMobile ? data.slice(0, 4) : data.slice(0, 6));
   };
 
@@ -58,7 +59,7 @@ const LandingBehanceFramor = () => {
       xMove: string[],
       yMove: string[],
       rotateDeg: number[],
-      triggerProgress: number
+      triggerProgress: number,
     ) => {
       gsap.to(images.slice(startIndex, endIndex), {
         x: (i) => xMove[i % 2],
@@ -94,7 +95,7 @@ const LandingBehanceFramor = () => {
       xMove,
       !isMobile ? ["90%", "90%"] : ["-20%", "-20%"],
       [-45, 45],
-      0.2
+      0.2,
     );
     animateRow(
       2,
@@ -102,7 +103,7 @@ const LandingBehanceFramor = () => {
       xMove,
       !isMobile ? ["40%", "40%"] : ["-20%", "-20%"],
       [-45, 45],
-      0.3
+      0.3,
     );
     animateRow(
       4,
@@ -110,7 +111,7 @@ const LandingBehanceFramor = () => {
       xMove,
       !isMobile ? ["-60%", "-60%"] : ["-20%", "-20%"],
       [-45, 45],
-      1
+      1,
     );
   };
 
@@ -135,9 +136,9 @@ const LandingBehanceFramor = () => {
     <div className="relative">
       {/* Centered Info */}
       <div
+        className="absolute inset-1 flex flex-col items-center justify-center text-center"
         id="info"
         style={{ zIndex: 1 }}
-        className="absolute inset-1 flex flex-col items-center justify-center text-center"
       >
         <p className="text-center text-6xl font-bold px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
           Recent Works
@@ -146,7 +147,7 @@ const LandingBehanceFramor = () => {
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
-        <NextLink href="/ourWorks" className="autoShow">
+        <NextLink className="autoShow" href="/ourWorks">
           <button
             color="primary"
             className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
@@ -189,10 +190,10 @@ const LandingBehanceFramor = () => {
             style={{ pointerEvents: "none", zIndex: 1 }}
           >
             <img
-              src={item.img}
               alt={item.heading}
               className="w-full h-full object-fill rounded-[30px] grayscale-[25%] box-shadow"
               id="img"
+              src={item.img}
             />
           </div>
         ))}

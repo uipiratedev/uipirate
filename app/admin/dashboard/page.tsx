@@ -1,11 +1,13 @@
 import Link from "next/link";
+import { Button } from "@nextui-org/button";
+
 import { getCurrentUser } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
-import { Button } from "@nextui-org/button";
 
 export default async function AdminDashboardPage() {
   const user = await getCurrentUser();
+
   await dbConnect();
 
   // Get blog statistics
@@ -117,7 +119,7 @@ export default async function AdminDashboardPage() {
             </Button>
           </Link>
           <Link href="/admin/dashboard/blogs">
-            <Button variant="flat" className="bg-gray-100 dark:bg-gray-700">
+            <Button className="bg-gray-100 dark:bg-gray-700" variant="flat">
               📝 Manage Blogs
             </Button>
           </Link>
@@ -131,8 +133,8 @@ export default async function AdminDashboardPage() {
             Recent Blogs
           </h2>
           <Link
-            href="/admin/dashboard/blogs"
             className="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
+            href="/admin/dashboard/blogs"
           >
             View All →
           </Link>
@@ -158,8 +160,8 @@ export default async function AdminDashboardPage() {
               >
                 <div className="flex-1">
                   <Link
-                    href={`/blogs/${blog.slug}`}
                     className="font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
+                    href={`/blogs/${blog.slug}`}
                   >
                     {blog.title}
                   </Link>
@@ -183,9 +185,9 @@ export default async function AdminDashboardPage() {
                 </div>
                 <Link href={`/admin/dashboard/blogs?edit=${blog._id}`}>
                   <Button
+                    className="bg-gray-100 dark:bg-gray-700"
                     size="sm"
                     variant="flat"
-                    className="bg-gray-100 dark:bg-gray-700"
                   >
                     Edit
                   </Button>
@@ -198,4 +200,3 @@ export default async function AdminDashboardPage() {
     </div>
   );
 }
-

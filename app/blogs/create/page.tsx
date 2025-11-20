@@ -12,8 +12,9 @@ import Typography from "@tiptap/extension-typography";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Button } from "@nextui-org/button";
-import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
+
+import { useAuth } from "@/hooks/useAuth";
 
 // Slash command menu component
 const SlashCommandMenu = ({
@@ -76,13 +77,14 @@ const SlashCommandMenu = ({
         icon: "🖼",
         command: () => {
           const url = window.prompt("Enter image URL:");
+
           if (url) {
             editor.chain().focus().setImage({ src: url }).run();
           }
         },
       },
     ],
-    [editor]
+    [editor],
   );
 
   useEffect(() => {
@@ -118,11 +120,11 @@ const SlashCommandMenu = ({
       {commands.map((command, index) => (
         <button
           key={index}
+          className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left rounded-lg"
           onClick={() => {
             command.command();
             onClose();
           }}
-          className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left rounded-lg"
         >
           <span className="text-gray-600 dark:text-gray-300 text-lg font-semibold w-8 text-center">
             {command.icon}
@@ -151,37 +153,37 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
     <div className="sticky top-[73px] z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 py-3 px-6">
       <div className="max-w-4xl mx-auto flex items-center gap-1 flex-wrap">
         <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
           className={buttonClass(editor.isActive("bold"))}
           title="Bold (Ctrl+B)"
+          onClick={() => editor.chain().focus().toggleBold().run()}
         >
           B
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
           className={buttonClass(editor.isActive("italic"))}
           title="Italic (Ctrl+I)"
+          onClick={() => editor.chain().focus().toggleItalic().run()}
         >
           <em>I</em>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
           className={buttonClass(editor.isActive("strike"))}
           title="Strikethrough"
+          onClick={() => editor.chain().focus().toggleStrike().run()}
         >
           <s>S</s>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleCode().run()}
           className={buttonClass(editor.isActive("code"))}
           title="Code"
+          onClick={() => editor.chain().focus().toggleCode().run()}
         >
           {"<>"}
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleHighlight().run()}
           className={buttonClass(editor.isActive("highlight"))}
           title="Highlight"
+          onClick={() => editor.chain().focus().toggleHighlight().run()}
         >
           ⬛
         </button>
@@ -189,29 +191,29 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
         <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
 
         <button
+          className={buttonClass(editor.isActive("heading", { level: 1 }))}
+          title="Heading 1"
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 1 }).run()
           }
-          className={buttonClass(editor.isActive("heading", { level: 1 }))}
-          title="Heading 1"
         >
           H1
         </button>
         <button
+          className={buttonClass(editor.isActive("heading", { level: 2 }))}
+          title="Heading 2"
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
-          className={buttonClass(editor.isActive("heading", { level: 2 }))}
-          title="Heading 2"
         >
           H2
         </button>
         <button
+          className={buttonClass(editor.isActive("heading", { level: 3 }))}
+          title="Heading 3"
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
-          className={buttonClass(editor.isActive("heading", { level: 3 }))}
-          title="Heading 3"
         >
           H3
         </button>
@@ -219,32 +221,32 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
         <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
 
         <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={buttonClass(editor.isActive("bulletList"))}
           title="Bullet List"
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
         >
           •
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={buttonClass(editor.isActive("orderedList"))}
           title="Numbered List"
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
         >
           1.
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleTaskList().run()}
           className={buttonClass(editor.isActive("taskList"))}
           title="Task List"
+          onClick={() => editor.chain().focus().toggleTaskList().run()}
         >
           ☑
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={buttonClass(editor.isActive("blockquote"))}
           title="Quote"
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
         >
-          "
+          &quot;
         </button>
       </div>
     </div>
@@ -260,15 +262,16 @@ const BlogEditor = () => {
   });
   const [title, setTitle] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [excerpt, setExcerpt] = useState("");
-  const [featuredImage, setFeaturedImage] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [excerpt, _setExcerpt] = useState("");
+  const [featuredImage, _setFeaturedImage] = useState("");
+  const [tags, _setTags] = useState<string[]>([]);
   const [saveStatus, setSaveStatus] = useState<string>("Draft");
   const editorRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   // Require authentication
-  const { isAuthenticated, isLoading: authLoading } = useAuth(true);
+  const { isAuthenticated: _isAuthenticated, isLoading: authLoading } =
+    useAuth(true);
 
   useEffect(() => {
     setMounted(true);
@@ -290,6 +293,7 @@ const BlogEditor = () => {
           if (node.type.name === "heading") {
             return "Heading";
           }
+
           return "Type '/' for commands...";
         },
       }),
@@ -319,11 +323,13 @@ const BlogEditor = () => {
             // Only show menu if at start of line or after space
             const textBefore = $from.parent.textContent.slice(
               0,
-              $from.parentOffset
+              $from.parentOffset,
             );
+
             if (textBefore === "" || textBefore.endsWith(" ")) {
               setTimeout(() => {
                 const coords = view.coordsAtPos(selection.from);
+
                 setSlashMenuPosition({
                   top: coords.bottom + window.scrollY,
                   left: coords.left + window.scrollX,
@@ -333,8 +339,10 @@ const BlogEditor = () => {
             }
           } else if (event.key === "Escape" && slashMenuOpen) {
             setSlashMenuOpen(false);
+
             return true;
           }
+
           return false;
         },
       },
@@ -351,6 +359,7 @@ const BlogEditor = () => {
           if (fileType.startsWith("image/")) {
             event.preventDefault();
             const reader = new FileReader();
+
             reader.onload = (e) => {
               const url = e.target?.result as string;
               const { schema } = view.state;
@@ -362,34 +371,43 @@ const BlogEditor = () => {
               if (coordinates) {
                 const node = schema.nodes.image.create({ src: url });
                 const transaction = view.state.tr.insert(coordinates.pos, node);
+
                 view.dispatch(transaction);
               }
             };
             reader.readAsDataURL(file);
+
             return true;
           }
         }
+
         return false;
       },
       handlePaste: (_view, event) => {
         const items = event.clipboardData?.items;
+
         if (items) {
           for (let i = 0; i < items.length; i++) {
             if (items[i].type.indexOf("image") !== -1) {
               event.preventDefault();
               const file = items[i].getAsFile();
+
               if (file) {
                 const reader = new FileReader();
+
                 reader.onload = (e) => {
                   const url = e.target?.result as string;
+
                   editor?.chain().focus().setImage({ src: url }).run();
                 };
                 reader.readAsDataURL(file);
               }
+
               return true;
             }
           }
         }
+
         return false;
       },
     },
@@ -399,26 +417,31 @@ const BlogEditor = () => {
   const handleImageUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>, editor: any) => {
       const file = event.target.files?.[0];
+
       if (file && editor) {
         const reader = new FileReader();
+
         reader.onload = (e) => {
           const url = e.target?.result as string;
+
           editor.chain().focus().setImage({ src: url }).run();
         };
         reader.readAsDataURL(file);
       }
     },
-    []
+    [],
   );
 
   const saveBlog = async (published: boolean) => {
     if (!title.trim()) {
       alert("Please enter a title for your blog");
+
       return;
     }
 
     if (!editor?.getHTML()) {
       alert("Please add some content to your blog");
+
       return;
     }
 
@@ -449,7 +472,9 @@ const BlogEditor = () => {
 
       setSaveStatus(published ? "Published" : "Draft Saved");
       alert(
-        published ? "Blog published successfully!" : "Draft saved successfully!"
+        published
+          ? "Blog published successfully!"
+          : "Draft saved successfully!",
       );
 
       // Redirect to blog list or edit page
@@ -457,7 +482,6 @@ const BlogEditor = () => {
         router.push("/admin/dashboard/blogs");
       }, 1500);
     } catch (error: any) {
-      console.error("Error saving blog:", error);
       alert(error.message || "Failed to save blog");
       setSaveStatus("Error");
     } finally {
@@ -490,17 +514,17 @@ const BlogEditor = () => {
           </div>
           <div className="flex items-center gap-3">
             <Button
-              onClick={handleSaveDraft}
-              variant="flat"
               className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               disabled={isSaving}
+              variant="flat"
+              onClick={handleSaveDraft}
             >
               Save Draft
             </Button>
             <Button
-              onClick={handlePublish}
               className="bg-blue-600 text-white hover:bg-blue-700"
               disabled={isSaving}
+              onClick={handlePublish}
             >
               Publish
             </Button>
@@ -514,11 +538,11 @@ const BlogEditor = () => {
       <div className="max-w-4xl mx-auto pt-12 pb-24 px-6">
         {/* Title Input */}
         <input
-          type="text"
+          className="w-full text-5xl font-bold border-none outline-none bg-transparent mb-6 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:placeholder-gray-300"
           placeholder="Untitled Post"
+          type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full text-5xl font-bold border-none outline-none bg-transparent mb-6 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:placeholder-gray-300"
         />
 
         {/* Editor Container */}
@@ -532,8 +556,8 @@ const BlogEditor = () => {
           <SlashCommandMenu
             editor={editor}
             isOpen={slashMenuOpen}
-            onClose={() => setSlashMenuOpen(false)}
             position={slashMenuPosition}
+            onClose={() => setSlashMenuOpen(false)}
           />
         </div>
 
@@ -542,28 +566,29 @@ const BlogEditor = () => {
           <label className="cursor-pointer p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <span className="text-2xl">🖼️</span>
             <input
-              type="file"
               accept="image/*"
-              onChange={(e) => handleImageUpload(e, editor)}
               className="hidden"
+              type="file"
+              onChange={(e) => handleImageUpload(e, editor)}
             />
           </label>
           <div className="w-px h-6 bg-gray-300 dark:bg-gray-600" />
           <button
+            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             onClick={() => {
               const url = window.prompt("Enter image URL:");
+
               if (url) {
                 editor.chain().focus().setImage({ src: url }).run();
               }
             }}
-            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
             Add Image URL
           </button>
         </div>
       </div>
 
-      <style jsx global>{`
+      <style>{`
         .notion-editor-wrapper .ProseMirror {
           position: relative;
           outline: none;
