@@ -32,6 +32,8 @@ const FeaturedBlogs = () => {
       const response = await fetch("/api/blogs?published=true&limit=50");
       const data = await response.json();
 
+      console.log(data);
+
       if (data.success) {
         setBlogs(data.data);
 
@@ -54,6 +56,8 @@ const FeaturedBlogs = () => {
     activeTab === "All"
       ? blogs
       : blogs.filter((blog) => blog.tags?.includes(activeTab));
+
+  console.log(filteredBlogs);
 
   return (
     <div className="pt-32 max-md:pt-24 px-6 max-w-7xl mx-auto mb-24 max-md:mb-12">
@@ -114,7 +118,7 @@ const FeaturedBlogs = () => {
                       ) : (
                         <img
                           alt={blog.title}
-                          className="object-cover h-[200px] min-md:h-[200px] max-h-full"
+                          className="object-cover h-[200px] min-md:h-[200px] max-h-full rounded-t-[40px] max-md:rounded-t-[30px]"
                           src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
                           width="100%"
                         />
@@ -126,7 +130,7 @@ const FeaturedBlogs = () => {
                           {blog.title}
                         </p>
 
-                        <p className="text-base max-md:text-base font-[500] text-[#777777] py-2">
+                        <p className="text-base max-md:text-base font-[500] text-[#777777] py-2 line-clamp-1 overflow-hidden text-ellipsis whitespace-nowrap">
                           {blog.excerpt || "Read more..."}
                         </p>
 
