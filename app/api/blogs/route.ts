@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
         success: false,
         error: error.message || "Failed to fetch blogs",
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
@@ -67,14 +67,22 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 },
+        { status: 401 }
       );
     }
 
     await dbConnect();
 
     const body = await request.json();
-    const { title, content, excerpt, featuredImage, tags, published } = body;
+    const {
+      title,
+      content,
+      excerpt,
+      featuredImage,
+      bannerImage,
+      tags,
+      published,
+    } = body;
 
     // Generate slug from title
     const slug = title
@@ -94,6 +102,7 @@ export async function POST(request: NextRequest) {
         content,
         excerpt,
         featuredImage,
+        bannerImage,
         tags,
         published: published || false,
         author: {
@@ -111,7 +120,7 @@ export async function POST(request: NextRequest) {
           success: true,
           data: blog,
         },
-        { status: 201 },
+        { status: 201 }
       );
     }
 
@@ -121,6 +130,7 @@ export async function POST(request: NextRequest) {
       content,
       excerpt,
       featuredImage,
+      bannerImage,
       tags,
       published: published || false,
       author: {
@@ -138,7 +148,7 @@ export async function POST(request: NextRequest) {
         success: true,
         data: blog,
       },
-      { status: 201 },
+      { status: 201 }
     );
   } catch (error: any) {
     return NextResponse.json(
@@ -146,7 +156,7 @@ export async function POST(request: NextRequest) {
         success: false,
         error: error.message || "Failed to create blog",
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

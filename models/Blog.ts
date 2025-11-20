@@ -6,6 +6,7 @@ export interface IBlog extends Document {
   content: string; // HTML content from TipTap editor
   excerpt?: string;
   featuredImage?: string;
+  bannerImage?: string;
   author: {
     name: string;
     email: string;
@@ -45,6 +46,10 @@ const BlogSchema: Schema = new Schema(
       trim: true,
     },
     featuredImage: {
+      type: String,
+      trim: true,
+    },
+    bannerImage: {
       type: String,
       trim: true,
     },

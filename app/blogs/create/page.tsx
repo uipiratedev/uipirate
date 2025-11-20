@@ -84,7 +84,7 @@ const SlashCommandMenu = ({
         },
       },
     ],
-    [editor],
+    [editor]
   );
 
   useEffect(() => {
@@ -266,6 +266,7 @@ const BlogEditor = () => {
   const [excerpt, setExcerpt] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [featuredImage, setFeaturedImage] = useState("");
+  const [bannerImage, setBannerImage] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tags, setTags] = useState<string[]>([]);
   const [saveStatus, setSaveStatus] = useState<string>("Draft");
@@ -326,7 +327,7 @@ const BlogEditor = () => {
             // Only show menu if at start of line or after space
             const textBefore = $from.parent.textContent.slice(
               0,
-              $from.parentOffset,
+              $from.parentOffset
             );
 
             if (textBefore === "" || textBefore.endsWith(" ")) {
@@ -432,7 +433,27 @@ const BlogEditor = () => {
         reader.readAsDataURL(file);
       }
     },
-    [],
+    []
+  );
+
+  const handleBannerImageUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          const url = e.target?.result as string;
+
+          setFeaturedImage(url);
+
+          setBannerImage(url);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    []
   );
 
   const saveBlog = async (published: boolean) => {
@@ -462,6 +483,7 @@ const BlogEditor = () => {
           content: editor.getHTML(),
           excerpt,
           featuredImage,
+          bannerImage,
           tags,
           published,
         }),
@@ -475,9 +497,7 @@ const BlogEditor = () => {
 
       setSaveStatus(published ? "Published" : "Draft Saved");
       alert(
-        published
-          ? "Blog published successfully!"
-          : "Draft saved successfully!",
+        published ? "Blog published successfully!" : "Draft saved successfully!"
       );
 
       // Redirect to blog list or edit page
@@ -494,11 +514,11 @@ const BlogEditor = () => {
 
   const handleSaveDraft = useCallback(() => {
     saveBlog(false);
-  }, [title, editor, excerpt, featuredImage, tags]);
+  }, [title, editor, excerpt, featuredImage, bannerImage, tags]);
 
   const handlePublish = useCallback(() => {
     saveBlog(true);
-  }, [title, editor, excerpt, featuredImage, tags]);
+  }, [title, editor, excerpt, featuredImage, bannerImage, tags]);
 
   if (!mounted || !editor || authLoading) return null;
 
@@ -547,6 +567,31 @@ const BlogEditor = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+        {/* banner image */}
+        <div className="mb-6">
+          <label
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            htmlFor="banner-image"
+          >
+            Banner Image
+          </label>
+          <input
+            accept="image/*"
+            className="mt-1 p-2 border rounded-lg w-full"
+            id="banner-image"
+            type="file"
+            onChange={handleBannerImageUpload}
+          />
+          {bannerImage && (
+            <div className="mt-2">
+              <img
+                alt="Banner preview"
+                className="max-w-full h-auto rounded-lg max-h-48 object-cover"
+                src={bannerImage}
+              />
+            </div>
+          )}
+        </div>
 
         {/* Editor Container */}
         <div ref={editorRef} className="relative">
