@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyAuth } from "@/lib/auth";
@@ -62,6 +63,7 @@ export async function POST(request: NextRequest) {
   try {
     // Check authentication
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
@@ -72,7 +74,15 @@ export async function POST(request: NextRequest) {
     await dbConnect();
 
     const body = await request.json();
-    const { title, content, excerpt, featuredImage, tags, published } = body;
+    const {
+      title,
+      content,
+      excerpt,
+      featuredImage,
+      bannerImage,
+      tags,
+      published,
+    } = body;
 
     // Generate slug from title
     const slug = title
@@ -82,6 +92,7 @@ export async function POST(request: NextRequest) {
 
     // Check if slug already exists
     const existingBlog = await Blog.findOne({ slug });
+
     if (existingBlog) {
       // Add timestamp to make slug unique
       const uniqueSlug = `${slug}-${Date.now()}`;
@@ -91,6 +102,7 @@ export async function POST(request: NextRequest) {
         content,
         excerpt,
         featuredImage,
+        bannerImage,
         tags,
         published: published || false,
         author: {
@@ -118,6 +130,7 @@ export async function POST(request: NextRequest) {
       content,
       excerpt,
       featuredImage,
+      bannerImage,
       tags,
       published: published || false,
       author: {

@@ -1,21 +1,8 @@
-import React, { useState } from "react";
-import { Tabs, Tab, Button } from "@nextui-org/react";
+import React from "react";
+
 import RecentWorkCard from "./workCard";
 
 const LandingWork = () => {
-  const [activeTab, setActiveTab] = useState("Hourly"); // Track active tab
-
-  const tabs = [
-    {
-      id: "Hourly",
-      label: "Hourly",
-    },
-    {
-      id: "Fixed",
-      label: "Fixed",
-    },
-  ];
-
   return (
     <>
       <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4 pt-32 max-md:pt-24 max-xl:px-4 max-2xl:px-0">
@@ -39,7 +26,11 @@ const LandingWork = () => {
       </div>
       <div>
         <div className="flex flex-row items-center justify-center">
-          <a href="https://www.behance.net/vishalanand-UI-UX" target="_blank">
+          <a
+            href="https://www.behance.net/vishalanand-UI-UX"
+            rel="noreferrer"
+            target="_blank"
+          >
             {/* <button className="buttonre bg-black button text-lg dark:bg-white dark:text-black px-[70px] py-[30px] cursor-pointer">
             <span className="button-text see-more">See More</span>
             <a href="https://www.behance.net/vishalanand-UI-UX" target="_blank">

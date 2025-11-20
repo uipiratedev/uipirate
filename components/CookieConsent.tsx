@@ -50,6 +50,7 @@ const GDPR_COUNTRIES = [
 const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isCheckingLocation, setIsCheckingLocation] = useState(true);
   const [preferences, setPreferences] = useState({
     necessary: true, // Always true, can't be disabled
@@ -61,11 +62,14 @@ const CookieConsent = () => {
     try {
       // Check if consent was already given
       const consent = localStorage.getItem("cookie-consent");
+
       if (consent) {
         const savedPreferences = JSON.parse(consent);
+
         setPreferences(savedPreferences);
         initializeAnalytics(savedPreferences);
         setIsCheckingLocation(false);
+
         return;
       }
 
@@ -83,16 +87,16 @@ const CookieConsent = () => {
           necessary: true,
           analytics: true,
         };
+
         setPreferences(autoAcceptPreferences);
         localStorage.setItem(
           "cookie-consent",
-          JSON.stringify(autoAcceptPreferences)
+          JSON.stringify(autoAcceptPreferences),
         );
         initializeAnalytics(autoAcceptPreferences);
       }
     } catch (error) {
       // If geolocation fails, show banner to be safe (GDPR-compliant by default)
-      console.error("Geolocation check failed:", error);
       setShowBanner(true);
     } finally {
       setIsCheckingLocation(false);
@@ -131,6 +135,7 @@ const CookieConsent = () => {
       necessary: true,
       analytics: true,
     };
+
     setPreferences(newPreferences);
     localStorage.setItem("cookie-consent", JSON.stringify(newPreferences));
     initializeAnalytics(newPreferences);
@@ -143,6 +148,7 @@ const CookieConsent = () => {
       necessary: true,
       analytics: false,
     };
+
     setPreferences(newPreferences);
     localStorage.setItem("cookie-consent", JSON.stringify(newPreferences));
     initializeAnalytics(newPreferences);
@@ -181,12 +187,12 @@ const CookieConsent = () => {
                 <p className="text-sm text-gray-600 leading-relaxed">
                   We use cookies to enhance your browsing experience, analyze
                   site traffic, and understand where our visitors are coming
-                  from. By clicking "Accept All", you consent to our use of
-                  cookies for analytics purposes (Google Analytics & Microsoft
-                  Clarity).{" "}
+                  from. By clicking &quot;Accept All&quot;, you consent to our
+                  use of cookies for analytics purposes (Google Analytics &
+                  Microsoft Clarity).{" "}
                   <a
-                    href="/privacy-policy"
                     className="text-blue-600 hover:underline font-medium"
+                    href="/privacy-policy"
                   >
                     Learn more in our Privacy Policy
                   </a>
@@ -195,14 +201,14 @@ const CookieConsent = () => {
               </div>
               <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                 <button
-                  onClick={() => setShowSettings(true)}
                   className="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors border border-gray-300"
+                  onClick={() => setShowSettings(true)}
                 >
                   Customize
                 </button>
                 <button
-                  onClick={handleAcceptAll}
                   className="px-6 py-2.5 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded-lg transition-colors"
+                  onClick={handleAcceptAll}
                 >
                   Accept All
                 </button>
@@ -216,8 +222,8 @@ const CookieConsent = () => {
                   Cookie Preferences
                 </h3>
                 <button
-                  onClick={() => setShowSettings(false)}
                   className="text-gray-500 hover:text-gray-700"
+                  onClick={() => setShowSettings(false)}
                 >
                   <svg
                     className="w-6 h-6"
@@ -226,10 +232,10 @@ const CookieConsent = () => {
                     viewBox="0 0 24 24"
                   >
                     <path
+                      d="M6 18L18 6M6 6l12 12"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
                 </button>
@@ -265,28 +271,33 @@ const CookieConsent = () => {
                       (Google Analytics, Microsoft Clarity). Data is anonymized.
                     </p>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer ml-4">
+                  <label
+                    className="relative inline-flex items-center cursor-pointer ml-4"
+                    htmlFor="analytics-toggle"
+                  >
+                    <span className="sr-only">Toggle analytics cookies</span>
                     <input
-                      type="checkbox"
                       checked={preferences.analytics}
-                      onChange={handleToggleAnalytics}
                       className="sr-only peer"
+                      id="analytics-toggle"
+                      type="checkbox"
+                      onChange={handleToggleAnalytics}
                     />
-                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black" />
                   </label>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
-                  onClick={handleRejectAll}
                   className="flex-1 px-6 py-2.5 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-lg transition-colors border border-gray-300"
+                  onClick={handleRejectAll}
                 >
                   Reject All
                 </button>
                 <button
-                  onClick={handleSavePreferences}
                   className="flex-1 px-6 py-2.5 text-sm font-medium text-white bg-black hover:bg-gray-800 rounded-lg transition-colors"
+                  onClick={handleSavePreferences}
                 >
                   Save Preferences
                 </button>

@@ -22,6 +22,7 @@ const CircularImage: React.FC<CircularImageProps> = ({ images }) => {
           const angle = (index / images.length) * (2 * Math.PI) + angleOffset;
           const x = radius * Math.cos(angle);
           const y = radius * Math.sin(angle);
+
           image.style.transform = `translate(${x}px, ${y}px)`;
         });
       }
@@ -41,6 +42,7 @@ const CircularImage: React.FC<CircularImageProps> = ({ images }) => {
   return (
     <div
       ref={containerRef}
+      className="-mt-[0rem] max-xl:mt-20 max-2xl:mt-24"
       style={{
         position: "relative",
         width: "100%",
@@ -49,13 +51,12 @@ const CircularImage: React.FC<CircularImageProps> = ({ images }) => {
         justifyContent: "center",
         alignItems: "end",
       }}
-      className="-mt-[0rem] max-xl:mt-20 max-2xl:mt-24"
     >
       {images.map((src, index) => (
         <img
           key={index}
-          src={src}
           alt={`Icon ${index + 1}`}
+          src={src}
           style={{
             position: "absolute",
             width: "150px",

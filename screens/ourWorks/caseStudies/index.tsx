@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import Link from "next/link";
 
 const data = [
   {
@@ -120,13 +119,13 @@ const CaseStudyCard = () => {
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.7,
               delay: index * 0.1,
               ease: "easeOut",
             }}
             viewport={{ once: true, amount: 0.3 }}
+            whileInView={{ opacity: 1, y: 0 }}
           >
             {/* <Link href={item.url} target="_blank"> */}
             <Card className="rounded-[40px] max-md:rounded-[30px] bg-[#e9e9e9]  h-full shadow-none border border-[#0000000f] overflow-hidden">
@@ -135,9 +134,9 @@ const CaseStudyCard = () => {
                   {/* Image */}
                   <CardHeader className="p-0">
                     <img
-                      src={item.img}
                       alt={item.heading}
                       className="w-full h-[250px] object-cover"
+                      src={item.img}
                     />
                   </CardHeader>
 

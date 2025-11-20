@@ -1,5 +1,8 @@
 "use client";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import LocomotiveScroll from "locomotive-scroll";
+
 import Loader from "@/components/loader";
 import Seo from "@/components/seo";
 
@@ -8,14 +11,11 @@ const Landing = dynamic(() => import("@/screens/landing"), {
   ssr: false,
 }) as React.FC;
 
-import { useEffect, useState } from "react";
-import LocomotiveScroll from "locomotive-scroll";
-
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const locomotiveScroll = new LocomotiveScroll();
+    new LocomotiveScroll();
     const handlePageLoad = () => {
       setTimeout(() => {
         setLoading(false);
@@ -27,6 +27,7 @@ export default function Home() {
       setLoading(false);
     } else {
       window.addEventListener("load", handlePageLoad);
+
       return () => window.removeEventListener("load", handlePageLoad);
     }
   }, []);

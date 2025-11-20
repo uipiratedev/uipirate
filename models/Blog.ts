@@ -6,6 +6,7 @@ export interface IBlog extends Document {
   content: string; // HTML content from TipTap editor
   excerpt?: string;
   featuredImage?: string;
+  bannerImage?: string;
   author: {
     name: string;
     email: string;
@@ -34,7 +35,6 @@ const BlogSchema: Schema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      index: true,
     },
     content: {
       type: String,
@@ -46,6 +46,10 @@ const BlogSchema: Schema = new Schema(
       trim: true,
     },
     featuredImage: {
+      type: String,
+      trim: true,
+    },
+    bannerImage: {
       type: String,
       trim: true,
     },
@@ -88,7 +92,7 @@ const BlogSchema: Schema = new Schema(
 
 // Create indexes for better query performance
 BlogSchema.index({ published: 1, publishedAt: -1 });
-BlogSchema.index({ slug: 1 });
+// Note: slug index is created automatically by unique: true
 BlogSchema.index({ tags: 1 });
 
 // Pre-save middleware to set publishedAt when published status changes
@@ -104,6 +108,7 @@ BlogSchema.methods.calculateReadTime = function () {
   const wordsPerMinute = 200;
   const textContent = this.content.replace(/<[^>]*>/g, ""); // Strip HTML tags
   const wordCount = textContent.split(/\s+/).length;
+
   this.readTime = Math.ceil(wordCount / wordsPerMinute);
 };
 

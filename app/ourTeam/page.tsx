@@ -1,5 +1,4 @@
 "use client";
-import OurTeams from "@/screens/ourTeam";
 
 const OurTeamPage = () => {
   return (

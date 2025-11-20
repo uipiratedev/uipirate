@@ -33,7 +33,7 @@ const SuggestedReads = () => {
         setBlogs(data.data);
       }
     } catch (error) {
-      console.error("Error fetching suggested blogs:", error);
+      // Error fetching suggested blogs
     } finally {
       setLoading(false);
     }
@@ -64,24 +64,24 @@ const SuggestedReads = () => {
       ) : (
         <div className="grid md:grid-cols-3 gap-4 mt-6">
           {blogs.map((blog) => (
-            <Link href={`/blogs/${blog.slug}`} key={blog._id}>
+            <Link key={blog._id} href={`/blogs/${blog.slug}`}>
               <Card className="rounded-[48px] max-md:rounded-[38px]  h-full bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
                 <CardBody className="p-2 max-md:p-2 max-md:gap-2">
                   <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow h-full">
                     <CardHeader className="px-0 pt-0">
                       {blog.featuredImage ? (
                         <img
-                          src={blog.featuredImage}
                           alt={blog.title}
-                          width="100%"
                           className="object-cover h-[200px] min-md:h-[200px] max-h-full rounded-t-[40px] max-md:rounded-t-[30px]"
+                          src={blog.featuredImage}
+                          width="100%"
                         />
                       ) : (
                         <img
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
                           alt={blog.title}
-                          width="100%"
                           className="object-cover h-[200px] min-md:h-[200px] max-h-full"
+                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
+                          width="100%"
                         />
                       )}
                     </CardHeader>

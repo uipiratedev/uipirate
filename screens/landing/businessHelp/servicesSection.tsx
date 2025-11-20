@@ -2,15 +2,15 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button, Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import data from "@/data/servicesTopList.json";
 import NextLink from "next/link";
+
+import data from "@/data/servicesTopList.json";
 gsap.registerPlugin(ScrollTrigger);
 
 const ServicesSection = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   useLayoutEffect(() => {
     // GSAP ScrollTrigger animation for cards
@@ -18,7 +18,7 @@ const ServicesSection = () => {
     // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    cardsRef.current.forEach((card, index) => {
+    cardsRef.current.forEach((card) => {
       if (card) {
         gsap.fromTo(
           card,
@@ -56,14 +56,13 @@ const ServicesSection = () => {
           if (index !== -1) {
             // Check if the index is valid
             const videoElement = videoRefs.current[index];
+
             if (videoElement) {
               // Ensure the video element is valid
               if (entry.isIntersecting) {
-                console.log(`Video ${index + 1} started playing.`);
                 videoElement.play();
                 videoElement.playbackRate = 0.5; // Adjust speed when in view
               } else {
-                console.log(`Video ${index + 1} paused.`);
                 videoElement.pause();
                 videoElement.playbackRate = 1; // Reset speed when out of view
               }
@@ -96,6 +95,7 @@ const ServicesSection = () => {
             {data.slice(0, 3).map((item, index) => {
               return (
                 <Card
+                  key={index}
                   className="rounded-[40px] max-md:rounded-[30px]  box-shadow"
                   // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
                 >
@@ -103,9 +103,9 @@ const ServicesSection = () => {
                     <div className=" w-full">
                       {item.isImage && (
                         <img
-                          src={item.sideImage}
                           alt="behance Logo"
                           className="w-full object-cover  h-[250px]"
+                          src={item.sideImage}
                         />
                       )}
                       {!item.isImage && (
@@ -113,13 +113,13 @@ const ServicesSection = () => {
                           ref={(elvideo) => {
                             if (elvideo) videoRefs.current[index] = elvideo;
                           }}
-                          width="100%"
                           autoPlay
                           loop
                           muted
                           className="object-cover h-[250px] min-md:h-[250px] max-h-full"
                           src={item.video}
-                        ></video>
+                          width="100%"
+                        />
                       )}
                     </div>
                   </CardHeader>
@@ -142,13 +142,13 @@ const ServicesSection = () => {
                       {item.chip.map((chipItem, chipIndex) => (
                         <Chip
                           key={chipIndex}
-                          radius="sm"
                           className="text-[12px] text-[#00000094] bg-[#51525E14] flex items-center gap-2"
+                          radius="sm"
                           startContent={
                             <img
-                              src={chipItem.icon}
-                              className="mx-1 w-[16px]"
                               alt={chipItem.title}
+                              className="mx-1 w-[16px]"
+                              src={chipItem.icon}
                             />
                           }
                         >
@@ -174,9 +174,10 @@ const ServicesSection = () => {
                     style={{ overflow: "visible" }}
                   >
                     <a
-                      href="https://wa.me/919708636151"
-                      target="_blank"
                       className="w-[250px] max-lg:mt-3 lg:ml-3"
+                      href="https://wa.me/919708636151"
+                      rel="noreferrer"
+                      target="_blank"
                     >
                       <div className="border-1 border-[#E2E2E2]  bg-black text-white rounded-[16px] h-auto transform transition-all duration-[600ms] ease-in-out px-3 py-3 flex flex-row items-center justify-center gap-3 relative">
                         <p className="text-base max-md:text-sm font-semibold text-center">
@@ -186,13 +187,13 @@ const ServicesSection = () => {
                     </a>
 
                     <NextLink
-                      href="/services"
                       className="w-[300px] max-md:w-[250px] max-lg:mt-3 lg:ml-3"
+                      href="/services"
                     >
                       <Button
+                        className="border-1 max-md:hidden border-[#E2E2E2] text-black font-bold w-full bg-white rounded-[16px] py-[25px]"
                         color="primary"
                         variant="bordered"
-                        className="border-1 max-md:hidden border-[#E2E2E2] text-black font-bold w-full bg-white rounded-[16px] py-[25px]"
                       >
                         <div className="flex flex-col items-center justify-center">
                           <p className="text-base max-md:text-sm font-semibold text-center">
@@ -202,9 +203,9 @@ const ServicesSection = () => {
                       </Button>
                       <Button
                         as="a"
+                        className="bg-white md:hidden text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
                         color="primary"
                         variant="bordered"
-                        className="bg-white md:hidden text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
                       >
                         View All Services
                       </Button>

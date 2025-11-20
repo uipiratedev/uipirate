@@ -8,8 +8,9 @@ import {
 } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import data from "@/data/servicesTopList.json";
 import Link from "next/link";
+
+import data from "@/data/servicesTopList.json";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,13 +43,13 @@ const data1 = [
     image: "/ux-audit.svg",
     video: (
       <video
-        width="100%"
         autoPlay
         loop
         muted
         className="object-cover h-[250px] w-full"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
-      ></video>
+        width="100%"
+      />
     ),
     isImage: true,
   },
@@ -79,13 +80,13 @@ const data1 = [
     ],
     video: (
       <video
-        width="70%"
         autoPlay
         loop
         muted
         className="object-cover h-[250px] w-full"
         src="https://res.cloudinary.com/damm9iwho/video/upload/v1730895565/3D_qasvie.mp4"
-      ></video>
+        width="70%"
+      />
     ),
     isImage: false,
   },
@@ -102,6 +103,7 @@ const VideoWithCards = () => {
       setIsMobile(window.innerWidth <= 768);
 
       const handleResize = () => setIsMobile(window.innerWidth <= 768);
+
       window.addEventListener("resize", handleResize);
 
       return () => window.removeEventListener("resize", handleResize);
@@ -132,7 +134,7 @@ const VideoWithCards = () => {
                 end: "bottom 70%",
                 toggleActions: "play none none reverse",
               },
-            }
+            },
           );
         }
       });
@@ -153,7 +155,7 @@ const VideoWithCards = () => {
       (entries) => {
         entries.forEach((entry) => {
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target
+            (video) => video === entry.target,
           );
           const videoElement = videoRefs.current[index];
 
@@ -168,7 +170,7 @@ const VideoWithCards = () => {
           }
         });
       },
-      { threshold: 0.4 }
+      { threshold: 0.4 },
     );
 
     videoRefs.current.forEach((video) => {
@@ -218,13 +220,13 @@ const VideoWithCards = () => {
                     {item.chip.map((chipItem, chipIndex) => (
                       <Chip
                         key={chipIndex}
-                        radius="sm"
                         className="text-[14px] text-[#00000094] bg-[#51525E14]"
+                        radius="sm"
                         startContent={
                           <img
-                            src={chipItem.icon}
                             alt=""
                             className="mx-1 w-[16px]"
+                            src={chipItem.icon}
                           />
                         }
                       >
@@ -237,8 +239,8 @@ const VideoWithCards = () => {
                       href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                     >
                       <button
-                        color="primary"
                         className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                        color="primary"
                         style={{ width: "100%" }}
                       >
                         <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
@@ -254,9 +256,9 @@ const VideoWithCards = () => {
                 <CardBody style={{ padding: 0 }}>
                   {item.isImage && item.sideImage && (
                     <img
-                      src={item.sideImage}
                       alt="illustration"
                       className="object-cover h-full w-full"
+                      src={item.sideImage}
                     />
                   )}
                   {!item.isImage && (
@@ -264,12 +266,12 @@ const VideoWithCards = () => {
                       ref={(el) => {
                         if (el) videoRefs.current[index] = el;
                       }}
-                      width="100%"
                       loop
                       muted
                       className="object-cover h-full w-full"
                       src={item.video}
-                    ></video>
+                      width="100%"
+                    />
                   )}
                 </CardBody>
               </Card>
@@ -293,9 +295,9 @@ const VideoWithCards = () => {
                     <div className="w-full">
                       {item.isImage && (
                         <img
-                          src={item.image}
                           alt="preview"
                           className="w-full h-[250px] object-cover"
+                          src={item.image}
                         />
                       )}
                       {!item.isImage && item.video}
@@ -314,13 +316,13 @@ const VideoWithCards = () => {
                       {item.chip.map((chipItem, chipIndex) => (
                         <Chip
                           key={chipIndex}
-                          radius="sm"
                           className="text-[14px] text-[#00000094] bg-[#51525E14]"
+                          radius="sm"
                           startContent={
                             <img
-                              src={chipItem.icon}
                               alt=""
                               className="mx-1 w-[16px]"
+                              src={chipItem.icon}
                             />
                           }
                         >
@@ -333,8 +335,8 @@ const VideoWithCards = () => {
                         href={`/services/${item.heading.replace(/\s+/g, "-")}`}
                       >
                         <button
-                          color="primary"
                           className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
+                          color="primary"
                           style={{ width: "100%" }}
                         >
                           <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
@@ -352,9 +354,9 @@ const VideoWithCards = () => {
                     <div className="w-full">
                       {item.isImage && (
                         <img
-                          src={item.image}
                           alt="mobile preview"
                           className="w-full h-[250px] object-cover"
+                          src={item.image}
                         />
                       )}
                       {!item.isImage && item.video}

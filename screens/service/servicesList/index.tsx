@@ -1,6 +1,6 @@
-import PricingCard from "@/screens/landing/businessHelp/pricingCard";
 import LookingFor from "./lookingFor";
-import ServicesCard from "./servicesCard";
+
+import PricingCard from "@/screens/landing/businessHelp/pricingCard";
 
 const ServicesList = () => {
   return (

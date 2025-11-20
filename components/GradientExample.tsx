@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import { Button } from "@nextui-org/button";
+
 import {
-  getGradient,
   getRandomGradient,
   getAllGradients,
   getGradientById,
 } from "@/utils/gradientService";
-import { Button } from "@nextui-org/button";
 
 /**
  * Example component demonstrating the gradient service usage
@@ -25,6 +25,7 @@ const GradientExample = () => {
 
   const handleSelectGradient = (id: number) => {
     const gradient = getGradientById(id);
+
     if (gradient) {
       setCurrentGradient(gradient);
       setSelectedId(id);
@@ -58,8 +59,8 @@ const GradientExample = () => {
       {/* Controls */}
       <div className="flex gap-4 mb-8 justify-center flex-wrap">
         <Button
-          onClick={handleRandomGradient}
           className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+          onClick={handleRandomGradient}
         >
           🎲 Random Gradient
         </Button>
@@ -74,7 +75,6 @@ const GradientExample = () => {
           {allGradients.map((gradient) => (
             <button
               key={gradient.id}
-              onClick={() => handleSelectGradient(gradient.id)}
               className={`rounded-xl p-6 transition-all duration-300 hover:scale-105 ${
                 selectedId === gradient.id
                   ? "ring-4 ring-black shadow-xl"
@@ -83,6 +83,7 @@ const GradientExample = () => {
               style={{
                 background: gradient.value,
               }}
+              onClick={() => handleSelectGradient(gradient.id)}
             >
               <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
                 <p className="font-semibold text-sm">{gradient.name}</p>
@@ -106,7 +107,9 @@ const gradient = getRandomGradient();`}
           </div>
 
           <div>
-            <p className="font-medium mb-2">2. Get a specific gradient by ID:</p>
+            <p className="font-medium mb-2">
+              2. Get a specific gradient by ID:
+            </p>
             <code className="block bg-white p-3 rounded text-sm overflow-x-auto">
               {`import { getGradientById } from "@/utils/gradientService";
 const gradient = getGradientById(3);`}
@@ -139,4 +142,3 @@ const randomGradient = getGradient(); // Returns random`}
 };
 
 export default GradientExample;
-

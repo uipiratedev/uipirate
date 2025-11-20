@@ -48,7 +48,7 @@ const AdminSchema: Schema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Hash password before saving
@@ -59,6 +59,7 @@ AdminSchema.pre("save", async function (next) {
 
   try {
     const salt = await bcrypt.genSalt(10);
+
     this.password = await bcrypt.hash(this.password as string, salt);
     next();
   } catch (error: any) {
@@ -68,7 +69,7 @@ AdminSchema.pre("save", async function (next) {
 
 // Method to compare password
 AdminSchema.methods.comparePassword = async function (
-  candidatePassword: string
+  candidatePassword: string,
 ): Promise<boolean> {
   try {
     return await bcrypt.compare(candidatePassword, this.password);

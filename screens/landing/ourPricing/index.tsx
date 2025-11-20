@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import OurPricingCard from "./ourPricingCard";
 import { Tabs, Tab } from "@nextui-org/react";
+
+import OurPricingCard from "./ourPricingCard";
 
 const LandingOurPricing = () => {
   const [activeTab, setActiveTab] = useState("Hourly"); // Track active tab
@@ -42,16 +43,16 @@ const LandingOurPricing = () => {
           <div className="sticky top-[4.5rem] max-md:top-[4.2rem] z-10 w-full flex justify-center md:px-[25rem] mx-auto">
             <Tabs
               aria-label="Dynamic tabs"
-              items={tabs}
-              selectedKey={activeTab} // Control active tab
-              onSelectionChange={(key: any) => setActiveTab(key)} // Update activeTab on selection
+              className="pricing-tabs"
               classNames={{
                 cursor: "bg-black text-black",
                 tab: "px-12 mx-[25rem] mx-auto",
                 tabContent:
                   "group-data-[selected=true]:text-white text-black font-[700]",
               }}
-              className="pricing-tabs"
+              items={tabs}
+              selectedKey={activeTab} // Control active tab
+              onSelectionChange={(key: any) => setActiveTab(key)} // Update activeTab on selection
             >
               {(item) => <Tab key={item.id} title={item.label} />}
             </Tabs>

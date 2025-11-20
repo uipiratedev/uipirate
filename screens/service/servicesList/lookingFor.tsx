@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import { motion } from "framer-motion";
+
 import { getGradientById } from "@/utils/gradientService";
 
 const data = [
@@ -118,8 +119,10 @@ const LookingFor = () => {
     setMounted(true);
 
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
+
     handleResize();
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -161,12 +164,12 @@ const LookingFor = () => {
                 {itemsToShow.map((item, rowIndex) => (
                   <motion.div
                     key={rowIndex}
-                    variants={cardVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                    custom={rowIndex + colIndex * 0.2}
                     className="flex h-full"
+                    custom={rowIndex + colIndex * 0.2}
+                    initial="hidden"
+                    variants={cardVariants}
+                    viewport={{ once: true, amount: 0.2 }}
+                    whileInView="visible"
                   >
                     <Card
                       className="rounded-[32px] max-md:rounded-[24px] bg-white shadow-none border border-[#0000000f] flex flex-col h-full"
@@ -184,10 +187,10 @@ const LookingFor = () => {
                         >
                           <CardBody className="p-7 max-md:p-5 max-lg:p-6 flex flex-col justify-between h-full">
                             <motion.div
-                              variants={imageVariants}
                               initial="hidden"
-                              whileInView="visible"
+                              variants={imageVariants}
                               viewport={{ once: true, amount: 0.4 }}
+                              whileInView="visible"
                             />
                             <div className="flex flex-col flex-grow justify-between">
                               <p className="text-xl max-md:text-base font-[700]">

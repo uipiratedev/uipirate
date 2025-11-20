@@ -96,10 +96,10 @@ export async function GET() {
     return hreflangs
       .map(
         (lang) =>
-          `    <xhtml:link rel="alternate" hreflang="${lang}" href="${baseUrl}${url}" />`
+          `    <xhtml:link rel="alternate" hreflang="${lang}" href="${baseUrl}${url}" />`,
       )
       .concat(
-        `    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}${url}" />`
+        `    <xhtml:link rel="alternate" hreflang="x-default" href="${baseUrl}${url}" />`,
       )
       .join("\n");
   };
@@ -133,7 +133,7 @@ ${mainPages
     <priority>${page.priority}</priority>
 ${page.hreflang ? generateHreflangLinks(page.url) : ""}
 ${page.image ? generateImageTag() : ""}
-  </url>`
+  </url>`,
   )
   .join("\n")}
 
@@ -145,7 +145,7 @@ ${servicePages
     <lastmod>${currentDate}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
-  </url>`
+  </url>`,
   )
   .join("\n")}
 

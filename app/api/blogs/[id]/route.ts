@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyAuth } from "@/lib/auth";
@@ -15,6 +16,7 @@ export async function GET(
 
     // Try to find by ID first, then by slug
     let blog = await Blog.findById(id);
+
     if (!blog) {
       blog = await Blog.findOne({ slug: id });
     }
@@ -66,6 +68,7 @@ export async function PUT(
   try {
     // Check authentication
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
@@ -77,7 +80,15 @@ export async function PUT(
 
     const { id } = params;
     const body = await request.json();
-    const { title, content, excerpt, featuredImage, tags, published } = body;
+    const {
+      title,
+      content,
+      excerpt,
+      featuredImage,
+      bannerImage,
+      tags,
+      published,
+    } = body;
 
     const blog = await Blog.findById(id);
 
@@ -110,6 +121,7 @@ export async function PUT(
     if (content !== undefined) blog.content = content;
     if (excerpt !== undefined) blog.excerpt = excerpt;
     if (featuredImage !== undefined) blog.featuredImage = featuredImage;
+    if (bannerImage !== undefined) blog.bannerImage = bannerImage;
     if (tags !== undefined) blog.tags = tags;
     if (published !== undefined) blog.published = published;
 
@@ -143,6 +155,7 @@ export async function DELETE(
   try {
     // Check authentication
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },

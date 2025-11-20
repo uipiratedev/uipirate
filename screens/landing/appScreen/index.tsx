@@ -31,22 +31,22 @@ const LandingAppScreen = () => {
     <>
       <div className="flex flex-row items-center justify-center gap-8 mt-20 appTrigger container mx-auto max-md:gap-4">
         <img
-          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729768861/Frame_1984078758_tkh9ag.svg"
           alt="app"
-          id="left"
           className="rotate-[-6deg] max-md:w-[40%]"
+          id="left"
+          src="https://res.cloudinary.com/damm9iwho/image/upload/v1729768861/Frame_1984078758_tkh9ag.svg"
         />
         <img
-          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054843/middleImage_ggzymj.svg"
           alt="app"
-          id="center"
           className="pt-40 max-lg:hidden"
+          id="center"
+          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054843/middleImage_ggzymj.svg"
         />
         <img
-          src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
           alt="app"
-          id="right"
           className="rotate-[6deg] max-md:w-[40%] "
+          id="right"
+          src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
         />
       </div>
     </>

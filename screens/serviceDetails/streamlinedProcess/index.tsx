@@ -1,4 +1,5 @@
 import { Card, CardBody } from "@nextui-org/react";
+
 import { getGradientById } from "@/utils/gradientService";
 
 const StreamlinedProcess = ({ data }: any) => {
@@ -14,7 +15,7 @@ const StreamlinedProcess = ({ data }: any) => {
       </div>
       <div>
         {data.workflow.map((items: any, index: number) => (
-          <div className=" mt-12">
+          <div key={index} className=" mt-12">
             <div className="flex flex-row items-center justify-center mb-3">
               <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
                 {items.badge}
@@ -43,9 +44,9 @@ const StreamlinedProcess = ({ data }: any) => {
                           <div key={index}>
                             <div className="border border-[#00000014] bg-white rounded-xl p-2 w-fit ">
                               <img
-                                src={item.icon}
                                 alt="behance Logo"
                                 className="w-[40px] grayscale "
+                                src={item.icon}
                               />
                             </div>
                             <p className="text-xl max-md:text-base font-[700]">

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
+
 import { useAuth } from "@/hooks/useAuth";
 
 interface Blog {
@@ -23,8 +24,10 @@ export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterStatus, setFilterStatus] = useState<"all" | "published" | "draft">("all");
-  
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "published" | "draft"
+  >("all");
+
   useAuth(true); // Require authentication
 
   useEffect(() => {
@@ -35,7 +38,7 @@ export default function AdminBlogsPage() {
     try {
       setLoading(true);
       let url = "/api/blogs?limit=100";
-      
+
       if (filterStatus === "published") {
         url += "&published=true";
       } else if (filterStatus === "draft") {
@@ -49,7 +52,7 @@ export default function AdminBlogsPage() {
         setBlogs(data.data);
       }
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      // Error fetching blogs
     } finally {
       setLoading(false);
     }
@@ -74,13 +77,12 @@ export default function AdminBlogsPage() {
         alert(data.error || "Failed to delete blog");
       }
     } catch (error) {
-      console.error("Error deleting blog:", error);
       alert("Failed to delete blog");
     }
   };
 
   const filteredBlogs = blogs.filter((blog) =>
-    blog.title.toLowerCase().includes(searchQuery.toLowerCase())
+    blog.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -107,44 +109,44 @@ export default function AdminBlogsPage() {
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
             <Input
-              placeholder="Search blogs..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
               classNames={{
                 input: "text-base",
               }}
+              placeholder="Search blogs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex gap-2">
             <Button
-              variant={filterStatus === "all" ? "solid" : "flat"}
               className={
                 filterStatus === "all"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-100 dark:bg-gray-700"
               }
+              variant={filterStatus === "all" ? "solid" : "flat"}
               onClick={() => setFilterStatus("all")}
             >
               All
             </Button>
             <Button
-              variant={filterStatus === "published" ? "solid" : "flat"}
               className={
                 filterStatus === "published"
                   ? "bg-green-600 text-white"
                   : "bg-gray-100 dark:bg-gray-700"
               }
+              variant={filterStatus === "published" ? "solid" : "flat"}
               onClick={() => setFilterStatus("published")}
             >
               Published
             </Button>
             <Button
-              variant={filterStatus === "draft" ? "solid" : "flat"}
               className={
                 filterStatus === "draft"
                   ? "bg-orange-600 text-white"
                   : "bg-gray-100 dark:bg-gray-700"
               }
+              variant={filterStatus === "draft" ? "solid" : "flat"}
               onClick={() => setFilterStatus("draft")}
             >
               Drafts
@@ -205,8 +207,8 @@ export default function AdminBlogsPage() {
                     <td className="px-6 py-4">
                       <div>
                         <Link
-                          href={`/blogs/${blog.slug}`}
                           className="font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400"
+                          href={`/blogs/${blog.slug}`}
                         >
                           {blog.title}
                         </Link>
@@ -236,17 +238,17 @@ export default function AdminBlogsPage() {
                       <div className="flex items-center gap-2">
                         <Link href={`/blogs/edit/${blog._id}`}>
                           <Button
+                            className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
                             size="sm"
                             variant="flat"
-                            className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
                           >
                             Edit
                           </Button>
                         </Link>
                         <Button
+                          className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
                           size="sm"
                           variant="flat"
-                          className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400"
                           onClick={() => handleDelete(blog._id, blog.title)}
                         >
                           Delete
@@ -263,4 +265,3 @@ export default function AdminBlogsPage() {
     </div>
   );
 }
-

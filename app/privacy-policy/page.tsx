@@ -14,10 +14,10 @@ const PrivacyPolicy = () => {
             1. Introduction
           </h2>
           <p className="text-gray-700 leading-relaxed">
-            UI Pirate ("we," "our," or "us") is committed to protecting your
-            privacy. This Privacy Policy explains how we collect, use, disclose,
-            and safeguard your information when you visit our website
-            uipirate.com.
+            UI Pirate (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is
+            committed to protecting your privacy. This Privacy Policy explains
+            how we collect, use, disclose, and safeguard your information when
+            you visit our website uipirate.com.
           </p>
         </section>
 
@@ -54,9 +54,9 @@ const PrivacyPolicy = () => {
             3. Cookies and Tracking Technologies
           </h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            We use cookies and similar tracking technologies to track activity on
-            our website and store certain information. You can control cookies
-            through our cookie consent banner and your browser settings.
+            We use cookies and similar tracking technologies to track activity
+            on our website and store certain information. You can control
+            cookies through our cookie consent banner and your browser settings.
           </p>
 
           <h3 className="text-xl font-semibold mb-2 text-gray-800">
@@ -84,14 +84,14 @@ const PrivacyPolicy = () => {
             </p>
             <ul className="list-disc pl-6 text-gray-700 text-sm space-y-1">
               <li>
-                <strong>Google Analytics:</strong> Tracks website usage,
-                visitor behavior, and traffic sources. Data is stored on Google
-                servers. Learn more at{" "}
+                <strong>Google Analytics:</strong> Tracks website usage, visitor
+                behavior, and traffic sources. Data is stored on Google servers.
+                Learn more at{" "}
                 <a
-                  href="https://policies.google.com/privacy"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
+                  href="https://policies.google.com/privacy"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Google Privacy Policy
                 </a>
@@ -101,10 +101,10 @@ const PrivacyPolicy = () => {
                 heatmaps, and interaction patterns to improve user experience.
                 Learn more at{" "}
                 <a
-                  href="https://privacy.microsoft.com/en-us/privacystatement"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
+                  href="https://privacy.microsoft.com/en-us/privacystatement"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Microsoft Privacy Statement
                 </a>
@@ -250,16 +250,16 @@ const PrivacyPolicy = () => {
               <br />
               Email:{" "}
               <a
-                href="mailto:privacy@uipirate.com"
                 className="text-blue-600 hover:underline"
+                href="mailto:privacy@uipirate.com"
               >
                 privacy@uipirate.com
               </a>
               <br />
               Website:{" "}
               <a
-                href="https://uipirate.com"
                 className="text-blue-600 hover:underline"
+                href="https://uipirate.com"
               >
                 https://uipirate.com
               </a>
@@ -274,8 +274,8 @@ const PrivacyPolicy = () => {
           <p className="text-gray-700 leading-relaxed">
             We may update our Privacy Policy from time to time. We will notify
             you of any changes by posting the new Privacy Policy on this page
-            and updating the "Last Updated" date. You are advised to review this
-            Privacy Policy periodically for any changes.
+            and updating the &quot;Last Updated&quot; date. You are advised to
+            review this Privacy Policy periodically for any changes.
           </p>
         </section>
       </div>
@@ -284,4 +284,3 @@ const PrivacyPolicy = () => {
 };
 
 export default PrivacyPolicy;
-
