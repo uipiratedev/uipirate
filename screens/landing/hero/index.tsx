@@ -19,7 +19,7 @@ const StarRating = ({
       {[...Array(5)].map((_, index) => (
         <div key={index} className="w-[14px] h-[14px] relative">
           <img
-            alt="5 star rating"
+            alt="5 star rating for UI Pirate design services"
             className="w-[14px] h-[14px] transition-transform duration-300 hover:scale-110 absolute top-0 left-0"
             src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
             style={{
@@ -68,7 +68,7 @@ const LandingHero = () => {
                     showArrow={true}
                   >
                     <img
-                      alt="SaaS Application Design - Enterprise UI/UX"
+                      alt="Kaivan Dave - Client testimonial for UI Pirate enterprise UI/UX design services"
                       className="w-[32px] h-[32px] border-white rounded-full border-2 cursor-pointer transition-all  duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards] hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
                       src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753805631/Kaivan_Dave-modified_mcm9iw.png"
                       style={{
@@ -107,7 +107,7 @@ const LandingHero = () => {
                     showArrow={true}
                   >
                     <img
-                      alt="Dribble Logo"
+                      alt="Eden Hazani - Client testimonial for SaaS platform design overhaul"
                       className="w-[32px] h-[32px] border-white rounded-full border-2  cursor-pointer transition-transform duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards]"
                       src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753805632/eden-modified_jsf37k.png"
                       style={{
@@ -146,7 +146,7 @@ const LandingHero = () => {
                     showArrow={true}
                   >
                     <img
-                      alt="Mobile App Design - AI-Driven User Interface"
+                      alt="Priyanka Padhye - Client testimonial for brand identity and mobile app design"
                       className="w-[32px] h-[32px] border-white rounded-full border-2  cursor-pointer transition-all duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards] hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
                       src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753805632/Priyanka-modified_byouxn.png"
                       style={{
@@ -201,73 +201,85 @@ const LandingHero = () => {
                   <div className="star-confetti-revolve">
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
                     <div className="star-confetti">
                       <img
-                        alt="star"
+                        alt=""
+                        aria-hidden="true"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                       />
                     </div>
@@ -276,7 +288,7 @@ const LandingHero = () => {
 
                 <div className="flex flex-row gap-2 items-center md:mr-11">
                   <img
-                    alt="Dribble Logo"
+                    alt="Calendar icon for booking consultation"
                     className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-[580ms] ease-in-out  md:group-hover:translate-x-4 max-md:order-3  md:order-1 md:group-hover:order-3"
                     id="image"
                     src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
@@ -288,7 +300,7 @@ const LandingHero = () => {
                     +
                   </p>
                   <img
-                    alt="Dribble Logo"
+                    alt="UI Pirate logo - Enterprise UI/UX design agency"
                     className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
                     id="client"
                     src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
@@ -300,7 +312,7 @@ const LandingHero = () => {
                 </p>
                 <div>
                   <img
-                    alt="Dribble Logo"
+                    alt="Free consultation badge"
                     className="w-auto h-[30px]"
                     src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                   />
@@ -342,7 +354,7 @@ const LandingHero = () => {
                       }`}
                     >
                       <img
-                        alt="WhatsApp Logo"
+                        alt="WhatsApp icon for instant messaging"
                         className="w-[30px]  h-[30px]"
                         src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                       />

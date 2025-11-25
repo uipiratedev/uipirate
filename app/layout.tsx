@@ -185,9 +185,14 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
+        {/* Skip Link for Keyboard Navigation */}
+        <a href="#main-content" className="skip-link sr-only focus:not-sr-only">
+          Skip to main content
+        </a>
+
         <div className="relative flex flex-col">
           <ConditionalNavbar />
-          <main className="">{children}</main>
+          <main id="main-content" className="">{children}</main>
           <SpeedInsights />
           <CookieConsent />
         </div>

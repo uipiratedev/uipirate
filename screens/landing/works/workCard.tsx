@@ -164,7 +164,7 @@ const RecentWorkCard = () => {
               {" "}
               {/* Ensure images fit within the container */}
               <img
-                alt="img"
+                alt={`${item.heading} - ${item.heading1} UI/UX design project showcase`}
                 className=" rounded-3xl md:-mt-12 max-md:mt-12 " // Ensure the image does not overflow
                 src={item.img}
                 style={{

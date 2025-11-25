@@ -22,13 +22,28 @@ export const Navbar = () => {
   const [isDarkSection, setIsDarkSection] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showBanner, setShowBanner] = useState(true); // ✅ banner visibility
+  const [showBanner, setShowBanner] = useState(true);
+  const [announcement, setAnnouncement] = useState(""); // For screen reader announcements
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Handle Escape key to close mobile menu
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+        setAnnouncement("Menu closed");
+        setTimeout(() => setAnnouncement(""), 1000);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -69,11 +84,15 @@ export const Navbar = () => {
               </a>
             </p>
 
-            {/* ❌ Close Icon */}
+            {/* Close Icon */}
             <button
               aria-label="Close banner"
-              className="absolute right-4 text-gray-500 hover:text-gray-800 transition-all"
-              onClick={() => setShowBanner(false)}
+              className="absolute right-4 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-600 rounded transition-all"
+              onClick={() => {
+                setShowBanner(false);
+                setAnnouncement("Banner dismissed");
+                setTimeout(() => setAnnouncement(""), 1000);
+              }}
             >
               <svg
                 className="w-6 h-6 text-white"
@@ -126,7 +145,7 @@ export const Navbar = () => {
                   href="/"
                 >
                   <img
-                    alt="Logo"
+                    alt="UI Pirate - Enterprise UI/UX Design Agency Logo"
                     className="mt-2"
                     src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                   />
@@ -177,11 +196,20 @@ export const Navbar = () => {
                     style={{ paddingTop: 0 }}
                     variant="solid"
                   >
-                    😀 Let’s Talk
+                    <span aria-hidden="true">😀</span> Let's Talk
                   </Button>
                 </Link>
               </NavbarItem>
             </NavbarContent>
+
+            {/* ARIA Live Region for Screen Reader Announcements */}
+            <div
+              aria-live="polite"
+              aria-atomic="true"
+              className="sr-only"
+            >
+              {announcement}
+            </div>
 
             {/* --- Mobile Menu Content --- */}
             <NavbarMenu>
