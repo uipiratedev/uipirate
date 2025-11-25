@@ -64,7 +64,7 @@ export default function TestimonialCards() {
                       <div className="max-md:hidden block">
                         {item.logo && (
                           <img
-                            alt="Logo"
+                            alt={`${item.company || item.name} company logo`}
                             className="max-w-[80px]"
                             src={item.logo}
                           />

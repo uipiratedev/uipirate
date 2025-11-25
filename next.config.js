@@ -1,3 +1,7 @@
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable ESLint during production builds to prevent build failures
@@ -9,10 +13,34 @@ const nextConfig = {
   images: {
     domains: ["res.cloudinary.com"],
     formats: ["image/webp", "image/avif"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
   },
 
   // Enable compression
   compress: true,
+
+  // Optimize fonts
+  optimizeFonts: true,
+
+  // Enable SWC minification for better performance
+  swcMinify: true,
+
+  // Modularize imports to reduce bundle size
+  modularizeImports: {
+    "@nextui-org/react": {
+      transform: "@nextui-org/react/dist/{{member}}",
+    },
+  },
+
+  // Production optimizations
+  productionBrowserSourceMaps: false,
+
+  // Experimental features for better performance
+  experimental: {
+    optimizePackageImports: ["@nextui-org/react", "framer-motion", "gsap"],
+  },
 
   // Generate sitemap and robots.txt
   async rewrites() {
@@ -24,7 +52,7 @@ const nextConfig = {
     ];
   },
 
-  // Add security headers
+  // Add security and performance headers
   async headers() {
     return [
       {
@@ -41,6 +69,24 @@ const nextConfig = {
           {
             key: "X-XSS-Protection",
             value: "1; mode=block",
+          },
+        ],
+      },
+      {
+        source: "/static/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/_next/static/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
@@ -63,4 +109,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

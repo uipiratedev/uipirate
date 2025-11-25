@@ -2,8 +2,9 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 
-import { fontSans } from "@/config/fonts";
+import { fontSans, fontJakarta } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 
@@ -69,48 +70,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head>
-        {/* Google Analytics with Consent Mode */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-
-              // Set default consent mode
-              gtag('consent', 'default', {
-                'analytics_storage': 'denied',
-                'ad_storage': 'denied',
-                'wait_for_update': 500
-              });
-
-              gtag('js', new Date());
-              gtag('config', 'G-ZS77RQCWYM', {
-                'anonymize_ip': true
-              });
-            `,
-          }}
-        />
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
-        />
-
-        {/* Microsoft Clarity - Will be initialized after consent */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-              })(window, document, "clarity", "script", "txqkzeahh6");
-            `,
-          }}
-          type="text/javascript"
-        />
-
         {/* Bing Webmaster Tools Verification */}
-
         <meta content="367497DBA609A56C845E2A1D4ECC5F42" name="msvalidate.01" />
 
         {/* AI Crawler Meta Tags */}
@@ -174,23 +134,72 @@ export default function RootLayout({
           rel="me"
         />
 
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
+        {/* Preconnect to external domains for better performance */}
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.clarity.ms" />
       </head>
       <body
         className={clsx(
           "min-h-screen  font-sans antialiased bg-[#F5F5F5]",
           fontSans.variable,
+          fontJakarta.variable
         )}
       >
+        {/* Skip Link for Keyboard Navigation */}
+        <a href="#main-content" className="skip-link sr-only focus:not-sr-only">
+          Skip to main content
+        </a>
+
         <div className="relative flex flex-col">
           <ConditionalNavbar />
-          <main className="">{children}</main>
+          <main id="main-content" className="">
+            {children}
+          </main>
           <SpeedInsights />
           <CookieConsent />
         </div>
+
+        {/* Google Analytics with Consent Mode - Lazy loaded for better performance */}
+        <Script
+          id="gtag-base"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied',
+                'wait_for_update': 500
+              });
+              gtag('js', new Date());
+              gtag('config', 'G-ZS77RQCWYM', {
+                'anonymize_ip': true
+              });
+            `,
+          }}
+        />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
+          strategy="lazyOnload"
+        />
+
+        {/* Microsoft Clarity - Lazy loaded for better performance */}
+        <Script
+          id="clarity-script"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "txqkzeahh6");
+            `,
+          }}
+        />
       </body>
     </html>
   );

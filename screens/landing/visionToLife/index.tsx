@@ -51,7 +51,7 @@ function VisionToLife() {
             target="_blank"
           >
             <img
-              alt="WhatsApp"
+              alt="WhatsApp icon for instant messaging"
               className="h-[22px]"
               src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
             />

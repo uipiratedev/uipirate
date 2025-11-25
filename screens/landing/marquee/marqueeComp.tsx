@@ -57,6 +57,7 @@ const MarqueeComp = ({ items }: any) => {
               <img
                 alt={`img-${index}`}
                 className=" h-[32px]  grayscale hover:grayscale-0 max-h-[32px] "
+                loading="lazy"
                 src={el}
               />
             </div>

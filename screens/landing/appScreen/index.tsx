@@ -34,18 +34,21 @@ const LandingAppScreen = () => {
           alt="app"
           className="rotate-[-6deg] max-md:w-[40%]"
           id="left"
+          loading="lazy"
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1729768861/Frame_1984078758_tkh9ag.svg"
         />
         <img
           alt="app"
           className="pt-40 max-lg:hidden"
           id="center"
+          loading="lazy"
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054843/middleImage_ggzymj.svg"
         />
         <img
           alt="app"
           className="rotate-[6deg] max-md:w-[40%] "
           id="right"
+          loading="lazy"
           src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
         />
       </div>
