@@ -1,6 +1,5 @@
 "use client";
 import TryBeforeCommit from "../pricing/tryBeforeCommit";
-
 import ServiceHero from "./hero";
 import ServicesList from "./servicesList";
 import WhatWeProvide from "./whatWeProvide";
