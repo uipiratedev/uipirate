@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState } from "react";
-import { Button, Card, CardBody, Chip } from "@nextui-org/react";
+import { Card, CardBody, Chip } from "@nextui-org/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
@@ -377,14 +377,13 @@ const BoreYouCommit = () => {
                 <p className="my-0 text-center">or</p>
 
                 <Link href="/pricing">
-                  <Button
-                    as="a"
-                    className="bg-white text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
-                    color="primary"
-                    variant="bordered"
+                  <div
+                    className="bg-white text-black rounded-[16px] px-8 py-3 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] cursor-pointer hover:bg-gray-50 transition-colors"
+                    role="button"
+                    tabIndex={0}
                   >
                     See Detailed Pricing
-                  </Button>
+                  </div>
                 </Link>
               </div>
             </CardBody>

@@ -256,7 +256,7 @@ const dataPrice = [
 const OurPricingCard = (props: any) => {
   const [isHoveredChat, setIsHoveredChat] = useState(false);
   const [selectedTabs, setSelectedTabs] = useState<{ [key: number]: string }>(
-    {},
+    {}
   );
 
   const tabs = [
@@ -384,8 +384,8 @@ const OurPricingCard = (props: any) => {
                               selectedTab == "Design + Dev"
                                 ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/designdev_f0onqh.svg"
                                 : selectedTab == "Design Only"
-                                  ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/design_oly_f4hn7l.svg"
-                                  : "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/dev_grzer7.svg"
+                                ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/design_oly_f4hn7l.svg"
+                                : "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/dev_grzer7.svg"
                             }
                           />
                         )}
@@ -393,17 +393,13 @@ const OurPricingCard = (props: any) => {
                     </div>
                     <div className="md:hidden max-md:block">
                       <Link href="/contact">
-                        <Button
-                          className="bg-black text-white button dark:bg-white dark:text-black w-full"
-                          startContent={
-                            <img
-                              alt="Dribble Logo"
-                              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
-                            />
-                          }
-                        >
-                          Book a 15-min call
-                        </Button>
+                        <div className="bg-black text-white dark:bg-white dark:text-black w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg cursor-pointer hover:opacity-90 transition-opacity">
+                          <img
+                            alt="Dribble Logo"
+                            src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
+                          />
+                          <span>Book a 15-min call</span>
+                        </div>
                       </Link>
                     </div>
                   </div>
@@ -773,11 +769,9 @@ const OurPricingCard = (props: any) => {
                     rel="noreferrer"
                     target="_blank"
                   >
-                    <Button
-                      className=" border-back/50 hover:border-4 border-4 text-black font-bold w-full bg-white hover:border-gray-200 rounded-[16px]   py-[30px]"
-                      color="primary"
+                    <button
+                      className="border-back/50 hover:border-4 border-4 text-black font-bold w-full bg-white hover:border-gray-200 rounded-[16px] py-3flex items-center justify-center cursor-pointer transition-all"
                       style={{ width: "100%" }}
-                      variant="bordered"
                       onMouseEnter={() => setIsHoveredChat(true)}
                       onMouseLeave={() => setIsHoveredChat(false)}
                     >
@@ -817,7 +811,7 @@ const OurPricingCard = (props: any) => {
                           </p>
                         </span>
                       </div>
-                    </Button>
+                    </button>
                   </a>
                 </div>
               </div>

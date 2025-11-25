@@ -56,6 +56,7 @@ const CircularImage: React.FC<CircularImageProps> = ({ images }) => {
         <img
           key={index}
           alt={`Icon ${index + 1}`}
+          loading="lazy"
           src={src}
           style={{
             position: "absolute",

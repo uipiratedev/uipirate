@@ -10,7 +10,6 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/navbar";
 import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
@@ -52,7 +51,7 @@ export const Navbar = () => {
 
         setIsDarkSection(isInView);
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     );
 
     const darkSections = document.querySelectorAll(".dark-section");
@@ -119,7 +118,7 @@ export const Navbar = () => {
           <NextUINavbar
             className={clsx(
               "bg-none mx-[25rem] blur-none py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-20 max-md:mx-0 max-xl:mx-40 max-2xl:mx-[18rem] border-2 container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:border-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] bg-transparent z-[99999999]",
-              { "text-white": isDarkSection, "text-black": !isDarkSection },
+              { "text-white": isDarkSection, "text-black": !isDarkSection }
             )}
             isMenuOpen={isMenuOpen}
             maxWidth="xl"
@@ -172,7 +171,7 @@ export const Navbar = () => {
                     <NextLink
                       className={clsx(
                         linkStyles({ color: "foreground" }),
-                        "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer",
+                        "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer"
                       )}
                       href={item.href}
                     >
@@ -186,28 +185,22 @@ export const Navbar = () => {
             {/* --- Right Button --- */}
             <NavbarContent className=" basis-1/5 sm:basis-full" justify="end">
               <NavbarItem>
-                <Link href="/contact">
-                  <Button
-                    isExternal
-                    as={Link}
-                    className=" text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
-                    data-back="Let's Talk"
-                    data-front="Have an Idea?"
-                    style={{ paddingTop: 0 }}
-                    variant="solid"
-                  >
-                    <span aria-hidden="true">😀</span> Let's Talk
-                  </Button>
-                </Link>
+                <Button
+                  as={NextLink}
+                  href="/contact"
+                  className=" text-sm font-[500] text-white bg-black pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
+                  data-back="Let's Talk"
+                  data-front="Have an Idea?"
+                  style={{ paddingTop: 0 }}
+                  variant="solid"
+                >
+                  <span aria-hidden="true">😀</span> Let's Talk
+                </Button>
               </NavbarItem>
             </NavbarContent>
 
             {/* ARIA Live Region for Screen Reader Announcements */}
-            <div
-              aria-live="polite"
-              aria-atomic="true"
-              className="sr-only"
-            >
+            <div aria-live="polite" aria-atomic="true" className="sr-only">
               {announcement}
             </div>
 

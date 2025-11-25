@@ -1,41 +1,33 @@
 "use client";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import LocomotiveScroll from "locomotive-scroll";
 
 import Loader from "@/components/loader";
-import Seo from "@/components/seo";
 
-// Use React.ComponentType to explicitly type the dynamic component
+// Dynamically import Landing with no SSR to avoid hydration issues
 const Landing = dynamic(() => import("@/screens/landing"), {
   ssr: false,
 }) as React.FC;
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
-    new LocomotiveScroll();
-    const handlePageLoad = () => {
-      setTimeout(() => {
-        setLoading(false);
-      }, 3000); // 3-second delay
+    // Initialize LocomotiveScroll
+    const initLocomotiveScroll = async () => {
+      const LocomotiveScroll = (await import("locomotive-scroll")).default;
+      new LocomotiveScroll();
     };
 
-    // Check if the page has already loaded
-    if (document.readyState === "complete") {
-      setLoading(false);
-    } else {
-      window.addEventListener("load", handlePageLoad);
+    initLocomotiveScroll();
 
-      return () => window.removeEventListener("load", handlePageLoad);
-    }
+    // Show loader for 600ms
+    const timer = setTimeout(() => {
+      setShowContent(true);
+    }, 600);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  return (
-    <>
-      <Seo />
-      {loading ? <Loader /> : <Landing />}
-    </>
-  );
+  return <>{showContent ? <Landing /> : <Loader />}</>;
 }

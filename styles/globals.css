@@ -37,7 +37,7 @@
 
 /* Focus Visible Styles - provides clear focus indicators for keyboard navigation */
 *:focus-visible {
-  outline: 2px solid #3B82F6;
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -52,7 +52,7 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: #3B82F6;
+  background: #3b82f6;
   color: white;
   padding: 8px 16px;
   text-decoration: none;
@@ -82,9 +82,12 @@
 
 /* Focus Within - for container elements */
 .focus-within\:ring-2:focus-within {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+    var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+    calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000);
 }
 
 /* ========================================
@@ -93,7 +96,7 @@
 
 html,
 body {
-  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-family: var(--font-jakarta), "Plus Jakarta Sans", sans-serif !important;
 
   /* scroll-behavior: smooth; */
 }
@@ -310,6 +313,20 @@ body {
 .cta-button-hover:hover::after {
   opacity: 1;
   animation: shimmer-border 2s ease-in-out infinite;
+}
+
+/* Fade-in animation for content after loader */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-in forwards;
 }
 
 /* loader start */
