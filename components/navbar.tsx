@@ -65,16 +65,24 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* ✅ Banner with Close Icon */}
+      {/* ✅ Banner with Close Icon - Premium Clean Glass Effect */}
       {showBanner && (
-        <div className="relative bg-[#059669] text-center border-b border-gray-200">
-          <div className="h-[40px] flex items-center justify-center px-10">
-            <p className="text-sm font-medium text-white flex items-center justify-center gap-2">
+        <div
+          className="relative text-center border-b border-white/20 isolate glass-texture navbar-glass-light glass-border-light"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.65) 100%)",
+            WebkitBackdropFilter: "blur(28px) saturate(200%) brightness(108%)",
+            backdropFilter: "blur(28px) saturate(200%) brightness(108%)",
+          }}
+        >
+          <div className="h-[40px] flex items-center justify-center px-10 relative z-10">
+            <p className="text-sm font-medium text-gray-900 flex items-center justify-center gap-2">
               <span className="hidden md:inline">
                 Learn real product skills with mentorship at{" "}
               </span>
               <a
-                className="text-white font-bold"
+                className="text-gray-900 font-bold hover:text-black transition-colors"
                 href="https://propirates.com"
                 rel="noreferrer"
                 target="_blank"
@@ -86,7 +94,7 @@ export const Navbar = () => {
             {/* Close Icon */}
             <button
               aria-label="Close banner"
-              className="absolute right-4 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-600 rounded transition-all"
+              className="absolute right-4 text-gray-700/70 hover:text-gray-900 hover:bg-gray-100/50 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white rounded p-1 transition-all backdrop-blur-sm"
               onClick={() => {
                 setShowBanner(false);
                 setAnnouncement("Banner dismissed");
@@ -94,10 +102,10 @@ export const Navbar = () => {
               }}
             >
               <svg
-                className="w-6 h-6 text-white"
+                className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={2}
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >

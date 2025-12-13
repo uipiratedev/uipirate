@@ -1466,6 +1466,11 @@ header.glass-texture {
   overflow: visible !important;
 }
 
+/* Banner glass effect - matches navbar glass aesthetic */
+.glass-texture.navbar-glass-light {
+  /* Inherits all navbar glass properties for consistency */
+}
+
 /*
   Premium Apple-style glass effect with:
   - Increased blur (28px) for more pronounced frosted effect
