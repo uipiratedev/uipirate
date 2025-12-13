@@ -40,11 +40,12 @@ const LandingHero = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center py-12 w-full max-lg:py-10 max-md:py-6 container mx-auto">
+      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 container mx-auto">
         <div
           className="flex flex-col items-center justify-center w-screen"
           style={{ overflow: "visible" }}
         >
+          {" "}
           <div
             className="p-2 px-4 rounded-xl bg-[#8EF1F1] border-cyan-400 border-2"
             style={{
@@ -55,22 +56,22 @@ const LandingHero = () => {
             }}
           >
             <p className="text-center uppercase text-xs max-md:text-[10px] font-medium">
-              Trusted by 40+ startups across 6 countries
+              Empowering 40+ startups across 6 countries
             </p>
           </div>
-          <div className="flex flex-row items-center justify-center w-full py-8 max-md:py-4 max-md:pb-2 overflow-visible">
+          <div className="flex flex-row items-center justify-center w-full py-6 max-md:py-4 max-md:pb-2 overflow-visible">
             <div className="flex flex-row gap-2 overflow-visible">
-              <div className="items-center flex flex-col max-w-[200px] gap-2 overflow-visible">
+              <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:hidden overflow-visible">
                 <div className="w-[32px] h-[32px] relative overflow-visible group hover:-translate-y-1 transition-transform duration-300">
                   <Tooltip
                     color="foreground"
-                    content="Kaivan Dave"
+                    content="Rohit Kumar Jha - Co-Founder , ArthAlpha"
                     showArrow={true}
                   >
                     <img
-                      alt="Kaivan Dave - Client testimonial for UI Pirate enterprise UI/UX design services"
+                      alt="Rohit Kumar Jha - Client testimonial for UI Pirate enterprise UI/UX design services"
                       className="w-[32px] h-[32px] border-white rounded-full border-2 cursor-pointer transition-all  duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards] hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753805631/Kaivan_Dave-modified_mcm9iw.png"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593621/rohit_vo3c4g.svg"
                       style={{
                         animation:
                           "testimonialImageDrop 0.4s ease-out forwards",
@@ -83,7 +84,7 @@ const LandingHero = () => {
                 </div>
                 <div className="min-h-[32px] flex items-center overflow-hidden">
                   <p
-                    className="text-center italic text-xs font-medium"
+                    className="text-center italic text-xs"
                     style={{
                       animation: "testimonialTextUp 0.4s ease-out forwards",
                       animationDelay: "0.4s",
@@ -91,19 +92,19 @@ const LandingHero = () => {
                       transform: "translateY(25px)",
                     }}
                   >
-                    &quot;...great to work with and will ensure you&apos;re
-                    happy...&quot;
+                    &quot;...brought our complex AI trading vision to
+                    life...&quot;
                   </p>
                 </div>
                 <div className="flex flex-row gap-1 h-[14px] items-start">
                   <StarRating delay={300} />
                 </div>
               </div>
-              <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:hidden overflow-visible ">
+              <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:gap-1  overflow-visible ">
                 <div className="w-[32px] h-[32px] relative overflow-visible group hover:-translate-y-1 transition-transform duration-300">
                   <Tooltip
                     color="foreground"
-                    content="Eden Hazani"
+                    content="Eden Hazani - VP Research and Development ,Ipsos"
                     showArrow={true}
                   >
                     <img
@@ -142,13 +143,13 @@ const LandingHero = () => {
                 <div className="w-[32px] h-[32px] relative overflow-visible group hover:-translate-y-1 transition-transform duration-300">
                   <Tooltip
                     color="foreground"
-                    content=" Priyanka Padhye"
+                    content=" Nipun Sharma - CEO, RevUp AI"
                     showArrow={true}
                   >
                     <img
-                      alt="Priyanka Padhye - Client testimonial for brand identity and mobile app design"
+                      alt="Nipun Sharma - Client testimonial for brand identity and mobile app design"
                       className="w-[32px] h-[32px] border-white rounded-full border-2  cursor-pointer transition-all duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards] hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753805632/Priyanka-modified_byouxn.png"
+                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg"
                       style={{
                         animation:
                           "testimonialImageDrop 0.4s ease-out forwards",
@@ -169,8 +170,8 @@ const LandingHero = () => {
                       transform: "translateY(25px)",
                     }}
                   >
-                    &quot;...ability to truly understand our brand&apos;s
-                    identity & target...&quot;
+                    &quot;...from the 1st SaaS flow to our full design overhaul,
+                    was crisp...&quot;
                   </p>
                 </div>
                 <div className="flex flex-row gap-1 h-[14px] items-start">
@@ -179,19 +180,17 @@ const LandingHero = () => {
               </div>
             </div>
           </div>
-
-          <h1 className="reveal-text-anim text-7xl px-56 text-center font-[700] max-md:font-[600] max-lg:text-5xl max-md:text-[44px] max-md:leading-[1.08] max-md:px-6 max-lg:px-12 mt-3 max-xl:px-12 max-2xl:px-32 tracking-[-1.5px] leading-[1.1]">
-            Scalable UI/UX design for SaaS & AI Products
+          <h1 className="reveal-text-anim text-[68px] px-56 text-center font-[700] max-md:font-[600] max-lg:text-5xl max-md:text-[40px] max-md:leading-[1.08] max-md:px-3 max-lg:px-12 max-md:py-0 max-xl:px-12 max-2xl:px-32 tracking-[-1.5px] leading-[1.1]">
+            Designing <br className="sm:hidden"></br>AI-Driven SaaS Products
+            That Convert, <br className="max-md:hidden"></br>Scale & Ship Faster
           </h1>
-
-          <p className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mt-4 px-40 max-md:px-4 max-lg:12 font-sans leading-[25.2px]">
-            We help SaaS and enterprise startups design high-converting
-            dashboards, onboarding flows, and full product experiences, from MVP
-            to scale.
+          <p className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mt-4 px-40 max-xl:px-4 max-lg:12 font-sans leading-[25.2px] ">
+            We help fast-growing SaaS and enterprise teams build world-class
+            dashboards, onboarding flows, and AI-powered product experiences -
+            from MVP to complete design systems.
           </p>
-
           <div
-            className="my-12 flex flex-row items-center max-md:flex-col max-md:px-2 button-spring-animate relative gap-3"
+            className=" max-xl:my-6 xl:my-8 max-md:my-3 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
             <Link className="relative z-10" href="/contact">
@@ -306,9 +305,9 @@ const LandingHero = () => {
                     src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
                   />
                 </div>
-                <p className="text-lg font-bold text-nowrap">
+                <p className="font-semibold text-nowrap">
                   {" "}
-                  Book a 15-min call
+                  Book a 15-min Product Strategy Call
                 </p>
                 <div>
                   <img
