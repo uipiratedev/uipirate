@@ -113,17 +113,44 @@ export const Navbar = () => {
       )}
 
       {/* ✅ Navbar */}
-      <div className="container mx-auto h-[67px] reveal-text-anim-1 overflow-hidden pb-6 relative z-[99999999] max-md:bg-[#F5F5F5]">
+      <div className="container mx-auto h-[67px] reveal-text-anim-1 pb-6 relative z-[99999999] max-md:bg-[#F5F5F5]">
         {!loading && (
           <NextUINavbar
             className={clsx(
-              "bg-none mx-[25rem] blur-none py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-20 max-md:mx-0 max-xl:mx-40 max-2xl:mx-[18rem] border-2 container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:border-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] bg-transparent z-[99999999]",
-              { "text-white": isDarkSection, "text-black": !isDarkSection }
+              "mx-[25rem] py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-20 max-md:mx-0 max-xl:mx-40 max-2xl:mx-[18rem] container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] z-[99999999]",
+              // Premium glass effect with texture
+              "glass-texture",
+              "transition-all duration-300 ease-in-out",
+              // CRITICAL: Isolation for backdrop-filter to work
+              "isolate",
+              // Adaptive glass styling based on section
+              {
+                // Dark section - premium glass with subtle glow
+                "navbar-glass-dark glass-border-dark glass-shadow-dark":
+                  isDarkSection,
+                // Light section - premium glass with bright highlights
+                "navbar-glass-light glass-border-light glass-shadow-light":
+                  !isDarkSection,
+                // Text colors
+                "text-white": isDarkSection,
+                "text-black": !isDarkSection,
+              },
+              // Mobile specific styles - simplified glass for performance
+              "max-md:backdrop-blur-md max-md:bg-[#F5F5F5]/95 max-md:border-none max-md:shadow-md"
             )}
             isMenuOpen={isMenuOpen}
             maxWidth="xl"
             position="sticky"
-            style={{ zIndex: 99999999 }}
+            style={{
+              zIndex: 99999999,
+              // Force backdrop-filter to apply
+              WebkitBackdropFilter: isDarkSection
+                ? "blur(28px) saturate(180%) brightness(95%)"
+                : "blur(28px) saturate(200%) brightness(108%)",
+              backdropFilter: isDarkSection
+                ? "blur(28px) saturate(180%) brightness(95%)"
+                : "blur(28px) saturate(200%) brightness(108%)",
+            }}
             onMenuOpenChange={setIsMenuOpen}
           >
             {/* --- Left Brand Section --- */}
@@ -166,12 +193,25 @@ export const Navbar = () => {
                 {siteConfig.navItems.map((item) => (
                   <NavbarItem
                     key={item.href}
-                    className="hover:bg-[#E9E9E9] px-2 rounded-[0.65rem] pb-[4px] hover:font-[700]"
+                    className={clsx(
+                      "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 relative",
+                      {
+                        // Premium glass hover for dark sections - brighter with inner glow
+                        "hover:bg-white/25 hover:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.3),0_2px_8px_-2px_rgba(255,255,255,0.1)]":
+                          isDarkSection,
+                        // Premium glass hover for light sections - subtle with depth
+                        "hover:bg-white/80 hover:shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.9),0_2px_8px_-2px_rgba(0,0,0,0.08)]":
+                          !isDarkSection,
+                      }
+                    )}
+                    style={{
+                      backdropFilter: "blur(8px)",
+                    }}
                   >
                     <NextLink
                       className={clsx(
                         linkStyles({ color: "foreground" }),
-                        "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer"
+                        "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]"
                       )}
                       href={item.href}
                     >

@@ -1433,6 +1433,173 @@ reveal-text span {
   background-color: #e9e9e9;
 }
 
+/* ========================================
+   NAVBAR GLASSMORPHISM EFFECT - PREMIUM
+   ======================================== */
+
+/*
+  CRITICAL FIX: Override NextUI Navbar defaults that prevent backdrop-filter
+  NextUI may add background colors or other properties that interfere with glass effect
+*/
+[data-slot="base"].glass-texture,
+nav.glass-texture,
+header.glass-texture {
+  /* Force transparent background to allow backdrop-filter to show through */
+  background-color: transparent !important;
+  /* Ensure proper stacking context */
+  isolation: isolate;
+  /* Remove any conflicting properties that block backdrop-filter */
+  overflow: visible !important;
+  /* Ensure element creates its own stacking context */
+  transform: translateZ(0);
+  /* Force GPU acceleration for better blur performance */
+  will-change: backdrop-filter;
+}
+
+/* Override any NextUI wrapper backgrounds */
+.glass-texture [data-slot="wrapper"] {
+  background-color: transparent !important;
+}
+
+/* Ensure parent containers don't block backdrop-filter */
+.reveal-text-anim-1 {
+  overflow: visible !important;
+}
+
+/*
+  Premium Apple-style glass effect with:
+  - Increased blur (28px) for more pronounced frosted effect
+  - Saturation boost (200%) for vibrant color bleed-through
+  - Brightness adjustment for depth perception
+  - Contrast enhancement for clarity
+*/
+.navbar-glass-premium {
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(105%)
+    contrast(100%);
+  backdrop-filter: blur(28px) saturate(200%) brightness(105%) contrast(100%);
+}
+
+/* Light section glass - more transparent with subtle brightness boost */
+.navbar-glass-light {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.65) 100%
+  );
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(108%);
+  backdrop-filter: blur(28px) saturate(200%) brightness(108%);
+}
+
+/* Dark section glass - subtle white tint with brightness reduction for contrast */
+.navbar-glass-dark {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(95%);
+  backdrop-filter: blur(28px) saturate(180%) brightness(95%);
+}
+
+/* Inner glow effect - simulates light refraction on glass edges */
+.glass-inner-glow-light {
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.glass-inner-glow-dark {
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Dual border effect for depth - outer subtle, inner bright */
+.glass-border-light {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 1px rgba(209, 213, 219, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.glass-border-dark {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Layered shadows for floating glass effect */
+.glass-shadow-light {
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08),
+    0 4px 16px -4px rgba(0, 0, 0, 0.06), 0 8px 24px -8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.glass-shadow-dark {
+  box-shadow: 0 2px 12px -2px rgba(0, 0, 0, 0.3),
+    0 4px 20px -4px rgba(0, 0, 0, 0.2), 0 8px 32px -8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Subtle noise texture for realistic glass grain */
+.glass-texture {
+  position: relative;
+  /* Ensure backdrop-filter works */
+  isolation: isolate;
+}
+
+.glass-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  /* Ensure texture doesn't block backdrop-filter */
+  z-index: 1;
+}
+
+/* Ensure all child elements are above the texture */
+.glass-texture > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Enhanced glass effect with better browser support */
+@supports (
+  (-webkit-backdrop-filter: blur(28px)) or (backdrop-filter: blur(28px))
+) {
+  .navbar-glass-premium {
+    -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(105%)
+      contrast(100%);
+    backdrop-filter: blur(28px) saturate(200%) brightness(105%) contrast(100%);
+  }
+
+  .navbar-glass-light {
+    -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(108%);
+    backdrop-filter: blur(28px) saturate(200%) brightness(108%);
+  }
+
+  .navbar-glass-dark {
+    -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(95%);
+    backdrop-filter: blur(28px) saturate(180%) brightness(95%);
+  }
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (
+  (-webkit-backdrop-filter: blur(28px)) or (backdrop-filter: blur(28px))
+) {
+  .navbar-glass-light {
+    background: rgba(255, 255, 255, 0.88) !important;
+  }
+
+  .navbar-glass-dark {
+    background: rgba(255, 255, 255, 0.15) !important;
+  }
+}
+
 /* meteor */
 /* Dropping Meteor Animation with slight horizontal drift */
 @keyframes meteorFall {
