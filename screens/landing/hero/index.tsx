@@ -3,7 +3,6 @@ import { Button } from "@heroui/button";
 import { useState, useRef } from "react";
 import { Tooltip } from "@heroui/react";
 import Link from "next/link";
-import AINodeAnimation from "./AINodeAnimation";
 import AnimatedHeadline from "./AnimatedHeadline";
 
 const LandingHero = () => {
@@ -361,15 +360,11 @@ const LandingHero = () => {
               </div>
             </div>
           </div> */}
-          {/* AI Node Animation Background */}
-          <div className="absolute left-1/2 -translate-x-1/2 w-full max-w-[1400px] h-[500px] max-md:h-[400px] pointer-events-none top-0">
-            <AINodeAnimation />
-          </div>
           {/* Animated Headline */}
           <div className="relative z-10">
             <AnimatedHeadline />
           </div>
-          <p className="reveal-text-anim-1 max-w-[820px] text-center text-lg max-md:text-sm mt-4 md:my-4 px-4 font-sans leading-[25.2px]">
+          <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-2xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 font-sans leading-[25.2px] 2xl:leading-[32px]">
             We help fast-growing SaaS and enterprise teams build world-class
             dashboards, onboarding flows, and AI-powered product experiences -
             from MVP to complete enterprise applications.
@@ -380,7 +375,7 @@ const LandingHero = () => {
           >
             <Link className="relative z-10" href="/contact">
               <div
-                className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative"
+                className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
                 style={{
                   borderRadius: "11.889px",
                   background: "#000",
