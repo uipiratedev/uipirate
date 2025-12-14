@@ -78,9 +78,9 @@ const LandingMarquee = () => {
       link: "https://biotexmedical.com/",
     },
     {
-      url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586283/NML_logo_1_hkebcc.png",
-      alt: "NML Research - Research and innovation company logo",
-      link: "https://nml.res.in/",
+      url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png",
+      alt: "Khaitan & Co - APAC's largest leading law firm ",
+      link: "https://www.khaitanco.com/",
     },
     {
       url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
@@ -122,24 +122,35 @@ const LandingMarquee = () => {
   ];
 
   return (
-    <div className="py-6 max-md:py-6 bg-gradient-to-b from-[#F5F5F5] via-[#F5F5F5] to-[#FAFAFA] relative overflow-hidden">
-      {/* Subtle decorative background elements */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
-        <div className="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-64 h-64 bg-white rounded-full blur-3xl" />
-      </div>
+    <div className="py-6 max-md:py-6 bg-white relative overflow-hidden">
+      {/* Subtle grid background - much softer, fades at edges, almost invisible */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%)",
+          opacity: 0.5,
+        }}
+      />
 
       <div className="container mx-auto max-md:px-4 flex flex-col items-center justify-center relative z-10">
         {/* Section heading with enhanced styling */}
-        <div className="mb-6 max-md:mb-10 text-center">
-          <p
-            ref={headingRef}
-            className="text-lg md:text-2xl font-[500] text-black/50 leading-snug tracking-wide"
-          >
-            Trusted by teams building the future of SaaS & AI
-          </p>
-          {/* Decorative underline */}
-          <div className="mt-4 mx-auto w-16 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-40" />
+        <div className="mb-6 max-md:mb-10 text-center max-w-4xl mx-auto px-8">
+          <div ref={headingRef}>
+            <p className="text-2xl md:text-4xl font-jakarta font-[600] text-brand-orange leading-snug tracking-wide">
+              Trusted by Teams
+            </p>
+            <p className="text-2xl md:text-4xl font-jakarta font-[600] text-black leading-snug tracking-wide mt-1">
+              Building the Future of SaaS and AI
+            </p>
+          </div>
         </div>
 
         {/* Static logo grid - premium enterprise clients only */}
@@ -154,13 +165,20 @@ const LandingMarquee = () => {
                 href={logo.link || undefined}
                 target={logo.link ? "_blank" : undefined}
                 rel={logo.link ? "noopener noreferrer" : undefined}
-                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-xl transition-all duration-500 ease-out relative overflow-hidden ${
+                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[18px] transition-all duration-500 ease-out relative overflow-hidden ${
                   logo.link
-                    ? "cursor-pointer hover:bg-white hover:shadow-lg hover:shadow-black/5"
+                    ? "cursor-pointer hover:brightness-105"
                     : "cursor-default"
                 }`}
                 style={{
-                  willChange: "transform, opacity",
+                  background:
+                    "linear-gradient(142deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0.55) 100%)",
+                  backdropFilter: "blur(32px) saturate(120%) brightness(100%)",
+                  WebkitBackdropFilter:
+                    "blur(32px) saturate(120%) brightness(100%)",
+                  border: "2px solid rgba(255, 255, 255, 0.12)",
+                  boxShadow:
+                    "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
                 }}
                 onMouseEnter={(e) => {
                   const border =
@@ -208,16 +226,11 @@ const LandingMarquee = () => {
                 <img
                   src={logo.url}
                   alt={logo.alt}
-                  className="h-[40px] max-h-[40px] max-md:h-[32px] max-md:max-h-[32px] w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 ease-out group-hover:scale-110 relative z-10"
+                  className="h-[40px] max-h-[40px] max-md:h-[32px] max-md:max-h-[32px] w-auto object-contain  transition-all duration-500 ease-out group-hover:scale-110 relative z-10"
                   loading="lazy"
-                  style={{
-                    filter: "grayscale(100%) brightness(0.95)",
-                    willChange: "filter, transform",
-                  }}
                   onMouseEnter={(e) => {
                     gsap.to(e.currentTarget, {
                       scale: 1.1,
-                      filter: "grayscale(0%) brightness(1)",
                       duration: 0.4,
                       ease: "power2.out",
                     });
@@ -225,7 +238,6 @@ const LandingMarquee = () => {
                   onMouseLeave={(e) => {
                     gsap.to(e.currentTarget, {
                       scale: 1,
-                      filter: "grayscale(100%) brightness(0.95)",
                       duration: 0.4,
                       ease: "power2.out",
                     });

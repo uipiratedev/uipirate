@@ -47,7 +47,7 @@ const FaqsHero = ({
         {/* Search Input with Category Selector */}
         <div className="mt-12 max-md:mt-6 flex flex-row items-center justify-center max-lg:flex-col w-full">
           <div className="w-full max-w-3xl relative">
-            <div className="flex items-center w-full rounded-full border border-[#E5E5E5] bg-[#FAFAFA] overflow-hidden shadow-sm">
+            <div className="flex items-center w-full rounded-full border border-[#E5E5E5] bg-white overflow-hidden shadow-sm">
               {/* Search Input */}
               <label htmlFor="faq-search" className="sr-only">
                 Search FAQs
