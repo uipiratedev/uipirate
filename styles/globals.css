@@ -1493,6 +1493,21 @@ header.glass-texture {
   overflow: visible !important;
 }
 
+/* Mobile: Fix navbar height to match desktop */
+@media (max-width: 768px) {
+  /* Override NextUI default padding on mobile */
+  nav.glass-texture[data-slot="base"] {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Ensure navbar wrapper has consistent height */
+  nav.glass-texture[data-slot="base"] [data-slot="wrapper"] {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
 /* Banner glass effect - matches navbar glass aesthetic */
 .glass-texture.navbar-glass-light {
   /* Inherits all navbar glass properties for consistency */

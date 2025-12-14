@@ -37,7 +37,7 @@ const LandingHero = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative overflow-hidden">
+      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative">
         {/* Subtle Grid Background Pattern */}
         <div
           className="absolute pointer-events-none -mt-20"
@@ -52,7 +52,6 @@ const LandingHero = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            width: "100vw",
             marginLeft: "calc(-50vw + 50%)",
           }}
         />
@@ -69,7 +68,6 @@ const LandingHero = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            width: "100vw",
             marginLeft: "calc(-50vw + 50%)",
           }}
         ></div>
@@ -361,11 +359,13 @@ const LandingHero = () => {
               </div>
             </div>
           </div> */}
-          <h1 className="reveal-text-anim text-[68px] px-4 text-center font-[700] max-md:font-[600] max-lg:text-5xl max-md:text-[39px] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1]">
-            Designing AI-Driven SaaS Products <br />
+          <h1 className="reveal-text-anim text-[68px] px-4 text-center font-[700] max-md:font-[600] max-lg:text-5xl max-md:text-[40px] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1]">
+            Designing <br className="max-md:block hidden"></br>AI-Driven SaaS
+            Products <br />
             That{" "}
             <span className="text-brand-orange">
-              Convert, Scale & Ship Faster
+              Convert, <br className="max-md:block hidden"></br>Scale &{" "}
+              <br className="max-md:block hidden"></br>Ship Faster
             </span>
           </h1>
           <p className="reveal-text-anim-1 max-w-[820px] text-center text-lg max-md:text-sm mt-4 md:my-4 px-4 font-sans leading-[25.2px]">
@@ -374,7 +374,7 @@ const LandingHero = () => {
             from MVP to complete enterprise applications.
           </p>
           <div
-            className=" max-xl:my-6 xl:my-8 max-md:my-3 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
+            className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
           >
             <Link className="relative z-10" href="/contact">
@@ -476,31 +476,6 @@ const LandingHero = () => {
                     </div>
                   </div>
                 </div>
-
-                <div className="flex flex-row gap-2 items-center md:mr-11">
-                  <img
-                    alt="Calendar icon for booking consultation"
-                    className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-[580ms] ease-in-out  md:group-hover:translate-x-4 max-md:order-3  md:order-1 md:group-hover:order-3"
-                    id="image"
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
-                  />
-                  <p
-                    className="text-[#5B5B5B] text-xl font-bold md:absolute order-2 -mt-1"
-                    id="plus"
-                  >
-                    +
-                  </p>
-                  <img
-                    alt="UI Pirate logo - Enterprise UI/UX design agency"
-                    className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
-                    id="client"
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
-                  />
-                </div>
-                <p className="font-semibold text-nowrap">
-                  {" "}
-                  Book a 15-min Product Strategy Call
-                </p>
                 <div>
                   <img
                     alt="Free consultation badge"
@@ -508,6 +483,10 @@ const LandingHero = () => {
                     src="/assets/free.svg"
                   />
                 </div>
+                <p className="font-semibold text-nowrap max-md:text-medium">
+                  {" "}
+                  Book a 15-min Product Strategy Call
+                </p>
               </div>
             </Link>
             <div className="w-[100%] z-10">
@@ -537,7 +516,7 @@ const LandingHero = () => {
                       className="w-[30px] h-[30px]"
                       src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                     />
-                    <p className="text-base font-semibold">
+                    <p className="text-base font-semibold max-md:text-medium">
                       Lets Talk via Whatsapp
                     </p>
                   </div>

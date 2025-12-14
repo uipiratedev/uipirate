@@ -136,12 +136,12 @@ export const Navbar = () => {
       )}
 
       {/* ✅ Navbar */}
-      <div className="container mx-auto h-[67px] reveal-text-anim-1 pb-6 relative z-[99999999] max-md:bg-[#FAFAFA]">
+      <div className="container mx-auto h-[67px] reveal-text-anim-1 pb-6 max-md:pb-0 max-md:h-auto relative z-[99999999]">
         {!loading && (
           <>
             <NextUINavbar
               className={clsx(
-                "mx-[10rem] py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-12 max-md:mx-0 max-xl:mx-24 max-2xl:mx-[12rem] container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] z-[99999999]",
+                "mx-[10rem] py-0 w-auto px-0 max-lg:mx-12 max-md:mx-0 max-xl:mx-24 max-2xl:mx-[12rem] container flex flex-row items-center rounded-2xl max-md:rounded-none sticky top-0 mt-3 max-md:mt-0 h-[55px] z-[99999999]",
                 // Premium glass effect with texture
                 "glass-texture",
                 "transition-all duration-300 ease-in-out",
@@ -158,9 +158,7 @@ export const Navbar = () => {
                   // Text colors
                   "text-white": isDarkSection,
                   "text-black": !isDarkSection,
-                },
-                // Mobile specific styles - simplified glass for performance
-                "max-md:backdrop-blur-md  max-md:border-none max-md:shadow-md"
+                }
               )}
               isMenuOpen={isMenuOpen}
               maxWidth="full"
