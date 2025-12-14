@@ -141,7 +141,7 @@ export const Navbar = () => {
           <>
             <NextUINavbar
               className={clsx(
-                "mx-[25rem] py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-20 max-md:mx-0 max-xl:mx-40 max-2xl:mx-[18rem] container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] z-[99999999]",
+                "mx-[10rem] py-0 w-auto px-0 max-md:-pb-3 max-lg:mx-12 max-md:mx-0 max-xl:mx-24 max-2xl:mx-[12rem] container flex flex-row items-center rounded-2xl max-md:rounded-none max-md:pt-1 sticky top-0 mt-3 max-md:mt-0 h-[55px] z-[99999999]",
                 // Premium glass effect with texture
                 "glass-texture",
                 "transition-all duration-300 ease-in-out",
@@ -163,7 +163,7 @@ export const Navbar = () => {
                 "max-md:backdrop-blur-md  max-md:border-none max-md:shadow-md"
               )}
               isMenuOpen={isMenuOpen}
-              maxWidth="xl"
+              maxWidth="full"
               position="sticky"
               style={{
                 zIndex: 99999999,

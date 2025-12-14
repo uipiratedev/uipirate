@@ -116,6 +116,17 @@ body {
   @apply text-center text-5xl max-lg:text-4xl max-md:text-3xl font-[700] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[64px];
 }
 
+.badge-text {
+  @apply text-center uppercase font-medium text-black font-jetbrains max-md:text-[10px];
+  color: #000;
+  font-variant-numeric: slashed-zero;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
 /* .badge-center {
   @apply bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2;
 } */
