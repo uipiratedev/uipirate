@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import Loader from "@/components/loader";
-// import SplashCursor from "@/components/SplashCursor";
+import SplashCursor from "@/components/SplashCursor";
 
 // Dynamically import Landing with no SSR to avoid hydration issues
 const Landing = dynamic(() => import("@/screens/landing"), {
@@ -15,12 +15,12 @@ export default function Home() {
 
   useEffect(() => {
     // Initialize LocomotiveScroll
-    const initLocomotiveScroll = async () => {
-      const LocomotiveScroll = (await import("locomotive-scroll")).default;
-      new LocomotiveScroll();
-    };
+    // const initLocomotiveScroll = async () => {
+    //   const LocomotiveScroll = (await import("locomotive-scroll")).default;
+    //   new LocomotiveScroll();
+    // };
 
-    initLocomotiveScroll();
+    // initLocomotiveScroll();
 
     // Show loader for 600ms
     const timer = setTimeout(() => {
@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <>
-      {/* <SplashCursor /> */}
+      <SplashCursor />
       {!showContent && <Loader />}
       <Landing />
     </>
