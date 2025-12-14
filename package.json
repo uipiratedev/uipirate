@@ -36,11 +36,13 @@
     "@tiptap/starter-kit": "^3.10.1",
     "@vercel/speed-insights": "^1.1.0",
     "bcryptjs": "^3.0.3",
-    "clsx": "2.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "framer-motion": "^11.5.6",
     "gsap": "^3.12.5",
     "jsonwebtoken": "^9.0.2",
     "locomotive-scroll": "^5.0.0-beta.21",
+    "lucide-react": "^0.561.0",
     "mongoose": "^8.19.3",
     "next": "14.2.35",
     "next-themes": "^0.2.1",
@@ -49,7 +51,9 @@
     "react-dom": "18.3.1",
     "react-fast-marquee": "^1.6.5",
     "react-slick": "^0.30.2",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "14.2.35",
