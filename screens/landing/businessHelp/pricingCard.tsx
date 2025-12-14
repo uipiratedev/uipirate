@@ -5,7 +5,7 @@ import {
   CardFooter,
   CardHeader,
   Chip,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
@@ -279,7 +279,6 @@ const VideoWithCards = () => {
           </Card>
         </div>
       ))}
-
       {/* Bottom cards (data1) */}
       <div
         ref={(el) => {

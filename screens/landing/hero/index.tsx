@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { useState, useRef } from "react";
-import { Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@heroui/react";
 import Link from "next/link";
 
 const LandingHero = () => {

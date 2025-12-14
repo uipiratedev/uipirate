@@ -31,8 +31,8 @@ const nextConfig = {
 
   // Modularize imports to reduce bundle size
   modularizeImports: {
-    "@nextui-org/react": {
-      transform: "@nextui-org/react/dist/{{member}}",
+    "@heroui/react": {
+      transform: "@heroui/react/dist/{{member}}",
     },
   },
 
@@ -41,7 +41,7 @@ const nextConfig = {
 
   // Experimental features for better performance
   experimental: {
-    optimizePackageImports: ["@nextui-org/react", "framer-motion", "gsap"],
+    optimizePackageImports: ["@heroui/react", "framer-motion", "gsap"],
   },
 
   // Generate sitemap and robots.txt

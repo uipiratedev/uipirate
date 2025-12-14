@@ -1,6 +1,6 @@
 "use client";
 
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem } from "@heroui/react";
 
 interface FaqsHeroProps {
   searchQuery: string;
@@ -107,9 +107,7 @@ const FaqsHero = ({
                   }}
                 >
                   {tabs.map((tab) => (
-                    <SelectItem key={tab} value={tab}>
-                      {getDisplayName(tab)}
-                    </SelectItem>
+                    <SelectItem key={tab}>{getDisplayName(tab)}</SelectItem>
                   ))}
                 </Select>
               </div>
@@ -144,9 +142,7 @@ const FaqsHero = ({
               }}
             >
               {tabs.map((tab) => (
-                <SelectItem key={tab} value={tab}>
-                  {getDisplayName(tab)}
-                </SelectItem>
+                <SelectItem key={tab}>{getDisplayName(tab)}</SelectItem>
               ))}
             </Select>
           </div>

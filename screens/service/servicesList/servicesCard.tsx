@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useLayoutEffect, useRef } from "react";
-import { Card, CardBody, CardHeader, Chip } from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Chip } from "@heroui/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
@@ -310,7 +310,6 @@ const ServicesCard = () => {
           </div>
         ))}
       </div>
-
       <div
         ref={(el) => {
           if (el && !isMobile) cardsRef.current[3] = el;

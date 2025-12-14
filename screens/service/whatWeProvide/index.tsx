@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 
 import testimonials from "@/data/testimonials.json";
 import Avatar from "@/components/Avatar";

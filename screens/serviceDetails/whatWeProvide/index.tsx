@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 const WhatWeProvide = ({ data }: any) => {
   return (
     <div className=" pt-32 max-md:pt-24">
