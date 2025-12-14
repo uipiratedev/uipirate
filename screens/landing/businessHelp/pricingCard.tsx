@@ -1,18 +1,16 @@
+"use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Chip,
-} from "@heroui/react";
+import { Card, CardBody, CardFooter, CardHeader, Chip } from "@heroui/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 
 import data from "@/data/servicesTopList.json";
 
-gsap.registerPlugin(ScrollTrigger);
+// Register GSAP plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const data1 = [
   {
@@ -134,7 +132,7 @@ const VideoWithCards = () => {
                 end: "bottom 70%",
                 toggleActions: "play none none reverse",
               },
-            },
+            }
           );
         }
       });
@@ -155,7 +153,7 @@ const VideoWithCards = () => {
       (entries) => {
         entries.forEach((entry) => {
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target,
+            (video) => video === entry.target
           );
           const videoElement = videoRefs.current[index];
 
@@ -170,7 +168,7 @@ const VideoWithCards = () => {
           }
         });
       },
-      { threshold: 0.4 },
+      { threshold: 0.4 }
     );
 
     videoRefs.current.forEach((video) => {

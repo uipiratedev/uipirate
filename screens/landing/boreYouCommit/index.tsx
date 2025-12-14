@@ -6,7 +6,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 
-gsap.registerPlugin(ScrollTrigger);
+// Register GSAP plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const BoreYouCommit = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);

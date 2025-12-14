@@ -1,10 +1,13 @@
+"use client";
 import { Button } from "@heroui/button";
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+// Register ScrollTrigger plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const data = [
   {
@@ -42,14 +45,15 @@ const data = [
 const LandingBehanceDan = () => {
   const runAnimation = () => {
     const images = gsap.utils.toArray("#img") as HTMLElement[]; // Explicitly cast to HTMLElement[]
-    const isMobile = window.innerWidth <= 7680; // Detect mobile view
+    // FIXED: Safe window check for SSR
+    const isMobile = typeof window !== "undefined" && window.innerWidth <= 7680; // Detect mobile view
 
     const animateRow = (
       startIndex: number,
       endIndex: number,
       xMove: string[],
       yMove: string[],
-      rotateDeg: number[],
+      rotateDeg: number[]
     ) => {
       gsap.to(images.slice(startIndex, endIndex), {
         x: (i) => xMove[i % 2],

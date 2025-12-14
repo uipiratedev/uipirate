@@ -1,10 +1,16 @@
+"use client";
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+// Register GSAP plugin outside component to avoid re-registration
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 const LandingAppScreen = () => {
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    // Plugin already registered above
 
     const tl = gsap.timeline({
       scrollTrigger: {

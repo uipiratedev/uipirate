@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button, Card, CardBody, CardHeader, Chip } from "@heroui/react";
 import gsap from "gsap";
@@ -5,7 +6,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NextLink from "next/link";
 
 import data from "@/data/servicesTopList.json";
-gsap.registerPlugin(ScrollTrigger);
+
+// Register GSAP plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const ServicesSection = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
@@ -201,9 +206,13 @@ const ServicesSection = () => {
                           </p>
                         </div>
                       </Button>
+                    </NextLink>
+                    <NextLink
+                      className="w-[300px] max-md:w-[250px] max-lg:mt-3 lg:ml-3 md:hidden"
+                      href="/services"
+                    >
                       <Button
-                        as="a"
-                        className="bg-white md:hidden text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
+                        className="bg-white text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2]"
                         color="primary"
                         variant="bordered"
                       >

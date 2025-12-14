@@ -3,12 +3,17 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
+// Register GSAP plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 const LandingMarquee = () => {
   const headingRef = useRef<HTMLParagraphElement>(null);
   const logosRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    // Plugin already registered above
 
     // Heading animation
     if (headingRef.current) {

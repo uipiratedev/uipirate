@@ -178,14 +178,15 @@ const data = [
 const LandingBehance = () => {
   const runAnimation = () => {
     const images = gsap.utils.toArray("#img") as HTMLElement[]; // Explicitly cast to HTMLElement[]
-    const isMobile = window.innerWidth <= 768; // Detect mobile view
+    // FIXED: Safe window check for SSR
+    const isMobile = typeof window !== "undefined" && window.innerWidth <= 768; // Detect mobile view
 
     const animateRow = (
       startIndex: number,
       endIndex: number,
       xMove: string[],
       yMove: string[],
-      rotateDeg: number[],
+      rotateDeg: number[]
     ) => {
       gsap.to(images.slice(startIndex, endIndex), {
         x: (i) => xMove[i % 2],

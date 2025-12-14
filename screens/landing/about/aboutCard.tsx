@@ -4,7 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+// Register GSAP plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const data = [
   {
@@ -44,11 +47,19 @@ const data = [
 ];
 
 const AboutCardAnimation = () => {
-  const isMobile = window.innerWidth <= 768;
+  // FIXED: Use useState to avoid SSR "window is not defined" error
+  const [isMobile, setIsMobile] = useState(false);
 
   const cardRefs = useRef<HTMLDivElement[]>([]);
   const letterRefs = useRef<Array<HTMLSpanElement[]>>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Set isMobile on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth <= 768);
+    }
+  }, []);
 
   useEffect(() => {
     cardRefs.current.forEach((cardAbout, index) => {
