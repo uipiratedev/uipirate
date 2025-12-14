@@ -33,7 +33,8 @@ export default function Home() {
   return (
     <>
       {/* <SplashCursor /> */}
-      {showContent ? <Landing /> : <Loader />}
+      {!showContent && <Loader />}
+      <Landing />
     </>
   );
 }
