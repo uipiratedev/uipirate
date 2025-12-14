@@ -1,4 +1,5 @@
-@import "slick-carousel/slick/slick.css";
+/* Slick carousel CSS - commented out due to build issues */
+/* @import "slick-carousel/slick/slick.css"; */
 @import "./slick-custom.css";
 
 @tailwind base;
