@@ -1,8 +1,9 @@
 "use client";
 import { Button } from "@nextui-org/button";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Tooltip } from "@nextui-org/react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 
 const StarRating = ({
   className = "",
@@ -35,31 +36,236 @@ const StarRating = ({
   );
 };
 
+// Glass Tooltip Component with Portal
+const GlassTooltip = ({
+  quote,
+  name,
+  title,
+  isVisible,
+  avatarRef,
+}: {
+  quote: string;
+  name: string;
+  title: string;
+  isVisible: boolean;
+  avatarRef: React.RefObject<HTMLDivElement>;
+}) => {
+  const [position, setPosition] = useState({ top: 0, left: 0 });
+
+  useEffect(() => {
+    if (isVisible && avatarRef.current) {
+      const rect = avatarRef.current.getBoundingClientRect();
+      setPosition({
+        top: rect.bottom + 8, // 8px below the avatar
+        left: rect.left + rect.width / 2, // Center horizontally
+      });
+    }
+  }, [isVisible, avatarRef]);
+
+  if (!isVisible || typeof window === "undefined") return null;
+
+  return createPortal(
+    <div
+      className={`fixed w-[280px] pointer-events-none transition-all duration-300 ease-out ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+      }`}
+      style={{
+        top: `${position.top}px`,
+        left: `${position.left}px`,
+        transform: "translateX(-50%)",
+        zIndex: 999999999,
+      }}
+    >
+      <div
+        className="glass-texture navbar-glass-light glass-border-light isolate relative p-4 rounded-xl"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.96) 100%)",
+          WebkitBackdropFilter: "blur(28px) saturate(200%) brightness(108%)",
+          backdropFilter: "blur(28px) saturate(200%) brightness(108%)",
+          border: "1px solid rgba(209, 213, 219, 0.6)",
+          boxShadow:
+            "0 8px 16px -2px rgba(0, 0, 0, 0.15), 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 16px 32px -8px rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.4)",
+        }}
+      >
+        {/* Arrow pointing up - Enhanced visibility */}
+        <div
+          className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rotate-45"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.96) 100%)",
+            border: "1px solid rgba(209, 213, 219, 0.6)",
+            borderBottom: "none",
+            borderRight: "none",
+            boxShadow: "-3px -3px 6px rgba(0, 0, 0, 0.06)",
+            zIndex: -1,
+          }}
+        />
+
+        {/* Quote */}
+        <p className="text-sm italic text-black mb-3 leading-relaxed relative z-10 font-semibold">
+          &quot;{quote}&quot;
+        </p>
+
+        {/* Name and Title */}
+        <div className="mb-2 relative z-10">
+          <p className="text-xs font-bold text-black">{name}</p>
+          <p className="text-xs text-gray-800 font-semibold">{title}</p>
+        </div>
+
+        {/* Star Rating */}
+        <div className="flex flex-row gap-1 relative z-10">
+          {[...Array(5)].map((_, index) => (
+            <img
+              key={index}
+              alt="star"
+              className="w-[14px] h-[14px]"
+              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+            />
+          ))}
+        </div>
+      </div>
+    </div>,
+    document.body
+  ) as any;
+};
+
 const LandingHero = () => {
   const [isHoveredChat, setIsHoveredChat] = useState(false);
+  const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
+
+  // Create refs for each avatar
+  const avatarRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Testimonial data
+  const testimonials = [
+    {
+      quote: "brought our complex AI trading vision to life",
+      name: "Rohit Kumar Jha",
+      title: "Co-Founder, ArthAlpha",
+      image:
+        "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593621/rohit_vo3c4g.svg",
+    },
+    {
+      quote: "Successfully overhauled the design of our entire platform",
+      name: "Eden Hazani",
+      title: "VP Research and Development, Ipsos",
+      image:
+        "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753805632/eden-modified_jsf37k.png",
+    },
+    {
+      quote: "from the 1st SaaS flow to our full design overhaul, was crisp",
+      name: "Nipun Sharma",
+      title: "CEO, RevUp AI",
+      image:
+        "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg",
+    },
+  ];
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 container mx-auto">
+      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 container mx-auto relative ">
+        {/* Subtle Grid Background Pattern */}
         <div
-          className="flex flex-col items-center justify-center w-screen"
+          className="absolute inset-0 pointer-events-none -mt-20 "
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+              
+            `,
+            backgroundSize: "40px 40px",
+          }}
+        />
+        {/* Layered gradient with gentle mist animation */}
+        <div
+          className="absolute inset-0 pointer-events-none -mt-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(to top, #ffffff 0%, transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
+            `,
+            animation: "gentle-mist 8s ease-in-out infinite",
+          }}
+        ></div>
+        <div
+          className="flex flex-col items-center justify-center w-full relative z-10"
           style={{ overflow: "visible" }}
         >
           {" "}
+          {/* Trust Badge with Glassmorphism - Inline Avatars */}
           <div
-            className="p-2 px-4 rounded-xl bg-[#8EF1F1] border-cyan-400 border-2"
+            className="p-2 px-4 rounded-xl glass-texture isolate relative overflow-visible flex flex-row items-center gap-3"
             style={{
               animation: "trustBadgeUp 0.5s ease-out forwards",
               animationDelay: "0.1s",
               opacity: 0,
               transform: "translateY(20px) scale(0.95)",
+              background:
+                "linear-gradient(142deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%)",
+              WebkitBackdropFilter:
+                "blur(22px) saturate(120%) brightness(100%)",
+              backdropFilter: "blur(22px) saturate(120%) brightness(100%)",
+              border: "2px solid rgba(255, 255, 255, 0.12)",
+              boxShadow:
+                "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
             }}
           >
-            <p className="text-center uppercase text-xs max-md:text-[10px] font-medium">
-              Empowering 40+ startups across 6 countries
+            {/* Avatar Stack */}
+            <div
+              className="flex flex-row items-center -space-x-2"
+              style={{ position: "relative", zIndex: 999999999 }}
+            >
+              {testimonials.map((testimonial, index) => {
+                // Create a ref object for this specific avatar
+                const avatarRef = { current: avatarRefs.current[index] };
+
+                return (
+                  <div
+                    key={index}
+                    ref={(el) => {
+                      avatarRefs.current[index] = el;
+                    }}
+                    className="relative"
+                    style={{
+                      zIndex: hoveredAvatar === index ? 999999999 : "auto",
+                    }}
+                    onMouseEnter={() => setHoveredAvatar(index)}
+                    onMouseLeave={() => setHoveredAvatar(null)}
+                  >
+                    {/* Glass Tooltip */}
+                    <GlassTooltip
+                      isVisible={hoveredAvatar === index}
+                      name={testimonial.name}
+                      quote={testimonial.quote}
+                      title={testimonial.title}
+                      avatarRef={avatarRef}
+                    />
+
+                    {/* Avatar */}
+                    <img
+                      alt={`${testimonial.name} - Client testimonial`}
+                      className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
+                      src={testimonial.image}
+                      style={{
+                        animation:
+                          "testimonialImageDrop 0.4s ease-out forwards",
+                        animationDelay: `${0.3 + index * 0.1}s`,
+                        opacity: 0,
+                        transform: "translateY(-20px)",
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Text */}
+            <p className="text-center uppercase text-xs max-md:text-[10px] font-medium text-black relative z-10">
+              TRUSTED BY 40+ STARTUPS ACROSS 6 COUNTRIES
             </p>
           </div>
-          <div className="flex flex-row items-center justify-center w-full py-6 max-md:py-4 max-md:pb-2 overflow-visible">
+          {/* <div className="flex flex-row items-center justify-center w-full py-6 max-md:py-4 max-md:pb-2 overflow-visible">
             <div className="flex flex-row gap-2 overflow-visible">
               <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:hidden overflow-visible">
                 <div className="w-[32px] h-[32px] relative overflow-visible group hover:-translate-y-1 transition-transform duration-300">
@@ -179,7 +385,7 @@ const LandingHero = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <h1 className="reveal-text-anim text-[68px] px-56 text-center font-[700] max-md:font-[600] max-lg:text-5xl max-md:text-[40px] max-md:leading-[1.08] max-md:px-3 max-lg:px-12 max-md:py-0 max-xl:px-12 max-2xl:px-32 tracking-[-1.5px] leading-[1.1]">
             Designing <br className="sm:hidden"></br>AI-Driven SaaS Products
             That Convert, <br className="max-md:hidden"></br>Scale & Ship Faster

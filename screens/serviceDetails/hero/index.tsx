@@ -16,7 +16,7 @@ const ServiceDetailsHero = ({ data }: any) => {
   const [isHoveredChat, setIsHoveredChat] = useState(false);
 
   return (
-    <div className="relative overflow-hidden bg-[#f5f5f5] text-black -mt-[67px] md:pt-[67px] md:pb-20">
+    <div className="relative overflow-hidden bg-[#FAFAFA] text-black -mt-[67px] md:pt-[67px] md:pb-20">
       {/* === Static Gray Grid Background === */}
       <div
         className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[size:80px_80px]"
