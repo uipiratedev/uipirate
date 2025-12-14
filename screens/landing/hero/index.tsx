@@ -3,6 +3,8 @@ import { Button } from "@heroui/button";
 import { useState, useRef } from "react";
 import { Tooltip } from "@heroui/react";
 import Link from "next/link";
+import AINodeAnimation from "./AINodeAnimation";
+import AnimatedHeadline from "./AnimatedHeadline";
 
 const LandingHero = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
@@ -235,7 +237,7 @@ const LandingHero = () => {
 
             {/* Text */}
             <p className="badge-text relative z-10 max-md:text-xs">
-              EMPOWERING 40+ STARTUPS ACROSS 6 COUNTRIES
+              EMPOWERING 40+ Business ACROSS 6 COUNTRIES
             </p>
           </div>
           {/* <div className="flex flex-row items-center justify-center w-full py-6 max-md:py-4 max-md:pb-2 overflow-visible">
@@ -359,15 +361,14 @@ const LandingHero = () => {
               </div>
             </div>
           </div> */}
-          <h1 className="reveal-text-anim text-[68px] px-4 text-center font-[700] max-md:font-[600] max-lg:text-5xl max-md:text-[40px] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1]">
-            Designing <br className="max-md:block hidden"></br>AI-Driven SaaS
-            Products <br />
-            That{" "}
-            <span className="text-brand-orange">
-              Convert, <br className="max-md:block hidden"></br>Scale &{" "}
-              <br className="max-md:block hidden"></br>Ship Faster
-            </span>
-          </h1>
+          {/* AI Node Animation Background */}
+          <div className="absolute left-1/2 -translate-x-1/2 w-full max-w-[1400px] h-[500px] max-md:h-[400px] pointer-events-none top-0">
+            <AINodeAnimation />
+          </div>
+          {/* Animated Headline */}
+          <div className="relative z-10">
+            <AnimatedHeadline />
+          </div>
           <p className="reveal-text-anim-1 max-w-[820px] text-center text-lg max-md:text-sm mt-4 md:my-4 px-4 font-sans leading-[25.2px]">
             We help fast-growing SaaS and enterprise teams build world-class
             dashboards, onboarding flows, and AI-powered product experiences -
