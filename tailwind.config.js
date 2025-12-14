@@ -12,6 +12,12 @@ module.exports = {
     extend: {
       fontFamily: {
         jakarta: ['"Plus Jakarta Sans"', "sans-serif"],
+        jetbrains: ['"JetBrains Mono"', "monospace"],
+      },
+      colors: {
+        brand: {
+          orange: "#FF5B04",
+        },
       },
     },
   },

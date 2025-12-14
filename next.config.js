@@ -2,6 +2,8 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
+const isDev = process.env.NODE_ENV === "development";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable ESLint during production builds to prevent build failures
@@ -52,9 +54,9 @@ const nextConfig = {
     ];
   },
 
-  // Add security and performance headers
+  // Add security headers, and only add long-term static caching in production
   async headers() {
-    return [
+    const headers = [
       {
         source: "/(.*)",
         headers: [
@@ -72,25 +74,33 @@ const nextConfig = {
           },
         ],
       },
-      {
-        source: "/static/(.*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/_next/static/(.*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
     ];
+
+    // In development, avoid aggressive caching so code changes always show up
+    if (!isDev) {
+      headers.push(
+        {
+          source: "/static/(.*)",
+          headers: [
+            {
+              key: "Cache-Control",
+              value: "public, max-age=31536000, immutable",
+            },
+          ],
+        },
+        {
+          source: "/_next/static/(.*)",
+          headers: [
+            {
+              key: "Cache-Control",
+              value: "public, max-age=31536000, immutable",
+            },
+          ],
+        }
+      );
+    }
+
+    return headers;
   },
 
   // Webpack configuration to handle slick-carousel fonts
@@ -104,6 +114,13 @@ const nextConfig = {
         emit: false,
       },
     });
+
+    // In dev, tell Watchpack to ignore Windows system paging/dump files
+    // This prevents errors like EINVAL lstat 'D:\\pagefile.sys' or 'D:\\DumpStack.log.tmp'
+    config.watchOptions = {
+      ignored:
+        /(pagefile\.sys$|DumpStack\.log\.tmp$|hiberfil\.sys$|swapfile\.sys$)/,
+    };
 
     return config;
   },

@@ -59,7 +59,7 @@ const LandingFooter = () => {
               <p className="text-xl font-semibold">UI Pirate</p>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Scalable UI/UX design for SaaS, & AI Products
+              Designing AI-Driven SaaS Products That Convert & Scale
             </p>
           </div>
 

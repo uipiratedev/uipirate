@@ -14,7 +14,6 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@floating-ui/dom": "^1.0.0",
-    "@next/bundle-analyzer": "^16.0.4",
     "@nextui-org/button": "2.0.38",
     "@nextui-org/code": "2.0.33",
     "@nextui-org/input": "2.2.5",
@@ -65,6 +64,7 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "14.2.4",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "20.5.7",
