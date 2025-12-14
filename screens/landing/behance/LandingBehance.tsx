@@ -4,8 +4,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NextLink from "next/link";
 
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+// Register ScrollTrigger plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const data = [
   {
@@ -44,13 +46,22 @@ const LandingBehanceFramor = () => {
   const [visibleData, setVisibleData] = useState(data.slice(0, 6)); // Default to 6 items for desktop
 
   const updateVisibleData = () => {
-    const isMobile = window.innerWidth <= 768;
+    // FIXED: Safe window check for SSR
+    if (typeof window === "undefined") return;
 
+    const isMobile = window.innerWidth <= 768;
     setVisibleData(isMobile ? data.slice(0, 4) : data.slice(0, 6));
   };
 
   const runAnimation = () => {
+    // FIXED: Check if window exists and elements are available
+    if (typeof window === "undefined") return;
+
     const images = gsap.utils.toArray("#img") as HTMLElement[];
+
+    // If no images found, don't run animation
+    if (images.length === 0) return;
+
     const isMobile = window.innerWidth <= 768;
 
     const animateRow = (
@@ -115,8 +126,15 @@ const LandingBehanceFramor = () => {
   };
 
   useEffect(() => {
+    // FIXED: Only run on client side
+    if (typeof window === "undefined") return;
+
     updateVisibleData();
-    runAnimation();
+
+    // Small delay to ensure DOM is ready
+    const animationTimer = setTimeout(() => {
+      runAnimation();
+    }, 100);
 
     const handleResize = () => {
       ScrollTrigger.refresh();
@@ -127,7 +145,9 @@ const LandingBehanceFramor = () => {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      clearTimeout(animationTimer);
       window.removeEventListener("resize", handleResize);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 

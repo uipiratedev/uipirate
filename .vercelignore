@@ -1,0 +1,25 @@
+# Vercel ignore file
+# Files and directories to ignore during Vercel deployment
+
+# Development files
+.env.local
+.env.development
+
+# Scripts
+scripts/
+
+# Documentation
+DEVELOPER_GUIDE.md
+CONTRIBUTING.md
+backlink-optimization-guide.md
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+

@@ -5,36 +5,30 @@ import dynamic from "next/dynamic";
 import Loader from "@/components/loader";
 import SplashCursor from "@/components/SplashCursor";
 
-// Dynamically import Landing with no SSR to avoid hydration issues
+// FIXED: Enable SSR for better Vercel deployment
+// Only disable SSR for components that absolutely need it (like GSAP ScrollTrigger)
 const Landing = dynamic(() => import("@/screens/landing"), {
-  ssr: false,
+  ssr: true, // Changed from false to true
+  loading: () => <Loader />, // Show loader while loading
 }) as React.FC;
 
 export default function Home() {
-  const [showContent, setShowContent] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
-    // Initialize LocomotiveScroll
-    // const initLocomotiveScroll = async () => {
-    //   const LocomotiveScroll = (await import("locomotive-scroll")).default;
-    //   new LocomotiveScroll();
-    // };
-
-    // initLocomotiveScroll();
-
-    // Show loader for 600ms
+    // Hide loader after 600ms
     const timer = setTimeout(() => {
-      setShowContent(true);
+      setShowLoader(false);
     }, 600);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <>
+    <div suppressHydrationWarning>
       <SplashCursor />
-      {!showContent && <Loader />}
+      {showLoader && <Loader />}
       <Landing />
-    </>
+    </div>
   );
 }

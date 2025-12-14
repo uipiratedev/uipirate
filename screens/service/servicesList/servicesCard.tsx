@@ -7,7 +7,10 @@ import Link from "next/link";
 
 import data from "@/data/servicesTopList.json";
 
-gsap.registerPlugin(ScrollTrigger);
+// Register GSAP plugin outside component
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const data1 = [
   {
@@ -104,8 +107,10 @@ const ServicesCard = () => {
   const [isMobile, setIsMobile] = React.useState(false);
 
   useLayoutEffect(() => {
-    // Set initial value
-    setIsMobile(window.innerWidth <= 768);
+    // FIXED: Safe window check for SSR
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth <= 768);
+    }
   }, []);
 
   useLayoutEffect(() => {

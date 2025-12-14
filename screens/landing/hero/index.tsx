@@ -125,132 +125,132 @@ const LandingHero = () => {
             >
               {testimonials.map((testimonial, index) => {
                 return (
-                  <Tooltip
+                  <div
                     key={index}
-                    showArrow
-                    closeDelay={100}
-                    delay={200}
-                    offset={12}
-                    placement="bottom"
-                    disableAnimation={false}
-                    isOpen={openTooltip === index}
-                    onOpenChange={(isOpen) => {
-                      setOpenTooltip(isOpen ? index : null);
+                    ref={(el) => {
+                      avatarRefs.current[index] = el;
                     }}
-                    classNames={{
-                      base: [
-                        // Arrow styling - glass effect for arrow
-                        "before:bg-white/70",
-                        "before:backdrop-blur-md",
-                        "before:shadow-sm",
-                      ],
-                      content: [
-                        // Remove default NextUI background
-                        "p-0",
-                        "bg-transparent",
-                        "shadow-none",
-                        "backdrop-blur-none",
-                      ],
+                    className="relative"
+                    style={{
+                      zIndex: hoveredAvatar === index ? 999999999 : "auto",
                     }}
-                    motionProps={{
-                      variants: {
-                        exit: {
-                          opacity: 0,
-                          y: -8,
-                          scale: 0.96,
-                          transition: {
-                            duration: 0.15,
-                            ease: "easeIn",
+                    onMouseEnter={() => {
+                      setHoveredAvatar(index);
+                      setOpenTooltip(index);
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredAvatar(null);
+                      setOpenTooltip(null);
+                    }}
+                    onClick={() => {
+                      // Toggle tooltip on click/touch
+                      setOpenTooltip(openTooltip === index ? null : index);
+                    }}
+                  >
+                    <Tooltip
+                      showArrow
+                      closeDelay={100}
+                      delay={200}
+                      offset={12}
+                      placement="bottom"
+                      disableAnimation={false}
+                      isOpen={openTooltip === index}
+                      onOpenChange={(isOpen) => {
+                        setOpenTooltip(isOpen ? index : null);
+                      }}
+                      classNames={{
+                        base: [
+                          // Arrow styling - glass effect for arrow
+                          "before:bg-white/70",
+                          "before:backdrop-blur-md",
+                          "before:shadow-sm",
+                        ],
+                        content: [
+                          // Remove default NextUI background
+                          "p-0",
+                          "bg-transparent",
+                          "shadow-none",
+                          "backdrop-blur-none",
+                        ],
+                      }}
+                      motionProps={{
+                        variants: {
+                          exit: {
+                            opacity: 0,
+                            y: -8,
+                            scale: 0.96,
+                            transition: {
+                              duration: 0.15,
+                              ease: "easeIn",
+                            },
+                          },
+                          enter: {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            transition: {
+                              type: "spring",
+                              stiffness: 400,
+                              damping: 30,
+                              mass: 0.8,
+                            },
                           },
                         },
-                        enter: {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                          transition: {
-                            type: "spring",
-                            stiffness: 400,
-                            damping: 30,
-                            mass: 0.8,
-                          },
-                        },
-                      },
-                    }}
-                    content={
-                      <div
-                        className="w-[280px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 252, 253, 0.94) 100%)",
-                          WebkitBackdropFilter:
-                            "blur(20px) saturate(180%) brightness(105%)",
-                          backdropFilter:
-                            "blur(20px) saturate(180%) brightness(105%)",
-                          boxShadow:
-                            "0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 20px 60px -12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(255, 255, 255, 0.7)",
-                        }}
-                      >
-                        {/* Frosted glass texture overlay */}
+                      }}
+                      content={
                         <div
-                          className="absolute inset-0 pointer-events-none z-0"
+                          className="w-[280px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
                           style={{
                             background:
-                              "radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(245, 248, 255, 0.3) 0%, transparent 50%)",
-                            mixBlendMode: "soft-light",
+                              "linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 252, 253, 0.94) 100%)",
+                            WebkitBackdropFilter:
+                              "blur(20px) saturate(180%) brightness(105%)",
+                            backdropFilter:
+                              "blur(20px) saturate(180%) brightness(105%)",
+                            boxShadow:
+                              "0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 20px 60px -12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(255, 255, 255, 0.7)",
                           }}
-                        />
-                        {/* Content wrapper with relative positioning */}
-                        <div className="relative z-10">
-                          {/* Quote */}
-                          <p className="text-sm italic text-black mb-3 leading-relaxed font-semibold">
-                            &quot;{testimonial.quote}&quot;
-                          </p>
-
-                          {/* Name and Title */}
-                          <div className="mb-2">
-                            <p className="text-xs font-bold text-black">
-                              {testimonial.name}
+                        >
+                          {/* Frosted glass texture overlay */}
+                          <div
+                            className="absolute inset-0 pointer-events-none z-0"
+                            style={{
+                              background:
+                                "radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(245, 248, 255, 0.3) 0%, transparent 50%)",
+                              mixBlendMode: "soft-light",
+                            }}
+                          />
+                          {/* Content wrapper with relative positioning */}
+                          <div className="relative z-10">
+                            {/* Quote */}
+                            <p className="text-sm italic text-black mb-3 leading-relaxed font-semibold">
+                              &quot;{testimonial.quote}&quot;
                             </p>
-                            <p className="text-xs text-gray-800 font-semibold">
-                              {testimonial.title}
-                            </p>
-                          </div>
 
-                          {/* Star Rating */}
-                          <div className="flex flex-row gap-1">
-                            {[...Array(5)].map((_, starIndex) => (
-                              <img
-                                key={starIndex}
-                                alt="star"
-                                className="w-[14px] h-[14px]"
-                                src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                              />
-                            ))}
+                            {/* Name and Title */}
+                            <div className="mb-2">
+                              <p className="text-xs font-bold text-black">
+                                {testimonial.name}
+                              </p>
+                              <p className="text-xs text-gray-800 font-semibold">
+                                {testimonial.title}
+                              </p>
+                            </div>
+
+                            {/* Star Rating */}
+                            <div className="flex flex-row gap-1">
+                              {[...Array(5)].map((_, starIndex) => (
+                                <img
+                                  key={starIndex}
+                                  alt="star"
+                                  className="w-[14px] h-[14px]"
+                                  src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                                />
+                              ))}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    }
-                  >
-                    <div
-                      ref={(el) => {
-                        avatarRefs.current[index] = el;
-                      }}
-                      className="relative"
-                      style={{
-                        zIndex: hoveredAvatar === index ? 999999999 : "auto",
-                      }}
-                      onMouseEnter={() => {
-                        setHoveredAvatar(index);
-                        setOpenTooltip(index);
-                      }}
-                      onMouseLeave={() => {
-                        setHoveredAvatar(null);
-                        setOpenTooltip(null);
-                      }}
-                      onClick={() => {
-                        // Toggle tooltip on click/touch
-                        setOpenTooltip(openTooltip === index ? null : index);
-                      }}
+                      }
                     >
                       {/* Avatar */}
                       <img
@@ -265,8 +265,8 @@ const LandingHero = () => {
                           transform: "translateY(-20px)",
                         }}
                       />
-                    </div>
-                  </Tooltip>
+                    </Tooltip>
+                  </div>
                 );
               })}
             </div>
