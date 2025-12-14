@@ -1,6 +1,6 @@
 "use client"; // Ensure to use this for Next.js projects using client-side rendering
 
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

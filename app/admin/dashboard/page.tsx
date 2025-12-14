@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 
 import { getCurrentUser } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";

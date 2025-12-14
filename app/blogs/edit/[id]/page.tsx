@@ -12,7 +12,7 @@ import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 
 import { useAuth } from "@/hooks/useAuth";
 

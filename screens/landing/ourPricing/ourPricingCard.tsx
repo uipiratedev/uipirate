@@ -1,5 +1,5 @@
-import { Button, Card, CardBody, Chip } from "@nextui-org/react";
-import { Tabs, Tab } from "@nextui-org/react";
+import { Button, Card, CardBody, Chip } from "@heroui/react";
+import { Tabs, Tab } from "@heroui/react";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -347,7 +347,7 @@ const OurPricingCard = (props: any) => {
                             //   )}
                             // </p>
 
-                            <p>
+                            (<p>
                               <span className="text-2xl mr-[4px] ">$</span>
                               {item.designhr}
                               <span className="text-[#C5C5C5] text-lg font-light max-md:text-sm">
@@ -363,7 +363,7 @@ const OurPricingCard = (props: any) => {
                                   </span>
                                 </>
                               )}
-                            </p>
+                            </p>)
                           ) : selectedTab == "Design Only" ? (
                             <p>
                               <span className="text-2xl mr-[4px] ">$</span>
