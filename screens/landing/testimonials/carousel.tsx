@@ -4,6 +4,9 @@ import { Card, CardBody } from "@nextui-org/react";
 
 import Avatar from "@/components/Avatar";
 
+// Type assertion to fix React 18 compatibility with react-slick
+const SliderComponent = Slider as any;
+
 const clients = [
   {
     name: "Eden Hazani",
@@ -207,7 +210,7 @@ function ResponsiveCarousel() {
 
   return (
     <div className="pt-2 pb-12">
-      <Slider {...settings}>
+      <SliderComponent {...settings}>
         {clients.map((item, index) => (
           <div
             key={index}
@@ -273,7 +276,7 @@ function ResponsiveCarousel() {
             </Card>
           </div>
         ))}
-      </Slider>
+      </SliderComponent>
     </div>
   );
 }
