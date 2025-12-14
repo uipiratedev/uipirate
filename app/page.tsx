@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import Loader from "@/components/loader";
-import SplashCursor from "@/components/SplashCursor";
+// import SplashCursor from "@/components/SplashCursor";
 
 // Dynamically import Landing with no SSR to avoid hydration issues
 const Landing = dynamic(() => import("@/screens/landing"), {
@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <>
-      <SplashCursor />
+      {/* <SplashCursor /> */}
       {showContent ? <Landing /> : <Loader />}
     </>
   );

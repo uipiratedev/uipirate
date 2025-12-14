@@ -11,6 +11,8 @@ import BoreYouCommit from "./boreYouCommit";
 
 import PageWrapper from "@/components/PageWrapper";
 import FloatingLetsTalkButton from "@/components/FloatingLetsTalkButton";
+import MiniService from "./miniService/miniService";
+import BentoGrid from "./bentoGrid/bentoGrid";
 const Landing = () => {
   return (
     <PageWrapper showFloatingButton={false}>
@@ -43,6 +45,12 @@ const Landing = () => {
             />
           </div>
         </div>
+
+        <div className="pt-24 max-md:pt-20">
+          <MiniService />
+          <BentoGrid></BentoGrid>
+        </div>
+
         <div className=" overflow-x-hidden py-0 max-md:py-4">
           <LandingAppScreen />
         </div>
