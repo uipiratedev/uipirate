@@ -1,12 +1,13 @@
 "use client";
 import { Button } from "@heroui/button";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Tooltip } from "@heroui/react";
 import Link from "next/link";
 import AnimatedHeadline from "./AnimatedHeadline";
 
 const LandingHero = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
+  const [openTooltip, setOpenTooltip] = useState<number | null>(null);
 
   // Create refs for each avatar (for z-index management)
   const avatarRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -35,6 +36,28 @@ const LandingHero = () => {
         "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg",
     },
   ];
+
+  // Close tooltip when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as HTMLElement;
+      // Check if click is outside avatar elements
+      const isOutside = !avatarRefs.current.some((ref) =>
+        ref?.contains(target)
+      );
+      if (isOutside && openTooltip !== null) {
+        setOpenTooltip(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [openTooltip]);
 
   return (
     <>
@@ -110,6 +133,10 @@ const LandingHero = () => {
                     offset={12}
                     placement="bottom"
                     disableAnimation={false}
+                    isOpen={openTooltip === index}
+                    onOpenChange={(isOpen) => {
+                      setOpenTooltip(isOpen ? index : null);
+                    }}
                     classNames={{
                       base: [
                         // Arrow styling - glass effect for arrow
@@ -212,8 +239,18 @@ const LandingHero = () => {
                       style={{
                         zIndex: hoveredAvatar === index ? 999999999 : "auto",
                       }}
-                      onMouseEnter={() => setHoveredAvatar(index)}
-                      onMouseLeave={() => setHoveredAvatar(null)}
+                      onMouseEnter={() => {
+                        setHoveredAvatar(index);
+                        setOpenTooltip(index);
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredAvatar(null);
+                        setOpenTooltip(null);
+                      }}
+                      onClick={() => {
+                        // Toggle tooltip on click/touch
+                        setOpenTooltip(openTooltip === index ? null : index);
+                      }}
                     >
                       {/* Avatar */}
                       <img
@@ -235,7 +272,7 @@ const LandingHero = () => {
             </div>
 
             {/* Text */}
-            <p className="badge-text relative z-10 max-md:text-xs">
+            <p className="badge-text relative z-10 max-md:text-xs cursor-default">
               EMPOWERING 40+ Business ACROSS 6 COUNTRIES
             </p>
           </div>
@@ -361,10 +398,10 @@ const LandingHero = () => {
             </div>
           </div> */}
           {/* Animated Headline */}
-          <div className="relative z-10">
+          <div className="relative z-10 cursor-default">
             <AnimatedHeadline />
           </div>
-          <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-2xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 font-sans leading-[25.2px] 2xl:leading-[32px]">
+          <p className="cursor-default reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-2xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 font-sans leading-[25.2px] 2xl:leading-[32px]">
             We help fast-growing SaaS and enterprise teams build world-class
             dashboards, onboarding flows, and AI-powered product experiences -
             from MVP to complete enterprise applications.
