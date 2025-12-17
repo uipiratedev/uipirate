@@ -19,32 +19,6 @@ const Landing = () => {
       <div>
         <LandingHero />
         <LandingMarquee />
-        <div className="pt-24 max-md:pt-20">
-          <div className="relative text-center  max-w-6xl mx-auto px-4">
-            {/* Left quote icon */}
-            <img
-              alt="Opening quotation mark"
-              aria-hidden="true"
-              className="absolute left-4 top-0 -translate-y-1/2 w-12 h-12  max-md:w-6 max-md:h-6"
-              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645971/icon_ibp1gv.svg"
-            />
-
-            {/* Text */}
-            <p className="text-2xl md:text-5xl font-[500] text-black leading-snug italic pl-8 pr-12 max-md:pr-6">
-              We transform complex ideas into simple, beautiful product
-              experiences.
-            </p>
-
-            {/* Right quote icon */}
-
-            <img
-              alt="Closing quotation mark"
-              aria-hidden="true"
-              className="absolute right-4 -bottom-12 max-md:-bottom-4 -translate-y-1/2 w-12 h-12 max-md:w-6 max-md:h-6"
-              src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1761645970/icon1_xyat8o.svg"
-            />
-          </div>
-        </div>
 
         <div className="pt-24 max-md:pt-20">
           <MiniService />

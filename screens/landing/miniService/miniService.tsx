@@ -21,10 +21,6 @@ const MiniService = () => {
           </div>
         </div>
       </div>{" "}
-      <div
-        className="mx-auto px-32 lg:px-20 max-md:px-4 "
-        style={{ overflowX: "hidden" }}
-      ></div>
     </>
   );
 };

@@ -8,113 +8,20 @@ const BentoGrid = () => {
         <div className="mx-auto px-32 lg:px-20 max-md:px-4 pb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {/* UX/UI Design Card - Tall */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 md:row-span-2 group">
-              <div className="h-full flex flex-col">
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl  border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 md:row-span-2 group overflow-hidden">
+              <div className="h-full flex flex-col justify-between">
                 {/* Chart Visualization */}
-                <div className="flex-1 mb-6 relative">
-                  <div className="absolute top-4 left-4 w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full opacity-80 blur-sm"></div>
-                  <div className="absolute top-8 right-8 w-8 h-8 bg-gradient-to-br from-orange-300 to-orange-400 rounded-full opacity-60"></div>
-
-                  {/* Chart Lines */}
-                  <svg className="w-full h-48 mt-8" viewBox="0 0 200 120">
-                    {/* Grid lines */}
-                    <line
-                      x1="20"
-                      y1="20"
-                      x2="20"
-                      y2="100"
-                      stroke="#e5e7eb"
-                      strokeWidth="1"
-                    />
-                    <line
-                      x1="20"
-                      y1="100"
-                      x2="180"
-                      y2="100"
-                      stroke="#e5e7eb"
-                      strokeWidth="1"
-                    />
-
-                    {/* Chart line */}
-                    <path
-                      d="M 30,80 Q 50,70 70,75 T 110,65 T 150,55 T 170,45"
-                      fill="none"
-                      stroke="url(#orangeGradient)"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                    />
-
-                    {/* Data points */}
-                    <circle
-                      cx="30"
-                      cy="80"
-                      r="4"
-                      fill="#fb923c"
-                      className="animate-pulse"
-                    />
-                    <circle
-                      cx="70"
-                      cy="75"
-                      r="4"
-                      fill="#fb923c"
-                      className="animate-pulse"
-                      style={{ animationDelay: "0.2s" }}
-                    />
-                    <circle
-                      cx="110"
-                      cy="65"
-                      r="4"
-                      fill="#fb923c"
-                      className="animate-pulse"
-                      style={{ animationDelay: "0.4s" }}
-                    />
-                    <circle
-                      cx="150"
-                      cy="55"
-                      r="4"
-                      fill="#fb923c"
-                      className="animate-pulse"
-                      style={{ animationDelay: "0.6s" }}
-                    />
-                    <circle
-                      cx="170"
-                      cy="45"
-                      r="5"
-                      fill="#f97316"
-                      className="animate-pulse"
-                      style={{ animationDelay: "0.8s" }}
-                    />
-
-                    <defs>
-                      <linearGradient
-                        id="orangeGradient"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="0%"
-                      >
-                        <stop offset="0%" stopColor="#fb923c" />
-                        <stop offset="100%" stopColor="#f97316" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-
-                  {/* Decorative elements */}
-                  <div className="mt-4 space-y-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-16 h-2 bg-gray-200 rounded-full"></div>
-                      <div className="w-12 h-2 bg-gray-200 rounded-full"></div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-12 h-2 bg-gray-200 rounded-full"></div>
-                      <div className="w-20 h-2 bg-orange-200 rounded-full"></div>
-                    </div>
-                  </div>
+                <div className="flex-1 -mb-6 relative px-0 ">
+                  <img
+                    src="/assets/img/bento1.svg"
+                    alt="UX/UI Design"
+                    className="w-full h-full object-cover mt-0 -z-10"
+                  />
                 </div>
 
                 {/* Content */}
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <div className="p-6 -mt-56 z-10">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2 ">
                     UX/UI Design
                   </h3>
                   <p className="text-gray-600 font-medium">
