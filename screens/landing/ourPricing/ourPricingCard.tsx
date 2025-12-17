@@ -187,7 +187,7 @@ const data = [
     heading1:
       "From infographics and newsletters to brand assets and social creatives.",
     designDev: "1,199",
-    designhr: "15",
+    designhr: "20",
     list: [
       "2-4 weeks delivery",
       "Scalable design systems",
@@ -218,7 +218,7 @@ const dataPrice = [
     heading1:
       "Ideal for social reels, product promos, or cinematic animations.",
     price: "49",
-    pricehr: "15",
+    pricehr: "20",
     list: [
       "1–4 week delivery",
       "2D/3D motion graphics, edits & renders",
@@ -239,7 +239,7 @@ const dataPrice = [
     heading1:
       "Perfect for audits, UX improvements, and continuous design help.",
     price: "999",
-    pricehr: "15",
+    pricehr: "20",
     list: [
       "Flexible engagement (hourly / weekly)",
       "UX audit & heuristic evaluation",
@@ -347,7 +347,7 @@ const OurPricingCard = (props: any) => {
                             //   )}
                             // </p>
 
-                            (<p>
+                            <p>
                               <span className="text-2xl mr-[4px] ">$</span>
                               {item.designhr}
                               <span className="text-[#C5C5C5] text-lg font-light max-md:text-sm">
@@ -363,7 +363,7 @@ const OurPricingCard = (props: any) => {
                                   </span>
                                 </>
                               )}
-                            </p>)
+                            </p>
                           ) : selectedTab == "Design Only" ? (
                             <p>
                               <span className="text-2xl mr-[4px] ">$</span>
@@ -384,8 +384,8 @@ const OurPricingCard = (props: any) => {
                               selectedTab == "Design + Dev"
                                 ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/designdev_f0onqh.svg"
                                 : selectedTab == "Design Only"
-                                ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/design_oly_f4hn7l.svg"
-                                : "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/dev_grzer7.svg"
+                                  ? "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/design_oly_f4hn7l.svg"
+                                  : "https://res.cloudinary.com/damm9iwho/image/upload/v1730106610/dev_grzer7.svg"
                             }
                           />
                         )}
@@ -398,7 +398,7 @@ const OurPricingCard = (props: any) => {
                             alt="Dribble Logo"
                             src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                           />
-                          <span>Book a 15-min call</span>
+                          <span>Book a 20-min call</span>
                         </div>
                       </Link>
                     </div>
@@ -487,7 +487,7 @@ const OurPricingCard = (props: any) => {
                           />
                         }
                       >
-                        Book a 15-min call
+                        Book a 20-min call
                       </Button> */}
 
                       <button
@@ -509,7 +509,7 @@ const OurPricingCard = (props: any) => {
                               alt="Dribble Logo"
                               src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                             />
-                            Book a 15-min call
+                            Book a 20-min call
                           </span>
 
                           <span
@@ -587,7 +587,7 @@ const OurPricingCard = (props: any) => {
                               <img
                                 alt="Limited availability icon"
                                 className="w-[14px]"
-                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729841595/svg1994013495_1681_qv43ow.svg"
+                                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729842095/svg1994013495_1681_qv43ow.svg"
                               />
                             }
                           >
@@ -632,7 +632,7 @@ const OurPricingCard = (props: any) => {
                             />
                           }
                         >
-                          Book a 15-min call
+                          Book a 20-min call
                         </Button>
                       </a> */}
                       <Link className="w-full" href="/contact">
@@ -655,7 +655,7 @@ const OurPricingCard = (props: any) => {
                                 alt="Dribble Logo"
                                 src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
                               />
-                              Book a 15-min call
+                              Book a 20-min call
                             </span>
 
                             <span
@@ -751,7 +751,7 @@ const OurPricingCard = (props: any) => {
                       </div>
                       <p className="text-lg max-md:text-sm font-bold">
                         {" "}
-                        Book a 15-min call
+                        Book a 20-min call
                       </p>
                       <div className="max-md:hidden">
                         <img
@@ -807,7 +807,7 @@ const OurPricingCard = (props: any) => {
                           />
                           <p className="text-base font-semibold">
                             {" "}
-                            +91 97086 36151
+                            +91 97086 36201
                           </p>
                         </span>
                       </div>
