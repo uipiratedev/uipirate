@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import { Tooltip } from "@heroui/react";
 import Link from "next/link";
 import AnimatedHeadline from "./AnimatedHeadline";
+import GlassBadgeExamples from "@/components/GlassBadge.example";
+import GlassSurface from "@/components/GlassSurface";
 
 const LandingHero = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
@@ -77,22 +79,29 @@ const LandingHero = () => {
           style={{ overflow: "visible" }}
         >
           {" "}
-          {/* Trust Badge with Glassmorphism - Inline Avatars */}
-          <div
-            className="p-2 md:my-9 max-md:my-5 px-4 rounded-xl glass-texture isolate relative overflow-visible flex flex-row max-md:flex-col items-center gap-3"
+          {/* Trust Badge with GlassSurface - Inline Avatars */}
+          <GlassSurface
+            width="auto"
+            height="auto"
+            borderRadius={12}
+            blur={11}
+            opacity={0.93}
+            borderWidth={0.01}
+            brightness={50}
+            backgroundOpacity={0.1}
+            saturation={1}
+            displace={0.5}
+            distortionScale={-180}
+            redOffset={0}
+            greenOffset={10}
+            blueOffset={20}
+            forceLightMode={true}
+            className="md:my-9 max-md:my-5 !flex !flex-row max-md:!flex-col !items-center !gap-3 isolate overflow-visible"
             style={{
               animation: "trustBadgeUp 0.5s ease-out forwards",
               animationDelay: "0.1s",
               opacity: 0,
               transform: "translateY(20px) scale(0.95)",
-              background:
-                "linear-gradient(142deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%)",
-              WebkitBackdropFilter:
-                "blur(22px) saturate(120%) brightness(100%)",
-              backdropFilter: "blur(22px) saturate(120%) brightness(100%)",
-              border: "2px solid rgba(255, 255, 255, 0.12)",
-              boxShadow:
-                "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
             }}
           >
             {/* Avatar Stack */}
@@ -235,10 +244,10 @@ const LandingHero = () => {
             </div>
 
             {/* Text */}
-            <p className="badge-text relative z-10 max-md:text-xs">
+            <p className="badge-text relative z-10 max-md:text-xs ml-2 px-3">
               EMPOWERING 40+ Business ACROSS 6 COUNTRIES
             </p>
-          </div>
+          </GlassSurface>
           {/* <div className="flex flex-row items-center justify-center w-full py-6 max-md:py-4 max-md:pb-2 overflow-visible">
             <div className="flex flex-row gap-2 overflow-visible">
               <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:hidden overflow-visible">

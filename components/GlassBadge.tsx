@@ -1,4 +1,5 @@
 import React from "react";
+import GlassSurface from "./GlassSurface";
 
 interface GlassBadgeProps {
   /**
@@ -83,21 +84,20 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
     },
   };
 
-  // For gradient variant, use the exact badge structure the design is based on:
-  // outer wrapper + inner glass pill, 3 blurred dots clipped by the edges, and text on top.
+  // For gradient variant, use GlassSurface with decorative dots
   if (variant === "gradient") {
     return (
       <div className={`relative z-10 inline-block ${className}`}>
-        <div
-          className="
-		          relative flex items-center justify-center
-		          overflow-hidden
-		          bg-white/30 backdrop-blur-2xl
-		          border border-white/80
-		          rounded-[10px] px-[15.156px] py-[10.104px]
-		          gap-[10.104px]
-		          shadow-md
-		        "
+        <GlassSurface
+          width="auto"
+          height="auto"
+          borderRadius={10}
+          blur={11}
+          opacity={0.93}
+          brightness={50}
+          backgroundOpacity={0.3}
+          saturation={1}
+          className="!px-[15.156px] !py-[10.104px]"
         >
           {/* Dot 1: Teal (Left) - 28px, moved slightly inside */}
           <div className="absolute -left-[8px] -top-[8px] w-[28px] h-[28px] bg-teal-400 rounded-full blur-[8px] opacity-100" />
@@ -116,12 +116,38 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           >
             {children}
           </span>
-        </div>
+        </GlassSurface>
       </div>
     );
   }
 
-  // For other variants, simple badge
+  // For solid variant, use GlassSurface
+  if (variant === "solid") {
+    return (
+      <GlassSurface
+        width="auto"
+        height="auto"
+        borderRadius={16}
+        blur={12}
+        opacity={0.93}
+        brightness={50}
+        backgroundOpacity={0.15}
+        saturation={1.5}
+        className={`
+          !inline-flex !items-center !justify-center
+          font-semibold
+          ${sizeClasses[size]}
+          ${uppercase ? "uppercase" : ""}
+          transition-all duration-300 ease-in-out
+          ${className}
+        `}
+      >
+        {children}
+      </GlassSurface>
+    );
+  }
+
+  // For cyan variant, simple badge without glass effect
   return (
     <span
       className={`
@@ -129,7 +155,6 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
         rounded-2xl font-semibold
         ${sizeClasses[size]}
         ${uppercase ? "uppercase" : ""}
-        ${variant !== "cyan" ? "glass-texture isolate" : ""}
         transition-all duration-300 ease-in-out
         ${className}
       `}
