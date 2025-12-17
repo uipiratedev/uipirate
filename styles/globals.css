@@ -86,7 +86,8 @@
     var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
     calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+  box-shadow:
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
     var(--tw-shadow, 0 0 #0000);
 }
 
@@ -514,7 +515,8 @@ body {
 
 .aurora__item:nth-of-type(1) {
   top: -50%;
-  animation: aurora-border 6s ease-in-out infinite,
+  animation:
+    aurora-border 6s ease-in-out infinite,
     aurora-1 12s ease-in-out infinite alternate;
 }
 
@@ -522,7 +524,8 @@ body {
   background-color: var(--clr-3);
   right: 0;
   top: 0;
-  animation: aurora-border 6s ease-in-out infinite,
+  animation:
+    aurora-border 6s ease-in-out infinite,
     aurora-2 12s ease-in-out infinite alternate;
 }
 
@@ -530,7 +533,8 @@ body {
   background-color: var(--clr-2);
   left: 0;
   bottom: 0;
-  animation: aurora-border 6s ease-in-out infinite,
+  animation:
+    aurora-border 6s ease-in-out infinite,
     aurora-3 8s ease-in-out infinite alternate;
 }
 
@@ -538,7 +542,8 @@ body {
   background-color: var(--clr-4);
   right: 0;
   bottom: -50%;
-  animation: aurora-border 6s ease-in-out infinite,
+  animation:
+    aurora-border 6s ease-in-out infinite,
     aurora-4 24s ease-in-out infinite alternate;
 }
 
@@ -683,7 +688,9 @@ body {
   filter: none;
   transform: scale(1.2);
   rotate: 0deg;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
 }
 
 .slick-slide {
@@ -699,7 +706,9 @@ body {
   font-size: 12px;
   color: gray; /* Inactive dot color */
   opacity: 0.7;
-  transition: color 0.3s, opacity 0.3s;
+  transition:
+    color 0.3s,
+    opacity 0.3s;
 }
 
 .slick-dots li.slick-active button::before {
@@ -719,9 +728,13 @@ body {
   border-right-width: 1px;
   border-style: solid;
   border-top-width: 1px;
-  box-shadow: inset 0 4px 4px -2px #0000001f, inset 0 -4px 4px -2px #0000001f,
-    inset 0 0 3px #0000003d, 0 0 0 1px #00000014,
-    0 7px 11.399999618530273px -7px #1f1c1c26, 0 16px 24px -7px #1f1c1c14;
+  box-shadow:
+    inset 0 4px 4px -2px #0000001f,
+    inset 0 -4px 4px -2px #0000001f,
+    inset 0 0 3px #0000003d,
+    0 0 0 1px #00000014,
+    0 7px 11.399999618530273px -7px #1f1c1c26,
+    0 16px 24px -7px #1f1c1c14;
 }
 
 /* header button  flip */
@@ -1214,7 +1227,8 @@ reveal-text span {
   pointer-events: none;
   overflow: visible;
   z-index: -1;
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  transition:
+    width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform, width, height;
@@ -1425,7 +1439,9 @@ reveal-text span {
   right: 0;
   /* top: 15; */
   text-align: center;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
   margin-top: -15px;
   overflow: hidden;
 }
@@ -1551,38 +1567,45 @@ header.glass-texture {
 
 /* Inner glow effect - simulates light refraction on glass edges */
 .glass-inner-glow-light {
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
     inset 0 -1px 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 .glass-inner-glow-dark {
-  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
     inset 0 -1px 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Dual border effect for depth - 2px border to match trust badge */
 .glass-border-light {
   border: 2px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3),
+  box-shadow:
+    inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3),
     inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .glass-border-dark {
   border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1),
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
     inset 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
 /* Layered shadows for floating glass effect - subtle and minimal */
 .glass-shadow-light {
-  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.08),
+  box-shadow:
+    0 4px 16px 0 rgba(31, 38, 135, 0.08),
     inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3),
     inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .glass-shadow-dark {
-  box-shadow: 0 2px 12px -2px rgba(0, 0, 0, 0.3),
-    0 4px 20px -4px rgba(0, 0, 0, 0.2), 0 8px 32px -8px rgba(0, 0, 0, 0.15),
+  box-shadow:
+    0 2px 12px -2px rgba(0, 0, 0, 0.3),
+    0 4px 20px -4px rgba(0, 0, 0, 0.2),
+    0 8px 32px -8px rgba(0, 0, 0, 0.15),
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
     inset 0 -1px 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -1645,6 +1668,21 @@ header.glass-texture {
   .navbar-glass-dark {
     background: rgba(255, 255, 255, 0.15) !important;
   }
+}
+
+/* Override NextUI Navbar default styles when inside GlassSurface */
+nav[data-slot="base"] {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-color: transparent !important;
+}
+
+nav[data-slot="base"] [data-slot="wrapper"] {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-color: transparent !important;
 }
 
 /* meteor */
@@ -1744,7 +1782,8 @@ header.glass-texture {
   background-size: 0% 100%;
   background-repeat: no-repeat;
   background-position: left center;
-  animation: wordReveal 0.4s ease-out forwards,
+  animation:
+    wordReveal 0.4s ease-out forwards,
     highlightPulse 0.6s ease-out 0.4s forwards;
   padding: 4px 8px;
   border-radius: 4px;

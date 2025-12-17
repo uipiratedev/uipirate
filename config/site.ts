@@ -20,6 +20,10 @@ export const siteConfig = {
       label: "Pricing",
       href: "/pricing",
     },
+    {
+      label: "ProPirates",
+      href: "https://propirates.com",
+    },
   ],
   navMenuItems: [
     {
