@@ -1831,3 +1831,97 @@ nav[data-slot="base"] [data-slot="wrapper"] {
     transform: rotate(360deg);
   }
 }
+
+/* Floating Dot Animations for GlassBadge - Enhanced with rotation and glow */
+@keyframes float-dot-1 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+    filter: blur(10px) brightness(1);
+  }
+  25% {
+    transform: translate(-3px, -5px) scale(1.1) rotate(90deg);
+    opacity: 0.85;
+    filter: blur(12px) brightness(1.2);
+  }
+  50% {
+    transform: translate(-4px, -2px) scale(1.15) rotate(180deg);
+    opacity: 0.9;
+    filter: blur(14px) brightness(1.3);
+  }
+  75% {
+    transform: translate(-2px, -6px) scale(1.08) rotate(270deg);
+    opacity: 0.88;
+    filter: blur(11px) brightness(1.15);
+  }
+  100% {
+    transform: translate(0, 0) scale(1) rotate(360deg);
+    opacity: 1;
+    filter: blur(10px) brightness(1);
+  }
+}
+
+@keyframes float-dot-2 {
+  0% {
+    transform: translate(-50%, 0) scale(1) rotate(0deg);
+    opacity: 1;
+    filter: blur(18px) brightness(1);
+  }
+  33% {
+    transform: translate(-50%, 4px) scale(1.12) rotate(120deg);
+    opacity: 0.8;
+    filter: blur(20px) brightness(1.25);
+  }
+  66% {
+    transform: translate(-50%, -2px) scale(1.18) rotate(240deg);
+    opacity: 0.85;
+    filter: blur(22px) brightness(1.35);
+  }
+  100% {
+    transform: translate(-50%, 0) scale(1) rotate(360deg);
+    opacity: 1;
+    filter: blur(18px) brightness(1);
+  }
+}
+
+@keyframes float-dot-3 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+    filter: blur(8px) brightness(1);
+  }
+  30% {
+    transform: translate(3px, -4px) scale(1.12) rotate(108deg);
+    opacity: 0.87;
+    filter: blur(10px) brightness(1.22);
+  }
+  60% {
+    transform: translate(4px, -1px) scale(1.18) rotate(216deg);
+    opacity: 0.92;
+    filter: blur(11px) brightness(1.32);
+  }
+  90% {
+    transform: translate(2px, -5px) scale(1.1) rotate(324deg);
+    opacity: 0.89;
+    filter: blur(9px) brightness(1.18);
+  }
+  100% {
+    transform: translate(0, 0) scale(1) rotate(360deg);
+    opacity: 1;
+    filter: blur(8px) brightness(1);
+  }
+}
+
+.animate-float-dot-1 {
+  animation: float-dot-1 4s ease-in-out infinite;
+}
+
+.animate-float-dot-2 {
+  animation: float-dot-2 5s ease-in-out infinite;
+  animation-delay: 0.7s;
+}
+
+.animate-float-dot-3 {
+  animation: float-dot-3 3.5s ease-in-out infinite;
+  animation-delay: 1.2s;
+}

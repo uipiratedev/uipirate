@@ -96,7 +96,7 @@ const LandingHero = () => {
             greenOffset={10}
             blueOffset={20}
             forceLightMode={true}
-            className="md:my-9 max-md:my-5 !flex !flex-row max-md:!flex-col !items-center !gap-3 isolate overflow-visible"
+            className="md:my-9 max-md:my-5 !flex !flex-row max-md:!flex-col !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
             style={{
               animation: "trustBadgeUp 0.5s ease-out forwards",
               animationDelay: "0.1s",
@@ -244,7 +244,7 @@ const LandingHero = () => {
             </div>
 
             {/* Text */}
-            <p className="badge-text relative z-10 max-md:text-xs ml-2 px-3">
+            <p className="badge-text relative z-10 max-md:text-xs ml-2 pl-2 max-md:pl-0 max-md:ml-0">
               EMPOWERING 40+ Business ACROSS 6 COUNTRIES
             </p>
           </GlassSurface>
