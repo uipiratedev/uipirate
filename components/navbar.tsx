@@ -84,7 +84,7 @@ export const Navbar = () => {
               backgroundOpacity={0.75}
               saturation={2}
               displace={0}
-              distortionScale={-180}
+              distortionScale={5}
               redOffset={1}
               greenOffset={10}
               blueOffset={20}
@@ -117,33 +117,33 @@ export const Navbar = () => {
               >
                 {/* --- Left Brand Section --- */}
                 <NavbarContent
-                  className="basis-1/5 sm:basis-full"
+                  className="basis-1/5 md:basis-full px-0"
                   justify="start"
                 >
                   {/* --- Mobile Section with Toggle --- */}
-                  <NavbarContent
-                    className="flex md:hidden basis-1 -ml-2"
-                    justify="start"
+
+                  <NavbarMenuToggle
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    className="text-current md:hidden mr-4 max-md:-ml-2 max-md:mr-2"
+                  />
+                  <NavbarBrand
+                    as="li"
+                    className="gap-2 max-w-fit max-sm:!gap-0"
                   >
-                    <NavbarMenuToggle
-                      aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                      className="text-current"
-                    />
-                  </NavbarContent>
-                  <NavbarBrand as="li" className="gap-3 max-w-fit">
                     <NextLink
-                      className="flex justify-start items-center gap-1 md:-ml-6 max-sm:-ml-6"
+                      className="flex justify-start items-center gap-0 md:-ml-7 max-md:-ml-6"
                       href="/"
                     >
                       <img
                         alt="UI Pirate - Enterprise UI/UX Design Agency Logo"
-                        className="mt-2"
-                        src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
+                        className="mt-5"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1766234689/logo_lcn2cq.png"
                       />
                       <p
                         className={clsx("font-bold text-inherit", {
-                          "text-white": isDarkSection,
-                          "text-black": !isDarkSection,
+                          "text-white text-2xl": isDarkSection,
+                          "text-black text-xl max-md:text-lg -ml-1":
+                            !isDarkSection,
                         })}
                       >
                         UI Pirates
@@ -188,7 +188,7 @@ export const Navbar = () => {
                     <Button
                       as={NextLink}
                       href="/contact"
-                      className=" text-sm font-[500] text-white bg-brand-orange pt-0 dark:bg-white dark:text-black -mr-6 mt-[0.1rem]"
+                      className=" text-sm font-[500] text-white bg-black border-brand-orange border-2 pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
                       data-back="Let's Talk"
                       data-front="Have an Idea?"
                       style={{ paddingTop: 0 }}
