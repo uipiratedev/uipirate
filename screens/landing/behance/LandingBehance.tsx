@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NextLink from "next/link";
@@ -50,7 +50,18 @@ const LandingBehanceFramor = () => {
   };
 
   const runAnimation = () => {
+    // Kill only this component's ScrollTriggers to prevent duplicates
+    ScrollTrigger.getById("row-0")?.kill();
+    ScrollTrigger.getById("row-2")?.kill();
+    ScrollTrigger.getById("row-4")?.kill();
+
     const images = gsap.utils.toArray("#img") as HTMLElement[];
+
+    // Check if images are found
+    if (images.length === 0) {
+      return;
+    }
+
     const isMobile = window.innerWidth <= 768;
 
     const animateRow = (
@@ -112,14 +123,20 @@ const LandingBehanceFramor = () => {
       [-45, 45],
       1
     );
+
+    // Force ScrollTrigger to recalculate positions after animations are set up
+    ScrollTrigger.refresh();
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     updateVisibleData();
-    runAnimation();
+
+    // Small delay to ensure DOM is ready and images are loaded
+    const timeoutId = setTimeout(() => {
+      runAnimation();
+    }, 100);
 
     const handleResize = () => {
-      ScrollTrigger.refresh();
       updateVisibleData();
       runAnimation();
     };
@@ -127,7 +144,12 @@ const LandingBehanceFramor = () => {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
+      // Kill only this component's ScrollTriggers
+      ScrollTrigger.getById("row-0")?.kill();
+      ScrollTrigger.getById("row-2")?.kill();
+      ScrollTrigger.getById("row-4")?.kill();
     };
   }, []);
 
@@ -160,7 +182,7 @@ const LandingBehanceFramor = () => {
                                 
                                `}
               >
-                See More
+                Explore All Work
               </span>
 
               <span
@@ -181,7 +203,7 @@ const LandingBehanceFramor = () => {
       </div>
 
       {/* Image Grid with Overlap */}
-      <div className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-40 pb-0 max-md:py-12 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4">
+      <div className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-20 pb-0 max-md:py-12 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4">
         {visibleData.map((item, index) => (
           <div
             key={index}
@@ -192,7 +214,6 @@ const LandingBehanceFramor = () => {
               alt={item.heading}
               className="w-full h-full object-fill rounded-[30px] grayscale-[25%] box-shadow"
               id="img"
-              loading="lazy"
               src={item.img}
             />
           </div>

@@ -12,8 +12,9 @@ const data = [
     subHeding: "From MVPs to complex dashboards, shipped across 6 countries",
     subtitle1: "Projects",
     subtitle2: "Completed",
-    hoverBg: "#dd3500e6",
+    hoverBg: "#FF5B04",
     textHover: "#fff",
+    img: "/assets/img/project.svg",
   },
   {
     heading: "20+",
@@ -21,25 +22,28 @@ const data = [
       "Including AI tools, HR platforms, fintech apps, and B2B SaaS products",
     subtitle1: "Enterprise",
     subtitle2: "Clients",
-    hoverBg: "#8EF1F1E5",
-    textHover: "#000",
+    hoverBg: "#00C17A",
+    textHover: "#fff",
+    img: "/assets/img/badge.svg",
   },
   {
-    heading: "20+",
+    heading: "40+",
     subHeding:
       "SaaS, EdTech, FinTech, HealthTech, LegalTech, Creator Economy, and more",
     subtitle1: "Industries",
     subtitle2: "Served",
-    hoverBg: "#b0ddcae6",
-    textHover: "#000",
+    hoverBg: "#008DE4",
+    textHover: "#fff",
+    img: "/assets/img/user.svg",
   },
   {
     heading: "9+",
     subHeding: "Built for scale, speed, and seamless handoff to developers",
     subtitle1: " Years of",
     subtitle2: "Experience",
-    hoverBg: "#f4e342e6",
-    textHover: "#000",
+    hoverBg: "#E40063",
+    textHover: "#fff",
+    img: "/assets/img/cal.svg",
   },
 ];
 
@@ -119,8 +123,8 @@ const AboutCardAnimation = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 pb-20 max-md:pb-12 max-md:pt-12">
-      <div className="grid grid-cols-2 gap-6 max-md:gap-4  lg:mt-60 max-lg:grid-cols-1">
+    <div className="container mx-auto px-4  pb-20 max-md:pb-12 max-md:pt-12">
+      <div className="grid grid-cols-2 gap-6 max-md:gap-4  lg:mt-16 max-lg:grid-cols-1">
         {data.map((item, index) => (
           <div
             key={index}
@@ -129,43 +133,58 @@ const AboutCardAnimation = () => {
                 cardRefs.current[index] = el;
               }
             }}
-            className={`bg-[#E1EAEA] rounded-[40px] max-md:rounded-[20px] pt-4 pb-12 px-12 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
+            className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-10 px-12 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
               index % 2 === 0 ? "lg:-mt-32" : "lg:mt-0"
             } hover:ease-in-out`}
             style={{
               transform: index % 2 === 0 ? "rotate(-15deg)" : "rotate(15deg)",
               backgroundColor:
-                hoveredIndex === index ? item.hoverBg : "#E1EAEA",
+                hoveredIndex === index ? item.hoverBg : "#ffffff",
               transition: "background-color 0.6s ease",
               color: hoveredIndex === index ? item.textHover : "#000",
             }}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={() => handleMouseLeave(index)}
           >
-            <div>
-              <p className="text-8xl max-md:text-6xl mb-4 lg:pt-4 overflow-hidden font-[500] max-md:font-[500]">
-                {item.heading.split("").map((letter, i) => (
-                  <span
-                    key={i}
-                    ref={(el) => {
-                      if (!letterRefs.current[index])
-                        letterRefs.current[index] = [];
-                      if (el) letterRefs.current[index][i] = el;
-                    }}
-                    className="inline-block"
-                  >
-                    {letter}
-                  </span>
-                ))}
-              </p>
-              <p className="text-lg max-md:text-sm font-medium flex flex-row ">
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                <p className="text-8xl max-md:text-6xl overflow-hidden font-[500] max-md:font-[500]">
+                  {item.heading.split("").map((letter, i) => (
+                    <span
+                      key={i}
+                      ref={(el) => {
+                        if (!letterRefs.current[index])
+                          letterRefs.current[index] = [];
+                        if (el) letterRefs.current[index][i] = el;
+                      }}
+                      className="inline-block"
+                      style={{
+                        color:
+                          hoveredIndex === index ? item.textHover : "#FF5B04",
+                      }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
+                </p>
+              </div>
+              {/* <p className="text-lg max-md:text-sm font-medium flex flex-row ">
                 {item.subHeding}
-              </p>
-              <p className="text-3xl max-md:text-2xl font-semibold flex flex-row items-end justify-end pt-14 text-right max-md:pt-6 uppercase">
-                {item.subtitle1}
-                <br />
-                {item.subtitle2}
-              </p>
+              </p> */}
+              <div className="flex flex-row items-end justify-between">
+                <p className="text-3xl max-md:text-2xl font-semibold uppercase">
+                  {item.subtitle1}
+                  <br />
+                  {item.subtitle2}
+                </p>
+                {item.img && (
+                  <img
+                    src={item.img}
+                    alt={`${item.subtitle1} ${item.subtitle2}`}
+                    className="h-32 max-md:h-16 object-contain"
+                  />
+                )}
+              </div>
             </div>
           </div>
         ))}

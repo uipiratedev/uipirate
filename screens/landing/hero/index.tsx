@@ -40,10 +40,10 @@ const LandingHero = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative">
+      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
         {/* Subtle Grid Background Pattern */}
         <div
-          className="absolute pointer-events-none -mt-20"
+          className="absolute pointer-events-none -mt-20 "
           style={{
             backgroundImage: `
               linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
@@ -60,10 +60,10 @@ const LandingHero = () => {
         />
         {/* Layered gradient with gentle mist animation */}
         <div
-          className="absolute pointer-events-none -mt-20"
+          className="absolute pointer-events-none -mt-20 "
           style={{
             backgroundImage: `
-              linear-gradient(to top, #ffffff 0%, transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
               linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
             `,
             animation: "gentle-mist 8s ease-in-out infinite",
@@ -75,7 +75,7 @@ const LandingHero = () => {
           }}
         ></div>
         <div
-          className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto"
+          className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto "
           style={{ overflow: "visible" }}
         >
           {" "}
