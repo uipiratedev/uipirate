@@ -124,7 +124,7 @@ const AboutCardAnimation = () => {
 
   return (
     <div className="container mx-auto px-4  pb-20 max-md:pb-12 max-md:pt-12">
-      <div className="grid grid-cols-2 gap-6 max-md:gap-4  lg:mt-40 max-lg:grid-cols-1">
+      <div className="grid grid-cols-2 gap-6 max-md:gap-4  lg:mt-60 max-lg:grid-cols-1">
         {data.map((item, index) => (
           <div
             key={index}
@@ -133,7 +133,7 @@ const AboutCardAnimation = () => {
                 cardRefs.current[index] = el;
               }
             }}
-            className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-10 px-12 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
+            className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
               index % 2 === 0 ? "lg:-mt-32" : "lg:mt-0"
             } hover:ease-in-out`}
             style={{
