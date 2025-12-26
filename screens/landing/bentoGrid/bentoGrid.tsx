@@ -1,9 +1,10 @@
 import GlassBadge from "@/components/GlassBadge";
+import AnimatedAnalyticsChart from "./AnimatedAnalyticsChart";
 
 const BentoGrid = () => {
   return (
     <>
-      <div className="container mx-auto lg:px-0 max-md:px-4 pt-4 max-md:pt-0">
+      <div className="container mx-auto lg:px-0 max-md:px-4 pt-2 max-md:pt-0">
         {/* Bento Grid */}
         <div className="mx-auto px-32 lg:px-20 max-md:px-4 pb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
@@ -305,86 +306,8 @@ const BentoGrid = () => {
                         </div>
                       </div>
                       <div className="relative h-12 mt-1">
-                        {/* Area Chart with Gradient Fill */}
-                        <svg
-                          className="w-full h-full"
-                          preserveAspectRatio="none"
-                          viewBox="0 0 100 100"
-                        >
-                          <defs>
-                            {/* Gradient for the line */}
-                            <linearGradient
-                              id="lineGradient"
-                              x1="0%"
-                              y1="0%"
-                              x2="100%"
-                              y2="0%"
-                            >
-                              <stop offset="0%" stopColor="#3b82f6" />
-                              <stop offset="100%" stopColor="#8b5cf6" />
-                            </linearGradient>
-                            {/* Gradient for the area fill */}
-                            <linearGradient
-                              id="areaGradient"
-                              x1="0%"
-                              y1="0%"
-                              x2="0%"
-                              y2="100%"
-                            >
-                              <stop
-                                offset="0%"
-                                stopColor="#3b82f6"
-                                stopOpacity="0.3"
-                              />
-                              <stop
-                                offset="100%"
-                                stopColor="#8b5cf6"
-                                stopOpacity="0.05"
-                              />
-                            </linearGradient>
-                          </defs>
-
-                          {/* Area fill */}
-                          <path
-                            d="M 2,60 Q 7,52 12,45 T 22,35 Q 27,45 32,55 T 42,40 Q 47,32 52,25 T 62,35 Q 67,27 72,20 T 82,30 Q 87,22 92,15 T 98,20 L 98,100 L 2,100 Z"
-                            fill="url(#areaGradient)"
-                          />
-
-                          {/* Line */}
-                          <path
-                            d="M 2,60 Q 7,52 12,45 T 22,35 Q 27,45 32,55 T 42,40 Q 47,32 52,25 T 62,35 Q 67,27 72,20 T 82,30 Q 87,22 92,15 T 98,20"
-                            fill="none"
-                            stroke="url(#lineGradient)"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-
-                          {/* Data points */}
-                          {[
-                            { x: 2, y: 60 },
-                            { x: 12, y: 45 },
-                            { x: 22, y: 35 },
-                            { x: 32, y: 55 },
-                            { x: 42, y: 40 },
-                            { x: 52, y: 25 },
-                            { x: 62, y: 35 },
-                            { x: 72, y: 20 },
-                            { x: 82, y: 30 },
-                            { x: 92, y: 15 },
-                            { x: 98, y: 20 },
-                          ].map((point, i) => (
-                            <circle
-                              key={i}
-                              cx={point.x}
-                              cy={point.y}
-                              r="1.5"
-                              fill="white"
-                              stroke="#3b82f6"
-                              strokeWidth="1.5"
-                            />
-                          ))}
-                        </svg>
+                        {/* Animated Area Chart with Gradient Fill */}
+                        <AnimatedAnalyticsChart />
                       </div>
                     </div>
 
@@ -592,135 +515,157 @@ const BentoGrid = () => {
 
                     {/* Tech Stack Icons positioned on different circle layers - Revolving */}
                     <div className="relative w-96 h-96 animate-[spin_25s_linear_infinite]">
-                      {/* OUTER CIRCLE - 8 icons */}
-                      {/* Blender */}
-                      <div className="absolute top-[3%] left-[22%] animate-[spin_25s_linear_infinite_reverse]">
-                        <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
-                          <img
-                            src="/assets/logos/blender.png"
-                            alt="Blender"
-                            className="w-8 h-8 object-contain"
-                          />
-                        </div>
-                      </div>
-
+                      {/* OUTER CIRCLE - 8 icons (Perfect Octagon - 45° spacing) */}
                       {/* React */}
-                      <div className="absolute top-[12%] right-[6%] animate-[spin_25s_linear_infinite_reverse]">
+                      <div className="absolute top-[0%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/React.png"
+                            src="/assets/logos/react.svg"
                             alt="React"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
-                      {/* After Effects */}
-                      <div className="absolute top-[38%] right-[3%] animate-[spin_25s_linear_infinite_reverse]">
+                      {/* Next.js */}
+                      <div className="absolute top-[15%] right-[15%] animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/After Effects.png"
-                            alt="After Effects"
+                            src="/assets/logos/next js.svg"
+                            alt="Next.js"
+                            className="w-8 h-8 object-contain"
+                          />
+                        </div>
+                      </div>
+
+                      {/* TypeScript */}
+                      <div className="absolute top-[50%] right-[0%] -translate-y-1/2 animate-[spin_25s_linear_infinite_reverse]">
+                        <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                          <img
+                            src="/assets/logos/typescript.svg"
+                            alt="TypeScript"
+                            className="w-8 h-8 object-contain"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Tailwind CSS */}
+                      <div className="absolute bottom-[15%] right-[15%] animate-[spin_25s_linear_infinite_reverse]">
+                        <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                          <img
+                            src="/assets/logos/tailwind.svg"
+                            alt="Tailwind CSS"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
                       {/* Figma */}
-                      <div className="absolute bottom-[18%] right-[11%] animate-[spin_25s_linear_infinite_reverse]">
+                      <div className="absolute bottom-[0%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/Figma.png"
+                            src="/assets/logos/figma.svg"
                             alt="Figma"
-                            className="w-8 h-8 object-contain"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Adobe Illustrator */}
-                      <div className="absolute bottom-[7%] left-[35%] animate-[spin_25s_linear_infinite_reverse]">
-                        <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
-                          <img
-                            src="/assets/logos/Adobe Illustrator.png"
-                            alt="Adobe Illustrator"
-                            className="w-8 h-8 object-contain"
-                          />
-                        </div>
-                      </div>
-
-                      {/* Next.js */}
-                      <div className="absolute bottom-[13%] left-[9%] animate-[spin_25s_linear_infinite_reverse]">
-                        <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
-                          <img
-                            src="/assets/logos/Next js.png"
-                            alt="Next.js"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
                       {/* Framer */}
-                      <div className="absolute top-[45%] left-[4%] animate-[spin_25s_linear_infinite_reverse]">
+                      <div className="absolute bottom-[15%] left-[15%] animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/Framer.png"
+                            src="/assets/logos/framer.svg"
                             alt="Framer"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
-                      {/* Angular */}
-                      <div className="absolute top-[19%] left-[7%] animate-[spin_25s_linear_infinite_reverse]">
+                      {/* GSAP */}
+                      <div className="absolute top-[50%] left-[0%] -translate-y-1/2 animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/ANgular.png"
+                            src="/assets/logos/gsap.svg"
+                            alt="GSAP"
+                            className="w-8 h-8 object-contain"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Vercel */}
+                      <div className="absolute top-[15%] left-[15%] animate-[spin_25s_linear_infinite_reverse]">
+                        <div className="w-12 h-12 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                          <img
+                            src="/assets/logos/vercel.svg"
+                            alt="Vercel"
+                            className="w-8 h-8 object-contain"
+                          />
+                        </div>
+                      </div>
+
+                      {/* MIDDLE CIRCLE - 6 icons (Perfect Hexagon - 60° spacing) */}
+                      {/* Angular */}
+                      <div className="absolute top-[18%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
+                        <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                          <img
+                            src="/assets/logos/angular.svg"
                             alt="Angular"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
-                      {/* MIDDLE CIRCLE - 4 icons */}
-                      {/* React */}
-                      <div className="absolute top-[21%] left-[38%] animate-[spin_25s_linear_infinite_reverse]">
+                      {/* Three.js */}
+                      <div className="absolute top-[32%] right-[18%] animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/React.png"
-                            alt="React"
+                            src="/assets/logos/threejs.svg"
+                            alt="Three.js"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
-                      {/* Figma */}
-                      <div className="absolute top-[42%] right-[16%] animate-[spin_25s_linear_infinite_reverse]">
+                      {/* GitHub */}
+                      <div className="absolute bottom-[32%] right-[18%] animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/Figma.png"
-                            alt="Figma"
+                            src="/assets/logos/github.svg"
+                            alt="GitHub"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
-                      {/* Next.js */}
-                      <div className="absolute bottom-[23%] left-[41%] animate-[spin_25s_linear_infinite_reverse]">
+                      {/* Photoshop */}
+                      <div className="absolute bottom-[18%] left-[50%] -translate-x-1/2 animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/Next js.png"
-                            alt="Next.js"
+                            src="/assets/logos/photoshop.svg"
+                            alt="Adobe Photoshop"
                             className="w-8 h-8 object-contain"
                           />
                         </div>
                       </div>
 
-                      {/* Blender */}
-                      <div className="absolute top-[48%] left-[17%] animate-[spin_25s_linear_infinite_reverse]">
+                      {/* Illustrator */}
+                      <div className="absolute bottom-[32%] left-[18%] animate-[spin_25s_linear_infinite_reverse]">
                         <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
                           <img
-                            src="/assets/logos/blender.png"
-                            alt="Blender"
+                            src="/assets/logos/illustrator.svg"
+                            alt="Adobe Illustrator"
+                            className="w-8 h-8 object-contain"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Notion */}
+                      <div className="absolute top-[32%] left-[18%] animate-[spin_25s_linear_infinite_reverse]">
+                        <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:scale-125 hover:shadow-xl">
+                          <img
+                            src="/assets/logos/notion.svg"
+                            alt="Notion"
                             className="w-8 h-8 object-contain"
                           />
                         </div>

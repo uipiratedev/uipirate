@@ -14,7 +14,7 @@ const MiniService = () => {
             <span className="text-brand-orange">You launch them.</span>
           </h2>
           <div className="flex flex-col items-center justify-center px-0 mb-8 mt-3 max-md:px-3">
-            <p className=" text-center content-center max-lg:px-4 max-md:px-0 font-[500] text-[#777777]">
+            <p className=" text-center content-center max-lg:px-4 max-md:px-0 font-[500] ">
               From strategic UX to scalable frontend architecture, we are the
               product team you wish you had in-house.
             </p>

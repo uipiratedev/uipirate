@@ -13,6 +13,7 @@ import PageWrapper from "@/components/PageWrapper";
 import FloatingLetsTalkButton from "@/components/FloatingLetsTalkButton";
 import MiniService from "./miniService/miniService";
 import BentoGrid from "./bentoGrid/bentoGrid";
+import TopThree from "./top3/topThree";
 const Landing = () => {
   return (
     <PageWrapper showFloatingButton={false}>
@@ -20,12 +21,13 @@ const Landing = () => {
         <LandingHero />
         <LandingMarquee />
 
-        <div className="pt-24 max-md:pt-20">
+        <div className="pt-14 max-md:pt-20">
           <MiniService />
           <BentoGrid></BentoGrid>
         </div>
 
         <div className=" overflow-x-hidden py-0 max-md:py-4">
+          <TopThree></TopThree>
           <LandingAppScreen />
         </div>
 
