@@ -107,13 +107,13 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           className="p-2 px-4"
         >
           {/* Dot 1: Teal (Left) - 28px, moved slightly inside */}
-          <div className="absolute -left-[20px] -top-[8px] w-[28px] h-[28px] bg-teal-400 rounded-full blur-[10px] opacity-100 animate-float-dot-1" />
+          <div className="absolute -left-[30px] -top-[20px] w-[28px] h-[28px] bg-teal-400 rounded-full blur-[10px] opacity-100 animate-float-dot-1" />
 
           {/* Dot 2: Blue (Center) - 39px, bottom, tiny slice visible */}
-          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[40px] w-[39px] h-[39px] bg-blue-500 rounded-full blur-[18px] opacity-100 animate-float-dot-2" />
+          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[50px] w-[39px] h-[39px] bg-blue-500 rounded-full blur-[18px] opacity-100 animate-float-dot-2" />
 
           {/* Dot 3: Pink (Right) - 21px, moved slightly inside */}
-          <div className="absolute -right-[16px] -top-[6px] w-[21px] h-[21px] bg-pink-400 rounded-full blur-[8px] opacity-100 animate-float-dot-3" />
+          <div className="absolute -right-[26px] -top-[16px] w-[21px] h-[21px] bg-pink-400 rounded-full blur-[8px] opacity-100 animate-float-dot-3" />
 
           {/* Text on top */}
           <span

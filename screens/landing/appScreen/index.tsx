@@ -29,7 +29,7 @@ const LandingAppScreen = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center gap-8 mt-20 appTrigger container mx-auto max-md:gap-4">
+      <div className="flex flex-row items-center justify-center gap-8 mt-4 appTrigger container mx-auto max-md:gap-4">
         <img
           alt="app"
           className="rotate-[-6deg] max-md:w-[40%]"
