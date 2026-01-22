@@ -80,7 +80,7 @@ const CardAnimation = () => {
             scrub: 1.5,
           },
           ease: "power2.out",
-        }
+        },
       );
     });
 
@@ -102,7 +102,7 @@ const CardAnimation = () => {
           duration: 1,
           stagger: 0.2,
           ease: "power3.out",
-        }
+        },
       );
     }
   };

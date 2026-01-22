@@ -35,24 +35,24 @@ const BlogsHero = ({ data: _data }: any) => {
         {/* search section */}
         <div className="mt-12 flex flex-row items-center justify-center max-lg:flex-col w-full">
           <div className="w-full max-w-3xl relative">
-            <label htmlFor="blog-search" className="sr-only">
+            <label className="sr-only" htmlFor="blog-search">
               Search blog topics
             </label>
             <input
-              id="blog-search"
+              aria-label="Search blog topics"
               className="w-full px-6 py-4 rounded-full border border-gray-300 bg-[#F7F7F7] focus:outline-none focus:border-blue-500 pr-12"
+              id="blog-search"
               placeholder="Search a topic..."
               type="search"
-              aria-label="Search blog topics"
             />
             {/* Search Icon */}
             <svg
+              aria-hidden="true"
               className="w-5 h-5 text-gray-400 absolute right-6 top-1/2 transform -translate-y-1/2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
             >
               <path
                 d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"

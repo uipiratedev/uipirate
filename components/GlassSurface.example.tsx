@@ -22,7 +22,7 @@ export default function GlassSurfaceExamples() {
           Simple glass surface with default settings
         </p>
         <div className="flex flex-wrap gap-4 items-center p-8">
-          <GlassSurface width={300} height={200} borderRadius={24}>
+          <GlassSurface borderRadius={24} height={200} width={300}>
             <h2 className="text-xl font-bold">Glass Surface Content</h2>
           </GlassSurface>
         </div>
@@ -47,17 +47,17 @@ export default function GlassSurfaceExamples() {
         </p>
         <div className="flex flex-wrap gap-4 items-center p-8">
           <GlassSurface
-            width={300}
-            height={150}
+            blueOffset={25}
             borderRadius={20}
+            brightness={60}
             displace={15}
             distortionScale={-150}
-            redOffset={5}
             greenOffset={15}
-            blueOffset={25}
-            brightness={60}
-            opacity={0.8}
+            height={150}
             mixBlendMode="screen"
+            opacity={0.8}
+            redOffset={5}
+            width={300}
           >
             <span className="text-lg font-semibold">
               Advanced Glass Distortion
@@ -88,11 +88,11 @@ export default function GlassSurfaceExamples() {
         </p>
         <div className="flex flex-wrap gap-4 items-center p-8">
           <GlassSurface
-            width="100%"
-            height={120}
-            borderRadius={16}
             backgroundOpacity={0.2}
+            borderRadius={16}
+            height={120}
             saturation={1.5}
+            width="100%"
           >
             <div className="text-center">
               <h3 className="text-xl font-bold mb-2">Responsive Glass</h3>
@@ -164,4 +164,3 @@ export default function GlassSurfaceExamples() {
     </div>
   );
 }
-

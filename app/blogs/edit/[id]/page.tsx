@@ -84,7 +84,7 @@ const SlashCommandMenu = ({
         },
       },
     ],
-    [editor]
+    [editor],
   );
 
   useEffect(() => {
@@ -330,7 +330,7 @@ const BlogEditPage = () => {
             // Only show menu if at start of line or after space
             const textBefore = $from.parent.textContent.slice(
               0,
-              $from.parentOffset
+              $from.parentOffset,
             );
 
             if (textBefore === "" || textBefore.endsWith(" ")) {
@@ -436,7 +436,7 @@ const BlogEditPage = () => {
         reader.readAsDataURL(file);
       }
     },
-    []
+    [],
   );
 
   const handleBannerImageUpload = useCallback(
@@ -454,7 +454,7 @@ const BlogEditPage = () => {
         reader.readAsDataURL(file);
       }
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -537,7 +537,9 @@ const BlogEditPage = () => {
 
       setSaveStatus(published ? "Published" : "Draft Saved");
       alert(
-        published ? "Blog updated and published!" : "Blog updated successfully!"
+        published
+          ? "Blog updated and published!"
+          : "Blog updated successfully!",
       );
 
       // Redirect to blog list

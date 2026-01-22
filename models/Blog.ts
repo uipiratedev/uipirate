@@ -87,7 +87,7 @@ const BlogSchema: Schema = new Schema(
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt
-  }
+  },
 );
 
 // Create indexes for better query performance

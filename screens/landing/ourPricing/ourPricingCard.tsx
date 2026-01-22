@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Chip } from "@heroui/react";
+import { Card, CardBody, Chip } from "@heroui/react";
 import { Tabs, Tab } from "@heroui/react";
 import { useState } from "react";
 import Link from "next/link";
@@ -256,7 +256,7 @@ const dataPrice = [
 const OurPricingCard = (props: any) => {
   const [isHoveredChat, setIsHoveredChat] = useState(false);
   const [selectedTabs, setSelectedTabs] = useState<{ [key: number]: string }>(
-    {}
+    {},
   );
 
   const tabs = [

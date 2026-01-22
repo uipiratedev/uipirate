@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { Button, Card, CardBody, CardHeader, Chip } from "@heroui/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -38,7 +38,7 @@ const ServicesSection = () => {
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
-          }
+          },
         );
       }
     });
@@ -50,7 +50,7 @@ const ServicesSection = () => {
         entries.forEach((entry) => {
           // Find the index of the observed element in videoRefs
           const index = videoRefs.current.findIndex(
-            (video) => video === entry.target
+            (video) => video === entry.target,
           );
 
           if (index !== -1) {
@@ -70,7 +70,7 @@ const ServicesSection = () => {
           }
         });
       },
-      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
+      { threshold: 0.5 }, // Trigger when at least 10% of the video is in view
     );
 
     // Observing all video elements

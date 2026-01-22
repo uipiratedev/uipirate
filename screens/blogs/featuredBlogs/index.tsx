@@ -32,8 +32,6 @@ const FeaturedBlogs = () => {
       const response = await fetch("/api/blogs?published=true&limit=50");
       const data = await response.json();
 
-      console.log(data);
-
       if (data.success) {
         setBlogs(data.data);
 
@@ -56,8 +54,6 @@ const FeaturedBlogs = () => {
     activeTab === "All"
       ? blogs
       : blogs.filter((blog) => blog.tags?.includes(activeTab));
-
-  console.log(filteredBlogs);
 
   return (
     <div className="pt-32 max-md:pt-24 px-6 max-w-7xl mx-auto mb-24 max-md:mb-12">

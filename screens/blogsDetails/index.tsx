@@ -24,7 +24,6 @@ interface BlogsDetailsProps {
 }
 
 const BlogsDetails = ({ blog }: BlogsDetailsProps) => {
-  console.log(blog);
   return (
     <div>
       <BlogsDetailsHero

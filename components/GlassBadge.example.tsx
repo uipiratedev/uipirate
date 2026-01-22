@@ -24,10 +24,10 @@ export default function GlassBadgeExamples() {
         <div className="flex flex-wrap gap-4 items-center p-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
           <GlassBadge>Design & Development</GlassBadge>
           <GlassBadge variant="gradient">Our Services</GlassBadge>
-          <GlassBadge variant="gradient" size="sm">
+          <GlassBadge size="sm" variant="gradient">
             Small Badge
           </GlassBadge>
-          <GlassBadge variant="gradient" size="lg">
+          <GlassBadge size="lg" variant="gradient">
             Large Badge
           </GlassBadge>
         </div>
@@ -46,10 +46,10 @@ export default function GlassBadgeExamples() {
         </p>
         <div className="flex flex-wrap gap-4 items-center p-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg">
           <GlassBadge variant="solid">Featured</GlassBadge>
-          <GlassBadge variant="solid" size="sm">
+          <GlassBadge size="sm" variant="solid">
             New
           </GlassBadge>
-          <GlassBadge variant="solid" size="lg">
+          <GlassBadge size="lg" variant="solid">
             Premium
           </GlassBadge>
         </div>
@@ -68,10 +68,10 @@ export default function GlassBadgeExamples() {
         </p>
         <div className="flex flex-wrap gap-4 items-center p-8 bg-gray-50 rounded-lg">
           <GlassBadge variant="cyan">About Us</GlassBadge>
-          <GlassBadge variant="cyan" size="sm">
+          <GlassBadge size="sm" variant="cyan">
             Services
           </GlassBadge>
-          <GlassBadge variant="cyan" size="lg">
+          <GlassBadge size="lg" variant="cyan">
             Testimonials
           </GlassBadge>
         </div>
@@ -90,10 +90,10 @@ export default function GlassBadgeExamples() {
         </p>
         <div className="flex flex-wrap gap-4 items-center p-8 bg-gradient-to-r from-orange-50 to-pink-50 rounded-lg">
           <GlassBadge className="text-blue-600">Custom Color</GlassBadge>
-          <GlassBadge variant="gradient" className="shadow-lg">
+          <GlassBadge className="shadow-lg" variant="gradient">
             With Shadow
           </GlassBadge>
-          <GlassBadge variant="solid" uppercase={false}>
+          <GlassBadge uppercase={false} variant="solid">
             Mixed Case Text
           </GlassBadge>
         </div>

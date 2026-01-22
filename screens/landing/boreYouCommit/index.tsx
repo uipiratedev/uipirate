@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Card, CardBody, Chip } from "@heroui/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -32,7 +32,7 @@ const BoreYouCommit = () => {
               toggleActions: "play none none reverse",
               scrub: 1.5,
             },
-          }
+          },
         );
       }
     });

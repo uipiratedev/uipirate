@@ -77,7 +77,7 @@ const AboutCardAnimation = () => {
             scrub: 1.5,
           },
           ease: "power2.out",
-        }
+        },
       );
     });
 
@@ -99,7 +99,7 @@ const AboutCardAnimation = () => {
           duration: 1,
           stagger: 0.2,
           ease: "power3.out",
-        }
+        },
       );
     }
   };
@@ -179,9 +179,9 @@ const AboutCardAnimation = () => {
                 </p>
                 {item.img && (
                   <img
-                    src={item.img}
                     alt={`${item.subtitle1} ${item.subtitle2}`}
                     className="h-32 max-md:h-16 object-contain"
+                    src={item.img}
                   />
                 )}
               </div>

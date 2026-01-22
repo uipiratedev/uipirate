@@ -70,7 +70,7 @@ const LandingBehanceFramor = () => {
       xMove: string[],
       yMove: string[],
       rotateDeg: number[],
-      triggerProgress: number
+      triggerProgress: number,
     ) => {
       gsap.to(images.slice(startIndex, endIndex), {
         x: (i) => xMove[i % 2],
@@ -105,7 +105,7 @@ const LandingBehanceFramor = () => {
       xMove,
       !isMobile ? ["90%", "90%"] : ["-20%", "-20%"],
       [-45, 45],
-      0.2
+      0.2,
     );
     animateRow(
       2,
@@ -113,7 +113,7 @@ const LandingBehanceFramor = () => {
       xMove,
       !isMobile ? ["40%", "40%"] : ["-20%", "-20%"],
       [-45, 45],
-      0.3
+      0.3,
     );
     animateRow(
       4,
@@ -121,7 +121,7 @@ const LandingBehanceFramor = () => {
       xMove,
       !isMobile ? ["-60%", "-60%"] : ["-20%", "-20%"],
       [-45, 45],
-      1
+      1,
     );
 
     // Force ScrollTrigger to recalculate positions after animations are set up

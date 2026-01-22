@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useVideoIntersection } from "@/hooks/useVideoIntersection";
 
 const data1 = [
   {
@@ -57,87 +57,11 @@ const data1 = [
 const Teams = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [isMobile, setIsMobile] = React.useState(false);
+  const isMobile = useIsMobile();
 
-  useLayoutEffect(() => {
-    // Set initial value
-    if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth <= 768);
-    }
-  }, []);
-
-  useLayoutEffect(() => {
-    // GSAP ScrollTrigger animation for cards
-
-    // Clear any existing ScrollTriggers
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 100, // Start from below
-            transform: isMobile ? "scale(1)" : "scale(0.80)",
-          },
-          {
-            y: 0, // Move to original position
-            transform: "scale(1)",
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "" : "top 110%",
-              end: isMobile ? "" : "bottom center",
-              toggleActions: "play none none reverse",
-              scrub: 1.5,
-            },
-          }
-        );
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // Find the index of the observed element in videoRefs
-          const index = videoRefs.current.findIndex(
-            (video) => video === entry.target
-          );
-
-          if (index !== -1) {
-            // Check if the index is valid
-            const videoElement = videoRefs.current[index];
-
-            if (videoElement) {
-              // Ensure the video element is valid
-              if (entry.isIntersecting) {
-                // console.log(`Video ${index + 1} started playing.`);
-                videoElement.play();
-                videoElement.playbackRate = 0.5; // Adjust speed when in view
-              } else {
-                // console.log(`Video ${index + 1} paused.`);
-                videoElement.pause();
-                videoElement.playbackRate = 1; // Reset speed when out of view
-              }
-            }
-          }
-        });
-      },
-      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
-    );
-
-    // Observing all video elements
-    videoRefs.current.forEach((video) => {
-      if (video) observer.observe(video); // Ensure video is not null before observing
-    });
-
-    return () => {
-      observer.disconnect(); // Cleanup observer on unmount
-    };
-  }, []);
+  // Use custom hooks for animations and video control
+  useScrollAnimation(cardsRef, isMobile);
+  useVideoIntersection(videoRefs);
 
   return (
     <div className="min-h-screen ">

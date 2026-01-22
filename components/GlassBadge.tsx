@@ -1,4 +1,5 @@
 import React from "react";
+
 import GlassSurface from "./GlassSurface";
 
 interface GlassBadgeProps {
@@ -89,22 +90,22 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
     return (
       <div className={`relative z-10 inline-block ${className}`}>
         <GlassSurface
-          width="auto"
-          height="auto"
-          borderRadius={10}
+          backgroundOpacity={0.1}
+          blueOffset={20}
           blur={11}
-          opacity={0.93}
+          borderRadius={10}
           borderWidth={0.01}
           brightness={50}
-          backgroundOpacity={0.1}
-          saturation={1}
+          className="p-2 px-4"
           displace={0.5}
           distortionScale={-180}
-          redOffset={0}
-          greenOffset={10}
-          blueOffset={20}
           forceLightMode={true}
-          className="p-2 px-4"
+          greenOffset={10}
+          height="auto"
+          opacity={0.93}
+          redOffset={0}
+          saturation={1}
+          width="auto"
         >
           {/* Dot 1: Teal (Left) - 28px, moved slightly inside */}
           <div className="absolute -left-[30px] -top-[20px] w-[28px] h-[28px] bg-teal-400 rounded-full blur-[10px] opacity-100 animate-float-dot-1" />
@@ -137,14 +138,10 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
   if (variant === "solid") {
     return (
       <GlassSurface
-        width="auto"
-        height="auto"
-        borderRadius={16}
-        blur={12}
-        opacity={0.93}
-        brightness={50}
         backgroundOpacity={0.15}
-        saturation={1.5}
+        blur={12}
+        borderRadius={16}
+        brightness={50}
         className={`
           !inline-flex !items-center !justify-center
           font-semibold
@@ -153,6 +150,10 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           transition-all duration-300 ease-in-out
           ${className}
         `}
+        height="auto"
+        opacity={0.93}
+        saturation={1.5}
+        width="auto"
       >
         {children}
       </GlassSurface>

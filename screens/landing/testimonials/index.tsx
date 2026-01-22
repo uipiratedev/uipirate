@@ -17,7 +17,8 @@ function LandingTestimonials() {
             <span className="z-10">clients</span>
 
             <img
-              alt="Decorative underline for clients text" aria-hidden="true"
+              alt="Decorative underline for clients text"
+              aria-hidden="true"
               className="absolute inset-0 w-[125px] h-full top-[0.4rem] left-2  z-0 max-lg:w-[70px]"
               src="https://res.cloudinary.com/damm9iwho/image/upload/v1730284462/Vector_client_jck63k.svg"
             />
