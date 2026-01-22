@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 const footerSocialLinks = [
   {
     name: "Google Maps",
@@ -71,25 +73,25 @@ const LandingFooter = () => {
               </h4>
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li>
-                  <a className="hover:text-white transition-colors" href="/">
+                  <Link className="hover:text-white transition-colors" href="/">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     className="hover:text-white transition-colors"
                     href="/services"
                   >
                     Services
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     className="hover:text-white transition-colors"
                     href="/ourWorks"
                   >
                     Works
-                  </a>
+                  </Link>
                 </li>
                 {/* <li>
                   <a
@@ -100,12 +102,12 @@ const LandingFooter = () => {
                   </a>
                 </li> */}
                 <li>
-                  <a
+                  <Link
                     className="hover:text-white transition-colors"
                     href="/pricing"
                   >
                     Pricing
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -117,12 +119,12 @@ const LandingFooter = () => {
               </h4>
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li>
-                  <a
+                  <Link
                     className="hover:text-white transition-colors"
                     href="/blogs"
                   >
                     Blogs
-                  </a>
+                  </Link>
                 </li>
                 {/* <li>
                   <a
@@ -133,29 +135,29 @@ const LandingFooter = () => {
                   </a>
                 </li> */}
                 <li>
-                  <a
+                  <Link
                     className="hover:text-white transition-colors"
                     href="/faqs"
                   >
                     FAQ’s
-                  </a>
+                  </Link>
                 </li>
                 {/* connect sitemap with xml file */}
                 <li>
-                  <a
+                  <Link
                     className="hover:text-white transition-colors"
                     href="/sitemap"
                   >
                     Site Map
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
+                  <Link
                     className="hover:text-white transition-colors"
                     href="/privacy-policy"
                   >
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
