@@ -29,7 +29,7 @@ const LandingMarquee = () => {
             end: "bottom 20%",
             toggleActions: "play reverse play reverse",
           },
-        }
+        },
       );
     }
 
@@ -57,7 +57,7 @@ const LandingMarquee = () => {
             end: "bottom 20%",
             toggleActions: "play reverse play reverse",
           },
-        }
+        },
       );
     }
 
@@ -162,14 +162,13 @@ const LandingMarquee = () => {
             {premiumLogos.map((logo, index) => (
               <a
                 key={index}
-                href={logo.link || undefined}
-                target={logo.link ? "_blank" : undefined}
-                rel={logo.link ? "noopener noreferrer" : undefined}
                 className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[18px] transition-all duration-500 ease-out relative overflow-hidden ${
                   logo.link
                     ? "cursor-pointer hover:brightness-105"
                     : "cursor-default"
                 }`}
+                href={logo.link || undefined}
+                rel={logo.link ? "noopener noreferrer" : undefined}
                 style={{
                   background:
                     "linear-gradient(142deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0.55) 100%)",
@@ -180,9 +179,11 @@ const LandingMarquee = () => {
                   boxShadow:
                     "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
                 }}
+                target={logo.link ? "_blank" : undefined}
                 onMouseEnter={(e) => {
                   const border =
                     e.currentTarget.querySelector(".gradient-border");
+
                   if (border) {
                     gsap.to(border, {
                       opacity: 1,
@@ -194,6 +195,7 @@ const LandingMarquee = () => {
                 onMouseLeave={(e) => {
                   const border =
                     e.currentTarget.querySelector(".gradient-border");
+
                   if (border) {
                     gsap.to(border, {
                       opacity: 0,
@@ -224,10 +226,10 @@ const LandingMarquee = () => {
                 />
 
                 <img
-                  src={logo.url}
                   alt={logo.alt}
                   className="h-[40px] max-h-[40px] max-md:h-[32px] max-md:max-h-[32px] w-auto object-contain  transition-all duration-500 ease-out group-hover:scale-110 relative z-10"
                   loading="lazy"
+                  src={logo.url}
                   onMouseEnter={(e) => {
                     gsap.to(e.currentTarget, {
                       scale: 1.1,

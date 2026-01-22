@@ -49,25 +49,25 @@ const FaqsHero = ({
           <div className="w-full max-w-3xl relative">
             <div className="flex items-center w-full rounded-full border border-[#E5E5E5] bg-white overflow-hidden shadow-sm">
               {/* Search Input */}
-              <label htmlFor="faq-search" className="sr-only">
+              <label className="sr-only" htmlFor="faq-search">
                 Search FAQs
               </label>
               <input
-                id="faq-search"
+                aria-label="Search frequently asked questions"
                 className="flex-1 px-6 py-4 bg-transparent focus:outline-none text-gray-700 placeholder:text-gray-400"
+                id="faq-search"
                 placeholder="What do you want help with?"
                 type="search"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                aria-label="Search frequently asked questions"
               />
               <svg
+                aria-hidden="true"
                 className="w-5 h-5 text-gray-400 absolute right-6 top-1/2 transform -translate-y-1/2 md:hidden"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
               >
                 <path
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"

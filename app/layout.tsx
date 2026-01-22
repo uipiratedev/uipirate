@@ -135,26 +135,26 @@ export default function RootLayout({
         />
 
         {/* Preconnect to external domains for better performance */}
-        <link rel="preconnect" href="https://res.cloudinary.com" />
-        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.clarity.ms" />
+        <link href="https://res.cloudinary.com" rel="preconnect" />
+        <link href="https://res.cloudinary.com" rel="dns-prefetch" />
+        <link href="https://www.googletagmanager.com" rel="preconnect" />
+        <link href="https://www.clarity.ms" rel="preconnect" />
       </head>
       <body
         className={clsx(
           "min-h-screen  font-sans antialiased bg-white",
           fontSans.variable,
-          fontJakarta.variable
+          fontJakarta.variable,
         )}
       >
         {/* Skip Link for Keyboard Navigation */}
-        <a href="#main-content" className="skip-link sr-only focus:not-sr-only">
+        <a className="skip-link sr-only focus:not-sr-only" href="#main-content">
           Skip to main content
         </a>
 
         <div className="relative flex flex-col">
           <ConditionalNavbar />
-          <main id="main-content" className="">
+          <main className="" id="main-content">
             {children}
           </main>
           <SpeedInsights />
@@ -163,8 +163,6 @@ export default function RootLayout({
 
         {/* Google Analytics with Consent Mode - Lazy loaded for better performance */}
         <Script
-          id="gtag-base"
-          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -180,6 +178,8 @@ export default function RootLayout({
               });
             `,
           }}
+          id="gtag-base"
+          strategy="lazyOnload"
         />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-ZS77RQCWYM"
@@ -188,8 +188,6 @@ export default function RootLayout({
 
         {/* Microsoft Clarity - Lazy loaded for better performance */}
         <Script
-          id="clarity-script"
-          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function(c,l,a,r,i,t,y){
@@ -199,6 +197,8 @@ export default function RootLayout({
               })(window, document, "clarity", "script", "txqkzeahh6");
             `,
           }}
+          id="clarity-script"
+          strategy="lazyOnload"
         />
       </body>
     </html>

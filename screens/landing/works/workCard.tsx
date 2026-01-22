@@ -67,7 +67,7 @@ const RecentWorkCard = () => {
             scrub: 1,
           },
           ease: "power2.out",
-        }
+        },
       );
 
       // Animate the contentDiv
@@ -87,7 +87,7 @@ const RecentWorkCard = () => {
             scrub: 1,
           },
           ease: "power2.out",
-        }
+        },
       );
     });
 

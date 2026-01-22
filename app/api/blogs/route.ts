@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
         success: false,
         error: error.message || "Failed to fetch blogs",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
           success: true,
           data: blog,
         },
-        { status: 201 }
+        { status: 201 },
       );
     }
 
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
         success: true,
         data: blog,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: any) {
     return NextResponse.json(
@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
         success: false,
         error: error.message || "Failed to create blog",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

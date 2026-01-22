@@ -195,7 +195,7 @@ export default function FaqsAccordion() {
               end: isMobile ? "botton 10%" : "top 30%", // Adjust end point for mobile
               toggleActions: "restart none none reverse",
             },
-          }
+          },
         );
       }
     });

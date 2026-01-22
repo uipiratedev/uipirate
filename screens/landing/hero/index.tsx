@@ -3,8 +3,9 @@ import { Button } from "@heroui/button";
 import { useState, useRef } from "react";
 import { Tooltip } from "@heroui/react";
 import Link from "next/link";
+
 import AnimatedHeadline from "./AnimatedHeadline";
-import GlassBadgeExamples from "@/components/GlassBadge.example";
+
 import GlassSurface from "@/components/GlassSurface";
 
 const LandingHero = () => {
@@ -73,7 +74,7 @@ const LandingHero = () => {
             bottom: 0,
             marginLeft: "calc(-50vw + 50%)",
           }}
-        ></div>
+        />
         <div
           className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto "
           style={{ overflow: "visible" }}
@@ -81,28 +82,28 @@ const LandingHero = () => {
           {" "}
           {/* Trust Badge with GlassSurface - Inline Avatars */}
           <GlassSurface
-            width="auto"
-            height="auto"
-            borderRadius={12}
+            backgroundOpacity={0.1}
+            blueOffset={20}
             blur={11}
-            opacity={0.93}
+            borderRadius={12}
             borderWidth={0.01}
             brightness={50}
-            backgroundOpacity={0.1}
-            saturation={1}
+            className="md:my-9 max-md:my-5 !flex !flex-row max-md:!flex-col !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
             displace={0.5}
             distortionScale={-180}
-            redOffset={0}
-            greenOffset={10}
-            blueOffset={20}
             forceLightMode={true}
-            className="md:my-9 max-md:my-5 !flex !flex-row max-md:!flex-col !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
+            greenOffset={10}
+            height="auto"
+            opacity={0.93}
+            redOffset={0}
+            saturation={1}
             style={{
               animation: "trustBadgeUp 0.5s ease-out forwards",
               animationDelay: "0.1s",
               opacity: 0,
               transform: "translateY(20px) scale(0.95)",
             }}
+            width="auto"
           >
             {/* Avatar Stack */}
             <div
@@ -114,11 +115,6 @@ const LandingHero = () => {
                   <Tooltip
                     key={index}
                     showArrow
-                    closeDelay={100}
-                    delay={200}
-                    offset={12}
-                    placement="bottom"
-                    disableAnimation={false}
                     classNames={{
                       base: [
                         // Arrow styling - glass effect for arrow
@@ -134,30 +130,7 @@ const LandingHero = () => {
                         "backdrop-blur-none",
                       ],
                     }}
-                    motionProps={{
-                      variants: {
-                        exit: {
-                          opacity: 0,
-                          y: -8,
-                          scale: 0.96,
-                          transition: {
-                            duration: 0.15,
-                            ease: "easeIn",
-                          },
-                        },
-                        enter: {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                          transition: {
-                            type: "spring",
-                            stiffness: 400,
-                            damping: 30,
-                            mass: 0.8,
-                          },
-                        },
-                      },
-                    }}
+                    closeDelay={100}
                     content={
                       <div
                         className="w-[280px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
@@ -212,6 +185,34 @@ const LandingHero = () => {
                         </div>
                       </div>
                     }
+                    delay={200}
+                    disableAnimation={false}
+                    motionProps={{
+                      variants: {
+                        exit: {
+                          opacity: 0,
+                          y: -8,
+                          scale: 0.96,
+                          transition: {
+                            duration: 0.15,
+                            ease: "easeIn",
+                          },
+                        },
+                        enter: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: {
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 30,
+                            mass: 0.8,
+                          },
+                        },
+                      },
+                    }}
+                    offset={12}
+                    placement="bottom"
                   >
                     <div
                       ref={(el) => {

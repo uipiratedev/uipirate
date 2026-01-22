@@ -15,8 +15,9 @@ import NextLink from "next/link";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-import { siteConfig } from "@/config/site";
 import GlassSurface from "./GlassSurface";
+
+import { siteConfig } from "@/config/site";
 
 export const Navbar = () => {
   const [isDarkSection, setIsDarkSection] = useState(false);
@@ -42,6 +43,7 @@ export const Navbar = () => {
     };
 
     document.addEventListener("keydown", handleEscape);
+
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isMenuOpen]);
 
@@ -52,7 +54,7 @@ export const Navbar = () => {
 
         setIsDarkSection(isInView);
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const darkSections = document.querySelectorAll(".dark-section");
@@ -71,29 +73,29 @@ export const Navbar = () => {
         {!loading && (
           <div
             className={clsx(
-              "mx-[10rem] max-lg:mx-12 max-md:mx-0 max-xl:mx-24 max-2xl:mx-[12rem] sticky top-0 mt-3 max-md:mt-0 z-[99999999]"
+              "mx-[10rem] max-lg:mx-12 max-md:mx-0 max-xl:mx-24 max-2xl:mx-[12rem] sticky top-0 mt-3 max-md:mt-0 z-[99999999]",
             )}
           >
             <GlassSurface
-              width="100%"
-              height={52}
-              borderRadius={16}
-              blur={28}
-              opacity={0.93}
-              brightness={55}
               backgroundOpacity={0.75}
-              saturation={2}
+              blueOffset={20}
+              blur={28}
+              borderRadius={16}
+              borderWidth={2}
+              brightness={55}
+              className="relative isolate max-md:rounded-none"
               displace={0}
               distortionScale={5}
-              redOffset={1}
-              greenOffset={10}
-              blueOffset={20}
-              borderWidth={2}
               forceLightMode={true}
-              className="relative isolate max-md:rounded-none"
+              greenOffset={10}
+              height={52}
+              opacity={0.93}
+              redOffset={1}
+              saturation={2}
               style={{
                 border: "1px solid rgba(255, 255, 255, 0.2)",
               }}
+              width="100%"
             >
               <NextUINavbar
                 className={clsx(
@@ -103,7 +105,7 @@ export const Navbar = () => {
                   {
                     "text-white": isDarkSection,
                     "text-black": !isDarkSection,
-                  }
+                  },
                 )}
                 isMenuOpen={isMenuOpen}
                 maxWidth="full"
@@ -162,13 +164,13 @@ export const Navbar = () => {
                       <NavbarItem
                         key={item.href}
                         className={clsx(
-                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 relative"
+                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 relative",
                         )}
                       >
                         <NextLink
                           className={clsx(
                             linkStyles({ color: "foreground" }),
-                            "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]"
+                            "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
                           )}
                           href={item.href}
                         >
@@ -187,10 +189,10 @@ export const Navbar = () => {
                   <NavbarItem>
                     <Button
                       as={NextLink}
-                      href="/contact"
                       className=" text-sm font-[500] text-white bg-black border-brand-orange border-2 pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
                       data-back="Let's Talk"
                       data-front="Have an Idea?"
+                      href="/contact"
                       style={{ paddingTop: 0 }}
                       variant="solid"
                     >
@@ -200,7 +202,7 @@ export const Navbar = () => {
                 </NavbarContent>
 
                 {/* ARIA Live Region for Screen Reader Announcements */}
-                <div aria-live="polite" aria-atomic="true" className="sr-only">
+                <div aria-atomic="true" aria-live="polite" className="sr-only">
                   {announcement}
                 </div>
 

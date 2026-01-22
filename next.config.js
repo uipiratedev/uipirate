@@ -103,18 +103,9 @@ const nextConfig = {
     return headers;
   },
 
-  // Webpack configuration to handle slick-carousel fonts
-  webpack: (config, { isServer }) => {
-    // Ignore missing slick-carousel font files
-    config.module.rules.push({
-      test: /\.(woff|woff2|eot|ttf|otf|svg)$/i,
-      issuer: /slick-carousel/,
-      type: "asset/resource",
-      generator: {
-        emit: false,
-      },
-    });
 
+  // Webpack configuration
+  webpack: (config, { isServer }) => {
     // In dev, tell Watchpack to ignore Windows system paging/dump files
     // This prevents errors like EINVAL lstat 'D:\\pagefile.sys' or 'D:\\DumpStack.log.tmp'
     config.watchOptions = {

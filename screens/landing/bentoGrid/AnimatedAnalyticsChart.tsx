@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -141,7 +141,7 @@ const AnimatedAnalyticsChart = () => {
           duration: 1.8,
           ease: "power1.inOut",
         },
-        "-=1.7" // Start slightly after glow
+        "-=1.7", // Start slightly after glow
       );
 
       // Animate area fill with elegant fade
@@ -152,7 +152,7 @@ const AnimatedAnalyticsChart = () => {
           duration: 1.2,
           ease: "power2.out",
         },
-        "-=1.3" // Overlap more with line drawing
+        "-=1.3", // Overlap more with line drawing
       );
 
       // Animate data point glows first
@@ -168,7 +168,7 @@ const AnimatedAnalyticsChart = () => {
           },
           ease: "power2.out",
         },
-        "-=0.9"
+        "-=0.9",
       );
 
       // Stagger animate data points with refined timing
@@ -184,7 +184,7 @@ const AnimatedAnalyticsChart = () => {
           },
           ease: "elastic.out(1, 0.6)", // Softer elastic effect
         },
-        "-=0.85" // Slight overlap with glows
+        "-=0.85", // Slight overlap with glows
       );
 
       // Clean up will-change after animations complete
@@ -197,7 +197,7 @@ const AnimatedAnalyticsChart = () => {
         ],
         {
           willChange: "auto",
-        }
+        },
       );
     }, chartRef);
 
@@ -209,34 +209,34 @@ const AnimatedAnalyticsChart = () => {
       ref={chartRef}
       className="w-full h-full"
       preserveAspectRatio="none"
-      viewBox="0 0 100 100"
       style={{ overflow: "visible" }}
+      viewBox="0 0 100 100"
     >
       <defs>
         {/* Enhanced gradient for the line with multiple color stops */}
-        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <linearGradient id="lineGradient" x1="0%" x2="100%" y1="0%" y2="0%">
           <stop offset="0%" stopColor="#3b82f6" stopOpacity="1" />
           <stop offset="50%" stopColor="#6366f1" stopOpacity="1" />
           <stop offset="100%" stopColor="#8b5cf6" stopOpacity="1" />
         </linearGradient>
 
         {/* Enhanced gradient for the area fill with smoother transition */}
-        <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <linearGradient id="areaGradient" x1="0%" x2="0%" y1="0%" y2="100%">
           <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.35" />
           <stop offset="40%" stopColor="#6366f1" stopOpacity="0.15" />
           <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.02" />
         </linearGradient>
 
         {/* Glow gradient for the line */}
-        <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <linearGradient id="glowGradient" x1="0%" x2="100%" y1="0%" y2="0%">
           <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
           <stop offset="50%" stopColor="#6366f1" stopOpacity="0.4" />
           <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.4" />
         </linearGradient>
 
         {/* Blur filter for glow effect */}
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        <filter height="200%" id="glow" width="200%" x="-50%" y="-50%">
+          <feGaussianBlur result="coloredBlur" stdDeviation="2" />
           <feMerge>
             <feMergeNode in="coloredBlur" />
             <feMergeNode in="SourceGraphic" />
@@ -264,12 +264,12 @@ const AnimatedAnalyticsChart = () => {
         ref={glowPathRef}
         d={linePath}
         fill="none"
-        stroke="url(#glowGradient)"
-        strokeWidth="4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
         filter="url(#glow)"
         opacity="0.6"
+        stroke="url(#glowGradient)"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="4"
       />
 
       {/* Main line */}
@@ -278,9 +278,9 @@ const AnimatedAnalyticsChart = () => {
         d={linePath}
         fill="none"
         stroke="url(#lineGradient)"
-        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="2"
       />
 
       {/* Data point glows */}
@@ -292,8 +292,8 @@ const AnimatedAnalyticsChart = () => {
           }}
           cx={point.x}
           cy={point.y}
-          r="3"
           fill="url(#pointGlow)"
+          r="3"
           style={{
             transformOrigin: `${point.x}px ${point.y}px`,
             pointerEvents: "none",
@@ -308,11 +308,11 @@ const AnimatedAnalyticsChart = () => {
           <circle
             cx={point.x}
             cy={point.y}
-            r="2.2"
             fill="none"
+            opacity="0.3"
+            r="2.2"
             stroke="url(#lineGradient)"
             strokeWidth="0.5"
-            opacity="0.3"
             style={{
               transformOrigin: `${point.x}px ${point.y}px`,
               pointerEvents: "none",
@@ -325,8 +325,8 @@ const AnimatedAnalyticsChart = () => {
             }}
             cx={point.x}
             cy={point.y}
-            r="1.5"
             fill="white"
+            r="1.5"
             stroke="url(#lineGradient)"
             strokeWidth="1.5"
             style={{

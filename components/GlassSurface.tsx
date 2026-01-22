@@ -142,7 +142,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       if (ref.current) {
         ref.current.setAttribute(
           "scale",
-          (distortionScale + offset).toString()
+          (distortionScale + offset).toString(),
         );
         ref.current.setAttribute("xChannelSelector", xChannel);
         ref.current.setAttribute("yChannelSelector", yChannel);
@@ -316,72 +316,72 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       >
         <defs>
           <filter
-            id={filterId}
             colorInterpolationFilters="sRGB"
+            height="100%"
+            id={filterId}
+            width="100%"
             x="0%"
             y="0%"
-            width="100%"
-            height="100%"
           >
             <feImage
               ref={feImageRef}
-              x="0"
-              y="0"
-              width="100%"
               height="100%"
               preserveAspectRatio="none"
               result="map"
+              width="100%"
+              x="0"
+              y="0"
             />
 
             <feDisplacementMap
               ref={redChannelRef}
+              id="redchannel"
               in="SourceGraphic"
               in2="map"
-              id="redchannel"
               result="dispRed"
             />
             <feColorMatrix
               in="dispRed"
+              result="red"
               type="matrix"
               values="1 0 0 0 0
                       0 0 0 0 0
                       0 0 0 0 0
                       0 0 0 1 0"
-              result="red"
             />
 
             <feDisplacementMap
               ref={greenChannelRef}
+              id="greenchannel"
               in="SourceGraphic"
               in2="map"
-              id="greenchannel"
               result="dispGreen"
             />
             <feColorMatrix
               in="dispGreen"
+              result="green"
               type="matrix"
               values="0 0 0 0 0
                       0 1 0 0 0
                       0 0 0 0 0
                       0 0 0 1 0"
-              result="green"
             />
 
             <feDisplacementMap
               ref={blueChannelRef}
+              id="bluechannel"
               in="SourceGraphic"
               in2="map"
-              id="bluechannel"
               result="dispBlue"
             />
             <feColorMatrix
               in="dispBlue"
+              result="blue"
               type="matrix"
               values="0 0 0 0 0
                       0 0 0 0 0
                       0 0 1 0 0
                       0 0 0 1 0"
-              result="blue"
             />
 
             <feBlend in="red" in2="green" mode="screen" result="rg" />

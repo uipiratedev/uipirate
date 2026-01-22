@@ -10,7 +10,8 @@ const ListMap = (props: any) => {
             className="flex flex-row items-center mt-3 gap-2"
           >
             <img
-              alt="Checkmark icon" aria-hidden="true"
+              alt="Checkmark icon"
+              aria-hidden="true"
               src="https://res.cloudinary.com/damm9iwho/image/upload/v1730809748/mynaui_check-hexagon-solid_t7vhzg.svg"
             />
             <p className="">{listItem}</p>

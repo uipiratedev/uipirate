@@ -1,13 +1,12 @@
 "use client";
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Card, CardBody, CardHeader, Chip } from "@heroui/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
 
 import data from "@/data/servicesTopList.json";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useVideoIntersection } from "@/hooks/useVideoIntersection";
+import { AnimatedButton } from "@/components/AnimatedButton";
 
 const data1 = [
   {
@@ -101,96 +100,11 @@ const data1 = [
 const ServicesCard = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [isMobile, setIsMobile] = React.useState(false);
+  const isMobile = useIsMobile();
 
-  useLayoutEffect(() => {
-    // Set initial value
-    setIsMobile(window.innerWidth <= 768);
-  }, []);
-
-  useLayoutEffect(() => {
-    // GSAP ScrollTrigger animation for cards
-
-    // Clear any existing ScrollTriggers
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-
-    // Small delay to ensure DOM is ready, especially important for client-side navigation
-    const timeoutId = setTimeout(() => {
-      cardsRef.current.forEach((card) => {
-        if (card) {
-          gsap.fromTo(
-            card,
-            {
-              y: 100, // Start from below
-              transform: isMobile ? "scale(1)" : "scale(0.80)",
-            },
-            {
-              y: 0, // Move to original position
-              transform: "scale(1)",
-              duration: 1,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: isMobile ? "" : "top 110%",
-                end: isMobile ? "" : "bottom center",
-                toggleActions: "play none none reverse",
-                scrub: 1.5,
-              },
-            }
-          );
-        }
-      });
-
-      // Force ScrollTrigger to recalculate positions after animations are set up
-      ScrollTrigger.refresh();
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [isMobile]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // Find the index of the observed element in videoRefs
-          const index = videoRefs.current.findIndex(
-            (video) => video === entry.target
-          );
-
-          if (index !== -1) {
-            // Check if the index is valid
-            const videoElement = videoRefs.current[index];
-
-            if (videoElement) {
-              // Ensure the video element is valid
-              if (entry.isIntersecting) {
-                // console.log(`Video ${index + 1} started playing.`);
-                videoElement.play();
-                videoElement.playbackRate = 0.5; // Adjust speed when in view
-              } else {
-                // console.log(`Video ${index + 1} paused.`);
-                videoElement.pause();
-                videoElement.playbackRate = 1; // Reset speed when out of view
-              }
-            }
-          }
-        });
-      },
-      { threshold: 0.5 } // Trigger when at least 10% of the video is in view
-    );
-
-    // Observing all video elements
-    videoRefs.current.forEach((video) => {
-      if (video) observer.observe(video); // Ensure video is not null before observing
-    });
-
-    return () => {
-      observer.disconnect(); // Cleanup observer on unmount
-    };
-  }, []);
+  // Use custom hooks for animations and video control
+  useScrollAnimation(cardsRef, isMobile);
+  useVideoIntersection(videoRefs);
 
   return (
     <div className="min-h-screen ">
@@ -268,41 +182,10 @@ const ServicesCard = () => {
                         </Chip>
                       ))}
                     </div>
-                    <p>dansodiah</p>
-                    <Link
+                    <AnimatedButton
                       href={`/services/${item.heading.replace(/\s+/g, "-")}`}
-                    >
-                      <button
-                        className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
-                        color="primary"
-                        style={{ width: "100%" }}
-                      >
-                        <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                          <span
-                            className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                                
-                                 group-hover:translate-y-[50px] translate-y-3
-                                
-                               `}
-                          >
-                            {item.ctaText}
-                          </span>
-
-                          <span
-                            className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                                
-                                translate-y-[50px] group-hover:-translate-y-3
-                                
-                               
-                              
-                              
-                              `}
-                          >
-                            See More
-                          </span>
-                        </div>
-                      </button>
-                    </Link>
+                      primaryText={item.ctaText}
+                    />
                   </CardBody>
                 </Card>
               </CardBody>
@@ -364,77 +247,10 @@ const ServicesCard = () => {
                         </Chip>
                       ))}
                     </div>
-                    <div>
-                      <Link
-                        href={`/services/${item.heading.replace(/\s+/g, "-")}`}
-                      >
-                        <button
-                          className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
-                          color="primary"
-                          style={{ width: "100%" }}
-                        >
-                          <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                            <span
-                              className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                                
-                                 group-hover:translate-y-[50px] translate-y-3
-                                
-                               `}
-                            >
-                              {item.ctaText}
-                            </span>
-
-                            <span
-                              className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                                
-                                translate-y-[50px] group-hover:-translate-y-3
-                                
-                               
-                              
-                              
-                              `}
-                            >
-                              See More
-                            </span>
-                          </div>
-                        </button>
-                      </Link>
-                    </div>
-
-                    <Link
+                    <AnimatedButton
                       href={`/services/${item.heading.replace(/\s+/g, "-")}`}
-                    >
-                      <button
-                        className="mt-6 bg-black text-white  px-[40px]  py-[16px] rounded-[20px] group w-full"
-                        color="primary"
-                        style={{ width: "100%" }}
-                      >
-                        <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                          <span
-                            className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                                
-                                 group-hover:translate-y-[50px] translate-y-3
-                                
-                               `}
-                          >
-                            {item.ctaText}
-                          </span>
-
-                          <span
-                            className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                                
-                                translate-y-[50px] group-hover:-translate-y-3
-                                
-                               
-                              
-                              
-                              `}
-                          >
-                            See More
-                          </span>
-                        </div>
-                      </button>
-                    </Link>
+                      primaryText={item.ctaText}
+                    />
                   </CardBody>
                 </Card>
               </CardBody>
