@@ -34,7 +34,6 @@ function LandingTestimonials() {
       </div>
       <div>
         <TestimonialCards />
-        {/* <ResponsiveCarousel /> */}
       </div>
     </div>
   );

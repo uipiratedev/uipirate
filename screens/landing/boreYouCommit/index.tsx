@@ -5,6 +5,7 @@ import { Card, CardBody, Chip } from "@heroui/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
+import { CheckIcon } from "@/components/icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -140,11 +141,9 @@ const BoreYouCommit = () => {
                   <ul className="space-y-4 text-left">
                     <li>
                       <div className="flex flex-row gap-2 items-start">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 "
-                          src="/check.svg"
-                        />
+                        <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">
@@ -160,11 +159,9 @@ const BoreYouCommit = () => {
                     </li>
                     <li>
                       <div className="flex flex-row gap-2 items-start">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">1–2 Page Design</span>
@@ -178,11 +175,9 @@ const BoreYouCommit = () => {
                     </li>
                     <li>
                       <div className="flex flex-row  gap-2 items-start">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">
@@ -220,11 +215,9 @@ const BoreYouCommit = () => {
                   <ul className="space-y-4 text-left">
                     <li>
                       <div className="flex flex-row  items-start gap-2">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">
@@ -240,11 +233,9 @@ const BoreYouCommit = () => {
                     </li>
                     <li>
                       <div className="flex flex-row  items-start gap-2">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">
@@ -260,11 +251,9 @@ const BoreYouCommit = () => {
                     </li>
                     <li>
                       <div className="flex flex-row  items-start gap-2">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">Hosted URL</span>
@@ -300,11 +289,9 @@ const BoreYouCommit = () => {
                   <ul className="space-y-4 text-left">
                     <li>
                       <div className="flex flex-row  items-start gap-2">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">
@@ -320,11 +307,9 @@ const BoreYouCommit = () => {
                     </li>
                     <li>
                       <div className="flex flex-row  items-start gap-2">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">
@@ -340,11 +325,9 @@ const BoreYouCommit = () => {
                     </li>
                     <li>
                       <div className="flex flex-row  items-start gap-2">
-                        <img
-                          alt=""
-                          className=" w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1"
-                          src="/check.svg"
-                        />
+                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                          <CheckIcon />
+                        </div>
 
                         <div>
                           <span className="font-semibold">

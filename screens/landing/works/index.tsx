@@ -31,12 +31,7 @@ const LandingWork = () => {
             rel="noreferrer"
             target="_blank"
           >
-            {/* <button className="buttonre bg-black button text-lg dark:bg-white dark:text-black px-[70px] py-[30px] cursor-pointer">
-            <span className="button-text see-more">See More</span>
-            <a href="https://www.behance.net/vishalanand-UI-UX" target="_blank">
-              <span className="button-text recent-work">Explore Works</span>
-            </a>
-          </button> */}
+          
 
             <button
               color="primary"
