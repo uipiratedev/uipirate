@@ -7,6 +7,7 @@ import LandingHero from "./hero";
 import LandingMarquee from "./marquee";
 import FloatingLetsTalkButton from "@/components/FloatingLetsTalkButton";
 import PageWrapper from "@/components/PageWrapper";
+import WhyChooseUs from "./whyChoosUs";
 
 // Dynamically import below-the-fold components for better initial load performance
 const LandingAppScreen = dynamic(() => import("./appScreen"), {
@@ -69,6 +70,8 @@ const Landing = memo(function Landing() {
         <LandingBehanceFramor />
 
         <LandingAbout />
+
+        <WhyChooseUs />
 
         <div id="Services">
           <LandingBusinessHelp />
