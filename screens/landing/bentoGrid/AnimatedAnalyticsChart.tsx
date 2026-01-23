@@ -1,10 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef, useEffect, useState } from "react";
+import { motion, useInView, Variants } from "framer-motion";
 
 interface DataPoint {
   x: number;
@@ -13,11 +10,9 @@ interface DataPoint {
 
 const AnimatedAnalyticsChart = () => {
   const chartRef = useRef<SVGSVGElement>(null);
+  const [lineLength, setLineLength] = useState(0);
   const linePathRef = useRef<SVGPathElement>(null);
-  const areaPathRef = useRef<SVGPathElement>(null);
-  const glowPathRef = useRef<SVGPathElement>(null);
-  const dataPointsRef = useRef<(SVGCircleElement | null)[]>([]);
-  const dataPointGlowsRef = useRef<(SVGCircleElement | null)[]>([]);
+  const isInView = useInView(chartRef, { once: false, amount: 0.3 });
 
   // Data points for the chart
   const dataPoints: DataPoint[] = [
@@ -73,136 +68,67 @@ const AnimatedAnalyticsChart = () => {
   const linePath = getCatmullRomPath(dataPoints, 0.5);
   const areaPath = `${linePath} L 98,100 L 2,100 Z`;
 
+  // Get line length for the drawing animation
   useEffect(() => {
-    if (
-      !chartRef.current ||
-      !linePathRef.current ||
-      !areaPathRef.current ||
-      !glowPathRef.current
-    )
-      return;
-
-    const ctx = gsap.context(() => {
-      // Get line length for drawing animation
-      const lineLength = linePathRef.current?.getTotalLength() || 0;
-
-      // Set initial states with hardware acceleration hints
-      gsap.set([linePathRef.current, glowPathRef.current], {
-        strokeDasharray: lineLength,
-        strokeDashoffset: lineLength,
-        force3D: true,
-        willChange: "stroke-dashoffset",
-      });
-
-      gsap.set(areaPathRef.current, {
-        opacity: 0,
-        force3D: true,
-        willChange: "opacity",
-      });
-
-      gsap.set(dataPointsRef.current, {
-        scale: 0,
-        opacity: 0,
-        force3D: true,
-        transformOrigin: "center center",
-        willChange: "transform, opacity",
-      });
-
-      gsap.set(dataPointGlowsRef.current, {
-        scale: 0,
-        opacity: 0,
-        force3D: true,
-        transformOrigin: "center center",
-      });
-
-      // Create optimized timeline with ScrollTrigger
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: chartRef.current,
-          start: "top 85%",
-          end: "bottom 60%",
-          toggleActions: "play none none reverse",
-          fastScrollEnd: true,
-        },
-      });
-
-      // Animate glow line first (subtle lead-in effect)
-      tl.to(glowPathRef.current, {
-        strokeDashoffset: 0,
-        duration: 1.8,
-        ease: "power1.inOut",
-      });
-
-      // Animate main line drawing with smooth easing
-      tl.to(
-        linePathRef.current,
-        {
-          strokeDashoffset: 0,
-          duration: 1.8,
-          ease: "power1.inOut",
-        },
-        "-=1.7", // Start slightly after glow
-      );
-
-      // Animate area fill with elegant fade
-      tl.to(
-        areaPathRef.current,
-        {
-          opacity: 1,
-          duration: 1.2,
-          ease: "power2.out",
-        },
-        "-=1.3", // Overlap more with line drawing
-      );
-
-      // Animate data point glows first
-      tl.to(
-        dataPointGlowsRef.current,
-        {
-          scale: 1,
-          opacity: 0.6,
-          duration: 0.5,
-          stagger: {
-            each: 0.06,
-            ease: "power2.out",
-          },
-          ease: "power2.out",
-        },
-        "-=0.9",
-      );
-
-      // Stagger animate data points with refined timing
-      tl.to(
-        dataPointsRef.current,
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.5,
-          stagger: {
-            each: 0.06,
-            ease: "power2.out",
-          },
-          ease: "elastic.out(1, 0.6)", // Softer elastic effect
-        },
-        "-=0.85", // Slight overlap with glows
-      );
-
-      // Clean up will-change after animations complete
-      tl.set(
-        [
-          linePathRef.current,
-          glowPathRef.current,
-          areaPathRef.current,
-          dataPointsRef.current,
-        ],
-        {
-          willChange: "auto",
-        },
-      );
-    }, chartRef);
-
-    return () => ctx.revert();
+    if (linePathRef.current) {
+      setLineLength(linePathRef.current.getTotalLength());
+    }
   }, []);
+
+  // Animation variants for the line drawing effect
+  const lineVariants: Variants = {
+    hidden: {
+      strokeDashoffset: lineLength,
+    },
+    visible: {
+      strokeDashoffset: 0,
+      transition: {
+        duration: 1.8,
+        ease: [0.42, 0, 0.58, 1], // power1.inOut equivalent
+      },
+    },
+  };
+
+  // Area fade in variant
+  const areaVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 1.2,
+        delay: 0.5,
+        ease: [0.33, 1, 0.68, 1], // power2.out equivalent
+      },
+    },
+  };
+
+  // Data point variants with stagger
+  const pointVariants: Variants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: (i: number) => ({
+      scale: 1,
+      opacity: 1,
+      transition: {
+        delay: 0.9 + i * 0.06,
+        duration: 0.5,
+        ease: [0.68, -0.55, 0.265, 1.55], // elastic equivalent
+      },
+    }),
+  };
+
+  // Glow point variants
+  const glowPointVariants: Variants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: (i: number) => ({
+      scale: 1,
+      opacity: 0.6,
+      transition: {
+        delay: 0.85 + i * 0.06,
+        duration: 0.5,
+        ease: [0.33, 1, 0.68, 1],
+      },
+    }),
+  };
 
   return (
     <svg
@@ -252,16 +178,17 @@ const AnimatedAnalyticsChart = () => {
       </defs>
 
       {/* Area fill */}
-      <path
-        ref={areaPathRef}
+      <motion.path
         d={areaPath}
         fill="url(#areaGradient)"
         style={{ mixBlendMode: "multiply" }}
+        variants={areaVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
       />
 
       {/* Glow line (behind main line) */}
-      <path
-        ref={glowPathRef}
+      <motion.path
         d={linePath}
         fill="none"
         filter="url(#glow)"
@@ -270,26 +197,39 @@ const AnimatedAnalyticsChart = () => {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="4"
+        strokeDasharray={lineLength}
+        variants={lineVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
       />
 
-      {/* Main line */}
+      {/* Main line - invisible reference for measuring length */}
       <path
         ref={linePathRef}
+        d={linePath}
+        fill="none"
+        stroke="transparent"
+        strokeWidth="0"
+      />
+
+      {/* Main line (animated) */}
+      <motion.path
         d={linePath}
         fill="none"
         stroke="url(#lineGradient)"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
+        strokeDasharray={lineLength}
+        variants={lineVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
       />
 
       {/* Data point glows */}
       {dataPoints.map((point, i) => (
-        <circle
+        <motion.circle
           key={`glow-${i}`}
-          ref={(el) => {
-            dataPointGlowsRef.current[i] = el;
-          }}
           cx={point.x}
           cy={point.y}
           fill="url(#pointGlow)"
@@ -298,6 +238,10 @@ const AnimatedAnalyticsChart = () => {
             transformOrigin: `${point.x}px ${point.y}px`,
             pointerEvents: "none",
           }}
+          variants={glowPointVariants}
+          custom={i}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
         />
       ))}
 
@@ -319,10 +263,7 @@ const AnimatedAnalyticsChart = () => {
             }}
           />
           {/* Main point */}
-          <circle
-            ref={(el) => {
-              dataPointsRef.current[i] = el;
-            }}
+          <motion.circle
             cx={point.x}
             cy={point.y}
             fill="white"
@@ -333,6 +274,10 @@ const AnimatedAnalyticsChart = () => {
               transformOrigin: `${point.x}px ${point.y}px`,
               filter: "drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))",
             }}
+            variants={pointVariants}
+            custom={i}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
           />
         </g>
       ))}

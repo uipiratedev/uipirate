@@ -1,5 +1,5 @@
 import { Card, CardBody } from "@heroui/react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 import GlassBadge from "@/components/GlassBadge";
 
@@ -62,7 +62,7 @@ const TheTeam = () => {
   ];
 
   // Animation variants for Framer Motion
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -72,7 +72,7 @@ const TheTeam = () => {
     },
   };
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50, scale: 0.9 },
     visible: {
       opacity: 1,
@@ -80,7 +80,7 @@ const TheTeam = () => {
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
+        ease: "easeOut" as const,
       },
     },
   };

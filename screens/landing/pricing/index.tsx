@@ -1,15 +1,20 @@
-import { useLayoutEffect, useRef } from "react";
+"use client";
+
 import { Button, Card, CardBody } from "@heroui/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 
 import GlassBadge from "@/components/GlassBadge";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useIsMobile, createCardScrollVariants } from "@/hooks";
 
 const Pricing = () => {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+  const isMobile = useIsMobile();
+
+  // Animation variants for cards
+  const cardVariants = createCardScrollVariants(isMobile, {
+    startY: 100,
+    startScale: 0.8,
+    duration: 1,
+  });
 
   const monthlyRetainerFeatures = [
     "Access to our full design & development stack",
@@ -62,36 +67,6 @@ const Pricing = () => {
     },
   ];
 
-  useLayoutEffect(() => {
-    // Clear any existing ScrollTriggers
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 100,
-            transform: isMobile ? "scale(1)" : "scale(0.80)",
-          },
-          {
-            y: 0,
-            transform: "scale(1)",
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "" : "top 110%",
-              end: isMobile ? "" : "bottom center",
-              toggleActions: "play none none reverse",
-              scrub: 1.5,
-            },
-          },
-        );
-      }
-    });
-  }, []);
-
   return (
     <div className="py-12 max-md:py-8 container">
       {/* Header */}
@@ -107,12 +82,13 @@ const Pricing = () => {
       {/* Pricing Cards Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Monthly Retainer Card */}
-        <Card
-          ref={(el) => {
-            if (el && !isMobile) cardsRef.current[0] = el;
-          }}
-          className="rounded-[40px] max-md:rounded-[32px] bg-gradient-to-br from-gray-900 to-black border-1 border-gray-800 shadow-lg"
+        <motion.div
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.3 }}
         >
+          <Card className="rounded-[40px] max-md:rounded-[32px] bg-gradient-to-br from-gray-900 to-black border-1 border-gray-800 shadow-lg h-full">
           <CardBody className="p-8 max-md:p-6">
             {/* Icon */}
             <div className="mb-6">
@@ -174,126 +150,44 @@ const Pricing = () => {
               </div>
             </div>
           </CardBody>
-        </Card>
+          </Card>
+        </motion.div>
 
         {/* Custom Project Estimate Card */}
-        <Card
-          ref={(el) => {
-            if (el && !isMobile) cardsRef.current[1] = el;
-          }}
-          className="rounded-[40px] max-md:rounded-[32px] bg-white border-1 border-gray-200 shadow-sm"
+        <motion.div
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: false, amount: 0.3 }}
         >
-          <CardBody className="p-8 max-md:p-6">
-            {/* Icon */}
-            <div className="mb-6">
-              <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                <span className="text-2xl">📊</span>
-              </div>
-            </div>
-
-            {/* Title */}
-            <h3 className="text-3xl max-md:text-2xl font-bold mb-2">
-              Custom Project <span className="text-orange-500">Estimate</span>
-            </h3>
-
-            {/* Subtitle */}
-            <p className="text-gray-500 text-sm font-mono mb-6 uppercase tracking-wide">
-              Get a quick ballpark before committing
-            </p>
-
-            {/* Description */}
-            <p className="text-gray-700 mb-6">
-              Pick your priorities, choose what you need, and get a realistic
-              range in seconds.
-            </p>
-
-            {/* Features List */}
-            <ul className="space-y-3 mb-8">
-              {customProjectFeatures.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-3 text-gray-700"
-                >
-                  <span className="text-gray-400 mt-1">✓</span>
-                  <span className="text-sm">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Footer */}
-            <div className="mt-auto">
-              <p className="text-gray-400 text-sm mb-4 italic">
-                Clarity before commitment
-              </p>
-
-              {/* Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button className="bg-orange-500 text-white rounded-[16px] px-6 py-6 font-bold text-base flex-1 hover:bg-orange-600 transition-colors">
-                  Calculate Now
-                </Button>
-                <Button
-                  className="bg-white text-black rounded-[16px] px-6 py-6 font-bold text-base flex-1 border-2 border-gray-200 hover:border-gray-300 transition-colors"
-                  variant="bordered"
-                >
-                  Lets Talk
-                </Button>
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-      </div>
-
-      {/* Custom Quote Card - Full Width */}
-      <Card
-        ref={(el) => {
-          if (el && !isMobile) cardsRef.current[2] = el;
-        }}
-        className="rounded-[40px] max-md:rounded-[32px] bg-white border-1 border-gray-200 shadow-sm mb-6"
-      >
-        <CardBody className="p-8 max-md:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left Side */}
-            <div>
+          <Card className="rounded-[40px] max-md:rounded-[32px] bg-white border-1 border-gray-200 shadow-sm h-full">
+            <CardBody className="p-8 max-md:p-6">
               {/* Icon */}
               <div className="mb-6">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl">🏢</span>
+                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">📊</span>
                 </div>
               </div>
 
               {/* Title */}
               <h3 className="text-3xl max-md:text-2xl font-bold mb-2">
-                Custom <span className="text-orange-500">Quote</span>
+                Custom Project <span className="text-orange-500">Estimate</span>
               </h3>
 
               {/* Subtitle */}
               <p className="text-gray-500 text-sm font-mono mb-6 uppercase tracking-wide">
-                For complex products, enterprise needs & startups
+                Get a quick ballpark before committing
               </p>
 
               {/* Description */}
               <p className="text-gray-700 mb-6">
-                Best suited for products that don't fit into standard plans.
+                Pick your priorities, choose what you need, and get a realistic
+                range in seconds.
               </p>
 
-              {/* Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button className="bg-orange-500 text-white rounded-[16px] px-6 py-6 font-bold text-base hover:bg-orange-600 transition-colors">
-                  Book a Call
-                </Button>
-                <Button
-                  className="bg-white text-black rounded-[16px] px-6 py-6 font-bold text-base border-2 border-gray-200 hover:border-gray-300 transition-colors"
-                  variant="bordered"
-                >
-                  Lets Talk
-                </Button>
-              </div>
-            </div>
-
-            {/* Right Side - Features */}
-            <div>
-              <ul className="space-y-3">
-                {customQuoteFeatures.map((feature, index) => (
+              {/* Features List */}
+              <ul className="space-y-3 mb-8">
+                {customProjectFeatures.map((feature, index) => (
                   <li
                     key={index}
                     className="flex items-start gap-3 text-gray-700"
@@ -304,34 +198,124 @@ const Pricing = () => {
                 ))}
               </ul>
 
-              <p className="text-gray-400 text-sm mt-6 italic">
-                Built around your product, not templates
-              </p>
+              {/* Footer */}
+              <div className="mt-auto">
+                <p className="text-gray-400 text-sm mb-4 italic">
+                  Clarity before commitment
+                </p>
+
+                {/* Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button className="bg-orange-500 text-white rounded-[16px] px-6 py-6 font-bold text-base flex-1 hover:bg-orange-600 transition-colors">
+                    Calculate Now
+                  </Button>
+                  <Button
+                    className="bg-white text-black rounded-[16px] px-6 py-6 font-bold text-base flex-1 border-2 border-gray-200 hover:border-gray-300 transition-colors"
+                    variant="bordered"
+                  >
+                    Lets Talk
+                  </Button>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Custom Quote Card - Full Width */}
+      <motion.div
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: false, amount: 0.3 }}
+        className="mb-6"
+      >
+        <Card className="rounded-[40px] max-md:rounded-[32px] bg-white border-1 border-gray-200 shadow-sm">
+          <CardBody className="p-8 max-md:p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Left Side */}
+              <div>
+                {/* Icon */}
+                <div className="mb-6">
+                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">🏢</span>
+                  </div>
+                </div>
+
+                {/* Title */}
+                <h3 className="text-3xl max-md:text-2xl font-bold mb-2">
+                  Custom <span className="text-orange-500">Quote</span>
+                </h3>
+
+                {/* Subtitle */}
+                <p className="text-gray-500 text-sm font-mono mb-6 uppercase tracking-wide">
+                  For complex products, enterprise needs & startups
+                </p>
+
+                {/* Description */}
+                <p className="text-gray-700 mb-6">
+                  Best suited for products that don't fit into standard plans.
+                </p>
+
+                {/* Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button className="bg-orange-500 text-white rounded-[16px] px-6 py-6 font-bold text-base hover:bg-orange-600 transition-colors">
+                    Book a Call
+                  </Button>
+                  <Button
+                    className="bg-white text-black rounded-[16px] px-6 py-6 font-bold text-base border-2 border-gray-200 hover:border-gray-300 transition-colors"
+                    variant="bordered"
+                  >
+                    Lets Talk
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right Side - Features */}
+              <div>
+                <ul className="space-y-3">
+                  {customQuoteFeatures.map((feature, index) => (
+                    <li
+                      key={index}
+                      className="flex items-start gap-3 text-gray-700"
+                    >
+                      <span className="text-gray-400 mt-1">✓</span>
+                      <span className="text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="text-gray-400 text-sm mt-6 italic">
+                  Built around your product, not templates
+                </p>
+              </div>
             </div>
-          </div>
-        </CardBody>
-      </Card>
+          </CardBody>
+        </Card>
+      </motion.div>
 
       {/* Benefits Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {benefits.map((benefit, index) => (
-          <Card
+          <motion.div
             key={index}
-            ref={(el) => {
-              if (el && !isMobile) cardsRef.current[3 + index] = el;
-            }}
-            className="rounded-[32px] max-md:rounded-[24px] bg-white border-1 border-gray-200 shadow-sm"
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: false, amount: 0.3 }}
           >
-            <CardBody className="p-6 max-md:p-5">
-              <div className="text-3xl mb-4">{benefit.icon}</div>
-              <h4 className="text-base font-bold font-mono mb-3 tracking-wide">
-                {benefit.title}
-              </h4>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {benefit.description}
-              </p>
-            </CardBody>
-          </Card>
+            <Card className="rounded-[32px] max-md:rounded-[24px] bg-white border-1 border-gray-200 shadow-sm h-full">
+              <CardBody className="p-6 max-md:p-5">
+                <div className="text-3xl mb-4">{benefit.icon}</div>
+                <h4 className="text-base font-bold font-mono mb-3 tracking-wide">
+                  {benefit.title}
+                </h4>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {benefit.description}
+                </p>
+              </CardBody>
+            </Card>
+          </motion.div>
         ))}
       </div>
     </div>

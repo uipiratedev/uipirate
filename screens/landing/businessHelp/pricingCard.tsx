@@ -1,12 +1,9 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Card, CardBody, CardFooter, CardHeader, Chip } from "@heroui/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, Variants } from "framer-motion";
 import Link from "next/link";
 
 import data from "@/data/servicesTopList.json";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const data1 = [
   {
@@ -86,62 +83,26 @@ const data1 = [
   },
 ];
 
+// Animation variants for card scroll animations
+const cardVariants: Variants = {
+  hidden: {
+    y: 100,
+    scale: 0.9,
+    opacity: 0
+  },
+  visible: {
+    y: 0,
+    scale: 1,
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      ease: [0.33, 1, 0.68, 1], // power2.out equivalent
+    },
+  },
+};
+
 const VideoWithCards = () => {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Set isMobile based on window size
-  useLayoutEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth <= 768);
-
-      const handleResize = () => setIsMobile(window.innerWidth <= 768);
-
-      window.addEventListener("resize", handleResize);
-
-      return () => window.removeEventListener("resize", handleResize);
-    }
-  }, []);
-
-  // Animate cards on scroll
-  useLayoutEffect(() => {
-    // Kill existing ScrollTriggers to prevent duplicates
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-
-    // Small delay to ensure DOM is ready, especially important for client-side navigation
-    const timeoutId = setTimeout(() => {
-      cardsRef.current.forEach((card) => {
-        if (card) {
-          gsap.fromTo(
-            card,
-            { y: 100, scale: isMobile ? 1 : 0.9, opacity: 0 },
-            {
-              y: 0,
-              scale: 1,
-              opacity: 1,
-              duration: 0.8,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 90%",
-                end: "bottom 70%",
-                toggleActions: "play none none reverse",
-              },
-            },
-          );
-        }
-      });
-
-      // Force ScrollTrigger to recalculate positions after animations are set up
-      ScrollTrigger.refresh();
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [isMobile]);
 
   // Handle video autoplay/pause when in view
   useEffect(() => {
@@ -178,11 +139,12 @@ const VideoWithCards = () => {
     <div className="min-h-screen">
       {/* Main cards */}
       {data.map((item, index) => (
-        <div
+        <motion.div
           key={index}
-          ref={(el) => {
-            if (el) cardsRef.current[index] = el;
-          }}
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
         >
           <Card className="rounded-[48px] max-md:rounded-[38px] md:mt-12 bg-[#e9e9e9] max-md:mt-4 shadow-none border border-[#0000000f]">
             <CardBody className="grid grid-cols-2 gap-4 max-xl:grid-cols-1 p-2.5 max-md:p-2 max-md:gap-2">
@@ -271,13 +233,14 @@ const VideoWithCards = () => {
               </Card>
             </CardBody>
           </Card>
-        </div>
+        </motion.div>
       ))}
       {/* Bottom cards (data1) */}
-      <div
-        ref={(el) => {
-          if (el) cardsRef.current[data.length] = el;
-        }}
+      <motion.div
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.3 }}
       >
         <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9] mt-12 max-md:mt-4 shadow-none border border-[#0000000f]">
           <CardBody className="grid grid-cols-2 gap-4 max-md:gap-2 max-xl:grid-cols-1 p-2.5 max-md:p-2">
@@ -360,7 +323,7 @@ const VideoWithCards = () => {
             ))}
           </CardBody>
         </Card>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -1,11 +1,6 @@
 "use client";
 import { Accordion, AccordionItem } from "@heroui/react";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NextLink from "next/link";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const data = [
   {
@@ -165,50 +160,9 @@ const data = [
 ];
 
 export default function FaqsAccordion() {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 50, // Start from below
-            paddingTop: "5%",
-            paddingBottom: "5%",
-            opacity: isMobile ? 4 : 0, // Start fully transparent
-            filter: isMobile ? "blur(0px)" : "blur(5px)", // Initial blur effect
-          },
-          {
-            y: 0, // Move to its original position
-            paddingTop: "0%",
-            paddingBottom: "0%",
-            opacity: 1, // Fade in to fully visible
-            filter: "blur(0px)", // Remove blur
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "top 50%" : "top 90%", // Adjust start point for mobile
-              end: isMobile ? "botton 10%" : "top 30%", // Adjust end point for mobile
-              toggleActions: "restart none none reverse",
-            },
-          },
-        );
-      }
-    });
-  }, []);
-
   return (
     <>
-      <div
-        className=""
-        // ref={(el) => {
-        //   if (el) cardsRef.current[0] = el;
-        // }}
-      >
+      <div>
         <Accordion
           className="mb-0"
           defaultExpandedKeys={["0"]} // ✅ opens first accordion by default

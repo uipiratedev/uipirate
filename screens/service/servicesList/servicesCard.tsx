@@ -1,10 +1,11 @@
 "use client";
 import React, { useRef } from "react";
 import { Card, CardBody, CardHeader, Chip } from "@heroui/react";
+import { motion } from "framer-motion";
 
 import data from "@/data/servicesTopList.json";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useFramerScrollAnimation } from "@/hooks/useFramerScrollAnimation";
 import { useVideoIntersection } from "@/hooks/useVideoIntersection";
 import { AnimatedButton } from "@/components/AnimatedButton";
 
@@ -98,22 +99,20 @@ const data1 = [
 ];
 
 const ServicesCard = () => {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const isMobile = useIsMobile();
 
-  // Use custom hooks for animations and video control
-  useScrollAnimation(cardsRef, isMobile);
+  // Get Framer Motion animation props
+  const scrollAnimationProps = useFramerScrollAnimation(isMobile);
+
+  // Use video intersection hook
   useVideoIntersection(videoRefs);
 
   return (
     <div className="min-h-screen ">
       <div className="grid grid-cols-2 gap-4 max-md:gap-2">
         {data.map((item, index) => (
-          <div
-            ref={(el) => {
-              if (el && !isMobile) cardsRef.current[index] = el;
-            }}
+          <motion.div
             key={index}
             // className={
             //   index === 0
@@ -121,6 +120,7 @@ const ServicesCard = () => {
             //     : "grid-cols-2 md:col-span-1 max-md:col-span-2"
             // } // first item full width
             className="gric-cols-2"
+            {...(isMobile ? {} : scrollAnimationProps)}
           >
             <Card className="rounded-[48px] max-md:rounded-[38px] md:mt-12 bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
               <CardBody className="p-4 max-md:p-2 max-md:gap-2">
@@ -190,14 +190,12 @@ const ServicesCard = () => {
                 </Card>
               </CardBody>
             </Card>
-          </div>
+          </motion.div>
         ))}
       </div>
-      <div
-        ref={(el) => {
-          if (el && !isMobile) cardsRef.current[3] = el;
-        }}
+      <motion.div
         className="grid grid-cols-2 max-md:grid-cols-1 gap-4 max-md:gap-2"
+        {...(isMobile ? {} : scrollAnimationProps)}
       >
         {data1.map((item, index) => {
           return (
@@ -257,7 +255,7 @@ const ServicesCard = () => {
             </Card>
           );
         })}
-      </div>
+      </motion.div>
     </div>
   );
 };

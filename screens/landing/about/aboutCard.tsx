@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useIsMobile } from "@/hooks";
 
 const data = [
   {
@@ -47,146 +45,125 @@ const data = [
   },
 ];
 
-const AboutCardAnimation = () => {
-  const isMobile = window.innerWidth <= 768;
+interface AboutCardItemProps {
+  item: (typeof data)[0];
+  index: number;
+  hoveredIndex: number | null;
+  onHoverStart: () => void;
+  onHoverEnd: () => void;
+  isMobile: boolean;
+}
 
-  const cardRefs = useRef<HTMLDivElement[]>([]);
-  const letterRefs = useRef<Array<HTMLSpanElement[]>>([]);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+const AboutCardItem = ({
+  item,
+  index,
+  hoveredIndex,
+  onHoverStart,
+  onHoverEnd,
+  isMobile,
+}: AboutCardItemProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isEven = index % 2 === 0;
+  const isHovered = hoveredIndex === index;
 
-  useEffect(() => {
-    cardRefs.current.forEach((cardAbout, index) => {
-      const isEven = index % 2 === 0;
-      const direction = isEven ? "-30%" : "30%";
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: isMobile ? ["start 160%", "end 120%"] : ["start 99%", "end 100%"],
+  });
 
-      gsap.fromTo(
-        cardAbout,
-        {
-          x: direction,
-          rotation: isEven ? -15 : 15,
-          opacity: isMobile ? 0 : 0.2,
-        },
-        {
-          x: 0,
-          rotation: 0,
-          opacity: 1,
-          scrollTrigger: {
-            trigger: cardAbout,
-            start: isMobile ? "top 160%" : "top 99%",
-            end: isMobile ? "bottom 120%" : "bottom 100%",
-            scrub: 1.5,
-          },
-          ease: "power2.out",
-        },
-      );
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
-
-  const handleMouseEnter = (index: number) => {
-    setHoveredIndex(index);
-
-    if (letterRefs.current[index]) {
-      gsap.fromTo(
-        letterRefs.current[index],
-        { y: "100%", opacity: 1 },
-        {
-          y: "0%",
-          opacity: 1,
-          duration: 1,
-          stagger: 0.2,
-          ease: "power3.out",
-        },
-      );
-    }
-  };
-
-  const handleMouseLeave = (_index: number) => {
-    setHoveredIndex(null);
-
-    // if (letterRefs.current[index]) {
-    //   gsap.fromTo(
-    //     letterRefs.current[index],
-    //     { y: "-10%", opacity: 1 },
-    //     {
-    //       y: "0%", // Move back down
-    //       opacity: 1, // Fade out
-    //       duration: 1,
-    //       stagger: 0.2,
-    //       ease: "power3.in",
-    //     }
-    //   );
-    // }
-  };
+  // Transform scroll progress to animation values
+  const x = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [isEven ? "-30%" : "30%", "0%"]
+  );
+  const rotate = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [isEven ? -15 : 15, 0]
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [isMobile ? 0 : 0.2, 1]
+  );
 
   return (
-    <div className="container mx-auto px-4  pb-20 max-md:pb-12 max-md:pt-12">
-      <div className="grid grid-cols-2 gap-6 max-md:gap-4  lg:mt-48 max-lg:grid-cols-1">
+    <motion.div
+      ref={cardRef}
+      className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
+        isEven ? "lg:-mt-32" : "lg:mt-0"
+      } hover:ease-in-out`}
+      style={{
+        x,
+        rotate,
+        opacity,
+        backgroundColor: isHovered ? item.hoverBg : "#ffffff",
+        color: isHovered ? item.textHover : "#000",
+        transition: "background-color 0.6s ease, color 0.6s ease",
+      }}
+      onHoverStart={onHoverStart}
+      onHoverEnd={onHoverEnd}
+    >
+      <div className="flex flex-col justify-between h-full">
+        <div>
+          <p className="text-8xl max-md:text-6xl overflow-hidden font-[500] max-md:font-[500]">
+            {item.heading.split("").map((letter, i) => (
+              <motion.span
+                key={`${index}-${i}`}
+                className="inline-block"
+                style={{
+                  color: isHovered ? item.textHover : "#FF5B04",
+                }}
+                initial={{ y: 0 }}
+                animate={isHovered ? { y: [0, -10, 0] } : { y: 0 }}
+                transition={{
+                  delay: i * 0.03,
+                  duration: 0.4,
+                  ease: [0.33, 1, 0.68, 1],
+                }}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </p>
+        </div>
+        <div className="flex flex-row items-end justify-between">
+          <p className="text-3xl max-md:text-2xl font-semibold uppercase">
+            {item.subtitle1}
+            <br />
+            {item.subtitle2}
+          </p>
+          {item.img && (
+            <img
+              alt={`${item.subtitle1} ${item.subtitle2}`}
+              className="h-32 max-md:h-16 object-contain"
+              src={item.img}
+            />
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const AboutCardAnimation = () => {
+  const isMobile = useIsMobile();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  return (
+    <div className="container mx-auto px-4 pb-20 max-md:pb-12 max-md:pt-12">
+      <div className="grid grid-cols-2 gap-6 max-md:gap-4 lg:mt-48 max-lg:grid-cols-1">
         {data.map((item, index) => (
-          <div
+          <AboutCardItem
             key={index}
-            ref={(el) => {
-              if (el) {
-                cardRefs.current[index] = el;
-              }
-            }}
-            className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
-              index % 2 === 0 ? "lg:-mt-32" : "lg:mt-0"
-            } hover:ease-in-out`}
-            style={{
-              transform: index % 2 === 0 ? "rotate(-15deg)" : "rotate(15deg)",
-              backgroundColor:
-                hoveredIndex === index ? item.hoverBg : "#ffffff",
-              transition: "background-color 0.6s ease",
-              color: hoveredIndex === index ? item.textHover : "#000",
-            }}
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={() => handleMouseLeave(index)}
-          >
-            <div className="flex flex-col justify-between h-full">
-              <div>
-                <p className="text-8xl max-md:text-6xl overflow-hidden font-[500] max-md:font-[500]">
-                  {item.heading.split("").map((letter, i) => (
-                    <span
-                      key={i}
-                      ref={(el) => {
-                        if (!letterRefs.current[index])
-                          letterRefs.current[index] = [];
-                        if (el) letterRefs.current[index][i] = el;
-                      }}
-                      className="inline-block"
-                      style={{
-                        color:
-                          hoveredIndex === index ? item.textHover : "#FF5B04",
-                      }}
-                    >
-                      {letter}
-                    </span>
-                  ))}
-                </p>
-              </div>
-              {/* <p className="text-lg max-md:text-sm font-medium flex flex-row ">
-                {item.subHeding}
-              </p> */}
-              <div className="flex flex-row items-end justify-between">
-                <p className="text-3xl max-md:text-2xl font-semibold uppercase">
-                  {item.subtitle1}
-                  <br />
-                  {item.subtitle2}
-                </p>
-                {item.img && (
-                  <img
-                    alt={`${item.subtitle1} ${item.subtitle2}`}
-                    className="h-32 max-md:h-16 object-contain"
-                    src={item.img}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
+            item={item}
+            index={index}
+            hoveredIndex={hoveredIndex}
+            onHoverStart={() => setHoveredIndex(index)}
+            onHoverEnd={() => setHoveredIndex(null)}
+            isMobile={isMobile}
+          />
         ))}
       </div>
     </div>

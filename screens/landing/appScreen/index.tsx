@@ -1,55 +1,53 @@
-import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+"use client";
+
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const LandingAppScreen = () => {
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".appTrigger", // element to start the animation
-        start: "top 50%", // when the top of the trigger hits the center of the viewport
-        end: "bottom 50%", // end when the bottom of the trigger hits the top of the viewport
-        scrub: 1, // smooth animation on scroll
-      },
-    });
+  // Track scroll progress within the container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"],
+  });
 
-    // Left image rotates and moves from left
-    tl.to("#left", { rotate: 0, x: 0, duration: 1, ease: "power2.out" })
-      // Right image rotates and moves from right
-      .to("#right", { rotate: 0, x: 0, duration: 1, ease: "power2.out" }, "<")
-      // Center image moves up
-      .to("#center", { paddingTop: 0, duration: 1 }, "<");
+  // Transform scroll progress to animation values
+  // Left image: rotate from -6deg to 0deg
+  const leftRotate = useTransform(scrollYProgress, [0, 1], [-6, 0]);
 
-    // Initial position off-screen
-    gsap.set("#left", { x: "0vw" });
-    gsap.set("#right", { x: "0vw" });
-  }, []);
+  // Right image: rotate from 6deg to 0deg
+  const rightRotate = useTransform(scrollYProgress, [0, 1], [6, 0]);
+
+  // Center image: paddingTop from 160px (pt-40) to 0
+  const centerPaddingTop = useTransform(scrollYProgress, [0, 1], [160, 0]);
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center gap-8 mt-4 appTrigger container mx-auto max-md:gap-4">
-        <img
+      <div
+        ref={containerRef}
+        className="flex flex-row items-center justify-center gap-8 mt-4 appTrigger container mx-auto max-md:gap-4"
+      >
+        <motion.img
           alt="app"
-          className="rotate-[-6deg] max-md:w-[40%]"
-          id="left"
+          className="max-md:w-[40%]"
           loading="lazy"
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1729768861/Frame_1984078758_tkh9ag.svg"
+          style={{ rotate: leftRotate }}
         />
-        <img
+        <motion.img
           alt="app"
-          className="pt-40 max-lg:hidden"
-          id="center"
+          className="max-lg:hidden"
           loading="lazy"
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054843/middleImage_ggzymj.svg"
+          style={{ paddingTop: centerPaddingTop }}
         />
-        <img
+        <motion.img
           alt="app"
-          className="rotate-[6deg] max-md:w-[40%] "
-          id="right"
+          className="max-md:w-[40%]"
           loading="lazy"
           src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
+          style={{ rotate: rightRotate }}
         />
       </div>
     </>

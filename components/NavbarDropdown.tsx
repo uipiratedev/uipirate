@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import NextLink from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
@@ -66,9 +66,11 @@ export const NavbarDropdown = ({
       </button>
 
       {/* Dropdown Menu */}
-      <AnimatePresence>
-        {isOpen && (
+      {/* @ts-expect-error AnimatePresence type issue with React 18 */}
+      <AnimatePresence mode="wait">
+        {isOpen ? (
           <motion.div
+            key="dropdown-menu"
             animate={{ opacity: 1, y: 0 }}
             className={clsx(
               "absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50",
@@ -150,7 +152,7 @@ export const NavbarDropdown = ({
               )}
             </div>
           </motion.div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );
