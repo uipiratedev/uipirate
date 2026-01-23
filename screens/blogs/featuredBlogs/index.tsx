@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
+import Image from "next/image";
 import { Card, CardBody, CardHeader } from "@heroui/react";
 import Link from "next/link";
 
@@ -16,17 +17,13 @@ interface Blog {
   readTime: number;
 }
 
-const FeaturedBlogs = () => {
+const FeaturedBlogs = memo(function FeaturedBlogs() {
   const [activeTab, setActiveTab] = useState("All");
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [allTags, setAllTags] = useState<string[]>(["All"]);
 
-  useEffect(() => {
-    fetchBlogs();
-  }, []);
-
-  const fetchBlogs = async () => {
+  const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch("/api/blogs?published=true&limit=50");
@@ -44,11 +41,15 @@ const FeaturedBlogs = () => {
         setAllTags(["All", ...Array.from(tags)]);
       }
     } catch (error) {
-      // Error fetching blogs
+      console.error("Error fetching blogs:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   const filteredBlogs =
     activeTab === "All"
@@ -103,22 +104,18 @@ const FeaturedBlogs = () => {
               <Card className="rounded-[48px] max-md:rounded-[38px]  h-full bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
                 <CardBody className="p-2 max-md:p-2 max-md:gap-2">
                   <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow h-full">
-                    <CardHeader className="px-0 pt-0">
-                      {blog.featuredImage ? (
-                        <img
-                          alt={blog.title}
-                          className="object-cover h-[200px] min-md:h-[200px] max-h-full rounded-t-[40px] max-md:rounded-t-[30px]"
-                          src={blog.featuredImage}
-                          width="100%"
-                        />
-                      ) : (
-                        <img
-                          alt={blog.title}
-                          className="object-cover h-[200px] min-md:h-[200px] max-h-full rounded-t-[40px] max-md:rounded-t-[30px]"
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
-                          width="100%"
-                        />
-                      )}
+                    <CardHeader className="px-0 pt-0 relative h-[200px]">
+                      <Image
+                        fill
+                        alt={blog.title}
+                        className="object-cover rounded-t-[40px] max-md:rounded-t-[30px]"
+                        loading="lazy"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        src={
+                          blog.featuredImage ||
+                          "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
+                        }
+                      />
                     </CardHeader>
                     <CardBody className="p-8 max-md:p-5 max-lg:p-6 flex flex-col justify-between">
                       <div>
@@ -145,6 +142,6 @@ const FeaturedBlogs = () => {
       )}
     </div>
   );
-};
+});
 
 export default FeaturedBlogs;

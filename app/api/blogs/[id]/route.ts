@@ -4,6 +4,16 @@ import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyAuth } from "@/lib/auth";
 
+interface BlogUpdateData {
+  title?: string;
+  content?: string;
+  excerpt?: string;
+  featuredImage?: string;
+  bannerImage?: string;
+  tags?: string[];
+  published?: boolean;
+}
+
 // GET /api/blogs/[id] - Get a single blog by ID or slug
 export async function GET(
   request: NextRequest,
@@ -49,11 +59,12 @@ export async function GET(
       success: true,
       data: blog,
     });
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Failed to fetch blog";
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Failed to fetch blog",
+        error: errorMessage,
       },
       { status: 500 },
     );
@@ -79,7 +90,7 @@ export async function PUT(
     await dbConnect();
 
     const { id } = params;
-    const body = await request.json();
+    const body = await request.json() as BlogUpdateData;
     const {
       title,
       content,
@@ -112,7 +123,7 @@ export async function PUT(
       const existingBlog = await Blog.findOne({
         slug: newSlug,
         _id: { $ne: id },
-      });
+      }).lean();
 
       if (!existingBlog) {
         blog.slug = newSlug;
@@ -136,11 +147,12 @@ export async function PUT(
       success: true,
       data: blog,
     });
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Failed to update blog";
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Failed to update blog",
+        error: errorMessage,
       },
       { status: 500 },
     );
@@ -181,11 +193,12 @@ export async function DELETE(
       message: "Blog deleted successfully",
       data: blog,
     });
-  } catch (error: any) {
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Failed to delete blog";
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Failed to delete blog",
+        error: errorMessage,
       },
       { status: 500 },
     );

@@ -1,4 +1,6 @@
 "use client";
+
+import { memo } from "react";
 import FloatingLetsTalkButton from "./FloatingLetsTalkButton";
 
 import LandingFooter from "@/screens/landing/footer";
@@ -9,10 +11,10 @@ interface PageWrapperProps {
   showFloatingButton?: boolean;
 }
 
-const PageWrapper = ({
+const PageWrapper = memo<PageWrapperProps>(function PageWrapper({
   children,
   showFloatingButton = true,
-}: PageWrapperProps) => {
+}) {
   return (
     <>
       {children}
@@ -21,6 +23,6 @@ const PageWrapper = ({
       {showFloatingButton && <FloatingLetsTalkButton />}
     </>
   );
-};
+});
 
 export default PageWrapper;

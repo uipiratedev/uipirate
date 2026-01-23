@@ -1,5 +1,6 @@
 "use client";
-import { useLayoutEffect, useState } from "react";
+
+import { useLayoutEffect, useState, useCallback, memo } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NextLink from "next/link";
@@ -40,16 +41,16 @@ const data = [
   },
 ];
 
-const LandingBehanceFramor = () => {
+const LandingBehanceFramor = memo(function LandingBehanceFramor() {
   const [visibleData, setVisibleData] = useState(data.slice(0, 6)); // Default to 6 items for desktop
 
-  const updateVisibleData = () => {
+  const updateVisibleData = useCallback(() => {
     const isMobile = window.innerWidth <= 768;
 
     setVisibleData(isMobile ? data.slice(0, 4) : data.slice(0, 6));
-  };
+  }, []);
 
-  const runAnimation = () => {
+  const runAnimation = useCallback(() => {
     // Kill only this component's ScrollTriggers to prevent duplicates
     ScrollTrigger.getById("row-0")?.kill();
     ScrollTrigger.getById("row-2")?.kill();
@@ -126,7 +127,7 @@ const LandingBehanceFramor = () => {
 
     // Force ScrollTrigger to recalculate positions after animations are set up
     ScrollTrigger.refresh();
-  };
+  }, []);
 
   useLayoutEffect(() => {
     updateVisibleData();
@@ -151,15 +152,14 @@ const LandingBehanceFramor = () => {
       ScrollTrigger.getById("row-2")?.kill();
       ScrollTrigger.getById("row-4")?.kill();
     };
-  }, []);
+  }, [runAnimation, updateVisibleData]);
 
   return (
     <div className="relative">
       {/* Centered Info */}
       <div
-        className="absolute inset-1 flex flex-col items-center justify-center text-center"
+        className="absolute inset-1 flex flex-col items-center justify-center text-center z-[1]"
         id="info"
-        style={{ zIndex: 1 }}
       >
         <p className="text-center text-6xl font-bold px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
           Recent Works
@@ -221,6 +221,6 @@ const LandingBehanceFramor = () => {
       </div>
     </div>
   );
-};
+});
 
 export default LandingBehanceFramor;
