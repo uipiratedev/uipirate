@@ -4,14 +4,20 @@ import { memo } from "react";
 import Image from "next/image";
 
 interface BlogHeroProps {
+	  imageUrl?: string;
   tag: string;
   title: string;
 }
 
 const BlogsDetailsHero = memo<BlogHeroProps>(function BlogsDetailsHero({
+	imageUrl,
   tag,
   title,
 }) {
+	const fallbackImageUrl =
+		"https://res.cloudinary.com/damm9iwho/image/upload/v1762014955/blogbanner_n7agjs.svg";
+	const heroImageUrl = imageUrl && imageUrl.trim().length > 0 ? imageUrl : fallbackImageUrl;
+
   return (
     <section className="relative w-full h-[300px] overflow-hidden -mt-[67px] md:pt-[67px]">
       {/* Background image */}
@@ -22,7 +28,7 @@ const BlogsDetailsHero = memo<BlogHeroProps>(function BlogsDetailsHero({
           alt={title}
           className="object-cover"
           quality={90}
-          src="https://res.cloudinary.com/damm9iwho/image/upload/v1762014955/blogbanner_n7agjs.svg"
+					src={heroImageUrl}
         />
         {/* Overlay for dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/50 to-black/50" />

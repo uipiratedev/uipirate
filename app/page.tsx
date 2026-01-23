@@ -16,17 +16,37 @@ const LOADER_DURATION = 600;
 export default function Home() {
   const [showContent, setShowContent] = useState(false);
 
-  const initLocomotiveScroll = useCallback(async () => {
+  const initSmoothScroll = useCallback(async () => {
     try {
-      const LocomotiveScroll = (await import("locomotive-scroll")).default;
-      new LocomotiveScroll();
+      // Initialize global Lenis for smooth scrolling across entire site
+      const Lenis = (await import("lenis")).default;
+      const lenis = new Lenis({
+        duration: 1.0,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        touchMultiplier: 2,
+        infinite: false,
+        wheelMultiplier: 1,
+        lerp: 0.15,
+        syncTouch: true,
+        syncTouchLerp: 0.1,
+      });
+
+	      const raf = (time: number) => {
+	        lenis.raf(time);
+	        requestAnimationFrame(raf);
+	      };
+	      requestAnimationFrame(raf);
+
+      // Store lenis instance globally for ScrollStack and other components to use
+      (window as any).__lenis = lenis;
     } catch (error) {
-      console.error("Failed to initialize LocomotiveScroll:", error);
+      console.error("Failed to initialize Lenis:", error);
     }
   }, []);
 
   useEffect(() => {
-    initLocomotiveScroll();
+    initSmoothScroll();
 
     // Show loader for 600ms
     const timer = setTimeout(() => {
@@ -34,7 +54,7 @@ export default function Home() {
     }, LOADER_DURATION);
 
     return () => clearTimeout(timer);
-  }, [initLocomotiveScroll]);
+  }, [initSmoothScroll]);
 
   return <>{showContent ? <Landing /> : <Loader />}</>;
 }
