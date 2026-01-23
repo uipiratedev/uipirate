@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 import GlassSurface from "./GlassSurface";
+import { NavbarDropdown } from "./NavbarDropdown";
 
 import { siteConfig } from "@/config/site";
 
@@ -83,7 +84,7 @@ export const Navbar = () => {
               borderRadius={16}
               borderWidth={2}
               brightness={55}
-              className="relative isolate max-md:rounded-none"
+              className="relative isolate max-md:rounded-none !overflow-visible"
               displace={0}
               distortionScale={5}
               forceLightMode={true}
@@ -94,12 +95,13 @@ export const Navbar = () => {
               saturation={2}
               style={{
                 border: "1px solid rgba(255, 255, 255, 0.2)",
+                overflow: "visible",
               }}
               width="100%"
             >
               <NextUINavbar
                 className={clsx(
-                  "w-full py-0 px-0 flex flex-row items-center h-[55px]",
+                  "w-full py-0 px-0 flex flex-row items-center h-[55px] !overflow-visible",
                   "transition-all duration-300 ease-in-out",
                   "!bg-transparent !backdrop-filter-none !backdrop-blur-none",
                   {
@@ -114,6 +116,7 @@ export const Navbar = () => {
                   background: "transparent",
                   backdropFilter: "none",
                   backgroundColor: "transparent",
+                  overflow: "visible",
                 }}
                 onMenuOpenChange={setIsMenuOpen}
               >
@@ -156,10 +159,10 @@ export const Navbar = () => {
 
                 {/* --- Center Navigation Links --- */}
                 <NavbarContent
-                  className="basis-1/5 sm:basis-full"
+                  className="basis-1/5 sm:basis-full !overflow-visible"
                   justify="center"
                 >
-                  <ul className="hidden lg:flex gap-0 justify-start ml-0">
+                  <ul className="hidden lg:flex gap-0 justify-start ml-0 overflow-visible">
                     {siteConfig.navItems.map((item) => (
                       <NavbarItem
                         key={item.href}
@@ -167,15 +170,24 @@ export const Navbar = () => {
                           "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 relative",
                         )}
                       >
-                        <NextLink
-                          className={clsx(
-                            linkStyles({ color: "foreground" }),
-                            "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
-                          )}
-                          href={item.href}
-                        >
-                          {item.label}
-                        </NextLink>
+                        {item.hasDropdown && item.dropdownItems ? (
+                          <NavbarDropdown
+                            isDarkSection={isDarkSection}
+                            isServicesMenu={item.label === "Services"}
+                            items={item.dropdownItems}
+                            label={item.label}
+                          />
+                        ) : (
+                          <NextLink
+                            className={clsx(
+                              linkStyles({ color: "foreground" }),
+                              "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
+                            )}
+                            href={item.href}
+                          >
+                            {item.label}
+                          </NextLink>
+                        )}
                       </NavbarItem>
                     ))}
                   </ul>
@@ -211,13 +223,29 @@ export const Navbar = () => {
                   <div className="mx-0 mt-3 flex flex-col gap-4">
                     {siteConfig.navMenuItems.map((item, index) => (
                       <NavbarMenuItem key={`${item}-${index}`}>
-                        <NextLink
-                          className="text-lg text-foreground cursor-pointer"
-                          href={item.href}
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {item.label}
-                        </NextLink>
+                        <div className="flex flex-col gap-2">
+                          <NextLink
+                            className="text-lg text-foreground cursor-pointer font-semibold"
+                            href={item.href}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {item.label}
+                          </NextLink>
+                          {item.subItems && (
+                            <div className="ml-4 flex flex-col gap-2">
+                              {item.subItems.map((subItem, subIndex) => (
+                                <NextLink
+                                  key={subIndex}
+                                  className="text-base text-gray-600 cursor-pointer"
+                                  href={subItem.href}
+                                  onClick={() => setIsMenuOpen(false)}
+                                >
+                                  {subItem.label}
+                                </NextLink>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </NavbarMenuItem>
                     ))}
                   </div>

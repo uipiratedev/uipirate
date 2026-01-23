@@ -1,16 +1,47 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { Button, Card, CardBody, CardHeader, Chip } from "@heroui/react";
+import { useLayoutEffect, useRef } from "react";
+import { Button, Card, CardBody } from "@heroui/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NextLink from "next/link";
 
-import data from "@/data/servicesTopList.json";
+import GlassBadge from "@/components/GlassBadge";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const ServicesSection = () => {
   const cardsRef = useRef<HTMLDivElement[]>([]);
-  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+
+  const services = [
+    {
+      icon: "💻",
+      title: "UX/UI DESIGN",
+    },
+    {
+      icon: "⚡",
+      title: "FRONTEND UI DEVELOPMENT",
+    },
+    {
+      icon: "🌐",
+      title: "LANDING PAGES & BUSINESS WEBSITES",
+    },
+    {
+      icon: "🎨",
+      title: "GRAPHIC DESIGN",
+    },
+    {
+      icon: "🎬",
+      title: "MOTION GRAPHIC",
+    },
+    {
+      icon: "🔍",
+      title: "UX AUDITS & CONSULTATION",
+    },
+    {
+      icon: "🎮",
+      title: "3D ASSETS & ANIMATION",
+    },
+  ];
 
   useLayoutEffect(() => {
     // GSAP ScrollTrigger animation for cards
@@ -44,179 +75,113 @@ const ServicesSection = () => {
     });
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // Find the index of the observed element in videoRefs
-          const index = videoRefs.current.findIndex(
-            (video) => video === entry.target,
-          );
-
-          if (index !== -1) {
-            // Check if the index is valid
-            const videoElement = videoRefs.current[index];
-
-            if (videoElement) {
-              // Ensure the video element is valid
-              if (entry.isIntersecting) {
-                videoElement.play();
-                videoElement.playbackRate = 0.5; // Adjust speed when in view
-              } else {
-                videoElement.pause();
-                videoElement.playbackRate = 1; // Reset speed when out of view
-              }
-            }
-          }
-        });
-      },
-      { threshold: 0.5 }, // Trigger when at least 10% of the video is in view
-    );
-
-    // Observing all video elements
-    videoRefs.current.forEach((video) => {
-      if (video) observer.observe(video); // Ensure video is not null before observing
-    });
-
-    return () => {
-      observer.disconnect(); // Cleanup observer on unmount
-    };
-  }, []);
-
   return (
-    <div className="min-h-screen">
-      <div
-      // ref={(el) => {
-      //   if (el && !isMobile) cardsRef.current[3] = el;
-      // }}
-      >
-        <Card className="rounded-[48px] max-md:rounded-[38px] mb-12 bg-[#e9e9e9]  mt-12 max-md:mt-4 shadow-none border-1 border-[#0000000f]">
-          <CardBody className="grid grid-cols-3 gap-4 max-md:gap-4 max-xl:grid-cols-1 p-3 max-md:p-2">
-            {data.slice(0, 3).map((item, index) => {
-              return (
-                <Card
-                  key={index}
-                  className="rounded-[40px] max-md:rounded-[30px]  box-shadow"
-                  // style={{ boxShadow: " inset 0 2px 4px rgba(0, 0, 0, 0.1)" }}
-                >
-                  <CardHeader className="px-0 pt-0 z-0">
-                    <div className=" w-full">
-                      {item.isImage && (
-                        <img
-                          alt="behance Logo"
-                          className="w-full object-cover  h-[250px]"
-                          src={item.sideImage}
-                        />
-                      )}
-                      {!item.isImage && (
-                        <video
-                          ref={(elvideo) => {
-                            if (elvideo) videoRefs.current[index] = elvideo;
-                          }}
-                          autoPlay
-                          loop
-                          muted
-                          className="object-cover h-[250px] min-md:h-[250px] max-h-full"
-                          src={item.video}
-                          width="100%"
-                        />
-                      )}
-                    </div>
-                  </CardHeader>
-                  <CardBody className="p-6 max-md:p-4 max-lg:p-6 pt-0">
-                    <div>
-                      <p className="text-2xl max-md:text-xl mt-4 mb-4 font-[700] tracking-[-0.5px] leading-[31.6px] pr-12">
-                        {item.heading}
-                      </p>
-                      <p className="text-base max-md:text-base font-[500]">
-                        {item.subheading}
-                      </p>
-                      <p className="text-base max-md:text-base font-[500] text-[#777777] py-2">
-                        {item.description}
-                      </p>
-                      <p className="text-base max-md:text-base font-[500]">
-                        {item.subheading2}
-                      </p>
-                    </div>
-                    <div className="mb-6 mt-3 flex flex-wrap gap-2 max-md:gap-2 w-full">
-                      {item.chip.map((chipItem, chipIndex) => (
-                        <Chip
-                          key={chipIndex}
-                          className="text-[12px] text-[#00000094] bg-[#51525E14] flex items-center gap-2"
-                          radius="sm"
-                          startContent={
-                            <img
-                              alt={chipItem.title}
-                              className="mx-1 w-[16px]"
-                              src={chipItem.icon}
-                            />
-                          }
-                        >
-                          <p className="font-[600] max-md:font-[500] text-xs">
-                            {chipItem.title}
-                          </p>
-                        </Chip>
-                      ))}
-                    </div>
-                  </CardBody>
-                </Card>
-              );
-            })}
-            <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1 bg-white/50">
-              <CardBody className="p-4 max-md:p-4 max-lg:p-4 px-0">
-                <div className="w-full text-center">
-                  <p className="text-3xl max-md:text-2xl mt-4 mb-4 font-semibold ">
-                    Need something custom !
-                  </p>
-
-                  <div
-                    className="mb-4  mt-6 flex flex-row items-center justify-center max-lg:flex-col w-full max-md:flex-col max-md:px-2 button-spring-animate relative"
-                    style={{ overflow: "visible" }}
-                  >
-                    <a
-                      className="w-[250px] max-lg:mt-3 lg:ml-3"
-                      href="https://wa.me/919708636151"
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      <div className="border-1 border-[#E2E2E2]  bg-black text-white rounded-[16px] h-auto transform transition-all duration-[600ms] ease-in-out px-3 py-3 flex flex-row items-center justify-center gap-3 relative">
-                        <p className="text-base max-md:text-sm font-semibold text-center">
-                          😀 Let’s Talk
-                        </p>
-                      </div>
-                    </a>
-
-                    <NextLink
-                      className="w-[300px] max-md:w-[250px] max-lg:mt-3 lg:ml-3"
-                      href="/services"
-                    >
-                      <Button
-                        className="border-1 max-md:hidden border-[#E2E2E2] text-black font-bold w-full bg-white rounded-[16px] py-[25px]"
-                        color="primary"
-                        variant="bordered"
-                      >
-                        <div className="flex flex-col items-center justify-center">
-                          <p className="text-base max-md:text-sm font-semibold text-center">
-                            View All Services
-                          </p>
-                        </div>
-                      </Button>
-                      <Button
-                        as="a"
-                        className="bg-white md:hidden text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-3 border-[#E2E2E2] "
-                        color="primary"
-                        variant="bordered"
-                      >
-                        View All Services
-                      </Button>
-                    </NextLink>
+    <div className="py-12 pt-8 max-md:py-8">
+      {/* Two Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Left Card - Apps, SaaS, Websites & More */}
+        <Card
+          ref={(el) => {
+            if (el && !isMobile) cardsRef.current[0] = el;
+          }}
+          className="rounded-[40px] max-md:rounded-[32px] bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm"
+        >
+          <CardBody className="p-8 max-md:p-6">
+            <h3 className="text-2xl max-md:text-xl font-bold mb-6">
+              Apps, Saas, Websites & More
+            </h3>
+            <div className="flex justify-center items-center min-h-[300px]">
+              <div className="relative">
+                <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-8 max-md:p-6 shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                  <div className="text-white text-center">
+                    <p className="text-4xl max-md:text-3xl font-black mb-2">
+                      ALL
+                    </p>
+                    <p className="text-4xl max-md:text-3xl font-black mb-2">
+                      THINGS
+                    </p>
+                    <p className="text-3xl max-md:text-2xl font-bold mb-2">
+                      YOU NEED
+                    </p>
+                    <p className="text-2xl max-md:text-xl font-bold mb-2">
+                      UNDER
+                    </p>
+                    <p className="text-3xl max-md:text-2xl font-black">
+                      ONE ROOF
+                    </p>
                   </div>
                 </div>
-              </CardBody>
-            </Card>
+                {/* Decorative stamp border effect */}
+                <div className="absolute inset-0 border-4 border-dashed border-orange-300 rounded-3xl -z-10 transform scale-105" />
+              </div>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Right Card - One-stop shop */}
+        <Card
+          ref={(el) => {
+            if (el && !isMobile) cardsRef.current[1] = el;
+          }}
+          className="rounded-[40px] max-md:rounded-[32px] bg-gradient-to-br from-gray-900 to-black border-1 border-gray-800 shadow-lg"
+        >
+          <CardBody className="p-8 max-md:p-6">
+            <h3 className="text-2xl max-md:text-xl font-bold mb-6 text-white">
+              One-stop shop for{" "}
+              <span className="text-orange-500">all your essentials</span>
+            </h3>
+            <div className="space-y-4">
+              {services.map((service, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 text-gray-300 font-mono text-sm max-md:text-xs bg-gray-800/50 rounded-lg p-3 hover:bg-gray-800 transition-colors"
+                >
+                  <span className="text-lg">{service.icon}</span>
+                  <span className="font-medium tracking-wide">
+                    {service.title}
+                  </span>
+                </div>
+              ))}
+            </div>
           </CardBody>
         </Card>
       </div>
+
+      {/* Bottom Card - Need Something Custom */}
+      <Card
+        ref={(el) => {
+          if (el && !isMobile) cardsRef.current[2] = el;
+        }}
+        className="rounded-[40px] max-md:rounded-[32px] bg-white border-1 border-[#0000000f] shadow-sm"
+      >
+        <CardBody className="p-8 max-md:p-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <h3 className="text-3xl max-md:text-2xl font-bold">
+              Need Something Custom ?
+            </h3>
+            <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+              <a
+                className="w-full md:w-auto"
+                href="https://wa.me/919708636151"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <Button className="bg-black text-white rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto hover:bg-gray-800 transition-colors">
+                  Let's Talk
+                </Button>
+              </a>
+              <NextLink className="w-full md:w-auto" href="/services">
+                <Button
+                  className="bg-white text-black rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto border-2 border-gray-200 hover:border-gray-300 transition-colors"
+                  variant="bordered"
+                >
+                  View All Services
+                </Button>
+              </NextLink>
+            </div>
+          </div>
+        </CardBody>
+      </Card>
     </div>
   );
 };

@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import Image from "next/image";
+import GlassBadge from "@/components/GlassBadge";
 
 interface OptionalAddCard {
   heading: string;
@@ -23,9 +24,7 @@ const OptionalAdd = memo<OptionalAddProps>(function OptionalAdd({ data }) {
     <div className="pt-32 max-md:pt-24">
       <div className="autoShow">
         <div className="flex items-center justify-center mb-6">
-          <span className="bg-cyan-200 px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-            {data.badge}
-          </span>
+          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <p className="heading-center">{data.heading}</p>
       </div>
