@@ -1,4 +1,21 @@
+"use client";
+
+import { motion } from "framer-motion";
 import AnimatedAnalyticsChart from "./AnimatedAnalyticsChart";
+
+// Animation variants for bento cards - smooth and buttery
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1], // Custom ease-out expo for smooth deceleration
+    },
+  }),
+};
 
 const BentoGrid = () => {
   return (
@@ -8,7 +25,14 @@ const BentoGrid = () => {
         <div className="mx-auto px-32 lg:px-20 max-md:px-4 pb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {/* UX/UI Design Card - Tall */}
-            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl  border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 md:row-span-2 group overflow-hidden">
+            <motion.div
+              className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl  border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 md:row-span-2 group overflow-hidden"
+              custom={0}
+              initial="hidden"
+              variants={cardVariants}
+              viewport={{ once: true, amount: 0.3 }}
+              whileInView="visible"
+            >
               <div className="h-full flex flex-col justify-between">
                 {/* Chart Visualization */}
                 <div className="flex-1 -mb-6 relative px-0 ">
@@ -30,10 +54,17 @@ const BentoGrid = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Frontend Development Card */}
-            <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden">
+            <motion.div
+              className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden"
+              custom={1}
+              initial="hidden"
+              variants={cardVariants}
+              viewport={{ once: true, amount: 0.3 }}
+              whileInView="visible"
+            >
               <div className="h-full flex flex-col">
                 <div className="flex-1 mb-2 overflow-hidden">
                   {/* Code Window */}
@@ -104,10 +135,17 @@ const BentoGrid = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Dashboards & SaaS UX Card */}
-            <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden">
+            <motion.div
+              className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden"
+              custom={2}
+              initial="hidden"
+              variants={cardVariants}
+              viewport={{ once: true, amount: 0.3 }}
+              whileInView="visible"
+            >
               <div className="h-full flex flex-col">
                 <div className="flex-1 mb-2 overflow-hidden">
                   {/* Dashboard Mockup */}
@@ -367,15 +405,20 @@ const BentoGrid = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Websites & Landing Pages Card */}
-            <div
+            <motion.div
               className="rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden relative h-[276px]"
+              custom={3}
+              initial="hidden"
               style={{
                 background:
                   "linear-gradient(184deg, rgba(255, 255, 255, 0.00) 30%, #FFF 70%), linear-gradient(90deg, rgba(255, 231, 187, 0.50) 0.07%, rgba(228, 227, 123, 0.50) 40.93%, rgba(194, 239, 242, 0.50) 97.76%), #FFF",
               }}
+              variants={cardVariants}
+              viewport={{ once: true, amount: 0.3 }}
+              whileInView="visible"
             >
               <div className="h-full flex flex-col relative">
                 {/* White Gradient Overlay */}
@@ -481,10 +524,17 @@ const BentoGrid = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Built With the Best Card */}
-            <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl pt-8 pb-0 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden">
+            <motion.div
+              className="bg-gradient-to-br from-white to-gray-50 rounded-2xl pt-8 pb-0 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden"
+              custom={4}
+              initial="hidden"
+              variants={cardVariants}
+              viewport={{ once: true, amount: 0.3 }}
+              whileInView="visible"
+            >
               <div className="h-full flex flex-col">
                 {/* Content */}
                 <div className="mb-4 px-8 text-left">
@@ -673,7 +723,7 @@ const BentoGrid = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

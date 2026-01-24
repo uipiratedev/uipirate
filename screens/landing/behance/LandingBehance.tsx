@@ -68,7 +68,18 @@ const getRowConfig = (index: number, isMobile: boolean) => {
   // Rotation: only on desktop
   const rotateTarget = isMobile ? 0 : isEven ? -45 : 45;
 
-  return { xTarget, yTarget, rotateTarget };
+  // Staggered scroll ranges for smooth "flower blooming" effect
+  // Rows overlap slightly for smoother transition
+  // Row 0: 0.00 - 0.50
+  // Row 1: 0.20 - 0.70
+  // Row 2: 0.40 - 0.90
+  const staggerDelay = 0.20; // 20% delay between each row starting
+  const animationDuration = 0.50; // Each row animates over 50% of scroll (slower)
+
+  const scrollStart = row * staggerDelay;
+  const scrollEnd = scrollStart + animationDuration;
+
+  return { xTarget, yTarget, rotateTarget, scrollStart, scrollEnd };
 };
 
 const BehanceImage = memo(function BehanceImage({
@@ -77,12 +88,12 @@ const BehanceImage = memo(function BehanceImage({
   isMobile,
   containerScrollProgress,
 }: BehanceImageProps) {
-  const { xTarget, yTarget, rotateTarget } = getRowConfig(index, isMobile);
+  const { xTarget, yTarget, rotateTarget, scrollStart, scrollEnd } = getRowConfig(index, isMobile);
 
   // Transform scroll progress to animation values
-  const x = useTransform(containerScrollProgress, [0, 1], ["0%", xTarget]);
-  const y = useTransform(containerScrollProgress, [0, 1], ["0%", yTarget]);
-  const rotate = useTransform(containerScrollProgress, [0, 1], [0, rotateTarget]);
+  const x = useTransform(containerScrollProgress, [scrollStart, scrollEnd], ["0%", xTarget]);
+  const y = useTransform(containerScrollProgress, [scrollStart, scrollEnd], ["0%", yTarget]);
+  const rotate = useTransform(containerScrollProgress, [scrollStart, scrollEnd], [0, rotateTarget]);
 
   return (
     <div
@@ -138,28 +149,18 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
           <button
             color="primary"
             className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
-            // style={{ width: "100%" }}
           >
             <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
               <span
-                className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                                
-                                 group-hover:translate-y-[50px] translate-y-3
-                                
-                               `}
+                className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3
+                                 group-hover:translate-y-[50px] translate-y-3`}
               >
                 Explore All Work
               </span>
 
               <span
                 className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                                
-                                translate-y-[50px] group-hover:-translate-y-3
-                                
-                               
-                              
-                              
-                              `}
+                                translate-y-[50px] group-hover:-translate-y-3`}
               >
                 View Works
               </span>
