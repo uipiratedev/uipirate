@@ -1,6 +1,21 @@
 "use client";
 import { Accordion, AccordionItem } from "@heroui/react";
+import { motion } from "framer-motion";
 import NextLink from "next/link";
+
+// Smooth animation variants for accordion items
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
 
 const data = [
   {
@@ -163,6 +178,19 @@ export default function FaqsAccordion() {
   return (
     <>
       <div>
+        <motion.div
+          initial="hidden"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.08,
+              },
+            },
+          }}
+          viewport={{ once: true, amount: 0.2 }}
+          whileInView="visible"
+        >
         <Accordion
           className="mb-0"
           defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
@@ -211,8 +239,16 @@ export default function FaqsAccordion() {
             </AccordionItem>
           ))}
         </Accordion>
+        </motion.div>
+        <motion.div
+          custom={4}
+          initial="hidden"
+          variants={itemVariants}
+          viewport={{ once: true, amount: 0.3 }}
+          whileInView="visible"
+        >
         <div className="flex flex-row items-center justify-center mt-6">
-          <NextLink className="autoShow w-fit" href="/faqs">
+          <NextLink className="w-fit" href="/faqs">
             <button
               className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
               color="primary"
@@ -235,6 +271,7 @@ export default function FaqsAccordion() {
             </button>
           </NextLink>
         </div>
+        </motion.div>
       </div>
     </>
   );

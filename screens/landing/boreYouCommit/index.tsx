@@ -1,8 +1,23 @@
 "use client";
 
 import { Card, CardBody, Chip } from "@heroui/react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { CheckIcon } from "@/components/icons";
+
+// Smooth animation variants for cards
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
 
 const BoreYouCommit = () => {
   return (
@@ -85,7 +100,14 @@ const BoreYouCommit = () => {
             {/* 3 Cards Section */}
             <div className="grid md:grid-cols-3 gap-3">
               {/* Card 1 */}
-              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between">
+              <motion.div
+                custom={0}
+                initial="hidden"
+                variants={cardVariants}
+                viewport={{ once: true, amount: 0.3 }}
+                whileInView="visible"
+              >
+              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
@@ -155,9 +177,17 @@ const BoreYouCommit = () => {
                   </ul>
                 </div>
               </Card>
+              </motion.div>
 
               {/* Card 2 */}
-              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between">
+              <motion.div
+                custom={1}
+                initial="hidden"
+                variants={cardVariants}
+                viewport={{ once: true, amount: 0.3 }}
+                whileInView="visible"
+              >
+              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
@@ -224,9 +254,17 @@ const BoreYouCommit = () => {
                   </ul>
                 </div>
               </Card>
+              </motion.div>
 
               {/* Card 3 */}
-              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between">
+              <motion.div
+                custom={2}
+                initial="hidden"
+                variants={cardVariants}
+                viewport={{ once: true, amount: 0.3 }}
+                whileInView="visible"
+              >
+              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
@@ -295,6 +333,7 @@ const BoreYouCommit = () => {
                   </ul>
                 </div>
               </Card>
+              </motion.div>
             </div>
           </div>
           <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1 bg-white/50">
