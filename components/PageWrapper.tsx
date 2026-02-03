@@ -18,8 +18,8 @@ const PageWrapper = memo<PageWrapperProps>(function PageWrapper({
   return (
     <>
       {children}
-      <VisionToLife />
-      <LandingFooter />
+      {/* <VisionToLife />
+      <LandingFooter /> */}
       {showFloatingButton && <FloatingLetsTalkButton />}
     </>
   );

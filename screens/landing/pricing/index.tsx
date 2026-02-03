@@ -68,13 +68,13 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="py-12 max-md:py-8 container">
+    <div className="py-12 max-md:py-8 container mx-auto px-6 md:px-12 lg:px-24 ">
       {/* Header */}
       <div className="text-center mb-12 max-md:mb-8">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
-        <h2 className="text-4xl max-md:text-3xl font-bold tracking-tight">
+        <h2 className="heading-center">
           Pricing That Makes Sense
         </h2>
       </div>
@@ -88,7 +88,7 @@ const Pricing = () => {
           whileInView="show"
           viewport={{ once: false, amount: 0.3 }}
         >
-          <Card className="rounded-[40px] max-md:rounded-[32px] bg-gradient-to-br from-gray-900 to-black border-1 border-gray-800 shadow-lg h-full">
+          <Card className="rounded-[32px] max-md:rounded-[24px]  bg-gradient-to-br from-gray-900 to-black border-1 border-gray-800 shadow-lg h-full">
           <CardBody className="p-8 max-md:p-6">
             {/* Icon */}
             <div className="mb-6">
@@ -160,7 +160,7 @@ const Pricing = () => {
           whileInView="show"
           viewport={{ once: false, amount: 0.3 }}
         >
-          <Card className="rounded-[40px] max-md:rounded-[32px] bg-white border-1 border-gray-200 shadow-sm h-full">
+          <Card className="rounded-[32px] max-md:rounded-[24px]  bg-white border-1 border-gray-200 shadow-sm h-full">
             <CardBody className="p-8 max-md:p-6">
               {/* Icon */}
               <div className="mb-6">
@@ -230,7 +230,7 @@ const Pricing = () => {
         viewport={{ once: false, amount: 0.3 }}
         className="mb-6"
       >
-        <Card className="rounded-[40px] max-md:rounded-[32px] bg-white border-1 border-gray-200 shadow-sm">
+        <Card className="rounded-[32px] max-md:rounded-[24px]  bg-white border-1 border-gray-200 shadow-sm">
           <CardBody className="p-8 max-md:p-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Side */}

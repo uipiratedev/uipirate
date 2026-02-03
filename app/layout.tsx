@@ -7,6 +7,7 @@ import Script from "next/script";
 import { fontSans, fontJakarta } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title:
@@ -157,6 +158,7 @@ export default function RootLayout({
           <main className="" id="main-content">
             {children}
           </main>
+          <Footer />
           <SpeedInsights />
           <CookieConsent />
         </div>

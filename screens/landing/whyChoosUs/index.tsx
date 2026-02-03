@@ -1,3 +1,4 @@
+import { SaaS } from "@/components/icons";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 
 const WhyChooseUs = () => {
@@ -15,18 +16,18 @@ const WhyChooseUs = () => {
       <div className="w-full">
         <ScrollStack useWindowScroll={true}>
           <ScrollStackItem itemClassName="bg-gradient-to-br from-pink-500 via-pink-600 to-pink-700 text-white">
-            <div className="flex flex-col justify-center h-full">
-              <div className="text-6xl mb-4">🎨</div>
-              <h3 className="text-3xl font-bold mb-4">Stunning Visual Design</h3>
+            <div className="flex flex-row justify-between h-full">
+            <div className="flex flex-col justify-center h-full w-[60%]">
+             
+              <h3 className="text-3xl font-bold mb-4">Simplifying SaaS Complexity</h3>
               <p className="text-lg opacity-90">
-                We create beautiful, modern interfaces that captivate your users and elevate your brand.
-                Every pixel is crafted with precision and purpose.
+               We understand data-heavy workflows, permissions, onboarding, multi-roles, and enterprise behaviour patterns.
               </p>
-              <ul className="mt-6 space-y-2 text-base opacity-90">
-                <li>✓ Modern, clean aesthetics</li>
-                <li>✓ Brand-aligned color schemes</li>
-                <li>✓ Attention to detail</li>
-              </ul>
+             <p>1</p>
+            </div>
+            <div >
+              <SaaS />
+               </div>
             </div>
           </ScrollStackItem>
 

@@ -6,42 +6,43 @@ import { useIsMobile } from "@/hooks";
 
 const data = [
   {
-    heading: "50+",
-    subHeding: "From MVPs to complex dashboards, shipped across 6 countries",
-    subtitle1: "Projects",
-    subtitle2: "Completed",
+    heading: "9+",
+    subHeading: "From MVPs to complex dashboards, shipped across 6 countries",
+    subtitle1: "Years of",
+    subtitle2: "Experience",
     hoverBg: "#FF5B04",
     textHover: "#fff",
-    img: "/assets/img/project.svg",
+    img: "/assets/img/cal.svg",
   },
   {
-    heading: "20+",
-    subHeding:
+    heading: "50+",
+    subHeading:
       "Including AI tools, HR platforms, fintech apps, and B2B SaaS products",
-    subtitle1: "Enterprise",
-    subtitle2: "Clients",
+    subtitle1: "projects",
+    subtitle2: "completed",
     hoverBg: "#00C17A",
+    textHover: "#fff",
+    img: "/assets/img/box.svg",
+  },
+  {
+    heading: "$150M+",
+    subHeading:
+      "SaaS, EdTech, FinTech, HealthTech, LegalTech, Creator Economy, and more",
+    subtitle1: "Made by",
+    subtitle2: "our clients",
+    hoverBg: "#008DE4",
     textHover: "#fff",
     img: "/assets/img/badge.svg",
   },
   {
-    heading: "40+",
-    subHeding:
-      "SaaS, EdTech, FinTech, HealthTech, LegalTech, Creator Economy, and more",
-    subtitle1: "Industries",
-    subtitle2: "Served",
-    hoverBg: "#008DE4",
-    textHover: "#fff",
-    img: "/assets/img/user.svg",
-  },
-  {
-    heading: "9+",
-    subHeding: "Built for scale, speed, and seamless handoff to developers",
-    subtitle1: " Years of",
-    subtitle2: "Experience",
+    heading: "6",
+    subHeading: "Built for scale, speed, and seamless handoff to developers",
+    subtitle1: " Client",
+    subtitle2: "Locations",
+    subtitle3: "Worldwide",
     hoverBg: "#E40063",
     textHover: "#fff",
-    img: "/assets/img/cal.svg",
+    img: "/assets/img/location.svg",
   },
 ];
 
@@ -133,6 +134,8 @@ const AboutCardItem = ({
             {item.subtitle1}
             <br />
             {item.subtitle2}
+            <br/>
+            {item.subtitle3 && item.subtitle3}
           </p>
           {item.img && (
             <img
@@ -152,7 +155,7 @@ const AboutCardAnimation = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="container mx-auto px-4 pb-20 max-md:pb-12 max-md:pt-12">
+    <div className="container mx-auto px-4 pb-20 max-md:pb-12 max-md:pt-12 ">
       <div className="grid grid-cols-2 gap-6 max-md:gap-4 lg:mt-48 max-lg:grid-cols-1">
         {data.map((item, index) => (
           <AboutCardItem

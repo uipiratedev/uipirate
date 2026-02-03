@@ -123,12 +123,15 @@ const LandingMarquee = () => {
             whileInView="visible"
             viewport={{ once: false, amount: 0.5 }}
           >
-            <p className="text-2xl md:text-4xl font-jakarta font-[600] text-brand-orange leading-snug tracking-wide">
-              Trusted by Teams
-            </p>
-            <p className="text-2xl md:text-4xl font-jakarta font-[600] text-black leading-snug tracking-wide mt-1">
-              Building the Future of SaaS and AI
-            </p>
+           
+              <h2 className="heading-center text-brand-orange">
+             Trusted by Teams
+          </h2>
+
+             <h2 className="heading-center ">
+            Building the Future of SaaS and AI
+          </h2>
+         
           </motion.div>
         </div>
 
@@ -144,7 +147,7 @@ const LandingMarquee = () => {
             {premiumLogos.map((logo, index) => (
               <motion.a
                 key={index}
-                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[18px] relative overflow-hidden ${
+                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden ${
                   logo.link
                     ? "cursor-pointer hover:brightness-105"
                     : "cursor-default"

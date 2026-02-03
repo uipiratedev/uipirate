@@ -10,6 +10,7 @@ import PageWrapper from "@/components/PageWrapper";
 import WhyChooseUs from "./whyChoosUs";
 import Pricing from "./pricing";
 import TheTeam from "./theTeam";
+import LandingWhoWeAre from "./whoWeAre";
 
 // Dynamically import below-the-fold components for better initial load performance
 const LandingAppScreen = dynamic(() => import("./appScreen"), {
@@ -55,7 +56,7 @@ const TopThree = dynamic(() => import("./top3/topThree"), {
 const Landing = memo(function Landing() {
   return (
     <PageWrapper showFloatingButton={false}>
-      <div>
+      <div className="space-y-20">
         <LandingHero />
         <LandingMarquee />
 
@@ -64,16 +65,19 @@ const Landing = memo(function Landing() {
           <BentoGrid />
         </div>
 
-        <div className="overflow-x-hidden py-0 max-md:py-4">
+        {/* <div className="overflow-x-hidden py-0 max-md:py-4">
           <TopThree />
           <LandingAppScreen />
-        </div>
+        </div> */}
 
         <LandingBehanceFramor />
 
+            <LandingWhoWeAre />
+
         <LandingAbout />
 
-        <WhyChooseUs />
+        {/* <WhyChooseUs /> */}
+    
 
         <div id="Services">
           <LandingBusinessHelp />
@@ -83,7 +87,7 @@ const Landing = memo(function Landing() {
 
         <TheTeam />
 
-        <BoreYouCommit />
+        {/* <BoreYouCommit /> */}
 
         <div className="overflow-hidden">
           <LandingTestimonials />

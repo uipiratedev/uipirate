@@ -46,63 +46,78 @@ export default function TestimonialCards() {
 
   return (
     <section className="w-full py-12 container mx-auto px-6 md:px-12 lg:px-24">
-      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-        {[col1, col2, col3].map((col, i) => (
-          <div key={i} className="flex flex-col gap-4 flex-1">
-            {col.map((item, idx) => (
-              <motion.div
-                key={idx}
-                custom={idx + i * 3}
-                initial="hidden"
-                variants={cardVariants}
-                viewport={{ once: true, amount: 0.3 }}
-                whileInView="visible"
-              >
-              <Card
-                className="rounded-[32px] max-md:w-full bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]"
-              >
-                <CardBody className="p-2 max-md:p-2 max-lg:p-2">
-                  <div className="w-full p-5 bg-white rounded-[24px] max-md:p-4 box-shadow">
-                    <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
-                      <div className="flex flex-row gap-3 items-center">
-                        <Avatar
-                          avatar={item.profileImage}
-                          name={item.name}
-                          size={52}
-                        />
+      <div className="h-[400px] overflow-hidden group">
+        <motion.div 
+          className="flex flex-col md:flex-row gap-4 md:gap-6"
+          initial={{ y: 0 }}
+          whileHover={{ 
+            y: `-${(Math.max(col1.length, col2.length, col3.length) * 200) - 300}px`,
+            transition: {
+              duration: Math.max(col1.length, col2.length, col3.length) * 2,
+              ease: "linear"
+            }
+          }}
+        >
+          {[col1, col2, col3].map((col, i) => (
+            <div 
+              key={i} 
+              className="flex flex-col gap-4 flex-1"
+            >
+              {col.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  custom={idx + i * 3}
+                  initial="hidden"
+                  variants={cardVariants}
+                  viewport={{ once: true, amount: 0.3 }}
+                  whileInView="visible"
+                >
+                <Card
+                  className="rounded-[32px] max-md:w-full bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]"
+                >
+                  <CardBody className="p-2 max-md:p-2 max-lg:p-2">
+                    <div className="w-full p-5 bg-white rounded-[24px] max-md:p-4 box-shadow">
+                      <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
+                        <div className="flex flex-row gap-3 items-center">
+                          <Avatar
+                            avatar={item.profileImage}
+                            name={item.name}
+                            size={52}
+                          />
 
-                        <div>
-                          <p className="text-xl max-md:text-lg font-semibold">
-                            {item.name}
-                          </p>
-                          <p className="text-[#A2A2A2] text-sm -mt-1">
-                            {item.occupation || "occupation"}
-                          </p>
-                          <p className="text-[#A2A2A2] text-sm -mt-1">
-                            {item.company || "location"}
-                          </p>
+                          <div>
+                            <p className="text-xl max-md:text-lg font-semibold">
+                              {item.name}
+                            </p>
+                            <p className="text-[#A2A2A2] text-sm -mt-1">
+                              {item.occupation || "occupation"}
+                            </p>
+                            <p className="text-[#A2A2A2] text-sm -mt-1">
+                              {item.company || "location"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="max-md:hidden block">
+                          {item.logo && (
+                            <img
+                              alt={`${item.company || item.name} company logo`}
+                              className="max-w-[80px]"
+                              src={item.logo}
+                            />
+                          )}
                         </div>
                       </div>
-                      <div className="max-md:hidden block">
-                        {item.logo && (
-                          <img
-                            alt={`${item.company || item.name} company logo`}
-                            className="max-w-[80px]"
-                            src={item.logo}
-                          />
-                        )}
-                      </div>
+                      <p className="mt-4 text-base font-[400]">
+                        {item.review || ""}
+                      </p>
                     </div>
-                    <p className="mt-4 text-base font-[400]">
-                      {item.review || ""}
-                    </p>
-                  </div>
-                </CardBody>
-              </Card>
-              </motion.div>
-            ))}
-          </div>
-        ))}
+                  </CardBody>
+                </Card>
+                </motion.div>
+              ))}
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
