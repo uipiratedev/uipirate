@@ -1,18 +1,19 @@
 "use client";
 
-import { Button, Card, CardBody, CardHeader } from "@heroui/react";
+import { Button, Card, CardBody, CardHeader, Link } from "@heroui/react";
 import { motion } from "framer-motion";
 
 
 import { useIsMobile, createCardScrollVariants } from "@/hooks";
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 // Sun Rays Component
-const SunRays = ({ color = "rgba(255, 165, 0, 0.15)", rayCount = 12 }) => {
+const SunRays = ({ color = "rgba(255, 165, 0, 0.15)", rayCount = 12, isMobile = false }) => {
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-[32px] max-md:rounded-[24px]  pointer-events-none">
+    <div className="absolute inset-0 overflow-hidden rounded-[20px] max-md:rounded-[12px]  pointer-events-none">
       <motion.div
         className="absolute inset-0"
-        animate={{ rotate: 360 }}
+        animate={isMobile ? {} : { rotate: 360 }}
         transition={{
           duration: 100,
           repeat: Infinity,
@@ -51,31 +52,31 @@ const ServicesSection = () => {
 
   const services = [
     {
-      icon: "💻",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
       title: "UX/UI DESIGN",
     },
     {
-      icon: "⚡",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
       title: "Saas & AI Development",
     },
     {
-      icon: "🌐",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
       title: "LANDING PAGES & BUSINESS WEBSITES",
     },
     {
-      icon: "🎨",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/graphic_s0cmgk.svg",
       title: "GRAPHIC DESIGN",
     },
     {
-      icon: "🎬",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/motion_dqrdcl.svg",
       title: "MOTION GRAPHIC",
     },
     {
-      icon: "🔍",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
       title: "UX AUDITS & CONSULTATION",
     },
     {
-      icon: "🎮",
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/3d_wtkihl.svg",
       title: "3D ASSETS & ANIMATION",
     },
   ];
@@ -96,23 +97,18 @@ const ServicesSection = () => {
         whileInView="show"
         viewport={{ once: false, amount: 0.3 }}
       >
-        <Card className="rounded-[32px] max-md:rounded-[24px] bg-white border-1 border-black/10 shadow-sm">
+        <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
           <CardBody className="p-8 max-md:p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-3xl max-md:text-2xl font-bold">
+              <h3 className="text-3xl max-md:text-xl font-bold">
                 Check Suite of Products Ready for Sale
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                <a
-                  className="w-full md:w-auto"
-                  href="https://wa.me/919708636151"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <Button className="bg-black text-white rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto hover:bg-gray-800 transition-colors">
-                    See Products In Action
-                  </Button>
-                </a>
+              
+
+    
+                 <LetsTalkButton fullWidth variant="dark" children="See Products In Action" href="/contact"/>
+           
                
               </div>
             </div>
@@ -129,22 +125,26 @@ const ServicesSection = () => {
           viewport={{ once: false, amount: 0.3 }}
           className="col-span-2"
         >
-          <Card className="rounded-[32px] max-md:rounded-[24px]   bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm h-full relative overflow-hidden"
+          <Card className="rounded-[20px] max-md:rounded-[12px]   bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm h-full relative overflow-hidden"
           style={{padding:"0px"}}
           >
             
-            <CardHeader className="relative z-10">
-              <div className="bg-orange-500 text-white rounded-full w-full flex items-center justify-between px-6 py-2">
+            <CardHeader className="relative z-10" style={{margin:"0px",padding:"0px",
+
+              boxShadow: "0px 1.03px 1.44px 0px #FFFFFFA6 inset",
+
+            }}>
+              <div className="bg-orange-500 text-white rounded-full max-md:rounded-xl w-full flex items-center justify-between px-6 max-md:px-4 py-2">
                 {/* Left Circle */}
                 <div className="w-6 h-6 bg-[#DE5005] rounded-full flex-shrink-0" style={{boxShadow: "0px 0.36px 0.36px 0px #7E7E7E8C inset"}} />
 
                 {/* Text */}
                 <p 
-                  className="uppercase text-center flex-1"
+                  className="uppercase text-center flex-1 text-[15px] max-md:text-[12px]"
                   style={{
                     fontFamily: 'JetBrains Mono, monospace',
                     fontWeight: 800,
-                    fontSize: '15.54px',
+                    // fontSize: '15.54px',
                     lineHeight: '22.51px',
                     letterSpacing: '-0.24px',
                     verticalAlign: 'middle',
@@ -157,7 +157,7 @@ const ServicesSection = () => {
                 <div className="w-6 h-6 bg-[#DE5005] rounded-full flex-shrink-0" style={{boxShadow: "0px 0.36px 0.36px 0px #7E7E7E8C inset"}} />
               </div>
             </CardHeader>
-            <SunRays color="rgba(255, 140, 0, 0.12)" rayCount={16} />
+            <SunRays color="rgba(255, 140, 0, 0.12)" rayCount={16} isMobile={isMobile} />
           <CardBody className="p-8 max-md:p-6 relative z-10">
             
             <div className="flex justify-center items-center">
@@ -177,19 +177,24 @@ const ServicesSection = () => {
           viewport={{ once: false, amount: 0.3 }}
           className="col-span-3"
         >
-          <Card className="rounded-[32px] max-md:rounded-[24px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full">
+          <Card className="rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full"
+          style={{
+            boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset",
+
+          }}
+          >
             <CardBody className="p-8 max-md:p-6">
               <h3 className="text-2xl max-md:text-xl font-bold mb-6 text-white">
                 One-stop shop for{" "}
                 <span className="text-orange-500">all your essentials</span>
               </h3>
-              <div className="flex flex-wrap gap-3">
+              <div className="gap-3 grid grid-cols-2 max-md:grid-cols-1">
                 {services.map((service, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-3 text-gray-300 w-fit font-mono text-sm max-md:text-xs bg-[#292929] z-[999999999999999] rounded-lg p-3 hover:bg-[#292929] transition-colors"
+                    className="flex items-center gap-3 text-gray-300 w-full font-mono text-sm max-md:text-xs bg-[#292929] rounded-lg p-3 hover:bg-[#292929] transition-colors"
                   >
-                    <span className="text-lg">{service.icon}</span>
+                    <span className="text-lg"><img src={service.icon} alt="" className="w-4 h-4" /></span>
                     <span className="font-medium tracking-wide">
                       {service.title}
                     </span>
@@ -208,23 +213,16 @@ const ServicesSection = () => {
         whileInView="show"
         viewport={{ once: false, amount: 0.3 }}
       >
-        <Card className="rounded-[32px] max-md:rounded-[24px]  bg-white border border-black/10 shadow-sm">
+        <Card className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-black/10 shadow-sm">
           <CardBody className="p-8 max-md:p-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-3xl max-md:text-2xl font-bold">
+              <h3 className="text-3xl max-md:text-xl font-bold">
                 Need Something Custom ?
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-                <a
-                  className="w-full md:w-auto"
-                  href="https://wa.me/919708636151"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <Button className="bg-black text-white rounded-[16px] px-8 py-6 font-bold text-base w-full md:w-auto hover:bg-gray-800 transition-colors">
-                    Let's Talk
-                  </Button>
-                </a>
+               
+
+                  <LetsTalkButton fullWidth variant="light" children="Let's Talk"/>
                
               </div>
             </div>

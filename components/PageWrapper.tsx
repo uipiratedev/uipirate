@@ -3,8 +3,7 @@
 import { memo } from "react";
 import FloatingLetsTalkButton from "./FloatingLetsTalkButton";
 
-import LandingFooter from "@/screens/landing/footer";
-import VisionToLife from "@/screens/landing/visionToLife";
+
 
 interface PageWrapperProps {
   children: React.ReactNode;
@@ -18,8 +17,6 @@ const PageWrapper = memo<PageWrapperProps>(function PageWrapper({
   return (
     <>
       {children}
-      {/* <VisionToLife />
-      <LandingFooter /> */}
       {showFloatingButton && <FloatingLetsTalkButton />}
     </>
   );

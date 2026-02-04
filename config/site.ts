@@ -63,34 +63,37 @@ export const siteConfig = {
       hasDropdown: true,
       dropdownItems: [
         {
-          category: "Blog",
+          category: "Blog & Tutorials",
+          icon: "✍️",
           href: "/blogs",
+          isLargeCard: true,
         },
         {
           category: "Case Studies",
+          icon: "📊",
           href: "/case-studies",
+          isLargeCard: true,
         },
         {
           category: "FAQs",
+          icon: "❓",
           href: "/faqs",
         },
-      ],
-    },
-    {
-      label: "Mini SaaS Apps",
-      href: "#",
-      hasDropdown: true,
-      dropdownItems: [
         {
-          category: "Coming Soon",
-          icon: "🚀",
-          href: "#",
+          category: "Documentation",
+          icon: "📚",
+          href: "/docs",
         },
       ],
     },
+   
     {
       label: "ProPirates",
       href: "https://propirates.com",
+    },
+     {
+      label: "Apps4Sale",
+      href: "/apps4sale",
     },
   ],
   navMenuItems: [

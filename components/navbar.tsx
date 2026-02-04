@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 
 import GlassSurface from "./GlassSurface";
 import { NavbarDropdown } from "./NavbarDropdown";
+import { MobileMenuAccordionItem } from "./MobileMenuAccordionItem";
 
 import { siteConfig } from "@/config/site";
 
@@ -101,7 +102,7 @@ export const Navbar = () => {
             >
               <NextUINavbar
                 className={clsx(
-                  "w-full py-0 px-0 flex flex-row items-center h-[55px] !overflow-visible",
+                  "w-full py-0 px-0 flex flex-row items-center h-[55px] !overflow-visible !static",
                   "transition-all duration-300 ease-in-out",
                   "!bg-transparent !backdrop-filter-none !backdrop-blur-none",
                   {
@@ -117,6 +118,7 @@ export const Navbar = () => {
                   backdropFilter: "none",
                   backgroundColor: "transparent",
                   overflow: "visible",
+                  position: "static", // Force static to let children anchor higher up
                 }}
                 onMenuOpenChange={setIsMenuOpen}
               >
@@ -159,16 +161,18 @@ export const Navbar = () => {
 
                 {/* --- Center Navigation Links --- */}
                 <NavbarContent
-                  className="basis-1/5 sm:basis-full !overflow-visible"
+                  className="basis-1/5 sm:basis-full !overflow-visible !static"
                   justify="center"
+                  style={{ position: "static" }}
                 >
-                  <ul className="hidden lg:flex gap-0 justify-start ml-0 overflow-visible">
+                  <ul className="hidden lg:flex gap-0 justify-start ml-0 overflow-visible !static" style={{ position: "static" }}>
                     {siteConfig.navItems.map((item) => (
                       <NavbarItem
                         key={item.href}
                         className={clsx(
-                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 relative",
+                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 !static",
                         )}
+                        style={{ position: "static" }}
                       >
                         {item.hasDropdown && item.dropdownItems ? (
                           <NavbarDropdown
@@ -220,32 +224,10 @@ export const Navbar = () => {
 
                 {/* --- Mobile Menu Content --- */}
                 <NavbarMenu className=" h-screen -mt-3">
-                  <div className="mx-0 mt-3 flex flex-col gap-4">
-                    {siteConfig.navMenuItems.map((item, index) => (
-                      <NavbarMenuItem key={`${item}-${index}`}>
-                        <div className="flex flex-col gap-2">
-                          <NextLink
-                            className="text-lg text-foreground cursor-pointer font-semibold"
-                            href={item.href}
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            {item.label}
-                          </NextLink>
-                          {item.subItems && (
-                            <div className="ml-4 flex flex-col gap-2">
-                              {item.subItems.map((subItem, subIndex) => (
-                                <NextLink
-                                  key={subIndex}
-                                  className="text-base text-gray-600 cursor-pointer"
-                                  href={subItem.href}
-                                  onClick={() => setIsMenuOpen(false)}
-                                >
-                                  {subItem.label}
-                                </NextLink>
-                              ))}
-                            </div>
-                          )}
-                        </div>
+                  <div className="mx-0 mt-3 flex flex-col gap-0 px-4">
+                    {siteConfig.navItems.map((item, index) => (
+                      <NavbarMenuItem key={`${item.href}-${index}`}>
+                        <MobileMenuAccordionItem item={item} setIsMenuOpen={setIsMenuOpen} />
                       </NavbarMenuItem>
                     ))}
                   </div>

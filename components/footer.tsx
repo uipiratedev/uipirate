@@ -59,15 +59,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="relative w-full bg-black pt-24 overflow-hidden noise-texture noise-texture ">
-      {/* Noise Texture Overlay */}
-      {/* <div 
-        className="absolute inset-0 pointer-events-none z-[1]"
-        style={{
-          backgroundImage: 'url(/assets/noise.png)',
-          backgroundRepeat: 'repeat',
-          opacity: 0.08,
-        }}
-      /> */}
+      
       
       {/* Top Light Effect */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-white/5" />
@@ -85,17 +77,17 @@ export const Footer: React.FC = () => {
         >
           {/* Heading */}
           <h2
-            className="footer-heading"
-            style={{ fontFamily: "var(--font-geist)" }}
+            className="text-3xl md:text-5xl font-bold leading-[1.1] mb-4 text-white "
           >
-            Wanna Be part of the first wave?
+            If you scrolled this far, 
           </h2>
-          <h2
-            className="footer-heading text-primary -mt-2"
-            style={{ fontFamily: "var(--font-geist)" }}
+           <h2
+            className="text-3xl md:text-5xl font-bold leading-[1.1] mb-8 text-white"
           >
-            Get Early Access and help shape what this becomes
+           
+It’s time to <span className="text-orange-500">Build Something Together</span>
           </h2>
+        
 
           {/* JOIN WAITLIST Button with 3D Effect */}
           {/* JOIN WAITLIST Button with Targeted Scaling & Reflection */}
@@ -176,66 +168,92 @@ export const Footer: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Tagline */}
+        {/* Footer Navigation Grid */}
         <motion.div
-          className="mb-8"
-          initial={{ opacity: 0 }}
+          className="max-w-[1400px] mx-auto px-6 mt-20 pb-16"
+          initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          whileInView={{ opacity: 1 }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
-          <p
-            className="text-[18px] max-md:text-[14px] font-medium text-center uppercase"
-            style={{
-              fontFamily: "'Geist Mono', monospace",
-              lineHeight: "140%",
-              letterSpacing: "4.8px",
-              // @ts-ignore
-              leadingTrim: "none",
-            }}
-          >
-            <span className="text-white">
-              SKILL-FIRST COMPETITIVE PLATFORM FOR{" "}
-            </span>
-            <span className="text-primary font-semibold">
-              BUILDERS AND CREATORS
-            </span>
-          </p>
-        </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 text-left pt-16">
+            {/* Branding/Tagline Section */}
+            <div className="lg:col-span-5 flex flex-col gap-8">
+              <p className="text-[28px] md:text-[32px] font-bold text-white leading-[1.3] max-w-md"
+                
+                 >
+                Premium <span className="text-orange-500  ">UI/UX Design & Development</span> for SaaS & AI Products.
+              </p>
+              
+          
+            </div>
 
-        {/* Footer Bottom Row - Copyright & Social Links */}
-        <motion.div
-          className="flex flex-col max-w-7xl mx-auto px-4 max-md:px-0 md:flex-row items-center justify-between gap-6 pt-8 border-t border-gray-800/50 mb-28 max-md:mb-6"
-          initial={{ opacity: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          whileInView={{ opacity: 1 }}
-        >
-          {/* Copyright */}
-          <p className="text-[14px] text-white order-2 md:order-1">
-            Copyright©2025 ProPirates. All Rights Reserved.
-          </p>
+            {/* Quick Links Column */}
+            <div className="lg:col-span-2">
+              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40"
+                  style={{ fontFamily: "'Geist Mono', monospace" }}>
+                Quick Links
+              </h4>
+              <ul className="flex flex-col gap-1">
+                <li><Link href="/" className="text-white hover:text-white/60 transition-colors text-base font-medium">Home</Link></li>
+                <li><Link href="/services" className="text-white hover:text-white/60 transition-colors text-base font-medium">Services</Link></li>
+                <li><Link href="/works" className="text-white hover:text-white/60 transition-colors text-base font-medium">Works</Link></li>
+                <li><Link href="/pricing" className="text-white hover:text-white/60 transition-colors text-base font-medium">Pricing</Link></li>
+              </ul>
+            </div>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-6 max-md:gap-3 order-1 md:order-2">
-            {footerSocialLinks.map((link) => (
-              <Link
-                key={link.name}
-                isExternal
-                className="group relative transition-all duration-300"
-                href={link.url}
-              >
-                <div className=" flex items-center justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-primary group-hover:border-primary transition-all duration-300">
-                  <img
-                    alt={link.name}
-                    className="w-10 h-10  brightness-100 group-hover:invert transition-all duration-300"
-                    height="40"
-                    src={link.icon}
-                    width="40"
-                  />
-                </div>
-              </Link>
-            ))}
+            {/* Resources Column */}
+            <div className="lg:col-span-2">
+              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40"
+                  style={{ fontFamily: "'Geist Mono', monospace" }}>
+                Resources
+              </h4>
+              <ul className="flex flex-col gap-1">
+                <li><Link href="/blogs" className="text-white hover:text-white/60 transition-colors text-base font-medium">Blogs</Link></li>
+                <li><Link href="/community" className="text-white hover:text-white/60 transition-colors text-base font-medium">Community Insights</Link></li>
+                <li><Link href="/products" className="text-white hover:text-white/60 transition-colors text-base font-medium">Mini SaaS Apps</Link></li>
+                <li><Link href="/faq" className="text-white hover:text-white/60 transition-colors text-base font-medium">FAQ’s</Link></li>
+              </ul>
+            </div>
+
+            {/* Policies Column */}
+            <div className="lg:col-span-3">
+              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40"
+                  style={{ fontFamily: "'Geist Mono', monospace" }}>
+                Policies & Legal
+              </h4>
+              <ul className="flex flex-col gap-1">
+                <li><Link href="/privacy" className="text-white hover:text-white/60 transition-colors text-base font-medium">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="text-white hover:text-white/60 transition-colors text-base font-medium">Terms and Conditions</Link></li>
+                <li><Link href="/sitemap" className="text-white hover:text-white/60 transition-colors text-base font-medium">Site Map</Link></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Copyright Strip */}
+          <div className="mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-[13px] text-white/30 font-medium">
+              Copyright©2025 ProPirates. All Rights Reserved.
+            </p>
+              {/* Social Links Sub-section */}
+              <div className="flex items-center gap-4 mt-2">
+                {footerSocialLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    isExternal
+                    className="group transition-all duration-300"
+                    href={link.url}
+                  >
+                    <div className="w-[45px] h-[45px] flex items-center justify-center rounded-xl bg-white/5 border border-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                      <img
+                        alt={link.name}
+                        className="w-10 h-10 transition-all duration-300 group-hover:invert"
+                        src={link.icon}
+                      />
+                    </div>
+                  </Link>
+                ))}
+              </div>
           </div>
         </motion.div>
       </div>
