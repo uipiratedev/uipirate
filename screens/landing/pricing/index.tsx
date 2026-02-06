@@ -107,16 +107,12 @@ const Pricing = () => {
             </div>
 
             {/* Title */}
-            <h3 className="text-3xl max-md:text-2xl font-bold mb-2 text-white "
-            style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-            >
+            <h3 className="text-3xl max-md:text-2xl font-bold mb-2 text-white font-jakarta">
               Monthly <span className="text-orange-600">Retainer</span>
             </h3>
 
             {/* Subtitle */}
-            <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm font- mb-6 uppercase tracking-wide"
-            style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-            >
+            <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm font- mb-6 uppercase tracking-wide font-mono">
               For teams that need design & dev support, every month
             </p>
 
@@ -128,32 +124,24 @@ const Pricing = () => {
                   className="flex items-start gap-3 text-gray-300"
                 >
                   <span className="text-[#454545]">  <CheckIcon /></span>
-                  <span className="text-white max-md:text-sm text-base"
-                  style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-                  >{feature}</span>
+                  <span className="text-white max-md:text-sm text-base font-jakarta">{feature}</span>
                 </li>
               ))}
             </ul>
 
             {/* Footer */}
             <div className="mt-auto">
-              <p className="text-[#777777] text-base max-md:text-sm mb-4 italic"
-              style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-              >
+              <p className="text-[#777777] text-base max-md:text-sm mb-4 italic font-jakarta">
                 One subscription, endless possibilities
               </p>
 
               {/* Price */}
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl max-md:text-4xl font-black text-white"
-                   style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-                  >
+                  <span className="text-5xl max-md:text-4xl font-black text-white font-mono">
                     $2000
                   </span>
-                  <span className="text-[#999999] text-lg"
-                  style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-                  >/per month</span>
+                  <span className="text-[#999999] text-lg font-jakarta">/per month</span>
                 </div>
               </div>
 
@@ -204,16 +192,12 @@ const Pricing = () => {
                 </h3>
 
                 {/* Subtitle */}
-                <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm mb-6 uppercase tracking-wide"
-                style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-                >
+                <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm mb-6 uppercase tracking-wide font-mono">
                   For complex products, enterprise needs & startups
                 </p>
 
                 {/* Description */}
-                <p className="text-[#161616] mb-6 text-base max-md:text-sm"
-                style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-                >
+                <p className="text-[#161616] mb-6 text-base max-md:text-sm font-jakarta">
                   Best suited for products that don't fit into standard plans.
                 </p>
 
@@ -233,16 +217,12 @@ const Pricing = () => {
                       className="flex items-start gap-3 text-gray-700"
                     >
                       <span className="text-[#E3E3E3]"><CheckIcon /></span>
-                      <span className="text-black max-md:text-sm text-base"
-                      style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-                      >{feature}</span>
+                      <span className="text-black max-md:text-sm text-base font-jakarta">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                <p className="text-[#777777] text-base max-md:text-sm mt-6 italic"
-                style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-                >
+                <p className="text-[#777777] text-base max-md:text-sm mt-6 italic font-jakarta">
                   Built around your product, not templates
                 </p>
               </div>
@@ -264,14 +244,10 @@ const Pricing = () => {
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
                
-                <h4 className="text-xl font-bold mb-3 tracking-wide flex items-center gap-2"
-                style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-                >
+                <h4 className="text-xl font-bold mb-3 tracking-wide flex items-center gap-2 font-mono">
                   <img src={benefit.icon} alt=""  className="w-4 h-4" /> {benefit.title}
                 </h4>
-                <p className="text-sm text-[#555555] leading-relaxed"
-                style={{fontFamily:"'Plus Jakarta Sans', sans-serif"}}
-                >
+                <p className="text-sm text-[#555555] leading-relaxed font-jakarta">
                   {benefit.description}
                 </p>
               </CardBody>

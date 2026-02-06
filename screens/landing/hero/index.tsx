@@ -374,7 +374,7 @@ const LandingHero = () => {
           <div className="relative z-10">
             <AnimatedHeadline />
           </div>
-          <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-2xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 font-sans leading-[25.2px] 2xl:leading-[32px]">
+          <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-2xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px]">
             We help fast-growing SaaS and enterprise teams build world-class
             dashboards, onboarding flows, and AI-powered product experiences -
             from MVP to complete enterprise applications.

@@ -140,9 +140,8 @@ const ServicesSection = () => {
 
                 {/* Text */}
                 <p 
-                  className="uppercase text-center flex-1 text-[15px] max-md:text-[12px]"
+                  className="uppercase text-center flex-1 text-[15px] max-md:text-[12px] font-mono"
                   style={{
-                    fontFamily: 'JetBrains Mono, monospace',
                     fontWeight: 800,
                     // fontSize: '15.54px',
                     lineHeight: '22.51px',

@@ -130,7 +130,7 @@ const AboutCardItem = ({
           </p>
         </div>
         <div className="flex flex-row items-end justify-between">
-          <p className="text-3xl max-md:text-2xl font-semibold uppercase">
+          <p className="text-3xl max-md:text-2xl font-semibold uppercase font-jetbrains-mono">
             {item.subtitle1}
             <br />
             {item.subtitle2}

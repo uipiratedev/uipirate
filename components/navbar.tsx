@@ -84,7 +84,7 @@ export const Navbar = () => {
               blur={28}
               borderRadius={16}
               borderWidth={2}
-              brightness={55}
+              brightness={98}
               className="relative isolate max-md:rounded-none !overflow-visible"
               displace={0}
               distortionScale={5}
