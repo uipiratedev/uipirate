@@ -167,12 +167,12 @@ const TheTeam = () => {
                   <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-8">
                     {/* First larger circle - positioned left and slightly rotated */}
                     <div 
-                      className="absolute top-0 left-2 w-6 h-6 rounded-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg"
+                      className="absolute top-0 left-0 w-6 h-6 rounded-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg"
                       style={{ transform: 'rotate(-15deg)' }}
                     />
                     {/* Second smaller circle - positioned right and rotated opposite */}
                     <div 
-                      className="absolute top-4 right-3 w-3 h-3 rounded-full bg-white/75 backdrop-blur-xl border border-white/40 shadow-lg"
+                      className="absolute top-8 -left-4 w-3 h-3 rounded-full bg-white/75 backdrop-blur-xl border border-white/40 shadow-lg"
                       style={{ transform: 'rotate(15deg)' }}
                     />
                   </div>

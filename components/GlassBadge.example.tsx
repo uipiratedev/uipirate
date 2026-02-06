@@ -117,10 +117,10 @@ export default function GlassBadgeExamples() {
             <br />
             <span className="text-orange-500">You launch them.</span>
           </h2>
-          <p className="text-center text-gray-600 max-w-2xl mx-auto">
+          {/* <p className="text-center text-gray-600 max-w-2xl mx-auto">
             From strategic UX to scalable frontend architecture, we are the
             product team you wish you had in-house.
-          </p>
+          </p> */}
         </div>
         <pre className="bg-gray-100 p-4 rounded text-sm overflow-x-auto">
           {`<div className="flex flex-row items-center justify-center mb-6">

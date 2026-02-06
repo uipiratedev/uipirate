@@ -142,7 +142,7 @@ const LandingMarquee = () => {
             variants={logoContainerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
           >
             {premiumLogos.map((logo, index) => (
               <motion.a

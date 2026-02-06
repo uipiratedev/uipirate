@@ -89,7 +89,7 @@ const Pricing = () => {
           variants={cardVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
         >
           <Card className="rounded-[20px] max-md:rounded-[12px]  bg-gradient-to-br from-[#212121] to-[#151514] border-1 border-gray-800 shadow-lg h-full noise-texture "
           style={{
@@ -172,7 +172,7 @@ const Pricing = () => {
           variants={cardVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
         >
           <ProjectEstimate cardVariants={cardVariants} />
         </motion.div>
@@ -183,7 +183,7 @@ const Pricing = () => {
         variants={cardVariants}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
         className="mb-6"
       >
         <Card className="rounded-[20px] max-md:rounded-[12px]  bg-white border-1 border-gray-200 shadow-sm">
@@ -259,7 +259,7 @@ const Pricing = () => {
             variants={cardVariants}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
           >
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
