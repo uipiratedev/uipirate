@@ -120,6 +120,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
                     className="w-full h-auto"
                     isActive={isActive}
                     isPressed={isPressed}
+                    text="lets venture"
                   />
                 </div>
               </div>
@@ -129,7 +130,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
           {/* Background Text - SAAS WEB APP Marquee - Positioned Behind Button */}
           <div
-            className="absolute top-[43%] max-md:top-[35%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
+            className="absolute top-[30%] max-md:top-[20%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
             style={{
               WebkitMaskImage:
                 "linear-gradient(to right, white 0%, white 20%, transparent 35%, transparent 65%, white 80%, white 100%)",

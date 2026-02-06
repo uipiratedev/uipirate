@@ -109,6 +109,15 @@ body {
   /* scroll-behavior: smooth; */
 }
 
+/* Geist Font Utilities */
+.font-geist {
+  font-family: var(--font-geist), sans-serif !important;
+}
+
+.font-geist-mono {
+  font-family: var(--font-geist-mono), monospace !important;
+}
+
 .button {
   border-radius: 16px;
   padding: 16px 32px;
