@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody, CardHeader, Link } from "@heroui/react";
+import {Card, CardBody, CardHeader } from "@heroui/react";
 import { motion } from "framer-motion";
 
 
@@ -95,12 +95,12 @@ const ServicesSection = () => {
         variants={cardVariants}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
-          <CardBody className="p-8 max-md:p-6">
+          <CardBody className="p-6 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-3xl max-md:text-xl font-bold">
+              <h3 className="text-3xl max-md:text-xl font-bold tracking-[-1px]">
                 Check Suite of Products Ready for Sale
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
@@ -122,7 +122,7 @@ const ServicesSection = () => {
           variants={cardVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           className="col-span-2"
         >
           <Card className="rounded-[20px] max-md:rounded-[12px]   bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm h-full relative overflow-hidden"
@@ -174,7 +174,7 @@ const ServicesSection = () => {
           variants={cardVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.3 }}
           className="col-span-3"
         >
           <Card className="rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full"
@@ -211,12 +211,12 @@ const ServicesSection = () => {
         variants={cardVariants}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <Card className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-black/10 shadow-sm">
-          <CardBody className="p-8 max-md:p-6">
+          <CardBody className="p-6 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-3xl max-md:text-xl font-bold">
+              <h3 className="text-3xl max-md:text-xl font-bold tracking-[-1px]">
                 Need Something Custom ?
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">

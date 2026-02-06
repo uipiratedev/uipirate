@@ -29,12 +29,12 @@ function LandingTestimonials() {
           </span>{" "}
           partners
         </p>
-        <div className="flex flex-row items-center justify-center mb-0 mt-3 px-60 max-lg:px-32 max-md:px-8">
+        {/* <div className="flex flex-row items-center justify-center mb-0 mt-3 px-60 max-lg:px-32 max-md:px-8">
           <p className="md:w-1/2 text-center content-center px-16  max-lg:px-8 max-md:px-0 font-[500]">
             Grateful for the opportunity to collaborate and forge lasting
             connections.
           </p>
-        </div>
+        </div> */}
       </div>
       <div>
         <TestimonialCards />

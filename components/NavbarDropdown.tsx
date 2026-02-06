@@ -101,18 +101,24 @@ export const NavbarDropdown = ({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="bg-[#121212]/95 backdrop-blur-3xl rounded-[32px] p-5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.7)] border border-white/10 overflow-hidden ring-1 ring-white/5">
+              <div className="relative isolate overflow-hidden rounded-[32px] p-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_50px_100px_-20px_rgba(0,0,0,0.7)] border border-white/20 ring-1 ring-white/10">
+                {/* Background Layer with heavy blur */}
+                <div className="absolute inset-0 bg-[#0A0A0A]/80 backdrop-blur-3xl -z-20" />
+                
+                {/* Subtle top-left highlight for glass reflection */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.12] via-transparent to-transparent -z-10" />
+                
                 <div className={clsx(
                   "grid gap-4",
                   largeCards.length > 0 ? "grid-cols-1 md:grid-cols-12" : "grid-cols-1"
                 )}>
                   {/* Left Side - Main Feature Cards (cols 1-8) */}
                   {largeCards.length > 0 && (
-                    <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                       {largeCards.map((item, index) => (
                         <NextLink
                           key={index}
-                          className="group relative aspect-[4/3] rounded-[24px] overflow-hidden bg-zinc-900/50 border border-white/5 transition-transform duration-500 hover:scale-[1.02]"
+                          className="group relative aspect-[4/3] rounded-[24px] overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:shadow-xl hover:shadow-black/20"
                           href={item.href || "#"}
                           onClick={() => setIsOpen(false)}
                         >
@@ -150,18 +156,18 @@ export const NavbarDropdown = ({
                       {listItems.map((item, index) => (
                         <NextLink
                           key={index}
-                          className="flex items-center gap-4 p-4 rounded-[20px] bg-white/5 hover:bg-white/10 border border-white/5 transition-all duration-300 group"
+                          className="flex items-center gap-4 p-4 rounded-[20px] bg-white/[0.03] backdrop-blur-sm hover:bg-white/[0.08] border border-white/5 hover:border-white/10 transition-all duration-300 group"
                           href={item.href || "#"}
                           onClick={() => setIsOpen(false)}
                         >
-                          <div className="w-10 h-10 rounded-[12px] bg-zinc-800 flex items-center justify-center text-lg group-hover:bg-zinc-700 border border-white/5 transition-colors shrink-0">
+                          <div className="w-10 h-10 rounded-[12px] bg-zinc-800/50 backdrop-blur-md flex items-center justify-center text-lg group-hover:bg-orange-500/20 group-hover:text-orange-400 group-hover:border-orange-500/50 border border-white/5 transition-all shrink-0">
                             {item.icon || "🔗"}
                           </div>
                           <div className="flex flex-col min-w-0">
                             <span className="text-white font-semibold text-[14px] group-hover:text-orange-400 transition-colors truncate">
                               {item.category}
                             </span>
-                            <span className="text-zinc-500 text-[12px] group-hover:text-zinc-400 transition-colors truncate">
+                            <span className="text-zinc-500 text-[12px] group-hover:text-zinc-300 transition-colors truncate">
                               {item.category.includes('Blog') ? 'Latest updates' : 'Learn more'}
                             </span>
                           </div>
