@@ -1,5 +1,3 @@
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -67,6 +65,16 @@
   outline-offset: 2px;
 }
 
+/* ========================================
+   NAVBAR DROPDOWN OVERFLOW FIX
+   ======================================== */
+/* Allow navbar dropdowns to overflow outside the navbar container */
+[data-slot="navbar"],
+[data-slot="navbar"] > *,
+.navbar-dropdown-container {
+  overflow: visible !important;
+}
+
 /* Reduced Motion Support - respects user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -96,9 +104,18 @@
 
 html,
 body {
-  font-family: var(--font-jakarta), "Plus Jakarta Sans", sans-serif !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
 
   /* scroll-behavior: smooth; */
+}
+
+/* Geist Font Utilities */
+.font-geist {
+  font-family: var(--font-geist), sans-serif !important;
+}
+
+.font-geist-mono {
+  font-family: var(--font-geist-mono), monospace !important;
 }
 
 .button {
@@ -113,7 +130,7 @@ body {
 }
 
 .heading-center {
-  @apply text-center text-5xl max-lg:text-4xl max-md:text-3xl font-[700] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[64px];
+  @apply text-center text-5xl max-lg:text-4xl max-md:text-3xl font-[600] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[64px];
 }
 
 .badge-text {
@@ -225,7 +242,7 @@ body {
 
 /* Button animations */
 
-/* 3. Button spring and firework animations */
+/* 3. Button spring animation */
 @keyframes button-spring-up {
   0% {
     transform: translateY(30px) scale(0.95);
@@ -244,102 +261,8 @@ body {
   }
 }
 
-@keyframes star-firework {
-  0% {
-    transform: scale(0.8) rotate(0deg);
-    opacity: 0.4;
-  }
-  25% {
-    transform: scale(0.9) rotate(90deg);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scale(1) rotate(180deg);
-    opacity: 1;
-  }
-  75% {
-    transform: scale(1.1) rotate(270deg);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(0.9) rotate(360deg);
-    opacity: 0.5;
-  }
-}
-
-@keyframes shimmer-border {
-  0% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
 .button-spring-animate {
   animation: button-spring-up 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.star-firework-animate {
-  animation: star-firework 3s ease-in-out infinite;
-}
-
-.cta-button-hover {
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-button-hover::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transform: translateX(-100%);
-  transition: transform 0.6s ease-in-out;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.cta-button-hover:hover::before {
-  animation: shimmer-border 1.5s ease-in-out infinite;
-}
-
-.cta-button-hover::after {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  border-radius: inherit;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.cta-button-hover:hover::after {
-  opacity: 1;
-  animation: shimmer-border 2s ease-in-out infinite;
 }
 
 /* Fade-in animation for content after loader */
@@ -930,6 +853,23 @@ reveal-text span {
 
 /* button text chnage animation */
 
+/* Scroll-based text reveal animation - light gray to original color */
+.text-reveal-scroll {
+  animation: textRevealScroll both;
+  animation-timeline: view(70% 5%);
+}
+
+@keyframes textRevealScroll {
+  from {
+    color: #D1D5DB; /* light gray */
+    opacity: 0.3;
+  }
+  to {
+    color: inherit; /* original color */
+    opacity: 1;
+  }
+}
+
 /* Star Confetti Effect - 360° spread from circumference with rotation */
 @keyframes star-confetti-1 {
   0% {
@@ -1476,200 +1416,10 @@ reveal-text span {
 }
 
 /* ========================================
-   NAVBAR GLASSMORPHISM EFFECT - PREMIUM
+   NEXTUI NAVBAR OVERRIDES FOR GLASSSURFACE
    ======================================== */
 
-/*
-  CRITICAL FIX: Override NextUI Navbar defaults that prevent backdrop-filter
-  NextUI may add background colors or other properties that interfere with glass effect
-*/
-[data-slot="base"].glass-texture,
-nav.glass-texture,
-header.glass-texture {
-  /* Force transparent background to allow backdrop-filter to show through */
-  background-color: transparent !important;
-  /* Ensure proper stacking context */
-  isolation: isolate;
-  /* Remove any conflicting properties that block backdrop-filter */
-  overflow: visible !important;
-  /* Ensure element creates its own stacking context */
-  transform: translateZ(0);
-  /* Force GPU acceleration for better blur performance */
-  will-change: backdrop-filter;
-}
-
-/* Override any NextUI wrapper backgrounds */
-.glass-texture [data-slot="wrapper"] {
-  background-color: transparent !important;
-}
-
-/* Ensure parent containers don't block backdrop-filter */
-.reveal-text-anim-1 {
-  overflow: visible !important;
-}
-
-/* Mobile: Fix navbar height to match desktop */
-@media (max-width: 768px) {
-  /* Override NextUI default padding on mobile */
-  nav.glass-texture[data-slot="base"] {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  /* Ensure navbar wrapper has consistent height */
-  nav.glass-texture[data-slot="base"] [data-slot="wrapper"] {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-  }
-}
-
-/* Banner glass effect - matches navbar glass aesthetic */
-.glass-texture.navbar-glass-light {
-  /* Inherits all navbar glass properties for consistency */
-}
-
-/*
-  Premium Apple-style glass effect with:
-  - Increased blur (28px) for more pronounced frosted effect
-  - Saturation boost (200%) for vibrant color bleed-through
-  - Brightness adjustment for depth perception
-  - Contrast enhancement for clarity
-*/
-.navbar-glass-premium {
-  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(105%)
-    contrast(100%);
-  backdrop-filter: blur(28px) saturate(200%) brightness(105%) contrast(100%);
-}
-
-/* Light section glass - Solid frosted glass with high opacity to prevent text bleed-through */
-.navbar-glass-light {
-  background: linear-gradient(
-    142deg,
-    rgba(255, 255, 255, 0.75) 0%,
-    rgba(255, 255, 255, 0.65) 50%,
-    rgba(255, 255, 255, 0.55) 100%
-  );
-  -webkit-backdrop-filter: blur(32px) saturate(120%) brightness(100%);
-  backdrop-filter: blur(32px) saturate(120%) brightness(100%);
-}
-
-/* Dark section glass - subtle white tint with brightness reduction for contrast */
-.navbar-glass-dark {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(95%);
-  backdrop-filter: blur(28px) saturate(180%) brightness(95%);
-}
-
-/* Inner glow effect - simulates light refraction on glass edges */
-.glass-inner-glow-light {
-  box-shadow:
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
-    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.glass-inner-glow-dark {
-  box-shadow:
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Dual border effect for depth - 2px border to match trust badge */
-.glass-border-light {
-  border: 2px solid rgba(255, 255, 255, 0.12);
-  box-shadow:
-    inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3),
-    inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.glass-border-dark {
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
-}
-
-/* Layered shadows for floating glass effect - subtle and minimal */
-.glass-shadow-light {
-  box-shadow:
-    0 4px 16px 0 rgba(31, 38, 135, 0.08),
-    inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3),
-    inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.glass-shadow-dark {
-  box-shadow:
-    0 2px 12px -2px rgba(0, 0, 0, 0.3),
-    0 4px 20px -4px rgba(0, 0, 0, 0.2),
-    0 8px 32px -8px rgba(0, 0, 0, 0.15),
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Subtle noise texture for realistic glass grain */
-.glass-texture {
-  position: relative;
-  /* Ensure backdrop-filter works */
-  isolation: isolate;
-}
-
-.glass-texture::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: overlay;
-  /* Ensure texture doesn't block backdrop-filter */
-  z-index: 1;
-}
-
-/* Ensure all child elements are above the texture */
-.glass-texture > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* Enhanced glass effect with better browser support */
-@supports (
-  (-webkit-backdrop-filter: blur(28px)) or (backdrop-filter: blur(28px))
-) {
-  .navbar-glass-premium {
-    -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(105%)
-      contrast(100%);
-    backdrop-filter: blur(28px) saturate(200%) brightness(105%) contrast(100%);
-  }
-
-  .navbar-glass-light {
-    -webkit-backdrop-filter: blur(32px) saturate(120%) brightness(100%);
-    backdrop-filter: blur(32px) saturate(120%) brightness(100%);
-  }
-
-  .navbar-glass-dark {
-    -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(95%);
-    backdrop-filter: blur(28px) saturate(180%) brightness(95%);
-  }
-}
-
-/* Fallback for browsers that don't support backdrop-filter */
-@supports not (
-  (-webkit-backdrop-filter: blur(28px)) or (backdrop-filter: blur(28px))
-) {
-  .navbar-glass-light {
-    background: rgba(255, 255, 255, 0.92) !important;
-  }
-
-  .navbar-glass-dark {
-    background: rgba(255, 255, 255, 0.15) !important;
-  }
-}
-
-/* Override NextUI Navbar default styles when inside GlassSurface */
+/* Override NextUI Navbar default styles when inside GlassSurface component */
 nav[data-slot="base"] {
   background: transparent !important;
   backdrop-filter: none !important;
@@ -1682,6 +1432,11 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   background-color: transparent !important;
+}
+
+/* Ensure parent containers don't block backdrop-filter */
+.reveal-text-anim-1 {
+  overflow: visible !important;
 }
 
 /* meteor */
@@ -1703,122 +1458,6 @@ nav[data-slot="base"] [data-slot="wrapper"] {
 
 .meteor {
   animation: meteorFall cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
-}
-
-/* Hero Headline Animations - AI Thought to Product Output */
-
-/* Word reveal animation - types in effect */
-@keyframes wordReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Highlight pulse for "Convert" */
-@keyframes highlightPulse {
-  0% {
-    background-size: 0% 100%;
-  }
-  100% {
-    background-size: 100% 100%;
-  }
-}
-
-/* Word expand for "Scale" */
-@keyframes wordExpand {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* Slide forward for "Ship Faster" */
-@keyframes slideForward {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(4px);
-  }
-}
-
-/* Cursor blink */
-@keyframes cursorBlink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Apply animations to hero text */
-.hero-word {
-  display: inline-block;
-  opacity: 0;
-  animation: wordReveal 0.4s ease-out forwards;
-}
-
-.hero-word-convert {
-  display: inline-block;
-  opacity: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 140, 0, 0.2) 0%,
-    rgba(255, 140, 0, 0.2) 100%
-  );
-  background-size: 0% 100%;
-  background-repeat: no-repeat;
-  background-position: left center;
-  animation:
-    wordReveal 0.4s ease-out forwards,
-    highlightPulse 0.6s ease-out 0.4s forwards;
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.hero-word-scale {
-  display: inline-block;
-  opacity: 0;
-  animation: wordReveal 0.4s ease-out forwards;
-}
-
-.hero-word-orange {
-  display: inline-block;
-  opacity: 0;
-  animation: wordReveal 0.4s ease-out forwards;
-}
-
-/* Soft glow on final headline state */
-@keyframes finalGlow {
-  0% {
-    text-shadow: none;
-  }
-  100% {
-    text-shadow: 0 0 20px rgba(255, 140, 0, 0.15);
-  }
-}
-
-.hero-word-convert,
-.hero-word-scale,
-.hero-word-ship {
-  animation-fill-mode: forwards;
-}
-
-/* Add subtle glow to orange text after animations complete */
-.text-brand-orange {
-  animation: finalGlow 0.8s ease-out 0.8s forwards;
 }
 
 /* Static Gray Grid already defined via Tailwind-style bg gradients */
@@ -1923,4 +1562,25 @@ nav[data-slot="base"] [data-slot="wrapper"] {
 .animate-float-dot-3 {
   animation: float-dot-3 3.5s ease-in-out infinite;
   animation-delay: 1.2s;
+}
+
+/* ========================================
+   GLOBAL NOISE TEXTURE
+   ======================================== */
+
+/* Reusable noise texture overlay - can be applied to any component */
+.noise-texture {
+  position: relative;
+}
+
+.noise-texture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/noise.webp");
+  background-repeat: repeat;
+  background-size: auto;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 1;
 }

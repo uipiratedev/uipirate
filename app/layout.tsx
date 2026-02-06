@@ -4,9 +4,10 @@ import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 
-import { fontSans, fontJakarta } from "@/config/fonts";
+import { fontSans, fontJakarta, fontGeist, fontGeistMono } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
+import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title:
@@ -145,6 +146,8 @@ export default function RootLayout({
           "min-h-screen  font-sans antialiased bg-white",
           fontSans.variable,
           fontJakarta.variable,
+          fontGeist.variable,
+          fontGeistMono.variable,
         )}
       >
         {/* Skip Link for Keyboard Navigation */}
@@ -157,6 +160,7 @@ export default function RootLayout({
           <main className="" id="main-content">
             {children}
           </main>
+          <Footer />
           <SpeedInsights />
           <CookieConsent />
         </div>

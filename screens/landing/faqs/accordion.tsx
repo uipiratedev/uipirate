@@ -1,11 +1,21 @@
 "use client";
 import { Accordion, AccordionItem } from "@heroui/react";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import NextLink from "next/link";
 
-gsap.registerPlugin(ScrollTrigger);
+// Smooth animation variants for accordion items
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
 
 const data = [
   {
@@ -165,50 +175,22 @@ const data = [
 ];
 
 export default function FaqsAccordion() {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 50, // Start from below
-            paddingTop: "5%",
-            paddingBottom: "5%",
-            opacity: isMobile ? 4 : 0, // Start fully transparent
-            filter: isMobile ? "blur(0px)" : "blur(5px)", // Initial blur effect
-          },
-          {
-            y: 0, // Move to its original position
-            paddingTop: "0%",
-            paddingBottom: "0%",
-            opacity: 1, // Fade in to fully visible
-            filter: "blur(0px)", // Remove blur
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "top 50%" : "top 90%", // Adjust start point for mobile
-              end: isMobile ? "botton 10%" : "top 30%", // Adjust end point for mobile
-              toggleActions: "restart none none reverse",
-            },
-          },
-        );
-      }
-    });
-  }, []);
-
   return (
     <>
-      <div
-        className=""
-        // ref={(el) => {
-        //   if (el) cardsRef.current[0] = el;
-        // }}
-      >
+      <div>
+        <motion.div
+          initial="hidden"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.08,
+              },
+            },
+          }}
+          viewport={{ once: true, amount: 0.2 }}
+          whileInView="visible"
+        >
         <Accordion
           className="mb-0"
           defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
@@ -257,8 +239,16 @@ export default function FaqsAccordion() {
             </AccordionItem>
           ))}
         </Accordion>
+        </motion.div>
+        <motion.div
+          custom={4}
+          initial="hidden"
+          variants={itemVariants}
+          viewport={{ once: true, amount: 0.3 }}
+          whileInView="visible"
+        >
         <div className="flex flex-row items-center justify-center mt-6">
-          <NextLink className="autoShow w-fit" href="/faqs">
+          <NextLink className="w-fit" href="/faqs">
             <button
               className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
               color="primary"
@@ -281,6 +271,7 @@ export default function FaqsAccordion() {
             </button>
           </NextLink>
         </div>
+        </motion.div>
       </div>
     </>
   );

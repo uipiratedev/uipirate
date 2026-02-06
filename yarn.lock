@@ -12,11 +12,6 @@
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.4.tgz#a70226016fabe25c5783b2f22d3e1c9bc5ca3326"
   integrity sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==
 
-"@darkroom.engineering/tempus@^0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@darkroom.engineering/tempus/-/tempus-0.0.46.tgz#3d958807503e4055fcc4a1aeeff83ca0546c62f0"
-  integrity sha512-s5vav3KMHYezvUCl4ee5epg0oimF6M8C9gAaKxFnFaTvX2q3ywFDryIv6XLd0mRFUt3S1uHDJqKaiEcs2ZVSvw==
-
 "@discoveryjs/json-ext@0.5.7":
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
@@ -4175,7 +4170,7 @@ fraction.js@^4.3.7:
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.3.7.tgz#06ca0085157e42fda7f9e726e79fefc4068840f7"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
 
-framer-motion@^11.5.6:
+framer-motion@^11.18.0:
   version "11.18.2"
   resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-11.18.2.tgz#0c6bd05677f4cfd3b3bdead4eb5ecdd5ed245718"
   integrity sha512-5F5Och7wrvtLVElIpclDT0CBzMVg3dL22B64aZwHtsIY8RB4mXICLrkajK4G9R+ieSAGcgrLeae2SeUTg2pr6w==
@@ -4339,11 +4334,6 @@ graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
-
-gsap@^3.12.5:
-  version "3.14.2"
-  resolved "https://registry.yarnpkg.com/gsap/-/gsap-3.14.2.tgz#6a9ea31e5046948e0be61eae006ae576ca5937d6"
-  integrity sha512-P8/mMxVLU7o4+55+1TCnQrPmgjPKnwkzkXOK1asnR9Jg2lna4tEY5qBJjMmAaOBDDZWtlRjBXjLa0w53G/uBLA==
 
 gzip-size@^6.0.0:
   version "6.0.0"
@@ -4814,12 +4804,10 @@ language-tags@^1.0.9:
   dependencies:
     language-subtag-registry "^0.3.20"
 
-lenis@1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.1.9.tgz#27d61daf614f8456a95d8b62d65fe61a7e625119"
-  integrity sha512-xU2UU1J8mJCiWBSfiMWsC/kPbQMIadSsJiEu3mVqptXGnwo/FUnfp8xCyiOJEvBwzqx4XDdB6TKYFn83y871vA==
-  dependencies:
-    "@darkroom.engineering/tempus" "^0.0.46"
+lenis@^1.3.17:
+  version "1.3.17"
+  resolved "https://registry.yarnpkg.com/lenis/-/lenis-1.3.17.tgz#5a8c486e6001703b7d50d412fff3348102f302e9"
+  integrity sha512-k9T9rgcxne49ggJOvXCraWn5dt7u2mO+BNkhyu6yxuEnm9c092kAW5Bus5SO211zUvx7aCCEtzy9UWr0RB+oJw==
 
 levn@^0.4.1:
   version "0.4.1"
@@ -4862,13 +4850,6 @@ locate-path@^6.0.0:
   integrity sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
   dependencies:
     p-locate "^5.0.0"
-
-locomotive-scroll@^5.0.0-beta.21:
-  version "5.0.0-beta.21"
-  resolved "https://registry.yarnpkg.com/locomotive-scroll/-/locomotive-scroll-5.0.0-beta.21.tgz#e6597bc14e6eb5246d1b20eebe87ac5c84421eeb"
-  integrity sha512-UrvuBVxI9rX7b0SkLzZwlzUqZ22Oybj6c6jBflqvH6bdQEb+OcsOpQg65cFJPY0IYBNGnaHkLHr/EDDW6y6scQ==
-  dependencies:
-    lenis "1.1.9"
 
 lodash.includes@^4.3.0:
   version "4.3.0"
@@ -5400,10 +5381,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^3.7.4:
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.7.4.tgz#d2f8335d4b1cec47e1c8098645411b0c9dff9c0f"
-  integrity sha512-v6UNi1+3hSlVvv8fSaoUbggEM5VErKmmpGA7Pl3HF8V6uKY7rvClBOJlH6yNwQtfTueNkGVpOv/mtWL9L4bgRA==
+prettier@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.8.1.tgz#edf48977cf991558f4fcbd8a3ba6015ba2a3a173"
+  integrity sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==
 
 prop-types@^15.8.1:
   version "15.8.1"

@@ -1,54 +1,67 @@
-import { Card, CardBody } from "@heroui/react";
+import GlassBadge from "@/components/GlassBadge";
+
+const patternBackgrounds = [
+  // Soft green diagonal stripes
+  "bg-[repeating-linear-gradient(135deg,#E4F7E9,#E4F7E9_12px,#F7FFF9_12px,#F7FFF9_24px)]",
+  // Soft yellow diagonal stripes
+  "bg-[repeating-linear-gradient(135deg,#FFF1C9,#FFF1C9_12px,#FFFBEA_12px,#FFFBEA_24px)]",
+  // Soft purple diagonal stripes
+  "bg-[repeating-linear-gradient(135deg,#EDE8FF,#EDE8FF_12px,#F7F5FF_12px,#F7F5FF_24px)]",
+];
 
 const WhoThisIsFor = ({ data }: any) => {
   return (
-    <div className="  pt-32 max-md:pt-24">
-      <div className="autoShow">
-        <div className="flex flex-row items-center justify-center mb-4">
-          <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-            {data.badge}
-          </span>
+    <section className="pt-24 max-md:pt-20">
+      {/* Header */}
+      <div className="autoShow text-center mb-10 md:mb-14">
+        <div className="flex items-center justify-center mb-4">
+          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
-        <p className="heading-center"> {data.heading}</p>
+        <h2 className="text-3xl md:text-[34px] font-bold text-black">
+          {data.heading}
+        </h2>
       </div>
-      <div className="mt-6">
-        <div className="space-y-6">
-          <Card className="rounded-[32px] max-md:w-full bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]">
-            <CardBody className="p-2 max-md:p-2 max-lg:p-3 grid grid-cols-3 gap-3 max-lg:grid-cols-2 max-md:grid-cols-1">
-              {data.card.map((item: any, index: number) => (
-                <div
-                  key={index}
-                  className="w-full p-6  bg-white rounded-[24px] max-md:p-4 box-shadow"
-                >
-                  <p className="text-2xl max-md:text-base font-[700]">
-                    {item.heading}
-                  </p>
-                  <p className="text-base max-md:text-base font-[500] text-[#777777]  py-2">
-                    {item.description}
-                  </p>
-                  {item.QuickWins && (
-                    <div>
-                      <p className="mt-3 mb-1 font-medium">Quick Wins:</p>
 
-                      <ul lang="dots">
-                        {item.QuickWins.map((items: any, index: number) => (
-                          <li
-                            key={index}
-                            className="text-base max-md:text-base font-[500] text-[#777777]  py-[2px]"
-                          >
-                            {items}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </CardBody>
-          </Card>
-        </div>
+      {/* Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+        {data.card?.map((item: any, index: number) => (
+          <div
+            key={index}
+            className="group flex h-full flex-col overflow-hidden rounded-[32px] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] border border-[#0000000f]"
+          >
+            {/* Illustration / pattern area */}
+            <div
+              className={`relative h-44 md:h-52 ${
+                patternBackgrounds[index % patternBackgrounds.length]
+              }`}
+            >
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,#ffffff,transparent_55%)] opacity-60" />
+            </div>
+
+            {/* Content */}
+            <div className="flex flex-1 flex-col px-6 py-6 md:px-7 md:py-7">
+              <h3 className="text-[17px] md:text-[19px] font-semibold text-black leading-snug uppercase tracking-[0.06em]">
+                {item.heading}
+              </h3>
+              <p className="mt-2 text-sm md:text-[15px] text-[#64748B] leading-relaxed">
+                {item.description}
+              </p>
+
+              {item.QuickWins && item.QuickWins.length > 0 && (
+                <ul className="mt-4 space-y-1.5 text-xs md:text-sm text-[#6B7280] text-left">
+                  {item.QuickWins.map((quickWin: string, qIndex: number) => (
+                    <li key={qIndex} className="flex items-start gap-2">
+                      <span className="mt-[3px] h-1.5 w-1.5 rounded-full bg-[#FF5B04]" />
+                      <span>{quickWin}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,11 +1,8 @@
-"use client"; // Ensure to use this for Next.js projects using client-side rendering
+"use client";
 
 import { Button } from "@heroui/button";
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const data = [
   {
@@ -40,143 +37,106 @@ const data = [
   },
 ];
 
-const RecentWorkCard = () => {
-  const cardRefs = useRef<HTMLDivElement[]>([]); // To store multiple refs for each card
+interface WorkCardItemProps {
+  item: (typeof data)[0];
+  index: number;
+}
 
-  useEffect(() => {
-    cardRefs.current.forEach((card, index) => {
-      const isEven = index % 2 === 0;
-      const direction = isEven ? "-35%" : "35%";
+const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const isEven = index % 2 === 0;
 
-      // Animate the image
-      gsap.fromTo(
-        card.querySelector("img"),
-        {
-          x: direction,
-          rotation: isEven ? -12 : 12,
-          opacity: 1,
-        },
-        {
-          x: 0,
-          rotation: 0,
-          opacity: 1,
-          scrollTrigger: {
-            trigger: card,
-            start: "top 110%",
-            end: "bottom 0%",
-            scrub: 1,
-          },
-          ease: "power2.out",
-        },
-      );
+  // Scroll progress for image animation
+  const { scrollYProgress: imageScrollProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
 
-      // Animate the contentDiv
-      gsap.fromTo(
-        card.querySelector("#contentDiv"),
-        {
-          opacity: 1,
-          y: 120, // Start slightly below
-        },
-        {
-          opacity: 1,
-          y: 0, // Move to its original position
-          scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-            end: "bottom 20%",
-            scrub: 1,
-          },
-          ease: "power2.out",
-        },
-      );
-    });
+  // Scroll progress for content animation
+  const { scrollYProgress: contentScrollProgress } = useScroll({
+    target: cardRef,
+    offset: ["start 80%", "end 20%"],
+  });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
+  // Image transforms: x and rotation
+  const imageX = useTransform(
+    imageScrollProgress,
+    [0, 1],
+    [isEven ? "-35%" : "35%", "0%"]
+  );
+  const imageRotate = useTransform(
+    imageScrollProgress,
+    [0, 1],
+    [isEven ? -12 : 12, 0]
+  );
+
+  // Content transform: y position
+  const contentY = useTransform(contentScrollProgress, [0, 1], [120, 0]);
 
   return (
-    <div className="">
-      {" "}
-      {/* Prevent overflow and horizontal scroll */}
-      {data.map((item, index) => {
-        return (
-          <div
-            key={index}
-            className={
-              index % 2 === 0
-                ? "flex flex-row-reverse justify-between mb-16 max-md:mb-4 max-w-full max-md:flex-col-reverse" // Ensure the div doesn't exceed the container's width
-                : "flex flex-row justify-between mb-16 max-md:mb-4 max-w-full max-md:flex-col-reverse py-32 max-md:py-8 max-lg:py-16 max-xl:py-28"
-            }
-            // ref={(el) => (cardRefs.current[index] = el!)}
-
-            ref={(el) => {
-              if (el) {
-                cardRefs.current[index] = el;
-              }
-            }}
-          >
-            <div
+    <div
+      ref={cardRef}
+      className={
+        isEven
+          ? "flex flex-row-reverse justify-between mb-16 max-md:mb-4 max-w-full max-md:flex-col-reverse"
+          : "flex flex-row justify-between mb-16 max-md:mb-4 max-w-full max-md:flex-col-reverse py-32 max-md:py-8 max-lg:py-16 max-xl:py-28"
+      }
+    >
+      <motion.div
+        className={
+          isEven
+            ? "flex flex-row items-center md:justify-end w-[40%] text-end max-md:text-center max-md:w-[100%] max-md:px-0 max-md:justify-center"
+            : "flex flex-row items-center justify-start w-[40%] max-md:text-center max-md:w-[100%] max-md:px-4"
+        }
+        style={{ y: contentY }}
+      >
+        <div>
+          <p className="text-[3.5rem] max-md:text-4xl mb-4 font-[600] max-xl:text-[3.5rem] max-md:mt-12">
+            {item.heading}
+          </p>
+          <p className="text-[1.5rem] max-md:text-[1rem] mb-4 max-md:mb-2 font-[600] max-xl:text-[1rem] max-md:mt-4">
+            {item.heading1}
+          </p>
+          <div className={isEven ? "flex flex-row items-end justify-end" : ""}>
+            <p
               className={
-                index % 2 === 0
-                  ? "flex flex-row items-center md:justify-end w-[40%] text-end max-md:text-center max-md:w-[100%] max-md:px-0 max-md:justify-center"
-                  : "flex flex-row items-center justify-start w-[40%] max-md:text-center max-md:w-[100%] max-md:px-4"
+                isEven
+                  ? "text-lg font-[500] max-w-[300px] max-md:text-base"
+                  : "text-lg font-[500] max-w-[400px] max-md:text-base"
               }
-              id="contentDiv"
             >
-              <div>
-                <p className="text-[3.5rem] max-md:text-4xl mb-4 font-[600] max-xl:text-[3.5rem] max-md:mt-12">
-                  {item.heading}
-                </p>
-                <p className="text-[1.5rem] max-md:text-[1rem] mb-4 max-md:mb-2 font-[600] max-xl:text-[1rem] max-md:mt-4">
-                  {item.heading1}
-                </p>
-                <div
-                  className={
-                    index % 2 === 0
-                      ? " flex flex-row items-end  justify-end"
-                      : ""
-                  }
-                >
-                  <p
-                    className={
-                      index % 2 === 0
-                        ? "text-lg font-[500] max-w-[300px] max-md:text-base"
-                        : "text-lg font-[500] max-w-[400px] max-md:text-base"
-                    }
-                  >
-                    {item.subtitle}
-                  </p>
-                </div>
-                <a href={item.url} rel="noreferrer" target="_blank">
-                  <Button
-                    // color="primary"
-                    className="rounded-2xl py-6 px-12 mt-12 font-[700] text-[16px]"
-                    variant="bordered"
-                  >
-                    View Project
-                  </Button>
-                </a>
-              </div>
-            </div>
-            <div className="w-[60%] max-w-full max-md:w-[100%]">
-              {" "}
-              {/* Ensure images fit within the container */}
-              <img
-                alt={`${item.heading} - ${item.heading1} UI/UX design project showcase`}
-                className=" rounded-3xl md:-mt-12 max-md:mt-12 " // Ensure the image does not overflow
-                loading="lazy"
-                src={item.img}
-                style={{
-                  transform:
-                    index % 2 === 0 ? "rotate(-20deg)" : "rotate(20deg)", // Add initial rotation
-                }}
-              />
-            </div>
+              {item.subtitle}
+            </p>
           </div>
-        );
-      })}
+          <a href={item.url} rel="noreferrer" target="_blank">
+            <Button
+              className="rounded-2xl py-6 px-12 mt-12 font-[700] text-[16px]"
+              variant="bordered"
+            >
+              View Project
+            </Button>
+          </a>
+        </div>
+      </motion.div>
+      <div className="w-[60%] max-w-full max-md:w-[100%]">
+        <motion.img
+          alt={`${item.heading} - ${item.heading1} UI/UX design project showcase`}
+          className="rounded-3xl md:-mt-12 max-md:mt-12"
+          loading="lazy"
+          src={item.img}
+          style={{ x: imageX, rotate: imageRotate }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const RecentWorkCard = () => {
+  return (
+    <div className="">
+      {data.map((item, index) => (
+        <WorkCardItem key={index} item={item} index={index} />
+      ))}
     </div>
   );
 };

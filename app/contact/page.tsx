@@ -8,7 +8,7 @@ export default function BookCall() {
         className="rounded-2xl w-full"
         frameBorder="0"
         height="780"
-        src="https://cal.com/ui-pirate/zerorisk"
+        src="https://cal.com/ui-pirate/15min"
         title="Book a Call with UI Pirate"
         width="100%"
       />

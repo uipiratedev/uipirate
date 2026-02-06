@@ -16,6 +16,8 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 import GlassSurface from "./GlassSurface";
+import { NavbarDropdown } from "./NavbarDropdown";
+import { MobileMenuAccordionItem } from "./MobileMenuAccordionItem";
 
 import { siteConfig } from "@/config/site";
 
@@ -83,7 +85,7 @@ export const Navbar = () => {
               borderRadius={16}
               borderWidth={2}
               brightness={55}
-              className="relative isolate max-md:rounded-none"
+              className="relative isolate max-md:rounded-none !overflow-visible"
               displace={0}
               distortionScale={5}
               forceLightMode={true}
@@ -94,12 +96,13 @@ export const Navbar = () => {
               saturation={2}
               style={{
                 border: "1px solid rgba(255, 255, 255, 0.2)",
+                overflow: "visible",
               }}
               width="100%"
             >
               <NextUINavbar
                 className={clsx(
-                  "w-full py-0 px-0 flex flex-row items-center h-[55px]",
+                  "w-full py-0 px-0 flex flex-row items-center h-[55px] !overflow-visible !static",
                   "transition-all duration-300 ease-in-out",
                   "!bg-transparent !backdrop-filter-none !backdrop-blur-none",
                   {
@@ -114,6 +117,8 @@ export const Navbar = () => {
                   background: "transparent",
                   backdropFilter: "none",
                   backgroundColor: "transparent",
+                  overflow: "visible",
+                  position: "static", // Force static to let children anchor higher up
                 }}
                 onMenuOpenChange={setIsMenuOpen}
               >
@@ -156,26 +161,37 @@ export const Navbar = () => {
 
                 {/* --- Center Navigation Links --- */}
                 <NavbarContent
-                  className="basis-1/5 sm:basis-full"
+                  className="basis-1/5 sm:basis-full !overflow-visible !static"
                   justify="center"
+                  style={{ position: "static" }}
                 >
-                  <ul className="hidden lg:flex gap-0 justify-start ml-0">
+                  <ul className="hidden lg:flex gap-0 justify-start ml-0 overflow-visible !static" style={{ position: "static" }}>
                     {siteConfig.navItems.map((item) => (
                       <NavbarItem
                         key={item.href}
                         className={clsx(
-                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 relative",
+                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 !static",
                         )}
+                        style={{ position: "static" }}
                       >
-                        <NextLink
-                          className={clsx(
-                            linkStyles({ color: "foreground" }),
-                            "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
-                          )}
-                          href={item.href}
-                        >
-                          {item.label}
-                        </NextLink>
+                        {item.hasDropdown && item.dropdownItems ? (
+                          <NavbarDropdown
+                            isDarkSection={isDarkSection}
+                            isServicesMenu={item.label === "Services"}
+                            items={item.dropdownItems}
+                            label={item.label}
+                          />
+                        ) : (
+                          <NextLink
+                            className={clsx(
+                              linkStyles({ color: "foreground" }),
+                              "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
+                            )}
+                            href={item.href}
+                          >
+                            {item.label}
+                          </NextLink>
+                        )}
                       </NavbarItem>
                     ))}
                   </ul>
@@ -208,16 +224,10 @@ export const Navbar = () => {
 
                 {/* --- Mobile Menu Content --- */}
                 <NavbarMenu className=" h-screen -mt-3">
-                  <div className="mx-0 mt-3 flex flex-col gap-4">
-                    {siteConfig.navMenuItems.map((item, index) => (
-                      <NavbarMenuItem key={`${item}-${index}`}>
-                        <NextLink
-                          className="text-lg text-foreground cursor-pointer"
-                          href={item.href}
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {item.label}
-                        </NextLink>
+                  <div className="mx-0 mt-3 flex flex-col gap-0 px-4">
+                    {siteConfig.navItems.map((item, index) => (
+                      <NavbarMenuItem key={`${item.href}-${index}`}>
+                        <MobileMenuAccordionItem item={item} setIsMenuOpen={setIsMenuOpen} />
                       </NavbarMenuItem>
                     ))}
                   </div>

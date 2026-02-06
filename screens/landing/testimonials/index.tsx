@@ -2,15 +2,19 @@
 import React from "react";
 
 import TestimonialCards from "./testimonialCards";
+import GlassBadge from "@/components/GlassBadge";
 function LandingTestimonials() {
   return (
     <div className=" pt-20 max-md:pt-3 ">
       <div className="autoShow">
-        <div className="flex flex-row items-center justify-center mb-6">
-          <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-            testimonials
-          </span>
-        </div>
+      <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-0 autoShow">
+
+        <GlassBadge variant="gradient">
+       testimonials
+       </GlassBadge>
+       </div>
+          
+      
         <p className="heading-center">
           Working with our{" "}
           <span className="relative inline-block ">

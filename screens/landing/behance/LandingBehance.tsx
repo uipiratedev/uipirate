@@ -1,11 +1,9 @@
 "use client";
-import { useLayoutEffect, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import NextLink from "next/link";
 
-// Register ScrollTrigger plugin
-gsap.registerPlugin(ScrollTrigger);
+import { useState, useCallback, useEffect, useRef, memo } from "react";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import NextLink from "next/link";
+import { useIsMobile } from "@/hooks";
 
 const data = [
   {
@@ -40,126 +38,105 @@ const data = [
   },
 ];
 
-const LandingBehanceFramor = () => {
-  const [visibleData, setVisibleData] = useState(data.slice(0, 6)); // Default to 6 items for desktop
+interface BehanceImageProps {
+  item: (typeof data)[0];
+  index: number;
+  isMobile: boolean;
+  containerScrollProgress: MotionValue<number>;
+}
 
-  const updateVisibleData = () => {
-    const isMobile = window.innerWidth <= 768;
+// Animation configuration per row
+const getRowConfig = (index: number, isMobile: boolean) => {
+  const isEven = index % 2 === 0;
+  const row = Math.floor(index / 2);
 
-    setVisibleData(isMobile ? data.slice(0, 4) : data.slice(0, 6));
-  };
+  // X movement: left images go left, right images go right
+  const xTarget = isMobile
+    ? isEven
+      ? "-90%"
+      : "90%"
+    : isEven
+      ? "-70%"
+      : "70%";
 
-  const runAnimation = () => {
-    // Kill only this component's ScrollTriggers to prevent duplicates
-    ScrollTrigger.getById("row-0")?.kill();
-    ScrollTrigger.getById("row-2")?.kill();
-    ScrollTrigger.getById("row-4")?.kill();
+  // Y movement varies by row
+  const yTargets = isMobile
+    ? ["-20%", "-20%", "-20%"]
+    : ["90%", "40%", "-60%"];
+  const yTarget = yTargets[row] || "-20%";
 
-    const images = gsap.utils.toArray("#img") as HTMLElement[];
+  // Rotation: only on desktop
+  const rotateTarget = isMobile ? 0 : isEven ? -45 : 45;
 
-    // Check if images are found
-    if (images.length === 0) {
-      return;
-    }
+  // Staggered scroll ranges for smooth "flower blooming" effect
+  // Rows overlap slightly for smoother transition
+  // Row 0: 0.00 - 0.50
+  // Row 1: 0.20 - 0.70
+  // Row 2: 0.40 - 0.90
+  const staggerDelay = 0.20; // 20% delay between each row starting
+  const animationDuration = 0.50; // Each row animates over 50% of scroll (slower)
 
-    const isMobile = window.innerWidth <= 768;
+  const scrollStart = row * staggerDelay;
+  const scrollEnd = scrollStart + animationDuration;
 
-    const animateRow = (
-      startIndex: number,
-      endIndex: number,
-      xMove: string[],
-      yMove: string[],
-      rotateDeg: number[],
-      triggerProgress: number,
-    ) => {
-      gsap.to(images.slice(startIndex, endIndex), {
-        x: (i) => xMove[i % 2],
-        y: (i) => yMove[i % 2],
-        rotate: isMobile ? 0 : (i) => rotateDeg[i % 2],
-        scrollTrigger: {
-          trigger: images[startIndex],
-          start: isMobile ? "top 99%" : "top 99%",
-          end: isMobile ? "bottom 30%" : "bottom 0%",
-          scrub: 1.5,
-          onUpdate: (self) => {
-            if (self.progress >= triggerProgress) {
-              ScrollTrigger.getById(`row-${startIndex + 2}`)?.enable();
-            }
-          },
-          id: `row-${startIndex}`,
-        },
-      });
-    };
+  return { xTarget, yTarget, rotateTarget, scrollStart, scrollEnd };
+};
 
-    const xMoveMobile = ["-90%", "90%"];
-    const yMoveMobile = ["-20%", "-20%"];
-    const xMoveDesktop = ["-70%", "70%"];
-    const yMoveDesktop = ["90%", "90%"];
+const BehanceImage = memo(function BehanceImage({
+  item,
+  index,
+  isMobile,
+  containerScrollProgress,
+}: BehanceImageProps) {
+  const { xTarget, yTarget, rotateTarget, scrollStart, scrollEnd } = getRowConfig(index, isMobile);
 
-    const xMove = isMobile ? xMoveMobile : xMoveDesktop;
+  // Transform scroll progress to animation values
+  const x = useTransform(containerScrollProgress, [scrollStart, scrollEnd], ["0%", xTarget]);
+  const y = useTransform(containerScrollProgress, [scrollStart, scrollEnd], ["0%", yTarget]);
+  const rotate = useTransform(containerScrollProgress, [scrollStart, scrollEnd], [0, rotateTarget]);
 
-    // Animate rows with staggered starts
-    animateRow(
-      0,
-      2,
-      xMove,
-      !isMobile ? ["90%", "90%"] : ["-20%", "-20%"],
-      [-45, 45],
-      0.2,
-    );
-    animateRow(
-      2,
-      4,
-      xMove,
-      !isMobile ? ["40%", "40%"] : ["-20%", "-20%"],
-      [-45, 45],
-      0.3,
-    );
-    animateRow(
-      4,
-      6,
-      xMove,
-      !isMobile ? ["-60%", "-60%"] : ["-20%", "-20%"],
-      [-45, 45],
-      1,
-    );
+  return (
+    <div
+      className="relative w-full h-full"
+      style={{ pointerEvents: "none", zIndex: 1 }}
+    >
+      <motion.img
+        alt={item.heading}
+        className="w-full h-full object-fill rounded-[30px] grayscale-[25%] box-shadow"
+        src={item.img}
+        style={{ x, y, rotate }}
+      />
+    </div>
+  );
+});
 
-    // Force ScrollTrigger to recalculate positions after animations are set up
-    ScrollTrigger.refresh();
-  };
+const LandingBehanceFramor = memo(function LandingBehanceFramor() {
+  const isMobile = useIsMobile();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visibleData, setVisibleData] = useState(data.slice(0, 6));
 
-  useLayoutEffect(() => {
-    updateVisibleData();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 99%", "end 0%"],
+  });
 
-    // Small delay to ensure DOM is ready and images are loaded
-    const timeoutId = setTimeout(() => {
-      runAnimation();
-    }, 100);
-
-    const handleResize = () => {
-      updateVisibleData();
-      runAnimation();
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("resize", handleResize);
-      // Kill only this component's ScrollTriggers
-      ScrollTrigger.getById("row-0")?.kill();
-      ScrollTrigger.getById("row-2")?.kill();
-      ScrollTrigger.getById("row-4")?.kill();
-    };
+  const updateVisibleData = useCallback(() => {
+    const isMobileCheck = window.innerWidth <= 768;
+    setVisibleData(isMobileCheck ? data.slice(0, 4) : data.slice(0, 6));
   }, []);
+
+  useEffect(() => {
+    updateVisibleData();
+    window.addEventListener("resize", updateVisibleData);
+    return () => window.removeEventListener("resize", updateVisibleData);
+  }, [updateVisibleData]);
 
   return (
     <div className="relative">
       {/* Centered Info */}
       <div
-        className="absolute inset-1 flex flex-col items-center justify-center text-center"
+        className="absolute inset-1 flex flex-col items-center justify-center text-center z-[1]"
         id="info"
-        style={{ zIndex: 1 }}
       >
         <p className="text-center text-6xl font-bold px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
           Recent Works
@@ -172,28 +149,18 @@ const LandingBehanceFramor = () => {
           <button
             color="primary"
             className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
-            // style={{ width: "100%" }}
           >
             <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
               <span
-                className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                                
-                                 group-hover:translate-y-[50px] translate-y-3
-                                
-                               `}
+                className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3
+                                 group-hover:translate-y-[50px] translate-y-3`}
               >
                 Explore All Work
               </span>
 
               <span
                 className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                                
-                                translate-y-[50px] group-hover:-translate-y-3
-                                
-                               
-                              
-                              
-                              `}
+                                translate-y-[50px] group-hover:-translate-y-3`}
               >
                 View Works
               </span>
@@ -203,24 +170,22 @@ const LandingBehanceFramor = () => {
       </div>
 
       {/* Image Grid with Overlap */}
-      <div className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-20 pb-0 max-md:py-12 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4">
+      <div
+        ref={containerRef}
+        className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-20 pb-0 max-md:py-12 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4"
+      >
         {visibleData.map((item, index) => (
-          <div
+          <BehanceImage
             key={index}
-            className="relative w-full h-full"
-            style={{ pointerEvents: "none", zIndex: 1 }}
-          >
-            <img
-              alt={item.heading}
-              className="w-full h-full object-fill rounded-[30px] grayscale-[25%] box-shadow"
-              id="img"
-              src={item.img}
-            />
-          </div>
+            item={item}
+            index={index}
+            isMobile={isMobile}
+            containerScrollProgress={scrollYProgress}
+          />
         ))}
       </div>
     </div>
   );
-};
+});
 
 export default LandingBehanceFramor;

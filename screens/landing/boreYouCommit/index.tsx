@@ -1,44 +1,25 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
 import { Card, CardBody, Chip } from "@heroui/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { CheckIcon } from "@/components/icons";
 
-gsap.registerPlugin(ScrollTrigger);
+// Smooth animation variants for cards
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
 
 const BoreYouCommit = () => {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
-
-  useLayoutEffect(() => {
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          { y: 100, transform: isMobile ? "scale(1)" : "scale(0.85)" },
-          {
-            y: 0,
-            transform: "scale(1)",
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "" : "top 110%",
-              end: isMobile ? "" : "bottom center",
-              toggleActions: "play none none reverse",
-              scrub: 1.5,
-            },
-          },
-        );
-      }
-    });
-  }, [isMobile]);
-
   return (
     <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 max-md:pt-0">
       <div className="text-center mb-10 autoShow">
@@ -119,12 +100,14 @@ const BoreYouCommit = () => {
             {/* 3 Cards Section */}
             <div className="grid md:grid-cols-3 gap-3">
               {/* Card 1 */}
-              <Card
-                // ref={(el) => {
-                //   if (el) cardsRef.current[0] = el;
-                // }}
-                className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between"
+              <motion.div
+                custom={0}
+                initial="hidden"
+                variants={cardVariants}
+                viewport={{ once: true, amount: 0.3 }}
+                whileInView="visible"
               >
+              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
@@ -194,14 +177,17 @@ const BoreYouCommit = () => {
                   </ul>
                 </div>
               </Card>
+              </motion.div>
 
               {/* Card 2 */}
-              <Card
-                // ref={(el) => {
-                //   if (el) cardsRef.current[1] = el;
-                // }}
-                className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between"
+              <motion.div
+                custom={1}
+                initial="hidden"
+                variants={cardVariants}
+                viewport={{ once: true, amount: 0.3 }}
+                whileInView="visible"
               >
+              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
@@ -268,14 +254,17 @@ const BoreYouCommit = () => {
                   </ul>
                 </div>
               </Card>
+              </motion.div>
 
               {/* Card 3 */}
-              <Card
-                // ref={(el) => {
-                //   if (el) cardsRef.current[2] = el;
-                // }}
-                className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between"
+              <motion.div
+                custom={2}
+                initial="hidden"
+                variants={cardVariants}
+                viewport={{ once: true, amount: 0.3 }}
+                whileInView="visible"
               >
+              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <Chip
@@ -344,6 +333,7 @@ const BoreYouCommit = () => {
                   </ul>
                 </div>
               </Card>
+              </motion.div>
             </div>
           </div>
           <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow col-span-3 max-md:col-span-1 bg-white/50">

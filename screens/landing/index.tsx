@@ -1,23 +1,62 @@
 "use client";
+
+import { memo } from "react";
+import dynamic from "next/dynamic";
+
 import LandingHero from "./hero";
 import LandingMarquee from "./marquee";
-import LandingAppScreen from "./appScreen";
-import LandingBusinessHelp from "./businessHelp";
-import LandingFaqs from "./faqs";
-import LandingAbout from "./about";
-import LandingTestimonials from "./testimonials";
-import LandingBehanceFramor from "./behance/LandingBehance";
-import BoreYouCommit from "./boreYouCommit";
-import MiniService from "./miniService/miniService";
-import BentoGrid from "./bentoGrid/bentoGrid";
-import TopThree from "./top3/topThree";
-
 import FloatingLetsTalkButton from "@/components/FloatingLetsTalkButton";
 import PageWrapper from "@/components/PageWrapper";
-const Landing = () => {
+import WhyChooseUs from "./whyChoosUs";
+import Pricing from "./pricing";
+import TheTeam from "./theTeam";
+import LandingWhoWeAre from "./whoWeAre";
+
+// Dynamically import below-the-fold components for better initial load performance
+const LandingAppScreen = dynamic(() => import("./appScreen"), {
+  loading: () => <div className="min-h-[400px]" />,
+});
+
+const LandingBusinessHelp = dynamic(() => import("./businessHelp"), {
+  loading: () => <div className="min-h-[600px]" />,
+});
+
+const LandingFaqs = dynamic(() => import("./faqs"), {
+  loading: () => <div className="min-h-[400px]" />,
+});
+
+const LandingAbout = dynamic(() => import("./about"), {
+  loading: () => <div className="min-h-[400px]" />,
+});
+
+const LandingTestimonials = dynamic(() => import("./testimonials"), {
+  loading: () => <div className="min-h-[400px]" />,
+});
+
+const LandingBehanceFramor = dynamic(() => import("./behance/LandingBehance"), {
+  loading: () => <div className="min-h-[600px]" />,
+});
+
+const BoreYouCommit = dynamic(() => import("./boreYouCommit"), {
+  loading: () => <div className="min-h-[300px]" />,
+});
+
+const MiniService = dynamic(() => import("./miniService/miniService"), {
+  loading: () => <div className="min-h-[400px]" />,
+});
+
+const BentoGrid = dynamic(() => import("./bentoGrid/bentoGrid"), {
+  loading: () => <div className="min-h-[500px]" />,
+});
+
+const TopThree = dynamic(() => import("./top3/topThree"), {
+  loading: () => <div className="min-h-[400px]" />,
+});
+
+const Landing = memo(function Landing() {
   return (
     <PageWrapper showFloatingButton={false}>
-      <div>
+      <div className="space-y-20">
         <LandingHero />
         <LandingMarquee />
 
@@ -26,24 +65,31 @@ const Landing = () => {
           <BentoGrid />
         </div>
 
-        <div className=" overflow-x-hidden py-0 max-md:py-4">
+        {/* <div className="overflow-x-hidden py-0 max-md:py-4">
           <TopThree />
           <LandingAppScreen />
-        </div>
+        </div> */}
 
-        <div className="">
-          <LandingBehanceFramor />
-        </div>
+        <LandingBehanceFramor />
+
+            <LandingWhoWeAre />
 
         <LandingAbout />
+
+        {/* <WhyChooseUs /> */}
+    
 
         <div id="Services">
           <LandingBusinessHelp />
         </div>
-        <div>
-          <BoreYouCommit />
-        </div>
-        <div className=" overflow-hidden">
+
+        <Pricing />
+
+        <TheTeam />
+
+        {/* <BoreYouCommit /> */}
+
+        <div className="overflow-hidden">
           <LandingTestimonials />
         </div>
 
@@ -56,6 +102,6 @@ const Landing = () => {
       <FloatingLetsTalkButton />
     </PageWrapper>
   );
-};
+});
 
 export default Landing;

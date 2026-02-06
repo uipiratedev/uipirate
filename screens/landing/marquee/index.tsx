@@ -1,70 +1,44 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import React, { useState } from "react";
+import { motion, Variants } from "framer-motion";
+
+// Animation variants
+const headingVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.33, 1, 0.68, 1] as const, // power3.out
+    },
+  },
+};
+
+const logoContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const logoItemVariants: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: [0.33, 1, 0.68, 1] as const, // power3.out
+    },
+  },
+};
 
 const LandingMarquee = () => {
-  const headingRef = useRef<HTMLParagraphElement>(null);
-  const logosRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Heading animation
-    if (headingRef.current) {
-      gsap.fromTo(
-        headingRef.current,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 85%",
-            end: "bottom 20%",
-            toggleActions: "play reverse play reverse",
-          },
-        },
-      );
-    }
-
-    // Staggered logo animations
-    if (logosRef.current) {
-      const logoElements = logosRef.current.querySelectorAll(".logo-item");
-
-      gsap.fromTo(
-        logoElements,
-        {
-          opacity: 0,
-          y: 40,
-          scale: 0.9,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.7,
-          ease: "power3.out",
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: logosRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play reverse play reverse",
-          },
-        },
-      );
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   // Curated selection of premium enterprise client logos
   const premiumLogos = [
     {
@@ -143,26 +117,37 @@ const LandingMarquee = () => {
       <div className="container mx-auto max-md:px-4 flex flex-col items-center justify-center relative z-10">
         {/* Section heading with enhanced styling */}
         <div className="mb-6 max-md:mb-10 text-center max-w-4xl mx-auto px-8">
-          <div ref={headingRef}>
-            <p className="text-2xl md:text-4xl font-jakarta font-[600] text-brand-orange leading-snug tracking-wide">
-              Trusted by Teams
-            </p>
-            <p className="text-2xl md:text-4xl font-jakarta font-[600] text-black leading-snug tracking-wide mt-1">
-              Building the Future of SaaS and AI
-            </p>
-          </div>
+          <motion.div
+            variants={headingVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.5 }}
+          >
+           
+              <h2 className="heading-center text-brand-orange">
+             Trusted by Teams
+          </h2>
+
+             <h2 className="heading-center ">
+            Building the Future of SaaS and AI
+          </h2>
+         
+          </motion.div>
         </div>
 
         {/* Static logo grid - premium enterprise clients only */}
         <div className="w-full max-w-6xl">
-          <div
-            ref={logosRef}
+          <motion.div
             className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center justify-items-center"
+            variants={logoContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
           >
             {premiumLogos.map((logo, index) => (
-              <a
+              <motion.a
                 key={index}
-                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[18px] transition-all duration-500 ease-out relative overflow-hidden ${
+                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden ${
                   logo.link
                     ? "cursor-pointer hover:brightness-105"
                     : "cursor-default"
@@ -180,33 +165,12 @@ const LandingMarquee = () => {
                     "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
                 }}
                 target={logo.link ? "_blank" : undefined}
-                onMouseEnter={(e) => {
-                  const border =
-                    e.currentTarget.querySelector(".gradient-border");
-
-                  if (border) {
-                    gsap.to(border, {
-                      opacity: 1,
-                      duration: 0.5,
-                      ease: "power2.out",
-                    });
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  const border =
-                    e.currentTarget.querySelector(".gradient-border");
-
-                  if (border) {
-                    gsap.to(border, {
-                      opacity: 0,
-                      duration: 0.5,
-                      ease: "power2.out",
-                    });
-                  }
-                }}
+                variants={logoItemVariants}
+                onHoverStart={() => setHoveredIndex(index)}
+                onHoverEnd={() => setHoveredIndex(null)}
               >
                 {/* Gradient Border - appears on hover */}
-                <div
+                <motion.div
                   className="gradient-border"
                   style={{
                     position: "absolute",
@@ -220,34 +184,23 @@ const LandingMarquee = () => {
                     WebkitMaskComposite: "xor",
                     maskComposite: "exclude",
                     pointerEvents: "none",
-                    opacity: 0,
                     zIndex: 1,
                   }}
+                  animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
+                  transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
                 />
 
-                <img
+                <motion.img
                   alt={logo.alt}
-                  className="h-[40px] max-h-[40px] max-md:h-[32px] max-md:max-h-[32px] w-auto object-contain  transition-all duration-500 ease-out group-hover:scale-110 relative z-10"
+                  className="h-[40px] max-h-[40px] max-md:h-[32px] max-md:max-h-[32px] w-auto object-contain relative z-10"
                   loading="lazy"
                   src={logo.url}
-                  onMouseEnter={(e) => {
-                    gsap.to(e.currentTarget, {
-                      scale: 1.1,
-                      duration: 0.4,
-                      ease: "power2.out",
-                    });
-                  }}
-                  onMouseLeave={(e) => {
-                    gsap.to(e.currentTarget, {
-                      scale: 1,
-                      duration: 0.4,
-                      ease: "power2.out",
-                    });
-                  }}
+                  animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}
+                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 />
-              </a>
+              </motion.a>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
 

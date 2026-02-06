@@ -1,13 +1,12 @@
 "use client";
 import { Card, CardBody } from "@heroui/react";
+import GlassBadge from "@/components/GlassBadge";
 const WhatWeProvide = ({ data }: any) => {
   return (
     <div className=" pt-32 max-md:pt-24">
       <div className="autoShow">
         <div className="flex flex-row items-center justify-center mb-4">
-          <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-            {data.badge}
-          </span>
+          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <p className="heading-center"> {data.heading}</p>
       </div>

@@ -1,12 +1,14 @@
-[
+﻿[
   {
     "slug": "SaaS-Web-&-Mobile-Apps",
     "data": {
       "hero": {
-        "badge": "MVP to Enterprise | UX to UI Dev | 1–2 month delivery",
-        "heading": "Build SaaS apps that scale",
-        "heading1": "cleanly & convert consistently.",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth."
+        "badge": "SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT",
+        "headingPrefix": "Build",
+        "headingHighlight": "SaaS, AI & Mobile apps",
+        "headingSuffix": "that",
+        "heading1": "scale & convert consistently.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products."
       },
       "whatWeProvide": {
         "badge": "What we provide",
@@ -145,7 +147,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
         "leftBadges": [
           {
             "icon": "🧩",
@@ -378,7 +380,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
         "leftBadges": [
           {
             "icon": "📱",
@@ -611,7 +613,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
         "leftBadges": [
           {
             "text": "Figma Component Library",
@@ -834,7 +836,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
         "leftBadges": [
           {
             "icon": "🎨",
@@ -1067,7 +1069,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
         "leftBadges": [
           {
             "icon": "✂️",
@@ -1300,7 +1302,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
         "leftBadges": [
           {
             "icon": "📄",
@@ -1533,7 +1535,7 @@
       "youWillGet": {
         "heading": "What You Will Get",
         "badge": "What we provide",
-        "description": "From MVP wireframes to fully coded dashboards, we design and develop modern web and mobile apps that simplify complex UX, boost user retention, and align with your product’s growth.",
+        "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products.",
         "leftBadges": [
           {
             "icon": "🧱️",

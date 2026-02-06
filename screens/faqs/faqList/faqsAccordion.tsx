@@ -1,12 +1,8 @@
 "use client";
 import { Accordion, AccordionItem } from "@heroui/react";
-import { useEffect, useRef, useMemo } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useMemo } from "react";
 
 import FaqData from "@/data/faqs.json";
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface FaqsAccordionTabsProps {
   activeTab: string;
@@ -28,8 +24,6 @@ export default function FaqsAccordionTabs({
   activeTab,
   searchQuery,
 }: FaqsAccordionTabsProps) {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
   // Filter FAQs based on active tab and search query
   const filteredData = useMemo(() => {
     const faqData = FaqData as FaqDataType;
@@ -55,48 +49,9 @@ export default function FaqsAccordionTabs({
     return filtered;
   }, [activeTab, searchQuery]);
 
-  useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 50, // Start from below
-            paddingTop: "5%",
-            paddingBottom: "5%",
-            opacity: isMobile ? 4 : 0, // Start fully transparent
-            filter: isMobile ? "blur(0px)" : "blur(5px)", // Initial blur effect
-          },
-          {
-            y: 0, // Move to its original position
-            paddingTop: "0%",
-            paddingBottom: "0%",
-            opacity: 1, // Fade in to fully visible
-            filter: "blur(0px)", // Remove blur
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "top 50%" : "top 90%", // Adjust start point for mobile
-              end: isMobile ? "botton 10%" : "top 30%", // Adjust end point for mobile
-              toggleActions: "restart none none reverse",
-            },
-          },
-        );
-      }
-    });
-  }, []);
-
   return (
     <>
-      <div
-        className=""
-        // ref={(el) => {
-        //   if (el) cardsRef.current[0] = el;
-        // }}
-      >
+      <div>
         {filteredData.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
