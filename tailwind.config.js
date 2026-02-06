@@ -11,8 +11,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        jakarta: ['"Plus Jakarta Sans"', "sans-serif"],
-        jetbrains: ['"JetBrains Mono"', "monospace"],
+        sans: ["var(--font-sans)", "sans-serif"],
+        jakarta: ["var(--font-jakarta)", "sans-serif"],
+        geist: ["var(--font-geist)", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "monospace"],
+        jetbrains: ["var(--font-jetbrains-mono)", "monospace"],
       },
       colors: {
         brand: {

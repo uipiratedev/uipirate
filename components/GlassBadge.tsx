@@ -118,7 +118,7 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
 
           {/* Text on top */}
           <span
-            className={`relative z-10 font-jetbrains font-medium text-black ${
+            className={`relative z-10 font-jetbrains-mono font-medium text-black ${
               uppercase ? "uppercase" : ""
             }`}
             style={{

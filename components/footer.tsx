@@ -155,9 +155,8 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
               {[...Array(4)].map((_, i) => (
                 <span
                   key={i}
-                  className="text-[100px] max-md:text-[50px] font-bold leading-[100%] tracking-[0px] align-middle uppercase text-white mx-12"
+                  className="text-[100px] max-md:text-[50px] font-bold leading-[100%] tracking-[0px] align-middle uppercase text-white mx-12 font-mono"
                   style={{
-                    fontFamily: "'JetBrains Mono Variable', monospace",
                     // @ts-ignore
                     leadingTrim: "none",
                   }}
@@ -191,8 +190,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
             {/* Quick Links Column */}
             <div className="lg:col-span-2">
-              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40"
-                  style={{ fontFamily: "'Geist Mono', monospace" }}>
+              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40 font-mono">
                 Quick Links
               </h4>
               <ul className="flex flex-col gap-1">
@@ -205,8 +203,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
             {/* Resources Column */}
             <div className="lg:col-span-2">
-              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40"
-                  style={{ fontFamily: "'Geist Mono', monospace" }}>
+              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40 font-mono">
                 Resources
               </h4>
               <ul className="flex flex-col gap-1">
@@ -219,8 +216,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
             {/* Policies Column */}
             <div className="lg:col-span-3">
-              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40"
-                  style={{ fontFamily: "'Geist Mono', monospace" }}>
+              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40 font-mono">
                 Policies & Legal
               </h4>
               <ul className="flex flex-col gap-1">

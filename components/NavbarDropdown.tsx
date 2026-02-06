@@ -91,16 +91,18 @@ export const NavbarDropdown = ({
         /* @ts-ignore - AnimatePresence type issue with TypeScript strict mode */
         <AnimatePresence mode="wait">
           {isOpen ? (
-            <motion.div
-              key="dropdown-menu"
-              initial={{ opacity: 0, y: 10, scale: 0.95, x: "-50%" }}
-              animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
-              exit={{ opacity: 0, y: 10, scale: 0.95, x: "-50%" }}
-              transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-              className="fixed left-1/2 top-[85px] z-[99999] w-[calc(100vw-20rem)] max-2xl:w-[calc(100vw-24rem)] max-xl:w-[calc(100vw-12rem)] max-lg:w-[calc(100vw-6rem)] max-md:w-full"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
+            <div className="fixed left-0 right-0 top-[68px] z-[99999]">
+              <div className="container mx-auto">
+                <motion.div
+                  key="dropdown-menu"
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                  className="mx-[10rem] max-lg:mx-12 max-md:mx-0 max-xl:mx-24 max-2xl:mx-[12rem]"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
               <div className="relative isolate overflow-hidden rounded-[32px] p-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_50px_100px_-20px_rgba(0,0,0,0.7)] border border-white/20 ring-1 ring-white/10">
                 {/* Background Layer with heavy blur */}
                 <div className="absolute inset-0 bg-[#0A0A0A]/80 backdrop-blur-3xl -z-20" />
@@ -176,8 +178,10 @@ export const NavbarDropdown = ({
                     </div>
                   </div>
                 </div>
+                  </div>
+                </motion.div>
               </div>
-            </motion.div>
+            </div>
           ) : null}
         </AnimatePresence>,
         document.body

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 
-import { fontSans, fontJakarta, fontGeist, fontGeistMono } from "@/config/fonts";
+import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import { Footer } from "@/components/footer";
@@ -148,6 +148,7 @@ export default function RootLayout({
           fontJakarta.variable,
           fontGeist.variable,
           fontGeistMono.variable,
+          fontJetBrainsMono.variable,
         )}
       >
         {/* Skip Link for Keyboard Navigation */}

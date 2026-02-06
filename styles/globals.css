@@ -104,7 +104,7 @@
 
 html,
 body {
-  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-family: var(--font-jakarta), sans-serif !important;
 
   /* scroll-behavior: smooth; */
 }
@@ -118,6 +118,11 @@ body {
   font-family: var(--font-geist-mono), monospace !important;
 }
 
+.font-jetbrains-mono {
+  font-family: var(--font-jetbrains-mono), monospace !important;
+}
+
+
 .button {
   border-radius: 16px;
   padding: 16px 32px;
@@ -130,18 +135,28 @@ body {
 }
 
 .heading-center {
-  @apply text-center text-5xl max-lg:text-4xl max-md:text-3xl font-[600] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[64px];
+  @apply text-center text-[36px] max-lg:text-3xl max-md:text-2xl font-[600] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[48px];
 }
 
 .badge-text {
-  @apply text-center uppercase font-medium text-black font-jetbrains max-md:text-[10px];
-  color: #000;
-  font-variant-numeric: slashed-zero;
-  font-size: 16px;
-  font-style: normal;
+  font-family: "JetBrains Mono", monospace;
   font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
   line-height: 20px;
+  letter-spacing: 0px;
+  vertical-align: middle;
   text-transform: uppercase;
+  font-variant-numeric: slashed-zero;
+  color: #000;
+  text-align: center;
+}
+
+/* Mobile responsive variant */
+@media (max-width: 768px) {
+  .badge-text {
+    font-size: 10px;
+  }
 }
 
 /* .badge-center {

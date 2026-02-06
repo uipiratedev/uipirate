@@ -196,7 +196,7 @@ export const JoinButtonIcon = ({
                 style={{
                   marginLeft:"-100px",
                   textTransform: 'uppercase',
-                  fontFamily: 'var(--font-geist), sans-serif'
+                  fontFamily: 'var(--font-jakarta), sans-serif'
                 }}
               >
                 {text}

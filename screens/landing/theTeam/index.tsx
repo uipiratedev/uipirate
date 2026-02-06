@@ -3,6 +3,7 @@ import { motion, Variants, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 import GlassBadge from "@/components/GlassBadge";
+import GlassSurface from "@/components/GlassSurface";
 
 const TheTeam = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -99,8 +100,9 @@ const TheTeam = () => {
 
   return (
     <div className="py-24 max-md:py-16 container mx-auto px-6 md:px-12 lg:px-24 relative">
+
       {/* Header */}
-      <div className="text-center mb-20 max-md:mb-12">
+      <div className="text-center mb-4 max-md:mb-4">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">THE TEAM</GlassBadge>
         </div>
@@ -134,9 +136,29 @@ const TheTeam = () => {
                   animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                   exit={{ opacity: 0, y: 20, scale: 0.8, filter: "blur(10px)" }}
                   transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                  className="hidden lg:block absolute -top-[150px] w-[280px] z-[101] pointer-events-none"
+                  className="hidden lg:block absolute -top-[130px] w-[200px] z-[101] pointer-events-none"
                 >
-                  <div className="relative p-6 rounded-[32px] border border-white/30 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] backdrop-blur-2xl bg-white/90 text-center overflow-hidden">
+                  <GlassSurface
+                    backgroundOpacity={0.1}
+                    blur={40}
+                    borderRadius={32}
+                    borderWidth={0.04}
+                    brightness={50}
+                    className="p-6 text-center shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] backdrop-blur-3xl"
+                    displace={3}
+                    distortionScale={-120}
+                    redOffset={10}
+                    greenOffset={15}
+                    blueOffset={25}
+                    height="auto"
+                    opacity={0.93}
+                    saturation={1.8}
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.4)",
+                      backdropFilter: "blur(40px) saturate(180%)",
+                    }}
+                    width={200}
+                  >
                     {/* Gradient overlay matching team member's color */}
                     <div 
                       className="absolute inset-0 opacity-15 pointer-events-none rounded-[32px]"
@@ -157,11 +179,11 @@ const TheTeam = () => {
                     {/* Subtle shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none rounded-[32px]" />
                     
-                    <p className="relative text-gray-800 text-[15px] font-medium leading-relaxed">
-                      Hey hey! I'm <span className="font-bold text-gray-900">{member.name}</span>,<br />
-                      I'm your <span className="font-bold text-gray-900">{member.role.toLowerCase()}</span>.
+                    <p className="relative text-gray-800 text-[14px] font-medium leading-relaxed">
+                      <span className="text-gray-900">{member.name} - {member.role}</span>,<br />
+                     <span className="text-gray-900">{member.quote}</span>.
                     </p>
-                  </div>
+                  </GlassSurface>
 
                   {/* Speech bubble tail with rotated circles */}
                   <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-8">
@@ -190,7 +212,27 @@ const TheTeam = () => {
                   exit={{ opacity: 0, y: 10 }}
                   className="lg:hidden absolute -top-28 left-1/2 -translate-x-1/2 w-64 z-50 pointer-events-none"
                 >
-                  <div className="relative bg-white/90 backdrop-blur-2xl p-4 rounded-[24px] shadow-xl border border-white/30 text-center overflow-hidden">
+                  <GlassSurface
+                    backgroundOpacity={0.1}
+                    blur={35}
+                    borderRadius={24}
+                    borderWidth={0.04}
+                    brightness={50}
+                    className="p-4 text-center shadow-xl backdrop-blur-3xl"
+                    displace={2.5}
+                    distortionScale={-100}
+                    redOffset={8}
+                    greenOffset={12}
+                    blueOffset={20}
+                    height="auto"
+                    opacity={0.93}
+                    saturation={1.8}
+                    style={{
+                      border: "1px solid rgba(255, 255, 255, 0.4)",
+                      backdropFilter: "blur(35px) saturate(180%)",
+                    }}
+                    width={256}
+                  >
                     {/* Gradient overlay matching team member's color */}
                     <div 
                       className="absolute inset-0 opacity-15 pointer-events-none rounded-[24px]"
@@ -216,9 +258,7 @@ const TheTeam = () => {
                       I'm your <span className="font-bold text-gray-900">{member.role.toLowerCase()}</span>.
                     </p>
                     
-                    {/* Speech bubble tail */}
-                    <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white/85 backdrop-blur-xl rotate-45 border-r border-b border-white/30" />
-                  </div>
+                  </GlassSurface>
                 </motion.div>
               )}
             </AnimatePresence>

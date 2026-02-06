@@ -219,9 +219,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               </h3>
 
               {/* Subtitle */}
-              <p className="text-black w-fit p-2 rounded-lg bg-black/5 text-sm mb-6 uppercase tracking-wide"
-                style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-              >
+              <p className="text-black w-fit p-2 rounded-lg bg-black/5 text-sm mb-6 uppercase tracking-wide font-mono">
                 Get a quick ballpark before committing
               </p>
 
@@ -286,9 +284,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto pr-2">
                 <div className="mb-6">
-                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase"
-                 style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-                 >STEP 1</p>
+                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-mono">STEP 1</p>
                   <h4 className="text-2xl font-bold mb-2">Add Your Details</h4>
                   <p className="text-sm text-gray-600">So we know who we're estimating for</p>
                 </div>
@@ -405,9 +401,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto pr-2">
                 <div className="mb-6">
-                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase"
-                 style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-                 >STEP 2</p>
+                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-mono">STEP 2</p>
                   <h4 className="text-2xl font-bold mb-2">Select Your Project Type & Scope</h4>
                   <p className="text-sm text-gray-600">Select what best fits your project</p>
                 </div>
@@ -488,9 +482,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               <p className="absolute top-4 right-4 rounded-full px-2 items-center justify-center text-center flex text-2xl font-bold cursor-pointer " onClick={handleReset}>x</p>
 
               <div className="mb-6">
-                 <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase"
-                 style={{fontFamily:"'Plus Jakarta Mono', monospace"}}
-                 >Project Estimate</p>
+                 <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-mono">Project Estimate</p>
                 <h4 className="text-2xl font-bold mb-6"
                 
                 >This is your rough estimate!</h4>
@@ -505,7 +497,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                         <p className="text-gray-700 text-base max-md:text-sm mb-2">
                           Fast and budget-friendly usually means cutting corners. 
                         </p>
-                        <span className="text-3xl font-black mt-2" style={{fontFamily:"'Plus Jakarta Mono', monospace"}}>
+                        <span className="text-3xl font-black mt-2 font-mono">
                           We don’t do that here ❌
                         </span>
                       </div>
@@ -516,13 +508,13 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div className="p-4 border-2 border-gray-200 rounded-xl">
                         <p className="text-base max-md:text-sm text-gray-500 mb-2">Estimated Budget Range</p>
-                        <p className="text-3xl font-black" style={{fontFamily:"'Plus Jakarta Mono', monospace"}}>
+                        <p className="text-3xl font-black font-mono">
                           {estimate.budget}
                         </p>
                       </div>
                       <div className="p-4 border-2 border-gray-200 rounded-xl">
                         <p className="text-base max-md:text-sm text-gray-500 mb-2">Estimated Timeline</p>
-                        <p className="text-3xl font-black" style={{fontFamily:"'Plus Jakarta Mono', monospace"}}>
+                        <p className="text-3xl font-black font-mono">
                           {estimate.timeline}
                         </p>
                       </div>
