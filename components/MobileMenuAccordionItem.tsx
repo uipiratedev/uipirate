@@ -84,31 +84,34 @@ export const MobileMenuAccordionItem = ({
         )}
       </div>
 
-      <AnimatePresence>
-        {isOpen && hasDropdown && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="flex flex-col gap-3 pb-4 pl-4">
-              {item.dropdownItems!.map((dropdownItem, index) => (
-                <NextLink
-                  key={index}
-                  className="text-base text-zinc-400 hover:text-white transition-colors flex items-center gap-2 py-1"
-                  href={dropdownItem.href || "#"}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {dropdownItem.icon && <span className="text-sm">{dropdownItem.icon}</span>}
-                  {dropdownItem.category}
-                </NextLink>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <>
+        {/* @ts-ignore - AnimatePresence type issue with TypeScript strict mode */}
+        <AnimatePresence mode="wait">
+          {isOpen && hasDropdown && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-col gap-3 pb-4 pl-4">
+                {item.dropdownItems!.map((dropdownItem, index) => (
+                  <NextLink
+                    key={index}
+                    className="text-base text-zinc-400 hover:text-white transition-colors flex items-center gap-2 py-1"
+                    href={dropdownItem.href || "#"}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {dropdownItem.icon && <span className="text-sm">{dropdownItem.icon}</span>}
+                    {dropdownItem.category}
+                  </NextLink>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </>
     </div>
   );
 };

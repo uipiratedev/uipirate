@@ -195,6 +195,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
   return (
     <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-gray-200 shadow-sm h-full">
       <CardBody className="p-8 max-md:p-6">
+        {/* @ts-ignore */}
         <AnimatePresence mode="wait">
           {/* Initial State */}
           {currentStep === 0 && (

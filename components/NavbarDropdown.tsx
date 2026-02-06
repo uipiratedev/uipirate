@@ -54,7 +54,7 @@ export const NavbarDropdown = ({
 
   return (
     <div
-      className="!static h-full flex items-center"
+      className="!static h-full w-full flex items-center"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -88,6 +88,7 @@ export const NavbarDropdown = ({
 
       {/* Dropdown Menu - Portal to Body to escape overflow/stacking contexts */}
       {mounted && typeof document !== "undefined" && (createPortal(
+        /* @ts-ignore - AnimatePresence type issue with TypeScript strict mode */
         <AnimatePresence mode="wait">
           {isOpen ? (
             <motion.div
@@ -96,10 +97,7 @@ export const NavbarDropdown = ({
               animate={{ opacity: 1, y: 0, scale: 1, x: "-50%" }}
               exit={{ opacity: 0, y: 10, scale: 0.95, x: "-50%" }}
               transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-              className={clsx(
-                "fixed left-1/2 top-[85px] z-[99999]",
-                largeCards.length > 0 ? "w-[95vw] max-w-[900px]" : "w-[300px]",
-              )}
+              className="fixed left-1/2 top-[85px] z-[99999] w-[calc(100vw-20rem)] max-2xl:w-[calc(100vw-24rem)] max-xl:w-[calc(100vw-12rem)] max-lg:w-[calc(100vw-6rem)] max-md:w-full"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >

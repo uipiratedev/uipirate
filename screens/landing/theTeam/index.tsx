@@ -126,6 +126,7 @@ const TheTeam = () => {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             {/* Desktop Tooltip (Appears just above the hovered card) */}
+            {/* @ts-ignore */}
             <AnimatePresence>
               {hoveredIndex === index && (
                 <motion.div
@@ -180,6 +181,7 @@ const TheTeam = () => {
             </AnimatePresence>
 
             {/* Mobile/Tablet Tooltip */}
+            {/* @ts-ignore */}
             <AnimatePresence>
               {hoveredIndex === index && (
                 <motion.div
