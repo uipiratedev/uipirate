@@ -99,11 +99,13 @@ export const MobileMenuAccordionItem = ({
                 {item.dropdownItems!.map((dropdownItem, index) => (
                   <NextLink
                     key={index}
-                    className="text-base text-zinc-400 hover:text-white transition-colors flex items-center gap-2 py-1"
+                    className="text-base text-zinc-400  transition-colors flex items-center gap-2 py-1"
                     href={dropdownItem.href || "#"}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {dropdownItem.icon && <span className="text-sm">{dropdownItem.icon}</span>}
+                    {/* {dropdownItem.icon && <span className="text-sm">
+                      <img src={dropdownItem.icon} alt="" className="w-4 h-4 grayscale" />
+                      </span>} */}
                     {dropdownItem.category}
                   </NextLink>
                 ))}

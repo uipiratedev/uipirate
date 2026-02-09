@@ -58,7 +58,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative w-full bg-black pt-24 overflow-hidden noise-texture noise-texture ">
+    <footer className="relative w-full bg-[#000000F5] pt-24 overflow-hidden noise-texture noise-texture ">
       
       
       {/* Top Light Effect */}
@@ -77,12 +77,12 @@ export const Footer: React.FC = () => {
         >
           {/* Heading */}
           <h2
-            className="text-3xl md:text-5xl font-bold leading-[1.1] mb-4 text-white "
+            className="footer-heading"
           >
             If you scrolled this far, 
           </h2>
            <h2
-            className="text-3xl md:text-5xl font-bold leading-[1.1] mb-8 text-white"
+            className="footer-heading"
           >
            
 It’s time to <span className="text-orange-500">Build Something Together</span>
