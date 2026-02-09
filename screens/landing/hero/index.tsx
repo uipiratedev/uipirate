@@ -249,132 +249,12 @@ const LandingHero = () => {
               EMPOWERING 40+ Business ACROSS 6 COUNTRIES
             </p>
           </GlassSurface>
-          {/* <div className="flex flex-row items-center justify-center w-full py-6 max-md:py-4 max-md:pb-2 overflow-visible">
-            <div className="flex flex-row gap-2 overflow-visible">
-              <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:hidden overflow-visible">
-                <div className="w-[32px] h-[32px] relative overflow-visible group hover:-translate-y-1 transition-transform duration-300">
-                  <Tooltip
-                    color="foreground"
-                    content="Rohit Kumar Jha - Co-Founder , ArthAlpha"
-                    showArrow={true}
-                  >
-                    <img
-                      alt="Rohit Kumar Jha - Client testimonial for UI Pirate enterprise UI/UX design services"
-                      className="w-[32px] h-[32px] border-white rounded-full border-2 cursor-pointer transition-all  duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards] hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593621/rohit_vo3c4g.svg"
-                      style={{
-                        animation:
-                          "testimonialImageDrop 0.4s ease-out forwards",
-                        animationDelay: "0.3s",
-                        opacity: 0,
-                        transform: "translateY(-40px)",
-                      }}
-                    />
-                  </Tooltip>
-                </div>
-                <div className="min-h-[32px] flex items-center overflow-hidden">
-                  <p
-                    className="text-center italic text-xs"
-                    style={{
-                      animation: "testimonialTextUp 0.4s ease-out forwards",
-                      animationDelay: "0.4s",
-                      opacity: 0,
-                      transform: "translateY(25px)",
-                    }}
-                  >
-                    &quot;...brought our complex AI trading vision to
-                    life...&quot;
-                  </p>
-                </div>
-                <div className="flex flex-row gap-1 h-[14px] items-start">
-                  <StarRating delay={300} />
-                </div>
-              </div>
-              <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:gap-1  overflow-visible ">
-                <div className="w-[32px] h-[32px] relative overflow-visible group hover:-translate-y-1 transition-transform duration-300">
-                  <Tooltip
-                    color="foreground"
-                    content="Eden Hazani - VP Research and Development ,Ipsos"
-                    showArrow={true}
-                  >
-                    <img
-                      alt="Eden Hazani - Client testimonial for SaaS platform design overhaul"
-                      className="w-[32px] h-[32px] border-white rounded-full border-2  cursor-pointer transition-transform duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards]"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753805632/eden-modified_jsf37k.png"
-                      style={{
-                        animation:
-                          "testimonialImageDrop 0.4s ease-out forwards",
-                        animationDelay: "0.45s",
-                        opacity: 0,
-                        transform: "translateY(-40px)",
-                      }}
-                    />
-                  </Tooltip>
-                </div>
-                <div className="min-h-[32px] flex items-center overflow-hidden">
-                  <p
-                    className="text-center italic text-xs font-medium"
-                    style={{
-                      animation: "testimonialTextUp 0.4s ease-out forwards",
-                      animationDelay: "0.55s",
-                      opacity: 0,
-                      transform: "translateY(25px)",
-                    }}
-                  >
-                    &quot;Successfully overhauled the design of our entire
-                    platform...&quot;
-                  </p>
-                </div>
-                <div className="flex flex-row gap-1 h-[14px] items-start">
-                  <StarRating delay={350} />
-                </div>
-              </div>
-              <div className="items-center flex flex-col max-w-[200px] gap-2 max-md:hidden overflow-visible">
-                <div className="w-[32px] h-[32px] relative overflow-visible group hover:-translate-y-1 transition-transform duration-300">
-                  <Tooltip
-                    color="foreground"
-                    content=" Nipun Sharma - CEO, RevUp AI"
-                    showArrow={true}
-                  >
-                    <img
-                      alt="Nipun Sharma - Client testimonial for brand identity and mobile app design"
-                      className="w-[32px] h-[32px] border-white rounded-full border-2  cursor-pointer transition-all duration-300 hover:animate-[imageLift_0.3s_ease-out_forwards] hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg"
-                      style={{
-                        animation:
-                          "testimonialImageDrop 0.4s ease-out forwards",
-                        animationDelay: "0.6s",
-                        opacity: 0,
-                        transform: "translateY(-40px)",
-                      }}
-                    />
-                  </Tooltip>
-                </div>
-                <div className="min-h-[32px] flex items-center overflow-hidden">
-                  <p
-                    className="text-center italic text-xs font-medium"
-                    style={{
-                      animation: "testimonialTextUp 0.4s ease-out forwards",
-                      animationDelay: "0.7s",
-                      opacity: 0,
-                      transform: "translateY(25px)",
-                    }}
-                  >
-                    &quot;...from the 1st SaaS flow to our full design overhaul,
-                    was crisp...&quot;
-                  </p>
-                </div>
-                <div className="flex flex-row gap-1 h-[14px] items-start">
-                  <StarRating delay={400} />
-                </div>
-              </div>
-            </div>
-          </div> */}
+
           {/* Animated Headline */}
           <div className="relative z-10">
             <AnimatedHeadline />
           </div>
-          <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-2xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px]">
+          <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px]">
             We help fast-growing SaaS and enterprise teams build world-class
             dashboards, onboarding flows, and AI-powered product experiences -
             from MVP to complete enterprise applications.
@@ -385,7 +265,7 @@ const LandingHero = () => {
           >
             <Link className="relative z-10" href="/contact">
               <div
-                className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
+                className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
                 style={{
                   borderRadius: "11.889px",
                   background: "#000",
@@ -485,11 +365,11 @@ const LandingHero = () => {
                 <div>
                   <img
                     alt="Free consultation badge"
-                    className="w-auto h-[30px]"
+                    className="w-auto h-[30px] max-md:h-[20px]"
                     src="/assets/free.svg"
                   />
                 </div>
-                <p className="font-semibold text-nowrap max-md:text-medium">
+                <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
                   {" "}
                   Book a 15-min Product Strategy Call
                 </p>
@@ -503,7 +383,7 @@ const LandingHero = () => {
                 target="_blank"
               >
                 <Button
-                  className="text-black font-bold w-full py-[27px]"
+                  className="text-black font-bold w-full py-[27px] max-md:py-[20px]"
                   color="primary"
                   style={{
                     width: "100%",
@@ -519,10 +399,10 @@ const LandingHero = () => {
                   <div className="flex flex-row items-center gap-3">
                     <img
                       alt="WhatsApp Logo"
-                      className="w-[30px] h-[30px]"
+                      className="w-[30px] h-[30px] max-md:w-[20px] max-md:h-[20px]"
                       src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
                     />
-                    <p className="text-base font-semibold max-md:text-medium">
+                    <p className="text-base font-semibold max-md:text-sm max-md:font-regular">
                       Lets Talk via Whatsapp
                     </p>
                   </div>

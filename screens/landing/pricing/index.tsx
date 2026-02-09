@@ -4,20 +4,24 @@ import { Button, Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
 
 import GlassBadge from "@/components/GlassBadge";
-import { useIsMobile, createCardScrollVariants } from "@/hooks";
 import { CheckIcon } from "@/components/icons";
 import LetsTalkButton from "@/components/LetsTalkButton";
 import ProjectEstimate from "@/components/ProjectEstimate";
 
 const Pricing = () => {
-  const isMobile = useIsMobile();
 
-  // Animation variants for cards
-  const cardVariants = createCardScrollVariants(isMobile, {
-    startY: 100,
-    startScale: 0.8,
-    duration: 1,
-  });
+  // Subtle animation for the main container
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
   const monthlyRetainerFeatures = [
     "Access to our full design & development stack",
@@ -71,9 +75,15 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="py-12 max-md:py-8 container mx-auto px-6 md:px-12 lg:px-24 ">
+    <motion.div 
+      className="py-12 max-md:py-8 container mx-auto px-6 md:px-12 lg:px-24 "
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
+    >
       {/* Header */}
-      <div className=" autoShow text-center mb-12 max-md:mb-8">
+      <div className=" autoShow text-center mb-6 max-md:mb-10">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
@@ -85,12 +95,7 @@ const Pricing = () => {
       {/* Pricing Cards Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         {/* Monthly Retainer Card */}
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-        >
+        <div>
           <Card className="rounded-[20px] max-md:rounded-[12px]  bg-gradient-to-br from-[#212121] to-[#151514] border-1 border-gray-800 shadow-lg h-full noise-texture "
           style={{
             boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset",
@@ -153,27 +158,16 @@ const Pricing = () => {
             </div>
           </CardBody>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Custom Project Estimate Card */}
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <ProjectEstimate cardVariants={cardVariants} />
-        </motion.div>
+        <div>
+          <ProjectEstimate />
+        </div>
       </div>
 
       {/* Custom Quote Card - Full Width */}
-      <motion.div
-        variants={cardVariants}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-        className="mb-6"
-      >
+      <div className="mb-4">
         <Card className="rounded-[20px] max-md:rounded-[12px]  bg-white border-1 border-gray-200 shadow-sm">
           <CardBody className="p-8 max-md:p-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -229,18 +223,12 @@ const Pricing = () => {
             </div>
           </CardBody>
         </Card>
-      </motion.div>
+      </div>
 
       {/* Benefits Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {benefits.map((benefit, index) => (
-          <motion.div
-            key={index}
-            variants={cardVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.3 }}
-          >
+          <div key={index}>
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
                
@@ -252,10 +240,10 @@ const Pricing = () => {
                 </p>
               </CardBody>
             </Card>
-          </motion.div>
+          </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

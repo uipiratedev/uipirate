@@ -4,7 +4,7 @@ import {Card, CardBody, CardHeader } from "@heroui/react";
 import { motion } from "framer-motion";
 
 
-import { useIsMobile, createCardScrollVariants } from "@/hooks";
+import { useIsMobile } from "@/hooks";
 import LetsTalkButton from "@/components/LetsTalkButton";
 
 // Sun Rays Component
@@ -81,26 +81,33 @@ const ServicesSection = () => {
     },
   ];
 
-  // Animation variants for cards
-  const cardVariants = createCardScrollVariants(isMobile, {
-    startY: 100,
-    startScale: 0.8,
-    duration: 1,
-  });
+  // Subtle animation for the main container
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
 
   return (
-    <div className="py-12 pt-8 max-md:py-8">
+    <motion.div 
+      className="pt-6 max-md:pt-10"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
+    >
       {/* top card  */}
-       <motion.div
-        variants={cardVariants}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-      >
+       <div>
         <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
-          <CardBody className="p-6 max-md:p-4">
+          <CardBody className="p-5 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-3xl max-md:text-xl font-bold tracking-[-1px]">
+              <h3 className="text-2xl max-md:text-xl font-bold tracking-[-1px]">
                 Check Suite of Products Ready for Sale
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
@@ -114,17 +121,11 @@ const ServicesSection = () => {
             </div>
           </CardBody>
         </Card>
-      </motion.div>
+      </div>
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 my-6">
         {/* Left Card - Apps, SaaS, Websites & More */}
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          className="col-span-2"
-        >
+        <div className="col-span-2">
           <Card className="rounded-[20px] max-md:rounded-[12px]   bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm h-full relative overflow-hidden"
           style={{padding:"0px"}}
           >
@@ -166,16 +167,10 @@ const ServicesSection = () => {
             </div>
           </CardBody>
           </Card>
-        </motion.div>
+        </div>
 
         {/* Right Card - One-stop shop */}
-        <motion.div
-          variants={cardVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
-          className="col-span-3"
-        >
+        <div className="col-span-3">
           <Card className="rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full"
           style={{
             boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset",
@@ -202,20 +197,15 @@ const ServicesSection = () => {
               </div>
             </CardBody>
           </Card>
-        </motion.div>
+        </div>
       </div>
 
       {/* Bottom Card - Need Something Custom */}
-      <motion.div
-        variants={cardVariants}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.3 }}
-      >
+      <div>
         <Card className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-black/10 shadow-sm">
-          <CardBody className="p-6 max-md:p-4">
+          <CardBody className="p-5 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-3xl max-md:text-xl font-bold tracking-[-1px]">
+              <h3 className="text-2xl max-md:text-xl font-bold tracking-[-1px]">
                 Need Something Custom ?
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
@@ -227,8 +217,8 @@ const ServicesSection = () => {
             </div>
           </CardBody>
         </Card>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 };
 

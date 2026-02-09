@@ -99,10 +99,10 @@ const TheTeam = () => {
   };
 
   return (
-    <div className="py-24 max-md:py-16 container mx-auto px-6 md:px-12 lg:px-24 relative">
+    <div className="container mx-auto px-6 md:px-12 lg:px-24 relative">
 
       {/* Header */}
-      <div className="text-center mb-4 max-md:mb-4">
+      <div className="text-center mb-6 max-md:mb-4">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">THE TEAM</GlassBadge>
         </div>
@@ -113,7 +113,7 @@ const TheTeam = () => {
 
       {/* Team Grid */}
       <motion.div
-        className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 max-md:gap-4 relative pt-12"
+        className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 max-md:gap-4 relative"
         initial="hidden"
         variants={containerVariants}
         whileInView="visible"
@@ -132,88 +132,20 @@ const TheTeam = () => {
             <AnimatePresence>
               {hoveredIndex === index && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20, scale: 0.8, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: 20, scale: 0.8, filter: "blur(10px)" }}
+                  initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.8 }}
                   transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                  className="hidden lg:block absolute -top-[130px] w-[200px] z-[101] pointer-events-none"
+                  className={`absolute -top-[105px] w-[200px] z-[101] pointer-events-none
+                    md:left-0 md:-translate-x-1/2
+                    ${index % 3 === 0 ? "max-md:left-0 max-md:-translate-x-[10%]" : ""}
+                    ${index % 3 === 2 ? "max-md:right-0 max-md:translate-x-[10%]" : ""}
+                    ${index % 3 !== 0 && index % 3 !== 2 ? "max-md:left-1/2 max-md:-translate-x-1/2" : ""}
+                  `}
                 >
-                  <GlassSurface
-                    backgroundOpacity={0.1}
-                    blur={40}
-                    borderRadius={32}
-                    borderWidth={0.04}
-                    brightness={50}
-                    className="p-6 text-center shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3)] backdrop-blur-3xl"
-                    displace={3}
-                    distortionScale={-120}
-                    redOffset={10}
-                    greenOffset={15}
-                    blueOffset={25}
-                    height="auto"
-                    opacity={0.93}
-                    saturation={1.8}
-                    style={{
-                      border: "1px solid rgba(255, 255, 255, 0.4)",
-                      backdropFilter: "blur(40px) saturate(180%)",
-                    }}
-                    width={200}
-                  >
-                    {/* Gradient overlay matching team member's color */}
-                    <div 
-                      className="absolute inset-0 opacity-15 pointer-events-none rounded-[32px]"
-                      style={{
-                        background: member.bgColor.includes('purple') ? 'radial-gradient(circle at bottom, rgba(168, 85, 247, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('green') ? 'radial-gradient(circle at bottom, rgba(74, 222, 128, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('blue') ? 'radial-gradient(circle at bottom, rgba(96, 165, 250, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('yellow') ? 'radial-gradient(circle at bottom, rgba(250, 204, 21, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('pink') ? 'radial-gradient(circle at bottom, rgba(244, 114, 182, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('orange') ? 'radial-gradient(circle at bottom, rgba(251, 146, 60, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('red') ? 'radial-gradient(circle at bottom, rgba(239, 68, 68, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('lime') ? 'radial-gradient(circle at bottom, rgba(163, 230, 53, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('cyan') ? 'radial-gradient(circle at bottom, rgba(34, 211, 238, 0.5) 0%, transparent 70%)' :
-                                   'radial-gradient(circle at bottom, rgba(168, 85, 247, 0.5) 0%, transparent 70%)'
-                      }}
-                    />
-                    
-                    {/* Subtle shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none rounded-[32px]" />
-                    
-                    <p className="relative text-gray-800 text-[14px] font-medium leading-relaxed">
-                      <span className="text-gray-900">{member.name} - {member.role}</span>,<br />
-                     <span className="text-gray-900">{member.quote}</span>.
-                    </p>
-                  </GlassSurface>
-
-                  {/* Speech bubble tail with rotated circles */}
-                  <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-8">
-                    {/* First larger circle - positioned left and slightly rotated */}
-                    <div 
-                      className="absolute top-0 left-0 w-6 h-6 rounded-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg"
-                      style={{ transform: 'rotate(-15deg)' }}
-                    />
-                    {/* Second smaller circle - positioned right and rotated opposite */}
-                    <div 
-                      className="absolute top-8 -left-4 w-3 h-3 rounded-full bg-white/75 backdrop-blur-xl border border-white/40 shadow-lg"
-                      style={{ transform: 'rotate(15deg)' }}
-                    />
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Mobile/Tablet Tooltip */}
-            {/* @ts-ignore */}
-            <AnimatePresence>
-              {hoveredIndex === index && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="lg:hidden absolute -top-28 left-1/2 -translate-x-1/2 w-64 z-50 pointer-events-none"
-                >
-                  <GlassSurface
-                    backgroundOpacity={0.1}
+                    <GlassSurface
+                    forceLightMode={true}
+                    backgroundOpacity={0.8}
                     blur={35}
                     borderRadius={24}
                     borderWidth={0.04}
@@ -231,34 +163,42 @@ const TheTeam = () => {
                       border: "1px solid rgba(255, 255, 255, 0.4)",
                       backdropFilter: "blur(35px) saturate(180%)",
                     }}
-                    width={256}
+                    width={200}
                   >
-                    {/* Gradient overlay matching team member's color */}
+                                        <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none rounded-[24px]" />
+                    
+                    <p className="relative text-gray-800 text-[14px] font-medium leading-relaxed">
+                     <span className="text-gray-900">{member.quote}</span>.
+                    </p>
+                  </GlassSurface>
+
+                  {/* Speech bubble tail with rotated circles */}
+                  <div className={`absolute -bottom-4 w-16 h-8
+                    md:left-1/2 md:-translate-x-1/2
+                    ${index % 3 === 0 ? "max-md:left-[35%] max-md:-translate-x-1/2" : ""}
+                    ${index % 3 === 2 ? "max-md:left-[65%] max-md:-translate-x-1/2" : ""}
+                    ${index % 3 !== 0 && index % 3 !== 2 ? "max-md:left-1/2 max-md:-translate-x-1/2" : ""}
+                  `}>
+                    {/* First larger circle - positioned left and slightly rotated */}
                     <div 
-                      className="absolute inset-0 opacity-15 pointer-events-none rounded-[24px]"
-                      style={{
-                        background: member.bgColor.includes('purple') ? 'radial-gradient(circle at bottom, rgba(168, 85, 247, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('green') ? 'radial-gradient(circle at bottom, rgba(74, 222, 128, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('blue') ? 'radial-gradient(circle at bottom, rgba(96, 165, 250, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('yellow') ? 'radial-gradient(circle at bottom, rgba(250, 204, 21, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('pink') ? 'radial-gradient(circle at bottom, rgba(244, 114, 182, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('orange') ? 'radial-gradient(circle at bottom, rgba(251, 146, 60, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('red') ? 'radial-gradient(circle at bottom, rgba(239, 68, 68, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('lime') ? 'radial-gradient(circle at bottom, rgba(163, 230, 53, 0.5) 0%, transparent 70%)' :
-                                   member.bgColor.includes('cyan') ? 'radial-gradient(circle at bottom, rgba(34, 211, 238, 0.5) 0%, transparent 70%)' :
-                                   'radial-gradient(circle at bottom, rgba(168, 85, 247, 0.5) 0%, transparent 70%)'
+                      className="absolute top-0 left-0 w-6 h-6 rounded-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg"
+                      style={{ transform: 'rotate(-15deg)' }}
+                    />
+                    {/* Second smaller circle - positioned right and rotated opposite */}
+                    <div 
+                      className={`absolute top-8 -left-4 w-3 h-3 rounded-full bg-white/75 backdrop-blur-xl border border-white/40 shadow-lg inner-shadow-lg
+                                 ${index % 3 === 0 ? "-right-4" : ""}
+                    ${index % 3 === 2 ? "-left-4" : ""}
+                    ${index % 3 !== 0 && index % 3 !== 2 ? "-right-4" : ""}
+                        `}
+
+
+
+                      style={{ transform: 'rotate(15deg)' 
+
                       }}
                     />
-                    
-                    {/* Subtle shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none rounded-[24px]" />
-                    
-                    <p className="relative text-gray-800 text-sm font-medium leading-relaxed">
-                      Hey hey! I'm <span className="font-bold text-gray-900">{member.name}</span>,<br />
-                      I'm your <span className="font-bold text-gray-900">{member.role.toLowerCase()}</span>.
-                    </p>
-                    
-                  </GlassSurface>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>

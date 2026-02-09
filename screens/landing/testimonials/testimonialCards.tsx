@@ -47,7 +47,7 @@ export default function TestimonialCards() {
   const col3 = displayedTestimonials.filter((_, i) => i % 3 === 2);
 
   return (
-    <section className="w-full py-12 container mx-auto px-6 md:px-12 lg:px-24">
+    <section className="w-full pt-6 max-md:pt-10 container mx-auto px-6 md:px-12 lg:px-24">
       <div className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] overflow-hidden"}`}>
         {/* Gradient Mask for collapsed state */}
         {!isExpanded && (
@@ -84,10 +84,10 @@ export default function TestimonialCards() {
                   className="h-full"
                 >
                   <Card
-                    className="rounded-[32px] h-full hover:rounded-[0px] transition-all duration-500 max-md:w-full bg-[#F6F6F6] shadow-none border-1 border-[#0000000f] overflow-hidden group/card hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
+                    className="rounded-[24px] h-full transition-all duration-500 max-md:w-full shadow-none border-1 border-black/10 overflow-hidden group/card"
                   >
-                    <CardBody className="p-2 h-full">
-                      <div className="w-full h-full p-5 bg-white rounded-[24px] group-hover/card:rounded-[0px] transition-all duration-500 max-md:p-4 shadow-sm group-hover/card:shadow-xl flex flex-col">
+                    <CardBody className="p-5 h-full">
+                      <div className="w-full h-full  bg-white   transition-all duration-500 shadow-sm flex flex-col">
                         <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
                           <div className="flex flex-row gap-3 items-center">
                             <Avatar
