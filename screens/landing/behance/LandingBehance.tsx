@@ -4,6 +4,8 @@ import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import NextLink from "next/link";
 import { useIsMobile } from "@/hooks";
+import { AnimatedButton } from "@/components/AnimatedButton";
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 const data = [
   {
@@ -145,28 +147,10 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
-        <NextLink className="autoShow" href="/ourWorks">
-          <button
-            color="primary"
-            className="mt-3 bg-black text-white w-full px-[40px]  py-[16px] rounded-[20px] group"
-          >
-            <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-              <span
-                className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3
-                                 group-hover:translate-y-[50px] translate-y-3`}
-              >
-                Explore All Work
-              </span>
-
-              <span
-                className={`text-white text-lg  transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                                translate-y-[50px] group-hover:-translate-y-3`}
-              >
-                View Works
-              </span>
-            </div>
-          </button>
-        </NextLink>
+        <div className="autoShow">
+    
+        <LetsTalkButton fullWidth variant="dark" children="Explore All Work" href="/ourWorks"/>
+        </div>
       </div>
 
       {/* Image Grid with Overlap */}

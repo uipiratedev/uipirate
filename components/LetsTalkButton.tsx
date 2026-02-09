@@ -2,6 +2,7 @@
 
 import { Button } from "@heroui/react";
 import { ReactNode } from "react";
+import Link from "next/link"; 
 
 interface LetsTalkButtonProps {
   children?: ReactNode;
@@ -11,6 +12,7 @@ interface LetsTalkButtonProps {
   variant?: "light" | "dark" | "color";
   onClick?: () => void;
   isDisabled?: boolean;
+  target?: string;
 }
 
 /**
@@ -32,12 +34,19 @@ export const LetsTalkButton = ({
   fullWidth = false,
   variant = "light",
   onClick,
-  isDisabled = false
+  isDisabled = false,
+  target
 }: LetsTalkButtonProps) => {
   const isLight = variant === "light";
   const isDark = variant === "dark";
   const isColor = variant === "color";
   
+  // Determine if the link is internal
+  const isInternal = href && (href.startsWith('/') || href.startsWith('#'));
+  // Default target: _self for internal, _blank for external
+  const defaultTarget = isInternal ? "_self" : "_blank";
+  const finalTarget = target || defaultTarget;
+
   // Determine background based on variant
   const getBackground = () => {
     if (isDisabled) return "#E5E7EB";
@@ -124,13 +133,28 @@ export const LetsTalkButton = ({
     );
   }
 
+  // Use NextLink for internal links to avoid page reload
+  if (isInternal && !isDisabled) {
+    return (
+      <div className={`${fullWidth ? 'w-full' : 'w-fit'} z-10 ${className}`}>
+        <Link
+          className="w-full"
+          href={href}
+          target={finalTarget}
+        >
+          {buttonContent}
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className={`${fullWidth ? 'w-full' : 'w-fit'} z-10 ${className} ${isDisabled ? 'pointer-events-none opacity-50' : ''}`}>
       <a
         className="w-full"
         href={isDisabled ? "#" : href}
         rel="noreferrer"
-        target={isDisabled ? "_self" : "_blank"}
+        target={isDisabled ? "_self" : finalTarget}
       >
         {buttonContent}
       </a>

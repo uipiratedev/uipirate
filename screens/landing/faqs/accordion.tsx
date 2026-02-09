@@ -1,4 +1,6 @@
 "use client";
+import { AnimatedButton } from "@/components/AnimatedButton";
+import LetsTalkButton from "@/components/LetsTalkButton";
 import { Accordion, AccordionItem } from "@heroui/react";
 import { motion } from "framer-motion";
 import NextLink from "next/link";
@@ -247,7 +249,7 @@ export default function FaqsAccordion() {
           viewport={{ once: true, amount: 0.3 }}
           whileInView="visible"
         >
-        <div className="flex flex-row items-center justify-center mt-6">
+        {/* <div className="flex flex-row items-center justify-center mt-6">
           <NextLink className="w-fit" href="/faqs">
             <button
               className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
@@ -270,6 +272,15 @@ export default function FaqsAccordion() {
               </div>
             </button>
           </NextLink>
+        </div> */}
+        <div className="flex flex-row items-center justify-center mt-6">
+                <LetsTalkButton
+                  
+                  variant="dark"
+                  children="See all FAQ’s"
+                  href="/faqs"
+                  target="_self"
+                />
         </div>
         </motion.div>
       </div>
