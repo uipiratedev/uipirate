@@ -1595,7 +1595,12 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   background-image: url("/assets/noise.webp");
   background-repeat: repeat;
   background-size: auto;
-  opacity: 0.08;
+  opacity: 0.05;
   pointer-events: none;
   z-index: 1;
+  pointer-events: none;
 }
+
+  .footer-heading{
+    @apply text-lg md:text-2xl lg:text-4xl font-[550] capitalize mb-4 transition-all duration-300 tracking-tight text-white;
+  }
