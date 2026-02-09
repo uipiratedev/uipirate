@@ -68,13 +68,13 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   height = 80,
   borderRadius = 20,
   borderWidth = 0.07,
-  brightness = 96,
+  brightness = 50,
   opacity = 0.93,
   blur = 11,
   displace = 0,
   backgroundOpacity = 0,
   saturation = 1,
-  distortionScale = -40,
+  distortionScale = -180,
   redOffset = 0,
   greenOffset = 10,
   blueOffset = 20,
@@ -229,10 +229,9 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       return {
         ...baseStyles,
         background: isDarkMode
-          ? `hsl(0 0% 5% / ${backgroundOpacity})`
+          ? `hsl(0 0% 0% / ${backgroundOpacity})`
           : `hsl(0 0% 100% / ${backgroundOpacity})`,
-        backdropFilter: `blur(${blur}px) url(#${filterId}) saturate(${saturation})`,
-        WebkitBackdropFilter: `blur(${blur}px) url(#${filterId}) saturate(${saturation})`,
+        backdropFilter: `url(#${filterId}) saturate(${saturation})`,
         boxShadow: isDarkMode
           ? `0 0 2px 1px color-mix(in oklch, white, transparent 65%) inset,
              0 0 10px 4px color-mix(in oklch, white, transparent 85%) inset,

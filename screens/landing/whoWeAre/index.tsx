@@ -66,14 +66,14 @@ const LandingWhoWeAre = () => {
   return (
     <>
       <div className="container mx-auto xl:px-40 2xl:px-48 max-md:px-4 pt-32 max-md:pt-24 max-xl:px-4 max-2xl:px-0">
-        <div className="autoShow">
-          <div className="flex flex-row items-center justify-center mb-6 max-md:mb-0">
+        <div className="autoShow max-md:-mb-4 -mb-12">
+          <div className="flex flex-row items-center justify-center">
             <GlassBadge variant="gradient">WHO we are</GlassBadge>
           </div>
         </div>
       </div>
-      <div className="px-32 max-md:px-4 overflow-x-hidden overflow-y-auto pb-20" ref={containerRef}>
-        <h2 className="heading-center max-md:text-2xl">
+      <div className="px-32 max-md:px-4 overflow-x-hidden overflow-y-auto pb-20 -mt-12" ref={containerRef}>
+        <h2 className="heading-center max-md:text-xl">
           {words.map((word, index) => (
             <span key={index} style={getWordStyle(index)}>
               {word}

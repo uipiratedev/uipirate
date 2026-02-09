@@ -138,7 +138,7 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
         className="absolute inset-1 flex flex-col items-center justify-center text-center z-[1]"
         id="info"
       >
-        <p className="text-center text-6xl font-bold px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
+        <p className="heading-center px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
           Recent Works
         </p>
         <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12 mt-6 w-1/2 max-md:text-lg autoShow">

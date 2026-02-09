@@ -61,7 +61,7 @@ export const NavbarDropdown = ({
       {/* Trigger Button */}
       <button
         className={clsx(
-          "flex items-center gap-1 text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600] h-full px-1",
+          "flex items-center gap-1 text-base font-[500] cursor-pointer transition-all duration-200 hover:font-[600] h-full px-1",
           {
             "text-white": isDarkSection,
             "text-black": !isDarkSection,
@@ -103,7 +103,7 @@ export const NavbarDropdown = ({
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-              <div className="relative isolate overflow-hidden rounded-[32px] p-5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_50px_100px_-20px_rgba(0,0,0,0.7)] border border-white/20 ring-1 ring-white/10">
+              <div className="relative isolate overflow-hidden rounded-[32px] p-3 bg-black/10 border border-white/20 ring-1 ring-white/10">
                 {/* Background Layer with heavy blur */}
                 <div className="absolute inset-0 bg-[#0A0A0A]/80 backdrop-blur-3xl -z-20" />
                 
@@ -116,11 +116,11 @@ export const NavbarDropdown = ({
                 )}>
                   {/* Left Side - Main Feature Cards (cols 1-8) */}
                   {largeCards.length > 0 && (
-                    <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {largeCards.map((item, index) => (
                         <NextLink
                           key={index}
-                          className="group relative aspect-[4/3] rounded-[24px] overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:shadow-xl hover:shadow-black/20"
+                          className="group relative aspect-[4/3] rounded-[24px] overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:shadow-xl hover:shadow-black/20 noise-texture"
                           href={item.href || "#"}
                           onClick={() => setIsOpen(false)}
                         >
@@ -128,8 +128,9 @@ export const NavbarDropdown = ({
                           <div 
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                             style={{ 
-                              backgroundImage: `url('https://images.unsplash.com/photo-${index === 0 ? "1586717791821-3f44a563feaf" : "1520110120287-cbb5934001b3"}?auto=format&fit=crop&q=80&w=800')`,
-                              filter: 'brightness(0.6)'
+                              // backgroundImage: `url('https://images.unsplash.com/photo-${index === 0 ? "1586717791821-3f44a563feaf" : "1520110120287-cbb5934001b3"}?auto=format&fit=crop&q=80&w=800')`,
+                              // filter: 'brightness(0.6)',
+                              background: "linear-gradient(340.36deg, #151514 39.57%, #212121 89.85%)",
                             }}
                           />
                           
@@ -137,12 +138,10 @@ export const NavbarDropdown = ({
                           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                           
                           <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                            <h3 className="text-white font-bold text-xl mb-1 group-hover:translate-x-1 transition-transform duration-300">
+                            <h3 className="text-white font-semibold text-lg group-hover:translate-x-1 transition-transform duration-300">
                               {item.category}
                             </h3>
-                            <p className="text-zinc-300 text-sm line-clamp-2 group-hover:text-white transition-colors duration-300">
-                              {item.icon} Explore our expertise in {item.category.toLowerCase()}.
-                            </p>
+                           
                           </div>
                         </NextLink>
                       ))}
@@ -158,20 +157,21 @@ export const NavbarDropdown = ({
                       {listItems.map((item, index) => (
                         <NextLink
                           key={index}
-                          className="flex items-center gap-4 p-4 rounded-[20px] bg-white/[0.03] backdrop-blur-sm hover:bg-white/[0.08] border border-white/5 hover:border-white/10 transition-all duration-300 group"
+                          className="flex items-center gap-4 p-1 rounded-[12px] bg-white/[0.03] backdrop-blur-sm hover:bg-white/[0.08] border border-white/5 hover:border-white/10 transition-all duration-300 group noise-texture"
                           href={item.href || "#"}
                           onClick={() => setIsOpen(false)}
+                          style={{
+                            background: "linear-gradient(340.36deg, rgba(21, 21, 20, 0.4) 39.57%, rgba(33, 33, 33, 0.4) 89.85%),linear-gradient(340.36deg, #151514 39.57%, #212121 89.85%)",
+                          }}
                         >
-                          <div className="w-10 h-10 rounded-[12px] bg-zinc-800/50 backdrop-blur-md flex items-center justify-center text-lg group-hover:bg-orange-500/20 group-hover:text-orange-400 group-hover:border-orange-500/50 border border-white/5 transition-all shrink-0">
-                            {item.icon || "🔗"}
+                          <div className="w-8 h-8 rounded-[8px] bg-white/15 text-white backdrop-blur-md flex items-center justify-center text-lg group-hover:bg-orange-500/20 group-hover:text-orange-400 group-hover:border-orange-500/50 border border-white/5 transition-all shrink-0">
+                            <img src={item.icon} alt={item.category} className="w-4 h-4 text-white" />
                           </div>
                           <div className="flex flex-col min-w-0">
                             <span className="text-white font-semibold text-[14px] group-hover:text-orange-400 transition-colors truncate">
                               {item.category}
                             </span>
-                            <span className="text-zinc-500 text-[12px] group-hover:text-zinc-300 transition-colors truncate">
-                              {item.category.includes('Blog') ? 'Latest updates' : 'Learn more'}
-                            </span>
+                            
                           </div>
                         </NextLink>
                       ))}

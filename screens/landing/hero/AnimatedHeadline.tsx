@@ -40,7 +40,7 @@ const AnimatedHeadline = () => {
   ];
 
   return (
-    <h1 className="text-[68px] 3xl:text-[80px] xl:text-[74px] px-4 text-center font-[700] max-md:font-[600] max-lg:text-5xl max-md:text-[40px] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative">
+    <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[64px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600]  max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative">
       {words.map((word, index) => (
         <span key={index}>
           {word.newLine && <br className="max-md:block hidden" />}

@@ -10,43 +10,45 @@ export const siteConfig = {
       hasDropdown: true,
       dropdownItems: [
         {
-          category: "SaaS & AI Product UX/UI",
-          icon: "💼",
+          category: "UX/UI DESIGN",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
           href: "/services",
           isLargeCard: true,
         },
         {
-          category: "Frontend UI Development",
-          icon: "⚡",
+          category: "Saas & AI Development",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
           href: "/services",
           isLargeCard: true,
         },
+        
         {
           category: "Landing Pages & Business Websites",
-          icon: "🌐",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
           href: "/services",
           isLargeCard: true,
         },
         {
           category: "Graphic Design",
-          icon: "🎨",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/graphic_s0cmgk.svg",
           href: "/services",
         },
         {
           category: "Motion Graphic",
-          icon: "🎬",
-          href: "/services",
-        },
-        {
-          category: "3D Assets & Animation",
-          icon: "🎮",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/motion_dqrdcl.svg",
           href: "/services",
         },
         {
           category: "UX Audits & Consultation",
-          icon: "🔍",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
           href: "/services",
         },
+        {
+          category: "3D Assets & Animation",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/3d_wtkihl.svg",
+          href: "/services",
+        },
+        
       ],
     },
     {
@@ -76,12 +78,12 @@ export const siteConfig = {
         },
         {
           category: "FAQs",
-          icon: "❓",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612676/circle-question-mark_1_sl0cgn.svg",
           href: "/faqs",
         },
         {
           category: "Documentation",
-          icon: "📚",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612675/file_1_fvzqpk.svg",
           href: "/docs",
         },
       ],
