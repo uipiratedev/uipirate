@@ -47,7 +47,7 @@ export default function TestimonialCards() {
   const col3 = displayedTestimonials.filter((_, i) => i % 3 === 2);
 
   return (
-    <section className="w-full pt-6 max-md:pt-10 container mx-auto px-6 md:px-12 lg:px-24">
+    <section className="w-full pt-6 max-md:pt-6 container mx-auto px-32 lg:px-20 max-md:px-4">
       <div className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] overflow-hidden"}`}>
         {/* Gradient Mask for collapsed state */}
         {!isExpanded && (

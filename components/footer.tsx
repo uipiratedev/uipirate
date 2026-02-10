@@ -64,7 +64,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative w-full bg-[#000000F9] pt-24 overflow-hidden noise-texture noise-texture ">
+    <footer className="relative w-full bg-[#000000F9] pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture ">
       
       
       {/* Top Light Effect */}
@@ -72,10 +72,10 @@ export const Footer: React.FC = () => {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[40vh] bg-white/5 blur-[80px] -translate-y-1/2" />
 
       {/* Content */}
-      <div className="relative z-20  mx-auto px-6 text-center">
+      <div className="relative z-20  mx-auto text-center">
         {/* CTA Section */}
         <motion.div
-          className="mb-24 max-md:mb-12"
+          className="mb-24 max-md:mb-6"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
@@ -104,7 +104,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
             target="_blank"
           >
             <motion.div
-              className="flex flex-col items-center mb-16 mt-6 relative group cursor-pointer w-fit"
+              className="flex flex-col items-center mb-16 max-md:mb-0 mt-6 relative group cursor-pointer w-fit"
               onClick={handleClick}
               onMouseLeave={() => setIsPressed(false)}
               onMouseUp={() => setIsPressed(false)}
@@ -136,7 +136,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
           {/* Background Text - SAAS WEB APP Marquee - Positioned Behind Button */}
           <div
-            className="absolute top-[27%] max-md:top-[20%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
+            className="absolute top-[27%] max-md:top-[16%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
             style={{
               WebkitMaskImage:
                 "linear-gradient(to right, white 0%, white 20%, transparent 35%, transparent 65%, white 80%, white 100%)",
@@ -176,13 +176,13 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
         {/* Footer Navigation Grid */}
         <motion.div
-          className="max-w-[1400px] mx-auto px-6 mt-20 pb-16"
+          className="container mx-auto px-32 lg:px-20 max-md:px-4 mt-20 max-md:mt-0 pb-16 max-md:pb-0"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 text-left pt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-16 text-left pt-16">
             {/* Branding/Tagline Section */}
             <div className="lg:col-span-5 flex flex-col gap-8">
               <p className="text-[18px] md:text-[24px] font-bold text-white leading-[1.3] max-w-sm"
@@ -200,10 +200,10 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
                 Quick Links
               </h4>
               <ul className="flex flex-col gap-1">
-                <li><Link href="/" className="text-white hover:text-white/60 transition-colors text-base font-medium">Home</Link></li>
-                <li><Link href="/services" className="text-white hover:text-white/60 transition-colors text-base font-medium">Services</Link></li>
-                <li><Link href="/works" className="text-white hover:text-white/60 transition-colors text-base font-medium">Works</Link></li>
-                <li><Link href="/pricing" className="text-white hover:text-white/60 transition-colors text-base font-medium">Pricing</Link></li>
+                <li><Link href="/" className="footer-text">Home</Link></li>
+                <li><Link href="/services" className="footer-text">Services</Link></li>
+                <li><Link href="/works" className="footer-text">Works</Link></li>
+                <li><Link href="/pricing" className="footer-text">Pricing</Link></li>
               </ul>
             </div>
 
@@ -213,10 +213,10 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
                 Resources
               </h4>
               <ul className="flex flex-col gap-1">
-                <li><Link href="/blogs" className="text-white hover:text-white/60 transition-colors text-base font-medium">Blogs</Link></li>
-                <li><Link href="/community" className="text-white hover:text-white/60 transition-colors text-base font-medium">Community Insights</Link></li>
-                <li><Link href="/products" className="text-white hover:text-white/60 transition-colors text-base font-medium">Mini SaaS Apps</Link></li>
-                <li><Link href="/faq" className="text-white hover:text-white/60 transition-colors text-base font-medium">FAQ’s</Link></li>
+                <li><Link href="/blogs" className="footer-text">Blogs</Link></li>
+                <li><Link href="/community" className="footer-text">Community Insights</Link></li>
+                <li><Link href="/products" className="footer-text">Mini SaaS Apps</Link></li>
+                <li><Link href="/faq" className="footer-text">FAQ’s</Link></li>
               </ul>
             </div>
 
@@ -226,15 +226,15 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
                 Policies & Legal
               </h4>
               <ul className="flex flex-col gap-1">
-                <li><Link href="/privacy" className="text-white hover:text-white/60 transition-colors text-base font-medium">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="text-white hover:text-white/60 transition-colors text-base font-medium">Terms and Conditions</Link></li>
-                <li><Link href="/sitemap" className="text-white hover:text-white/60 transition-colors text-base font-medium">Site Map</Link></li>
+                <li><Link href="/privacy" className="footer-text">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="footer-text">Terms and Conditions</Link></li>
+                <li><Link href="/sitemap" className="footer-text">Site Map</Link></li>
               </ul>
             </div>
           </div>
 
           {/* Copyright Strip */}
-          <div className="mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="mt-24 max-md:mt-12 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[13px] text-white/30 font-medium">
               Copyright©2023 UI Pirate. All Rights Reserved.
             </p>

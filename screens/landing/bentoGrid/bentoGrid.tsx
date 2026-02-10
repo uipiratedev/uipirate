@@ -20,10 +20,10 @@ const cardVariants = {
 const BentoGrid = () => {
   return (
     <>
-      <div className="container mx-auto lg:px-0 max-md:px-4 pt-2 max-md:pt-6">
+      <div className="container mx-auto pt-2 max-md:pt-6">
         {/* Bento Grid */}
-        <div className="mx-auto px-32 lg:px-20 max-md:px-4 pb-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <div className="px-32 lg:px-20 max-md:px-4 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
             {/* UX/UI Design Card - Tall */}
             <motion.div
               className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl  border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 md:row-span-2 group overflow-hidden"
@@ -58,7 +58,7 @@ const BentoGrid = () => {
 
             {/* Frontend Development Card */}
             <motion.div
-              className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden"
+              className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[295px] overflow-hidden"
               custom={1}
               initial="hidden"
               variants={cardVariants}
@@ -139,7 +139,7 @@ const BentoGrid = () => {
 
             {/* Dashboards & SaaS UX Card */}
             <motion.div
-              className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden"
+              className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[295px] overflow-hidden"
               custom={2}
               initial="hidden"
               variants={cardVariants}
@@ -409,7 +409,7 @@ const BentoGrid = () => {
 
             {/* Websites & Landing Pages Card */}
             <motion.div
-              className="rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden relative h-[276px]"
+              className="rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden relative h-[295px]"
               custom={3}
               initial="hidden"
               style={{
@@ -528,7 +528,7 @@ const BentoGrid = () => {
 
             {/* Built With the Best Card */}
             <motion.div
-              className="bg-gradient-to-br from-white to-gray-50 rounded-2xl pt-8 pb-0 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[276px] overflow-hidden"
+              className="bg-gradient-to-br from-white to-gray-50 rounded-2xl pt-8 pb-0 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[295px] overflow-hidden"
               custom={4}
               initial="hidden"
               variants={cardVariants}

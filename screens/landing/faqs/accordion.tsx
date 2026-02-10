@@ -194,10 +194,11 @@ export default function FaqsAccordion() {
           whileInView="visible"
         >
         <Accordion
-          className="mb-0"
+          className="mb-0 p-0 -px-2"
           defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
           selectionMode="multiple"
           variant="splitted"
+          style={{padding:0}}
         >
           {data.slice(0, 4).map((item, index) => (
             <AccordionItem
@@ -249,30 +250,7 @@ export default function FaqsAccordion() {
           viewport={{ once: true, amount: 0.3 }}
           whileInView="visible"
         >
-        {/* <div className="flex flex-row items-center justify-center mt-6">
-          <NextLink className="w-fit" href="/faqs">
-            <button
-              className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
-              color="primary"
-            >
-              <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                <span
-                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                     group-hover:translate-y-[50px] translate-y-3`}
-                >
-                  See all FAQ’s
-                </span>
-
-                <span
-                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                     translate-y-[50px] group-hover:-translate-y-3`}
-                >
-                  See More
-                </span>
-              </div>
-            </button>
-          </NextLink>
-        </div> */}
+      
         <div className="flex flex-row items-center justify-center mt-6">
                 <LetsTalkButton
                   

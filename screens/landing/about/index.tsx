@@ -4,7 +4,7 @@ import GlassBadge from "@/components/GlassBadge";
 const LandingAbout = () => {
   return (
     <>
-      <div className=" container mx-auto lg:px-12 max-md:px-4  pt-12 max-md:pt-0 ">
+      <div className=" container mx-auto lg:px-12 max-md:px-4  pt-12 max-md:pt-8 ">
         <div className="autoShow">
           <div className="flex flex-row  items-center justify-center">
             <GlassBadge variant="gradient">Our journey so far</GlassBadge>

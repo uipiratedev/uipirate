@@ -76,14 +76,14 @@ const Pricing = () => {
 
   return (
     <motion.div 
-      className="py-12 max-md:py-8 container mx-auto px-6 md:px-12 lg:px-24 "
+      className="py-12 max-md:py-8 container mx-auto px-32 lg:px-20 max-md:px-4"
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.1 }}
     >
       {/* Header */}
-      <div className=" autoShow text-center mb-6 max-md:mb-10">
+      <div className=" autoShow text-center mb-6 max-md:mb-6">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
