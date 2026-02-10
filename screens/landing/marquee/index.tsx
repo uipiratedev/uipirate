@@ -73,9 +73,9 @@ const LandingMarquee = () => {
       link: "https://www.arthalpha.in/",
     },
     {
-      url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586408/OS-logo_w1dtde.svg",
-      alt: "Omnex Systems - Quality management and compliance software logo",
-      link: "https://www.omnexsystems.com/",
+      url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg",
+      alt: "Sarge - AI-powered business solutions logo",
+      link: "https://sarge.com/",
     },
     {
       url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg",

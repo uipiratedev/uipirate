@@ -80,11 +80,15 @@ export const siteConfig = {
           category: "FAQs",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612676/circle-question-mark_1_sl0cgn.svg",
           href: "/faqs",
+          isLargeCard: true,
+
         },
         {
           category: "Documentation",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612675/file_1_fvzqpk.svg",
           href: "/docs",
+          isLargeCard: true,
+
         },
       ],
     },
