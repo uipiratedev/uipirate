@@ -276,7 +276,7 @@ export default function FaqsAccordion() {
         <div className="flex flex-row items-center justify-center mt-6">
                 <LetsTalkButton
                   
-                  variant="dark"
+                  variant="light"
                   children="See all FAQ’s"
                   href="/faqs"
                   target="_self"

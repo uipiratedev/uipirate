@@ -1,4 +1,4 @@
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody, Tooltip } from "@heroui/react";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -120,120 +120,137 @@ const TheTeam = () => {
         viewport={{ once: true, amount: 0.2 }}
       >
         {teamMembers.map((member, index) => (
-          <motion.div 
-            key={index} 
-            variants={cardVariants}
-            className={`group cursor-pointer relative ${hoveredIndex === index ? 'z-[100]' : 'z-10'}`}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-          >
-            {/* Desktop Tooltip (Appears just above the hovered card) */}
-            {/* @ts-ignore */}
-            <AnimatePresence>
-              {hoveredIndex === index && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 20, scale: 0.8 }}
-                  transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-                  className={`absolute -top-[105px] w-[200px] z-[101] pointer-events-none
-                    md:left-0 md:-translate-x-1/2
-                    ${index % 3 === 0 ? "max-md:left-0 max-md:-translate-x-[10%]" : ""}
-                    ${index % 3 === 2 ? "max-md:right-0 max-md:translate-x-[10%]" : ""}
-                    ${index % 3 !== 0 && index % 3 !== 2 ? "max-md:left-1/2 max-md:-translate-x-1/2" : ""}
-                  `}
-                >
-                    <GlassSurface
-                    forceLightMode={true}
-                    backgroundOpacity={0.8}
-                    blur={35}
-                    borderRadius={24}
-                    borderWidth={0.04}
-                    brightness={50}
-                    className="p-4 text-center shadow-xl backdrop-blur-3xl"
-                    displace={2.5}
-                    distortionScale={-100}
-                    redOffset={8}
-                    greenOffset={12}
-                    blueOffset={20}
-                    height="auto"
-                    opacity={0.93}
-                    saturation={1.8}
-                    style={{
-                      border: "1px solid rgba(255, 255, 255, 0.4)",
-                      backdropFilter: "blur(35px) saturate(180%)",
-                    }}
-                    width={200}
-                  >
-                                        <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none rounded-[24px]" />
-                    
-                    <p className="relative text-gray-800 text-[14px] font-medium leading-relaxed">
-                     <span className="text-gray-900">{member.quote}</span>.
+          <Tooltip
+            key={index}
+            isOpen={hoveredIndex === index}
+            showArrow
+            classNames={{
+              base: [
+                // Arrow styling - glass effect for arrow
+                "before:bg-white/70",
+                "before:backdrop-blur-md",
+                "before:shadow-sm",
+                "before:z-50",
+              ],
+              content: [
+                // Remove default NextUI background
+                "p-0",
+                "bg-transparent",
+                "shadow-none",
+                "backdrop-blur-none",
+              ],
+            }}
+            closeDelay={100}
+            content={
+              <div
+                className="w-[200px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 252, 253, 0.94) 100%)",
+                  WebkitBackdropFilter:
+                    "blur(20px) saturate(180%) brightness(105%)",
+                  backdropFilter:
+                    "blur(20px) saturate(180%) brightness(105%)",
+                  boxShadow:
+                    "0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 20px 60px -12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(255, 255, 255, 0.7)",
+                }}
+              >
+                {/* Frosted glass texture overlay */}
+                <div
+                  className="absolute inset-0 pointer-events-none z-0"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(245, 248, 255, 0.3) 0%, transparent 50%)",
+                    mixBlendMode: "soft-light",
+                  }}
+                />
+                {/* Content wrapper with relative positioning */}
+                <div className="relative z-10 text-center">
+                  {/* Quote */}
+                  <p className="text-sm italic text-black mb-1 leading-relaxed font-semibold">
+                    &quot;{member.quote}&quot;
+                  </p>
+
+                  {/* Name and Title */}
+                  <div className="">
+                    {/* <p className="text-xs font-bold text-black">
+                      {member.name}
+                    </p> */}
+                    <p className="text-[10px] text-gray-800 font-semibold opacity-70">
+                      {member.role}
                     </p>
-                  </GlassSurface>
-
-                  {/* Speech bubble tail with rotated circles */}
-                  <div className={`absolute -bottom-4 w-16 h-8
-                    md:left-1/2 md:-translate-x-1/2
-                    ${index % 3 === 0 ? "max-md:left-[35%] max-md:-translate-x-1/2" : ""}
-                    ${index % 3 === 2 ? "max-md:left-[65%] max-md:-translate-x-1/2" : ""}
-                    ${index % 3 !== 0 && index % 3 !== 2 ? "max-md:left-1/2 max-md:-translate-x-1/2" : ""}
-                  `}>
-                    {/* First larger circle - positioned left and slightly rotated */}
-                    <div 
-                      className="absolute top-0 left-0 w-6 h-6 rounded-full bg-white/85 backdrop-blur-xl border border-white/40 shadow-lg"
-                      style={{ transform: 'rotate(-15deg)' }}
-                    />
-                    {/* Second smaller circle - positioned right and rotated opposite */}
-                    <div 
-                      className={`absolute top-8 -left-4 w-3 h-3 rounded-full bg-white/75 backdrop-blur-xl border border-white/40 shadow-lg inner-shadow-lg
-                                 ${index % 3 === 0 ? "-right-4" : ""}
-                    ${index % 3 === 2 ? "-left-4" : ""}
-                    ${index % 3 !== 0 && index % 3 !== 2 ? "-right-4" : ""}
-                        `}
-
-
-
-                      style={{ transform: 'rotate(15deg)' 
-
-                      }}
-                    />
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <motion.div
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.3, ease: "easeOut" }
-              }}
+                </div>
+              </div>
+            }
+            delay={200}
+            disableAnimation={false}
+            motionProps={{
+              variants: {
+                exit: {
+                  opacity: 0,
+                  y: -8,
+                  scale: 0.96,
+                  transition: {
+                    duration: 0.15,
+                    ease: "easeIn",
+                  },
+                },
+                enter: {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  transition: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 30,
+                    mass: 0.8,
+                  },
+                },
+              },
+            }}
+            offset={12}
+            placement="top"
+          >
+            <motion.div 
+              variants={cardVariants}
+              className={`group cursor-pointer relative ${hoveredIndex === index ? 'z-[100]' : 'z-10'}`}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => setHoveredIndex(hoveredIndex === index ? null : index)}
             >
-              <Card className="rounded-[32px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
-                <CardBody className="p-0">
-                  <div className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-                    
-                    {/* Hover Glow */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
-                      <div
-                        className="w-full h-full"
-                        style={{
-                          background: "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%)",
-                        }}
+              <motion.div
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { duration: 0.3, ease: "easeOut" }
+                }}
+              >
+                <Card className="rounded-[32px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
+                  <CardBody className="p-0">
+                    <div className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}>
+                      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+                      
+                      {/* Hover Glow */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+                        <div
+                          className="w-full h-full"
+                          style={{
+                            background: "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%)",
+                          }}
+                        />
+                      </div>
+
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="relative z-10 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
-
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="relative z-10 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
-                </CardBody>
-              </Card>
+                  </CardBody>
+                </Card>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </Tooltip>
         ))}
       </motion.div>
     </div>

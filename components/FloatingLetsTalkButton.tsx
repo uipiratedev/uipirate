@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const FloatingLetsTalkButton = () => {
@@ -44,11 +45,9 @@ const FloatingLetsTalkButton = () => {
   if (!showButton || isFooterVisible) return null;
 
   return (
-    <a
+    <Link
       className="fixed bottom-3 left-1/2 z-[999999] -translate-x-1/2 transition-opacity duration-500"
-      href="https://wa.me/919708636151"
-      rel="noopener noreferrer"
-      target="_blank"
+      href="/contact"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -72,7 +71,7 @@ const FloatingLetsTalkButton = () => {
           Let&apos;s Talk
         </span>
       </div>
-    </a>
+    </Link>
   );
 };
 
