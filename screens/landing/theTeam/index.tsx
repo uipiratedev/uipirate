@@ -99,7 +99,7 @@ const TheTeam = () => {
   };
 
   return (
-    <div className="container mx-auto px-6 md:px-12 lg:px-24 relative">
+    <div className="container mx-auto px-32 lg:px-20 max-md:px-4 relative">
 
       {/* Header */}
       <div className="text-center mb-6 max-md:mb-4">

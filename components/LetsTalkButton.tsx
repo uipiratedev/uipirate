@@ -88,7 +88,7 @@ export const LetsTalkButton = ({
 
   const buttonContent = (
     <Button
-      className={`${getTextColor()} font-bold py-[27px] px-8`}
+      className={`${getTextColor()} font-bold py-[27px] max-md:py-[24px] px-8`}
       color="primary"
       onPress={onClick}
       isDisabled={isDisabled}

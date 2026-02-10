@@ -96,7 +96,7 @@ const ServicesSection = () => {
 
   return (
     <motion.div 
-      className="pt-6 max-md:pt-10"
+      className="pt-6 max-md:pt-6"
       variants={containerVariants}
       initial="hidden"
       whileInView="show"

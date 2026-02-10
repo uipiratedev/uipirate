@@ -109,17 +109,6 @@ body {
   /* scroll-behavior: smooth; */
 }
 
-.link-heading {
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-weight: 500;
-  font-style: normal;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  color: #888888;
-  margin-bottom: 16px;
-}
 
 /* Geist Font Utilities */
 .font-geist {
@@ -1614,5 +1603,19 @@ nav[data-slot="base"] [data-slot="wrapper"] {
 }
 
   .footer-heading{
-    @apply text-lg md:text-2xl lg:text-4xl font-[550] capitalize mb-4 transition-all duration-300 tracking-tight text-white;
+    @apply text-lg md:text-2xl lg:text-4xl font-[550] capitalize mb-4 max-md:mb-1 transition-all duration-300 tracking-tight text-white;
   }
+.link-heading {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #888888;
+  @apply text-base max-md:text-sm mb-4 max-md:mb-2;
+}
+
+.footer-text{
+    @apply text-white hover:text-white/60 transition-colors text-base max-md:text-sm font-medium;
+}

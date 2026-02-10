@@ -3,7 +3,7 @@ import ServicesSection from "./servicesSection";
 const LandingBusinessHelp = () => {
   return (
     <>
-      <div className="container mx-auto px-6 md:px-12 lg:px-24">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
         <div className="autoShow">
           <div className="flex flex-row items-center justify-center mb-6">
             <GlassBadge variant="gradient">SERVICES</GlassBadge>

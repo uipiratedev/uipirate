@@ -114,9 +114,9 @@ const LandingMarquee = () => {
         }}
       />
 
-      <div className="container mx-auto max-md:px-4 flex flex-col items-center justify-center relative z-10">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 flex flex-col items-center justify-center relative z-10">
         {/* Section heading with enhanced styling */}
-        <div className="mb-6 max-md:mb-10 text-center max-w-4xl mx-auto px-8">
+        <div className="mb-6 max-md:mb-6 text-center max-w-4xl mx-auto px-8">
           <motion.div
             variants={headingVariants}
             initial="hidden"
@@ -136,7 +136,7 @@ const LandingMarquee = () => {
         </div>
 
         {/* Static logo grid - premium enterprise clients only */}
-        <div className="w-full max-w-6xl">
+        <div className="w-full ">
           <motion.div
             className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center justify-items-center"
             variants={logoContainerVariants}
