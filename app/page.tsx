@@ -56,5 +56,5 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [initSmoothScroll]);
 
-  return <>{showContent ? <Landing /> : <Loader />}</>;
+  return <><Landing /></>;
 }

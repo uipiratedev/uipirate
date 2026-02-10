@@ -7,6 +7,7 @@ import Script from "next/script";
 import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
+import PageLoader from "@/components/PageLoader";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
@@ -156,9 +157,10 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col min-h-screen">
+          <PageLoader />
           <ConditionalNavbar />
-          <main className="" id="main-content">
+          <main className="flex-1" id="main-content">
             {children}
           </main>
           <Footer />
