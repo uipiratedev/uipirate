@@ -143,7 +143,7 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
         <p className="heading-center px-12 max-md:px-4 max-lg:px-12 mb-6 mt-6 w-1/2 max-md:text-xl autoShow">
           Recent Works
         </p>
-        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12 mt-6 w-1/2 max-md:text-lg autoShow">
+        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12  w-1/2 max-md:text-lg autoShow">
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>

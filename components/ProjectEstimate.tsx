@@ -79,7 +79,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
   const [selectedRequirement, setSelectedRequirement] = useState<string>("");
   
   // Step 3 data
-  const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
+  const [selectedPriorities, setSelectedPriorities] = useState<string[]>(["fast", "premium"]);
 
   const handleStart = () => {
     setCurrentStep(1);
@@ -92,7 +92,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
     setPhone("");
     setSelectedProjectTypes([]);
     setSelectedRequirement("");
-    setSelectedPriorities([]);
+    setSelectedPriorities(["fast", "premium"]);
   };
 
   const handleNext = () => {
@@ -108,21 +108,21 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
   };
 
   const toggleProjectType = (type: string) => {
-    setSelectedProjectTypes(prev =>
-      prev.includes(type)
-        ? prev.filter(t => t !== type)
-        : [...prev, type]
-    );
+    setSelectedProjectTypes([type]);
   };
 
   const togglePriority = (priorityId: string) => {
     setSelectedPriorities(prev => {
-      // If already selected, remove it
+      // If already selected, replace current with the one not selected
       if (prev.includes(priorityId)) {
-        return prev.filter(id => id !== priorityId);
+        const allOptions = ["fast", "premium", "budget"];
+        const unselected = allOptions.find(opt => !prev.includes(opt));
+        const remaining = prev.filter(id => id !== priorityId);
+        // Ensure we always have 2 (if unselected exists)
+        return unselected ? [...remaining, unselected] : prev;
       }
       
-      // If less than 2 selected, add it
+      // If less than 2 selected (shouldn't happen with new logic but for safety), add it
       if (prev.length < 2) {
         return [...prev, priorityId];
       }
@@ -219,7 +219,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               </h3>
 
               {/* Subtitle */}
-              <p className="text-black w-fit p-2 rounded-lg bg-black/5 text-sm mb-6 uppercase tracking-wide font-mono">
+              <p className="text-black w-fit p-2 rounded-lg bg-black/5 text-sm mb-6 uppercase tracking-wide font-jetbrains-mono">
                 Get a quick ballpark before committing
               </p>
 
@@ -279,13 +279,13 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               transition={{ duration: 0.3 }}
               className="flex flex-col h-full"
             >
-              <p className="absolute top-4 right-4 rounded-full px-2 items-center justify-center text-center flex text-2xl font-bold cursor-pointer bg-[#F6F6F6]" onClick={handleReset}>x</p>
+              
               
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto pr-2">
                 <div className="mb-6">
-                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-mono">STEP 1</p>
-                  <h4 className="text-2xl font-bold mb-2">Add Your Details</h4>
+                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-jetbrains-mono">STEP 1</p>
+                  <h4 className="text-xl font-semibold mb-2">Add Your Details</h4>
                   <p className="text-sm text-gray-600">So we know who we're estimating for</p>
                 </div>
 
@@ -396,18 +396,18 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               transition={{ duration: 0.3 }}
               className="flex flex-col h-full"
             >
-              <p className="absolute top-4 right-4 rounded-full px-2 items-center justify-center text-center flex text-2xl font-bold cursor-pointer bg-[#F6F6F6]" onClick={handleReset}>x</p>
+              
 
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto pr-2">
                 <div className="mb-6">
-                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-mono">STEP 2</p>
-                  <h4 className="text-2xl font-bold mb-2">Select Your Project Type & Scope</h4>
-                  <p className="text-sm text-gray-600">Select what best fits your project</p>
+                  <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-jetbrains-mono">STEP 2</p>
+                  <h4 className="text-xl font-semibold mb-2">Select Your Project Type & Scope</h4>
+                  <p className="text-md text-gray-600 italic">Select what best fits your project</p>
                 </div>
 
                 <div className="mb-6">
-                  <h5 className="text-base font-semibold mb-3">What are you building?</h5>
+                  <h5 className="text-base font-medium mb-3">What are you building?</h5>
                   <div className="flex flex-wrap gap-2">
                     {projectTypes.map((type) => {
                       const isSelected = selectedProjectTypes.includes(type);
@@ -431,7 +431,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                 </div>
 
                 <div className="mb-6">
-                  <h5 className="text-base font-semibold mb-3">What is your requirement?</h5>
+                  <h5 className="text-base font-medium mb-3">What is your requirement?</h5>
                   <Tabs
                     // fullWidth
                     aria-label="Requirement Options"
@@ -479,12 +479,10 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <p className="absolute top-4 right-4 rounded-full px-2 items-center justify-center text-center flex text-2xl font-bold cursor-pointer " onClick={handleReset}>x</p>
 
               <div className="mb-6">
-                 <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-mono">Project Estimate</p>
-                <h4 className="text-2xl font-bold mb-6"
-                
+                 <p className="text-sm mb-2 bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-jetbrains-mono">Project Estimate</p>
+                <h4 className="text-xl font-semibold mb-6"
                 >This is your rough estimate!</h4>
                 
                 {/* Estimate Cards */}
@@ -497,7 +495,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                         <p className="text-gray-700 text-base max-md:text-sm mb-2">
                           Fast and budget-friendly usually means cutting corners. 
                         </p>
-                        <span className="text-3xl font-black mt-2 font-mono">
+                        <span className="text-3xl font-black mt-2 font-jetbrains-mono">
                           We don’t do that here ❌
                         </span>
                       </div>
@@ -508,13 +506,15 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       <div className="p-4 border-2 border-gray-200 rounded-xl">
                         <p className="text-base max-md:text-sm text-gray-500 mb-2">Estimated Budget Range</p>
-                        <p className="text-3xl font-black font-mono">
+                        <p className="text-3xl font-black font-jetbrains-mono">
                           {estimate.budget}
                         </p>
                       </div>
                       <div className="p-4 border-2 border-gray-200 rounded-xl">
                         <p className="text-base max-md:text-sm text-gray-500 mb-2">Estimated Timeline</p>
-                        <p className="text-3xl font-black font-mono">
+                        <p className="text-3xl font-black font-jetbrains-mono"
+                        
+                        >
                           {estimate.timeline}
                         </p>
                       </div>
@@ -524,7 +524,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               </div>
 
               <div className="mb-6">
-                <h5 className="text-lg font-bold mb-4">What matters most right now?</h5>
+                <h5 className="text-base font-medium mb-4">What matters most right now?</h5>
                 
                 <div className="space-y-3">
                   {priorities.map((priority) => {

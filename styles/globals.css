@@ -109,6 +109,18 @@ body {
   /* scroll-behavior: smooth; */
 }
 
+.link-heading {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #888888;
+  margin-bottom: 16px;
+}
+
 /* Geist Font Utilities */
 .font-geist {
   font-family: var(--font-geist), sans-serif !important;

@@ -143,10 +143,10 @@ const Pricing = () => {
               {/* Price */}
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl max-md:text-4xl font-black text-white font-mono">
+                  <span className="text-5xl max-md:text-4xl font-black text-white font-jetbrains-mono">
                     $2000
                   </span>
-                  <span className="text-[#999999] text-lg font-jakarta">/per month</span>
+                  <span className="text-[#999999] text-lg font-jetbrains-mono">/per month</span>
                 </div>
               </div>
 

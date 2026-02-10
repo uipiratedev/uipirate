@@ -5,7 +5,7 @@ import TestimonialCards from "./testimonialCards";
 import GlassBadge from "@/components/GlassBadge";
 function LandingTestimonials() {
   return (
-    <div className=" pt-20 max-md:pt-3 ">
+    <div className=" pt-20 max-md:pt-12 ">
       <div className="autoShow">
       <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-0 autoShow">
 

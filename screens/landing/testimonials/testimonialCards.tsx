@@ -55,18 +55,9 @@ export default function TestimonialCards() {
         )}
 
         <motion.div 
-          className="flex flex-col md:flex-row gap-4 md:gap-6"
+          className="flex flex-col md:flex-row gap-4 md:gap-4"
           initial={{ y: 0 }}
           animate={isExpanded ? { y: 0 } : {}}
-          whileHover={!isExpanded ? { 
-            y: `-${(Math.max(col1.length, col2.length, col3.length) * 250)}px`,
-            transition: {
-              duration: Math.max(col1.length, col2.length, col3.length) * 3,
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "loop"
-            }
-          } : {}}
         >
           {[col1, col2, col3].map((col, i) => (
             <div 
@@ -133,9 +124,9 @@ export default function TestimonialCards() {
 
       {/* See More Button */}
       {!isExpanded && (
-        <div className="flex justify-center mt-8 relative z-30">
+        <div className="flex justify-center mt-8 relative z-30 pb-1">
           <LetsTalkButton 
-            variant="color" 
+            variant="light" 
             onClick={() => setIsExpanded(true)}
           >
             See More Testimonials

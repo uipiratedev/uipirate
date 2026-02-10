@@ -10,34 +10,40 @@ import { useClickSound } from "@/hooks/useClickSound";
 
 const footerSocialLinks = [
   {
-    name: "Google Maps",
-    url: "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
-    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1751630868/maps_icon-s_rgw06n.svg",
+    name: "uipirate",
+    url: "https://uipirate.com",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280222/uipirate_sowte1.svg",
   },
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729665622/ri_linkedin-fill_nivdt4.svg",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/in_ucqlrn.svg",
+  },
+    {
+    name: "twitter",
+    url: "https://twitter.com/ui_pirate",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/x_n6sgau.svg",
+  },
+   {
+    name: "Dribbble",
+    url: "https://dribbble.com/vishalanandUIUX",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/redit_v3rdpt.svg",
   },
   {
     name: "Upwork",
     url: "https://www.upwork.com/agencies/1837026757439552424/",
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729665602/bxl_upwork_qojqwz.svg",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280706/up_a4rhmj.svg",
   },
   {
     name: "Behance",
     url: "https://www.behance.net/vishalanand-UI-UX",
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729665601/uil_behance_ky54am.svg",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280706/be_k40rwo.svg",
   },
-  {
-    name: "Dribbble",
-    url: "https://dribbble.com/vishalanandUIUX",
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1730786563/uil_behance_mf89uz.svg",
-  },
+ 
   {
     name: "Clutch",
     url: "https://clutch.co/profile/ui-pirate-vishal-anand",
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1729665601/Frame_1000006225_bafxox.svg",
+    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280807/cl_zlzmht.svg",
   },
 ];
 
@@ -58,11 +64,11 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative w-full bg-[#000000F5] pt-24 overflow-hidden noise-texture noise-texture ">
+    <footer className="relative w-full bg-[#000000F9] pt-24 overflow-hidden noise-texture noise-texture ">
       
       
       {/* Top Light Effect */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/5 to-white/5" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-white via-white/50 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[40vh] bg-white/5 blur-[80px] -translate-y-1/2" />
 
       {/* Content */}
@@ -130,7 +136,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
           {/* Background Text - SAAS WEB APP Marquee - Positioned Behind Button */}
           <div
-            className="absolute top-[30%] max-md:top-[20%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
+            className="absolute top-[27%] max-md:top-[20%] left-0 right-0 -translate-y-1/2 opacity-[0.03] pointer-events-none overflow-hidden"
             style={{
               WebkitMaskImage:
                 "linear-gradient(to right, white 0%, white 20%, transparent 35%, transparent 65%, white 80%, white 100%)",
@@ -155,7 +161,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
               {[...Array(4)].map((_, i) => (
                 <span
                   key={i}
-                  className="text-[100px] max-md:text-[50px] font-bold leading-[100%] tracking-[0px] align-middle uppercase text-white mx-12 font-mono"
+                  className="text-[100px] max-md:text-[50px] font-bold leading-[100%] tracking-[0px] align-middle uppercase text-white mx-12 font-jetbrains-mono"
                   style={{
                     // @ts-ignore
                     leadingTrim: "none",
@@ -179,7 +185,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 text-left pt-16">
             {/* Branding/Tagline Section */}
             <div className="lg:col-span-5 flex flex-col gap-8">
-              <p className="text-[28px] md:text-[32px] font-bold text-white leading-[1.3] max-w-md"
+              <p className="text-[18px] md:text-[24px] font-bold text-white leading-[1.3] max-w-sm"
                 
                  >
                 Premium <span className="text-orange-500  ">UI/UX Design & Development</span> for SaaS & AI Products.
@@ -190,7 +196,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
             {/* Quick Links Column */}
             <div className="lg:col-span-2">
-              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40 font-mono">
+              <h4 className="link-heading">
                 Quick Links
               </h4>
               <ul className="flex flex-col gap-1">
@@ -203,7 +209,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
             {/* Resources Column */}
             <div className="lg:col-span-2">
-              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40 font-mono">
+              <h4 className="link-heading">
                 Resources
               </h4>
               <ul className="flex flex-col gap-1">
@@ -216,7 +222,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
 
             {/* Policies Column */}
             <div className="lg:col-span-3">
-              <h4 className="text-white font-black uppercase tracking-[0.25em] text-[11px] mb-4 opacity-40 font-mono">
+              <h4 className="link-heading">
                 Policies & Legal
               </h4>
               <ul className="flex flex-col gap-1">
@@ -230,25 +236,26 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
           {/* Copyright Strip */}
           <div className="mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[13px] text-white/30 font-medium">
-              Copyright©2025 ProPirates. All Rights Reserved.
+              Copyright©2023 UI Pirate. All Rights Reserved.
             </p>
               {/* Social Links Sub-section */}
               <div className="flex items-center gap-4 mt-2">
                 {footerSocialLinks.map((link) => (
                   <Link
-                    key={link.name}
-                    isExternal
-                    className="group transition-all duration-300"
-                    href={link.url}
-                  >
-                    <div className="w-[45px] h-[45px] flex items-center justify-center rounded-xl bg-white/5 border border-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
-                      <img
-                        alt={link.name}
-                        className="w-10 h-10 transition-all duration-300 group-hover:invert"
-                        src={link.icon}
-                      />
-                    </div>
-                  </Link>
+                key={link.name}
+                isExternal
+                className="group relative transition-all duration-300"
+                href={link.url}
+              >
+                <div className=" flex items-center p-3 max-md:p-2 justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                  <img
+                    alt={link.name}
+                    className="w-4 h-4 max-md:w-5 max-md:h-5 brightness-100 group-hover:invert transition-all duration-300"
+                  
+                    src={link.icon}
+                  />
+                </div>
+              </Link>
                 ))}
               </div>
           </div>
