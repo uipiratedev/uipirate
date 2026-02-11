@@ -29,11 +29,11 @@ const ServiceDetails = ({ data }: any) => {
         </div>
 
         <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0">
-          <WhatWeProvide data={data.whatWeProvide} />
-          <YouWillGet data={data.youWillGet} />
+          {/* <WhatWeProvide data={data.whatWeProvide} /> */}
+          {/* <YouWillGet data={data.youWillGet} /> */}
           <WhyThisMatters />
           <StreamlinedProcess data={data.streamlinedProcess} />
-          <OptionalAdd data={data.optionalAdd} />
+          {/* <OptionalAdd data={data.optionalAdd} /> */}
         </div>
 
         <div className="container mx-auto">
@@ -45,9 +45,9 @@ const ServiceDetails = ({ data }: any) => {
           <WhoThisIsFor data={data.whoThisIsFor} />
         </div>
 
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 mb-24">
+        {/* <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 mb-24">
           <TryBeforeCommit />
-        </div>
+        </div> */}
 
         <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 mb-24">
           <RecommendedNextSteps />

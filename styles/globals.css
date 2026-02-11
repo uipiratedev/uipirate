@@ -1679,3 +1679,11 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   }
 }
 
+/* Knot component specific shadows */
+.knot-shadow-orange {
+  box-shadow: inset 0px 2.12px 2.97px 0px #ffffffa6;
+}
+
+.knot-shadow-white {
+  box-shadow: inset 0px -0.05px 2px 0px #00000040;
+}

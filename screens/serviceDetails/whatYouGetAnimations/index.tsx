@@ -1,5 +1,6 @@
 import Image from "next/image";
 import GlassBadge from "@/components/GlassBadge";
+import { ContainerScroll } from "@/components/container-scroll-animation";
 
 const features = [
   {
@@ -7,25 +8,25 @@ const features = [
     description:
       "Animations that guide users through actions, states, and key moments inside your product and campaigns.",
     // Replace this with your actual card background image path/URL
-    image: "",
+    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
   },
   {
     title: "Lottie & JSON Animations",
     description:
       "Lightweight vector animations exported as Lottie / JSON files so developers can drop them straight into code.",
-    image: "",
+    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
   },
   {
     title: "Website Motion & Interactions",
     description:
       "Scroll, hover, and micro-interactions that make landing pages and marketing sites feel smooth and intentional.",
-    image: "",
+    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
   },
   {
     title: "Developer-Ready Files",
     description:
       "Clean exports, specs, and implementation notes so your dev team knows exactly how everything should move.",
-    image: "",
+    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
   },
 ];
 
@@ -37,7 +38,7 @@ interface FeatureCardProps {
 
 const WhatYouGetCard = ({ title, description, image }: FeatureCardProps) => {
   return (
-    <div className="relative h-[190px] md:h-[210px] overflow-hidden rounded-[28px] bg-[#020617] border border-white/10 shadow-[0_22px_55px_rgba(15,23,42,0.75)]">
+    <div className="relative h-[290px] md:h-[350px] overflow-hidden rounded-[28px]  border border-white/10">
       {/* Background image */}
       {image ? (
         <Image src={image} alt={title} fill className="object-cover" />
@@ -65,23 +66,33 @@ const WhatYouGetCard = ({ title, description, image }: FeatureCardProps) => {
 
 const WhatYouGetAnimations = () => {
   return (
-    <section className="pt-24 max-md:pt-20 pb-20">
+    <section className=" pb-20">
       {/* Header */}
-      <div className="autoShow text-center mb-10 md:mb-14">
+    
+
+      {/* Cards grid */}
+       <ContainerScroll
+        titleComponent={
+          <>
+              <div className="autoShow text-center mb-10 md:mb-14">
         <div className="flex items-center justify-center mb-3">
           <GlassBadge variant="gradient">WHAT YOU GET</GlassBadge>
         </div>
-        <h2 className="text-3xl md:text-[32px] font-bold text-[#0F172A] leading-tight">
+        <h2 className="heading-center">
           Everything You Need to Create Smoooooth Animations
         </h2>
       </div>
-
-      {/* Cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 autoShow">
+          </>
+        }
+      >
+       
+     
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-3 autoShow">
         {features.map((feature) => (
           <WhatYouGetCard key={feature.title} {...feature} />
         ))}
       </div>
+       </ContainerScroll>
     </section>
   );
 };

@@ -16,7 +16,7 @@ const WhatWeProvide = ({ data }: any) => {
         {data.card.map((item: any, index: number) => {
           return (
             <div key={index}>
-              <Card className="rounded-[32px] max-md:w-full bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]">
+              <Card className="rounded-[20px] max-md:rounded-[12px] max-md:w-full bg-[#e9e9e9] shadow-none border-1 border-[#0000000f]">
                 <CardBody className="p-2 max-md:p-2 max-lg:p-3">
                   <div className="w-full p-6  bg-white rounded-[24px] max-md:p-4 box-shadow">
                     <div className="flex flex-row items-center justify-center gap-4 max-md:gap-2 mb-4">

@@ -58,60 +58,60 @@ const StreamlinedProcess = ({ data }: any) => {
         </h2>
       </div>
 
-      {/* Cards with Rope */}
-      <div className="relative max-w-5xl mx-auto px-4 md:px-0">
+      {/* Cards with Straight Rope */}
+      <div className="relative mx-auto px-4 md:px-0">
+        
+        {/* Mobile: Continuous Straight Vertical Rope on Left */}
+        {/* Placed outside the row loop to be continuous across all items */}
+        <div className="md:hidden absolute left-[23px] top-0 bottom-12 w-[3px] bg-[#FF5B04] z-0" />
+
         {rows.map((row, rowIndex) => (
-          <div key={rowIndex} className="relative mb-8 md:mb-4">
-            {/* Orange Rope */}
-            <svg
-              className="pointer-events-none absolute left-0 right-0 top-4 h-9 w-full z-0"
-              viewBox="0 0 300 30"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient
-                  id="ropeGradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                >
-                  <stop offset="0%" stopColor="#FF5B04" />
-                  <stop offset="50%" stopColor="#FF7B3A" />
-                  <stop offset="100%" stopColor="#FF5B04" />
-                </linearGradient>
-              </defs>
-              {/* Single smooth sagging rope across the full width (deeper curve) */}
-              <path
-                d="M0,5 C75,16 225,16 300,5"
-                stroke="url(#ropeGradient)"
-                strokeWidth="3.5"
-                fill="none"
-                strokeLinecap="round"
-              />
-            </svg>
+          <div key={rowIndex} className="relative mb-0 md:mb-12 last:mb-0">
+            {/* Desktop: Straight Horizontal Rope */}
+            <div className="hidden md:block absolute left-0 right-0 top-[6px] h-[3px] bg-[#FF5B04] z-0 rounded-full" />
 
             {/* Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-8 relative z-10 pt-1 md:pt-0 pb-4 md:pb-0">
               {row.map((card, cardIdx) => (
-                <div
-                  key={card.index}
-                  className={`flex flex-col items-center ${getCardVerticalOffsetClass(
-                    cardIdx,
-                  )}`}
-                >
-                  {/* Orange Clip */}
-                  <div
-                    className="flex flex-col items-center -mb-3 z-20"
-                    style={{
-                      transform: `rotate(${getCardRotation(card.index)})`,
-                      transformOrigin: "top center",
-                    }}
-                  >
-                    <div className="w-3 h-3 bg-[#FF5B04] rounded-full shadow-md" />
-                    <div className="w-[2px] h-5 bg-[#FF5B04]" />
-                    {/* Card */}
-                    <div className="bg-white rounded-[18px] pt-5 pb-6 px-6 shadow-[0_18px_45px_rgba(0,0,0,0.08)] border border-gray-100 w-full hover:shadow-[0_22px_55px_rgba(0,0,0,0.12)] transition-all duration-300 group">
+                <div key={card.index} className="flex md:flex-col items-start md:items-center relative">
+                  
+                  {/* Clip/Knot Section - Desktop (Two Knots) */}
+                  <div className="hidden md:flex justify-between w-full px-12 absolute -top-1 z-20">
+                     {/* Left Knot */}
+                     <div className="flex flex-col items-center">
+                        <div className="w-[11px] h-8 bg-[#FF5B04] rounded-full z-30 knot-shadow-orange" />
+                        <div className="w-4 h-4 -mt-3 bg-[#F7F7F7] rounded-full ring-2 ring-white z-20 knot-shadow-white" />
+                     </div>
+                     {/* Right Knot */}
+                     <div className="flex flex-col items-center">
+                         <div className="w-[11px] h-8 bg-[#FF5B04] rounded-full z-30 knot-shadow-orange" />
+                         <div className="w-4 h-4 -mt-3 bg-[#F7F7F7] rounded-full ring-2 ring-white z-20 knot-shadow-white" />
+                     </div>
+                  </div>
+
+                  {/* Clip/Knot Section - Mobile (Two Knots on Left) */}
+                  <div className="md:hidden">
+                    {/* Top Knot */}
+                    <div className="absolute z-20 top-[35px] left-[5px]">
+                      <div className="relative flex flex-row items-center">
+                         <div className="w-8 h-[11px] bg-[#FF5B04] rounded-full z-30 knot-shadow-orange" />
+                         <div className="w-4 h-4 bg-[#F7F7F7] rounded-full -ml-3 ring-2 ring-white z-10 knot-shadow-white" />
+                      </div>
+                      <div className="h-[2px] w-6 bg-[#FF5B04] absolute left-4 top-1/2 -translate-y-1/2 -z-10" />
+                    </div>
+                    {/* Bottom Knot */}
+                    <div className="absolute z-20 bottom-[35px] left-[5px]">
+                      <div className="relative flex flex-row items-center">
+                         <div className="w-8 h-[11px] bg-[#FF5B04] rounded-full z-40 knot-shadow-orange" />
+                         <div className="w-4 h-4 bg-[#F7F7F7] -ml-3 rounded-full ring-2 ring-white z-20 knot-shadow-white" />
+                      </div>
+                      <div className="h-[2px] w-6 bg-[#FF5B04] absolute left-4 top-1/2 -translate-y-1/2 -z-10" />
+                    </div>
+                  </div>
+
+                  {/* Card Container */}
+                  <div className="w-full pl-7 md:pl-0 md:mt-4">
+                    <div className="bg-white rounded-[18px] pt-5 pb-6 px-6 shadow-[0_18px_45px_rgba(0,0,0,0.08)] border border-gray-100 w-full hover:shadow-[0_22px_55px_rgba(0,0,0,0.12)] transition-all duration-300 group relative z-10">
                       {/* Card Number */}
                       <span className="text-[44px] md:text-[52px] font-semibold text-gray-200 leading-none mb-4 block">
                         {String(card.index).padStart(2, "0")}
