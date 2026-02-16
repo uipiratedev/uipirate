@@ -1,6 +1,7 @@
 "use client";
 
 import GlassBadge from "@/components/GlassBadge";
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 const BlogsNewsletter = () => {
   return (
@@ -14,28 +15,28 @@ const BlogsNewsletter = () => {
         </div>
 
         {/* Heading */}
-        <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-8">
+        <h2 className="heading-center">
           Stay In The Loop
         </h2>
 
         {/* Illustration placeholder styled similar to design */}
-        <div className="mx-auto mb-8 h-40 md:h-48 w-full max-w-xs rounded-[32px] bg-[radial-gradient(circle_at_top,_#FF5B04,_transparent_60%),linear-gradient(to_bottom,#ffffff,#f4f4f4)] shadow-[0_18px_45px_rgba(15,23,42,0.08)] flex items-center justify-center">
-          <div className="h-24 w-20 border-[3px] border-slate-900 rounded-[32px] flex items-center justify-center relative bg-white">
-            <div className="h-10 w-10 rounded-full bg-[#FF5B04]" />
-          </div>
-        </div>
+       <div className="flex item-center justify-center my-12">
+        <img src="/assets/loop.svg" alt=""  className="w-[300px] h-[300px]" />
+       </div>
 
         {/* Tagline + sparkles */}
         <div className="flex items-center justify-center gap-3 mb-5">
-          <span className="text-xs md:text-sm">✨</span>
-          <p className="tracking-[0.4em] text-[11px] md:text-xs font-semibold text-slate-900 uppercase">
-            GET THE GOOD STUFF ONLY
+          <p className="tracking-[0.2em] text-xl max-md:text-base font-semibold text-slate-900 uppercase "
+          style={{fontFamily:"'JetBrains Mono', monospace"}}
+          >
+            ✨  Get the Good Stuff Only  ✨
           </p>
-          <span className="text-xs md:text-sm">✨</span>
         </div>
 
         {/* Description */}
-        <div className="space-y-1 text-xs md:text-sm text-slate-500 mb-8 leading-relaxed">
+        <div className="space-y-1 text-xs md:text-sm mb-8 leading-relaxed"
+        style={{fontFamily:"'Plus Jakarta Sans',sans-serif"}}
+        >
           <p>
             We don&apos;t send emails often. Only when there&apos;s something
             genuinely useful.
@@ -49,18 +50,14 @@ const BlogsNewsletter = () => {
 
         {/* Email input with button inside */}
         <form onSubmit={(e) => e.preventDefault()} className="max-w-md mx-auto">
-          <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-[0_10px_25px_rgba(15,23,42,0.05)]">
+          <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-[0_10px_25px_rgba(15,23,42,0.05)]">
             <input
               type="email"
               placeholder="Email ID"
               className="flex-1 bg-transparent px-2 py-1 text-sm outline-none placeholder:text-slate-400"
             />
-            <button
-              type="submit"
-              className="px-5 py-2 rounded-full bg-[#FF5B04] text-white text-xs md:text-sm font-semibold shadow-[0_10px_25px_rgba(255,91,4,0.45)] hover:bg-[#ff7a33] transition-colors whitespace-nowrap"
-            >
-              Register
-            </button>
+            <LetsTalkButton variant="color" children="Register" className="py-0 my-0" href="#"/>
+              
           </div>
         </form>
       </div>

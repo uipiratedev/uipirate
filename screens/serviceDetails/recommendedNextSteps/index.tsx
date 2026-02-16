@@ -22,10 +22,10 @@ const RecommendedNextSteps = () => {
       </div>
 
       {/* Content row */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-6 md:gap-8 items-stretch">
+      <div className=" max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-6 md:gap-8 items-stretch">
         {/* Left: Motion Graphic feature card */}
         <div className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.06)]">
-          <div className="bg-orange-500 text-white rounded-full max-md:rounded-xl w-full flex items-center justify-between px-6 max-md:px-4 py-2">
+          <div className="bg-orange-500 text-white rounded-full max-md:rounded-xl w-full flex items-center justify-between px-2 max-md:px-4 py-2">
                 {/* Left Circle */}
                 <div className="w-6 h-6 bg-[#DE5005] rounded-full flex-shrink-0" style={{boxShadow: "0px 0.36px 0.36px 0px #7E7E7E8C inset"}} />
 
@@ -79,7 +79,7 @@ const RecommendedNextSteps = () => {
               <p className="text-sm md:text-[15px] text-[#64748B] leading-relaxed">
                 Most teams use motion to explain, promote, and scale reach.
               </p>
-              <LetsTalkButton fullWidth variant="color" children="Explore Motion graphic" />
+              <LetsTalkButton  variant="dark" children="Explore " />
             </div>
           </div>
         </div>

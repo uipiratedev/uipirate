@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, memo } from "react";
 import Image from "next/image";
 import { Card, CardBody, CardHeader } from "@heroui/react";
 import Link from "next/link";
+import GlassBadge from "@/components/GlassBadge";
 
 interface Blog {
   _id: string;
@@ -62,9 +63,9 @@ const FeaturedBlogs = memo(function FeaturedBlogs() {
 
       <div className="autoShow">
         <div className="flex flex-row items-center justify-center mb-6">
-          <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
+          <GlassBadge variant="gradient" size="sm">
             What we provide
-          </span>
+          </GlassBadge>
         </div>
         <p className="heading-center">Why Work With UiPirate?</p>
       </div>
