@@ -2,7 +2,8 @@
 
 import { Button } from "@heroui/button";
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 const data = [
   {
@@ -47,22 +48,34 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
   const isEven = index % 2 === 0;
 
   // Scroll progress for image animation
-  const { scrollYProgress: imageScrollProgress } = useScroll({
+  const { scrollYProgress: imageScrollProgressRaw } = useScroll({
     target: cardRef,
-    offset: ["start end", "end start"],
+    offset: ["start 100%", "start 70%"],
   });
 
   // Scroll progress for content animation
-  const { scrollYProgress: contentScrollProgress } = useScroll({
+  const { scrollYProgress: contentScrollProgressRaw } = useScroll({
     target: cardRef,
-    offset: ["start 80%", "end 20%"],
+    offset: ["start 90%", "start 70%"],
+  });
+
+  // Smooth out the raw progress values with physics
+  const imageScrollProgress = useSpring(imageScrollProgressRaw, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+  const contentScrollProgress = useSpring(contentScrollProgressRaw, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
   });
 
   // Image transforms: x and rotation
   const imageX = useTransform(
     imageScrollProgress,
     [0, 1],
-    [isEven ? "-35%" : "35%", "0%"]
+    [isEven ? "-25%" : "25%", "0%"]
   );
   const imageRotate = useTransform(
     imageScrollProgress,
@@ -108,14 +121,22 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
               {item.subtitle}
             </p>
           </div>
-          <a href={item.url} rel="noreferrer" target="_blank">
+          {/* <a href={item.url} rel="noreferrer" target="_blank">
             <Button
               className="rounded-2xl py-6 px-12 mt-12 font-[700] text-[16px]"
               variant="bordered"
             >
               View Project
             </Button>
-          </a>
+          </a> */}
+          <div className="mt-12">
+            <LetsTalkButton
+              variant="light"
+              children="View Project"
+              href={item.url}
+              target="_blank"
+          />
+          </div>
         </div>
       </motion.div>
       <div className="w-[60%] max-w-full max-md:w-[100%]">

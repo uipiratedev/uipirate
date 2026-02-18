@@ -764,7 +764,7 @@ const OurPricingCard = (props: any) => {
                   </Link>
 
                   <a
-                    className="w-[300px] max-lg:mt-3 lg:ml-3"
+                    className="w-[300px] h-auto max-lg:mt-3 lg:ml-3"
                     href="https://wa.link/i35lma"
                     rel="noreferrer"
                     target="_blank"
