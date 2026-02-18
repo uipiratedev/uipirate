@@ -151,7 +151,7 @@ const StreamlinedProcess = ({ data }: any) => {
                     </div>
 
                     {/* Static Rotation Wrapper - Handles the 5/-6 degree tilt */}
-                    <div className={`w-full h-full origin-top ${getCardRotationClass(colIdx)}`}>
+                    <div className={`w-full origin-top ${getCardRotationClass(colIdx)}`}>
                       {/* Card Container - Now sways relative to the tilted wrapper */}
                       <div className="w-full md:mt-4 h-full flex flex-col rounded-[32px] p-2 md:pt-14 max-md:pl-8 transition-transform duration-500 hover-swing-card origin-top"
                         style={{boxShadow: "0px 3px 15px 3px #FFC8DC"}}
@@ -160,15 +160,15 @@ const StreamlinedProcess = ({ data }: any) => {
                           style={{boxShadow: "0px -1px 1px 0px #0000001A inset"}}
                         >
                           {/* Card Number */}
-                          <span className="text-[44px] md:text-[52px] font-semibold text-gray-200 leading-none mb-4 block">
+                          <span className="text-[44px] md:text-[52px] font-semibold text-gray-200 leading-none mb-4 block group-hover:text-orange-500 transition-colors">
                             {String(card.index).padStart(2, "0")}
                           </span>
 
                           {/* Card Content */}
-                          <h3 className="text-[18px] md:text-[19px] font-semibold text-black mb-2 group-hover:text-[#FF5B04] transition-colors">
+                          <h3 className="text-[18px] md:text-[19px] font-semibold text-black mb-2 group-hover:text-orange-500 transition-colors">
                             {card.heading}
                           </h3>
-                          <p className="text-[13px] md:text-[14px] text-gray-500 leading-relaxed flex-grow">
+                          <p className="text-[13px] md:text-[14px] text-gray-500 group-hover:text-gray-800 transition-colors leading-relaxed flex-grow">
                             {card.description}
                           </p>
                         </div>
