@@ -27,7 +27,7 @@ const WhoThisIsFor = ({ data }: any) => {
         {data.card?.map((item: any, index: number) => (
           <div
             key={index}
-            className="group flex h-full flex-col overflow-hidden rounded-[32px] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] border border-[#0000000f]"
+            className="group flex h-full flex-col overflow-hidden rounded-[20px] max-md:rounded-[12px] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] border border-[#0000000f]"
           >
             {/* Illustration / pattern area */}
             <div

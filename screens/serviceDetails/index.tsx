@@ -24,32 +24,33 @@ const ServiceDetails = ({ data }: any) => {
         <ServiceDetailsHero data={data.hero} />
 
         {/* New WHAT YOU GET (animations) section just below hero */}
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0">
+        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
           <WhatYouGetAnimations />
         </div>
 
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0">
-          <WhatWeProvide data={data.whatWeProvide} />
-          <YouWillGet data={data.youWillGet} />
+        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
+          {/* <WhatWeProvide data={data.whatWeProvide} /> */}
+          {/* <YouWillGet data={data.youWillGet} /> */}
           <WhyThisMatters />
-          <StreamlinedProcess data={data.streamlinedProcess} />
-          <OptionalAdd data={data.optionalAdd} />
+          {/* <OptionalAdd data={data.optionalAdd} /> */}
         </div>
+          <StreamlinedProcess data={data.streamlinedProcess} />
 
-        <div className="container mx-auto">
+
+        <div className="container mx-auto ">
           <LandingWork />
         </div>
 
         {/* New Who This Is For section below Work section */}
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0">
+        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
           <WhoThisIsFor data={data.whoThisIsFor} />
         </div>
 
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 mb-24">
+        {/* <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4 mb-24">
           <TryBeforeCommit />
-        </div>
+        </div> */}
 
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 mb-24">
+        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4 mb-24">
           <RecommendedNextSteps />
         </div>
       </div>

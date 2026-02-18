@@ -1679,3 +1679,53 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   }
 }
 
+/* Knot component specific shadows */
+.knot-shadow-orange {
+  box-shadow: inset 0px 2.12px 2.97px 0px #ffffffa6;
+}
+
+.knot-shadow-white {
+  box-shadow: inset 0px -0.05px 2px 0px #00000040;
+}
+
+@keyframes card-swing-desktop {
+  0% { transform: perspective(1200px) rotateX(0deg) translate3d(0, 0, 0); }
+  25% { transform: perspective(1200px) rotateX(-25deg) translate3d(0, -15px, 5px); } /* Bottom swings IN, card lifts UP */
+  50% { transform: perspective(1200px) rotateX(15deg) translate3d(0, 10px, 20px); }  /* Bottom swings OUT, card drops/stretches */
+  75% { transform: perspective(1200px) rotateX(-12deg) translate3d(0, -5px, 0); }
+  100% { transform: perspective(1200px) rotateX(0deg) translate3d(0, 0, 0); }
+}
+
+@keyframes card-swing-mobile {
+  0% { transform: perspective(1200px) rotateY(0deg); }
+  25% { transform: perspective(1200px) rotateY(-18deg); }
+  50% { transform: perspective(1200px) rotateY(12deg); }
+  75% { transform: perspective(1200px) rotateY(-8deg); }
+  100% { transform: perspective(1200px) rotateY(0deg); }
+}
+
+@media (max-width: 767px) {
+  .hover-swing-card:hover {
+    animation: card-swing-mobile 3s ease-in-out infinite;
+    transform-origin: center left;
+    z-index: 50;
+  }
+}
+
+@media (min-width: 768px) {
+  .hover-swing-card:hover {
+    animation: card-swing-desktop 3s ease-in-out infinite;
+    transform-origin: top center;
+    z-index: 50;
+  }
+}
+
+.knot-shadow-orange {
+  filter: drop-shadow(0 4px 6px rgba(229, 78, 0, 0.4));
+}
+
+.knot-shadow-white {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+

@@ -725,6 +725,132 @@ const BentoGrid = () => {
               </div>
             </motion.div>
           </div>
+          {/* botton card */}
+          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-6 mt-6">
+             {/* <!-- Card 6: Apps4Sale (NEW) --> */}
+             <motion.div
+               className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[350px] overflow-hidden"
+               custom={5}
+               initial="hidden"
+               variants={cardVariants}
+               viewport={{ once: true, amount: 0.3 }}
+               whileInView="visible"
+             >
+              <div className="h-full flex flex-col justify-between">
+                {/* Visual Section */}
+                <div className="flex-1 flex items-center justify-center mb-2 overflow-hidden">
+                  <div className="w-full flex items-center gap-5">
+                    {/* User Flows */}
+                    <div className="flex-1 flex flex-col gap-4">
+                      {/* Flow Step 1 */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400 to-orange-300 flex-shrink-0" />
+                        <div className="flex-1 h-0.5 bg-gray-200 relative">
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-l-[6px] border-l-gray-200 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent" />
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-gray-100 flex-shrink-0" />
+                      </div>
+
+                      {/* Flow Step 2 */}
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl bg-gray-100 flex-shrink-0" />
+                        <div className="flex-1 h-0.5 bg-gray-200 relative">
+                          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-l-[6px] border-l-gray-200 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent" />
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-400 to-green-300 flex-shrink-0" />
+                      </div>
+                    </div>
+
+                    {/* Wireframe Icon */}
+                    <div className="w-20 h-24 bg-white border-2 border-gray-200 rounded-lg p-2 flex flex-col gap-1.5 flex-shrink-0">
+                      <div className="h-3 bg-gray-100 rounded" />
+                      <div className="flex-1 bg-gray-50 rounded" />
+                      <div className="h-3 bg-gray-100 rounded" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="text-left">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                    UX Consultation
+                  </h3>
+                  <p className="text-gray-600 font-medium">
+                    Expert guidance on user flows, wireframes, and design strategy.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* <!-- Card 7: UX Consultation (NEW) --> */}
+            <motion.div
+               className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[350px] overflow-hidden relative"
+               custom={6}
+               initial="hidden"
+               variants={cardVariants}
+               viewport={{ once: true, amount: 0.3 }}
+               whileInView="visible"
+             >
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/40 via-green-50/40 to-blue-50/40 rounded-2xl" />
+              
+              <div className="h-full flex flex-col justify-between relative z-10">
+                {/* Visual Section */}
+                <div className="flex-1 flex items-center justify-center mb-2 overflow-hidden">
+                  <div className="grid grid-cols-2 gap-3 w-full max-w-[200px]">
+                    {/* App Icon 1 */}
+                    <div className="aspect-square rounded-2xl bg-gradient-to-br from-orange-400 to-orange-300 flex items-center justify-center relative overflow-hidden">
+                      <div className="w-3/5 h-3/5 bg-white/30 rounded-lg flex items-center justify-center">
+                        <div className="w-1/2 h-1/2 bg-white rounded" />
+                      </div>
+                      <div className="absolute top-2 right-2 bg-black/20 text-white px-2 py-1 rounded-md text-xs font-semibold">
+                        $99
+                      </div>
+                    </div>
+
+                    {/* App Icon 2 */}
+                    <div className="aspect-square rounded-2xl bg-gradient-to-br from-blue-400 to-blue-300 flex items-center justify-center relative overflow-hidden">
+                      <div className="w-3/5 h-3/5 bg-white/30 rounded-lg flex items-center justify-center">
+                        <div className="w-1/2 h-1/2 bg-white rounded-full" />
+                      </div>
+                      <div className="absolute top-2 right-2 bg-black/20 text-white px-2 py-1 rounded-md text-xs font-semibold">
+                        $149
+                      </div>
+                    </div>
+
+                    {/* App Icon 3 */}
+                    <div className="aspect-square rounded-2xl bg-gradient-to-br from-green-400 to-green-300 flex items-center justify-center relative overflow-hidden">
+                      <div className="w-3/5 h-3/5 bg-white/30 rounded-lg flex items-center justify-center">
+                        <div className="w-1/2 h-1/2 bg-white rounded-full" />
+                      </div>
+                      <div className="absolute top-2 right-2 bg-black/20 text-white px-2 py-1 rounded-md text-xs font-semibold">
+                        $79
+                      </div>
+                    </div>
+
+                    {/* App Icon 4 */}
+                    <div className="aspect-square rounded-2xl bg-gradient-to-br from-purple-400 to-purple-300 flex items-center justify-center relative overflow-hidden">
+                      <div className="w-3/5 h-3/5 bg-white/30 rounded-lg flex items-center justify-center">
+                        <div className="w-1/2 h-1/2 bg-white rounded" />
+                      </div>
+                      <div className="absolute top-2 right-2 bg-black/20 text-white px-2 py-1 rounded-md text-xs font-semibold">
+                        $199
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="text-left">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                    Apps4Sale
+                  </h3>
+                  <p className="text-gray-600 font-medium">
+                    Ready-to-deploy apps and tools. Fully functional.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </>

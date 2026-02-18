@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 import PageWrapper from "@/components/PageWrapper";
+import GlassBadge from "@/components/GlassBadge";
 
 const Sitemap = () => {
   const sitemapData = {
@@ -54,9 +55,7 @@ const Sitemap = () => {
         {/* Hero Section */}
         <div className="text-center mb-16 max-md:mb-12">
           <div className="mb-6 flex flex-row items-center justify-center">
-            <span className="rounded-xl border-2 border-cyan-400 bg-[#8EF1F1] px-4 py-2 font-semibold uppercase text-sm">
-              Navigation
-            </span>
+            <GlassBadge variant="gradient">Navigation</GlassBadge>
           </div>
           <h1 className="heading-center mb-6">Site Map</h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">

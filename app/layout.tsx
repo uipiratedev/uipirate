@@ -163,7 +163,9 @@ export default function RootLayout({
           <main className="flex-1" id="main-content">
             {children}
           </main>
-          <Footer />
+
+             <Footer />
+        
           <SpeedInsights />
           <CookieConsent />
         </div>

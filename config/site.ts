@@ -12,41 +12,41 @@ export const siteConfig = {
         {
           category: "UX/UI DESIGN",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
-          href: "/services",
+          href: "/services/SaaS-Web-&-Mobile-Apps",
           isLargeCard: true,
         },
         {
           category: "Saas & AI Development",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
-          href: "/services",
+          href: "/services/SaaS-Web-&-Mobile-Apps",
           isLargeCard: true,
         },
         
         {
           category: "Landing Pages & Business Websites",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
-          href: "/services",
+          href: "/services/Landing-Pages-&-Business-Websites",
           isLargeCard: true,
         },
         {
           category: "Graphic Design",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/graphic_s0cmgk.svg",
-          href: "/services",
+          href: "/services/Graphic-Design",
         },
         {
           category: "Motion Graphic",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/motion_dqrdcl.svg",
-          href: "/services",
+          href: "/services/Motion-Graphics-&-Video-Editing",
         },
         {
           category: "UX Audits & Consultation",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
-          href: "/services",
+          href: "/services/UX-Audits-&-Consultation",
         },
         {
           category: "3D Assets & Animation",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/3d_wtkihl.svg",
-          href: "/services",
+          href: "/services/3D-Animation-&-Rendering",
         },
         
       ],

@@ -4,6 +4,7 @@ import { Card, CardBody, Chip } from "@heroui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { CheckIcon } from "@/components/icons";
+import GlassBadge from "@/components/GlassBadge";
 
 // Smooth animation variants for cards
 const cardVariants = {
@@ -23,9 +24,7 @@ const BoreYouCommit = () => {
   return (
     <div className="container mx-auto px-6 md:px-12 lg:px-24 py-12 max-md:pt-0">
       <div className="text-center mb-10 autoShow">
-        <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-          Before You Commit
-        </span>
+        <GlassBadge variant="gradient">Before You Commit</GlassBadge>
         <h2 className="text-4xl md:text-5xl font-bold mt-6 mb-4">
           See the difference in 5 days
         </h2>

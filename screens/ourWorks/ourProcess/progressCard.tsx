@@ -4,6 +4,7 @@ import { Card, CardBody } from "@heroui/react";
 import { motion, Variants, Easing } from "framer-motion";
 
 import { getGradientById } from "@/utils/gradientService";
+import GlassBadge from "@/components/GlassBadge";
 
 const data = {
   heading: "Simple. Strategic. Results-Driven.",
@@ -65,9 +66,7 @@ const ProgressCard = () => {
         whileInView={{ opacity: 1, y: 0 }}
       >
         <div className="flex flex-row items-center justify-center mb-6">
-          <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-            {data.badge}
-          </span>
+          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <p className="heading-center">{data.heading}</p>
       </motion.div>

@@ -4,6 +4,7 @@ import { memo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Card, CardBody, CardHeader } from "@heroui/react";
+import GlassBadge from "@/components/GlassBadge";
 
 const data = [
   {
@@ -107,9 +108,8 @@ const CaseStudyCard = memo(function CaseStudyCard() {
     <div className="min-h-screen pt-32 max-md:pt-24">
       {/* Section Heading */}
       <div className="text-center mb-10 autoShow">
-        <span className="rounded-xl border-2 border-cyan-400 bg-[#8EF1F1] px-4 py-2 font-semibold uppercase">
-          Featured Case Studies
-        </span>
+        
+        <GlassBadge variant="gradient">Featured Case Studies</GlassBadge>
         <p className="heading-center mt-4 max-md:mt-6">
           What happens behind the scenes
         </p>
