@@ -32,9 +32,10 @@ const ServiceDetails = ({ data }: any) => {
           {/* <WhatWeProvide data={data.whatWeProvide} /> */}
           {/* <YouWillGet data={data.youWillGet} /> */}
           <WhyThisMatters />
-          <StreamlinedProcess data={data.streamlinedProcess} />
           {/* <OptionalAdd data={data.optionalAdd} /> */}
         </div>
+          <StreamlinedProcess data={data.streamlinedProcess} />
+
 
         <div className="container mx-auto">
           <LandingWork />
