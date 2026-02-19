@@ -1,10 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Loader from "@/components/loader";
 
-export default function PageLoader() {
+interface PageLoaderProps {
+  children: ReactNode;
+}
+
+export default function PageLoader({ children }: PageLoaderProps) {
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +23,21 @@ export default function PageLoader() {
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  if (!loading) return null;
+  return (
+    <>
+      {/* Loader overlay */}
+      {loading && <Loader />}
 
-  return <Loader />;
+      {/* Page content - hidden while loading to prevent footer flash */}
+      <div
+        style={{
+          opacity: loading ? 0 : 1,
+          visibility: loading ? "hidden" : "visible",
+          transition: "opacity 0.3s ease-in-out, visibility 0.3s ease-in-out",
+        }}
+      >
+        {children}
+      </div>
+    </>
+  );
 }

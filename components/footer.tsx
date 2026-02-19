@@ -64,11 +64,11 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative w-full bg-[#000000F9] pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture ">
+    <footer className="relative w-full bg-black/95 pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture ">
       
       
       {/* Top Light Effect */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-white via-white/50 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-white via-white/90 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[40vh] bg-white/5 blur-[80px] -translate-y-1/2" />
 
       {/* Content */}
