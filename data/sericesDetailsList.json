@@ -4,145 +4,170 @@
     "data": {
       "hero": {
         "badge": "SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT",
-        "headingPrefix": "Build",
-        "headingHighlight": "SaaS, AI & Mobile apps",
-        "headingSuffix": "that",
-        "heading1": "scale & convert consistently.",
+        "heading": [
+          [
+            { "text": "Build ", "highlight": false },
+            { "text": "SaaS, AI & Mobile apps", "highlight": true },
+            { "text": "that", "highlight": false }
+          ],
+          [
+            { "text": "scale & convert consistently.", "highlight": false }
+          ]
+        ],
         "description": "We design & build intuitive user interfaces and working apps for SaaS, AI tools, dashboards, mobile-first products, from MVP Figma wireframes to fully developed enterprise grade products."
       },
-      "whatWeProvide": {
-        "badge": "What we provide",
-        "heading": "What This Service Includes",
+      "whatYouGet": {
+        "badge": "WHAT YOU GET",
+        "heading": "Everything You Need to Design & Build a SaaS Product",
         "card": [
           {
-            "heading": "UX & Product Flow Design",
-            "description": "Mapping out user journeys, flows, and wireframes built for clarity and conversion.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622257/ux_wfeudq.svg"
+            "heading": "UX/UI Design & Prototype",
+            "description": "Clean, modern interfaces that feel premium, usable, & consistent",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622257/ux_wfeudq.svg"
           },
           {
-            "heading": "Beautiful UI Design",
-            "description": "Mapping out user journeys, flows, and wireframes built for clarity and conversion.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
+            "heading": "UI Development & Integration",
+            "description": "Production-ready UI built using React, Next.js, or Angular",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
           },
           {
-            "heading": "Frontend Development",
-            "description": "Mapping out user journeys, flows, and wireframes built for clarity and conversion.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
+            "heading": "Idea to MVP",
+            "description": "Product strategy, Product thinking, Competitive analysis",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
           },
           {
             "heading": "Mobile Optimization",
-            "description": "Mapping out user journeys, flows, and wireframes built for clarity and conversion.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622283/mobile_ior7xh.svg"
-          },
-          {
-            "heading": "Prototyping & Iterations",
-            "description": "Mapping out user journeys, flows, and wireframes built for clarity and conversion.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622267/figma_opoxx5.svg"
-          },
-          {
-            "heading": "Cross-platform QA",
-            "description": "Mapping out user journeys, flows, and wireframes built for clarity and conversion.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622271/cross_hehxxz.svg"
+            "description": "Responsive layouts that work seamlessly across desktop, tablet & mobile",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622283/mobile_ior7xh.svg"
           }
         ]
       },
-      "whoThisIsFor": {
-        "heading": "Who This Is For",
-        "badge": "Does it sound like you?",
-        "card": [
-          {
-            "heading": " For Startups",
-            "description": "Bring your MVP to life fast with clean UX and modular UI that scales with your product.",
-            "QuickWins": [
-              "MVP-focused structure",
-              "SaaS and Mobile App design",
-              "Scalable React/Next.js builds"
-            ]
-          },
-          {
-            "heading": "For Enterprise Teams",
-            "description": "Redesign your dashboards or admin systems for better usability and faster workflows.",
-            "QuickWins": [
-              "Advanced dashboard UX",
-              "Clean, data-driven design",
-              "Enterprise-grade performance"
-            ]
-          },
-          {
-            "heading": "For AI & B2B Platforms",
-            "description": "Simplify complex tools with high-conversion interfaces designed for clarity and engagement.",
-            "QuickWins": [
-              "UX for complex workflows",
-              "B2B-ready design systems",
-              "Aligned design + dev delivery"
-            ]
-          }
-        ]
-      },
+      "whyThisMatters": {
+  "heading": "Why Most SaaS & AI Products Break (And How We Fix It)",
+  "badge": "WHY THIS MATTERS",
+  "card": [
+    {
+      "heading": "Hidden Churn",
+      "description": "Why do users leave without obvious problems? They didn’t get stuck — they got confused.",
+      "QuickWins": [
+        "Confusion creates silent churn",
+        "Clarity improves retention",
+        "Remove friction before users disengage"
+      ]
+    },
+    {
+      "heading": "Product Fragility",
+      "description": "Why does the product feel fragile as it grows? Because it wasn’t designed for change.",
+      "QuickWins": [
+        "Build systems that expect growth",
+        "Design modular & scalable architecture",
+        "Prevent breakage during expansion"
+      ]
+    },
+    {
+      "heading": "Too Many Questions",
+      "description": "Why do buyers ask endless questions? Because the product doesn’t answer them upfront.",
+      "QuickWins": [
+        "Clear positioning reduces friction",
+        "Pre-answer sales objections",
+        "Improve conversion before sales calls"
+      ]
+    },
+    {
+      "heading": "Commitment Risk",
+      "description": "Why does the product feel risky to adopt? Because outcomes aren’t clear.",
+      "QuickWins": [
+        "Define visible success paths",
+        "Show measurable outcomes",
+        "Increase confidence before purchase"
+      ]
+    },
+    {
+      "heading": "Trust Gap",
+      "description": "Why do some products feel safe instantly? Because they’re predictable.",
+      "QuickWins": [
+        "Consistency builds trust",
+        "Predictable UX patterns",
+        "Reliable product behavior"
+      ]
+    }
+  ]
+}
+,
+  "whoThisIsFor": {
+  "heading": "Does it sound like you?",
+  "badge": "Who This Is For",
+  "card": [
+    {
+      "heading": "SaaS & AI Startups",
+      "description": "Building a product and need it to be clear, usable, and ready to grow without breaking later.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+    },
+    {
+      "heading": "Enterprise Teams",
+      "description": "Managing complex tools and teams, and need systems that people actually understand and use.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
+    },
+    {
+      "heading": "Design / Dev Agencies",
+      "description": "Need a reliable partner to handle product structure and interface work for client projects.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151096/Coding_Folder_v2gznj.svg"
+    }
+  ]
+},
       "streamlinedProcess": {
         "heading": "Complete SaaS Web & Mobile App Workflow",
         "badge": "Streamlined Process",
 
-        "workflow": [
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
-                "heading": "Onboarding & Research",
-                "description": "Kickoff call, tool setup, & project alignment. We define goals, target audience, & success metrics to set the foundation.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
-                "heading": "Strategy & Structure",
-                "description": "We map the information architecture, define user journeys, and plan features that align with your product vision.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
-                "heading": "UX Design & Wireframes",
-                "description": "We create low- to mid-fidelity wireframes focusing on functionality, flow, and clarity before visual design begins.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
-                "heading": "UI Design & Prototyping",
-                "description": "We design detailed screens, define the design system, add imagery, & prepare interactive prototypes for early validation.",
-                "gradientId": 4
-              }
-            ]
-          },
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
-                "heading": "Setup & Planning",
-                "description": "We configure repositories, set up dev environments, & finalize the tech stack - React, Node.js, or Next.js depending on scope.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
-                "heading": "Full Stack Development",
-                "description": "We develop the complete product, pixel-perfect UI, scalable backend architecture, and secure API integration.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
-                "heading": "Testing & QA",
-                "description": "We run functional, UI, and performance tests to ensure your SaaS product works flawlessly across devices.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/streamline-plump_browser-website-1-remix_ccvkvy.svg",
-                "heading": "Launch & Post-Launch ",
-                "description": "We deploy to your chosen platform, provide detailed handoff documentation, & offer ongoing support for updates.",
-                "gradientId": 4
-              }
-            ]
-          }
-        ]
+"workflow": [
+  {
+    "badge": "Design Workflow",
+    "card": [
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
+        "heading": "Discovery, Research & Strategy",
+        "description": "Onboarding, kickoff, product understanding, user context, goals, and success metrics. We define the strategic direction before design begins.",
+        "gradientId": 1
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
+        "heading": "UX Design & Wireframes",
+        "description": "We design information architecture, user journeys, and low- to mid-fidelity wireframes focused on clarity and usability.",
+        "gradientId": 2
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
+        "heading": "UI Design & Prototyping",
+        "description": "High-fidelity UI, strong visual direction, and interactive prototypes to validate design decisions before development.",
+        "gradientId": 3
+      }
+    ]
+  },
+  {
+    "badge": "Development Workflow",
+    "card": [
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
+        "heading": "Setup & Planning",
+        "description": "We configure repositories, environments, and finalize the tech stack based on your product’s technical requirements.",
+        "gradientId": 1
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
+        "heading": "Full Stack Development",
+        "description": "Scalable architecture, reusable UI components, API integration, and production-ready code built for long-term growth.",
+        "gradientId": 2
+      },
+      {
+        "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
+        "heading": "Testing, Launch & Handoff",
+        "description": "Performance testing followed by deployment, documentation, and a smooth handoff to ensure long-term product stability.",
+        "gradientId": 3
+      }
+    ]
+  }
+]
+
       },
       "youWillGet": {
         "heading": "What You Will Get",
@@ -239,143 +264,168 @@
     "slug": "Landing-Pages-&-Business-Websites",
     "data": {
       "hero": {
-        "badge": "Design to Development | Landing and Corporate | 1–4 Week Delivery",
-        "heading": "High-converting sites",
-        "heading1": "built to scale",
-        "description": "Launch faster with stunning, conversion-ready websites. We design landing pages and corporate sites that clearly communicate your value, convert visitors into users, and look sharp on every device."
+        "badge": "Landing Pages & Business Websites",
+        "heading": [
+          [
+            { "text": "Your Website Isn’t a Brochure, ", "highlight": false }
+          ],
+          [
+            { "text": "It’s a ", "highlight": false },
+            { "text": "Sales Tool ", "highlight": true }
+
+          ]
+        ],
+        "description": "We design model landing pages & websites for small businesses to large corporations  that communicate your value, look stunning on every device, and turn visitors into users or leads."
       },
-      "whatWeProvide": {
-        "heading": "What This Service Includes",
-        "badge": "What we provide",
-        "card": [
-          {
-            "heading": "Marketing Sites & Landing Pages",
-            "description": "Conversion-focused websites for launches, campaigns, and SaaS tools.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151374/marketing_nubpwx.svg"
-          },
-          {
-            "heading": "Corporate Websites",
-            "description": "Credibility-boosting web presence for startups, enterprises, and agencies.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151360/corporate_szit3w.svg"
-          },
-          {
-            "heading": "Responsive Design",
-            "description": "Mobile-first, fully adaptive layouts that look perfect on all devices.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151376/Responsive_i5t4u3.svg"
-          },
-          {
-            "heading": "Design + Development",
-            "description": "From copy and layout to live build, we take care of everything.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151388/devhandoff_siuivx.svg"
-          },
-          {
-            "heading": "SEO & Performance",
-            "description": "Fast-loading, well-structured websites optimized for search engines.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151290/seo_e1bwaz.svg"
-          },
-          {
-            "heading": "Analytics Setup",
-            "description": "Basic tracking integrations like GA4, Hotjar, or Meta Pixel pre-installed.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151345/analytice_t9vqh2.svg"
-          }
-        ]
+      "whatYouGet": {
+        "heading": "Everything You Need to Launch and Convert",
+        "badge": "WHAT YOU GET",
+      "card": [
+  {
+    "heading": "Landing Pages & Corporate Websites",
+    "description": "High-impact pages designed to build credibility, clearly explain your product, and drive signups, demos, or inquiries.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151374/marketing_nubpwx.svg"
+  },
+  {
+    "heading": "Design & Frontend Development",
+    "description": "Clean, fast, production-ready development ensuring your designs translate perfectly into a live site.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151360/corporate_szit3w.svg"
+  },
+  {
+    "heading": "SEO Performance & AI-Readable Websites",
+    "description": "Fast-loading, well-structured websites optimized for search engines and AI discovery systems.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151290/seo_e1bwaz.svg"
+  },
+  {
+    "heading": "Fully Responsive Experience",
+    "description": "Your site works seamlessly across mobile, tablet, and desktop without extra effort later.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151376/Responsive_i5t4u3.svg"
+  }
+]
+
       },
-      "whoThisIsFor": {
-        "heading": "Who This Is For",
-        "badge": "Does it sound like you? ",
-        "card": [
-          {
-            "heading": "For Local Businesses",
-            "description": "Showcase your restaurant, café, or studio with a fast, modern website that builds trust and drives more local traffic.",
-            "QuickWins": [
-              "Optimized for mobile & SEO",
-              "Simple booking or inquiry forms",
-              "Clean, professional design"
-            ]
-          },
-          {
-            "heading": "For SaaS & Product Teams",
-            "description": "Turn visitors into users with high-converting landing pages built for startups, corporates and tech products.",
-            "QuickWins": [
-              "Conversion-focused design",
-              "CTA-driven structure",
-              "Fast-loading and scalable layouts"
-            ]
-          },
-          {
-            "heading": "For Portfolios & Personal Brand Sites",
-            "description": "Build a sleek, minimal portfolio or brand site that highlights your story and credibility.",
-            "QuickWins": [
-              "Showcase your work beautifully",
-              "Built for easy updates",
-              "Perfect for freelancers & creators"
-            ]
-          }
-        ]
-      },
+      "whyThisMatters": {
+  "heading": "Why Most Business Websites Don’t Convert (And What We Do Differently)",
+  "badge": "WHY THIS MATTERS",
+  "card": [
+    {
+      "heading": "First Impressions Matter",
+      "description": "Why do most websites fail to convert visitors? Because people don’t understand what the business does within a few seconds. If clarity is missing, they leave.",
+      "QuickWins": [
+        "Clear value proposition above the fold",
+        "Instant understanding of services",
+        "Strong first-screen messaging"
+      ]
+    },
+    {
+      "heading": "Clarity Beats Creativity",
+      "description": "Why isn’t a good-looking website enough? A site can look great and still confuse users. Clear messaging drives action, not visuals alone.",
+      "QuickWins": [
+        "Conversion-focused messaging",
+        "Design that supports clarity",
+        "Strategic content hierarchy"
+      ]
+    },
+    {
+      "heading": "Messaging Drives Action",
+      "description": "Why do visitors scroll but not click? Because the site doesn’t clearly tell them what to do next or why it matters.",
+      "QuickWins": [
+        "Strong, visible CTAs",
+        "Clear next-step guidance",
+        "Benefit-driven copy"
+      ]
+    },
+    {
+      "heading": "Mobile Is Not Optional",
+      "description": "Why does mobile performance matter so much? Most visitors see your site on their phone first. If it’s hard to use, they’re gone.",
+      "QuickWins": [
+        "Mobile-first layout",
+        "Touch-friendly UI elements",
+        "Optimized mobile performance"
+      ]
+    },
+    {
+      "heading": "Speed Is Perception",
+      "description": "Why does a slow website hurt credibility? Slow sites feel unreliable. People associate speed with professionalism.",
+      "QuickWins": [
+        "Fast-loading pages",
+        "Performance optimization",
+        "Lightweight, clean builds"
+      ]
+    },
+    {
+      "heading": "Users Scan, They Don’t Read",
+      "description": "Why do long paragraphs fail on websites? People scan headlines and buttons. If meaning isn’t visible instantly, text is ignored.",
+      "QuickWins": [
+        "Scannable content structure",
+        "Strong headline hierarchy",
+        "Clear, concise copy blocks"
+      ]
+    }
+  ]
+}
+,
+     "whoThisIsFor": {
+  "heading": "Does this sound like you?",
+  "badge": "Who This Is For",
+  "card": [
+    {
+      "heading": "SaaS & Product Teams",
+      "description": "Turn visitors into users with high-converting landing pages built for startups, corporates, and tech products.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+    },
+    {
+      "heading": "Local Businesses",
+      "description": "Showcase your restaurant, café, or studio with a fast, modern website that builds trust and drives more local traffic.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
+    },
+    {
+      "heading": "Portfolios & Personal Brand Sites",
+      "description": "Build a sleek, minimal portfolio or brand site that highlights your story and credibility.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151205/customicon_n8ieev.svg"
+    }
+  ]
+},
       "streamlinedProcess": {
         "heading": "From idea to live website",
         "badge": "Streamlined Process",
-        "workflow": [
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
-                "heading": "Onboarding & Research",
-                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
-                "heading": "Strategy & Structure",
-                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
-                "heading": "Visual Design & Styling",
-                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
-                "heading": "Feedback & Finalization",
-                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
-                "gradientId": 4
-              }
-            ]
-          },
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
-                "heading": "Setup & Configuration",
-                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
-                "heading": "Full Stack Development",
-                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "QA & SEO Optimization",
-                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894143/solar_document-bold_jzqau9.svg",
-                "heading": "Launch & Handoff",
-                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
-                "gradientId": 4
-              }
-            ]
-          }
-        ]
+       "workflow": [
+  {
+    "badge": "Website Strategy & Design",
+    "card": [
+      {
+        "heading": "Discovery & Positioning",
+        "description": "We understand your business, audience, and goals so the site speaks clearly to the right people."
+      },
+      {
+        "heading": "Structure & Messaging",
+        "description": "We map page flow, key sections, and messaging so visitors instantly “get it.”"
+      },
+      {
+        "heading": "Visual Design & Prototyping",
+        "description": "High-fidelity designs showing exactly how the site will look and behave."
+      }
+    ]
+  },
+  {
+    "badge": "Website Development",
+    "card": [
+      {
+        "heading": "Development Setup",
+        "description": "Frameworks, CMS, and integrations are set up for smooth development and future updates."
+      },
+      {
+        "heading": "Build & QA",
+        "description": "We build, test, and optimize for speed, responsiveness, and reliability."
+      },
+      {
+        "heading": "Launch & Handoff",
+        "description": "Site goes live with documentation and support so you’re never stuck post-launch."
+      }
+    ]
+  }
+]
+
       },
       "youWillGet": {
         "heading": "What You Will Get",
@@ -473,11 +523,19 @@
     "data": {
       "hero": {
         "badge": "Tokens to Components | Built for Scale | 1–4 Week Delivery",
-        "heading": "Build UI Consistency",
-        "heading1": "Across Teams & Platforms",
+        "heading": [
+          [
+            { "text": "Your Website Isn’t a Brochure, ", "highlight": false }
+          ],
+          [
+            { "text": "It’s a ", "highlight": false },
+            { "text": "Sales Tool ", "highlight": true }
+
+          ]
+        ],
         "description": "We build robust design systems with custom tokens, brand-aligned UI kits, and fully documented, dev-ready components, built for long-term consistency and speed."
       },
-      "whatWeProvide": {
+      "whatYouGet": {
         "heading": "What This Service Includes",
         "badge": "What we provide",
         "card": [
@@ -695,143 +753,150 @@
     "slug": "Graphic-Design",
     "data": {
       "hero": {
-        "badge": "Social, Print & Promo | Campaign-ready delivery | 1–3 Week Delivery",
-        "heading": "Graphic Design for",
-        "heading1": "Digital, Print, & Campaigns",
-        "description": "Impactful visuals for social media, brochures, and brand communication, crafted to convert and built to scale."
+        "badge": "Graphic Design",
+        "heading": [
+          [
+            { "text": "Brand-ready visuals", "highlight": true },
+            { "text": "for", "highlight": false }
+          ],
+          [
+            { "text": "websites, brand assets, & print", "highlight": false }
+          ]
+        ],
+        "description": "From infographics, newsletters, website graphics to brand assets, we deliver creatives that match your identity and engage across web, social, and product experiences."
       },
-      "whatWeProvide": {
-        "heading": "What This Service Includes",
-        "badge": "What we provide",
-        "card": [
-          {
-            "heading": "Multi-format graphics",
-            "description": "Posters, brochures, carousels, flyers, all built for versatility.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151253/multi_fvkbyn.svg"
-          },
-          {
-            "heading": "Campaign-specific design",
-            "description": "Designs tailored for ads, launches, promotions, and events.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
-          },
-          {
-            "heading": "Brand-safe visuals",
-            "description": "We match your brand colors, fonts, and tone to stay consistent.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
-          },
-          {
-            "heading": "Print & digital-ready",
-            "description": "High-res outputs optimized for both web and physical formats.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151214/paint_mkz9am.svg"
-          },
-          {
-            "heading": "Custom layouts",
-            "description": "Each piece is crafted to maximize readability and clarity.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151205/customicon_n8ieev.svg"
-          },
-          {
-            "heading": "Editable files included",
-            "description": "Get layered source files for reuse, updates, or localization.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151184/Adjuster_3D_gl1ghv.svg"
-          }
-        ]
+      "whatYouGet": {
+        "heading": "Everything You Need to Create Stunning Visuals",
+        "badge": "WHAT YOU GET",
+     "card": [
+  {
+    "heading": "Brand & Marketing Visuals",
+    "description": "Everything you need to look professional across web, social media, and marketing campaigns.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
+  },
+  {
+    "heading": "Website & Product Assets",
+    "description": "Graphics designed specifically for websites, dashboards, and apps to ensure clarity and consistency.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151205/customicon_n8ieev.svg"
+  },
+  {
+    "heading": "Infographics & Newsletters",
+    "description": "Turn complex information into clear, easy-to-understand visuals that improve engagement.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151214/paint_mkz9am.svg"
+  },
+  {
+    "heading": "Multi-Format Graphics",
+    "description": "Posters, carousels, flyers, and more — built for versatility across digital and print platforms.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151253/multi_fvkbyn.svg"
+  }
+]
+
       },
-      "whoThisIsFor": {
-        "heading": "Does it sound like you?",
-        "badge": "Who This Is For",
-        "card": [
-          {
-            "heading": "For Product Teams",
-            "description": "Need clean, consistent visuals for your app or website? We design assets that blend seamlessly into your product experience.",
-            "QuickWins": [
-              "UI illustrations & icon sets",
-              "In-app and dashboard visuals",
-              "Web graphics optimized for clarity"
-            ]
-          },
-          {
-            "heading": "For Brand & Marketing Teams",
-            "description": "Looking to strengthen your brand identity? We create visuals that align perfectly with your tone, style, and audience.",
-            "QuickWins": [
-              "Brand assets & social visuals",
-              "Presentation and pitch decks",
-              "Consistent branding all across"
-            ]
-          },
-          {
-            "heading": "For Founders & Creators",
-            "description": "Launching a new brand or refreshing your visuals? Get polished, versatile designs that look great on web, print, and social.",
-            "QuickWins": [
-              "Logo and visual identity",
-              "Print-ready materials",
-              "Cohesive design language"
-            ]
-          }
-        ]
-      },
+      "whyThisMatters": {
+  "heading": "Why Most Visuals Fail to Create Impact (And How We Fix It)",
+  "badge": "WHY THIS MATTERS",
+  "card": [
+    {
+      "heading": "Clarity Over Decoration",
+      "description": "Why do good-looking visuals still fail to convert? Because they don’t explain anything. We design visuals that guide decisions, not just decorate screens.",
+      "QuickWins": [
+        "Decision-focused design",
+        "Visual hierarchy with purpose",
+        "Design that supports messaging"
+      ]
+    },
+    {
+      "heading": "Trust Is Visual",
+      "description": "Why do some brands feel more reliable instantly? Because consistency signals professionalism. People trust what looks intentional.",
+      "QuickWins": [
+        "Consistent visual system",
+        "Professional brand alignment",
+        "Predictable design patterns"
+      ]
+    },
+    {
+      "heading": "Attention Is Earned",
+      "description": "Why do people ignore most graphics today? Because clutter is everywhere. Clear visuals earn attention without forcing it.",
+      "QuickWins": [
+        "Minimal, focused layouts",
+        "Clear focal points",
+        "Reduced visual noise"
+      ]
+    },
+    {
+      "heading": "Growth Exposes Weak Visuals",
+      "description": "Why do visuals break when companies scale? Because they weren’t built as a system. We design for reuse, not one-offs.",
+      "QuickWins": [
+        "Scalable design systems",
+        "Reusable components",
+        "Structured brand guidelines"
+      ]
+    },
+    {
+      "heading": "Visuals Affect Business Confidence",
+      "description": "Why do visuals impact buying decisions so much? Because people decide emotionally, then justify logically. Visual clarity reduces doubt.",
+      "QuickWins": [
+        "Emotion-driven design",
+        "Confidence-building layouts",
+        "Clear value visualization"
+      ]
+    },
+    {
+      "heading": "First Impressions Decide",
+      "description": "Why does visual quality affect credibility so fast? Because people judge reliability before reading a single word.",
+      "QuickWins": [
+        "Strong first-screen impact",
+        "Premium visual presentation",
+        "Instant brand clarity"
+      ]
+    }
+  ]
+},
+
+     "whoThisIsFor": {
+  "heading": "Does this sound like you?",
+  "badge": "Who This Is For",
+  "card": [
+    {
+      "heading": "Founders & Product Teams",
+      "description": "Need professional visuals without building an in-house design team.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
+    },
+    {
+      "heading": "Brand & Marketing Teams",
+      "description": "Need consistent creatives for campaigns, launches, and daily marketing.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+    },
+    {
+      "heading": "Professionals & Creators",
+      "description": "Need clean visuals that support content, products, and communication.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151205/customicon_n8ieev.svg"
+    }
+  ]
+},
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
-        "workflow": [
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
-                "heading": "Onboarding & Research",
-                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
-                "heading": "Strategy & Structure",
-                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
-                "heading": "Visual Design & Styling",
-                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
-                "heading": "Feedback & Finalization",
-                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
-                "gradientId": 4
-              }
-            ]
-          },
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Setup & Configuration",
-                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/clarity_note-edit-solid_xdtbo0.svg",
-                "heading": "Full Stack Development",
-                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
-                "heading": "QA & SEO Optimization",
-                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/streamline-plump_browser-website-1-remix_ccvkvy.svg",
-                "heading": "Launch & Handoff",
-                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
-                "gradientId": 4
-              }
-            ]
-          }
-        ]
+   "workflow": [
+  {
+    "badge": "Visual Design Process",
+    "card": [
+      {
+        "heading": "Direction & Context",
+        "description": "We understand your brand, goals, and where the designs will be used to ensure clarity and alignment from the start."
+      },
+      {
+        "heading": "Design & Refinement",
+        "description": "We design, review, and refine until everything feels right and aligns with your vision."
+      },
+      {
+        "heading": "Delivery & Handoff",
+        "description": "You receive final assets, source files, and ready-to-use formats for seamless implementation."
+      }
+    ]
+  }
+]
+
       },
       "youWillGet": {
         "heading": "What You Will Get",
@@ -928,143 +993,134 @@
     "slug": "Motion-Graphics-&-Video-Editing",
     "data": {
       "hero": {
-        "badge": "videos, Explainers, Promos | 1–4 Week Delivery",
-        "heading": "Motion Graphics & Video Editing",
-        "heading1": "for Modern Brands",
-        "description": "Turn raw footage and static content into high-impact videos for launches, socials, and storytelling."
+        "badge": "Motion GraphicS",
+         "heading": [
+          [
+            { "text": "Motion That Makes Products", "highlight": false }
+          ],
+          [
+            { "text": "Feel ", "highlight": false },
+            { "text": "Clear, Fast & Trustworthy", "highlight": true }
+
+
+          ]
+        ],
+        "description": "We design motion for SaaS products and websites — subtle, purposeful animations that guide users, reduce confusion, and improve product experience."
       },
-      "whatWeProvide": {
-        "heading": "What This Service Includes",
-        "badge": "What we provide",
-        "card": [
-          {
-            "heading": "Motion graphics overlays",
-            "description": "Add branded animations, text, transitions, and dynamic callouts.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151206/motion_sc88nz.svg"
-          },
-          {
-            "heading": "Promo & ad videos",
-            "description": "Short-form clips tailored for ads, reels, or YouTube intros.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151140/promo_erxieg.svg"
-          },
-          {
-            "heading": "Color Grading",
-            "description": "Balanced tones, cinematic looks, and visual consistency across clips.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151163/Color_Slides_3D_isnmct.svg"
-          },
-          {
-            "heading": "Custom Animations & 3D",
-            "description": "Engaging 2D/3D visuals that make your story pop.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151219/Reels_Video_kayr1h.svg"
-          },
-          {
-            "heading": "Sound Design & Voice Cleanup",
-            "description": "Polished audio, effects, background music, and crystal-clear voice tracks.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151083/Microphone_zq3meh.svg"
-          },
-          {
-            "heading": "Captions & Subtitles",
-            "description": "Readable, on-brand subtitles, optional multi-language support.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151100/Area_Type_3D_p8mjry.svg"
-          }
-        ]
+      "whatYouGet": {
+        "heading": "Everything You Need to Create Smoooooth Animations",
+        "badge": "WHAT YOU GET",
+      "card": [
+  {
+    "heading": "Product UI Animations & Ads",
+    "description": "Animations that guide users through actions and states inside your product while enhancing clarity and engagement.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151206/motion_sc88nz.svg"
+  },
+  {
+    "heading": "Lottie & JSON Animations",
+    "description": "Lightweight, performance-friendly animations ready for production use and seamless frontend integration.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151219/Reels_Video_kayr1h.svg"
+  },
+  {
+    "heading": "Website Motion & Interactions",
+    "description": "Scroll, hover, and transition animations that improve clarity, feedback, and presentation across screens.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151140/promo_erxieg.svg"
+  },
+  {
+    "heading": "Developer-Ready Files",
+    "description": "Clean JSON and optimized assets delivered for smooth integration into modern frontend workflows.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151083/Microphone_zq3meh.svg"
+  }
+]
+
       },
-      "whoThisIsFor": {
-        "heading": "Who This Is For",
-        "badge": "Does it sound like you? ",
-        "card": [
-          {
-            "heading": "For Founders & Marketers",
-            "description": "Promote launches or updates with engaging, story-driven motion graphics.",
-            "QuickWins": [
-              "Launch promo videos",
-              "Product explainers",
-              "Short social reels"
-            ]
-          },
-          {
-            "heading": "For Creators & YouTubers",
-            "description": "Get pro-quality video edits, graphics, and audio polish without the agency overhead.",
-            "QuickWins": [
-              "Dynamic motion overlays",
-              "Sound sync & color grading",
-              "Consistent video style"
-            ]
-          },
-          {
-            "heading": "For Product Teams",
-            "description": "Add explainer or training videos that clearly communicate product value.",
-            "QuickWins": [
-              "Script-to-edit delivery",
-              "Educational flow",
-              "Brand-aligned motion"
-            ]
-          }
-        ]
-      },
+
+      "whyThisMatters": {
+  "heading": "Why Motion Often Hurts Products (And How We Use It Right)",
+  "badge": "WHY THIS MATTERS",
+  "card": [
+    {
+      "heading": "Static Interfaces Create Overwhelm",
+      "description": "Why do many SaaS products feel overwhelming to use? Because everything looks static. Motion helps users understand what changed and what to do next.",
+      "QuickWins": [
+        "State-change feedback animations",
+        "Guided interaction transitions",
+        "Reduced cognitive overload"
+      ]
+    },
+    {
+      "heading": "Animation Shouldn’t Slow Products",
+      "description": "Why does animation sometimes slow products down? Because it’s added for looks. We design motion that’s lightweight and performance-safe.",
+      "QuickWins": [
+        "Performance-optimized motion",
+        "Purpose-driven transitions",
+        "Lightweight interaction design"
+      ]
+    },
+    {
+      "heading": "Motion Is Functional, Not Decorative",
+      "description": "Why isn’t motion just a nice-to-have? Because users rely on feedback. Motion reduces hesitation and mistakes.",
+      "QuickWins": [
+        "Clear action feedback",
+        "Error-prevention cues",
+        "Confidence-building microinteractions"
+      ]
+    },
+    {
+      "heading": "Motion Must Scale With the Product",
+      "description": "Why does motion break as products scale? Because it’s not systemized. We design reusable motion patterns, not one-offs.",
+      "QuickWins": [
+        "Reusable motion components",
+        "Consistent transition patterns",
+        "Scalable animation system"
+      ]
+    }
+  ]
+},
+   "whoThisIsFor": {
+  "heading": "Does this sound like you?",
+  "badge": "Who This Is For",
+  "card": [
+    {
+      "heading": "SaaS & Product Teams",
+      "description": "Add explainer or training videos that clearly communicate product value.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151206/motion_sc88nz.svg"
+    },
+    {
+      "heading": "Large Enterprises",
+      "description": "Get pro-quality graphics and visual polish without the agency overhead.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
+    },
+    {
+      "heading": "Founders & Marketers",
+      "description": "Promote launches or updates with engaging, story-driven motion graphics.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151140/promo_erxieg.svg"
+    }
+  ]
+},
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
-        "workflow": [
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
-                "heading": "Onboarding & Research",
-                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
-                "heading": "Strategy & Structure",
-                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/iconoir_design-nib-solid_bil229.svg",
-                "heading": "Visual Design & Styling",
-                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
-                "heading": "Feedback & Finalization",
-                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
-                "gradientId": 4
-              }
-            ]
-          },
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
-                "heading": "Setup & Configuration",
-                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
-                "heading": "Full Stack Development",
-                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "QA & SEO Optimization",
-                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Launch & Handoff",
-                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
-                "gradientId": 4
-              }
-            ]
-          }
-        ]
+   "workflow": [
+  {
+    "badge": "Motion Design Process",
+    "card": [
+      {
+        "heading": "Understand Product Behavior",
+        "description": "We map states, actions, and user intent."
+      },
+      {
+        "heading": "Design Motion Patterns",
+        "description": "Purposeful animations designed to guide users and scale consistently across screens."
+      },
+      {
+        "heading": "Deliver Production Assets",
+        "description": "Lottie / JSON files prepared and optimized for smooth developer integration."
+      }
+    ]
+  }
+]
+
       },
       "youWillGet": {
         "heading": "What You Will Get",
@@ -1161,80 +1217,113 @@
     "slug": "UX-Audits-&-Consultation",
     "data": {
       "hero": {
-        "badge": "Heuristic Audit + Recommendations",
-        "heading": "UX Audits &",
-        "heading1": "Product Consultation",
-        "description": "Pinpoint usability issues and unlock design improvements with expert reviews."
+        "badge": "UX Audits & Consultation",
+         "heading": [
+          [
+            { "text": "Find What’s Blocking Growth,", "highlight": false }
+          ],
+          [
+            { "text": "Before You Build More", "highlight": true }
+
+
+          ]
+        ],
+        "description": "We identify where users hesitate, drop off, or lose confidence — and tell you exactly what to fix, why it matters, and what to do next."
       },
-      "whatWeProvide": {
-        "heading": "What This Service Includes",
-        "badge": "What we provide",
-        "card": [
-          {
-            "heading": "Heuristic UX Audit",
-            "description": "We analyze your product using proven UX principles and heuristics.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151117/Tick_Shield_bizqew.svg"
-          },
-          {
-            "heading": "Friction Point Analysis",
-            "description": "Identify where users drop off or struggle and why it’s happening.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
-          },
-          {
-            "heading": "Flow & Interaction Review",
-            "description": "We review complete user journeys, not just individual screens.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151102/flow_krv5pk.svg"
-          },
-          {
-            "heading": "Detailed Audit Report",
-            "description": "You’ll get a clear, structured PDF or Notion report with annotated findings.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151109/details_asitpb.svg"
-          },
-          {
-            "heading": "Walkthrough Video",
-            "description": "Optional video review explaining our findings and suggestions.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151107/Video_Camera_osg0ob.svg"
-          },
-          {
-            "heading": "Strategy Consultation",
-            "description": "Call to go over the findings, priorities, and next steps for improvement.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151076/strategy_zuqh5d.svg"
-          }
-        ]
+      "whatYouGet": {
+        "heading": "What All Will you get in return",
+        "badge": "WHAT YOU GET",
+    "card": [
+  {
+    "heading": "Heuristic UX Audit Report",
+    "description": "We analyze your product using proven UX principles and heuristics to uncover usability gaps and improvement areas.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151117/Tick_Shield_bizqew.svg"
+  },
+  {
+    "heading": "Drop-Off & Friction Insights",
+    "description": "Pinpoint where users hesitate, abandon actions, or lose trust — and understand why it’s happening.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
+  },
+  {
+    "heading": "Flow & Interaction Review",
+    "description": "We review complete user journeys and interaction patterns, not just isolated screens.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151102/flow_krv5pk.svg"
+  },
+  {
+    "heading": "Walkthrough Video",
+    "description": "Optional video explanation walking through findings, priorities, and actionable recommendations.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151107/Video_Camera_osg0ob.svg"
+  }
+]
+
       },
+      "whyThisMatters": {
+  "heading": "Why Most Products Struggle With Adoption (And How We Fix It)",
+  "badge": "WHY THIS MATTERS",
+  "card": [
+    {
+      "heading": "Unclear First Steps",
+      "description": "Why do users hesitate even after signing up? They’re unsure what to do next. When the product doesn’t clearly guide the first few actions, confidence drops fast.",
+      "QuickWins": [
+        "Guided onboarding flows",
+        "Clear next-step prompts",
+        "Early momentum-building actions"
+      ]
+    },
+    {
+      "heading": "Too Many Decisions",
+      "description": "Why does a product feel “heavy” or tiring to use? Too many decisions at once. Every extra choice increases friction and slows momentum.",
+      "QuickWins": [
+        "Reduced cognitive load",
+        "Progressive feature exposure",
+        "Simplified interaction paths"
+      ]
+    },
+    {
+      "heading": "Features Without Priority",
+      "description": "Why don’t features translate into usage? They solve internal ideas, not user priorities. What makes sense to the team doesn’t always make sense to customers.",
+      "QuickWins": [
+        "User-priority feature mapping",
+        "Outcome-driven design decisions",
+        "Clear value alignment"
+      ]
+    },
+    {
+      "heading": "Demo vs. Daily Use Gap",
+      "description": "Why do demos go well but adoption stalls? Real usage isn’t a demo. Products optimized for presentations often break in daily workflows.",
+      "QuickWins": [
+        "Workflow-tested interfaces",
+        "Real-world scenario design",
+        "Sustainable usability patterns"
+      ]
+    },
+    {
+      "heading": "Silent Churn",
+      "description": "Why do users churn without complaining? Confusion doesn’t trigger feedback — it triggers exits. People leave quietly when effort outweighs value.",
+      "QuickWins": [
+        "Friction detection points",
+        "Clarity-first UX systems",
+        "Effort-to-value optimization"
+      ]
+    }
+  ]
+},
       "whoThisIsFor": {
-        "heading": "Who This Is For",
-        "badge": "Does it sound like you?",
-        "card": [
-          {
-            "heading": "For Startups",
-            "description": "Fix usability issues and friction points before your next release or MVP launch.",
-            "QuickWins": [
-              "UX flaw detection",
-              "Pre-launch feedback",
-              "Actionable audit report"
-            ]
-          },
-          {
-            "heading": "For Product Teams",
-            "description": "Pinpoint drop-offs, churn, and user confusion with data-backed insights.",
-            "QuickWins": [
-              "Heuristic evaluation",
-              "Usability improvement plan",
-              "Conversion UX tips"
-            ]
-          },
-          {
-            "heading": "For Agencies & Partners",
-            "description": "White-label our audit process to offer UX reviews under your own brand.",
-            "QuickWins": [
-              "White-label audit support",
-              "Client-ready reporting",
-              "Fast turnaround"
-            ]
-          }
-        ]
-      },
+  "heading": "Does this sound like you?",
+  "badge": "Who This Is For",
+  "card": [
+    {
+      "heading": "Founders or startups who are just starting out",
+      "description": "Looking for guidance on essential design principles and identify key elements to focus on as you embark on your journey",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+    },
+    {
+      "heading": "anyone looking to upgrade their product experience & conversions",
+      "description": "If you’ve noticed that growth has slowed down and you’re feeling uncertain about what might be holding users back.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
+    }
+  ]
+},
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
@@ -1394,143 +1483,148 @@
     "slug": "3D-Animation-&-Rendering",
     "data": {
       "hero": {
-        "badge": "Product Demos & Explainers |  Development-Ready Exports  | 1–4 Week Delivery",
-        "heading": "Stunning 3D Animation ",
-        "heading1": "& Rendering,Web-Ready ",
-        "description": "Bring your product to life with stunning, realistic 3D visuals and motion."
+        "badge": "3D ASSETS & ANIMATION",
+        "heading": [
+          [
+            { "text": "Bring Products to Life With ", "highlight": false }
+          ],
+          [
+            { "text": "3D Assets & Animation", "highlight": true }
+          ]
+        ],
+        "description": "We create web-ready 3D assets and animations for SaaS products, websites, and interfaces—optimized for performance, clarity, and real-world use."
       },
-      "whatWeProvide": {
-        "heading": "What This Service Includes",
-        "badge": "What we provide",
-        "card": [
-          {
-            "heading": "3D Modeling",
-            "description": "Accurate and detailed modeling of your product or concept.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761153215/Headphone_fbd6rf.png"
-          },
-          {
-            "heading": "Texturing & Lighting",
-            "description": "High-quality textures and lighting for realistic output and visual appeal.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761153257/Creative_Idea_wfvziq.png"
-          },
-          {
-            "heading": "Animations",
-            "description": "Custom movement, transitions, and physics-based interactions.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151076/Blender_yaepgi.svg"
-          },
-          {
-            "heading": "Final Renders",
-            "description": "Video and/or image sequences delivered in high resolution.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151206/motion_sc88nz.svg"
-          },
-          {
-            "heading": "Brand-Aligned Visuals",
-            "description": "Everything matches your brand’s look, feel, and message.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
-          },
-          {
-            "heading": "Web-Ready Assets",
-            "description": "Optimized exports for your website, social, or presentations.",
-            "img": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151096/Coding_Folder_v2gznj.svg"
-          }
-        ]
+      "whatYouGet": {
+        "heading": "Everything You Need to Create Stunning 3D Visuals",
+        "badge": "WHAT YOU GET",
+      "card": [
+  {
+    "heading": "Custom 3D Assets",
+    "description": "Purpose-built models designed specifically for websites, products, and digital interfaces.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761153215/Headphone_fbd6rf.png"
+  },
+  {
+    "heading": "Web-Ready 3D Animations",
+    "description": "Lightweight 3D animations optimized for smooth loading, interaction, and real-world performance.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151076/Blender_yaepgi.svg"
+  },
+  {
+    "heading": "3D Modeling & Animations",
+    "description": "Modeling, animation, and exports prepared for practical product and marketing use.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761153257/Creative_Idea_wfvziq.png"
+  },
+  {
+    "heading": "Website & Product Integration",
+    "description": "3D assets ready for Webflow, Framer, Three.js, and modern development stacks.",
+    "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151096/Coding_Folder_v2gznj.svg"
+  }
+]
+
       },
-      "whoThisIsFor": {
-        "heading": "Who This Is For",
-        "badge": "Does it sound like you?",
-        "card": [
-          {
-            "heading": "For Product Startups",
-            "description": "Show your product in stunning 3D visuals that attract investors and customers.",
-            "QuickWins": [
-              "Realistic 3D modeling",
-              "Motion or static renders",
-              "Fast turnaround visuals"
-            ]
-          },
-          {
-            "heading": "For Marketing Teams",
-            "description": "Create high-quality explainers, promos, or 3D motion for campaigns.",
-            "QuickWins": [
-              "Animated 3D scenes",
-              "Product showcase videos",
-              "Ad-ready exports"
-            ]
-          },
-          {
-            "heading": "For Agencies & Founders",
-            "description": "Offer high-impact visuals with 3D and cinematic renders for your clients or brand.",
-            "QuickWins": [
-              "Premium 3D aesthetics",
-              "Brand integration",
-              "Multi-platform delivery"
-            ]
-          }
-        ]
-      },
+      "whyThisMatters": {
+  "heading": "Why Most 3D On Websites Fails (And How We Do It Right)",
+  "badge": "WHY THIS MATTERS",
+  "card": [
+    {
+      "heading": "Performance Comes First",
+      "description": "Why do most 3D websites feel slow or broken? Because visuals are added without thinking about performance. We design 3D assets that enhance experience without hurting speed or usability.",
+      "QuickWins": [
+        "Optimized 3D assets",
+        "Lightweight rendering techniques",
+        "Smooth, performance-safe interactions"
+      ]
+    },
+    {
+      "heading": "Cool Isn’t Enough",
+      "description": "Why isn’t “cool 3D” enough for a real product? Because visuals alone don’t drive trust or action. Every asset we create supports clarity, understanding, and conversion.",
+      "QuickWins": [
+        "Conversion-focused visuals",
+        "Clarity-driven 3D storytelling",
+        "Strategic design integration"
+      ]
+    },
+    {
+      "heading": "Built for Real Constraints",
+      "description": "Why does 3D often get removed before launch? Because it’s treated like decoration. We build assets that work within real product and website constraints.",
+      "QuickWins": [
+        "Product-ready assets",
+        "Cross-device compatibility",
+        "Scalable implementation approach"
+      ]
+    },
+    {
+      "heading": "Designed to Scale",
+      "description": "How does 3D help products scale long-term? Reusable assets reduce redesigns, stay consistent, and adapt as the product grows.",
+      "QuickWins": [
+        "Reusable 3D systems",
+        "Consistent visual language",
+        "Future-ready design assets"
+      ]
+    },
+    {
+      "heading": "Optimized, Not Heavy",
+      "description": "Does 3D hurt website performance? Only when done wrong. Ours is optimized to load fast and feel smooth.",
+      "QuickWins": [
+        "Fast-loading models",
+        "Efficient asset compression",
+        "Smooth real-time rendering"
+      ]
+    },
+    {
+      "heading": "Value-Driven 3D",
+      "description": "When does 3D actually add value? When it explains, guides, or builds confidence—not just looks impressive.",
+      "QuickWins": [
+        "Explainer-focused visuals",
+        "Guided user interactions",
+        "Confidence-building design elements"
+      ]
+    }
+  ]
+},
+    "whoThisIsFor": {
+  "heading": "Does this sound like you?",
+  "badge": "Who This Is For",
+  "card": [
+    {
+      "heading": "Product Startups & Real Estates",
+      "description": "Show your product in stunning 3D visuals that attract investors and customers.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761153215/Headphone_fbd6rf.png"
+    },
+    {
+      "heading": "Marketing Teams",
+      "description": "Create high-quality explainers, promos, or 3D motion for campaigns and launches.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151140/promo_erxieg.svg"
+    },
+    {
+      "heading": "Agencies & Founders",
+      "description": "Deliver high-impact visuals with 3D assets and cinematic renders for your clients or brand.",
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761153257/Creative_Idea_wfvziq.png"
+    }
+  ]
+},
       "streamlinedProcess": {
         "heading": "Graphic Design Roadmap",
         "badge": "Streamlined Process",
-        "workflow": [
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Onboarding & Research",
-                "description": "We start with a discovery call and competitor audit to understand your goals, tone, and brand direction.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Strategy & Structure",
-                "description": "We plan site architecture, map out page hierarchy, and prepare wireframes for key pages like home and service.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Visual Design & Styling",
-                "description": "We design high-fidelity Figma layouts — colors, typography, imagery, and components aligned with your brand.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Feedback & Finalization",
-                "description": "We iterate quickly based on your feedback to finalize every detail before development begins.",
-                "gradientId": 4
-              }
-            ]
-          },
-          {
-            "badge": "Design Workflow",
-            "card": [
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Setup & Configuration",
-                "description": "We set up CMS (if applicable), repositories, and frameworks, typically React or Next.js, based on project needs.",
-                "gradientId": 1
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Full Stack Development",
-                "description": "We develop all pages, graphics, and backend integrations, ensuring clean code and flexibility for future updates.",
-                "gradientId": 2
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "QA & SEO Optimization",
-                "description": "We test for responsiveness, speed, and SEO readiness, ensuring your site ranks well and performs smoothly.",
-                "gradientId": 3
-              },
-              {
-                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761894144/icon-park-solid_trend_jcfrts.svg",
-                "heading": "Launch & Handoff",
-                "description": "We deploy your live site, connect domains, & hand over  files with documentation for future management.",
-                "gradientId": 4
-              }
-            ]
-          }
-        ]
+  "workflow": [
+  {
+    "badge": "3D Design Process",
+    "card": [
+      {
+        "heading": "Planning & References",
+        "description": "We define goals, usage context, and technical constraints to ensure 3D fits your product and platform."
+      },
+      {
+        "heading": "Asset Creation & Animation",
+        "description": "Modeling, animation, and performance optimization built for real-world web and product environments."
+      },
+      {
+        "heading": "Integration & Delivery",
+        "description": "Web-ready exports or direct implementation support to ensure smooth integration into your website or app."
+      }
+    ]
+  }
+]
+
       },
       "youWillGet": {
         "heading": "What You Will Get",

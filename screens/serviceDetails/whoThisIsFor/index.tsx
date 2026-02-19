@@ -47,16 +47,6 @@ const WhoThisIsFor = ({ data }: any) => {
                 {item.description}
               </p>
 
-              {item.QuickWins && item.QuickWins.length > 0 && (
-                <ul className="mt-4 space-y-1.5 text-xs md:text-sm text-[#6B7280] text-left">
-                  {item.QuickWins.map((quickWin: string, qIndex: number) => (
-                    <li key={qIndex} className="flex items-start gap-2">
-                      <span className="mt-[3px] h-1.5 w-1.5 rounded-full bg-[#FF5B04]" />
-                      <span>{quickWin}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>
           </div>
         ))}

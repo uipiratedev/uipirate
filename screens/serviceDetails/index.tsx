@@ -25,13 +25,13 @@ const ServiceDetails = ({ data }: any) => {
 
         {/* New WHAT YOU GET (animations) section just below hero */}
         <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
-          <WhatYouGetAnimations />
+          <WhatYouGetAnimations data={data.whatYouGet} />
         </div>
 
         <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
           {/* <WhatWeProvide data={data.whatWeProvide} /> */}
           {/* <YouWillGet data={data.youWillGet} /> */}
-          <WhyThisMatters />
+          <WhyThisMatters data={data.whyThisMatters} />
           {/* <OptionalAdd data={data.optionalAdd} /> */}
         </div>
           <StreamlinedProcess data={data.streamlinedProcess} />

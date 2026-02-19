@@ -83,18 +83,28 @@ const ServiceDetailsHero = ({ data }: any) => {
 
           {/* Animated Headline Replacement using Data Props */}
           <div className="relative z-10 w-full">
-            <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
-              {data.headingPrefix && (
-                <span className="text-black">{data.headingPrefix} </span>
-              )}
-              {/* Force line break if needed, replicating behavior from AnimatedHeadline logic if applicable, but data is simpler here */}
-              <span className="text-[#FF5B04]">
-                {data.headingHighlight || data.heading}
-              </span>
-              {data.headingSuffix && (
-                <span className="text-black"> {data.headingSuffix}</span>
-              )}
-            </h1>
+          
+            {data.heading && (
+              <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
+                {data.heading.map((line: any, lineIndex: number) => (
+                  <div key={lineIndex} className="flex justify-center">
+                    {line.map((word: any, wordIndex: number) => (
+                      <span
+                        key={wordIndex}
+                        className={`inline-block ${word.highlight ? "text-[#FF5B04]" : "text-black"
+                          }`}
+                      >
+                        {word.text}
+                        {/* Add space after each word except the last one in the line */}
+                        {wordIndex < line.length - 1 && " "}
+                      </span>
+                      
+                    ))}
+                    {"  "}
+                  </div>
+                ))} {" "}
+              </h1>
+            )}
           </div>
 
           <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px] text-gray-600">
