@@ -61,7 +61,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs() {
     <div className="pt-32 max-md:pt-24 px-6 max-w-7xl mx-auto mb-24 max-md:mb-12">
       {/* Section Header */}
 
-      <div className="autoShow">
+      <div className="autoShow mb-12 max-md:mb-6">
         <div className="flex flex-row items-center justify-center mb-6">
           <GlassBadge variant="gradient" size="sm">
             What we provide
@@ -70,29 +70,22 @@ const FeaturedBlogs = memo(function FeaturedBlogs() {
         <p className="heading-center">Why Work With UiPirate?</p>
       </div>
 
-      {/* Tabs - Grouped with Horizontal Scroll */}
-      <div className="flex justify-center mb-12 mt-12 max-md:mt-8 overflow-x-auto hide-scrollbar px-0">
-        <div className="inline-flex bg-[#EDEDED] rounded-full p-1 gap-1 min-w-max">
-          {allTags.map((tab) => (
-            <button
-              key={tab}
-              className={`px-4 py-2 rounded-full text-sm max-md:text-xs whitespace-nowrap transition-all duration-200 ${
-                activeTab === tab
-                  ? "bg-[#0b132b] text-white shadow-md"
-                  : "bg-transparent text-[#0b132b] hover:bg-gray-200"
-              }`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-      </div>
+
 
       {/* Blog Cards Grid */}
       {loading ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500">Loading blogs...</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse">
+              {/* Image area skeleton */}
+              <div className="flex-1 bg-[#F1F5F9]" />
+              {/* Content skeleton */}
+              <div className="px-5 py-4 md:px-6 md:py-5 space-y-3">
+                <div className="h-6 bg-[#F1F5F9] rounded w-[85%]" />
+                <div className="h-4 bg-[#F8FAFC] rounded w-[60%]" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : filteredBlogs.length === 0 ? (
         <div className="text-center py-12">
@@ -102,41 +95,33 @@ const FeaturedBlogs = memo(function FeaturedBlogs() {
         <div className="grid md:grid-cols-3 gap-6">
           {filteredBlogs.map((blog) => (
             <Link key={blog._id} href={`/blogs/${blog.slug}`}>
-              <Card className="rounded-[48px] max-md:rounded-[38px]  h-full bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
-                <CardBody className="p-2 max-md:p-2 max-md:gap-2">
-                  <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow h-full">
-                    <CardHeader className="px-0 pt-0 relative h-[200px]">
-                      <Image
-                        fill
-                        alt={blog.title}
-                        className="object-cover rounded-t-[40px] max-md:rounded-t-[30px]"
-                        loading="lazy"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        src={
-                          blog.featuredImage ||
-                          "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
-                        }
-                      />
-                    </CardHeader>
-                    <CardBody className="p-8 max-md:p-5 max-lg:p-6 flex flex-col justify-between">
-                      <div>
-                        <p className="text-2xl max-md:text-xl mt-4 mb-3 font-[700] tracking-[-0.5px] leading-[34px]">
-                          {blog.title}
-                        </p>
+              <div className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)] group">
+                {/* Image area */}
+                <div className="flex-1 relative bg-[#F8F9FB] overflow-hidden">
+                  <div className="relative w-full h-full transition-transform duration-700 group-hover:scale-110">
+                    <Image
+                      src={
+                        blog.featuredImage ||
+                        "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
+                      }
+                      alt={blog.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                </div>
 
-                        <p className="text-base max-md:text-base font-[500] text-[#777777] py-2 line-clamp-1 overflow-hidden text-ellipsis whitespace-nowrap">
-                          {blog.excerpt || "Read more..."}
-                        </p>
-
-                        <div className="flex items-center gap-4 mt-4 text-sm text-gray-500">
-                          <span>👁️ {blog.views || 0} views</span>
-                          <span>⏱️ {blog.readTime || 5} min read</span>
-                        </div>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </CardBody>
-              </Card>
+                {/* Content */}
+                <div className="px-5 py-4 md:px-6 md:py-5">
+                  <h3 className="text-[16px] md:text-[22px] font-semibold text-[#0F172A] leading-snug tracking-tight line-clamp-2">
+                    {blog.title}
+                  </h3>
+                  <p className="mt-1.5 text-[12px] md:text-[13px] text-[#64748B] leading-relaxed line-clamp-1">
+                    {blog.excerpt || "Read more about this project and our process."}
+                  </p>
+                </div>
+              </div>
             </Link>
           ))}
         </div>

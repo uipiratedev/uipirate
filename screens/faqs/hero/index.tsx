@@ -129,26 +129,12 @@ const FaqsHero = ({
             Search FAQs
           </label>
           <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 md:px-5 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md transition-all duration-300 focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] focus-within:bg-white/95">
-            <svg
-              aria-hidden="true"
-              className="hidden md:block w-5 h-5 text-slate-400 flex-shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-              />
-            </svg>
+            
             <input
               aria-label="Search frequently asked questions"
               className="flex-1 bg-transparent focus:outline-none text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
               id="faq-search"
-              placeholder="Search by topic, problem, or keyword..."
+              placeholder="Search by topic, problem, or keyword…"
               type="search"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
