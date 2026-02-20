@@ -14,14 +14,7 @@ const data = [
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
     url: "https://www.xperiti.com/",
   },
-  {
-    heading: "AI LegalTech Saas",
-    heading1: "APAC’s largest law firm",
-    subtitle:
-      "Designed a future-ready AI SaaS platform for lawyers and legal professionals ",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1760502551/ai_legaltech_h24rin.svg",
-    url: "https://www.xperiti.com/",
-  },
+
   {
     heading: "ArthAlpha",
     heading1: "AI Trading Platform",
@@ -29,13 +22,21 @@ const data = [
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
     url: "https://arthalpha.in/",
   },
-  {
-    heading: "Rings & I",
-    heading1: "Diamond Ring Studio",
-    subtitle: "Shopify Store, UX Design , Shopify Theme, Asset Creation",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
-    url: "https://ringsandi.com/",
+    {
+    heading: "AI LegalTech Saas",
+    heading1: "APAC’s largest law firm",
+    subtitle:
+      "Designed a future-ready AI SaaS platform for lawyers and legal professionals ",
+    img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771570379/Image_hzwg0d.svg",
+    url: "https://www.xperiti.com/",
   },
+  // {
+  //   heading: "Rings & I",
+  //   heading1: "Diamond Ring Studio",
+  //   subtitle: "Shopify Store, UX Design , Shopify Theme, Asset Creation",
+  //   img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+  //   url: "https://ringsandi.com/",
+  // },
 ];
 
 interface WorkCardItemProps {
@@ -91,8 +92,8 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
       ref={cardRef}
       className={
         isEven
-          ? "flex flex-row-reverse justify-between mb-16 max-md:mb-4 max-w-full max-md:flex-col-reverse"
-          : "flex flex-row justify-between mb-16 max-md:mb-4 max-w-full max-md:flex-col-reverse py-32 max-md:py-8 max-lg:py-16 max-xl:py-28"
+          ? "flex flex-row-reverse justify-between mb-0 max-md:mb-4 max-w-full max-md:flex-col-reverse"
+          : "flex flex-row justify-between mb-0 max-md:mb-4 max-w-full max-md:flex-col-reverse py-32 max-md:py-8 max-lg:py-16 max-xl:py-28"
       }
     >
       <motion.div
@@ -142,7 +143,7 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
       <div className="w-[60%] max-w-full max-md:w-[100%]">
         <motion.img
           alt={`${item.heading} - ${item.heading1} UI/UX design project showcase`}
-          className="rounded-3xl md:-mt-12 max-md:mt-12"
+          className="w-full rounded-3xl md:-mt-12 max-md:mt-12"
           loading="lazy"
           src={item.img}
           style={{ x: imageX, rotate: imageRotate }}

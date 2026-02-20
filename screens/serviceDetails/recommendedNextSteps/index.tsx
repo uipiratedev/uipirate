@@ -1,23 +1,15 @@
 import GlassBadge from "@/components/GlassBadge";
 import LetsTalkButton from "@/components/LetsTalkButton";
-
-const relatedServices = [
-  "UX/UI & Front End Development",
-  "Landing Pages & Business Websites",
-  "3D Assets & Animation",
-  "UX Audits & Consultation",
-];
-
-const RecommendedNextSteps = () => {
+const RecommendedNextSteps = ({data}:any) => {
   return (
-    <section className="pt-24 max-md:pt-20 pb-24">
+    <section>
       {/* Header */}
-      <div className="autoShow text-center mb-10 md:mb-14">
-        <div className="flex items-center justify-center mb-3">
-          <GlassBadge variant="gradient">RECOMMENDED NEXT STEPS</GlassBadge>
+      <div className="autoShow text-center mb-8 md:mb-12">
+        <div className="flex items-center justify-center mb-6">
+          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
-        <h2 className="text-3xl md:text-[34px] font-bold text-black">
-          What Most Clients Require Next
+        <h2 className="heading-center">
+          {data.heading}
         </h2>
       </div>
 
@@ -40,7 +32,7 @@ const RecommendedNextSteps = () => {
                     verticalAlign: 'middle',
                   }}
                 >
-                  AI Apps, Saas, Websites & More
+                  {data.featuredService.title}
                 </p>
                 
                 {/* Right Circle */}
@@ -52,13 +44,7 @@ const RecommendedNextSteps = () => {
               
               <div className="relative">
                 <div className="rounded-[20px] bg-white p-2 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
-                  <div className="flex h-44 w-32 md:h-48 md:w-36 items-end justify-center rounded-[22px] bg-[#FF5B04] text-white text-[11px] font-semibold leading-tight text-center px-4 pb-6">
-                    ALL THINGS YOU NEED
-                    <br />
-                    UNDER
-                    <br />
-                    ONE ROOF
-                  </div>
+                  <img src="/assets/servicesBanner.svg" alt="" className="" />
                 </div>
               </div>
             </div>
@@ -66,20 +52,14 @@ const RecommendedNextSteps = () => {
             {/* Copy + CTA */}
             <div className="space-y-3">
               <p className="text-sm font-semibold text-[#0F172A]">
-                Motion Graphic
+                {data.featuredService.tagline}
               </p>
-              <h3 className="text-lg md:text-xl font-semibold text-[#0F172A]">
-                Bring static visuals to life for launches, ads, and
-                storytelling.
-              </h3>
+             
               <p className="text-sm md:text-[15px] text-[#64748B] leading-relaxed">
-                Once visuals are in place, motion helps capture attention
-                faster.
+                {data.featuredService.description}
               </p>
-              <p className="text-sm md:text-[15px] text-[#64748B] leading-relaxed">
-                Most teams use motion to explain, promote, and scale reach.
-              </p>
-              <LetsTalkButton  variant="dark" children="Explore " />
+             
+              <LetsTalkButton  variant="dark" children={data.featuredService.buttonText} />
             </div>
           </div>
         </div>
@@ -90,8 +70,8 @@ const RecommendedNextSteps = () => {
             Other Services You May Need
           </h3>
           <div className="space-y-3">
-            {relatedServices.map((service) => (
-             <LetsTalkButton fullWidth variant="light" children={service} />
+            {data.otherServices.map((service: any) => (
+             <LetsTalkButton fullWidth variant="light" children={service.title} />
             ))}
           </div>
         </div>

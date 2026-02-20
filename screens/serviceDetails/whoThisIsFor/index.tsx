@@ -11,13 +11,13 @@ const patternBackgrounds = [
 
 const WhoThisIsFor = ({ data }: any) => {
   return (
-    <section className="pt-24 max-md:pt-20">
+    <section>
       {/* Header */}
-      <div className="autoShow text-center mb-10 md:mb-14">
-        <div className="flex items-center justify-center mb-4">
+      <div className="autoShow text-center mb-8 md:mb-12">
+        <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
-        <h2 className="text-3xl md:text-[34px] font-bold text-black">
+        <h2 className="heading-center">
           {data.heading}
         </h2>
       </div>
@@ -36,6 +36,11 @@ const WhoThisIsFor = ({ data }: any) => {
               }`}
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,#ffffff,transparent_55%)] opacity-60" />
+              <img
+                src={item.image}
+                alt={item.heading}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-[150px] h-auto"
+              />
             </div>
 
             {/* Content */}
@@ -47,16 +52,6 @@ const WhoThisIsFor = ({ data }: any) => {
                 {item.description}
               </p>
 
-              {item.QuickWins && item.QuickWins.length > 0 && (
-                <ul className="mt-4 space-y-1.5 text-xs md:text-sm text-[#6B7280] text-left">
-                  {item.QuickWins.map((quickWin: string, qIndex: number) => (
-                    <li key={qIndex} className="flex items-start gap-2">
-                      <span className="mt-[3px] h-1.5 w-1.5 rounded-full bg-[#FF5B04]" />
-                      <span>{quickWin}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
             </div>
           </div>
         ))}

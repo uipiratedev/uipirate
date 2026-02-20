@@ -144,8 +144,12 @@ export const NavbarDropdown = ({
                   {/* Left Side - Main Feature Cards */}
                   {displayLargeCards.length > 0 && (
                     <div className={clsx(
-                      "grid gap-3 self-stretch",
-                       showFourRow ? "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4" : "md:w-2/3 grid-cols-1 sm:grid-cols-3"
+                      "grid gap-3 self-stretch min-w-0",
+                       showFourRow 
+                         ? "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4" 
+                         : displayRightItems.length > 0 
+                           ? "md:w-3/4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" 
+                           : "w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
                     )}>
                       {displayLargeCards.map((item, index) => (
                         <NextLink
@@ -184,8 +188,8 @@ export const NavbarDropdown = ({
                   {/* Right Side - List Items & Overflow Large Cards */}
                   {displayRightItems.length > 0 && (
                     <div className={clsx(
-                      "flex flex-col gap-2",
-                      showFourRow ? "w-full mt-4" : (displayLargeCards.length > 0 ? "md:w-1/3" : "w-full"),
+                      "flex flex-col gap-2 min-w-0",
+                      showFourRow ? "w-full mt-4" : (displayLargeCards.length > 0 ? "md:w-1/4" : "w-full"),
                       "self-stretch" // Ensure it stretches to match height
                     )}>
                     <div className={clsx(

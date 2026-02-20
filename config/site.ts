@@ -10,7 +10,7 @@ export const siteConfig = {
       hasDropdown: true,
       dropdownItems: [
         {
-          category: "UX/UI DESIGN",
+          category: "UX/UI Design",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
           href: "/services/SaaS-Web-&-Mobile-Apps",
           isLargeCard: true,

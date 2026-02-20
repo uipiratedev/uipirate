@@ -20,38 +20,29 @@ const ServiceDetails = ({ data }: any) => {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div>
         <ServiceDetailsHero data={data.hero} />
 
-        {/* New WHAT YOU GET (animations) section just below hero */}
-        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
-          <WhatYouGetAnimations />
+        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <WhatYouGetAnimations data={data.whatYouGet} />
+        </div>
+      <div className="space-y-20 max-md:space-y-8">
+
+        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <WhyThisMatters data={data.whyThisMatters} />
         </div>
 
-        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
-          {/* <WhatWeProvide data={data.whatWeProvide} /> */}
-          {/* <YouWillGet data={data.youWillGet} /> */}
-          <WhyThisMatters />
-          {/* <OptionalAdd data={data.optionalAdd} /> */}
-        </div>
-          <StreamlinedProcess data={data.streamlinedProcess} />
+        <StreamlinedProcess data={data.streamlinedProcess} />
 
-
-        <div className="container mx-auto ">
+        <div className="container mx-auto">
           <LandingWork />
         </div>
 
-        {/* New Who This Is For section below Work section */}
-        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4">
+        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
           <WhoThisIsFor data={data.whoThisIsFor} />
         </div>
 
-        {/* <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4 mb-24">
-          <TryBeforeCommit />
-        </div> */}
-
-        <div className="container mx-auto mx-auto px-32 lg:px-20 max-md:px-4 mb-24">
-          <RecommendedNextSteps />
+        <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pb-16">
+          <RecommendedNextSteps data={data.recommendedNextSteps} />
         </div>
       </div>
     </PageWrapper>

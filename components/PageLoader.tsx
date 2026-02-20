@@ -1,25 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useState, ReactNode } from "react";
 import Loader from "@/components/loader";
 
-export default function PageLoader() {
-  const pathname = usePathname();
+interface PageLoaderProps {
+  children: ReactNode;
+}
+
+export default function PageLoader({ children }: PageLoaderProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Show loader on path change
-    setLoading(true);
-
+    // Show loader only on initial page load (hard reload)
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [pathname]);
+  }, []); // Empty dependency — runs only once on mount
 
-  if (!loading) return null;
+  return (
+    <>
+      {/* Loader overlay — only on initial page load */}
+      {loading && <Loader />}
 
-  return <Loader />;
+      {/* Page content — hidden while loading to prevent footer flash */}
+      <div
+        style={{
+          opacity: loading ? 0 : 1,
+          visibility: loading ? "hidden" : "visible",
+          transition: "opacity 0.3s ease-in-out, visibility 0.3s ease-in-out",
+        }}
+      >
+        {children}
+      </div>
+    </>
+  );
 }
+

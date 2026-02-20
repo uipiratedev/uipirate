@@ -1,100 +1,76 @@
+"use client";
 import Image from "next/image";
 import GlassBadge from "@/components/GlassBadge";
 import { ContainerScroll } from "@/components/container-scroll-animation";
 
-const features = [
-  {
-    title: "Product UI Animations & Ads",
-    description:
-      "Animations that guide users through actions, states, and key moments inside your product and campaigns.",
-    // Replace this with your actual card background image path/URL
-    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
-  },
-  {
-    title: "Lottie & JSON Animations",
-    description:
-      "Lightweight vector animations exported as Lottie / JSON files so developers can drop them straight into code.",
-    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
-  },
-  {
-    title: "Website Motion & Interactions",
-    description:
-      "Scroll, hover, and micro-interactions that make landing pages and marketing sites feel smooth and intentional.",
-    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
-  },
-  {
-    title: "Developer-Ready Files",
-    description:
-      "Clean exports, specs, and implementation notes so your dev team knows exactly how everything should move.",
-    image: "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg",
-  },
-];
-
 interface FeatureCardProps {
-  title: string;
+  heading: string;
   description: string;
   image?: string;
+  index?: number;
 }
 
-const WhatYouGetCard = ({ title, description, image }: FeatureCardProps) => {
+const WhatYouGetCard = ({
+  heading,
+  description,
+  image,
+  index = 0,
+}: FeatureCardProps) => {
   return (
-    <div className="relative h-[290px] md:h-[350px] overflow-hidden rounded-[28px]  border border-white/10">
-      {/* Background image */}
-      {image ? (
-        <Image src={image} alt={title} fill className="object-cover" />
-      ) : (
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.24),transparent_55%),radial-gradient(circle_at_bottom,_rgba(15,23,42,0.85),#020617)]" />
+    <div className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+      {/* Image area */}
+      {image && (
+        <div className="flex-1 flex items-center justify-center bg-[#F8F9FB] px-6 pt-6">
+          <div className="relative w-[55%] h-[70%]">
+            <Image
+              src={image}
+              alt={heading}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 50vw, 25vw"
+            />
+          </div>
+        </div>
       )}
 
-      {/* Subtle overlay for readability */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(15,23,42,0.35),transparent_55%)]" />
-
-      {/* Bottom bar with text, like the reference card */}
-      <div className="absolute inset-x-0 bottom-0 p-3 md:p-4">
-        <div className="rounded-2xl bg-[linear-gradient(90deg,rgba(15,23,42,0.98),rgba(15,23,42,0.96))] border border-white/10 px-4 py-3 md:px-5 md:py-3.5">
-          <h3 className="text-[15px] md:text-[17px] font-semibold text-white leading-snug">
-            {title}
-          </h3>
-          <p className="mt-1 text-[12px] md:text-[14px] text-slate-200/90 leading-relaxed">
-            {description}
-          </p>
-        </div>
+      {/* Content */}
+      <div className="px-5 py-4 md:px-6 md:py-5">
+        <h3 className="text-[16px] md:text-[22px] font-semibold text-[#0F172A] leading-snug tracking-tight">
+          {heading}
+        </h3>
+        <p className="mt-1.5 text-[12px] md:text-[13px] text-[#64748B] leading-relaxed">
+          {description}
+        </p>
       </div>
     </div>
   );
 };
 
-const WhatYouGetAnimations = () => {
+const WhatYouGetAnimations = ({ data }: any) => {
   return (
-    <section className=" pb-20">
-      {/* Header */}
-    
-
-      {/* Cards grid */}
-       <ContainerScroll
+    <section className="overflow-hidden">
+      {/* Cards grid with ContainerScroll */}
+      <ContainerScroll
         titleComponent={
           <>
-              <div className="autoShow text-center mb-10 md:mb-14">
-        <div className="flex items-center justify-center mb-3">
-          <GlassBadge variant="gradient">WHAT YOU GET</GlassBadge>
-        </div>
-        <h2 className="heading-center">
-          Everything You Need to Create Smoooooth Animations
-        </h2>
-      </div>
+            <div className="autoShow text-center mb-10 md:mb-8">
+              <div className="flex items-center justify-center mb-6">
+                <GlassBadge variant="gradient">{data.badge}</GlassBadge>
+              </div>
+              <h2 className="heading-center">{data.heading}</h2>
+            </div>
           </>
         }
       >
-       
-     
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-3 autoShow">
-        {features.map((feature) => (
-          <WhatYouGetCard key={feature.title} {...feature} />
-        ))}
-      </div>
-       </ContainerScroll>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 autoShow">
+          {data.card.map((feature: any, i: number) => (
+            <WhatYouGetCard key={feature.heading} {...feature} index={i} />
+          ))}
+        </div>
+      </ContainerScroll>
     </section>
   );
 };
 
 export default WhatYouGetAnimations;
+

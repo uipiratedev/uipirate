@@ -8,6 +8,7 @@ import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } fr
 import CookieConsent from "@/components/CookieConsent";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import PageLoader from "@/components/PageLoader";
+import PageTransition from "@/components/PageTransition";
 import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
@@ -158,14 +159,14 @@ export default function RootLayout({
         </a>
 
         <div className="relative flex flex-col min-h-screen">
-          <PageLoader />
-          <ConditionalNavbar />
-          <main className="flex-1" id="main-content">
-            {children}
-          </main>
-
-             <Footer />
-        
+          <PageTransition />
+          <PageLoader>
+            <ConditionalNavbar />
+            <main className="flex-1 min-h-screen" id="main-content">
+              {children}
+            </main>
+            <Footer />
+          </PageLoader>
           <SpeedInsights />
           <CookieConsent />
         </div>
