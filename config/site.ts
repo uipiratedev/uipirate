@@ -84,9 +84,9 @@ export const siteConfig = {
 
         },
         {
-          category: "Documentation",
+          category: "Community Insights",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612675/file_1_fvzqpk.svg",
-          href: "/docs",
+          href: "/community",
           isLargeCard: true,
 
         },
