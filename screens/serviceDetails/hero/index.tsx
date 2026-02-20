@@ -87,7 +87,7 @@ const ServiceDetailsHero = ({ data }: any) => {
             {data.heading && (
               <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
                 {data.heading.map((line: any, lineIndex: number) => (
-                  <div key={lineIndex} className="flex justify-center">
+                  <div key={lineIndex} className="flex flex-wrap justify-center gap-x-[0.2em]">
                     {line.map((word: any, wordIndex: number) => (
                       <span
                         key={wordIndex}

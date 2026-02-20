@@ -239,27 +239,38 @@
         ],
         "mockup": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
       },
-      "optionalAdd": {
-        "heading": "Optional Add-Ons",
-        "badge": "What we provide",
-        "card": [
-          {
-            "heading": "🧩  Design System & Component Library"
-          },
-          {
-            "heading": "🎨  Branding / Logo & Visual Identity"
-          },
-          {
-            "heading": "🚥  Onboarding & Empty State Screens"
-          },
-          {
-            "heading": "🤖  AI assistant UI integrations"
-          }
-        ],
-        "rightImg": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760717024/Shopping_Website_wfxxl7.png"
+  "recommendedNextSteps": {
+    "badge": "RECOMMENDED NEXT STEPS",
+    "heading": "What Most Clients Require Next",
+    "featuredService": {
+      "title": "Landing Pages & Business Websites",
+      "tagline": "Launch faster with beautiful, high-converting websites",
+      "description": "Once your product is ready, the next bottleneck is adoption. We design and build high-converting landing pages and marketing websites that help you launch, explain value clearly, and drive sign-ups.",
+      "buttonText": "Explore",
+      "slug": "landing-pages-business-websites"
+    },
+    "otherServices": [
+      {
+        "title": "Graphic Design",
+        "slug": "graphic-design"
+      },
+      {
+        "title": "Motion Graphic",
+        "slug": "motion-graphic"
+      },
+      {
+        "title": "3D Assets & Animation",
+        "slug": "3d-assets-animation"
+      },
+      {
+        "title": "UX Audits & Consultation",
+        "slug": "ux-audits-consultation"
       }
+    ]
+  
     }
-  },
+  }
+},
   {
     "slug": "Landing-Pages-&-Business-Websites",
     "data": {
@@ -497,25 +508,42 @@
         ],
         "mockup": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151263/ringsweprovide_mytiou.svg"
       },
-      "optionalAdd": {
-        "heading": "Optional Add-Ons",
-        "badge": "Who This Is For",
-        "card": [
-          {
-            "heading": "📝  Blog setup"
-          },
-          {
-            "heading": "✉️  Email capture forms"
-          },
-          {
-            "heading": "🎞️  Custom interactions or animations"
-          },
-          {
-            "heading": "📄  Multi-page expansion"
-          }
-        ],
-        "rightImg": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151610/Shopping_Websitesd_aegspp.png"
+      
+  "recommendedNextSteps": {
+    "badge": "RECOMMENDED NEXT STEPS",
+    "heading": "What Most Founders Require Next",
+    "featuredService": {
+      "title": "Graphic Design",
+      "tagline": "Supporting visuals that keep your product consistent everywhere.",
+      "description": "Once your website is live, most teams need ongoing visuals for marketing, sales, and product updates. We create brand-ready assets that match your site and scale across campaigns, decks, and content.",
+      "buttonText": "Explore",
+      "slug": "graphic-design",
+      "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
+    },
+    "otherServices": [
+      {
+        "title": "UX/UI & Front End Development",
+        "slug": "ux-ui-front-end-development",
+        "icon": "code"
+      },
+      {
+        "title": "Motion Graphic",
+        "slug": "motion-graphic",
+        "icon": "motion"
+      },
+      {
+        "title": "3D Assets & Animation",
+        "slug": "3d-assets-animation",
+        "icon": "3d"
+      },
+      {
+        "title": "UX Audits & Consultation",
+        "slug": "ux-audits-consultation",
+        "icon": "audit"
       }
+    ]
+  
+}
     }
   },
   {
@@ -727,25 +755,6 @@
           }
         ],
         "mockup": "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
-      },
-      "optionalAdd": {
-        "heading": "Optional Add-Ons",
-        "badge": "Who This Is For",
-        "card": [
-          {
-            "heading": "🧪 Accessibility Audits"
-          },
-          {
-            "heading": "📊 A/B Test Variants"
-          },
-          {
-            "heading": "🔄 Maintenance Support"
-          },
-          {
-            "heading": "🧱 Web Component Export (Framer/React)"
-          }
-        ],
-        "rightImg": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151249/React_zarfdg.svg"
       }
     }
   },
@@ -968,25 +977,42 @@
         ],
         "mockup": "https://res.cloudinary.com/damm9iwho/image/upload/v1760505980/graphic_hircry.svg"
       },
-      "optionalAdd": {
-        "heading": "Optional Add-Ons",
-        "badge": "Who This Is For",
-        "card": [
-          {
-            "heading": "🖥️  Slide decks"
-          },
-          {
-            "heading": "🧵  Social media kits"
-          },
-          {
-            "heading": "🖼️  Static ads"
-          },
-          {
-            "heading": "📊  Infographic design"
-          }
-        ],
-        "rightImg": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761152661/Graphics_Design_htu7wk.png"
+      
+  "recommendedNextSteps": {
+    "badge": "RECOMMENDED NEXT STEPS",
+    "heading": "What Most Clients Require Next",
+    "featuredService": {
+      "title": "Motion Graphic",
+      "tagline": "Bring static visuals to life for launches, ads, and storytelling.",
+      "description": "Once visuals are in place, motion helps capture attention faster. Most teams use motion to explain, promote, and scale reach.",
+      "buttonText": "Explore",
+      "slug": "motion-graphic",
+      "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
+    },
+    "otherServices": [
+      {
+        "title": "UX/UI & Front End Development",
+        "slug": "ux-ui-front-end-development",
+        "icon": "code"
+      },
+      {
+        "title": "Landing Pages & Business Websites",
+        "slug": "landing-pages-business-websites",
+        "icon": "browser"
+      },
+      {
+        "title": "3D Assets & Animation",
+        "slug": "3d-assets-animation",
+        "icon": "cube"
+      },
+      {
+        "title": "UX Audits & Consultation",
+        "slug": "ux-audits-consultation",
+        "icon": "audit"
       }
+    ]
+  }
+
     }
   },
   {
@@ -1192,25 +1218,41 @@
         ],
         "mockup": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
       },
-      "optionalAdd": {
-        "heading": "Optional Add-Ons",
-        "badge": "Who This Is For",
-        "card": [
-          {
-            "heading": "📝  Scriptwriting"
-          },
-          {
-            "heading": "📊  Animated explainer slides"
-          },
-          {
-            "heading": "🎙️  Voiceover syncing"
-          },
-          {
-            "heading": "🎯  Ad campaign targeting edits"
-          }
-        ],
-        "rightImg": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761152893/Video_Editing_rqukwv.png"
+      
+  "recommendedNextSteps": {
+    "badge": "RECOMMENDED NEXT STEPS",
+    "heading": "What Most Clients Require Next",
+    "featuredService": {
+      "title": "Motion Graphic",
+      "tagline": "Short UI animations and micro-interactions to extend 3D across the product.",
+      "description": "Once core 3D assets are in place, teams usually add motion to guide attention and explain interactions. This keeps experiences consistent across onboarding, product flows, and marketing touchpoints.",
+      "buttonText": "Explore",
+      "slug": "motion-graphic",
+      "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
+    },
+    "otherServices": [
+      {
+        "title": "UX/UI & Front End Development",
+        "slug": "ux-ui-front-end-development",
+        "icon": "code"
+      },
+      {
+        "title": "Landing Pages & Business Websites",
+        "slug": "landing-pages-business-websites",
+        "icon": "browser"
+      },
+      {
+        "title": "3D Assets & Animation",
+        "slug": "3d-assets-animation",
+        "icon": "cube"
+      },
+      {
+        "title": "UX Audits & Consultation",
+        "slug": "ux-audits-consultation",
+        "icon": "audit"
       }
+    ]
+  }
     }
   },
   {
@@ -1458,25 +1500,42 @@
         ],
         "mockup": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
       },
-      "optionalAdd": {
-        "heading": "Optional Add-Ons",
-        "badge": "Who This Is For",
-        "card": [
-          {
-            "heading": "🧪  Competitive analysis"
-          },
-          {
-            "heading": "🖼️  Wireframe redesign suggestions"
-          },
-          {
-            "heading": "💬  Team onboarding session"
-          },
-          {
-            "heading": "📋  User feedback framework"
-          }
-        ],
-        "rightImg": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761152661/Graphics_Design_htu7wk.png"
+      
+  "recommendedNextSteps": {
+    "badge": "RECOMMENDED NEXT STEPS",
+    "heading": "What Most SaaS & AI Founders Require Next",
+    "featuredService": {
+      "title": "SaaS & AI Product UX/UI & Front End Development",
+      "tagline": "Turn audit insights into a product that’s easier to use, easier to trust, and easier to scale.",
+      "description": "Most teams move from clarity → UX execution to fix friction fast. Apply fixes with structure, not guesswork. Build flows that hold up as the product grows.",
+      "buttonText": "Explore",
+      "slug": "ux-ui-front-end-development",
+      "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
+    },
+    "otherServices": [
+      {
+        "title": "Landing Pages & Business Websites",
+        "slug": "landing-pages-business-websites",
+        "icon": "browser"
+      },
+      {
+        "title": "Graphic Design",
+        "slug": "graphic-design",
+        "icon": "pen"
+      },
+      {
+        "title": "3D Assets & Animation",
+        "slug": "3d-assets-animation",
+        "icon": "cube"
+      },
+      {
+        "title": "UX Audits & Consultation",
+        "slug": "ux-audits-consultation",
+        "icon": "audit"
       }
+    ]
+  
+}
     }
   },
   {
@@ -1696,25 +1755,42 @@
         ],
         "mockup": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151359/headphone_pn5sic.svg"
       },
-      "optionalAdd": {
-        "heading": "Optional Add-Ons",
-        "badge": "Who This Is For",
-        "card": [
-          {
-            "heading": "🔄  Interactive WebGL version"
-          },
-          {
-            "heading": "🎤  Voiceover + SFX sync"
-          },
-          {
-            "heading": "🌐  Landing page with embedded render"
-          },
-          {
-            "heading": "🗂️  Integration with Webflow or Framer"
-          }
-        ],
-        "rightImg": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761152661/Graphics_Design_htu7wk.png"
+            
+  "recommendedNextSteps": {
+    "badge": "RECOMMENDED NEXT STEPS",
+    "heading": "What Most Clients Require Next",
+    "featuredService": {
+      "title": "3D Assets & Animation",
+      "tagline": "Immersive 3D animations and rendering for standout visuals.",
+      "description": "Once motion improves clarity, teams often need stronger visuals to support it. 3D assets help products stand out while staying consistent with the interface.",
+      "buttonText": "Explore",
+      "slug": "3d-assets-animation",
+      "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
+    },
+    "otherServices": [
+      {
+        "title": "UX/UI & Front End Development",
+        "slug": "ux-ui-front-end-development",
+        "icon": "code"
+      },
+      {
+        "title": "Landing Pages & Business Websites",
+        "slug": "landing-pages-business-websites",
+        "icon": "browser"
+      },
+      {
+        "title": "Graphic Design",
+        "slug": "graphic-design",
+        "icon": "pen"
+      },
+      {
+        "title": "UX Audits & Consultation",
+        "slug": "ux-audits-consultation",
+        "icon": "audit"
       }
+    ]
+  
+}
     }
   }
 ]

@@ -5,10 +5,10 @@ import GlassBadge from "@/components/GlassBadge";
 const WhyThisMatters = ({ data }: { data: any }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   return (
-    <section className="pt-24 max-md:pt-20 pb-24">
+    <section>
       {/* Header */}
-      <div className="autoShow text-center mb-10 md:mb-14">
-        <div className="flex items-center justify-center mb-3">
+      <div className="autoShow text-center mb-6 md:mb-8">
+        <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <h2 className="heading-center">

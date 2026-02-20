@@ -59,14 +59,14 @@ const StreamlinedProcess = ({ data }: any) => {
     const angle = (Math.atan(slope / 400) * 180) / Math.PI; 
     
     return {
-      top: `${ropeY - cardY - 6}px`,
+      top: `${ropeY - cardY - 4}px`,
       transform: `rotate(${angle}deg)`,
     };
   };
 
   const getCardRotationClass = (colIndex: number) => {
-    if (colIndex === 0) return "lg:rotate-[5deg]";
-    if (colIndex === 2) return "lg:rotate-[-6deg]";
+    if (colIndex === 0) return "lg:rotate-[3deg]";
+    if (colIndex === 2) return "lg:rotate-[-4deg]";
     return "";
   };
 
@@ -74,18 +74,18 @@ const StreamlinedProcess = ({ data }: any) => {
     const t = getRopeParam(colIndex, 0.5);
     const yOffset = getRopeY(t);
     return {
-      marginTop: `${yOffset}px`,
+      marginTop: `${yOffset - 8}px`,
     };
   };
 
   return (
-    <div className="pt-32 max-md:pt-24 overflow-hidden">
+    <div className="pt-6 overflow-hidden">
       {/* Header */}
-      <div className="autoShow text-center mb-20">
+      <div className="autoShow text-center mb-12">
         <div className="flex flex-row items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
-        <h2 className="text-[32px] md:text-[48px] font-bold text-black tracking-tight">
+        <h2 className="heading-center">
           How We Work
         </h2>
       </div>
@@ -111,7 +111,7 @@ const StreamlinedProcess = ({ data }: any) => {
             </div>
 
             {/* Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 relative z-10 pt-1 md:pt-0 mx-auto xl:px-24 md:mb-32">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 container gap-10 md:gap-12 relative z-10 pt-1 md:pt-0 mx-auto xl:px-24 md:mb-32">
               {row.map((card, colIdx) => (
                 <div 
                   key={card.index} 
@@ -161,7 +161,7 @@ const StreamlinedProcess = ({ data }: any) => {
                         >
                           {/* Card Number */}
                           <span className="text-[44px] md:text-[52px] font-semibold text-gray-200 leading-none mb-4 block group-hover:text-orange-500 transition-colors">
-                            {String(card.index).padStart(2, "0")}
+                            {String(card.index).padStart(2)}
                           </span>
 
                           {/* Card Content */}
