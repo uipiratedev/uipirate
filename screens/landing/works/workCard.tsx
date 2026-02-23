@@ -122,21 +122,13 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
               {item.subtitle}
             </p>
           </div>
-          {/* <a href={item.url} rel="noreferrer" target="_blank">
-            <Button
-              className="rounded-2xl py-6 px-12 mt-12 font-[700] text-[16px]"
-              variant="bordered"
-            >
-              View Project
-            </Button>
-          </a> */}
-          <div className="mt-12">
+          <div className={`mt-12 flex ${isEven ? "justify-end" : "justify-start"} max-md:justify-center`}>
             <LetsTalkButton
               variant="light"
               children="View Project"
               href={item.url}
               target="_blank"
-          />
+            />
           </div>
         </div>
       </motion.div>

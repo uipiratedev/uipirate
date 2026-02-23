@@ -43,52 +43,46 @@
         ]
       },
       "whyThisMatters": {
-  "heading": "Why Most SaaS & AI Products Break (And How We Fix It)",
+  "heading": "Why Most SaaS & AI Products Break",
+  "heading2": "(And How We Fix It)",
   "badge": "WHY THIS MATTERS",
   "card": [
     {
       "heading": "Hidden Churn",
-      "description": "Why do users leave without obvious problems? They didn’t get stuck — they got confused.",
+      "description": "Why do users leave without obvious problems?",
       "QuickWins": [
-        "Confusion creates silent churn",
-        "Clarity improves retention",
-        "Remove friction before users disengage"
+        "They didn’t get stuck — they got confused. Confusion creates silent churn"
       ]
     },
     {
       "heading": "Product Fragility",
-      "description": "Why does the product feel fragile as it grows? Because it wasn’t designed for change.",
+      "description": "Why does the product feel fragile as it grows?",
       "QuickWins": [
-        "Build systems that expect growth",
-        "Design modular & scalable architecture",
-        "Prevent breakage during expansion"
+        "Because it wasn’t designed for change. We build systems that expect growth, not fight it."
       ]
     },
     {
       "heading": "Too Many Questions",
-      "description": "Why do buyers ask endless questions? Because the product doesn’t answer them upfront.",
+      "description": "Why do buyers ask endless questions?",
       "QuickWins": [
-        "Clear positioning reduces friction",
-        "Pre-answer sales objections",
-        "Improve conversion before sales calls"
+        "Because the product doesn’t answer them upfront.",
+        "Clarity reduces friction before sales ever speaks."
       ]
     },
     {
       "heading": "Commitment Risk",
-      "description": "Why does the product feel risky to adopt? Because outcomes aren’t clear.",
+      "description": "Why does the product feel risky to adopt?",
       "QuickWins": [
-        "Define visible success paths",
-        "Show measurable outcomes",
-        "Increase confidence before purchase"
+        "Because outcomes aren’t clear.",
+        "People commit when they know what success looks like."
       ]
     },
     {
       "heading": "Trust Gap",
-      "description": "Why do some products feel safe instantly? Because they’re predictable.",
+      "description": "Why do some products feel safe instantly?",
       "QuickWins": [
-        "Consistency builds trust",
-        "Predictable UX patterns",
-        "Reliable product behavior"
+        "Because they’re predictable.",
+        "People trust what behaves consistent"
       ]
     }
   ]
@@ -101,17 +95,17 @@
     {
       "heading": "SaaS & AI Startups",
       "description": "Building a product and need it to be clear, usable, and ready to grow without breaking later.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
     },
     {
       "heading": "Enterprise Teams",
       "description": "Managing complex tools and teams, and need systems that people actually understand and use.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg"
     },
     {
       "heading": "Design / Dev Agencies",
       "description": "Need a reliable partner to handle product structure and interface work for client projects.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151096/Coding_Folder_v2gznj.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
     }
   ]
 },
@@ -245,7 +239,8 @@
     "featuredService": {
       "title": "Landing Pages & Business Websites",
       "tagline": "Launch faster with beautiful, high-converting websites",
-      "description": "Once your product is ready, the next bottleneck is adoption. We design and build high-converting landing pages and marketing websites that help you launch, explain value clearly, and drive sign-ups.",
+      "description": "Once your product is ready, the next bottleneck is adoption.",
+      "description2": "We design and build high-converting landing pages and marketing websites that help you launch, explain value clearly, and drive sign-ups.",
       "buttonText": "Explore",
       "slug": "landing-pages-business-websites"
     },
@@ -316,61 +311,55 @@
 
       },
       "whyThisMatters": {
-  "heading": "Why Most Business Websites Don’t Convert (And What We Do Differently)",
+  "heading": "Why Most Business Websites Don’t Convert",
+  "heading2":  "(And What We Do Differently)",
   "badge": "WHY THIS MATTERS",
   "card": [
     {
       "heading": "First Impressions Matter",
-      "description": "Why do most websites fail to convert visitors? Because people don’t understand what the business does within a few seconds. If clarity is missing, they leave.",
+      "description": "Why do most websites fail to convert visitors?",
       "QuickWins": [
-        "Clear value proposition above the fold",
-        "Instant understanding of services",
-        "Strong first-screen messaging"
+        "Because people don’t understand what the business does within a few seconds.",
+        " If clarity is missing, they leave."
       ]
     },
     {
       "heading": "Clarity Beats Creativity",
-      "description": "Why isn’t a good-looking website enough? A site can look great and still confuse users. Clear messaging drives action, not visuals alone.",
+      "description": "Why isn’t a good-looking website enough?",
       "QuickWins": [
-        "Conversion-focused messaging",
-        "Design that supports clarity",
-        "Strategic content hierarchy"
+        "A site can look great and still confuse users.",
+        " Clear messaging drives action, not visuals alone."
       ]
     },
     {
       "heading": "Messaging Drives Action",
-      "description": "Why do visitors scroll but not click? Because the site doesn’t clearly tell them what to do next or why it matters.",
+      "description": "Why do visitors scroll but not click?",
       "QuickWins": [
-        "Strong, visible CTAs",
-        "Clear next-step guidance",
-        "Benefit-driven copy"
+        "Because the site doesn’t clearly tell them what to do next or why it matters."
       ]
     },
     {
       "heading": "Mobile Is Not Optional",
-      "description": "Why does mobile performance matter so much? Most visitors see your site on their phone first. If it’s hard to use, they’re gone.",
+      "description": "Why does mobile performance matter so much?",
       "QuickWins": [
-        "Mobile-first layout",
-        "Touch-friendly UI elements",
-        "Optimized mobile performance"
+        "Most visitors see your site on their phone first.",
+        "If it’s hard to use, they’re gone."
       ]
     },
     {
       "heading": "Speed Is Perception",
-      "description": "Why does a slow website hurt credibility? Slow sites feel unreliable. People associate speed with professionalism.",
+      "description": "Why does a slow website hurt credibility?",
       "QuickWins": [
-        "Fast-loading pages",
-        "Performance optimization",
-        "Lightweight, clean builds"
+        "Slow sites feel unreliable. ",
+        "People associate speed with professionalism."
       ]
     },
     {
       "heading": "Users Scan, They Don’t Read",
-      "description": "Why do long paragraphs fail on websites? People scan headlines and buttons. If meaning isn’t visible instantly, text is ignored.",
+      "description": "Why do long paragraphs fail on websites?",
       "QuickWins": [
-        "Scannable content structure",
-        "Strong headline hierarchy",
-        "Clear, concise copy blocks"
+        "People scan headlines and buttons.",
+        "If meaning isn’t visible instantly, text is ignored."
       ]
     }
   ]
@@ -383,17 +372,17 @@
     {
       "heading": "SaaS & Product Teams",
       "description": "Turn visitors into users with high-converting landing pages built for startups, corporates, and tech products.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
     },
     {
       "heading": "Local Businesses",
       "description": "Showcase your restaurant, café, or studio with a fast, modern website that builds trust and drives more local traffic.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771830594/local_bzcfjn.svg"
     },
     {
       "heading": "Portfolios & Personal Brand Sites",
       "description": "Build a sleek, minimal portfolio or brand site that highlights your story and credibility.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151205/customicon_n8ieev.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
     }
   ]
 },
@@ -515,7 +504,8 @@
     "featuredService": {
       "title": "Graphic Design",
       "tagline": "Supporting visuals that keep your product consistent everywhere.",
-      "description": "Once your website is live, most teams need ongoing visuals for marketing, sales, and product updates. We create brand-ready assets that match your site and scale across campaigns, decks, and content.",
+      "description": "Once your website is live, most teams need ongoing visuals for marketing, sales, and product updates.",
+      "description2": " We create brand-ready assets that match your site and scale across campaigns, decks, and content.",
       "buttonText": "Explore",
       "slug": "graphic-design",
       "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
@@ -757,7 +747,8 @@
         "mockup": "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
       },
       "whyThisMatters": {
-        "heading": "Why Most Design Systems Fail to Scale (And How We Fix It)",
+        "heading": "Why Most Design Systems Fail to Scale",
+        "heading2":"(And How We Fix It)",
         "badge": "WHY THIS MATTERS",
         "card": [
           {
@@ -864,61 +855,55 @@
 
       },
       "whyThisMatters": {
-  "heading": "Why Most Visuals Fail to Create Impact (And How We Fix It)",
+  "heading": "Why Most Visuals Fail to Create Impact",
+  "heading2":" (And How We Fix It)",
   "badge": "WHY THIS MATTERS",
   "card": [
     {
       "heading": "Clarity Over Decoration",
-      "description": "Why do good-looking visuals still fail to convert? Because they don’t explain anything. We design visuals that guide decisions, not just decorate screens.",
+      "description": "Why do good-looking visuals still fail to convert?",
       "QuickWins": [
-        "Decision-focused design",
-        "Visual hierarchy with purpose",
-        "Design that supports messaging"
+        "Because they don’t explain anything.",
+        "We design visuals that guide decisions, not just decorate screens."
       ]
     },
     {
       "heading": "Trust Is Visual",
-      "description": "Why do some brands feel more reliable instantly? Because consistency signals professionalism. People trust what looks intentional.",
+      "description": "Why do some brands feel more reliable instantly?",
       "QuickWins": [
-        "Consistent visual system",
-        "Professional brand alignment",
-        "Predictable design patterns"
+        "Because consistency signals professionalism.",
+        "People trust what looks intentional."
       ]
     },
     {
       "heading": "Attention Is Earned",
-      "description": "Why do people ignore most graphics today? Because clutter is everywhere. Clear visuals earn attention without forcing it.",
+      "description": "Why do people ignore most graphics today?",
       "QuickWins": [
-        "Minimal, focused layouts",
-        "Clear focal points",
-        "Reduced visual noise"
+        "Because clutter is everywhere.",
+        "Clear visuals earn attention without forcing it."
       ]
     },
     {
       "heading": "Growth Exposes Weak Visuals",
-      "description": "Why do visuals break when companies scale? Because they weren’t built as a system. We design for reuse, not one-offs.",
+      "description": "Why do visuals break when companies scale?",
       "QuickWins": [
-        "Scalable design systems",
-        "Reusable components",
-        "Structured brand guidelines"
+        "Because they weren’t built as a system.",
+        "We design for reuse, not one-offs."
       ]
     },
     {
       "heading": "Visuals Affect Business Confidence",
-      "description": "Why do visuals impact buying decisions so much? Because people decide emotionally, then justify logically. Visual clarity reduces doubt.",
+      "description": "Why do visuals impact buying decisions so much?",
       "QuickWins": [
-        "Emotion-driven design",
-        "Confidence-building layouts",
-        "Clear value visualization"
+        "Because people decide emotionally, then justify logically.",
+        "Visual clarity reduces doubt."
       ]
     },
     {
       "heading": "First Impressions Decide",
-      "description": "Why does visual quality affect credibility so fast? Because people judge reliability before reading a single word.",
+      "description": "Why does visual quality affect credibility so fast?",
       "QuickWins": [
-        "Strong first-screen impact",
-        "Premium visual presentation",
-        "Instant brand clarity"
+        "Because people judge reliability before reading a single word."
       ]
     }
   ]
@@ -931,17 +916,17 @@
     {
       "heading": "Founders & Product Teams",
       "description": "Need professional visuals without building an in-house design team.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
     },
     {
       "heading": "Brand & Marketing Teams",
       "description": "Need consistent creatives for campaigns, launches, and daily marketing.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771831381/brand_qbdqtq.svg"
     },
     {
       "heading": "Professionals & Creators",
       "description": "Need clean visuals that support content, products, and communication.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151205/customicon_n8ieev.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771831381/creator_qzziot.svg"
     }
   ]
 },
@@ -1046,7 +1031,8 @@
     "featuredService": {
       "title": "Motion Graphic",
       "tagline": "Bring static visuals to life for launches, ads, and storytelling.",
-      "description": "Once visuals are in place, motion helps capture attention faster. Most teams use motion to explain, promote, and scale reach.",
+      "description": "Once visuals are in place, motion helps capture attention faster.",
+      "description2": "Most teams use motion to explain, promote, and scale reach.",
       "buttonText": "Explore",
       "slug": "motion-graphic",
       "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
@@ -1124,43 +1110,40 @@
       },
 
       "whyThisMatters": {
-  "heading": "Why Motion Often Hurts Products (And How We Use It Right)",
+  "heading": "Why Motion Often Hurts Products",
+  "heading2":"(And How We Use It Right)",
   "badge": "WHY THIS MATTERS",
   "card": [
     {
       "heading": "Static Interfaces Create Overwhelm",
-      "description": "Why do many SaaS products feel overwhelming to use? Because everything looks static. Motion helps users understand what changed and what to do next.",
+      "description": "Why do many SaaS products feel overwhelming to use?",
       "QuickWins": [
-        "State-change feedback animations",
-        "Guided interaction transitions",
-        "Reduced cognitive overload"
+        "Because everything looks static.",
+        "Motion helps users understand what changed and what to do next."
       ]
     },
     {
       "heading": "Animation Shouldn’t Slow Products",
-      "description": "Why does animation sometimes slow products down? Because it’s added for looks. We design motion that’s lightweight and performance-safe.",
+      "description": "Why does animation sometimes slow products down?",
       "QuickWins": [
-        "Performance-optimized motion",
-        "Purpose-driven transitions",
-        "Lightweight interaction design"
+        "Because it’s added for looks.",
+        "We design motion that’s lightweight and performance-safe."
       ]
     },
     {
       "heading": "Motion Is Functional, Not Decorative",
-      "description": "Why isn’t motion just a nice-to-have? Because users rely on feedback. Motion reduces hesitation and mistakes.",
+      "description": "Why isn’t motion just a nice-to-have?",
       "QuickWins": [
-        "Clear action feedback",
-        "Error-prevention cues",
-        "Confidence-building microinteractions"
+        "Because users rely on feedback.",
+        "Motion reduces hesitation and mistakes."
       ]
     },
     {
       "heading": "Motion Must Scale With the Product",
-      "description": "Why does motion break as products scale? Because it’s not systemized. We design reusable motion patterns, not one-offs.",
+      "description": "Why does motion break as products scale?",
       "QuickWins": [
-        "Reusable motion components",
-        "Consistent transition patterns",
-        "Scalable animation system"
+        "Because it’s not systemized.",
+        "We design reusable motion patterns, not one-offs."
       ]
     }
   ]
@@ -1172,17 +1155,17 @@
     {
       "heading": "SaaS & Product Teams",
       "description": "Add explainer or training videos that clearly communicate product value.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151206/motion_sc88nz.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
     },
     {
       "heading": "Large Enterprises",
       "description": "Get pro-quality graphics and visual polish without the agency overhead.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151228/brand_z8qpjl.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg"
     },
     {
       "heading": "Founders & Marketers",
       "description": "Promote launches or updates with engaging, story-driven motion graphics.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151140/promo_erxieg.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771831381/brand_qbdqtq.svg"
     }
   ]
 },
@@ -1287,7 +1270,8 @@
     "featuredService": {
       "title": "Motion Graphic",
       "tagline": "Short UI animations and micro-interactions to extend 3D across the product.",
-      "description": "Once core 3D assets are in place, teams usually add motion to guide attention and explain interactions. This keeps experiences consistent across onboarding, product flows, and marketing touchpoints.",
+      "description": "Once core 3D assets are in place, teams usually add motion to guide attention and explain interactions.",
+      "description2": "This keeps experiences consistent across onboarding, product flows, and marketing touchpoints.",
       "buttonText": "Explore",
       "slug": "motion-graphic",
       "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
@@ -1362,52 +1346,48 @@
 
       },
       "whyThisMatters": {
-  "heading": "Why Most Products Struggle With Adoption (And How We Fix It)",
+  "heading": "Why Most 3D On Websites Fails ",
+  "heading2":"(And How We Do It Right)",
   "badge": "WHY THIS MATTERS",
   "card": [
     {
       "heading": "Unclear First Steps",
-      "description": "Why do users hesitate even after signing up? They’re unsure what to do next. When the product doesn’t clearly guide the first few actions, confidence drops fast.",
+      "description": "Why do users hesitate even after signing up?",
       "QuickWins": [
-        "Guided onboarding flows",
-        "Clear next-step prompts",
-        "Early momentum-building actions"
+        "They’re unsure what to do next.",
+        "When the product doesn’t clearly guide the first few actions, confidence drops fast."
       ]
     },
     {
       "heading": "Too Many Decisions",
-      "description": "Why does a product feel “heavy” or tiring to use? Too many decisions at once. Every extra choice increases friction and slows momentum.",
+      "description": "Why does a product feel “heavy” or tiring to use?",
       "QuickWins": [
-        "Reduced cognitive load",
-        "Progressive feature exposure",
-        "Simplified interaction paths"
+        "Too many decisions at once.",
+        "Every extra choice increases friction and slows momentum."
       ]
     },
     {
       "heading": "Features Without Priority",
-      "description": "Why don’t features translate into usage? They solve internal ideas, not user priorities. What makes sense to the team doesn’t always make sense to customers.",
+      "description": "Why don’t features translate into usage?",
       "QuickWins": [
-        "User-priority feature mapping",
-        "Outcome-driven design decisions",
-        "Clear value alignment"
+        "They solve internal ideas, not user priorities.",
+        "What makes sense to the team doesn’t always make sense to customers."
       ]
     },
     {
       "heading": "Demo vs. Daily Use Gap",
-      "description": "Why do demos go well but adoption stalls? Real usage isn’t a demo. Products optimized for presentations often break in daily workflows.",
+      "description": "Why do demos go well but adoption stalls?",
       "QuickWins": [
-        "Workflow-tested interfaces",
-        "Real-world scenario design",
-        "Sustainable usability patterns"
+        "Real usage isn’t a demo.",
+        "Products optimized for presentations often break in daily workflows."
       ]
     },
     {
       "heading": "Silent Churn",
-      "description": "Why do users churn without complaining? Confusion doesn’t trigger feedback — it triggers exits. People leave quietly when effort outweighs value.",
+      "description": "Why do users churn without complaining?",
       "QuickWins": [
-        "Friction detection points",
-        "Clarity-first UX systems",
-        "Effort-to-value optimization"
+        "Confusion doesn’t trigger feedback — it triggers exits.",
+        "People leave quietly when effort outweighs value."
       ]
     }
   ]
@@ -1419,12 +1399,12 @@
     {
       "heading": "Founders or startups who are just starting out",
       "description": "Looking for guidance on essential design principles and identify key elements to focus on as you embark on your journey",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151251/coampaign_hsrbys.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832692/founder_gipqiv.svg"
     },
     {
       "heading": "anyone looking to upgrade their product experience & conversions",
       "description": "If you’ve noticed that growth has slowed down and you’re feeling uncertain about what might be holding users back.",
-      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1761151209/frin_xvln0y.svg"
+      "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771832688/anyone_l09c81.svg"
     }
   ]
 },
@@ -1569,7 +1549,8 @@
     "featuredService": {
       "title": "SaaS & AI Product UX/UI & Front End Development",
       "tagline": "Turn audit insights into a product that’s easier to use, easier to trust, and easier to scale.",
-      "description": "Most teams move from clarity → UX execution to fix friction fast. Apply fixes with structure, not guesswork. Build flows that hold up as the product grows.",
+      "description": "Most teams move from clarity → UX execution to fix friction fast.",
+      "description2":" Apply fixes with structure, not guesswork. Build flows that hold up as the product grows.",
       "buttonText": "Explore",
       "slug": "ux-ui-front-end-development",
       "imageLabel": "ALL THINGS YOU NEED UNDER ONE ROOF"
@@ -1643,7 +1624,8 @@
 
       },
       "whyThisMatters": {
-  "heading": "Why Most 3D On Websites Fails (And How We Do It Right)",
+  "heading": "Why Most 3D On Websites Fails ",
+  "heading2":"(And How We Do It Right)",
   "badge": "WHY THIS MATTERS",
   "card": [
     {

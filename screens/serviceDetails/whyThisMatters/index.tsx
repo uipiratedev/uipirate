@@ -12,7 +12,7 @@ const WhyThisMatters = ({ data }: { data: any }) => {
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <h2 className="heading-center">
-          {data.heading}
+          {data.heading} <br /> {data.heading2}
         </h2>
         {/* <p className="mt-1 heading-center">
           (And How We Fix It)
@@ -77,9 +77,19 @@ const WhyThisMatters = ({ data }: { data: any }) => {
         {/* Right column: Dynamic Content */}
         <div className="lg:sticky lg:top-24 rounded-[20px] max-md:rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.08)] px-8 py-10 md:px-10 md:py-12 min-h-[300px] flex flex-col justify-center transition-all duration-500">
           <div key={activeIndex} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-             <h3 className="text-xl md:text-2xl font-bold text-[#0F172A] mb-6 leading-tight">
-               {data.card[activeIndex].QuickWins}
-             </h3>
+            <div className="space-y-4 mb-6">
+              {Array.isArray(data.card[activeIndex].QuickWins) ? (
+                data.card[activeIndex].QuickWins.map((win: string, i: number) => (
+                  <h3 key={i} className="text-xl md:text-2xl font-semibold leading-tight">
+                    {win}
+                  </h3>
+                ))
+              ) : (
+                <h3 className="text-xl md:text-2xl font-semibold leading-tight">
+                  {data.card[activeIndex].QuickWins}
+                </h3>
+              )}
+            </div>
              <div className="w-12 h-1 bg-[#FF5B04] mb-6 rounded-full opacity-20" />
              
           </div>

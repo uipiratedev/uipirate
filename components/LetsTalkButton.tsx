@@ -14,6 +14,7 @@ interface LetsTalkButtonProps {
   onClick?: () => void;
   isDisabled?: boolean;
   target?: string;
+  showArrow?: boolean;
 }
 
 /**
@@ -37,7 +38,8 @@ export const LetsTalkButton = ({
   size = "default",
   onClick,
   isDisabled = false,
-  target
+  target,
+  showArrow = false
 }: LetsTalkButtonProps) => {
   const isSmall = size === "sm";
   const isLight = variant === "light";
@@ -119,10 +121,29 @@ export const LetsTalkButton = ({
           }}
         />
       )}
-      <div className="flex flex-row items-center gap-3 relative z-10">
+      <div className="flex flex-row items-center gap-2 relative z-10 transition-all duration-300">
         <p className={`${isSmall ? 'text-sm' : 'text-base max-md:text-medium'} font-semibold`}>
           {children}
         </p>
+        
+        {showArrow && (
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width={isSmall ? "16" : "20"} 
+            height={isSmall ? "16" : "20"} 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M17 7l-10 10" />
+            <path d="M8 7l9 0l0 9" />
+          </svg>
+        )}
       </div>
     </Button>
   );

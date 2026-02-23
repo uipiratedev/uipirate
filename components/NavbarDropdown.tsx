@@ -200,7 +200,7 @@ export const NavbarDropdown = ({
                         <NextLink
                           key={index}
                           className={clsx(
-                            "flex items-center gap-4 p-1 rounded-[12px] bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 transition-all duration-300 group",
+                            "flex items-center gap-3 p-1 rounded-[12px] bg-gray-50 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 transition-all duration-300 group",
                             showFourRow ? "w-auto" : "flex-1" // Added flex-1 to distribute height only in column mode
                           )}
                           href={item.href || "#"}
@@ -209,7 +209,7 @@ export const NavbarDropdown = ({
                            // background: "linear-gradient(340.36deg, rgba(21, 21, 20, 0.4) 39.57%, rgba(33, 33, 33, 0.4) 89.85%),linear-gradient(340.36deg, #151514 39.57%, #212121 89.85%)",
                           }}
                         >
-                          <div className="w-8 h-8 rounded-[8px] bg-white text-gray-700 flex items-center justify-center text-lg group-hover:bg-orange-50 group-hover:text-orange-600 border border-gray-200 group-hover:border-orange-200 transition-all shrink-0">
+                          <div className="w-auto h-full aspect-square rounded-[8px] bg-white text-gray-700 flex items-center justify-center text-lg group-hover:bg-orange-50 group-hover:text-orange-600 border border-gray-200 group-hover:border-orange-200 transition-all shrink-0">
                             {item.icon ? (
                               <img src={item.icon} alt={item.category} className="w-4 h-4 invert" />
                             ) : (
@@ -219,7 +219,7 @@ export const NavbarDropdown = ({
                           </div>
                           <div className="flex flex-col min-w-0">
                             <span className="text-gray-900 font-semibold text-[14px] group-hover:text-orange-600 transition-colors truncate">
-                              {item.category}
+                              {item.category} dan
                             </span>
                             
                           </div>
