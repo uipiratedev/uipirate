@@ -755,6 +755,68 @@
           }
         ],
         "mockup": "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
+      },
+      "whyThisMatters": {
+        "heading": "Why Most Design Systems Fail to Scale (And How We Fix It)",
+        "badge": "WHY THIS MATTERS",
+        "card": [
+          {
+            "heading": "Visual Inconsistency",
+            "description": "Different teams using different versions of the same component leads to a fragmented user experience and brand confusion.",
+            "QuickWins": [
+              "Centralized component library",
+              "Version control for design",
+              "Strict brand alignment"
+            ]
+          },
+          {
+            "heading": "Development Friction",
+            "description": "Developers often spend too much time rebuilding common UI elements from scratch instead of focusing on core features.",
+            "QuickWins": [
+              "Reusable code snippets",
+              "Standardized design tokens",
+              "Easy handoff documentation"
+            ]
+          },
+          {
+            "heading": "Maintenance Debt",
+            "description": "Updating a single brand color or font requires searching through hundreds of files, leading to errors and delays.",
+            "QuickWins": [
+              "Global design tokens",
+              "One-click updates",
+              "Scalable architecture"
+            ]
+          }
+        ]
+      },
+      "recommendedNextSteps": {
+        "badge": "RECOMMENDED NEXT STEPS",
+        "heading": "What Most Teams Require Next",
+        "featuredService": {
+          "title": "UX Audits & Consultation",
+          "tagline": "Ensure your new design system is being used effectively.",
+          "description": "Once your design system is live, the next step is making sure it's solving real usability problems. We audit your product to ensure the new components are improving adoption and reducing friction.",
+          "buttonText": "Explore",
+          "slug": "ux-audits-consultation"
+        },
+        "otherServices": [
+          {
+            "title": "SaaS Web & Mobile Apps",
+            "slug": "ux-ui-front-end-development"
+          },
+          {
+            "title": "Landing Pages & Business Websites",
+            "slug": "landing-pages-business-websites"
+          },
+          {
+            "title": "Graphic Design",
+            "slug": "graphic-design"
+          },
+          {
+            "title": "Motion Graphic",
+            "slug": "motion-graphic"
+          }
+        ]
       }
     }
   },

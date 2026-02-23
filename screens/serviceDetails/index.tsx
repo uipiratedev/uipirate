@@ -20,30 +20,38 @@ const ServiceDetails = ({ data }: any) => {
 
   return (
     <PageWrapper showFloatingButton={false}>
-        <ServiceDetailsHero data={data.hero} />
+        {data.hero && <ServiceDetailsHero data={data.hero} />}
 
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <WhatYouGetAnimations data={data.whatYouGet} />
-        </div>
+        {data.whatYouGet && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+            <WhatYouGetAnimations data={data.whatYouGet} />
+          </div>
+        )}
+
       <div className="space-y-20 max-md:space-y-8">
+        {data.whyThisMatters && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+            <WhyThisMatters data={data.whyThisMatters} />
+          </div>
+        )}
 
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <WhyThisMatters data={data.whyThisMatters} />
-        </div>
-
-        <StreamlinedProcess data={data.streamlinedProcess} />
+        {data.streamlinedProcess && <StreamlinedProcess data={data.streamlinedProcess} />}
 
         <div className="container mx-auto">
           <LandingWork />
         </div>
 
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <WhoThisIsFor data={data.whoThisIsFor} />
-        </div>
+        {data.whoThisIsFor && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+            <WhoThisIsFor data={data.whoThisIsFor} />
+          </div>
+        )}
 
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pb-16">
-          <RecommendedNextSteps data={data.recommendedNextSteps} />
-        </div>
+        {data.recommendedNextSteps && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pb-16">
+            <RecommendedNextSteps data={data.recommendedNextSteps} />
+          </div>
+        )}
       </div>
     </PageWrapper>
   );
