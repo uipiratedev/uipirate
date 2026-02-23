@@ -14,16 +14,19 @@ const WhatYouGetCard = ({
   heading,
   description,
   image,
+  img,
   index = 0,
-}: FeatureCardProps) => {
+}: any) => {
+  const displayImage = image || img;
+
   return (
     <div className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
       {/* Image area */}
-      {image && (
+      {displayImage && (
         <div className="flex-1 flex items-center justify-center bg-[#F8F9FB] px-6 pt-6">
           <div className="relative w-[55%] h-[70%]">
             <Image
-              src={image}
+              src={displayImage}
               alt={heading}
               fill
               className="object-contain"

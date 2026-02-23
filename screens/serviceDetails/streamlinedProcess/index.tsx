@@ -6,15 +6,17 @@ const StreamlinedProcess = ({ data }: any) => {
     [];
   let cardIndex = 1;
 
-  data.workflow.forEach((workflow: any) => {
-    workflow.card.forEach((card: any) => {
-      allCards.push({
-        heading: card.heading,
-        description: card.description,
-        index: cardIndex++,
+  if (data.workflow) {
+    data.workflow.forEach((workflow: any) => {
+      workflow.card.forEach((card: any) => {
+        allCards.push({
+          heading: card.heading,
+          description: card.description,
+          index: cardIndex++,
+        });
       });
     });
-  });
+  }
 
   // Use only the first 6 steps to match the design (2 rows of 3 cards)
   const displayCards = allCards.slice(0, 6);
