@@ -214,9 +214,11 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
               </h4>
               <ul className="flex flex-col gap-1">
                 <li><Link href="/blogs" className="footer-text">Blogs</Link></li>
+                {/* <li><Link href="/case-studies" className="footer-text">Case Studies</Link></li> */}
                 <li><Link href="/community" className="footer-text">Community Insights</Link></li>
-                <li><Link href="/products" className="footer-text">Mini SaaS Apps</Link></li>
-                <li><Link href="/faq" className="footer-text">FAQ’s</Link></li>
+                <li><Link href="/apps4sale" className="footer-text">Apps 4 Sale</Link></li>
+                <li><Link href="/mini-saas-apps" className="footer-text">Mini SaaS Apps</Link></li>
+                <li><Link href="/faqs" className="footer-text">FAQ’s</Link></li>
               </ul>
             </div>
 

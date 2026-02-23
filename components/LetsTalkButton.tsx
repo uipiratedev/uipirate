@@ -10,6 +10,7 @@ interface LetsTalkButtonProps {
   className?: string;
   fullWidth?: boolean;
   variant?: "light" | "dark" | "color";
+  size?: "default" | "sm";
   onClick?: () => void;
   isDisabled?: boolean;
   target?: string;
@@ -33,10 +34,12 @@ export const LetsTalkButton = ({
   className = "",
   fullWidth = false,
   variant = "light",
+  size = "default",
   onClick,
   isDisabled = false,
   target
 }: LetsTalkButtonProps) => {
+  const isSmall = size === "sm";
   const isLight = variant === "light";
   const isDark = variant === "dark";
   const isColor = variant === "color";
@@ -88,13 +91,13 @@ export const LetsTalkButton = ({
 
   const buttonContent = (
     <Button
-      className={`${getTextColor()} font-bold py-[27px] max-md:py-[24px] px-8`}
+      className={`${getTextColor()} font-bold ${isSmall ? 'py-[10px] px-5' : 'py-[27px] max-md:py-[24px] px-8'}`}
       color="primary"
       onPress={onClick}
       isDisabled={isDisabled}
       style={{
         width: fullWidth ? "100%" : "auto",
-        borderRadius: "11.889px",
+        borderRadius: isSmall ? "8px" : "11.889px",
         border: "none",
         background: getBackground(),
         backgroundClip: "padding-box",
@@ -117,7 +120,7 @@ export const LetsTalkButton = ({
         />
       )}
       <div className="flex flex-row items-center gap-3 relative z-10">
-        <p className="text-base font-semibold max-md:text-medium">
+        <p className={`${isSmall ? 'text-sm' : 'text-base max-md:text-medium'} font-semibold`}>
           {children}
         </p>
       </div>

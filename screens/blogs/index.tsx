@@ -7,10 +7,16 @@ import BlogsNewsletter from "./newsletter";
 
 const Blogs = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("general");
 
   return (
     <div>
-      <BlogsHero searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <BlogsHero 
+        searchQuery={searchQuery} 
+        onSearchChange={setSearchQuery}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+      />
       <FeaturedBlogs />
       <BlogsNewsletter />
     </div>

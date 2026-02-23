@@ -50,13 +50,13 @@ const BlogsNewsletter = () => {
 
         {/* Email input with button inside */}
         <form onSubmit={(e) => e.preventDefault()} className="max-w-md mx-auto">
-          <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-[0_10px_25px_rgba(15,23,42,0.05)]">
+          <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-1.5 shadow-[0_10px_25px_rgba(15,23,42,0.05)]">
             <input
               type="email"
               placeholder="Email ID"
-              className="flex-1 bg-transparent px-2 py-1 text-sm outline-none placeholder:text-slate-400"
+              className="flex-1 bg-transparent px-1 py-1 text-sm outline-none placeholder:text-slate-400"
             />
-            <LetsTalkButton variant="color" children="Register" className="py-0 my-0" href="#"/>
+            <LetsTalkButton variant="color" size="sm" children="Register" className="py-0 my-0" href="#"/>
               
           </div>
         </form>
