@@ -106,7 +106,7 @@ const FaqsHero = ({
         <div className="relative z-10 w-full">
           <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
             <span className="text-[#FF5B04]">Everything</span>{" "}
-            <span className="text-black">you need to know</span>
+            <span className="text-black">you <br/> need to know</span>
           </h1>
         </div>
 
@@ -128,7 +128,7 @@ const FaqsHero = ({
           <label className="sr-only" htmlFor="faq-search">
             Search FAQs
           </label>
-          <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 md:px-5 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md transition-all duration-300 focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] focus-within:bg-white/95">
+          <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 p-2 pl-4 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md transition-all duration-300 focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] focus-within:bg-white/95">
             
             <input
               aria-label="Search frequently asked questions"

@@ -3,6 +3,7 @@
 import { memo, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { Button } from "@heroui/button";
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 interface BlogData {
   author: {
@@ -90,7 +91,7 @@ const HeaderInfo = memo<HeaderInfoProps>(function HeaderInfo({ blog }) {
         <p className="text-base font-medium text-gray-500 uppercase max-md:text-sm">
           {formattedDate} | {timeAgo}
         </p>
-        <Button
+        {/* <Button
           className="bg-black text-white rounded-2xl px-8 py-6 font-bold text-base max-md:text-sm w-full md:w-auto"
           startContent={
             <Image
@@ -104,7 +105,13 @@ const HeaderInfo = memo<HeaderInfoProps>(function HeaderInfo({ blog }) {
           onClick={handleShare}
         >
           Share
-        </Button>
+        </Button> */}
+        <LetsTalkButton
+          variant="color"
+          size="sm"
+          children="Share"
+          onClick={handleShare}
+        />
       </div>
     </div>
   );

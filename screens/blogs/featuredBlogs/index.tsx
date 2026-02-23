@@ -58,10 +58,10 @@ const FeaturedBlogs = memo(function FeaturedBlogs() {
       : blogs.filter((blog) => blog.tags?.includes(activeTab));
 
   return (
-    <div className="pt-32 max-md:pt-24 px-6 max-w-7xl mx-auto mb-24 max-md:mb-12">
+    <div className="pt-20 max-md:pt-12 container mx-auto px-32 lg:px-20 max-md:px-4">
       {/* Section Header */}
 
-      <div className="autoShow mb-12 max-md:mb-6">
+      <div className="autoShow mb-6 max-md:mb-6">
         <div className="flex flex-row items-center justify-center mb-6">
           <GlassBadge variant="gradient" size="sm">
             What we provide

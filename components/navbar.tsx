@@ -75,7 +75,7 @@ export const Navbar = () => {
         {!loading && (
           <div
             className={clsx(
-              " mx-auto px-32 lg:px-20 max-md:px-0 sticky top-0 mt-3 max-md:mt-0 z-[99999999]",
+              " mx-auto px-32 lg:px-20 max-md:px-0 sticky top-3 max-md:top-0 z-[99999999]",
             )}
           >
             <GlassSurface
