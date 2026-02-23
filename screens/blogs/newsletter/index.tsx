@@ -5,7 +5,7 @@ import LetsTalkButton from "@/components/LetsTalkButton";
 
 const BlogsNewsletter = () => {
   return (
-    <section className="py-20 md:py-24">
+    <section className="py-12 md:py-20">
       <div className="max-w-3xl mx-auto text-center px-4">
         {/* Badge */}
         <div className="flex justify-center mb-4">

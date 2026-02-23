@@ -39,16 +39,16 @@ const WhoThisIsFor = ({ data }: any) => {
               <img
                 src={item.image}
                 alt={item.heading}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-[150px] h-auto"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-[200px] h-auto"
               />
             </div>
 
             {/* Content */}
             <div className="flex flex-1 flex-col px-6 py-6 md:px-7 md:py-7">
-              <h3 className="text-[17px] md:text-[19px] font-semibold text-black leading-snug uppercase tracking-[0.06em]">
+              <h3 className="text-lg md:text-xl font-bold text-black leading-snug uppercase tracking-[0.06em]">
                 {item.heading}
               </h3>
-              <p className="mt-2 text-sm md:text-[15px] text-[#64748B] leading-relaxed">
+              <p className="mt-2 text-sm md:text-base leading-relaxed">
                 {item.description}
               </p>
 

@@ -22,15 +22,9 @@ const RecommendedNextSteps = ({data}:any) => {
                 <div className="w-6 h-6 bg-[#DE5005] rounded-full flex-shrink-0" style={{boxShadow: "0px 0.36px 0.36px 0px #7E7E7E8C inset"}} />
 
                 {/* Text */}
-                <p 
-                  className="uppercase text-center flex-1 text-[15px] max-md:text-[12px] font-mono"
-                  style={{
-                    fontWeight: 800,
-                    // fontSize: '15.54px',
-                    lineHeight: '22.51px',
-                    letterSpacing: '-0.24px',
-                    verticalAlign: 'middle',
-                  }}
+                <p  
+                  className="uppercase text-center flex-1 text-[15px] max-md:text-[12px] font-semibold "
+                  style={{fontFamily:"'JetBrains Mono', monospace"}}
                 >
                   {data.featuredService.title}
                 </p>
@@ -43,35 +37,40 @@ const RecommendedNextSteps = ({data}:any) => {
             <div className="flex justify-center md:justify-start">
               
               <div className="relative">
-                <div className="rounded-[20px] bg-white p-2 shadow-[0_10px_25px_rgba(15,23,42,0.12)]">
+                {/* <div className="rounded-[20px] bg-white p-2 shadow-[0_10px_25px_rgba(15,23,42,0.12)]"> */}
                   <img src="/assets/servicesBanner.svg" alt="" className="" />
-                </div>
+                {/* </div> */}
               </div>
             </div>
 
             {/* Copy + CTA */}
-            <div className="space-y-3">
-              <p className="text-sm font-semibold text-[#0F172A]">
+            <div className="flex flex-col justify-between h-full">
+              <div className="space-y-2">
+              <p className="text-lg  max-md:text-base font-semibold ">
                 {data.featuredService.tagline}
               </p>
              
-              <p className="text-sm md:text-[15px] text-[#64748B] leading-relaxed">
+              <p className="text-sm md:text-[14px] leading-relaxed">
                 {data.featuredService.description}
               </p>
+                 <p className="text-sm md:text-[14px] leading-relaxed">
+                {data.featuredService.description2}
+              </p>
+              </div>
              
-              <LetsTalkButton  variant="dark" children={data.featuredService.buttonText} />
+              <LetsTalkButton  variant="dark" children={data.featuredService.buttonText} size="sm" showArrow={true} />
             </div>
           </div>
         </div>
 
         {/* Right: Other services list card */}
         <div className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.06)] p-6 md:p-8 flex flex-col gap-5">
-          <h3 className="text-[17px] md:text-[19px] font-semibold text-[#0F172A]">
+          <h3 className="text-lg  max-md:text-base font-bold ">
             Other Services You May Need
           </h3>
           <div className="space-y-3">
             {data.otherServices.map((service: any) => (
-             <LetsTalkButton fullWidth variant="light" children={service.title} />
+             <LetsTalkButton fullWidth variant="light" children={service.title}/>
             ))}
           </div>
         </div>
