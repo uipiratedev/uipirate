@@ -83,7 +83,7 @@ const Pricing = () => {
       viewport={{ once: true, amount: 0.1 }}
     >
       {/* Header */}
-      <div className=" autoShow text-center mb-6 max-md:mb-6">
+      <div className=" autoShow text-center mb-6 max-md:mb-4">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
@@ -112,12 +112,12 @@ const Pricing = () => {
             </div>
 
             {/* Title */}
-            <h3 className="text-3xl max-md:text-2xl font-bold mb-2 text-white font-jakarta">
+            <h3 className="text-3xl max-md:text-lg font-bold mb-2 text-white font-jakarta">
               Monthly <span className="text-orange-600">Retainer</span>
             </h3>
 
             {/* Subtitle */}
-            <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm font- mb-6 uppercase tracking-wide font-mono">
+            <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm max-md:text-xs font- mb-6 uppercase tracking-wide font-mono">
               For teams that need design & dev support, every month
             </p>
 
@@ -143,7 +143,7 @@ const Pricing = () => {
               {/* Price */}
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl max-md:text-4xl font-black text-white font-jetbrains-mono">
+                  <span className="text-5xl max-md:text-3xl font-black text-white font-jetbrains-mono">
                     $2000
                   </span>
                   <span className="text-[#999999] text-lg font-jetbrains-mono">/per month</span>
@@ -181,12 +181,12 @@ const Pricing = () => {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-3xl max-md:text-2xl font-bold mb-2">
+                <h3 className="text-3xl max-md:text-lg max-lg:text-xl font-bold mb-2">
                   Custom <span className="text-orange-600">Quote</span>
                 </h3>
 
                 {/* Subtitle */}
-                <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm mb-6 uppercase tracking-wide font-mono">
+                <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm max-md:text-xs mb-6 uppercase tracking-wide font-mono">
                   For complex products, enterprise needs & startups
                 </p>
 
@@ -196,7 +196,7 @@ const Pricing = () => {
                 </p>
 
                 {/* Buttons */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 max-md:hidden">
                   <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
                   <LetsTalkButton fullWidth/>
                 </div>
@@ -220,6 +220,10 @@ const Pricing = () => {
                   Built around your product, not templates
                 </p>
               </div>
+                  <div className="grid grid-cols-2 gap-3 md:hidden">
+                  <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
+                  <LetsTalkButton fullWidth/>
+                </div>
             </div>
           </CardBody>
         </Card>
@@ -232,7 +236,7 @@ const Pricing = () => {
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
                
-                <h4 className="text-xl font-bold mb-3 tracking-wide flex items-center gap-2 font-mono">
+                <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center gap-2 font-mono">
                   <img src={benefit.icon} alt=""  className="w-4 h-4" /> {benefit.title}
                 </h4>
                 <p className="text-sm text-[#555555] leading-relaxed font-jakarta">

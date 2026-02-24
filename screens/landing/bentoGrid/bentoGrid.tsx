@@ -20,7 +20,7 @@ const cardVariants = {
 const BentoGrid = () => {
   return (
     <>
-      <div className="container mx-auto pt-2 max-md:pt-6">
+      <div className="container mx-auto pt-2 max-md:pt-4">
         {/* Bento Grid */}
         <div className="px-32 lg:px-20 max-md:px-4 pb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
@@ -45,10 +45,10 @@ const BentoGrid = () => {
 
                 {/* Content */}
                 <div className="p-6 -mt-56 z-10">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2 ">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2 max-md:text-lg max-md:font-semibold ">
                     UX/UI Design
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-gray-600 font-medium max-md:text-sm">
                     User-centric interfaces that convert. We craft pixel-perfect
                     experiences
                   </p>
@@ -127,10 +127,10 @@ const BentoGrid = () => {
 
                 {/* Content */}
                 <div className="text-left">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
                     Frontend Development
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-gray-600 font-medium max-md:text-sm">
                     Robust Angular.js & Next.js architecture
                   </p>
                 </div>
@@ -397,10 +397,10 @@ const BentoGrid = () => {
 
                 {/* Content */}
                 <div className="text-left">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
                     Dashboards & SaaS UX
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-gray-600 font-medium max-md:text-sm">
                     Clean and data-driven
                   </p>
                 </div>
@@ -516,10 +516,10 @@ const BentoGrid = () => {
 
                 {/* Content */}
                 <div className="relative z-20 text-left">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
                     Websites & Landing Pages
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-gray-600 font-medium max-md:text-sm">
                     Fast, conversion-focused sites
                   </p>
                 </div>
@@ -537,11 +537,11 @@ const BentoGrid = () => {
             >
               <div className="h-full flex flex-col">
                 {/* Content */}
-                <div className="mb-4 px-8 text-left">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <div className="mb-4 px-8 max-md:px-6 text-left">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2 max-md:text-lg max-md:font-semibold ">
                     Built With the Best
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-gray-600 font-medium max-md:text-sm">
                     Figma, React, Angular, Blender & more.
                   </p>
                 </div>
@@ -772,10 +772,10 @@ const BentoGrid = () => {
 
                 {/* Content Section */}
                 <div className="text-left">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
                     UX Consultation
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-gray-600 font-medium max-md:text-sm">
                     Expert guidance on user flows, wireframes, and design strategy.
                   </p>
                 </div>
@@ -841,10 +841,10 @@ const BentoGrid = () => {
 
                 {/* Content Section */}
                 <div className="text-left">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
                     Apps4Sale
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-gray-600 font-medium max-md:text-sm">
                     Ready-to-deploy apps and tools. Fully functional.
                   </p>
                 </div>

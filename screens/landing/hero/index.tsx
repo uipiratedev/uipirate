@@ -41,7 +41,7 @@ const LandingHero = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
+      <div className="flex flex-row items-center justify-center full relative ">
         {/* Subtle Grid Background Pattern */}
         <div
           className="absolute pointer-events-none -mt-20 "
@@ -177,7 +177,7 @@ const LandingHero = () => {
                               <img
                                 key={starIndex}
                                 alt="star"
-                                className="w-[14px] h-[14px]"
+                                className="w-[14px] h-[14px] max-md:w-[10px] max-md:h-[10px]"
                                 src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
                               />
                             ))}
@@ -245,7 +245,7 @@ const LandingHero = () => {
             </div>
 
             {/* Text */}
-            <p className="badge-text relative z-10 max-md:text-xs ml-2 pl-2 max-md:pl-0 max-md:ml-0">
+            <p className="badge-text relative z-10 max-md:text-[10px] ml-2 pl-2 max-md:pl-0 max-md:ml-0">
               EMPOWERING 40+ Business ACROSS 6 COUNTRIES
             </p>
           </GlassSurface>

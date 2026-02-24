@@ -60,7 +60,7 @@ const Landing = memo(function Landing() {
         <LandingHero />
         <LandingMarquee />
 
-        <div className="pt-14 max-md:pt-20">
+        <div className="pt-20 max-md:pt-8">
           <MiniService />
           <BentoGrid />
         </div>

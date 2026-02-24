@@ -68,14 +68,53 @@ export const Navbar = () => {
     };
   }, []);
 
+  // Scroll Lock for mobile menu
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (isMenuOpen) {
+      // Get current scroll position to prevent jump
+      const scrollY = window.scrollY;
+      
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}px`;
+      body.style.width = "100%";
+    } else {
+      // Get scroll position from body top
+      const scrollY = body.style.top;
+      
+      html.style.overflow = "";
+      body.style.overflow = "";
+      body.style.position = "";
+      body.style.top = "";
+      body.style.width = "";
+      
+      // Restore scroll position
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+
+    return () => {
+      html.style.overflow = "";
+      body.style.overflow = "";
+      body.style.position = "";
+      body.style.top = "";
+      body.style.width = "";
+    };
+  }, [isMenuOpen]);
+
   return (
     <>
       {/* ✅ Navbar */}
-      <div className="container mx-auto h-[67px] pb-6 max-md:pb-0 max-md:h-auto relative z-[99999999]">
+      <div className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0">
         {!loading && (
           <div
             className={clsx(
-              " mx-auto px-32 lg:px-20 max-md:px-0 sticky top-3 max-md:top-0 z-[99999999]",
+              "container mx-auto px-32 lg:px-20 max-md:px-0",
             )}
           >
             <GlassSurface
@@ -85,7 +124,7 @@ export const Navbar = () => {
               borderRadius={16}
               borderWidth={2}
               brightness={98}
-              className="relative isolate max-md:rounded-none !overflow-visible"
+              className="relative isolate !overflow-visible"
               displace={0}
               distortionScale={5}
               forceLightMode={true}
@@ -222,21 +261,34 @@ export const Navbar = () => {
                   {announcement}
                 </div>
 
-                {/* --- Mobile Menu Content --- */}
-                <NavbarMenu className=" h-screen -mt-3">
-                  <div className="mx-0 mt-3 flex flex-col gap-0 px-4">
-                    {siteConfig.navItems.map((item, index) => (
-                      <NavbarMenuItem key={`${item.href}-${index}`}>
-                        <MobileMenuAccordionItem item={item} setIsMenuOpen={setIsMenuOpen} />
-                      </NavbarMenuItem>
-                    ))}
-                  </div>
-                </NavbarMenu>
+                {/* --- Keep NavbarMenu minimal, actual content rendered outside --- */}
+                <NavbarMenu className="!hidden" />
               </NextUINavbar>
             </GlassSurface>
           </div>
         )}
       </div>
+
+      {/* --- Mobile Menu Overlay (rendered outside navbar hierarchy for independent scroll) --- */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 top-[52px] z-[99999998] bg-white overflow-y-auto"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'contain',
+          }}
+        >
+          <div className="pt-4 pb-40 flex flex-col gap-0 px-4">
+            {siteConfig.navItems.map((item, index) => (
+              <MobileMenuAccordionItem
+                key={`${item.href}-${index}`}
+                item={item}
+                setIsMenuOpen={setIsMenuOpen}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 };

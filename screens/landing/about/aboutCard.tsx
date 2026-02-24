@@ -108,7 +108,7 @@ const AboutCardItem = ({
     >
       <div className="flex flex-col justify-between h-full">
         <div>
-          <p className="text-8xl max-md:text-6xl overflow-hidden font-[500] max-md:font-[500]">
+          <p className="text-8xl max-md:text-5xl overflow-hidden font-[500] max-md:font-[500]">
             {item.heading.split("").map((letter, i) => (
               <motion.span
                 key={`${index}-${i}`}
@@ -130,7 +130,7 @@ const AboutCardItem = ({
           </p>
         </div>
         <div className="flex flex-row items-end justify-between">
-          <p className="text-3xl max-md:text-2xl font-semibold uppercase font-jetbrains-mono">
+          <p className="text-3xl max-md:text-xl font-semibold uppercase font-jetbrains-mono">
             {item.subtitle1}
             <br />
             {item.subtitle2}
@@ -155,7 +155,7 @@ const AboutCardAnimation = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="container mx-auto px-4 pb-20 max-md:pb-12 max-md:pt-12 ">
+    <div className="container mx-auto px-4 pb-20 max-md:pb-12 max-md:pt-0 ">
       <div className="grid grid-cols-2 gap-6 max-md:gap-4 lg:mt-48 max-lg:grid-cols-1">
         {data.map((item, index) => (
           <AboutCardItem
