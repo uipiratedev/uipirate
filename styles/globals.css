@@ -136,7 +136,7 @@ body {
 }
 
 .heading-center {
-  @apply text-center text-[36px] max-lg:text-3xl max-md:text-2xl font-[600] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[48px];
+  @apply text-center text-[36px] max-lg:text-3xl max-md:text-xl font-[600] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[48px];
 }
 
 .badge-text {

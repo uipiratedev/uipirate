@@ -9,8 +9,8 @@ const MiniService = () => {
             <GlassBadge variant="gradient">Design & Development</GlassBadge>
           </div>
           <h2 className="heading-center">
-            We design world-class products.
-            <br />
+            <span className="text-gray-900">We design world-class products.</span>
+            <br className="max-md:hidden" />{" "}
             <span className="text-brand-orange">You launch them.</span>
           </h2>
         </div>

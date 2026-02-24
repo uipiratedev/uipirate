@@ -15,9 +15,11 @@ function LandingTestimonials() {
        </div>
           
       
-        <p className="heading-center">
-       Loved by SaaS Founders & Product Teams
-        </p>
+        <h2 className="heading-center">
+          <span className="text-gray-900">Loved by SaaS Founders &</span>
+          <br className="max-md:hidden" />{" "}
+          <span className="text-brand-orange">Product Teams</span>
+        </h2>
       </div>
       <div>
         <TestimonialCards />

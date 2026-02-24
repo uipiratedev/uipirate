@@ -4,6 +4,8 @@ import { Button } from "@heroui/react";
 import { ReactNode } from "react";
 import Link from "next/link"; 
 
+import { useIsMobile } from "@/hooks";
+
 interface LetsTalkButtonProps {
   children?: ReactNode;
   href?: string;
@@ -41,6 +43,7 @@ export const LetsTalkButton = ({
   target,
   showArrow = false
 }: LetsTalkButtonProps) => {
+  const isMobile = useIsMobile();
   const isSmall = size === "sm";
   const isLight = variant === "light";
   const isDark = variant === "dark";
@@ -93,13 +96,13 @@ export const LetsTalkButton = ({
 
   const buttonContent = (
     <Button
-      className={`${getTextColor()} font-bold ${isSmall ? 'py-[10px] px-5' : 'py-[27px] max-md:py-[24px] px-8'}`}
+      className={`${getTextColor()} font-bold ${isSmall ? 'py-[10px] px-5' : 'py-[27px] max-md:py-[14px] px-8 max-md:px-4'}`}
       color="primary"
       onPress={onClick}
       isDisabled={isDisabled}
       style={{
         width: fullWidth ? "100%" : "auto",
-        borderRadius: isSmall ? "8px" : "11.889px",
+        borderRadius: isSmall ? "8px" : isMobile ? "9px" : "11.889px",
         border: "none",
         background: getBackground(),
         backgroundClip: "padding-box",
@@ -111,18 +114,18 @@ export const LetsTalkButton = ({
     >
       {isLight && !isDisabled && (
         <div 
-          className="absolute inset-0 rounded-[9.908px] pointer-events-none"
+          className="absolute inset-0 rounded-[9.908px] max-md:rounded-[7px] pointer-events-none"
           style={{
             background: "linear-gradient(180deg, #FFFFFF 0%, #ECECEC 100%)",
             WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
             WebkitMaskComposite: "xor",
             maskComposite: "exclude",
-            padding: "3.98px",
+            padding: isMobile ? "2px" : "3.98px",
           }}
         />
       )}
       <div className="flex flex-row items-center gap-2 relative z-10 transition-all duration-300">
-        <p className={`${isSmall ? 'text-sm' : 'text-base max-md:text-medium'} font-semibold`}>
+        <p className={`${isSmall ? 'text-sm' : 'text-base max-md:text-sm'} font-semibold`}>
           {children}
         </p>
         

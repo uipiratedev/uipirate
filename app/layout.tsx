@@ -162,7 +162,7 @@ export default function RootLayout({
           <PageTransition />
           <PageLoader>
             <ConditionalNavbar />
-            <main className="flex-1 min-h-screen" id="main-content">
+            <main className="flex-1 min-h-screen pt-24 max-md:pt-16" id="main-content">
               {children}
             </main>
             <Footer />

@@ -31,7 +31,7 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
   fullWidth = true,
   variant = "primary",
 }) => {
-  const baseClasses = `mt-6 px-[40px] py-[16px] rounded-[20px] group transition-all duration-300 ${
+  const baseClasses = `mt-6 px-[40px] max-md:px-6 py-[16px] max-md:py-[12px] rounded-[20px] max-md:rounded-[12px] group transition-all duration-300 ${
     fullWidth ? "w-full" : ""
   }`;
 
@@ -41,11 +41,11 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
       : "bg-white text-black border-2 border-black hover:bg-gray-100";
 
   const buttonContent = (
-    <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-      <span className="text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 group-hover:translate-y-[50px] translate-y-3">
+    <div className="flex flex-col items-center justify-center max-h-[24px] max-md:max-h-[20px] overflow-hidden">
+      <span className="text-lg max-md:text-sm transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 group-hover:translate-y-[50px] translate-y-3 max-md:translate-y-2.5">
         {primaryText}
       </span>
-      <span className="text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3 translate-y-[50px] group-hover:-translate-y-3">
+      <span className="text-lg max-md:text-sm transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3 translate-y-[50px] group-hover:-translate-y-3 max-md:group-hover:-translate-y-2.5">
         {hoverText}
       </span>
     </div>

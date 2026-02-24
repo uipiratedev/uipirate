@@ -116,7 +116,7 @@ const LandingMarquee = () => {
 
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 flex flex-col items-center justify-center relative z-10">
         {/* Section heading with enhanced styling */}
-        <div className="mb-6 max-md:mb-6 text-center max-w-4xl mx-auto px-8">
+        <div className="mb-6 max-md:mb-6 text-center max-w-4xl mx-auto px-8 max-md:px-0">
           <motion.div
             variants={headingVariants}
             initial="hidden"
@@ -124,13 +124,15 @@ const LandingMarquee = () => {
             viewport={{ once: false, amount: 0.5 }}
           >
            
-              <h2 className="heading-center text-brand-orange">
-             Trusted by Teams
-          </h2>
+            <h2 className="heading-center">
+              <span className="text-brand-orange">Trusted by Teams</span>
+              <br className="max-md:hidden" />{" "}
+              <span className="text-gray-900">
+                Building the Future of SaaS and{" "}
+                <span className="whitespace-nowrap">AI</span>
+              </span>
+            </h2>
 
-             <h2 className="heading-center ">
-            Building the Future of SaaS and AI
-          </h2>
          
           </motion.div>
         </div>
@@ -192,7 +194,7 @@ const LandingMarquee = () => {
 
                 <motion.img
                   alt={logo.alt}
-                  className="h-[40px] max-h-[40px] max-md:h-[32px] max-md:max-h-[32px] w-auto object-contain relative z-10"
+                  className="h-[40px] max-h-[40px] max-md:h-[24px] max-md:max-h-[24px] w-auto object-contain relative z-10"
                   loading="lazy"
                   src={logo.url}
                   animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}

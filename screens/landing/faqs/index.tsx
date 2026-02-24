@@ -19,7 +19,7 @@ const LandingFaqs = () => {
         </p>
 
       {/* Right section - Scrollable */}
-      <div className=" mt-6 max-md:mt-10">
+      <div className=" mt-6 max-md:mt-4">
         <FaqsAccordion />
       </div>
     </div>

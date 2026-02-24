@@ -96,7 +96,7 @@ const ServicesSection = () => {
 
   return (
     <motion.div 
-      className="pt-6 max-md:pt-6"
+      className="pt-6 max-md:pt-4"
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
@@ -107,7 +107,7 @@ const ServicesSection = () => {
         <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
           <CardBody className="p-5 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-2xl max-md:text-xl font-semibold tracking-[-1px]">
+              <h3 className="text-2xl max-md:text-lg font-semibold tracking-[-1px]">
                 Check Suite of Products Ready for Sale
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
@@ -125,8 +125,8 @@ const ServicesSection = () => {
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 my-6">
         {/* Left Card - Apps, SaaS, Websites & More */}
-        <div className="col-span-2">
-          <Card className="rounded-[20px] max-md:rounded-[12px]   bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm h-full relative overflow-hidden"
+        <div className="lg:col-span-2">
+          <Card className="w-full rounded-[20px]  max-md:rounded-[12px]   bg-gradient-to-br from-orange-50 to-yellow-50 border-1 border-[#0000000f] shadow-sm h-full relative overflow-hidden"
           style={{padding:"0px"}}
           >
             
@@ -135,7 +135,7 @@ const ServicesSection = () => {
               boxShadow: "0px 1.03px 1.44px 0px #FFFFFFA6 inset",
 
             }}>
-              <div className="bg-orange-500 text-white rounded-full max-md:rounded-xl w-full flex items-center justify-between px-6 max-md:px-4 py-2">
+              <div className="bg-orange-500 text-white rounded-full max-md:rounded-[12px] w-full flex items-center justify-between px-6 max-md:px-4 py-2">
                 {/* Left Circle */}
                 <div className="w-6 h-6 bg-[#DE5005] rounded-full flex-shrink-0" style={{boxShadow: "0px 0.36px 0.36px 0px #7E7E7E8C inset"}} />
 
@@ -170,15 +170,15 @@ const ServicesSection = () => {
         </div>
 
         {/* Right Card - One-stop shop */}
-        <div className="col-span-3">
-          <Card className="rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full"
+        <div className="lg:col-span-3">
+          <Card className="w-full rounded-[20px] max-md:rounded-[12px] noise-texture bg-black border-1 border-gray-800 shadow-lg h-full"
           style={{
             boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset",
 
           }}
           >
             <CardBody className="p-8 max-md:p-6">
-              <h3 className="text-2xl max-md:text-xl font-bold mb-6 text-white">
+              <h3 className="text-2xl max-md:text-lg font-bold mb-6 text-white">
                 One-stop shop for{" "}
                 <span className="text-orange-500">all your essentials</span>
               </h3>
@@ -204,8 +204,8 @@ const ServicesSection = () => {
       <div>
         <Card className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-black/10 shadow-sm">
           <CardBody className="p-5 max-md:p-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <h3 className="text-2xl max-md:text-xl font-semibold tracking-[-1px]">
+            <div className="flex flex-col md:flex-row items-center max-md:items-start justify-between gap-6">
+              <h3 className="text-2xl max-md:text-lg font-semibold tracking-[-1px]">
                 Need Something Custom ?
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
