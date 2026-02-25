@@ -112,13 +112,13 @@ const OurWorksHero = () => {
         {/* Headline */}
         <div className="relative z-10 w-full">
           <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
-            <span className="text-[#FF5B04]">Real Projects.</span>{" "}
-            <span className="text-black">Real Results.</span>
+            Real <span className="text-[#FF5B04]"> Projects.</span>{" "}
+            Real<span className="text-[#FF5B04]"> Results.</span>
           </h1>
         </div>
 
         {/* Subheading */}
-        <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px] text-gray-600">
+        <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px] text-[#11181C]">
           See how we’ve helped startups, SaaS teams, and global brands turn ideas
           into fully functional digital products.
         </p>
@@ -212,12 +212,12 @@ const OurWorksHero = () => {
         </motion.div>
 
         {/* Stats Section */}
-        <div className="flex flex-wrap justify-center items-center gap-10 text-center py-10 z-10 relative">
+        <div className="flex flex-wrap justify-between w-full items-center gap-10 text-center py-10 z-10 relative mt-6">
           {[
-            { num: "6+", text: "Countries Served" },
-            { num: "50+", text: "Projects Completed" },
-            { num: "20+", text: "Enterprise Clients" },
             { num: "9+", text: "Years of Experience" },
+            { num: "50+", text: "Projects Completed" },
+            { num: "$150M+", text: "Made by our clients" },
+            { num: "6+", text: "Countries Served" },
           ].map((item, index) => (
             <motion.div
               key={index}
@@ -227,16 +227,17 @@ const OurWorksHero = () => {
               viewport={{ once: true }}
               whileInView={{ opacity: 1, y: 0 }}
             >
-              <h3 className="text-5xl max-md:text-2xl font-bold text-black">
+              <h3 className="text-5xl max-md:text-2xl font-bold text-black text-orange-500">
                 {item.num}
               </h3>
-              <p className="text-lg max-md:text-xs text-[#777777]">
+              <p className="text-lg max-md:text-xs text-[#777777] font-jetbrains-mono">
                 {item.text}
               </p>
             </motion.div>
           ))}
         </div>
       </div>
+      
     </div>
   );
 };

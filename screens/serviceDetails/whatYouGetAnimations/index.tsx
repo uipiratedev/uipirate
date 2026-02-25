@@ -82,12 +82,12 @@ const WhatYouGetCard = ({
 
 const WhatYouGetAnimations = ({ data }: any) => {
   return (
-    <section className="overflow-hidden">
+    <div className="overflow-hidden">
       {/* Cards grid with ContainerScroll */}
       <ContainerScroll
         titleComponent={
           <>
-            <div className="autoShow text-center mb-10 md:mb-1">
+            <div className="md:autoShow text-center mb-10 md:mb-1">
               <div className="flex items-center justify-center mb-6">
                 <GlassBadge variant="gradient" size="sm">{data.badge}</GlassBadge>
               </div>
@@ -96,13 +96,13 @@ const WhatYouGetAnimations = ({ data }: any) => {
           </>
         }
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 autoShow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 md:autoShow">
           {data.card.map((feature: any) => (
             <WhatYouGetCard key={feature.heading} {...feature} />
           ))}
         </div>
       </ContainerScroll>
-    </section>
+    </div>
   );
 };
 
