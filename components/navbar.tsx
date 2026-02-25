@@ -30,6 +30,7 @@ export const Navbar = () => {
   const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [showBanner, setShowBanner] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [announcement, setAnnouncement] = useState(""); // For screen reader announcements
 
   useEffect(() => {
@@ -70,6 +71,21 @@ export const Navbar = () => {
     return () => {
       darkSections.forEach((section) => observer.unobserve(section));
     };
+  }, []);
+
+  // Hide navbar when footer is visible
+  useEffect(() => {
+    const footer = document.getElementById("site-footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsFooterVisible(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+
+    observer.observe(footer);
+
+    return () => observer.disconnect();
   }, []);
 
   // Scroll Lock for mobile menu — position:fixed is the only reliable method for iOS Safari
@@ -116,7 +132,14 @@ export const Navbar = () => {
   return (
     <>
       {/* ✅ Navbar */}
-      <div className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0 pointer-events-none">
+      <div
+        className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
+        style={{
+          opacity: isFooterVisible ? 0 : 1,
+          transform: isFooterVisible ? "translateY(-16px)" : "translateY(0)",
+          pointerEvents: isFooterVisible ? "none" : undefined,
+        }}
+      >
         {!loading && (
           <div
             className={clsx(
