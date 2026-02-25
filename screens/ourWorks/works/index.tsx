@@ -1,5 +1,7 @@
 import GlassBadge from "@/components/GlassBadge";
 import RecentWorkCard from "@/screens/landing/works/workCard";
+import CaseStudyGrid from "./workCard";
+import WhyChooseUs from "@/screens/landing/whyChoosUs";
 
 const Works = () => {
   return (
@@ -10,8 +12,10 @@ const Works = () => {
         </div>
         <p className="heading-center">Recent Works</p>
       </div>
-      <div className="px-32 max-md:px-4 overflow-x-hidden overflow-y-auto pt-48 max-md:pt-12">
-        <RecentWorkCard />
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+        {/* <RecentWorkCard /> */}
+        <CaseStudyGrid />
+        <WhyChooseUs />
       </div>
     </div>
   );

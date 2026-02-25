@@ -1,16 +1,18 @@
+import GlassBadge from "@/components/GlassBadge";
 import { SaaS } from "@/components/icons";
 import ScrollStack, { ScrollStackItem } from "@/components/ScrollStack";
 
 const WhyChooseUs = () => {
   return (
-    <section className="w-full bg-black py-32 min-h-screen">
+    <section className="w-full py-32 min-h-screen">
       <div className="container mx-auto px-4 mb-20">
-        <h2 className="text-5xl md:text-6xl font-bold text-center mb-6 text-white">
-          Why Choose <span className="text-brand-orange">UI Pirate</span>?
+         <div className="mb-6 flex flex-row items-center justify-center">
+          <GlassBadge variant="gradient">WHY CHOOSE US</GlassBadge>
+        </div>
+        <h2 className="heading-center mb-6">
+        Why SaaS & AI Teams <span className="text-brand-orange">Choose UI Pirate</span>?
         </h2>
-        <p className="text-center text-gray-400 text-xl max-w-3xl mx-auto">
-          We deliver exceptional UI/UX design that transforms your digital presence
-        </p>
+       
       </div>
 
       <div className="w-full">
