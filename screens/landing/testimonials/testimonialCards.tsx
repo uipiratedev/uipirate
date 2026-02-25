@@ -48,7 +48,7 @@ export default function TestimonialCards() {
 
   return (
     <section className="w-full pt-6 max-md:pt-4 container mx-auto px-32 lg:px-20 max-md:px-4">
-      <div className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] overflow-hidden"}`}>
+      <div className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] max-md:h-[500px] overflow-hidden"}`}>
         {/* Gradient Mask for collapsed state */}
         {!isExpanded && (
           <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent z-20 pointer-events-none" />
@@ -124,7 +124,7 @@ export default function TestimonialCards() {
 
       {/* See More Button */}
       {!isExpanded && (
-        <div className="flex justify-center mt-8 relative z-30 pb-1">
+        <div className="flex justify-center mt-8 max-md:mt-0 relative z-30 pb-1">
           <LetsTalkButton 
             variant="light" 
             onClick={() => setIsExpanded(true)}

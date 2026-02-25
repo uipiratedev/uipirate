@@ -13,7 +13,7 @@ const WhoThisIsFor = ({ data }: any) => {
   return (
     <section>
       {/* Header */}
-      <div className="autoShow text-center mb-4 md:mb-12">
+      <div className="md:autoShow text-center mb-4 md:mb-12">
         <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
@@ -45,7 +45,7 @@ const WhoThisIsFor = ({ data }: any) => {
 
             {/* Content */}
             <div className="flex flex-1 flex-col px-6 py-6 md:px-7 md:py-7">
-              <h3 className="text-lg md:text-xl font-bold text-black leading-snug uppercase tracking-[0.06em]">
+              <h3 className="text-base md:text-xl font-bold text-black leading-snug uppercase tracking-[0.06em]">
                 {item.heading}
               </h3>
               <p className="mt-2 text-sm md:text-base leading-relaxed">

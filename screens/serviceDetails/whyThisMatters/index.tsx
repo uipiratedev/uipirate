@@ -7,7 +7,7 @@ const WhyThisMatters = ({ data }: { data: any }) => {
   return (
     <section>
       {/* Header */}
-      <div className="autoShow text-center mb-6 md:mb-4">
+      <div className="md:autoShow text-center mb-6 md:mb-4">
         <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>

@@ -4,7 +4,7 @@ const RecommendedNextSteps = ({data}:any) => {
   return (
     <section>
       {/* Header */}
-      <div className="autoShow text-center mb-8 md:mb-12">
+      <div className="md:autoShow text-center mb-4 md:mb-12">
         <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
@@ -44,7 +44,7 @@ const RecommendedNextSteps = ({data}:any) => {
             </div>
 
             {/* Copy + CTA */}
-            <div className="flex flex-col justify-between h-full">
+            <div className="flex flex-col justify-between h-full max-md:mb-3">
               <div className="space-y-2">
               <p className="text-lg  max-md:text-base font-semibold ">
                 {data.featuredService.tagline}

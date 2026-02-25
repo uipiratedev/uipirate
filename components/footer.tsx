@@ -9,11 +9,7 @@ import ProPirateFooterSection from "./proPirate";
 import { useClickSound } from "@/hooks/useClickSound";
 
 const footerSocialLinks = [
-  {
-    name: "uipirate",
-    url: "https://uipirate.com",
-    icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280222/uipirate_sowte1.svg",
-  },
+
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
