@@ -130,26 +130,32 @@ const BlogsHero = ({
           <label className="sr-only" htmlFor="blog-search">
             Search blog topics
           </label>
-          <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 md:px-5 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md transition-all duration-300 focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] focus-within:bg-white/95">
-            <input
-              aria-label="Search blog topics"
-              className="flex-1 bg-transparent focus:outline-none text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
-              id="blog-search"
-              placeholder="Search by topic, problem, or keyword..."
-              type="search"
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-            />
 
-            {/* Category Selector inside input */}
-            <div className="pl-3 ml-1 border-l border-slate-200 flex-shrink-0 hidden md:block">
+          {/* On mobile: stacked. On desktop: single pill row */}
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200 md:bg-white/80 md:px-5 md:py-3.5 md:shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:backdrop-blur-md md:focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:focus-within:bg-white/95 md:transition-all md:duration-300">
+
+            {/* Search Input — full pill on mobile */}
+            <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:flex-1 md:border-none md:shadow-none md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
+              <input
+                aria-label="Search blog topics"
+                className="flex-1 bg-transparent focus:outline-none text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
+                id="blog-search"
+                placeholder="Search by topic, problem, or keyword..."
+                type="search"
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+              />
+            </div>
+
+            {/* Category Selector — full width pill on mobile, inline on desktop */}
+            <div className="md:pl-3 md:ml-1 md:border-l md:border-slate-200 flex-shrink-0">
               <Select
                 disallowEmptySelection
                 aria-label="Select category"
                 classNames={{
-                  base: "min-w-[150px]",
+                  base: "w-full md:min-w-[150px]",
                   trigger:
-                    "bg-[#FF5B04] hover:bg-[#ff6b1e] text-white rounded-full h-9 md:h-10 px-4 border-none shadow-sm data-[hover=true]:bg-[#ff7a33] transition-colors",
+                    "bg-[#FF5B04] hover:bg-[#ff6b1e] text-white rounded-full h-10 px-4 border-none shadow-sm data-[hover=true]:bg-[#ff7a33] transition-colors w-full",
                   value:
                     "text-[10px] md:text-xs font-semibold tracking-[0.1em] uppercase group-data-[has-value=true]:text-white",
                   popoverContent: "rounded-xl",
