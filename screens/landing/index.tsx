@@ -56,11 +56,11 @@ const TopThree = dynamic(() => import("./top3/topThree"), {
 const Landing = memo(function Landing() {
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="space-y-20 max-md:space-y-8">
+      <div className="space-y-20 max-md:space-y-16">
         <LandingHero />
         <LandingMarquee />
 
-        <div className="pt-20 max-md:pt-8">
+        <div className="pt-20 max-md:pt-16">
           <MiniService />
           <BentoGrid />
         </div>

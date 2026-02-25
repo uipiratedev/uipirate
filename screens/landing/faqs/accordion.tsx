@@ -204,7 +204,7 @@ export default function FaqsAccordion() {
             <AccordionItem
               key={String(index)}
               aria-label={item.heading}
-              className="shadow-none border-1 rounded-[1.25rem] mt-3 max-md:mt-2 items-center hover:bg-[#f2f1f1]"
+              className="shadow-none border-1 rounded-[1.25rem] mt-3 max-md:mt-2 items-center bg-[#f2f1f1]"
               indicator={({ isOpen }) =>
                 isOpen ? (
                   <img

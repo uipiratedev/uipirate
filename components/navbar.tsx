@@ -21,9 +21,13 @@ import { MobileMenuAccordionItem } from "./MobileMenuAccordionItem";
 
 import { siteConfig } from "@/config/site";
 
+import { useIsMobile } from "@/hooks";
+
 export const Navbar = () => {
+  const isMobile = useIsMobile();
   const [isDarkSection, setIsDarkSection] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [showBanner, setShowBanner] = useState(true);
   const [announcement, setAnnouncement] = useState(""); // For screen reader announcements
@@ -68,60 +72,62 @@ export const Navbar = () => {
     };
   }, []);
 
-  // Scroll Lock for mobile menu
+  // Scroll Lock for mobile menu — position:fixed is the only reliable method for iOS Safari
   useEffect(() => {
-    const html = document.documentElement;
     const body = document.body;
 
     if (isMenuOpen) {
-      // Get current scroll position to prevent jump
+      // Save current scroll position
       const scrollY = window.scrollY;
-      
-      html.style.overflow = "hidden";
-      body.style.overflow = "hidden";
+      // Lock body in place so it can't scroll behind the overlay
       body.style.position = "fixed";
       body.style.top = `-${scrollY}px`;
-      body.style.width = "100%";
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.overflow = "hidden";
     } else {
-      // Get scroll position from body top
-      const scrollY = body.style.top;
-      
-      html.style.overflow = "";
-      body.style.overflow = "";
+      // Read back saved scroll so we can restore after unlocking
+      const savedScrollY = body.style.top;
       body.style.position = "";
       body.style.top = "";
-      body.style.width = "";
-      
-      // Restore scroll position
-      if (scrollY) {
-        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      body.style.left = "";
+      body.style.right = "";
+      body.style.overflow = "";
+      // Restore scroll position without visual jump
+      if (savedScrollY) {
+        window.scrollTo(0, parseInt(savedScrollY || "0") * -1);
       }
     }
 
     return () => {
-      html.style.overflow = "";
-      body.style.overflow = "";
+      // Safety cleanup
+      const savedScrollY = body.style.top;
       body.style.position = "";
       body.style.top = "";
-      body.style.width = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.overflow = "";
+      if (savedScrollY) {
+        window.scrollTo(0, parseInt(savedScrollY || "0") * -1);
+      }
     };
   }, [isMenuOpen]);
 
   return (
     <>
       {/* ✅ Navbar */}
-      <div className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0">
+      <div className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0 pointer-events-none">
         {!loading && (
           <div
             className={clsx(
-              "container mx-auto px-32 lg:px-20 max-md:px-0",
+              "container mx-auto px-32 lg:px-20 max-md:px-0 pointer-events-auto",
             )}
           >
             <GlassSurface
               backgroundOpacity={0.75}
               blueOffset={20}
               blur={28}
-              borderRadius={16}
+              borderRadius={isMobile ? 0 : 16}
               borderWidth={2}
               brightness={98}
               className="relative isolate !overflow-visible"
@@ -134,8 +140,9 @@ export const Navbar = () => {
               redOffset={1}
               saturation={2}
               style={{
-                border: "1px solid rgba(255, 255, 255, 0.2)",
+                border: isMobile ? "none" : "1px solid rgba(255, 255, 255, 0.2)",
                 overflow: "visible",
+                borderRadius: isMobile ? "0px" : "16px",
               }}
               width="100%"
             >
@@ -209,7 +216,7 @@ export const Navbar = () => {
                       <NavbarItem
                         key={item.href}
                         className={clsx(
-                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 !static",
+                          "px-2 rounded-[0.65rem] max-md:rounded-none pb-[4px] transition-all duration-200 !static",
                         )}
                         style={{ position: "static" }}
                       >
@@ -272,17 +279,21 @@ export const Navbar = () => {
       {/* --- Mobile Menu Overlay (rendered outside navbar hierarchy for independent scroll) --- */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 top-[52px] z-[99999998] bg-white overflow-y-auto"
+          className="fixed left-0 right-0 top-[52px] bottom-0 z-[100000000] bg-white overflow-y-auto pointer-events-auto"
           style={{
+            touchAction: 'pan-y',
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
           }}
         >
-          <div className="pt-4 pb-40 flex flex-col gap-0 px-4">
+          <div className="pt-4 pb-44 flex flex-col gap-0 px-4">
             {siteConfig.navItems.map((item, index) => (
               <MobileMenuAccordionItem
                 key={`${item.href}-${index}`}
                 item={item}
+                index={index}
+                isOpen={openAccordionIndex === index}
+                onToggle={(i) => setOpenAccordionIndex(openAccordionIndex === i ? null : i)}
                 setIsMenuOpen={setIsMenuOpen}
               />
             ))}
