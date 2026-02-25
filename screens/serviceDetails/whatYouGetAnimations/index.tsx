@@ -69,10 +69,10 @@ const WhatYouGetCard = ({
 
       {/* Content */}
       <div className="px-5 py-4 md:px-6 md:py-5 bg-white relative z-10">
-        <h3 className="text-[16px] md:text-[22px] font-semibold text-[#0F172A] leading-snug tracking-tight">
+        <h3 className="text-[18px] md:text-[22px] font-semibold text-[#111827] leading-snug tracking-tight">
           {heading}
         </h3>
-        <p className="mt-1.5 text-[12px] md:text-[13px] text-[#64748B] leading-relaxed">
+        <p className="mt-1.5 text-[14px] md:text-[16px] text-[#4B5563] leading-relaxed">
           {description}
         </p>
       </div>
@@ -87,7 +87,7 @@ const WhatYouGetAnimations = ({ data }: any) => {
       <ContainerScroll
         titleComponent={
           <>
-            <div className="autoShow text-center mb-10 md:mb-8">
+            <div className="autoShow text-center mb-10 md:mb-1">
               <div className="flex items-center justify-center mb-6">
                 <GlassBadge variant="gradient" size="sm">{data.badge}</GlassBadge>
               </div>
