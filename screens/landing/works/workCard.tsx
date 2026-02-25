@@ -3,6 +3,7 @@
 import { Button } from "@heroui/button";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useIsMobile } from "@/hooks";
 import LetsTalkButton from "@/components/LetsTalkButton";
 
 const data = [
@@ -47,28 +48,29 @@ interface WorkCardItemProps {
 const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const isEven = index % 2 === 0;
+  const isMobile = useIsMobile();
 
-  // Scroll progress for image animation
+  // Scroll progress for image animation - Extremely tight offset for immediate trigger
   const { scrollYProgress: imageScrollProgressRaw } = useScroll({
     target: cardRef,
-    offset: ["start 100%", "start 70%"],
+    offset: ["start 100%", "start 98%"],
   });
 
   // Scroll progress for content animation
   const { scrollYProgress: contentScrollProgressRaw } = useScroll({
     target: cardRef,
-    offset: ["start 90%", "start 70%"],
+    offset: ["start 100%", "start 98%"],
   });
 
-  // Smooth out the raw progress values with physics
+  // Hyper-fast physics for near-instant completion
   const imageScrollProgress = useSpring(imageScrollProgressRaw, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 800,
+    damping: 50,
     restDelta: 0.001
   });
   const contentScrollProgress = useSpring(contentScrollProgressRaw, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 800,
+    damping: 50,
     restDelta: 0.001
   });
 
@@ -76,16 +78,16 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
   const imageX = useTransform(
     imageScrollProgress,
     [0, 1],
-    [isEven ? "-25%" : "25%", "0%"]
+    [isEven ? (isMobile ? "-10%" : "-25%") : (isMobile ? "10%" : "25%"), "0%"]
   );
   const imageRotate = useTransform(
     imageScrollProgress,
     [0, 1],
-    [isEven ? -12 : 12, 0]
+    [isEven ? (isMobile ? -5 : -12) : (isMobile ? 5 : 12), 0]
   );
 
-  // Content transform: y position
-  const contentY = useTransform(contentScrollProgress, [0, 1], [120, 0]);
+  // Content transform: y position - much smaller on mobile for faster visibility
+  const contentY = useTransform(contentScrollProgress, [0, 1], [isMobile ? 20 : 60, 0]);
 
   return (
     <div

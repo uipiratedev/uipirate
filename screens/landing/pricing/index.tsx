@@ -104,17 +104,15 @@ const Pricing = () => {
           
           >
           <CardBody className="p-8 max-md:p-6">
-            {/* Icon */}
-            <div className="mb-6">
-              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+            {/* Icon and Title aligned together on mobile */}
+            <div className="flex items-center gap-4 max-md:gap-3 mb-6">
+              <div className="w-12 h-12 max-md:w-10 max-md:h-10 rounded-lg flex items-center justify-center">
                <img src="/assets/gif/kite.gif" alt="" />
               </div>
+              <h3 className="text-3xl max-md:text-xl font-bold text-white font-jakarta">
+                Monthly <span className="text-orange-600">Retainer</span>
+              </h3>
             </div>
-
-            {/* Title */}
-            <h3 className="text-3xl max-md:text-lg font-bold mb-2 text-white font-jakarta">
-              Monthly <span className="text-orange-600">Retainer</span>
-            </h3>
 
             {/* Subtitle */}
             <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm max-md:text-xs font- mb-6 uppercase tracking-wide font-mono">
@@ -173,25 +171,24 @@ const Pricing = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Side */}
               <div>
-                {/* Icon */}
-                <div className="mb-6">
-                  <div className="w-12 h-12 flex items-center justify-center">
+                <div className="flex items-center gap-4 max-md:gap-3 mb-6">
+                  {/* Icon */}
+                  <div className="w-12 h-12 max-md:w-10 max-md:h-10 flex items-center justify-center">
                     <img src="/assets/gif/headquater.gif" alt="" />
                   </div>
+
+                  {/* Title */}
+                  <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
+                    Custom <span className="text-orange-600">Quote</span>
+                  </h3>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-3xl max-md:text-lg max-lg:text-xl font-bold mb-2">
-                  Custom <span className="text-orange-600">Quote</span>
-                </h3>
-
                 {/* Subtitle */}
                 <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm max-md:text-xs mb-6 uppercase tracking-wide font-mono">
                   For complex products, enterprise needs & startups
                 </p>
 
                 {/* Description */}
-                <p className="text-[#161616] mb-6 text-base max-md:text-sm font-jakarta">
+                <p className="text-[#161616] mb-6 max-md:mb-0 text-base max-md:text-sm font-jakarta">
                   Best suited for products that don't fit into standard plans.
                 </p>
 
@@ -236,8 +233,8 @@ const Pricing = () => {
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
                
-                <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center gap-2 font-mono">
-                  <img src={benefit.icon} alt=""  className="w-4 h-4" /> {benefit.title}
+                <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center max-md:flex-col gap-2 font-mono max-md:text-center">
+                  <img src={benefit.icon} alt=""  className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6" /> {benefit.title}
                 </h4>
                 <p className="text-sm text-[#555555] leading-relaxed font-jakarta">
                   {benefit.description}

@@ -155,7 +155,7 @@ const AboutCardAnimation = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div className="container mx-auto px-4 pb-20 max-md:pb-12 max-md:pt-0 ">
+    <div className="container mx-auto px-4 max-md:px-0 pb-20 max-md:pb-12 max-md:pt-0 ">
       <div className="grid grid-cols-2 gap-6 max-md:gap-4 lg:mt-48 max-lg:grid-cols-1">
         {data.map((item, index) => (
           <AboutCardItem

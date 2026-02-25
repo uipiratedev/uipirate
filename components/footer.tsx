@@ -64,7 +64,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative w-full bg-black/95 pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture ">
+    <footer id="site-footer" className="relative w-full bg-black/95 pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture ">
       
       
       {/* Top Light Effect */}
@@ -182,9 +182,9 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-16 text-left pt-16">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-16 text-left pt-16">
             {/* Branding/Tagline Section */}
-            <div className="lg:col-span-5 flex flex-col gap-8">
+            <div className="lg:col-span-5 max-md:col-span-2 flex flex-col gap-8">
               <p className="text-[18px] md:text-[24px] font-bold text-white leading-[1.3] max-w-sm"
                 
                  >

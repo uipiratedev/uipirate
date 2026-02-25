@@ -206,17 +206,15 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              {/* Icon */}
-              <div className="mb-6">
-                <div className="w-12 h-12 flex items-center justify-center">
+              {/* Icon and Title aligned together on mobile */}
+              <div className="flex items-center gap-4 max-md:gap-3 mb-6">
+                <div className="w-12 h-12 max-md:w-10 max-md:h-10 flex items-center justify-center">
                   <img src="/assets/gif/filter.gif" alt="" />
                 </div>
+                <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
+                  Custom Project <span className="text-orange-600">Estimate</span>
+                </h3>
               </div>
-
-              {/* Title */}
-              <h3 className="text-3xl max-md:text-lg max-lg:text-xl font-bold mb-2">
-                Custom Project <span className="text-orange-600">Estimate</span>
-              </h3>
 
               {/* Subtitle */}
               <p className="text-black w-fit p-2 rounded-lg bg-black/5 text-sm max-md:text-xs mb-6 uppercase tracking-wide font-jetbrains-mono">

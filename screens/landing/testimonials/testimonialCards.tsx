@@ -80,14 +80,14 @@ export default function TestimonialCards() {
                     <CardBody className="p-5 h-full">
                       <div className="w-full h-full  bg-white   transition-all duration-500 shadow-sm flex flex-col">
                         <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
-                          <div className="flex flex-row gap-3 items-center">
+                          <div className="flex flex-row max-md:flex-col gap-3 items-center max-md:text-center max-md:w-full">
                             <Avatar
                               avatar={item.profileImage}
                               name={item.name}
                               size={52}
                             />
 
-                            <div>
+                            <div className="max-md:mt-1">
                               <p className="text-xl max-md:text-lg font-semibold">
                                 {item.name}
                               </p>
