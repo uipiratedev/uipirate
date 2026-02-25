@@ -7,12 +7,12 @@ const WhyThisMatters = ({ data }: { data: any }) => {
   return (
     <section>
       {/* Header */}
-      <div className="autoShow text-center mb-6 md:mb-8">
+      <div className="autoShow text-center mb-6 md:mb-4">
         <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <h2 className="heading-center">
-          {data.heading} <br /> {data.heading2}
+          {data.heading} <br className="hidden md:block" /> {data.heading2}
         </h2>
         {/* <p className="mt-1 heading-center">
           (And How We Fix It)
@@ -67,6 +67,24 @@ const WhyThisMatters = ({ data }: { data: any }) => {
                     <p className="text-[15px] text-[#475569] leading-relaxed pl-[48px]">
                       {item.description}
                     </p>
+
+                    {/* QuickWins - shown inline on mobile only */}
+                    <div className="lg:hidden mt-4  mr-4 ml-[32px] rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] px-5 py-4">
+                      <div className="space-y-2">
+                        {Array.isArray(item.QuickWins) ? (
+                          item.QuickWins.map((win: string, i: number) => (
+                            <h3 key={i} className="text-base font-semibold leading-tight">
+                              {win}
+                            </h3>
+                          ))
+                        ) : (
+                          <h3 className="text-base font-semibold leading-tight">
+                            {item.QuickWins}
+                          </h3>
+                        )}
+                      </div>
+                      <div className="w-10 h-1 bg-[#FF5B04] mt-3 rounded-full opacity-20" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -74,8 +92,8 @@ const WhyThisMatters = ({ data }: { data: any }) => {
           })}
         </div>
 
-        {/* Right column: Dynamic Content */}
-        <div className="lg:sticky lg:top-24 rounded-[20px] max-md:rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.08)] px-8 py-10 md:px-10 md:py-12 min-h-[300px] flex flex-col justify-center transition-all duration-500">
+        {/* Right column: Dynamic Content (desktop only) */}
+        <div className="hidden lg:flex lg:sticky lg:top-24 rounded-[20px] bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.08)] px-8 py-10 md:px-10 md:py-12 min-h-[300px] flex-col justify-center transition-all duration-500">
           <div key={activeIndex} className="animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="space-y-4 mb-6">
               {Array.isArray(data.card[activeIndex].QuickWins) ? (

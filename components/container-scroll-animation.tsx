@@ -42,11 +42,11 @@ export const ContainerScroll = ({
       <div
         className="py-10 md:py-40 w-full relative"
         style={{
-          perspective: "1000px",
+          perspective: isMobile ? "none" : "1000px",
         }}
       >
-        <Header translate={translate} titleComponent={titleComponent} />
-        <Card rotate={rotate} translate={translate} scale={scale}>
+        <Header translate={translate} titleComponent={titleComponent} isMobile={isMobile} />
+        <Card rotate={rotate} translate={translate} scale={scale} isMobile={isMobile}>
           {children}
         </Card>
       </div>
@@ -54,7 +54,15 @@ export const ContainerScroll = ({
   );
 };
 
-export const Header = ({ translate, titleComponent }: any) => {
+export const Header = ({ translate, titleComponent, isMobile }: any) => {
+  if (isMobile) {
+    return (
+      <div className="div max-w-5xl mx-auto text-center">
+        {titleComponent}
+      </div>
+    );
+  }
+
   return (
     <motion.div
       style={{
@@ -71,12 +79,24 @@ export const Card = ({
   rotate,
   scale,
   children,
+  isMobile,
 }: {
   rotate: MotionValue<number>;
   scale: MotionValue<number>;
   translate: MotionValue<number>;
   children: React.ReactNode;
+  isMobile?: boolean;
 }) => {
+  if (isMobile) {
+    return (
+      <div className="mx-auto w-full">
+        <div className="h-full w-full overflow-hidden">
+          {children}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       style={{

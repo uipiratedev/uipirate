@@ -83,8 +83,8 @@ const StreamlinedProcess = ({ data }: any) => {
   return (
     <div className="pt-6 overflow-hidden">
       {/* Header */}
-      <div className="autoShow text-center mb-12">
-        <div className="flex flex-row items-center justify-center mb-6">
+      <div className="autoShow text-center mb-12 max-md:mb-4">
+        <div className="flex flex-row items-center justify-center mb-6 ">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <h2 className="heading-center">
@@ -93,13 +93,13 @@ const StreamlinedProcess = ({ data }: any) => {
       </div>
 
       {/* Cards Section */}
-      <div className="relative mx-auto max-md:mb-4">
+      <div className="relative mx-auto max-md:mb-4 max-md:-mt-4">
         
         {/* Mobile: Continuous Straight Vertical Rope on Left */}
         <div className="md:hidden absolute left-[23px] top-0 bottom-12 w-[3px] bg-[#FF5B04] z-0" />
 
         {rows.map((row, rowIndex) => (
-          <div key={rowIndex} className="relative mb-0 md:mb-32 last:mb-0 max-md:mt-10">
+          <div key={rowIndex} className="relative mb-0 md:mb-32 last:mb-0 max-md:mt-6">
             {/* Desktop: Curved Horizontal Rope with Texture */}
             <div className="hidden md:block absolute left-0 right-0 top-[-10px] h-[100px] z-0 opacity-100 pointer-events-none">
                <svg className="w-full h-full" viewBox="0 0 1200 100" preserveAspectRatio="none">
@@ -113,7 +113,7 @@ const StreamlinedProcess = ({ data }: any) => {
             </div>
 
             {/* Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 container gap-10 md:gap-12 relative z-10 pt-1 md:pt-0 mx-auto xl:px-24 md:mb-32">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 container gap-6 md:gap-12 relative z-10 pt-1 md:pt-0 mx-auto xl:px-24 md:mb-32">
               {row.map((card, colIdx) => (
                 <div 
                   key={card.index} 
@@ -167,10 +167,10 @@ const StreamlinedProcess = ({ data }: any) => {
                           </span>
 
                           {/* Card Content */}
-                          <h3 className="text-[18px] md:text-[19px] font-semibold text-black mb-2 group-hover:text-orange-500 transition-colors">
+                          <h3 className="text-[18px] md:text-[20px] font-semibold text-black mb-2 group-hover:text-orange-500 transition-colors">
                             {card.heading}
                           </h3>
-                          <p className="text-[13px] md:text-[14px] text-gray-500 group-hover:text-gray-800 transition-colors leading-relaxed flex-grow">
+                          <p className="text-[14px] md:text-[14px] text-gray-500 group-hover:text-gray-800 transition-colors leading-relaxed flex-grow">
                             {card.description}
                           </p>
                         </div>

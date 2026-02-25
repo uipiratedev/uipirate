@@ -8,7 +8,7 @@ import LetsTalkButton from "@/components/LetsTalkButton";
 const data = [
   {
     heading: "Xperiti",
-    heading1: "Comprehensive Rsearch Platform",
+    heading1: "Comprehensive Research Platform",
     subtitle:
       "Enterprise Saas App UI/UX Design on Figma & Development on Angular.js",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
@@ -18,7 +18,7 @@ const data = [
   {
     heading: "ArthAlpha",
     heading1: "AI Trading Platform",
-    subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Developemt",
+    subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Development",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
     url: "https://arthalpha.in/",
   },
@@ -92,37 +92,37 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
       ref={cardRef}
       className={
         isEven
-          ? "flex flex-row-reverse justify-between mb-0 max-md:mb-4 max-w-full max-md:flex-col-reverse"
-          : "flex flex-row justify-between mb-0 max-md:mb-4 max-w-full max-md:flex-col-reverse py-32 max-md:py-8 max-lg:py-16 max-xl:py-28"
+          ? "flex flex-row-reverse justify-between mb-0 max-md:mb-6 max-w-full max-md:flex-col-reverse"
+          : "flex flex-row justify-between mb-0 max-md:mb-6 max-w-full max-md:flex-col-reverse py-32 max-md:py-0 max-lg:py-16 max-xl:py-28"
       }
     >
       <motion.div
         className={
           isEven
-            ? "flex flex-row items-center md:justify-end w-[40%] text-end max-md:text-center max-md:w-[100%] max-md:px-0 max-md:justify-center"
-            : "flex flex-row items-center justify-start w-[40%] max-md:text-center max-md:w-[100%] max-md:px-4"
+            ? "flex flex-row items-start md:justify-end w-[40%] text-end max-md:text-center max-md:w-[100%] max-md:px-0 max-md:justify-center"
+            : "flex flex-row items-start justify-start w-[40%] max-md:text-center max-md:w-[100%] max-md:px-4"
         }
         style={{ y: contentY }}
       >
         <div>
-          <p className="text-[3.5rem] max-md:text-4xl mb-4 font-[600] max-xl:text-[3.5rem] max-md:mt-12">
+          <h3 className="text-[2rem] max-md:text-xl mb-2 max-md:mb-1 font-[600] max-xl:text-[3.5rem] max-md:mt-6">
             {item.heading}
-          </p>
-          <p className="text-[1.5rem] max-md:text-[1rem] mb-4 max-md:mb-2 font-[600] max-xl:text-[1rem] max-md:mt-4">
+          </h3>
+          <p className="text-[1rem] max-md:text-sm mb-3 max-md:mb-2 font-[600] max-xl:text-[1rem] text-gray-700">
             {item.heading1}
           </p>
           <div className={isEven ? "flex flex-row items-end justify-end" : ""}>
             <p
               className={
                 isEven
-                  ? "text-lg font-[500] max-w-[300px] max-md:text-base"
-                  : "text-lg font-[500] max-w-[400px] max-md:text-base"
+                  ? "text-base font-[400] max-w-[300px] max-md:text-sm text-gray-500 leading-relaxed"
+                  : "text-base font-[400] max-w-[400px] max-md:text-sm text-gray-500 leading-relaxed"
               }
             >
               {item.subtitle}
             </p>
           </div>
-          <div className={`mt-12 flex ${isEven ? "justify-end" : "justify-start"} max-md:justify-center`}>
+          <div className={`mt-8 max-md:mt-5 flex ${isEven ? "justify-end" : "justify-start"} max-md:justify-center`}>
             <LetsTalkButton
               variant="light"
               children="View Project"
@@ -135,7 +135,7 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
       <div className="w-[60%] max-w-full max-md:w-[100%]">
         <motion.img
           alt={`${item.heading} - ${item.heading1} UI/UX design project showcase`}
-          className="w-full rounded-3xl md:-mt-12 max-md:mt-12"
+          className="w-full rounded-3xl max-md:rounded-2xl md:-mt-12 max-md:mt-4"
           loading="lazy"
           src={item.img}
           style={{ x: imageX, rotate: imageRotate }}
