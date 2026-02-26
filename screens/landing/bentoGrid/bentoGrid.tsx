@@ -40,7 +40,7 @@ const BentoGrid = () => {
                 <div className="flex-1 relative px-0 ">
                   <img
                     alt="UX/UI Design"
-                    className="w-full h-[50%] object-cover mt-0 -z-10"
+                    className="w-full h-[70%] object-cover mt-0 -z-10"
                     src="/assets/img/bento1.svg"
                   />
                 </div>
