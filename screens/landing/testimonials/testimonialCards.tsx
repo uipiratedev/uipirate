@@ -51,7 +51,7 @@ export default function TestimonialCards() {
       <div className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] max-md:h-[500px] overflow-hidden"}`}>
         {/* Gradient Mask for collapsed state */}
         {!isExpanded && (
-          <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent z-20 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-full h-[500px] bg-gradient-to-t from-white via-white/50 to-transparent z-20 pointer-events-none" />
         )}
 
         <motion.div 

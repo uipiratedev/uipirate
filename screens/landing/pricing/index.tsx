@@ -233,7 +233,7 @@ const Pricing = () => {
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
                
-                <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center max-md:flex-col gap-2 font-mono max-md:text-center">
+                <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center  gap-2 font-mono max-md:text-center">
                   <img src={benefit.icon} alt=""  className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6" /> {benefit.title}
                 </h4>
                 <p className="text-sm text-[#555555] leading-relaxed font-jakarta">

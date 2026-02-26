@@ -1833,3 +1833,36 @@ body[data-transitioning="true"] #main-content *  {
 }
 
 
+
+/* Reusable animated top border */
+.premium-card {
+  position: relative;
+  border-radius: 24px;
+  background: #ffffff;
+  padding: 4px; /* border thickness */
+  background-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 20%,
+    #ffffff 60%,
+    #ffffff 100%
+  );
+  transition: background-image 0.4s ease;
+}
+
+.premium-card:hover {
+  background-image: linear-gradient(
+    to bottom,
+    #FF5B04 0%,
+    #FF5B04 20%,
+    #ffffff 60%,
+    #ffffff 100%
+  );
+}
+
+.premium-card-inner {
+  border-radius: 19px;
+  background: #f8f9fc;
+  height: 100%;
+  width: 100%;
+}

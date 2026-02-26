@@ -244,4 +244,3 @@ export const SaaS=  (props: IconSvgProps) => (
             
 );
  
-
