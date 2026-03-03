@@ -10,7 +10,9 @@ const LandingBusinessHelp = () => {
           </div>
           <h2 className="heading-center">What We Design, Build, & Scale</h2>
         </div>
+        <div className="autoShowBottom">
         <ServicesSection />
+        </div>
       </div>
     </>
   );

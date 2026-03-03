@@ -14,12 +14,12 @@ const LandingFaqs = () => {
         
 
       </div>
-              <p className="heading-center">
+              <p className="heading-center autoShow">
       Everything you need to know
         </p>
 
       {/* Right section - Scrollable */}
-      <div className=" mt-6 max-md:mt-4">
+      <div className=" mt-6 max-md:mt-4 autoShowBottom">
         <FaqsAccordion />
       </div>
     </div>

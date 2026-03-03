@@ -13,7 +13,7 @@ const WhoThisIsFor = ({ data }: any) => {
   return (
     <section>
       {/* Header */}
-      <div className="md:autoShow text-center mb-4 md:mb-12">
+      <div className="autoShow text-center mb-4 md:mb-6">
         <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
@@ -23,7 +23,7 @@ const WhoThisIsFor = ({ data }: any) => {
       </div>
 
       {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7 autoShowBottom">
         {data.card?.map((item: any, index: number) => (
           <div
             key={index}

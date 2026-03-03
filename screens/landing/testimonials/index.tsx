@@ -7,7 +7,7 @@ function LandingTestimonials() {
   return (
     <div className=" pt-20 max-md:pt-12 ">
       <div className="autoShow">
-      <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-4 autoShow">
+      <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-4">
 
         <GlassBadge variant="gradient">
        testimonials
@@ -21,7 +21,7 @@ function LandingTestimonials() {
           <span className="text-brand-orange">Product Teams</span>
         </h2>
       </div>
-      <div>
+      <div className="autoShowBottom">
         <TestimonialCards />
       </div>
     </div>

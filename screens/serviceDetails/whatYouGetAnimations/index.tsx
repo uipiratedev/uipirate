@@ -87,7 +87,7 @@ const WhatYouGetAnimations = ({ data }: any) => {
       <ContainerScroll
         titleComponent={
           <>
-            <div className="md:autoShow text-center mb-10 md:mb-1">
+            <div className="autoShow text-center mb-10 md:mb-1">
               <div className="flex items-center justify-center mb-6">
                 <GlassBadge variant="gradient" size="sm">{data.badge}</GlassBadge>
               </div>
@@ -96,7 +96,7 @@ const WhatYouGetAnimations = ({ data }: any) => {
           </>
         }
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 md:autoShow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 mt-6 max-md:mt-4 autoShowBottom">
           {data.card.map((feature: any) => (
             <WhatYouGetCard key={feature.heading} {...feature} />
           ))}

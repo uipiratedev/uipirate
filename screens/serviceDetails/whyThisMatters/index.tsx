@@ -7,7 +7,7 @@ const WhyThisMatters = ({ data }: { data: any }) => {
   return (
     <section>
       {/* Header */}
-      <div className="md:autoShow text-center mb-6 md:mb-4">
+      <div className="autoShow text-center mb-6 md:mb-4">
         <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
@@ -20,7 +20,7 @@ const WhyThisMatters = ({ data }: { data: any }) => {
       </div>
 
       {/* Content row */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 md:gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 md:gap-8 items-start autoShowBottom">
         {/* Left column: Accordion */}
         <div className="flex flex-col gap-3">
           { data.card && data.card.map((item: any, idx: number) => {
