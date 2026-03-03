@@ -12,7 +12,7 @@ const Works = () => {
         </div>
         <p className="heading-center">Recent Works</p>
       </div>
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 mt-6 max-md:mt-4">
         {/* <RecentWorkCard /> */}
         <CaseStudyGrid />
         <WhyChooseUs />
