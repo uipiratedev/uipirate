@@ -18,7 +18,7 @@ const OurWorks = () => {
         </div>
         <Works />
         <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <div>
+          <div className="mb-12">
               <div className="autoShow">
         <div className="mb-6 flex flex-row items-center justify-center">
           <GlassBadge variant="gradient">pricing</GlassBadge>
@@ -26,11 +26,7 @@ const OurWorks = () => {
         <p className="heading-center">Pricing That Makes Sense</p>
       </div>
         <ProjectEstimate />
-
           </div>
-
-          {/* <OurProcess />
-          <CaseStudyCard /> */}
         </div>
       </div>
     </PageWrapper>

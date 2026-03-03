@@ -83,8 +83,9 @@ const Landing = memo(function Landing() {
           <LandingBusinessHelp />
         </div>
 
+<div id="pricing">
         <Pricing />
-
+</div>
         <TheTeam />
 
         {/* <BoreYouCommit /> */}
