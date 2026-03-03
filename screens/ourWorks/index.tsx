@@ -25,7 +25,9 @@ const OurWorks = () => {
         </div>
         <p className="heading-center">Pricing That Makes Sense</p>
       </div>
+      <div className="mt-6 max-md:mt-4">
         <ProjectEstimate />
+        </div>
           </div>
         </div>
       </div>
