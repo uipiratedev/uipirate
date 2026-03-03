@@ -7,22 +7,25 @@ const caseStudies = [
     heading: "Xperiti",
     heading1: "Comprehensive Research Platform",
     subtitle: "Enterprise Saas App UI/UX Design on Figma & Development on Angular.js",
+    logo:"https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
-    url: "https://www.xperiti.com/",
+    url: "https://www.ipsos.com/en/ipsos-acquires-xperiti-strengthen-its-b2b-research-capabilities-global",
   },
   {
     heading: "ArthAlpha",
     heading1: "AI Trading Platform",
     subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Development",
+    logo:"https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
-    url: "https://arthalpha.in/",
+    url: "https://www.arthalpha.in/",
   },
   {
     heading: "AI LegalTech Saas",
     heading1: "APAC’s largest law firm",
     subtitle: "Designed a future-ready AI SaaS platform for lawyers and legal professionals",
+    logo:"https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
     img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771570379/Image_hzwg0d.svg",
-    url: "https://www.xperiti.com/",
+    url: "https://revupai.com/",
   },
 ];
 
@@ -48,12 +51,20 @@ export default function CaseStudyGrid() {
             {/* Glassmorphism Overlay Bar */}
             <div className="absolute bottom-4 left-4 right-4 h-16 bg-white/60 backdrop-blur-xl border border-white/40 rounded-2xl flex items-center justify-between px-6 shadow-lg">
               <div>
-                <h3 className="text-gray-900 font-bold text-lg leading-tight">
+                {/* <h3 className="text-gray-900 font-bold text-lg leading-tight capitalize">
                   {study.heading.toLowerCase()}
                 </h3>
-                <p className="text-[10px] uppercase tracking-widest text-gray-500 font-medium">
+                <p className="text-[10px] tracking-widest text-gray-500 font-medium">
                   {study.heading1}
-                </p>
+                </p> */}
+
+                <Image
+                  src={study.logo}
+                  alt={study.heading}
+                  width={100}
+                  height={30}
+                  priority
+                />
               </div>
               
               <div className="flex items-center gap-2 text-sm font-semibold text-gray-800">
