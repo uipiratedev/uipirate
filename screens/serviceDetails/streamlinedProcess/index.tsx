@@ -93,7 +93,7 @@ const StreamlinedProcess = ({ data }: any) => {
       </div>
 
       {/* Cards Section */}
-      <div className="relative mx-auto max-md:mb-4 max-md:-mt-4">
+      <div className="relative mx-auto max-md:mb-4 max-md:-mt-4 autoShowBottom">
         
         {/* Mobile: Continuous Straight Vertical Rope on Left */}
         <div className="md:hidden absolute left-[23px] top-0 bottom-12 w-[3px] bg-[#FF5B04] z-0" />

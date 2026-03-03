@@ -21,7 +21,7 @@ const cardVariants = {
 const BentoGrid = () => {
   return (
     <>
-      <div className="container mx-auto pt-2 max-md:pt-4">
+      <div className="container mx-auto pt-2 max-md:pt-4 autoShowBottom">
         {/* Bento Grid */}
         <div className="px-32 lg:px-20 max-md:px-4 pb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">

@@ -93,7 +93,7 @@ const Pricing = () => {
       </div>
 
       {/* Pricing Cards Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 autoShowBottom">
         {/* Monthly Retainer Card */}
         <div>
           <Card className="rounded-[20px] max-md:rounded-[12px]  bg-gradient-to-br from-[#212121] to-[#151514] border-1 border-gray-800 shadow-lg h-full noise-texture "

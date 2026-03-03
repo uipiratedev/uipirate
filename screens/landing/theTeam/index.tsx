@@ -102,7 +102,7 @@ const TheTeam = () => {
     <div className="container mx-auto px-32 lg:px-20 max-md:px-4 relative">
 
       {/* Header */}
-      <div className="text-center mb-6 max-md:mb-4">
+      <div className="text-center mb-6 max-md:mb-4 autoShow">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">THE TEAM</GlassBadge>
         </div>
@@ -110,10 +110,10 @@ const TheTeam = () => {
           Meet The Crew On Board
         </h2>
       </div>
-
+<div className="autoShowBottom">
       {/* Team Grid */}
       <motion.div
-        className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 max-md:gap-4 relative"
+        className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 max-md:gap-4 relative "
         initial="hidden"
         variants={containerVariants}
         whileInView="visible"
@@ -253,6 +253,7 @@ const TheTeam = () => {
           </Tooltip>
         ))}
       </motion.div>
+      </div>
     </div>
   );
 };

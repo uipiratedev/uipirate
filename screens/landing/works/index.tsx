@@ -15,7 +15,7 @@ const LandingWork = () => {
           
         </div>
       </div>
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-48 max-md:pt-0">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-48 max-md:pt-0 autoShowBottom">
         <RecentWorkCard />
       </div>
     </div>

@@ -793,6 +793,21 @@ body {
   }
 }
 
+/* Bottom section: syncs with autoShow — pure translateY slide, completes at 60% viewport entry */
+.autoShowBottom {
+  animation: autoShowBottomAnimation both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 60%;
+}
+@keyframes autoShowBottomAnimation {
+  from {
+    transform: translateY(100px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
 .reveal-text {
   margin: 0;
   text-align: center;
