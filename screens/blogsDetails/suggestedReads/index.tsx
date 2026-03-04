@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardBody, CardHeader } from "@heroui/react";
+import Image from "next/image";
 import Link from "next/link";
+import GlassBadge from "@/components/GlassBadge";
 
 interface Blog {
   _id: string;
@@ -40,70 +41,64 @@ const SuggestedReads = () => {
   };
 
   return (
-    <div className="pt-32 max-md:pt-24 px-6 max-w-7xl mx-auto mb-24 max-md:mb-12">
+    <div className="pt-20 max-md:pt-12 container mx-auto px-32 lg:px-20 max-md:px-4 mb-24 max-md:mb-12">
       {/* Section Header */}
 
-      <div className="autoShow">
+      <div className="autoShow mb-12 max-md:mb-6 text-center">
         <div className="flex flex-row items-center justify-center mb-6">
-          <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-            Suggested Reads
-          </span>
+          <GlassBadge variant="gradient" size="sm">Suggested Reads</GlassBadge>
         </div>
         <p className="heading-center">Continue Your Journey</p>
       </div>
 
       {/* Blog Cards Grid */}
       {loading ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500">Loading suggested reads...</p>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[...Array(3)].map((_, i) => (
+             <div key={i} className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse">
+               <div className="flex-1 bg-[#F1F5F9]" />
+               <div className="px-5 py-4 md:px-6 md:py-5 space-y-3">
+                 <div className="h-6 bg-[#F1F5F9] rounded w-[85%]" />
+                 <div className="h-4 bg-[#F8FAFC] rounded w-[60%]" />
+               </div>
+             </div>
+          ))}
         </div>
       ) : blogs.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500">No suggested blogs available.</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-4 mt-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {blogs.map((blog) => (
             <Link key={blog._id} href={`/blogs/${blog.slug}`}>
-              <Card className="rounded-[48px] max-md:rounded-[38px]  h-full bg-[#e9e9e9] max-md:mt-4 group shadow-none border-1 border-[#0000000f]">
-                <CardBody className="p-2 max-md:p-2 max-md:gap-2">
-                  <Card className="rounded-[40px] max-md:rounded-[30px] box-shadow h-full">
-                    <CardHeader className="px-0 pt-0">
-                      {blog.featuredImage ? (
-                        <img
-                          alt={blog.title}
-                          className="object-cover h-[200px] min-md:h-[200px] max-h-full rounded-t-[40px] max-md:rounded-t-[30px]"
-                          src={blog.featuredImage}
-                          width="100%"
-                        />
-                      ) : (
-                        <img
-                          alt={blog.title}
-                          className="object-cover h-[200px] min-md:h-[200px] max-h-full"
-                          src="https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
-                          width="100%"
-                        />
-                      )}
-                    </CardHeader>
-                    <CardBody className="p-8 max-md:p-5 max-lg:p-6 flex flex-col justify-between">
-                      <div>
-                        <p className="text-2xl max-md:text-xl mt-4 mb-3 font-[700] tracking-[-0.5px] leading-[34px]">
-                          {blog.title}
-                        </p>
+              <div className="relative flex flex-col h-[290px] md:h-[360px] rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.06)] group">
+                {/* Image area */}
+                <div className="flex-1 relative bg-[#F8F9FB] overflow-hidden">
+                  <div className="relative w-full h-full transition-transform duration-700 group-hover:scale-110">
+                    <Image
+                      src={
+                        blog.featuredImage ||
+                        "https://res.cloudinary.com/damm9iwho/image/upload/v1731054694/desin_aetz3i.svg"
+                      }
+                      alt={blog.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                </div>
 
-                        <p className="text-base max-md:text-base font-[500] text-[#777777] py-2">
-                          {blog.excerpt || "Read more..."}
-                        </p>
-
-                        <div className="flex items-center gap-4 mt-4 text-sm text-gray-500">
-                          <span>👁️ {blog.views || 0} views</span>
-                          <span>⏱️ {blog.readTime || 5} min read</span>
-                        </div>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </CardBody>
-              </Card>
+                {/* Content */}
+                <div className="px-5 py-4 md:px-6 md:py-5">
+                  <h3 className="text-[16px] md:text-[22px] font-semibold text-[#0F172A] leading-snug tracking-tight line-clamp-2">
+                    {blog.title}
+                  </h3>
+                  <p className="mt-1.5 text-[12px] md:text-[13px] text-[#64748B] leading-relaxed line-clamp-1">
+                    {blog.excerpt || "Read more about this project and our process."}
+                  </p>
+                </div>
+              </div>
             </Link>
           ))}
         </div>

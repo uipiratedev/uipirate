@@ -4,6 +4,7 @@ import { Card, CardBody } from "@heroui/react";
 
 import testimonials from "@/data/testimonials.json";
 import Avatar from "@/components/Avatar";
+import GlassBadge from "@/components/GlassBadge";
 
 const StarRating = ({
   className = "",
@@ -52,9 +53,7 @@ const WhatWeProvide = () => {
     <div className="pt-32 max-md:pt-24">
       <div className="autoShow">
         <div className="mb-6 flex flex-row items-center justify-center">
-          <span className="rounded-xl border-2 border-cyan-400 bg-[#8EF1F1] px-4 py-2 font-semibold uppercase">
-            What we provide
-          </span>
+          <GlassBadge variant="gradient">What we provide</GlassBadge>
         </div>
         <p className="heading-center">Why Work With UiPirate?</p>
       </div>

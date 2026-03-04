@@ -4,11 +4,11 @@ import LandingWork from "../landing/works";
 import TryBeforeCommit from "../pricing/tryBeforeCommit";
 
 import ServiceDetailsHero from "./hero";
-import OptionalAdd from "./optionalAdd";
 import StreamlinedProcess from "./streamlinedProcess";
-import WhatWeProvide from "./whatWeProvide";
 import WhoThisIsFor from "./whoThisIsFor";
-import YouWillGet from "./youWillGet";
+import RecommendedNextSteps from "./recommendedNextSteps";
+import WhyThisMatters from "./whyThisMatters";
+import WhatYouGetAnimations from "./whatYouGetAnimations";
 
 import PageWrapper from "@/components/PageWrapper";
 
@@ -17,22 +17,39 @@ const ServiceDetails = ({ data }: any) => {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div>
-        <ServiceDetailsHero data={data.hero} />
+            <div className="space-y-20 max-md:space-y-16">
+        {data.hero && <ServiceDetailsHero data={data.hero} />}
 
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0">
-          <WhatWeProvide data={data.whatWeProvide} />
-          <WhoThisIsFor data={data.whoThisIsFor} />
-          <YouWillGet data={data.youWillGet} />
-          <StreamlinedProcess data={data.streamlinedProcess} />
-          <OptionalAdd data={data.optionalAdd} />
-        </div>
+        {data.whatYouGet && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+            <WhatYouGetAnimations data={data.whatYouGet} />
+          </div>
+        )}
+
+
+        {data.whyThisMatters && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+            <WhyThisMatters data={data.whyThisMatters} />
+          </div>
+        )}
+
+        {data.streamlinedProcess && <StreamlinedProcess data={data.streamlinedProcess} />}
+
         <div className="container mx-auto">
           <LandingWork />
         </div>
-        <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 mb-24">
-          <TryBeforeCommit />
-        </div>
+
+        {data.whoThisIsFor && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+            <WhoThisIsFor data={data.whoThisIsFor} />
+          </div>
+        )}
+
+        {data.recommendedNextSteps && (
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pb-16">
+            <RecommendedNextSteps data={data.recommendedNextSteps} />
+          </div>
+        )}
       </div>
     </PageWrapper>
   );

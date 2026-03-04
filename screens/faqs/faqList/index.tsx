@@ -8,7 +8,7 @@ interface FaqListProps {
 
 const FaqList = ({ searchQuery, selectedCategory }: FaqListProps) => {
   return (
-    <div className="pt-12 max-md:pt-4 ">
+    <div className="-mx-2">
       {/* FAQ Accordion */}
       <FaqsAccordionTabs
         activeTab={selectedCategory}

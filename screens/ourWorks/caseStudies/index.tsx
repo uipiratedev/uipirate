@@ -1,7 +1,10 @@
 "use client";
 
+import { memo } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Card, CardBody, CardHeader } from "@heroui/react";
+import GlassBadge from "@/components/GlassBadge";
 
 const data = [
   {
@@ -100,14 +103,13 @@ const data = [
   },
 ];
 
-const CaseStudyCard = () => {
+const CaseStudyCard = memo(function CaseStudyCard() {
   return (
     <div className="min-h-screen pt-32 max-md:pt-24">
       {/* Section Heading */}
       <div className="text-center mb-10 autoShow">
-        <span className="rounded-xl border-2 border-cyan-400 bg-[#8EF1F1] px-4 py-2 font-semibold uppercase">
-          Featured Case Studies
-        </span>
+        
+        <GlassBadge variant="gradient">Featured Case Studies</GlassBadge>
         <p className="heading-center mt-4 max-md:mt-6">
           What happens behind the scenes
         </p>
@@ -132,10 +134,13 @@ const CaseStudyCard = () => {
               <CardBody className="p-1.5">
                 <Card className="rounded-[30px] max-md:rounded-[20px] h-full box-shadow overflow-hidden">
                   {/* Image */}
-                  <CardHeader className="p-0">
-                    <img
+                  <CardHeader className="p-0 relative h-[250px]">
+                    <Image
+                      fill
                       alt={item.heading}
-                      className="w-full h-[250px] object-cover"
+                      className="object-cover"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       src={item.img}
                     />
                   </CardHeader>
@@ -158,6 +163,6 @@ const CaseStudyCard = () => {
       </div>
     </div>
   );
-};
+});
 
 export default CaseStudyCard;

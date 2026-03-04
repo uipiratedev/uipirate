@@ -9,11 +9,11 @@ const TopThree = () => {
             <GlassBadge variant="gradient">works</GlassBadge>
           </div>
           <h2 className="heading-center">
-            Recent
+            Recent{" "}
             <span className="text-brand-orange">Product Transformations</span>
           </h2>
         </div>
-      </div>{" "}
+      </div>
     </>
   );
 };

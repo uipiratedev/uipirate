@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { SwitchProps, useSwitch } from "@heroui/switch";
 import { useTheme } from "next-themes";
@@ -21,12 +21,17 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
   const { theme, setTheme } = useTheme();
   const isSSR = useIsSSR();
 
-  const onChange = () => {
-    theme === "light" ? setTheme("light") : setTheme("light");
-  };
+  const onChange = useCallback(() => {
+    setTheme(theme === "light" ? "dark" : "light");
+  }, [theme, setTheme]);
+
+  const ariaLabel = useMemo(
+    () => `Switch to ${theme === "light" || isSSR ? "dark" : "light"} mode`,
+    [theme, isSSR]
+  );
 
   const {
-    Component, // This may be causing the issue
+    Component,
     slots,
     isSelected,
     getBaseProps,
@@ -34,13 +39,11 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     getWrapperProps,
   } = useSwitch({
     isSelected: theme === "light" || isSSR,
-    "aria-label": `Switch to ${
-      theme === "light" || isSSR ? "light" : "light"
-    } mode`,
+    "aria-label": ariaLabel,
     onChange,
   });
 
-  const BaseComponent = Component as FC<any>;
+  const BaseComponent = Component as FC<Record<string, unknown>>;
 
   return (
     <BaseComponent

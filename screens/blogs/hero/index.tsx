@@ -1,69 +1,192 @@
 "use client";
-const BlogsHero = ({ data: _data }: any) => {
-  return (
-    <div className="flex flex-row items-center justify-center py-12 w-full max-lg:py-10 max-md:py-6 container mx-auto">
-      <section className="relative  flex flex-col items-center text-center ">
-        {/* Badge Text */}
 
-        <div
-          className="p-2 px-4 rounded-xl bg-[#8EF1F1] border-cyan-400 border-2 mb-6"
+import GlassSurface from "@/components/GlassSurface";
+import { Select, SelectItem } from "@heroui/react";
+
+interface BlogsHeroProps {
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+}
+
+const BlogsHero = ({
+  searchQuery,
+  onSearchChange,
+  selectedCategory,
+  onCategoryChange,
+}: BlogsHeroProps) => {
+  const tabs = [
+    "general",
+    "SaaS Web & Mobile Apps",
+    "Motion Graphics & Video Editing",
+    "Services",
+    "UX Audits & Consultation",
+    "Graphic Design",
+    "Landing Pages & Business Websites",
+  ];
+
+  // Simple display name helper
+  const getDisplayName = (name: string) => {
+    if (name === "general") return "GENERAL";
+    return name.toUpperCase();
+  };
+
+  return (
+    <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
+      {/* Subtle Grid Background Pattern */}
+      <div
+        className="absolute pointer-events-none -mt-20 "
+        style={{
+          backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+
+            `,
+          backgroundSize: "40px 40px",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          marginLeft: "calc(-50vw + 50%)",
+        }}
+      />
+      {/* Layered gradient with gentle mist animation */}
+      <div
+        className="absolute pointer-events-none -mt-20 "
+        style={{
+          backgroundImage: `
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
+            `,
+          animation: "gentle-mist 8s ease-in-out infinite",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          marginLeft: "calc(-50vw + 50%)",
+        }}
+      />
+      <div
+        className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto px-32 lg:px-20 max-md:px-4  "
+        style={{ overflow: "visible" }}
+      >
+        {" "}
+        {/* Badge with GlassSurface */}
+        <GlassSurface
+          backgroundOpacity={0.1}
+          blueOffset={20}
+          blur={11}
+          borderRadius={12}
+          borderWidth={0.01}
+          brightness={50}
+          className="md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
+          displace={0.5}
+          distortionScale={-180}
+          forceLightMode={true}
+          greenOffset={10}
+          height="auto"
+          opacity={0.93}
+          redOffset={0}
+          saturation={1}
           style={{
             animation: "trustBadgeUp 0.5s ease-out forwards",
             animationDelay: "0.1s",
             opacity: 0,
             transform: "translateY(20px) scale(0.95)",
           }}
+          width="auto"
         >
-          <p className="text-center uppercase text-xs max-md:text-[10px] font-medium">
-            BLOGS
+          {/* Text */}
+          <p className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
+            INSIGHTS & RESOURCES
           </p>
+        </GlassSurface>
+        {/* Headline */}
+        <div className="relative z-10 w-full">
+          <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] text-center font-[700] max-md:font-[600]  max-md:leading-[1.08] tracking-[-1.5px] leading-[1.1] relative">
+            <span className="text-black">
+              Insights, Stories &amp; Research <br />
+              for{" "}
+            </span>
+            <span className="text-[#FF5B04]">SaaS, Tech &amp; Design</span>
+          </h1>
         </div>
-        {/* Main Heading */}
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-3 reveal-text-anim ">
-          Insights, Stories & Research
-        </h1>
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim ">
-          for SaaS, Tech, and Design
-        </h1>
-
-        {/* Subheading */}
-        <p className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mt-4 px-40 max-md:px-4 max-lg:12 font-sans leading-[25.2px]">
-          Real-world lessons, research-backed insights, and opinions from our
-          work and the community
+        <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px]">
+          Fresh ideas, research-backed insights, and real stories from our work
+          and the community.
         </p>
 
-        {/* search section */}
-        <div className="mt-12 flex flex-row items-center justify-center max-lg:flex-col w-full">
-          <div className="w-full max-w-3xl relative">
-            <label className="sr-only" htmlFor="blog-search">
-              Search blog topics
-            </label>
-            <input
-              aria-label="Search blog topics"
-              className="w-full px-6 py-4 rounded-full border border-gray-300 bg-[#F7F7F7] focus:outline-none focus:border-blue-500 pr-12"
-              id="blog-search"
-              placeholder="Search a topic..."
-              type="search"
-            />
-            {/* Search Icon */}
-            <svg
-              aria-hidden="true"
-              className="w-5 h-5 text-gray-400 absolute right-6 top-1/2 transform -translate-y-1/2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
+        {/* Search */}
+        <div
+          className="mt-8 md:mt-10 w-full max-w-2xl relative z-10 px-4"
+          style={{
+            animation: "trustBadgeUp 0.5s ease-out forwards",
+            animationDelay: "0.3s",
+            opacity: 0,
+            transform: "translateY(20px)",
+          }}
+        >
+          <label className="sr-only" htmlFor="blog-search">
+            Search blog topics
+          </label>
+
+          {/* On mobile: stacked. On desktop: single pill row */}
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200 md:bg-white/80 md:px-5 md:py-3.5 md:shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:backdrop-blur-md md:focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:focus-within:bg-white/95 md:transition-all md:duration-300">
+
+            {/* Search Input — full pill on mobile */}
+            <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:flex-1 md:border-none md:shadow-none md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
+              <input
+                aria-label="Search blog topics"
+                className="flex-1 bg-transparent focus:outline-none text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
+                id="blog-search"
+                placeholder="Search by topic, problem, or keyword..."
+                type="search"
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
               />
-            </svg>
+            </div>
+
+            {/* Category Selector — full width pill on mobile, inline on desktop */}
+            <div className="md:pl-3 md:ml-1 md:border-l md:border-slate-200 flex-shrink-0">
+              <Select
+                disallowEmptySelection
+                aria-label="Select category"
+                classNames={{
+                  base: "w-full md:min-w-[150px]",
+                  trigger:
+                    "bg-[#FF5B04] hover:bg-[#ff6b1e] text-white rounded-full h-10 px-4 border-none shadow-sm data-[hover=true]:bg-[#ff7a33] transition-colors w-full",
+                  value:
+                    "text-[10px] md:text-xs font-semibold tracking-[0.1em] uppercase group-data-[has-value=true]:text-white",
+                  popoverContent: "rounded-xl",
+                  listbox: "p-0",
+                  selectorIcon: "text-white",
+                }}
+                renderValue={() => (
+                  <div className="flex items-center gap-2">
+                    <span className="text-white whitespace-nowrap">
+                      {getDisplayName(selectedCategory)}
+                    </span>
+                  </div>
+                )}
+                selectedKeys={[selectedCategory]}
+                onSelectionChange={(keys) => {
+                  const selected = Array.from(keys)[0] as string;
+                  if (selected) {
+                    onCategoryChange(selected);
+                  }
+                }}
+              >
+                {tabs.map((tab) => (
+                  <SelectItem key={tab} textValue={tab}>
+                    {tab}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

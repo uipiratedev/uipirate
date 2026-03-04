@@ -1,258 +1,268 @@
 "use client";
 import { Button } from "@heroui/button";
 import Link from "next/link";
-import React, { useState } from "react";
+import GlassSurface from "@/components/GlassSurface";
 
 const ServiceDetailsHero = ({ data }: any) => {
-  const meteors = Array.from({ length: 9 }).map((_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${-5 - Math.random() * 10}%`, // Start from above the viewport
-    delay: `${Math.random() * 8}s`,
-    duration: `${2 + Math.random() * 3}s`,
-    drift: `${Math.random() * 80 - 40}px`, // Horizontal drift for diagonal effect
-  }));
 
-  const [isHoveredChat, setIsHoveredChat] = useState(false);
+
 
   return (
-    <div className="relative overflow-hidden bg-white text-black -mt-[67px] md:pt-[67px] md:pb-20">
-      {/* === Static Gray Grid Background === */}
-      <div
-        className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[size:80px_80px]"
-        // style={{
-        //   animation: "slow-rotate 120s linear infinite", // 120s for very slow rotation
-        //   transformOrigin: "left right",
-        // }}
-      />
-
-      {/* === Meteors === */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {meteors.map((meteor) => (
-          <span
-            key={meteor.id}
-            className="meteor absolute"
-            style={
-              {
-                top: meteor.top,
-                left: meteor.left,
-                animationDelay: meteor.delay,
-                animationDuration: meteor.duration,
-                "--drift": meteor.drift,
-              } as React.CSSProperties
-            }
-          >
-            {/* Meteor head - bright glowing dot */}
-            <div className="absolute w-[3px] h-[3px] -ml-[1px] rounded-full bg-black " />
-
-            {/* Meteor tail - long gradient streak */}
-            <div
-              className="absolute top-0 left-0 w-[1.5px] h-[50px] -translate-y-full bg-gradient-to-b from-gray-200 via-gray-900 to-black opacity-70"
-              // style={{
-              //   boxShadow: "0 0 6px 1px rgba(0, 255, 255, 0.4)",
-              // }}
-            />
-          </span>
-        ))}
-      </div>
-      <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-[#F5F5F5] to-transparent z-10 pointer-events-none" />
-
-      {/* === Hero Content === */}
-      <section className="relative pt-[83px] md:pt-[87px] flex flex-col items-center text-center z-10">
-        {/* Badge */}
+    <>
+      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
+        {/* Subtle Grid Background Pattern */}
         <div
-          className="p-2 px-4 rounded-xl bg-[#8EF1F1] border-cyan-400 border-2 mb-6"
+          className="absolute pointer-events-none -mt-20 "
           style={{
-            animation: "trustBadgeUp 0.5s ease-out forwards",
-            animationDelay: "0.1s",
-            opacity: 0,
-            transform: "translateY(20px) scale(0.95)",
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+
+            `,
+            backgroundSize: "40px 40px",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
           }}
-        >
-          <p className="text-center uppercase text-xs max-md:text-[10px] font-medium text-black">
-            {data.badge}
-          </p>
-        </div>
-
-        {/* Headings */}
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim">
-          {data.heading}
-        </h1>
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim">
-          {data.heading1}
-        </h1>
-
-        {/* Subheading */}
-        <p className="reveal-text-anim-1 lg:w-3/4 text-center text-lg max-md:text-sm mb-8 px-40 max-md:px-4 font-sans leading-[25.2px]">
-          {data.description}
-        </p>
-
-        {/* CTA */}
+        />
+        {/* Layered gradient with gentle mist animation */}
         <div
-          className="my-12 flex flex-row items-center max-md:flex-col max-md:px-2 button-spring-animate relative gap-3"
+          className="absolute pointer-events-none -mt-20 "
+          style={{
+            backgroundImage: `
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
+            `,
+            animation: "gentle-mist 8s ease-in-out infinite",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            marginLeft: "calc(-50vw + 50%)",
+          }}
+        />
+        <div
+          className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto "
           style={{ overflow: "visible" }}
         >
-          <Link className="relative z-10" href="/contact">
-            <div className=" hover:border-back/50 hover:border-4 border-4 bg-black text-white rounded-[20px] h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-3 buttonHero md:hover:pl-12 hover:bg-black flex flow-row items-center gap-3 relative">
-              {/* Star Confetti Container - Behind button */}
-              <div className="star-confetti-container">
-                <div className="star-confetti-revolve">
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                  <div className="star-confetti">
-                    <img
-                      alt="star"
-                      src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
-                    />
-                  </div>
-                </div>
-              </div>
+          {" "}
+          {/* Trust Badge with GlassSurface - Inline Avatars */}
+          <GlassSurface
+            backgroundOpacity={0.1}
+            blueOffset={20}
+            blur={11}
+            borderRadius={12}
+            borderWidth={0.01}
+            brightness={50}
+            className="md:my-9 max-md:my-5 !flex !flex-row max-md:!flex-col !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
+            displace={0.5}
+            distortionScale={-180}
+            forceLightMode={true}
+            greenOffset={10}
+            height="auto"
+            opacity={0.93}
+            redOffset={0}
+            saturation={1}
+            style={{
+              animation: "trustBadgeUp 0.5s ease-out forwards",
+              animationDelay: "0.1s",
+              opacity: 0,
+              transform: "translateY(20px) scale(0.95)",
+            }}
+            width="auto"
+          >
+            
 
-              <div className="flex flex-row gap-2 items-center md:mr-11">
-                <img
-                  alt="Dribble Logo"
-                  className="w-auto h-[30px] md:absolute  transform translate-x-0 transition-all duration-[580ms] ease-in-out  md:group-hover:translate-x-4 max-md:order-3  md:order-1 md:group-hover:order-3"
-                  id="image"
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1730289917/Frame_1984078767_sjyim4.svg"
-                />
-                <p
-                  className="text-[#5B5B5B] text-xl font-bold md:absolute order-2 -mt-1"
-                  id="plus"
-                >
-                  +
-                </p>
-                <img
-                  alt="Dribble Logo"
-                  className="w-auto bg-black h-[30px] md:absolute  transform translate-x-0 transition-all duration-500 ease-in-out  md:group-hover:-translate-x-[2.1rem] max-md:order-1  md:order-3 md:group-hover:order-1"
-                  id="client"
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
-                />
-              </div>
-              <p className="text-lg font-bold text-nowrap">
-                {" "}
-                Book a 15-min call
-              </p>
-              <div>
-                <img
-                  alt="Dribble Logo"
-                  className="w-auto h-[30px]"
-                  src="https://res.cloudinary.com/damm9iwho/image/upload/v1729594468/free_p7odqs.svg"
-                />
-              </div>
-            </div>
-          </Link>
-          <div className="w-[100%] z-10">
-            <a
-              className="w-[200px]"
-              href="https://wa.link/i35lma"
-              rel="noreferrer"
-              target="_blank"
-            >
-              <Button
-                className=" border-gray-300 text-black font-bold w-full bg-white  hover:border-gray-200 rounded-[16px]   py-[27px]"
-                color="primary"
-                style={{ width: "100%" }}
-                variant="bordered"
-                onMouseEnter={() => setIsHoveredChat(true)}
-                onMouseLeave={() => setIsHoveredChat(false)}
+            {/* Text */}
+            <p className="badge-text relative z-10 max-md:text-xs uppercase">
+              {data.badge || "EMPOWERING 40+ Business ACROSS 6 COUNTRIES"}
+            </p>
+          </GlassSurface>
+
+          {/* Animated Headline Replacement using Data Props */}
+          <div className="relative z-10 w-full">
+          
+            {data.heading && (
+              <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
+                {data.heading.map((line: any, lineIndex: number) => (
+                  <span key={lineIndex}>
+                    {lineIndex > 0 && <br className="max-md:hidden" />}
+                    {line.map((word: any, wordIndex: number) => (
+                      <span
+                        key={wordIndex}
+                        className={`inline ${word.highlight ? "text-[#FF5B04]" : "text-black"}`}
+                      >
+                        {word.text}
+                        {wordIndex < line.length - 1 && " "}
+                      </span>
+                    ))}
+                    {" "}
+                  </span>
+                ))}
+              </h1>
+            )}
+          </div>
+
+          <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px] text-[#11181C]">
+            {data.description}
+          </p>
+
+          <div
+            className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
+            style={{ overflow: "visible" }}
+          >
+            <Link className="relative z-10" href="/contact">
+              <div
+                className="bg-black text-white h-auto group transform transition-all duration-[600ms] ease-in-out max-md:px-4 px-6 py-[18px] max-md:py-[14px] buttonHero hover:bg-black flex flow-row items-center gap-3 relative"
+                style={{
+                  borderRadius: "11.889px",
+                  background: "#000",
+                  boxShadow:
+                    "0 2.122px 2.97px 0 rgba(255, 255, 255, 0.65) inset, 0 2.386px 6.365px 0 rgba(0, 0, 0, 0.16), 0 0 0 1.734px #2F2F37 inset, 0 1.591px 4.971px 0 rgba(0, 0, 0, 0.12), 0 11.134px 39.765px 0 rgba(15, 15, 15, 0.03), 0 11.134px 25.458px 0 rgba(15, 15, 15, 0.02), 0 11.134px 15.906px 0 rgba(15, 15, 15, 0.02)",
+                }}
               >
-                <div className="flex flex-col items-center justify-center max-h-[32px] overflow-hidden">
-                  <span
-                    className={`text-black transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 ${
-                      isHoveredChat ? "translate-y-[50px]" : "translate-y-4"
-                    }`}
-                  >
-                    <img
-                      alt="WhatsApp Logo"
-                      className="w-[30px]  h-[30px] "
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
-                    />
-                    <p className="text-base font-semibold">Lets Talk</p>
-                  </span>
-
-                  <span
-                    className={`text-black w-full transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3 ${
-                      isHoveredChat ? "-translate-y-4" : "translate-y-[50px]"
-                    }`}
-                  >
-                    <img
-                      alt="WhatsApp Logo"
-                      className="w-[30px]  h-[30px]"
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
-                    />
-                    <p className="text-base font-semibold"> +91 97086 36151</p>
-                  </span>
+                {/* Star Confetti Container - Behind button */}
+                <div className="star-confetti-container">
+                  <div className="star-confetti-revolve">
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                    <div className="star-confetti">
+                      <img
+                        alt=""
+                        aria-hidden="true"
+                        src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1753806991/tabler-icon-star-filled_oymrgq.svg"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </Button>
-            </a>
+                <div>
+                  <img
+                    alt="Free consultation badge"
+                    className="w-auto h-[30px] max-md:h-[20px]"
+                    src="/assets/free.svg"
+                  />
+                </div>
+                <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
+                  {" "}
+                  Book a 15-min Product Strategy Call
+                </p>
+              </div>
+            </Link>
+            <div className="w-[100%] z-10">
+              <a
+                className="w-full"
+                href="https://wa.link/i35lma"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <Button
+                  className="text-black font-bold w-full py-[27px] max-md:py-[20px]"
+                  color="primary"
+                  style={{
+                    width: "100%",
+                    borderRadius: "9.908px",
+                    border: "3.979px solid #FFF",
+                    background:
+                      "linear-gradient(180deg, #F4F4F4 0%, #FEFEFE 100%)",
+                    boxShadow:
+                      "0 0 0.295px 0.295px rgba(0, 0, 0, 0.07), 0 0 0.295px 0.884px rgba(0, 0, 0, 0.05), 0 3.536px 3.831px -1.768px rgba(0, 0, 0, 0.25), 0 1.179px 4.715px 1.179px rgba(0, 0, 0, 0.12)",
+                  }}
+                  variant="bordered"
+                >
+                  <div className="flex flex-row items-center gap-3">
+                    <img
+                      alt="WhatsApp Logo"
+                      className="w-[30px] h-[30px] max-md:w-[20px] max-md:h-[20px]"
+                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
+                    />
+                    <p className="text-base font-semibold max-md:text-sm max-md:font-regular">
+                      Lets Talk via Whatsapp
+                    </p>
+                  </div>
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </>
   );
 };
 

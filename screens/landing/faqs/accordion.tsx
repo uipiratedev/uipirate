@@ -1,11 +1,23 @@
 "use client";
+import { AnimatedButton } from "@/components/AnimatedButton";
+import LetsTalkButton from "@/components/LetsTalkButton";
 import { Accordion, AccordionItem } from "@heroui/react";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import NextLink from "next/link";
 
-gsap.registerPlugin(ScrollTrigger);
+// Smooth animation variants for accordion items
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.08,
+      duration: 0.8,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  }),
+};
 
 const data = [
   {
@@ -165,61 +177,34 @@ const data = [
 ];
 
 export default function FaqsAccordion() {
-  const cardsRef = useRef<HTMLDivElement[]>([]);
-
-  useEffect(() => {
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-    cardsRef.current.forEach((card) => {
-      if (card) {
-        gsap.fromTo(
-          card,
-          {
-            y: 50, // Start from below
-            paddingTop: "5%",
-            paddingBottom: "5%",
-            opacity: isMobile ? 4 : 0, // Start fully transparent
-            filter: isMobile ? "blur(0px)" : "blur(5px)", // Initial blur effect
-          },
-          {
-            y: 0, // Move to its original position
-            paddingTop: "0%",
-            paddingBottom: "0%",
-            opacity: 1, // Fade in to fully visible
-            filter: "blur(0px)", // Remove blur
-            duration: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: card,
-              start: isMobile ? "top 50%" : "top 90%", // Adjust start point for mobile
-              end: isMobile ? "botton 10%" : "top 30%", // Adjust end point for mobile
-              toggleActions: "restart none none reverse",
-            },
-          },
-        );
-      }
-    });
-  }, []);
-
   return (
     <>
-      <div
-        className=""
-        // ref={(el) => {
-        //   if (el) cardsRef.current[0] = el;
-        // }}
-      >
+      <div>
+        <motion.div
+          initial="hidden"
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.08,
+              },
+            },
+          }}
+          viewport={{ once: true, amount: 0.2 }}
+          whileInView="visible"
+        >
         <Accordion
-          className="mb-0"
+          className="mb-0 p-0 -px-2"
           defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
           selectionMode="multiple"
           variant="splitted"
+          style={{padding:0}}
         >
           {data.slice(0, 4).map((item, index) => (
             <AccordionItem
               key={String(index)}
               aria-label={item.heading}
-              className="shadow-none border-1 rounded-[1.25rem] mt-3 max-md:mt-2 items-center hover:bg-[#f2f1f1]"
+              className="shadow-none border-1 rounded-[1.25rem] mt-3 max-md:mt-2 items-center bg-[#FF5B0414]"
               indicator={({ isOpen }) =>
                 isOpen ? (
                   <img
@@ -257,30 +242,25 @@ export default function FaqsAccordion() {
             </AccordionItem>
           ))}
         </Accordion>
+        </motion.div>
+        <motion.div
+          custom={4}
+          initial="hidden"
+          variants={itemVariants}
+          viewport={{ once: true, amount: 0.3 }}
+          whileInView="visible"
+        >
+      
         <div className="flex flex-row items-center justify-center mt-6">
-          <NextLink className="autoShow w-fit" href="/faqs">
-            <button
-              className="mt-3 bg-black text-white px-[40px] py-[16px] rounded-[20px] group w-fit"
-              color="primary"
-            >
-              <div className="flex flex-col items-center justify-center max-h-[24px] overflow-hidden">
-                <span
-                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 
-                     group-hover:translate-y-[50px] translate-y-3`}
-                >
-                  See all FAQ’s
-                </span>
-
-                <span
-                  className={`text-white text-lg transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3
-                     translate-y-[50px] group-hover:-translate-y-3`}
-                >
-                  See More
-                </span>
-              </div>
-            </button>
-          </NextLink>
+                <LetsTalkButton
+                  
+                  variant="light"
+                  children="See all FAQ’s"
+                  href="/faqs"
+                  target="_self"
+                />
         </div>
+        </motion.div>
       </div>
     </>
   );

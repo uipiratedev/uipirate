@@ -41,7 +41,7 @@ const nextConfig = {
 
   // Experimental features for better performance
   experimental: {
-    optimizePackageImports: ["@heroui/react", "framer-motion", "gsap"],
+    optimizePackageImports: ["@heroui/react", "framer-motion"],
   },
 
   // Generate sitemap and robots.txt

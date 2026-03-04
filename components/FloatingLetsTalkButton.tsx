@@ -1,9 +1,11 @@
 "use client";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const FloatingLetsTalkButton = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [showButton, setShowButton] = useState(false);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,14 +17,37 @@ const FloatingLetsTalkButton = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!showButton) return null;
+  // Detect when footer is visible
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsFooterVisible(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of footer is visible
+      }
+    );
+
+    observer.observe(footer);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Hide button if not scrolled enough OR if footer is visible
+  if (!showButton || isFooterVisible) return null;
 
   return (
-    <a
-      className="fixed bottom-3 left-1/2 z-[1] -translate-x-1/2 transition-opacity duration-500"
-      href="https://wa.me/919708636151"
-      rel="noopener noreferrer"
-      target="_blank"
+    <Link
+      className="fixed bottom-3 left-1/2 z-[999999] -translate-x-1/2 transition-opacity duration-500"
+      href="/contact"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -34,7 +59,7 @@ const FloatingLetsTalkButton = () => {
           transform transition-all duration-300 ease-in-out
           flex items-center gap-3
           ${isHovered ? "scale-110 bg-black" : "scale-100"}
-          max-md:px-6 max-md:py-3
+          max-md:px-3 max-md:py-1
         `}
         style={{
           backdropFilter: "blur(12px)",
@@ -46,7 +71,7 @@ const FloatingLetsTalkButton = () => {
           Let&apos;s Talk
         </span>
       </div>
-    </a>
+    </Link>
   );
 };
 

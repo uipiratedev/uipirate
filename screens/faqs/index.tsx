@@ -12,20 +12,21 @@ const Faqs = () => {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="container mx-auto">
-        <div className=" max-md:px-4">
+      <div className="relative overflow-hidden bg-white">
+        <div className="relative container mx-auto px-32 lg:px-20 max-md:px-4 pb-16 pt-10 md:pt-14">
           <FaqsHero
             searchQuery={searchQuery}
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
             onSearchChange={setSearchQuery}
           />
-        </div>
-        <div className="bg-white pb-12 rounded-tr-[100px] rounded-tl-[100px] max-md:rounded-tr-[50px] max-md:rounded-tl-[50px]  xl:px-40 max-md:px-4 max-md:pt-4 max-xl:px-4 max-2xl:px-0">
-          <FaqList
-            searchQuery={searchQuery}
-            selectedCategory={selectedCategory}
-          />
+
+          <div className="mt-12 md:mt-20 ">
+            <FaqList
+              searchQuery={searchQuery}
+              selectedCategory={selectedCategory}
+            />
+          </div>
         </div>
       </div>
     </PageWrapper>

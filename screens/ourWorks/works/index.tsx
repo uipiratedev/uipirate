@@ -1,18 +1,21 @@
+import GlassBadge from "@/components/GlassBadge";
 import RecentWorkCard from "@/screens/landing/works/workCard";
+import CaseStudyGrid from "./workCard";
+import WhyChooseUs from "@/screens/landing/whyChoosUs";
 
 const Works = () => {
   return (
     <div className="pt-12 max-md:pt-6">
       <div className="autoShow">
         <div className="mb-6 flex flex-row items-center justify-center">
-          <span className="rounded-xl border-2 border-cyan-400 bg-[#8EF1F1] px-4 py-2 font-semibold uppercase">
-            works
-          </span>
+          <GlassBadge variant="gradient">works</GlassBadge>
         </div>
         <p className="heading-center">Recent Works</p>
       </div>
-      <div className="px-32 max-md:px-4 overflow-x-hidden overflow-y-auto pt-48 max-md:pt-12">
-        <RecentWorkCard />
+      <div className="autoShowBottom container mx-auto px-32 lg:px-20 max-md:px-4 mt-6 max-md:mt-4">
+        {/* <RecentWorkCard /> */}
+        <CaseStudyGrid />
+        <WhyChooseUs />
       </div>
     </div>
   );

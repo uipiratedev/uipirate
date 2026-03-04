@@ -4,19 +4,15 @@ import GlassBadge from "@/components/GlassBadge";
 const LandingAbout = () => {
   return (
     <>
-      <div className=" container mx-auto lg:px-12 max-md:px-4  pt-12 max-md:pt-0 ">
+      <div className=" container mx-auto lg:px-12 max-md:px-4  pt-12 max-md:pt-8 ">
         <div className="autoShow">
-          <div className="flex flex-row  items-center justify-center mb-6 ">
-            <GlassBadge variant="gradient">our achievements</GlassBadge>
+          <div className="flex flex-row  items-center justify-center">
+            <GlassBadge variant="gradient">Our journey so far</GlassBadge>
           </div>
-          <h2 className="heading-center">
-            <span className="text-brand-orange">Our journey</span>
-            so far
-          </h2>
         </div>
-      </div>{" "}
+      </div>
       <div
-        className="mx-auto px-32 lg:px-20 max-md:px-4 "
+        className="mx-auto px-32 lg:px-20 max-md:px-4 autoShowBottom"
         style={{ overflowX: "hidden" }}
       >
         <AboutCardAnimation />

@@ -18,6 +18,10 @@ Complete technical documentation for developers working on the UI Pirate project
 10. [Deployment](#10-deployment)
 11. [Best Practices](#11-best-practices)
 12. [Troubleshooting](#12-troubleshooting)
+13. [Code Organization & Naming Conventions](#13-code-organization--naming-conventions)
+14. [Animation Best Practices](#14-animation-best-practices)
+15. [CSS & Tailwind Guidelines](#15-css--tailwind-guidelines)
+16. [Optimization Strategies](#16-optimization-strategies)
 
 ---
 
@@ -141,19 +145,21 @@ Complete technical documentation for developers working on the UI Pirate project
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| Next.js | 14.2.4 | React framework with App Router |
+| Next.js | 14.2.35 | React framework with App Router |
 | React | 18.3.1 | UI library |
 | TypeScript | 5.0.4 | Type safety |
-| TailwindCSS | 3.4.3 | Styling |
-| NextUI | 2.x | Component library |
-| Framer Motion | 11.1.1 | Animations |
-| GSAP | 3.12.5 | Advanced animations |
-| Locomotive Scroll | 5.0 | Smooth scrolling |
-| TipTap | 3.10.1 | Rich text editor |
-| MongoDB | 6.x | Database |
-| Mongoose | 8.19.3 | ODM |
+| TailwindCSS | 3.4.3 | Utility-first CSS framework |
+| NextUI (HeroUI) | 2.x | React component library |
+| Framer Motion | 11.5.6 | **Primary animation library** |
+| Lenis | 1.3.17 | Smooth scroll library |
+| Locomotive Scroll | 5.0 | Smooth scrolling wrapper |
+| TipTap | 3.10.1 | Rich text editor for blog CMS |
+| MongoDB | 6.x | NoSQL database |
+| Mongoose | 8.19.3 | MongoDB ODM |
 | bcryptjs | Latest | Password hashing |
 | jsonwebtoken | Latest | JWT authentication |
+
+**Note**: GSAP has been removed in favor of Framer Motion for all animations. See [Animation Best Practices](#14-animation-best-practices) for migration details.
 
 ### Application Layers
 
@@ -1210,6 +1216,637 @@ mongoose.set('debug', true); // Log all queries
 
 ---
 
+## 13. Code Organization & Naming Conventions
+
+### File Naming Conventions
+
+#### Components
+- **React Components**: PascalCase
+  ```
+  ✅ Button.tsx
+  ✅ UserProfile.tsx
+  ✅ BlogCard.tsx
+  ❌ button.tsx
+  ❌ user-profile.tsx
+  ```
+
+#### Utilities & Helpers
+- **Utility Files**: camelCase
+  ```
+  ✅ formatDate.ts
+  ✅ validateEmail.ts
+  ✅ apiHelpers.ts
+  ❌ FormatDate.ts
+  ❌ validate-email.ts
+  ```
+
+#### Hooks
+- **Custom Hooks**: camelCase with `use` prefix
+  ```
+  ✅ useAuth.ts
+  ✅ useScrollAnimation.ts
+  ✅ useDebounce.ts
+  ❌ UseAuth.ts
+  ❌ auth-hook.ts
+  ```
+
+#### Screens
+- **Screen Components**: PascalCase
+  ```
+  ✅ LandingHero.tsx
+  ✅ BlogList.tsx
+  ✅ ServiceDetails.tsx
+  ```
+
+### Folder Structure Best Practices
+
+#### Component Organization
+```
+components/
+├── ui/                    # Reusable UI components
+│   ├── Button.tsx
+│   ├── Card.tsx
+│   └── Input.tsx
+├── layout/                # Layout components
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   └── Sidebar.tsx
+└── animations/            # Animation components
+    ├── FadeIn.tsx
+    └── SlideUp.tsx
+```
+
+#### Screen Organization
+```
+screens/
+├── landing/               # Landing page sections
+│   ├── hero/
+│   │   └── index.tsx
+│   ├── services/
+│   │   └── index.tsx
+│   └── testimonials/
+│       └── index.tsx
+├── blogs/                 # Blog screens
+└── pricing/               # Pricing screens
+```
+
+### Variable & Function Naming
+
+#### Variables
+```typescript
+// ✅ Good - Descriptive camelCase
+const userEmail = "user@example.com";
+const isAuthenticated = true;
+const blogPostCount = 10;
+
+// ❌ Bad - Unclear or wrong case
+const e = "user@example.com";
+const auth = true;
+const BlogPostCount = 10;
+```
+
+#### Functions
+```typescript
+// ✅ Good - Verb-based camelCase
+function getUserById(id: string) { }
+function validateEmail(email: string) { }
+function handleSubmit() { }
+
+// ❌ Bad - Noun-based or unclear
+function user(id: string) { }
+function email(email: string) { }
+function submit() { }
+```
+
+#### Constants
+```typescript
+// ✅ Good - UPPER_SNAKE_CASE for true constants
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const API_BASE_URL = "https://api.example.com";
+const DEFAULT_TIMEOUT = 3000;
+
+// ✅ Good - PascalCase for config objects
+const ApiConfig = {
+  baseUrl: "https://api.example.com",
+  timeout: 3000,
+};
+```
+
+#### CSS Classes
+```tsx
+// ✅ Good - Tailwind utilities + semantic custom classes
+<div className="flex items-center gap-4 card-base">
+
+// ✅ Good - BEM for complex custom components
+<div className="blog-card blog-card--featured blog-card__title">
+
+// ❌ Bad - Inconsistent or unclear
+<div className="div1 container2 myClass">
+```
+
+### TypeScript Type Naming
+
+```typescript
+// ✅ Good - PascalCase for interfaces and types
+interface User {
+  id: string;
+  name: string;
+}
+
+type BlogPost = {
+  title: string;
+  content: string;
+};
+
+// ✅ Good - Prefix with 'I' for interfaces (optional but consistent)
+interface IAdmin {
+  email: string;
+  role: string;
+}
+
+// ❌ Bad - Wrong case or unclear
+interface user { }
+type blogpost = { };
+```
+
+### Import Organization
+
+```typescript
+// ✅ Good - Organized by source
+// 1. External libraries
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+// 2. Internal components
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+
+// 3. Utilities and helpers
+import { formatDate } from '@/utils/formatDate';
+import { validateEmail } from '@/utils/validation';
+
+// 4. Types
+import type { User, BlogPost } from '@/types';
+
+// 5. Styles
+import styles from './Component.module.css';
+```
+
+---
+
+## 14. Animation Best Practices
+
+### Primary Animation Library: Framer Motion
+
+**Framer Motion** is the primary animation library for UI Pirate. GSAP has been removed in favor of Framer Motion for better React integration and smaller bundle size.
+
+### Common Animation Patterns
+
+#### 1. Fade In on Scroll
+```typescript
+import { motion } from 'framer-motion';
+
+export function FadeInSection({ children }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+```
+
+#### 2. Stagger Children Animation
+```typescript
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
+export function StaggerList({ items }) {
+  return (
+    <motion.ul
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+    >
+      {items.map((item) => (
+        <motion.li key={item.id} variants={itemVariants}>
+          {item.text}
+        </motion.li>
+      ))}
+    </motion.ul>
+  );
+}
+```
+
+#### 3. Scroll-Based Animations with useScroll
+```typescript
+import { useScroll, useTransform, motion } from 'framer-motion';
+import { useRef } from 'react';
+
+export function ParallaxSection() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0]);
+
+  return (
+    <motion.div ref={ref} style={{ y, opacity }}>
+      Parallax Content
+    </motion.div>
+  );
+}
+```
+
+#### 4. Hover Animations
+```typescript
+export function HoverCard({ children }) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05, y: -5 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+```
+
+### Performance Optimization
+
+#### Use transform and opacity
+```typescript
+// ✅ Good - GPU-accelerated properties
+<motion.div
+  animate={{ x: 100, opacity: 0.5, scale: 1.2 }}
+/>
+
+// ❌ Bad - Causes layout reflow
+<motion.div
+  animate={{ width: 200, height: 300, top: 50 }}
+/>
+```
+
+#### Lazy Load Animations
+```typescript
+import dynamic from 'next/dynamic';
+
+// Only load animation component when needed
+const HeavyAnimation = dynamic(
+  () => import('@/components/animations/HeavyAnimation'),
+  { ssr: false }
+);
+```
+
+#### Use `will-change` Sparingly
+```typescript
+// ✅ Good - Framer Motion handles this automatically
+<motion.div animate={{ x: 100 }} />
+
+// ❌ Bad - Manual will-change can hurt performance
+<div style={{ willChange: 'transform, opacity' }} />
+```
+
+### Migration from GSAP
+
+For detailed migration instructions, see [GSAP_TO_FRAMER_MOTION_MIGRATION.md](./GSAP_TO_FRAMER_MOTION_MIGRATION.md).
+
+**Quick Reference**:
+- `gsap.fromTo()` → `initial` + `animate` props
+- `ScrollTrigger` → `whileInView` + `viewport`
+- `gsap.timeline()` → `variants` with `staggerChildren`
+- `gsap.to()` with scrub → `useScroll` + `useTransform`
+
+---
+
+## 15. CSS & Tailwind Guidelines
+
+### When to Use Tailwind vs Custom CSS
+
+#### Use Tailwind For:
+- ✅ Layout (flex, grid, spacing)
+- ✅ Typography (font sizes, weights, colors)
+- ✅ Common UI patterns (buttons, cards, forms)
+- ✅ Responsive design (breakpoints)
+- ✅ State variants (hover, focus, active)
+
+```tsx
+// ✅ Good - Tailwind utilities
+<div className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+  <h2 className="text-2xl font-bold text-gray-900">Title</h2>
+</div>
+```
+
+#### Use Custom CSS For:
+- ✅ Complex animations (or use Framer Motion)
+- ✅ Glassmorphism effects
+- ✅ Custom @keyframes animations
+- ✅ Browser-specific hacks
+- ✅ Third-party library overrides
+
+```css
+/* ✅ Good - Custom CSS for complex effects */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+```
+
+### Tailwind Best Practices
+
+#### 1. Use Arbitrary Values for One-Off Styles
+```tsx
+// ✅ Good - Arbitrary values for specific needs
+<div className="w-[347px] h-[calc(100vh-80px)] bg-[#FF5B04]">
+
+// ❌ Bad - Creating custom CSS for one-off values
+<div className="custom-width custom-height custom-bg">
+```
+
+#### 2. Extract Common Patterns with @apply
+```css
+/* globals.css */
+@layer components {
+  .card-base {
+    @apply bg-white rounded-2xl shadow-lg p-6 border border-gray-200;
+  }
+
+  .btn-primary {
+    @apply bg-brand-orange text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors;
+  }
+}
+```
+
+```tsx
+// Usage
+<div className="card-base">
+  <button className="btn-primary">Click Me</button>
+</div>
+```
+
+#### 3. Use CSS Variables for Theming
+```css
+:root {
+  --brand-orange: #FF5B04;
+  --glass-blur: 12px;
+  --transition-speed: 0.3s;
+}
+
+.dark {
+  --brand-orange: #FF7B34;
+}
+```
+
+```tsx
+// Access in Tailwind
+<div className="bg-[var(--brand-orange)]">
+```
+
+#### 4. Organize Classes Logically
+```tsx
+// ✅ Good - Grouped by category
+<div className={`
+  // Layout
+  flex items-center justify-between gap-4
+  // Sizing
+  w-full h-auto
+  // Spacing
+  p-6 mb-4
+  // Visual
+  bg-white rounded-2xl shadow-lg
+  // Typography
+  text-lg font-semibold
+  // States
+  hover:shadow-xl transition-all
+`}>
+```
+
+### Glassmorphism Pattern
+
+```tsx
+// Reusable glassmorphism component
+export function GlassCard({ children, className = "" }) {
+  return (
+    <div className={`
+      bg-white/70 dark:bg-gray-900/70
+      backdrop-blur-xl
+      border border-white/20
+      rounded-2xl
+      ${className}
+    `}>
+      {children}
+    </div>
+  );
+}
+```
+
+### Responsive Design
+
+```tsx
+// Mobile-first approach
+<div className="
+  // Mobile (default)
+  flex-col gap-2 p-4
+  // Tablet (md: 768px)
+  md:flex-row md:gap-4 md:p-6
+  // Desktop (lg: 1024px)
+  lg:gap-6 lg:p-8
+  // Large Desktop (xl: 1280px)
+  xl:gap-8 xl:p-10
+">
+```
+
+### Dark Mode Support
+
+```tsx
+// Use dark: prefix for dark mode styles
+<div className="
+  bg-white text-gray-900
+  dark:bg-gray-900 dark:text-white
+">
+```
+
+### CSS Optimization Tips
+
+1. **Avoid Duplicate Styles**: Use `@apply` to consolidate
+2. **Purge Unused CSS**: Tailwind automatically purges in production
+3. **Use Tailwind Utilities**: Smaller bundle than custom CSS
+4. **Minimize Custom CSS**: Only when Tailwind can't handle it
+
+For detailed CSS optimization strategy, see [CSS_OPTIMIZATION_STRATEGY.md](./CSS_OPTIMIZATION_STRATEGY.md).
+
+---
+
+## 16. Optimization Strategies
+
+### Bundle Size Optimization
+
+#### 1. Dynamic Imports
+```typescript
+// ✅ Good - Lazy load heavy components
+import dynamic from 'next/dynamic';
+
+const TipTapEditor = dynamic(
+  () => import('@/components/TipTapEditor'),
+  {
+    ssr: false,
+    loading: () => <div>Loading editor...</div>
+  }
+);
+
+// ❌ Bad - Import everything upfront
+import TipTapEditor from '@/components/TipTapEditor';
+```
+
+#### 2. Tree Shaking
+```typescript
+// ✅ Good - Named imports
+import { Button } from '@heroui/button';
+import { motion } from 'framer-motion';
+
+// ❌ Bad - Import entire library
+import * as HeroUI from '@heroui/react';
+import * as FramerMotion from 'framer-motion';
+```
+
+#### 3. Image Optimization
+```tsx
+import Image from 'next/image';
+
+// ✅ Good - Next.js Image component
+<Image
+  src="/hero.jpg"
+  alt="Hero"
+  width={1200}
+  height={600}
+  priority // For above-the-fold images
+  placeholder="blur"
+/>
+
+// ❌ Bad - Regular img tag
+<img src="/hero.jpg" alt="Hero" />
+```
+
+### Performance Monitoring
+
+#### Lighthouse Scores
+```bash
+# Run Lighthouse audit
+lighthouse https://uipirate.com --view
+```
+
+**Target Scores**:
+- Performance: 90+
+- Accessibility: 95+
+- Best Practices: 95+
+- SEO: 100
+
+#### Bundle Analysis
+```bash
+# Install bundle analyzer
+yarn add -D @next/bundle-analyzer
+
+# Run analysis
+ANALYZE=true yarn build
+```
+
+### Code Splitting Strategy
+
+```typescript
+// next.config.js
+module.exports = {
+  experimental: {
+    optimizePackageImports: ['@heroui/react', 'framer-motion'],
+  },
+  modularizeImports: {
+    '@heroui/react': {
+      transform: '@heroui/react/dist/{{member}}',
+    },
+  },
+};
+```
+
+### Database Query Optimization
+
+```typescript
+// ✅ Good - Select only needed fields
+const blogs = await Blog.find()
+  .select('title slug createdAt')
+  .limit(10)
+  .lean(); // Convert to plain JS object
+
+// ❌ Bad - Fetch all fields
+const blogs = await Blog.find();
+```
+
+### Caching Strategy
+
+```typescript
+// Static data - Cache indefinitely
+export const revalidate = false;
+
+// Dynamic data - Revalidate every hour
+export const revalidate = 3600;
+
+// Real-time data - No cache
+export const revalidate = 0;
+```
+
+### Migration Priorities
+
+For detailed migration plans, see:
+- [GSAP_TO_FRAMER_MOTION_MIGRATION.md](./GSAP_TO_FRAMER_MOTION_MIGRATION.md) - Animation library migration
+- [PACKAGE_OPTIMIZATION.md](./PACKAGE_OPTIMIZATION.md) - Dependency cleanup
+- [CSS_OPTIMIZATION_STRATEGY.md](./CSS_OPTIMIZATION_STRATEGY.md) - CSS optimization
+
+**Priority Order**:
+1. **High Priority** (Week 1-2):
+   - Remove unused dependencies
+   - Optimize images
+   - Implement code splitting
+
+2. **Medium Priority** (Week 3-4):
+   - Migrate GSAP to Framer Motion
+   - Consolidate CSS
+   - Database query optimization
+
+3. **Low Priority** (Week 5+):
+   - Advanced caching strategies
+   - Further bundle optimization
+   - Performance fine-tuning
+
+### Expected Results
+
+| Metric | Current | Target | Improvement |
+|--------|---------|--------|-------------|
+| Bundle Size | ~520KB | ~470KB | -10% |
+| CSS Size | 1,770 lines | ~1,200 lines | -30% |
+| First Contentful Paint | <1.5s | <1.2s | -20% |
+| Lighthouse Score | 85+ | 90+ | +5 points |
+
+---
+
 ## Additional Resources
 
 - [Next.js Documentation](https://nextjs.org/docs)
@@ -1222,4 +1859,4 @@ mongoose.set('debug', true); // Log all queries
 
 **Need help?** Check the [README](./README.md) or [Contributing Guidelines](./CONTRIBUTING.md).
 
-**Last Updated**: 2024-11-25
+**Last Updated**: 2026-01-23

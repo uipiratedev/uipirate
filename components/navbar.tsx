@@ -16,14 +16,21 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 import GlassSurface from "./GlassSurface";
+import { NavbarDropdown } from "./NavbarDropdown";
+import { MobileMenuAccordionItem } from "./MobileMenuAccordionItem";
 
 import { siteConfig } from "@/config/site";
 
+import { useIsMobile } from "@/hooks";
+
 export const Navbar = () => {
+  const isMobile = useIsMobile();
   const [isDarkSection, setIsDarkSection] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [showBanner, setShowBanner] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [announcement, setAnnouncement] = useState(""); // For screen reader announcements
 
   useEffect(() => {
@@ -66,24 +73,87 @@ export const Navbar = () => {
     };
   }, []);
 
+  // Hide navbar when footer is visible
+  useEffect(() => {
+    const footer = document.getElementById("site-footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsFooterVisible(entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+
+    observer.observe(footer);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Scroll Lock for mobile menu — position:fixed is the only reliable method for iOS Safari
+  useEffect(() => {
+    const body = document.body;
+
+    if (isMenuOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+      // Lock body in place so it can't scroll behind the overlay
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}px`;
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.overflow = "hidden";
+    } else {
+      // Read back saved scroll so we can restore after unlocking
+      const savedScrollY = body.style.top;
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.overflow = "";
+      // Restore scroll position without visual jump
+      if (savedScrollY) {
+        window.scrollTo(0, parseInt(savedScrollY || "0") * -1);
+      }
+    }
+
+    return () => {
+      // Safety cleanup
+      const savedScrollY = body.style.top;
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.overflow = "";
+      if (savedScrollY) {
+        window.scrollTo(0, parseInt(savedScrollY || "0") * -1);
+      }
+    };
+  }, [isMenuOpen]);
+
   return (
     <>
       {/* ✅ Navbar */}
-      <div className="container mx-auto h-[67px] pb-6 max-md:pb-0 max-md:h-auto relative z-[99999999]">
+      <div
+        className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
+        style={{
+          opacity: isFooterVisible ? 0 : 1,
+          transform: isFooterVisible ? "translateY(-16px)" : "translateY(0)",
+          pointerEvents: isFooterVisible ? "none" : undefined,
+        }}
+      >
         {!loading && (
           <div
             className={clsx(
-              "mx-[10rem] max-lg:mx-12 max-md:mx-0 max-xl:mx-24 max-2xl:mx-[12rem] sticky top-0 mt-3 max-md:mt-0 z-[99999999]",
+              "container mx-auto px-32 lg:px-20 max-md:px-0 pointer-events-auto",
             )}
           >
             <GlassSurface
               backgroundOpacity={0.75}
               blueOffset={20}
               blur={28}
-              borderRadius={16}
+              borderRadius={isMobile ? 0 : 16}
               borderWidth={2}
-              brightness={55}
-              className="relative isolate max-md:rounded-none"
+              brightness={98}
+              className="relative isolate !overflow-visible"
               displace={0}
               distortionScale={5}
               forceLightMode={true}
@@ -93,13 +163,15 @@ export const Navbar = () => {
               redOffset={1}
               saturation={2}
               style={{
-                border: "1px solid rgba(255, 255, 255, 0.2)",
+                border: isMobile ? "none" : "1px solid rgba(255, 255, 255, 0.2)",
+                overflow: "visible",
+                borderRadius: isMobile ? "0px" : "16px",
               }}
               width="100%"
             >
               <NextUINavbar
                 className={clsx(
-                  "w-full py-0 px-0 flex flex-row items-center h-[55px]",
+                  "w-full py-0 px-0 flex flex-row items-center h-[55px] !overflow-visible !static",
                   "transition-all duration-300 ease-in-out",
                   "!bg-transparent !backdrop-filter-none !backdrop-blur-none",
                   {
@@ -114,6 +186,8 @@ export const Navbar = () => {
                   background: "transparent",
                   backdropFilter: "none",
                   backgroundColor: "transparent",
+                  overflow: "visible",
+                  position: "static", // Force static to let children anchor higher up
                 }}
                 onMenuOpenChange={setIsMenuOpen}
               >
@@ -156,26 +230,37 @@ export const Navbar = () => {
 
                 {/* --- Center Navigation Links --- */}
                 <NavbarContent
-                  className="basis-1/5 sm:basis-full"
+                  className="basis-1/5 sm:basis-full !overflow-visible !static"
                   justify="center"
+                  style={{ position: "static" }}
                 >
-                  <ul className="hidden lg:flex gap-0 justify-start ml-0">
+                  <ul className="hidden lg:flex gap-0 justify-start ml-0 overflow-visible !static" style={{ position: "static" }}>
                     {siteConfig.navItems.map((item) => (
                       <NavbarItem
                         key={item.href}
                         className={clsx(
-                          "px-2 rounded-[0.65rem] pb-[4px] transition-all duration-200 relative",
+                          "px-2 rounded-[0.65rem] max-md:rounded-none pb-[4px] transition-all duration-200 !static",
                         )}
+                        style={{ position: "static" }}
                       >
-                        <NextLink
-                          className={clsx(
-                            linkStyles({ color: "foreground" }),
-                            "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
-                          )}
-                          href={item.href}
-                        >
-                          {item.label}
-                        </NextLink>
+                        {item.hasDropdown && item.dropdownItems ? (
+                          <NavbarDropdown
+                            isDarkSection={isDarkSection}
+                            isServicesMenu={item.label === "Services"}
+                            items={item.dropdownItems}
+                            label={item.label}
+                          />
+                        ) : (
+                          <NextLink
+                            className={clsx(
+                              linkStyles({ color: "foreground" }),
+                              "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
+                            )}
+                            href={item.href}
+                          >
+                            {item.label}
+                          </NextLink>
+                        )}
                       </NavbarItem>
                     ))}
                   </ul>
@@ -206,27 +291,38 @@ export const Navbar = () => {
                   {announcement}
                 </div>
 
-                {/* --- Mobile Menu Content --- */}
-                <NavbarMenu className=" h-screen -mt-3">
-                  <div className="mx-0 mt-3 flex flex-col gap-4">
-                    {siteConfig.navMenuItems.map((item, index) => (
-                      <NavbarMenuItem key={`${item}-${index}`}>
-                        <NextLink
-                          className="text-lg text-foreground cursor-pointer"
-                          href={item.href}
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {item.label}
-                        </NextLink>
-                      </NavbarMenuItem>
-                    ))}
-                  </div>
-                </NavbarMenu>
+                {/* --- Keep NavbarMenu minimal, actual content rendered outside --- */}
+                <NavbarMenu className="!hidden" />
               </NextUINavbar>
             </GlassSurface>
           </div>
         )}
       </div>
+
+      {/* --- Mobile Menu Overlay (rendered outside navbar hierarchy for independent scroll) --- */}
+      {isMenuOpen && (
+        <div
+          className="fixed left-0 right-0 top-[52px] bottom-0 z-[100000000] bg-white overflow-y-auto pointer-events-auto"
+          style={{
+            touchAction: 'pan-y',
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'contain',
+          }}
+        >
+          <div className="pt-4 pb-44 flex flex-col gap-0 px-4">
+            {siteConfig.navItems.map((item, index) => (
+              <MobileMenuAccordionItem
+                key={`${item.href}-${index}`}
+                item={item}
+                index={index}
+                isOpen={openAccordionIndex === index}
+                onToggle={(i) => setOpenAccordionIndex(openAccordionIndex === i ? null : i)}
+                setIsMenuOpen={setIsMenuOpen}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 };

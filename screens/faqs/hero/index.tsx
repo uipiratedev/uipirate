@@ -1,6 +1,7 @@
 "use client";
 
 import { Select, SelectItem } from "@heroui/react";
+import GlassSurface from "@/components/GlassSurface";
 
 interface FaqsHeroProps {
   searchQuery: string;
@@ -27,127 +28,163 @@ const FaqsHero = ({
 
   // Display name mapping for better UI
   const getDisplayName = (category: string) => {
-    if (category === "general") return "General";
-
+    if (category === "general") return "GENERAL";
     return category;
   };
 
   return (
-    <div className="flex flex-row items-center justify-center py-12 w-full max-lg:py-10 max-md:py-6 container mx-auto">
-      <section className="relative flex flex-col items-center text-center w-full ">
-        {/* Main Heading */}
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim ">
-          Have questions?
-        </h1>
+    <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
+      {/* Subtle Grid Background Pattern */}
+      <div
+        className="absolute pointer-events-none -mt-20 "
+        style={{
+          backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+            `,
+          backgroundSize: "40px 40px",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          marginLeft: "calc(-50vw + 50%)",
+        }}
+      />
+      {/* Layered gradient with gentle mist animation */}
+      <div
+        className="absolute pointer-events-none -mt-20 "
+        style={{
+          backgroundImage: `
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
+              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
+            `,
+          animation: "gentle-mist 8s ease-in-out infinite",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          marginLeft: "calc(-50vw + 50%)",
+        }}
+      />
+      <div
+        className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto "
+        style={{ overflow: "visible" }}
+      >
+        {" "}
+        {/* Badge with GlassSurface */}
+        <GlassSurface
+          backgroundOpacity={0.1}
+          blueOffset={20}
+          blur={11}
+          borderRadius={12}
+          borderWidth={0.01}
+          brightness={50}
+          className="md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
+          displace={0.5}
+          distortionScale={-180}
+          forceLightMode={true}
+          greenOffset={10}
+          height="auto"
+          opacity={0.93}
+          redOffset={0}
+          saturation={1}
+          style={{
+            animation: "trustBadgeUp 0.5s ease-out forwards",
+            animationDelay: "0.1s",
+            opacity: 0,
+            transform: "translateY(20px) scale(0.95)",
+          }}
+          width="auto"
+        >
+          {/* Text */}
+          <p className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
+            FAQ&apos;S
+          </p>
+        </GlassSurface>
 
-        <h1 className="text-3xl md:text-5xl font-bold leading-snug max-w-4xl mb-4 reveal-text-anim ">
-          We&apos;ve got you!
-        </h1>
+        {/* Headline */}
+        <div className="relative z-10 w-full">
+          <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
+            <span className="text-[#FF5B04]">Everything</span>{" "}
+            <span className="text-black">you <br/> need to know</span>
+          </h1>
+        </div>
 
-        {/* Search Input with Category Selector */}
-        <div className="mt-12 max-md:mt-6 flex flex-row items-center justify-center max-lg:flex-col w-full">
-          <div className="w-full max-w-3xl relative">
-            <div className="flex items-center w-full rounded-full border border-[#E5E5E5] bg-white overflow-hidden shadow-sm">
-              {/* Search Input */}
-              <label className="sr-only" htmlFor="faq-search">
-                Search FAQs
-              </label>
+        {/* Description */}
+        <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px] text-gray-600">
+          Questions answered in depth.
+        </p>
+
+        {/* Search + Category inside pill */}
+        <div
+          className="mt-8 md:mt-10 w-full max-w-3xl relative z-10 px-4"
+          style={{
+            animation: "trustBadgeUp 0.5s ease-out forwards",
+            animationDelay: "0.3s",
+            opacity: 0,
+            transform: "translateY(20px)",
+          }}
+        >
+          <label className="sr-only" htmlFor="faq-search">
+            Search FAQs
+          </label>
+
+          {/* On mobile: stacked. On desktop: single pill row */}
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200 md:bg-white/80 md:p-2 md:pl-4 md:shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:backdrop-blur-md md:focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:focus-within:bg-white/95 md:transition-all md:duration-300">
+
+            {/* Search Input — full pill on mobile */}
+            <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:flex-1 md:border-none md:shadow-none md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
               <input
                 aria-label="Search frequently asked questions"
-                className="flex-1 px-6 py-4 bg-transparent focus:outline-none text-gray-700 placeholder:text-gray-400"
+                className="flex-1 bg-transparent focus:outline-none text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
                 id="faq-search"
-                placeholder="What do you want help with?"
+                placeholder="Search by topic, problem, or keyword…"
                 type="search"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
               />
-              <svg
-                aria-hidden="true"
-                className="w-5 h-5 text-gray-400 absolute right-6 top-1/2 transform -translate-y-1/2 md:hidden"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+            </div>
+
+            {/* Category Selector — full width pill on mobile, inline on desktop */}
+            <div className="md:pl-3 md:ml-1 md:border-l md:border-slate-200 flex-shrink-0">
+              <Select
+                disallowEmptySelection
+                aria-label="Select category"
+                classNames={{
+                  base: "w-full md:min-w-[150px]",
+                  trigger:
+                    "bg-[#FF5B04] hover:bg-[#ff6b1e] text-white rounded-full h-10 px-4 border-none shadow-sm data-[hover=true]:bg-[#ff7a33] transition-colors w-full",
+                  value:
+                    "text-[10px] md:text-xs font-semibold tracking-[0.1em] uppercase group-data-[has-value=true]:text-white",
+                  popoverContent: "rounded-xl",
+                  listbox: "p-0",
+                  selectorIcon: "text-white",
+                }}
+                renderValue={() => (
+                  <div className="flex items-center gap-2">
+                    <span className="text-white whitespace-nowrap">
+                      {getDisplayName(selectedCategory)}
+                    </span>
+                  </div>
+                )}
+                selectedKeys={[selectedCategory]}
+                onSelectionChange={(keys) => {
+                  const selected = Array.from(keys)[0] as string;
+                  if (selected) {
+                    onCategoryChange(selected);
+                  }
+                }}
               >
-                <path
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                />
-              </svg>
-
-              {/* Category Selector */}
-              <div className="flex items-center border-l text-white border-gray-200 pl-4 pr-2 max-md:hidden">
-                <Select
-                  disallowEmptySelection
-                  aria-label="Select category"
-                  classNames={{
-                    base: "min-w-[240px]",
-                    trigger:
-                      "bg-black text-white rounded-full h-10 px-4 border-none shadow-none hover:bg-gray-800 data-[hover=true]:bg-gray-800 text-white",
-                    value: "text-white text-sm font-medium",
-                    popoverContent: "rounded-xl",
-                    listbox: "p-0",
-                  }}
-                  renderValue={() => (
-                    <div className="flex items-center gap-2">
-                      <span className="text-white text-nowrap pr-4">
-                        {getDisplayName(selectedCategory)}
-                      </span>
-                    </div>
-                  )}
-                  selectedKeys={[selectedCategory]}
-                  onSelectionChange={(keys) => {
-                    const selected = Array.from(keys)[0] as string;
-
-                    if (selected) {
-                      onCategoryChange(selected);
-                    }
-                  }}
-                >
-                  {tabs.map((tab) => (
-                    <SelectItem key={tab}>{getDisplayName(tab)}</SelectItem>
-                  ))}
-                </Select>
-              </div>
+                {tabs.map((tab) => (
+                  <SelectItem key={tab} textValue={getDisplayName(tab)}>
+                    {getDisplayName(tab)}
+                  </SelectItem>
+                ))}
+              </Select>
             </div>
           </div>
-          <div className="max-md:block md:hidden mt-4 w-full">
-            <Select
-              disallowEmptySelection
-              aria-label="Select category"
-              classNames={{
-                base: "min-w-[140px]",
-                trigger:
-                  "bg-black text-white rounded-full h-10 max-md:h-12 px-4 border-none shadow-none hover:bg-gray-800 data-[hover=true]:bg-gray-800 text-white",
-                value: "text-white text-base font-medium",
-                popoverContent: "rounded-xl",
-                listbox: "p-0",
-              }}
-              renderValue={() => (
-                <div className="flex items-center gap-2">
-                  <span className="text-white ">
-                    {getDisplayName(selectedCategory)}
-                  </span>
-                </div>
-              )}
-              selectedKeys={[selectedCategory]}
-              onSelectionChange={(keys) => {
-                const selected = Array.from(keys)[0] as string;
-
-                if (selected) {
-                  onCategoryChange(selected);
-                }
-              }}
-            >
-              {tabs.map((tab) => (
-                <SelectItem key={tab}>{getDisplayName(tab)}</SelectItem>
-              ))}
-            </Select>
-          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

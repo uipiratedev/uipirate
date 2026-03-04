@@ -7,22 +7,99 @@ export const siteConfig = {
     {
       label: "Services",
       href: "/services",
+      hasDropdown: true,
+      dropdownItems: [
+        {
+          category: "UX/UI Design",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
+          href: "/services/SaaS-Web-&-Mobile-Apps",
+          isLargeCard: true,
+        },
+        {
+          category: "Saas & AI Development",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
+          href: "/services/SaaS-Web-&-Mobile-Apps",
+          isLargeCard: true,
+        },
+        
+        {
+          category: "Landing Pages & Business Websites",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
+          href: "/services/Landing-Pages-&-Business-Websites",
+          isLargeCard: true,
+        },
+        {
+          category: "Graphic Design",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/graphic_s0cmgk.svg",
+          href: "/services/Graphic-Design",
+        },
+        {
+          category: "Motion Graphic",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/motion_dqrdcl.svg",
+          href: "/services/Motion-Graphics-&-Video-Editing",
+        },
+        {
+          category: "UX Audits & Consultation",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
+          href: "/services/UX-Audits-&-Consultation",
+        },
+        {
+          category: "3D Assets & Animation",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/3d_wtkihl.svg",
+          href: "/services/3D-Animation-&-Rendering",
+        },
+        
+      ],
     },
     {
       label: "Works",
       href: "/ourWorks",
     },
-    // {
-    //   label: "Tools",
-    //   href: "/tools",
-    // },
     {
       label: "Pricing",
-      href: "/pricing",
+      href: "/#pricing",
     },
+    {
+      label: "Resources",
+      href: "#",
+      hasDropdown: true,
+      dropdownItems: [
+        {
+          category: "Blog & Tutorials",
+          icon: "✍️",
+          href: "/blogs",
+          isLargeCard: true,
+        },
+        {
+          category: "Case Studies",
+          icon: "📊",
+          href: "/case-studies",
+          isLargeCard: true,
+        },
+        {
+          category: "FAQs",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612676/circle-question-mark_1_sl0cgn.svg",
+          href: "/faqs",
+          isLargeCard: true,
+
+        },
+        {
+          category: "Community Insights",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612675/file_1_fvzqpk.svg",
+          href: "/community",
+          isLargeCard: true,
+
+        },
+      ],
+    },
+   
     {
       label: "ProPirates",
       href: "https://propirates.com",
+    },
+     {
+      label: "Apps4Sale",
+      href: "/apps4sale",
     },
   ],
   navMenuItems: [
@@ -34,13 +111,22 @@ export const siteConfig = {
       label: "Works",
       href: "/ourWorks",
     },
-    // {
-    //   label: "Tools",
-    //   href: "/tools",
-    // },
     {
       label: "Pricing",
-      href: "/pricing",
+      href: "#pricing",
+    },
+    {
+      label: "Resources",
+      href: "#",
+      subItems: [
+        { label: "Blog", href: "/blogs" },
+        { label: "Case Studies", href: "/case-studies" },
+        { label: "FAQs", href: "/faqs" },
+      ],
+    },
+    {
+      label: "ProPirates",
+      href: "https://propirates.com",
     },
   ],
   links: {

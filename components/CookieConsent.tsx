@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
+
+interface GtagFunction {
+  (command: string, action: string, params: Record<string, string>): void;
+}
+
+interface ClarityFunction {
+  (command: string): void;
+}
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
-    dataLayer?: any[];
-    clarity?: (...args: any[]) => void;
+    gtag?: GtagFunction;
+    dataLayer?: unknown[];
+    clarity?: ClarityFunction;
   }
 }
 
@@ -47,67 +55,21 @@ const GDPR_COUNTRIES = [
   "CH",
 ];
 
+interface CookiePreferences {
+  necessary: boolean;
+  analytics: boolean;
+}
+
 const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isCheckingLocation, setIsCheckingLocation] = useState(true);
-  const [preferences, setPreferences] = useState({
+  const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true, // Always true, can't be disabled
     analytics: false,
   });
 
-  // Check if user is in a GDPR country
-  const checkUserLocation = async () => {
-    try {
-      // Check if consent was already given
-      const consent = localStorage.getItem("cookie-consent");
-
-      if (consent) {
-        const savedPreferences = JSON.parse(consent);
-
-        setPreferences(savedPreferences);
-        initializeAnalytics(savedPreferences);
-        setIsCheckingLocation(false);
-
-        return;
-      }
-
-      // Use a free geolocation API to detect country
-      const response = await fetch("https://ipapi.co/json/");
-      const data = await response.json();
-      const userCountry = data.country_code;
-
-      if (GDPR_COUNTRIES.includes(userCountry)) {
-        // User is in GDPR country - show banner
-        setShowBanner(true);
-      } else {
-        // User is NOT in GDPR country - auto-accept all cookies
-        const autoAcceptPreferences = {
-          necessary: true,
-          analytics: true,
-        };
-
-        setPreferences(autoAcceptPreferences);
-        localStorage.setItem(
-          "cookie-consent",
-          JSON.stringify(autoAcceptPreferences),
-        );
-        initializeAnalytics(autoAcceptPreferences);
-      }
-    } catch (error) {
-      // If geolocation fails, show banner to be safe (GDPR-compliant by default)
-      setShowBanner(true);
-    } finally {
-      setIsCheckingLocation(false);
-    }
-  };
-
-  useEffect(() => {
-    checkUserLocation();
-  }, []);
-
-  const initializeAnalytics = (prefs: typeof preferences) => {
+  // Initialize analytics based on preferences
+  const initializeAnalytics = useCallback((prefs: CookiePreferences) => {
     if (prefs.analytics) {
       // Initialize Google Analytics
       if (typeof window !== "undefined" && window.gtag) {
@@ -128,10 +90,58 @@ const CookieConsent = () => {
         });
       }
     }
-  };
+  }, []);
 
-  const handleAcceptAll = () => {
-    const newPreferences = {
+  // Check if user is in a GDPR country
+  const checkUserLocation = useCallback(async () => {
+    try {
+      // Check if consent was already given
+      const consent = localStorage.getItem("cookie-consent");
+
+      if (consent) {
+        const savedPreferences = JSON.parse(consent) as CookiePreferences;
+
+        setPreferences(savedPreferences);
+        initializeAnalytics(savedPreferences);
+
+        return;
+      }
+
+      // Use a free geolocation API to detect country
+      const response = await fetch("https://ipapi.co/json/");
+      const data = await response.json();
+      const userCountry = data.country_code as string;
+
+      if (GDPR_COUNTRIES.includes(userCountry)) {
+        // User is in GDPR country - show banner
+        setShowBanner(true);
+      } else {
+        // User is NOT in GDPR country - auto-accept all cookies
+        const autoAcceptPreferences: CookiePreferences = {
+          necessary: true,
+          analytics: true,
+        };
+
+        setPreferences(autoAcceptPreferences);
+        localStorage.setItem(
+          "cookie-consent",
+          JSON.stringify(autoAcceptPreferences),
+        );
+        initializeAnalytics(autoAcceptPreferences);
+      }
+    } catch (error) {
+      // If geolocation fails, show banner to be safe (GDPR-compliant by default)
+      console.error("Failed to check user location:", error);
+      setShowBanner(true);
+    }
+  }, [initializeAnalytics]);
+
+  useEffect(() => {
+    checkUserLocation();
+  }, [checkUserLocation]);
+
+  const handleAcceptAll = useCallback(() => {
+    const newPreferences: CookiePreferences = {
       necessary: true,
       analytics: true,
     };
@@ -141,10 +151,10 @@ const CookieConsent = () => {
     initializeAnalytics(newPreferences);
     setShowBanner(false);
     setShowSettings(false);
-  };
+  }, [initializeAnalytics]);
 
-  const handleRejectAll = () => {
-    const newPreferences = {
+  const handleRejectAll = useCallback(() => {
+    const newPreferences: CookiePreferences = {
       necessary: true,
       analytics: false,
     };
@@ -154,21 +164,21 @@ const CookieConsent = () => {
     initializeAnalytics(newPreferences);
     setShowBanner(false);
     setShowSettings(false);
-  };
+  }, [initializeAnalytics]);
 
-  const handleSavePreferences = () => {
+  const handleSavePreferences = useCallback(() => {
     localStorage.setItem("cookie-consent", JSON.stringify(preferences));
     initializeAnalytics(preferences);
     setShowBanner(false);
     setShowSettings(false);
-  };
+  }, [preferences, initializeAnalytics]);
 
-  const handleToggleAnalytics = () => {
+  const handleToggleAnalytics = useCallback(() => {
     setPreferences((prev) => ({
       ...prev,
       analytics: !prev.analytics,
     }));
-  };
+  }, []);
 
   if (!showBanner) return null;
 

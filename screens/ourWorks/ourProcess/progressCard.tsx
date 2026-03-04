@@ -1,9 +1,10 @@
 "use client";
 
 import { Card, CardBody } from "@heroui/react";
-import { motion } from "framer-motion";
+import { motion, Variants, Easing } from "framer-motion";
 
 import { getGradientById } from "@/utils/gradientService";
+import GlassBadge from "@/components/GlassBadge";
 
 const data = {
   heading: "Simple. Strategic. Results-Driven.",
@@ -40,7 +41,7 @@ const data = {
   ],
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 60 },
   visible: (i: number) => ({
     opacity: 1,
@@ -48,7 +49,7 @@ const cardVariants = {
     transition: {
       delay: i * 0.2,
       duration: 0.6,
-      ease: "easeOut",
+      ease: "easeOut" as Easing,
     },
   }),
 };
@@ -60,14 +61,12 @@ const ProgressCard = () => {
       <motion.div
         className="autoShow"
         initial={{ opacity: 0, y: 40 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: "easeOut" as Easing }}
         viewport={{ once: true, amount: 0.3 }}
         whileInView={{ opacity: 1, y: 0 }}
       >
         <div className="flex flex-row items-center justify-center mb-6">
-          <span className="bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2">
-            {data.badge}
-          </span>
+          <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
         <p className="heading-center">{data.heading}</p>
       </motion.div>

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import Image from "next/image";
 
 import { getAllGradients } from "@/utils/gradientService";
 
@@ -85,41 +86,43 @@ export const Avatar: React.FC<AvatarProps> = ({
   className = "",
   alt,
 }) => {
-  const gradient = generateGradient(name);
-  const initial = name.charAt(0).toUpperCase();
+  const gradient = useMemo(() => generateGradient(name), [name]);
+  const initial = useMemo(() => name.charAt(0).toUpperCase(), [name]);
   const altText = alt || name;
+
+  const sizeStyles = useMemo(
+    () => ({
+      width: `${size}px`,
+      height: `${size}px`,
+      minWidth: `${size}px`,
+      minHeight: `${size}px`,
+    }),
+    [size]
+  );
 
   if (avatar) {
     return (
-      <img
-        alt={altText}
-        className={`rounded-full object-cover ${className}`}
-        src={avatar}
-        style={{
-          width: `${size}px`,
-          height: `${size}px`,
-          minWidth: `${size}px`,
-          minHeight: `${size}px`,
-        }}
-      />
+      <div className={`relative rounded-full ${className}`} style={sizeStyles}>
+        <Image
+          alt={altText}
+          fill
+          className="rounded-full object-cover"
+          src={avatar}
+        />
+      </div>
     );
   }
 
   return (
     <div
-      className={`rounded-full flex items-center justify-center ${className}`}
+      className={`rounded-full flex items-center justify-center border border-gray-500 ${className}`}
       style={{
-        width: `${size}px`,
-        height: `${size}px`,
-        minWidth: `${size}px`,
-        minHeight: `${size}px`,
+        ...sizeStyles,
         background: gradient,
-        border: "1px solid",
-        borderColor: "#777777",
       }}
     >
       <p
-        className=" font-semibold text-center select-none "
+        className="font-semibold text-center select-none"
         style={{
           fontSize: `${size * 0.4}px`, // 40% of avatar size
         }}

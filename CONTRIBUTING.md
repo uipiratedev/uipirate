@@ -267,6 +267,288 @@ import { Button, Card } from '@nextui-org/react';
 </div>
 ```
 
+### Animation Guidelines
+
+**Primary Animation Library**: Framer Motion
+
+✅ **Do**:
+```tsx
+import { motion } from 'framer-motion';
+
+// Use Framer Motion for animations
+export function AnimatedCard() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      Content
+    </motion.div>
+  );
+}
+
+// Use variants for complex animations
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5 }
+  }
+};
+
+<motion.div
+  variants={cardVariants}
+  initial="hidden"
+  animate="show"
+/>
+```
+
+❌ **Don't**:
+```tsx
+// Don't use GSAP (being phased out)
+import gsap from 'gsap';
+gsap.to(element, { x: 100 });
+
+// Don't use CSS animations for complex interactions
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+```
+
+**Animation Best Practices**:
+- Use `transform` and `opacity` for GPU-accelerated animations
+- Use `whileInView` for scroll-triggered animations
+- Use `variants` for coordinated animations
+- Keep animations under 0.6s for UI interactions
+- Use `once: true` in viewport to prevent re-triggering
+
+### Naming Conventions
+
+#### Variables and Functions
+```typescript
+// ✅ Good - Descriptive camelCase
+const userEmail = "user@example.com";
+const isAuthenticated = true;
+const blogPostCount = 10;
+
+function getUserById(id: string) { }
+function validateEmail(email: string) { }
+function handleSubmit() { }
+
+// ❌ Bad - Unclear or wrong case
+const e = "user@example.com";
+const UserEmail = "user@example.com";
+function user(id: string) { }
+```
+
+#### Constants
+```typescript
+// ✅ Good - UPPER_SNAKE_CASE for true constants
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const API_BASE_URL = "https://api.example.com";
+const DEFAULT_TIMEOUT = 3000;
+
+// ✅ Good - PascalCase for config objects
+const ApiConfig = {
+  baseUrl: "https://api.example.com",
+  timeout: 3000,
+};
+
+// ❌ Bad - Inconsistent naming
+const maxfilesize = 5000000;
+const api_base_url = "https://api.example.com";
+```
+
+#### CSS Classes
+```tsx
+// ✅ Good - Tailwind utilities + semantic custom classes
+<div className="flex items-center gap-4 card-base">
+
+// ✅ Good - BEM for complex custom components
+<div className="blog-card blog-card--featured">
+  <h2 className="blog-card__title">Title</h2>
+</div>
+
+// ❌ Bad - Inconsistent or unclear
+<div className="div1 container2 myClass">
+```
+
+### Component Organization
+
+```typescript
+'use client'; // Only if needed
+
+// 1. Imports - Grouped by source
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '@heroui/button';
+import { formatDate } from '@/utils/formatDate';
+import type { User } from '@/types';
+
+// 2. Types/Interfaces
+interface BlogCardProps {
+  title: string;
+  date: Date;
+  author: User;
+}
+
+// 3. Constants
+const ANIMATION_DURATION = 0.6;
+
+// 4. Component
+export default function BlogCard({ title, date, author }: BlogCardProps) {
+  // 5. State
+  const [isHovered, setIsHovered] = useState(false);
+
+  // 6. Effects
+  useEffect(() => {
+    // Effect logic
+  }, []);
+
+  // 7. Event Handlers
+  const handleClick = () => {
+    // Handler logic
+  };
+
+  // 8. Render Helpers
+  const renderAuthor = () => (
+    <span>{author.name}</span>
+  );
+
+  // 9. Return
+  return (
+    <motion.div
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      onClick={handleClick}
+    >
+      <h2>{title}</h2>
+      <time>{formatDate(date)}</time>
+      {renderAuthor()}
+    </motion.div>
+  );
+}
+```
+
+### CSS & Tailwind Best Practices
+
+#### When to Use Tailwind vs Custom CSS
+
+**Use Tailwind for**:
+- Layout (flex, grid, spacing)
+- Typography (font sizes, weights, colors)
+- Common UI patterns
+- Responsive design
+- State variants (hover, focus)
+
+**Use Custom CSS for**:
+- Glassmorphism effects
+- Complex animations (or use Framer Motion)
+- Browser-specific hacks
+- Third-party library overrides
+
+#### Tailwind Patterns
+
+```tsx
+// ✅ Good - Organized classes
+<div className={`
+  // Layout
+  flex items-center justify-between gap-4
+  // Sizing
+  w-full h-auto
+  // Spacing
+  p-6 mb-4
+  // Visual
+  bg-white rounded-2xl shadow-lg
+  // States
+  hover:shadow-xl transition-all
+`}>
+
+// ✅ Good - Extract common patterns
+// In globals.css
+@layer components {
+  .card-base {
+    @apply bg-white rounded-2xl shadow-lg p-6 border border-gray-200;
+  }
+}
+
+// ✅ Good - Use arbitrary values for one-off styles
+<div className="w-[347px] h-[calc(100vh-80px)]">
+
+// ❌ Bad - Inline styles for static values
+<div style={{ width: '347px', height: 'calc(100vh - 80px)' }}>
+```
+
+#### Responsive Design
+
+```tsx
+// ✅ Good - Mobile-first approach
+<div className="
+  flex-col gap-2 p-4
+  md:flex-row md:gap-4 md:p-6
+  lg:gap-6 lg:p-8
+">
+
+// ✅ Good - Dark mode support
+<div className="
+  bg-white text-gray-900
+  dark:bg-gray-900 dark:text-white
+">
+```
+
+### Performance Guidelines
+
+#### Code Splitting
+```typescript
+// ✅ Good - Dynamic imports for heavy components
+import dynamic from 'next/dynamic';
+
+const TipTapEditor = dynamic(
+  () => import('@/components/TipTapEditor'),
+  {
+    ssr: false,
+    loading: () => <div>Loading...</div>
+  }
+);
+
+// ❌ Bad - Import everything upfront
+import TipTapEditor from '@/components/TipTapEditor';
+```
+
+#### Image Optimization
+```tsx
+import Image from 'next/image';
+
+// ✅ Good - Next.js Image component
+<Image
+  src="/hero.jpg"
+  alt="Hero image"
+  width={1200}
+  height={600}
+  priority // For above-the-fold images
+  placeholder="blur"
+/>
+
+// ❌ Bad - Regular img tag
+<img src="/hero.jpg" alt="Hero" />
+```
+
+#### Database Queries
+```typescript
+// ✅ Good - Select only needed fields
+const blogs = await Blog.find()
+  .select('title slug createdAt')
+  .limit(10)
+  .lean();
+
+// ❌ Bad - Fetch all fields
+const blogs = await Blog.find();
+```
+
 ---
 
 ## Commit Guidelines

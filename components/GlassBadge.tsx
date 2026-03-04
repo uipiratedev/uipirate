@@ -55,11 +55,19 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
   size = "md",
   uppercase = true,
 }) => {
-  // Size classes
+  // Size classes - responsive: smaller on mobile, normal on desktop
   const sizeClasses = {
-    sm: "px-3 py-1.5 text-xs",
-    md: "px-4 py-2 text-sm",
-    lg: "px-5 py-2.5 text-base",
+    sm: "px-2.5 py-1 text-[10px] sm:px-3 sm:py-1.5 sm:text-xs",
+    md: "px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm",
+    lg: "px-4 py-2 text-sm sm:px-5 sm:py-2.5 sm:text-base",
+  };
+
+  // For the gradient variant, we want it to be slightly more premium (larger) on desktop 
+  // but still responsive for mobile.
+  const gradientSizeClasses = {
+    sm: "px-2.5 py-1 text-[10px] sm:px-3 sm:py-1.5 sm:text-xs",
+    md: "px-3 py-1.5 text-xs sm:px-5 sm:py-2.5 sm:text-[15px]",
+    lg: "px-4 py-2 text-sm sm:px-7 sm:py-3.5 sm:text-[18px]",
   };
 
   // Variant styles
@@ -96,7 +104,7 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           borderRadius={10}
           borderWidth={0.01}
           brightness={50}
-          className="p-2 px-4"
+          className={`!flex !items-center !justify-center ${gradientSizeClasses[size]}`}
           displace={0.5}
           distortionScale={-180}
           forceLightMode={true}
@@ -108,22 +116,20 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           width="auto"
         >
           {/* Dot 1: Teal (Left) - 28px, moved slightly inside */}
-          <div className="absolute -left-[30px] -top-[20px] w-[28px] h-[28px] bg-teal-400 rounded-full blur-[10px] opacity-100 animate-float-dot-1" />
+          <div className="absolute -left-[20px] -top-[15px] sm:-left-[30px] sm:-top-[20px] w-[18px] h-[18px] sm:w-[28px] sm:h-[28px] bg-teal-400 rounded-full blur-[8px] sm:blur-[10px] opacity-100 animate-float-dot-1" />
 
           {/* Dot 2: Blue (Center) - 39px, bottom, tiny slice visible */}
-          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[50px] w-[39px] h-[39px] bg-blue-500 rounded-full blur-[18px] opacity-100 animate-float-dot-2" />
+          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[35px] sm:-bottom-[50px] w-[25px] h-[25px] sm:w-[39px] sm:h-[39px] bg-blue-500 rounded-full blur-[12px] sm:blur-[18px] opacity-100 animate-float-dot-2" />
 
           {/* Dot 3: Pink (Right) - 21px, moved slightly inside */}
-          <div className="absolute -right-[26px] -top-[16px] w-[21px] h-[21px] bg-pink-400 rounded-full blur-[8px] opacity-100 animate-float-dot-3" />
+          <div className="absolute -right-[18px] -top-[12px] sm:-right-[26px] sm:-top-[16px] w-[14px] h-[14px] sm:w-[21px] sm:h-[21px] bg-pink-400 rounded-full blur-[6px] sm:blur-[8px] opacity-100 animate-float-dot-3" />
 
           {/* Text on top */}
           <span
-            className={`relative z-10 font-jetbrains font-medium text-black ${
+            className={`relative z-10 font-jetbrains-mono font-medium text-black ${
               uppercase ? "uppercase" : ""
             }`}
             style={{
-              fontSize: "16px",
-              lineHeight: "20px",
               fontVariantNumeric: "slashed-zero",
             }}
           >
