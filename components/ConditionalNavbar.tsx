@@ -27,7 +27,7 @@ export const ConditionalNavbar = memo(function ConditionalNavbar() {
   }
 
   return (
-    <div className="sticky top-0 z-[999999999]">
+    <div className="sticky top-0 z-[999999999] main-navbar">
       <Navbar />
     </div>
   );
