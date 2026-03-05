@@ -17,7 +17,7 @@ const PageWrapper = memo<PageWrapperProps>(function PageWrapper({
   return (
     <>
       {children}
-      {showFloatingButton && <FloatingLetsTalkButton />}
+      {/* {showFloatingButton && <FloatingLetsTalkButton />} */}
     </>
   );
 });

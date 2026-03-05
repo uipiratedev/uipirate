@@ -1852,9 +1852,9 @@ body[data-transitioning="true"] #main-content *  {
 /* Reusable animated top border */
 .premium-card {
   position: relative;
-  border-radius: 24px;
+  border-radius: 22px;
   background: #ffffff;
-  padding: 4px; /* border thickness */
+  padding: 2px; /* border thickness */
   background-image: linear-gradient(
     to bottom,
     transparent 0%,
@@ -1881,3 +1881,101 @@ body[data-transitioning="true"] #main-content *  {
   height: 100%;
   width: 100%;
 }
+
+/* ========================================
+   REACT PHONE INPUT 2 CUSTOM STYLES
+   ======================================== */
+.phone-wrapper-custom .react-tel-input .form-control {
+  @apply !w-full !h-[42px] !text-base !font-jakarta !rounded-lg !border-2 !border-gray-200 hover:!border-gray-300;
+}
+
+.phone-wrapper-custom .react-tel-input .flag-dropdown {
+  @apply !bg-transparent !border-r-0 !rounded-l-lg hover:!bg-gray-50;
+}
+
+.phone-wrapper-custom .react-tel-input .selected-flag {
+  @apply !bg-transparent !w-[50px];
+}
+
+.phone-wrapper-custom .react-tel-input .country-list {
+  @apply !bottom-[100%] !top-auto !mb-2 !mt-0 !w-[280px] !max-h-[250px] !z-[99999999] !rounded-xl !shadow-2xl !border-1 !border-gray-100 !py-2;
+}
+
+.phone-wrapper-custom .react-tel-input .special-label {
+  display: none;
+}
+
+.phone-wrapper-custom .react-tel-input .search {
+  @apply !px-2 !py-2 !bg-white !sticky !top-0 !z-10 !border-b !border-gray-100;
+}
+
+.phone-wrapper-custom .react-tel-input .search-box {
+  @apply !w-full !m-0 !px-3 !py-2 !text-sm !font-jakarta !border !border-gray-200 !rounded-lg focus:!border-[#FF5B04] focus:!ring-0;
+}
+
+.phone-wrapper-custom .react-tel-input .country {
+  @apply !px-3 !py-2.5 !transition-colors hover:!bg-gray-50;
+}
+
+.phone-wrapper-custom .react-tel-input .country.highlight {
+  @apply !bg-gray-100;
+}
+
+.phone-wrapper-custom .react-tel-input .country-name {
+  @apply !text-sm !font-jakarta !text-gray-700;
+}
+
+.phone-wrapper-custom .react-tel-input .dial-code {
+  @apply !text-sm !font-jakarta !text-gray-400 !ml-auto;
+}
+
+@media (max-width: 768px) {
+  .phone-wrapper-custom .react-tel-input .country-list {
+    @apply !w-[calc(100vw-80px)];
+  }
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #949494;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #757575;
+}
+
+/* Body lock for modals */
+html.modal-open,
+body.modal-open {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+body.modal-open {
+  padding-right: 0px !important;
+}
+
+/* Hide Navbar when modal is open (behind backdrop) */
+html.modal-open .main-navbar,
+body.modal-open .main-navbar {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* ========================================
+   END REACT PHONE INPUT 2 CUSTOM STYLES
+   ======================================== */
+/* ========================================
+   END REACT PHONE INPUT 2 CUSTOM STYLES
+   ======================================== */
