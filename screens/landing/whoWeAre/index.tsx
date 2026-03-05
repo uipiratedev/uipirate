@@ -72,7 +72,7 @@ const LandingWhoWeAre = () => {
           </div>
         </div>
       </div>
-      <div className="px-32 max-md:px-0 overflow-x-hidden overflow-y-auto autoShowBottom -mt-12" ref={containerRef}>
+      <div className="container mx-auto px-32 max-md:px-0 overflow-x-hidden overflow-y-auto autoShowBottom -mt-12" ref={containerRef}>
         <h2 className="heading-center max-md:text-xl max-md:font-[600]">
           {words.map((word, index) => (
             <span key={index} style={getWordStyle(index)}>

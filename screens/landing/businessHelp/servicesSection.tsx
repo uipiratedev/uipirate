@@ -27,7 +27,7 @@ const SunRays = ({ color = "rgba(255, 165, 0, 0.15)", rayCount = 12, isMobile = 
               key={index}
               className="absolute top-1/2 left-1/2 origin-left"
               style={{
-                transform: `rotate(${angle}deg)`,
+                transform: `translateY(-50%) rotate(${angle}deg)`,
                 width: '150%',
                 height: '130px', // Increased height for the widening effect
               }}

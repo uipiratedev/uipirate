@@ -134,7 +134,7 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
   }, [updateVisibleData]);
 
   return (
-    <div className="relative">
+    <div className="relative 3xl:container 3xl:mx-auto">
       {/* Centered Info */}
       <div
         className="absolute inset-1 flex flex-col items-center justify-center text-center z-[1]"

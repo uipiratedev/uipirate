@@ -100,7 +100,7 @@ const Landing = memo(function Landing() {
       </div>
 
       {/* Floating Let's Talk Button - Only on Landing Page */}
-      <FloatingLetsTalkButton />
+      {/* <FloatingLetsTalkButton /> */}
     </PageWrapper>
   );
 });

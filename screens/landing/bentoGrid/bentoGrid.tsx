@@ -463,7 +463,7 @@ const BentoGrid = () => {
             >
               <div className="h-full flex flex-col">
                 {/* Content */}
-                <div className="mb-4 px-8 max-md:px-6 text-left">
+                <div className="mb-4 text-left">
                   <h3 className="text-2xl font-bold text-gray-900 mb-2 max-md:text-lg max-md:font-semibold ">
                     Built With the Best
                   </h3>
