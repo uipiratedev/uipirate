@@ -191,8 +191,8 @@ export const JoinButtonIcon = ({
                 dominantBaseline="middle"
                 textAnchor="middle"
                 fill="black"
-                fontSize="clamp(28px, 5vw, 48px)"
-                fontWeight="500"
+                fontSize="clamp(44px, 8vw, 48px)"
+                fontWeight="600"
                 style={{
                   marginLeft:"-100px",
                   textTransform: 'uppercase',
