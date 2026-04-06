@@ -149,9 +149,9 @@ const Pricing = () => {
               </div>
 
               {/* Buttons */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3">
                 <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                   <LetsTalkButton fullWidth variant="dark"/>
+                   {/* <LetsTalkButton fullWidth variant="dark"/> */}
               </div>
             </div>
           </CardBody>
@@ -193,9 +193,9 @@ const Pricing = () => {
                 </p>
 
                 {/* Buttons */}
-                <div className="grid grid-cols-2 gap-3 max-md:hidden">
+                <div className="grid grid-cols-1 gap-3 max-md:hidden">
                   <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                  <LetsTalkButton fullWidth/>
+                  {/* <LetsTalkButton fullWidth/> */}
                 </div>
               </div>
 

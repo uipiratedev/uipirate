@@ -82,7 +82,7 @@ const WhatYouGetCard = ({
 
 const WhatYouGetAnimations = ({ data }: any) => {
   return (
-    <div className="overflow-hidden">
+    <div className="mx-auto px-32 lg:px-20 max-md:px-4 overflow-hidden">
       {/* Cards grid with ContainerScroll */}
       <ContainerScroll
         titleComponent={

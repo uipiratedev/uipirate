@@ -21,15 +21,15 @@ export default function Home() {
       // Initialize global Lenis for smooth scrolling across entire site
       const Lenis = (await import("lenis")).default;
       const lenis = new Lenis({
-        duration: 1.0,
+        duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 2,
+        touchMultiplier: 1.2,
         infinite: false,
         wheelMultiplier: 1,
-        lerp: 0.15,
+        lerp: 0.1,
         syncTouch: true,
-        syncTouchLerp: 0.1,
+        syncTouchLerp: 0.08,
       });
 
 	      const raf = (time: number) => {

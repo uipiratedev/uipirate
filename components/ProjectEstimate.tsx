@@ -374,11 +374,11 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                   </p>
 
                   {/* Buttons */}
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3">
                     <LetsTalkButton fullWidth variant="color" onClick={handleStart}>
                       Calculate Now
                     </LetsTalkButton>
-                    <LetsTalkButton fullWidth/>
+                    {/* <LetsTalkButton fullWidth/> */}
                   </div>
                 </div>
               </motion.div>
