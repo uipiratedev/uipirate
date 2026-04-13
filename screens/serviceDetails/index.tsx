@@ -21,7 +21,7 @@ const ServiceDetails = ({ data }: any) => {
         {data.hero && <ServiceDetailsHero data={data.hero} />}
 
         {data.whatYouGet && (
-          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <div className="container mx-auto">
             <WhatYouGetAnimations data={data.whatYouGet} />
           </div>
         )}

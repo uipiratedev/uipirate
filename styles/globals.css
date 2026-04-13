@@ -361,9 +361,9 @@ body {
   width: 35px;
   height: 7px;
   /* background: #1a1919; */
-  @apply bg-[#1a1919] dark:bg-white;
+  @apply bg-orange-500;
   animation: dominos 1s ease infinite;
-  box-shadow: 2px 2px 3px 0px black;
+  box-shadow: 2px 2px 3px 0px rgba(249, 115, 22, 0.3);
 }
 
 .spinner span:nth-child(1) {
@@ -1702,7 +1702,7 @@ nav[data-slot="base"] [data-slot="wrapper"] {
 
 .page-transition-bar {
   flex: 1;
-  background: #bfc4a8;
+  background: #f97316;
   backface-visibility: hidden;
   will-change: transform;
 }
@@ -1782,7 +1782,7 @@ body[data-transitioning="true"] #main-content *  {
 
 .reveal-bar {
   flex: 1;
-  background: #bfc4a8;
+  background: #f97316;
   transform-origin: left center;
   animation: flipReveal 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   backface-visibility: hidden;
