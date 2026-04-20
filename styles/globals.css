@@ -160,6 +160,18 @@ body {
   }
 }
 
+.global-title {
+  font-family: var(--font-jetbrains-mono), monospace !important;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  leading-trim: cap-height;
+}
+
 /* .badge-center {
   @apply bg-[#8EF1F1] px-4 py-2 rounded-xl font-semibold uppercase border-cyan-400 border-2;
 } */

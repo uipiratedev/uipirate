@@ -14,12 +14,14 @@ export const siteConfig = {
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
           href: "/services/SaaS-Web-&-Mobile-Apps",
           isLargeCard: true,
+          bgImage:"https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg"
         },
         {
           category: "Saas & AI Development",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
           href: "/services/SaaS-Web-&-Mobile-Apps",
           isLargeCard: true,
+          bgImage:"https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg"
         },
         
         {
@@ -27,6 +29,7 @@ export const siteConfig = {
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
           href: "/services/Landing-Pages-&-Business-Websites",
           isLargeCard: true,
+          bgImage:"https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670796/landing_skjuro.svg"
         },
         {
           category: "Graphic Design",
@@ -69,26 +72,28 @@ export const siteConfig = {
           icon: "✍️",
           href: "/blogs",
           isLargeCard: true,
+          bgImage:"https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670800/blog_v5hfmy.svg"
         },
         {
           category: "Case Studies",
           icon: "📊",
           href: "/case-studies",
           isLargeCard: true,
+          bgImage:"https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg"
         },
         {
           category: "FAQs",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612676/circle-question-mark_1_sl0cgn.svg",
           href: "/faqs",
           isLargeCard: true,
-
+          bgImage:"https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670805/faq_gn5mmv.svg"
         },
         {
           category: "Community Insights",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612675/file_1_fvzqpk.svg",
           href: "/community",
           isLargeCard: true,
-
+          bgImage:"https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/community_ovswiv.svg"
         },
       ],
     },

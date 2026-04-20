@@ -11,6 +11,7 @@ interface DropdownItem {
   icon?: string;
   href?: string;
   isLargeCard?: boolean;
+  bgImage?: string;
 }
 
 interface NavbarDropdownProps {
@@ -165,9 +166,7 @@ export const NavbarDropdown = ({
                           <div 
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                             style={{ 
-                              // backgroundImage: `url('https://images.unsplash.com/photo-${index === 0 ? "1586717791821-3f44a563feaf" : "1520110120287-cbb5934001b3"}?auto=format&fit=crop&q=80&w=800')`,
-                              // filter: 'brightness(0.6)',
-                              background: "linear-gradient(340.36deg, #F5F5F5 39.57%, #E0E0E0 89.85%)",
+                              backgroundImage: item.bgImage ? `url('${item.bgImage}')` : "linear-gradient(340.36deg, #F5F5F5 39.57%, #E0E0E0 89.85%)",
                             }}
                           />
                           
@@ -219,7 +218,7 @@ export const NavbarDropdown = ({
                           </div>
                           <div className="flex flex-col min-w-0">
                             <span className="text-gray-900 font-semibold text-[14px] group-hover:text-orange-600 transition-colors truncate">
-                              {item.category} dan
+                              {item.category}
                             </span>
                             
                           </div>
