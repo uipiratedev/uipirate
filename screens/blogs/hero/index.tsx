@@ -112,7 +112,7 @@ const BlogsHero = ({
             <span className="text-[#FF5B04]">SaaS, Tech &amp; Design</span>
           </h1>
         </div>
-        <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px]">
+        <p className="sub-header">
           Fresh ideas, research-backed insights, and real stories from our work
           and the community.
         </p>

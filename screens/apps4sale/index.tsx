@@ -5,6 +5,7 @@ import { Input } from "@heroui/input";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import GlassSurface from "@/components/GlassSurface";
 
 const categories = [
   "All",
@@ -85,7 +86,7 @@ const Apps4Sale = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white pt-32 pb-20 px-4 md:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-white pt-6 pb-20 px-4 md:px-8 relative overflow-hidden">
       {/* Grid Background */}
       <div 
         className="absolute inset-0 pointer-events-none opacity-[0.05]"
@@ -101,17 +102,42 @@ const Apps4Sale = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header Section */}
         <div className="text-center flex flex-col items-center mb-10 md:mb-16 px-4">
-          <div className="bg-zinc-100 px-4 py-1.5 rounded-full mb-6 md:mb-8 border border-zinc-200 shadow-sm">
-            <span className="text-[9px] md:text-[11px] font-bold tracking-[0.1em] text-zinc-600 uppercase">
+                 <GlassSurface
+          backgroundOpacity={0.1}
+          blueOffset={20}
+          blur={11}
+          borderRadius={12}
+          borderWidth={0.01}
+          brightness={50}
+          className="md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
+          displace={0.5}
+          distortionScale={-180}
+          forceLightMode={true}
+          greenOffset={10}
+          height="auto"
+          opacity={0.93}
+          redOffset={0}
+          saturation={1}
+          style={{
+            animation: "trustBadgeUp 0.5s ease-out forwards",
+            animationDelay: "0.1s",
+            opacity: 0,
+            transform: "translateY(20px) scale(0.95)",
+          }}
+          width="auto"
+        >
+          <div className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
               Used in real projects. Not just concepts.
-            </span>
+            
           </div>
 
-          <h1 className="text-[32px] md:text-[72px] font-bold tracking-tight leading-[1.1] mb-4 md:mb-6 text-zinc-900">
+          </GlassSurface>
+
+          <h1 className="hero-header">
             Ready to Launch <span className="text-[#FF5B04]">Products</span>
           </h1>
 
-          <p className="text-zinc-500 text-base md:text-xl max-w-2xl mx-auto leading-relaxed">
+          <p className="sub-header">
             Production-ready micro apps built for real products. Plug them into your workflow, 
             customize as needed, and launch without building from scratch.
           </p>
