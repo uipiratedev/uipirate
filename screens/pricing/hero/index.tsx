@@ -74,7 +74,7 @@ const PricingHero = () => {
 
         {/* Headline */}
         <div className="relative z-10 w-full">
-          <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
+          <h1 className="hero-header">
             <span className="text-black">Transparent Pricing for </span>
             <span className="text-[#FF5B04]">Design & Development</span>
           </h1>

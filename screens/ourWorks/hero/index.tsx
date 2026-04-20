@@ -111,14 +111,14 @@ const OurWorksHero = () => {
 
         {/* Headline */}
         <div className="relative z-10 w-full">
-          <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
+          <h1 className="hero-header">
             Real <span className="text-[#FF5B04]"> Projects.</span>{" "}
             Real<span className="text-[#FF5B04]"> Results.</span>
           </h1>
         </div>
 
         {/* Subheading */}
-        <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px] text-[#11181C]">
+        <p className="sub-header text-[#11181C]">
           See how we’ve helped startups, SaaS teams, and global brands turn ideas
           into fully functional digital products.
         </p>

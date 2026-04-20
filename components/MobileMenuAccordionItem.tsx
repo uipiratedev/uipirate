@@ -8,6 +8,8 @@ interface DropdownItem {
   category: string;
   icon?: string;
   href?: string;
+  isLargeCard?: boolean;
+  bgImage?: string;
 }
 
 interface NavItem {
