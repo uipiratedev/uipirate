@@ -231,6 +231,33 @@ export default function RootLayout({
           }}
           type="application/ld+json"
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SiteNavigationElement",
+              name: [
+                "Services",
+                "Our Works",
+                "Pricing",
+                "Case Studies",
+                "Blog",
+                "Contact",
+                "FAQs",
+              ],
+              url: [
+                "https://uipirate.com/services",
+                "https://uipirate.com/ourWorks",
+                "https://uipirate.com/pricing",
+                "https://uipirate.com/case-studies",
+                "https://uipirate.com/blogs",
+                "https://uipirate.com/contact",
+                "https://uipirate.com/faqs",
+              ],
+            }),
+          }}
+          type="application/ld+json"
+        />
 
         {/* AI Data Reference (kept for AI crawlers that do follow links) */}
         <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
