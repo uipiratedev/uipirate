@@ -1,0 +1,76 @@
+# UI Pirate — Enterprise UI/UX Design Agency
+
+> UI Pirate is a global enterprise UI/UX design and frontend development agency founded by Vishal Anand, specializing in Angular, React, and Next.js development. Serving Fortune 500 and enterprise clients across USA, UK, Singapore, India, and Australia.
+
+## About
+
+UI Pirate designs and builds intuitive user interfaces for SaaS platforms, AI applications, mobile products, and enterprise software. The team has deep expertise in **Angular**, React, and Next.js frontend development. With 50+ successful projects and a 5.0 client rating, the team specializes in turning complex product requirements into clean, scalable designs and production-ready code that drives user engagement and business growth.
+
+**Core Technologies**: Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Webflow
+
+**Founder**: Vishal Anand — 9+ years of experience in enterprise UI/UX design
+**Team**: Vishal Anand (Founder & Lead Designer), Kartik Kumar (UI/UX Designer), Syed Musaddiq (UI/UX Designer)
+**Headquarters**: India (serving clients globally)
+**Founded**: 2015
+
+## Services
+
+- **SaaS Web & Mobile App Design & Development**: End-to-end UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products. From MVP wireframes to enterprise-grade products. Timeline: 1-2 months.
+- **Landing Pages & Business Websites**: High-converting landing pages and corporate websites for startups and enterprises. Design + development in Angular, React, Next.js, Framer, or Webflow. Timeline: 2-4 weeks.
+- **UI Development & Frontend Engineering**: Production-ready frontend development in Angular (v14+), React, and Next.js. Component-based architecture, responsive layouts, API integration, and performance optimization.
+- **Design Systems & Component Libraries**: Custom design tokens, branded UI kits, documented and dev-ready Angular/React component libraries for scalable product teams. Timeline: 1-4 weeks.
+- **Graphic Design**: Brand identity, infographics, newsletters, website graphics, social media visuals, and print-ready marketing materials.
+- **Motion Graphics & Video Editing**: 2D/3D animations, social media reels/ads, explainer videos, sound design, color grading, and motion graphics for web and product.
+- **UX Audits & Consultation**: Heuristic analysis, usability testing, friction point identification, and strategic UX recommendations for existing products.
+- **3D Animation & Rendering**: 3D product visualization, architectural rendering, and animated 3D assets for marketing and product use.
+
+## Notable Clients & Projects
+
+- **Ipsos** (Israel) — Enterprise research platform redesign for VP of R&D
+- **Xperiti** (New York, USA) — SaaS research platform for CEO & Founder
+- **RevUp AI** (Dallas, Texas, USA) — AI SaaS platform for CEO
+- **Bird** (San Francisco, USA) — Brand & product design for CEO
+- **Awesome Health Club** (California, USA) — Platform design for Seed Investor
+- **ArthAlpha** (Bangalore, India) — Fintech trading platform for Co-Founder
+- **APAC Law Firm** (New Delhi, India) — AI-powered LegalTech platform
+- **Netzhill** (Ontario, Canada) — Product design for Founder
+- **Rings & I** (India) — E-commerce platform on Shopify
+- **ION** — Medical supply chain SaaS platform
+- **Brahmastra** — Fintech trading platform
+- **StayPe** — Rental property management platform
+
+## Industries Served
+
+SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applications, Enterprise Software
+
+## Target Audience
+
+Enterprise clients, Fortune 500 companies, SaaS companies, tech startups, mobile app companies, and design/dev agencies needing a reliable UI/UX design partner.
+
+## Pricing
+
+Flexible pricing models including per-project, monthly retainer, and hourly rates. Transparent pricing with enterprise-grade quality at startup-friendly rates.
+
+## Contact
+
+- **Website**: https://uipirate.com
+- **Book a Call**: https://cal.com/ui-pirate/15min
+- **Email**: vishalanand072@gmail.com
+- **Phone**: +91 9708636151
+
+## Links
+
+- Website: https://uipirate.com
+- Portfolio: https://uipirate.com/ourWorks
+- Services: https://uipirate.com/services
+- Pricing: https://uipirate.com/pricing
+- Blog: https://uipirate.com/blogs
+- Case Studies: https://uipirate.com/case-studies
+- FAQs: https://uipirate.com/faqs
+- LinkedIn: https://www.linkedin.com/company/ui-pirate-by-vishal-anand/
+- Behance: https://www.behance.net/vishalanand-UI-UX
+- Dribbble: https://dribbble.com/vishalanandUIUX
+- Clutch: https://clutch.co/profile/ui-pirate-vishal-anand
+- Upwork: https://www.upwork.com/agencies/1837026757439552424/
+- Twitter/X: https://x.com/UI_Pirate
+- Google Maps: https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8

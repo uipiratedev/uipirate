@@ -13,11 +13,11 @@ import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title:
-    "UI Pirate | Enterprise UI/UX Design & Development | USA, UK, Singapore, India, Australia",
+    "UI Pirate | Enterprise UI/UX Design & Angular, React Development | USA, UK, Singapore, India, Australia",
   description:
-    "Leading UI/UX design agency serving enterprise clients globally. Specializing in UI development, graphic design, motion graphics, design systems, AI/SaaS apps, and mobile applications. Trusted by Fortune 500 companies across USA, UK, Singapore, India, and Australia.",
+    "Leading UI/UX design and frontend development agency serving enterprise clients globally. Specializing in Angular, React, Next.js development, design systems, AI/SaaS apps, and mobile applications. Trusted by Fortune 500 companies across USA, UK, Singapore, India, and Australia.",
   keywords:
-    "enterprise UI design, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise clients USA UK Singapore India Australia, Fortune 500 design, startup design agency, Vishal Anand, UI Pirate",
+    "enterprise UI design, Angular development agency, Angular frontend development, React development, Next.js, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise clients USA UK Singapore India Australia, Fortune 500 design, startup design agency, Vishal Anand, UI Pirate",
   openGraph: {
     title: "UI Pirate | Global Enterprise UI/UX Design & Development Agency",
     description:
@@ -104,13 +104,137 @@ export default function RootLayout({
           name="target-audience"
         />
 
-        {/* AI Data Reference */}
-        <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
-        <link
-          href="/enterprise-schema.json"
-          rel="alternate"
+        {/* Structured Data — Inline JSON-LD (Google ignores linked JSON-LD files) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              "@id": "https://uipirate.com/#organization",
+              name: "UI Pirate by Vishal Anand",
+              alternateName: "UI Pirate",
+              url: "https://uipirate.com",
+              logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
+              image: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+              description:
+                "Leading enterprise UI/UX design and frontend development agency serving Fortune 500 companies globally. Specializing in Angular, React, and Next.js development for SaaS applications, design systems, AI products, and mobile apps across USA, UK, Singapore, India, and Australia.",
+              foundingDate: "2015",
+              founder: {
+                "@type": "Person",
+                name: "Vishal Anand",
+                jobTitle: "Founder & Lead UI/UX Designer",
+                url: "https://www.linkedin.com/in/vishal-a-51bb49110",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+919708636151",
+                email: "vishalanand072@gmail.com",
+                contactType: "customer service",
+                areaServed: ["US", "GB", "SG", "IN", "AU"],
+                availableLanguage: "English",
+              },
+              address: { "@type": "PostalAddress", addressCountry: "IN" },
+              serviceArea: [
+                { "@type": "Country", name: "United States" },
+                { "@type": "Country", name: "United Kingdom" },
+                { "@type": "Country", name: "Singapore" },
+                { "@type": "Country", name: "India" },
+                { "@type": "Country", name: "Australia" },
+              ],
+              hasOfferCatalog: {
+                "@type": "OfferCatalog",
+                name: "Enterprise Design Services",
+                itemListElement: [
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "SaaS Web & Mobile App Design & Development",
+                      description: "UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Landing Pages & Business Websites",
+                      description: "High-converting landing pages and corporate websites built with Angular, React, Framer, and Webflow for startups and enterprises",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Design Systems & Component Libraries",
+                      description: "Scalable design systems with custom tokens, UI kits, and documented Angular/React components for enterprise teams",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Graphic Design",
+                      description: "Brand identity, infographics, newsletters, and marketing visuals",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Motion Graphics & Video Editing",
+                      description: "2D/3D animations, social media content, and product explainer videos",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "UX Audits & Consultation",
+                      description: "Heuristic analysis, usability testing, and strategic UX recommendations",
+                    },
+                  },
+                ],
+              },
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "5.0",
+                reviewCount: "50",
+                bestRating: "5",
+              },
+              sameAs: [
+                "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
+                "https://www.linkedin.com/in/vishal-a-51bb49110",
+                "https://www.behance.net/vishalanand-UI-UX",
+                "https://www.behance.net/UI-Pirate",
+                "https://dribbble.com/vishalanandUIUX",
+                "https://www.upwork.com/agencies/1837026757439552424/",
+                "https://clutch.co/profile/ui-pirate-vishal-anand",
+                "https://x.com/UI_Pirate",
+                "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
+              ],
+            }),
+          }}
           type="application/ld+json"
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "@id": "https://uipirate.com/#website",
+              url: "https://uipirate.com",
+              name: "UI Pirate",
+              description: "Enterprise UI/UX design agency for SaaS & tech companies. Modern, scalable design trusted by Fortune 500.",
+              publisher: { "@id": "https://uipirate.com/#organization" },
+              inLanguage: "en-US",
+            }),
+          }}
+          type="application/ld+json"
+        />
+
+        {/* AI Data Reference (kept for AI crawlers that do follow links) */}
+        <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
+        <link href="/llms.txt" rel="alternate" type="text/plain" />
 
         {/* Hreflang for international targeting */}
         <link href="https://uipirate.com/" hrefLang="en-us" rel="alternate" />

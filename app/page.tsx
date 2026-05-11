@@ -1,60 +1,50 @@
-"use client";
-
-import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
 
 import Loader from "@/components/loader";
 
-// Dynamically import Landing with no SSR to avoid hydration issues
+// SSR-enabled dynamic import — Google can now crawl the full page content
 const Landing = dynamic(() => import("@/screens/landing"), {
-  ssr: false,
   loading: () => <Loader />,
 });
 
-const LOADER_DURATION = 600;
+// Client-only smooth scroll — doesn't block server rendering
+const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
+  ssr: false,
+});
+
+// Page-specific metadata (overrides layout defaults for the homepage)
+export const metadata: Metadata = {
+  title: "UI Pirate | #1 SaaS UI/UX Design & Angular Development Agency — Fortune 500 Trusted",
+  description:
+    "Enterprise UI/UX design and Angular, React, Next.js frontend development agency. Specializing in SaaS apps, design systems & AI products. 50+ projects delivered for clients in USA, UK & globally. Book a free consultation.",
+  alternates: {
+    canonical: "https://uipirate.com",
+  },
+  openGraph: {
+    title: "UI Pirate | #1 SaaS UI/UX Design & Angular Development Agency",
+    description:
+      "Enterprise UI/UX design and Angular, React, Next.js development for SaaS apps, design systems & AI products. 50+ projects delivered in USA, UK & globally.",
+    url: "https://uipirate.com",
+    siteName: "UI Pirate by Vishal Anand",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+        width: 1200,
+        height: 630,
+        alt: "UI Pirate - Enterprise UI/UX Design Agency for SaaS & AI Products",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+};
 
 export default function Home() {
-  const [showContent, setShowContent] = useState(false);
-
-  const initSmoothScroll = useCallback(async () => {
-    try {
-      // Initialize global Lenis for smooth scrolling across entire site
-      const Lenis = (await import("lenis")).default;
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 1.2,
-        infinite: false,
-        wheelMultiplier: 1,
-        lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.08,
-      });
-
-	      const raf = (time: number) => {
-	        lenis.raf(time);
-	        requestAnimationFrame(raf);
-	      };
-	      requestAnimationFrame(raf);
-
-      // Store lenis instance globally for ScrollStack and other components to use
-      (window as any).__lenis = lenis;
-    } catch (error) {
-      console.error("Failed to initialize Lenis:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    initSmoothScroll();
-
-    // Show loader for 600ms
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, LOADER_DURATION);
-
-    return () => clearTimeout(timer);
-  }, [initSmoothScroll]);
-
-  return <><Landing /></>;
+  return (
+    <>
+      <SmoothScroll />
+      <Landing />
+    </>
+  );
 }
