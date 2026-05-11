@@ -25,7 +25,7 @@ const Seo = () => {
       "@type": "ContactPoint",
       telephone: "+919708636151",
       contactType: "customer service",
-      email: "vishalanand072@gmail.com",
+      email: "vishal@uipirate.com",
     },
     address: {
       "@type": "PostalAddress",

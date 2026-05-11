@@ -128,7 +128,7 @@ export default function RootLayout({
               contactPoint: {
                 "@type": "ContactPoint",
                 telephone: "+919708636151",
-                email: "vishalanand072@gmail.com",
+                email: "vishal@uipirate.com",
                 contactType: "customer service",
                 areaServed: ["US", "GB", "SG", "IN", "AU"],
                 availableLanguage: "English",
