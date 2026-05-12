@@ -1,6 +1,11 @@
 // app/[slug]/page.tsx
+// This route handles dynamic blog post pages at uipirate.com/[slug]
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+import BlogsDetails from "@/screens/blogsDetails";
+import dbConnect from "@/lib/mongodb";
+import Blog from "@/models/Blog";
 
 interface Props {
   params: { slug: string };
@@ -11,74 +16,131 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
 
   try {
-    const response = await fetch(`https://api.example.com/page-seo/${slug}`, {
-      // Cache the request (optional)
-      cache: "no-store", // or 'force-cache' for caching
-    });
+    await dbConnect();
+    const blog = await Blog.findOne({ slug, published: true }).lean();
 
-    if (!response.ok) {
-      // If the data isn't found, trigger 404
-      notFound();
+    if (!blog) {
+      return {
+        title: "Blog Post Not Found | UI Pirate",
+        description: "The requested blog post could not be found.",
+      };
     }
 
-    const data = await response.json();
-
     return {
-      title: data.title || "Default Title",
-      description: data.description || "Default Description",
+      title: `${(blog as any).title} | UI Pirate Blog`,
+      description:
+        (blog as any).excerpt ||
+        (blog as any).description ||
+        `Read ${(blog as any).title} on UI Pirate's design blog.`,
       openGraph: {
-        title: data.title,
-        description: data.description,
-        url: `https://example.com/${slug}`,
-        siteName: "Example Site",
-        images: [
-          {
-            url: data.image || "https://example.com/default-image.jpg",
-            width: 800,
-            height: 600,
-            alt: data.title,
-          },
-        ],
+        title: (blog as any).title,
+        description:
+          (blog as any).excerpt ||
+          (blog as any).description ||
+          `Read ${(blog as any).title} on UI Pirate's design blog.`,
+        url: `https://uipirate.com/${slug}`,
+        siteName: "UI Pirate by Vishal Anand",
+        images: (blog as any).featuredImage
+          ? [
+              {
+                url: (blog as any).featuredImage,
+                width: 1200,
+                height: 630,
+                alt: (blog as any).title,
+              },
+            ]
+          : [],
         locale: "en_US",
-        type: "website",
+        type: "article",
+      },
+      alternates: {
+        canonical: `https://uipirate.com/${slug}`,
       },
     };
   } catch (error) {
-    notFound(); // Redirect to 404 if there's an error
+    return {
+      title: "Blog | UI Pirate",
+      description: "UI/UX design insights, case studies, and tutorials.",
+    };
   }
 }
 
-// Generate static params for dynamic routing
+// Generate static params for known blog posts at build time
 export async function generateStaticParams() {
   try {
-    const response = await fetch("https://api.example.com/page-paths", {
-      cache: "no-store",
-      // Add timeout to prevent hanging
-      signal: AbortSignal.timeout(5000),
-    });
+    await dbConnect();
+    const blogs = await Blog.find({ published: true }, { slug: 1 }).lean();
 
-    if (!response.ok) {
-      return []; // Return an empty array if fetch fails
-    }
-
-    const paths = await response.json();
-
-    return paths.map((slug: string) => ({ slug }));
+    return blogs.map((blog: any) => ({ slug: blog.slug }));
   } catch (error) {
-    // Handle network errors gracefully during build
-    // Return empty array - pages will be generated on-demand with dynamicParams: true
+    // If DB is unavailable at build time, generate pages on-demand
     return [];
   }
 }
 
-// Allow dynamic params to be generated on-demand if not in staticParams
+// Allow dynamic params to be generated on-demand
 export const dynamicParams = true;
 
-export default function DynamicPage({ params }: Props) {
-  return (
-    <main>
-      <h1>Dynamic Page Content</h1>
-      <p>Content for route: {params.slug}</p>
-    </main>
-  );
+export default async function DynamicBlogPage({ params }: Props) {
+  const { slug } = params;
+
+  try {
+    await dbConnect();
+
+    const blog = await Blog.findOne({ slug, published: true }).lean();
+
+    if (!blog) {
+      notFound();
+    }
+
+    // Increment view count (don't await to avoid blocking)
+    Blog.findByIdAndUpdate(blog._id, { $inc: { views: 1 } }).exec();
+
+    // Convert MongoDB document to plain object
+    const blogData = {
+      ...blog,
+      _id: blog._id.toString(),
+      createdAt: blog.createdAt.toISOString(),
+      updatedAt: blog.updatedAt.toISOString(),
+      publishedAt: blog.publishedAt?.toISOString() || null,
+    };
+
+    return (
+      <div>
+        {/* Blog post JSON-LD for rich results */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: (blog as any).title,
+              description: (blog as any).excerpt || (blog as any).description,
+              image: (blog as any).featuredImage || undefined,
+              author: {
+                "@type": "Organization",
+                name: "UI Pirate by Vishal Anand",
+                url: "https://uipirate.com",
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "UI Pirate",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
+                },
+              },
+              datePublished: blog.publishedAt?.toISOString() || blog.createdAt.toISOString(),
+              dateModified: blog.updatedAt.toISOString(),
+              url: `https://uipirate.com/${slug}`,
+              mainEntityOfPage: `https://uipirate.com/${slug}`,
+            }),
+          }}
+          type="application/ld+json"
+        />
+        <BlogsDetails blog={blogData} />
+      </div>
+    );
+  } catch (error) {
+    notFound();
+  }
 }
