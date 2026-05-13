@@ -239,6 +239,7 @@ export default function RootLayout({
               name: [
                 "Services",
                 "Our Works",
+                "About",
                 "Pricing",
                 "Case Studies",
                 "Blog",
@@ -248,6 +249,7 @@ export default function RootLayout({
               url: [
                 "https://uipirate.com/services",
                 "https://uipirate.com/ourWorks",
+                "https://uipirate.com/about",
                 "https://uipirate.com/pricing",
                 "https://uipirate.com/case-studies",
                 "https://uipirate.com/blogs",
