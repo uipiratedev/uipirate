@@ -100,8 +100,11 @@ const industries = [
 
 const clients = [
   { name: "Ipsos", location: "Israel", role: "VP of R&D" },
+  { name: "Khaitan & Co", location: "India", role: "Leading Corporate Law Firm" },
   { name: "Xperiti", location: "New York, USA", role: "CEO & Founder" },
   { name: "RevUp AI", location: "Dallas, Texas, USA", role: "CEO" },
+  { name: "Sarge", location: "USA", role: "Legal & Policy Support Platform" },
+  { name: "Biotex Medical", location: "Texas, USA", role: "MedTech & Device Development" },
   { name: "Bird", location: "San Francisco, USA", role: "CEO" },
   {
     name: "Awesome Health Club",
@@ -120,16 +123,52 @@ const team = [
       "9+ years of experience in product design and enterprise frontend development. Specializes in turning complex ideas into intuitive, scalable products.",
   },
   {
-    name: "Kartik Kumar",
-    role: "UI/UX Designer",
+    name: "Danish Ansari",
+    role: "Lead Frontend Developer",
     description:
-      "Expert in creating user-centered designs for SaaS platforms, mobile apps, and enterprise dashboards.",
+      "Builds and ships the frontend. Expert in Angular, React, and creating pixel-perfect, responsive enterprise applications.",
   },
   {
     name: "Syed Musaddiq",
-    role: "UI/UX Designer",
+    role: "Lead UX Designer",
     description:
-      "Specializes in design systems, component libraries, and high-fidelity UI design for complex applications.",
+      "Designs how the product works. Specializes in design systems, component libraries, and data-driven UX for SaaS.",
+  },
+  {
+    name: "Kartik Kumar",
+    role: "Lead Graphics & Motion",
+    description:
+      "Crafts visuals and motion design, ensuring every product feels premium, polished, and dynamic.",
+  },
+  {
+    name: "Aniket",
+    role: "Lead Backend Developer",
+    description:
+      "Handles backend architecture, ensuring our enterprise applications are scalable, secure, and performant.",
+  },
+  {
+    name: "Priyagni",
+    role: "Graphic Designer",
+    description:
+      "Works on visual design, branding, and ensuring visual consistency across all touchpoints.",
+  },
+  {
+    name: "Harsh",
+    role: "Backend Developer",
+    description:
+      "Builds robust backend systems and APIs to power complex frontend interfaces.",
+  },
+  {
+    name: "Karan",
+    role: "Marketing",
+    description:
+      "Handles marketing, growth, and ensuring our products reach the right audience.",
+  },
+  {
+    name: "Aman",
+    role: "Video Editing",
+    description:
+      "Edits and produces high-quality video content for product showcases and marketing.",
   },
 ];
 
@@ -164,13 +203,43 @@ export default function AboutPage() {
               employee: [
                 {
                   "@type": "Person",
-                  name: "Kartik Kumar",
-                  jobTitle: "UI/UX Designer",
+                  name: "Danish Ansari",
+                  jobTitle: "Lead Frontend Developer",
                 },
                 {
                   "@type": "Person",
                   name: "Syed Musaddiq",
-                  jobTitle: "UI/UX Designer",
+                  jobTitle: "Lead UX Designer",
+                },
+                {
+                  "@type": "Person",
+                  name: "Kartik Kumar",
+                  jobTitle: "Lead Graphics & Motion",
+                },
+                {
+                  "@type": "Person",
+                  name: "Aniket",
+                  jobTitle: "Lead Backend Developer",
+                },
+                {
+                  "@type": "Person",
+                  name: "Priyagni",
+                  jobTitle: "Graphic Designer",
+                },
+                {
+                  "@type": "Person",
+                  name: "Harsh",
+                  jobTitle: "Backend Developer",
+                },
+                {
+                  "@type": "Person",
+                  name: "Karan",
+                  jobTitle: "Marketing",
+                },
+                {
+                  "@type": "Person",
+                  name: "Aman",
+                  jobTitle: "Video Editing",
                 },
               ],
               knowsAbout: [
@@ -280,6 +349,45 @@ export default function AboutPage() {
               Multi-role dashboards, data-heavy interfaces, intricate user
               flows, and real business logic. We specialize in the hard
               problems other agencies avoid.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Design Style & Approach */}
+      <section className="container mx-auto px-32 lg:px-20 max-md:px-4 py-20 bg-white">
+        <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 mb-4">
+          Our Design Style
+        </h2>
+        <p className="text-lg text-gray-600 mb-12 max-w-3xl">
+          We don't just make it look good; we design for conversion, clarity, and scale.
+        </p>
+
+        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-8">
+          <div className="border border-gray-200 rounded-2xl p-8 hover:border-[#FF5B04] transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              Dashboards & SaaS UX
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Clean, intuitive, and data-driven. We tame complexity by organizing dense information into clear, actionable interfaces.
+            </p>
+          </div>
+
+          <div className="border border-gray-200 rounded-2xl p-8 hover:border-[#FF5B04] transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              Websites & Landing Pages
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              Fast and conversion-focused. Every section is strategically crafted to guide the user toward the core CTA.
+            </p>
+          </div>
+
+          <div className="border border-gray-200 rounded-2xl p-8 hover:border-[#FF5B04] transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              Pixel-Perfect Execution
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              From Figma to code, we ensure the final product matches the vision exactly. No lost details in handoff.
             </p>
           </div>
         </div>

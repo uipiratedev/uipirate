@@ -18,7 +18,7 @@ We specialize in **complex enterprise applications** — the kind with multi-rol
 
 **Core Technologies**: Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Webflow
 **Founder**: Vishal Anand — 9+ years of experience in product design & enterprise frontend development
-**Team**: Vishal Anand (Founder & Lead Designer), Kartik Kumar (UI/UX Designer), Syed Musaddiq (UI/UX Designer)
+**Team**: Vishal Anand (Founder & Lead Designer), Danish Ansari (Lead Frontend Developer), Syed Musaddiq (Lead UX Designer), Kartik Kumar (Lead Graphics & Motion), Aniket (Lead Backend Developer)
 **Headquarters**: India (serving clients globally)
 **Founded**: 2015
 **Projects Shipped**: 50+ products with 5.0 rating
@@ -46,8 +46,11 @@ We specialize in **complex enterprise applications** — the kind with multi-rol
 ## Notable Clients & Projects
 
 - **Ipsos** (Israel) — Enterprise research platform redesign for VP of R&D
+- **Khaitan & Co** (India) — India's leading corporate law firm
 - **Xperiti** (New York, USA) — SaaS research platform for CEO & Founder
 - **RevUp AI** (Dallas, Texas, USA) — AI SaaS platform for CEO
+- **Sarge** (USA) — Real-time legal and policy support platform for officers in the field
+- **Biotex Medical** (Texas, USA) — MedTech & medical device development
 - **Bird** (San Francisco, USA) — Brand & product design for CEO
 - **Awesome Health Club** (California, USA) — Platform design for Seed Investor
 - **ArthAlpha** (Bangalore, India) — Fintech trading platform for Co-Founder

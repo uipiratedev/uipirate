@@ -18,6 +18,28 @@
         "jobTitle": "Founder & Lead UI/UX Designer",
         "url": "https://www.linkedin.com/in/vishal-a-51bb49110"
       },
+      "employee": [
+        {
+          "@type": "Person",
+          "name": "Danish Ansari",
+          "jobTitle": "Lead Frontend Developer"
+        },
+        {
+          "@type": "Person",
+          "name": "Syed Musaddiq",
+          "jobTitle": "Lead UX Designer"
+        },
+        {
+          "@type": "Person",
+          "name": "Kartik Kumar",
+          "jobTitle": "Lead Graphics & Motion"
+        },
+        {
+          "@type": "Person",
+          "name": "Aniket",
+          "jobTitle": "Lead Backend Developer"
+        }
+      ],
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+919708636151",
