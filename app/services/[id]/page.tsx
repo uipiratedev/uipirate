@@ -23,19 +23,19 @@ const normalize = (str: string) =>
 // SEO metadata mapping for each service
 const SERVICE_META: Record<string, { title: string; description: string; keywords: string }> = {
   "saas-web-mobile-apps": {
-    title: "SaaS & Mobile App Design | Angular, React & Next.js Development | UI Pirate",
+    title: "SaaS & Mobile App Design & Development | Idea to Product | Angular, React | UI Pirate",
     description:
-      "Expert SaaS and mobile app UI/UX design & frontend development in Angular, React, and Next.js. From MVP wireframes to enterprise-grade products. 50+ projects delivered. Book a free consultation.",
+      "Turn your SaaS or mobile app idea into a shipped product. We handle product thinking, competitive analysis, information architecture, UX/UI design & frontend development in Angular and React. From a few lines of vision to a fully built product.",
     keywords:
-      "SaaS design agency, Angular development agency, Angular frontend development, mobile app UI design, SaaS UX design, dashboard design, AI app design, MVP design, React Angular Next.js development, startup design agency USA",
+      "SaaS product design, idea to product, product thinking, Angular SaaS development, mobile app design and development, competitive analysis, information architecture, complex enterprise application, MVP to product, startup product agency USA",
   },
   "landing-pages-business-websites": {
     title:
-      "Landing Page & Website Design | Angular, React & Webflow Development | UI Pirate",
+      "Landing Page & Website Design & Development | Angular, React & Webflow | UI Pirate",
     description:
-      "High-converting landing pages and business websites that turn visitors into customers. Design + development in Angular, React, Next.js, Framer, and Webflow. 2-4 week delivery.",
+      "High-converting landing pages and business websites that turn visitors into customers. We think through your product positioning, competitive landscape, and user journey — then design + develop in Angular, React, Next.js, Framer, or Webflow.",
     keywords:
-      "landing page design agency, Angular website development, business website design, high-converting landing page, Angular React development, website redesign, startup website, corporate website design",
+      "landing page design and development, business website development, Angular website development, high-converting landing page, product positioning, competitive analysis, startup website design",
   },
   "design-system-component-library": {
     title: "Design Systems & Component Libraries | Scalable UI Kits | UI Pirate",

@@ -1,9 +1,9 @@
 {
   "schema_version": "v1",
   "name_for_model": "ui_pirate_design",
-  "name_for_human": "UI Pirate - Enterprise Design Agency",
-  "description_for_model": "UI Pirate is an enterprise UI/UX design and development agency founded in 2015 by Vishal Anand. They serve Fortune 500 companies and tech startups across USA, UK, Singapore, India, and Australia. Services include: SaaS web and mobile app design, landing pages and business websites, design systems and component libraries, graphic design, motion graphics and video editing, UX audits and consultation, and 3D animation. They have completed 50+ projects with a 5.0 rating. Notable clients include Ipsos, Xperiti, RevUp AI, Bird, and ArthAlpha. The team specializes in AI application design, fintech dashboards, healthcare UX, and enterprise software interfaces.",
-  "description_for_human": "Enterprise UI/UX design agency specializing in SaaS apps, design systems, and AI products. 50+ projects, 5.0 rating.",
+  "name_for_human": "UI Pirate - Product Design & Development Agency",
+  "description_for_model": "UI Pirate is a product design and frontend development agency founded in 2015 by Vishal Anand. They turn product ideas into shipped products — handling product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. They serve Fortune 500 companies and tech startups across USA, UK, Singapore, India, and Australia. Services include: SaaS web and mobile app design and development, landing pages and business websites, design systems and component libraries, graphic design, motion graphics and video editing, UX audits and consultation, and 3D animation. They have completed 50+ projects with a 5.0 rating. Notable clients include Ipsos, Xperiti, RevUp AI, Bird, and ArthAlpha. They specialize in complex enterprise applications with multi-role dashboards, data-heavy interfaces, and intricate user flows. Their approach: have a conversation about your product — they carry the rest.",
+  "description_for_human": "Product design & development agency. From idea to shipped product — UX/UI, product thinking & complex enterprise Angular/React apps. 50+ products shipped.",
   "auth": {
     "type": "none"
   },

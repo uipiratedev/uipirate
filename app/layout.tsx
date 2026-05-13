@@ -13,15 +13,15 @@ import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title:
-    "UI Pirate | Enterprise UI/UX Design & Angular, React Development | USA, UK, Singapore, India, Australia",
+    "UI Pirate | Product Design & Development Agency — Idea to Product | Angular, React, Next.js",
   description:
-    "Leading UI/UX design and frontend development agency serving enterprise clients globally. Specializing in Angular, React, Next.js development, design systems, AI/SaaS apps, and mobile applications. Trusted by Fortune 500 companies across USA, UK, Singapore, India, and Australia.",
+    "We turn ideas into shipped products. Product design & frontend development agency specializing in UX/UI, product thinking, competitive analysis, information architecture & complex enterprise Angular/React applications. Trusted by Fortune 500 across USA, UK, Singapore, India, and Australia.",
   keywords:
-    "enterprise UI design, Angular development agency, Angular frontend development, React development, Next.js, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise clients USA UK Singapore India Australia, Fortune 500 design, startup design agency, Vishal Anand, UI Pirate",
+    "product design agency, idea to product, product thinking, UX UI design and development, Angular development agency, complex enterprise application design, frontend development, React development, competitive analysis, information architecture, product design, SaaS app design, design systems, mobile app design, enterprise software design, Fortune 500 design, Vishal Anand, UI Pirate",
   openGraph: {
-    title: "UI Pirate | Global Enterprise UI/UX Design & Development Agency",
+    title: "UI Pirate | Product Design & Development — From Idea to Shipped Product",
     description:
-      "Transform your business with world-class UI/UX design and development. Serving enterprise clients across USA, UK, Singapore, India & Australia. Specializing in AI/SaaS apps, mobile design, and design systems.",
+      "Not just designs — we help you think, plan, and build your product. Product thinking, UX/UI, competitive analysis & complex enterprise frontend development in Angular & React. Serving USA, UK, Singapore, India & Australia.",
     url: "https://uipirate.com",
     siteName: "UI Pirate by Vishal Anand",
     images: [
@@ -117,7 +117,7 @@ export default function RootLayout({
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
               image: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
               description:
-                "Leading enterprise UI/UX design and frontend development agency serving Fortune 500 companies globally. Specializing in Angular, React, and Next.js development for SaaS applications, design systems, AI products, and mobile apps across USA, UK, Singapore, India, and Australia.",
+                "Product design and frontend development agency that turns ideas into shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
               foundingDate: "2015",
               founder: {
                 "@type": "Person",

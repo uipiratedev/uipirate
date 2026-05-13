@@ -15,16 +15,16 @@ const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
 
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
-  title: "UI Pirate | #1 SaaS UI/UX Design & Angular Development Agency — Fortune 500 Trusted",
+  title: "UI Pirate | Product Design & Development Agency — Idea to Product | Angular, React",
   description:
-    "Enterprise UI/UX design and Angular, React, Next.js frontend development agency. Specializing in SaaS apps, design systems & AI products. 50+ projects delivered for clients in USA, UK & globally. Book a free consultation.",
+    "We turn your product ideas into reality. Full-service product design & frontend development agency — UX/UI, product thinking, competitive analysis, information architecture & complex enterprise Angular/React applications. 50+ products shipped. Book a free call.",
   alternates: {
     canonical: "https://uipirate.com",
   },
   openGraph: {
-    title: "UI Pirate | #1 SaaS UI/UX Design & Angular Development Agency",
+    title: "UI Pirate | Product Design & Development — From Idea to Shipped Product",
     description:
-      "Enterprise UI/UX design and Angular, React, Next.js development for SaaS apps, design systems & AI products. 50+ projects delivered in USA, UK & globally.",
+      "Not just designs — we help you think, plan, and build your product from scratch. Product thinking, UX/UI design, and complex enterprise frontend development in Angular & React. 50+ products shipped globally.",
     url: "https://uipirate.com",
     siteName: "UI Pirate by Vishal Anand",
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
         width: 1200,
         height: 630,
-        alt: "UI Pirate - Enterprise UI/UX Design Agency for SaaS & AI Products",
+        alt: "UI Pirate - Product Design & Development Agency — From Idea to Shipped Product",
       },
     ],
     locale: "en_US",

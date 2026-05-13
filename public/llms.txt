@@ -1,28 +1,47 @@
-# UI Pirate — Enterprise UI/UX Design Agency
+# UI Pirate — Product Design & Development Agency
 
-> UI Pirate is a global enterprise UI/UX design and frontend development agency founded by Vishal Anand, specializing in Angular, React, and Next.js development. Serving Fortune 500 and enterprise clients across USA, UK, Singapore, India, and Australia.
+> UI Pirate is a product design and frontend development agency founded by Vishal Anand. We turn product ideas into shipped products — handling everything from product thinking and competitive analysis to UX/UI design and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 and enterprise clients across USA, UK, Singapore, India, and Australia.
+
+## What Makes Us Different
+
+We are NOT just a design agency that makes things look pretty. Our approach is simple: **have a conversation about your product — we carry the rest.** From a few lines of your vision, we help you:
+
+- **Think through your product** — Product thinking, competitive analysis, market positioning
+- **Plan the architecture** — Information architecture, user flows, decision-making frameworks
+- **Design the experience** — UX research, wireframes, high-fidelity UI, prototypes
+- **Build the product** — Production-ready frontend code in Angular, React, Next.js
+- **Ship and scale** — Performance optimization, design systems, component libraries
+
+We specialize in **complex enterprise applications** — the kind with multi-role dashboards, data-heavy interfaces, intricate user flows, and real business logic. Not just marketing pages, but actual working products.
 
 ## About
 
-UI Pirate designs and builds intuitive user interfaces for SaaS platforms, AI applications, mobile products, and enterprise software. The team has deep expertise in **Angular**, React, and Next.js frontend development. With 50+ successful projects and a 5.0 client rating, the team specializes in turning complex product requirements into clean, scalable designs and production-ready code that drives user engagement and business growth.
-
 **Core Technologies**: Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Webflow
-
-**Founder**: Vishal Anand — 9+ years of experience in enterprise UI/UX design
+**Founder**: Vishal Anand — 9+ years of experience in product design & enterprise frontend development
 **Team**: Vishal Anand (Founder & Lead Designer), Kartik Kumar (UI/UX Designer), Syed Musaddiq (UI/UX Designer)
 **Headquarters**: India (serving clients globally)
 **Founded**: 2015
+**Projects Shipped**: 50+ products with 5.0 rating
 
 ## Services
 
-- **SaaS Web & Mobile App Design & Development**: End-to-end UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products. From MVP wireframes to enterprise-grade products. Timeline: 1-2 months.
-- **Landing Pages & Business Websites**: High-converting landing pages and corporate websites for startups and enterprises. Design + development in Angular, React, Next.js, Framer, or Webflow. Timeline: 2-4 weeks.
-- **UI Development & Frontend Engineering**: Production-ready frontend development in Angular (v14+), React, and Next.js. Component-based architecture, responsive layouts, API integration, and performance optimization.
+- **SaaS Web & Mobile App Design & Development**: End-to-end product design and frontend development in Angular, React, and Next.js. From idea to shipped product — product thinking, competitive analysis, information architecture, UX/UI design, prototyping, and production-ready code. Timeline: 1-2 months.
+- **Landing Pages & Business Websites**: High-converting landing pages and corporate websites. We think through your positioning, competitive landscape, and user journey — then design + develop in Angular, React, Next.js, Framer, or Webflow. Timeline: 2-4 weeks.
+- **UI Development & Frontend Engineering**: Production-ready frontend development in Angular (v14+), React, and Next.js. Specializing in complex enterprise applications — multi-role dashboards, data-heavy interfaces, API integration, and performance optimization.
 - **Design Systems & Component Libraries**: Custom design tokens, branded UI kits, documented and dev-ready Angular/React component libraries for scalable product teams. Timeline: 1-4 weeks.
 - **Graphic Design**: Brand identity, infographics, newsletters, website graphics, social media visuals, and print-ready marketing materials.
 - **Motion Graphics & Video Editing**: 2D/3D animations, social media reels/ads, explainer videos, sound design, color grading, and motion graphics for web and product.
 - **UX Audits & Consultation**: Heuristic analysis, usability testing, friction point identification, and strategic UX recommendations for existing products.
 - **3D Animation & Rendering**: 3D product visualization, architectural rendering, and animated 3D assets for marketing and product use.
+
+## Our Approach
+
+1. **Listen** — You share your vision, even if it's just a few lines of an idea
+2. **Think** — We do competitive analysis, market research, product thinking
+3. **Plan** — Information architecture, user flows, feature prioritization
+4. **Design** — Wireframes → High-fidelity UI → Interactive prototypes
+5. **Build** — Production-ready Angular/React code, API integration, testing
+6. **Ship** — Deployment, documentation, handoff, and ongoing support
 
 ## Notable Clients & Projects
 
@@ -42,14 +61,6 @@ UI Pirate designs and builds intuitive user interfaces for SaaS platforms, AI ap
 ## Industries Served
 
 SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applications, Enterprise Software
-
-## Target Audience
-
-Enterprise clients, Fortune 500 companies, SaaS companies, tech startups, mobile app companies, and design/dev agencies needing a reliable UI/UX design partner.
-
-## Pricing
-
-Flexible pricing models including per-project, monthly retainer, and hourly rates. Transparent pricing with enterprise-grade quality at startup-friendly rates.
 
 ## Contact
 
