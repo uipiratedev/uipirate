@@ -10,6 +10,7 @@ import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
 import { Footer } from "@/components/footer";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title:
@@ -315,7 +316,8 @@ export default function RootLayout({
           <PageTransition />
           <PageLoader>
             <ConditionalNavbar />
-            <main className="flex-1 min-h-screen pt-24 max-md:pt-16" id="main-content">
+            <Breadcrumbs />
+            <main className="flex-1 min-h-screen" id="main-content">
               {children}
             </main>
             <Footer />

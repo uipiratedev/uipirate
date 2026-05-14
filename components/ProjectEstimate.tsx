@@ -10,6 +10,7 @@ import 'react-phone-input-2/lib/style.css';
 
 interface ProjectEstimateProps {
   cardVariants?: any;
+  className?: string;
 }
 
 // Country codes will be handled by react-phone-input-2 package
@@ -55,7 +56,7 @@ const priorities = [
   },
 ];
 
-export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
+export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimateProps) => {
   const [currentStep, setCurrentStep] = useState(0); // 0 = initial, 1-3 = steps
   const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
   const [modalPlacement, setModalPlacement] = useState<"center" | "bottom" | "top" | "top-center" | "bottom-center">("center");
@@ -289,16 +290,21 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
 
   // Prevent background scroll when modal is open
   useEffect(() => {
+    const lenis = (window as any).__lenis;
+
     if (isOpen) {
       document.body.classList.add('modal-open');
       document.documentElement.classList.add('modal-open');
+      if (lenis) lenis.stop();
     } else {
       document.body.classList.remove('modal-open');
       document.documentElement.classList.remove('modal-open');
+      if (lenis) lenis.start();
     }
     return () => {
       document.body.classList.remove('modal-open');
       document.documentElement.classList.remove('modal-open');
+      if (lenis) lenis.start();
     };
   }, [isOpen]);
 
@@ -315,7 +321,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
   };
 
   return (
-    <div className="h-full">
+    <div className={`h-full ${className}`}>
       <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-gray-200 shadow-sm h-full">
         <CardBody className="p-8 max-md:p-6">
           {/* @ts-ignore */}
@@ -420,14 +426,14 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
         placement={modalPlacement}
         scrollBehavior="inside"
         classNames={{
-          base: `rounded-[24px] border-1 border-gray-200 shadow-2xl h-[520px] max-md:h-auto max-md:max-h-[85dvh] ${currentStep === 1 ? '!overflow-visible' : 'overflow-hidden'}`,
+          base: `rounded-[24px] border-1 border-gray-200 shadow-2xl min-h-[520px] max-h-[92vh] max-md:h-auto max-md:max-h-[92dvh] ${currentStep === 1 ? '!overflow-visible' : 'overflow-hidden'}`,
           body: `p-0 ${currentStep === 1 ? '!overflow-visible' : ''}`,
           wrapper: currentStep === 1 ? '!overflow-visible' : '',
           backdrop: "bg-black/50 backdrop-blur-md",
         }}
       >
         <ModalContent className={currentStep === 1 ? '!overflow-visible' : ''}>
-          <ModalBody className={`p-8 max-md:p-6 flex flex-col ${currentStep === 1 ? '!overflow-visible' : 'h-[650px] max-md:h-auto overflow-hidden'}`}>
+          <ModalBody className={`p-8 max-md:p-6 flex flex-col ${currentStep === 1 ? '!overflow-visible' : 'min-h-[500px] overflow-hidden'}`}>
             {/* @ts-ignore */}
             <AnimatePresence mode="wait">
               {/* Step 1: Add Your Details */}
@@ -453,6 +459,8 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                       <div>
                         <label className="text-sm font-medium mb-2 block font-jakarta text-gray-700">What is your name?*</label>
                         <Input
+                          name="name"
+                          autoComplete="name"
                           placeholder="Write here"
                           value={name}
                           radius="sm"
@@ -473,6 +481,8 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                       <div>
                         <label className="text-sm font-medium mb-2 block font-jakarta">What is your email id?*</label>
                         <Input
+                          name="email"
+                          autoComplete="email"
                           type="email"
                           placeholder="Write here"
                           value={email}
@@ -513,7 +523,8 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                             inputProps={{
                               name: 'phone',
                               required: true,
-                              autoFocus: false
+                              autoFocus: false,
+                              autoComplete: 'tel'
                             }}
                           />
                           {phoneError && <p className="text-xs text-[#f31260] mt-1 ml-1">{phoneError}</p>}
@@ -540,7 +551,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                   transition={{ duration: 0.3 }}
                   className="flex flex-col h-full"
                 >
-                  <div className="flex-1 overflow-y-scroll pr-2 custom-scrollbar">
+                  <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
                     <div className="mb-6">
                       <div className="flex justify-between items-center mb-2">
                         <p className="text-[10px] bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-jetbrains-mono tracking-wider font-bold">STEP 2</p>
@@ -617,7 +628,7 @@ export const ProjectEstimate = ({ cardVariants }: ProjectEstimateProps) => {
                   transition={{ duration: 0.3 }}
                   className="flex flex-col h-full"
                 >
-                  <div className="flex-1 overflow-y-scroll pr-2 custom-scrollbar pb-6">
+                  <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar pb-6">
                     <div className="mb-6">
                       <div className="flex justify-between items-center mb-6">
                          <div className="px-3 py-1.5 bg-gray-100 rounded-lg border border-gray-200">

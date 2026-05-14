@@ -1,4 +1,5 @@
 import HeaderInfo from "./headeInfo";
+import GlobalCTA from "@/components/GlobalCTA";
 
 interface BlogData {
   _id: string;
@@ -28,6 +29,9 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
         dangerouslySetInnerHTML={{ __html: blog.content }}
         className="prose prose-lg max-w-none dark:prose-invert mt-8 mb-12"
       />
+
+      {/* CTA Banner — convert engaged readers into leads */}
+      <GlobalCTA />
     </div>
   );
 };
