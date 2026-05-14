@@ -429,11 +429,11 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
         classNames={{
           base: `rounded-[24px] border-1 border-gray-200 shadow-2xl min-h-[520px] max-h-[92vh] max-md:h-auto max-md:max-h-[92dvh] ${currentStep === 1 ? '!overflow-visible' : 'overflow-hidden'}`,
           body: `p-0 ${currentStep === 1 ? '!overflow-visible' : ''}`,
-          wrapper: currentStep === 1 ? '!overflow-visible' : '',
+          wrapper: `${currentStep === 1 ? '!overflow-visible' : ''} overflow-hidden`,
           backdrop: "bg-black/50 backdrop-blur-md",
         }}
       >
-        <ModalContent className={currentStep === 1 ? '!overflow-visible' : ''}>
+        <ModalContent className={currentStep === 1 ? '!overflow-visible' : ''} data-lenis-prevent>
           <ModalBody className={`p-8 max-md:p-6 flex flex-col ${currentStep === 1 ? '!overflow-visible' : 'min-h-[500px] overflow-hidden'}`}>
             {/* @ts-ignore */}
             <AnimatePresence mode="wait">

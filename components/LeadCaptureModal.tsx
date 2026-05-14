@@ -17,23 +17,25 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
     if (isOpen) {
       // 1. Lock native scroll
       const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = "hidden";
-      document.body.style.paddingRight = `${scrollBarWidth}px`;
       document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
 
       // 2. Stop Lenis smooth scroll if active
       if (lenis) {
         lenis.stop();
+        console.log("Lenis stopped via modal");
       }
     } else {
       // 1. Restore native scroll
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
       document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
 
       // 2. Restart Lenis
       if (lenis) {
         lenis.start();
+        console.log("Lenis started via modal");
       }
     }
 
@@ -41,6 +43,7 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
       document.body.style.overflow = "";
       document.body.style.paddingRight = "";
       document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
       if (lenis) {
         lenis.start();
       }
@@ -57,12 +60,12 @@ export default function LeadCaptureModal({ isOpen, onClose }: LeadCaptureModalPr
       classNames={{
         base: "rounded-[24px] border-1 border-gray-200 shadow-2xl overflow-hidden max-h-[92vh]",
         backdrop: "bg-black/50 backdrop-blur-md",
-        wrapper: "z-[9999999]",
+        wrapper: "z-[9999999] overflow-hidden",
       }}
     >
-      <ModalContent className="rounded-[24px] overflow-hidden">
+      <ModalContent className="rounded-[24px] overflow-hidden" data-lenis-prevent>
         {(onCloseInternal) => (
-          <ModalBody className="p-8 max-md:p-6 overflow-y-auto custom-scrollbar rounded-[24px]">
+          <ModalBody className="p-8 max-md:p-6 overflow-y-auto custom-scrollbar rounded-[24px] min-h-[500px]">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Let's Venture Together</h2>
               <p className="text-gray-500">
