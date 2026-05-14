@@ -10,7 +10,7 @@
         "@type": "ImageObject",
         "url": "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg"
       },
-      "description": "Global enterprise UI/UX design and frontend development agency serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Specializing in Angular, React, and Next.js development for SaaS applications, design systems, AI products, and mobile apps. Expert UI development, graphic design, motion graphics, and comprehensive frontend engineering. Helping businesses create intuitive, engaging interfaces that drive user engagement and business growth.",
+      "description": "Product design and frontend development agency that turns ideas into shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. We help clients go from a few lines of vision to a fully built product. Serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Our approach: have a conversation about your product — we carry the rest.",
       "foundingDate": "2015",
       "founder": {
         "@type": "Person",
@@ -18,6 +18,28 @@
         "jobTitle": "Founder & Lead UI/UX Designer",
         "url": "https://www.linkedin.com/in/vishal-a-51bb49110"
       },
+      "employee": [
+        {
+          "@type": "Person",
+          "name": "Danish Ansari",
+          "jobTitle": "Lead Frontend Developer"
+        },
+        {
+          "@type": "Person",
+          "name": "Syed Musaddiq",
+          "jobTitle": "Lead UX Designer"
+        },
+        {
+          "@type": "Person",
+          "name": "Kartik Kumar",
+          "jobTitle": "Lead Graphics & Motion"
+        },
+        {
+          "@type": "Person",
+          "name": "Aniket",
+          "jobTitle": "Lead Backend Developer"
+        }
+      ],
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+919708636151",
@@ -72,7 +94,7 @@
       "provider": {
         "@id": "https://uipirate.com/#organization"
       },
-      "description": "Comprehensive UI/UX design and frontend development services for enterprise clients including Angular development, React development, Next.js development, UI development, graphic design, motion graphics, design systems, SaaS application design, mobile app design, AI application interfaces, and web development",
+      "description": "Full-service product design and frontend development services — from idea to shipped product. Includes product thinking, competitive analysis, information architecture, UX/UI design, Angular development, React development, complex enterprise application design, design systems, SaaS applications, mobile apps, graphic design, motion graphics, and frontend engineering",
       "serviceType": [
         "UI Design",
         "UX Design",
@@ -110,7 +132,7 @@
       "@id": "https://uipirate.com/#person",
       "name": "Vishal Anand",
       "jobTitle": "UI/UX Designer & Founder",
-      "description": "Expert UI/UX designer and frontend developer with 9+ years of experience in creating modern, scalable designs for SaaS and tech companies. Specializes in Angular, React, and Next.js development, AI application design, and enterprise software interfaces.",
+      "description": "Product designer and frontend developer with 9+ years of experience turning product ideas into shipped products. Specializes in product thinking, competitive analysis, information architecture, complex enterprise Angular/React applications, AI product design, and enterprise software interfaces. Philosophy: have a conversation about the product, we carry the rest.",
       "worksFor": {
         "@id": "https://uipirate.com/#organization"
       },

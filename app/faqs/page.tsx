@@ -1,17 +1,18 @@
 import { Metadata } from "next";
 
 import Faqs from "@/screens/faqs";
+import FaqData from "@/data/faqs.json";
 
 export const metadata: Metadata = {
-  title: "FAQs | UI/UX Design Agency Questions Answered | UI Pirate",
+  title: "FAQs | Product Design & Development Questions Answered | UI Pirate",
   description:
-    "Frequently asked questions about UI Pirate's design services, pricing, process, timelines, and working with our enterprise UI/UX design team. Get answers before you book a call.",
+    "Frequently asked questions about UI Pirate's product design & development services, pricing, process, timelines, Angular/React development, and working with our team. Get answers before you book a call.",
   keywords:
-    "UI/UX design FAQ, design agency questions, SaaS design process, UI design timeline, how to hire UI designer, design agency process",
+    "product design FAQ, design agency questions, SaaS design process, Angular development FAQ, UI design timeline, how to hire product designer, design agency process, idea to product",
   openGraph: {
-    title: "FAQs | UI Pirate — UI/UX Design Agency",
+    title: "FAQs | UI Pirate — Product Design & Development Agency",
     description:
-      "Get answers about our design services, pricing, process, and timelines.",
+      "Get answers about our product design & development services, pricing, process, and timelines.",
     url: "https://uipirate.com/faqs",
     siteName: "UI Pirate by Vishal Anand",
     locale: "en_US",
@@ -22,9 +23,44 @@ export const metadata: Metadata = {
   },
 };
 
+// Build FAQPage schema from the "general" category (most important for Google)
+function buildFaqSchema() {
+  const generalFaqs = (FaqData as any).general || [];
+  const serviceFaqs = (FaqData as any).Services || [];
+
+  // Combine general + services FAQs for the schema (most relevant)
+  const allFaqs = [...generalFaqs, ...serviceFaqs];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: allFaqs.map(
+      (faq: { heading: string; title1: string; list: string[]; title2?: string }) => ({
+        "@type": "Question",
+        name: faq.heading.replace(/^[^\w]*/, "").trim(), // Remove leading emoji
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: [faq.title1, ...faq.list, faq.title2 || ""]
+            .filter(Boolean)
+            .join(" "),
+        },
+      })
+    ),
+  };
+}
+
 const FaqsPage = () => {
+  const faqSchema = buildFaqSchema();
+
   return (
     <div>
+      {/* FAQPage JSON-LD for Google rich results */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+        type="application/ld+json"
+      />
       <Faqs />
     </div>
   );

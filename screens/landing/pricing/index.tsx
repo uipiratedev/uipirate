@@ -159,7 +159,7 @@ const Pricing = () => {
         </div>
 
         {/* Custom Project Estimate Card */}
-        <div>
+        <div className="h-full min-h-[580px]">
           <ProjectEstimate />
         </div>
       </div>

@@ -25,9 +25,9 @@ const OurWorks = () => {
         </div>
         <p className="heading-center">Pricing That Makes Sense</p>
       </div>
-      <div className="autoShowBottom mt-6 max-md:mt-4">
-        <ProjectEstimate />
-        </div>
+      <div className="autoShowBottom mt-6 max-md:mt-4 max-w-2xl mx-auto">
+        <ProjectEstimate className="min-h-[600px]" />
+      </div>
           </div>
         </div>
       </div>

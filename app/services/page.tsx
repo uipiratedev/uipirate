@@ -4,11 +4,11 @@ import Service from "@/screens/service";
 
 export const metadata: Metadata = {
   title:
-    "UI/UX Design & Angular Development Services | SaaS, Mobile Apps, Design Systems | UI Pirate",
+    "Product Design & Development Services | Idea to Product | Angular, React | UI Pirate",
   description:
-    "Full-service UI/UX design and frontend development in Angular, React & Next.js. SaaS apps, landing pages, design systems, motion graphics & mobile apps. Enterprise-grade quality with startup-friendly pricing. Serving USA, UK & globally.",
+    "Full-service product design & frontend development. From idea to shipped product — product thinking, competitive analysis, UX/UI design, and complex enterprise Angular/React applications. Design systems, SaaS apps, landing pages & more.",
   keywords:
-    "UI/UX design services, Angular development agency, Angular frontend development, SaaS design agency, React development, Next.js development, mobile app design, design systems, motion graphics, landing page design, enterprise UX, hire Angular developer, hire UI designer",
+    "product design and development, idea to product, product thinking agency, UX UI design services, Angular development agency, complex enterprise application design, frontend development, competitive analysis, information architecture, SaaS design, design systems, hire product designer",
   openGraph: {
     title: "UI/UX Design Services | UI Pirate",
     description:

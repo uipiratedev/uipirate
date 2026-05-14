@@ -3,10 +3,12 @@
 import { motion } from "framer-motion";
 import { Link } from "@heroui/link";
 import { useState } from "react";
+import NextLink from "next/link";
 
 import { JoinButtonIcon } from "./JoinButtonIcon";
 import ProPirateFooterSection from "./proPirate";
 import { useClickSound } from "@/hooks/useClickSound";
+import LeadCaptureModal from "./LeadCaptureModal";
 
 const footerSocialLinks = [
 
@@ -52,11 +54,13 @@ const footerSocialLinks = [
 export const Footer: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const playClickSound = useClickSound();
 
   const handleClick = () => {
     playClickSound();
     setIsActive(!isActive);
+    setIsModalOpen(true);
   };
 
   return (
@@ -91,14 +95,8 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
           </h2>
         
 
-          {/* JOIN WAITLIST Button with 3D Effect */}
-          {/* JOIN WAITLIST Button with Targeted Scaling & Reflection */}
+          {/* "Lets Venture" button — opens lead capture modal */}
           <div className="flex justify-center">
-            <Link
-            href="https://docs.google.com/forms/d/e/1FAIpQLSd5jCqm79CUcwSaaQ6yPckhFoChN8Aq_m1LWlS_0_BO5iFrkg/viewform"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
             <motion.div
               className="flex flex-col items-center mb-16 max-md:mb-0 mt-6 relative group cursor-pointer w-fit"
               onClick={handleClick}
@@ -107,7 +105,6 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
               onTouchEnd={() => setIsPressed(false)}
               onTouchStart={() => setIsPressed(true)}
               style={{ perspective: "1000px" }}
-              // whileTap={{ scale: 0.99 }}
               onMouseDown={() => setIsPressed(true)}
             >
               <div className="block relative mt-6">
@@ -127,8 +124,13 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
                 </div>
               </div>
             </motion.div>
-            </Link>
           </div>
+
+          {/* Lead Capture Modal */}
+          <LeadCaptureModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
 
           {/* Background Text - SAAS WEB APP Marquee - Positioned Behind Button */}
           <div
