@@ -267,18 +267,19 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
     const prioritiesList = selectedPriorities.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(", ");
     
     const message = encodeURIComponent(
-      `*Hey UI Pirate! I just completed the Project Estimator*%0A%0A` +
-      `*My Details:*%0A` +
-      `• Name: ${name}%0A` +
-      `• Email: ${email}%0A` +
-      `• Phone: ${countryCode} ${phone}%0A%0A` +
-      `*Project Info:*%0A` +
-      `• Building: ${projectTypesList}%0A` +
-      `• Requirement: ${selectedRequirement}%0A` +
-      `• Priorities: ${prioritiesList}%0A%0A` +
-      `*Rough Estimate Received:*%0A` +
-      `${estimate.isInvalid ? "_Invalid Combination (Fast + Budget)_" : `• Budget: ${estimate.budget}%0A• Timeline: ${estimate.timeline}`}%0A%0A` +
-      `I'd like to get a more detailed quote!`
+      `🏴‍☠️ *NEW PROJECT ESTIMATE* 🏴‍☠️\n\n` +
+      `*CLIENT DETAILS*\n` +
+      `👤 *Name:* ${name}\n` +
+      `📧 *Email:* ${email}\n` +
+      `📞 *Phone:* +${phone}\n\n` +
+      `*PROJECT SCOPE*\n` +
+      `🚀 *Building:* ${projectTypesList}\n` +
+      `🛠️ *Needs:* ${selectedRequirement}\n` +
+      `🎯 *Priorities:* ${prioritiesList}\n\n` +
+      `*BALLPARK ESTIMATE*\n` +
+      `${estimate.isInvalid ? "⚠️ _Invalid Combination_" : `💰 *Budget:* ${estimate.budget}\n⏳ *Timeline:* ${estimate.timeline}`}\n\n` +
+      `--- \n` +
+      `_I'm interested in moving forward. Let's talk!_`
     );
 
     // Using the provided wa.link and appending the text parameter
