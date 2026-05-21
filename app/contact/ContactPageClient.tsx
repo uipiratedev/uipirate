@@ -88,29 +88,19 @@ export default function ContactPageClient() {
         </motion.div>
       </section>
 
-      {/* ── Main Layout: Estimator + Cal.com ─────────────────────────── */}
+      {/* ── Main Layout: Info Panel + Cal.com ─────────────────────────── */}
       <section className="container mx-auto px-8 max-md:px-4 py-12 max-md:py-8">
-        <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-8 items-start">
-          {/* Left — Project Estimator (existing component) */}
+        <div className="flex flex-col gap-16 max-w-5xl mx-auto">
+          {/* Top — Book a Call */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={4}
-            className="h-full min-h-[680px]"
-          >
-            <ProjectEstimate />
-          </motion.div>
-
-          {/* Right — Book a Call */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={5}
+            className="w-full"
           >
             {/* Card header */}
-            <div className="mb-5 flex items-center gap-3">
+            <div className="mb-6 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center flex-shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -122,13 +112,64 @@ export default function ContactPageClient() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+            {/* Info Panel — full width, clearly separated above the calendar */}
+            <div className="p-8 max-md:p-6 bg-gray-50/50 rounded-3xl border border-gray-100 mb-6">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                <div className="flex-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] text-xs font-bold font-jetbrains-mono uppercase tracking-wider mb-4">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                    Free Strategy Session
+                  </div>
+
+                  <h3 className="text-2xl max-md:text-xl font-black text-gray-900 tracking-tight mb-3 leading-tight">
+                    Let's Chat About <span className="text-[#FF5B04]">Your Product</span>
+                  </h3>
+
+                  <p className="text-gray-600 text-sm leading-relaxed max-w-lg">
+                    Book a free, no-commitment 15-minute call. We'll discuss your product goals, answer questions about our design and development workflow, and outline a custom project plan.
+                  </p>
+                </div>
+
+                {/* Quick Specs — compact row on desktop */}
+                <div className="flex flex-row lg:flex-col gap-4 lg:gap-3 flex-shrink-0">
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-100 flex-shrink-0">
+                      <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-semibold">15 Minutes Call</span>
+                  </div>
+
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-100 flex-shrink-0">
+                      <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-semibold">Google Meet / Zoom</span>
+                  </div>
+
+                  <div className="flex items-center gap-3 text-gray-700">
+                    <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-100 flex-shrink-0">
+                      <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    </div>
+                    <span className="text-sm font-semibold">100% Secure & Confidential</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Cal.com Calendar — separate card below info panel */}
+            <div className="rounded-3xl border border-gray-100 overflow-hidden shadow-sm bg-white">
               <iframe
                 allow="camera; microphone; autoplay; encrypted-media;"
                 className="w-full"
                 frameBorder="0"
-                height="680"
-                src="https://cal.com/ui-pirate/15min"
+                height="750"
+                src="https://cal.com/ui-pirate/15min?theme=light&hideEventTypeDetails=true&showTimezoneWhenEventDetailsHidden=true"
                 title="Book a Call with UI Pirate"
                 width="100%"
                 loading="lazy"
@@ -140,6 +181,17 @@ export default function ContactPageClient() {
               <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               Typical response time: under 2 hours · Mon–Sat, 9am–10pm IST
             </div>
+          </motion.div>
+
+          {/* Bottom — Project Estimator (existing component) */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            custom={5}
+            className="w-full max-w-3xl mx-auto"
+          >
+            <ProjectEstimate />
           </motion.div>
         </div>
       </section>
