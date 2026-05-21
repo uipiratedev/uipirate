@@ -7,6 +7,11 @@ import Link from "next/link";
 import AnimatedHeadline from "./AnimatedHeadline";
 
 import GlassSurface from "@/components/GlassSurface";
+import {
+  HERO_BADGE_PRESET,
+  HERO_BADGE_CLASSNAME,
+  HERO_BADGE_ANIMATION_STYLE
+} from "@/config/glassSurfacePresets";
 
 const LandingHero = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
@@ -80,30 +85,11 @@ const LandingHero = () => {
           style={{ overflow: "visible" }}
         >
           {" "}
-          {/* Trust Badge with GlassSurface - Inline Avatars */}
+          {/* Trust Badge with GlassSurface - Using centralized preset for consistency */}
           <GlassSurface
-            backgroundOpacity={0.1}
-            blueOffset={20}
-            blur={11}
-            borderRadius={12}
-            borderWidth={0.01}
-            brightness={50}
-            className="md:my-9 max-md:my-5 isolate overflow-visible p-2 px-4 max-md:mx-2"
-            displace={0.5}
-            distortionScale={-180}
-            forceLightMode={true}
-            greenOffset={10}
-            height="auto"
-            opacity={0.93}
-            redOffset={0}
-            saturation={1}
-            style={{
-              animation: "trustBadgeUp 0.5s ease-out forwards",
-              animationDelay: "0.1s",
-              opacity: 0,
-              transform: "translateY(20px) scale(0.95)",
-            }}
-            width="auto"
+            {...HERO_BADGE_PRESET}
+            className={HERO_BADGE_CLASSNAME}
+            style={HERO_BADGE_ANIMATION_STYLE}
           >
             <div className="flex flex-row max-md:flex-col items-center gap-3 max-md:gap-1">
               {/* Avatar Stack */}

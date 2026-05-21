@@ -260,28 +260,31 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       };
     } else {
       // Default glassmorphism path - works on SSR and all browsers
-      // Using standard backdrop-filter which is widely supported
+      // Solid opaque background to completely hide underlying grid/patterns
       if (isDarkMode) {
         return {
           ...baseStyles,
-          background: "rgba(255, 255, 255, 0.1)",
-          backdropFilter: "blur(12px) saturate(1.8) brightness(1.2)",
-          WebkitBackdropFilter: "blur(12px) saturate(1.8) brightness(1.2)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          boxShadow: `inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-                      inset 0 -1px 0 0 rgba(255, 255, 255, 0.1)`,
+          background: "rgba(40, 40, 40, 0.95)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(255, 255, 255, 0.15)",
+          boxShadow: `inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+                      inset 0 -1px 0 0 rgba(255, 255, 255, 0.05),
+                      0 4px 16px rgba(0, 0, 0, 0.2)`,
         };
       } else {
         return {
           ...baseStyles,
-          background: "rgba(255, 255, 255, 0.25)",
-          backdropFilter: "blur(12px) saturate(1.8) brightness(1.1)",
-          WebkitBackdropFilter: "blur(12px) saturate(1.8) brightness(1.1)",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
-          boxShadow: `0 8px 32px 0 rgba(31, 38, 135, 0.2),
-                      0 2px 16px 0 rgba(31, 38, 135, 0.1),
-                      inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
-                      inset 0 -1px 0 0 rgba(255, 255, 255, 0.2)`,
+          // Fully opaque light gray background - matches Apps4Sale exactly
+          background: "linear-gradient(135deg, rgba(248, 248, 248, 1) 0%, rgba(240, 240, 240, 1) 100%)",
+          // No backdrop-filter transparency - solid surface
+          backdropFilter: "none",
+          WebkitBackdropFilter: "none",
+          border: "1px solid rgba(220, 220, 220, 0.8)",
+          boxShadow: `0 2px 8px 0 rgba(0, 0, 0, 0.04),
+                      0 4px 16px 0 rgba(0, 0, 0, 0.04),
+                      inset 0 1px 0 0 rgba(255, 255, 255, 1),
+                      inset 0 -1px 0 0 rgba(255, 255, 255, 0.6)`,
         };
       }
     }

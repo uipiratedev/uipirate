@@ -1,46 +1,63 @@
 "use client";
 
-import { useEffect, useState, ReactNode } from "react";
+import { useEffect, useState, ReactNode, memo } from "react";
 import Loader from "@/components/loader";
 
 interface PageLoaderProps {
   children: ReactNode;
 }
 
-export default function PageLoader({ children }: PageLoaderProps) {
+/**
+ * PageLoader — Shows initial loading spinner on hard refresh only.
+ *
+ * Performance optimizations:
+ * - Memoized to prevent unnecessary re-renders
+ * - Uses CSS class instead of inline styles for better performance
+ * - Reduced loading time from 2000ms to 1500ms
+ * - Content is always rendered (for SEO), just visually hidden
+ */
+const PageLoader = memo(function PageLoader({ children }: PageLoaderProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Show loader only on initial page load (hard reload)
+    // Check if this is a client-side navigation (skip loader)
+    const isClientNavigation = sessionStorage.getItem("hasLoaded") === "true";
+
+    if (isClientNavigation) {
+      setLoading(false);
+      return;
+    }
+
+    // Mark as loaded for future navigations
+    sessionStorage.setItem("hasLoaded", "true");
+
+    // Shorter initial load time for snappier feel
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1500);
 
     return () => clearTimeout(timer);
-  }, []); // Empty dependency — runs only once on mount
+  }, []);
 
   return (
     <>
-      {/* Loader overlay — only on initial page load */}
+      {/* Loader overlay — only on initial page load (hard refresh) */}
       {loading && <Loader />}
 
       {/*
         Page content container:
-        - Use opacity only (not visibility) to allow CSS animations to run
-        - pointer-events: none prevents interaction while loading
-        - position: relative maintains layout flow
-        - CSS animations will fire and complete during loading period
+        - Uses CSS class for GPU-accelerated opacity transition
+        - Content is always in DOM for SEO crawlers
+        - pointer-events prevents interaction during load
       */}
       <div
-        style={{
-          opacity: loading ? 0 : 1,
-          pointerEvents: loading ? "none" : "auto",
-          transition: "opacity 0.3s ease-in-out",
-        }}
+        className={`page-content-wrapper ${loading ? "is-loading" : "is-loaded"}`}
       >
         {children}
       </div>
     </>
   );
-}
+});
+
+export default PageLoader;
 
