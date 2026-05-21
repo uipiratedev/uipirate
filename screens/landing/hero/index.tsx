@@ -41,7 +41,7 @@ const LandingHero = () => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-center full relative ">
+      <div className="flex flex-row items-center justify-center w-full pt-32 max-md:pt-28 relative">
         {/* Subtle Grid Background Pattern */}
         <div
           className="absolute pointer-events-none -mt-20 "

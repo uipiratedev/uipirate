@@ -74,7 +74,7 @@ const HeaderInfo = memo<HeaderInfoProps>(function HeaderInfo({ blog }) {
     <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
       <div className="flex items-center gap-3">
         <Image
-          alt="UI Pirates Logo"
+          alt="UI Pirate Logo"
           className="w-10 h-10"
           height={40}
           src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"

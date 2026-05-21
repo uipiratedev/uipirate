@@ -55,7 +55,7 @@ const WhatWeProvide = () => {
         <div className="mb-6 flex flex-row items-center justify-center">
           <GlassBadge variant="gradient">What we provide</GlassBadge>
         </div>
-        <p className="heading-center">Why Work With UI Pirates?</p>
+        <p className="heading-center">Why Work With UI Pirate?</p>
       </div>
 
       <div className="mt-12 grid grid-cols-2 gap-6 max-md:grid-cols-1">
