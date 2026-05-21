@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description:
     "We turn ideas into shipped products. Product design & frontend development agency specializing in UX/UI, product thinking, competitive analysis, information architecture & complex enterprise Angular/React applications. Trusted by Fortune 500 across USA, UK, Singapore, India, and Australia.",
   keywords:
-    "product design agency, idea to product, product thinking, UX UI design and development, Angular development agency, complex enterprise application design, frontend development, React development, competitive analysis, information architecture, product design, SaaS app design, design systems, mobile app design, enterprise software design, Fortune 500 design, Vishal Anand, UI Pirate",
+    "uipirate, uipirates, UI Pirate, product design agency, idea to product, product thinking, UX UI design and development, Angular development agency, complex enterprise application design, frontend development, React development, competitive analysis, information architecture, product design, SaaS app design, design systems, mobile app design, enterprise software design, Fortune 500 design, Vishal Anand",
   openGraph: {
     title: "UI Pirate | Product Design & Development — From Idea to Shipped Product",
     description:
@@ -92,7 +92,7 @@ export default function RootLayout({
         />
         <meta content="Business, Design, Technology" name="classification" />
         <meta
-          content="UI design, UX design, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise design, USA UK Singapore India Australia, enterprise clients, startup design, tech company design, Vishal Anand, UI Pirate"
+          content="uipirate, uipirates, UI Pirate, UI design, UX design, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise design, USA UK Singapore India Australia, enterprise clients, startup design, tech company design, Vishal Anand"
           name="keywords"
         />
         <meta content="US, GB, SG, IN, AU" name="geo.region" />
@@ -113,7 +113,7 @@ export default function RootLayout({
               "@type": "ProfessionalService",
               "@id": "https://uipirate.com/#organization",
               name: "UI Pirate by Vishal Anand",
-              alternateName: "UI Pirate",
+              alternateName: ["UI Pirate", "uipirate", "uipirates"],
               url: "https://uipirate.com",
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
               image: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
