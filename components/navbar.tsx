@@ -222,7 +222,7 @@ export const Navbar = () => {
                             !isDarkSection,
                         })}
                       >
-                        UI Pirates
+                        UI Pirate
                       </p>
                     </NextLink>
                   </NavbarBrand>

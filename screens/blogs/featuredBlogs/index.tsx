@@ -67,7 +67,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs() {
             What we provide
           </GlassBadge>
         </div>
-        <p className="heading-center">Why Work With UI Pirates?</p>
+        <p className="heading-center">Why Work With UI Pirate?</p>
       </div>
 
 
