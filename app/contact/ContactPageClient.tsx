@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useDisclosure, Modal, ModalContent, ModalBody } from "@heroui/react";
+import LetsTalkButton from "@/components/LetsTalkButton";
 import ProjectEstimate from "@/components/ProjectEstimate";
 import testimonials from "@/data/testimonials.json";
 
@@ -30,6 +33,17 @@ const fadeUp = {
 };
 
 export default function ContactPageClient() {
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [modalPlacement, setModalPlacement] = useState<"center" | "bottom" | "top" | "top-center" | "bottom-center">("center");
+
+  useEffect(() => {
+    const handleResize = () => {
+      setModalPlacement(window.innerWidth < 768 ? "bottom" : "center");
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <div className="min-h-screen bg-white pt-24 max-md:pt-20">
       {/* ── Hero ─────────────────────────────────────────────────────── */}
@@ -88,113 +102,127 @@ export default function ContactPageClient() {
         </motion.div>
       </section>
 
-      {/* ── Main Layout: Info Panel + Cal.com ─────────────────────────── */}
+      {/* ── Main Layout: 2 Cards ─────────────────────────── */}
       <section className="container mx-auto px-8 max-md:px-4 py-12 max-md:py-8">
-        <div className="flex flex-col gap-16 max-w-5xl mx-auto">
-          {/* Top — Book a Call */}
+        <div className="grid grid-cols-2 max-lg:grid-cols-1 gap-8 items-stretch max-w-5xl mx-auto">
+          {/* Card 1: Book a Call */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={4}
-            className="w-full"
+            className="h-full"
           >
-            {/* Card header */}
-            <div className="mb-6 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gray-900 flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+            <div className="h-full bg-white border border-gray-200 rounded-[20px] shadow-sm p-8 max-md:p-6 flex flex-col">
+              <div className="flex items-center gap-4 max-md:gap-3 mb-6">
+                <div className="w-12 h-12 max-md:w-10 max-md:h-10 rounded-xl bg-gray-900 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-6 h-6 max-md:w-5 max-md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
+                  Book a <span className="text-[#FF5B04]">Call</span>
+                </h3>
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">Book a Free 15-min Call</h2>
-                <p className="text-sm text-gray-400">Pick a time that works for you — we'll do the rest</p>
-              </div>
-            </div>
 
-            {/* Info Panel — full width, clearly separated above the calendar */}
-            <div className="p-8 max-md:p-6 bg-gray-50/50 rounded-3xl border border-gray-100 mb-6">
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-                <div className="flex-1">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] text-xs font-bold font-jetbrains-mono uppercase tracking-wider mb-4">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
-                    Free Strategy Session
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] text-xs font-bold font-jetbrains-mono uppercase tracking-wider mb-6 w-fit">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                Free Strategy Session
+              </div>
+
+              <p className="text-[#161616] text-lg max-md:text-base leading-relaxed mb-8">
+                Book a free, no-commitment 15-minute call. We'll discuss your product goals, answer questions about our workflow, and outline a plan.
+              </p>
+
+              {/* Quick Specs */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3.5 text-gray-700">
+                  <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
+                    <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                   </div>
-
-                  <h3 className="text-2xl max-md:text-xl font-black text-gray-900 tracking-tight mb-3 leading-tight">
-                    Let's Chat About <span className="text-[#FF5B04]">Your Product</span>
-                  </h3>
-
-                  <p className="text-gray-600 text-sm leading-relaxed max-w-lg">
-                    Book a free, no-commitment 15-minute call. We'll discuss your product goals, answer questions about our design and development workflow, and outline a custom project plan.
-                  </p>
+                  <span className="text-sm font-semibold">15 Minutes Call</span>
                 </div>
 
-                {/* Quick Specs — compact row on desktop */}
-                <div className="flex flex-row lg:flex-col gap-4 lg:gap-3 flex-shrink-0">
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-100 flex-shrink-0">
-                      <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <span className="text-sm font-semibold">15 Minutes Call</span>
+                <div className="flex items-center gap-3.5 text-gray-700">
+                  <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
+                    <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
                   </div>
+                  <span className="text-sm font-semibold">Google Meet / Zoom</span>
+                </div>
 
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-100 flex-shrink-0">
-                      <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <span className="text-sm font-semibold">Google Meet / Zoom</span>
+                <div className="flex items-center gap-3.5 text-gray-700">
+                  <div className="w-9 h-9 rounded-lg bg-gray-50 flex items-center justify-center border border-gray-100 flex-shrink-0">
+                    <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
                   </div>
-
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center shadow-sm border border-gray-100 flex-shrink-0">
-                      <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                      </svg>
-                    </div>
-                    <span className="text-sm font-semibold">100% Secure & Confidential</span>
-                  </div>
+                  <span className="text-sm font-semibold">100% Secure & Confidential</span>
                 </div>
               </div>
-            </div>
 
-            {/* Cal.com Calendar — separate card below info panel */}
-            <div className="rounded-3xl border border-gray-100 overflow-hidden shadow-sm bg-white">
-              <iframe
-                allow="camera; microphone; autoplay; encrypted-media;"
-                className="w-full"
-                frameBorder="0"
-                height="750"
-                src="https://cal.com/ui-pirate/15min?theme=light&hideEventTypeDetails=true&showTimezoneWhenEventDetailsHidden=true"
-                title="Book a Call with UI Pirate"
-                width="100%"
-                loading="lazy"
-              />
-            </div>
+              <div className="mt-auto">
+                <p className="text-gray-400 max-md:text-sm text-base mb-4 flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  Typical response time: under 2 hours
+                </p>
 
-            {/* Response time badge */}
-            <div className="mt-4 flex items-center gap-2 text-sm text-gray-400">
-              <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              Typical response time: under 2 hours · Mon–Sat, 9am–10pm IST
+                <div className="grid grid-cols-1 gap-3">
+                  <LetsTalkButton fullWidth variant="color" onClick={onOpen}>
+                    Book a Time
+                  </LetsTalkButton>
+                </div>
+              </div>
             </div>
           </motion.div>
 
-          {/* Bottom — Project Estimator (existing component) */}
+          {/* Card 2 — Project Estimator */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate="show"
             custom={5}
-            className="w-full max-w-3xl mx-auto"
+            className="h-full w-full"
           >
-            <ProjectEstimate />
+            <ProjectEstimate className="h-full w-full" />
           </motion.div>
         </div>
       </section>
+
+      <Modal 
+        isOpen={isOpen} 
+        onOpenChange={onOpenChange}
+        size="4xl"
+        placement={modalPlacement}
+        scrollBehavior="inside"
+        classNames={{
+          wrapper: "!z-[999999999]",
+          backdrop: "!z-[999999999] bg-black/50 backdrop-blur-md",
+          base: "rounded-[24px] border-1 border-gray-200 shadow-2xl overflow-hidden",
+          body: "p-0",
+        }}
+      >
+        <ModalContent data-lenis-prevent>
+          {(onClose) => (
+            <ModalBody className="p-0 overflow-hidden bg-white" data-lenis-prevent>
+              <iframe
+                allow="camera; microphone; autoplay; encrypted-media;"
+                className="w-full"
+                frameBorder="0"
+                height="650"
+                style={{ minHeight: "650px", height: "calc(100vh - 150px)", maxHeight: "750px" }}
+                src="https://cal.com/ui-pirate/15min?theme=light&layout=column_view&hideEventTypeDetails=true"
+                title="Book a Call with UI Pirate"
+                width="100%"
+                loading="lazy"
+              />
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
 
       {/* ── US Client Testimonials ────────────────────────────────────── */}
       {US_TESTIMONIALS.length > 0 && (
