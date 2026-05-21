@@ -11,8 +11,8 @@ import GlassSurface from "@/components/GlassSurface";
 const LandingHero = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
 
-  // Create refs for each avatar (for z-index management)
-  const avatarRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Create refs for each avatar container (for z-index management)
+  const avatarContainerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Testimonial data
   const testimonials = [
@@ -113,8 +113,20 @@ const LandingHero = () => {
               >
                 {testimonials.map((testimonial, index) => {
                   return (
-                    <Tooltip
+                    <div
                       key={index}
+                      data-avatar-wrapper
+                      ref={(el) => {
+                        avatarContainerRefs.current[index] = el;
+                      }}
+                      className="relative"
+                      style={{
+                        zIndex: hoveredAvatar === index ? 999999999 : "auto",
+                      }}
+                      onMouseEnter={() => setHoveredAvatar(index)}
+                      onMouseLeave={() => setHoveredAvatar(null)}
+                    >
+                      <Tooltip
                       showArrow
                       classNames={{
                         base: [
@@ -215,32 +227,20 @@ const LandingHero = () => {
                       offset={12}
                       placement="bottom"
                     >
-                      <div
-                        ref={(el) => {
-                          avatarRefs.current[index] = el;
-                        }}
-                        className="relative"
+                      <img
+                        alt={`${testimonial.name} - Client testimonial`}
+                        className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
+                        src={testimonial.image}
                         style={{
-                          zIndex: hoveredAvatar === index ? 999999999 : "auto",
+                          animation:
+                            "testimonialImageDrop 0.4s ease-out forwards",
+                          animationDelay: `${0.3 + index * 0.1}s`,
+                          opacity: 0,
+                          transform: "translateY(-20px)",
                         }}
-                        onMouseEnter={() => setHoveredAvatar(index)}
-                        onMouseLeave={() => setHoveredAvatar(null)}
-                      >
-                        {/* Avatar */}
-                        <img
-                          alt={`${testimonial.name} - Client testimonial`}
-                          className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
-                          src={testimonial.image}
-                          style={{
-                            animation:
-                              "testimonialImageDrop 0.4s ease-out forwards",
-                            animationDelay: `${0.3 + index * 0.1}s`,
-                            opacity: 0,
-                            transform: "translateY(-20px)",
-                          }}
-                        />
-                      </div>
+                      />
                     </Tooltip>
+                    </div>
                   );
                 })}
               </div>
