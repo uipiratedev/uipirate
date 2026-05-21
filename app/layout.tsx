@@ -101,10 +101,6 @@ export default function RootLayout({
           name="subject"
         />
         <meta content="Business, Design, Technology" name="classification" />
-        <meta
-          content="uipirate, uipirates, UI Pirate, UI design, UX design, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise design, USA UK Singapore India Australia, enterprise clients, startup design, tech company design, Vishal Anand"
-          name="keywords"
-        />
         <meta content="US, GB, SG, IN, AU" name="geo.region" />
         <meta
           content="United States, United Kingdom, Singapore, India, Australia"

@@ -29,8 +29,6 @@ const STATIC_PAGES: {
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
   { path: "/case-studies", priority: 0.85, changeFrequency: "weekly" },
   { path: "/faqs", priority: 0.8, changeFrequency: "monthly" },
-  { path: "/resources", priority: 0.7, changeFrequency: "monthly" },
-  { path: "/community", priority: 0.7, changeFrequency: "monthly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
   { path: "/sitemap", priority: 0.3, changeFrequency: "monthly" },

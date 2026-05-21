@@ -2,6 +2,10 @@
 
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /blogs/create
+Disallow: /blogs/edit/
+Disallow: /api/
 
 # AI crawlers — explicit allow (no Crawl-delay)
 User-agent: GPTBot
