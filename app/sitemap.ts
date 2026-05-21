@@ -1,5 +1,7 @@
 import { MetadataRoute } from "next";
 
+import caseStudies from "@/data/case-studies.json";
+
 /**
  * Dynamic sitemap generation for Next.js App Router.
  * Replaces the static public/sitemap.xml with auto-generated entries.
@@ -98,5 +100,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.warn("Sitemap: Could not fetch blog posts from database:", error);
   }
 
-  return [...staticEntries, ...serviceEntries, ...blogEntries];
+  const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({
+    url: `${BASE_URL}/case-studies/${study.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticEntries, ...serviceEntries, ...caseStudyEntries, ...blogEntries];
 }

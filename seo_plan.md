@@ -8,18 +8,22 @@
 
 ## Implementation Status
 
+> **Last audited:** 2026-05-21 — synced with codebase.
+
 | Phase | Status | Details |
 |-------|:------:|---------|
-| **Phase 1 — Technical SEO** | ✅ DONE | SSR fix, JSON-LD inlined, dynamic sitemap, robots.txt updated |
+| **Phase 1 — Technical SEO** | ✅ DONE | SSR fix, JSON-LD inlined, dynamic sitemap, `robots.txt` with AI crawlers |
 | **Phase 2 — On-Page SEO** | ✅ DONE | Per-page metadata for all 9+ pages, dynamic `generateMetadata()` for services |
-| **Phase 3 — AI Visibility** | ✅ DONE | `llms.txt`, `ai-plugin.json`, `ai-data.json`, `SiteNavigationElement` schema, AI crawler permissions |
-| **Brand Positioning Update** | ✅ DONE | Updated all 10 files from "design agency" → "product design & development partner" |
-| **Angular Focus** | ✅ DONE | Angular positioned as #1 technology across all metadata and structured data |
-| **Email Update** | ✅ DONE | Changed from `vishalanand072@gmail.com` → `vishal@uipirate.com` in all 5 files |
-| **Google Search Console Fixes** | ✅ DONE | Fixed 5xx errors in `[slug]` page, fixed duplicate `/privacy-policy` redirect |
-| **Phase 4 — Content Strategy** | 🔴 NOT STARTED | Blog content calendar, case study template, programmatic SEO |
-| **Phase 5 — Lead Generation** | 🔴 NOT STARTED | Lead capture forms, contact page overhaul, CTA optimization |
+| **Phase 3 — AI Visibility** | ✅ DONE | `llms.txt`, `ai-plugin.json`, `ai-data.json`, `SiteNavigationElement` schema |
+| **Brand Positioning Update** | ✅ DONE | "Product design & development partner" across SEO files |
+| **Angular Focus** | ✅ DONE | Angular positioned as #1 technology in metadata and structured data |
+| **Email Update** | ✅ DONE | `vishal@uipirate.com` (incl. `ai-plugin.json` — fixed May 2026) |
+| **Google Search Console Fixes** | ✅ DONE | Fixed 5xx in `[slug]`, `/privacy-policy` → `/privacy` redirect |
+| **Phase 4 — Site & Schema** | ✅ DONE | About, FAQPage schema, Breadcrumbs, portfolio metadata |
+| **Phase 4 — Content** | 🟡 IN PROGRESS | Case study template + 2 live studies; blog calendar (16 posts) not started |
+| **Phase 5 — Lead Generation** | 🟡 IN PROGRESS | Contact: Cal.com + `ProjectEstimate` (primary capture); footer modal optional; lead magnets & CTA copy pending |
 | **Phase 6 — Off-Page SEO** | 🔴 NOT STARTED | Directory submissions, guest posts, backlink building |
+| **Phase 7 — Advanced** | 🟡 PARTIAL | `AggregateRating` on testimonials; programmatic pages, HowTo/VideoObject, CWV pending |
 
 ---
 
@@ -383,11 +387,11 @@ gantt
 
 > [!IMPORTANT]
 > **Immediate actions (this week):**
-> 1. ✅ Deploy current changes to production
+> 1. ⏳ Deploy latest changes to production (robots.txt, case studies, exit intent, contact form)
 > 2. ⏳ Submit sitemap in Google Search Console: `https://uipirate.com/sitemap.xml`
-> 3. ⏳ Request re-indexing for all key pages
-> 4. ⏳ Start Phase 4: About page + FAQPage schema + Breadcrumbs + Portfolio metadata
-> 5. ⏳ Start Phase 5: Contact page overhaul
+> 3. ⏳ Request re-indexing for `/about`, `/case-studies/xperiti`, `/case-studies/revup-ai`, `/contact`
+> 4. ⏳ Publish blog posts 1–4 from content calendar
+> 5. ⏳ Add 4 more case studies (Bird, Brahmastra, APAC Law Firm, ION) to `data/case-studies.json`
 
 ---
 
@@ -414,12 +418,14 @@ gantt
 | **MODIFY** | `components/seo.tsx` — Product partner schema component | 3 | ✅ |
 | **MODIFY** | `app/[slug]/page.tsx` — Fixed 5xx error, added BlogPosting schema | Fix | ✅ |
 | **MODIFY** | `app/privacy-policy/page.tsx` — Redirect to /privacy | Fix | ✅ |
-| **NEW** | `app/about/page.tsx` — Rich about page | 4 | ⏳ |
-| **MODIFY** | `app/faqs/page.tsx` — Add FAQPage schema | 4 | ⏳ |
-| **NEW** | `components/Breadcrumbs.tsx` — Breadcrumb navigation | 4 | ⏳ |
-| **MODIFY** | `app/ourWorks/page.tsx` — Portfolio metadata | 4 | ⏳ |
-| **NEW** | `app/case-studies/[slug]/page.tsx` — Case study template | 4 | ⏳ |
-| **MODIFY** | `app/contact/page.tsx` — Full contact page redesign | 5 | ⏳ |
-| **NEW** | `components/LeadCaptureForm.tsx` — Email capture | 5 | ⏳ |
-| **NEW** | `app/api/leads/route.ts` — Lead storage API | 5 | ⏳ |
-| **NEW** | `components/ExitIntentPopup.tsx` — Exit intent lead capture | 5 | ⏳ |
+| **NEW** | `app/about/page.tsx` — Rich about page | 4 | ✅ |
+| **MODIFY** | `app/faqs/page.tsx` — Add FAQPage schema | 4 | ✅ |
+| **NEW** | `components/Breadcrumbs.tsx` — Breadcrumb navigation | 4 | ✅ |
+| **MODIFY** | `app/ourWorks/page.tsx` — Portfolio metadata | 4 | ✅ |
+| **NEW** | `data/case-studies.json` + `app/case-studies/[slug]/page.tsx` | 4 | ✅ (2 studies; expand to 6) |
+| **MODIFY** | `app/contact/ContactPageClient.tsx` — Cal.com + ProjectEstimate only | 5 | ✅ |
+| **NEW** | `components/LeadCaptureForm.tsx` — Email capture | 5 | ✅ |
+| **NEW** | `app/api/leads/route.ts` — Lead storage API | 5 | ✅ |
+| **NEW** | `components/ExitIntentPopup.tsx` — Exit intent lead capture | 5 | ❌ Removed (duplicate of estimator) |
+| **MODIFY** | `public/robots.txt` — AI crawler allow rules | 1+3 | ✅ (restored May 2026) |
+| **MODIFY** | `public/.well-known/ai-plugin.json` — Contact email fix | 3 | ✅ |
