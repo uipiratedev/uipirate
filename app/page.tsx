@@ -15,30 +15,36 @@ const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
 
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
-  title: "UI Pirate | Product Design & Development Agency — Idea to Product | Angular, React",
+  title: "UI Pirate | Product Design & Development Agency — From Idea to Shipped Product",
   description:
-    "We turn your product ideas into reality. Full-service product design & frontend development agency — UX/UI, product thinking, competitive analysis, information architecture & complex enterprise Angular/React applications. 50+ products shipped. Book a free call.",
+    "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. We simplify complexity and design for conversion. 50+ products shipped.",
   keywords:
-    "uipirate, uipirates, UI Pirate, product design agency, idea to product, product thinking, UX UI design and development, Angular development agency, complex enterprise application design, frontend development, React development, competitive analysis, information architecture, product design, SaaS app design, design systems, mobile app design, enterprise software design, Fortune 500 design, Vishal Anand",
+    "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS product design, AI app design, enterprise UX design, conversion-focused design, simplify complex products, dashboard design, mobile app UI, web app UX, Vishal Anand",
   alternates: {
     canonical: "https://uipirate.com",
   },
   openGraph: {
-    title: "UI Pirate | Product Design & Development — From Idea to Shipped Product",
+    title: "UI Pirate | Product Design Agency — From Idea to Shipped Product",
     description:
-      "Not just designs — we help you think, plan, and build your product from scratch. Product thinking, UX/UI design, and complex enterprise frontend development in Angular & React. 50+ products shipped globally.",
+      "Not just designs — we help you think, plan, and build your product. Product thinking, competitive analysis, information architecture & conversion-focused design for complex products.",
     url: "https://uipirate.com",
-    siteName: "UI Pirate by Vishal Anand",
+    siteName: "UI Pirate",
     images: [
       {
         url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
         width: 1200,
         height: 630,
-        alt: "UI Pirate - Product Design & Development Agency — From Idea to Shipped Product",
+        alt: "UI Pirate - Product Design Agency — From Idea to Shipped Product",
       },
     ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UI Pirate | Product Design — Idea to Shipped Product",
+    description: "Product thinking, competitive analysis & conversion-focused design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
+    images: ["https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png"],
   },
 };
 

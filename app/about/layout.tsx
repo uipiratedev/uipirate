@@ -1,23 +1,23 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About UI Pirate | US-Based Design Agency for Startups & SaaS — Our Story",
+  title: "About UI Pirate | Product Design Agency — From Idea to Shipped Product",
   description:
-    "We turn product ideas into shipped products. Trusted by 50+ US startups and SaaS companies. Product thinking, UX/UI design & React/Next.js development. EST/PST timezone friendly. Save 50-70% vs US agencies.",
+    "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & conversion-focused UX/UI design. We simplify complex SaaS, AI apps & enterprise software. 9+ years, 50+ products shipped. EST/PST timezone friendly for US clients.",
   keywords:
-    "about UI Pirate, design agency for US startups, SaaS design partner, product design agency USA, hire UI designer America, enterprise UX agency, React development agency, startup design partner, offshore design team USA",
+    "uipirate, uipirates, UI Pirate, about UI Pirate, product design agency USA, idea to product, product thinking agency, competitive analysis design, information architecture, conversion focused UX, simplify complex products, SaaS product design, AI app design, enterprise UX design, hire product designer USA, Vishal Anand",
   openGraph: {
-    title: "About UI Pirate | Design Agency for US Startups & SaaS",
+    title: "About UI Pirate | Product Design — From Idea to Shipped Product",
     description:
-      "Not just designs — we help you think, plan, and ship your product. Trusted by 50+ US companies. EST/PST hours, 2hr response time.",
+      "Not just designs — we help you think, plan, and ship your product. Product thinking, competitive analysis & conversion-focused design. 50+ products shipped. EST/PST timezone friendly.",
     url: "https://uipirate.com/about",
-    siteName: "UI Pirate by Vishal Anand",
+    siteName: "UI Pirate",
     images: [
       {
         url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
         width: 1200,
         height: 630,
-        alt: "About UI Pirate - Design Agency for US Startups",
+        alt: "About UI Pirate - Product Design Agency — From Idea to Shipped Product",
       },
     ],
     locale: "en_US",
@@ -25,8 +25,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About UI Pirate | Design Agency for US Startups",
-    description: "We turn ideas into shipped products. 50+ US clients. EST/PST timezone friendly.",
+    title: "About UI Pirate | Product Design — Idea to Shipped Product",
+    description: "Product thinking, competitive analysis & conversion-focused design. 50+ products shipped. US timezone friendly.",
+    images: ["https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png"],
   },
   alternates: {
     canonical: "https://uipirate.com/about",
