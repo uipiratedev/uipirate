@@ -1522,6 +1522,33 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   background-color: transparent !important;
 }
 
+/* ========================================
+   HEROUI TOOLTIP GLASSMORPHISM FIX
+   ======================================== */
+
+/*
+ * Fix for Tooltip losing glassmorphism styles on initial page load (SSR).
+ * HeroUI Tooltip applies default opaque background during SSR that overrides
+ * our custom transparent/glass styles. These rules ensure our styles win.
+ */
+
+/* Override Tooltip content wrapper to be transparent when we use custom glass styles */
+[data-slot="content"].bg-transparent {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Ensure backdrop-blur-none class actually removes backdrop filter */
+[data-slot="content"].backdrop-blur-none {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Remove default shadow when using custom glass shadow */
+[data-slot="content"].shadow-none {
+  box-shadow: none !important;
+}
+
 /* Ensure parent containers don't block backdrop-filter */
 .reveal-text-anim-1 {
   overflow: visible !important;
