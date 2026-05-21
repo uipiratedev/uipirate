@@ -9,10 +9,10 @@ export const contentType = "image/png";
 export default function Image() {
   return new ImageResponse(
     <OGTemplate
-      badge="About UI Pirate"
-      title="We Ship Products."
-      titleHighlight="Not Just Designs."
-      description="Product thinking, architecture, design & development. 9+ years of experience. 50+ shipped products. We simplify complexity and design for conversion."
+      badge="Design & Development Agency"
+      title="We Design, Build &"
+      titleHighlight="Ship Products."
+      description="Product thinking, UX/UI design & development. 9+ years, 50+ products shipped. From idea to production. We simplify complexity and design for conversion."
     />,
     { ...size }
   );

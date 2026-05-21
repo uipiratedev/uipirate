@@ -11,8 +11,8 @@ export default function Image() {
     <OGTemplate
       badge="Transparent Pricing"
       title="$2,000/mo."
-      titleHighlight="Unlimited Design."
-      description="No contracts. 48hr turnaround. Save 60% vs US agencies. Or try a $350 5-day pilot first. 100% satisfaction guarantee."
+      titleHighlight="Design & Development."
+      description="No contracts. 48hr turnaround. UX/UI design + Angular.js/React/Next.js development. Save 60% vs US agencies. 100% satisfaction guarantee."
     />,
     { ...size }
   );
