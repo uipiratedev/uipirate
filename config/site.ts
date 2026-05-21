@@ -55,12 +55,12 @@ export const siteConfig = {
       ],
     },
     {
-      label: "Works",
-      href: "/ourWorks",
-    },
-    {
       label: "Pricing",
       href: "/#pricing",
+    },
+    {
+      label: "About",
+      href: "/about",
     },
     {
       label: "Resources",

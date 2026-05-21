@@ -20,7 +20,7 @@ const TRUST_STATS = [
   { value: "50+", label: "Products Shipped" },
   { value: "5.0★", label: "Average Rating" },
   { value: "< 2hr", label: "Response Time" },
-  { value: "11yr", label: "In Business" },
+  { value: "9yr+", label: "In Business" },
 ];
 
 const fadeUp = {
