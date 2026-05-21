@@ -3,23 +3,23 @@ import { Metadata } from "next";
 import Pricing from "@/screens/pricing";
 
 export const metadata: Metadata = {
-  title: "UI/UX Design Pricing | $2000/mo Retainer or Project-Based — UI Pirate",
+  title: "UI/UX Design Pricing 2026 | $2000/mo Unlimited Requests | Save 60% vs Agencies",
   description:
-    "Transparent UI/UX design pricing starting at $2000/month. No hidden fees. Monthly retainers, project-based quotes, and 5-day pilot projects. Save 50-70% vs US agencies. 100% satisfaction guarantee.",
+    "UI/UX design from $2000/mo — unlimited requests, 48hr turnaround. Or try our $350 5-day pilot. Save 60% vs US agencies. No contracts, pause anytime. 100% satisfaction guarantee. Used by Ipsos, Pivot Bits, Sarge.",
   keywords:
-    "UI/UX design pricing, design agency cost, SaaS design pricing, web design rates 2026, UI designer monthly retainer, design subscription, hire UI/UX designer cost, landing page design price, mobile app design cost, enterprise UI design pricing",
+    "UI UX design pricing 2026, design subscription cost, unlimited design requests, SaaS design pricing, design agency monthly cost, hire UI designer cost, design retainer pricing, $2000 design subscription, cheap UI design agency, affordable UX design, design agency vs freelancer cost",
   openGraph: {
-    title: "UI/UX Design Pricing — Simple & Transparent | UI Pirate",
+    title: "UI/UX Design Pricing | $2000/mo Unlimited · Save 60% vs Agencies",
     description:
-      "From $2000/mo for unlimited design requests. Compare monthly retainer vs project pricing. No hidden fees, 100% satisfaction guarantee. Book a free consultation.",
+      "Unlimited design requests from $2000/mo. 48hr turnaround, no contracts. Or try $350 pilot first. 100% satisfaction guarantee.",
     url: "https://uipirate.com/pricing",
-    siteName: "UI Pirate by Vishal Anand",
+    siteName: "UI Pirate",
     images: [
       {
         url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
         width: 1200,
         height: 630,
-        alt: "UI Pirate — Transparent Design Pricing Plans",
+        alt: "UI Pirate Pricing - $2000/mo Unlimited Design Requests",
       },
     ],
     locale: "en_US",
@@ -27,8 +27,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI/UX Design Pricing | $2000/mo or Project-Based",
-    description: "Save 50-70% vs US agencies. Transparent pricing, no hidden fees. Monthly retainer or per-project.",
+    title: "UI/UX Design | $2000/mo Unlimited · 48hr Turnaround",
+    description: "Save 60% vs US agencies. No contracts, pause anytime. Try $350 pilot first. 100% satisfaction guarantee.",
+    images: ["https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png"],
   },
   alternates: {
     canonical: "https://uipirate.com/pricing",

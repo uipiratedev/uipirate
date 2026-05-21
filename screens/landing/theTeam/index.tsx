@@ -30,14 +30,7 @@ const TheTeam = () => {
       image: "/assets/teams/musaddiq.svg",
       bgColor: "bg-gradient-to-br from-blue-400 to-blue-600",
     },
-    {
-      name: "Kartik",
-      role: "Lead Graphics & Motion",
-      quote: "I’m Kartik. I design visuals and motion.",
-      image: "/assets/teams/kartik.svg",
-      bgColor: "bg-gradient-to-br from-yellow-400 to-yellow-600",
-    },
-    {
+      {
       name: "Priyagni",
       role: "Graphic Designer",
       quote: "I’m Priyagni. I work on visual design.",
@@ -45,25 +38,19 @@ const TheTeam = () => {
       bgColor: "bg-gradient-to-br from-pink-400 to-pink-600",
     },
     {
+      name: "Kartik",
+      role: "Lead Graphics & Motion",
+      quote: "I’m Kartik. I design visuals and motion.",
+      image: "/assets/teams/kartik.svg",
+      bgColor: "bg-gradient-to-br from-yellow-400 to-yellow-600",
+    },
+  
+    {
       name: "Aniket",
-      role: "Lead Backend Dev",
-      quote: "I’m Aniket. I handle backend architecture.",
+      role: "Lead Backend & AI Dev",
+      quote: "I’m Aniket. I handle backend architecture and AI integrations.",
       image: "/assets/teams/aniket.svg",
       bgColor: "bg-gradient-to-br from-orange-400 to-orange-600",
-    },
-    {
-      name: "Harsh",
-      role: "Backend Dev",
-      quote: "I’m Harsh. I build backend systems.",
-      image: "/assets/teams/harsh.svg",
-      bgColor: "bg-gradient-to-br from-red-400 to-red-500",
-    },
-    {
-      name: "Karan",
-      role: "Marketing",
-      quote: "I’m Karan. I handle marketing and growth.",
-      image: "/assets/teams/karan.svg",
-      bgColor: "bg-gradient-to-br from-lime-400 to-lime-600",
     },
     {
       name: "Aman",
@@ -113,7 +100,7 @@ const TheTeam = () => {
 <div className="autoShowBottom">
       {/* Team Grid */}
       <motion.div
-        className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 max-md:gap-4 relative "
+        className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 max-md:gap-4 relative "
         initial="hidden"
         variants={containerVariants}
         whileInView="visible"

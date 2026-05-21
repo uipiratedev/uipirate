@@ -15,24 +15,26 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title:
-    "UI Pirate | Product Design & Development Agency — Idea to Product | Angular, React, Next.js",
+  title: {
+    default: "UI Pirate | Product Design & Development — From Idea to Shipped Product",
+    template: "%s | UI Pirate",
+  },
   description:
-    "We turn ideas into shipped products. Product design & frontend development agency specializing in UX/UI, product thinking, competitive analysis, information architecture & complex enterprise Angular/React applications. Trusted by Fortune 500 across USA, UK, Singapore, India, and Australia.",
+    "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. We simplify complexity. Angular, React, Next.js development.",
   keywords:
-    "uipirate, uipirates, UI Pirate, product design agency, idea to product, product thinking, UX UI design and development, Angular development agency, complex enterprise application design, frontend development, React development, competitive analysis, information architecture, product design, SaaS app design, design systems, mobile app design, enterprise software design, Fortune 500 design, Vishal Anand",
+    "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, simplify complex products, Angular development, React development, Vishal Anand",
   openGraph: {
-    title: "UI Pirate | Product Design & Development — From Idea to Shipped Product",
+    title: "UI Pirate | Product Design — From Idea to Shipped Product",
     description:
-      "Not just designs — we help you think, plan, and build your product. Product thinking, UX/UI, competitive analysis & complex enterprise frontend development in Angular & React. Serving USA, UK, Singapore, India & Australia.",
+      "Not just designs — we help you think, plan, and build your product. Product thinking, competitive analysis & conversion-focused design for complex products.",
     url: "https://uipirate.com",
-    siteName: "UI Pirate by Vishal Anand",
+    siteName: "UI Pirate",
     images: [
       {
         url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
         width: 1200,
         height: 630,
-        alt: "UI Pirate - Global Enterprise Design Agency",
+        alt: "UI Pirate - Product Design Agency — From Idea to Shipped Product",
       },
     ],
     locale: "en_US",
@@ -40,12 +42,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI Pirate | Enterprise Design Agency - Global Services",
-    description:
-      "World-class UI/UX design & development for enterprise clients. AI/SaaS apps, mobile design, motion graphics. Serving USA, UK, Singapore, India, Australia.",
-    images: [
-      "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
-    ],
+    title: "UI Pirate | Product Design — Idea to Shipped Product",
+    description: "Product thinking, competitive analysis & conversion-focused design. We simplify complex products. 50+ shipped.",
+    images: ["https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png"],
     site: "@UI_Pirate",
     creator: "@UI_Pirate",
   },
@@ -53,9 +52,20 @@ export const metadata: Metadata = {
     canonical: "https://uipirate.com",
   },
   icons: {
-    icon: "/favicon.ico?v=2", 
-    apple: "/favicon.ico?v=2", 
-    shortcut: "/favicon.ico?v=2", 
+    icon: "/favicon.ico?v=2",
+    apple: "/favicon.ico?v=2",
+    shortcut: "/favicon.ico?v=2",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

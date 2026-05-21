@@ -144,22 +144,12 @@ export default function AboutPage() {
                 {
                   "@type": "Person",
                   name: "Aniket",
-                  jobTitle: "Lead Backend Developer",
+                  jobTitle: "Lead Backend & AI Developer",
                 },
                 {
                   "@type": "Person",
                   name: "Priyagni",
                   jobTitle: "Graphic Designer",
-                },
-                {
-                  "@type": "Person",
-                  name: "Harsh",
-                  jobTitle: "Backend Developer",
-                },
-                {
-                  "@type": "Person",
-                  name: "Karan",
-                  jobTitle: "Marketing",
                 },
                 {
                   "@type": "Person",
@@ -301,8 +291,7 @@ export default function AboutPage() {
 
             {/* Subheading */}
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
-              Not just a design agency. We're your product partner — from strategy to shipped code.
-              Trusted by 50+ companies across the US, UK, and Singapore.
+              Not just a design agency — we're your product partner. We help you think through competitive analysis, simplify complex products, design for conversion, and ship production-ready code. From idea to shipped product.
             </p>
 
             {/* US Market Badge */}
@@ -360,11 +349,19 @@ export default function AboutPage() {
         {/* Dark Card Grid */}
         <Card className="rounded-[24px] max-md:rounded-[16px] bg-gradient-to-br from-[#212121] to-[#151514] border border-gray-800 shadow-xl noise-texture">
           <CardBody className="p-8 max-md:p-5">
-            <div className="grid grid-cols-3 max-md:grid-cols-1 gap-6">
+            <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6">
               {[
                 {
-                  title: "Product Thinking",
-                  desc: "We start with competitive analysis, market positioning, and strategy. Right decisions before designing a single pixel.",
+                  title: "Product Thinking First",
+                  desc: "Before a single pixel, we do competitive analysis, market positioning, and product strategy. We help you make the right decisions, not just design ones.",
+                },
+                {
+                  title: "Simplify Complex Products",
+                  desc: "Multi-role dashboards, data-heavy flows, enterprise systems — we break down complexity into intuitive, user-friendly interfaces that people actually understand.",
+                },
+                {
+                  title: "Designed for Conversion",
+                  desc: "Every section, CTA, and flow is strategically designed. We don't just make it look good — we design to convert visitors into users and users into revenue.",
                 },
                 {
                   title: "Architecture to Code",
@@ -373,6 +370,10 @@ export default function AboutPage() {
                 {
                   title: "Enterprise Specialist",
                   desc: "Multi-role dashboards, data-heavy interfaces, complex flows. We handle the hard problems others avoid.",
+                },
+                {
+                  title: "Idea to Shipped Product",
+                  desc: "Information architecture, wireframes, UI design, and production-ready React/Angular/Next.js code. We carry your idea all the way to launch.",
                 },
               ].map((item, i) => (
                 <motion.div
