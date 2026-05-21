@@ -93,14 +93,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: meta.description,
       url: `https://uipirate.com/services/${encodeURIComponent(urlSlug)}`,
       siteName: "UI Pirate by Vishal Anand",
-      images: [
-        {
-          url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
-          width: 1200,
-          height: 630,
-          alt: meta.title,
-        },
-      ],
       locale: "en_US",
       type: "website",
     },
