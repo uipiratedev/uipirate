@@ -8,8 +8,8 @@ export interface OGTemplateProps {
 }
 
 export function OGTemplate({ badge, title, titleHighlight, description }: OGTemplateProps) {
-  const full = title + (titleHighlight ? " " + titleHighlight : "");
-  const fontSize = full.length > 46 ? 52 : full.length > 30 ? 62 : 72;
+  // Match hero font sizes: xl=61px, 2xl=74px — scale by title length
+  const fontSize = title.length > 22 ? 64 : title.length > 16 ? 72 : 80;
 
   return (
     <div
@@ -17,13 +17,13 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
         display: "flex",
         width: "1200px",
         height: "630px",
-        backgroundColor: "#FAFAFA",
+        backgroundColor: "#FFFFFF",
         fontFamily: "system-ui, -apple-system, sans-serif",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Subtle 40px grid — matches the hero section exactly */}
+      {/* Grid — copy-paste of the hero: rgba(0,0,0,0.05), 40px, covers entire area uniformly */}
       <div
         style={{
           position: "absolute",
@@ -35,23 +35,17 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
         }}
       />
 
-      {/* Radial vignette — fades the grid toward center so text stays clean */}
+      {/* Bottom fade — exact two-layer gradient from the hero's "gentle-mist" overlay:
+           layer 1: solid white → transparent at 10%
+           layer 2: solid white → transparent at 35%
+           Combined: strong white at base, gradually revealing the grid above */}
       <div
         style={{
           position: "absolute",
           top: 0, left: 0, right: 0, bottom: 0,
-          background:
-            "radial-gradient(ellipse 90% 70% at 50% 45%, rgba(250,250,250,0.92) 0%, transparent 100%)",
-        }}
-      />
-
-      {/* Bottom fade — matches hero gradient-to-top overlay */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0, left: 0, right: 0,
-          height: "180px",
-          background: "linear-gradient(to top, rgba(250,250,250,1) 0%, transparent 100%)",
+          backgroundImage:
+            "linear-gradient(to top, rgba(250,250,250,1), transparent 0%)," +
+            "linear-gradient(to top, rgba(250,250,250,1) 0%, transparent 0%)",
         }}
       />
 
@@ -65,7 +59,30 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
         }}
       />
 
-      {/* ── Main content ── */}
+      {/* Logo — absolutely pinned to top-left, exactly like the navbar */}
+      <div
+        style={{
+          position: "absolute",
+          top: "24px",
+          left: "72px",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: "0px",
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="UI Pirate Logo"
+          src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1766234689/logo_lcn2cq.png"
+          style={{ width: "56px", height: "56px", objectFit: "contain", display: "block" }}
+        />
+        <span style={{ color: "#000", fontSize: "20px", fontWeight: 700, lineHeight: 1, marginTop: "-16px" }}>
+          UI Pirate
+        </span>
+      </div>
+
+      {/* ── Main content — centred vertically now that logo is out of flow ── */}
       <div
         style={{
           display: "flex",
@@ -77,47 +94,43 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
           position: "relative",
         }}
       >
-        {/* Logo — top-left, matching the navbar */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", alignSelf: "flex-start" }}>
-          <div
-            style={{
-              width: "30px",
-              height: "30px",
-              backgroundColor: "#FF5B04",
-              borderRadius: "7px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span style={{ color: "white", fontSize: "17px" }}>⚓</span>
-          </div>
-          <span style={{ color: "#000", fontSize: "17px", fontWeight: 700, letterSpacing: "0.1em" }}>
-            UI PIRATE
-          </span>
-        </div>
+        {/* spacer so centre block pushes down past the logo */}
+        <div style={{ display: "flex", height: "0px" }} />
 
         {/* Centre block */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "22px" }}>
 
-          {/* Badge — white glass pill with mono uppercase, matching the hero badge */}
+          {/* Badge — matches the GlassSurface hero badge exactly:
+               white solid background, thin border, monospace uppercase */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              backgroundColor: "rgba(255,255,255,0.95)",
-              border: "1px solid rgba(0,0,0,0.1)",
-              borderRadius: "10px",
-              padding: "8px 18px",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+              gap: "8px",
+              backgroundColor: "rgba(255,255,255,0.98)",
+              border: "1px solid rgba(0,0,0,0.09)",
+              borderRadius: "12px",
+              padding: "10px 20px",
+              boxShadow:
+                "0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1)",
             }}
           >
+            {/* Orange dot — adds brand color, echoes hero orange accents */}
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                backgroundColor: "#FF5B04",
+                flexShrink: 0,
+              }}
+            />
             <span
               style={{
                 color: "#000",
                 fontSize: "13px",
                 fontWeight: 600,
-                letterSpacing: "0.09em",
+                letterSpacing: "0.1em",
                 fontFamily: "monospace",
               }}
             >
@@ -125,23 +138,41 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
             </span>
           </div>
 
-          {/* Headline — black + orange highlight, matching hero typography */}
+          {/* Headline — mirrors the hero exactly:
+               Line 1: black text
+               Line 2: orange text WITH orange-400/30 background box (the "Convert," treatment) */}
           <div
             style={{
               display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              fontSize: `${fontSize}px`,
-              fontWeight: 800,
-              lineHeight: 1.08,
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "6px",
               letterSpacing: "-1.5px",
+              lineHeight: 1.1,
+              fontWeight: 700,
               textAlign: "center",
-              maxWidth: "980px",
             }}
           >
-            <span style={{ color: "#000" }}>{title}</span>
+            {/* Line 1 — black, same as "Designing AI-Driven SaaS Products That" */}
+            <span style={{ color: "#000", fontSize: `${fontSize}px` }}>
+              {title}
+            </span>
+
+            {/* Line 2 — orange with highlight bg, same as "Convert, Scale & Ship Faster" */}
             {titleHighlight && (
-              <span style={{ color: "#FF5B04" }}>&nbsp;{titleHighlight}</span>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <span
+                  style={{
+                    color: "#FF5B04",
+                    fontSize: `${fontSize}px`,
+                    backgroundColor: "rgba(251,146,60,0.25)",
+                    borderRadius: "8px",
+                    padding: "2px 14px",
+                  }}
+                >
+                  {titleHighlight}
+                </span>
+              </div>
             )}
           </div>
 

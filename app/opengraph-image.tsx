@@ -9,10 +9,10 @@ export const contentType = "image/png";
 export default function Image() {
   return new ImageResponse(
     <OGTemplate
-      badge="Product Design Agency"
+      badge="Product Design & Development Agency"
       title="From Idea to"
       titleHighlight="Shipped Product"
-      description="Product thinking, competitive analysis & conversion-focused UX/UI design for complex SaaS, AI apps & enterprise software."
+      description="Product thinking, competitive analysis & conversion-focused UX/UI design & Development for complex SaaS, AI apps & enterprise software."
     />,
     { ...size }
   );
