@@ -196,12 +196,6 @@ export default function RootLayout({
                   },
                 ],
               },
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: "5.0",
-                reviewCount: "50",
-                bestRating: "5",
-              },
               sameAs: [
                 "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
                 "https://www.linkedin.com/in/vishal-a-51bb49110",
