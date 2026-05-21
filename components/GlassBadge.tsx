@@ -128,7 +128,7 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           <span
             className={`relative z-10 font-jetbrains-mono font-medium text-black ${
               uppercase ? "uppercase" : ""
-            }`}
+            } ${className}`}
             style={{
               fontVariantNumeric: "slashed-zero",
             }}

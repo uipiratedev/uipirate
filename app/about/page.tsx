@@ -387,7 +387,7 @@ export default function AboutPage() {
             className="text-center mb-16"
           >
             <div className="flex justify-center mb-4">
-              <GlassBadge variant="gradient">THE PROCESS</GlassBadge>
+              <GlassBadge variant="gradient" className="!text-white">THE PROCESS</GlassBadge>
             </div>
             <h2 className="text-4xl max-md:text-3xl font-bold tracking-tight mb-4">
               Our Approach
