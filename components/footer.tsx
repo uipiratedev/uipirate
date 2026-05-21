@@ -180,9 +180,9 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-16 text-left pt-12 max-md:pt-10">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-12 text-left pt-12 max-md:pt-10">
             {/* Branding/Tagline Section */}
-            <div className="lg:col-span-5 max-md:col-span-2 flex flex-col gap-8">
+            <div className="lg:col-span-3 max-md:col-span-2 flex flex-col gap-8">
               <p className="text-[18px] md:text-[24px] font-bold text-white leading-[1.3] max-w-sm"
                 
                  >
@@ -199,9 +199,25 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
               </h4>
               <ul className="flex flex-col gap-1">
                 <li><Link href="/" className="footer-text">Home</Link></li>
-                <li><Link href="/services" className="footer-text">Services</Link></li>
                 <li><Link href="/ourWorks" className="footer-text">Works</Link></li>
                 <li><Link href="/pricing" className="footer-text">Pricing</Link></li>
+                <li><Link href="/about" className="footer-text">About</Link></li>
+              </ul>
+            </div>
+
+            {/* Services Column */}
+            <div className="lg:col-span-3">
+              <h4 className="link-heading">
+                Services
+              </h4>
+              <ul className="flex flex-col gap-1">
+                <li><Link href="/services/SaaS-Web-&-Mobile-Apps" className="footer-text">UX/UI Design</Link></li>
+                <li><Link href="/services/SaaS-Web-&-Mobile-Apps" className="footer-text">SaaS & AI Development</Link></li>
+                <li><Link href="/services/Landing-Pages-&-Business-Websites" className="footer-text">Landing Pages</Link></li>
+                <li><Link href="/services/Graphic-Design" className="footer-text">Graphic Design</Link></li>
+                <li><Link href="/services/Motion-Graphics-&-Video-Editing" className="footer-text">Motion Graphics</Link></li>
+                <li><Link href="/services/UX-Audits-&-Consultation" className="footer-text">UX Audits</Link></li>
+                <li><Link href="/services/3D-Animation-&-Rendering" className="footer-text">3D Assets & Animation</Link></li>
               </ul>
             </div>
 
@@ -221,7 +237,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
             </div>
 
             {/* Policies Column */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-2">
               <h4 className="link-heading">
                 Policies & Legal
               </h4>
