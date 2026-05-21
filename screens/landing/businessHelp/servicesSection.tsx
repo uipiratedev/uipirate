@@ -103,7 +103,7 @@ const ServicesSection = () => {
       viewport={{ once: true, amount: 0.1 }}
     >
       {/* top card  */}
-       <div>
+       {/* <div>
         <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
           <CardBody className="p-5 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -121,7 +121,7 @@ const ServicesSection = () => {
             </div>
           </CardBody>
         </Card>
-      </div>
+      </div> */}
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 my-6">
         {/* Left Card - Apps, SaaS, Websites & More */}

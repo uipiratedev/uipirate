@@ -126,7 +126,7 @@ const LandingMarquee = () => {
            
             <h2 className="heading-center">
               <span className="text-brand-orange">Trusted by Teams</span>
-              <br className="max-md:hidden" />{" "}
+              <br />{" "}
               <span className="text-gray-900">
                 Building the Future of SaaS and{" "}
                 <span className="whitespace-nowrap">AI</span>
@@ -138,7 +138,7 @@ const LandingMarquee = () => {
         </div>
 
         {/* Static logo grid - premium enterprise clients only */}
-        <div className="w-full ">
+        <div className="w-full mt-6">
           <motion.div
             className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center justify-items-center"
             variants={logoContainerVariants}

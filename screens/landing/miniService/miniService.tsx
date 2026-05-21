@@ -9,7 +9,7 @@ const MiniService = () => {
         </div>
         <h2 className="heading-center mb-8">
           <span className="text-gray-900">We design world-class products.</span>
-          <br className="max-md:hidden" />{" "}
+          <br />{" "}
           <span className="text-brand-orange ">You launch them.</span>
         </h2>
       </div>

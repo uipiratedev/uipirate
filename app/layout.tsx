@@ -6,6 +6,7 @@ import Script from "next/script";
 
 import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
@@ -318,6 +319,7 @@ export default function RootLayout({
             </PageLoader>
             <SpeedInsights />
             <CookieConsent />
+            <StickyMobileCTA />
           </div>
         </Providers>
 
