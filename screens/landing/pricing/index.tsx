@@ -150,8 +150,7 @@ const Pricing = () => {
 
               {/* Buttons */}
               <div className="grid grid-cols-1 gap-3">
-                <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                   {/* <LetsTalkButton fullWidth variant="dark"/> */}
+                <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
               </div>
             </div>
           </CardBody>
@@ -194,8 +193,7 @@ const Pricing = () => {
 
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3 max-md:hidden">
-                  <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                  {/* <LetsTalkButton fullWidth/> */}
+                  <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
                 </div>
               </div>
 
@@ -217,9 +215,8 @@ const Pricing = () => {
                   Built around your product, not templates
                 </p>
               </div>
-                  <div className="grid grid-cols-2 gap-3 md:hidden">
-                  <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                  <LetsTalkButton fullWidth/>
+                  <div className="grid grid-cols-1 gap-3 md:hidden">
+                  <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
                 </div>
             </div>
           </CardBody>
