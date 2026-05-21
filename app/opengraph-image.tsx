@@ -10,7 +10,8 @@ export default function Image() {
   return new ImageResponse(
     <OGTemplate
       badge="Product Design Agency"
-      title="From Idea to Shipped Product"
+      title="From Idea to"
+      titleHighlight="Shipped Product"
       description="Product thinking, competitive analysis & conversion-focused UX/UI design for complex SaaS, AI apps & enterprise software."
     />,
     { ...size }
