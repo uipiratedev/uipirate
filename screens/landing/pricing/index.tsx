@@ -75,8 +75,8 @@ const Pricing = () => {
   ];
 
   return (
-    <motion.div 
-      className="py-12 max-md:py-8 container mx-auto px-32 lg:px-20 max-md:px-4"
+    <motion.div
+      className="py-12 max-md:py-8 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32"
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
@@ -110,7 +110,7 @@ const Pricing = () => {
                <img src="/assets/gif/kite.gif" alt="" />
               </div>
               <h3 className="text-3xl max-md:text-xl font-bold text-white font-jakarta">
-                Monthly <span className="text-orange-600">Retainer</span>
+                Monthly <span className="text-brand-orange">Retainer</span>
               </h3>
             </div>
 
@@ -179,7 +179,7 @@ const Pricing = () => {
 
                   {/* Title */}
                   <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
-                    Custom <span className="text-orange-600">Quote</span>
+                    Custom <span className="text-brand-orange">Quote</span>
                   </h3>
                 </div>
                 {/* Subtitle */}

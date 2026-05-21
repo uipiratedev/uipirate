@@ -180,7 +180,7 @@ const ServicesSection = () => {
             <CardBody className="p-8 max-md:p-6">
               <h3 className="text-2xl max-md:text-lg font-bold mb-6 text-white">
                 One-stop shop for{" "}
-                <span className="text-orange-500">all your essentials</span>
+                <span className="text-brand-orange">all your essentials</span>
               </h3>
               <div className="gap-3 grid grid-cols-2 max-md:grid-cols-1">
                 {services.map((service, index) => (

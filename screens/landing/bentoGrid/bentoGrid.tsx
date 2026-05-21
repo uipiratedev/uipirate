@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import AnimatedAnalyticsChart from "./AnimatedAnalyticsChart";
-import { Card } from "@heroui/react";
 
 // Animation variants for bento cards - smooth and buttery
 const cardVariants = {
@@ -75,21 +74,21 @@ const BentoGrid = () => {
                     {/* Top Bar - Navigation */}
                     <div className="flex items-center justify-between mb-1.5 pb-1.5 border-b border-gray-100">
                       <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 rounded bg-gradient-to-br from-blue-500 to-blue-600" />
+                        <div className="w-3 h-3 rounded bg-gradient-to-br from-brand-orange to-orange-600" />
                         <div className="w-10 h-1 bg-gray-200 rounded-full" />
                       </div>
                       <div className="flex gap-0.5">
                         <div className="w-3 h-3 rounded-full bg-gray-100" />
-                        <div className="w-3 h-3 rounded-full bg-gradient-to-br from-orange-400 to-orange-500" />
+                        <div className="w-3 h-3 rounded-full bg-brand-orange" />
                       </div>
                     </div>
 
                     {/* KPI Cards */}
                     <div className="grid grid-cols-3 gap-1 mb-1.5">
                       {/* Revenue Card */}
-                      <div className="bg-gradient-to-br from-blue-50 via-blue-50/50 to-white rounded-md p-1.5 border border-blue-100/50 relative">
+                      <div className="bg-gradient-to-br from-orange-50 via-orange-50/50 to-white rounded-md p-1.5 border border-orange-100/50 relative">
                         <div className="flex items-center justify-between mb-1">
-                          <div className="text-[6px] text-blue-600/70 font-semibold uppercase">
+                          <div className="text-[6px] text-orange-600/70 font-semibold uppercase">
                             REV
                           </div>
                           <div className="flex items-center gap-0.5">
@@ -109,7 +108,7 @@ const BentoGrid = () => {
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            className="text-blue-500"
+                            className="text-brand-orange"
                             d="M12 2V22M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
                             stroke="currentColor"
                             strokeLinecap="round"
@@ -120,9 +119,9 @@ const BentoGrid = () => {
                       </div>
 
                       {/* Active Users Card */}
-                      <div className="bg-gradient-to-br from-purple-50 via-purple-50/50 to-white rounded-md p-1.5 border border-purple-100/50 relative">
+                      <div className="bg-gradient-to-br from-amber-50 via-amber-50/50 to-white rounded-md p-1.5 border border-amber-100/50 relative">
                         <div className="flex items-center justify-between mb-1">
-                          <div className="text-[6px] text-purple-600/70 font-semibold uppercase">
+                          <div className="text-[6px] text-amber-600/70 font-semibold uppercase">
                             USR
                           </div>
                           <div className="flex items-center gap-0.5">
@@ -142,7 +141,7 @@ const BentoGrid = () => {
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            className="text-purple-500"
+                            className="text-amber-500"
                             d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13M16 3.13C16.8604 3.3503 17.623 3.8507 18.1676 4.55231C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89317 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z"
                             stroke="currentColor"
                             strokeLinecap="round"
@@ -259,7 +258,7 @@ const BentoGrid = () => {
                           <div className="px-1 py-0.5 bg-white rounded text-[5px] text-gray-600 border border-gray-200">
                             7D
                           </div>
-                          <div className="px-1 py-0.5 bg-blue-500 rounded text-[5px] text-white">
+                          <div className="px-1 py-0.5 bg-brand-orange rounded text-[5px] text-white">
                             30D
                           </div>
                         </div>
@@ -277,14 +276,14 @@ const BentoGrid = () => {
                       </div>
                       {[
                         {
-                          color: "from-blue-400 to-blue-500",
+                          color: "from-brand-orange to-orange-500",
                           progress: 85,
                           status: "from-green-400 to-green-500",
                         },
                         {
-                          color: "from-purple-400 to-purple-500",
+                          color: "from-amber-400 to-amber-500",
                           progress: 60,
-                          status: "from-yellow-400 to-yellow-500",
+                          status: "from-orange-400 to-orange-500",
                         },
                       ].map((item, i) => (
                         <div
@@ -333,12 +332,12 @@ const BentoGrid = () => {
             {/* Websites & Landing Pages Card */}
             <div className="premium-card">
             <motion.div
-              className="premium-card-inner  p-6 border border-gray-200 shadow rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden relative h-[295px]"
+              className="premium-card-inner rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden relative h-[295px]"
               custom={3}
               initial="hidden"
               style={{
                 background:
-                  "linear-gradient(184deg, rgba(255, 255, 255, 0.00) 30%, #FFF 70%), linear-gradient(90deg, rgba(255, 231, 187, 0.50) 0.07%, rgba(228, 227, 123, 0.50) 40.93%, rgba(194, 239, 242, 0.50) 97.76%), #FFF",
+                  "linear-gradient(184deg, rgba(255, 255, 255, 0.00) 30%, #FFF 70%), linear-gradient(90deg, rgba(255, 235, 210, 0.50) 0.07%, rgba(255, 220, 180, 0.40) 40.93%, rgba(255, 245, 230, 0.30) 97.76%), #FFF",
               }}
               variants={cardVariants}
               viewport={{ once: true, amount: 0.3 }}
@@ -433,7 +432,7 @@ const BentoGrid = () => {
                       {/* Text Line */}
                       <div className="w-full h-1 bg-gray-300/60 rounded-full" />
                       {/* Orange Button */}
-                      <div className="w-full h-3 bg-orange-500 rounded-full shadow-lg" />
+                      <div className="w-full h-3 bg-brand-orange rounded-full shadow-lg" />
                     </div>
                   </div>
                 </div>
@@ -454,7 +453,7 @@ const BentoGrid = () => {
             {/* Built With the Best Card */}
             <div className="premium-card h-[295px]">
             <motion.div
-              className="premium-card-inner bg-gradient-to-br hover-arc-border from-white to-gray-50 rounded-2xl pt-8 pb-0  p-6 border border-gray-200 shadow shadow-md hover:shadow-lg transition-all duration-300 group h-[295px] overflow-hidden"
+              className="premium-card-inner bg-gradient-to-br hover-arc-border from-white to-gray-50 rounded-2xl pt-8 pb-0 p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[295px] overflow-hidden"
               custom={4}
               initial="hidden"
               variants={cardVariants}
@@ -477,16 +476,16 @@ const BentoGrid = () => {
                   {/* Concentric Circles with Gradients and Shadows - Rotating */}
                   <div className="relative flex items-center justify-center">
                     {/* Outer Circle - Largest - Slow rotation */}
-                    <div className="w-96 h-96 rounded-full absolute bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-pink-50/10 shadow-[0_0_40px_rgba(59,130,246,0.1)] animate-[spin_20s_linear_infinite]" />
+                    <div className="w-96 h-96 rounded-full absolute bg-gradient-to-br from-orange-50/30 via-amber-50/20 to-yellow-50/10 shadow-[0_0_40px_rgba(255,91,4,0.08)] animate-[spin_20s_linear_infinite]" />
 
                     {/* Middle Circle - Medium rotation (reverse) */}
-                    <div className="w-72 h-72 rounded-full absolute bg-gradient-to-br from-blue-100/40 via-purple-100/30 to-pink-100/20 shadow-[0_0_30px_rgba(139,92,246,0.15)] animate-[spin_15s_linear_infinite_reverse]" />
+                    <div className="w-72 h-72 rounded-full absolute bg-gradient-to-br from-orange-100/40 via-amber-100/30 to-yellow-100/20 shadow-[0_0_30px_rgba(255,91,4,0.12)] animate-[spin_15s_linear_infinite_reverse]" />
 
                     {/* Inner Circle - Faster rotation */}
-                    <div className="w-48 h-48 rounded-full absolute bg-gradient-to-br from-blue-200/50 via-purple-200/40 to-pink-200/30 shadow-[0_0_20px_rgba(168,85,247,0.2)] animate-[spin_10s_linear_infinite]" />
+                    <div className="w-48 h-48 rounded-full absolute bg-gradient-to-br from-orange-200/50 via-amber-200/40 to-yellow-200/30 shadow-[0_0_20px_rgba(255,91,4,0.15)] animate-[spin_10s_linear_infinite]" />
 
                     {/* Center Circle - Fastest rotation (reverse) */}
-                    <div className="w-24 h-24 rounded-full absolute bg-gradient-to-br from-blue-400/60 via-purple-400/50 to-pink-400/40 shadow-[0_0_15px_rgba(147,51,234,0.3)] animate-[spin_8s_linear_infinite_reverse]" />
+                    <div className="w-24 h-24 rounded-full absolute bg-gradient-to-br from-brand-orange/50 via-orange-400/40 to-amber-400/30 shadow-[0_0_15px_rgba(255,91,4,0.25)] animate-[spin_8s_linear_infinite_reverse]" />
 
                     {/* Tech Stack Icons positioned on different circle layers - Revolving */}
                     <div className="relative w-96 h-96 animate-[spin_25s_linear_infinite]">
@@ -659,7 +658,7 @@ const BentoGrid = () => {
              
               <div className="premium-card h-[350px]">
              <motion.div
-               className="bg-gradient-to-br premium-card-inner from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 group h-[350px] overflow-hidden relative before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-orange-500 before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300 before:content-['']"
+               className="bg-gradient-to-br premium-card-inner from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[350px] overflow-hidden relative before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-brand-orange before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300 before:content-['']"
                custom={5}
                initial="hidden"
                variants={cardVariants}
@@ -693,8 +692,8 @@ const BentoGrid = () => {
                         </div>
                         
                         {/* Right Node (Highlighted/Active) */}
-                        <div className="w-20 bg-white p-2.5 rounded-xl border border-orange-100 shadow-[0_4px_16px_rgba(255,149,0,0.08)] flex flex-col gap-1.5 items-center transform scale-105">
-                          <div className="w-4 h-4 rounded-full bg-orange-400 shadow-sm shadow-orange-200"></div>
+                        <div className="w-20 bg-white p-2.5 rounded-xl border border-brand-orange/20 shadow-[0_4px_16px_rgba(255,91,4,0.08)] flex flex-col gap-1.5 items-center transform scale-105">
+                          <div className="w-4 h-4 rounded-full bg-brand-orange shadow-sm shadow-brand-orange/30"></div>
                           <div className="w-10 h-1 bg-gray-100 rounded-full"></div>
                         </div>
                      </div>
@@ -716,15 +715,15 @@ const BentoGrid = () => {
             {/* <!-- Card 7: Apps4Sale (NEW) --> */}
             <div className="premium-card h-[350px]">
             <motion.div
-               className="premium-card-inner bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6  p-6 border border-gray-200 shadow-md hover:shadow-lg transition-all duration-300 group h-[350px] overflow-hidden relative"
+               className="premium-card-inner bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[350px] overflow-hidden relative"
                custom={6}
                initial="hidden"
                variants={cardVariants}
                viewport={{ once: true, amount: 0.3 }}
                whileInView="visible"
              >
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/40 via-green-50/40 to-blue-50/40 rounded-2xl" />
-              
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/40 via-amber-50/30 to-yellow-50/20 rounded-2xl" />
+
               <div className="h-full flex flex-col justify-between relative z-10">
                 {/* Visual Section - Integrated without extra wrappers */}
                 <div className="flex-1 w-full relative overflow-hidden flex items-end justify-center pt-8 mb-4">
@@ -738,12 +737,12 @@ const BentoGrid = () => {
                          </div>
                          <div className="w-12 h-1.5 bg-gray-100 rounded-full"></div>
                       </div>
-                      
+
                       {/* Mock App Marketplace Grid */}
                       <div className="flex-1 p-3 grid grid-cols-2 gap-3 bg-gray-50/50">
                          {/* App Card 1 */}
-                         <div className="bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm flex flex-col gap-2.5 relative group-hover:border-blue-100 transition-colors">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 shadow-inner flex items-center justify-center">
+                         <div className="bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm flex flex-col gap-2.5 relative group-hover:border-orange-100 transition-colors">
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-orange-600 shadow-inner flex items-center justify-center">
                                <div className="w-3.5 h-3.5 bg-white/90 rounded-sm"></div>
                             </div>
                             <div className="w-12 h-1.5 bg-gray-200 rounded-full"></div>
@@ -751,10 +750,10 @@ const BentoGrid = () => {
                               $99
                             </div>
                          </div>
-                         
+
                          {/* App Card 2 */}
-                         <div className="bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm flex flex-col gap-2.5 relative group-hover:border-purple-100 transition-colors">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 shadow-inner flex items-center justify-center">
+                         <div className="bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm flex flex-col gap-2.5 relative group-hover:border-amber-100 transition-colors">
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 shadow-inner flex items-center justify-center">
                                <div className="w-3.5 h-3.5 bg-white/90 rounded-full"></div>
                             </div>
                             <div className="w-8 h-1.5 bg-gray-200 rounded-full"></div>

@@ -94,8 +94,7 @@ const LandingHero = () => {
             <div className="flex flex-row max-md:flex-col items-center gap-3 max-md:gap-1">
               {/* Avatar Stack */}
               <div
-                className="flex flex-row items-center -space-x-2"
-                style={{ position: "relative", zIndex: 999999999 }}
+                className="flex flex-row items-center -space-x-2 relative z-50"
               >
                 {testimonials.map((testimonial, index) => {
                   return (
@@ -105,10 +104,7 @@ const LandingHero = () => {
                       ref={(el) => {
                         avatarContainerRefs.current[index] = el;
                       }}
-                      className="relative"
-                      style={{
-                        zIndex: hoveredAvatar === index ? 999999999 : "auto",
-                      }}
+                      className={`relative ${hoveredAvatar === index ? 'z-[60]' : 'z-auto'}`}
                       onMouseEnter={() => setHoveredAvatar(index)}
                       onMouseLeave={() => setHoveredAvatar(null)}
                     >
@@ -244,8 +240,7 @@ const LandingHero = () => {
           </div>
           <p className="sub-header">
             We help fast-growing SaaS and enterprise teams build world-class
-            dashboards, onboarding flows, and AI-powered product experiences -
-            from MVP to complete enterprise applications.
+            dashboards, onboarding flows, and AI-powered product experiences—from MVP to complete enterprise applications.
           </p>
           <div
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
