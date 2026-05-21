@@ -51,11 +51,9 @@ export const metadata: Metadata = {
     canonical: "https://uipirate.com",
   },
   icons: {
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg", // Path for the favicon.ico file
-    apple:
-      "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg", // For Apple devices, if available
-    shortcut:
-      "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg", // For older browsers
+    icon: "/favicon.ico?v=2", 
+    apple: "/favicon.ico?v=2", 
+    shortcut: "/favicon.ico?v=2", 
   },
 };
 
