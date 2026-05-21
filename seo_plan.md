@@ -69,6 +69,7 @@
 | M3 | `Disallow: /admin/`, `/blogs/create`, `/blogs/edit/`, `/api/` | `public/robots.txt` |
 | M5 | Removed stale hardcoded `<meta name="keywords">` (Metadata API now owns it) | `app/layout.tsx` |
 | — | Dropped `/resources` + `/community` from sitemap (consistent with above) | `app/sitemap.ts` |
+| M6 | **`/ourWorks` merged into `/case-studies`** — single canonical URL for portfolio + case studies. `/ourWorks` now 308-redirects; merged page renders hero + featured deep-dive case studies (`data/case-studies.json`) + recent works grid + WhyChooseUs + ProjectEstimate. All internal links updated (footer, nav config, GlobalCTA, layout JSON-LD `SiteNavigationElement`, both sitemaps, `/sitemap` page, llms.txt, Behance "Explore All Work" CTA). | `app/ourWorks/page.tsx`, `screens/caseStudies/index.tsx`, `app/case-studies/page.tsx`, `app/sitemap.ts`, `app/api/sitemap/route.ts`, `app/layout.tsx`, `app/sitemap/page.tsx`, `screens/sitemap/index.tsx`, `components/footer.tsx`, `components/GlobalCTA.tsx`, `components/Breadcrumbs.tsx`, `config/site.ts`, `screens/landing/behance/LandingBehance.tsx`, `public/llms.txt` |
 
 ---
 

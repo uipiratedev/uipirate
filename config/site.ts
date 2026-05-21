@@ -114,7 +114,7 @@ export const siteConfig = {
     },
     {
       label: "Works",
-      href: "/ourWorks",
+      href: "/case-studies",
     },
     {
       label: "Pricing",

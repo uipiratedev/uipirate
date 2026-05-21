@@ -22,12 +22,12 @@ const STATIC_PAGES: {
 }[] = [
   { path: "/", priority: 1.0, changeFrequency: "daily" },
   { path: "/services", priority: 0.95, changeFrequency: "weekly" },
-  { path: "/ourWorks", priority: 0.95, changeFrequency: "weekly" },
+  // /ourWorks merged into /case-studies (permanent redirect); single canonical entry below.
+  { path: "/case-studies", priority: 0.95, changeFrequency: "weekly" },
   { path: "/about", priority: 0.9, changeFrequency: "monthly" },
   { path: "/pricing", priority: 0.9, changeFrequency: "weekly" },
   { path: "/blogs", priority: 0.85, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
-  { path: "/case-studies", priority: 0.85, changeFrequency: "weekly" },
   { path: "/faqs", priority: 0.8, changeFrequency: "monthly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },

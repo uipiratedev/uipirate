@@ -48,7 +48,7 @@ const jsonLd = {
         { "@type": "SiteLinksSearchBox", "url": "https://uipirate.com" },
         { "@type": "ListItem", "position": 1, "url": "https://uipirate.com/", "name": "Home" },
         { "@type": "ListItem", "position": 2, "url": "https://uipirate.com/about", "name": "About UI Pirate" },
-        { "@type": "ListItem", "position": 3, "url": "https://uipirate.com/ourWorks", "name": "Our Works & Portfolio" },
+        { "@type": "ListItem", "position": 3, "url": "https://uipirate.com/case-studies", "name": "Case Studies & Portfolio" },
         { "@type": "ListItem", "position": 4, "url": "https://uipirate.com/pricing", "name": "Pricing" },
         { "@type": "ListItem", "position": 5, "url": "https://uipirate.com/contact", "name": "Contact" },
         { "@type": "ListItem", "position": 6, "url": "https://uipirate.com/services/SaaS-Web-&-Mobile-Apps", "name": "UX/UI Design — SaaS, AI & Mobile Apps" },
