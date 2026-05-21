@@ -6,88 +6,29 @@ export async function GET() {
 
   // Main pages with hreflang support
   const mainPages = [
-    {
-      url: "/",
-      priority: "1.0",
-      changefreq: "daily",
-      hreflang: true,
-      image: true,
-    },
-    { url: "/about", priority: "0.9", changefreq: "monthly", hreflang: true },
-    {
-      url: "/services",
-      priority: "0.95",
-      changefreq: "weekly",
-      hreflang: true,
-    },
-    {
-      url: "/ourWorks",
-      priority: "0.95",
-      changefreq: "weekly",
-      hreflang: true,
-    },
-    { url: "/pricing", priority: "0.95", changefreq: "weekly", hreflang: true },
-    { url: "/faqs", priority: "0.8", changefreq: "monthly", hreflang: true },
-    {
-      url: "/blogs",
-      priority: "0.8",
-      changefreq: "weekly",
-      hreflang: true,
-    },
-    {
-      url: "/contact",
-      priority: "0.85",
-      changefreq: "monthly",
-      hreflang: true,
-    },
-    {
-      url: "/ourTeam",
-      priority: "0.7",
-      changefreq: "monthly",
-      hreflang: false,
-    },
-    {
-      url: "/sitemap",
-      priority: "0.5",
-      changefreq: "monthly",
-      hreflang: false,
-    },
-    { url: "/blogs", priority: "0.8", changefreq: "weekly", hreflang: false },
+    { url: "/",            priority: "1.0",  changefreq: "daily",   hreflang: true,  image: true  },
+    { url: "/about",       priority: "0.9",  changefreq: "monthly", hreflang: true,  image: false },
+    { url: "/ourWorks",    priority: "0.9",  changefreq: "weekly",  hreflang: true,  image: false },
+    { url: "/pricing",     priority: "0.95", changefreq: "weekly",  hreflang: true,  image: false },
+    { url: "/contact",     priority: "0.85", changefreq: "monthly", hreflang: true,  image: false },
+    { url: "/blogs",       priority: "0.8",  changefreq: "weekly",  hreflang: true,  image: false },
+    { url: "/faqs",        priority: "0.8",  changefreq: "monthly", hreflang: true,  image: false },
+    { url: "/community",   priority: "0.7",  changefreq: "weekly",  hreflang: false, image: false },
+    { url: "/apps4sale",   priority: "0.7",  changefreq: "weekly",  hreflang: false, image: false },
+    { url: "/mini-saas-apps", priority: "0.6", changefreq: "monthly", hreflang: false, image: false },
+    { url: "/sitemap",     priority: "0.5",  changefreq: "monthly", hreflang: false, image: false },
+    { url: "/privacy",     priority: "0.3",  changefreq: "yearly",  hreflang: false, image: false },
+    { url: "/terms",       priority: "0.3",  changefreq: "yearly",  hreflang: false, image: false },
   ];
 
-  // Service detail pages
+  // Service detail pages — all active routes under /services/[id]
   const servicePages = [
-    {
-      url: "/services/SaaS-Web-&-Mobile-Apps",
-      priority: "0.9",
-      changefreq: "weekly",
-    },
-    {
-      url: "/services/Landing-Pages-&-Corporate-Websites",
-      priority: "0.9",
-      changefreq: "weekly",
-    },
-    {
-      url: "/services/Design-System-&-Component-Library",
-      priority: "0.9",
-      changefreq: "weekly",
-    },
-    { url: "/services/Graphic-Design", priority: "0.9", changefreq: "weekly" },
-    {
-      url: "/services/Motion-Graphics-&-Video-Editing",
-      priority: "0.9",
-      changefreq: "weekly",
-    },
-    {
-      url: "/services/UX-Audits-&-Consultation",
-      priority: "0.9",
-      changefreq: "weekly",
-    },
-    {
-      url: "/services/3D-Animation-&-Rendering",
-      priority: "0.9",
-      changefreq: "weekly",
-    },
+    { url: "/services/SaaS-Web-&-Mobile-Apps",           priority: "0.95", changefreq: "weekly" },
+    { url: "/services/Landing-Pages-&-Business-Websites", priority: "0.9",  changefreq: "weekly" },
+    { url: "/services/Graphic-Design",                   priority: "0.85", changefreq: "weekly" },
+    { url: "/services/Motion-Graphics-&-Video-Editing",  priority: "0.85", changefreq: "weekly" },
+    { url: "/services/UX-Audits-&-Consultation",         priority: "0.85", changefreq: "weekly" },
+    { url: "/services/3D-Animation-&-Rendering",         priority: "0.8",  changefreq: "weekly" },
   ];
 
   const hreflangs = ["en-us", "en-gb", "en-sg", "en-in", "en-au"];
@@ -106,7 +47,7 @@ export async function GET() {
 
   const generateImageTag = () => {
     return `    <image:image>
-      <image:loc>https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png</image:loc>
+      <image:loc>https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png</image:loc>
       <image:title>UI Pirate - Enterprise UI/UX Design Agency</image:title>
       <image:caption>UI Pirate by Vishal Anand - Modern, scalable design for SaaS and Tech companies</image:caption>
     </image:image>`;

@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "UI Pirate",
     images: [
       {
-        url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+        url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
         width: 1200,
         height: 630,
         alt: "UI Pirate - Product Design Agency — From Idea to Shipped Product",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "UI Pirate | Product Design — Idea to Shipped Product",
     description: "Product thinking, competitive analysis & conversion-focused design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
-    images: ["https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png"],
+    images: ["https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png"],
   },
 };
 

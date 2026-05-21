@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: "UI Pirate",
     images: [
       {
-        url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+        url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
         width: 1200,
         height: 630,
         alt: "UI Pirate Pricing - $2000/mo Unlimited Design Requests",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "UI/UX Design | $2000/mo Unlimited · 48hr Turnaround",
     description: "Save 60% vs US agencies. No contracts, pause anytime. Try $350 pilot first. 100% satisfaction guarantee.",
-    images: ["https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png"],
+    images: ["https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png"],
   },
   alternates: {
     canonical: "https://uipirate.com/pricing",
