@@ -11,6 +11,7 @@ const reviewSchema = {
   "@type": "ProfessionalService",
   "@id": "https://uipirate.com/#organization",
   name: "UI Pirate by Vishal Anand",
+  alternateName: ["UI Pirate", "uipirate", "uipirates"],
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: "5.0",
