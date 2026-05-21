@@ -83,7 +83,33 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
   
   // Step 3 data
   const [selectedPriorities, setSelectedPriorities] = useState<string[]>(["fast", "premium"]);
-  
+
+  // Dynamically generate next 5 days starting today
+  const getAvailableDates = () => {
+    const dates = [];
+    const today = new Date();
+    for (let i = 0; i < 5; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      
+      const isToday = i === 0;
+      const dayName = isToday ? "Today" : d.toLocaleDateString("en-US", { weekday: "short" });
+      const dateString = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      
+      dates.push({
+        id: d.toISOString().split('T')[0],
+        dayName,
+        dateString,
+        fullLabel: isToday ? `Today (${dateString})` : `${dayName}, ${dateString}`
+      });
+    }
+    return dates;
+  };
+
+  const availableDates = getAvailableDates();
+  const [selectedDate, setSelectedDate] = useState(availableDates[0].id); // Today is default!
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+
   const [emailError, setEmailError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [nameError, setNameError] = useState("");
@@ -143,6 +169,8 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
     setSelectedProjectTypes([]);
     setSelectedRequirement("");
     setSelectedPriorities(["fast", "premium"]);
+    setSelectedDate(getAvailableDates()[0].id);
+    setSelectedTimeSlot("");
     setIsEmailTouched(false);
     setIsPhoneTouched(false);
     setIsNameTouched(false);
@@ -266,8 +294,12 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
     const projectTypesList = selectedProjectTypes.join(", ");
     const prioritiesList = selectedPriorities.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(", ");
     
+    const chosenDateObj = availableDates.find(d => d.id === selectedDate);
+    const dateLabel = chosenDateObj ? chosenDateObj.fullLabel : "Today";
+    const slotText = selectedTimeSlot ? `${dateLabel} at ${selectedTimeSlot}` : "Not specified";
+
     const message = encodeURIComponent(
-      `🏴‍☠️ *NEW PROJECT ESTIMATE* 🏴‍☠️\n\n` +
+      `🏴‍☠️ *NEW PROJECT ESTIMATE & CALL* 🏴‍☠️\n\n` +
       `*CLIENT DETAILS*\n` +
       `👤 *Name:* ${name}\n` +
       `📧 *Email:* ${email}\n` +
@@ -278,6 +310,8 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
       `🎯 *Priorities:* ${prioritiesList}\n\n` +
       `*BALLPARK ESTIMATE*\n` +
       `${estimate.isInvalid ? "⚠️ _Invalid Combination_" : `💰 *Budget:* ${estimate.budget}\n⏳ *Timeline:* ${estimate.timeline}`}\n\n` +
+      `*📅 PREFERRED CALL SLOT*\n` +
+      `⏰ *Time:* ${slotText}\n\n` +
       `--- \n` +
       `_I'm interested in moving forward. Let's talk!_`
     );
@@ -285,8 +319,8 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
     // Using the provided wa.link and appending the text parameter
     window.open(`https://wa.link/i35lma?text=${message}`, "_blank");
     
-    // Switch to success step (Step 4)
-    setCurrentStep(4);
+    // Switch to success step (Step 5)
+    setCurrentStep(5);
   };
 
   // Prevent background scroll when modal is open
@@ -318,6 +352,7 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
     }
     if (currentStep === 2) return selectedProjectTypes.length > 0 && selectedRequirement;
     if (currentStep === 3) return selectedPriorities.length > 0;
+    if (currentStep === 4) return selectedTimeSlot !== "";
     return false;
   };
 
@@ -726,17 +761,122 @@ export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimat
                       Start Over
                     </Button>
                     <div className="flex-[2.5]">
-                      <LetsTalkButton fullWidth variant="color" onClick={handleWhatsAppRedirect}>
+                      <LetsTalkButton fullWidth variant="color" onClick={() => setCurrentStep(4)}>
                         Get Detailed Quote →
                       </LetsTalkButton>
                     </div>
                   </div>
                 </motion.div>
               )}
-              {/* Step 4: Success Message */}
+              {/* Step 4: Schedule Call Date & Time Selection */}
               {currentStep === 4 && (
                 <motion.div
                   key="step4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col h-full"
+                >
+                  <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar pb-6">
+                    <div className="mb-6">
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="text-[10px] bg-black/5 w-fit px-3 py-1 rounded-lg uppercase font-jetbrains-mono tracking-wider font-bold">STEP 4</p>
+                        <Button isIconOnly variant="light" radius="full" size="sm" onPress={() => setCurrentStep(3)} className="text-gray-400">←</Button>
+                      </div>
+                      <h4 className="text-xl font-semibold mb-2">Select a Preferred Time Slot</h4>
+                      <p className="text-sm text-gray-600">Choose a convenient date and time for a brief 15-min discovery call.</p>
+                    </div>
+
+                    {/* Date Picker Grid */}
+                    <div className="mb-6">
+                      <h5 className="text-sm font-jakarta font-bold text-gray-700 uppercase tracking-wider mb-3">1. Select Date</h5>
+                      <div className="grid grid-cols-5 gap-2 max-md:grid-cols-3">
+                        {availableDates.map((date) => {
+                          const isSelected = selectedDate === date.id;
+                          return (
+                            <button
+                              key={date.id}
+                              type="button"
+                              onClick={() => setSelectedDate(date.id)}
+                              className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${
+                                isSelected
+                                  ? "border-[#FF5B04] bg-[#FF5B04]/5 text-black font-bold"
+                                  : "border-gray-100 hover:border-gray-200 bg-white text-gray-700"
+                              }`}
+                            >
+                              <span className="text-[10px] uppercase font-bold tracking-wide block mb-1 opacity-60">
+                                {date.dayName}
+                              </span>
+                              <span className="text-sm whitespace-nowrap">
+                                {date.dateString}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Time Slot Picker Grid */}
+                    <div className="mb-4">
+                      <h5 className="text-sm font-jakarta font-bold text-gray-700 uppercase tracking-wider mb-3">2. Select Time (IST)</h5>
+                      <div className="grid grid-cols-4 max-md:grid-cols-2 gap-2">
+                        {[
+                          "10:00 AM",
+                          "11:30 AM",
+                          "1:00 PM",
+                          "2:30 PM",
+                          "4:00 PM",
+                          "5:30 PM",
+                          "7:00 PM",
+                          "8:30 PM"
+                        ].map((time) => {
+                          const isSelected = selectedTimeSlot === time;
+                          return (
+                            <button
+                              key={time}
+                              type="button"
+                              onClick={() => setSelectedTimeSlot(time)}
+                              className={`py-3 px-2 text-center rounded-xl border-2 transition-all text-sm font-medium ${
+                                isSelected
+                                  ? "border-[#FF5B04] bg-[#FF5B04] text-white font-bold"
+                                  : "border-gray-100 hover:border-gray-200 bg-white text-gray-700"
+                              }`}
+                            >
+                              {time}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-100 flex items-center gap-3 bg-white mt-auto">
+                    <Button 
+                      variant="light" 
+                      className="flex-1 font-bold h-[56px] text-gray-400 hover:text-black transition-colors" 
+                      radius="full"
+                      onPress={() => setCurrentStep(3)}
+                    >
+                      Back
+                    </Button>
+                    <div className="flex-[2.5]">
+                      <LetsTalkButton 
+                        fullWidth 
+                        variant="color" 
+                        onClick={handleWhatsAppRedirect}
+                        isDisabled={!selectedTimeSlot}
+                      >
+                        Confirm & Get Quote →
+                      </LetsTalkButton>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+              {/* Step 5: Success Message */}
+              {currentStep === 5 && (
+                <motion.div
+                  key="step5"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}

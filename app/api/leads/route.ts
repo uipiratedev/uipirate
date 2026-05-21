@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
         );
 
         // Use existing model or create a new one
-        const Lead =
+        const Lead: any =
           mongoose.models.Lead || mongoose.model("Lead", LeadSchema);
 
         await Lead.create({
