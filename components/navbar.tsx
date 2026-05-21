@@ -239,7 +239,7 @@ export const Navbar = () => {
                       <NavbarItem
                         key={item.href}
                         className={clsx(
-                          "px-2 rounded-[0.65rem] max-md:rounded-none pb-[4px] transition-all duration-200 !static",
+                          "px-1 rounded-[0.65rem] max-md:rounded-none transition-all duration-200 !static",
                         )}
                         style={{ position: "static" }}
                       >
@@ -254,7 +254,10 @@ export const Navbar = () => {
                           <NextLink
                             className={clsx(
                               linkStyles({ color: "foreground" }),
-                              "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
+                              "relative px-3 py-2 text-sm font-medium cursor-pointer transition-all duration-300",
+                              "hover:text-brand-orange",
+                              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[2px] after:bg-brand-orange after:transition-all after:duration-300",
+                              "hover:after:w-full",
                             )}
                             href={item.href}
                           >

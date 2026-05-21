@@ -6,11 +6,13 @@ import Script from "next/script";
 
 import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
 import { Footer } from "@/components/footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title:
@@ -299,24 +301,27 @@ export default function RootLayout({
           fontJetBrainsMono.variable,
         )}
       >
-        {/* Skip Link for Keyboard Navigation */}
-        <a className="skip-link sr-only focus:not-sr-only" href="#main-content">
-          Skip to main content
-        </a>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+          {/* Skip Link for Keyboard Navigation */}
+          <a className="skip-link sr-only focus:not-sr-only" href="#main-content">
+            Skip to main content
+          </a>
 
-        <div className="relative flex flex-col min-h-screen">
-          <PageTransition />
-          <PageLoader>
-            <ConditionalNavbar />
-            <Breadcrumbs />
-            <main className="flex-1 min-h-screen" id="main-content">
-              {children}
-            </main>
-            <Footer />
-          </PageLoader>
-          <SpeedInsights />
-          <CookieConsent />
-        </div>
+          <div className="relative flex flex-col min-h-screen">
+            <PageTransition />
+            <PageLoader>
+              <ConditionalNavbar />
+              <Breadcrumbs />
+              <main className="flex-1 min-h-screen" id="main-content">
+                {children}
+              </main>
+              <Footer />
+            </PageLoader>
+            <SpeedInsights />
+            <CookieConsent />
+            <StickyMobileCTA />
+          </div>
+        </Providers>
 
         {/* Google Analytics with Consent Mode - Lazy loaded for better performance */}
         <Script

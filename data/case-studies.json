@@ -1,0 +1,48 @@
+[
+  {
+    "slug": "xperiti",
+    "title": "Xperiti — Enterprise Research Platform",
+    "client": "Xperiti",
+    "region": "USA",
+    "industry": "SaaS / Market Research",
+    "excerpt": "From product vision to a shipped enterprise research platform — product thinking, IA, UX/UI, and Angular frontend development.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
+    "technologies": ["Angular", "TypeScript", "Figma", "Product Design"],
+    "metrics": [
+      { "label": "Platform scope", "value": "Multi-role enterprise SaaS" },
+      { "label": "Engagement", "value": "End-to-end product partner" }
+    ],
+    "problem": "Xperiti needed an integrated platform for qualitative and quantitative research management — complex workflows, multiple user roles, and data-heavy interfaces.",
+    "approach": "We started with competitive analysis and product thinking, defined information architecture for research teams, and mapped user flows across admin, researcher, and client roles.",
+    "solution": "Full UX/UI design system, high-fidelity prototypes, and production-ready Angular frontend — dashboards, reporting, and collaboration flows built for scale.",
+    "results": "A shipped enterprise research platform used by teams in the US market, with a scalable design system and frontend architecture for ongoing product iteration.",
+    "testimonial": {
+      "quote": "UI Pirate helped us think through the product, not just the pixels — from IA to shipped Angular UI.",
+      "author": "Xperiti Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "revup-ai",
+    "title": "RevUp AI — MVP to Enterprise SaaS",
+    "client": "RevUp AI",
+    "region": "USA",
+    "industry": "AI / SaaS",
+    "excerpt": "Turning an MVP idea into an enterprise-ready AI SaaS platform with product strategy, UX/UI, and React development.",
+    "heroImage": "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+    "technologies": ["React", "Next.js", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Stage", "value": "MVP → Enterprise platform" },
+      { "label": "Market", "value": "US SaaS / AI" }
+    ],
+    "problem": "RevUp AI had a strong vision for an AI-powered SaaS product but needed a partner to structure the product, design complex workflows, and build a scalable frontend.",
+    "approach": "Product discovery, feature prioritization for MVP, competitive positioning, and iterative design + development sprints aligned with fundraising and launch milestones.",
+    "solution": "UX/UI for core AI workflows, admin dashboards, onboarding, and React/Next.js frontend implementation with a component-based architecture.",
+    "results": "A market-ready platform narrative, design system foundations, and shipped UI that supported growth from early MVP to enterprise positioning.",
+    "testimonial": {
+      "quote": "They carried the product from idea through design and build — exactly what a founder needs.",
+      "author": "RevUp AI"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+  }
+]

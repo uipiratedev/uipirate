@@ -129,21 +129,48 @@ body {
   padding: 16px 32px;
   height: 56px;
   font-weight: 500;
-  /* box-shadow: rgba(0, 0, 0, 0.01) 0px 0.602187px 1.32481px 0px,
-    rgba(0, 0, 0, 0.047) 0px 2.28853px 5.03477px 0px,
-    rgba(0, 0, 0, 0.2) 0px 10px 22px 0px; */
   margin-bottom: 4px;
 }
 
+/* ========================================
+   TYPOGRAPHY SYSTEM
+   ======================================== */
+
+/* Section heading - centered, responsive */
 .heading-center {
-  @apply text-center text-[36px] max-lg:text-3xl max-md:text-xl font-[600] max-md:font-[700] max-md:px-8 tracking-[-1px] leading-[48px];
+  @apply text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[36px] font-semibold px-4 md:px-0 tracking-tight leading-snug md:leading-tight;
+}
+
+/* Hero headline - largest text */
+.heading-hero {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-[1.1];
+}
+
+/* Section subheading */
+.heading-section {
+  @apply text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-snug;
+}
+
+/* Card titles */
+.heading-card {
+  @apply text-lg sm:text-xl md:text-2xl font-bold text-gray-900 tracking-tight;
+}
+
+/* Body text - readable paragraphs */
+.text-body {
+  @apply text-sm sm:text-base md:text-lg text-gray-600 font-medium leading-relaxed;
+}
+
+/* Sub-header text (hero section) */
+.sub-header {
+  @apply text-center text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 font-medium leading-relaxed max-w-3xl mx-auto px-4 md:px-8 mt-4;
 }
 
 .badge-text {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
   font-weight: 500;
   font-style: normal;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 20px;
   letter-spacing: 0px;
   vertical-align: middle;
@@ -156,7 +183,7 @@ body {
 /* Mobile responsive variant */
 @media (max-width: 768px) {
   .badge-text {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
@@ -169,7 +196,6 @@ body {
   letter-spacing: 0px;
   vertical-align: middle;
   text-transform: uppercase;
-  leading-trim: cap-height;
 }
 
 /* .badge-center {
@@ -1522,6 +1548,33 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   background-color: transparent !important;
 }
 
+/* ========================================
+   HEROUI TOOLTIP GLASSMORPHISM FIX
+   ======================================== */
+
+/*
+ * Fix for Tooltip losing glassmorphism styles on initial page load (SSR).
+ * HeroUI Tooltip applies default opaque background during SSR that overrides
+ * our custom transparent/glass styles. These rules ensure our styles win.
+ */
+
+/* Override Tooltip content wrapper to be transparent when we use custom glass styles */
+[data-slot="content"].bg-transparent {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Ensure backdrop-blur-none class actually removes backdrop filter */
+[data-slot="content"].backdrop-blur-none {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Remove default shadow when using custom glass shadow */
+[data-slot="content"].shadow-none {
+  box-shadow: none !important;
+}
+
 /* Ensure parent containers don't block backdrop-filter */
 .reveal-text-anim-1 {
   overflow: visible !important;
@@ -1694,7 +1747,13 @@ nav[data-slot="base"] [data-slot="wrapper"] {
 
 
 /* ========================================
-   PAGE TRANSITION — Flip Reveal (Left-to-Right)
+   PAGE TRANSITION — Optimized Slide Reveal
+   ========================================
+   Performance optimizations:
+   - Uses translateX (GPU-accelerated, no 3D perspective)
+   - Reduced bar count (6 vs 12)
+   - Shorter animation (600ms vs 1200ms)
+   - Uses contain: strict for paint isolation
    ======================================== */
 
 .page-transition-wrapper {
@@ -1703,54 +1762,80 @@ nav[data-slot="base"] [data-slot="wrapper"] {
   z-index: 99999999;
   pointer-events: none;
   overflow: hidden;
-  perspective: 1200px;
+  /* Removed perspective to avoid 3D compositing overhead */
+  contain: strict;
 }
 
 .page-transition-container {
   display: flex;
   width: 100%;
   height: 100%;
+  /* Promote to own layer for GPU acceleration */
+  transform: translateZ(0);
 }
 
 .page-transition-bar {
   flex: 1;
-  background: #f97316;
-  backface-visibility: hidden;
-  will-change: transform;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  /* Only animate transform and opacity - both GPU accelerated */
+  will-change: transform, opacity;
+  /* Use CSS variable for stagger delay */
+  animation-delay: var(--stagger-delay, 0s);
+  /* Contain paint to prevent repaints affecting other elements */
+  contain: paint;
 }
 
-/* Cover: bars appear (fill screen instantly) */
+/* Cover: bars appear instantly */
 .page-transition-bar.cover {
   opacity: 1;
-  transform: rotateY(0deg);
+  transform: translateX(0);
 }
 
-/* Reveal: bars flip away left-to-right — the original flipReveal */
+/* Reveal: bars slide out with optimized animation */
 .page-transition-bar.reveal {
-  transform-origin: left center;
-  animation: flipReveal 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: slideReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: var(--stagger-delay, 0s);
 }
 
-@keyframes flipReveal {
+@keyframes slideReveal {
   0% {
-    transform: rotateY(0deg);
+    transform: translateX(0);
+    opacity: 1;
   }
   100% {
-    transform: rotateY(90deg);
+    transform: translateX(100%);
+    opacity: 0;
   }
 }
 
 /* ========================================
    PAUSE PAGE ANIMATIONS DURING TRANSITION
    ========================================
-   While data-transitioning is on <body>, 
-   freeze all CSS animations & framer-motion 
-   so hero / page-level animations only play
-   AFTER the transition finishes.
+   Simplified selector to reduce style recalculation cost.
+   Only pause animations, don't disable transitions entirely
+   as that causes layout thrashing.
    ======================================== */
-body[data-transitioning="true"] #main-content *  {
+body[data-transitioning="true"] [data-animate] {
   animation-play-state: paused !important;
-  transition: none !important;
+}
+
+/* ========================================
+   PAGE CONTENT WRAPPER — Loading States
+   ======================================== */
+.page-content-wrapper {
+  /* GPU-accelerated opacity animation */
+  will-change: opacity;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-content-wrapper.is-loading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.page-content-wrapper.is-loaded {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Legacy loader-wrapper for initial page load spinner */
@@ -1861,33 +1946,38 @@ body[data-transitioning="true"] #main-content *  {
 
 
 
-/* Reusable animated top border */
+/* Reusable animated top border with smooth hover */
 .premium-card {
   position: relative;
   border-radius: 22px;
   background: #ffffff;
   padding: 2px; /* border thickness */
-  background-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    transparent 20%,
-    #ffffff 60%,
-    #ffffff 100%
-  );
-  transition: background-image 0.4s ease;
 }
 
-.premium-card:hover {
-  background-image: linear-gradient(
+.premium-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(
     to bottom,
     #FF5B04 0%,
-    #FF5B04 20%,
-    #ffffff 60%,
-    #ffffff 100%
+    #FF5B04 12%,
+    transparent 45%
   );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.premium-card:hover::before {
+  opacity: 1;
 }
 
 .premium-card-inner {
+  position: relative;
+  z-index: 1;
   border-radius: 19px;
   background: #f8f9fc;
   height: 100%;

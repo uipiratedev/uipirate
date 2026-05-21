@@ -204,7 +204,7 @@ export default function FaqsAccordion() {
             <AccordionItem
               key={String(index)}
               aria-label={item.heading}
-              className="shadow-none border-1 rounded-[1.25rem] mt-3 max-md:mt-2 items-center bg-[#FF5B0414]"
+              className="shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:border-l-[3px] data-[open=true]:border-l-brand-orange data-[open=true]:border-gray-200 data-[open=true]:shadow-sm"
               indicator={({ isOpen }) =>
                 isOpen ? (
                   <img
@@ -221,20 +221,20 @@ export default function FaqsAccordion() {
                 )
               }
               title={
-                <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug">
+                <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug text-gray-900">
                   {item.heading}
                 </p>
               }
             >
-              <div className="p-5 md:p-6 bg-white rounded-[20px]">
-                <p className="mb-5 text-[15px] text-gray-700">{item.title1}</p>
+              <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
+                <p className="mb-5 text-[15px] text-gray-600">{item.title1}</p>
                 {item.list.map((listItem, i) => (
-                  <p key={i} className="mb-3 text-[15px] text-gray-700">
+                  <p key={i} className="mb-3 text-[15px] text-gray-600 leading-relaxed">
                     {listItem}
                   </p>
                 ))}
                 {item.title2 && (
-                  <p className="mt-5 text-[15px] text-gray-700">
+                  <p className="mt-5 text-[15px] text-gray-600">
                     {item.title2}
                   </p>
                 )}

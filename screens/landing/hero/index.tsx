@@ -7,12 +7,17 @@ import Link from "next/link";
 import AnimatedHeadline from "./AnimatedHeadline";
 
 import GlassSurface from "@/components/GlassSurface";
+import {
+  HERO_BADGE_PRESET,
+  HERO_BADGE_CLASSNAME,
+  HERO_BADGE_ANIMATION_STYLE
+} from "@/config/glassSurfacePresets";
 
 const LandingHero = () => {
   const [hoveredAvatar, setHoveredAvatar] = useState<number | null>(null);
 
-  // Create refs for each avatar (for z-index management)
-  const avatarRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Create refs for each avatar container (for z-index management)
+  const avatarContainerRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Testimonial data
   const testimonials = [
@@ -80,41 +85,30 @@ const LandingHero = () => {
           style={{ overflow: "visible" }}
         >
           {" "}
-          {/* Trust Badge with GlassSurface - Inline Avatars */}
+          {/* Trust Badge with GlassSurface - Using centralized preset for consistency */}
           <GlassSurface
-            backgroundOpacity={0.1}
-            blueOffset={20}
-            blur={11}
-            borderRadius={12}
-            borderWidth={0.01}
-            brightness={50}
-            className="md:my-9 max-md:my-5 isolate overflow-visible p-2 px-4 max-md:mx-2"
-            displace={0.5}
-            distortionScale={-180}
-            forceLightMode={true}
-            greenOffset={10}
-            height="auto"
-            opacity={0.93}
-            redOffset={0}
-            saturation={1}
-            style={{
-              animation: "trustBadgeUp 0.5s ease-out forwards",
-              animationDelay: "0.1s",
-              opacity: 0,
-              transform: "translateY(20px) scale(0.95)",
-            }}
-            width="auto"
+            {...HERO_BADGE_PRESET}
+            className={HERO_BADGE_CLASSNAME}
+            style={HERO_BADGE_ANIMATION_STYLE}
           >
             <div className="flex flex-row max-md:flex-col items-center gap-3 max-md:gap-1">
               {/* Avatar Stack */}
               <div
-                className="flex flex-row items-center -space-x-2"
-                style={{ position: "relative", zIndex: 999999999 }}
+                className="flex flex-row items-center -space-x-2 relative z-50"
               >
                 {testimonials.map((testimonial, index) => {
                   return (
-                    <Tooltip
+                    <div
                       key={index}
+                      data-avatar-wrapper
+                      ref={(el) => {
+                        avatarContainerRefs.current[index] = el;
+                      }}
+                      className={`relative ${hoveredAvatar === index ? 'z-[60]' : 'z-auto'}`}
+                      onMouseEnter={() => setHoveredAvatar(index)}
+                      onMouseLeave={() => setHoveredAvatar(null)}
+                    >
+                      <Tooltip
                       showArrow
                       classNames={{
                         base: [
@@ -215,32 +209,20 @@ const LandingHero = () => {
                       offset={12}
                       placement="bottom"
                     >
-                      <div
-                        ref={(el) => {
-                          avatarRefs.current[index] = el;
-                        }}
-                        className="relative"
+                      <img
+                        alt={`${testimonial.name} - Client testimonial`}
+                        className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
+                        src={testimonial.image}
                         style={{
-                          zIndex: hoveredAvatar === index ? 999999999 : "auto",
+                          animation:
+                            "testimonialImageDrop 0.4s ease-out forwards",
+                          animationDelay: `${0.3 + index * 0.1}s`,
+                          opacity: 0,
+                          transform: "translateY(-20px)",
                         }}
-                        onMouseEnter={() => setHoveredAvatar(index)}
-                        onMouseLeave={() => setHoveredAvatar(null)}
-                      >
-                        {/* Avatar */}
-                        <img
-                          alt={`${testimonial.name} - Client testimonial`}
-                          className="w-[28px] h-[28px] border-white rounded-full border-2 cursor-pointer transition-all duration-300 hover:scale-110 hover:z-10 hover:brightness-125 hover:drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]"
-                          src={testimonial.image}
-                          style={{
-                            animation:
-                              "testimonialImageDrop 0.4s ease-out forwards",
-                            animationDelay: `${0.3 + index * 0.1}s`,
-                            opacity: 0,
-                            transform: "translateY(-20px)",
-                          }}
-                        />
-                      </div>
+                      />
                     </Tooltip>
+                    </div>
                   );
                 })}
               </div>
@@ -258,8 +240,7 @@ const LandingHero = () => {
           </div>
           <p className="sub-header">
             We help fast-growing SaaS and enterprise teams build world-class
-            dashboards, onboarding flows, and AI-powered product experiences -
-            from MVP to complete enterprise applications.
+            dashboards, onboarding flows, and AI-powered product experiences—from MVP to complete enterprise applications.
           </p>
           <div
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"

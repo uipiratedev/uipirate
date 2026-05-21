@@ -99,7 +99,7 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
       <div className={`relative z-10 inline-block ${className}`}>
         <GlassSurface
           backgroundOpacity={0.1}
-          blueOffset={20}
+          blueOffset={8}
           blur={11}
           borderRadius={10}
           borderWidth={0.01}
@@ -108,27 +108,27 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           displace={0.5}
           distortionScale={-180}
           forceLightMode={true}
-          greenOffset={10}
+          greenOffset={4}
           height="auto"
           opacity={0.93}
-          redOffset={0}
+          redOffset={12}
           saturation={1}
           width="auto"
         >
-          {/* Dot 1: Teal (Left) - 28px, moved slightly inside */}
-          <div className="absolute -left-[20px] -top-[15px] sm:-left-[30px] sm:-top-[20px] w-[18px] h-[18px] sm:w-[28px] sm:h-[28px] bg-teal-400 rounded-full blur-[8px] sm:blur-[10px] opacity-100 animate-float-dot-1" />
+          {/* Dot 1: Deep Orange (Left) - warm brand accent */}
+          <div className="absolute -left-[20px] -top-[15px] sm:-left-[30px] sm:-top-[20px] w-[18px] h-[18px] sm:w-[28px] sm:h-[28px] bg-[#FF5B04] rounded-full blur-[8px] sm:blur-[10px] opacity-90 animate-float-dot-1" />
 
-          {/* Dot 2: Blue (Center) - 39px, bottom, tiny slice visible */}
-          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[35px] sm:-bottom-[50px] w-[25px] h-[25px] sm:w-[39px] sm:h-[39px] bg-blue-500 rounded-full blur-[12px] sm:blur-[18px] opacity-100 animate-float-dot-2" />
+          {/* Dot 2: Warm Amber (Center-bottom) - complementary warmth */}
+          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[35px] sm:-bottom-[50px] w-[25px] h-[25px] sm:w-[39px] sm:h-[39px] bg-amber-500 rounded-full blur-[12px] sm:blur-[18px] opacity-85 animate-float-dot-2" />
 
-          {/* Dot 3: Pink (Right) - 21px, moved slightly inside */}
-          <div className="absolute -right-[18px] -top-[12px] sm:-right-[26px] sm:-top-[16px] w-[14px] h-[14px] sm:w-[21px] sm:h-[21px] bg-pink-400 rounded-full blur-[6px] sm:blur-[8px] opacity-100 animate-float-dot-3" />
+          {/* Dot 3: Orange-Red (Right) - brand harmony */}
+          <div className="absolute -right-[18px] -top-[12px] sm:-right-[26px] sm:-top-[16px] w-[14px] h-[14px] sm:w-[21px] sm:h-[21px] bg-orange-600 rounded-full blur-[6px] sm:blur-[8px] opacity-90 animate-float-dot-3" />
 
           {/* Text on top */}
           <span
             className={`relative z-10 font-jetbrains-mono font-medium text-black ${
               uppercase ? "uppercase" : ""
-            }`}
+            } ${className}`}
             style={{
               fontVariantNumeric: "slashed-zero",
             }}

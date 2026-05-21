@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardBody } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
 
 import GlassBadge from "@/components/GlassBadge";
@@ -75,8 +75,8 @@ const Pricing = () => {
   ];
 
   return (
-    <motion.div 
-      className="py-12 max-md:py-8 container mx-auto px-32 lg:px-20 max-md:px-4"
+    <motion.div
+      className="py-12 max-md:py-8 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32"
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
@@ -110,7 +110,7 @@ const Pricing = () => {
                <img src="/assets/gif/kite.gif" alt="" />
               </div>
               <h3 className="text-3xl max-md:text-xl font-bold text-white font-jakarta">
-                Monthly <span className="text-orange-600">Retainer</span>
+                Monthly <span className="text-brand-orange">Retainer</span>
               </h3>
             </div>
 
@@ -138,20 +138,30 @@ const Pricing = () => {
                 One subscription, endless possibilities
               </p>
 
-              {/* Price */}
-              <div className="mb-6">
+              {/* Price with Anchor */}
+              <div className="mb-4">
                 <div className="flex items-baseline gap-2">
                   <span className="text-5xl max-md:text-3xl font-black text-white font-jetbrains-mono">
                     $2000
                   </span>
                   <span className="text-[#999999] text-lg font-jetbrains-mono">/per month</span>
                 </div>
+                <p className="text-[#666666] text-sm mt-1 font-jakarta">
+                  vs $8-15k/mo for a typical agency retainer
+                </p>
+              </div>
+
+              {/* Scarcity */}
+              <div className="flex items-center gap-2 mb-4 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
+                <div className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
+                <p className="text-brand-orange text-sm font-semibold">
+                  Only accepting 2 new clients this month
+                </p>
               </div>
 
               {/* Buttons */}
               <div className="grid grid-cols-1 gap-3">
-                <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                   {/* <LetsTalkButton fullWidth variant="dark"/> */}
+                <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
               </div>
             </div>
           </CardBody>
@@ -179,7 +189,7 @@ const Pricing = () => {
 
                   {/* Title */}
                   <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
-                    Custom <span className="text-orange-600">Quote</span>
+                    Custom <span className="text-brand-orange">Quote</span>
                   </h3>
                 </div>
                 {/* Subtitle */}
@@ -194,8 +204,7 @@ const Pricing = () => {
 
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3 max-md:hidden">
-                  <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                  {/* <LetsTalkButton fullWidth/> */}
+                  <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
                 </div>
               </div>
 
@@ -217,9 +226,8 @@ const Pricing = () => {
                   Built around your product, not templates
                 </p>
               </div>
-                  <div className="grid grid-cols-2 gap-3 md:hidden">
-                  <LetsTalkButton fullWidth variant="color" children="Book a Call"/>
-                  <LetsTalkButton fullWidth/>
+                  <div className="grid grid-cols-1 gap-3 md:hidden">
+                  <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
                 </div>
             </div>
           </CardBody>
@@ -232,7 +240,7 @@ const Pricing = () => {
           <div key={index}>
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
-               
+
                 <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center  gap-2 font-mono max-md:text-center">
                   <img src={benefit.icon} alt=""  className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6" /> {benefit.title}
                 </h4>
@@ -243,6 +251,20 @@ const Pricing = () => {
             </Card>
           </div>
         ))}
+      </div>
+
+      {/* Risk Reversal / Guarantee Section */}
+      <div className="mt-8 p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 text-center">
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <h4 className="text-xl md:text-2xl font-bold text-gray-900">100% Satisfaction Guarantee</h4>
+        </div>
+        <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+          Not happy with the first milestone? We'll refund your deposit — no questions asked.
+          We're confident in our work because we've done this 100+ times for companies like yours.
+        </p>
       </div>
     </motion.div>
   );

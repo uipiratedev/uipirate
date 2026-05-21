@@ -102,34 +102,6 @@ const AnimatedAnalyticsChart = () => {
     },
   };
 
-  // Data point variants with stagger
-  const pointVariants: Variants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: (i: number) => ({
-      scale: 1,
-      opacity: 1,
-      transition: {
-        delay: 0.9 + i * 0.06,
-        duration: 0.5,
-        ease: [0.68, -0.55, 0.265, 1.55], // elastic equivalent
-      },
-    }),
-  };
-
-  // Glow point variants
-  const glowPointVariants: Variants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: (i: number) => ({
-      scale: 1,
-      opacity: 0.6,
-      transition: {
-        delay: 0.85 + i * 0.06,
-        duration: 0.5,
-        ease: [0.33, 1, 0.68, 1],
-      },
-    }),
-  };
-
   return (
     <svg
       ref={chartRef}
@@ -139,25 +111,25 @@ const AnimatedAnalyticsChart = () => {
       viewBox="0 0 100 100"
     >
       <defs>
-        {/* Enhanced gradient for the line with multiple color stops */}
+        {/* Enhanced gradient for the line with brand-aligned warm tones */}
         <linearGradient id="lineGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-          <stop offset="0%" stopColor="#3b82f6" stopOpacity="1" />
-          <stop offset="50%" stopColor="#6366f1" stopOpacity="1" />
-          <stop offset="100%" stopColor="#8b5cf6" stopOpacity="1" />
+          <stop offset="0%" stopColor="#FF5B04" stopOpacity="1" />
+          <stop offset="50%" stopColor="#F59E0B" stopOpacity="1" />
+          <stop offset="100%" stopColor="#FF7B34" stopOpacity="1" />
         </linearGradient>
 
         {/* Enhanced gradient for the area fill with smoother transition */}
         <linearGradient id="areaGradient" x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.35" />
-          <stop offset="40%" stopColor="#6366f1" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.02" />
+          <stop offset="0%" stopColor="#FF5B04" stopOpacity="0.35" />
+          <stop offset="40%" stopColor="#F59E0B" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="#FF7B34" stopOpacity="0.02" />
         </linearGradient>
 
         {/* Glow gradient for the line */}
         <linearGradient id="glowGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-          <stop offset="50%" stopColor="#6366f1" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.4" />
+          <stop offset="0%" stopColor="#FF5B04" stopOpacity="0.4" />
+          <stop offset="50%" stopColor="#F59E0B" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#FF7B34" stopOpacity="0.4" />
         </linearGradient>
 
         {/* Blur filter for glow effect */}
@@ -168,13 +140,6 @@ const AnimatedAnalyticsChart = () => {
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
-
-        {/* Radial gradient for data point glows */}
-        <radialGradient id="pointGlow">
-          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
-          <stop offset="70%" stopColor="#6366f1" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
-        </radialGradient>
       </defs>
 
       {/* Area fill */}
@@ -226,61 +191,6 @@ const AnimatedAnalyticsChart = () => {
         animate={isInView ? "visible" : "hidden"}
       />
 
-      {/* Data point glows */}
-      {dataPoints.map((point, i) => (
-        <motion.circle
-          key={`glow-${i}`}
-          cx={point.x}
-          cy={point.y}
-          fill="url(#pointGlow)"
-          r="3"
-          style={{
-            transformOrigin: `${point.x}px ${point.y}px`,
-            pointerEvents: "none",
-          }}
-          variants={glowPointVariants}
-          custom={i}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        />
-      ))}
-
-      {/* Data points */}
-      {dataPoints.map((point, i) => (
-        <g key={`point-${i}`}>
-          {/* Outer ring */}
-          <circle
-            cx={point.x}
-            cy={point.y}
-            fill="none"
-            opacity="0.3"
-            r="2.2"
-            stroke="url(#lineGradient)"
-            strokeWidth="0.5"
-            style={{
-              transformOrigin: `${point.x}px ${point.y}px`,
-              pointerEvents: "none",
-            }}
-          />
-          {/* Main point */}
-          <motion.circle
-            cx={point.x}
-            cy={point.y}
-            fill="white"
-            r="1.5"
-            stroke="url(#lineGradient)"
-            strokeWidth="1.5"
-            style={{
-              transformOrigin: `${point.x}px ${point.y}px`,
-              filter: "drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))",
-            }}
-            variants={pointVariants}
-            custom={i}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-          />
-        </g>
-      ))}
     </svg>
   );
 };

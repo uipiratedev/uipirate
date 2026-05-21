@@ -77,16 +77,19 @@ export const NavbarDropdown = ({
       {/* Trigger Button */}
       <button
         className={clsx(
-          "flex items-center gap-1 text-base font-[500] cursor-pointer transition-all duration-200 hover:font-[600] h-full px-1",
+          "relative flex items-center gap-1 text-sm font-medium cursor-pointer transition-all duration-300 h-full px-3 py-2",
+          "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-[2px] after:bg-brand-orange after:transition-all after:duration-300",
+          isOpen ? "after:w-full text-brand-orange" : "after:w-0",
+          "hover:text-brand-orange hover:after:w-full",
           {
-            "text-white": isDarkSection,
-            "text-black": !isDarkSection,
+            "text-white": isDarkSection && !isOpen,
+            "text-black": !isDarkSection && !isOpen,
           },
         )}
       >
         {label}
         <svg
-          className={clsx("w-4 h-4 transition-transform duration-200", {
+          className={clsx("w-4 h-4 transition-transform duration-300", {
             "rotate-180": isOpen,
           })}
           fill="none"
@@ -156,28 +159,27 @@ export const NavbarDropdown = ({
                         <NextLink
                           key={index}
                           className={clsx(
-                            "group relative rounded-[24px] overflow-hidden bg-white/5 backdrop-blur-md border border-white/10 transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:shadow-xl hover:shadow-black/20 noise-texture h-full",
-                            showFourRow ? "aspect-[16/10]" : "aspect-[4/3]" // Use flatter aspect ratio for 4-col layout to reduce height
+                            "group relative rounded-[20px] overflow-hidden bg-white/5 backdrop-blur-md border border-gray-200 transition-all duration-500 hover:scale-[1.02] hover:border-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/10 h-full",
+                            showFourRow ? "aspect-[16/10]" : "aspect-[4/3]"
                           )}
                           href={item.href || "#"}
                           onClick={() => setIsOpen(false)}
                         >
                           {/* Background Image / Placeholder */}
-                          <div 
+                          <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                            style={{ 
+                            style={{
                               backgroundImage: item.bgImage ? `url('${item.bgImage}')` : "linear-gradient(340.36deg, #F5F5F5 39.57%, #E0E0E0 89.85%)",
                             }}
                           />
-                          
-                          {/* Overlay Gradient */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-                          
-                          <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                            <h3 className="text-gray-900 font-semibold text-lg group-hover:translate-x-1 transition-transform duration-300">
+
+                          {/* White gradient overlay at bottom for text readability */}
+                          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white via-white/90 to-transparent" />
+
+                          <div className="absolute inset-0 p-5 flex flex-col justify-end">
+                            <h3 className="text-gray-900 font-semibold text-base group-hover:text-brand-orange transition-colors duration-300">
                               {item.category}
                             </h3>
-                           
                           </div>
                         </NextLink>
                       ))}

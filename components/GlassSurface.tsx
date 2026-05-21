@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState, useId } from "react";
+"use client";
+
+import React, { useEffect, useRef, useState, useId, useLayoutEffect } from "react";
 
 export interface GlassSurfaceProps {
   children?: React.ReactNode;
@@ -41,6 +43,10 @@ export interface GlassSurfaceProps {
   style?: React.CSSProperties;
   forceLightMode?: boolean;
 }
+
+// Safe useLayoutEffect that falls back to useEffect on server
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const useDarkMode = () => {
   const [isDark, setIsDark] = useState(false);
@@ -97,8 +103,16 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   const blueChannelRef = useRef<SVGFEDisplacementMapElement>(null);
   const gaussianBlurRef = useRef<SVGFEGaussianBlurElement>(null);
 
+  // Track if component has mounted to ensure SSR/CSR consistency
+  const [hasMounted, setHasMounted] = useState(false);
+
   const systemDarkMode = useDarkMode();
   const isDarkMode = forceLightMode ? false : systemDarkMode;
+
+  // Use isomorphic layout effect to set mounted state as early as possible
+  useIsomorphicLayoutEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const generateDisplacementMap = () => {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -186,10 +200,9 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     setTimeout(updateDisplacementMap, 0);
   }, [width, height]);
 
-  const supportsSVGFilters = () => {
-    if (typeof window === "undefined" || typeof document === "undefined") {
-      return false;
-    }
+  // Memoize browser capability checks - only run on client after mount
+  const supportsSVGFilters = (): boolean => {
+    if (!hasMounted) return false;
 
     const isWebkit =
       /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
@@ -200,16 +213,9 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     }
 
     const div = document.createElement("div");
-
     div.style.backdropFilter = `url(#${filterId})`;
 
     return div.style.backdropFilter !== "";
-  };
-
-  const supportsBackdropFilter = () => {
-    if (typeof window === "undefined") return false;
-
-    return CSS.supports("backdrop-filter", "blur(10px)");
   };
 
   const getContainerStyles = (): React.CSSProperties => {
@@ -222,10 +228,12 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       "--glass-saturation": saturation,
     } as React.CSSProperties;
 
+    // Always use the glassmorphism fallback styles for consistent SSR/CSR rendering.
+    // The SVG filter enhancement is applied only after mount on supported browsers.
     const svgSupported = supportsSVGFilters();
-    const backdropFilterSupported = supportsBackdropFilter();
 
     if (svgSupported) {
+      // Enhanced SVG filter path (Chrome only, after mount)
       return {
         ...baseStyles,
         background: isDarkMode
@@ -251,48 +259,33 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
              0px 16px 56px rgba(17, 17, 26, 0.05) inset`,
       };
     } else {
+      // Default glassmorphism path - works on SSR and all browsers
+      // Solid opaque background to completely hide underlying grid/patterns
       if (isDarkMode) {
-        if (!backdropFilterSupported) {
-          return {
-            ...baseStyles,
-            background: "rgba(0, 0, 0, 0.4)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            boxShadow: `inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-                        inset 0 -1px 0 0 rgba(255, 255, 255, 0.1)`,
-          };
-        } else {
-          return {
-            ...baseStyles,
-            background: "rgba(255, 255, 255, 0.1)",
-            backdropFilter: "blur(12px) saturate(1.8) brightness(1.2)",
-            WebkitBackdropFilter: "blur(12px) saturate(1.8) brightness(1.2)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            boxShadow: `inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-                        inset 0 -1px 0 0 rgba(255, 255, 255, 0.1)`,
-          };
-        }
+        return {
+          ...baseStyles,
+          background: "rgba(40, 40, 40, 0.95)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(255, 255, 255, 0.15)",
+          boxShadow: `inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+                      inset 0 -1px 0 0 rgba(255, 255, 255, 0.05),
+                      0 4px 16px rgba(0, 0, 0, 0.2)`,
+        };
       } else {
-        if (!backdropFilterSupported) {
-          return {
-            ...baseStyles,
-            background: "rgba(255, 255, 255, 0.4)",
-            border: "1px solid rgba(255, 255, 255, 0.3)",
-            boxShadow: `inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
-                        inset 0 -1px 0 0 rgba(255, 255, 255, 0.3)`,
-          };
-        } else {
-          return {
-            ...baseStyles,
-            background: "rgba(255, 255, 255, 0.25)",
-            backdropFilter: "blur(12px) saturate(1.8) brightness(1.1)",
-            WebkitBackdropFilter: "blur(12px) saturate(1.8) brightness(1.1)",
-            border: "1px solid rgba(255, 255, 255, 0.3)",
-            boxShadow: `0 8px 32px 0 rgba(31, 38, 135, 0.2),
-                        0 2px 16px 0 rgba(31, 38, 135, 0.1),
-                        inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
-                        inset 0 -1px 0 0 rgba(255, 255, 255, 0.2)`,
-          };
-        }
+        return {
+          ...baseStyles,
+          // Fully opaque light gray background - matches Apps4Sale exactly
+          background: "linear-gradient(135deg, rgba(248, 248, 248, 1) 0%, rgba(240, 240, 240, 1) 100%)",
+          // No backdrop-filter transparency - solid surface
+          backdropFilter: "none",
+          WebkitBackdropFilter: "none",
+          border: "1px solid rgba(220, 220, 220, 0.8)",
+          boxShadow: `0 2px 8px 0 rgba(0, 0, 0, 0.04),
+                      0 4px 16px 0 rgba(0, 0, 0, 0.04),
+                      inset 0 1px 0 0 rgba(255, 255, 255, 1),
+                      inset 0 -1px 0 0 rgba(255, 255, 255, 0.6)`,
+        };
       }
     }
   };

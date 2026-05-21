@@ -114,7 +114,7 @@ const LandingMarquee = () => {
         }}
       />
 
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 flex flex-col items-center justify-center relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 flex flex-col items-center justify-center relative z-10">
         {/* Section heading with enhanced styling */}
         <div className="mb-6 max-md:mb-6 text-center max-w-4xl mx-auto px-8 max-md:px-0">
           <motion.div
@@ -126,7 +126,7 @@ const LandingMarquee = () => {
            
             <h2 className="heading-center">
               <span className="text-brand-orange">Trusted by Teams</span>
-              <br className="max-md:hidden" />{" "}
+              <br />{" "}
               <span className="text-gray-900">
                 Building the Future of SaaS and{" "}
                 <span className="whitespace-nowrap">AI</span>
@@ -138,7 +138,7 @@ const LandingMarquee = () => {
         </div>
 
         {/* Static logo grid - premium enterprise clients only */}
-        <div className="w-full ">
+        <div className="w-full mt-6">
           <motion.div
             className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center justify-items-center"
             variants={logoContainerVariants}
@@ -171,16 +171,15 @@ const LandingMarquee = () => {
                 onHoverStart={() => setHoveredIndex(index)}
                 onHoverEnd={() => setHoveredIndex(null)}
               >
-                {/* Gradient Border - appears on hover */}
+                {/* Brand Orange Border - appears on hover */}
                 <motion.div
-                  className="gradient-border"
+                  className="brand-border"
                   style={{
                     position: "absolute",
                     inset: 0,
                     borderRadius: "0.75rem",
                     padding: "2px",
-                    background:
-                      "linear-gradient(90deg, #F7DE04 4.58%, #11C781 27.52%, #05A2FB 48.18%, #5E72E4 72.05%, #F04800 92.7%)",
+                    background: "linear-gradient(135deg, #FF5B04 0%, #FF7B34 50%, #FF5B04 100%)",
                     WebkitMask:
                       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                     WebkitMaskComposite: "xor",
@@ -188,8 +187,13 @@ const LandingMarquee = () => {
                     pointerEvents: "none",
                     zIndex: 1,
                   }}
-                  animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
-                  transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
+                  animate={{
+                    opacity: hoveredIndex === index ? 1 : 0,
+                    boxShadow: hoveredIndex === index
+                      ? "0 0 20px rgba(255, 91, 4, 0.3), 0 0 40px rgba(255, 91, 4, 0.1)"
+                      : "0 0 0px rgba(255, 91, 4, 0)"
+                  }}
+                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 />
 
                 <motion.img
@@ -210,7 +214,7 @@ const LandingMarquee = () => {
         @media (prefers-reduced-motion: reduce) {
           .logo-item,
           .logo-item img,
-          .gradient-border {
+          .brand-border {
             transition: none !important;
             animation: none !important;
           }
@@ -227,11 +231,11 @@ const LandingMarquee = () => {
           border-radius: 0.75rem;
           background: linear-gradient(
             135deg,
-            rgba(142, 241, 241, 0.1),
-            rgba(96, 165, 250, 0.1)
+            rgba(255, 91, 4, 0.06),
+            rgba(255, 123, 52, 0.04)
           );
           opacity: 0;
-          transition: opacity 0.5s ease;
+          transition: opacity 0.4s ease;
           z-index: 0;
         }
 

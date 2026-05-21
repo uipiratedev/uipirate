@@ -2,8 +2,16 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Card, CardBody } from "@heroui/react";
+import GlassSurface from "@/components/GlassSurface";
 import GlassBadge from "@/components/GlassBadge";
+import { CheckIcon } from "@/components/icons";
 import TheTeam from "@/screens/landing/theTeam";
+import {
+  HERO_BADGE_PRESET,
+  HERO_BADGE_CLASSNAME,
+  HERO_BADGE_ANIMATION_STYLE
+} from "@/config/glassSurfacePresets";
 
 const stats = [
   { number: "9+", label: "Years of Experience" },
@@ -52,14 +60,14 @@ const process = [
 ];
 
 const technologies = [
-  { name: "Angular", category: "Frontend" },
-  { name: "React", category: "Frontend" },
-  { name: "Next.js", category: "Frontend" },
-  { name: "TypeScript", category: "Language" },
-  { name: "Tailwind CSS", category: "Styling" },
-  { name: "Framer", category: "No-Code" },
-  { name: "Webflow", category: "No-Code" },
-  { name: "Figma", category: "Design" },
+  { name: "Angular", logo: "/assets/logos/angular.svg" },
+  { name: "React", logo: "/assets/logos/react.svg" },
+  { name: "Next.js", logo: "/assets/logos/next js.svg" },
+  { name: "TypeScript", logo: "/assets/logos/typescript.svg" },
+  { name: "Tailwind CSS", logo: "/assets/logos/tailwind.svg" },
+  { name: "Framer", logo: "/assets/logos/framer.svg" },
+  { name: "Figma", logo: "/assets/logos/figma.svg" },
+  { name: "GSAP", logo: "/assets/logos/gsap.svg" },
 ];
 
 const industries = [
@@ -73,45 +81,21 @@ const industries = [
   "AI & Machine Learning",
 ];
 
-const clients = [
-  { name: "Ipsos", location: "Israel", role: "VP of R&D" },
-  { name: "Khaitan & Co", location: "India", role: "Leading Corporate Law Firm" },
-  { name: "Xperiti", location: "New York, USA", role: "CEO & Founder" },
-  { name: "RevUp AI", location: "Dallas, Texas, USA", role: "CEO" },
-  { name: "Sarge", location: "USA", role: "Legal & Policy Support Platform" },
-  { name: "Biotex Medical", location: "Texas, USA", role: "MedTech & Device Development" },
-  { name: "Bird", location: "San Francisco, USA", role: "CEO" },
-  {
-    name: "Awesome Health Club",
-    location: "California, USA",
-    role: "Seed Investor",
-  },
-  { name: "ArthAlpha", location: "Bangalore, India", role: "Co-Founder" },
-  { name: "Netzhill", location: "Ontario, Canada", role: "Founder" },
+// Client logos from cloudinary - matching marquee section
+const clientLogos = [
+  { name: "Pivot Bits", logo: "/assets/logos/pivotbits.png", desc: "Enterprise Security Software", isUS: true, invertColor: true },
+  { name: "Ipsos", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg", desc: "Global Market Research", isUS: false },
+  { name: "Biotex Medical", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp", desc: "MedTech", isUS: true },
+  { name: "Khaitan & Co", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png", desc: "Asia's Largest Law Firm", isUS: false },
+  { name: "RevUp AI", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg", desc: "AI Platform", isUS: true },
+  { name: "Simpleo AI", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682148/Group-2_uduxpp.svg", desc: "AI Solutions", isUS: true },
+  { name: "Sarge", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg", desc: "AI Police Tech Platform", isUS: true },
+  { name: "Awesome Health", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg", desc: "HealthTech", isUS: true },
+  { name: "Rings & I", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Rings_I_eyrgog.svg", desc: "E-commerce", isUS: true },
+  { name: "Arth Alpha", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg", desc: "Quant Trading Startup", isUS: false },
 ];
 
-// Smooth entry animations for cards
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.8,
-      ease: [0.16, 1, 0.3, 1], // Smooth custom easing
-    },
-  }),
-};
 
-const headerVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
 
 export default function AboutPage() {
   return (
@@ -192,61 +176,165 @@ export default function AboutPage() {
                 "React Development",
                 "Complex Enterprise Applications",
                 "Design Systems",
+                "Enterprise Security Software",
+                "HealthTech",
+                "LegalTech",
+                "AI Platforms",
+                "SaaS Applications",
               ],
+              // Clients/Customers - verifiable organizations
+              customer: [
+                {
+                  "@type": "Organization",
+                  name: "Pivot Bits",
+                  url: "http://www.pivotbits.com/",
+                  description: "Enterprise security software company serving Fortune 500, hospitals, and schools in the USA",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Ipsos",
+                  url: "https://www.ipsos.com/",
+                  description: "Global market research and consulting firm headquartered in Paris, France",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Biotex Medical",
+                  url: "https://biotexmedical.com/",
+                  description: "MedTech and medical device development company based in Texas, USA",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Khaitan & Co",
+                  url: "https://www.khaitanco.com/",
+                  description: "Asia's largest law firm with offices across India",
+                },
+                {
+                  "@type": "Organization",
+                  name: "RevUp AI",
+                  url: "https://revupai.com/",
+                  description: "AI-powered business solutions platform based in Dallas, USA",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Simpleo AI",
+                  url: "https://www.simpleo.ai/",
+                  description: "Artificial intelligence solutions provider",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Sarge",
+                  url: "https://sarge.com/",
+                  description: "AI-powered police technology platform supporting law enforcement in Florida, USA",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Awesome Health Club",
+                  url: "https://awesomehealthclub.com/",
+                  description: "HealthTech and wellness platform based in California, USA",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Rings & I",
+                  url: "https://ringsandi.com/",
+                  description: "E-commerce jewelry and lifestyle brand",
+                },
+                {
+                  "@type": "Organization",
+                  name: "Arth Alpha",
+                  url: "https://www.arthalpha.in/",
+                  description: "Quant trading funded startup based in Bangalore, India",
+                },
+              ],
+              areaServed: [
+                { "@type": "Country", name: "United States" },
+                { "@type": "Country", name: "India" },
+                { "@type": "Country", name: "France" },
+                { "@type": "Country", name: "Canada" },
+                { "@type": "Country", name: "United Kingdom" },
+                { "@type": "Country", name: "Singapore" },
+              ],
+              slogan: "From Idea to Shipped Product",
             },
           }),
         }}
         type="application/ld+json"
       />
 
-      {/* Hero Section */}
-      <section className="relative container mx-auto px-32 lg:px-20 max-md:px-4 pt-40 max-md:pt-28 pb-20">
-        <motion.div
-          className="max-w-4xl"
-          initial="hidden"
-          animate="visible"
-          variants={headerVariants}
-        >
-          <div className="mb-6 inline-block">
-            <GlassBadge variant="gradient">ABOUT US</GlassBadge>
+      {/* Hero Section - Consistent with other pages */}
+      <section className="relative pt-8 pb-12 max-md:pt-4">
+        {/* Grid Background */}
+        <div
+          className="absolute pointer-events-none inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+          }}
+        />
+        <div
+          className="absolute pointer-events-none inset-0"
+          style={{
+            background: "linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 40%)",
+          }}
+        />
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10">
+          <div className="flex flex-col items-center text-center">
+            {/* Badge - Same as Landing Page */}
+            <GlassSurface
+              {...HERO_BADGE_PRESET}
+              className={HERO_BADGE_CLASSNAME}
+              style={HERO_BADGE_ANIMATION_STYLE}
+            >
+              <div className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
+                ABOUT US
+              </div>
+            </GlassSurface>
+
+            {/* Headline */}
+            <h1 className="hero-header max-w-4xl">
+              <span className="text-black">We Turn Ideas Into </span>
+              <span className="text-brand-orange">Shipped Products</span>
+            </h1>
+
+            {/* Subheading */}
+            <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
+              Not just a design agency. We're your product partner — from strategy to shipped code.
+              Trusted by 50+ companies across the US, UK, and Singapore.
+            </p>
+
+            {/* US Market Badge */}
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
+              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-sm text-gray-600">
+                  <span className="font-semibold text-gray-900">US Timezone Friendly</span> — EST & PST hours
+                </span>
+              </div>
+            </div>
           </div>
-          <h1 className="text-6xl max-md:text-4xl font-bold text-gray-900 mb-6 leading-[1.1] tracking-tight">
-            We Turn Ideas Into
-            <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] to-orange-400">
-              Shipped Products
-            </span>
-          </h1>
-          <p className="text-xl max-md:text-lg text-gray-600 leading-relaxed max-w-3xl font-medium">
-            We are not just a design agency that makes things look pretty. We
-            are a product design and development partner that helps you think
-            through your product, plan its architecture, design the experience,
-            and build it with production-ready code.{" "}
-            <strong className="text-gray-900">
-              Have a conversation about your product — we carry the rest.
-            </strong>
-          </p>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Stats Strip - Glass Cards */}
-      <section className="py-10 relative">
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <div className="grid grid-cols-4 max-md:grid-cols-2 gap-6">
+      {/* Stats Strip */}
+      <section className="py-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
+          <div className="grid grid-cols-4 max-md:grid-cols-2 gap-4">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className="bg-white/60 backdrop-blur-xl border border-gray-200/50 rounded-3xl p-8 text-center shadow-lg shadow-gray-100/50"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:border-brand-orange/30 transition-all duration-300"
               >
-                <p className="text-5xl max-md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-[#FF5B04] to-orange-400">
+                <p className="text-4xl max-md:text-3xl font-bold text-brand-orange font-jetbrains-mono">
                   {stat.number}
                 </p>
-                <p className="text-sm text-gray-600 mt-3 font-semibold uppercase tracking-wider">
+                <p className="text-xs text-gray-500 mt-2 font-medium uppercase tracking-wider">
                   {stat.label}
                 </p>
               </motion.div>
@@ -255,167 +343,147 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* What Makes Us Different - Bento Grid Style */}
-      <section className="container mx-auto px-32 lg:px-20 max-md:px-4 py-24">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.8 }}
-          variants={headerVariants}
-          className="mb-16"
-        >
-          <div className="mb-4">
+      {/* What Makes Us Different - Dark Card Style */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16">
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">OUR DNA</GlassBadge>
           </div>
-          <h2 className="text-4xl max-md:text-3xl font-bold text-gray-900 mb-4 tracking-tight">
+          <h2 className="heading-center">
             What Makes Us Different
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl font-medium">
-            Most agencies give you mockups. We give you a shipped product — with
-            the thinking, strategy, and code to back it up.
+          <p className="text-gray-500 mt-2 max-w-xl mx-auto">
+            Most agencies give you mockups. We give you a shipped product.
           </p>
-        </motion.div>
-
-        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-6">
-          {[
-            {
-              icon: "🧠",
-              title: "Product Thinking",
-              desc: "We start with competitive analysis, market positioning, and product strategy. We help you make the right product decisions before designing a single pixel.",
-            },
-            {
-              icon: "🏗️",
-              title: "Architecture to Code",
-              desc: "From your few lines of vision, we build the information architecture, user flows, wireframes, high-fidelity UI, and production-ready Angular/React code.",
-            },
-            {
-              icon: "⚡",
-              title: "Enterprise Specialist",
-              desc: "Multi-role dashboards, data-heavy interfaces, intricate user flows, and real business logic. We specialize in the hard problems other agencies avoid.",
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={item.title}
-              custom={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              className="premium-card-inner bg-gradient-to-br from-white to-gray-50 rounded-[32px] p-8 border border-gray-200/60 shadow-xl shadow-gray-200/20 hover:shadow-2xl hover:border-[#FF5B04]/30 transition-all duration-500 group"
-            >
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl">{item.icon}</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3 tracking-tight">
-                {item.title}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                {item.desc}
-              </p>
-            </motion.div>
-          ))}
         </div>
+
+        {/* Dark Card Grid */}
+        <Card className="rounded-[24px] max-md:rounded-[16px] bg-gradient-to-br from-[#212121] to-[#151514] border border-gray-800 shadow-xl noise-texture">
+          <CardBody className="p-8 max-md:p-5">
+            <div className="grid grid-cols-3 max-md:grid-cols-1 gap-6">
+              {[
+                {
+                  title: "Product Thinking",
+                  desc: "We start with competitive analysis, market positioning, and strategy. Right decisions before designing a single pixel.",
+                },
+                {
+                  title: "Architecture to Code",
+                  desc: "From vision to shipped product — IA, user flows, wireframes, UI, and production-ready React/Next.js code.",
+                },
+                {
+                  title: "Enterprise Specialist",
+                  desc: "Multi-role dashboards, data-heavy interfaces, complex flows. We handle the hard problems others avoid.",
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center mb-4">
+                    <span className="text-brand-orange font-bold font-mono text-sm">0{i + 1}</span>
+                  </div>
+                  <h3 className="text-white font-semibold text-lg mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {item.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </CardBody>
+        </Card>
       </section>
 
       {/* Design Style & Approach */}
-      <section className="container mx-auto px-32 lg:px-20 max-md:px-4 pb-24">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.8 }}
-          variants={headerVariants}
-          className="mb-12"
-        >
-          <div className="mb-4">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pb-16">
+        <div className="text-center mb-10">
+          <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">DESIGN PHILOSOPHY</GlassBadge>
           </div>
-          <h2 className="text-4xl max-md:text-3xl font-bold text-gray-900 mb-4 tracking-tight">
+          <h2 className="heading-center">
             Our Design Style
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl font-medium">
-            We don't just make it look good; we design for conversion, clarity, and scale.
-          </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-6">
+        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-4">
           {[
             {
               title: "Dashboards & SaaS UX",
-              desc: "Clean, intuitive, and data-driven. We tame complexity by organizing dense information into clear, actionable interfaces.",
-              bg: "from-blue-50/50",
+              desc: "Clean, intuitive, data-driven. We tame complexity into clear, actionable interfaces.",
             },
             {
               title: "Websites & Landing Pages",
-              desc: "Fast and conversion-focused. Every section is strategically crafted to guide the user toward the core CTA.",
-              bg: "from-green-50/50",
+              desc: "Fast and conversion-focused. Every section guides users toward the CTA.",
             },
             {
               title: "Pixel-Perfect Execution",
-              desc: "From Figma to code, we ensure the final product matches the vision exactly. No lost details in handoff.",
-              bg: "from-purple-50/50",
+              desc: "From Figma to code — the final product matches the vision exactly.",
             },
           ].map((item, i) => (
             <motion.div
               key={item.title}
-              custom={i + 3}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              className={`premium-card-inner bg-gradient-to-br ${item.bg} to-white rounded-[32px] p-8 border border-gray-200/60 shadow-lg hover:shadow-xl transition-all duration-300`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              className="premium-card"
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-3 tracking-tight">
-                {item.title}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed font-medium">
-                {item.desc}
-              </p>
+              <div className="premium-card-inner bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] rounded-[20px] p-6 border border-gray-200 h-full">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-brand-orange"><CheckIcon /></span>
+                  <h3 className="font-semibold text-gray-900">
+                    {item.title}
+                  </h3>
+                </div>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {item.desc}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* Our Process - Dark Section */}
-      <section className="bg-[#0A0A0A] text-white py-24 relative overflow-hidden rounded-[60px] max-md:rounded-[30px] mx-4 max-md:mx-2 mb-24">
+      <section className="bg-[#0A0A0A] text-white py-16 relative overflow-hidden rounded-[32px] max-md:rounded-[20px] mx-4 sm:mx-6 lg:mx-20 xl:mx-32 mb-16">
         {/* Subtle background glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-[#FF5B04]/10 to-transparent blur-3xl pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-gradient-to-b from-brand-orange/10 to-transparent blur-3xl pointer-events-none" />
 
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4 relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.8 }}
-            variants={headerVariants}
-            className="text-center mb-16"
-          >
+        <div className="px-8 max-md:px-5 relative z-10">
+          <div className="text-center mb-10">
             <div className="flex justify-center mb-4">
-              <GlassBadge variant="gradient">THE PROCESS</GlassBadge>
+              <GlassBadge variant="gradient" className="text-white">THE PROCESS</GlassBadge>
             </div>
-            <h2 className="text-4xl max-md:text-3xl font-bold tracking-tight mb-4">
+            <h2 className="text-3xl max-md:text-2xl font-bold tracking-tight text-white mb-3">
               Our Approach
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto font-medium">
-              Simple: you share your vision. We do the rest — from thinking to shipping.
+            <p className="text-gray-400 max-w-xl mx-auto">
+              Simple: you share your vision. We do the rest.
             </p>
-          </motion.div>
+          </div>
 
-          <div className="grid grid-cols-3 max-md:grid-cols-1 gap-6">
+          <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4">
             {process.map((step, i) => (
               <motion.div
                 key={step.step}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                className="bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-[32px] p-8 hover:bg-white/[0.05] hover:border-[#FF5B04]/50 transition-all duration-300 group relative overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/5 to-transparent rounded-bl-full pointer-events-none" />
-                
-                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono font-bold text-sm mb-6 group-hover:scale-110 transition-transform duration-300">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-brand-orange/20 text-brand-orange font-mono font-bold text-xs mb-4">
                   {step.step}
                 </span>
-                <h3 className="text-xl font-bold text-white tracking-tight mb-3">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   {step.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed font-medium">
+                <p className="text-gray-500 text-sm leading-relaxed">
                   {step.description}
                 </p>
               </motion.div>
@@ -425,140 +493,145 @@ export default function AboutPage() {
       </section>
 
       {/* Shared TheTeam Component */}
-      <section className="mb-24">
+      <section className="mb-16">
         <TheTeam />
       </section>
 
       {/* Technology Stack & Industries */}
-      <section className="container mx-auto px-32 lg:px-20 max-md:px-4 py-24 border-t border-gray-200">
-        <div className="grid grid-cols-2 max-md:grid-cols-1 gap-20">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={headerVariants}
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 tracking-tight">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-12">
+        <div className="grid grid-cols-2 max-md:grid-cols-1 gap-8">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
               Technology Stack
-            </h2>
+            </h3>
             <div className="flex flex-wrap gap-3">
               {technologies.map((tech) => (
-                <div
+                <motion.div
                   key={tech.name}
-                  className="bg-white border border-gray-200 shadow-sm rounded-full px-5 py-2 hover:border-[#FF5B04] hover:shadow-md transition-all duration-300 cursor-default"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="bg-white border border-gray-200 rounded-xl px-4 py-2 flex items-center gap-2 hover:border-brand-orange/50 hover:shadow-sm transition-all duration-300"
                 >
-                  <span className="text-sm font-bold text-gray-900">
-                    {tech.name}
-                  </span>
-                  <span className="text-xs text-gray-500 font-medium ml-2">
-                    {tech.category}
-                  </span>
-                </div>
+                  <img src={tech.logo} alt={tech.name} className="w-5 h-5 object-contain" />
+                  <span className="text-sm font-medium text-gray-700">{tech.name}</span>
+                </motion.div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={headerVariants}
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 tracking-tight">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">
               Industries We Serve
-            </h2>
-            <div className="flex flex-wrap gap-3">
+            </h3>
+            <div className="flex flex-wrap gap-2">
               {industries.map((industry) => (
-                <div
+                <span
                   key={industry}
-                  className="bg-gray-100 rounded-full px-5 py-2 text-sm font-semibold text-gray-700"
+                  className="bg-gray-100 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-600"
                 >
                   {industry}
-                </div>
+                </span>
               ))}
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Trusted By Clients Grid */}
-      <section className="bg-white py-24 border-t border-gray-200">
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.8 }}
-            variants={headerVariants}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 tracking-tight">
-              Trusted by Teams Across the Globe
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6">
-            {clients.map((client, i) => (
-              <motion.div
-                key={client.name}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={cardVariants}
-                className="bg-gradient-to-br from-white to-gray-50 border border-gray-200/80 shadow-sm hover:shadow-lg rounded-2xl p-6 transition-all duration-300 group"
-              >
-                <p className="font-bold text-lg text-gray-900 tracking-tight group-hover:text-[#FF5B04] transition-colors">
-                  {client.name}
-                </p>
-                <p className="text-xs font-semibold text-gray-500 mt-1 uppercase tracking-wide">
-                  {client.location}
-                </p>
-                <div className="mt-4 inline-block px-3 py-1 bg-gray-100 rounded-lg">
-                  <p className="text-xs font-bold text-gray-700">
-                    {client.role}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-32 lg:px-20 max-md:px-4 py-32 text-center relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-orange-50/50 pointer-events-none rounded-[60px]" />
-        
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.8 }}
-          variants={headerVariants}
-          className="relative z-10"
-        >
-          <h2 className="text-5xl max-md:text-3xl font-bold text-gray-900 mb-6 tracking-tight">
-            Ready to Turn Your Idea
-            <br /> Into a Product?
+      {/* Trusted By Clients Grid - Logo-based */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-12">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <GlassBadge variant="gradient">OUR CLIENTS</GlassBadge>
+          </div>
+          <h2 className="heading-center">
+            Trusted by Teams Worldwide
           </h2>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto font-medium">
-            Book a free 15-minute call. Tell us about your product vision — we'll
-            show you how we can bring it to life.
+          <p className="text-gray-500 mt-2">
+            60% of our clients are US-based startups and enterprises
           </p>
-          <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
-            <Link
-              className="bg-[#FF5B04] text-white px-8 py-4 rounded-full font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/20 transition-all duration-300"
-              href="https://cal.com/ui-pirate/15min"
-              target="_blank"
+        </div>
+
+        <div className="grid grid-cols-5 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4">
+          {clientLogos.map((client, i) => (
+            <motion.div
+              key={client.name}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              className={`border rounded-xl p-5 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-brand-orange/40 hover:shadow-lg group ${
+                client.isUS
+                  ? 'bg-brand-orange/5 border-brand-orange/20'
+                  : 'bg-white border-gray-200'
+              }`}
             >
-              Book a Free Call
-            </Link>
-            <Link
-              className="bg-white border border-gray-200 text-gray-900 px-8 py-4 rounded-full font-bold hover:border-gray-900 hover:bg-gray-50 hover:scale-105 transition-all duration-300 shadow-sm"
-              href="/ourWorks"
-            >
-              See Our Work
-            </Link>
-          </div>
-        </motion.div>
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="h-8 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                style={client.invertColor ? {
+                  filter: 'invert(1) sepia(1) saturate(5) hue-rotate(180deg) brightness(0.7)',
+                } : undefined}
+              />
+              <span className="mt-2 text-xs text-gray-500 font-medium">
+                {client.desc}
+              </span>
+              {client.isUS && (
+                <span className="mt-1 text-[10px] text-brand-orange font-semibold">
+                  🇺🇸 US
+                </span>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Section - Dark Card */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16 mb-8">
+        <Card className="rounded-[24px] max-md:rounded-[16px] bg-gradient-to-br from-[#212121] to-[#151514] border border-gray-800 shadow-xl noise-texture overflow-hidden">
+          <CardBody className="p-12 max-md:p-6 text-center relative">
+            {/* Glow effect */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 bg-brand-orange/10 blur-3xl pointer-events-none" />
+
+            <div className="relative z-10">
+              <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4 tracking-tight">
+                Ready to Turn Your Idea Into a <span className="text-brand-orange">Product</span>?
+              </h2>
+              <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+                Book a free 15-minute call. Tell us your vision — we'll show you how we can bring it to life.
+              </p>
+              <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
+                <Link
+                  href="https://cal.com/ui-pirate/15min"
+                  target="_blank"
+                  className="bg-brand-orange text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-300"
+                >
+                  Book a Free Call
+                </Link>
+                <Link
+                  className="bg-white/10 border border-white/20 text-white px-6 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all duration-300"
+                  href="/pricing"
+                >
+                  See Pricing
+                </Link>
+              </div>
+
+              {/* Trust indicators */}
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-gray-400 text-sm">
+                <span className="flex items-center gap-2">
+                  <CheckIcon /> No commitment required
+                </span>
+                <span className="flex items-center gap-2">
+                  <CheckIcon /> Response within 2 hours
+                </span>
+                <span className="flex items-center gap-2">
+                  <CheckIcon /> US timezone friendly
+                </span>
+              </div>
+            </div>
+          </CardBody>
+        </Card>
       </section>
     </div>
   );

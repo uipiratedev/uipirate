@@ -103,7 +103,7 @@ const ServicesSection = () => {
       viewport={{ once: true, amount: 0.1 }}
     >
       {/* top card  */}
-       <div>
+       {/* <div>
         <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-black/10 shadow-sm">
           <CardBody className="p-5 max-md:p-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -121,7 +121,7 @@ const ServicesSection = () => {
             </div>
           </CardBody>
         </Card>
-      </div>
+      </div> */}
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 my-6">
         {/* Left Card - Apps, SaaS, Websites & More */}
@@ -180,7 +180,7 @@ const ServicesSection = () => {
             <CardBody className="p-8 max-md:p-6">
               <h3 className="text-2xl max-md:text-lg font-bold mb-6 text-white">
                 One-stop shop for{" "}
-                <span className="text-orange-500">all your essentials</span>
+                <span className="text-brand-orange">all your essentials</span>
               </h3>
               <div className="gap-3 grid grid-cols-2 max-md:grid-cols-1">
                 {services.map((service, index) => (

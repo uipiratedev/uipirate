@@ -29,30 +29,6 @@ const products = [
     category: "Customer Experience",
     slug: "smart-onboarding-engine",
   },
-  {
-    title: "AI Voice Support System",
-    description: "Handle customer queries with real-time voice AI.",
-    category: "AI Systems",
-    slug: "ai-voice-support-system-2",
-  },
-  {
-    title: "AI Voice Support System",
-    description: "Handle customer queries with real-time voice AI.",
-    category: "AI Systems",
-    slug: "ai-voice-support-system-3",
-  },
-  {
-    title: "AI Voice Support System",
-    description: "Handle customer queries with real-time voice AI.",
-    category: "AI Systems",
-    slug: "ai-voice-support-system-4",
-  },
-  {
-    title: "AI Voice Support System",
-    description: "Handle customer queries with real-time voice AI.",
-    category: "AI Systems",
-    slug: "ai-voice-support-system-5",
-  },
 ];
 
 const ProductIcon = () => (
