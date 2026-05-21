@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "UI Pirate",
     images: [
       {
-        url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+        url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
         width: 1200,
         height: 630,
         alt: "UI Pirate - Product Design Agency — From Idea to Shipped Product",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "UI Pirate | Product Design — Idea to Shipped Product",
     description: "Product thinking, competitive analysis & conversion-focused design. We simplify complex products. 50+ shipped.",
-    images: ["https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png"],
+    images: ["https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png"],
     site: "@UI_Pirate",
     creator: "@UI_Pirate",
   },
@@ -126,7 +126,7 @@ export default function RootLayout({
               alternateName: ["UI Pirate", "uipirate", "uipirates"],
               url: "https://uipirate.com",
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
-              image: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+              image: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
                 "Product design and frontend development agency that turns ideas into shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
               foundingDate: "2015",
