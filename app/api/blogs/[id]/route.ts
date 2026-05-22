@@ -50,12 +50,6 @@ export async function GET(
       );
     }
 
-    // Increment view count for published blogs
-    if (blog.published && !isAdmin) {
-      blog.views = (blog.views || 0) + 1;
-      await blog.save();
-    }
-
     return NextResponse.json({
       success: true,
       data: blog,

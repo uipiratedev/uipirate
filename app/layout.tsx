@@ -16,6 +16,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://uipirate.com"),
   title: {
     default: "UI Pirate | Product Design & Dev — Idea to Shipped Product",
     template: "%s | UI Pirate",

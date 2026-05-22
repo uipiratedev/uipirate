@@ -16,8 +16,11 @@ export interface IBlog extends Document {
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
-  views?: number;
-  readTime?: number; // in minutes
+  views?: number;        // Unique human views (deduplicated per IP per 24h)
+  botViews?: number;     // Hits from known bots/crawlers
+  duplicateViews?: number; // Repeat visits from same IP within 24h
+  totalViews?: number;   // Raw total = views + duplicateViews + botViews
+  readTime?: number;     // in minutes
   calculateReadTime(): void;
 }
 
@@ -77,6 +80,21 @@ const BlogSchema: Schema = new Schema(
       type: Date,
     },
     views: {
+      type: Number,
+      default: 0,
+    },
+    // Views from known bots/crawlers (Googlebot, Bingbot, etc.)
+    botViews: {
+      type: Number,
+      default: 0,
+    },
+    // Human visits that were duplicates (same IP within 24h window)
+    duplicateViews: {
+      type: Number,
+      default: 0,
+    },
+    // Raw total hits: views + duplicateViews + botViews
+    totalViews: {
       type: Number,
       default: 0,
     },
