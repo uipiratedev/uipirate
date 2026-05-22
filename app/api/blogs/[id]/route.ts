@@ -28,7 +28,8 @@ export async function GET(
     let blog = await Blog.findById(id);
 
     if (!blog) {
-      blog = await Blog.findOne({ slug: id });
+      const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+      blog = await Blog.findOne({ slug: { $regex: new RegExp(`^${escapedId}$`, "i") } });
     }
 
     if (!blog) {
