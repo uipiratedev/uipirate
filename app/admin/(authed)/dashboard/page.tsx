@@ -27,20 +27,32 @@ export default async function AdminDashboardPage() {
   const recentBlogs = await Blog.find()
     .sort({ createdAt: -1 })
     .limit(5)
-    .select("title slug published createdAt views")
+    .select("title slug published createdAt views totalViews botViews duplicateViews")
     .lean();
 
-  // Calculate total views
+  // Aggregate all view counters across all blog posts
   const viewsResult = await Blog.aggregate([
-    { $group: { _id: null, totalViews: { $sum: "$views" } } },
+    {
+      $group: {
+        _id: null,
+        totalViews:     { $sum: "$totalViews" },
+        uniqueViews:    { $sum: "$views" },
+        botViews:       { $sum: "$botViews" },
+        duplicateViews: { $sum: "$duplicateViews" },
+      },
+    },
   ]);
-  const totalViews = viewsResult[0]?.totalViews || 0;
+  const aggViews = viewsResult[0] || {};
+  const totalViewsAll     = aggViews.totalViews     || 0;
+  const uniqueViewsAll    = aggViews.uniqueViews    || 0;
+  const botViewsAll       = aggViews.botViews       || 0;
+  const duplicateViewsAll = aggViews.duplicateViews || 0;
 
   const stats = [
-    { label: "Total Blogs",   value: totalBlogs,     Icon: IconBlogs,  color: "#151514", bg: "#F0EDE8" },
-    { label: "Published",     value: publishedBlogs, Icon: IconCheck,  color: "#16A34A", bg: "#DCFCE7" },
-    { label: "Drafts",        value: draftBlogs,     Icon: IconDraft,  color: "#FF5B04", bg: "#FFF0E8" },
-    { label: "Total Views",   value: totalViews,     Icon: IconEye,    color: "#7C3AED", bg: "#EDE9FE" },
+    { label: "Total Blogs",     value: totalBlogs,      Icon: IconBlogs, color: "#151514", bg: "#F0EDE8" },
+    { label: "Published",       value: publishedBlogs,  Icon: IconCheck, color: "#16A34A", bg: "#DCFCE7" },
+    { label: "Drafts",          value: draftBlogs,      Icon: IconDraft, color: "#FF5B04", bg: "#FFF0E8" },
+    { label: "Total Views",     value: totalViewsAll.toLocaleString(),   Icon: IconEye,   color: "#7C3AED", bg: "#EDE9FE" },
   ];
 
   return (
@@ -71,6 +83,27 @@ export default async function AdminDashboardPage() {
             <p className="text-3xl font-bold font-geist tracking-tight" style={{ color }}>{value}</p>
           </div>
         ))}
+      </div>
+
+      {/* View Breakdown Strip */}
+      <div className="bg-white rounded-2xl p-5 shadow-card border border-black/5">
+        <p className="text-xs font-semibold font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-4">View Breakdown</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { label: "Unique Visitors", value: uniqueViewsAll,    color: "#7C3AED", note: "Deduplicated, 24h window" },
+            { label: "Repeat Visits",   value: duplicateViewsAll, color: "#0EA5E9", note: "Same IP, within 24h" },
+            { label: "Bot / Crawler",   value: botViewsAll,       color: "#94A3B8", note: "Googlebot, Bingbot, etc." },
+            { label: "Raw Total",       value: totalViewsAll,     color: "#FF5B04", note: "All hits combined" },
+          ].map(({ label, value, color, note }) => (
+            <div key={label} className="flex flex-col gap-1">
+              <p className="text-2xl font-bold font-geist tracking-tight" style={{ color }}>
+                {value.toLocaleString()}
+              </p>
+              <p className="text-xs font-medium text-gray-700 font-geist">{label}</p>
+              <p className="text-[10px] text-gray-400 font-geist">{note}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Quick Actions */}
@@ -133,7 +166,13 @@ export default async function AdminDashboardPage() {
                       {new Date(blog.createdAt).toLocaleDateString()}
                     </span>
                     <span className="text-xs text-gray-400 font-geist flex items-center gap-1">
-                      <IconEye className="opacity-50" style={{ width: 12, height: 12 }} /> {blog.views || 0}
+                      <IconEye className="opacity-50" style={{ width: 12, height: 12 }} />
+                      {((blog as any).totalViews || (blog as any).views || 0).toLocaleString()}
+                      {(blog as any).views !== undefined && (
+                        <span className="text-[9px] text-gray-300 ml-0.5">
+                          ({((blog as any).views || 0)} unique)
+                        </span>
+                      )}
                     </span>
                   </div>
                 </div>

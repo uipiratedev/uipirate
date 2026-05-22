@@ -6,7 +6,8 @@ interface BlogData {
   author: { name: string };
   publishedAt: string | null;
   createdAt: string;
-  views?: number;
+  views?: number;          // unique human views
+  totalViews?: number;     // all hits combined (biggest number)
   readTime?: number;
 }
 
@@ -56,7 +57,7 @@ const HeaderInfo = memo<{ blog: BlogData }>(function HeaderInfo({ blog }) {
               {blog.author.name}
             </p>
             <p className="text-xs text-gray-400">
-              {blog.views || 0} views · {blog.readTime || 5} min read
+              {(blog.totalViews || blog.views || 0).toLocaleString()} views · {blog.readTime || 5} min read
             </p>
           </div>
         </div>

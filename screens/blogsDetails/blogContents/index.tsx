@@ -30,6 +30,9 @@ interface BlogData {
   createdAt: string;
   publishedAt: string | null;
   views?: number;
+  totalViews?: number;
+  botViews?: number;
+  duplicateViews?: number;
   readTime?: number;
 }
 

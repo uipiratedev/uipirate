@@ -16,6 +16,8 @@ interface Blog {
   tags?: string[];
   createdAt: string;
   readTime?: number;
+  views?: number;
+  totalViews?: number;
 }
 
 const SuggestedReads = () => {
@@ -101,6 +103,8 @@ const SuggestedReads = () => {
                         <span>{date}</span>
                         <span>·</span>
                         <span>{blog.readTime || 5} min read</span>
+                        <span>·</span>
+                        <span>{(blog.totalViews || blog.views || 0).toLocaleString()} views</span>
                       </div>
                     </div>
                   </div>
