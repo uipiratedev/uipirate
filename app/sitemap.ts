@@ -80,7 +80,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       // Use the Blog model
       const { default: Blog } = await import("@/models/Blog");
       const blogs = await Blog.find(
-        { status: "published" },
+        { published: true },
         { slug: 1, updatedAt: 1 }
       ).lean();
 
