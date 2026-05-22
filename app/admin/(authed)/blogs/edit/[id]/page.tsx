@@ -412,14 +412,14 @@ const PublishConfirmModal = ({
               </svg>
             </div>
             <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">Post Updated & Published!</h3>
-            <p className="text-sm font-geist text-gray-500 mb-6">Your blog post has been successfully updated and published.</p>
+            <p className="text-sm font-geist text-gray-500 mb-6">Your post has been successfully updated and published.</p>
             <div className="flex gap-3">
               <button
                 onClick={onViewBlogs}
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
               >
-                Go to Blog List
+                Go to Post List
               </button>
               <button
                 onClick={onKeepEditing}
@@ -556,7 +556,7 @@ const SaveDraftModal = ({
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
               >
-                Go to Blog List
+                Go to Post List
               </button>
               <button
                 onClick={onKeepEditing}
@@ -1070,6 +1070,7 @@ const BlogEditPage = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [blogId, setBlogId] = useState<string>("");
+  const [postType, setPostType] = useState<"blog" | "tutorial" | "case-study" | "community-insight">("blog");
   const [saveStatus, setSaveStatus] = useState<
     "Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"
   >("Draft");
@@ -1225,6 +1226,7 @@ const BlogEditPage = () => {
         setFeaturedImage(blog.featuredImage || "");
         setBannerImage(blog.bannerImage || "");
         setTags(blog.tags || []);
+        setPostType(blog.postType || "blog");
         setSaveStatus(blog.published ? "Published" : "Draft");
         if (editor) editor.commands.setContent(blog.content);
       } else {
@@ -1278,7 +1280,7 @@ const BlogEditPage = () => {
       const response = await fetch(`/api/blogs/${blogId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, content: editor?.getHTML() || "", excerpt, featuredImage, bannerImage, tags, published }),
+        body: JSON.stringify({ title, content: editor?.getHTML() || "", excerpt, featuredImage, bannerImage, tags, published, postType }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to update blog");
@@ -1351,7 +1353,7 @@ const BlogEditPage = () => {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
-            Blogs
+            Posts
           </a>
           <span className="text-gray-200">/</span>
           <span className="text-sm font-medium font-geist text-gray-900">Edit Post</span>
@@ -1514,6 +1516,73 @@ const BlogEditPage = () => {
                   }}
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Post Type card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+              Post Type
+            </p>
+            <div className="space-y-1.5">
+              {([
+                {
+                  value: "blog",
+                  label: "Blog",
+                  icon: (
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                    </svg>
+                  ),
+                },
+                {
+                  value: "tutorial",
+                  label: "Tutorial",
+                  icon: (
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                  ),
+                },
+                {
+                  value: "case-study",
+                  label: "Case Study",
+                  icon: (
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                  ),
+                },
+                {
+                  value: "community-insight",
+                  label: "Community Insight",
+                  icon: (
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                  ),
+                },
+              ] as const).map(({ value, label, icon }) => (
+                <button
+                  key={value}
+                  onClick={() => setPostType(value)}
+                  className={`w-full flex items-center gap-2.5 text-sm font-geist px-3 py-2 rounded-xl border transition-all ${
+                    postType === value
+                      ? "border-[#FF5B04] bg-orange-50 text-[#FF5B04] font-semibold"
+                      : "border-black/5 bg-black/[0.02] text-gray-600 hover:border-[#FF5B04]/30 hover:bg-orange-50/50"
+                  }`}
+                >
+                  <span className="flex-shrink-0">{icon}</span>
+                  <span>{label}</span>
+                  {postType === value && (
+                    <span className="ml-auto text-[#FF5B04]">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    </span>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
 

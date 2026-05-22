@@ -21,6 +21,7 @@ export interface IBlog extends Document {
   duplicateViews?: number; // Repeat visits from same IP within 24h
   totalViews?: number;   // Raw total = views + duplicateViews + botViews
   readTime?: number;     // in minutes
+  postType?: "blog" | "tutorial" | "case-study" | "community-insight";
   calculateReadTime(): void;
 }
 
@@ -101,6 +102,11 @@ const BlogSchema: Schema = new Schema(
     readTime: {
       type: Number, // in minutes
       default: 5,
+    },
+    postType: {
+      type: String,
+      enum: ["blog", "tutorial", "case-study", "community-insight"],
+      default: "blog",
     },
   },
   {

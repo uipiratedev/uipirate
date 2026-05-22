@@ -19,6 +19,7 @@ interface Blog {
   totalViews?: number;
   botViews?: number;
   duplicateViews?: number;
+  postType?: "blog" | "tutorial" | "case-study" | "community-insight";
   author: {
     name: string;
   };
@@ -31,12 +32,15 @@ export default function AdminBlogsPage() {
   const [filterStatus, setFilterStatus] = useState<
     "all" | "published" | "draft"
   >("all");
+  const [filterType, setFilterType] = useState<
+    "all" | "blog" | "tutorial" | "case-study" | "community-insight"
+  >("all");
 
   useAuth(true); // Require authentication
 
   useEffect(() => {
     fetchBlogs();
-  }, [filterStatus]);
+  }, [filterStatus, filterType]);
 
   const fetchBlogs = async () => {
     try {
@@ -47,6 +51,10 @@ export default function AdminBlogsPage() {
         url += "&published=true";
       } else if (filterStatus === "draft") {
         url += "&published=false";
+      }
+
+      if (filterType !== "all") {
+        url += `&postType=${filterType}`;
       }
 
       const response = await fetch(url);
@@ -75,13 +83,13 @@ export default function AdminBlogsPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert("Blog deleted successfully!");
+        alert("Post deleted successfully!");
         fetchBlogs(); // Refresh the list
       } else {
-        alert(data.error || "Failed to delete blog");
+        alert(data.error || "Failed to delete post");
       }
     } catch (error) {
-      alert("Failed to delete blog");
+      alert("Failed to delete post");
     }
   };
 
@@ -103,19 +111,21 @@ export default function AdminBlogsPage() {
       const data = await response.json();
 
       if (data.success) {
-        alert(`Blog ${currentStatus ? "unpublished" : "published"} successfully!`);
+        alert(`Post ${currentStatus ? "unpublished" : "published"} successfully!`);
         fetchBlogs(); // Refresh the list
       } else {
-        alert(data.error || `Failed to ${action} blog`);
+        alert(data.error || `Failed to ${action} post`);
       }
     } catch (error) {
-      alert(`Failed to ${action} blog`);
+      alert(`Failed to ${action} post`);
     }
   };
 
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.title.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const filteredBlogs = blogs.filter((blog) => {
+    const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesType = filterType === "all" || (blog.postType || "blog") === filterType;
+    return matchesSearch && matchesType;
+  });
 
   const filterButtons: { label: string; value: typeof filterStatus }[] = [
     { label: "All", value: "all" },
@@ -131,7 +141,7 @@ export default function AdminBlogsPage() {
           <p className="text-xs font-jetbrains-mono uppercase tracking-widest mb-1" style={{ color: "#FF5B04" }}>
             Content
           </p>
-          <h1 className="text-2xl font-bold font-geist text-gray-900 tracking-tight">Blog Posts</h1>
+          <h1 className="text-2xl font-bold font-geist text-gray-900 tracking-tight">Posts</h1>
           <p className="text-sm text-gray-500 mt-1 font-geist">Manage all your published and draft posts</p>
         </div>
         <Link href="/admin/blogs/create">
@@ -143,20 +153,21 @@ export default function AdminBlogsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl p-4 shadow-card border border-black/5">
-        <div className="flex flex-col md:flex-row gap-3">
+      <div className="bg-white rounded-2xl p-5 shadow-card border border-black/5 space-y-4">
+        <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <Input
               classNames={{
-                inputWrapper: "bg-black/5 border-transparent shadow-none",
+                inputWrapper: "bg-black/5 border-transparent shadow-none h-10 rounded-xl",
                 input: "text-sm font-geist",
               }}
-              placeholder="Search posts…"
+              placeholder="Search posts by title…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
+            <span className="text-xs font-semibold font-jetbrains-mono text-gray-400 uppercase tracking-wider mr-1">Status:</span>
             {filterButtons.map(({ label, value }) => (
               <Button key={value}
                 size="sm"
@@ -173,6 +184,32 @@ export default function AdminBlogsPage() {
               </Button>
             ))}
           </div>
+        </div>
+
+        {/* Type Filter Row */}
+        <div className="flex flex-wrap gap-2 items-center pt-3.5 border-t border-black/5">
+          <span className="text-xs font-semibold font-jetbrains-mono text-gray-400 uppercase tracking-wider mr-1">Type:</span>
+          {[
+            { label: "All Types", value: "all" },
+            { label: "Blogs", value: "blog" },
+            { label: "Tutorials", value: "tutorial" },
+            { label: "Case Studies", value: "case-study" },
+            { label: "Community Insights", value: "community-insight" },
+          ].map(({ label, value }) => (
+            <Button key={value}
+              size="sm"
+              variant="flat"
+              className={`font-geist text-xs h-8 px-3.5 rounded-xl font-medium transition-all ${
+                filterType === value
+                  ? "text-white bg-[#FF5B04]"
+                  : "bg-black/5 text-gray-600 hover:bg-black/10"
+              }`}
+              style={filterType === value ? { background: "#FF5B04" } : {}}
+              onClick={() => setFilterType(value as any)}
+            >
+              {label}
+            </Button>
+          ))}
         </div>
       </div>
 
@@ -192,7 +229,7 @@ export default function AdminBlogsPage() {
                 {searchQuery ? "No posts match your search" : "No posts yet"}
               </p>
               <p className="text-xs text-gray-400 font-geist">
-                {searchQuery ? "Try a different keyword." : "Write your first blog post to get started."}
+                {searchQuery ? "Try a different keyword." : "Write your first post to get started."}
               </p>
             </div>
             {!searchQuery && (
@@ -225,7 +262,25 @@ export default function AdminBlogsPage() {
                         href={`/blogs/${blog.slug}`}>
                         {blog.title}
                       </Link>
-                      <p className="text-xs text-gray-400 font-geist mt-0.5">by {blog.author.name}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs text-gray-400 font-geist">by {blog.author.name}</span>
+                        {(() => {
+                          const type = blog.postType || "blog";
+                          const typeMap: Record<string, { label: string; color: string; bg: string }> = {
+                            blog:                { label: "Blog",              color: "#E24A00", bg: "#FFEFE6" },
+                            tutorial:           { label: "Tutorial",         color: "#6D28D9", bg: "#EDE9FE" },
+                            "case-study":       { label: "Case Study",       color: "#0369A1", bg: "#E0F2FE" },
+                            "community-insight": { label: "Community Insight", color: "#065F46", bg: "#D1FAE5" },
+                          };
+                          const t = typeMap[type];
+                          return t ? (
+                            <span className="inline-flex text-[9px] font-semibold font-jetbrains-mono px-2 py-0.5 rounded-full"
+                              style={{ color: t.color, background: t.bg }}>
+                              {t.label}
+                            </span>
+                          ) : null;
+                        })()}
+                      </div>
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
                       <span className={`inline-flex text-[10px] font-medium font-jetbrains-mono px-2.5 py-1 rounded-full ${

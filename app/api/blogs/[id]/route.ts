@@ -12,6 +12,7 @@ interface BlogUpdateData {
   bannerImage?: string;
   tags?: string[];
   published?: boolean;
+  postType?: string;
 }
 
 // GET /api/blogs/[id] - Get a single blog by ID or slug
@@ -94,6 +95,7 @@ export async function PUT(
       bannerImage,
       tags,
       published,
+      postType,
     } = body;
 
     const blog = await Blog.findById(id);
@@ -130,6 +132,7 @@ export async function PUT(
     if (bannerImage !== undefined) blog.bannerImage = bannerImage;
     if (tags !== undefined) blog.tags = tags;
     if (published !== undefined) blog.published = published;
+    if (postType !== undefined) (blog as any).postType = postType;
 
     // Recalculate read time if content changed
     if (content !== undefined) {

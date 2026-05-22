@@ -6,6 +6,7 @@ import { verifyAuth } from "@/lib/auth";
 
 interface BlogQuery {
   published?: boolean;
+  postType?: string;
 }
 
 // GET /api/blogs - Get all blogs (published only for public, all for authenticated admin)
@@ -15,6 +16,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const published = searchParams.get("published");
+    const postType = searchParams.get("postType");
     const limit = parseInt(searchParams.get("limit") || "10", 10);
     const page = parseInt(searchParams.get("page") || "1", 10);
     const skip = (page - 1) * limit;
@@ -31,6 +33,18 @@ export async function GET(request: NextRequest) {
     } else if (published !== null) {
       // Admin can filter by published status
       query.published = published === "true";
+    }
+
+    if (postType && postType !== "all") {
+      if (postType === "blog") {
+        query.$or = [
+          { postType: "blog" },
+          { postType: { $exists: false } },
+          { postType: null },
+        ];
+      } else {
+        query.postType = postType;
+      }
     }
 
     const blogs = await Blog.find(query)
@@ -72,6 +86,7 @@ interface BlogCreateData {
   bannerImage: string;
   tags: string[];
   published: boolean;
+  postType?: string;
 }
 
 // POST /api/blogs - Create a new blog (requires authentication)
@@ -98,6 +113,7 @@ export async function POST(request: NextRequest) {
       bannerImage,
       tags,
       published,
+      postType,
     } = body;
 
     // Generate slug from title
@@ -124,6 +140,7 @@ export async function POST(request: NextRequest) {
       bannerImage,
       tags,
       published: published || false,
+      postType: postType || "blog",
       author: {
         name: user.name || "UI Pirate",
         email: user.email || "",

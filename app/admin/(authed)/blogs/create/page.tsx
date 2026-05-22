@@ -423,14 +423,14 @@ const PublishConfirmModal = ({
               </svg>
             </div>
             <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">Post Published!</h3>
-            <p className="text-sm font-geist text-gray-500 mb-6">Your blog post has been successfully published and is now live.</p>
+            <p className="text-sm font-geist text-gray-500 mb-6">Your post has been successfully published and is now live.</p>
             <div className="flex gap-3">
               <button
                 onClick={onViewBlogs}
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
               >
-                Go to Blog List
+                Go to Post List
               </button>
               <button
                 onClick={onKeepEditing}
@@ -567,7 +567,7 @@ const SaveDraftModal = ({
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
               >
-                Go to Blog List
+                Go to Post List
               </button>
               <button
                 onClick={onKeepEditing}
@@ -1203,6 +1203,8 @@ const BlogEditor = () => {
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [postType, setPostType] = useState<"blog" | "tutorial" | "case-study" | "community-insight">("blog");
+  const [typeSelected, setTypeSelected] = useState(false);
   const [saveStatus, setSaveStatus] = useState<
     "Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"
   >("Draft");
@@ -1399,6 +1401,7 @@ const BlogEditor = () => {
           bannerImage,
           tags,
           published,
+          postType,
         }),
       });
       const data = await response.json();
@@ -1446,6 +1449,120 @@ const BlogEditor = () => {
 
   if (!mounted || !editor || authLoading) return null;
 
+  // ── Post Type definitions (shared between modal and badge) ──
+  const postTypes = [
+    {
+      value: "blog" as const,
+      label: "Blog",
+      description: "Share thoughts, insights and perspectives",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+      ),
+    },
+    {
+      value: "tutorial" as const,
+      label: "Tutorial",
+      description: "Step-by-step guides and how-tos",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      ),
+    },
+    {
+      value: "case-study" as const,
+      label: "Case Study",
+      description: "In-depth analysis of a project or problem",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      ),
+    },
+    {
+      value: "community-insight" as const,
+      label: "Community Insight",
+      description: "Trends, observations and community highlights",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      ),
+    },
+  ];
+
+  const selectedTypeInfo = postTypes.find((t) => t.value === postType)!;
+
+  // ── Type selection gate ──
+  if (!typeSelected) {
+    return (
+      <div
+        className="fixed inset-0 z-[300] flex items-center justify-center"
+        style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
+      >
+        <div
+          className="bg-white rounded-3xl shadow-2xl w-[520px] max-w-[95vw] p-8"
+          style={{ border: "1px solid rgba(0,0,0,0.07)" }}
+        >
+          {/* Header */}
+          <div className="mb-6">
+            <p className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-semibold mb-1" style={{ color: "#FF5B04" }}>New Post</p>
+            <h2 className="text-xl font-bold font-geist text-gray-900">What are you creating?</h2>
+            <p className="text-sm text-gray-400 font-geist mt-1">Choose a post type. This can't be changed after you start writing.</p>
+          </div>
+
+          {/* Type grid */}
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {postTypes.map(({ value, label, description, icon }) => (
+              <button
+                key={value}
+                onClick={() => setPostType(value)}
+                className={`flex flex-col items-start gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
+                  postType === value
+                    ? "border-[#FF5B04] bg-orange-50"
+                    : "border-black/8 bg-black/[0.01] hover:border-[#FF5B04]/40 hover:bg-orange-50/40"
+                }`}
+              >
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
+                  style={{
+                    background: postType === value ? "rgba(255,91,4,0.12)" : "rgba(0,0,0,0.05)",
+                    color: postType === value ? "#FF5B04" : "#6b7280",
+                  }}
+                >
+                  {icon}
+                </div>
+                <div>
+                  <p className={`text-sm font-semibold font-geist ${ postType === value ? "text-[#FF5B04]" : "text-gray-800"}`}>{label}</p>
+                  <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">{description}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <a href="/admin/blogs" className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors">
+              Cancel
+            </a>
+            <button
+              onClick={() => setTypeSelected(true)}
+              className="ml-auto flex items-center gap-2 text-sm font-semibold font-geist text-white h-10 px-6 rounded-xl transition-colors"
+              style={{ background: "#FF5B04" }}
+            >
+              Continue as {selectedTypeInfo.label}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
       e.preventDefault();
@@ -1483,10 +1600,21 @@ const BlogEditor = () => {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
-            Blogs
+            Posts
           </a>
           <span className="text-gray-200">/</span>
           <span className="text-sm font-medium font-geist text-gray-900">New Post</span>
+          {/* Locked type badge */}
+          <span
+            className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
+            style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
+            title="Post type is locked for this draft"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            {selectedTypeInfo.label}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span
