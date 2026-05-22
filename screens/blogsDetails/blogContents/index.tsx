@@ -1,3 +1,20 @@
+/**
+ * DEVELOPER NOTICE & BLOG FORMATTING RULES:
+ * 
+ * To ensure high-contrast accessibility (avoiding low-contrast grey or white text on white backgrounds)
+ * and full responsive scaling across all viewports, all dynamically generated blog HTML content must:
+ *   1. Use only clean semantic HTML tags (<p>, <h2>, <h3>, <ul>, <ol>, <li>, <strong>, <em>, <blockquote>, <table>, etc.)
+ *   2. Strictly contain NO custom inline styles (e.g. style="...")
+ *   3. Strictly contain NO custom class attributes (e.g. class="..." or className="...")
+ *   4. Strictly contain NO custom wrapper divs (e.g. <div class="bg-charcoal text-gray-200">)
+ * 
+ * All typography, styling, margins, and custom branding rules are defined globally inside styles/globals.css
+ * under the `.blog-prose` selector family.
+ * 
+ * For full detailed rules and the recommended system prompt for AI-auto-generation,
+ * please refer to the root file: /BLOG_FORMATTING_RULES.md
+ */
+
 import { useMemo } from "react";
 import HeaderInfo from "./headeInfo";
 import GlobalCTA from "@/components/GlobalCTA";
