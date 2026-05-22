@@ -2203,9 +2203,11 @@ body.modal-open .main-navbar {
 }
 
 .blog-prose img {
+  display: block;
   max-width: 100%;
+  height: auto;
   border-radius: 12px;
-  margin: 1.5rem 0;
+  margin: 1.5rem auto;
 }
 
 .blog-prose table {
