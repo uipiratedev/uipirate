@@ -2,10 +2,13 @@
 // This route handles dynamic blog post pages at uipirate.com/[slug]
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 import BlogsDetails from "@/screens/blogsDetails";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
+import { trackView } from "@/lib/trackView";
+import { verifyAuth } from "@/lib/auth";
 
 interface Props {
   params: { slug: string };
@@ -105,8 +108,9 @@ export default async function DynamicBlogPage({ params }: Props) {
       notFound();
     }
 
-    // Increment view count (don't await to avoid blocking)
-    Blog.findByIdAndUpdate(blog._id, { $inc: { views: 1 } }).exec();
+    // Track this view: deduplicates by IP+slug with 24h TTL, filters bots, skips admins
+    const user = await verifyAuth();
+    trackView(slug, headers(), !!user).catch(() => {});
 
     // Convert MongoDB document to plain object
     const blogData = {
