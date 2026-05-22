@@ -7,7 +7,7 @@
     "industry": "SaaS / Market Research",
     "excerpt": "From product vision to a shipped enterprise research platform — product thinking, IA, UX/UI, and Angular frontend development.",
     "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
-    "technologies": ["Angular", "TypeScript", "Figma", "Product Design"],
+    "technologies": ["Angular", "TypeScript", "Figma"],
     "metrics": [
       { "label": "Platform scope", "value": "Multi-role enterprise SaaS" },
       { "label": "Engagement", "value": "End-to-end product partner" }
@@ -23,25 +23,278 @@
     "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
   },
   {
-    "slug": "revup-ai",
-    "title": "RevUp AI — MVP to Enterprise SaaS",
-    "client": "RevUp AI",
-    "region": "USA",
-    "industry": "AI / SaaS",
-    "excerpt": "Turning an MVP idea into an enterprise-ready AI SaaS platform with product strategy, UX/UI, and React development.",
-    "heroImage": "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
-    "technologies": ["React", "Next.js", "TypeScript", "Figma"],
+    "slug": "legaltech-ai-saas",
+    "title": "Legaltech AI SaaS — APAC's Largest Law Firm",
+    "client": "Legaltech AI SaaS",
+    "region": "India",
+    "industry": "LegalTech / AI SaaS",
+    "excerpt": "AI-powered legal platform to streamline document analysis, automate drafting, and support legal professionals.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761444013/lega_n7vqzw.svg",
+    "technologies": ["Next.js", "AI UX", "Figma"],
     "metrics": [
-      { "label": "Stage", "value": "MVP → Enterprise platform" },
-      { "label": "Market", "value": "US SaaS / AI" }
+      { "label": "Client", "value": "APAC's largest law firm" },
+      { "label": "Focus", "value": "AI-powered legal workflows" }
     ],
-    "problem": "RevUp AI had a strong vision for an AI-powered SaaS product but needed a partner to structure the product, design complex workflows, and build a scalable frontend.",
-    "approach": "Product discovery, feature prioritization for MVP, competitive positioning, and iterative design + development sprints aligned with fundraising and launch milestones.",
-    "solution": "UX/UI for core AI workflows, admin dashboards, onboarding, and React/Next.js frontend implementation with a component-based architecture.",
-    "results": "A market-ready platform narrative, design system foundations, and shipped UI that supported growth from early MVP to enterprise positioning.",
+    "problem": "Legal professionals needed an AI-powered platform to streamline document analysis, automate drafting, and enhance efficiency in legal workflows.",
+    "approach": "Designed a future-ready AI SaaS platform with focus on legal document management, AI-assisted drafting, and compliance tracking.",
+    "solution": "Full UX/UI design system for AI workflows, document analysis interfaces, and legal professional dashboards built with Next.js and Figma.",
+    "results": "A comprehensive AI legal platform that streamlines legal operations for APAC's largest law firm.",
     "testimonial": {
-      "quote": "They carried the product from idea through design and build — exactly what a founder needs.",
-      "author": "RevUp AI"
+      "quote": "A transformative platform that brings AI capabilities to legal professionals.",
+      "author": "Legal Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+  },
+  {
+    "slug": "ion",
+    "title": "ION — Order Fulfilment SaaS Platform",
+    "client": "ION",
+    "region": "USA",
+    "industry": "HealthTech / Supply Chain",
+    "excerpt": "Order fulfilment SaaS platform designed to streamline medical supply chain operations.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761444002/ion_xce6b5.svg",
+    "technologies": ["React", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Industry", "value": "Medical supply chain" },
+      { "label": "Focus", "value": "Order fulfilment automation" }
+    ],
+    "problem": "Medical supply chain operations needed a streamlined platform for efficient order fulfilment and inventory management.",
+    "approach": "Designed a comprehensive SaaS platform focusing on order tracking, inventory management, and supply chain optimization.",
+    "solution": "Full UX/UI design and React frontend for order management, real-time tracking, and supply chain dashboards.",
+    "results": "A robust order fulfilment platform that streamlines medical supply chain operations.",
+    "testimonial": {
+      "quote": "ION transformed our supply chain operations with seamless order management.",
+      "author": "ION Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "brahmastra",
+    "title": "Brahmastra — AI Trading Platform",
+    "client": "Brahmastra",
+    "region": "India",
+    "industry": "Fintech / AI Trading",
+    "excerpt": "A trading platform with real-time data, advanced charting, and customizable strategies to enhance trading efficiency.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761443918/brahma_jvnmc9.svg",
+    "technologies": ["Angular", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "Real-time trading platform" },
+      { "label": "Features", "value": "Advanced charting & strategies" }
+    ],
+    "problem": "Traders needed a sophisticated platform with real-time data, advanced charting capabilities, and customizable trading strategies.",
+    "approach": "Built a comprehensive trading platform with focus on real-time data visualization, technical analysis tools, and strategy customization.",
+    "solution": "Full UX/UI design and Angular frontend for real-time charting, trading dashboards, and strategy builder interfaces.",
+    "results": "A powerful trading platform that enhances trading efficiency with advanced tools and real-time insights.",
+    "testimonial": {
+      "quote": "Brahmastra delivers the tools and insights we need for successful trading.",
+      "author": "Trading Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "rings-and-i",
+    "title": "Rings & I — Custom Ring Design Studio",
+    "client": "Rings & I",
+    "region": "India",
+    "industry": "E-commerce / Jewelry",
+    "excerpt": "A Shopify-powered e-commerce site for custom ring design and sales.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+    "technologies": ["Shopify", "Liquid", "Figma"],
+    "metrics": [
+      { "label": "Platform", "value": "Shopify e-commerce" },
+      { "label": "Focus", "value": "Custom ring design" }
+    ],
+    "problem": "A jewelry brand needed an e-commerce platform for custom ring design with seamless shopping experience.",
+    "approach": "Designed and developed a Shopify-powered store with custom design tools and product visualization.",
+    "solution": "Full UX/UI design and Shopify theme development with custom ring builder and checkout flows.",
+    "results": "A beautiful e-commerce platform that enables customers to design and purchase custom rings.",
+    "testimonial": {
+      "quote": "Our online presence now matches the quality of our craftsmanship.",
+      "author": "Rings & I Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+  },
+  {
+    "slug": "frytx",
+    "title": "FrytX — Business Operations Platform",
+    "client": "FrytX",
+    "region": "India",
+    "industry": "Business / SaaS",
+    "excerpt": "An all-in-one platform for business operations, customer service, verification, and financial management.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1730025188/frytx_mo0frx.svg",
+    "technologies": ["React", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "All-in-one business platform" },
+      { "label": "Features", "value": "Operations & finance management" }
+    ],
+    "problem": "Businesses needed a unified platform to manage operations, customer service, verification processes, and financial management.",
+    "approach": "Designed a comprehensive business management platform with integrated modules for different business functions.",
+    "solution": "Full UX/UI design and React frontend for operations dashboard, customer service tools, and financial management interfaces.",
+    "results": "A complete business operations platform that streamlines multiple business functions in one place.",
+    "testimonial": {
+      "quote": "FrytX unified our business operations and improved our efficiency significantly.",
+      "author": "FrytX Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "test-dynamiz",
+    "title": "Test Dynamiz — Automated Testing SaaS",
+    "client": "Test Dynamiz",
+    "region": "India",
+    "industry": "DevTools / SaaS",
+    "excerpt": "An automated software testing SaaS for efficient, high-quality releases.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761444003/test_oxuysl.svg",
+    "technologies": ["React", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "Automated testing platform" },
+      { "label": "Focus", "value": "High-quality releases" }
+    ],
+    "problem": "Development teams needed an automated testing platform to ensure high-quality software releases efficiently.",
+    "approach": "Designed a comprehensive testing platform with focus on test automation, reporting, and CI/CD integration.",
+    "solution": "Full UX/UI design and React frontend for test management, automated testing workflows, and detailed reporting dashboards.",
+    "results": "An efficient automated testing platform that helps teams ship high-quality software faster.",
+    "testimonial": {
+      "quote": "Test Dynamiz streamlined our testing process and improved our release quality.",
+      "author": "Test Dynamiz Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "simpleo",
+    "title": "SimpleO — AI Legal Management System",
+    "client": "SimpleO",
+    "region": "India",
+    "industry": "LegalTech / AI",
+    "excerpt": "An AI-powered legal management system for streamlined contracts and compliance.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761443926/simplo_dnrjzi.svg",
+    "technologies": ["React", "AI UX", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "AI legal management" },
+      { "label": "Focus", "value": "Contracts & compliance" }
+    ],
+    "problem": "Legal teams needed an AI-powered system to manage contracts, ensure compliance, and streamline legal workflows.",
+    "approach": "Designed an AI-powered legal management platform with focus on contract analysis, compliance tracking, and workflow automation.",
+    "solution": "Full UX/UI design and React frontend for contract management, AI-assisted compliance, and legal workflow interfaces.",
+    "results": "An intelligent legal management system that streamlines contracts and compliance operations.",
+    "testimonial": {
+      "quote": "SimpleO made our legal operations simpler and more efficient.",
+      "author": "SimpleO Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+  },
+  {
+    "slug": "staype",
+    "title": "StayPe — Rental Property Management",
+    "client": "StayPe",
+    "region": "India",
+    "industry": "PropTech / Real Estate",
+    "excerpt": "A streamlined app for finding, securing, and managing rental properties throughout the entire rental lifecycle.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761444021/staype_o0y07w.svg",
+    "technologies": ["React", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "Rental property platform" },
+      { "label": "Focus", "value": "Full rental lifecycle" }
+    ],
+    "problem": "Renters and landlords needed a comprehensive platform to find, secure, and manage rental properties throughout the entire lifecycle.",
+    "approach": "Designed a complete rental property management platform with features for property search, booking, and management.",
+    "solution": "Full UX/UI design and React frontend for property listings, rental workflows, and management dashboards.",
+    "results": "A comprehensive rental property platform that simplifies the entire rental lifecycle for both renters and landlords.",
+    "testimonial": {
+      "quote": "StayPe transformed how we manage our rental properties.",
+      "author": "StayPe Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "infinity-aquasol",
+    "title": "Infinity AquaSol — Water Treatment Solutions",
+    "client": "Infinity AquaSol",
+    "region": "India",
+    "industry": "Environmental / Industrial",
+    "excerpt": "A website highlighting cutting-edge water treatment and environmental solutions.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761444012/infinity_aqvvse.svg",
+    "technologies": ["Next.js", "Tailwind", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "Corporate website" },
+      { "label": "Focus", "value": "Water treatment solutions" }
+    ],
+    "problem": "Infinity AquaSol needed a modern website to showcase their water treatment and environmental solutions.",
+    "approach": "Designed a clean, professional website highlighting their cutting-edge water treatment technologies and services.",
+    "solution": "Full UX/UI design and Next.js development for corporate website with product showcases and service information.",
+    "results": "A modern website that effectively communicates their environmental solutions and expertise.",
+    "testimonial": {
+      "quote": "Our website now reflects the innovation in our water treatment solutions.",
+      "author": "Infinity AquaSol Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+  },
+  {
+    "slug": "cloud-shift",
+    "title": "Cloud Shift — Cloud Migration Platform",
+    "client": "Cloud Shift",
+    "region": "USA",
+    "industry": "Cloud / DevOps",
+    "excerpt": "A specialized cloud migration platform to guide and support businesses transitioning to cloud infrastructure.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761444015/cloud_wawxjj.svg",
+    "technologies": ["React", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "Cloud migration platform" },
+      { "label": "Focus", "value": "Infrastructure transition" }
+    ],
+    "problem": "Businesses needed guidance and support for transitioning their infrastructure to cloud platforms.",
+    "approach": "Designed a comprehensive cloud migration platform with tools for planning, execution, and monitoring.",
+    "solution": "Full UX/UI design and React frontend for migration planning, progress tracking, and infrastructure management interfaces.",
+    "results": "A specialized platform that simplifies cloud migration for businesses of all sizes.",
+    "testimonial": {
+      "quote": "Cloud Shift made our cloud migration seamless and stress-free.",
+      "author": "Cloud Shift Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "stayrealtor",
+    "title": "StayRealtor — Property Management App",
+    "client": "StayRealtor",
+    "region": "India",
+    "industry": "PropTech / Real Estate",
+    "excerpt": "A property management app to optimize landlord and broker operations and improve tenant relations.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761443928/stayrelater_vbxkvv.svg",
+    "technologies": ["React Native", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "Property management app" },
+      { "label": "Focus", "value": "Landlord & broker operations" }
+    ],
+    "problem": "Landlords and brokers needed a dedicated app to manage properties, tenants, and improve operational efficiency.",
+    "approach": "Designed a mobile-first property management solution with focus on landlord-broker-tenant workflows.",
+    "solution": "Full UX/UI design and React Native development for property management, tenant communication, and operations dashboards.",
+    "results": "A comprehensive property management app that optimizes landlord and broker operations.",
+    "testimonial": {
+      "quote": "StayRealtor streamlined our property management and improved tenant satisfaction.",
+      "author": "StayRealtor Team"
+    },
+    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+  },
+  {
+    "slug": "olso",
+    "title": "OLSO — Peer-to-Peer Sharing Platform",
+    "client": "OLSO",
+    "region": "Europe",
+    "industry": "Sharing Economy / Marketplace",
+    "excerpt": "A peer-to-peer platform for local product borrowing and sharing.",
+    "heroImage": "https://res.cloudinary.com/damm9iwho/image/upload/v1761443916/olso_ldpdnw.svg",
+    "technologies": ["React", "TypeScript", "Figma"],
+    "metrics": [
+      { "label": "Type", "value": "P2P sharing platform" },
+      { "label": "Focus", "value": "Local product sharing" }
+    ],
+    "problem": "Communities needed a platform to share and borrow products locally, reducing waste and building connections.",
+    "approach": "Designed a peer-to-peer marketplace with focus on local sharing, trust, and community building.",
+    "solution": "Full UX/UI design and React frontend for product listings, borrowing workflows, and community features.",
+    "results": "A vibrant peer-to-peer platform that enables local communities to share products efficiently.",
+    "testimonial": {
+      "quote": "OLSO brought our community together through sharing and sustainability.",
+      "author": "OLSO Team"
     },
     "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
   }

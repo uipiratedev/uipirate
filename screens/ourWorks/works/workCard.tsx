@@ -1,113 +1,166 @@
-import React from 'react';
-import Image from 'next/image';
-import LetsTalkButton from '@/components/LetsTalkButton';
+import Image from "next/image";
+import Link from "next/link";
 
-const caseStudies = [
+import LetsTalkButton from "@/components/LetsTalkButton";
+
+type Project = {
+  name: string;
+  tagline: string;
+  industry: string;
+  metric: string;
+  tech: string[];
+  logo: string;
+  img: string;
+  href: string;
+  internal?: boolean;
+};
+
+const projects: Project[] = [
   {
-    heading: "Xperiti",
-    heading1: "Comprehensive Research Platform",
-    subtitle: "Enterprise Saas App UI/UX Design on Figma & Development on Angular.js",
-    logo:"https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
+    name: "Xperiti",
+    tagline: "Enterprise Research Platform",
+    industry: "Enterprise SaaS · Market Research",
+    metric: "Acquired by Ipsos",
+    tech: ["Angular", "Figma", "UI Dev"],
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
-    url: "https://www.ipsos.com/en/ipsos-acquires-xperiti-strengthen-its-b2b-research-capabilities-global",
+    href: "/case-studies/xperiti",
+    internal: true,
   },
   {
-    heading: "ArthAlpha",
-    heading1: "AI Trading Platform",
-    subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Development",
-    logo:"https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
+    name: "ArthAlpha",
+    tagline: "AI Quant Trading Platform",
+    industry: "Fintech · AI Trading",
+    metric: "Real-time charting & strategies",
+    tech: ["Angular", "UX Design", "UI Dev"],
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
-    url: "https://www.arthalpha.in/",
+    href: "https://www.arthalpha.in/",
   },
   {
-    heading: "AI LegalTech Saas",
-    heading1: "APAC’s largest law firm",
-    subtitle: "Designed a future-ready AI SaaS platform for lawyers and legal professionals",
-    logo:"https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
+    name: "AI LegalTech SaaS",
+    tagline: "Built for Khaitan & Co",
+    industry: "LegalTech · AI SaaS",
+    metric: "APAC's largest law firm",
+    tech: ["Next.js", "AI UX", "Figma"],
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png",
     img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771570379/Image_hzwg0d.svg",
-    url: "https://revupai.com/",
+    href: "/contact",
+    internal: true,
   },
 ];
 
-export default function CaseStudyGrid() {
-  return (
-    <section className="space-y-6 font-sans">
-      {caseStudies.map((study, index) => (
-        <a 
-          key={index}
-          href={study.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group block relative rounded-3xl overflow-hidden shadow-sm transition-all duration-500"
-        >
-          {/* Image Container */}
-          <div className="aspect-[16/6] max-md:aspect-[16/10] w-full bg-gray-100 relative">
-            <img 
-              src={study.img} 
-              alt={study.heading1}
-              className="w-full h-full object-cover transition-transform duration-700"
-            />
-            
-            {/* Glassmorphism Overlay Bar */}
-            <div className="absolute bottom-4 left-4 right-4 h-16 bg-white/60 backdrop-blur-xl border border-white/40 rounded-2xl flex items-center justify-between px-6 shadow-lg">
-              <div>
-                {/* <h3 className="text-gray-900 font-bold text-lg leading-tight capitalize">
-                  {study.heading.toLowerCase()}
-                </h3>
-                <p className="text-[10px] tracking-widest text-gray-500 font-medium">
-                  {study.heading1}
-                </p> */}
+function ProjectCard({ project }: { project: Project }) {
+  const Wrapper: React.ElementType = project.internal ? Link : "a";
+  const wrapperProps = project.internal
+    ? { href: project.href }
+    : { href: project.href, target: "_blank", rel: "noopener noreferrer" };
 
-                <Image
-                  src={study.logo}
-                  alt={study.heading}
-                  width={100}
-                  height={30}
-                  priority
-                />
-              </div>
-              
-              <div className="flex items-center gap-2 text-sm font-semibold text-gray-800">
-                View Project 
-                <span className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
-                  ↗
+  return (
+    <Wrapper
+      {...wrapperProps}
+      className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/50 hover:shadow-2xl hover:border-gray-300 transition-all duration-500"
+    >
+      <div className="aspect-[16/6] max-md:aspect-[16/10] w-full bg-white relative">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={project.img}
+          alt={`${project.name} — ${project.tagline}`}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+
+        {/* Top-left industry chip */}
+        <div className="absolute top-4 left-4 max-md:top-3 max-md:left-3 px-3 py-1.5 bg-white/70 backdrop-blur-xl border border-white/50 rounded-full shadow-sm">
+          <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-700">
+            {project.industry}
+          </p>
+        </div>
+
+        {/* Top-right metric chip */}
+        <div className="absolute top-4 right-4 max-md:top-3 max-md:right-3 px-3 py-1.5 bg-[#FF5B04]/95 backdrop-blur-xl rounded-full shadow-sm">
+          <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
+            {project.metric}
+          </p>
+        </div>
+
+        {/* Bottom glass bar - name-first hierarchy */}
+        <div className="absolute bottom-4 left-4 right-4 max-md:bottom-3 max-md:left-3 max-md:right-3 bg-white/65 backdrop-blur-xl border border-white/40 rounded-2xl px-5 py-4 shadow-lg transition-transform duration-500 group-hover:-translate-y-1">
+          <div className="flex items-start justify-between gap-4 mb-2">
+            <div className="flex flex-col min-w-0 flex-1">
+              <h3 className="text-lg max-md:text-base font-bold text-gray-900 leading-tight truncate">{project.name}</h3>
+              <p className="text-xs max-md:text-[11px] text-gray-500 leading-tight truncate">{project.tagline}</p>
+            </div>
+
+            {/* Logo watermark - small, secondary */}
+            <Image
+              src={project.logo}
+              alt={project.name}
+              width={60}
+              height={18}
+              className="h-5 w-auto max-md:h-4 object-contain shrink-0 opacity-60"
+              priority
+            />
+          </div>
+
+          {/* Tech stack pills + CTA */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex gap-1.5 flex-wrap">
+              {project.tech.map((t) => (
+                <span
+                  key={t}
+                  className="px-2 py-0.5 bg-gray-100 rounded-full text-[10px] font-jetbrains-mono text-gray-600"
+                >
+                  {t}
                 </span>
-              </div>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1.5 text-sm max-md:text-xs font-semibold text-gray-800 shrink-0">
+              <span className="hidden md:inline">{project.internal ? "Read case study" : "View project"}</span>
+              <span className="md:hidden">{project.internal ? "Read" : "Visit"}</span>
+              <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
+                {project.internal ? "→" : "↗"}
+              </span>
             </div>
           </div>
-        </a>
-      ))}
-      <div className="relative rounded-[2.5rem] bg-white border-2  border-gray-200 py-24 max-md:py-6 px-6 text-center overflow-hidden">
-  
-  {/* The Perfect "Designer Grid" Background */}
-  <div 
-    className="absolute inset-0 pointer-events-none" 
-    style={{ 
-      backgroundImage: `
-        linear-gradient(45deg, #edededff 25%, transparent 25%), 
-        linear-gradient(-45deg, #edededff 25%, transparent 25%), 
-        linear-gradient(45deg, transparent 75%, #edededff 75%), 
-        linear-gradient(-45deg, transparent 75%, #edededff 75%)
-      `,
-      backgroundSize: '100px 100px',
-      backgroundPosition: '0 0, 0 50px, 50px -50px, -50px 0px' 
-    }} 
-  />
-  
-  <div className="relative z-10 flex flex-col items-center">
-    <h2 className="text-3xl max-md:text-xl font-bold text-gray-900 mb-2">Your Work Here</h2>
-    <p className="text-gray-500 font-medium mb-8">
-      This Page Isn't Finished. Because the work isn't.
-    </p>
-    
-    <div className="flex flex-col gap-4 w-full max-w-sm">
-      
-      <LetsTalkButton fullWidth variant="color" children="Book a 15-min Product Strategy Call"/>
+        </div>
+      </div>
+    </Wrapper>
+  );
+}
 
-      <LetsTalkButton fullWidth variant="light" children="Let's Talk"/>
-    </div>
-  </div>
-</div>
+export default function CaseStudyGrid() {
+  return (
+    <section className="space-y-8 font-sans">
+      {/* Grid layout: 2 columns on desktop, 1 on mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {projects.map((project) => (
+          <ProjectCard key={project.name} project={project} />
+        ))}
+      </div>
+
+      {/* Closing CTA — full-width, confident, dark */}
+      <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#212121] to-[#151514] noise-texture px-12 py-20 max-md:px-6 max-md:py-12 text-center">
+        <p className="text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-[#FF5B04] mb-3">
+          What&apos;s next
+        </p>
+        <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4">
+          Your product, shipped next
+        </h2>
+        <p className="text-gray-400 font-medium text-base max-md:text-sm max-w-2xl mx-auto mb-8 max-md:mb-6">
+          From idea to shipped product — product thinking, IA, UX/UI, and Angular/React frontend
+          carried end-to-end. Typical response under 2 hours.
+        </p>
+
+        <div className="flex flex-row max-md:flex-col gap-4 justify-center items-center max-w-md mx-auto">
+          <LetsTalkButton variant="color" fullWidth>
+            Book a 15-min Strategy Call
+          </LetsTalkButton>
+          <LetsTalkButton variant="light" href="/contact" fullWidth>
+            Get a Project Estimate
+          </LetsTalkButton>
+        </div>
+      </div>
     </section>
   );
 }

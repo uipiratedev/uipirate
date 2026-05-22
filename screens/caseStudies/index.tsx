@@ -33,37 +33,88 @@ const CaseStudies = () => {
             </p>
           </div>
 
-          <div className="autoShowBottom grid grid-cols-2 max-lg:grid-cols-1 gap-8">
-            {caseStudies.map((study) => (
-              <Link
-                key={study.slug}
-                href={`/case-studies/${study.slug}`}
-                className="group bg-white border border-gray-200 rounded-2xl p-8 hover:border-[#FF5B04]/40 hover:shadow-lg transition-all"
-              >
-                {study.heroImage && (
-                  <div className="h-16 mb-6 flex items-center">
+          <div className="autoShowBottom grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {caseStudies.map((study) => {
+              const primaryMetric = study.metrics?.[0]?.value || study.industry;
+
+              return (
+                <Link
+                  key={study.slug}
+                  href={`/case-studies/${study.slug}`}
+                  className="group block relative rounded-3xl overflow-hidden shadow-lg border border-white/40 hover:shadow-2xl hover:border-white/60 transition-all duration-500"
+                >
+                  {/* Blurred background image */}
+                  <div className="absolute inset-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={study.heroImage}
-                      alt={study.client}
-                      className="max-h-12 w-auto object-contain"
+                      alt={`${study.client} background`}
+                      className="w-full h-full object-cover blur-sm scale-110 opacity-20"
                     />
                   </div>
-                )}
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">
-                  {study.industry} · {study.region}
-                </p>
-                <h2 className="text-xl font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors mb-3">
-                  {study.title}
-                </h2>
-                <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-                  {study.excerpt}
-                </p>
-                <span className="inline-block mt-6 text-sm font-semibold text-[#FF5B04]">
-                  Read case study →
-                </span>
-              </Link>
-            ))}
+
+                  {/* Glass overlay with content */}
+                  <div className="relative z-10 bg-gradient-to-br from-white/40 to-gray-50/30 backdrop-blur-none p-8 max-md:p-6">
+                    {/* Top row: Industry chip + Metric chip */}
+                    <div className="flex items-center justify-between mb-6 max-md:mb-4">
+                      <div className="px-3 py-1.5 bg-white/70 backdrop-blur-xl border border-white/50 rounded-full shadow-sm">
+                        <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-700">
+                          {study.industry} · {study.region}
+                        </p>
+                      </div>
+                      <div className="px-3 py-1.5 bg-[#FF5B04]/95 backdrop-blur-xl rounded-full shadow-sm">
+                        <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-white font-semibold">
+                          {primaryMetric}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Company name + Project title + Excerpt */}
+                    <div className="mb-6 max-md:mb-4">
+                      <h3 className="text-2xl max-md:text-xl font-bold text-gray-900 mb-1 group-hover:text-[#FF5B04] transition-colors">
+                        {study.client}
+                      </h3>
+                      <p className="text-sm max-md:text-xs text-gray-500 font-medium mb-2">
+                        {study.title.split(' — ')[1] || study.title}
+                      </p>
+                      <p className="text-sm max-md:text-xs text-gray-600 leading-relaxed line-clamp-2">
+                        {study.excerpt}
+                      </p>
+                    </div>
+
+                    {/* Tech stack pills + CTA */}
+                    <div className="flex items-center justify-between gap-3 pt-4 border-t border-gray-200/50">
+                      <div className="flex gap-1.5 flex-wrap">
+                        {study.technologies?.slice(0, 3).map((tech: string) => (
+                          <span
+                            key={tech}
+                            className="px-2.5 py-1 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-full text-[10px] font-jetbrains-mono text-gray-700 shadow-sm"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-col items-end gap-2 shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={study.heroImage}
+                          alt={`${study.client} logo`}
+                          className="w-8 h-8 max-md:w-6 max-md:h-6 object-contain"
+                        />
+                        <div className="flex items-center gap-1.5 text-sm max-md:text-xs font-semibold text-[#FF5B04]">
+                          <span className="hidden md:inline">Read case study</span>
+                          <span className="md:hidden">Read</span>
+                          <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
+                            →
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
 
