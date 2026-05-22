@@ -138,7 +138,7 @@ export default function CaseStudyDetailPage({ params }: PageProps) {
         </div>
 
         <div className="bg-gray-900 text-white rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-3">Want similar results?</h2>
+          <h2 className="text-2xl font-bold mb-3">Want Similar Results? Share Your Product Idea</h2>
           <p className="text-gray-300 mb-6 text-sm">
             Share your product idea — we handle product thinking, design, and Angular/React build.
           </p>

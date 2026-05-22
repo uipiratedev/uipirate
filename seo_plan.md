@@ -148,7 +148,7 @@ Publish via admin dashboard → MongoDB → renders at `/<slug>` with `BlogPosti
 
 Wire a `source` field per magnet in `LeadCaptureForm` for attribution.
 
-#### A.4 CTA Optimization (page-level copy)
+#### A.4 CTA Optimization (page-level copy) (✅ Shipped)
 
 | Page | Current | Optimized |
 |------|---------|-----------|
@@ -295,7 +295,7 @@ Assumes consistent execution of Phase A content cadence + Phase B outreach.
 > **Next 2 weeks — content engine on:**
 > 4. ⏳ Add 4 case studies to `data/case-studies.json` (Bird, Brahmastra, APAC Law Firm, ION) — see Phase A.1.
 > 5. ⏳ Publish blog post 4 from the calendar (Phase A.2) via admin dashboard (posts 1, 2, and 3 are ✅ Live!).
-> 6. ⏳ Roll out optimized CTA copy across homepage, services, blog footer, pricing (Phase A.4).
+> 6. ✅ Roll out optimized CTA copy across homepage, services, blog footer, pricing (Phase A.4).
 >
 > **Weeks 3–6 — authority + magnets:**
 > 7. ⏳ Ship Lead Magnet 1 (Product Thinking Checklist PDF) wired to `LeadCaptureForm` with `source=product-thinking-checklist`.

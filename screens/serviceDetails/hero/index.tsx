@@ -212,7 +212,7 @@ const ServiceDetailsHero = ({ data }: any) => {
                     </div>
                   </div>
                 </div>
-                <div>
+                 <div>
                   <img
                     alt="Free consultation badge"
                     className="w-auto h-[30px] max-md:h-[20px]"
@@ -221,7 +221,7 @@ const ServiceDetailsHero = ({ data }: any) => {
                 </div>
                 <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
                   {" "}
-                  Book a 15-min Product Strategy Call
+                  Start Your Product Journey — Book a 15-Min Call
                 </p>
               </div>
             </Link>

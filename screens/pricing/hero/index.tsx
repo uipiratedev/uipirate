@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import GlassSurface from "@/components/GlassSurface";
 import {
   HERO_BADGE_PRESET,
@@ -98,6 +99,35 @@ const PricingHero = () => {
             <span className="font-semibold text-gray-900">Save 50-70%</span> compared to US agencies
           </span>
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+        </div>
+
+        {/* Optimized Pricing CTAs */}
+        <div className="mt-8 flex flex-wrap justify-center gap-4 px-4 autoShow z-20">
+          <Link
+            href="#compare"
+            className="px-6 py-3 rounded-full bg-white text-gray-900 font-bold border-2 border-gray-200 hover:border-brand-orange hover:text-brand-orange transition-all duration-300 text-sm shadow-sm hover:shadow-md whitespace-nowrap"
+          >
+            Compare Plans ↓
+          </Link>
+          <Link
+            href="/contact"
+            className="px-6 py-3 rounded-full bg-brand-orange text-white font-bold hover:bg-[#e04e00] transition-all duration-300 text-sm shadow-md hover:shadow-lg whitespace-nowrap"
+          >
+            Book a Call →
+          </Link>
+          <a
+            href="/uipirate-pricing-2026.pdf"
+            download="uipirate-pricing-2026.pdf"
+            className="px-6 py-3 rounded-full bg-gray-900 text-white font-bold hover:bg-black transition-all duration-300 text-sm shadow-sm hover:shadow-md whitespace-nowrap flex items-center gap-2"
+          >
+            <span>Download Pricing PDF</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+              <path d="M7 11l5 5l5 -5" />
+              <path d="M12 4l0 12" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>

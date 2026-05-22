@@ -4,7 +4,11 @@ import Link from "next/link";
  * GlobalCTA — contextual call-to-action banner shown at the bottom of blog posts and service pages.
  * Drives readers toward the contact / estimate flow.
  */
-export default function GlobalCTA() {
+export default function GlobalCTA({ topic }: { topic?: string } = {}) {
+  const headingText = topic 
+    ? `Struggling with ${topic}? Let's talk about your product.`
+    : "Let's Build It Together";
+
   return (
     <section className="container mx-auto xl:px-40 2xl:px-48 max-xl:px-4 max-2xl:px-0 mb-16 mt-8">
       <div className="relative rounded-[28px] bg-gray-900 overflow-hidden px-10 py-12 max-md:px-6 max-md:py-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl">
@@ -21,10 +25,10 @@ export default function GlobalCTA() {
         {/* Text */}
         <div className="flex-1 relative z-10">
           <p className="text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-[#FF5B04] mb-3">
-            Need Help With This?
+            {topic ? "Personalized Help" : "Need Help With This?"}
           </p>
           <h3 className="text-2xl max-md:text-xl font-bold text-white mb-2 leading-snug">
-            Let's Build It Together
+            {headingText}
           </h3>
           <p className="text-gray-400 text-sm leading-relaxed max-w-md">
             UI Pirate is a product design & development agency trusted by 50+
