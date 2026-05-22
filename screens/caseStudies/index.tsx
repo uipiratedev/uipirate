@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
 import PageWrapper from "@/components/PageWrapper";
 import ProjectEstimate from "@/components/ProjectEstimate";
@@ -26,13 +27,67 @@ const categories = [
 
 const CaseStudies = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredStudies = activeCategory === "All"
-    ? caseStudies
-    : caseStudies.filter(study => study.category === activeCategory);
+  const filteredStudies = caseStudies
+    .filter(study => activeCategory === "All" || study.category === activeCategory)
+    .filter(study => {
+      if (searchQuery === "") return true;
+
+      const query = searchQuery.toLowerCase().trim();
+
+      // Search in multiple fields
+      const searchableText = [
+        study.client,
+        study.title,
+        study.excerpt,
+        study.category,
+        study.industry,
+        study.region,
+        ...(study.technologies || []),
+        ...(study.metrics?.map(m => m.value) || [])
+      ].join(" ").toLowerCase();
+
+      return searchableText.includes(query);
+    });
+
+  // JSON-LD Schema for Portfolio/Case Studies
+  const portfolioSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Case Studies - UI Pirate",
+    "description": "Product design and development case studies showcasing SaaS, AI, mobile apps, and enterprise projects",
+    "url": "https://uipirate.com/case-studies",
+    "provider": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com"
+    },
+    "numberOfItems": caseStudies.length,
+    "itemListElement": caseStudies.map((study, index) => ({
+      "@type": "CreativeWork",
+      "position": index + 1,
+      "name": study.title,
+      "description": study.excerpt,
+      "image": study.heroImage,
+      "creator": {
+        "@type": "Organization",
+        "name": "UI Pirate"
+      },
+      "keywords": study.technologies?.join(", "),
+      "about": study.category,
+      ...(study.externalUrl && { "url": study.externalUrl })
+    }))
+  };
 
   return (
     <PageWrapper showFloatingButton={false}>
+      {/* SEO Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolioSchema) }}
+      />
+
       <div className="mb-12">
         {/* Hero — portfolio + case studies positioning */}
         <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
@@ -55,8 +110,44 @@ const CaseStudies = () => {
             </p>
           </div>
 
+          {/* Search Bar */}
+          <div className="autoShow max-w-xl mx-auto mb-8 max-md:mb-6">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search by client, industry, technology, category..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-sm"
+              />
+              <svg
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Category Filter Tabs */}
-          <div className="autoShow flex flex-wrap items-center justify-center gap-3 mb-10 max-md:mb-6">
+          <div className="autoShow flex flex-wrap items-center justify-center gap-3 mb-6 max-md:mb-4">
             {categories.map((category) => {
               const count = category === "All"
                 ? caseStudies.length
@@ -85,23 +176,89 @@ const CaseStudies = () => {
             })}
           </div>
 
-          <div className="autoShowBottom grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {filteredStudies.length === 0 ? (
-              <div className="col-span-full text-center py-20 max-md:py-16">
+          {/* Results Count */}
+          {(searchQuery || activeCategory !== "All") && (
+            <div className="flex items-center justify-between mb-6 max-md:mb-4 text-sm">
+              <p className="text-gray-600 font-medium">
+                Showing <span className="text-[#FF5B04] font-bold">{filteredStudies.length}</span> of{" "}
+                <span className="font-bold">{caseStudies.length}</span> projects
+                {searchQuery && (
+                  <span className="ml-2 text-gray-500">
+                    matching "<span className="font-semibold text-gray-700">{searchQuery}</span>"
+                  </span>
+                )}
+              </p>
+              {searchQuery && (
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setActiveCategory("All");
+                  }}
+                  className="text-[#FF5B04] hover:text-[#e04e00] font-medium text-sm transition-colors underline"
+                >
+                  Clear all filters
+                </button>
+              )}
+            </div>
+          )}
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${activeCategory}-${searchQuery}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            >
+              {filteredStudies.length === 0 ? (
+                <div className="col-span-full text-center py-20 max-md:py-16">
                 <div className="max-w-md mx-auto">
-                  <p className="text-gray-500 text-lg max-md:text-base mb-4">
-                    No projects in this category yet.
-                  </p>
-                  <button
-                    onClick={() => setActiveCategory("All")}
-                    className="px-6 py-3 bg-[#FF5B04] text-white rounded-full hover:bg-[#FF5B04]/90 transition-colors duration-300 font-semibold text-sm shadow-md hover:shadow-lg"
+                  <svg
+                    className="w-16 h-16 mx-auto mb-4 text-gray-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    View all projects
-                  </button>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p className="text-gray-500 text-lg max-md:text-base mb-2 font-semibold">
+                    {searchQuery ? "No matching projects found" : "No projects in this category yet"}
+                  </p>
+                  <p className="text-gray-400 text-sm mb-6">
+                    {searchQuery
+                      ? `Try adjusting your search term or filters`
+                      : `Check out other categories or view all projects`
+                    }
+                  </p>
+                  <div className="flex gap-3 justify-center">
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 rounded-full hover:border-[#FF5B04] hover:text-[#FF5B04] transition-all duration-300 font-semibold text-sm"
+                      >
+                        Clear search
+                      </button>
+                    )}
+                    <button
+                      onClick={() => {
+                        setActiveCategory("All");
+                        setSearchQuery("");
+                      }}
+                      className="px-6 py-3 bg-[#FF5B04] text-white rounded-full hover:bg-[#FF5B04]/90 transition-colors duration-300 font-semibold text-sm shadow-md hover:shadow-lg"
+                    >
+                      View all projects
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
-              filteredStudies.map((study) => {
+              filteredStudies.map((study, index) => {
               const primaryMetric = study.metrics?.[0]?.value || study.industry;
               const isExternal = !!study.externalUrl;
               const href = study.externalUrl || `/case-studies/${study.slug}`;
@@ -111,11 +268,20 @@ const CaseStudies = () => {
                 : { href };
 
               return (
-                <LinkComponent
+                <motion.div
                   key={study.slug}
-                  {...linkProps}
-                  className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: index * 0.1,
+                    ease: [0.25, 0.1, 0.25, 1]
+                  }}
                 >
+                  <LinkComponent
+                    {...linkProps}
+                    className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
+                  >
                   {/* Blurred background image - more visible */}
                   <div className="absolute inset-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -186,10 +352,12 @@ const CaseStudies = () => {
                     </div>
                   </div>
                 </LinkComponent>
+                </motion.div>
               );
             })
             )}
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </section>
 
         {/* What's Next CTA */}

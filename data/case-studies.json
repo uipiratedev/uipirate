@@ -51,9 +51,9 @@
     "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
   },
   {
-    "slug": "bioptex-ion",
-    "title": "ION by Bioptex — Order Fulfilment SaaS Platform",
-    "client": "Bioptex",
+    "slug": "ion",
+    "title": "ION — Order Fulfilment SaaS Platform",
+    "client": "ION",
     "clientLogo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp",
     "region": "USA",
     "industry": "HealthTech / Supply Chain",
@@ -65,13 +65,13 @@
       { "label": "Industry", "value": "Medical supply chain" },
       { "label": "Focus", "value": "Order fulfilment automation" }
     ],
-    "problem": "Bioptex needed a streamlined platform for efficient order fulfilment and inventory management in medical supply chain operations.",
+    "problem": "ION needed a streamlined platform for efficient order fulfilment and inventory management in medical supply chain operations.",
     "approach": "Designed a comprehensive SaaS platform focusing on order tracking, inventory management, and supply chain optimization.",
     "solution": "Full UX/UI design and React frontend for order management, real-time tracking, and supply chain dashboards.",
-    "results": "A robust order fulfilment platform that streamlines medical supply chain operations for Bioptex.",
+    "results": "A robust order fulfilment platform that streamlines medical supply chain operations for ION.",
     "testimonial": {
       "quote": "The platform transformed our supply chain operations with seamless order management.",
-      "author": "Bioptex Team"
+      "author": "ION Team"
     },
     "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
   },
