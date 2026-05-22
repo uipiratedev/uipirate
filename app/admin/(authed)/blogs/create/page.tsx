@@ -108,30 +108,25 @@ const SlashCommandMenu = ({
   return (
     <div
       ref={menuRef}
-      className="absolute z-50 bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 py-2 min-w-[240px]"
+      className="absolute z-50 rounded-xl shadow-2xl py-1.5 min-w-[220px]"
       style={{
-        top: `${position.top}px`,
+        top: `${position.top + 8}px`,
         left: `${position.left}px`,
+        background: "#fff",
+        border: "1px solid rgba(0,0,0,0.08)",
       }}
     >
-      <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+      <p className="px-3 py-1.5 text-[9px] font-semibold font-jetbrains-mono text-gray-400 uppercase tracking-widest">
         Blocks
-      </div>
+      </p>
       {commands.map((command, index) => (
         <button
           key={index}
-          className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left rounded-lg"
-          onClick={() => {
-            command.command();
-            onClose();
-          }}
+          className="w-full flex items-center gap-3 px-3 py-2 hover:bg-black/5 transition-colors text-left"
+          onClick={() => { command.command(); onClose(); }}
         >
-          <span className="text-gray-600 dark:text-gray-300 text-lg font-semibold w-8 text-center">
-            {command.icon}
-          </span>
-          <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
-            {command.title}
-          </span>
+          <span className="text-xs font-bold font-jetbrains-mono text-gray-400 w-7 text-center">{command.icon}</span>
+          <span className="text-sm font-medium font-geist text-gray-800">{command.title}</span>
         </button>
       ))}
     </div>
@@ -142,113 +137,30 @@ const SlashCommandMenu = ({
 const FormattingToolbar = ({ editor }: { editor: any }) => {
   if (!editor) return null;
 
-  const buttonClass = (isActive: boolean) =>
-    `px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-semibold text-sm ${
-      isActive
-        ? "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300"
-        : "text-gray-600 dark:text-gray-400"
+  const btn = (active: boolean) =>
+    `px-2.5 py-1.5 rounded-lg transition-all font-semibold text-sm font-geist ${
+      active ? "text-white" : "text-gray-500 hover:bg-black/5 hover:text-gray-900"
     }`;
+  const activeStyle = { background: "#FF5B04" };
+  const sep = <div className="w-px h-5 bg-black/10 mx-1" />;
 
   return (
-    <div className="sticky top-[73px] z-40 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 py-3 px-6">
-      <div className="max-w-4xl mx-auto flex items-center gap-1 flex-wrap">
-        <button
-          className={buttonClass(editor.isActive("bold"))}
-          title="Bold (Ctrl+B)"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-        >
-          B
-        </button>
-        <button
-          className={buttonClass(editor.isActive("italic"))}
-          title="Italic (Ctrl+I)"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-        >
-          <em>I</em>
-        </button>
-        <button
-          className={buttonClass(editor.isActive("strike"))}
-          title="Strikethrough"
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-        >
-          <s>S</s>
-        </button>
-        <button
-          className={buttonClass(editor.isActive("code"))}
-          title="Code"
-          onClick={() => editor.chain().focus().toggleCode().run()}
-        >
-          {"<>"}
-        </button>
-        <button
-          className={buttonClass(editor.isActive("highlight"))}
-          title="Highlight"
-          onClick={() => editor.chain().focus().toggleHighlight().run()}
-        >
-          ⬛
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
-
-        <button
-          className={buttonClass(editor.isActive("heading", { level: 1 }))}
-          title="Heading 1"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-        >
-          H1
-        </button>
-        <button
-          className={buttonClass(editor.isActive("heading", { level: 2 }))}
-          title="Heading 2"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-        >
-          H2
-        </button>
-        <button
-          className={buttonClass(editor.isActive("heading", { level: 3 }))}
-          title="Heading 3"
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 3 }).run()
-          }
-        >
-          H3
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
-
-        <button
-          className={buttonClass(editor.isActive("bulletList"))}
-          title="Bullet List"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-        >
-          •
-        </button>
-        <button
-          className={buttonClass(editor.isActive("orderedList"))}
-          title="Numbered List"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        >
-          1.
-        </button>
-        <button
-          className={buttonClass(editor.isActive("taskList"))}
-          title="Task List"
-          onClick={() => editor.chain().focus().toggleTaskList().run()}
-        >
-          ☑
-        </button>
-        <button
-          className={buttonClass(editor.isActive("blockquote"))}
-          title="Quote"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        >
-          &quot;
-        </button>
-      </div>
+    <div className="sticky top-0 z-40 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
+      style={{ background: "rgba(247,247,246,0.96)", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+      <button className={btn(editor.isActive("bold"))} style={editor.isActive("bold") ? activeStyle : {}} title="Bold (Ctrl+B)" onClick={() => editor.chain().focus().toggleBold().run()}>B</button>
+      <button className={btn(editor.isActive("italic"))} style={editor.isActive("italic") ? activeStyle : {}} title="Italic (Ctrl+I)" onClick={() => editor.chain().focus().toggleItalic().run()}><em>I</em></button>
+      <button className={btn(editor.isActive("strike"))} style={editor.isActive("strike") ? activeStyle : {}} title="Strikethrough" onClick={() => editor.chain().focus().toggleStrike().run()}><s>S</s></button>
+      <button className={btn(editor.isActive("code"))} style={editor.isActive("code") ? activeStyle : {}} title="Inline code" onClick={() => editor.chain().focus().toggleCode().run()}>{"<>"}</button>
+      <button className={btn(editor.isActive("highlight"))} style={editor.isActive("highlight") ? activeStyle : {}} title="Highlight" onClick={() => editor.chain().focus().toggleHighlight().run()}>Mk</button>
+      {sep}
+      <button className={btn(editor.isActive("heading", { level: 1 }))} style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}} title="Heading 1" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>H1</button>
+      <button className={btn(editor.isActive("heading", { level: 2 }))} style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}} title="Heading 2" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button>
+      <button className={btn(editor.isActive("heading", { level: 3 }))} style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}} title="Heading 3" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>H3</button>
+      {sep}
+      <button className={btn(editor.isActive("bulletList"))} style={editor.isActive("bulletList") ? activeStyle : {}} title="Bullet List" onClick={() => editor.chain().focus().toggleBulletList().run()}>• List</button>
+      <button className={btn(editor.isActive("orderedList"))} style={editor.isActive("orderedList") ? activeStyle : {}} title="Numbered List" onClick={() => editor.chain().focus().toggleOrderedList().run()}>1. List</button>
+      <button className={btn(editor.isActive("blockquote"))} style={editor.isActive("blockquote") ? activeStyle : {}} title="Blockquote" onClick={() => editor.chain().focus().toggleBlockquote().run()}>&ldquo; Quote</button>
+      <button className={btn(editor.isActive("codeBlock"))} style={editor.isActive("codeBlock") ? activeStyle : {}} title="Code Block" onClick={() => editor.chain().focus().toggleCodeBlock().run()}>{"</>"}</button>
     </div>
   );
 };
@@ -256,26 +168,19 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
 const BlogEditor = () => {
   const [mounted, setMounted] = useState(false);
   const [slashMenuOpen, setSlashMenuOpen] = useState(false);
-  const [slashMenuPosition, setSlashMenuPosition] = useState({
-    top: 0,
-    left: 0,
-  });
+  const [slashMenuPosition, setSlashMenuPosition] = useState({ top: 0, left: 0 });
   const [title, setTitle] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [excerpt, setExcerpt] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [featuredImage, setFeaturedImage] = useState("");
   const [bannerImage, setBannerImage] = useState("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tags, setTags] = useState<string[]>([]);
-  const [saveStatus, setSaveStatus] = useState<string>("Draft");
+  const [tagInput, setTagInput] = useState("");
+  const [saveStatus, setSaveStatus] = useState<"Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error">("Draft");
   const editorRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Require authentication
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isAuthenticated, isLoading: authLoading } = useAuth(true);
+  const { isLoading: authLoading } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);
@@ -524,117 +429,156 @@ const BlogEditor = () => {
 
   if (!mounted || !editor || authLoading) return null;
 
+  const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
+      e.preventDefault();
+      const t = tagInput.trim().replace(/,$/, "");
+      if (t && !tags.includes(t)) setTags([...tags, t]);
+      setTagInput("");
+    }
+  };
+
+  const statusColor: Record<string, string> = {
+    Draft: "#6b7280", "Saving…": "#FF5B04", "Publishing…": "#FF5B04",
+    Saved: "#16a34a", Published: "#16a34a", Error: "#dc2626",
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      {/* Top Action Bar */}
-      <div className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-              Create Post
-            </h1>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {saveStatus}
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button
-              className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-              disabled={isSaving}
-              variant="flat"
-              onClick={handleSaveDraft}
-            >
-              Save Draft
-            </Button>
-            <Button
-              className="bg-blue-600 text-white hover:bg-blue-700"
-              disabled={isSaving}
-              onClick={handlePublish}
-            >
-              Publish
-            </Button>
-          </div>
+    <div className="min-h-screen" style={{ background: "#F7F7F6" }}>
+      {/* Top bar */}
+      <div className="sticky top-0 z-50 flex items-center justify-between px-6 py-3"
+        style={{ background: "rgba(247,247,246,0.95)", borderBottom: "1px solid rgba(0,0,0,0.07)", backdropFilter: "blur(8px)" }}>
+        <div className="flex items-center gap-3">
+          <a href="/admin/blogs" className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Blogs
+          </a>
+          <span className="text-gray-200">/</span>
+          <span className="text-sm font-medium font-geist text-gray-900">New Post</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-geist font-medium transition-colors" style={{ color: statusColor[saveStatus] ?? "#6b7280" }}>
+            {saveStatus}
+          </span>
+          <Button variant="flat" disabled={isSaving} onClick={handleSaveDraft}
+            className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium">
+            Save Draft
+          </Button>
+          <Button disabled={isSaving} isLoading={isSaving} onClick={handlePublish}
+            className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
+            style={{ background: "#FF5B04" }}>
+            Publish
+          </Button>
         </div>
       </div>
 
-      {/* Formatting Toolbar */}
+      {/* Formatting toolbar */}
       <FormattingToolbar editor={editor} />
 
-      <div className="max-w-4xl mx-auto pt-12 pb-24 px-6">
-        {/* Title Input */}
-        <input
-          className="w-full text-5xl font-bold border-none outline-none bg-transparent mb-6 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:placeholder-gray-300"
-          placeholder="Untitled Post"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        {/* banner image */}
-        <div className="mb-6">
-          <label
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            htmlFor="banner-image"
-          >
-            Banner Image
-          </label>
-          <input
-            accept="image/*"
-            className="mt-1 p-2 border rounded-lg w-full"
-            id="banner-image"
-            type="file"
-            onChange={handleBannerImageUpload}
-          />
-          {bannerImage && (
-            <div className="mt-2">
-              <img
-                alt="Banner preview"
-                className="max-w-full h-auto rounded-lg max-h-48 object-cover"
-                src={bannerImage}
-              />
-            </div>
-          )}
-        </div>
-
-        {/* Editor Container */}
-        <div ref={editorRef} className="relative">
-          {/* Editor Content */}
-          <div className="notion-editor-wrapper  min-h-[600px]">
-            <EditorContent editor={editor} />
+      {/* Two-column layout */}
+      <div className="flex gap-6 p-6 items-start">
+        {/* ── Editor column ── */}
+        <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
+          {/* Title */}
+          <div className="px-10 pt-10 pb-4">
+            <input
+              className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-300 leading-tight"
+              placeholder="Post title…"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <p className="text-xs font-jetbrains-mono text-gray-300 mt-3">Type <kbd className="px-1.5 py-0.5 rounded bg-gray-100 text-gray-400">/</kbd> in the editor for block commands</p>
           </div>
 
-          {/* Slash Command Menu */}
-          <SlashCommandMenu
-            editor={editor}
-            isOpen={slashMenuOpen}
-            position={slashMenuPosition}
-            onClose={() => setSlashMenuOpen(false)}
-          />
+          <div className="h-px mx-10" style={{ background: "rgba(0,0,0,0.06)" }} />
+
+          {/* Editor */}
+          <div ref={editorRef} className="relative px-10 py-6">
+            <div className="notion-editor-wrapper min-h-[520px]">
+              <EditorContent editor={editor} />
+            </div>
+            <SlashCommandMenu editor={editor} isOpen={slashMenuOpen} position={slashMenuPosition} onClose={() => setSlashMenuOpen(false)} />
+          </div>
         </div>
 
-        {/* Floating Toolbar at bottom */}
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center gap-4 z-50">
-          <label className="cursor-pointer p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-            <span className="text-2xl">🖼️</span>
-            <input
-              accept="image/*"
-              className="hidden"
-              type="file"
-              onChange={(e) => handleImageUpload(e, editor)}
-            />
-          </label>
-          <div className="w-px h-6 bg-gray-300 dark:bg-gray-600" />
-          <button
-            className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            onClick={() => {
-              const url = window.prompt("Enter image URL:");
+        {/* ── Settings sidebar ── */}
+        <div className="w-72 flex-shrink-0 space-y-4">
+          {/* Publish card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">Publish</p>
+            <div className="space-y-2">
+              <Button className="w-full font-geist font-medium text-white text-sm h-10 rounded-xl" style={{ background: "#FF5B04" }}
+                disabled={isSaving} isLoading={isSaving} onClick={handlePublish}>
+                Publish Now
+              </Button>
+              <Button variant="flat" className="w-full font-geist font-medium text-sm h-10 rounded-xl bg-black/5 text-gray-600"
+                disabled={isSaving} onClick={handleSaveDraft}>
+                Save as Draft
+              </Button>
+            </div>
+          </div>
 
-              if (url) {
-                editor.chain().focus().setImage({ src: url }).run();
-              }
-            }}
-          >
-            Add Image URL
-          </button>
+          {/* Banner image card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">Banner Image</p>
+            {bannerImage ? (
+              <div className="relative group">
+                <img src={bannerImage} alt="Banner" className="w-full h-32 object-cover rounded-xl" />
+                <button onClick={() => { setBannerImage(""); setFeaturedImage(""); }}
+                  className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-28 rounded-xl border-2 border-dashed cursor-pointer transition-colors hover:border-[#FF5B04] hover:bg-orange-50"
+                style={{ borderColor: "rgba(0,0,0,0.1)" }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span className="text-xs font-geist text-gray-400 mt-2">Click to upload</span>
+                <input type="file" accept="image/*" className="hidden" onChange={handleBannerImageUpload} />
+              </label>
+            )}
+          </div>
+
+          {/* Excerpt card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">Excerpt</p>
+            <textarea
+              className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
+              style={{ minHeight: 80 }}
+              placeholder="Short summary shown in blog listings…"
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+            />
+          </div>
+
+          {/* Tags card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">Tags</p>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {tags.map((tag) => (
+                <span key={tag} className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                  style={{ background: "#FFF0E8", color: "#FF5B04" }}>
+                  {tag}
+                  <button onClick={() => setTags(tags.filter(t => t !== tag))} className="opacity-60 hover:opacity-100 leading-none">✕</button>
+                </span>
+              ))}
+            </div>
+            <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+              placeholder="Add tag, press Enter…"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={addTag}
+            />
+          </div>
+
+          {/* Insert image card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">Insert Image</p>
+            <label className="flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-gray-900 bg-black/5 rounded-xl px-3 py-2.5 transition-colors">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              Upload image
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, editor)} />
+            </label>
+          </div>
         </div>
       </div>
 
@@ -736,21 +680,15 @@ const BlogEditor = () => {
         }
 
         .notion-editor-wrapper .ProseMirror blockquote {
-          border-left: 3px solid #3b82f6;
+          border-left: 3px solid #FF5B04;
           padding-left: 1.25rem;
           padding-top: 0.5rem;
           padding-bottom: 0.5rem;
           color: #6b7280;
           font-style: italic;
           margin: 1.5rem 0;
-          background-color: rgba(59, 130, 246, 0.05);
+          background-color: rgba(255, 91, 4, 0.04);
           border-radius: 0 8px 8px 0;
-        }
-
-        .dark .notion-editor-wrapper .ProseMirror blockquote {
-          border-left-color: #60a5fa;
-          color: #9ca3af;
-          background-color: rgba(59, 130, 246, 0.1);
         }
 
         .notion-editor-wrapper .ProseMirror code {
