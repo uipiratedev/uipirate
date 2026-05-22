@@ -17,11 +17,11 @@ import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "UI Pirate | Product Design & Development — From Idea to Shipped Product",
+    default: "UI Pirate | Product Design & Dev — Idea to Shipped Product",
     template: "%s | UI Pirate",
   },
   description:
-    "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. We simplify complexity. Angular, React, Next.js development.",
+    "Product design & development agency. We turn SaaS and AI product ideas into shipped products. Expert in UX/UI, Angular & React. Serving USA, UK, Singapore.",
   keywords:
     "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, simplify complex products, Angular development, React development, Vishal Anand",
   openGraph: {

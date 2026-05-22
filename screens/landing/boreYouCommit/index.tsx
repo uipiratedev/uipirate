@@ -51,7 +51,7 @@ const BoreYouCommit = () => {
                 </div>
                 <div className="">
                   <img
-                    alt=""
+                    alt="Rocket — high-impact, fast delivery"
                     className="max-md:hidden"
                     src="/fxemoji_rocket.svg"
                   />

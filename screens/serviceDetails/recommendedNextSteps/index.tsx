@@ -38,7 +38,7 @@ const RecommendedNextSteps = ({data}:any) => {
               
               <div className="relative">
                 {/* <div className="rounded-[20px] bg-white p-2 shadow-[0_10px_25px_rgba(15,23,42,0.12)]"> */}
-                  <img src="/assets/servicesBanner.svg" alt="" className="" />
+                  <img src="/assets/servicesBanner.svg" alt="UI Pirate services overview" className="" />
                 {/* </div> */}
               </div>
             </div>

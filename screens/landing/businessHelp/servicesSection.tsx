@@ -162,7 +162,7 @@ const ServicesSection = () => {
             
             <div className="flex justify-center items-center">
               <div className="relative">
-                <img src="/assets/servicesBanner.svg" alt="" className="" />
+                <img src="/assets/servicesBanner.svg" alt="UI Pirate services overview" className="" />
                 </div>
             </div>
           </CardBody>
@@ -188,7 +188,7 @@ const ServicesSection = () => {
                     key={index}
                     className="flex items-center gap-3 text-gray-300 w-full font-mono text-sm max-md:text-xs bg-[#292929] rounded-lg p-3 hover:bg-[#292929] transition-colors"
                   >
-                    <span className="text-lg"><img src={service.icon} alt="" className="w-4 h-4" /></span>
+                    <span className="text-lg"><img src={service.icon} alt={service.title} className="w-4 h-4" /></span>
                     <span className="font-medium tracking-wide">
                       {service.title}
                     </span>
