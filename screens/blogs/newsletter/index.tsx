@@ -21,7 +21,7 @@ const BlogsNewsletter = () => {
 
         {/* Illustration placeholder styled similar to design */}
        <div className="flex item-center justify-center my-12">
-        <img src="/assets/loop.svg" alt=""  className="w-[300px] h-[300px]" />
+        <img src="/assets/loop.svg" alt="" aria-hidden="true" className="w-[300px] h-[300px]" />
        </div>
 
         {/* Tagline + sparkles */}

@@ -285,7 +285,7 @@ export default function ContactPageClient() {
                       {t.logo && (
                         <img
                           src={t.logo}
-                          alt=""
+                          alt={`${t.company} logo`}
                           className="ml-auto h-6 w-auto object-contain opacity-60"
                           loading="lazy"
                         />

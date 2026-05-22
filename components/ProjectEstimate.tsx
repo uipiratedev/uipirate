@@ -374,7 +374,7 @@ const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimateProps)
                 {/* Icon and Title aligned together on mobile */}
                 <div className="flex items-center gap-4 max-md:gap-3 mb-6">
                   <div className="w-12 h-12 max-md:w-10 max-md:h-10 flex items-center justify-center">
-                    <img src="/assets/gif/filter.gif" alt="" />
+                    <img src="/assets/gif/filter.gif" alt="" aria-hidden="true" />
                   </div>
                   <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
                     Custom Project <span className="text-orange-600">Estimate</span>

@@ -107,7 +107,7 @@ const Pricing = () => {
             {/* Icon and Title aligned together on mobile */}
             <div className="flex items-center gap-4 max-md:gap-3 mb-6">
               <div className="w-12 h-12 max-md:w-10 max-md:h-10 rounded-lg flex items-center justify-center">
-               <img src="/assets/gif/kite.gif" alt="" />
+               <img src="/assets/gif/kite.gif" alt="Monthly retainer plan icon" aria-hidden="true" />
               </div>
               <h3 className="text-3xl max-md:text-xl font-bold text-white font-jakarta">
                 Monthly <span className="text-brand-orange">Retainer</span>
@@ -184,7 +184,7 @@ const Pricing = () => {
                 <div className="flex items-center gap-4 max-md:gap-3 mb-6">
                   {/* Icon */}
                   <div className="w-12 h-12 max-md:w-10 max-md:h-10 flex items-center justify-center">
-                    <img src="/assets/gif/headquater.gif" alt="" />
+                    <img src="/assets/gif/headquater.gif" alt="Custom quote plan icon" aria-hidden="true" />
                   </div>
 
                   {/* Title */}
@@ -242,7 +242,7 @@ const Pricing = () => {
               <CardBody className="p-6 max-md:p-5">
 
                 <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center  gap-2 font-mono max-md:text-center">
-                  <img src={benefit.icon} alt=""  className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6" /> {benefit.title}
+                  <img src={benefit.icon} alt={benefit.title} className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6" /> {benefit.title}
                 </h4>
                 <p className="text-sm text-[#555555] leading-relaxed font-jakarta">
                   {benefit.description}
