@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -216,6 +216,283 @@ const VideoEmbedModal = ({
   );
 };
 
+// ─── Custom Alert Modal ──────────────────────────────────────────────────────
+const AlertModal = ({
+  title,
+  message,
+  onClose,
+}: {
+  title: string;
+  message: string;
+  onClose: () => void;
+}) => (
+  <Modal title={title} onClose={onClose}>
+    <div className="text-center py-4">
+      <div className="w-12 h-12 bg-red-50 text-[#FF5B04] rounded-full flex items-center justify-center mx-auto mb-3">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <p className="text-sm font-geist text-gray-600 mb-5">{message}</p>
+      <button
+        onClick={onClose}
+        className="w-full h-10 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
+        style={{ background: "#FF5B04" }}
+      >
+        Okay
+      </button>
+    </div>
+  </Modal>
+);
+
+// ─── Publish Confirm Modal ───────────────────────────────────────────────────
+const PublishConfirmModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  isSaving,
+  blogData,
+  isSuccess,
+  onViewBlogs,
+  onKeepEditing,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isSaving: boolean;
+  blogData: { title: string; bannerImage: string; excerpt: string; tags: string[] };
+  isSuccess: boolean;
+  onViewBlogs: () => void;
+  onKeepEditing: () => void;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[460px] max-w-[95vw] border border-black/5"
+        style={{ animation: "fadeSlideIn 0.2s ease" }}
+      >
+        {isSuccess ? (
+          <div className="p-8 text-center">
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(22, 163, 74, 0.1)" }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">Post Published!</h3>
+            <p className="text-sm font-geist text-gray-500 mb-6">Your blog post has been successfully published and is now live.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={onViewBlogs}
+                className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
+                style={{ background: "#FF5B04" }}
+              >
+                Go to Blog List
+              </button>
+              <button
+                onClick={onKeepEditing}
+                className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
+              >
+                Keep Editing
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            {/* Header Preview */}
+            <div className="h-36 bg-gray-100 relative bg-cover bg-center flex items-end p-5" style={{ backgroundImage: blogData.bannerImage ? `url(${blogData.bannerImage})` : "linear-gradient(135deg, #FFF0E8 0%, #FFEBE0 100%)" }}>
+              {!blogData.bannerImage && (
+                <div className="absolute inset-0 flex items-center justify-center opacity-30">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+                  </svg>
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/10" />
+              <div className="relative z-10 text-white w-full">
+                <p className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-orange-400 font-semibold mb-1">Publish Preview</p>
+                <h4 className="text-lg font-bold font-geist line-clamp-1">{blogData.title || "Untitled Post"}</h4>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold mb-1 block">Excerpt Preview</label>
+                <p className="text-xs font-geist text-gray-600 line-clamp-2 italic bg-black/5 rounded-xl p-3">
+                  {blogData.excerpt || "No excerpt provided. A summary will be auto-generated from your content."}
+                </p>
+              </div>
+
+              {blogData.tags.length > 0 && (
+                <div>
+                  <label className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold mb-1.5 block">Tags</label>
+                  <div className="flex flex-wrap gap-1">
+                    {blogData.tags.map((tag) => (
+                      <span key={tag} className="text-[10px] font-geist px-2.5 py-0.5 rounded-full" style={{ background: "#FFF0E8", color: "#FF5B04" }}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="bg-orange-50 border border-orange-100 rounded-xl p-3.5 flex gap-2.5">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2" className="flex-shrink-0 mt-0.5">
+                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+                <p className="text-[11px] font-geist text-[#FF5B04]/90 leading-normal">
+                  Publishing will make this post immediately live on your blog. Make sure all your details are correct!
+                </p>
+              </div>
+
+              <div className="flex gap-2 pt-2 border-t border-black/5">
+                <button
+                  onClick={onConfirm}
+                  disabled={isSaving}
+                  className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity disabled:opacity-50 hover:opacity-90 flex items-center justify-center gap-2"
+                  style={{ background: "#FF5B04" }}
+                >
+                  {isSaving ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Publishing...
+                    </>
+                  ) : "Confirm & Publish"}
+                </button>
+                <button
+                  onClick={onClose}
+                  disabled={isSaving}
+                  className="h-11 px-5 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── Save Draft Modal ────────────────────────────────────────────────────────
+const SaveDraftModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  isSaving,
+  blogData,
+  isSuccess,
+  onViewBlogs,
+  onKeepEditing,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isSaving: boolean;
+  blogData: { title: string; excerpt: string };
+  isSuccess: boolean;
+  onViewBlogs: () => void;
+  onKeepEditing: () => void;
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[400px] max-w-[95vw] border border-black/5"
+        style={{ animation: "fadeSlideIn 0.2s ease" }}
+      >
+        {isSuccess ? (
+          <div className="p-8 text-center">
+            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(99, 102, 241, 0.1)" }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">Draft Saved!</h3>
+            <p className="text-sm font-geist text-gray-500 mb-6">Your progress has been saved successfully as a draft.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={onViewBlogs}
+                className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
+                style={{ background: "#FF5B04" }}
+              >
+                Go to Blog List
+              </button>
+              <button
+                onClick={onKeepEditing}
+                className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
+              >
+                Keep Editing
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="p-6 space-y-4">
+            <div className="text-center pb-2">
+              <div className="w-12 h-12 bg-orange-50 text-[#FF5B04] rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold font-geist text-gray-900">Save Draft</h3>
+              <p className="text-xs font-geist text-gray-500 mt-1">Save your current progress to finish editing later.</p>
+            </div>
+
+            <div className="bg-black/5 rounded-2xl p-4 space-y-2">
+              <div className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold">Post Title</div>
+              <div className="text-sm font-geist text-gray-800 font-semibold line-clamp-1">{blogData.title || "Untitled Post"}</div>
+              {blogData.excerpt && (
+                <>
+                  <div className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold pt-1">Excerpt</div>
+                  <div className="text-xs font-geist text-gray-500 line-clamp-2">{blogData.excerpt}</div>
+                </>
+              )}
+            </div>
+
+            <div className="flex gap-2 pt-2 border-t border-black/5">
+              <button
+                onClick={onConfirm}
+                disabled={isSaving}
+                className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity disabled:opacity-50 hover:opacity-90 flex items-center justify-center gap-2"
+                style={{ background: "#FF5B04" }}
+              >
+                {isSaving ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Saving...
+                  </>
+                ) : "Save Draft"}
+              </button>
+              <button
+                onClick={onClose}
+                disabled={isSaving}
+                className="h-11 px-5 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ─── Floating Block Inserter (Medium-style) ───────────────────────────────────
 const FloatingBlockInserter = ({
   editor,
@@ -228,47 +505,37 @@ const FloatingBlockInserter = ({
   onVideoEmbed: () => void;
   imageUploadRef: React.RefObject<HTMLInputElement>;
 }) => {
-  const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
-  const [top, setTop] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!editor) return;
-
-    const updatePosition = () => {
-      const { state, view } = editor;
+  // Use Tiptap v3's reactive hook — re-renders on every selection change
+  const editorState = useEditorState({
+    editor,
+    selector: (ctx: any) => {
+      if (!ctx.editor) return { visible: false, top: 0 };
+      const { state, view } = ctx.editor;
       const { selection } = state;
       const { $from } = selection;
-
-      // Show only on empty paragraphs
       const isEmpty =
         $from.parent.type.name === "paragraph" &&
         $from.parent.textContent === "";
-
-      if (isEmpty) {
-        try {
-          const coords = view.coordsAtPos(selection.from);
-          const scrollTop = window.scrollY;
-          setTop(coords.top + scrollTop);
-          setVisible(true);
-        } catch {
-          setVisible(false);
-        }
-      } else {
-        setVisible(false);
-        setOpen(false);
+      if (!isEmpty) return { visible: false, top: 0 };
+      try {
+        const coords = view.coordsAtPos(selection.from);
+        return { visible: true, top: coords.top };
+      } catch {
+        return { visible: false, top: 0 };
       }
-    };
+    },
+  });
 
-    editor.on("selectionUpdate", updatePosition);
-    editor.on("transaction", updatePosition);
+  const visible = editorState?.visible ?? false;
+  const top = editorState?.top ?? 0;
 
-    return () => {
-      editor.off("selectionUpdate", updatePosition);
-      editor.off("transaction", updatePosition);
-    };
-  }, [editor]);
+  // Auto-close expanded toolbar when cursor leaves empty line
+  useEffect(() => {
+    if (!visible) setOpen(false);
+  }, [visible]);
 
   // Close on outside click
   useEffect(() => {
@@ -610,8 +877,9 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
 
   return (
     <div
-      className="sticky top-0 z-40 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
+      className="sticky z-40 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
       style={{
+        top: "61px",
         background: "rgba(247,247,246,0.96)",
         borderBottom: "1px solid rgba(0,0,0,0.07)",
       }}
@@ -653,6 +921,10 @@ const BlogEditor = () => {
   >("Draft");
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -795,14 +1067,6 @@ const BlogEditor = () => {
   );
 
   const saveBlog = async (published: boolean) => {
-    if (!title.trim()) {
-      alert("Please enter a title for your blog");
-      return;
-    }
-    if (!editor?.getHTML()) {
-      alert("Please add some content to your blog");
-      return;
-    }
     setIsSaving(true);
     setSaveStatus(published ? "Publishing…" : "Saving…");
     try {
@@ -811,7 +1075,7 @@ const BlogEditor = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          content: editor.getHTML(),
+          content: editor?.getHTML() || "",
           excerpt,
           featuredImage,
           bannerImage,
@@ -822,18 +1086,45 @@ const BlogEditor = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to save blog");
       setSaveStatus(published ? "Published" : "Saved");
-      alert(published ? "Blog published successfully!" : "Draft saved successfully!");
-      setTimeout(() => router.push("/admin/blogs"), 1500);
+      setModalSuccess(published ? "publish" : "draft");
+      
+      // Auto-redirect to dashboard after 3 seconds, but user can also click immediately
+      setTimeout(() => {
+        router.push("/admin/blogs");
+      }, 3000);
     } catch (error: any) {
-      alert(error.message || "Failed to save blog");
       setSaveStatus("Error");
+      setShowPublishModal(false);
+      setShowSaveModal(false);
+      setValidationError(error.message || "Failed to save blog");
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleSaveDraft = useCallback(() => saveBlog(false), [title, editor, excerpt, featuredImage, bannerImage, tags]);
-  const handlePublish = useCallback(() => saveBlog(true), [title, editor, excerpt, featuredImage, bannerImage, tags]);
+  const handleSaveDraft = useCallback(() => {
+    if (!title.trim()) {
+      setValidationError("Please enter a title for your blog post.");
+      return;
+    }
+    if (!editor || editor.isEmpty) {
+      setValidationError("Please add some content to your blog post.");
+      return;
+    }
+    setShowSaveModal(true);
+  }, [title, editor]);
+
+  const handlePublish = useCallback(() => {
+    if (!title.trim()) {
+      setValidationError("Please enter a title for your blog post.");
+      return;
+    }
+    if (!editor || editor.isEmpty) {
+      setValidationError("Please add some content to your blog post.");
+      return;
+    }
+    setShowPublishModal(true);
+  }, [title, editor]);
 
   if (!mounted || !editor || authLoading) return null;
 
@@ -1130,6 +1421,42 @@ const BlogEditor = () => {
           onClose={() => setShowVideoModal(false)}
         />
       )}
+
+      {validationError && (
+        <AlertModal
+          title="Attention Required"
+          message={validationError}
+          onClose={() => setValidationError(null)}
+        />
+      )}
+
+      <PublishConfirmModal
+        isOpen={showPublishModal}
+        onClose={() => setShowPublishModal(false)}
+        onConfirm={() => saveBlog(true)}
+        isSaving={isSaving}
+        blogData={{ title, bannerImage, excerpt, tags }}
+        isSuccess={modalSuccess === "publish"}
+        onViewBlogs={() => router.push("/admin/blogs")}
+        onKeepEditing={() => {
+          setShowPublishModal(false);
+          setModalSuccess(null);
+        }}
+      />
+
+      <SaveDraftModal
+        isOpen={showSaveModal}
+        onClose={() => setShowSaveModal(false)}
+        onConfirm={() => saveBlog(false)}
+        isSaving={isSaving}
+        blogData={{ title, excerpt }}
+        isSuccess={modalSuccess === "draft"}
+        onViewBlogs={() => router.push("/admin/blogs")}
+        onKeepEditing={() => {
+          setShowSaveModal(false);
+          setModalSuccess(null);
+        }}
+      />
 
       {/* ── Styles ── */}
       <style>{`

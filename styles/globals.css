@@ -2282,7 +2282,7 @@ body.modal-open .main-navbar {
 
 .blog-prose p {
   margin-top: 0;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.15rem;
 }
 
 .blog-prose h1,
@@ -2316,7 +2316,7 @@ body.modal-open .main-navbar {
 
 .blog-prose ul,
 .blog-prose ol {
-  margin: 1.2rem 0 1.4rem 0;
+  margin: 1.2rem 0 1.2rem 0;
   padding-left: 1.6rem;
 }
 
@@ -2329,8 +2329,8 @@ body.modal-open .main-navbar {
 }
 
 .blog-prose li {
-  margin-bottom: 0.55rem;
-  line-height: 1.75;
+  margin-bottom: 0.1rem;
+  line-height: 1.5;
 }
 
 .blog-prose li strong {
