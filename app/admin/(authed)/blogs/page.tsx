@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
@@ -36,7 +36,28 @@ export default function AdminBlogsPage() {
     "all" | "blog" | "tutorial" | "case-study" | "community-insight"
   >("all");
 
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const [typeDropdownOpen, setTypeDropdownOpen] = useState(false);
+
+  const statusRef = useRef<HTMLDivElement>(null);
+  const typeRef = useRef<HTMLDivElement>(null);
+
   useAuth(true); // Require authentication
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (statusRef.current && !statusRef.current.contains(event.target as Node)) {
+        setStatusDropdownOpen(false);
+      }
+      if (typeRef.current && !typeRef.current.contains(event.target as Node)) {
+        setTypeDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     fetchBlogs();
@@ -152,64 +173,151 @@ export default function AdminBlogsPage() {
         </Link>
       </div>
 
-      {/* Filters */}
-      <div className="bg-white rounded-2xl p-5 shadow-card border border-black/5 space-y-4">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
+      {/* Search & Filters in One Row */}
+      <div className="bg-white rounded-2xl p-4 shadow-card border border-black/5">
+        <div className="flex flex-col lg:flex-row gap-3 items-center w-full">
+          {/* Search Field */}
+          <div className="flex-1 w-full">
             <Input
               classNames={{
-                inputWrapper: "bg-black/5 border-transparent shadow-none h-10 rounded-xl",
-                input: "text-sm font-geist",
+                inputWrapper: "bg-black/5 border-transparent shadow-none h-11 rounded-xl focus-within:bg-black/[0.08] transition-all",
+                input: "text-sm font-geist text-gray-900",
               }}
               placeholder="Search posts by title…"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              startContent={
+                <svg className="w-4 h-4 text-gray-400 mr-1.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              }
             />
           </div>
-          <div className="flex gap-2 items-center">
-            <span className="text-xs font-semibold font-jetbrains-mono text-gray-400 uppercase tracking-wider mr-1">Status:</span>
-            {filterButtons.map(({ label, value }) => (
-              <Button key={value}
-                size="sm"
-                variant="flat"
-                className={`font-geist text-xs h-10 px-4 rounded-xl font-medium transition-all ${
-                  filterStatus === value
-                    ? "text-white"
-                    : "bg-black/5 text-gray-600"
-                }`}
-                style={filterStatus === value ? { background: "#151514" } : {}}
-                onClick={() => setFilterStatus(value)}
-              >
-                {label}
-              </Button>
-            ))}
-          </div>
-        </div>
 
-        {/* Type Filter Row */}
-        <div className="flex flex-wrap gap-2 items-center pt-3.5 border-t border-black/5">
-          <span className="text-xs font-semibold font-jetbrains-mono text-gray-400 uppercase tracking-wider mr-1">Type:</span>
-          {[
-            { label: "All Types", value: "all" },
-            { label: "Blogs", value: "blog" },
-            { label: "Tutorials", value: "tutorial" },
-            { label: "Case Studies", value: "case-study" },
-            { label: "Community Insights", value: "community-insight" },
-          ].map(({ label, value }) => (
-            <Button key={value}
-              size="sm"
-              variant="flat"
-              className={`font-geist text-xs h-8 px-3.5 rounded-xl font-medium transition-all ${
-                filterType === value
-                  ? "text-white bg-[#FF5B04]"
-                  : "bg-black/5 text-gray-600 hover:bg-black/10"
-              }`}
-              style={filterType === value ? { background: "#FF5B04" } : {}}
-              onClick={() => setFilterType(value as any)}
-            >
-              {label}
-            </Button>
-          ))}
+          {/* Dropdowns Container */}
+          <div className="flex w-full lg:w-auto items-center gap-3">
+            {/* Status Dropdown */}
+            <div ref={statusRef} className="relative w-full lg:w-44 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setStatusDropdownOpen(!statusDropdownOpen);
+                  setTypeDropdownOpen(false);
+                }}
+                className="w-full flex items-center justify-between h-11 px-4 rounded-xl bg-black/5 hover:bg-black/[0.08] transition-all font-geist text-sm text-gray-700 font-medium focus:outline-none"
+              >
+                <div className="flex items-center gap-1.5 overflow-hidden">
+                  <span className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider flex-shrink-0">Status:</span>
+                  <span className="truncate">
+                    {filterStatus === "all" ? "All" : filterStatus === "published" ? "Published" : "Drafts"}
+                  </span>
+                </div>
+                <svg
+                  className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-1 ${statusDropdownOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {statusDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-full min-w-[176px] bg-white rounded-xl border border-black/5 shadow-lg py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  {[
+                    { label: "All Statuses", value: "all" as const },
+                    { label: "Published Only", value: "published" as const },
+                    { label: "Drafts Only", value: "draft" as const },
+                  ].map(({ label, value }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => {
+                        setFilterStatus(value);
+                        setStatusDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-4 py-2.5 text-left font-geist text-sm transition-colors ${
+                        filterStatus === value
+                          ? "text-[#FF5B04] bg-[#FF5B04]/[0.04] font-semibold"
+                          : "text-gray-600 hover:bg-black/[0.02]"
+                      }`}
+                    >
+                      <span>{label}</span>
+                      {filterStatus === value && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Type Dropdown */}
+            <div ref={typeRef} className="relative w-full lg:w-56 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setTypeDropdownOpen(!typeDropdownOpen);
+                  setStatusDropdownOpen(false);
+                }}
+                className="w-full flex items-center justify-between h-11 px-4 rounded-xl bg-black/5 hover:bg-black/[0.08] transition-all font-geist text-sm text-gray-700 font-medium focus:outline-none"
+              >
+                <div className="flex items-center gap-1.5 overflow-hidden">
+                  <span className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider flex-shrink-0">Type:</span>
+                  <span className="truncate">
+                    {[
+                      { label: "All Types", value: "all" },
+                      { label: "Blogs", value: "blog" },
+                      { label: "Tutorials", value: "tutorial" },
+                      { label: "Case Studies", value: "case-study" },
+                      { label: "Community Insights", value: "community-insight" },
+                    ].find((o) => o.value === filterType)?.label || "All Types"}
+                  </span>
+                </div>
+                <svg
+                  className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-1 ${typeDropdownOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {typeDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-full min-w-[220px] bg-white rounded-xl border border-black/5 shadow-lg py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                  {[
+                    { label: "All Types", value: "all" },
+                    { label: "Blogs", value: "blog" },
+                    { label: "Tutorials", value: "tutorial" },
+                    { label: "Case Studies", value: "case-study" },
+                    { label: "Community Insights", value: "community-insight" },
+                  ].map(({ label, value }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => {
+                        setFilterType(value as any);
+                        setTypeDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-4 py-2.5 text-left font-geist text-sm transition-colors ${
+                        filterType === value
+                          ? "text-[#FF5B04] bg-[#FF5B04]/[0.04] font-semibold"
+                          : "text-gray-600 hover:bg-black/[0.02]"
+                      }`}
+                    >
+                      <span>{label}</span>
+                      {filterType === value && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 

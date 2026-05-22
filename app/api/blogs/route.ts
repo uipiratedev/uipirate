@@ -6,7 +6,8 @@ import { verifyAuth } from "@/lib/auth";
 
 interface BlogQuery {
   published?: boolean;
-  postType?: string;
+  postType?: any;
+  $or?: any[];
 }
 
 // GET /api/blogs - Get all blogs (published only for public, all for authenticated admin)
