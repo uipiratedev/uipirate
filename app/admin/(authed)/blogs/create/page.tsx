@@ -16,6 +16,10 @@ import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
+import { Table } from "@tiptap/extension-table";
+import { TableRow } from "@tiptap/extension-table-row";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { TableCell } from "@tiptap/extension-table-cell";
 import { Button } from "@heroui/button";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -629,6 +633,19 @@ const FloatingBlockInserter = ({
         editor.chain().focus().toggleBlockquote().run();
       },
     },
+    {
+      id: "table",
+      label: "Table",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 3h18v18H3zM21 9H3M21 15H3M12 3v18"/>
+        </svg>
+      ),
+      action: () => {
+        setOpen(false);
+        editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+      },
+    },
   ];
 
   return (
@@ -807,6 +824,12 @@ const SlashCommandMenu = ({
         desc: "YouTube, Vimeo, Loom…",
         command: onVideoEmbed,
       },
+      {
+        title: "Table",
+        icon: "田",
+        desc: "Insert a 3x3 table",
+        command: () => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+      },
     ],
     [editor, onImageUrl, onVideoEmbed, imageUploadRef]
   );
@@ -900,6 +923,61 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
       <button className={btn(editor.isActive("codeBlock"))} style={editor.isActive("codeBlock") ? activeStyle : {}} title="Code Block" onClick={() => editor.chain().focus().toggleCodeBlock().run()}>{"</>"}</button>
       {sep}
       <button className={btn(false)} title="Horizontal Rule" onClick={() => editor.chain().focus().setHorizontalRule().run()}>—</button>
+      {editor.isActive("table") && (
+        <>
+          {sep}
+          <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
+            <span className="text-[10px] font-bold font-jetbrains-mono text-[#FF5B04] uppercase tracking-wider mr-1">Table Controls:</span>
+            
+            <button className={btn(false)} title="Add Row Above" onClick={() => editor.chain().focus().addRowBefore().run()}>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              <span className="text-[10px] ml-1">Row ↑</span>
+            </button>
+            
+            <button className={btn(false)} title="Add Row Below" onClick={() => editor.chain().focus().addRowAfter().run()}>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              <span className="text-[10px] ml-1">Row ↓</span>
+            </button>
+            
+            <button className={btn(false)} title="Delete Row" onClick={() => editor.chain().focus().deleteRow().run()}>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14"/></svg>
+              <span className="text-[10px] ml-1">Row</span>
+            </button>
+
+            <div className="w-px h-4 bg-orange-200/50 mx-1" />
+
+            <button className={btn(false)} title="Add Column Before" onClick={() => editor.chain().focus().addColumnBefore().run()}>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              <span className="text-[10px] ml-1">Col ←</span>
+            </button>
+            
+            <button className={btn(false)} title="Add Column After" onClick={() => editor.chain().focus().addColumnAfter().run()}>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+              <span className="text-[10px] ml-1">Col →</span>
+            </button>
+            
+            <button className={btn(false)} title="Delete Column" onClick={() => editor.chain().focus().deleteColumn().run()}>
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14"/></svg>
+              <span className="text-[10px] ml-1">Col</span>
+            </button>
+
+            <div className="w-px h-4 bg-orange-200/50 mx-1" />
+
+            <button className={btn(false)} title="Toggle Header Row" onClick={() => editor.chain().focus().toggleHeaderRow().run()}>
+              <span className="text-[10px]">H-Row</span>
+            </button>
+
+            <button className={btn(false)} title="Toggle Header Column" onClick={() => editor.chain().focus().toggleHeaderColumn().run()}>
+              <span className="text-[10px]">H-Col</span>
+            </button>
+
+            <button className={btn(false)} title="Delete Table" style={{ color: "#dc2626" }} onClick={() => editor.chain().focus().deleteTable().run()}>
+              <svg className="w-3.5 h-3.5 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              <span className="text-[10px] ml-1">Delete</span>
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -956,6 +1034,10 @@ const BlogEditor = () => {
       Typography,
       TextStyle,
       Color,
+      Table.configure({ resizable: true }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: "",
     editorProps: {
@@ -1704,6 +1786,46 @@ const BlogEditor = () => {
           width: 100%;
           height: 100%;
           border-radius: 12px;
+        }
+
+        /* Table Styles inside Editor */
+        .notion-editor-wrapper .ProseMirror table {
+          border-collapse: collapse;
+          table-layout: fixed;
+          width: 100%;
+          margin: 1.5rem 0;
+          overflow: hidden;
+        }
+        .notion-editor-wrapper .ProseMirror td,
+        .notion-editor-wrapper .ProseMirror th {
+          min-width: 1em;
+          border: 1px solid #e5e5e5;
+          padding: 8px 12px;
+          vertical-align: top;
+          box-sizing: border-box;
+          position: relative;
+        }
+        .notion-editor-wrapper .ProseMirror th {
+          font-weight: bold;
+          text-align: left;
+          background-color: #f5f5f5;
+        }
+        .notion-editor-wrapper .ProseMirror .selectedCell:after {
+          z-index: 2;
+          position: absolute;
+          content: "";
+          left: 0; right: 0; top: 0; bottom: 0;
+          background: rgba(255, 91, 4, 0.08);
+          pointer-events: none;
+        }
+        .notion-editor-wrapper .ProseMirror .column-resize-handle {
+          position: absolute;
+          right: -2px;
+          top: 0;
+          bottom: -2px;
+          width: 4px;
+          background-color: #FF5B04;
+          pointer-events: none;
         }
 
         /* Smooth transitions */
