@@ -7,10 +7,9 @@ import { useMemo } from "react";
 // Map URL segments to human-readable labels
 const SEGMENT_LABELS: Record<string, string> = {
   services: "Services",
-  ourWorks: "Our Work",
   pricing: "Pricing",
   blogs: "Blog",
-  "case-studies": "Case Studies",
+  "case-studies": "Case Studies & Portfolio",
   faqs: "FAQs",
   contact: "Contact",
   about: "About",

@@ -1,397 +1,308 @@
-# UI Pirate — SEO, AI Visibility & Lead Generation Plan (v2)
+# UI Pirate — SEO, AI Visibility & Lead Generation Plan (v3)
 
-> **Goal**: Dominate organic search for "product design & development agency" queries, get cited by AI assistants (ChatGPT, Perplexity, Gemini), and generate qualified leads from the US market.
-> **Brand Position**: Product design & development agency — we turn ideas into shipped products. Not just pretty designs, but product thinking, competitive analysis, information architecture, UX/UI, and complex enterprise Angular/React frontend development.
+> **Goal**: Dominate organic search for "product design & development agency" queries, get cited by AI assistants (ChatGPT, Perplexity, Gemini), and generate qualified US leads.
+> **Brand Position**: Product design & development agency — we turn ideas into shipped products. Product thinking, competitive analysis, information architecture, UX/UI, and complex enterprise Angular/React frontend development.
 > **Site**: [uipirate.com](https://uipirate.com) · Next.js 14 · Vercel
+> **Last audit:** 2026-05-21 — deep code-vs-plan audit + critical fixes shipped.
 
 ---
 
-## Implementation Status
+## 📊 Status Dashboard
 
-> **Last audited:** 2026-05-21 — synced with codebase.
-
-| Phase | Status | Details |
-|-------|:------:|---------|
-| **Phase 1 — Technical SEO** | ✅ DONE | SSR fix, JSON-LD inlined, dynamic sitemap, `robots.txt` with AI crawlers |
-| **Phase 2 — On-Page SEO** | ✅ DONE | Per-page metadata for all 9+ pages, dynamic `generateMetadata()` for services |
-| **Phase 3 — AI Visibility** | ✅ DONE | `llms.txt`, `ai-plugin.json`, `ai-data.json`, `SiteNavigationElement` schema |
-| **Brand Positioning Update** | ✅ DONE | "Product design & development partner" across SEO files |
-| **Angular Focus** | ✅ DONE | Angular positioned as #1 technology in metadata and structured data |
-| **Email Update** | ✅ DONE | `vishal@uipirate.com` (incl. `ai-plugin.json` — fixed May 2026) |
-| **Google Search Console Fixes** | ✅ DONE | Fixed 5xx in `[slug]`, `/privacy-policy` → `/privacy` redirect |
-| **Phase 4 — Site & Schema** | ✅ DONE | About, FAQPage schema, Breadcrumbs, portfolio metadata |
-| **Phase 4 — Content** | 🟡 IN PROGRESS | Case study template + 2 live studies; blog calendar (16 posts) not started |
-| **Phase 5 — Lead Generation** | 🟡 IN PROGRESS | Contact: Cal.com + `ProjectEstimate` (primary capture); footer modal optional; lead magnets & CTA copy pending |
-| **Phase 6 — Off-Page SEO** | 🔴 NOT STARTED | Directory submissions, guest posts, backlink building |
-| **Phase 7 — Advanced** | 🟡 PARTIAL | `AggregateRating` on testimonials; programmatic pages, HowTo/VideoObject, CWV pending |
+| Phase | Status | Coverage |
+|-------|:------:|----------|
+| **1. Technical SEO** | ✅ DONE | SSR, 3× JSON-LD inlined, dynamic sitemap, robots.txt with AI crawlers + admin Disallow |
+| **2. On-Page SEO** | ✅ DONE | Per-route metadata, dynamic `generateMetadata()`, canonicals, hreflang for 5 regions |
+| **3. AI Visibility** | ✅ DONE | `llms.txt`, `ai-plugin.json`, `ai-data.json`, `enterprise-schema.json`, `SiteNavigationElement` |
+| **4. Site & Schema** | ✅ DONE | About, FAQPage, Breadcrumbs, portfolio meta, dynamic Edge OG images |
+| **5. Lead Generation** | ✅ DONE | `/contact` + `ProjectEstimate` + Cal.com, footer `LeadCaptureModal`, `/api/leads` → MongoDB |
+| **A. Content (blogs + case studies + magnets)** | 🟡 IN PROGRESS | 2/6 case studies, 0/16 blog posts, 0/4 lead magnets |
+| **B. Off-Page SEO** | 🔴 NOT STARTED | Directories, guest posts, backlinks |
+| **C.1 Programmatic SEO** | 🔴 NOT STARTED | USA landing + 5 city/service combo pages |
+| **C.2 Advanced Schema** | 🟡 PARTIAL | ✅ AggregateRating + Reviews; ❌ HowTo, VideoObject, BlogPosting `author` Person |
+| **C.3 Core Web Vitals** | 🔴 NOT STARTED | Banner video, lazy images, bundle audit |
 
 ---
 
-## What Was Completed (Phases 1-3)
+## ✅ What's Live (Audit-Verified)
 
-### Technical SEO ✅
-- ✅ Removed `"use client"` + `ssr: false` from homepage — Google can now crawl all content
-- ✅ Extracted `Lenis` smooth scroll to client-only `SmoothScroll.tsx` component
-- ✅ Inlined `ProfessionalService` + `WebSite` + `SiteNavigationElement` JSON-LD schemas in `layout.tsx`
-- ✅ Created dynamic `app/sitemap.ts` — auto-generates routes including blog posts from MongoDB
-- ✅ Fixed `robots.txt` — removed `Crawl-delay`, added AI crawler permissions (GPTBot, Claude-Web, etc.)
-- ✅ Fixed `[slug]/page.tsx` — was fetching from `https://api.example.com/` causing 5xx errors
-- ✅ Fixed `/privacy-policy` → redirects to `/privacy` (resolved "Alternative page with canonical" issue)
+### Technical foundation
+- SSR enabled on homepage; client-only `SmoothScroll` doesn't block Google rendering.
+- `app/sitemap.ts` is the single source for `/sitemap.xml` — pulls static routes + service detail pages + case studies + published MongoDB blogs.
+- `public/robots.txt`: all AI crawlers allowed (GPTBot, ChatGPT-User, Claude-Web, anthropic-ai, PerplexityBot, Google-Extended, CCBot, Bytespider, cohere-ai); `/admin/`, `/blogs/create`, `/blogs/edit/`, `/api/` disallowed.
+- `app/layout.tsx`: 3 JSON-LD blocks inline (ProfessionalService, WebSite, SiteNavigationElement); hreflang en-us / en-gb / en-sg / en-in / en-au + x-default; preconnects to Cloudinary, GTM, Clarity.
 
-### On-Page SEO ✅
-- ✅ Unique metadata for: Homepage, Services, each Service Detail (7 services), Pricing, Blogs, FAQs, Contact, Case Studies, Privacy, Terms
-- ✅ Dynamic `generateMetadata()` in `services/[id]/page.tsx` — per-service titles, descriptions, keywords
-- ✅ `BlogPosting` JSON-LD schema added to `[slug]/page.tsx` for blog post rich results
-- ✅ All pages have canonical URLs via `alternates.canonical`
+### Per-route metadata + schema
+- All public routes have `title` / `description` / `keywords` / `openGraph` / `alternates.canonical`.
+- `/services/[id]` → dynamic `generateMetadata()` + `Service` schema per service.
+- `/[slug]` (blog) → dynamic metadata + `BlogPosting` schema.
+- `/case-studies/[slug]` → dynamic metadata + `Article` schema, generated from `data/case-studies.json`.
+- `/about` → `AboutPage` schema with team `Person` entities (metadata in `app/about/layout.tsx`).
+- `/faqs` → `FAQPage` schema generated from `data/faqs.json`.
+- `/contact` → `ContactPage` schema with `OpeningHoursSpecification` + `areaServed`.
+- Homepage testimonials → `ProfessionalService` with `aggregateRating` + 8 `Review` entries.
+- All inner pages → `BreadcrumbList` schema via `components/Breadcrumbs.tsx`.
 
-### AI Visibility ✅
-- ✅ Created `public/llms.txt` — entity-dense document for AI training (with full approach, services, clients)
-- ✅ Created `public/.well-known/ai-plugin.json` — OpenAI plugin manifest
-- ✅ Updated `public/ai-data.json` — full product partner positioning
-- ✅ Updated `public/enterprise-schema.json` — Angular, product thinking, competitive analysis in knowsAbout
-- ✅ Added `SiteNavigationElement` schema — tells Google which pages to show as sitelinks
+### AI discovery
+- `public/llms.txt` — entity-dense brief with services, approach, clients, team.
+- `public/.well-known/ai-plugin.json` — OpenAI plugin manifest with `vishal@uipirate.com`.
+- `public/ai-data.json` — full Organization JSON-LD graph.
+- `public/enterprise-schema.json` — supplementary schema with `knowsAbout` Angular, product thinking, competitive analysis.
 
-### Brand Positioning ✅
-All 10 SEO files now reflect:
-- **"Product design & development agency"** (not "design agency")
-- **"Idea to shipped product"** — product thinking, competitive analysis, information architecture
-- **Complex enterprise Angular/React applications** as core capability
-- **"Have a conversation about your product — we carry the rest"** as tagline
+### Dynamic Edge OG images
+- Shared template at `app/_og/template.tsx` (brand-styled, with stats footer).
+- Per-route variants: homepage, `/about`, `/pricing`, `/services/[id]`.
+
+### Lead generation
+- `/contact` → Cal.com embed + `ProjectEstimate` multi-step wizard + US trust signals + `ContactPage` schema.
+- Footer-wide `LeadCaptureModal` with `LeadCaptureForm` (name, email, company, budget, project type).
+- `app/api/leads/route.ts` validates, stores in MongoDB, logs server-side.
+
+### Audit fixes shipped (2026-05-21)
+
+| Ref | Fix | File |
+|:---:|-----|------|
+| C1 | Removed static sitemap that was shadowing dynamic route | `public/sitemap.xml` (deleted) |
+| C2 | Removed orphan AI sitemap | `public/ai-sitemap.xml` (deleted) |
+| M1 | `/resources` → permanent redirect to `/blogs` (was duplicate content) | `app/resources/page.tsx` |
+| M2 | `/community` → `noindex, follow` until built (was thin "Coming Soon") | `app/community/page.tsx` |
+| M3 | `Disallow: /admin/`, `/blogs/create`, `/blogs/edit/`, `/api/` | `public/robots.txt` |
+| M5 | Removed stale hardcoded `<meta name="keywords">` (Metadata API now owns it) | `app/layout.tsx` |
+| — | Dropped `/resources` + `/community` from sitemap (consistent with above) | `app/sitemap.ts` |
+| M6 | **`/ourWorks` merged into `/case-studies`** — single canonical URL for portfolio + case studies. `/ourWorks` now 308-redirects; merged page renders hero + featured deep-dive case studies (`data/case-studies.json`) + recent works grid + WhyChooseUs + ProjectEstimate. All internal links updated (footer, nav config, GlobalCTA, layout JSON-LD `SiteNavigationElement`, both sitemaps, `/sitemap` page, llms.txt, Behance "Explore All Work" CTA). | `app/ourWorks/page.tsx`, `screens/caseStudies/index.tsx`, `app/case-studies/page.tsx`, `app/sitemap.ts`, `app/api/sitemap/route.ts`, `app/layout.tsx`, `app/sitemap/page.tsx`, `screens/sitemap/index.tsx`, `components/footer.tsx`, `components/GlobalCTA.tsx`, `components/Breadcrumbs.tsx`, `config/site.ts`, `screens/landing/behance/LandingBehance.tsx`, `public/llms.txt` |
 
 ---
 
-## Phase 4 — Content & Site Changes 📝
+## 🟡 Audit Items Still Open
+
+| Ref | Item | Effort | ETA |
+|:---:|------|:------:|:---:|
+| C3 | Empty `app/usa/` directory — either delete or scaffold USA landing page (covers Phase 8.1) | 5 min vs 1 day | TBD |
+| M4 | `app/[slug]/page.tsx` BlogPosting `author` → `{ @type: Person, name: "Vishal Anand" }` for E-E-A-T | 5 min | This week |
+
+---
+
+## 🎯 Active Roadmap
+
+Technical foundation is shipped. What's left is **content** (drives traffic), **off-page** (drives authority), **advanced schema + programmatic** (long-tail), and **CWV** (rankings hygiene).
+
+---
+
+### Phase A — Content 📝
 **Priority: HIGH · Effort: Ongoing · Impact: HIGH (compounds over time)**
 
-### 4.1 Create About Page (HIGH PRIORITY)
+Two parallel tracks: complete the case-study set + execute the 16-post blog calendar.
 
-#### [NEW] `app/about/page.tsx`
-Currently `/about` doesn't exist as a page. This is critical for both Google and AI assistants.
+#### A.1 Case Studies — finish the set (4 of 6 remaining)
 
-**Content structure:**
-- Hero: "We Turn Ideas Into Shipped Products"
-- Our Approach section: The 6-step process (Listen → Think → Plan → Design → Build → Ship)
-- What Makes Us Different: Not just designs — product thinking, competitive analysis, architecture
-- Team section: Vishal Anand + team bios with photos
-- Industries & Expertise: SaaS, Fintech, HealthTech, LegalTech, E-commerce, AI
-- Technology Stack: Angular, React, Next.js, TypeScript, Framer, Webflow
-- Client Logos: Ipsos, Xperiti, RevUp AI, Bird, ArthAlpha, etc.
-- Social proof: 50+ products shipped, 5.0 rating, Fortune 500 trust signals
-- CTA: Book a conversation about your product
+Each entry in `data/case-studies.json` auto-renders at `/case-studies/<slug>` with `Article` JSON-LD and dynamic OG image. Add full Problem → Approach → Solution → Results, testimonial, metrics, technologies, hero image.
 
-**SEO metadata:**
-```typescript
-title: "About UI Pirate | Product Design & Development Agency — Our Story & Approach"
-description: "We turn product ideas into shipped products. Learn about our approach — product thinking, competitive analysis, UX/UI design & complex enterprise Angular/React development. 50+ products shipped for Fortune 500 clients."
-```
+| Slug | Client | Region | Industry | Status |
+|------|--------|--------|----------|:------:|
+| `xperiti` | Xperiti | USA | SaaS / Research | ✅ |
+| `revup-ai` | RevUp AI | USA | AI / SaaS | ✅ |
+| `bird` | Bird | USA | Brand & Product | ⏳ |
+| `brahmastra` | Brahmastra | India | Fintech / Trading | ⏳ |
+| `apac-law-firm` | APAC Law Firm | India | LegalTech / AI | ⏳ |
+| `ion` | ION | — | MedTech / Supply Chain | ⏳ |
 
-**Schema**: `AboutPage` type with team `Person` entities
+#### A.2 Blog Content Calendar — 16 posts (positioning-aligned)
 
----
+> Not generic "design tips" — deep product thinking, competitive analysis, enterprise development insights.
 
-### 4.2 Add FAQPage Schema to /faqs (RICH RESULTS)
+**Month 1–2 · Foundation (8 posts)**
 
-#### [MODIFY] `app/faqs/page.tsx`
-Add `FAQPage` JSON-LD schema using data from `data/faqs.json`. This enables Google FAQ rich results — the expandable Q&A snippets directly in search results.
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What kinds of services does UiPirate offer?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We specialize in product design and development..."
-      }
-    }
-  ]
-}
-```
-
-**Impact**: FAQ-style rich results increase click-through rate by 30-50%.
-
----
-
-### 4.3 Add Breadcrumbs with BreadcrumbList Schema
-
-#### [NEW] `components/Breadcrumbs.tsx`
-Add breadcrumb navigation to all inner pages with `BreadcrumbList` schema markup.
-
-```
-Home > Services > SaaS Web & Mobile Apps
-Home > Blog > [Post Title]
-Home > Case Studies
-```
-
-**Pages to add breadcrumbs**: Services, Service Details, Blog Posts, Case Studies, Pricing, FAQs, Contact, Privacy, Terms
-
----
-
-### 4.4 Portfolio Page Metadata
-
-#### [MODIFY] `app/ourWorks/page.tsx`
-Currently has NO metadata at all. Add:
-
-```typescript
-title: "Our Work | 50+ Product Design & Development Projects | UI Pirate"
-description: "Explore our portfolio of 50+ shipped products — SaaS platforms, enterprise dashboards, AI applications, mobile apps & design systems. Built with Angular, React & Next.js for clients like Ipsos, Xperiti, and RevUp AI."
-```
-
----
-
-### 4.5 Blog Content Calendar (US-Focused, Product Thinking Angle)
-
-> [!IMPORTANT]
-> Blog content should reflect the new brand positioning — not generic "design tips" but deep product thinking, competitive analysis frameworks, and enterprise development insights.
-
-#### Month 1-2: Foundation Content (8 posts)
 | # | Title | Target Keyword | Type |
 |:-:|-------|---------------|------|
-| 1 | "From Idea to Product: A Step-by-Step Guide for Non-Technical Founders" | idea to product | Pillar |
-| 2 | "How to Choose a Product Design & Development Agency (Buyer's Guide)" | hire product design agency | Commercial |
-| 3 | "Case Study: Building Xperiti's Enterprise Research Platform from Scratch" | enterprise saas design case study | Case Study |
-| 4 | "Product Thinking vs Feature Factories: Why Most SaaS Products Fail" | product thinking for saas | Thought Leadership |
-| 5 | "UI/UX Design + Development Cost in 2026: Complete Pricing Guide" | ui ux design cost | Commercial |
-| 6 | "Case Study: AI-Powered LegalTech for APAC's Largest Law Firm" | ai app design case study | Case Study |
-| 7 | "SaaS Dashboard Design: 12 Best Practices for Complex Enterprise Apps" | saas dashboard design | Pillar |
-| 8 | "Angular vs React for Enterprise Applications: A Decision Framework" | angular vs react enterprise | Tutorial |
+| 1 | From Idea to Product: A Step-by-Step Guide for Non-Technical Founders | idea to product | Pillar |
+| 2 | How to Choose a Product Design & Development Agency (Buyer's Guide) | hire product design agency | Commercial |
+| 3 | Case Study: Building Xperiti's Enterprise Research Platform from Scratch | enterprise saas design case study | Case Study |
+| 4 | Product Thinking vs Feature Factories: Why Most SaaS Products Fail | product thinking for saas | Thought Leadership |
+| 5 | UI/UX Design + Development Cost in 2026: Complete Pricing Guide | ui ux design cost | Commercial |
+| 6 | Case Study: AI-Powered LegalTech for APAC's Largest Law Firm | ai app design case study | Case Study |
+| 7 | SaaS Dashboard Design: 12 Best Practices for Complex Enterprise Apps | saas dashboard design | Pillar |
+| 8 | Angular vs React for Enterprise Applications: A Decision Framework | angular vs react enterprise | Tutorial |
 
-#### Month 3-4: Authority Content (8 posts)
+**Month 3–4 · Authority (8 posts)**
+
 | # | Title | Target Keyword | Type |
 |:-:|-------|---------------|------|
-| 9 | "Information Architecture for Complex SaaS Products" | information architecture saas | Pillar |
-| 10 | "Competitive Analysis for Product Design: Finding Your Edge" | competitive analysis product design | Tutorial |
-| 11 | "Case Study: Brahmastra Fintech Trading Platform" | fintech dashboard design | Case Study |
-| 12 | "Free UX Audit Checklist: Template Inside" | ux audit checklist | Lead Magnet |
-| 13 | "Building Enterprise Angular Applications: Architecture Patterns" | enterprise angular development | Tutorial |
-| 14 | "Design Agency vs Product Studio: What's Right for Your SaaS?" | design agency vs product studio | Commercial |
-| 15 | "Case Study: RevUp AI — From MVP Idea to Enterprise Platform" | saas mvp design | Case Study |
-| 16 | "Design Systems for Angular & React Teams: A Practical Guide" | angular react design system | Tutorial |
+| 9 | Information Architecture for Complex SaaS Products | information architecture saas | Pillar |
+| 10 | Competitive Analysis for Product Design: Finding Your Edge | competitive analysis product design | Tutorial |
+| 11 | Case Study: Brahmastra Fintech Trading Platform | fintech dashboard design | Case Study |
+| 12 | Free UX Audit Checklist: Template Inside | ux audit checklist | Lead Magnet |
+| 13 | Building Enterprise Angular Applications: Architecture Patterns | enterprise angular development | Tutorial |
+| 14 | Design Agency vs Product Studio: What's Right for Your SaaS? | design agency vs product studio | Commercial |
+| 15 | Case Study: RevUp AI — From MVP Idea to Enterprise Platform | saas mvp design | Case Study |
+| 16 | Design Systems for Angular & React Teams: A Practical Guide | angular react design system | Tutorial |
 
----
+Publish via admin dashboard → MongoDB → renders at `/<slug>` with `BlogPosting` schema → indexed via dynamic sitemap.
 
-### 4.6 Case Studies Section
+#### A.3 Lead Magnets (gated content — feeds `/api/leads`)
 
-#### [NEW] `app/case-studies/[slug]/page.tsx`
-Create detailed case study template with:
-- **Problem → Approach → Solution → Results** structure
-- Before/after screenshots
-- Product thinking breakdown (how we analyzed competitive landscape, defined IA)
-- Client testimonial embed
-- Metrics (engagement increase, conversion improvement)
-- Technologies used (Angular, React, etc.)
-- Related services CTA
-- `CaseStudy` schema markup
+| Magnet | Audience | Placement |
+|--------|----------|-----------|
+| Product Thinking Checklist (PDF) | Non-technical founders | Blog sidebar, `/services` CTA |
+| Idea-to-Product Playbook (10-page) | SaaS founders, PMs | Homepage scroll-trigger, blog footer |
+| Design System Starter Kit (Figma) | Dev teams | `/services/Design-System-&-Component-Library` |
+| Competitive Analysis Template (Notion) | PMs | Blog posts about competitive analysis |
 
-#### Priority Case Studies:
-1. **Xperiti** — Enterprise SaaS research platform (USA)
-2. **RevUp AI** — AI SaaS platform from MVP (USA)
-3. **Bird** — Brand & product design (USA)
-4. **Brahmastra** — Fintech trading platform (India)
-5. **APAC Law Firm** — AI-powered LegalTech (India)
-6. **ION** — Medical supply chain SaaS
+Wire a `source` field per magnet in `LeadCaptureForm` for attribution.
 
----
+#### A.4 CTA Optimization (page-level copy)
 
-## Phase 5 — Lead Generation Funnel 💰
-**Priority: HIGH · Effort: 3-4 days · Impact: HIGH**
-
-> [!IMPORTANT]
-> Currently the only conversion path is a Cal.com iframe on `/contact`. You need multiple lead capture mechanisms for different stages of the buyer journey.
-
-### 5.1 Contact Page Overhaul
-
-#### [MODIFY] `app/contact/page.tsx`
-Replace bare iframe with a conversion-optimized page:
-
-- **Hero**: "Have a Conversation About Your Product — We Carry the Rest"
-- **Quick contact form**: Name, Email, Company, Project Type (dropdown), Budget Range, "Tell us about your idea" (textarea)
-- **Cal.com embed**: For those ready to book directly
-- **Social proof strip**: Client logos + "50+ products shipped" + "5.0 rating"
-- **Trust signals**: "Typical response time: 2 hours" · "Free 15-min consultation" · "No obligation"
-- **Process preview**: "Here's what happens after you reach out" (3-step visual)
-- Add `ContactPage` schema
-
-### 5.2 Lead Magnets (Gated Content)
-
-| Lead Magnet | Target Audience | Placement |
-|-------------|----------------|-----------|
-| **Free Product Thinking Checklist** (PDF) | Non-technical founders | Blog sidebar, `/services` CTA |
-| **Idea to Product Playbook** (10-page guide) | SaaS founders, product managers | Homepage popup, blog posts |
-| **Design System Starter Kit** (Figma) | Dev teams | `/services/Design-System` page |
-| **Competitive Analysis Template** (Notion) | Product managers | Blog posts about competitive analysis |
-
-#### Implementation:
-- [NEW] `components/LeadCaptureForm.tsx` — Email capture with name, email, company
-- [NEW] `app/api/leads/route.ts` — Store leads in MongoDB
-- [NEW] `components/ExitIntentPopup.tsx` — Show lead magnet on exit intent
-- Add email field + CTA to blog post footer
-
-### 5.3 CTA Optimization
-
-| Page | Current CTA | Optimized CTA |
-|------|------------|---------------|
-| Homepage | Generic "Contact" | "Tell Us Your Idea — Free Consultation" |
+| Page | Current | Optimized |
+|------|---------|-----------|
+| Homepage hero | Generic "Contact" | "Tell Us Your Idea — Free Consultation" |
 | Services | None specific | "Start Your Product Journey — Book a 15-Min Call" |
-| Blog posts | None | "Struggling with [topic]? Let's talk about your product" |
+| Blog post footer | None | "Struggling with [topic]? Let's talk about your product" |
 | Pricing | Cal.com link | "Compare Plans" + "Book a Call" + "Download Pricing PDF" |
 | Case Studies | None | "Want Similar Results? Share Your Product Idea" |
 | Portfolio | None | "Let's Build Something Like This For You" |
 
-### 5.4 US-Specific Trust Signals
-- Add US client logos prominently (Xperiti NY, Awesome Health Club CA, Bird SF, RevUp AI TX)
-- Add "Serving clients across the United States" messaging
-- Display US timezone availability
-- Add Clutch badge/rating widget
-- Consider a US virtual business address for Google Business Profile
-
 ---
 
-## Phase 6 — Off-Page SEO & Backlinks 🔗
+### Phase B — Off-Page SEO & Backlinks 🔗
 **Priority: MEDIUM · Effort: Ongoing · Impact: HIGH (slow build)**
 
-### 6.1 Quick Wins (Week 1-2)
+Authority compounds. Start week 1, run continuously.
+
+#### B.1 Quick Wins (Week 1–2)
 - [ ] Submit to **Awwwards**, **CSS Design Awards**, **SiteInspire**
 - [ ] Complete **Crunchbase** and **G2** profiles
-- [ ] Create **Product Hunt** launch for Mini SaaS Apps / Apps4Sale
+- [ ] Product Hunt launch for Mini SaaS Apps / Apps4Sale
 - [ ] Request backlinks from 3 US clients (Xperiti, RevUp AI, Bird)
-- [ ] Submit site to **ProductHunt**, **BetaList**, **IndieHackers**
+- [ ] Submit to **BetaList**, **IndieHackers**
 
-### 6.2 Monthly Ongoing
-- [ ] 2 guest posts/month on Smashing Magazine, UX Collective, CSS-Tricks
-- [ ] 4 Medium articles/month (republish blogs with canonical)
-- [ ] Weekly Reddit engagement in r/SaaS, r/userexperience, r/web_design, r/angular
-- [ ] Weekly LinkedIn articles + product design carousel posts
+#### B.2 Monthly Ongoing
+- [ ] 2 guest posts/month — Smashing Magazine, UX Collective, CSS-Tricks
+- [ ] 4 Medium articles/month (republish blogs with `rel=canonical` to uipirate.com)
+- [ ] Weekly Reddit — r/SaaS, r/userexperience, r/web_design, r/angular
+- [ ] Weekly LinkedIn articles + product design carousels (Vishal Anand byline)
 - [ ] Monthly Behance/Dribbble project uploads
-- [ ] Angular community engagement — contribute to angular.dev, write Angular tutorials
+- [ ] Angular community contributions (angular.dev, Angular tutorials)
 
-### 6.3 Digital PR
-- [ ] "From Idea to Product: The 2026 Product Design Report" (linkable asset)
-- [ ] Free Figma UI kit for SaaS dashboards (drives backlinks from design resource sites)
-- [ ] Podcast appearances on design/startup/Angular podcasts
-- [ ] Angular conference talks or workshop proposals
+#### B.3 Digital PR Assets
+- [ ] "From Idea to Product: The 2026 Product Design Report" — linkable asset
+- [ ] Free Figma UI kit for SaaS dashboards — backlink magnet from design resource sites
+- [ ] Podcast appearances — design/startup/Angular podcasts
+- [ ] Angular conference talks / workshop proposals
 
 ---
 
-## Phase 7 — Advanced Site Improvements 🚀
-**Priority: MEDIUM · Effort: 1-2 weeks · Impact: MEDIUM-HIGH**
+### Phase C — Advanced Schema & Programmatic 🚀
+**Priority: MEDIUM · Effort: 1–2 weeks · Impact: MEDIUM–HIGH**
 
-### 7.1 Programmatic SEO Pages
+#### C.1 Programmatic SEO — Location × Service pages
 
-#### [NEW] Location + Service combo pages
-Create pages targeting high-intent US local searches:
-- `/services/product-design-agency-new-york`
-- `/services/angular-development-agency-san-francisco`
-- `/services/saas-design-agency-austin-texas`
-- `/services/ui-ux-design-agency-usa`
-- `/services/enterprise-angular-development`
+Target US local intent. Resolve the empty `app/usa/` directory (audit C3) by building this route or removing it.
 
-Each page has unique content about serving that specific market.
+| Slug | Target Keyword |
+|------|----------------|
+| `/services/product-design-agency-new-york` | product design agency new york |
+| `/services/angular-development-agency-san-francisco` | angular development agency san francisco |
+| `/services/saas-design-agency-austin-texas` | saas design agency austin |
+| `/services/ui-ux-design-agency-usa` | ui ux design agency usa |
+| `/services/enterprise-angular-development` | enterprise angular development |
 
-### 7.2 Review & Testimonial Schema
+Each page: unique 800+ word content, local trust signals, relevant case study highlights, `Service` + `LocalBusiness`-style schema.
 
-#### [MODIFY] Homepage testimonials section
-Add `Review` schema with `aggregateRating` to get star ratings in Google search results:
-
-```json
-{
-  "@type": "AggregateRating",
-  "ratingValue": "5.0",
-  "reviewCount": "50",
-  "bestRating": "5"
-}
-```
-
-### 7.3 Video Schema for Motion Graphics
-
-#### [MODIFY] Motion graphics service page
-Add `VideoObject` schema for showreel/portfolio videos to appear in Google Video results.
-
-### 7.4 HowTo Schema for Process Pages
-
-#### [MODIFY] Service detail pages
-Add `HowTo` schema to the process/methodology sections — triggers step-by-step rich results:
+#### C.2 HowTo Schema on Service Detail Pages
+Add `HowTo` JSON-LD to the 6-step process section in `app/services/[id]/page.tsx`:
 
 ```
-Step 1: Share your product vision
-Step 2: We do competitive analysis & product thinking
-Step 3: Information architecture & user flows
-Step 4: UX/UI design & prototyping
-Step 5: Frontend development in Angular/React
-Step 6: Launch, iterate & scale
+Listen → Think → Plan → Design → Build → Ship
 ```
 
-### 7.5 Core Web Vitals Optimization
+Triggers step-by-step rich results in SERPs.
+
+#### C.3 VideoObject Schema
+Add `VideoObject` JSON-LD to motion-graphics service page and any portfolio showreel embeds — enables Google Video results.
+
+#### C.4 Core Web Vitals
 
 | Issue | Fix |
 |-------|-----|
-| Banner video in `/public` | Move to Cloudinary with adaptive streaming, lazy-load below fold |
-| No `loading="lazy"` on below-fold images | Add to all non-LCP images |
-| Font optimization | Subset fonts, use `font-display: swap`, preload critical fonts |
-| JavaScript bundle size | Analyze with `@next/bundle-analyzer`, tree-shake unused dependencies |
+| Banner video in `/public` | Move to Cloudinary adaptive streaming, lazy-load below fold |
+| Missing `loading="lazy"` on below-fold images | Audit & add to all non-LCP images |
+| Font optimization | Subset, `font-display: swap`, preload critical fonts |
+| JS bundle size | Analyze with `@next/bundle-analyzer`, tree-shake |
+
+Track CWV in Search Console → Core Web Vitals report. Target: LCP < 2.5s, INP < 200ms, CLS < 0.1 on 75th-percentile mobile.
 
 ---
 
-## Implementation Priority & Timeline
+## Implementation Timeline
 
 ```mermaid
 gantt
-    title SEO Implementation Roadmap (Updated)
+    title SEO Roadmap v3 (post-audit)
     dateFormat  YYYY-MM-DD
-    section ✅ Phase 1-3 (DONE)
-    Technical SEO fixes         :done, p1, 2026-05-11, 1d
-    On-page meta optimization   :done, p2, 2026-05-11, 1d
-    AI visibility files         :done, p3, 2026-05-11, 1d
-    Brand positioning update    :done, p4, 2026-05-13, 1d
-    section Phase 4 - Content & Site
-    Create About page           :crit, p4a, 2026-05-14, 1d
-    FAQPage schema              :p4b, 2026-05-14, 1d
-    Breadcrumbs component       :p4c, 2026-05-15, 1d
-    Portfolio page metadata     :p4d, 2026-05-15, 1d
-    Blog posts 1-4              :p4e, 2026-05-16, 5d
-    Case study template + 2     :p4f, 2026-05-21, 3d
-    Blog posts 5-8              :p4g, 2026-05-24, 5d
-    section Phase 5 - Lead Gen
-    Contact page overhaul       :crit, p5a, 2026-05-16, 2d
-    Lead capture components     :p5b, 2026-05-18, 2d
-    CTA optimization            :p5c, 2026-05-20, 1d
-    section Phase 6 - Off-Page
-    Directory submissions       :p6a, 2026-05-21, 3d
-    Guest post outreach         :p6b, 2026-05-24, 30d
-    section Phase 7 - Advanced
-    Programmatic SEO pages      :p7a, 2026-06-01, 3d
-    Review/Video/HowTo schema   :p7b, 2026-06-04, 2d
-    Core Web Vitals fixes       :p7c, 2026-06-06, 2d
+    section ✅ Shipped
+    Phases 1-3 (technical + AI + meta)  :done, s1, 2026-05-11, 3d
+    Phase 4 (About + Schema + OG)       :done, s2, 2026-05-14, 5d
+    Phase 5 (Lead gen + /api/leads)     :done, s3, 2026-05-16, 4d
+    Audit fixes (sitemaps, robots)      :done, s4, 2026-05-20, 1d
+    section This Week (Audit + Authorship)
+    Resolve app/usa/ (C3)               :crit, n1, 2026-05-21, 1d
+    BlogPosting author → Person (M4)    :crit, n2, 2026-05-21, 1d
+    GSC sitemap submit + re-index       :n3, 2026-05-22, 1d
+    section Phase A - Content
+    Case studies 3-6 (Bird, Brahma…)    :a1, 2026-05-23, 7d
+    Blog posts 1-4                      :a2, 2026-05-23, 7d
+    Blog posts 5-8                      :a3, 2026-05-30, 7d
+    Blog posts 9-12                     :a4, 2026-06-06, 14d
+    Blog posts 13-16                    :a5, 2026-06-20, 14d
+    Lead magnet 1 (Product Thinking)    :a6, 2026-05-30, 5d
+    Lead magnet 2 (Idea→Product)        :a7, 2026-06-06, 7d
+    CTA copy rollout                    :a8, 2026-05-25, 3d
+    section Phase B - Off-Page
+    Directory submissions               :b1, 2026-05-25, 5d
+    Guest post outreach (ongoing)       :b2, 2026-05-28, 60d
+    Client backlink requests            :b3, 2026-05-28, 14d
+    section Phase C - Advanced
+    Programmatic location pages         :c1, 2026-06-15, 7d
+    HowTo + VideoObject schema          :c2, 2026-06-22, 3d
+    Core Web Vitals fixes               :c3, 2026-06-25, 5d
 ```
 
 ---
 
 ## Expected Results (6-Month Forecast)
 
-| Metric | Current (Est.) | 3 Months | 6 Months |
+| Metric | Current (May 2026) | +3 Months | +6 Months |
 |--------|:-:|:-:|:-:|
 | Organic Traffic (US) | ~100/mo | ~800/mo | ~3,000/mo |
-| Google Indexed Pages | ~20 | ~50 | ~100+ |
-| AI Citations (ChatGPT/Perplexity) | Rare | Regular | Frequent |
-| Leads/month from organic | ~2-3 | ~15-20 | ~30-50 |
-| Domain Authority | ~15 | ~28 | ~40 |
+| Google Indexed Pages | ~25 | ~60 | ~120+ |
+| AI Citations (ChatGPT / Perplexity / Claude) | Rare | Regular | Frequent |
+| Leads/month from organic | ~2–3 | ~15–20 | ~30–50 |
+| Domain Authority (Moz / Ahrefs DR) | ~15 | ~28 | ~40 |
 | Blog Posts Published | ~5 | ~20 | ~40 |
+| Case Studies Published | 2 | 6 | 8+ |
 | Backlinks (referring domains) | ~30 | ~100 | ~200+ |
+
+Assumes consistent execution of Phase A content cadence + Phase B outreach.
 
 ---
 
-## Next Steps (What to Do Now)
+## 🚀 Next Steps (in order)
 
 > [!IMPORTANT]
-> **Immediate actions (this week):**
-> 1. ⏳ Deploy latest changes to production (robots.txt, case studies, exit intent, contact form)
-> 2. ⏳ Submit sitemap in Google Search Console: `https://uipirate.com/sitemap.xml`
-> 3. ⏳ Request re-indexing for `/about`, `/case-studies/xperiti`, `/case-studies/revup-ai`, `/contact`
-> 4. ⏳ Publish blog posts 1–4 from content calendar
-> 5. ⏳ Add 4 more case studies (Bird, Brahmastra, APAC Law Firm, ION) to `data/case-studies.json`
+> **This week — close out the audit:**
+> 1. 🔴 Resolve `app/usa/` (audit C3) — delete the empty directory **or** scaffold it as the USA programmatic landing page (Phase C.1 candidate).
+> 2. 🔴 `app/[slug]/page.tsx` — switch BlogPosting `author` from `Organization` → `Person { name: "Vishal Anand", url: "https://www.uipirate.com/about" }` (audit M4) for E-E-A-T.
+> 3. 🟡 Deploy and submit `https://www.uipirate.com/sitemap.xml` in Google Search Console; request re-index for `/`, `/about`, `/contact`, `/case-studies/xperiti`, `/case-studies/revup-ai`.
+>
+> **Next 2 weeks — content engine on:**
+> 4. ⏳ Add 4 case studies to `data/case-studies.json` (Bird, Brahmastra, APAC Law Firm, ION) — see Phase A.1.
+> 5. ⏳ Publish blog posts 1–4 from the calendar (Phase A.2) via admin dashboard.
+> 6. ⏳ Roll out optimized CTA copy across homepage, services, blog footer, pricing (Phase A.4).
+>
+> **Weeks 3–6 — authority + magnets:**
+> 7. ⏳ Ship Lead Magnet 1 (Product Thinking Checklist PDF) wired to `LeadCaptureForm` with `source=product-thinking-checklist`.
+> 8. ⏳ Directory submissions (Awwwards, Crunchbase, G2, BetaList, IndieHackers).
+> 9. ⏳ Request backlinks from Xperiti, RevUp AI, Bird.
+> 10. ⏳ Continue blog calendar — posts 5–16 across months 2–4.
 
 ---
 
@@ -429,3 +340,23 @@ gantt
 | **NEW** | `components/ExitIntentPopup.tsx` — Exit intent lead capture | 5 | ❌ Removed (duplicate of estimator) |
 | **MODIFY** | `public/robots.txt` — AI crawler allow rules | 1+3 | ✅ (restored May 2026) |
 | **MODIFY** | `public/.well-known/ai-plugin.json` — Contact email fix | 3 | ✅ |
+| **NEW** | `components/LeadCaptureModal.tsx` — Modal wrapper used in footer | 5 | ✅ (not in original plan) |
+| **NEW** | `app/_og/template.tsx` — Shared Edge OG image template | 4 | ✅ (not in original plan) |
+| **NEW** | `app/opengraph-image.tsx` (+ per-route variants in `/about`, `/pricing`, `/services/[id]`) | 4 | ✅ (not in original plan) |
+| **MODIFY** | `screens/landing/testimonials/index.tsx` — AggregateRating + 8 Reviews | 7.2 | ✅ (re-classified DONE) |
+| **MODIFY** | `app/about/layout.tsx` — Metadata for client-rendered About page | 4 | ✅ |
+| **MODIFY** | `app/case-studies/[slug]/page.tsx` — Article JSON-LD + generateMetadata | 4 | ✅ |
+
+### Audit follow-ups
+
+| Action | File | Audit Ref | Status |
+|--------|------|:---------:|:------:|
+| **DELETE** | `public/sitemap.xml` (overrode dynamic sitemap) | C1 | ✅ |
+| **DELETE** | `public/ai-sitemap.xml` (orphan, stale) | C2 | ✅ |
+| **DELETE or BUILD** | `app/usa/` (empty directory) | C3 | ⏳ |
+| **MODIFY** | `app/resources/page.tsx` — `redirect("/blogs")` | M1 | ✅ |
+| **MODIFY** | `app/community/page.tsx` — `robots: { index: false, follow: true }` until built | M2 | ✅ |
+| **MODIFY** | `public/robots.txt` — added `Disallow: /admin/`, `/blogs/create`, `/blogs/edit/`, `/api/` | M3 | ✅ |
+| **MODIFY** | `app/[slug]/page.tsx` — BlogPosting `author` → `Person` (Vishal Anand) | M4 | ⏳ |
+| **MODIFY** | `app/layout.tsx` — removed stale hardcoded `<meta name="keywords">` | M5 | ✅ |
+| **MODIFY** | `app/sitemap.ts` — dropped `/resources` and `/community` (redirect + noindex) | M1+M2 | ✅ |

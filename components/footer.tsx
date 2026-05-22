@@ -199,7 +199,7 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
               </h4>
               <ul className="flex flex-col gap-1">
                 <li><Link href="/" className="footer-text">Home</Link></li>
-                <li><Link href="/ourWorks" className="footer-text">Works</Link></li>
+                <li><Link href="/case-studies" className="footer-text">Works</Link></li>
                 <li><Link href="/pricing" className="footer-text">Pricing</Link></li>
                 <li><Link href="/about" className="footer-text">About</Link></li>
               </ul>

@@ -75,11 +75,10 @@ SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applic
 ## Links
 
 - Website: https://uipirate.com
-- Portfolio: https://uipirate.com/ourWorks
+- Case Studies & Portfolio: https://uipirate.com/case-studies
 - Services: https://uipirate.com/services
 - Pricing: https://uipirate.com/pricing
 - Blog: https://uipirate.com/blogs
-- Case Studies: https://uipirate.com/case-studies
 - FAQs: https://uipirate.com/faqs
 - LinkedIn: https://www.linkedin.com/company/ui-pirate-by-vishal-anand/
 - Behance: https://www.behance.net/vishalanand-UI-UX

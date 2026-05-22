@@ -43,7 +43,7 @@ export default function GlobalCTA() {
             Get a Free Estimate →
           </Link>
           <Link
-            href="/ourWorks"
+            href="/case-studies"
             id="global-cta-works"
             className="px-6 py-3 rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/20 transition-colors text-center whitespace-nowrap"
           >

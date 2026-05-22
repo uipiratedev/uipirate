@@ -1,11 +1,7 @@
-import Blogs from "@/screens/blogs";
+import { redirect } from "next/navigation";
 
-const ResourcesPage = () => {
-  return (
-    <div>
-      <Blogs />
-    </div>
-  );
-};
-
-export default ResourcesPage;
+// /resources duplicates /blogs content — redirect permanently so Google
+// consolidates the canonical signal on /blogs and we don't compete with ourselves.
+export default function ResourcesPage() {
+  redirect("/blogs");
+}

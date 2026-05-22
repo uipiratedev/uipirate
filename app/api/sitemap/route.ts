@@ -8,7 +8,7 @@ export async function GET() {
   const mainPages = [
     { url: "/",            priority: "1.0",  changefreq: "daily",   hreflang: true,  image: true  },
     { url: "/about",       priority: "0.9",  changefreq: "monthly", hreflang: true,  image: false },
-    { url: "/ourWorks",    priority: "0.9",  changefreq: "weekly",  hreflang: true,  image: false },
+    { url: "/case-studies", priority: "0.95", changefreq: "weekly", hreflang: true,  image: false },
     { url: "/pricing",     priority: "0.95", changefreq: "weekly",  hreflang: true,  image: false },
     { url: "/contact",     priority: "0.85", changefreq: "monthly", hreflang: true,  image: false },
     { url: "/blogs",       priority: "0.8",  changefreq: "weekly",  hreflang: true,  image: false },
