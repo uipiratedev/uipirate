@@ -16,7 +16,7 @@
 | **3. AI Visibility** | ✅ DONE | `llms.txt`, `ai-plugin.json`, `ai-data.json`, `enterprise-schema.json`, `SiteNavigationElement` |
 | **4. Site & Schema** | ✅ DONE | About, FAQPage, Breadcrumbs, portfolio meta, dynamic Edge OG images |
 | **5. Lead Generation** | ✅ DONE | `/contact` + `ProjectEstimate` + Cal.com, footer `LeadCaptureModal`, `/api/leads` → MongoDB |
-| **A. Content (blogs + case studies + magnets)** | 🟡 IN PROGRESS | 2/6 case studies, 3/16 blog posts, 0/4 lead magnets |
+| **A. Content (blogs + case studies + magnets)** | 🟡 IN PROGRESS | 2/6 case studies, 5/16 blog posts, 0/4 lead magnets |
 | **B. Off-Page SEO** | 🔴 NOT STARTED | Directories, guest posts, backlinks |
 | **C.1 Programmatic SEO** | 🔴 NOT STARTED | USA landing + 5 city/service combo pages |
 | **C.2 Advanced Schema** | 🟡 PARTIAL | ✅ AggregateRating + Reviews + BlogPosting author Person; ❌ HowTo, VideoObject |
@@ -116,8 +116,8 @@ Each entry in `data/case-studies.json` auto-renders at `/case-studies/<slug>` wi
 | 1 | From Idea to Product: A Step-by-Step Guide for Non-Technical Founders | idea to product | Pillar | ✅ Live |
 | 2 | How to Choose a Product Design & Development Agency (Buyer's Guide) | hire product design agency | Commercial | ✅ Live |
 | 3 | Case Study: Building Xperiti's Enterprise Research Platform from Scratch | enterprise saas design case study | Case Study | ✅ Live |
-| 4 | Product Thinking vs Feature Factories: Why Most SaaS Products Fail | product thinking for saas | Thought Leadership | ⏳ Scheduled |
-| 5 | UI/UX Design + Development Cost in 2026: Complete Pricing Guide | ui ux design cost | Commercial | ⏳ Scheduled |
+| 4 | Product Thinking vs Feature Factories: Why Most SaaS Products Fail | product thinking for saas | Thought Leadership | ✅ Live |
+| 5 | UI/UX Design + Development Cost in 2026: Complete Pricing Guide | ui ux design cost | Commercial | ✅ Live |
 | 6 | Case Study: AI-Powered LegalTech for APAC's Largest Law Firm | ai app design case study | Case Study | ⏳ Scheduled |
 | 7 | SaaS Dashboard Design: 12 Best Practices for Complex Enterprise Apps | saas dashboard design | Pillar | ⏳ Scheduled |
 | 8 | Angular vs React for Enterprise Applications: A Decision Framework | angular vs react enterprise | Tutorial | ⏳ Scheduled |

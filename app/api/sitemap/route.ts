@@ -3,6 +3,8 @@ import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import caseStudies from "@/data/case-studies.json";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const baseUrl = "https://uipirate.com";
   const currentDate = new Date().toISOString().split("T")[0];

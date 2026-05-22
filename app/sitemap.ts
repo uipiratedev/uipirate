@@ -64,11 +64,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  // 3. Blog posts from database (fetched at build/request time)
+  // 3. Blog posts from database (fetched at request time, skipped during build to avoid worker hangs)
   let blogEntries: MetadataRoute.Sitemap = [];
-  try {
-    // Use internal API or direct DB query if available
-    const mongodbUri = process.env.MONGODB_URI;
+  const isBuild = process.env.NEXT_PHASE === "phase-production-build";
+  if (!isBuild) {
+    try {
+      // Use internal API or direct DB query if available
+      const mongodbUri = process.env.MONGODB_URI;
     if (mongodbUri) {
       const { default: mongoose } = await import("mongoose");
 
@@ -96,6 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   } catch (error) {
     // Silently handle DB errors — sitemap still works with static entries
     console.warn("Sitemap: Could not fetch blog posts from database:", error);
+  }
   }
 
   const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({

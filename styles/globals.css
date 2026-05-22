@@ -2276,13 +2276,14 @@ body.modal-open .main-navbar {
 .blog-prose {
   font-size: 1.0625rem;
   line-height: 1.8;
-  color: #1a1a1a;
+  color: #1a1a1a !important;
   max-width: none;
 }
 
 .blog-prose p {
   margin-top: 0;
   margin-bottom: 1.15rem;
+  color: #1a1a1a !important;
 }
 
 .blog-prose h1,
@@ -2291,7 +2292,7 @@ body.modal-open .main-navbar {
 .blog-prose h4 {
   font-weight: 700;
   line-height: 1.25;
-  color: #111;
+  color: #111 !important;
   margin-top: 2.25rem;
   margin-bottom: 0.75rem;
 }
@@ -2331,6 +2332,7 @@ body.modal-open .main-navbar {
 .blog-prose li {
   margin-bottom: 0.1rem;
   line-height: 1.5;
+  color: #1a1a1a !important;
 }
 
 .blog-prose li strong {
