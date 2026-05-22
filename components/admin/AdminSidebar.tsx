@@ -14,8 +14,8 @@ import {
 
 const navItems = [
   { label: "Dashboard", href: "/admin/dashboard", Icon: IconDashboard },
-  { label: "Blogs",     href: "/admin/blogs",     Icon: IconBlogs    },
-  { label: "Create",    href: "/admin/blogs/create", Icon: IconCreate },
+  { label: "Posts",     href: "/admin/blogs",     Icon: IconBlogs    },
+  { label: "Create Post", href: "/admin/blogs/create", Icon: IconCreate },
 ];
 
 const AdminSidebar = () => {

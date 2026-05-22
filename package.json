@@ -17,6 +17,7 @@
     "@heroui/switch": "2.2.24",
     "@heroui/system": "2.4.23",
     "@heroui/theme": "2.4.23",
+    "@heyputer/puter.js": "^2.4.2",
     "@react-aria/ssr": "^3.9.6",
     "@react-aria/visually-hidden": "^3.8.16",
     "@tiptap/core": "^3.10.1",

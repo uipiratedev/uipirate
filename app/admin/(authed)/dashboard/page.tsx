@@ -49,7 +49,7 @@ export default async function AdminDashboardPage() {
   const duplicateViewsAll = aggViews.duplicateViews || 0;
 
   const stats = [
-    { label: "Total Blogs",     value: totalBlogs,      Icon: IconBlogs, color: "#151514", bg: "#F0EDE8" },
+    { label: "Total Posts",     value: totalBlogs,      Icon: IconBlogs, color: "#151514", bg: "#F0EDE8" },
     { label: "Published",       value: publishedBlogs,  Icon: IconCheck, color: "#16A34A", bg: "#DCFCE7" },
     { label: "Drafts",          value: draftBlogs,      Icon: IconDraft, color: "#FF5B04", bg: "#FFF0E8" },
     { label: "Total Views",     value: totalViewsAll.toLocaleString(),   Icon: IconEye,   color: "#7C3AED", bg: "#EDE9FE" },
@@ -113,12 +113,12 @@ export default async function AdminDashboardPage() {
           <Link href="/admin/blogs/create">
             <Button className="font-geist font-medium text-white text-sm h-10 px-5 rounded-xl gap-2"
               style={{ background: "#FF5B04" }}>
-              <IconCreate /> New Blog Post
+              <IconCreate /> New Post
             </Button>
           </Link>
           <Link href="/admin/blogs">
             <Button variant="flat" className="font-geist font-medium text-sm h-10 px-5 rounded-xl gap-2 bg-black/5 text-gray-700">
-              <IconBlogs /> Manage Blogs
+              <IconBlogs /> Manage Posts
             </Button>
           </Link>
         </div>
@@ -176,7 +176,7 @@ export default async function AdminDashboardPage() {
                     </span>
                   </div>
                 </div>
-                <Link href={`/admin/blogs?edit=${blog._id}`}>
+                <Link href={`/admin/blogs/edit/${blog._id}`}>
                   <Button size="sm" variant="flat"
                     className="font-geist text-xs h-8 px-3 rounded-lg bg-black/5 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">
                     <IconEdit style={{ width: 14, height: 14 }} /> Edit

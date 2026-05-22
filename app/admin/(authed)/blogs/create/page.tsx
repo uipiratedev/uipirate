@@ -423,14 +423,14 @@ const PublishConfirmModal = ({
               </svg>
             </div>
             <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">Post Published!</h3>
-            <p className="text-sm font-geist text-gray-500 mb-6">Your blog post has been successfully published and is now live.</p>
+            <p className="text-sm font-geist text-gray-500 mb-6">Your post has been successfully published and is now live.</p>
             <div className="flex gap-3">
               <button
                 onClick={onViewBlogs}
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
               >
-                Go to Blog List
+                Go to Post List
               </button>
               <button
                 onClick={onKeepEditing}
@@ -567,7 +567,7 @@ const SaveDraftModal = ({
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
               >
-                Go to Blog List
+                Go to Post List
               </button>
               <button
                 onClick={onKeepEditing}
@@ -625,6 +625,1658 @@ const SaveDraftModal = ({
                 Cancel
               </button>
             </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── AI Excerpt Modal ────────────────────────────────────────────────────────
+const AIExcerptModal = ({
+  isOpen,
+  onClose,
+  editor,
+  postTitle,
+  postType,
+  excerpt,
+  setExcerpt,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  editor: any;
+  postTitle: string;
+  postType: string;
+  excerpt: string;
+  setExcerpt: (val: string) => void;
+}) => {
+  const [prompt, setPrompt] = useState("");
+  const [result, setResult] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState("");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
+  const [model, setModel] = useState<string>("gpt-5.5");
+
+  // Sync default engine models when engine changes
+  useEffect(() => {
+    if (engine === "openai" || engine === "puter") {
+      if (!model.startsWith("gpt")) {
+        setModel("gpt-5.5");
+      }
+    } else {
+      setModel("gemini-flash-latest");
+    }
+  }, [engine, model]);
+
+  // Sync result with initial excerpt if any
+  useEffect(() => {
+    if (isOpen) {
+      setResult(excerpt || "");
+      setError("");
+    }
+  }, [isOpen, excerpt]);
+
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    setError("");
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textToSummarize = plainText.trim() || postTitle || "Untitled Post";
+
+      if (engine === "puter") {
+        let systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following content. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${textToSummarize}`;
+        
+        if (prompt.trim()) {
+          systemInstructions += `\n\nAlso incorporate the following custom instructions: "${prompt.trim()}"`;
+        }
+
+        const { puter } = await import("@heyputer/puter.js");
+        const chatResponse = await puter.ai.chat(systemInstructions, { model });
+        
+        let text = "";
+        if (chatResponse.message?.content) {
+          text = typeof chatResponse.message.content === "string"
+            ? chatResponse.message.content
+            : String(chatResponse.message.content);
+        } else {
+          text = String(chatResponse);
+        }
+
+        text = text.trim();
+        // Clean backticks
+        if (text.startsWith("```json")) {
+          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```html")) {
+          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```")) {
+          text = text.replace(/^```/, "").replace(/```$/, "").trim();
+        }
+        
+        // Remove surrounding quotes if model added them
+        if (text.startsWith('"') && text.endsWith('"')) {
+          text = text.substring(1, text.length - 1);
+        }
+
+        setResult(text);
+      } else {
+        // Send a custom prompt for excerpt if prompt is provided
+        const response = await fetch("/api/ai/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "excerpt",
+            title: postTitle,
+            content: prompt.trim() 
+              ? `${textToSummarize}\n\nCustom Instructions:\n${prompt.trim()}`
+              : textToSummarize,
+            postType,
+            engine,
+            model,
+          }),
+        });
+
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error(data.error || "Failed to generate excerpt.");
+        }
+
+        let cleanText = data.data.trim();
+        if (cleanText.startsWith('"') && cleanText.endsWith('"')) {
+          cleanText = cleanText.substring(1, cleanText.length - 1);
+        }
+        setResult(cleanText);
+      }
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleApply = () => {
+    setExcerpt(result);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  // SEO bounds helper
+  const getCounterColor = (len: number) => {
+    if (len === 0) return "text-gray-400";
+    if (len >= 120 && len <= 160) return "text-emerald-500 font-bold";
+    if (len > 200) return "text-red-500 font-bold animate-pulse";
+    return "text-amber-500 font-semibold";
+  };
+
+  const getCounterBg = (len: number) => {
+    if (len === 0) return "bg-gray-100 border-gray-200 text-gray-500";
+    if (len >= 120 && len <= 160) return "bg-emerald-50 border-emerald-200 text-emerald-800";
+    if (len > 200) return "bg-red-50 border-red-200 text-red-800";
+    return "bg-amber-50 border-amber-200 text-amber-800";
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[540px] max-w-[95vw] border border-black/5 flex flex-col max-h-[85vh] transition-all duration-300"
+        style={{
+          animation: "fadeSlideIn 0.2s ease",
+          boxShadow:
+            engine === "openai"
+              ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
+              : engine === "gemini"
+              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+        }}
+      >
+        {/* Header with beautiful gradient badge */}
+        <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div 
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                    : engine === "gemini"
+                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+              }}
+            >
+              📝
+            </div>
+            <div>
+              <h3 className="text-base font-bold font-geist text-gray-900">AI Excerpt Generator</h3>
+              <p className="text-xs text-gray-400 font-geist">Draft perfectly summarized, SEO-friendly snippets</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Modal Body (Scrollable) */}
+        <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
+          {/* Engine & Model Selector */}
+          <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
+            {/* Engine selector */}
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
+                <span className="text-[10px] text-gray-400 font-geist">Select the AI brain for excerpting</span>
+              </div>
+              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
+                <button
+                  type="button"
+                  onClick={() => setEngine("openai")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "openai"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("gemini")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "gemini"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("puter")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "puter"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                </button>
+              </div>
+            </div>
+
+            {/* Separator line */}
+            <div className="h-px bg-black/5" />
+
+            {/* Model selector */}
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
+                <span className="text-[10px] text-gray-400 font-geist">Choose the specific model capability</span>
+              </div>
+              <select
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
+              >
+                {engine === "openai" || engine === "puter" ? (
+                  <>
+                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
+                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
+                    <option value="gpt-5.4-mini">🟢 GPT-5.4 Mini (Lightweight & Efficient)</option>
+                    <option value="gpt-5.4-nano">🌱 GPT-5.4 Nano (Super Speed)</option>
+                    <option value="gpt-5.3-chat">💬 GPT-5.3 Chat (Conversational)</option>
+                    <option value="gpt-5.3-codex">💻 GPT-5.3 Codex (Programming & Logic)</option>
+                    <option value="gpt-5.2-pro">💎 GPT-5.2 Pro (Professional)</option>
+                    <option value="gpt-5.2-chat">💬 GPT-5.2 Chat (Standard Chat)</option>
+                    <option value="gpt-5.2">⚡ GPT-5.2 Standard (General)</option>
+                    <option value="gpt-5.1-chat-latest">💬 GPT-5.1 Chat (Legacy Chat)</option>
+                    <option value="gpt-5.1">⚡ GPT-5.1 Standard (Legacy General)</option>
+                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
+                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
+
+          {/* Custom Focus Instructions */}
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider block">
+              Custom Focus Guidelines (Optional)
+            </label>
+            <input
+              type="text"
+              className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 transition-all"
+              placeholder="e.g. 'Emphasize the coding aspect', 'Make it sound casual'"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              disabled={isGenerating}
+            />
+          </div>
+
+          {/* Action Trigger */}
+          <div className="flex justify-end pt-1">
+            <button
+              type="button"
+              onClick={handleGenerate}
+              disabled={isGenerating}
+              className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                    : engine === "gemini"
+                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+              }}
+            >
+              {isGenerating ? (
+                <>
+                  <span className="animate-spin text-xs">🌀</span>
+                  <span>Summarizing Post...</span>
+                </>
+              ) : (
+                <>
+                  <span>✨ Generate Excerpt</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+            </div>
+          )}
+
+          {/* Result / Preview Box */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <label 
+                className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
+                style={{
+                  color:
+                    engine === "openai"
+                      ? "#10B981"
+                      : engine === "gemini"
+                      ? "#3B82F6"
+                      : "#FF5B04",
+                }}
+              >
+                Draft Excerpt Preview
+              </label>
+              
+              {/* Color-Coded SEO Character Counter */}
+              <div className={`text-xs font-geist px-2 py-0.5 rounded-full border transition-all duration-300 ${getCounterBg(result.length)}`}>
+                <span className={getCounterColor(result.length)}>{result.length}</span> / 160 chars
+                {result.length >= 120 && result.length <= 160 && (
+                  <span className="ml-1 text-[10px] font-semibold text-emerald-600">✓ Perfect SEO Length</span>
+                )}
+                {result.length > 200 && (
+                  <span className="ml-1 text-[10px] font-bold text-red-600">⚠️ Truncated in search</span>
+                )}
+              </div>
+            </div>
+
+            <textarea
+              rows={4}
+              className={`w-full text-sm font-geist bg-gray-50 border rounded-2xl p-4 outline-none resize-none transition-all duration-300 ${
+                isGenerating
+                  ? engine === "openai"
+                    ? "animate-pulse border-emerald-200"
+                    : engine === "gemini"
+                    ? "animate-pulse border-blue-200"
+                    : "animate-pulse border-orange-200"
+                  : "border-black/5 focus:border-orange-200 focus:ring-1 focus:ring-orange-100"
+              }`}
+              placeholder="Your AI excerpt will generate here, or you can type here to refine manually..."
+              value={result}
+              onChange={(e) => setResult(e.target.value)}
+              disabled={isGenerating}
+            />
+          </div>
+        </div>
+
+        {/* Modal Footer */}
+        <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
+          <button
+            type="button"
+            onClick={handleApply}
+            disabled={!result.trim() || isGenerating}
+            className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+            style={{
+              background:
+                engine === "openai"
+                  ? "#10B981"
+                  : engine === "gemini"
+                  ? "#3B82F6"
+                  : "#FF5B04",
+            }}
+          >
+            <span>Apply Excerpt</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── AI Title Modal ─────────────────────────────────────────────────────────
+const AITitleModal = ({
+  isOpen,
+  onClose,
+  editor,
+  title,
+  setTitle,
+  postType,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  editor: any;
+  title: string;
+  setTitle: (val: string) => void;
+  postType: string;
+}) => {
+  const [prompt, setPrompt] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [selectedTitle, setSelectedTitle] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState("");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
+  const [model, setModel] = useState<string>("gpt-5.5");
+
+  // Sync default engine models when engine changes
+  useEffect(() => {
+    if (engine === "openai" || engine === "puter") {
+      if (!model.startsWith("gpt")) {
+        setModel("gpt-5.5");
+      }
+    } else {
+      setModel("gemini-flash-latest");
+    }
+  }, [engine, model]);
+
+  // Sync state on open
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedTitle("");
+      setSuggestions([]);
+      setError("");
+    }
+  }, [isOpen]);
+
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    setError("");
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textContext = plainText.trim().substring(0, 3000);
+
+      if (engine === "puter") {
+        let systemInstructions = `Suggest 3 high-impact, highly clickable, and search-optimized alternative titles for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${textContext}". Format your response STRICTLY as a raw JSON array of strings, e.g. ["Optimized Title 1", "Optimized Title 2", "Optimized Title 3"]. Deliver ONLY the JSON array, no markdown backticks, no wrap text, and no leading/trailing spaces.`;
+        
+        if (prompt.trim()) {
+          systemInstructions += `\n\nAlso incorporate the following custom instructions: "${prompt.trim()}"`;
+        }
+
+        const { puter } = await import("@heyputer/puter.js");
+        const chatResponse = await puter.ai.chat(systemInstructions, { model });
+        
+        let text = "";
+        if (chatResponse.message?.content) {
+          text = typeof chatResponse.message.content === "string"
+            ? chatResponse.message.content
+            : String(chatResponse.message.content);
+        } else {
+          text = String(chatResponse);
+        }
+
+        text = text.trim();
+        // Clean backticks
+        if (text.startsWith("```json")) {
+          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```html")) {
+          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```")) {
+          text = text.replace(/^```/, "").replace(/```$/, "").trim();
+        }
+
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          setSuggestions(parsed);
+        } else {
+          throw new Error("Failed to parse array from response.");
+        }
+      } else {
+        const response = await fetch("/api/ai/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "titles",
+            title,
+            content: prompt.trim() 
+              ? `${textContext}\n\nCustom Instructions:\n${prompt.trim()}`
+              : textContext,
+            postType,
+            engine,
+            model,
+          }),
+        });
+
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error(data.error || "Failed to generate titles.");
+        }
+
+        setSuggestions(data.data);
+      }
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleApply = () => {
+    if (selectedTitle) {
+      setTitle(selectedTitle);
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[540px] max-w-[95vw] border border-black/5 flex flex-col max-h-[85vh] transition-all duration-300"
+        style={{
+          animation: "fadeSlideIn 0.2s ease",
+          boxShadow:
+            engine === "openai"
+              ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
+              : engine === "gemini"
+              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+        }}
+      >
+        <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div 
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                    : engine === "gemini"
+                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+              }}
+            >
+              👑
+            </div>
+            <div>
+              <h3 className="text-base font-bold font-geist text-gray-900">AI Title Optimizer</h3>
+              <p className="text-xs text-gray-400 font-geist">Generate high-impact headline recommendations</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
+          <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
+              </div>
+              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
+                <button
+                  type="button"
+                  onClick={() => setEngine("openai")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "openai"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("gemini")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "gemini"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("puter")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "puter"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                </button>
+              </div>
+            </div>
+
+            <div className="h-px bg-black/5" />
+
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
+              </div>
+              <select
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
+              >
+                {engine === "openai" || engine === "puter" ? (
+                  <>
+                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
+                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
+                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
+                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider block">
+              Custom Guidelines / Key Focus Words (Optional)
+            </label>
+            <input
+              type="text"
+              className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 transition-all"
+              placeholder="e.g. 'Make it sound casual', 'Focus on React performance'"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              disabled={isGenerating}
+            />
+          </div>
+
+          <div className="flex justify-end pt-1">
+            <button
+              type="button"
+              onClick={handleGenerate}
+              disabled={isGenerating}
+              className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                    : engine === "gemini"
+                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+              }}
+            >
+              {isGenerating ? (
+                <>
+                  <span className="animate-spin text-xs">🌀</span>
+                  <span>Generating headlines...</span>
+                </>
+              ) : (
+                <>
+                  <span>✨ Generate Alternatives</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {error && (
+            <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+            </div>
+          )}
+
+          {suggestions.length > 0 && (
+            <div className="space-y-2.5">
+              <label 
+                className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
+                style={{
+                  color:
+                    engine === "openai"
+                      ? "#10B981"
+                      : engine === "gemini"
+                      ? "#3B82F6"
+                      : "#FF5B04",
+                }}
+              >
+                Select Your Favorite Headline
+              </label>
+              
+              <div className="space-y-2">
+                {suggestions.map((t, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedTitle(t)}
+                    className={`w-full text-left text-sm font-geist p-3.5 rounded-2xl transition-all border flex items-start gap-3 cursor-pointer ${
+                      selectedTitle === t
+                        ? engine === "openai"
+                          ? "bg-emerald-50/50 border-emerald-500 text-emerald-950 font-medium shadow-sm"
+                          : engine === "gemini"
+                          ? "bg-indigo-50/50 border-indigo-500 text-indigo-950 font-medium shadow-sm"
+                          : "bg-orange-50/50 border-[#FF5B04] text-orange-950 font-medium shadow-sm"
+                        : "bg-gray-50 border-black/5 hover:border-black/10 text-gray-800"
+                    }`}
+                  >
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold border transition-colors ${
+                      selectedTitle === t
+                        ? engine === "openai"
+                          ? "bg-emerald-500 text-white border-emerald-500"
+                          : engine === "gemini"
+                          ? "bg-indigo-500 text-white border-indigo-500"
+                          : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                        : "bg-white border-black/10 text-gray-400"
+                    }`}>
+                      {idx + 1}
+                    </span>
+                    <span className="flex-1 leading-snug">{t}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
+          <button
+            type="button"
+            onClick={handleApply}
+            disabled={!selectedTitle || isGenerating}
+            className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+            style={{
+              background:
+                engine === "openai"
+                  ? "#10B981"
+                  : engine === "gemini"
+                  ? "#3B82F6"
+                  : "#FF5B04",
+            }}
+          >
+            <span>Apply Selected Headline</span>
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── AI Tags Modal ──────────────────────────────────────────────────────────
+const AITagsModal = ({
+  isOpen,
+  onClose,
+  editor,
+  postTitle,
+  postType,
+  tags,
+  setTags,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  editor: any;
+  postTitle: string;
+  postType: string;
+  tags: string[];
+  setTags: (val: string[]) => void;
+}) => {
+  const [prompt, setPrompt] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState("");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
+  const [model, setModel] = useState<string>("gpt-5.5");
+
+  // Sync default engine models when engine changes
+  useEffect(() => {
+    if (engine === "openai" || engine === "puter") {
+      if (!model.startsWith("gpt")) {
+        setModel("gpt-5.5");
+      }
+    } else {
+      setModel("gemini-flash-latest");
+    }
+  }, [engine, model]);
+
+  // Sync state on open
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedTags([]);
+      setSuggestions([]);
+      setError("");
+    }
+  }, [isOpen]);
+
+  const handleGenerate = async () => {
+    setIsGenerating(true);
+    setError("");
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textContext = plainText.trim().substring(0, 3000);
+
+      if (engine === "puter") {
+        let systemInstructions = `Suggest 5-8 highly relevant, lowercase, search-optimized tags / keywords for a post with the title: "${postTitle || ""}", category: "${postType || "blog"}", and content: "${textContext}". Format your response STRICTLY as a raw JSON array of strings, e.g. ["tech", "javascript", "react"]. Deliver ONLY the JSON array, no markdown backticks, no wrap text, and no leading/trailing spaces.`;
+        
+        if (prompt.trim()) {
+          systemInstructions += `\n\nAlso incorporate the following custom instructions: "${prompt.trim()}"`;
+        }
+
+        const { puter } = await import("@heyputer/puter.js");
+        const chatResponse = await puter.ai.chat(systemInstructions, { model });
+        
+        let text = "";
+        if (chatResponse.message?.content) {
+          text = typeof chatResponse.message.content === "string"
+            ? chatResponse.message.content
+            : String(chatResponse.message.content);
+        } else {
+          text = String(chatResponse);
+        }
+
+        text = text.trim();
+        // Clean backticks
+        if (text.startsWith("```json")) {
+          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```html")) {
+          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```")) {
+          text = text.replace(/^```/, "").replace(/```$/, "").trim();
+        }
+
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed)) {
+          setSuggestions(parsed.map(t => t.toLowerCase()));
+          setSelectedTags(parsed.map(t => t.toLowerCase()));
+        } else {
+          throw new Error("Failed to parse array from response.");
+        }
+      } else {
+        const response = await fetch("/api/ai/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "tags",
+            title: postTitle,
+            content: prompt.trim() 
+              ? `${textContext}\n\nCustom Instructions:\n${prompt.trim()}`
+              : textContext,
+            postType,
+            engine,
+            model,
+          }),
+        });
+
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error(data.error || "Failed to generate tags.");
+        }
+
+        const parsedTags = data.data.map((t: string) => t.toLowerCase());
+        setSuggestions(parsedTags);
+        setSelectedTags(parsedTags);
+      }
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const toggleTag = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleApply = () => {
+    const combined = Array.from(new Set([...tags, ...selectedTags]));
+    setTags(combined);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[540px] max-w-[95vw] border border-black/5 flex flex-col max-h-[85vh] transition-all duration-300"
+        style={{
+          animation: "fadeSlideIn 0.2s ease",
+          boxShadow:
+            engine === "openai"
+              ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
+              : engine === "gemini"
+              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+        }}
+      >
+        <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div 
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                    : engine === "gemini"
+                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+              }}
+            >
+              🏷️
+            </div>
+            <div>
+              <h3 className="text-base font-bold font-geist text-gray-900">AI Tag Suggestor</h3>
+              <p className="text-xs text-gray-400 font-geist">Generate optimized tags and taxonomies</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
+          <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
+              </div>
+              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
+                <button
+                  type="button"
+                  onClick={() => setEngine("openai")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "openai"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-950"
+                  }`}
+                >
+                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("gemini")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "gemini"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-955"
+                  }`}
+                >
+                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("puter")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "puter"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-955"
+                  }`}
+                >
+                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                </button>
+              </div>
+            </div>
+
+            <div className="h-px bg-black/5" />
+
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
+              </div>
+              <select
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
+              >
+                {engine === "openai" || engine === "puter" ? (
+                  <>
+                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
+                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
+                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
+                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider block">
+              Custom Tag Guidelines (Optional)
+            </label>
+            <input
+              type="text"
+              className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 transition-all"
+              placeholder="e.g. 'Use web development tags', 'Include SEO'"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              disabled={isGenerating}
+            />
+          </div>
+
+          <div className="flex justify-end pt-1">
+            <button
+              type="button"
+              onClick={handleGenerate}
+              disabled={isGenerating}
+              className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                    : engine === "gemini"
+                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+              }}
+            >
+              {isGenerating ? (
+                <>
+                  <span className="animate-spin text-xs">🌀</span>
+                  <span>Generating tags...</span>
+                </>
+              ) : (
+                <>
+                  <span>✨ Generate Tags</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {error && (
+            <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+            </div>
+          )}
+
+          {suggestions.length > 0 && (
+            <div className="space-y-2.5">
+              <label 
+                className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
+                style={{
+                  color:
+                    engine === "openai"
+                      ? "#10B981"
+                      : engine === "gemini"
+                      ? "#3B82F6"
+                      : "#FF5B04",
+                }}
+              >
+                Select Tags to Apply
+              </label>
+              
+              <div className="flex flex-wrap gap-2.5">
+                {suggestions.map((t, idx) => {
+                  const isSelected = selectedTags.includes(t);
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => toggleTag(t)}
+                      className={`px-4 py-2 rounded-2xl text-xs font-semibold font-geist border transition-all flex items-center gap-2 cursor-pointer ${
+                        isSelected
+                          ? engine === "openai"
+                            ? "bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm"
+                            : engine === "gemini"
+                            ? "bg-indigo-50 border-indigo-300 text-indigo-800 shadow-sm"
+                            : "bg-orange-50 border-orange-300 text-orange-800 shadow-sm"
+                          : "bg-gray-50 border-black/5 text-gray-600 hover:bg-gray-100"
+                      }`}
+                    >
+                      <span className={`w-3.5 h-3.5 rounded-md flex items-center justify-center text-[9px] border transition-colors ${
+                        isSelected
+                          ? engine === "openai"
+                            ? "bg-emerald-500 text-white border-emerald-500"
+                            : engine === "gemini"
+                            ? "bg-indigo-500 text-white border-indigo-500"
+                            : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                          : "bg-white border-black/10"
+                      }`}>
+                        {isSelected && "✓"}
+                      </span>
+                      <span>#{t}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
+          <button
+            type="button"
+            onClick={handleApply}
+            disabled={selectedTags.length === 0 || isGenerating}
+            className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+            style={{
+              background:
+                engine === "openai"
+                  ? "#10B981"
+                  : engine === "gemini"
+                  ? "#3B82F6"
+                  : "#FF5B04",
+            }}
+          >
+            <span>Apply Selected Tags</span>
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── AI Copilot Modal ────────────────────────────────────────────────────────
+const AICopilotModal = ({
+  isOpen,
+  onClose,
+  editor,
+  postTitle,
+  postType,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  editor: any;
+  postTitle: string;
+  postType: string;
+}) => {
+  const [prompt, setPrompt] = useState("");
+  const [result, setResult] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [error, setError] = useState("");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
+  const [model, setModel] = useState<string>("gpt-5.5");
+
+  // Selection & Context states
+  const [selectedText, setSelectedText] = useState("");
+  const [hasSelection, setHasSelection] = useState(false);
+  const [selectionRange, setSelectionRange] = useState<{ from: number; to: number } | null>(null);
+
+  useEffect(() => {
+    if (isOpen && editor) {
+      const { from, to } = editor.state.selection;
+      const text = editor.state.doc.textBetween(from, to, " ");
+      if (text.trim()) {
+        setSelectedText(text.trim());
+        setHasSelection(true);
+        setSelectionRange({ from, to });
+      } else {
+        setSelectedText("");
+        setHasSelection(false);
+        setSelectionRange(null);
+      }
+    }
+  }, [isOpen, editor]);
+
+  useEffect(() => {
+    if (engine === "openai" || engine === "puter") {
+      if (!model.startsWith("gpt")) {
+        setModel("gpt-5.5");
+      }
+    } else {
+      setModel("gemini-flash-latest");
+    }
+  }, [engine]);
+
+  const presets = [
+    { label: "Draft Introduction", prompt: "Write a high-converting, engaging introduction paragraph based on the post title and details." },
+    { label: "Step-by-Step Outline", prompt: "Generate a detailed, step-by-step structure/outline with subheadings." },
+    { label: "Make Professional", prompt: "Summarize the key ideas and rewrite them in a highly polished, professional tone." },
+    { label: "Write Key Takeaways", prompt: "Create a visual checklist of the top 5 key takeaways or learnings." },
+  ];
+
+  const handleGenerate = async (customPrompt?: string) => {
+    const activePrompt = customPrompt || prompt;
+    if (!activePrompt.trim()) return;
+
+    setIsGenerating(true);
+    setError("");
+    setResult("");
+
+    try {
+      const editorContent = editor ? editor.getHTML() : "";
+      const surroundingText = editor ? editor.getText() : "";
+      const surroundingContext = surroundingText.length > 2000
+        ? surroundingText.slice(-2000)
+        : surroundingText;
+
+      if (engine === "puter") {
+        let contextInfo = "";
+        if (hasSelection && selectedText) {
+          contextInfo += `\n\nTARGET TEXT FOR EDITING (Rewrite, expand, improve, or format this selected text directly based on the user prompt): "${selectedText}"`;
+        }
+        if (surroundingContext.trim()) {
+          contextInfo += `\n\nSURROUNDING BLOG CONTEXT (Ensure your generated section matches this writing style, tone, and flow perfectly, without repeating existing paragraphs): \n... ${surroundingContext.trim()}`;
+        }
+
+        const systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following prompt: "${activePrompt}". The context of the post is: title: "${postTitle || ""}", category: "${postType || "blog"}".${contextInfo}
+Write a comprehensive, fully detailed, and substantial piece of content. Expand on the concepts deeply with rich explanations, multiple robust and fully-fleshed out paragraphs, structured subheadings, and thorough insights (aim for at least 300 to 600 words or a complete, deep-dive section, unless the prompt explicitly requests a short summary or brief answer). Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
+
+        const { puter } = await import("@heyputer/puter.js");
+        const chatResponse = await puter.ai.chat(systemInstructions, { model });
+        
+        let text = "";
+        if (chatResponse.message?.content) {
+          text = typeof chatResponse.message.content === "string"
+            ? chatResponse.message.content
+            : String(chatResponse.message.content);
+        } else {
+          text = String(chatResponse);
+        }
+
+        text = text.trim();
+        if (text.startsWith("```json")) {
+          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```html")) {
+          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```")) {
+          text = text.replace(/^```/, "").replace(/```$/, "").trim();
+        }
+
+        setResult(text);
+      } else {
+        const response = await fetch("/api/ai/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "write",
+            title: postTitle,
+            content: editorContent,
+            selectedText: hasSelection ? selectedText : "",
+            surroundingContext: surroundingContext,
+            postType,
+            prompt: activePrompt,
+            engine,
+            model,
+          }),
+        });
+
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error(data.error || "Failed to generate content.");
+        }
+
+        setResult(data.data);
+      }
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleInsert = () => {
+    if (result && editor) {
+      if (hasSelection && selectionRange) {
+        editor
+          .chain()
+          .focus()
+          .setTextSelection(selectionRange)
+          .insertContent(result)
+          .run();
+      } else {
+        editor.chain().focus().insertContent(result).run();
+      }
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[640px] max-w-[95vw] border border-black/5 flex flex-col max-h-[85vh] transition-all duration-300"
+        style={{
+          animation: "fadeSlideIn 0.2s ease",
+          boxShadow:
+            engine === "openai"
+              ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
+              : engine === "gemini"
+              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+        }}
+      >
+        {/* Header with beautiful gradient badge */}
+        <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <div 
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                    : engine === "gemini"
+                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+              }}
+            >
+              ✨
+            </div>
+            <div>
+              <h3 className="text-base font-bold font-geist text-gray-900">AI Writing Copilot</h3>
+              <p className="text-xs text-gray-400 font-geist">Generate structures, intros, and polished sections instantly</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Modal Body (Scrollable) */}
+        <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
+          {/* Engine & Model Selector */}
+          <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
+            {/* Engine selector */}
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
+                <span className="text-[10px] text-gray-400 font-geist">Select the AI brain for composition</span>
+              </div>
+              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
+                <button
+                  onClick={() => setEngine("openai")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "openai"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                </button>
+                <button
+                  onClick={() => setEngine("gemini")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "gemini"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                </button>
+                <button
+                  onClick={() => setEngine("puter")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "puter"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                </button>
+              </div>
+            </div>
+
+            {/* Separator line */}
+            <div className="h-px bg-black/5" />
+
+            {/* Model selector */}
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
+                <span className="text-[10px] text-gray-400 font-geist">Choose the specific model capability</span>
+              </div>
+              <select
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm animate-in fade-in duration-200"
+              >
+                {engine === "openai" || engine === "puter" ? (
+                  <>
+                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
+                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
+                    <option value="gpt-5.4-mini">🟢 GPT-5.4 Mini (Lightweight & Efficient)</option>
+                    <option value="gpt-5.4-nano">🌱 GPT-5.4 Nano (Super Speed)</option>
+                    <option value="gpt-5.3-chat">💬 GPT-5.3 Chat (Conversational)</option>
+                    <option value="gpt-5.3-codex">💻 GPT-5.3 Codex (Programming & Logic)</option>
+                    <option value="gpt-5.2-pro">💎 GPT-5.2 Pro (Professional)</option>
+                    <option value="gpt-5.2-chat">💬 GPT-5.2 Chat (Standard Chat)</option>
+                    <option value="gpt-5.2">⚡ GPT-5.2 Standard (General)</option>
+                    <option value="gpt-5.1-chat-latest">💬 GPT-5.1 Chat (Legacy Chat)</option>
+                    <option value="gpt-5.1">⚡ GPT-5.1 Standard (Legacy General)</option>
+                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
+                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                )}
+              </select>
+            </div>
+          </div>
+
+          {/* Quick Presets */}
+          <div>
+            <label className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider mb-2 block">
+              Quick Presets
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {presets.map((preset) => (
+                <button
+                  key={preset.label}
+                  onClick={() => {
+                    setPrompt(preset.prompt);
+                    handleGenerate(preset.prompt);
+                  }}
+                  disabled={isGenerating}
+                  className="text-left text-xs font-geist font-medium text-gray-700 bg-black/[0.02] border border-black/5 hover:border-[#FF5B04]/30 hover:bg-orange-50/30 p-3 rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                >
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Custom Prompt Input */}
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider block">
+              Custom Instructions
+            </label>
+            {hasSelection && (
+              <div className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-geist mb-3 border transition-all duration-300 ${
+                engine === "openai"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                  : engine === "gemini"
+                  ? "bg-indigo-50 border-indigo-200 text-indigo-800"
+                  : "bg-orange-50 border-orange-200 text-orange-800"
+              }`}>
+                <span className="flex h-2 w-2 relative">
+                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                    engine === "openai"
+                      ? "bg-emerald-400"
+                      : engine === "gemini"
+                      ? "bg-indigo-400"
+                      : "bg-orange-400"
+                  }`}></span>
+                  <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                    engine === "openai"
+                      ? "bg-emerald-500"
+                      : engine === "gemini"
+                      ? "bg-indigo-500"
+                      : "bg-orange-500"
+                  }`}></span>
+                </span>
+                <span>
+                  <strong>Selection Active:</strong> AI will rewrite and refine your highlighted text (<strong>{selectedText.length} characters</strong>).
+                </span>
+              </div>
+            )}
+            <textarea
+              autoFocus
+              rows={3}
+              className="w-full text-sm font-geist bg-black/5 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 resize-none transition-all"
+              placeholder="Provide details of what you want to write or refine (e.g., 'Draft a highly engaging 3-paragraph introduction detailing the benefits of modern responsive design...')"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              disabled={isGenerating}
+            />
+            <div className="flex justify-end">
+              <button
+                onClick={() => handleGenerate()}
+                disabled={isGenerating || !prompt.trim()}
+                className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
+                style={{
+                  background:
+                    engine === "openai"
+                      ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
+                      : engine === "gemini"
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                }}
+              >
+                {isGenerating ? (
+                  <>
+                    <span className="animate-spin text-xs">🌀</span>
+                    <span>Generating...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>✨ {hasSelection ? "Refine Selection" : "Compose Segment"}</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+            </div>
+          )}
+
+          {/* Generation Preview Area */}
+          {(isGenerating || result) && (
+            <div className="space-y-2">
+              <label 
+                className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
+                style={{
+                  color:
+                    engine === "openai"
+                      ? "#10B981"
+                      : engine === "gemini"
+                      ? "#3B82F6"
+                      : "#FF5B04",
+                }}
+              >
+                AI Composition Preview
+              </label>
+              <div 
+                className={`border rounded-2xl p-4 bg-gray-50/50 min-h-[140px] text-sm overflow-y-auto max-h-[260px] font-geist prose prose-sm transition-all duration-300 ${
+                  isGenerating
+                    ? engine === "openai"
+                      ? "animate-pulse border-emerald-200"
+                      : engine === "gemini"
+                      ? "animate-pulse border-blue-200"
+                      : "animate-pulse border-orange-200"
+                    : "border-black/5"
+                }`}
+              >
+                {isGenerating ? (
+                  <div className="space-y-2.5">
+                    <div className="h-4 bg-gray-200 rounded-md w-3/4"></div>
+                    <div className="h-4 bg-gray-200 rounded-md"></div>
+                    <div className="h-4 bg-gray-200 rounded-md w-5/6"></div>
+                  </div>
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: result }} />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Modal Footer */}
+        {result && !isGenerating && (
+          <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
+            <button
+              onClick={handleInsert}
+              className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90 flex items-center justify-center gap-1.5 cursor-pointer"
+              style={{
+                background:
+                  engine === "openai"
+                    ? "#10B981"
+                    : engine === "gemini"
+                    ? "#3B82F6"
+                    : "#FF5B04",
+              }}
+            >
+              <span>{hasSelection ? "Replace Highlighted Text" : "Insert at Cursor Position"}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              </svg>
+            </button>
+            <button
+              onClick={onClose}
+              className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
+            >
+              Cancel
+            </button>
           </div>
         )}
       </div>
@@ -1026,9 +2678,11 @@ const SlashCommandMenu = ({
 const FormattingToolbar = ({
   editor,
   onLinkClick,
+  onCopilotClick,
 }: {
   editor: any;
   onLinkClick: () => void;
+  onCopilotClick: () => void;
 }) => {
   const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
   if (!editor) return null;
@@ -1057,6 +2711,17 @@ const FormattingToolbar = ({
         borderBottom: "1px solid rgba(0,0,0,0.07)",
       }}
     >
+      <button
+        onClick={onCopilotClick}
+        className="mr-2 px-3 py-1.5 rounded-lg text-white font-semibold text-sm font-geist transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-sm hover:shadow flex items-center gap-1 cursor-pointer relative overflow-hidden group animate-pulse"
+        style={{
+          background: "linear-gradient(135deg, #FF5B04 0%, #D946EF 100%)",
+        }}
+      >
+        <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <span>✨ AI Copilot</span>
+      </button>
+      {sep}
       <button className={btn(editor.isActive("bold"))} style={editor.isActive("bold") ? activeStyle : {}} title="Bold (Ctrl+B)" onClick={() => editor.chain().focus().toggleBold().run()}>B</button>
       <button className={btn(editor.isActive("italic"))} style={editor.isActive("italic") ? activeStyle : {}} title="Italic (Ctrl+I)" onClick={() => editor.chain().focus().toggleItalic().run()}><em>I</em></button>
       <button className={btn(editor.isActive("strike"))} style={editor.isActive("strike") ? activeStyle : {}} title="Strikethrough" onClick={() => editor.chain().focus().toggleStrike().run()}><s>S</s></button>
@@ -1199,10 +2864,20 @@ const BlogEditor = () => {
   const [title, setTitle] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [excerpt, setExcerpt] = useState("");
+
+  // AI States
+  const [isExcerptModalOpen, setIsExcerptModalOpen] = useState(false);
+  const [isTitleModalOpen, setIsTitleModalOpen] = useState(false);
+  const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+
+  // AI API Handlers
   const [featuredImage, setFeaturedImage] = useState("");
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [postType, setPostType] = useState<"blog" | "tutorial" | "case-study" | "community-insight">("blog");
+  const [typeSelected, setTypeSelected] = useState(false);
   const [saveStatus, setSaveStatus] = useState<
     "Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"
   >("Draft");
@@ -1399,6 +3074,7 @@ const BlogEditor = () => {
           bannerImage,
           tags,
           published,
+          postType,
         }),
       });
       const data = await response.json();
@@ -1446,6 +3122,120 @@ const BlogEditor = () => {
 
   if (!mounted || !editor || authLoading) return null;
 
+  // ── Post Type definitions (shared between modal and badge) ──
+  const postTypes = [
+    {
+      value: "blog" as const,
+      label: "Blog",
+      description: "Share thoughts, insights and perspectives",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+      ),
+    },
+    {
+      value: "tutorial" as const,
+      label: "Tutorial",
+      description: "Step-by-step guides and how-tos",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      ),
+    },
+    {
+      value: "case-study" as const,
+      label: "Case Study",
+      description: "In-depth analysis of a project or problem",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      ),
+    },
+    {
+      value: "community-insight" as const,
+      label: "Community Insight",
+      description: "Trends, observations and community highlights",
+      icon: (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      ),
+    },
+  ];
+
+  const selectedTypeInfo = postTypes.find((t) => t.value === postType)!;
+
+  // ── Type selection gate ──
+  if (!typeSelected) {
+    return (
+      <div
+        className="fixed inset-0 z-[300] flex items-center justify-center"
+        style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
+      >
+        <div
+          className="bg-white rounded-3xl shadow-2xl w-[520px] max-w-[95vw] p-8"
+          style={{ border: "1px solid rgba(0,0,0,0.07)" }}
+        >
+          {/* Header */}
+          <div className="mb-6">
+            <p className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-semibold mb-1" style={{ color: "#FF5B04" }}>New Post</p>
+            <h2 className="text-xl font-bold font-geist text-gray-900">What are you creating?</h2>
+            <p className="text-sm text-gray-400 font-geist mt-1">Choose a post type. This can't be changed after you start writing.</p>
+          </div>
+
+          {/* Type grid */}
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {postTypes.map(({ value, label, description, icon }) => (
+              <button
+                key={value}
+                onClick={() => setPostType(value)}
+                className={`flex flex-col items-start gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
+                  postType === value
+                    ? "border-[#FF5B04] bg-orange-50"
+                    : "border-black/8 bg-black/[0.01] hover:border-[#FF5B04]/40 hover:bg-orange-50/40"
+                }`}
+              >
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
+                  style={{
+                    background: postType === value ? "rgba(255,91,4,0.12)" : "rgba(0,0,0,0.05)",
+                    color: postType === value ? "#FF5B04" : "#6b7280",
+                  }}
+                >
+                  {icon}
+                </div>
+                <div>
+                  <p className={`text-sm font-semibold font-geist ${ postType === value ? "text-[#FF5B04]" : "text-gray-800"}`}>{label}</p>
+                  <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">{description}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <a href="/admin/blogs" className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors">
+              Cancel
+            </a>
+            <button
+              onClick={() => setTypeSelected(true)}
+              className="ml-auto flex items-center gap-2 text-sm font-semibold font-geist text-white h-10 px-6 rounded-xl transition-colors"
+              style={{ background: "#FF5B04" }}
+            >
+              Continue as {selectedTypeInfo.label}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
       e.preventDefault();
@@ -1483,10 +3273,21 @@ const BlogEditor = () => {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
-            Blogs
+            Posts
           </a>
           <span className="text-gray-200">/</span>
           <span className="text-sm font-medium font-geist text-gray-900">New Post</span>
+          {/* Locked type badge */}
+          <span
+            className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
+            style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
+            title="Post type is locked for this draft"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            {selectedTypeInfo.label}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <span
@@ -1516,7 +3317,11 @@ const BlogEditor = () => {
       </div>
 
       {/* ── Formatting Toolbar ── */}
-      <FormattingToolbar editor={editor} onLinkClick={() => { editor.chain().focus().extendMarkRange("link").run(); setShowLinkModal(true); }} />
+      <FormattingToolbar 
+        editor={editor} 
+        onLinkClick={() => { editor.chain().focus().extendMarkRange("link").run(); setShowLinkModal(true); }} 
+        onCopilotClick={() => setIsCopilotOpen(true)}
+      />
 
       {/* ── Two-column Layout ── */}
       <div className="flex gap-6 p-6 items-start">
@@ -1557,14 +3362,25 @@ const BlogEditor = () => {
           )}
 
           {/* Title */}
-          <div className={bannerImage ? "px-10 pt-6 pb-4" : "px-10 pt-4 pb-4"}>
-            <input
-              className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-              placeholder="Post title…"
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
+          <div className={bannerImage ? "px-10 pt-6 pb-4 relative" : "px-10 pt-4 pb-4 relative"}>
+            <div className="flex items-center gap-3">
+              <input
+                className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                placeholder="Post title…"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  setIsTitleModalOpen(true);
+                }}
+                className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+              >
+                ✨ AI Assistant
+              </button>
+            </div>
           </div>
 
           <div className="h-px mx-10" style={{ background: "rgba(0,0,0,0.06)" }} />
@@ -1606,32 +3422,6 @@ const BlogEditor = () => {
 
         {/* ── Settings Sidebar ── */}
         <div className="w-72 flex-shrink-0 space-y-4">
-          {/* Publish card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-              Publish
-            </p>
-            <div className="space-y-2">
-              <Button
-                className="w-full font-geist font-medium text-white text-sm h-10 rounded-xl"
-                style={{ background: "#FF5B04" }}
-                disabled={isSaving}
-                isLoading={isSaving}
-                onClick={handlePublish}
-              >
-                Publish Now
-              </Button>
-              <Button
-                variant="flat"
-                className="w-full font-geist font-medium text-sm h-10 rounded-xl bg-black/5 text-gray-600"
-                disabled={isSaving}
-                onClick={handleSaveDraft}
-              >
-                Save as Draft
-              </Button>
-            </div>
-          </div>
-
           {/* Analytics Card */}
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
             <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
@@ -1678,9 +3468,23 @@ const BlogEditor = () => {
 
           {/* Excerpt card */}
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-              Excerpt
-            </p>
+            <div className="flex justify-between items-center mb-3">
+              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                Excerpt
+              </p>
+              <button
+                onClick={() => {
+                  if (!editor || editor.isEmpty) {
+                    setValidationError("Please write some content first so the AI can summarize it.");
+                    return;
+                  }
+                  setIsExcerptModalOpen(true);
+                }}
+                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                ✨ AI Assistant
+              </button>
+            </div>
             <textarea
               className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
               style={{ minHeight: 80 }}
@@ -1692,9 +3496,20 @@ const BlogEditor = () => {
 
           {/* Tags card */}
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-              Tags
-            </p>
+            <div className="flex justify-between items-center mb-3">
+              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                Tags
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsTagsModalOpen(true);
+                }}
+                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                ✨ AI Assistant
+              </button>
+            </div>
             <div className="flex flex-wrap gap-1.5 mb-2">
               {tags.map((tag) => (
                 <span
@@ -1771,6 +3586,39 @@ const BlogEditor = () => {
       </div>
 
       {/* ── Modals ── */}
+      <AICopilotModal
+        isOpen={isCopilotOpen}
+        onClose={() => setIsCopilotOpen(false)}
+        editor={editor}
+        postTitle={title}
+        postType={postType}
+      />
+      <AIExcerptModal
+        isOpen={isExcerptModalOpen}
+        onClose={() => setIsExcerptModalOpen(false)}
+        editor={editor}
+        postTitle={title}
+        postType={postType}
+        excerpt={excerpt}
+        setExcerpt={setExcerpt}
+      />
+      <AITitleModal
+        isOpen={isTitleModalOpen}
+        onClose={() => setIsTitleModalOpen(false)}
+        editor={editor}
+        title={title}
+        setTitle={setTitle}
+        postType={postType}
+      />
+      <AITagsModal
+        isOpen={isTagsModalOpen}
+        onClose={() => setIsTagsModalOpen(false)}
+        editor={editor}
+        postTitle={title}
+        postType={postType}
+        tags={tags}
+        setTags={setTags}
+      />
       {showImageUrlModal && (
         <ImageUrlModal
           editor={editor}
