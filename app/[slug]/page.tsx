@@ -1,7 +1,7 @@
 // app/[slug]/page.tsx
 // This route handles dynamic blog post pages at uipirate.com/[slug]
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import BlogsDetails from "@/screens/blogsDetails";
 import dbConnect from "@/lib/mongodb";
@@ -17,7 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     await dbConnect();
-    const blog = await Blog.findOne({ slug, published: true }).lean();
+    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    const blog = await Blog.findOne({
+      slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
+      published: true,
+    }).lean();
 
     if (!blog) {
       return {
@@ -84,10 +88,18 @@ export const dynamicParams = true;
 export default async function DynamicBlogPage({ params }: Props) {
   const { slug } = params;
 
+  if (slug !== slug.toLowerCase()) {
+    redirect(`/${slug.toLowerCase()}`);
+  }
+
   try {
     await dbConnect();
 
-    const blog = await Blog.findOne({ slug, published: true }).lean();
+    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    const blog = await Blog.findOne({
+      slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
+      published: true,
+    }).lean();
 
     if (!blog) {
       notFound();

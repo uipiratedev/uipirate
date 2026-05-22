@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+
 
 import BlogsDetails from "@/screens/blogsDetails";
 import dbConnect from "@/lib/mongodb";
@@ -15,7 +16,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     await dbConnect();
-    const blog = await Blog.findOne({ slug, published: true }).lean();
+    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    const blog = await Blog.findOne({
+      slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
+      published: true,
+    }).lean();
 
     if (!blog) {
       return {
@@ -87,11 +92,17 @@ export const dynamicParams = true;
 
 const BlogsDetailsPage = async ({ params }: Props) => {
   const { slug } = params;
+
+  if (slug !== slug.toLowerCase()) {
+    redirect(`/blogs/${slug.toLowerCase()}`);
+  }
+
   await dbConnect();
 
   // Fetch blog by slug
+  const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
   const blog = await Blog.findOne({
-    slug,
+    slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
     published: true,
   }).lean();
 
