@@ -887,6 +887,25 @@ const BlogEditPage = () => {
     immediatelyRender: false,
   });
 
+  // Real-time analytics counter hook
+  const editorStats = useEditorState({
+    editor,
+    selector: (ctx: any) => {
+      if (!ctx.editor) return { words: 0, characters: 0, paragraphs: 0, readTime: 1 };
+      const text = ctx.editor.getText();
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const characters = text.length;
+      const readTime = Math.ceil(words / 200) || 1;
+      let paragraphs = 0;
+      ctx.editor.state.doc.descendants((node: any) => {
+        if (node.type.name === "paragraph") {
+          paragraphs++;
+        }
+      });
+      return { words, characters, paragraphs, readTime };
+    },
+  }) || { words: 0, characters: 0, paragraphs: 0, readTime: 1 };
+
   // Fetch existing blog data
   useEffect(() => {
     if (params.id && mounted && !authLoading && editor) {
@@ -1136,6 +1155,50 @@ const BlogEditPage = () => {
                 disabled={isSaving} onClick={handleSaveDraft}>
                 Save as Draft
               </Button>
+            </div>
+          </div>
+
+          {/* Analytics Card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+              Analytics
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                <div className="text-2xl font-bold font-geist text-gray-900">{editorStats.words}</div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Words</div>
+              </div>
+              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                <div className="text-2xl font-bold font-geist text-gray-900">{editorStats.characters}</div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Characters</div>
+              </div>
+              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                <div className="text-2xl font-bold font-geist text-gray-900">{editorStats.paragraphs}</div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Paragraphs</div>
+              </div>
+              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                <div className="text-2xl font-bold font-geist text-[#FF5B04]">{editorStats.readTime} min</div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Read Time</div>
+              </div>
+            </div>
+            
+            {/* Writing Goal Progress */}
+            <div className="mt-3.5 pt-3 border-t border-black/5">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-[10px] font-geist text-gray-500 font-medium">Writing Goal</span>
+                <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
+                  {Math.min(100, Math.round((editorStats.words / 500) * 100))}% ({editorStats.words}/500 words)
+                </span>
+              </div>
+              <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                <div 
+                  className="h-full rounded-full transition-all duration-500 ease-out"
+                  style={{ 
+                    width: `${Math.min(100, (editorStats.words / 500) * 100)}%`,
+                    background: "#FF5B04"
+                  }}
+                />
+              </div>
             </div>
           </div>
 
