@@ -20,6 +20,7 @@ import { Table } from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
+import Link from "@tiptap/extension-link";
 import { Button } from "@heroui/button";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
@@ -200,6 +201,140 @@ const VideoEmbedModal = ({
           <button
             onClick={onClose}
             className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
+// ─── Link Modal ──────────────────────────────────────────────────────────────
+const LinkModal = ({
+  editor,
+  onClose,
+}: {
+  editor: any;
+  onClose: () => void;
+}) => {
+  const [url, setUrl] = useState("");
+  const [linkText, setLinkText] = useState("");
+  const [ctaType, setCtaType] = useState<"none" | "primary" | "secondary">("none");
+
+  useEffect(() => {
+    if (editor) {
+      const { from, to } = editor.state.selection;
+      const selectedText = editor.state.doc.textBetween(from, to, " ");
+      setLinkText(selectedText);
+
+      const attrs = editor.getAttributes("link");
+      if (attrs.href) {
+        setUrl(attrs.href);
+      }
+      if (attrs.class && attrs.class.includes("blog-cta-btn-secondary")) {
+        setCtaType("secondary");
+      } else if (attrs.class && attrs.class.includes("blog-cta-btn")) {
+        setCtaType("primary");
+      }
+    }
+  }, [editor]);
+
+  const insert = () => {
+    const trimmedUrl = url.trim();
+    const trimmedText = linkText.trim() || trimmedUrl;
+    if (trimmedUrl) {
+      if (ctaType === "primary") {
+        editor
+          .chain()
+          .focus()
+          .insertContent(`<a href="${trimmedUrl}" class="blog-cta-btn">${trimmedText}</a> `)
+          .run();
+      } else if (ctaType === "secondary") {
+        editor
+          .chain()
+          .focus()
+          .insertContent(`<a href="${trimmedUrl}" class="blog-cta-btn-secondary">${trimmedText}</a> `)
+          .run();
+      } else {
+        editor
+          .chain()
+          .focus()
+          .insertContent(`<a href="${trimmedUrl}">${trimmedText}</a>`)
+          .run();
+      }
+      onClose();
+    }
+  };
+
+  return (
+    <Modal title="Insert or Edit Link" onClose={onClose}>
+      <div className="space-y-4">
+        <div>
+          <label className="text-xs font-geist text-gray-500 mb-1 block">Link Text *</label>
+          <input
+            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
+            placeholder="Text to display…"
+            value={linkText}
+            onChange={(e) => setLinkText(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="text-xs font-geist text-gray-500 mb-1 block">Link URL *</label>
+          <input
+            autoFocus
+            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
+            placeholder="https://example.com"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && insert()}
+          />
+        </div>
+        <div className="flex flex-col gap-2 select-none">
+          <label className="text-xs font-geist text-gray-600 font-semibold mb-1 block">Link Style</label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="ctaType"
+              checked={ctaType === "none"}
+              onChange={() => setCtaType("none")}
+              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
+            />
+            <span className="text-xs font-geist text-gray-700">Standard Link</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="ctaType"
+              checked={ctaType === "primary"}
+              onChange={() => setCtaType("primary")}
+              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
+            />
+            <span className="text-xs font-geist text-gray-700">Primary CTA Button (Orange)</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              name="ctaType"
+              checked={ctaType === "secondary"}
+              onChange={() => setCtaType("secondary")}
+              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
+            />
+            <span className="text-xs font-geist text-gray-700">Secondary CTA Button (Dark)</span>
+          </label>
+        </div>
+        <div className="flex gap-2 pt-1">
+          <button
+            onClick={insert}
+            disabled={!url.trim()}
+            className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity cursor-pointer"
+            style={{ background: "#FF5B04" }}
+          >
+            Save Link
+          </button>
+          <button
+            onClick={onClose}
+            className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer"
           >
             Cancel
           </button>
@@ -751,7 +886,14 @@ const SlashCommandMenu = ({
 };
 
 // ─── Formatting Toolbar ───────────────────────────────────────────────────────
-const FormattingToolbar = ({ editor }: { editor: any }) => {
+const FormattingToolbar = ({
+  editor,
+  onLinkClick,
+}: {
+  editor: any;
+  onLinkClick: () => void;
+}) => {
+  const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
   if (!editor) return null;
 
   const btn = (active: boolean) =>
@@ -760,6 +902,14 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
     }`;
   const activeStyle = { background: "#FF5B04" };
   const sep = <div className="w-px h-5 bg-black/10 mx-1" />;
+
+  const colors = [
+    { name: "Orange", value: "#FF5B04" },
+    { name: "Black", value: "#1A1A1A" },
+    { name: "Blue", value: "#1D4ED8" },
+    { name: "Green", value: "#15803D" },
+    { name: "Purple", value: "#6D28D9" },
+  ];
 
   return (
     <div
@@ -775,6 +925,65 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
       <button className={btn(editor.isActive("strike"))} style={editor.isActive("strike") ? activeStyle : {}} title="Strikethrough" onClick={() => editor.chain().focus().toggleStrike().run()}><s>S</s></button>
       <button className={btn(editor.isActive("code"))} style={editor.isActive("code") ? activeStyle : {}} title="Inline code" onClick={() => editor.chain().focus().toggleCode().run()}>{"<>"}</button>
       <button className={btn(editor.isActive("highlight"))} style={editor.isActive("highlight") ? activeStyle : {}} title="Highlight" onClick={() => editor.chain().focus().toggleHighlight().run()}>Mk</button>
+      
+      {/* Sleek Text Color Menu */}
+      <div className="relative flex items-center">
+        <button
+          className={btn(colorPaletteOpen)}
+          style={colorPaletteOpen ? activeStyle : {}}
+          title="Text Color"
+          onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
+        >
+          <span className="flex items-center gap-1">
+            A<span className="w-2.5 h-2.5 rounded-full border border-black/10" style={{ backgroundColor: editor.getAttributes("textStyle").color || "#1A1A1A" }} />
+          </span>
+        </button>
+        {colorPaletteOpen && (
+          <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
+            {colors.map((c) => (
+              <button
+                key={c.value}
+                onClick={() => {
+                  editor.chain().focus().setColor(c.value).run();
+                  setColorPaletteOpen(false);
+                }}
+                className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
+                style={{ backgroundColor: c.value }}
+                title={c.name}
+              />
+            ))}
+            <button
+              onClick={() => {
+                editor.chain().focus().unsetColor().run();
+                setColorPaletteOpen(false);
+              }}
+              className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
+              title="Reset Color"
+            >
+              Reset
+            </button>
+          </div>
+        )}
+      </div>
+
+      <button
+        className={btn(editor.isActive("link"))}
+        style={editor.isActive("link") ? activeStyle : {}}
+        title="Insert Link (Ctrl+K)"
+        onClick={onLinkClick}
+      >
+        🔗 Link
+      </button>
+      {editor.isActive("link") && (
+        <button
+          className={btn(false)}
+          title="Remove Link"
+          onClick={() => editor.chain().focus().unsetLink().run()}
+        >
+          Unlink 🔓
+        </button>
+      )}
+
       {sep}
       <button className={btn(editor.isActive("heading", { level: 1 }))} style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}} title="Heading 1" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>H1</button>
       <button className={btn(editor.isActive("heading", { level: 2 }))} style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}} title="Heading 2" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button>
@@ -866,6 +1075,7 @@ const BlogEditPage = () => {
   >("Draft");
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showLinkModal, setShowLinkModal] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(null);
@@ -897,6 +1107,13 @@ const BlogEditPage = () => {
       TableRow,
       TableHeader,
       TableCell,
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          rel: "noopener noreferrer",
+          target: "_blank",
+        },
+      }),
     ],
     content: "",
     editorProps: {
@@ -1156,7 +1373,7 @@ const BlogEditPage = () => {
       </div>
 
       {/* ── Formatting Toolbar ── */}
-      <FormattingToolbar editor={editor} />
+      <FormattingToolbar editor={editor} onLinkClick={() => { editor.chain().focus().extendMarkRange("link").run(); setShowLinkModal(true); }} />
 
       {/* ── Two-column Layout ── */}
       <div className="flex gap-6 p-6 items-start">
@@ -1364,6 +1581,7 @@ const BlogEditPage = () => {
       {/* ── Modals ── */}
       {showImageUrlModal && <ImageUrlModal editor={editor} onClose={() => setShowImageUrlModal(false)} />}
       {showVideoModal && <VideoEmbedModal editor={editor} onClose={() => setShowVideoModal(false)} />}
+      {showLinkModal && <LinkModal editor={editor} onClose={() => setShowLinkModal(false)} />}
 
       {validationError && (
         <AlertModal

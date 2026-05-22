@@ -2274,15 +2274,35 @@ body.modal-open .main-navbar {
    BLOG DETAIL PROSE STYLES
    ======================================== */
 .blog-prose {
+  font-family: var(--font-jakarta), var(--font-sans), sans-serif;
   font-size: 1.0625rem;
-  line-height: 1.8;
+  line-height: 1.85;
   color: #1a1a1a !important;
   max-width: none;
+  letter-spacing: -0.005em;
+}
+
+/* Elegant Text Selection */
+.blog-prose ::selection {
+  background-color: rgba(255, 91, 4, 0.12);
+  color: #FF5B04;
+}
+
+/* Editorial Drop Cap for First Paragraph */
+.blog-prose > p:first-of-type::first-letter {
+  font-size: 3.5rem;
+  font-weight: 700;
+  float: left;
+  line-height: 0.85;
+  margin-right: 0.55rem;
+  margin-top: 0.15rem;
+  color: #FF5B04;
+  font-family: var(--font-geist), var(--font-sans), sans-serif;
 }
 
 .blog-prose p {
   margin-top: 0;
-  margin-bottom: 1.15rem;
+  margin-bottom: 1.25rem;
   color: #1a1a1a !important;
 }
 
@@ -2290,48 +2310,72 @@ body.modal-open .main-navbar {
 .blog-prose h2,
 .blog-prose h3,
 .blog-prose h4 {
+  font-family: var(--font-geist), var(--font-sans), sans-serif;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.2;
   color: #111 !important;
-  margin-top: 2.25rem;
-  margin-bottom: 0.75rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.025em;
 }
 
 .blog-prose h1 {
-  font-size: 2rem;
-  letter-spacing: -0.5px;
+  font-size: 2.25rem;
 }
 
 .blog-prose h2 {
-  font-size: 1.5rem;
-  letter-spacing: -0.3px;
+  font-size: 1.625rem;
+  border-left: 3.5px solid #FF5B04;
+  padding-left: 0.85rem;
+  margin-left: -0.85rem;
 }
 
 .blog-prose h3 {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
 }
 
 .blog-prose h4 {
-  font-size: 1.05rem;
+  font-size: 1.125rem;
 }
 
 .blog-prose ul,
 .blog-prose ol {
-  margin: 1.2rem 0 1.2rem 0;
-  padding-left: 1.6rem;
+  margin: 1.5rem 0;
 }
 
+/* Curated Brand Orange Bullets for Unordered Lists */
 .blog-prose ul {
-  list-style-type: disc;
+  list-style: none;
+  padding-left: 0;
+}
+
+.blog-prose ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: #1a1a1a !important;
+}
+
+.blog-prose ul li::before {
+  content: "•";
+  color: #FF5B04;
+  font-weight: bold;
+  font-size: 1.35rem;
+  position: absolute;
+  left: 0.25rem;
+  top: -0.15rem;
 }
 
 .blog-prose ol {
   list-style-type: decimal;
+  padding-left: 1.5rem;
 }
 
-.blog-prose li {
-  margin-bottom: 0.1rem;
-  line-height: 1.5;
+.blog-prose ol li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+  line-height: 1.6;
   color: #1a1a1a !important;
 }
 
@@ -2339,55 +2383,66 @@ body.modal-open .main-navbar {
   color: #111;
 }
 
+/* Premium Pull-Quote Style for Blockquotes */
 .blog-prose blockquote {
-  border-left: 3px solid #FF5B04;
-  margin: 1.75rem 0;
-  padding: 0.6rem 1.25rem;
-  background-color: rgba(255, 91, 4, 0.04);
-  border-radius: 0 8px 8px 0;
-  color: #555;
+  border-left: 4px solid #FF5B04;
+  margin: 2.25rem 0;
+  padding: 0.85rem 1.5rem;
+  background-color: rgba(255, 91, 4, 0.035);
+  border-radius: 4px 16px 16px 4px;
+  color: #2b2b2b;
+  font-size: 1.15rem;
+  line-height: 1.7;
   font-style: italic;
+  font-weight: 500;
+  box-shadow: inset 2px 0 8px rgba(255, 91, 4, 0.01);
 }
 
 .blog-prose strong {
   color: #111;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .blog-prose em {
   font-style: italic;
-  color: #444;
+  color: #333;
 }
 
 .blog-prose a {
   color: #FF5B04;
   text-decoration: underline;
   text-underline-offset: 3px;
+  font-weight: 500;
 }
 
 .blog-prose a:hover {
   color: #E54F00;
 }
 
+/* Sleek Branded Inline Code */
 .blog-prose code {
   font-family: var(--font-geist-mono, monospace);
-  font-size: 0.875em;
-  background-color: #f3f3f3;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  padding: 0.15em 0.4em;
-  color: #c7254e;
+  font-size: 0.85em;
+  background-color: #f7f7f8;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 6px;
+  padding: 0.2em 0.4em;
+  color: #FF5B04;
+  font-weight: 500;
 }
 
+/* Dark Terminal Codeblock */
 .blog-prose pre {
-  background-color: #1a1a1a;
-  color: #e5e5e5;
-  border-radius: 10px;
-  padding: 1.25rem 1.5rem;
+  background-color: #0c0c0d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f4f4f5;
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
   overflow-x: auto;
-  margin: 1.75rem 0;
-  font-size: 0.875rem;
-  line-height: 1.7;
+  margin: 2.25rem 0;
+  font-size: 0.85rem;
+  line-height: 1.75;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
 }
 
 .blog-prose pre code {
@@ -2398,18 +2453,21 @@ body.modal-open .main-navbar {
   font-size: inherit;
 }
 
+/* Gradient Fade Divider */
 .blog-prose hr {
   border: none;
-  border-top: 1px solid #e5e5e5;
-  margin: 2.5rem 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(0,0,0,0.08) 15%, rgba(0,0,0,0.08) 85%, transparent);
+  margin: 3.5rem 0;
 }
 
 .blog-prose img {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: 12px;
-  margin: 1.5rem auto;
+  border-radius: 14px;
+  margin: 2rem auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
 
 /* Ensure paragraph wrapping an image acts as a flex column so margin:auto centers the img */
@@ -2418,23 +2476,95 @@ body.modal-open .main-navbar {
   justify-content: center;
 }
 
+/* Polished Interactive Table aesthetics matching Brand Design */
 .blog-prose table {
   width: 100%;
-  border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-size: 0.95rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 2.5rem 0;
+  font-size: 0.925rem;
+  border: 1px solid rgba(255, 91, 4, 0.15);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(255, 91, 4, 0.03);
 }
 
 .blog-prose th,
 .blog-prose td {
-  border: 1px solid #e5e5e5;
-  padding: 0.6rem 1rem;
+  border-bottom: 1px solid rgba(255, 91, 4, 0.08);
+  border-right: 1px solid rgba(255, 91, 4, 0.06);
+  padding: 0.9rem 1.25rem;
   text-align: left;
 }
 
+.blog-prose th:last-child,
+.blog-prose td:last-child {
+  border-right: none;
+}
+
+.blog-prose tr:last-child td {
+  border-bottom: none;
+}
+
 .blog-prose th {
-  background-color: #f5f5f5;
-  font-weight: 600;
+  background-color: #FFF5F0; /* Soft warm Brand Orange tint */
+  color: #1A1A1A;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid rgba(255, 91, 4, 0.2) !important;
+}
+
+.blog-prose tr:hover td {
+  background-color: rgba(255, 91, 4, 0.025); /* Faint brand orange glow on row hover */
+}
+
+/* Call to Action (CTA) Button styles within blogs */
+.blog-prose a.blog-cta-btn,
+.notion-editor-wrapper .ProseMirror a.blog-cta-btn,
+.blog-prose a.blog-cta-btn-secondary,
+.notion-editor-wrapper .ProseMirror a.blog-cta-btn-secondary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  border-radius: 12px !important;
+  padding: 0.8rem 1.6rem !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s ease !important;
+  margin: 0.75rem 0.5rem 0.75rem 0 !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+.blog-prose a.blog-cta-btn,
+.notion-editor-wrapper .ProseMirror a.blog-cta-btn {
+  background-color: #FF5B04 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(255, 91, 4, 0.2) !important;
+}
+
+.blog-prose a.blog-cta-btn:hover,
+.notion-editor-wrapper .ProseMirror a.blog-cta-btn:hover {
+  background-color: #E54F00 !important;
+  transform: translateY(-1.2px) !important;
+  box-shadow: 0 6px 16px rgba(255, 91, 4, 0.35) !important;
+}
+
+.blog-prose a.blog-cta-btn-secondary,
+.notion-editor-wrapper .ProseMirror a.blog-cta-btn-secondary {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.blog-prose a.blog-cta-btn-secondary:hover,
+.notion-editor-wrapper .ProseMirror a.blog-cta-btn-secondary:hover {
+  background-color: #333333 !important;
+  transform: translateY(-1.2px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* ========================================
