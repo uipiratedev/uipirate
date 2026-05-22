@@ -1734,32 +1734,6 @@ const BlogEditor = () => {
 
         {/* ── Settings Sidebar ── */}
         <div className="w-72 flex-shrink-0 space-y-4">
-          {/* Publish card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-              Publish
-            </p>
-            <div className="space-y-2">
-              <Button
-                className="w-full font-geist font-medium text-white text-sm h-10 rounded-xl"
-                style={{ background: "#FF5B04" }}
-                disabled={isSaving}
-                isLoading={isSaving}
-                onClick={handlePublish}
-              >
-                Publish Now
-              </Button>
-              <Button
-                variant="flat"
-                className="w-full font-geist font-medium text-sm h-10 rounded-xl bg-black/5 text-gray-600"
-                disabled={isSaving}
-                onClick={handleSaveDraft}
-              >
-                Save as Draft
-              </Button>
-            </div>
-          </div>
-
           {/* Analytics Card */}
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
             <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
