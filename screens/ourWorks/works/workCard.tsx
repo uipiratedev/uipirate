@@ -132,12 +132,6 @@ function ProjectCard({ project }: { project: Project }) {
 export default function CaseStudyGrid() {
   return (
     <section className="space-y-8 font-sans">
-      {/* Grid layout: 2 columns on desktop, 1 on mobile */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {projects.map((project) => (
-          <ProjectCard key={project.name} project={project} />
-        ))}
-      </div>
 
       {/* Closing CTA — full-width, confident, dark */}
       <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#212121] to-[#151514] noise-texture px-12 py-20 max-md:px-6 max-md:py-12 text-center">

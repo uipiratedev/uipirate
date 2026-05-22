@@ -43,12 +43,12 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="w-full py-32 pb-0 min-h-screen">
+    <section className="w-full py-16 pb-0 min-h-screen">
       <div className="container mx-auto px-4 mb-0">
          <div className="mb-6 flex flex-row items-center justify-center">
           <GlassBadge variant="gradient">WHY CHOOSE US</GlassBadge>
         </div>
-        <h2 className="heading-center mb-6">
+        <h2 className="heading-center mb-10">
         Why SaaS & AI Teams <span className="text-brand-orange">Choose UI Pirate</span>?
         </h2>
        
