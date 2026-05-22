@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 
 import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } from "@/config/fonts";
@@ -322,6 +323,7 @@ export default function RootLayout({
               <ConditionalFooter />
             </PageLoader>
             <SpeedInsights />
+            <Analytics />
             <CookieConsent />
             <StickyMobileCTA />
           </div>
