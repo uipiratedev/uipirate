@@ -45,8 +45,8 @@ export default function Breadcrumbs() {
   const pathname = usePathname();
 
   const breadcrumbs = useMemo(() => {
-    // Don't render breadcrumbs on the homepage
-    if (pathname === "/") return [];
+    // Don't render breadcrumbs on the homepage or admin pages
+    if (pathname === "/" || pathname.startsWith("/admin")) return [];
 
     const segments = pathname.split("/").filter(Boolean);
     const items: BreadcrumbItem[] = [

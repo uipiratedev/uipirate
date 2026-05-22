@@ -1,0 +1,95 @@
+
+> next-app-template@0.0.1 build
+> next build
+
+  ▲ Next.js 14.2.35
+  - Environments: .env
+
+   Creating an optimized production build ...
+(node:32228) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/54) ...
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+   Generating static pages (13/54) 
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+   Generating static pages (26/54) 
+   Generating static pages (40/54) 
+ ✓ Generating static pages (54/54)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                Size     First Load JS
+┌ ○ /                                                      12 kB           253 kB
+├ ○ /_not-found                                            159 B          88.1 kB
+├ ● /[slug]                                                163 B           148 kB
+├   ├ /text-blog
+├   └ /nhksfsdf
+├ ○ /about                                                 10.9 kB         193 kB
+├ ƒ /about/opengraph-image                                 0 B                0 B
+├ ƒ /admin/blogs                                           2.11 kB         147 kB
+├ ƒ /admin/blogs/create                                    4.96 kB         255 kB
+├ ƒ /admin/blogs/edit/[id]                                 5.14 kB         255 kB
+├ ƒ /admin/dashboard                                       245 B           136 kB
+├ ○ /admin/login                                           1.57 kB         138 kB
+├ ƒ /api/auth/login                                        0 B                0 B
+├ ƒ /api/auth/logout                                       0 B                0 B
+├ ƒ /api/auth/me                                           0 B                0 B
+├ ƒ /api/blogs                                             0 B                0 B
+├ ƒ /api/blogs/[id]                                        0 B                0 B
+├ ƒ /api/estimates                                         0 B                0 B
+├ ƒ /api/leads                                             0 B                0 B
+├ ○ /api/sitemap                                           0 B                0 B
+├ ○ /apps4sale                                             5.47 kB         177 kB
+├ ƒ /apps4sale/[slug]                                      5.12 kB         183 kB
+├ ○ /blogs                                                 4.99 kB         203 kB
+├ ƒ /blogs/[slug]                                          163 B           148 kB
+├ ○ /case-studies                                          23.8 kB         255 kB
+├ ● /case-studies/[slug]                                   178 B          96.8 kB
+├   ├ /case-studies/xperiti
+├   ├ /case-studies/legaltech-ai-saas
+├   ├ /case-studies/ion
+├   └ [+10 more paths]
+├ ○ /community                                             3.36 kB         100 kB
+├ ○ /contact                                               6.08 kB         229 kB
+├ ○ /faqs                                                  14.3 kB         195 kB
+├ ○ /mini-saas-apps                                        3.33 kB         100 kB
+├ ƒ /opengraph-image                                       0 B                0 B
+├ ○ /ourWorks                                              159 B          88.1 kB
+├ ○ /pricing                                               5.71 kB         250 kB
+├ ƒ /pricing/opengraph-image                               0 B                0 B
+├ ○ /privacy                                               6.5 kB          145 kB
+├ ○ /privacy-policy                                        159 B          88.1 kB
+├ ○ /resources                                             159 B          88.1 kB
+├ ○ /saas-apps/ai-calling                                  8.23 kB         169 kB
+├ ● /services/[id]                                         13.2 kB         195 kB
+├   ├ /services/SaaS-Web-&-Mobile-Apps
+├   ├ /services/Landing-Pages-&-Business-Websites
+├   ├ /services/Design-System-&-Component-Library
+├   └ [+4 more paths]
+├ ƒ /services/[id]/opengraph-image/[[...__metadata_id__]]  0 B                0 B
+├ ○ /sitemap                                               4.81 kB         101 kB
+├ ○ /sitemap.xml                                           0 B                0 B
+└ ○ /terms                                                 6.3 kB          145 kB
++ First Load JS shared by all                              87.9 kB
+  ├ chunks/2117-9a696ed141e5fb62.js                        31.9 kB
+  ├ chunks/fd9d1056-a402954fb213d0cb.js                    53.6 kB
+  └ other shared chunks (total)                            2.37 kB
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+ƒ  (Dynamic)  server-rendered on demand
+

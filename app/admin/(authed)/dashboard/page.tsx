@@ -113,12 +113,12 @@ export default async function AdminDashboardPage() {
           Quick Actions
         </h2>
         <div className="flex flex-wrap gap-3">
-          <Link href="/blogs/create">
+          <Link href="/admin/blogs/create">
             <Button className="bg-blue-600 text-white hover:bg-blue-700">
               ➕ Create New Blog
             </Button>
           </Link>
-          <Link href="/admin/dashboard/blogs">
+          <Link href="/admin/blogs">
             <Button className="bg-gray-100 dark:bg-gray-700" variant="flat">
               📝 Manage Blogs
             </Button>
@@ -134,7 +134,7 @@ export default async function AdminDashboardPage() {
           </h2>
           <Link
             className="text-blue-600 dark:text-blue-400 hover:underline text-sm font-medium"
-            href="/admin/dashboard/blogs"
+            href="/admin/blogs"
           >
             View All →
           </Link>
@@ -145,7 +145,7 @@ export default async function AdminDashboardPage() {
             <p className="text-gray-500 dark:text-gray-400 mb-4">
               No blogs yet. Create your first blog!
             </p>
-            <Link href="/blogs/create">
+            <Link href="/admin/blogs/create">
               <Button className="bg-blue-600 text-white hover:bg-blue-700">
                 Create Blog
               </Button>
@@ -183,7 +183,7 @@ export default async function AdminDashboardPage() {
                     </span>
                   </div>
                 </div>
-                <Link href={`/admin/dashboard/blogs?edit=${blog._id}`}>
+                <Link href={`/admin/blogs?edit=${blog._id}`}>
                   <Button
                     className="bg-gray-100 dark:bg-gray-700"
                     size="sm"

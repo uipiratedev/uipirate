@@ -97,7 +97,7 @@ export default function AdminBlogsPage() {
             View, edit, and delete your blog posts
           </p>
         </div>
-        <Link href="/blogs/create">
+        <Link href="/admin/blogs/create">
           <Button className="bg-blue-600 text-white hover:bg-blue-700">
             ➕ Create New Blog
           </Button>
@@ -169,7 +169,7 @@ export default function AdminBlogsPage() {
                 : "No blogs yet. Create your first blog!"}
             </p>
             {!searchQuery && (
-              <Link href="/blogs/create">
+              <Link href="/admin/blogs/create">
                 <Button className="bg-blue-600 text-white hover:bg-blue-700">
                   Create Blog
                 </Button>
@@ -236,7 +236,7 @@ export default function AdminBlogsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <Link href={`/blogs/edit/${blog._id}`}>
+                        <Link href={`/admin/blogs/edit/${blog._id}`}>
                           <Button
                             className="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
                             size="sm"

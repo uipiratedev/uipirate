@@ -18,18 +18,18 @@ const AdminSidebar = () => {
     },
     {
       label: "Blogs",
-      href: "/admin/dashboard/blogs",
+      href: "/admin/blogs",
       icon: "📝",
     },
     {
       label: "Create Blog",
-      href: "/blogs/create",
+      href: "/admin/blogs/create",
       icon: "➕",
     },
   ];
 
   const isActive = (href: string) => {
-    if (href === "/admin/dashboard") {
+    if (href === "/admin/dashboard" || href === "/admin/blogs") {
       return pathname === href;
     }
 

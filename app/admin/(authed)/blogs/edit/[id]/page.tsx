@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -12,7 +13,6 @@ import Typography from "@tiptap/extension-typography";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { Button } from "@heroui/button";
-import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
 
@@ -253,8 +253,11 @@ const FormattingToolbar = ({ editor }: { editor: any }) => {
   );
 };
 
-const BlogEditor = () => {
+const BlogEditPage = () => {
+  const params = useParams();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [slashMenuOpen, setSlashMenuOpen] = useState(false);
   const [slashMenuPosition, setSlashMenuPosition] = useState({
     top: 0,
@@ -270,8 +273,8 @@ const BlogEditor = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tags, setTags] = useState<string[]>([]);
   const [saveStatus, setSaveStatus] = useState<string>("Draft");
+  const [blogId, setBlogId] = useState<string>("");
   const editorRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   // Require authentication
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -446,8 +449,6 @@ const BlogEditor = () => {
         reader.onload = (e) => {
           const url = e.target?.result as string;
 
-          setFeaturedImage(url);
-
           setBannerImage(url);
         };
         reader.readAsDataURL(file);
@@ -455,6 +456,45 @@ const BlogEditor = () => {
     },
     [],
   );
+
+  useEffect(() => {
+    if (params.id && mounted && !authLoading && editor) {
+      fetchBlog();
+    }
+  }, [params.id, mounted, authLoading, editor]);
+
+  const fetchBlog = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/blogs/${params.id}`);
+      const data = await response.json();
+
+      if (data.success) {
+        const blog = data.data;
+
+        setBlogId(blog._id);
+        setTitle(blog.title);
+        setExcerpt(blog.excerpt || "");
+        setFeaturedImage(blog.featuredImage || "");
+        setBannerImage(blog.bannerImage || "");
+        setTags(blog.tags || []);
+        setSaveStatus(blog.published ? "Published" : "Draft");
+
+        // Set editor content
+        if (editor) {
+          editor.commands.setContent(blog.content);
+        }
+      } else {
+        alert("Blog not found");
+        router.push("/admin/blogs");
+      }
+    } catch (error) {
+      alert("Failed to load blog");
+      router.push("/admin/blogs");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const saveBlog = async (published: boolean) => {
     if (!title.trim()) {
@@ -473,8 +513,8 @@ const BlogEditor = () => {
     setSaveStatus(published ? "Publishing..." : "Saving...");
 
     try {
-      const response = await fetch("/api/blogs", {
-        method: "POST",
+      const response = await fetch(`/api/blogs/${blogId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -492,22 +532,22 @@ const BlogEditor = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to save blog");
+        throw new Error(data.error || "Failed to update blog");
       }
 
       setSaveStatus(published ? "Published" : "Draft Saved");
       alert(
         published
-          ? "Blog published successfully!"
-          : "Draft saved successfully!",
+          ? "Blog updated and published!"
+          : "Blog updated successfully!",
       );
 
-      // Redirect to blog list or edit page
+      // Redirect to blog list
       setTimeout(() => {
-        router.push("/admin/dashboard/blogs");
+        router.push("/admin/blogs");
       }, 1500);
     } catch (error: any) {
-      alert(error.message || "Failed to save blog");
+      alert(error.message || "Failed to update blog");
       setSaveStatus("Error");
     } finally {
       setIsSaving(false);
@@ -516,13 +556,13 @@ const BlogEditor = () => {
 
   const handleSaveDraft = useCallback(() => {
     saveBlog(false);
-  }, [title, editor, excerpt, featuredImage, bannerImage, tags]);
+  }, [title, editor, excerpt, featuredImage, bannerImage, tags, blogId]);
 
   const handlePublish = useCallback(() => {
     saveBlog(true);
-  }, [title, editor, excerpt, featuredImage, bannerImage, tags]);
+  }, [title, editor, excerpt, featuredImage, bannerImage, tags, blogId]);
 
-  if (!mounted || !editor || authLoading) return null;
+  if (!mounted || !editor || authLoading || loading) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -531,7 +571,7 @@ const BlogEditor = () => {
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-              Create Post
+              Edit Post
             </h1>
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {saveStatus}
@@ -842,4 +882,4 @@ const BlogEditor = () => {
   );
 };
 
-export default BlogEditor;
+export default BlogEditPage;
