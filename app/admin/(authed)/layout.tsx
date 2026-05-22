@@ -10,14 +10,11 @@ export default async function AdminDashboardLayout({
   await requireAuth();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="flex">
-        {/* Sidebar */}
+    <div className="min-h-screen" style={{ background: "#F7F7F6" }}>
+      <div className="flex min-h-screen">
         <AdminSidebar />
-
-        {/* Main Content */}
-        <div className="flex-1 ml-64">
-          <main className="p-8">{children}</main>
+        <div className="flex-1 ml-60 min-w-0">
+          <main className="px-8 py-8 w-full">{children}</main>
         </div>
       </div>
     </div>

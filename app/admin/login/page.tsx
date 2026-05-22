@@ -48,91 +48,112 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-gray-700">
-          {/* Logo and Title */}
-          <div className="text-center mb-8">
-            <img
-              alt="UI Pirate Logo"
-              className="w-16 h-16 mx-auto mb-4"
-              src="https://res.cloudinary.com/damm9iwho/image/upload/v1729862847/Div_framer-bfl99f_v7cltn.svg"
-            />
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-              Admin Login
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Sign in to access the dashboard
-            </p>
+    <div className="min-h-screen flex" style={{ background: "#151514" }}>
+      {/* Left branding panel */}
+      <div className="hidden lg:flex flex-col justify-between w-80 p-10 flex-shrink-0"
+        style={{ borderRight: "1px solid rgba(255,255,255,0.06)" }}>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#FF5B04" }}>
+            <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+              <path clipRule="evenodd" fillRule="evenodd"
+                d="M17.648 10.13L15.878 7.026 7.03 22.55h3.498l7.12-12.42zm2.232 3.916l-1.77 3.152 1.284 2.253h-2.549l-1.74 3.099h9.622l-4.847-8.504z"
+                fill="white" />
+            </svg>
+          </div>
+          <span className="text-white font-semibold font-geist text-sm">UI Pirate</span>
+        </div>
+        <div>
+          <p className="text-xs font-jetbrains-mono uppercase tracking-widest mb-3"
+            style={{ color: "#FF5B04" }}>Admin Panel</p>
+          <p className="text-white font-geist text-2xl font-bold leading-snug">
+            Manage your content.
+          </p>
+          <p className="mt-2 text-sm font-geist" style={{ color: "rgba(255,255,255,0.4)" }}>
+            Secure access — authorized personnel only.
+          </p>
+        </div>
+        <p className="text-xs font-geist" style={{ color: "rgba(255,255,255,0.2)" }}>
+          © {new Date().getFullYear()} UI Pirate
+        </p>
+      </div>
+
+      {/* Right form panel */}
+      <div className="flex-1 flex items-center justify-center px-6">
+        <div className="w-full max-w-sm">
+          {/* Mobile logo */}
+          <div className="flex items-center gap-3 mb-10 lg:hidden">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#FF5B04" }}>
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
+                <path clipRule="evenodd" fillRule="evenodd"
+                  d="M17.648 10.13L15.878 7.026 7.03 22.55h3.498l7.12-12.42zm2.232 3.916l-1.77 3.152 1.284 2.253h-2.549l-1.74 3.099h9.622l-4.847-8.504z"
+                  fill="white" />
+              </svg>
+            </div>
+            <span className="text-white font-semibold font-geist text-sm">UI Pirate Admin</span>
           </div>
 
-          {/* Error Message */}
+          <h1 className="text-2xl font-bold font-geist text-white tracking-tight mb-1">Sign in</h1>
+          <p className="text-sm font-geist mb-8" style={{ color: "rgba(255,255,255,0.4)" }}>
+            Enter your credentials to continue
+          </p>
+
           {error && (
-            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+            <div className="mb-6 p-3.5 rounded-xl border text-sm font-geist"
+              style={{ background: "rgba(239,68,68,0.1)", borderColor: "rgba(239,68,68,0.2)", color: "#F87171" }}>
+              {error}
             </div>
           )}
 
-          {/* Login Form */}
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
+              <label className="block text-xs font-medium font-geist mb-1.5" style={{ color: "rgba(255,255,255,0.5)" }}>
+                Email
+              </label>
               <Input
                 required
                 classNames={{
-                  input: "text-base",
-                  label: "text-base font-medium",
+                  inputWrapper: "bg-white/5 border-white/10 hover:border-white/20 data-[focus=true]:border-[#FF5B04]",
+                  input: "text-sm font-geist text-white placeholder:text-white/20",
                 }}
                 disabled={isLoading}
-                label="Email"
                 placeholder="admin@uipirate.com"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-
             <div>
+              <label className="block text-xs font-medium font-geist mb-1.5" style={{ color: "rgba(255,255,255,0.5)" }}>
+                Password
+              </label>
               <Input
                 required
                 classNames={{
-                  input: "text-base",
-                  label: "text-base font-medium",
+                  inputWrapper: "bg-white/5 border-white/10 hover:border-white/20 data-[focus=true]:border-[#FF5B04]",
+                  input: "text-sm font-geist text-white placeholder:text-white/20",
                 }}
                 disabled={isLoading}
-                label="Password"
-                placeholder="Enter your password"
+                placeholder="••••••••"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-
-            <Button
-              className="w-full bg-blue-600 text-white hover:bg-blue-700 font-semibold text-base py-6"
-              disabled={isLoading}
-              isLoading={isLoading}
-              type="submit"
-            >
-              {isLoading ? "Signing in..." : "Sign In"}
+            <Button type="submit" disabled={isLoading} isLoading={isLoading}
+              className="w-full h-11 font-geist font-semibold text-sm text-white rounded-xl mt-2"
+              style={{ background: "#FF5B04" }}>
+              {isLoading ? "Signing in…" : "Sign In"}
             </Button>
           </form>
 
-          {/* Footer */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Protected area - Authorized access only
-            </p>
+          <div className="mt-8 text-center">
+            <a href="/" className="text-xs font-geist transition-colors"
+              style={{ color: "rgba(255,255,255,0.25)" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.6)")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}>
+              ← Back to website
+            </a>
           </div>
-        </div>
-
-        {/* Back to Home Link */}
-        <div className="text-center mt-6">
-          <a
-            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-            href="/"
-          >
-            ← Back to Home
-          </a>
         </div>
       </div>
     </div>
