@@ -17,7 +17,7 @@ const Blogs = () => {
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
       />
-      <FeaturedBlogs />
+      <FeaturedBlogs searchQuery={searchQuery} selectedCategory={selectedCategory} />
       <BlogsNewsletter />
     </div>
   );

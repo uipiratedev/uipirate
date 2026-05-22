@@ -117,9 +117,9 @@ export default async function DynamicBlogPage({ params }: Props) {
               description: (blog as any).excerpt || (blog as any).description,
               image: (blog as any).featuredImage || undefined,
               author: {
-                "@type": "Organization",
-                name: "UI Pirate by Vishal Anand",
-                url: "https://uipirate.com",
+                "@type": "Person",
+                name: "Vishal Anand",
+                url: "https://uipirate.com/about",
               },
               publisher: {
                 "@type": "Organization",

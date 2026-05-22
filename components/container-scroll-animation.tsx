@@ -54,7 +54,7 @@ export const ContainerScroll = ({
   );
 };
 
-export const Header = ({ translate, titleComponent, isMobile }: any) => {
+const Header = ({ translate, titleComponent, isMobile }: any) => {
   if (isMobile) {
     return (
       <div className="div max-w-5xl mx-auto text-center">
@@ -75,7 +75,7 @@ export const Header = ({ translate, titleComponent, isMobile }: any) => {
   );
 };
 
-export const Card = ({
+const Card = ({
   rotate,
   scale,
   children,

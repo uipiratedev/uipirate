@@ -8,6 +8,7 @@ interface BlogData {
   content: string;
   excerpt?: string;
   featuredImage?: string;
+  bannerImage?: string;
   tags?: string[];
   author: {
     name: string;
@@ -24,11 +25,14 @@ interface BlogsDetailsProps {
 }
 
 const BlogsDetails = ({ blog }: BlogsDetailsProps) => {
+  const tag = blog.tags?.[0] ?? "Blog";
+  const banner = blog.bannerImage || blog.featuredImage || "";
+
   return (
     <div>
       <BlogsDetailsHero
-        imageUrl={blog.featuredImage || ""}
-        tag={blog.tags?.[0] ? `🏷️ ${blog.tags[0]}` : "📝 Blog"}
+        imageUrl={banner}
+        tag={tag}
         title={blog.title}
       />
       <BlogContents blog={blog} />

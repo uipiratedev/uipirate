@@ -31,7 +31,7 @@ interface LetsTalkButtonProps {
  * <LetsTalkButton variant="color">Let's Talk</LetsTalkButton>
  * <LetsTalkButton fullWidth>Let's Talk</LetsTalkButton>
  */
-export const LetsTalkButton = ({ 
+const LetsTalkButton = ({
   children = "Let's Talk", 
   href = "https://wa.link/i35lma",
   className = "",

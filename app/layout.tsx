@@ -8,9 +8,9 @@ import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } fr
 import CookieConsent from "@/components/CookieConsent";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
+import { ConditionalFooter } from "@/components/ConditionalFooter";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
-import { Footer } from "@/components/footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { Providers } from "./providers";
 
@@ -319,7 +319,7 @@ export default function RootLayout({
               <main className="flex-1 min-h-screen" id="main-content">
                 {children}
               </main>
-              <Footer />
+              <ConditionalFooter />
             </PageLoader>
             <SpeedInsights />
             <CookieConsent />

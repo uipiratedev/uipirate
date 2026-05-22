@@ -34,6 +34,27 @@ export const metadata: Metadata = {
 const BlogsPage = () => {
   return (
     <div>
+      {/* Blog Index JSON-LD for rich snippets */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            name: "UI Pirate Design Blog",
+            description: "Expert insights on UI/UX design, SaaS product design, design systems, and AI application design.",
+            url: "https://uipirate.com/blogs",
+            publisher: {
+              "@type": "Organization",
+              name: "UI Pirate",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
+              },
+            },
+          }),
+        }}
+        type="application/ld+json"
+      />
       <Blogs />
     </div>
   );

@@ -16,10 +16,10 @@
 | **3. AI Visibility** | ✅ DONE | `llms.txt`, `ai-plugin.json`, `ai-data.json`, `enterprise-schema.json`, `SiteNavigationElement` |
 | **4. Site & Schema** | ✅ DONE | About, FAQPage, Breadcrumbs, portfolio meta, dynamic Edge OG images |
 | **5. Lead Generation** | ✅ DONE | `/contact` + `ProjectEstimate` + Cal.com, footer `LeadCaptureModal`, `/api/leads` → MongoDB |
-| **A. Content (blogs + case studies + magnets)** | 🟡 IN PROGRESS | 2/6 case studies, 0/16 blog posts, 0/4 lead magnets |
+| **A. Content (blogs + case studies + magnets)** | 🟡 IN PROGRESS | 2/6 case studies, 3/16 blog posts, 0/4 lead magnets |
 | **B. Off-Page SEO** | 🔴 NOT STARTED | Directories, guest posts, backlinks |
 | **C.1 Programmatic SEO** | 🔴 NOT STARTED | USA landing + 5 city/service combo pages |
-| **C.2 Advanced Schema** | 🟡 PARTIAL | ✅ AggregateRating + Reviews; ❌ HowTo, VideoObject, BlogPosting `author` Person |
+| **C.2 Advanced Schema** | 🟡 PARTIAL | ✅ AggregateRating + Reviews + BlogPosting author Person; ❌ HowTo, VideoObject |
 | **C.3 Core Web Vitals** | 🔴 NOT STARTED | Banner video, lazy images, bundle audit |
 
 ---
@@ -70,15 +70,14 @@
 | M5 | Removed stale hardcoded `<meta name="keywords">` (Metadata API now owns it) | `app/layout.tsx` |
 | — | Dropped `/resources` + `/community` from sitemap (consistent with above) | `app/sitemap.ts` |
 | M6 | **`/ourWorks` merged into `/case-studies`** — single canonical URL for portfolio + case studies. `/ourWorks` now 308-redirects; merged page renders hero + featured deep-dive case studies (`data/case-studies.json`) + recent works grid + WhyChooseUs + ProjectEstimate. All internal links updated (footer, nav config, GlobalCTA, layout JSON-LD `SiteNavigationElement`, both sitemaps, `/sitemap` page, llms.txt, Behance "Explore All Work" CTA). | `app/ourWorks/page.tsx`, `screens/caseStudies/index.tsx`, `app/case-studies/page.tsx`, `app/sitemap.ts`, `app/api/sitemap/route.ts`, `app/layout.tsx`, `app/sitemap/page.tsx`, `screens/sitemap/index.tsx`, `components/footer.tsx`, `components/GlobalCTA.tsx`, `components/Breadcrumbs.tsx`, `config/site.ts`, `screens/landing/behance/LandingBehance.tsx`, `public/llms.txt` |
+| C3 | Removed empty `app/usa/` directory to prevent partial/empty route indexing issues. | `app/usa/` (deleted) |
+| M4 | Switched BlogPosting schema `author` from Organization to Person (Vishal Anand) | `app/[slug]/page.tsx` |
 
 ---
 
 ## 🟡 Audit Items Still Open
 
-| Ref | Item | Effort | ETA |
-|:---:|------|:------:|:---:|
-| C3 | Empty `app/usa/` directory — either delete or scaffold USA landing page (covers Phase 8.1) | 5 min vs 1 day | TBD |
-| M4 | `app/[slug]/page.tsx` BlogPosting `author` → `{ @type: Person, name: "Vishal Anand" }` for E-E-A-T | 5 min | This week |
+*All audit items successfully resolved!*
 
 ---
 
@@ -112,16 +111,16 @@ Each entry in `data/case-studies.json` auto-renders at `/case-studies/<slug>` wi
 
 **Month 1–2 · Foundation (8 posts)**
 
-| # | Title | Target Keyword | Type |
-|:-:|-------|---------------|------|
-| 1 | From Idea to Product: A Step-by-Step Guide for Non-Technical Founders | idea to product | Pillar |
-| 2 | How to Choose a Product Design & Development Agency (Buyer's Guide) | hire product design agency | Commercial |
-| 3 | Case Study: Building Xperiti's Enterprise Research Platform from Scratch | enterprise saas design case study | Case Study |
-| 4 | Product Thinking vs Feature Factories: Why Most SaaS Products Fail | product thinking for saas | Thought Leadership |
-| 5 | UI/UX Design + Development Cost in 2026: Complete Pricing Guide | ui ux design cost | Commercial |
-| 6 | Case Study: AI-Powered LegalTech for APAC's Largest Law Firm | ai app design case study | Case Study |
-| 7 | SaaS Dashboard Design: 12 Best Practices for Complex Enterprise Apps | saas dashboard design | Pillar |
-| 8 | Angular vs React for Enterprise Applications: A Decision Framework | angular vs react enterprise | Tutorial |
+| # | Title | Target Keyword | Type | Status |
+|:-:|-------|---------------|------|:------:|
+| 1 | From Idea to Product: A Step-by-Step Guide for Non-Technical Founders | idea to product | Pillar | ✅ Live |
+| 2 | How to Choose a Product Design & Development Agency (Buyer's Guide) | hire product design agency | Commercial | ✅ Live |
+| 3 | Case Study: Building Xperiti's Enterprise Research Platform from Scratch | enterprise saas design case study | Case Study | ✅ Live |
+| 4 | Product Thinking vs Feature Factories: Why Most SaaS Products Fail | product thinking for saas | Thought Leadership | ⏳ Scheduled |
+| 5 | UI/UX Design + Development Cost in 2026: Complete Pricing Guide | ui ux design cost | Commercial | ⏳ Scheduled |
+| 6 | Case Study: AI-Powered LegalTech for APAC's Largest Law Firm | ai app design case study | Case Study | ⏳ Scheduled |
+| 7 | SaaS Dashboard Design: 12 Best Practices for Complex Enterprise Apps | saas dashboard design | Pillar | ⏳ Scheduled |
+| 8 | Angular vs React for Enterprise Applications: A Decision Framework | angular vs react enterprise | Tutorial | ⏳ Scheduled |
 
 **Month 3–4 · Authority (8 posts)**
 
@@ -289,13 +288,13 @@ Assumes consistent execution of Phase A content cadence + Phase B outreach.
 
 > [!IMPORTANT]
 > **This week — close out the audit:**
-> 1. 🔴 Resolve `app/usa/` (audit C3) — delete the empty directory **or** scaffold it as the USA programmatic landing page (Phase C.1 candidate).
-> 2. 🔴 `app/[slug]/page.tsx` — switch BlogPosting `author` from `Organization` → `Person { name: "Vishal Anand", url: "https://www.uipirate.com/about" }` (audit M4) for E-E-A-T.
+> 1. ✅ Resolved `app/usa/` (audit C3) — deleted empty directory.
+> 2. ✅ `app/[slug]/page.tsx` — switched BlogPosting `author` to `Person { name: "Vishal Anand" }` (audit M4) for E-E-A-T.
 > 3. 🟡 Deploy and submit `https://www.uipirate.com/sitemap.xml` in Google Search Console; request re-index for `/`, `/about`, `/contact`, `/case-studies/xperiti`, `/case-studies/revup-ai`.
 >
 > **Next 2 weeks — content engine on:**
 > 4. ⏳ Add 4 case studies to `data/case-studies.json` (Bird, Brahmastra, APAC Law Firm, ION) — see Phase A.1.
-> 5. ⏳ Publish blog posts 1–4 from the calendar (Phase A.2) via admin dashboard.
+> 5. ⏳ Publish blog post 4 from the calendar (Phase A.2) via admin dashboard (posts 1, 2, and 3 are ✅ Live!).
 > 6. ⏳ Roll out optimized CTA copy across homepage, services, blog footer, pricing (Phase A.4).
 >
 > **Weeks 3–6 — authority + magnets:**
@@ -353,10 +352,10 @@ Assumes consistent execution of Phase A content cadence + Phase B outreach.
 |--------|------|:---------:|:------:|
 | **DELETE** | `public/sitemap.xml` (overrode dynamic sitemap) | C1 | ✅ |
 | **DELETE** | `public/ai-sitemap.xml` (orphan, stale) | C2 | ✅ |
-| **DELETE or BUILD** | `app/usa/` (empty directory) | C3 | ⏳ |
+| **DELETE** | `app/usa/` (empty directory) | C3 | ✅ |
 | **MODIFY** | `app/resources/page.tsx` — `redirect("/blogs")` | M1 | ✅ |
 | **MODIFY** | `app/community/page.tsx` — `robots: { index: false, follow: true }` until built | M2 | ✅ |
 | **MODIFY** | `public/robots.txt` — added `Disallow: /admin/`, `/blogs/create`, `/blogs/edit/`, `/api/` | M3 | ✅ |
-| **MODIFY** | `app/[slug]/page.tsx` — BlogPosting `author` → `Person` (Vishal Anand) | M4 | ⏳ |
+| **MODIFY** | `app/[slug]/page.tsx` — BlogPosting `author` → `Person` (Vishal Anand) | M4 | ✅ |
 | **MODIFY** | `app/layout.tsx` — removed stale hardcoded `<meta name="keywords">` | M5 | ✅ |
 | **MODIFY** | `app/sitemap.ts` — dropped `/resources` and `/community` (redirect + noindex) | M1+M2 | ✅ |

@@ -13,7 +13,7 @@ import { Button } from "@heroui/button";
 import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import GlassSurface from "./GlassSurface";
 import { NavbarDropdown } from "./NavbarDropdown";
@@ -31,7 +31,9 @@ export const Navbar = () => {
   const [loading, setLoading] = useState(true);
   const [showBanner, setShowBanner] = useState(true);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const [isScrollHidden, setIsScrollHidden] = useState(false);
   const [announcement, setAnnouncement] = useState(""); // For screen reader announcements
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
@@ -88,6 +90,24 @@ export const Navbar = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Hide navbar on scroll-down, reveal on scroll-up
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < 80) {
+        setIsScrollHidden(false);
+      } else if (y > lastScrollY.current + 6) {
+        setIsScrollHidden(true);
+      } else if (y < lastScrollY.current - 4) {
+        setIsScrollHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   // Scroll Lock for mobile menu — position:fixed is the only reliable method for iOS Safari
   useEffect(() => {
     const body = document.body;
@@ -136,7 +156,7 @@ export const Navbar = () => {
         className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
         style={{
           opacity: isFooterVisible ? 0 : 1,
-          transform: isFooterVisible ? "translateY(-16px)" : "translateY(0)",
+          transform: isScrollHidden ? "translateY(-120%)" : isFooterVisible ? "translateY(-16px)" : "translateY(0)",
           pointerEvents: isFooterVisible ? "none" : undefined,
         }}
       >

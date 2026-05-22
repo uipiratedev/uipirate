@@ -119,6 +119,6 @@ BlogSchema.statics.findPublished = function () {
 
 // Prevent model recompilation in development
 const Blog: Model<IBlog> =
-  mongoose.models.Blog || mongoose.model<IBlog>("Blog", BlogSchema);
+  (mongoose.models.Blog as any) || mongoose.model<IBlog>("Blog", BlogSchema);
 
 export default Blog;

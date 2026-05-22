@@ -56,7 +56,7 @@ const priorities = [
   },
 ];
 
-export const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimateProps) => {
+const ProjectEstimate = ({ cardVariants, className = "" }: ProjectEstimateProps) => {
   const [currentStep, setCurrentStep] = useState(0); // 0 = initial, 1-3 = steps
   const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
   const [modalPlacement, setModalPlacement] = useState<"center" | "bottom" | "top" | "top-center" | "bottom-center">("center");
