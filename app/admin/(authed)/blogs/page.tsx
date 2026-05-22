@@ -6,7 +6,7 @@ import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 
 import { useAuth } from "@/hooks/useAuth";
-import { IconCreate, IconEdit, IconTrash, IconBlogs } from "@/components/admin/AdminIcons";
+import { IconCreate, IconEdit, IconTrash, IconBlogs, IconEye } from "@/components/admin/AdminIcons";
 
 interface Blog {
   _id: string;
@@ -16,6 +16,9 @@ interface Blog {
   createdAt: string;
   updatedAt: string;
   views: number;
+  totalViews?: number;
+  botViews?: number;
+  duplicateViews?: number;
   author: {
     name: string;
   };
@@ -79,6 +82,34 @@ export default function AdminBlogsPage() {
       }
     } catch (error) {
       alert("Failed to delete blog");
+    }
+  };
+
+  const handleTogglePublish = async (id: string, currentStatus: boolean, title: string) => {
+    const action = currentStatus ? "unpublish" : "publish";
+    if (!confirm(`Are you sure you want to ${action} "${title}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/blogs/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ published: !currentStatus }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Blog ${currentStatus ? "unpublished" : "published"} successfully!`);
+        fetchBlogs(); // Refresh the list
+      } else {
+        alert(data.error || `Failed to ${action} blog`);
+      }
+    } catch (error) {
+      alert(`Failed to ${action} blog`);
     }
   };
 
@@ -205,7 +236,27 @@ export default function AdminBlogsPage() {
                         {blog.published ? "Published" : "Draft"}
                       </span>
                     </td>
-                    <td className="px-4 py-4 text-sm font-geist text-gray-500 whitespace-nowrap">{blog.views || 0}</td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-0.5">
+                        <div className="text-sm font-geist font-semibold text-gray-900 flex items-center gap-1.5">
+                          <IconEye style={{ width: 13, height: 13, color: "#7C3AED" }} />
+                          {(blog.totalViews || blog.views || 0).toLocaleString()}
+                        </div>
+                        <div className="text-[10px] font-geist text-gray-400 flex items-center gap-1.5 leading-none">
+                          <span title="Unique visitors (deduplicated by IP over 24h)" className="hover:text-purple-600 cursor-help font-semibold">
+                            {blog.views || 0} U
+                          </span>
+                          <span className="text-gray-300">•</span>
+                          <span title="Repeat visits (same IP within 24h)" className="hover:text-blue-500 cursor-help font-semibold">
+                            {blog.duplicateViews || 0} R
+                          </span>
+                          <span className="text-gray-300">•</span>
+                          <span title="Bot/crawler hits (search engines, indexers)" className="hover:text-gray-600 cursor-help font-semibold">
+                            {blog.botViews || 0} B
+                          </span>
+                        </div>
+                      </div>
+                    </td>
                     <td className="px-4 py-4 text-xs font-geist text-gray-400 whitespace-nowrap">
                       {new Date(blog.createdAt).toLocaleDateString()}
                     </td>
@@ -217,6 +268,17 @@ export default function AdminBlogsPage() {
                             <IconEdit style={{ width: 13, height: 13 }} /> Edit
                           </Button>
                         </Link>
+                        <Button size="sm" variant="flat"
+                          className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5 font-medium transition-colors"
+                          style={
+                            blog.published
+                              ? { background: "rgba(249,115,22,0.08)", color: "#EA580C" }
+                              : { background: "rgba(22,163,74,0.08)", color: "#16A34A" }
+                          }
+                          onClick={() => handleTogglePublish(blog._id, blog.published, blog.title)}
+                        >
+                          {blog.published ? "Unpublish" : "Publish"}
+                        </Button>
                         <Button size="sm" variant="flat"
                           className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
                           style={{ background: "rgba(239,68,68,0.08)", color: "#DC2626" }}
