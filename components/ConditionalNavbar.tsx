@@ -17,13 +17,7 @@ export const ConditionalNavbar = memo(function ConditionalNavbar() {
     [pathname]
   );
 
-  if (shouldHideNavbar) {
-    return null;
-  }
+  if (shouldHideNavbar) return null;
 
-  return (
-    <div className="sticky top-0 z-[999999999] main-navbar">
-      <Navbar />
-    </div>
-  );
+  return <Navbar />;
 });

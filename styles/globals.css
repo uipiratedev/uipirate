@@ -2096,3 +2096,136 @@ body.modal-open .main-navbar {
     @apply text-[80px];
   }
 }
+
+/* ========================================
+   BLOG DETAIL PROSE STYLES
+   ======================================== */
+.blog-prose {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: #1a1a1a;
+  max-width: none;
+}
+
+.blog-prose p {
+  margin-top: 0;
+  margin-bottom: 1.4rem;
+}
+
+.blog-prose h1,
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4 {
+  font-weight: 700;
+  line-height: 1.25;
+  color: #111;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.blog-prose h1 { font-size: 2rem; letter-spacing: -0.5px; }
+.blog-prose h2 { font-size: 1.5rem; letter-spacing: -0.3px; }
+.blog-prose h3 { font-size: 1.25rem; }
+.blog-prose h4 { font-size: 1.05rem; }
+
+.blog-prose ul,
+.blog-prose ol {
+  margin: 1.2rem 0 1.4rem 0;
+  padding-left: 1.6rem;
+}
+
+.blog-prose ul { list-style-type: disc; }
+.blog-prose ol { list-style-type: decimal; }
+
+.blog-prose li {
+  margin-bottom: 0.55rem;
+  line-height: 1.75;
+}
+
+.blog-prose li strong {
+  color: #111;
+}
+
+.blog-prose blockquote {
+  border-left: 3px solid #FF5B04;
+  margin: 1.75rem 0;
+  padding: 0.6rem 1.25rem;
+  background-color: rgba(255, 91, 4, 0.04);
+  border-radius: 0 8px 8px 0;
+  color: #555;
+  font-style: italic;
+}
+
+.blog-prose strong { color: #111; font-weight: 600; }
+.blog-prose em { font-style: italic; color: #444; }
+
+.blog-prose a {
+  color: #FF5B04;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-prose a:hover { color: #E54F00; }
+
+.blog-prose code {
+  font-family: var(--font-geist-mono, monospace);
+  font-size: 0.875em;
+  background-color: #f3f3f3;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  color: #c7254e;
+}
+
+.blog-prose pre {
+  background-color: #1a1a1a;
+  color: #e5e5e5;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.75rem 0;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.blog-prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.blog-prose hr {
+  border: none;
+  border-top: 1px solid #e5e5e5;
+  margin: 2.5rem 0;
+}
+
+.blog-prose img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+.blog-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+.blog-prose th,
+.blog-prose td {
+  border: 1px solid #e5e5e5;
+  padding: 0.6rem 1rem;
+  text-align: left;
+}
+
+.blog-prose th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+/* ========================================
+   END BLOG DETAIL PROSE STYLES
+   ======================================== */

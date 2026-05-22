@@ -1,7 +1,9 @@
 "use client";
 
 import { memo } from "react";
-import GlassSurface from "@/components/GlassSurface";
+import Image from "next/image";
+
+const DEFAULT_BANNER = "/assets/blog-banner-default.svg";
 
 interface BlogHeroProps {
   imageUrl?: string;
@@ -14,83 +16,43 @@ const BlogsDetailsHero = memo<BlogHeroProps>(function BlogsDetailsHero({
   tag,
   title,
 }) {
-  return (
-    <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
-      {/* Subtle Grid Background Pattern */}
-      <div
-        className="absolute pointer-events-none -mt-20 "
-        style={{
-          backgroundImage: `
-              linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
+  const banner = imageUrl || DEFAULT_BANNER;
 
-            `,
-          backgroundSize: "40px 40px",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          marginLeft: "calc(-50vw + 50%)",
-        }}
+  return (
+    /* Full-width banner with tag + title overlaid on top */
+    <div className="relative w-full overflow-hidden" style={{ height: 380 }}>
+      {/* Banner image */}
+      <Image
+        src={banner}
+        alt="Blog banner"
+        fill
+        className="object-cover"
+        priority
       />
-      {/* Layered gradient with gentle mist animation */}
+
+      {/* Dark gradient — stronger at bottom-left so text is readable */}
       <div
-        className="absolute pointer-events-none -mt-20 "
+        className="absolute inset-0"
         style={{
-          backgroundImage: `
-              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 10%),
-              linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 35%)
-            `,
-          animation: "gentle-mist 8s ease-in-out infinite",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          marginLeft: "calc(-50vw + 50%)",
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.10) 100%)",
         }}
       />
-      <div
-        className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto px-32 lg:px-20 max-md:px-4  "
-        style={{ overflow: "visible" }}
-      >
-        {" "}
-        {/* Badge with GlassSurface */}
-        <GlassSurface
-          backgroundOpacity={0.1}
-          blueOffset={20}
-          blur={11}
-          borderRadius={12}
-          borderWidth={0.01}
-          brightness={50}
-          className="md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2"
-          displace={0.5}
-          distortionScale={-180}
-          forceLightMode={true}
-          greenOffset={10}
-          height="auto"
-          opacity={0.93}
-          redOffset={0}
-          saturation={1}
-          style={{
-            animation: "trustBadgeUp 0.5s ease-out forwards",
-            animationDelay: "0.1s",
-            opacity: 0,
-            transform: "translateY(20px) scale(0.95)",
-          }}
-          width="auto"
-        >
-          {/* Text */}
-          <p className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
-            {tag}
-          </p>
-        </GlassSurface>
-        {/* Headline */}
-        <div className="relative z-10 w-full">
-          <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] text-center font-[700] max-md:font-[600]  max-md:leading-[1.08] tracking-[-1.5px] leading-[1.1] relative">
-            <span className="text-black">
-              {title}
-            </span>
-          </h1>
+
+      {/* Tag badge + Title — bottom-left aligned */}
+      <div className="absolute inset-0 flex flex-col justify-end pb-10 max-md:pb-7 z-10">
+        <div className="container mx-auto xl:px-32 2xl:px-40 max-xl:px-8 max-md:px-4 w-full">
+        {/* Tag pill */}
+        <span className="inline-flex items-center self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-white"
+          style={{ background: "rgba(255,255,255,0.18)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.25)" }}>
+          {tag}
+        </span>
+
+        {/* Title */}
+        <h1 className="text-white font-[700] leading-[1.15] tracking-[-0.5px] max-w-2xl
+          text-[22px] md:text-[28px] lg:text-[32px] xl:text-[40px]">
+          {title}
+        </h1>
         </div>
       </div>
     </div>

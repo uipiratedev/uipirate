@@ -375,7 +375,7 @@ const BlogEditor = () => {
     }
 
     setIsSaving(true);
-    setSaveStatus(published ? "Publishing..." : "Saving...");
+    setSaveStatus(published ? "Publishing…" : "Saving…");
 
     try {
       const response = await fetch("/api/blogs", {
@@ -400,7 +400,7 @@ const BlogEditor = () => {
         throw new Error(data.error || "Failed to save blog");
       }
 
-      setSaveStatus(published ? "Published" : "Draft Saved");
+      setSaveStatus(published ? "Published" : "Saved");
       alert(
         published
           ? "Blog published successfully!"

@@ -6,14 +6,12 @@
   - Environments: .env
 
    Creating an optimized production build ...
-(node:32228) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
-(Use `node --trace-deprecation ...` to show where the warning was created)
  ✓ Compiled successfully
    Skipping linting
    Checking validity of types ...
    Collecting page data ...
  ⚠ Using edge runtime on a page currently disables static generation for that page
-   Generating static pages (0/54) ...
+   Generating static pages (0/55) ...
  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
@@ -23,27 +21,29 @@
  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
-   Generating static pages (13/54) 
+   Generating static pages (13/55) 
  ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
-   Generating static pages (26/54) 
-   Generating static pages (40/54) 
- ✓ Generating static pages (54/54)
+   Generating static pages (27/55) 
+ ⚠ metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+   Generating static pages (41/55) 
+ ✓ Generating static pages (55/55)
    Finalizing page optimization ...
    Collecting build traces ...
 
 Route (app)                                                Size     First Load JS
 ┌ ○ /                                                      12 kB           253 kB
 ├ ○ /_not-found                                            159 B          88.1 kB
-├ ● /[slug]                                                163 B           148 kB
+├ ● /[slug]                                                164 B           148 kB
 ├   ├ /text-blog
-├   └ /nhksfsdf
+├   ├ /nhksfsdf
+├   └ /is-ethical-design-a-myth-in-2025
 ├ ○ /about                                                 10.9 kB         193 kB
 ├ ƒ /about/opengraph-image                                 0 B                0 B
-├ ƒ /admin/blogs                                           2.11 kB         147 kB
-├ ƒ /admin/blogs/create                                    4.96 kB         255 kB
+├ ƒ /admin/blogs                                           2.96 kB         148 kB
+├ ƒ /admin/blogs/create                                    5.92 kB         256 kB
 ├ ƒ /admin/blogs/edit/[id]                                 5.14 kB         255 kB
-├ ƒ /admin/dashboard                                       245 B           136 kB
-├ ○ /admin/login                                           1.57 kB         138 kB
+├ ƒ /admin/dashboard                                       246 B           136 kB
+├ ○ /admin/login                                           1.99 kB         138 kB
 ├ ƒ /api/auth/login                                        0 B                0 B
 ├ ƒ /api/auth/logout                                       0 B                0 B
 ├ ƒ /api/auth/me                                           0 B                0 B
