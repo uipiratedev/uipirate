@@ -21,7 +21,7 @@ interface BlogContentsProps {
 
 const BlogContents = ({ blog }: BlogContentsProps) => {
   return (
-    <div className="container mx-auto xl:px-32 2xl:px-40 max-md:px-4 max-md:pt-0 max-xl:px-8 pt-8">
+    <article className="container mx-auto xl:px-32 2xl:px-40 max-md:px-4 max-md:pt-0 max-xl:px-8 pt-8">
       <HeaderInfo blog={blog} />
 
       {/* Blog Content */}
@@ -32,7 +32,7 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
 
       {/* CTA Banner — convert engaged readers into leads */}
       <GlobalCTA />
-    </div>
+    </article>
   );
 };
 
