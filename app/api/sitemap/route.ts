@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+import dbConnect from "@/lib/mongodb";
+import Blog from "@/models/Blog";
+import caseStudies from "@/data/case-studies.json";
 
 export async function GET() {
   const baseUrl = "https://uipirate.com";
@@ -53,6 +56,28 @@ export async function GET() {
     </image:image>`;
   };
 
+  // Case Study detail pages
+  const caseStudyPages = caseStudies.map((study) => ({
+    url: `/case-studies/${study.slug}`,
+    priority: "0.8",
+    changefreq: "weekly",
+  }));
+
+  // Fetch published blogs from MongoDB
+  let blogPages: { url: string; priority: string; changefreq: string; lastmod: string }[] = [];
+  try {
+    await dbConnect();
+    const blogs = await Blog.find({ published: true }, { slug: 1, updatedAt: 1 }).lean();
+    blogPages = blogs.map((blog: any) => ({
+      url: `/${blog.slug}`,
+      priority: "0.75",
+      changefreq: "weekly",
+      lastmod: blog.updatedAt ? new Date(blog.updatedAt).toISOString().split("T")[0] : currentDate,
+    }));
+  } catch (error) {
+    console.error("Error fetching blogs for sitemap route:", error);
+  }
+
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
@@ -84,6 +109,30 @@ ${servicePages
       `  <url>
     <loc>${baseUrl}${page.url}</loc>
     <lastmod>${currentDate}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`,
+  )
+  .join("\n")}
+
+${caseStudyPages
+  .map(
+    (page) =>
+      `  <url>
+    <loc>${baseUrl}${page.url}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
+  </url>`,
+  )
+  .join("\n")}
+
+${blogPages
+  .map(
+    (page) =>
+      `  <url>
+    <loc>${baseUrl}${page.url}</loc>
+    <lastmod>${page.lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`,
