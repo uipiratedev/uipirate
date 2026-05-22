@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 import PageWrapper from "@/components/PageWrapper";
 import ProjectEstimate from "@/components/ProjectEstimate";
@@ -202,15 +202,7 @@ const CaseStudies = () => {
             </div>
           )}
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${activeCategory}-${searchQuery}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-            >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {filteredStudies.length === 0 ? (
                 <div className="col-span-full text-center py-20 max-md:py-16">
                 <div className="max-w-md mx-auto">
@@ -356,8 +348,7 @@ const CaseStudies = () => {
               );
             })
             )}
-            </motion.div>
-          </AnimatePresence>
+          </div>
         </section>
 
         {/* What's Next CTA */}
