@@ -24,7 +24,7 @@ interface User {
 /**
  * Verify JWT token and return payload
  */
-export async function verifyToken(token: string): Promise<JWTPayload | null> {
+async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
 
@@ -37,7 +37,7 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
 /**
  * Get token from cookies
  */
-export async function getToken(): Promise<string | null> {
+async function getToken(): Promise<string | null> {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("auth-token");
@@ -46,19 +46,6 @@ export async function getToken(): Promise<string | null> {
   } catch (error) {
     return null;
   }
-}
-
-/**
- * Check if user is authenticated
- */
-export async function isAuthenticated(): Promise<boolean> {
-  const token = await getToken();
-
-  if (!token) return false;
-
-  const payload = await verifyToken(token);
-
-  return !!payload;
 }
 
 /**

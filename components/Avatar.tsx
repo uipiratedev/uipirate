@@ -27,7 +27,7 @@ const generateGradient = (str: string): string => {
   return gradients[index].value;
 };
 
-export interface AvatarProps {
+interface AvatarProps {
   /**
    * The name of the person - used to display the first letter as fallback
    * and to generate a consistent gradient color
@@ -79,7 +79,7 @@ export interface AvatarProps {
  * <Avatar name="Bob Wilson" size={64} />
  * ```
  */
-export const Avatar: React.FC<AvatarProps> = ({
+const Avatar: React.FC<AvatarProps> = ({
   name,
   avatar,
   size = 52,

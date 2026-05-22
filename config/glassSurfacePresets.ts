@@ -67,37 +67,4 @@ export const HERO_BADGE_ANIMATION_STYLE: CSSProperties = {
   transform: "translateY(20px) scale(0.95)",
 };
 
-/**
- * Pill-shaped badge preset - for product labs, status indicators
- */
-export const PILL_BADGE_PRESET: GlassSurfacePreset = {
-  backgroundOpacity: 0.15,
-  blueOffset: 20,
-  blur: 12,
-  borderRadius: 100,
-  borderWidth: 0.01,
-  brightness: 60,
-  displace: 0.5,
-  distortionScale: -180,
-  forceLightMode: true,
-  greenOffset: 10,
-  opacity: 0.93,
-  redOffset: 0,
-  saturation: 1,
-  width: "auto",
-  height: "auto",
-};
 
-/**
- * Helper to spread preset props onto GlassSurface component
- * 
- * @example
- * <GlassSurface {...HERO_BADGE_PRESET} className={HERO_BADGE_CLASSNAME} style={HERO_BADGE_ANIMATION_STYLE}>
- *   <p>Badge Text</p>
- * </GlassSurface>
- */
-export const getHeroBadgeProps = () => ({
-  ...HERO_BADGE_PRESET,
-  className: HERO_BADGE_CLASSNAME,
-  style: HERO_BADGE_ANIMATION_STYLE,
-});
