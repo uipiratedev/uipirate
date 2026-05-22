@@ -1360,15 +1360,31 @@ const BlogEditPage = () => {
           <span className="text-xs font-geist font-medium transition-colors" style={{ color: statusColor[saveStatus] ?? "#6b7280" }}>
             {saveStatus}
           </span>
-          <Button variant="flat" disabled={isSaving} onClick={handleSaveDraft}
-            className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium">
-            Save Draft
-          </Button>
-          <Button disabled={isSaving} isLoading={isSaving} onClick={handlePublish}
-            className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
-            style={{ background: "#FF5B04" }}>
-            Publish
-          </Button>
+          {saveStatus === "Published" ? (
+            <>
+              <Button variant="flat" disabled={isSaving} onClick={handleSaveDraft}
+                className="font-geist text-sm h-9 px-4 rounded-xl bg-orange-50 text-[#FF5B04] font-medium hover:bg-orange-100 transition-colors">
+                Unpublish
+              </Button>
+              <Button disabled={isSaving} isLoading={isSaving} onClick={handlePublish}
+                className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
+                style={{ background: "#FF5B04" }}>
+                Update Post
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="flat" disabled={isSaving} onClick={handleSaveDraft}
+                className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium">
+                Save Draft
+              </Button>
+              <Button disabled={isSaving} isLoading={isSaving} onClick={handlePublish}
+                className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
+                style={{ background: "#FF5B04" }}>
+                Publish
+              </Button>
+            </>
+          )}
         </div>
       </div>
 

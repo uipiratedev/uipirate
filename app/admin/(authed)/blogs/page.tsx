@@ -85,6 +85,34 @@ export default function AdminBlogsPage() {
     }
   };
 
+  const handleTogglePublish = async (id: string, currentStatus: boolean, title: string) => {
+    const action = currentStatus ? "unpublish" : "publish";
+    if (!confirm(`Are you sure you want to ${action} "${title}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/blogs/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ published: !currentStatus }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(`Blog ${currentStatus ? "unpublished" : "published"} successfully!`);
+        fetchBlogs(); // Refresh the list
+      } else {
+        alert(data.error || `Failed to ${action} blog`);
+      }
+    } catch (error) {
+      alert(`Failed to ${action} blog`);
+    }
+  };
+
   const filteredBlogs = blogs.filter((blog) =>
     blog.title.toLowerCase().includes(searchQuery.toLowerCase()),
   );
@@ -240,6 +268,17 @@ export default function AdminBlogsPage() {
                             <IconEdit style={{ width: 13, height: 13 }} /> Edit
                           </Button>
                         </Link>
+                        <Button size="sm" variant="flat"
+                          className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5 font-medium transition-colors"
+                          style={
+                            blog.published
+                              ? { background: "rgba(249,115,22,0.08)", color: "#EA580C" }
+                              : { background: "rgba(22,163,74,0.08)", color: "#16A34A" }
+                          }
+                          onClick={() => handleTogglePublish(blog._id, blog.published, blog.title)}
+                        >
+                          {blog.published ? "Unpublish" : "Publish"}
+                        </Button>
                         <Button size="sm" variant="flat"
                           className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
                           style={{ background: "rgba(239,68,68,0.08)", color: "#DC2626" }}
