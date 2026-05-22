@@ -7,8 +7,10 @@ import PageWrapper from "@/components/PageWrapper";
 import ProjectEstimate from "@/components/ProjectEstimate";
 import GlassBadge from "@/components/GlassBadge";
 import OurWorksHero from "@/screens/ourWorks/hero";
-import CaseStudyGrid from "@/screens/ourWorks/works/workCard";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
+import ClientLogosMarquee from "./ClientLogosMarquee";
+import LandingTestimonials from "@/screens/landing/testimonials";
+import CaseStudiesFAQ from "./CaseStudiesFAQ";
 
 import caseStudies from "@/data/case-studies.json";
 
@@ -36,6 +38,9 @@ const CaseStudies = () => {
         <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
           <OurWorksHero />
         </div>
+
+        {/* Client Logos Marquee */}
+        <ClientLogosMarquee />
 
         {/* Featured deep-dive case studies (from data/case-studies.json) */}
         <section className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-12 max-md:pt-6">
@@ -81,7 +86,22 @@ const CaseStudies = () => {
           </div>
 
           <div className="autoShowBottom grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {filteredStudies.map((study) => {
+            {filteredStudies.length === 0 ? (
+              <div className="col-span-full text-center py-20 max-md:py-16">
+                <div className="max-w-md mx-auto">
+                  <p className="text-gray-500 text-lg max-md:text-base mb-4">
+                    No projects in this category yet.
+                  </p>
+                  <button
+                    onClick={() => setActiveCategory("All")}
+                    className="px-6 py-3 bg-[#FF5B04] text-white rounded-full hover:bg-[#FF5B04]/90 transition-colors duration-300 font-semibold text-sm shadow-md hover:shadow-lg"
+                  >
+                    View all projects
+                  </button>
+                </div>
+              </div>
+            ) : (
+              filteredStudies.map((study) => {
               const primaryMetric = study.metrics?.[0]?.value || study.industry;
               const isExternal = !!study.externalUrl;
               const href = study.externalUrl || `/case-studies/${study.slug}`;
@@ -167,17 +187,54 @@ const CaseStudies = () => {
                   </div>
                 </LinkComponent>
               );
-            })}
+            })
+            )}
           </div>
         </section>
 
-        {/* Recent works — featured large project cards + why-choose-us */}
-        <section className="pt-6 max-md:pt-6">
-          <div className="autoShowBottom container mx-auto px-32 lg:px-20 max-md:px-4 mt-6 max-md:mt-4">
-            <CaseStudyGrid />
-            <WhyChooseUs />
+        {/* What's Next CTA */}
+        <section className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-12 max-md:pt-6">
+          <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#212121] to-[#151514] noise-texture px-12 py-20 max-md:px-6 max-md:py-12 text-center">
+            <p className="text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-[#FF5B04] mb-3">
+              What&apos;s next
+            </p>
+            <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4">
+              Your product, shipped next
+            </h2>
+            <p className="text-gray-400 font-medium text-base max-md:text-sm max-w-2xl mx-auto mb-8 max-md:mb-6">
+              From idea to shipped product — product thinking, IA, UX/UI, and Angular/React frontend
+              carried end-to-end. Typical response under 2 hours.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/contact"
+                className="px-8 py-4 bg-[#FF5B04] text-white font-bold rounded-full hover:bg-[#e04e00] transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Start Your Project →
+              </Link>
+              <Link
+                href="/pricing"
+                className="px-8 py-4 bg-white/10 text-white font-bold rounded-full hover:bg-white/20 transition-all duration-300 border border-white/20"
+              >
+                View Pricing
+              </Link>
+            </div>
           </div>
         </section>
+
+        {/* Client Testimonials */}
+        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <LandingTestimonials />
+        </div>
+
+        {/* Why Choose Us */}
+         <div className="container mx-auto px-32 lg:px-20 max-md:px-4">\
+     <WhyChooseUs />
+         </div>
+   
+
+        {/* FAQ Section */}
+        <CaseStudiesFAQ />
 
         {/* Pricing CTA */}
         <div className="container mx-auto px-32 lg:px-20 max-md:px-4">

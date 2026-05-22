@@ -43,7 +43,7 @@ const features = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="w-full py-16 pb-0 min-h-screen">
+    <section className="w-full py-4 pb-0 min-h-screen">
       <div className="container mx-auto px-4 mb-0">
          <div className="mb-6 flex flex-row items-center justify-center">
           <GlassBadge variant="gradient">WHY CHOOSE US</GlassBadge>
