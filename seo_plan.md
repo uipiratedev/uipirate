@@ -16,7 +16,7 @@
 | **3. AI Visibility** | ✅ DONE | `llms.txt`, `ai-plugin.json`, `ai-data.json`, `enterprise-schema.json`, `SiteNavigationElement` |
 | **4. Site & Schema** | ✅ DONE | About, FAQPage, Breadcrumbs, portfolio meta, dynamic Edge OG images |
 | **5. Lead Generation** | ✅ DONE | `/contact` + `ProjectEstimate` + Cal.com, footer `LeadCaptureModal`, `/api/leads` → MongoDB |
-| **A. Content (blogs + case studies + magnets)** | 🟡 IN PROGRESS | 2/6 case studies, 5/16 blog posts, 0/4 lead magnets |
+| **A. Content (blogs + case studies + magnets)** | 🟡 IN PROGRESS | 2/2 case studies (skipped remaining), 13/13 blog posts (skipped case studies), 0/4 lead magnets |
 | **B. Off-Page SEO** | 🔴 NOT STARTED | Directories, guest posts, backlinks |
 | **C.1 Programmatic SEO** | 🔴 NOT STARTED | USA landing + 5 city/service combo pages |
 | **C.2 Advanced Schema** | 🟡 PARTIAL | ✅ AggregateRating + Reviews + BlogPosting author Person; ❌ HowTo, VideoObject |
@@ -92,7 +92,7 @@ Technical foundation is shipped. What's left is **content** (drives traffic), **
 
 Two parallel tracks: complete the case-study set + execute the 16-post blog calendar.
 
-#### A.1 Case Studies — finish the set (4 of 6 remaining)
+#### A.1 Case Studies — finish the set (Skipped per user request)
 
 Each entry in `data/case-studies.json` auto-renders at `/case-studies/<slug>` with `Article` JSON-LD and dynamic OG image. Add full Problem → Approach → Solution → Results, testimonial, metrics, technologies, hero image.
 
@@ -100,10 +100,10 @@ Each entry in `data/case-studies.json` auto-renders at `/case-studies/<slug>` wi
 |------|--------|--------|----------|:------:|
 | `xperiti` | Xperiti | USA | SaaS / Research | ✅ |
 | `revup-ai` | RevUp AI | USA | AI / SaaS | ✅ |
-| `bird` | Bird | USA | Brand & Product | ⏳ |
-| `brahmastra` | Brahmastra | India | Fintech / Trading | ⏳ |
-| `apac-law-firm` | APAC Law Firm | India | LegalTech / AI | ⏳ |
-| `ion` | ION | — | MedTech / Supply Chain | ⏳ |
+| `bird` | Bird | USA | Brand & Product | ❌ Skipped |
+| `brahmastra` | Brahmastra | India | Fintech / Trading | ❌ Skipped |
+| `apac-law-firm` | APAC Law Firm | India | LegalTech / AI | ❌ Skipped |
+| `ion` | ION | — | MedTech / Supply Chain | ❌ Skipped |
 
 #### A.2 Blog Content Calendar — 16 posts (positioning-aligned)
 
@@ -118,22 +118,22 @@ Each entry in `data/case-studies.json` auto-renders at `/case-studies/<slug>` wi
 | 3 | Case Study: Building Xperiti's Enterprise Research Platform from Scratch | enterprise saas design case study | Case Study | ✅ Live |
 | 4 | Product Thinking vs Feature Factories: Why Most SaaS Products Fail | product thinking for saas | Thought Leadership | ✅ Live |
 | 5 | UI/UX Design + Development Cost in 2026: Complete Pricing Guide | ui ux design cost | Commercial | ✅ Live |
-| 6 | Case Study: AI-Powered LegalTech for APAC's Largest Law Firm | ai app design case study | Case Study | ⏳ Scheduled |
-| 7 | SaaS Dashboard Design: 12 Best Practices for Complex Enterprise Apps | saas dashboard design | Pillar | ⏳ Scheduled |
-| 8 | Angular vs React for Enterprise Applications: A Decision Framework | angular vs react enterprise | Tutorial | ⏳ Scheduled |
+| 6 | Case Study: AI-Powered LegalTech for APAC's Largest Law Firm | ai app design case study | Case Study | ❌ Skipped |
+| 7 | SaaS Dashboard Design: 12 Best Practices for Complex Enterprise Apps | saas dashboard design | Pillar | ✅ Live |
+| 8 | Angular vs React for Enterprise Applications: A Decision Framework | angular vs react enterprise | Tutorial | ✅ Live |
 
 **Month 3–4 · Authority (8 posts)**
 
-| # | Title | Target Keyword | Type |
-|:-:|-------|---------------|------|
-| 9 | Information Architecture for Complex SaaS Products | information architecture saas | Pillar |
-| 10 | Competitive Analysis for Product Design: Finding Your Edge | competitive analysis product design | Tutorial |
-| 11 | Case Study: Brahmastra Fintech Trading Platform | fintech dashboard design | Case Study |
-| 12 | Free UX Audit Checklist: Template Inside | ux audit checklist | Lead Magnet |
-| 13 | Building Enterprise Angular Applications: Architecture Patterns | enterprise angular development | Tutorial |
-| 14 | Design Agency vs Product Studio: What's Right for Your SaaS? | design agency vs product studio | Commercial |
-| 15 | Case Study: RevUp AI — From MVP Idea to Enterprise Platform | saas mvp design | Case Study |
-| 16 | Design Systems for Angular & React Teams: A Practical Guide | angular react design system | Tutorial |
+| # | Title | Target Keyword | Type | Status |
+|:-:|-------|---------------|------|:------:|
+| 9 | Information Architecture for Complex SaaS Products | information architecture saas | Pillar | ✅ Live |
+| 10 | Competitive Analysis for Product Design: Finding Your Edge | competitive analysis product design | Tutorial | ✅ Live |
+| 11 | Case Study: Brahmastra Fintech Trading Platform | fintech dashboard design | Case Study | ❌ Skipped |
+| 12 | Free UX Audit Checklist: Template Inside | ux audit checklist | Lead Magnet | ✅ Live |
+| 13 | Building Enterprise Angular Applications: Architecture Patterns | enterprise angular development | Tutorial | ✅ Live |
+| 14 | Design Agency vs Product Studio: What's Right for Your SaaS? | design agency vs product studio | Commercial | ✅ Live |
+| 15 | Case Study: RevUp AI — From MVP Idea to Enterprise Platform | saas mvp design | Case Study | ❌ Skipped |
+| 16 | Design Systems for Angular & React Teams: A Practical Guide | angular react design system | Tutorial | ✅ Live |
 
 Publish via admin dashboard → MongoDB → renders at `/<slug>` with `BlogPosting` schema → indexed via dynamic sitemap.
 
@@ -148,7 +148,7 @@ Publish via admin dashboard → MongoDB → renders at `/<slug>` with `BlogPosti
 
 Wire a `source` field per magnet in `LeadCaptureForm` for attribution.
 
-#### A.4 CTA Optimization (page-level copy)
+#### A.4 CTA Optimization (page-level copy) (✅ Shipped)
 
 | Page | Current | Optimized |
 |------|---------|-----------|
@@ -295,7 +295,7 @@ Assumes consistent execution of Phase A content cadence + Phase B outreach.
 > **Next 2 weeks — content engine on:**
 > 4. ⏳ Add 4 case studies to `data/case-studies.json` (Bird, Brahmastra, APAC Law Firm, ION) — see Phase A.1.
 > 5. ⏳ Publish blog post 4 from the calendar (Phase A.2) via admin dashboard (posts 1, 2, and 3 are ✅ Live!).
-> 6. ⏳ Roll out optimized CTA copy across homepage, services, blog footer, pricing (Phase A.4).
+> 6. ✅ Roll out optimized CTA copy across homepage, services, blog footer, pricing (Phase A.4).
 >
 > **Weeks 3–6 — authority + magnets:**
 > 7. ⏳ Ship Lead Magnet 1 (Product Thinking Checklist PDF) wired to `LeadCaptureForm` with `source=product-thinking-checklist`.

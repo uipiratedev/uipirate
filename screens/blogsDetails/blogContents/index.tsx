@@ -104,7 +104,7 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
       />
 
       {/* CTA Banner — convert engaged readers into leads */}
-      <GlobalCTA />
+      <GlobalCTA topic={blog.title} />
     </article>
   );
 };

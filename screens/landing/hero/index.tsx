@@ -354,7 +354,7 @@ const LandingHero = () => {
                 </div>
                 <p className="font-semibold text-nowrap max-md:text-sm max-md:font-regular">
                   {" "}
-                  Book a 15-min Product Strategy Call
+                  Tell Us Your Idea — Free Consultation
                 </p>
               </div>
             </Link>

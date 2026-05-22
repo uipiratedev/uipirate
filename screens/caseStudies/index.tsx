@@ -358,7 +358,7 @@ const CaseStudies = () => {
               What&apos;s next
             </p>
             <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4">
-              Your product, shipped next
+              Let&apos;s Build Something Like This For You
             </h2>
             <p className="text-gray-400 font-medium text-base max-md:text-sm max-w-2xl mx-auto mb-8 max-md:mb-6">
               From idea to shipped product — product thinking, IA, UX/UI, and Angular/React frontend
