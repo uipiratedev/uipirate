@@ -20,6 +20,8 @@ import { Button } from "@heroui/button";
 import { useParams, useRouter } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
+import { useSaveBlog } from "@/hooks/useSaveBlog";
+import DistributionPanel from "@/components/admin/DistributionPanel";
 import { loadAIConfig } from "@/components/admin/AIConfigPanel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
@@ -5954,7 +5956,6 @@ const BlogEditPage = () => {
     left: 0,
   });
   const [title, setTitle] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
   const [excerpt, setExcerpt] = useState("");
 
   // AI States
@@ -5969,13 +5970,9 @@ const BlogEditPage = () => {
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [blogId, setBlogId] = useState<string>("");
   const [postType, setPostType] = useState<
     "blog" | "tutorial" | "case-study" | "community-insight"
   >("blog");
-  const [saveStatus, setSaveStatus] = useState<
-    "Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"
-  >("Draft");
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -5986,7 +5983,6 @@ const BlogEditPage = () => {
   );
   const [validationError, setValidationError] = useState<string | null>(null);
   // Navigation guard + dirty state
-  const [isDirty, setIsDirty] = useState(false);
   const [isDataInitialized, setIsDataInitialized] = useState(false);
   const [showUnsavedModal, setShowUnsavedModal] = useState(false);
   const [showUnpublishModal, setShowUnpublishModal] = useState(false);
@@ -5996,7 +5992,41 @@ const BlogEditPage = () => {
   const [seoData, setSeoData] = useState<PostSEO>({});
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [sidebarTab, setSidebarTab] = useState<"content" | "seo" | "ai">("content");
+  const [sidebarTab, setSidebarTab] = useState<"content" | "seo" | "ai" | "distribute">("content");
+  const [distRecords, setDistRecords] = useState<any[]>([]);
+
+  const {
+    blogId,
+    setBlogId,
+    isSaving,
+    saveStatus,
+    setSaveStatus,
+    isDirty,
+    setIsDirty,
+    saveBlog,
+    ensureSaved,
+  } = useSaveBlog({
+    initialBlogId: (params.id as string) || null,
+    getEditorState: () => ({
+      title,
+      content: editor?.getHTML() || "",
+      excerpt,
+      featuredImage,
+      bannerImage,
+      tags,
+      postType,
+      slug: currentSlug,
+      seo: seoData,
+    }),
+    onSaveSuccess: (id, published) => {
+      setModalSuccess(published ? "publish" : "draft");
+    },
+    onSaveError: (err) => {
+      setShowPublishModal(false);
+      setShowSaveModal(false);
+      setValidationError(err.message || "Failed to save blog");
+    },
+  });
   const pendingNavHref = useRef<string>("");
   const pendingNavIsBack = useRef(false); // true when guard was tripped by browser back/forward
   const isDirtyRef = useRef(false); // ref mirror — always current inside event handlers
@@ -6289,6 +6319,7 @@ const BlogEditPage = () => {
         setCurrentSlug(blog.slug || "");
         setSeoData(blog.seo || {});
         setSaveStatus(blog.published ? "Published" : "Draft");
+        setDistRecords(blog.distributionRecords || []);
         if (editor) {
           // Disable dirty tracking while loading initial content
           isEditorReady.current = false;
@@ -6362,75 +6393,16 @@ const BlogEditPage = () => {
     [isDirty, router],
   );
 
-  const saveBlog = async (published: boolean, customSeo?: any, customSlug?: string) => {
-    setIsSaving(true);
-    setSaveStatus(published ? "Publishing…" : "Saving…");
-    try {
-      const response = await fetch(`/api/blogs/${blogId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          content: editor?.getHTML() || "",
-          excerpt,
-          featuredImage,
-          bannerImage,
-          tags,
-          published,
-          postType,
-          slug: customSlug !== undefined ? customSlug : currentSlug,
-          seo: customSeo !== undefined ? customSeo : seoData,
-        }),
-      });
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.error || "Failed to update blog");
-      setSaveStatus(published ? "Published" : "Saved");
-      setModalSuccess(published ? "publish" : "draft");
-      setIsDirty(false);
-    } catch (error: any) {
-      setSaveStatus("Error");
-      setShowPublishModal(false);
-      setShowSaveModal(false);
-      setValidationError(error.message || "Failed to update blog");
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  // saveBlog is managed by useSaveBlog hook
 
   // Dedicated unpublish flow (separate from Save Draft)
   const doUnpublish = async () => {
-    setIsSaving(true);
-    setSaveStatus("Saving…");
     try {
-      const response = await fetch(`/api/blogs/${blogId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          content: editor?.getHTML() || "",
-          excerpt,
-          featuredImage,
-          bannerImage,
-          tags,
-          published: false,
-          postType,
-          slug: currentSlug,
-          seo: seoData,
-        }),
-      });
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.error || "Failed to unpublish");
-      setSaveStatus("Draft");
-      setIsDirty(false);
+      await saveBlog(false);
       setShowUnpublishModal(false);
     } catch (error: any) {
-      setSaveStatus("Error");
       setShowUnpublishModal(false);
       setValidationError(error.message || "Failed to unpublish post");
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -6824,6 +6796,7 @@ const BlogEditPage = () => {
                 { key: "content", label: "Content" },
                 { key: "seo", label: "SEO" },
                 { key: "ai", label: "AI Tools" },
+                { key: "distribute", label: "Distribute" },
               ] as const
             ).map(({ key, label }) => (
               <button
@@ -7349,6 +7322,30 @@ const BlogEditPage = () => {
                 </button>
               ))}
             </div>
+          )}
+          {/* ── Distribute Tab ── */}
+          {sidebarTab === "distribute" && (
+            <DistributionPanel
+              blogId={blogId || null}
+              blogPublished={saveStatus === "Published"}
+              blogContent={editor?.getHTML() || ""}
+              blogExcerpt={excerpt}
+              blogTags={tags}
+              blogSeo={seoData}
+              distributionRecords={distRecords}
+              onEnsureSaved={ensureSaved}
+              onUpdateRecords={(recs) => setDistRecords(recs)}
+              onNavigateToSEO={() => setSidebarTab("seo")}
+              onTriggerExcerptAI={() => {
+                if (!editor || editor.isEmpty) {
+                  setValidationError("Please write some content first so the AI can summarize it.");
+                  return;
+                }
+                setIsExcerptModalOpen(true);
+              }}
+              onTriggerTagsAI={() => setIsTagsModalOpen(true)}
+              onTriggerCopilotAI={() => setIsCopilotOpen(true)}
+            />
           )}
         </div>}
 

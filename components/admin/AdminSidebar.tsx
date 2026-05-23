@@ -189,6 +189,69 @@ const AdminSidebar = () => {
             );
           })()}
 
+          {/* Integrations */}
+          {(() => {
+            const active = pathname === "/admin/settings/integrations";
+
+            return (
+              <Link
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+                href="/admin/settings/integrations"
+                style={{
+                  background: active ? "#FF5B04" : "transparent",
+                  color: active ? "#fff" : "rgba(255,255,255,0.5)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!active) {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(255,255,255,0.06)";
+                    (e.currentTarget as HTMLElement).style.color = "#fff";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!active) {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "transparent";
+                    (e.currentTarget as HTMLElement).style.color =
+                      "rgba(255,255,255,0.5)";
+                  }
+                }}
+              >
+                <svg
+                  className="flex-shrink-0"
+                  fill="none"
+                  height="16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.8"
+                  viewBox="0 0 24 24"
+                  width="16"
+                >
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+                  <path d="M6 8H5a4 4 0 0 0 0 8h1" />
+                  <line x1="2" x2="6" y1="12" y2="12" />
+                  <line x1="18" x2="22" y1="12" y2="12" />
+                  <rect height="12" rx="2" width="10" x="7" y="6" />
+                </svg>
+                <span className="text-sm font-medium font-geist">
+                  Integrations
+                </span>
+                {!active && (
+                  <span
+                    className="ml-auto text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded"
+                    style={{
+                      background: "rgba(255,91,4,0.15)",
+                      color: "#FF5B04",
+                    }}
+                  >
+                    API
+                  </span>
+                )}
+              </Link>
+            );
+          })()}
+
           {/* Plan badge */}
           {user && (
             <div className="flex items-center gap-3 px-3 py-2">

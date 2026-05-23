@@ -37,6 +37,14 @@ export interface IBlog extends Document {
     canonicalUrl?: string;
     noIndex?: boolean;
   };
+  distributionRecords?: Array<{
+    platform: string;        // "wordpress" | "medium" | "ghost" | "buffer"
+    externalId: string;      // Platform's post ID — used for future updates/deletes
+    url: string;             // Canonical external URL (shown as a link in the UI)
+    distributedAt: Date;
+    status: "success" | "failed" | "pending";
+    errorMessage?: string;   // Populated on failure; surfaced in Distribution Panel
+  }>;
   calculateReadTime(): void;
 }
 
@@ -146,6 +154,16 @@ const BlogSchema: Schema = new Schema(
       canonicalUrl: { type: String, trim: true },
       noIndex: { type: Boolean, default: false },
     },
+    distributionRecords: [
+      {
+        platform: { type: String, required: true },
+        externalId: { type: String },
+        url: { type: String },
+        distributedAt: { type: Date, default: Date.now },
+        status: { type: String, enum: ["success", "failed", "pending"], default: "pending" },
+        errorMessage: { type: String },
+      },
+    ],
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt
