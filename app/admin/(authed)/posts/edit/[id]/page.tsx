@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -5774,6 +5774,174 @@ const FormattingToolbar = ({
   );
 };
 
+// ─── Post Preview Panel ──────────────────────────────────────────────────────
+function slugifyHeading(text: string): string {
+  return text.toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").replace(/--+/g, "-");
+}
+function parseHeadings(html: string): { id: string; text: string; level: 2 | 3 }[] {
+  const out: { id: string; text: string; level: 2 | 3 }[] = [];
+  const seen: Record<string, number> = {};
+  let m: RegExpExecArray | null;
+  const re = /<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi;
+  while ((m = re.exec(html))) {
+    const lvl = parseInt(m[1]) as 2 | 3;
+    const txt = m[2].replace(/<[^>]+>/g, "").trim();
+    if (!txt) continue;
+    let id = slugifyHeading(txt);
+    if (seen[id] != null) { seen[id]++; id += `-${seen[id]}`; } else { seen[id] = 0; }
+    out.push({ id, text: txt, level: lvl });
+  }
+  return out;
+}
+function injectHeadingIds(html: string): string {
+  const seen: Record<string, number> = {};
+  return html.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi, (_, lvl, attrs, inner) => {
+    const txt = inner.replace(/<[^>]+>/g, "").trim();
+    if (!txt) return _;
+    let id = slugifyHeading(txt);
+    if (seen[id] != null) { seen[id]++; id += `-${seen[id]}`; } else { seen[id] = 0; }
+    return `<h${lvl}${attrs.replace(/\s*id="[^"]*"/gi, "")} id="${id}">${inner}</h${lvl}>`;
+  });
+}
+// Minified mirror of globals.css .blog-prose rules, scoped to .preview-prose
+const PREVIEW_PROSE_CSS = `.preview-prose{color:#1a1a1a!important;font-family:var(--font-jakarta),var(--font-sans),sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:-.005em}.preview-prose p{color:#1a1a1a!important;margin-top:0;margin-bottom:1.25rem}.preview-prose li{color:#1a1a1a!important}.preview-prose h1,.preview-prose h2,.preview-prose h3,.preview-prose h4{color:#111!important;font-family:var(--font-geist),sans-serif;font-weight:700;line-height:1.2;margin-top:2.5rem;margin-bottom:.85rem;letter-spacing:-.025em}.preview-prose h1{font-size:2.25rem}.preview-prose h2{font-size:1.625rem;border-left:3.5px solid #FF5B04;padding-left:.85rem;margin-left:-.85rem}.preview-prose h3{font-size:1.35rem}.preview-prose h4{font-size:1.125rem}.preview-prose strong{color:#111!important;font-weight:700}.preview-prose em{color:#444!important;font-style:italic}.preview-prose a{color:#FF5B04;text-decoration:underline;text-underline-offset:3px;font-weight:500}.preview-prose ul{list-style:none;padding-left:0;margin:1.5rem 0}.preview-prose ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;line-height:1.6}.preview-prose ul li::before{content:"•";color:#FF5B04;font-weight:bold;font-size:1.35rem;position:absolute;left:.25rem;top:-.15rem}.preview-prose ol{list-style-type:decimal;padding-left:1.5rem;margin:1.5rem 0}.preview-prose ol li{margin-bottom:.5rem;padding-left:.25rem;line-height:1.6}.preview-prose li strong{color:#111}.preview-prose blockquote{border-left:4px solid #FF5B04;margin:2.25rem 0;padding:.85rem 1.5rem;background:rgba(255,91,4,.035);border-radius:4px 16px 16px 4px;color:#2b2b2b;font-size:1.15rem;line-height:1.7;font-style:italic;font-weight:500}.preview-prose code{font-family:var(--font-geist-mono,monospace);font-size:.85em;background:#f7f7f8;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:.2em .4em;color:#FF5B04;font-weight:500}.preview-prose pre{background:#0c0c0d;border:1px solid rgba(255,255,255,.08);color:#f4f4f5;border-radius:14px;padding:1.5rem 1.75rem;overflow-x:auto;margin:2.25rem 0;font-size:.85rem;line-height:1.75}.preview-prose pre code{background:none;border:none;padding:0;color:inherit}.preview-prose hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.08) 15%,rgba(0,0,0,.08) 85%,transparent);margin:3.5rem 0}.preview-prose img{display:block;max-width:100%;height:auto;border-radius:14px;margin:2rem auto;box-shadow:0 10px 30px rgba(0,0,0,.04)}.preview-prose p:has(>img:only-child){display:flex;justify-content:center}.preview-prose table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;margin:2.5rem 0;font-size:.925rem;border:1px solid rgba(255,91,4,.15);border-radius:14px;box-shadow:0 4px 24px rgba(255,91,4,.03)}.preview-prose th,.preview-prose td{border-bottom:1px solid rgba(255,91,4,.08);border-right:1px solid rgba(255,91,4,.06);padding:.9rem 1.25rem;text-align:left}.preview-prose th:last-child,.preview-prose td:last-child{border-right:none}.preview-prose tr:last-child td{border-bottom:none}.preview-prose th{background:#FFF5F0;color:#1a1a1a;font-weight:700;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;border-bottom:2px solid rgba(255,91,4,.2)!important}.preview-prose tr:hover td{background:rgba(255,91,4,.025)}.preview-prose>p:first-of-type::first-letter{font-size:3.5rem;font-weight:700;float:left;line-height:.85;margin-right:.55rem;margin-top:.15rem;color:#FF5B04;font-family:var(--font-geist),sans-serif}.preview-prose::selection,.preview-prose *::selection{background:rgba(255,91,4,.12);color:#FF5B04}`;
+
+const PostPreviewPanel = ({
+  title, bannerImage, excerpt, tags, contentHtml, postType, onEdit,
+}: {
+  title: string; bannerImage: string; excerpt: string; tags: string[];
+  contentHtml: string; postType: string; onEdit: () => void;
+}) => {
+  const typeLabel: Record<string, string> = { blog: "Blog", tutorial: "Tutorial", "case-study": "Case Study", "community-insight": "Community Insight" };
+  const headings = useMemo(() => parseHeadings(contentHtml), [contentHtml]);
+  const processedHtml = useMemo(() => injectHeadingIds(contentHtml), [contentHtml]);
+  const [activeId, setActiveId] = useState("");
+  const readTime = useMemo(() => Math.max(1, Math.ceil(contentHtml.replace(/<[^>]*>/g, " ").trim().split(/\s+/).filter(Boolean).length / 200)), [contentHtml]);
+
+  useEffect(() => {
+    if (!headings.length) return;
+    const handleScroll = () => {
+      let current = headings[0].id;
+      for (const { id } of headings) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 120) current = id;
+      }
+      setActiveId(current);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // initialise on mount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [headings]);
+
+  const hasToc = headings.length >= 2;
+
+  return (
+    <div className="flex-1 min-w-0">
+      {/* Preview toolbar */}
+      <div className="flex items-center justify-between mb-3 px-1">
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}>
+            <svg fill="none" height="8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+            Reader Preview
+          </span>
+          <span className="text-xs font-geist text-gray-400">High-fidelity · matches live site</span>
+        </div>
+        <button className="text-xs font-geist font-medium text-gray-500 hover:text-gray-800 flex items-center gap-1.5 transition-colors px-3 py-1.5 rounded-lg hover:bg-black/5" onClick={onEdit}>
+          <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+          Edit Post
+        </button>
+      </div>
+
+      {/* Preview card — no overflow-hidden here; the hero div owns its own clip so
+          the inner sticky TOC aside has a full-height scroll track to travel along */}
+      <div className="bg-white rounded-2xl shadow-sm border border-black/5">
+        {/* ── Hero — mirrors screens/blogsDetails/hero/index.tsx ── */}
+        <div className="relative w-full overflow-hidden group" style={{ height: 340 }}>
+          {bannerImage
+            ? <img alt="Blog banner" className="absolute inset-0 w-full h-full object-cover" src={bannerImage} />
+            : <div className="absolute inset-0" style={{ background: "linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)" }} />}
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.35) 50%,rgba(0,0,0,0.10) 100%)" }} />
+          <button className="absolute top-3 right-3 z-20 bg-white/90 text-xs font-geist font-semibold px-3 py-1.5 rounded-lg shadow-md text-gray-700 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity" onClick={onEdit}>
+            <svg fill="none" height="11" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="11"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+            Edit
+          </button>
+          <div className="absolute inset-0 flex flex-col justify-end pb-10 z-10 px-14">
+            <span className="inline-flex items-center self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-white" style={{ background: "rgba(255,255,255,0.18)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.25)" }}>
+              {typeLabel[postType] ?? postType}
+            </span>
+            <h1 className="text-white font-bold leading-tight max-w-2xl" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.25rem)", letterSpacing: "-0.5px" }}>
+              {title || <span className="opacity-40">Untitled Post</span>}
+            </h1>
+          </div>
+        </div>
+
+        {/* ── Article body — mirrors screens/blogsDetails/blogContents/ layout ── */}
+        <article className="px-14 pt-8 pb-16">
+          {/* Inject prose CSS identical to live site's bulletproof style block */}
+          <style dangerouslySetInnerHTML={{ __html: PREVIEW_PROSE_CSS }} />
+
+          {/* Header info — mirrors screens/blogsDetails/blogContents/headeInfo.tsx */}
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: "#FF5B04" }}>UI</div>
+              <div>
+                <p className="text-sm font-bold text-[#111] uppercase tracking-wide" style={{ fontFamily: "var(--font-geist)" }}>UI Pirate</p>
+                <p className="text-xs text-gray-400" style={{ fontFamily: "var(--font-geist)" }}>Preview · {readTime} min read</p>
+              </div>
+            </div>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest whitespace-nowrap" style={{ fontFamily: "var(--font-geist)" }}>{readTime} min read | Draft</p>
+          </div>
+          <hr className="mt-6 mb-0 border-gray-100" />
+
+          {/* Tags */}
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mt-6">
+              {tags.map((t) => <span key={t} className="text-xs px-2.5 py-0.5 rounded-full" style={{ background: "#FFF0E8", color: "#FF5B04", fontFamily: "var(--font-geist)" }}>{t}</span>)}
+            </div>
+          )}
+
+          {/* Excerpt — pull-quote style matching live site */}
+          {excerpt && <p className="mt-6 text-lg leading-relaxed pl-4 border-l-4 border-orange-200" style={{ color: "#6b7280", fontFamily: "var(--font-jakarta,var(--font-sans))" }}>{excerpt}</p>}
+
+          {/* Content + sticky TOC — two-column when there are ≥2 headings */}
+          {/* NOTE: no items-start — aside must stretch to article height so sticky has room to travel */}
+          <div className={`mt-10 ${hasToc ? "flex gap-10" : ""}`}>
+            <div
+              className="preview-prose min-w-0 flex-1"
+              dangerouslySetInnerHTML={{ __html: processedHtml || "<p style='color:#d1d5db'>No content yet. Start writing in the editor.</p>" }}
+            />
+            {/* Sticky TOC — pixel-identical to screens/blogsDetails/blogContents */}
+            {hasToc && (
+              <aside className="flex-shrink-0 hidden xl:block" style={{ width: 220 }}>
+                <div className="sticky top-24 bg-gray-50 border border-gray-100 rounded-3xl p-6">
+                  <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">Contents</p>
+                  <nav className="flex flex-col gap-2">
+                    {headings.map((h) => (
+                      <a
+                        key={h.id}
+                        className="text-sm transition-colors py-1 px-2 rounded-lg truncate"
+                        href={`#${h.id}`}
+                        style={{
+                          paddingLeft: h.level === 3 ? "1rem" : undefined,
+                          color: activeId === h.id ? "#FF5B04" : "#4b5563",
+                          fontWeight: activeId === h.id ? 600 : 400,
+                        }}
+                        onClick={(e) => { e.preventDefault(); document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); setActiveId(h.id); }}
+                      >
+                        {h.text}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </aside>
+            )}
+          </div>
+        </article>
+      </div>
+    </div>
+  );
+};
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditPage = () => {
   const params = useParams();
@@ -5827,6 +5995,8 @@ const BlogEditPage = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [seoData, setSeoData] = useState<PostSEO>({});
   const [currentSlug, setCurrentSlug] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<"content" | "seo" | "ai">("content");
   const pendingNavHref = useRef<string>("");
   const pendingNavIsBack = useRef(false); // true when guard was tripped by browser back/forward
   const isDirtyRef = useRef(false); // ref mirror — always current inside event handlers
@@ -6407,6 +6577,20 @@ const BlogEditPage = () => {
           >
             {saveStatus}
           </span>
+          <button
+            className={`h-9 px-4 rounded-xl text-sm font-geist font-medium flex items-center gap-1.5 transition-all ${
+              showPreview
+                ? "bg-[#FF5B04] text-white"
+                : "bg-black/5 text-gray-600 hover:bg-black/10"
+            }`}
+            onClick={() => setShowPreview((v) => !v)}
+          >
+            <svg fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            {showPreview ? "Exit Preview" : "Preview"}
+          </button>
           {saveStatus === "Published" ? (
             <>
               <Button
@@ -6451,19 +6635,32 @@ const BlogEditPage = () => {
         </div>
       </div>
 
-      {/* ── Formatting Toolbar ── */}
-      <FormattingToolbar
-        editor={editor}
-        onCopilotClick={() => setIsCopilotOpen(true)}
-        onLinkClick={() => {
-          editor.chain().focus().extendMarkRange("link").run();
-          setShowLinkModal(true);
-        }}
-      />
+      {/* ── Formatting Toolbar — hidden in immersive preview mode ── */}
+      {!showPreview && (
+        <FormattingToolbar
+          editor={editor}
+          onCopilotClick={() => setIsCopilotOpen(true)}
+          onLinkClick={() => {
+            editor.chain().focus().extendMarkRange("link").run();
+            setShowLinkModal(true);
+          }}
+        />
+      )}
 
       {/* ── Two-column Layout ── */}
       <div className="flex gap-6 px-6 pb-6 pt-2 items-start">
-        {/* Editor Column */}
+        {/* Editor / Preview Column */}
+        {showPreview ? (
+          <PostPreviewPanel
+            bannerImage={bannerImage}
+            contentHtml={editor?.getHTML() || ""}
+            excerpt={excerpt}
+            postType={postType}
+            tags={tags}
+            title={title}
+            onEdit={() => setShowPreview(false)}
+          />
+        ) : (
         <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
           {/* Banner image area */}
           {bannerImage ? (
@@ -6616,10 +6813,37 @@ const BlogEditPage = () => {
             />
           </div>
         </div>
+        )}
 
-        {/* ── Settings Sidebar ── */}
-        <div className="w-72 flex-shrink-0 space-y-4">
-          {/* Analytics Card */}
+        {/* ── Settings Sidebar — hidden in immersive preview mode ── */}
+        {!showPreview && <div className="w-72 flex-shrink-0 space-y-4">
+          {/* Sidebar Tab Navigation */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
+            {(
+              [
+                { key: "content", label: "Content" },
+                { key: "seo", label: "SEO" },
+                { key: "ai", label: "AI Tools" },
+              ] as const
+            ).map(({ key, label }) => (
+              <button
+                key={key}
+                className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
+                  sidebarTab === key
+                    ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
+                    : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
+                }`}
+                onClick={() => setSidebarTab(key)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {/* ── Content Tab ── */}
+          {sidebarTab === "content" && (
+            <>
+              {/* Analytics Card */}
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
             <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
               Analytics
@@ -6910,47 +7134,6 @@ const BlogEditPage = () => {
             />
           </div>
 
-          {/* SEO card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 overflow-hidden relative group">
-            <div className="flex justify-between items-center mb-3">
-              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                Search Engine
-              </p>
-              <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 text-[9px] font-bold font-jetbrains-mono uppercase">
-                Optimized
-              </span>
-            </div>
-
-            <div className="space-y-3 mb-4">
-              <div className="p-3 bg-black/[0.02] rounded-xl border border-black/5">
-                <p className="text-[9px] font-jetbrains-mono text-gray-400 uppercase mb-1">
-                  Focus Keyword
-                </p>
-                <p className="text-xs font-semibold text-gray-700">
-                  {seoData?.focusKeyword || "Not set"}
-                </p>
-              </div>
-            </div>
-
-            <button
-              className="w-full py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-gray-800 transition-all flex items-center justify-center gap-2"
-              onClick={() => setShowSEOModal(true)}
-            >
-              <svg
-                fill="none"
-                height="12"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                width="12"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-              Open SEO Editor
-            </button>
-          </div>
-
           {/* Quick insert card */}
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
             <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
@@ -7057,7 +7240,118 @@ const BlogEditPage = () => {
               </button>
             </div>
           </div>
-        </div>
+            </>
+          )}
+
+          {/* ── SEO Tab ── */}
+          {sidebarTab === "seo" && (
+            <>
+              <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">SEO Health</p>
+                  {(() => {
+                    const score =
+                      (seoData?.focusKeyword ? 25 : 0) +
+                      (seoData?.metaTitle ? 25 : 0) +
+                      (seoData?.metaDescription ? 25 : 0) +
+                      ((seoData?.keywords?.length ?? 0) > 0 ? 25 : 0);
+                    const color = score >= 75 ? "#16a34a" : score >= 50 ? "#FF5B04" : "#dc2626";
+                    const label = score >= 75 ? "Good" : score >= 50 ? "Fair" : "Needs Work";
+                    return (
+                      <div className="flex items-center gap-2">
+                        <div className="relative w-8 h-8">
+                          <svg className="w-8 h-8 -rotate-90" viewBox="0 0 32 32">
+                            <circle cx="16" cy="16" fill="none" r="12" stroke="#f3f4f6" strokeWidth="4" />
+                            <circle cx="16" cy="16" fill="none" r="12" stroke={color} strokeDasharray={`${(score / 100) * 75.4} 75.4`} strokeLinecap="round" strokeWidth="4" />
+                          </svg>
+                          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold font-jetbrains-mono" style={{ color }}>{score}</span>
+                        </div>
+                        <span className="text-[10px] font-bold font-jetbrains-mono" style={{ color }}>{label}</span>
+                      </div>
+                    );
+                  })()}
+                </div>
+                <div className="space-y-2 mb-4">
+                  {[
+                    { label: "Focus Keyword", value: !!seoData?.focusKeyword },
+                    { label: "Meta Title", value: !!seoData?.metaTitle },
+                    { label: "Meta Description", value: !!seoData?.metaDescription },
+                    { label: "Keywords", value: (seoData?.keywords?.length ?? 0) > 0 },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="flex items-center gap-2">
+                      <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: value ? "#dcfce7" : "#fee2e2" }}>
+                        {value ? (
+                          <svg fill="none" height="8" stroke="#16a34a" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="8"><polyline points="20 6 9 17 4 12" /></svg>
+                        ) : (
+                          <svg fill="none" height="8" stroke="#dc2626" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="8"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
+                        )}
+                      </div>
+                      <span className="text-xs font-geist text-gray-600">{label}</span>
+                    </div>
+                  ))}
+                </div>
+                <button className="w-full py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-gray-800 transition-all flex items-center justify-center gap-2" onClick={() => setShowSEOModal(true)}>
+                  <svg fill="none" height="12" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="12"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+                  Open SEO Editor
+                </button>
+              </div>
+              <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
+                <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">Quick Edit</p>
+                <div>
+                  <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">Focus Keyword</label>
+                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="e.g. react performance" value={seoData?.focusKeyword || ""} onChange={(e) => setSeoData((prev) => ({ ...prev, focusKeyword: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
+                    Meta Title <span className="normal-case font-geist text-gray-300">({(seoData?.metaTitle || "").length}/60)</span>
+                  </label>
+                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" maxLength={60} placeholder="SEO page title…" value={seoData?.metaTitle || ""} onChange={(e) => setSeoData((prev) => ({ ...prev, metaTitle: e.target.value }))} />
+                </div>
+                <div>
+                  <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
+                    Meta Description <span className="normal-case font-geist text-gray-300">({(seoData?.metaDescription || "").length}/160)</span>
+                  </label>
+                  <textarea className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none" maxLength={160} placeholder="Brief description for search results…" rows={3} value={seoData?.metaDescription || ""} onChange={(e) => setSeoData((prev) => ({ ...prev, metaDescription: e.target.value }))} />
+                </div>
+                {currentSlug && (
+                  <div className="pt-1 border-t border-black/5">
+                    <p className="text-[9px] font-jetbrains-mono text-gray-400 uppercase tracking-wider mb-1">URL Slug</p>
+                    <p className="text-xs font-geist text-gray-500 break-all">/{currentSlug}</p>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* ── AI Tab ── */}
+          {sidebarTab === "ai" && (
+            <div className="space-y-3">
+              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">AI Writing Tools</p>
+              {[
+                { key: "copilot", label: "AI Copilot", description: "Get AI suggestions and help with your content", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" /></svg>, onClick: () => setIsCopilotOpen(true) },
+                { key: "title", label: "AI Title", description: "Generate compelling post titles", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M4 6h16M4 12h16M4 18h7" /></svg>, onClick: () => setIsTitleModalOpen(true) },
+                { key: "excerpt", label: "AI Excerpt", description: "Auto-summarize your post content", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" x2="8" y1="13" y2="13" /><line x1="16" x2="8" y1="17" y2="17" /></svg>, onClick: () => { if (!editor || editor.isEmpty) { setValidationError("Please write some content first so the AI can summarize it."); return; } setIsExcerptModalOpen(true); } },
+                { key: "tags", label: "AI Tags", description: "Generate relevant tags for your post", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><line x1="7" x2="7.01" y1="7" y2="7" /></svg>, onClick: () => setIsTagsModalOpen(true) },
+              ].map(({ key, label, description, icon, onClick }) => (
+                <button key={key} className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group" onClick={onClick}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(255,91,4,0.08)", color: "#FF5B04" }}>
+                      {icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">{label}</p>
+                      <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">{description}</p>
+                    </div>
+                    <svg className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+                      <line x1="5" x2="19" y1="12" y2="12" /><polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>}
+
       </div>
 
       {/* ── Modals ── */}
