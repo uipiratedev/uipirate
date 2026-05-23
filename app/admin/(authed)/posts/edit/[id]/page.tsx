@@ -88,10 +88,9 @@ const Modal = ({
 const SEOEditorModal = ({
   isOpen,
   onClose,
-  data,
-  onChange,
-  slug,
-  onSlugChange,
+  data: parentData,
+  onApply,
+  slug: parentSlug,
   postTitle,
   postContent,
   postType,
@@ -99,70 +98,369 @@ const SEOEditorModal = ({
   isOpen: boolean;
   onClose: () => void;
   data: any;
-  onChange: (newData: any) => void;
+  onApply: (newData: any, newSlug: string) => void;
   slug: string;
-  onSlugChange: (newSlug: string) => void;
   postTitle: string;
   postContent: string;
   postType: string;
 }) => {
-  const [activeTab, setActiveTab] = useState<"general" | "social" | "analysis">(
-    "general",
-  );
-  const [isAnalyzing, setIsGenerating] = useState(false);
-  const [analysis, setAnalysis] = useState<any>(null);
-  const [error, setError] = useState("");
-
-  const updateField = (field: string, value: any) => {
-    onChange({ ...data, [field]: value });
+  type SupportedAIEngine = "openai" | "gemini" | "mistral";
+  type ModalTab = "general" | "social" | "analysis" | "performance";
+  type SEOAction = "seo-analysis" | "titles" | "excerpt" | "tags";
+  type SEOAnalysisResult = {
+    score: number;
+    strengths: string[];
+    improvements: string[];
+    keywordGap: string[];
+    headingStructure: string;
+    readability: string;
+    imageOptimization?: string;
   };
 
-  const runAIAnalysis = async () => {
-    setIsGenerating(true);
+  const steps = [
+    { id: "title", label: "Title & Slug" },
+    { id: "desc", label: "Description" },
+    { id: "social", label: "Social Cards" },
+    { id: "review", label: "Final Review" },
+  ] as const;
+
+  const modelOptions: Record<
+    SupportedAIEngine,
+    Array<{ value: string; label: string }>
+  > = {
+    openai: [
+      { value: "gpt-4o-mini", label: "GPT-4o Mini (Default)" },
+      { value: "gpt-4o", label: "GPT-4o" },
+      { value: "gpt-5.4", label: "GPT-5.4" },
+      { value: "gpt-5.4-mini", label: "GPT-5.4 Mini" },
+      { value: "gpt-5.5", label: "GPT-5.5" },
+    ],
+    gemini: [
+      { value: "gemini-flash-latest", label: "Gemini 1.5 Flash" },
+      { value: "gemini-1.5-pro-latest", label: "Gemini 1.5 Pro" },
+      { value: "gemini-2.0-flash-exp", label: "Gemini 2.0 Flash" },
+    ],
+    mistral: [
+      { value: "mistral-large-latest", label: "Mistral Large" },
+      { value: "mistral-small-latest", label: "Mistral Small" },
+      { value: "mistral-nemo", label: "Mistral Nemo" },
+      { value: "codestral-latest", label: "Codestral" },
+    ],
+  };
+
+  const getDefaultModelForEngine = (engine: SupportedAIEngine) =>
+    engine === "gemini"
+      ? "gemini-flash-latest"
+      : engine === "mistral"
+        ? "mistral-large-latest"
+        : "gpt-4o-mini";
+
+  const getTabForStep = (step: number): Exclude<ModalTab, "performance"> => {
+    if (step <= 1) return "general";
+    if (step === 2) return "social";
+    return "analysis";
+  };
+
+  const plainTextContent = postContent
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const [activeTab, setActiveTab] = useState<ModalTab>("general");
+  const [isAnalyzing, setIsGenerating] = useState(false);
+  const [generatingAction, setGeneratingAction] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState<SEOAnalysisResult | null>(null);
+  const [error, setError] = useState("");
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [workflowStep, setWorkflowStep] = useState(0);
+  const [selectedEngine, setSelectedEngine] =
+    useState<SupportedAIEngine>("openai");
+  const [selectedModel, setSelectedModel] = useState("gpt-4o-mini");
+
+  const [localData, setLocalData] = useState<any>({});
+  const [localSlug, setLocalSlug] = useState<string>("");
+
+  const data = localData;
+  const slug = localSlug;
+
+  const updateField = (field: string, value: any) => {
+    setLocalData((prev: any) => ({ ...prev, [field]: value }));
+  };
+
+  const goToStep = useCallback((nextStep: number) => {
+    const safeStep = Math.max(0, Math.min(steps.length - 1, nextStep));
+
+    setWorkflowStep(safeStep);
+    setActiveTab(getTabForStep(safeStep));
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Prevent background scrolling when the modal is open
+    document.body.style.overflow = "hidden";
+
+    const config = loadAIConfig();
+    const nextEngine: SupportedAIEngine =
+      config.defaultEngine === "gemini" ||
+      config.defaultEngine === "mistral" ||
+      config.defaultEngine === "openai"
+        ? config.defaultEngine
+        : "openai";
+    const nextModel =
+      config.defaultModel &&
+      modelOptions[nextEngine].some((option) => option.value === config.defaultModel)
+        ? config.defaultModel
+        : getDefaultModelForEngine(nextEngine);
+
+    setSelectedEngine(nextEngine);
+    setSelectedModel(nextModel);
+    setActiveTab("general");
+    setWorkflowStep(0);
     setError("");
+    setAnalysis(null);
+
+    // Initialize local states from props when opening the modal
+    setLocalData(parentData ? { ...parentData } : {});
+    setLocalSlug(parentSlug || "");
+
+    return () => {
+      // Restore background scrolling when modal closes or unmounts
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!modelOptions[selectedEngine].some((option) => option.value === selectedModel)) {
+      setSelectedModel(getDefaultModelForEngine(selectedEngine));
+    }
+  }, [selectedEngine, selectedModel]);
+
+  const getPerformanceStats = useCallback(() => {
+    const stats = {
+      contentDepth: 0,
+      keywordDensity: 0,
+      mobileReadiness: 95,
+      semanticRichness: 0,
+      overallScore: 0,
+      strategies: [] as { type: "check" | "alert"; text: string }[],
+    };
+    const wordCount = plainTextContent ? plainTextContent.split(/\s+/).length : 0;
+
+    stats.contentDepth = Math.min(100, Math.floor((wordCount / 1000) * 100));
+
+    if (data?.focusKeyword && plainTextContent) {
+      const escapedKeyword = String(data.focusKeyword).replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&",
+      );
+      const regex = new RegExp(escapedKeyword, "gi");
+      const matches = plainTextContent.match(regex);
+      const count = matches ? matches.length : 0;
+      const density = wordCount ? (count / wordCount) * 100 : 0;
+
+      if (density >= 1 && density <= 2.5) stats.keywordDensity = 100;
+      else if (density > 0) {
+        stats.keywordDensity = Math.min(100, Math.floor((density / 1) * 100));
+      }
+    }
+
+    if (data?.keywords && data.keywords.length > 0) {
+      stats.semanticRichness = Math.min(100, data.keywords.length * 10);
+    }
+
+    if (wordCount < 500) {
+      stats.strategies.push({
+        type: "alert",
+        text: "Increase content length to at least 800 words for better ranking.",
+      });
+    } else {
+      stats.strategies.push({
+        type: "check",
+        text: "Content depth is strong enough to compete for broader search queries.",
+      });
+    }
+
+    if (!data?.focusKeyword) {
+      stats.strategies.push({
+        type: "alert",
+        text: "Define a focus keyword to unlock more accurate density analysis.",
+      });
+    }
+
+    if (!data?.metaDescription || data.metaDescription.length < 120) {
+      stats.strategies.push({
+        type: "alert",
+        text: "Meta description is too short; aim for a concise 150-160 characters.",
+      });
+    }
+
+    if (!data?.ogImage) {
+      stats.strategies.push({
+        type: "alert",
+        text: "Add a social sharing image to improve preview quality on external platforms.",
+      });
+    }
+
+    stats.overallScore = Math.floor(
+      (stats.contentDepth +
+        stats.keywordDensity +
+        stats.mobileReadiness +
+        stats.semanticRichness) /
+        4,
+    );
+
+    return stats;
+  }, [plainTextContent, data]);
+
+  const perfStats = getPerformanceStats();
+
+  const runAIAnalysis = async (specificAction?: string) => {
+    setIsGenerating(true);
+    const apiAction =
+      specificAction === "metaTitle"
+        ? "titles"
+        : specificAction === "metaDescription"
+          ? "excerpt"
+          : specificAction || "seo-analysis";
+    setGeneratingAction(specificAction || "seo-analysis");
+    setError("");
+
     try {
-      const config = loadAIConfig();
       const response = await fetch("/api/ai/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          action: "seo-analysis",
+          action: apiAction,
           title: postTitle,
-          content: postContent.replace(/<[^>]*>/g, "").slice(0, 5000), // Strip HTML and limit context
+          content: plainTextContent.slice(0, 5000),
           postType,
-          engine: config.defaultEngine,
-          model: config.defaultModel,
+          engine: selectedEngine,
+          model: selectedModel,
         }),
       });
-
       const result = await response.json();
 
-      if (!result.success) throw new Error(result.error);
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Failed to complete AI request");
+      }
 
       const aiData = result.data;
 
-      setAnalysis(aiData.analysis);
+      if (apiAction === "titles") {
+        const nextTitle = Array.isArray(aiData)
+          ? aiData.find((item) => typeof item === "string" && item.trim())
+          : null;
 
-      // Optionally auto-fill fields if they are empty
-      const newData = { ...data };
+        if (!nextTitle) {
+          throw new Error("AI did not return a valid title suggestion.");
+        }
 
-      if (!newData.metaTitle) newData.metaTitle = aiData.metaTitle;
-      if (!newData.metaDescription)
-        newData.metaDescription = aiData.metaDescription;
-      if (!newData.focusKeyword) newData.focusKeyword = aiData.focusKeyword;
-      if (!newData.keywords || newData.keywords.length === 0)
-        newData.keywords = aiData.semanticKeywords;
-      if (!newData.ogTitle) newData.ogTitle = aiData.ogTitle;
-      if (!newData.ogDescription) newData.ogDescription = aiData.ogDescription;
+        updateField("metaTitle", nextTitle.trim());
+        return;
+      }
 
-      onChange(newData);
-      if (!slug) onSlugChange(aiData.slug);
+      if (apiAction === "excerpt") {
+        if (typeof aiData !== "string" || !aiData.trim()) {
+          throw new Error("AI did not return a valid meta description.");
+        }
 
-      setActiveTab("analysis");
+        updateField("metaDescription", aiData.trim());
+        return;
+      }
+
+      if (apiAction === "tags") {
+        const nextKeywords = Array.isArray(aiData)
+          ? aiData
+              .filter((item) => typeof item === "string" && item.trim())
+              .map((item) => item.trim())
+          : [];
+
+        if (!nextKeywords.length) {
+          throw new Error("AI did not return valid keyword suggestions.");
+        }
+
+        setLocalData((prev: any) => ({
+          ...prev,
+          keywords: nextKeywords,
+          focusKeyword: prev?.focusKeyword || nextKeywords[0],
+        }));
+        return;
+      }
+
+      const nextAnalysis =
+        aiData?.analysis && typeof aiData.analysis === "object"
+          ? {
+              score:
+                typeof aiData.analysis.score === "number"
+                  ? Math.max(0, Math.min(100, aiData.analysis.score))
+                  : perfStats.overallScore,
+              strengths: Array.isArray(aiData.analysis.strengths)
+                ? aiData.analysis.strengths
+                : [],
+              improvements: Array.isArray(aiData.analysis.improvements)
+                ? aiData.analysis.improvements
+                : [],
+              keywordGap: Array.isArray(aiData.analysis.keywordGap)
+                ? aiData.analysis.keywordGap
+                : [],
+              headingStructure:
+                typeof aiData.analysis.headingStructure === "string"
+                  ? aiData.analysis.headingStructure
+                  : "Heading structure review unavailable.",
+              readability:
+                typeof aiData.analysis.readability === "string"
+                  ? aiData.analysis.readability
+                  : "Readability review unavailable.",
+              imageOptimization:
+                typeof aiData.analysis.imageOptimization === "string"
+                  ? aiData.analysis.imageOptimization
+                  : "",
+            }
+          : null;
+
+      setAnalysis(nextAnalysis);
+      setLocalData((prev: any) => ({
+        ...prev,
+        metaTitle:
+          typeof aiData?.metaTitle === "string" && aiData.metaTitle.trim()
+            ? aiData.metaTitle.trim()
+            : prev?.metaTitle,
+        metaDescription:
+          typeof aiData?.metaDescription === "string" &&
+          aiData.metaDescription.trim()
+            ? aiData.metaDescription.trim()
+            : prev?.metaDescription,
+        focusKeyword:
+          typeof aiData?.focusKeyword === "string" && aiData.focusKeyword.trim()
+            ? aiData.focusKeyword.trim()
+            : prev?.focusKeyword,
+        keywords: Array.isArray(aiData?.semanticKeywords)
+          ? aiData.semanticKeywords
+              .filter((item: unknown) => typeof item === "string" && item.trim())
+              .map((item: string) => item.trim())
+          : prev?.keywords,
+        ogTitle:
+          typeof aiData?.ogTitle === "string" && aiData.ogTitle.trim()
+            ? aiData.ogTitle.trim()
+            : prev?.ogTitle,
+        ogDescription:
+          typeof aiData?.ogDescription === "string" &&
+          aiData.ogDescription.trim()
+            ? aiData.ogDescription.trim()
+            : prev?.ogDescription,
+      }));
+
+      if (typeof aiData?.slug === "string" && aiData.slug.trim()) {
+        setLocalSlug(aiData.slug.trim());
+      }
+
+      goToStep(3);
     } catch (err: any) {
       setError(err.message || "Failed to analyze SEO");
     } finally {
       setIsGenerating(false);
+      setGeneratingAction(null);
     }
   };
 
@@ -170,153 +468,283 @@ const SEOEditorModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-0 md:p-4 bg-black/50 backdrop-blur-md transition-all duration-300"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-[32px] shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300"
+        className={`bg-white shadow-2xl flex flex-col overflow-hidden transition-all duration-500 ease-in-out ${
+          isFullscreen
+            ? "w-full h-full rounded-none"
+            : "w-full max-w-6xl h-[90vh] rounded-[32px]"
+        } animate-in fade-in zoom-in duration-300`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="p-6 border-b border-black/5 flex items-center justify-between bg-gray-50/50">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded-md bg-orange-100 text-[#FF5B04] text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider">
-                SEO Engine
-              </span>
-              <h2 className="text-xl font-bold font-geist text-gray-900">
-                Search Optimization
-              </h2>
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="px-2 py-0.5 rounded-md bg-orange-100 text-[#FF5B04] text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider">
+                  SEO Suite 2.0
+                </span>
+                <h2 className="text-xl font-bold font-geist text-gray-900">
+                  Search Optimization
+                </h2>
+              </div>
+              <p className="text-xs text-gray-400 font-geist">
+                Manual AI workflows, section-aware stepping, and in-modal model selection.
+              </p>
             </div>
-            <p className="text-xs text-gray-400 font-geist">
-              Configure how your post appears in search engines and social
-              media.
-            </p>
           </div>
-          <button
-            className="w-10 h-10 rounded-2xl flex items-center justify-center text-gray-400 hover:bg-black/5 transition-all"
-            onClick={onClose}
-          >
-            <svg
-              fill="none"
-              height="20"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              width="20"
+
+          <div className="flex items-center gap-2">
+            <button
+              className="w-10 h-10 rounded-2xl flex items-center justify-center text-gray-400 hover:bg-black/5 transition-all border border-black/5 bg-white"
+              title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+              onClick={() => setIsFullscreen(!isFullscreen)}
             >
-              <line x1="18" x2="6" y1="6" y2="18" />
-              <line x1="6" x2="18" y1="6" y2="18" />
-            </svg>
-          </button>
+              <svg
+                fill="none"
+                height="18"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="18"
+              >
+                {isFullscreen ? (
+                  <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+                ) : (
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                )}
+              </svg>
+            </button>
+            <button
+              className="w-10 h-10 rounded-2xl flex items-center justify-center text-gray-400 hover:bg-black/5 transition-all border border-black/5 bg-white"
+              onClick={onClose}
+            >
+              <svg
+                fill="none"
+                height="20"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="20"
+              >
+                <line x1="18" x2="6" y1="6" y2="18" />
+                <line x1="6" x2="18" y1="6" y2="18" />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex px-6 bg-gray-50/50 border-b border-black/5">
-          {[
-            {
-              id: "general",
-              label: "General SEO",
-              icon: (
-                <svg
-                  fill="none"
-                  height="14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  width="14"
+        <div className="px-4 md:px-8 py-3 bg-white border-b border-black/5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center gap-3 overflow-x-auto">
+            {steps.map((step, idx) => (
+              <React.Fragment key={step.id}>
+                <button
+                  className={`flex items-center gap-2 transition-all whitespace-nowrap ${
+                    idx <= workflowStep ? "text-orange-600" : "text-gray-300"
+                  }`}
+                  onClick={() => goToStep(idx)}
                 >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.3-4.3" />
-                </svg>
-              ),
-            },
-            {
-              id: "social",
-              label: "Social Media",
-              icon: (
+                  <span
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold border-2 ${
+                      idx <= workflowStep
+                        ? "border-orange-600 bg-orange-50"
+                        : "border-gray-200"
+                    }`}
+                  >
+                    {idx + 1}
+                  </span>
+                  <span className="text-[11px] font-bold uppercase tracking-tight hidden md:block">
+                    {step.label}
+                  </span>
+                </button>
+                {idx < steps.length - 1 && (
+                  <div
+                    className={`w-8 h-px ${
+                      idx < workflowStep ? "bg-orange-600" : "bg-gray-100"
+                    }`}
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <button
+              className="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:bg-gray-50 disabled:opacity-30"
+              disabled={workflowStep === 0}
+              onClick={() => goToStep(workflowStep - 1)}
+            >
+              Back
+            </button>
+            <button
+              className="px-4 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200 disabled:opacity-30"
+              disabled={workflowStep === steps.length - 1}
+              onClick={() => goToStep(workflowStep + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col xl:flex-row xl:items-center gap-3 px-4 md:px-6 bg-gray-50/50 border-b border-black/5">
+          <div className="flex overflow-x-auto no-scrollbar">
+            {[
+              {
+                id: "general",
+                label: "General SEO",
+                icon: (
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                ),
+              },
+              {
+                id: "social",
+                label: "Social Media",
+                icon: (
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                  </svg>
+                ),
+              },
+              {
+                id: "analysis",
+                label: "AI Analysis",
+                icon: (
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
+                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                  </svg>
+                ),
+              },
+              {
+                id: "performance",
+                label: "Performance Evaluation",
+                icon: (
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                  </svg>
+                ),
+              },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                className={`flex items-center gap-2 px-4 md:px-6 py-4 text-sm font-semibold transition-all relative whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? "text-[#FF5B04]"
+                    : "text-gray-400 hover:text-gray-600"
+                }`}
+                onClick={() => {
+                  if (tab.id === "performance") {
+                    setActiveTab("performance");
+                  } else if (tab.id === "general") {
+                    goToStep(Math.min(workflowStep, 1));
+                  } else if (tab.id === "social") {
+                    goToStep(2);
+                  } else {
+                    goToStep(3);
+                  }
+                }}
+              >
+                {tab.icon}
+                {tab.label}
+                {activeTab === tab.id && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF5B04]" />
+                )}
+              </button>
+            ))}
+          </div>
+          <div className="xl:ml-auto flex flex-col sm:flex-row gap-2 py-3 xl:py-0 xl:my-auto">
+            <select
+              className="h-9 rounded-xl border border-black/5 bg-white px-3 text-xs font-semibold text-gray-700 outline-none"
+              value={selectedEngine}
+              onChange={(e) =>
+                setSelectedEngine(e.target.value as SupportedAIEngine)
+              }
+            >
+              <option value="openai">OpenAI</option>
+              <option value="gemini">Gemini</option>
+              <option value="mistral">Mistral</option>
+            </select>
+            <select
+              className="h-9 min-w-[210px] rounded-xl border border-black/5 bg-white px-3 text-xs font-semibold text-gray-700 outline-none"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+            >
+              {modelOptions[selectedEngine].map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <button
+              className="h-9 px-4 rounded-xl bg-black text-white text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-all shadow-sm shrink-0"
+              disabled={isAnalyzing}
+              onClick={() => runAIAnalysis("seo-analysis")}
+            >
+              {isAnalyzing ? (
                 <svg
+                  className="animate-spin"
                   fill="none"
-                  height="14"
+                  height="12"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.5"
                   viewBox="0 0 24 24"
-                  width="14"
+                  width="12"
                 >
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                 </svg>
-              ),
-            },
-            {
-              id: "analysis",
-              label: "AI Analysis",
-              icon: (
+              ) : (
                 <svg
                   fill="none"
-                  height="14"
+                  height="12"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.5"
                   viewBox="0 0 24 24"
-                  width="14"
+                  width="12"
                 >
                   <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
                 </svg>
-              ),
-            },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-all relative ${
-                activeTab === tab.id
-                  ? "text-[#FF5B04]"
-                  : "text-gray-400 hover:text-gray-600"
-              }`}
-              onClick={() => setActiveTab(tab.id as any)}
-            >
-              {tab.icon}
-              {tab.label}
-              {activeTab === tab.id && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF5B04]" />
               )}
+              {isAnalyzing ? "Analyzing..." : "Run AI Optimization"}
             </button>
-          ))}
-          <button
-            className="ml-auto my-auto h-9 px-4 rounded-xl bg-black text-white text-xs font-bold flex items-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-all shadow-sm"
-            disabled={isAnalyzing}
-            onClick={runAIAnalysis}
-          >
-            {isAnalyzing ? (
-              <svg
-                className="animate-spin"
-                fill="none"
-                height="12"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                width="12"
-              >
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-              </svg>
-            ) : (
-              <svg
-                fill="none"
-                height="12"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                width="12"
-              >
-                <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-              </svg>
-            )}
-            {isAnalyzing ? "Analyzing..." : "Auto-Optimize with AI"}
-          </button>
+          </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
+        <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar bg-white">
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex gap-3 animate-in slide-in-from-top-2">
               <svg
@@ -338,97 +766,200 @@ const SEOEditorModal = ({
             </div>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Left Column: Form */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
             <div className="space-y-8">
               {activeTab === "general" && (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-end">
-                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
-                        Meta Title
-                      </label>
-                      <span
-                        className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaTitle?.length && data.metaTitle.length > 60 ? "text-red-500" : "text-gray-400"}`}
+                  <div
+                    className={`p-6 rounded-3xl border transition-all ${
+                      workflowStep === 0
+                        ? "border-orange-200 bg-orange-50/20"
+                        : "border-black/5 bg-gray-50/30"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
+                          1
+                        </span>
+                        Title & Identity
+                      </h3>
+                      <button
+                        className="text-[10px] font-bold text-orange-600 hover:underline disabled:opacity-40"
+                        disabled={isAnalyzing}
+                        onClick={() => runAIAnalysis("metaTitle")}
                       >
-                        {data?.metaTitle?.length || 0}/60
-                      </span>
+                        {generatingAction === "metaTitle" ? "Generating..." : "Regenerate Title"}
+                      </button>
                     </div>
-                    <input
-                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
-                      placeholder="Enter search engine title..."
-                      value={data?.metaTitle || ""}
-                      onChange={(e) => updateField("metaTitle", e.target.value)}
-                    />
+
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-end">
+                          <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">
+                            Meta Title
+                          </label>
+                          <span
+                            className={`text-[10px] font-bold font-jetbrains-mono ${
+                              data?.metaTitle?.length &&
+                              data.metaTitle.length > 60
+                                ? "text-red-500"
+                                : "text-gray-400"
+                            }`}
+                          >
+                            {data?.metaTitle?.length || 0}/60
+                          </span>
+                        </div>
+                        <input
+                          className="w-full bg-white border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
+                          placeholder="Enter search engine title..."
+                          value={data?.metaTitle || ""}
+                          onChange={(e) =>
+                            updateField("metaTitle", e.target.value)
+                          }
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">
+                          URL Slug
+                        </label>
+                        <div className="flex items-center bg-white border border-black/5 rounded-2xl px-4 py-3.5 focus-within:ring-2 focus-within:ring-orange-100 transition-all shadow-sm">
+                          <span className="text-xs text-gray-300 pr-1">
+                            uipirate.com/posts/
+                          </span>
+                          <input
+                            className="flex-1 bg-transparent text-sm font-geist outline-none"
+                            placeholder="url-slug-here"
+                            value={slug}
+                            onChange={(e) =>
+                              setLocalSlug(
+                                e.target.value
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")
+                                  .replace(/[^a-z0-9-]/g, ""),
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-end">
-                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
-                        URL Slug
-                      </label>
+                  <div
+                    className={`p-6 rounded-3xl border transition-all ${
+                      workflowStep === 1
+                        ? "border-orange-200 bg-orange-50/20"
+                        : "border-black/5 bg-gray-50/30"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
+                          2
+                        </span>
+                        Search Snippet
+                      </h3>
+                      <button
+                        className="text-[10px] font-bold text-orange-600 hover:underline disabled:opacity-40"
+                        disabled={isAnalyzing}
+                        onClick={() => runAIAnalysis("metaDescription")}
+                      >
+                        {generatingAction === "metaDescription" ? "Generating..." : "Generate Description"}
+                      </button>
                     </div>
-                    <div className="flex items-center bg-gray-50 border border-black/5 rounded-2xl px-4 py-3.5 focus-within:ring-2 focus-within:ring-orange-100 transition-all">
-                      <span className="text-xs text-gray-400 pr-1">
-                        uipirate.com/posts/
-                      </span>
-                      <input
-                        className="flex-1 bg-transparent text-sm font-geist outline-none"
-                        placeholder="url-slug-here"
-                        value={slug}
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-end">
+                        <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">
+                          Meta Description
+                        </label>
+                        <span
+                          className={`text-[10px] font-bold font-jetbrains-mono ${
+                            data?.metaDescription?.length &&
+                            data.metaDescription.length > 160
+                              ? "text-red-500"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          {data?.metaDescription?.length || 0}/160
+                        </span>
+                      </div>
+                      <textarea
+                        className="w-full bg-white border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all min-h-[120px] resize-none shadow-sm"
+                        placeholder="Enter short summary for search results..."
+                        value={data?.metaDescription || ""}
                         onChange={(e) =>
-                          onSlugChange(
-                            e.target.value
-                              .toLowerCase()
-                              .replace(/\s+/g, "-")
-                              .replace(/[^a-z0-9-]/g, ""),
-                          )
+                          updateField("metaDescription", e.target.value)
                         }
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-end">
-                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
-                        Meta Description
-                      </label>
-                      <span
-                        className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaDescription?.length && data.metaDescription.length > 160 ? "text-red-500" : "text-gray-400"}`}
-                      >
-                        {data?.metaDescription?.length || 0}/160
-                      </span>
-                    </div>
-                    <textarea
-                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all min-h-[120px] resize-none"
-                      placeholder="Enter short summary for search results..."
-                      value={data?.metaDescription || ""}
-                      onChange={(e) =>
-                        updateField("metaDescription", e.target.value)
-                      }
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                        Focus Keyword
-                      </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-5 rounded-3xl border border-black/5 bg-gray-50/30 space-y-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">
+                          Focus Keyword
+                        </label>
+                        <button
+                          className="text-[10px] font-bold text-orange-600 hover:underline disabled:opacity-40"
+                          disabled={isAnalyzing}
+                          onClick={() => runAIAnalysis("tags")}
+                        >
+                          {generatingAction === "tags" ? "Generating..." : "Generate Keywords"}
+                        </button>
+                      </div>
                       <input
-                        className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                        className="w-full bg-white border border-black/5 rounded-xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
                         placeholder="e.g. Next.js SEO"
                         value={data?.focusKeyword || ""}
                         onChange={(e) =>
                           updateField("focusKeyword", e.target.value)
                         }
                       />
+
+                      {/* Semantic Keywords Tag List */}
+                      {data?.keywords && data.keywords.length > 0 && (
+                        <div className="space-y-1.5 pt-1">
+                          <label className="text-[9px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">
+                            Semantic Keywords
+                          </label>
+                          <div className="flex flex-wrap gap-1.5">
+                            {data.keywords.map((kw: string, idx: number) => (
+                              <span
+                                key={idx}
+                                className="px-2 py-0.5 rounded-lg bg-orange-50 text-orange-600 text-[10px] font-bold font-geist border border-orange-100 flex items-center gap-1 cursor-pointer hover:bg-orange-100 transition-all select-none"
+                                onClick={() => {
+                                  // Click semantic keyword to set as Focus Keyword
+                                  updateField("focusKeyword", kw);
+                                }}
+                                title="Set as Focus Keyword"
+                              >
+                                {kw}
+                                <button
+                                  type="button"
+                                  className="text-orange-400 hover:text-orange-600 font-bold pl-0.5"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const nextKws = data.keywords.filter((_: any, i: number) => i !== idx);
+                                    updateField("keywords", nextKws);
+                                  }}
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
+                    <div className="p-5 rounded-3xl border border-black/5 bg-gray-50/30 space-y-2">
+                      <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">
                         Canonical URL
                       </label>
                       <input
-                        className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                        className="w-full bg-white border border-black/5 rounded-xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
                         placeholder="https://..."
                         value={data?.canonicalUrl || ""}
                         onChange={(e) =>
@@ -442,57 +973,75 @@ const SEOEditorModal = ({
 
               {activeTab === "social" && (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                      OG Image URL
-                    </label>
-                    <input
-                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
-                      placeholder="https://cloudinary.com/..."
-                      value={data?.ogImage || ""}
-                      onChange={(e) => updateField("ogImage", e.target.value)}
-                    />
+                  <div
+                    className={`p-6 rounded-3xl border transition-all ${
+                      workflowStep === 2
+                        ? "border-orange-200 bg-orange-50/20"
+                        : "border-black/5 bg-gray-50/30"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
+                          3
+                        </span>
+                        Social Appearance
+                      </h3>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">
+                          OG Image URL
+                        </label>
+                        <input
+                          className="w-full bg-white border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
+                          placeholder="https://cloudinary.com/..."
+                          value={data?.ogImage || ""}
+                          onChange={(e) => updateField("ogImage", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">
+                          OG Title Override
+                        </label>
+                        <input
+                          className="w-full bg-white border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
+                          placeholder="Title for Facebook/LinkedIn..."
+                          value={data?.ogTitle || ""}
+                          onChange={(e) => updateField("ogTitle", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">
+                          OG Description Override
+                        </label>
+                        <textarea
+                          className="w-full bg-white border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all min-h-[100px] resize-none shadow-sm"
+                          placeholder="Description for social shares..."
+                          value={data?.ogDescription || ""}
+                          onChange={(e) =>
+                            updateField("ogDescription", e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                      OG Title Override
-                    </label>
-                    <input
-                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
-                      placeholder="Title for Facebook/LinkedIn..."
-                      value={data?.ogTitle || ""}
-                      onChange={(e) => updateField("ogTitle", e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                      OG Description Override
-                    </label>
-                    <textarea
-                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all min-h-[100px] resize-none"
-                      placeholder="Description for social shares..."
-                      value={data?.ogDescription || ""}
-                      onChange={(e) =>
-                        updateField("ogDescription", e.target.value)
-                      }
-                    />
-                  </div>
-                  <div className="flex items-center gap-6 pt-2">
+
+                  <div className="flex items-center gap-6 p-4 rounded-3xl bg-gray-50/50 border border-black/5">
                     <div className="flex items-center gap-2">
                       <input
                         checked={data?.noIndex || false}
                         className="w-4 h-4 rounded-md border-black/10 text-[#FF5B04] focus:ring-[#FF5B04]/30"
                         id="noIndex"
                         type="checkbox"
-                        onChange={(e) =>
-                          updateField("noIndex", e.target.checked)
-                        }
+                        onChange={(e) => updateField("noIndex", e.target.checked)}
                       />
                       <label
-                        className="text-xs font-semibold text-gray-600 cursor-pointer"
+                        className="text-xs font-bold font-geist text-gray-600 cursor-pointer"
                         htmlFor="noIndex"
                       >
-                        Hide from Search Engines (noindex)
+                        No-Index (Hide from Search)
                       </label>
                     </div>
                   </div>
@@ -501,276 +1050,394 @@ const SEOEditorModal = ({
 
               {activeTab === "analysis" && (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                  {analysis ? (
-                    <div className="space-y-6">
-                      <div className="flex items-center gap-4 p-5 rounded-[24px] bg-orange-50 border border-orange-100 shadow-sm">
-                        <div className="relative w-16 h-16 flex-shrink-0">
-                          <svg className="w-full h-full" viewBox="0 0 36 36">
-                            <path
-                              className="text-orange-200"
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeDasharray="100, 100"
-                              strokeWidth="3"
-                            />
-                            <path
-                              className="text-[#FF5B04]"
-                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeDasharray={`${analysis.score}, 100`}
-                              strokeLinecap="round"
-                              strokeWidth="3"
-                            />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center text-sm font-bold font-jetbrains-mono text-[#FF5B04]">
-                            {analysis.score}
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-gray-900 mb-1">
-                            SEO Health Score
-                          </h4>
-                          <p className="text-[11px] text-gray-500 leading-relaxed">
-                            Your content is{" "}
-                            {analysis.score >= 80
-                              ? "excellent"
-                              : analysis.score >= 50
-                                ? "good but needs work"
-                                : "needs significant optimization"}{" "}
-                            for search visibility.
-                          </p>
-                        </div>
-                      </div>
+                  <div
+                    className={`p-6 rounded-3xl border transition-all ${
+                      workflowStep === 3
+                        ? "border-orange-200 bg-orange-50/20"
+                        : "border-black/5 bg-gray-50/30"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
+                          4
+                        </span>
+                        Final Review
+                      </h3>
+                      <button
+                        className="text-[10px] font-bold text-orange-600 hover:underline disabled:opacity-40"
+                        disabled={isAnalyzing}
+                        onClick={() => runAIAnalysis("seo-analysis")}
+                      >
+                        Run Audit
+                      </button>
+                    </div>
 
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-emerald-500">
-                            Key Strengths
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {analysis.strengths.map((s: string, i: number) => (
-                              <span
-                                key={i}
-                                className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-600 text-[11px] font-medium border border-emerald-100 flex items-center gap-1.5"
-                              >
-                                <svg
-                                  fill="none"
-                                  height="10"
-                                  stroke="currentColor"
-                                  strokeWidth="3"
-                                  viewBox="0 0 24 24"
-                                  width="10"
-                                >
-                                  <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                                {s}
-                              </span>
-                            ))}
+                    {!analysis ? (
+                      <div className="flex flex-col items-center justify-center py-12 bg-white rounded-[28px] border border-dashed border-black/5">
+                        <div className="w-16 h-16 rounded-3xl bg-orange-50 shadow-sm flex items-center justify-center text-orange-500 mb-4">
+                          <svg
+                            fill="none"
+                            height="32"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            width="32"
+                          >
+                            <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                          </svg>
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2">
+                          AI Audit Ready
+                        </h3>
+                        <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
+                          Run a manual audit when you want recommendations. Opening the modal no longer auto-generates content.
+                        </p>
+                        <button
+                          className="px-6 py-3 rounded-2xl bg-black text-white text-sm font-bold hover:scale-105 transition-all"
+                          disabled={isAnalyzing}
+                          onClick={() => runAIAnalysis("seo-analysis")}
+                        >
+                          Run Comprehensive Audit
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-6">
+                        <div className="flex items-center gap-4 p-5 rounded-[24px] bg-white border border-black/5 shadow-sm">
+                          <div className="relative w-16 h-16 flex-shrink-0">
+                            <svg className="w-full h-full" viewBox="0 0 36 36">
+                              <path
+                                className="text-orange-100"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeDasharray="100, 100"
+                                strokeWidth="3"
+                              />
+                              <path
+                                className="text-[#FF5B04]"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeDasharray={`${analysis.score}, 100`}
+                                strokeLinecap="round"
+                                strokeWidth="3"
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center text-sm font-bold font-jetbrains-mono text-[#FF5B04]">
+                              {analysis.score}
+                            </div>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-bold text-gray-900 mb-1">
+                              SEO Health Score
+                            </h4>
+                            <p className="text-[11px] text-gray-500 leading-relaxed">
+                              {analysis.score >= 80
+                                ? "Strong optimization profile with only minor refinements left."
+                                : analysis.score >= 50
+                                  ? "Good foundation, but several SEO improvements are still recommended."
+                                  : "This page needs substantial SEO improvements before publishing."}
+                            </p>
                           </div>
                         </div>
-                        <div className="space-y-2">
-                          <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-orange-500">
-                            Suggested Improvements
-                          </p>
-                          <ul className="space-y-2">
-                            {analysis.improvements.map(
-                              (imp: string, i: number) => (
-                                <li
-                                  key={i}
-                                  className="text-xs text-gray-600 flex gap-2 items-start bg-gray-50 p-3 rounded-xl border border-black/5"
-                                >
-                                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 flex-shrink-0" />
-                                  {imp}
+
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-emerald-500">
+                              Key Strengths
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                              {analysis.strengths.length ? (
+                                analysis.strengths.map((item) => (
+                                  <span
+                                    key={item}
+                                    className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-600 text-[11px] font-medium border border-emerald-100 flex items-center gap-1.5"
+                                  >
+                                    <svg
+                                      fill="none"
+                                      height="10"
+                                      stroke="currentColor"
+                                      strokeWidth="3"
+                                      viewBox="0 0 24 24"
+                                      width="10"
+                                    >
+                                      <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    {item}
+                                  </span>
+                                ))
+                              ) : (
+                                <p className="text-xs text-gray-500">
+                                  No strengths were returned for this audit.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-orange-500">
+                              Suggested Improvements
+                            </p>
+                            <ul className="space-y-2">
+                              {analysis.improvements.length ? (
+                                analysis.improvements.map((item) => (
+                                  <li
+                                    key={item}
+                                    className="text-xs text-gray-600 flex gap-2 items-start bg-gray-50 p-3 rounded-xl border border-black/5"
+                                  >
+                                    <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 flex-shrink-0" />
+                                    {item}
+                                  </li>
+                                ))
+                              ) : (
+                                <li className="text-xs text-gray-500">
+                                  No improvement suggestions were returned for this audit.
                                 </li>
-                              ),
-                            )}
-                          </ul>
-                        </div>
-                        {analysis.keywordGap &&
-                          analysis.keywordGap.length > 0 && (
+                              )}
+                            </ul>
+                          </div>
+
+                          {!!analysis.keywordGap.length && (
                             <div className="space-y-2">
                               <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-blue-500">
                                 Keyword Gap Analysis
                               </p>
                               <div className="flex flex-wrap gap-2">
-                                {analysis.keywordGap.map(
-                                  (kw: string, i: number) => (
-                                    <span
-                                      key={i}
-                                      className="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-600 text-[11px] font-medium border border-blue-100 flex items-center gap-1.5"
-                                    >
-                                      <svg
-                                        fill="none"
-                                        height="10"
-                                        stroke="currentColor"
-                                        strokeWidth="3"
-                                        viewBox="0 0 24 24"
-                                        width="10"
-                                      >
-                                        <circle cx="11" cy="11" r="8" />
-                                        <path d="m21 21-4.3-4.3" />
-                                      </svg>
-                                      {kw}
-                                    </span>
-                                  ),
-                                )}
+                                {analysis.keywordGap.map((item) => (
+                                  <span
+                                    key={item}
+                                    className="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-600 text-[11px] font-medium border border-blue-100"
+                                  >
+                                    {item}
+                                  </span>
+                                ))}
                               </div>
                             </div>
                           )}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                          <div className="p-4 rounded-2xl bg-gray-50 border border-black/5">
-                            <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
-                              Structure
-                            </p>
-                            <p className="text-xs text-gray-600 leading-relaxed">
-                              {analysis.headingStructure}
-                            </p>
-                          </div>
-                          <div className="p-4 rounded-2xl bg-gray-50 border border-black/5">
-                            <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
-                              Readability
-                            </p>
-                            <p className="text-xs text-gray-600 leading-relaxed">
-                              {analysis.readability}
-                            </p>
-                          </div>
-                          {analysis.imageOptimization && (
-                            <div className="p-4 rounded-2xl bg-gray-50 border border-black/5 sm:col-span-2">
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div className="p-4 rounded-2xl bg-gray-50 border border-black/5">
                               <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
-                                Images & Alt Text
+                                Structure
                               </p>
                               <p className="text-xs text-gray-600 leading-relaxed">
-                                {analysis.imageOptimization}
+                                {analysis.headingStructure}
                               </p>
                             </div>
-                          )}
+                            <div className="p-4 rounded-2xl bg-gray-50 border border-black/5">
+                              <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
+                                Readability
+                              </p>
+                              <p className="text-xs text-gray-600 leading-relaxed">
+                                {analysis.readability}
+                              </p>
+                            </div>
+                            {!!analysis.imageOptimization && (
+                              <div className="p-4 rounded-2xl bg-gray-50 border border-black/5 sm:col-span-2">
+                                <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
+                                  Images & Alt Text
+                                </p>
+                                <p className="text-xs text-gray-600 leading-relaxed">
+                                  {analysis.imageOptimization}
+                                </p>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center py-12 text-center">
-                      <div className="w-16 h-16 rounded-3xl bg-orange-50 flex items-center justify-center text-[#FF5B04] mb-4">
-                        <svg
-                          fill="none"
-                          height="32"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          viewBox="0 0 24 24"
-                          width="32"
-                        >
-                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                        </svg>
-                      </div>
-                      <h4 className="text-base font-bold text-gray-900 mb-2">
-                        No Analysis Yet
-                      </h4>
-                      <p className="text-xs text-gray-400 max-w-[280px] leading-relaxed mb-6">
-                        Click the button above to let the AI analyze your
-                        content for SEO best practices and improvements.
-                      </p>
-                      <button
-                        className="h-10 px-6 rounded-xl bg-[#FF5B04] text-white text-xs font-bold hover:shadow-lg hover:shadow-orange-200 transition-all"
-                        disabled={isAnalyzing}
-                        onClick={runAIAnalysis}
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "performance" && (
+                <div className="space-y-6 animate-in fade-in duration-300">
+                  <div className="p-8 rounded-[40px] bg-gradient-to-br from-gray-900 to-gray-800 text-white shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-8 opacity-10">
+                      <svg
+                        fill="none"
+                        height="120"
+                        stroke="currentColor"
+                        strokeWidth="1"
+                        viewBox="0 0 24 24"
+                        width="120"
                       >
-                        Start AI Analysis
-                      </button>
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                      </svg>
                     </div>
-                  )}
+                    <h3 className="text-xl font-bold mb-2">SEO Strategy Engine</h3>
+                    <p className="text-gray-400 text-sm mb-8 max-w-md">
+                      This evaluation combines content depth, keyword usage, semantic breadth, and social readiness into practical strategy recommendations.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        {
+                          label: "Content Depth",
+                          score: perfStats.contentDepth,
+                          color: "bg-emerald-500",
+                        },
+                        {
+                          label: "Keyword Density",
+                          score: perfStats.keywordDensity,
+                          color: "bg-orange-500",
+                        },
+                        {
+                          label: "Mobile Readiness",
+                          score: perfStats.mobileReadiness,
+                          color: "bg-blue-500",
+                        },
+                        {
+                          label: "Semantic Richness",
+                          score: perfStats.semanticRichness,
+                          color: "bg-red-500",
+                        },
+                      ].map((stat) => (
+                        <div
+                          key={stat.label}
+                          className="bg-white/5 border border-white/10 p-4 rounded-2xl"
+                        >
+                          <div className="flex justify-between items-end mb-2">
+                            <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">
+                              {stat.label}
+                            </span>
+                            <span className="text-xs font-bold">
+                              {stat.score}%
+                            </span>
+                          </div>
+                          <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full ${stat.color} transition-all duration-1000`}
+                              style={{ width: `${stat.score}%` }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-10 p-6 rounded-3xl bg-white/5 border border-white/10">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-orange-500 mb-4">
+                        Recommended Strategy
+                      </h4>
+                      <ul className="space-y-3">
+                        {perfStats.strategies.map((strategy, i) => (
+                          <li key={`${strategy.text}-${i}`} className="flex gap-3 text-sm">
+                            <span
+                              className={
+                                strategy.type === "check"
+                                  ? "text-emerald-500"
+                                  : "text-orange-500"
+                              }
+                            >
+                              {strategy.type === "check" ? "✓" : "!"}
+                            </span>
+                            <span
+                              className={
+                                strategy.type === "check"
+                                  ? "text-gray-300"
+                                  : "text-gray-300 font-medium"
+                              }
+                            >
+                              {strategy.text}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Right Column: SERP Preview */}
-            <div className="bg-gray-50/50 rounded-[32px] p-8 space-y-8 border border-black/5 h-fit sticky top-0">
-              <div>
-                <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-6 flex items-center gap-2">
+            <div className="space-y-8 sticky top-0">
+              <div className="space-y-4">
+                <h3 className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 flex items-center gap-2">
                   <svg
                     fill="none"
                     height="14"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
                     viewBox="0 0 24 24"
                     width="14"
                   >
                     <circle cx="11" cy="11" r="8" />
                     <path d="m21 21-4.3-4.3" />
                   </svg>
-                  Google Preview
-                </p>
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5 space-y-1.5">
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-[10px] text-gray-400">
-                      UI
-                    </div>
-                    <div>
-                      <div className="text-[11px] text-gray-900 leading-none">
-                        UI Pirate
-                      </div>
-                      <div className="text-[10px] text-gray-400 leading-none mt-0.5">
-                        https://uipirate.com › posts › {slug || "..."}
-                      </div>
-                    </div>
+                  Google Search Preview
+                </h3>
+                <div className="p-8 bg-white border border-black/5 rounded-[40px] shadow-sm group hover:shadow-xl hover:shadow-black/5 transition-all duration-500">
+                  <div className="space-y-1.5">
+                    <p className="text-[13px] text-[#202124] line-clamp-1">
+                      https://uipirate.com/posts/
+                      <span className="font-medium">{slug || "..."}</span>
+                    </p>
+                    <h4 className="text-xl text-[#1a0dab] font-medium hover:underline cursor-pointer leading-tight line-clamp-2">
+                      {generatingAction === "metaTitle" || generatingAction === "seo-analysis"
+                        ? "Generating optimized title..."
+                        : data?.metaTitle || postTitle || "Untitled Post"}
+                    </h4>
+                    <p className="text-[14px] text-[#4d5156] line-clamp-2 leading-relaxed">
+                      {generatingAction === "metaDescription" || generatingAction === "seo-analysis"
+                        ? "Generating optimized meta description..."
+                        : data?.metaDescription ||
+                          "Please provide a meta description to see how your post will appear in search results..."}
+                    </p>
                   </div>
-                  <h3 className="text-lg text-[#1a0dab] hover:underline cursor-pointer font-arial leading-tight">
-                    {data?.metaTitle || postTitle || "Untitled Post"}
-                  </h3>
-                  <p className="text-sm text-[#4d5156] font-arial leading-relaxed line-clamp-2">
-                    {data?.metaDescription ||
-                      "No description provided. Add a meta description to see how this post will look in search results."}
-                  </p>
                 </div>
               </div>
 
-              <div>
-                <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-6 flex items-center gap-2">
+              <div className="space-y-4">
+                <h3 className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 flex items-center gap-2">
                   <svg
                     fill="none"
                     height="14"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
                     viewBox="0 0 24 24"
                     width="14"
                   >
                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                   </svg>
-                  Social Media Preview
-                </p>
-                <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
-                  <div className="aspect-[1.91/1] bg-gray-100 relative overflow-hidden flex items-center justify-center">
+                  Social Card Preview
+                </h3>
+                <div className="bg-white border border-black/5 rounded-[40px] overflow-hidden shadow-sm group hover:shadow-xl hover:shadow-black/5 transition-all duration-500">
+                  <div className="aspect-[1.91/1] bg-gray-100 relative overflow-hidden">
                     {data?.ogImage ? (
                       <img
                         alt="OG Preview"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
                         src={data.ogImage}
                       />
                     ) : (
-                      <div className="flex flex-col items-center gap-2 text-gray-300">
+                      <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 gap-3">
                         <svg
                           fill="none"
-                          height="40"
+                          height="48"
                           stroke="currentColor"
                           strokeWidth="1"
                           viewBox="0 0 24 24"
-                          width="40"
+                          width="48"
                         >
                           <rect height="18" rx="2" width="18" x="3" y="3" />
                           <circle cx="8.5" cy="8.5" r="1.5" />
-                          <polyline points="21 15 16 10 5 21" />
+                          <path d="M21 15l-5-5L5 21" />
                         </svg>
-                        <span className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-widest">
-                          No OG Image
+                        <span className="text-[10px] font-bold uppercase tracking-widest">
+                          No Card Image Selected
                         </span>
                       </div>
                     )}
                   </div>
-                  <div className="p-4 bg-gray-50/80 border-t border-black/5">
-                    <p className="text-[10px] text-gray-400 uppercase font-bold font-jetbrains-mono mb-1">
+                  <div className="p-6 bg-gray-50/50 border-t border-black/5">
+                    <p className="text-[10px] text-gray-400 uppercase font-bold font-jetbrains-mono mb-2">
                       UIPIRATE.COM
                     </p>
-                    <h4 className="text-sm font-bold text-gray-900 line-clamp-1 mb-1">
+                    <h4 className="text-base font-bold text-gray-900 line-clamp-1 mb-2">
                       {data?.ogTitle ||
                         data?.metaTitle ||
                         postTitle ||
@@ -788,13 +1455,25 @@ const SEOEditorModal = ({
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="p-6 border-t border-black/5 bg-gray-50/50 flex gap-3">
+        <div className="p-6 border-t border-black/5 bg-gray-50/50 flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest mr-auto">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Manual AI Controls Active
+          </div>
           <button
-            className="px-8 py-3 rounded-2xl bg-black text-white text-sm font-bold hover:shadow-lg hover:shadow-black/10 transition-all ml-auto"
+            className="px-6 py-3 rounded-2xl text-sm font-bold text-gray-500 hover:bg-black/5 transition-all"
             onClick={onClose}
           >
-            Apply Changes
+            Cancel
+          </button>
+          <button
+            className="px-10 py-3 rounded-2xl bg-black text-white text-sm font-bold hover:shadow-xl hover:shadow-black/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            onClick={() => {
+              onApply(localData, localSlug);
+              onClose();
+            }}
+          >
+            Apply Optimization
           </button>
         </div>
       </div>
@@ -3187,13 +3866,31 @@ const AITagsModal = ({
           text = text.replace(/^```/, "").replace(/```$/, "").trim();
         }
 
-        const parsed = JSON.parse(text);
+        let parsedTags: string[] = [];
+        try {
+          const json = JSON.parse(text);
+          if (Array.isArray(json)) {
+            parsedTags = json.map((t) => String(t).toLowerCase());
+          }
+        } catch {
+          // Fallback parsing: split by newlines, commas, or semicolons
+          parsedTags = text
+            .split(/[\n,;]+/)
+            .map((t) =>
+              t
+                .replace(/^\d+\.\s*/, "")
+                .replace(/[\[\]"']/g, "")
+                .trim()
+                .toLowerCase(),
+            )
+            .filter((t) => t.length > 1);
+        }
 
-        if (Array.isArray(parsed)) {
-          setSuggestions(parsed.map((t) => t.toLowerCase()));
-          setSelectedTags(parsed.map((t) => t.toLowerCase()));
+        if (parsedTags.length > 0) {
+          setSuggestions(parsedTags);
+          setSelectedTags(parsedTags);
         } else {
-          throw new Error("Failed to parse array from response.");
+          throw new Error("Failed to parse array or keywords from response.");
         }
       } else {
         const response = await fetch("/api/ai/generate", {
@@ -5582,7 +6279,7 @@ const BlogEditPage = () => {
     [isDirty, router],
   );
 
-  const saveBlog = async (published: boolean) => {
+  const saveBlog = async (published: boolean, customSeo?: any, customSlug?: string) => {
     setIsSaving(true);
     setSaveStatus(published ? "Publishing…" : "Saving…");
     try {
@@ -5598,8 +6295,8 @@ const BlogEditPage = () => {
           tags,
           published,
           postType,
-          slug: currentSlug,
-          seo: seoData,
+          slug: customSlug !== undefined ? customSlug : currentSlug,
+          seo: customSeo !== undefined ? customSeo : seoData,
         }),
       });
       const data = await response.json();
@@ -6591,9 +7288,13 @@ const BlogEditPage = () => {
         postTitle={title}
         postType={postType}
         slug={currentSlug}
-        onChange={setSeoData}
+        onApply={(newData, newSlug) => {
+          setSeoData(newData);
+          setCurrentSlug(newSlug);
+          setIsDirty(true);
+          saveBlog(saveStatus === "Published", newData, newSlug);
+        }}
         onClose={() => setShowSEOModal(false)}
-        onSlugChange={setCurrentSlug}
       />
       {/* ── Styles ── */}
       <style>{`

@@ -179,6 +179,7 @@ export async function PUT(
         ...blog.seo,
         ...seo,
       };
+      blog.markModified("seo");
     }
 
     // Recalculate read time if content changed

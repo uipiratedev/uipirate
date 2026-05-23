@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { verifyAuth } from "@/lib/auth";
-import { getDecryptedKeys } from "@/app/api/admin/ai-config/route";
+import { getDecryptedKeys } from "@/lib/ai-config";
 
 export async function POST(request: NextRequest) {
   try {
@@ -93,10 +93,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let systemInstructions = "";
-
-    if (action === "excerpt") {
+    let systemInstructions = "";    if (action === "excerpt" || action === "metaDescription") {
       systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following post. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${content || title}`;
+    } else if (action === "metaTitle") {
+      systemInstructions = `Suggest a single, high-impact, highly clickable, and search-optimized alternative title for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Deliver ONLY the single title text. Do NOT wrap it in quotes, code blocks, or include introductory text.`;
     } else if (action === "titles") {
       systemInstructions = `Suggest 3 high-impact, highly clickable, and search-optimized alternative titles for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Format your response STRICTLY as a raw JSON array of strings, e.g. ["Optimized Title 1", "Optimized Title 2", "Optimized Title 3"]. Deliver ONLY the JSON array, no markdown backticks, no wrap text, and no leading/trailing spaces.`;
     } else if (action === "tags") {
@@ -234,7 +234,29 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
 
     if (action === "titles" || action === "tags" || action === "seo-analysis") {
       try {
-        const parsed = JSON.parse(text);
+        let parsed;
+        const firstBracket = text.indexOf("[");
+        const lastBracket = text.lastIndexOf("]");
+        const firstBrace = text.indexOf("{");
+        const lastBrace = text.lastIndexOf("}");
+
+        if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
+          try {
+            parsed = JSON.parse(text.substring(firstBracket, lastBracket + 1));
+          } catch (e) {
+            // fallback
+          }
+        }
+        if (!parsed && firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+          try {
+            parsed = JSON.parse(text.substring(firstBrace, lastBrace + 1));
+          } catch (e) {
+            // fallback
+          }
+        }
+        if (!parsed) {
+          parsed = JSON.parse(text);
+        }
 
         return NextResponse.json({
           success: true,
@@ -248,15 +270,16 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
           );
         }
         // Fallback split parsing if model failed to return strict JSON
+        // Split by newlines, commas, or semicolons to extract individual keywords
         const fallbackItems = text
-          .split("\n")
+          .split(/[\n,;]+/)
           .map((t) =>
             t
-              .replace(/^\d+\.\s*/, "")
-              .replace(/[\[\]"']/g, "")
+              .replace(/^\d+\.\s*/, "") // Remove list numbers like "1. "
+              .replace(/[\[\]"']/g, "") // Remove brackets/quotes
               .trim(),
           )
-          .filter((t) => t.length > 1)
+          .filter((t) => t.length > 1 && t.split(/\s+/).length <= 3 && t.length <= 30)
           .slice(0, 8);
 
         return NextResponse.json({
