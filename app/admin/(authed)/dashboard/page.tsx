@@ -56,7 +56,7 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-8 px-8 py-8">
+    <div className="space-y-8 px-8 py-4">
       {/* Header */}
       <div className="pt-2">
         <p className="text-xs font-jetbrains-mono uppercase tracking-widest mb-1" style={{ color: "#FF5B04" }}>
