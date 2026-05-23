@@ -2739,7 +2739,7 @@ const FloatingBlockInserter = ({
   return (
     <div
       ref={menuRef}
-      className="absolute z-[100] flex items-center"
+      className="absolute z-30 flex items-center"
       style={{
         top: top + 16, // Offset by parent py-4
         left: 12,
@@ -2848,7 +2848,7 @@ const SlashCommandMenu = ({
   return (
     <div
       ref={menuRef}
-      className="fixed z-[150] rounded-2xl shadow-2xl py-2 min-w-[260px] max-h-[380px] overflow-y-auto"
+      className="fixed z-30 rounded-2xl shadow-2xl py-2 min-w-[260px] max-h-[380px] overflow-y-auto"
       style={{ top: `${position.top + 8}px`, left: `${position.left}px`, background: "#fff", border: "1px solid rgba(0,0,0,0.08)", animation: "fadeSlideIn 0.12s ease" }}
     >
       <p className="px-4 py-1.5 text-[9px] font-semibold font-jetbrains-mono text-gray-400 uppercase tracking-widest">Blocks</p>
