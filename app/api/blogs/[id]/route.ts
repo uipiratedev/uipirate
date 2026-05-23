@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
@@ -39,13 +40,26 @@ export async function GET(
 
     const { id } = params;
 
+    // Check authentication first — needed for tenant-scoping on admin requests
+    const user = await verifyAuth();
+    const isAdmin = !!user;
+
+    // Build a reusable ObjectId so every branch uses the correct BSON type
+    const tenantOid = isAdmin
+      ? new mongoose.Types.ObjectId(user!.tenantId)
+      : null;
+
     // Try to find by ID first, then by slug
-    let blog = await Blog.findById(id);
+    // Admins always see only their own tenant's posts
+    let blog = await Blog.findOne(
+      tenantOid ? { _id: id, tenantId: tenantOid } : { _id: id }
+    ).catch(() => null);
 
     if (!blog) {
       const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 
       blog = await Blog.findOne({
+        ...(tenantOid ? { tenantId: tenantOid } : {}),
         slug: { $regex: new RegExp(`^${escapedId}$`, "i") },
       });
     }
@@ -56,10 +70,6 @@ export async function GET(
         { status: 404 },
       );
     }
-
-    // Check if blog is published or user is admin
-    const user = await verifyAuth();
-    const isAdmin = !!user;
 
     if (!blog.published && !isAdmin) {
       return NextResponse.json(
@@ -119,7 +129,9 @@ export async function PUT(
       seo,
     } = body;
 
-    const blog = await Blog.findById(id);
+    // Scope to this tenant — prevents one user from editing another's posts
+    const putTenantOid = new mongoose.Types.ObjectId(user.tenantId);
+    const blog = await Blog.findOne({ _id: id, tenantId: putTenantOid });
 
     if (!blog) {
       return NextResponse.json(
@@ -138,7 +150,9 @@ export async function PUT(
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/(^-|-$)/g, "");
 
+        // Slug uniqueness is per-tenant
         const existingBlog = await Blog.findOne({
+          tenantId: putTenantOid,
           slug: newSlug,
           _id: { $ne: id },
         }).lean();
@@ -151,7 +165,9 @@ export async function PUT(
 
     // Explicitly update slug if provided (manual override)
     if (customSlug !== undefined && customSlug !== blog.slug) {
+      // Slug uniqueness is per-tenant
       const existingBlog = await Blog.findOne({
+        tenantId: putTenantOid,
         slug: customSlug,
         _id: { $ne: id },
       }).lean();
@@ -227,7 +243,9 @@ export async function DELETE(
 
     const { id } = params;
 
-    const blog = await Blog.findByIdAndDelete(id);
+    // Scope to this tenant — prevents one user from deleting another's posts
+    const deleteTenantOid = new mongoose.Types.ObjectId(user.tenantId);
+    const blog = await Blog.findOneAndDelete({ _id: id, tenantId: deleteTenantOid });
 
     if (!blog) {
       return NextResponse.json(

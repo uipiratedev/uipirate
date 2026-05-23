@@ -19,9 +19,15 @@ const navItems = [
   { label: "Create Post", href: "/admin/posts/create", Icon: IconCreate },
 ];
 
+const PLAN_LABEL: Record<string, string> = {
+  free: "Free",
+  starter: "Starter",
+  pro: "Pro",
+};
+
 const AdminSidebar = () => {
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const isActive = (href: string) => {
     if (href === "/admin/dashboard" || href === "/admin/posts") {
@@ -182,6 +188,38 @@ const AdminSidebar = () => {
               </Link>
             );
           })()}
+
+          {/* Plan badge */}
+          {user && (
+            <div className="flex items-center gap-3 px-3 py-2">
+              <div className="flex-1 min-w-0">
+                <p
+                  className="text-xs font-medium font-geist truncate"
+                  style={{ color: "rgba(255,255,255,0.55)" }}
+                >
+                  {user.name}
+                </p>
+                <p
+                  className="text-[9px] font-jetbrains-mono uppercase tracking-widest truncate"
+                  style={{ color: "rgba(255,255,255,0.25)" }}
+                >
+                  {user.email}
+                </p>
+              </div>
+              <span
+                className="flex-shrink-0 text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded uppercase tracking-wider"
+                style={
+                  user.plan === "pro"
+                    ? { background: "rgba(255,91,4,0.2)", color: "#FF5B04" }
+                    : user.plan === "starter"
+                      ? { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }
+                      : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.35)" }
+                }
+              >
+                {PLAN_LABEL[user.plan] ?? "Free"}
+              </span>
+            </div>
+          )}
 
           <Link
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"

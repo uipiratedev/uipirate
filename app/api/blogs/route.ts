@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyAuth } from "@/lib/auth";
 
 interface BlogQuery {
+  tenantId?: mongoose.Types.ObjectId;
   published?: boolean;
   postType?: any;
   $or?: any[];
@@ -27,6 +29,14 @@ export async function GET(request: NextRequest) {
     const isAdmin = !!user;
 
     const query: BlogQuery = {};
+
+    // Scope to the authenticated tenant; public requests see all published posts.
+    // Explicitly cast to ObjectId so MongoDB always receives the correct BSON
+    // type, regardless of whether the Mongoose model schema is cached from an
+    // earlier dev-server session that predates the tenantId field.
+    if (isAdmin) {
+      query.tenantId = new mongoose.Types.ObjectId(user!.tenantId);
+    }
 
     // If not admin, only show published blogs
     if (!isAdmin) {
@@ -131,16 +141,20 @@ export async function POST(request: NextRequest) {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
 
-    // Check if slug already exists and make it unique if needed (only if not provided or if provided is taken)
-    const existingBlog = await Blog.findOne({ slug }).lean();
+    // Explicit ObjectId — bypasses stale schema cache in dev hot-reload
+    const postTenantOid = new mongoose.Types.ObjectId(user.tenantId);
+
+    // Check if slug already exists within this tenant's namespace
+    const existingBlog = await Blog.findOne({ tenantId: postTenantOid, slug }).lean();
 
     if (existingBlog && !providedSlug) {
-      // Add timestamp to make slug unique
+      // Add timestamp to make slug unique within this tenant
       slug = `${slug}-${Date.now()}`;
     }
 
-    // Create blog with calculated slug
+    // Create blog with tenantId scoping
     const blog = await Blog.create({
+      tenantId: postTenantOid,
       title,
       slug,
       content,

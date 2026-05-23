@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/auth";
 import { encrypt, decrypt } from "@/lib/encrypt";
@@ -19,7 +20,8 @@ export async function GET() {
   }
 
   await dbConnect();
-  const cfg = await AIConfig.findOne().lean();
+  const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
+  const cfg = await AIConfig.findOne({ tenantId: tenantOid }).lean();
 
   const openaiEnv = !!process.env.OPENAI_API_KEY;
   const geminiEnv = !!process.env.GEMINI_API_KEY;
@@ -69,7 +71,10 @@ export async function POST(req: NextRequest) {
   }
 
   await dbConnect();
-  const cfg = (await AIConfig.findOne()) ?? new AIConfig();
+  const postTenantOid = new mongoose.Types.ObjectId(user.tenantId);
+  const cfg =
+    (await AIConfig.findOne({ tenantId: postTenantOid })) ??
+    new AIConfig({ tenantId: postTenantOid });
 
   if (typeof openaiKey === "string") {
     cfg.openaiKeyEncrypted = openaiKey.trim()

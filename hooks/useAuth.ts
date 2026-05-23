@@ -8,6 +8,9 @@ interface User {
   name: string;
   email: string;
   role: string;
+  /** The tenant boundary — equals the Admin._id string */
+  tenantId: string;
+  plan: "free" | "starter" | "pro";
 }
 
 export function useAuth(requireAuth: boolean = false) {

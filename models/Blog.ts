@@ -1,6 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IBlog extends Document {
+  /** References the Admin._id that owns this post — the tenant boundary */
+  tenantId: mongoose.Types.ObjectId;
   title: string;
   slug: string;
   content: string; // HTML content from TipTap editor
@@ -40,6 +42,12 @@ export interface IBlog extends Document {
 
 const BlogSchema: Schema = new Schema(
   {
+    tenantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      required: [true, "tenantId is required"],
+      index: true,
+    },
     title: {
       type: String,
       required: [true, "Please provide a title for this blog"],
@@ -49,7 +57,7 @@ const BlogSchema: Schema = new Schema(
     slug: {
       type: String,
       required: [true, "Please provide a slug for this blog"],
-      unique: true,
+      // unique: true removed — uniqueness is now per-tenant via compound index below
       lowercase: true,
       trim: true,
     },
@@ -145,8 +153,9 @@ const BlogSchema: Schema = new Schema(
 );
 
 // Create indexes for better query performance
-BlogSchema.index({ published: 1, publishedAt: -1 });
-// Note: slug index is created automatically by unique: true
+BlogSchema.index({ tenantId: 1, published: 1, publishedAt: -1 });
+// Slug must be unique within a tenant, not globally
+BlogSchema.index({ tenantId: 1, slug: 1 }, { unique: true });
 BlogSchema.index({ tags: 1 });
 
 // Pre-save middleware to set publishedAt when published status changes

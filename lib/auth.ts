@@ -12,6 +12,8 @@ interface JWTPayload {
   userId: string;
   email: string;
   role: string;
+  tenantId: string;
+  plan: "free" | "starter" | "pro";
 }
 
 interface User {
@@ -19,6 +21,9 @@ interface User {
   name: string;
   email: string;
   role: string;
+  /** The tenant boundary — equals the Admin._id string */
+  tenantId: string;
+  plan: "free" | "starter" | "pro";
 }
 
 /**
@@ -61,9 +66,13 @@ export async function getCurrentUser(): Promise<User | null> {
 
     if (!payload) return null;
 
-    // Fetch user from database to ensure they still exist and are active
+    // Fetch user from database to ensure they still exist and are active.
+    // .lean() returns the raw MongoDB document, bypassing Mongoose strict-mode
+    // schema stripping — this ensures fields added after initial model
+    // registration (plan, usageThisMonth, tenantId) are always present even
+    // when the Mongoose model is cached from a pre-change dev-server session.
     await dbConnect();
-    const admin = await Admin.findById(payload.userId);
+    const admin = await Admin.findById(payload.userId).lean();
 
     if (!admin || !admin.isActive) {
       return null;
@@ -71,9 +80,11 @@ export async function getCurrentUser(): Promise<User | null> {
 
     return {
       id: String(admin._id),
-      name: admin.name,
-      email: admin.email,
-      role: admin.role,
+      name: (admin as any).name,
+      email: (admin as any).email,
+      role: (admin as any).role,
+      tenantId: String(admin._id), // each Admin is their own tenant
+      plan: (admin as any).plan ?? "free",
     };
   } catch (error) {
     return null;

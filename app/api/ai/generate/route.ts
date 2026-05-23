@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     const envOpenai = process.env.OPENAI_API_KEY;
     const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
-    const dbKeys = await getDecryptedKeys();
+    const dbKeys = await getDecryptedKeys(user.tenantId);
 
     const openaiApiKey = envOpenai || dbKeys.openai;
     const geminiApiKey = envGemini || dbKeys.gemini;

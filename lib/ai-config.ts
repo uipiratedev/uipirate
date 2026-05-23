@@ -1,8 +1,10 @@
+import mongoose from "mongoose";
+
 import dbConnect from "@/lib/mongodb";
 import AIConfig from "@/models/AIConfig";
 import { decrypt } from "@/lib/encrypt";
 
-export async function getDecryptedKeys(): Promise<{
+export async function getDecryptedKeys(tenantId: string): Promise<{
   openai?: string;
   gemini?: string;
   mistral?: string;
@@ -10,7 +12,10 @@ export async function getDecryptedKeys(): Promise<{
   defaultModel: string;
 }> {
   await dbConnect();
-  const cfg = await AIConfig.findOne().lean();
+  // Cast to ObjectId explicitly — bypasses stale schema cache in dev hot-reload
+  const cfg = await AIConfig.findOne({
+    tenantId: new mongoose.Types.ObjectId(tenantId),
+  }).lean();
 
   if (!cfg) return { defaultEngine: "puter", defaultModel: "gpt-4o-mini" };
 
