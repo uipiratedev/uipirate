@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { action, title, content, postType, prompt, engine, model, selectedText, surroundingContext } = body;
+    const { action, title, content, postType, prompt, engine, model, selectedText, surroundingContext, clientApiKey } = body;
 
     const geminiApiKey = process.env.GEMINI_API_KEY;
     const openaiApiKey = process.env.OPENAI_API_KEY;
@@ -20,14 +20,18 @@ export async function POST(request: NextRequest) {
     // Determine engine: default to 'openai' if key exists, otherwise 'gemini'
     let selectedEngine = engine || (openaiApiKey ? "openai" : "gemini");
 
-    if (selectedEngine === "openai" && !openaiApiKey) {
+    if (selectedEngine === "openai" && !openaiApiKey && !clientApiKey) {
       selectedEngine = "gemini";
     }
 
-    let apiKey = selectedEngine === "openai" ? openaiApiKey : geminiApiKey;
+    // Use env key first, fall back to client-provided key from browser localStorage
+    let apiKey = selectedEngine === "openai"
+      ? (openaiApiKey || clientApiKey)
+      : (geminiApiKey || clientApiKey);
+
     if (!apiKey) {
       return NextResponse.json(
-        { success: false, error: `${selectedEngine === "openai" ? "OpenAI" : "Gemini"} API Key is not configured.` },
+        { success: false, error: `${selectedEngine === "openai" ? "OpenAI" : "Gemini"} API key is not configured. Add it in Admin → AI Configuration.` },
         { status: 500 }
       );
     }

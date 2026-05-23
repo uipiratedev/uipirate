@@ -24,6 +24,7 @@ import Link from "@tiptap/extension-link";
 import { Button } from "@heroui/button";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { loadAIConfig } from "@/components/admin/AIConfigPanel";
 
 
 // ─── Modal helpers ───────────────────────────────────────────────────────────
@@ -654,8 +655,8 @@ const AIExcerptModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
-  const [model, setModel] = useState<string>("gpt-5.5");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Sync default engine models when engine changes
   useEffect(() => {
@@ -732,6 +733,7 @@ const AIExcerptModal = ({
             postType,
             engine,
             model,
+            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 
@@ -1069,8 +1071,8 @@ const AITitleModal = ({
   const [selectedTitle, setSelectedTitle] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
-  const [model, setModel] = useState<string>("gpt-5.5");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Sync default engine models when engine changes
   useEffect(() => {
@@ -1147,6 +1149,7 @@ const AITitleModal = ({
             postType,
             engine,
             model,
+            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 
@@ -1448,8 +1451,8 @@ const AITagsModal = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
-  const [model, setModel] = useState<string>("gpt-5.5");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Sync default engine models when engine changes
   useEffect(() => {
@@ -1527,6 +1530,7 @@ const AITagsModal = ({
             postType,
             engine,
             model,
+            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 
@@ -1835,8 +1839,8 @@ const AICopilotModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">("openai");
-  const [model, setModel] = useState<string>("gpt-5.5");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Selection & Context states
   const [selectedText, setSelectedText] = useState("");
@@ -1939,6 +1943,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             prompt: activePrompt,
             engine,
             model,
+            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 

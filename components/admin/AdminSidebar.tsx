@@ -30,6 +30,7 @@ const AdminSidebar = () => {
   };
 
   return (
+    <>
     <aside className="fixed left-0 top-0 h-screen w-60 flex flex-col"
       style={{ background: "#151514", borderRight: "1px solid rgba(255,255,255,0.06)" }}>
 
@@ -77,6 +78,27 @@ const AdminSidebar = () => {
 
       {/* Footer actions */}
       <div className="px-3 py-4 space-y-0.5" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        {/* AI Settings */}
+        {(() => {
+          const active = pathname === "/admin/ai-settings";
+          return (
+            <Link href="/admin/ai-settings"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+              style={{ background: active ? "#FF5B04" : "transparent", color: active ? "#fff" : "rgba(255,255,255,0.5)" }}
+              onMouseEnter={e => { if (!active) { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}}
+              onMouseLeave={e => { if (!active) { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.5)"; }}}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+              <span className="text-sm font-medium font-geist">AI Settings</span>
+              {!active && <span className="ml-auto text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded"
+                style={{ background: "rgba(255,91,4,0.15)", color: "#FF5B04" }}>AI</span>}
+            </Link>
+          );
+        })()}
+
         <Link href="/" target="_blank"
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
           style={{ color: "rgba(255,255,255,0.4)" }}
@@ -97,6 +119,7 @@ const AdminSidebar = () => {
         </button>
       </div>
     </aside>
+    </>
   );
 };
 
