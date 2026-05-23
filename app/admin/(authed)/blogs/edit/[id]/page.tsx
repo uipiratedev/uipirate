@@ -51,7 +51,7 @@ const Modal = ({
           onClick={onClose}
           className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
         >
-          ✕
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
       {children}
@@ -796,7 +796,7 @@ const AIExcerptModal = ({
                     : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              📝
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             </div>
             <div>
               <h3 className="text-base font-bold font-geist text-gray-900">AI Excerpt Generator</h3>
@@ -808,7 +808,7 @@ const AIExcerptModal = ({
             onClick={onClose}
             className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
           >
-            ✕
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
 
@@ -854,7 +854,7 @@ const AIExcerptModal = ({
                       : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
-                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
                 </button>
                 <button
                   type="button"
@@ -886,34 +886,34 @@ const AIExcerptModal = ({
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
-                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
-                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
-                    <option value="gpt-5.4-mini">🟢 GPT-5.4 Mini (Lightweight & Efficient)</option>
-                    <option value="gpt-5.4-nano">🌱 GPT-5.4 Nano (Super Speed)</option>
-                    <option value="gpt-5.3-chat">💬 GPT-5.3 Chat (Conversational)</option>
-                    <option value="gpt-5.3-codex">💻 GPT-5.3 Codex (Programming & Logic)</option>
-                    <option value="gpt-5.2-pro">💎 GPT-5.2 Pro (Professional)</option>
-                    <option value="gpt-5.2-chat">💬 GPT-5.2 Chat (Standard Chat)</option>
-                    <option value="gpt-5.2">⚡ GPT-5.2 Standard (General)</option>
-                    <option value="gpt-5.1-chat-latest">💬 GPT-5.1 Chat (Legacy Chat)</option>
-                    <option value="gpt-5.1">⚡ GPT-5.1 Standard (Legacy General)</option>
-                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
-                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
+                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
+                    <option value="gpt-5.4-mini">GPT-5.4 Mini (Lightweight &amp; Efficient)</option>
+                    <option value="gpt-5.4-nano">GPT-5.4 Nano (Super Speed)</option>
+                    <option value="gpt-5.3-chat">GPT-5.3 Chat (Conversational)</option>
+                    <option value="gpt-5.3-codex">GPT-5.3 Codex (Programming &amp; Logic)</option>
+                    <option value="gpt-5.2-pro">GPT-5.2 Pro (Professional)</option>
+                    <option value="gpt-5.2-chat">GPT-5.2 Chat (Standard Chat)</option>
+                    <option value="gpt-5.2">GPT-5.2 Standard (General)</option>
+                    <option value="gpt-5.1-chat-latest">GPT-5.1 Chat (Legacy Chat)</option>
+                    <option value="gpt-5.1">GPT-5.1 Standard (Legacy General)</option>
+                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
+                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
                   </>
                 )}
               </select>
@@ -953,12 +953,13 @@ const AIExcerptModal = ({
             >
               {isGenerating ? (
                 <>
-                  <span className="animate-spin text-xs">🌀</span>
+                  <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                   <span>Summarizing Post...</span>
                 </>
               ) : (
                 <>
-                  <span>✨ Generate Excerpt</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                  <span>Generate Excerpt</span>
                 </>
               )}
             </button>
@@ -995,10 +996,10 @@ const AIExcerptModal = ({
               <div className={`text-xs font-geist px-2 py-0.5 rounded-full border transition-all duration-300 ${getCounterBg(result.length)}`}>
                 <span className={getCounterColor(result.length)}>{result.length}</span> / 160 chars
                 {result.length >= 120 && result.length <= 160 && (
-                  <span className="ml-1 text-[10px] font-semibold text-emerald-600">✓ Perfect SEO Length</span>
+                  <span className="ml-1 text-[10px] font-semibold text-emerald-600 flex items-center gap-0.5"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Perfect SEO Length</span>
                 )}
                 {result.length > 200 && (
-                  <span className="ml-1 text-[10px] font-bold text-red-600">⚠️ Truncated in search</span>
+                  <span className="ml-1 text-[10px] font-bold text-red-600 flex items-center gap-0.5"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Truncated in search</span>
                 )}
               </div>
             </div>
@@ -1211,7 +1212,7 @@ const AITitleModal = ({
                     : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              👑
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </div>
             <div>
               <h3 className="text-base font-bold font-geist text-gray-900">AI Title Optimizer</h3>
@@ -1223,7 +1224,7 @@ const AITitleModal = ({
             onClick={onClose}
             className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
           >
-            ✕
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
 
@@ -1265,7 +1266,7 @@ const AITitleModal = ({
                       : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
-                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
                 </button>
                 <button
                   type="button"
@@ -1294,25 +1295,25 @@ const AITitleModal = ({
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
-                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
-                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
-                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
-                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
+                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
+                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
+                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
                   </>
                 )}
               </select>
@@ -1350,12 +1351,13 @@ const AITitleModal = ({
             >
               {isGenerating ? (
                 <>
-                  <span className="animate-spin text-xs">🌀</span>
+                  <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                   <span>Generating headlines...</span>
                 </>
               ) : (
                 <>
-                  <span>✨ Generate Alternatives</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                  <span>Generate Alternatives</span>
                 </>
               )}
             </button>
@@ -1618,7 +1620,7 @@ const AITagsModal = ({
                     : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              🏷️
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
             </div>
             <div>
               <h3 className="text-base font-bold font-geist text-gray-900">AI Tag Suggestor</h3>
@@ -1630,7 +1632,7 @@ const AITagsModal = ({
             onClick={onClose}
             className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
           >
-            ✕
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
 
@@ -1672,7 +1674,7 @@ const AITagsModal = ({
                       : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
-                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
                 </button>
                 <button
                   type="button"
@@ -1701,25 +1703,25 @@ const AITagsModal = ({
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
-                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
-                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
-                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
-                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
+                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
+                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
+                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
                   </>
                 )}
               </select>
@@ -1757,12 +1759,13 @@ const AITagsModal = ({
             >
               {isGenerating ? (
                 <>
-                  <span className="animate-spin text-xs">🌀</span>
+                  <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                   <span>Generating tags...</span>
                 </>
               ) : (
                 <>
-                  <span>✨ Generate Tags</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                  <span>Generate Tags</span>
                 </>
               )}
             </button>
@@ -2049,7 +2052,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                     : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              ✨
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
             </div>
             <div>
               <h3 className="text-base font-bold font-geist text-gray-900">AI Writing Copilot</h3>
@@ -2060,7 +2063,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             onClick={onClose}
             className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
           >
-            ✕
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
 
@@ -2103,7 +2106,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                       : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
-                  <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
                 </button>
                 <button
                   onClick={() => setEngine("mistral")}
@@ -2134,34 +2137,34 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
-                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
-                    <option value="gpt-5.4-pro">💎 GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
-                    <option value="gpt-5.4-mini">🟢 GPT-5.4 Mini (Lightweight & Efficient)</option>
-                    <option value="gpt-5.4-nano">🌱 GPT-5.4 Nano (Super Speed)</option>
-                    <option value="gpt-5.3-chat">💬 GPT-5.3 Chat (Conversational)</option>
-                    <option value="gpt-5.3-codex">💻 GPT-5.3 Codex (Programming & Logic)</option>
-                    <option value="gpt-5.2-pro">💎 GPT-5.2 Pro (Professional)</option>
-                    <option value="gpt-5.2-chat">💬 GPT-5.2 Chat (Standard Chat)</option>
-                    <option value="gpt-5.2">⚡ GPT-5.2 Standard (General)</option>
-                    <option value="gpt-5.1-chat-latest">💬 GPT-5.1 Chat (Legacy Chat)</option>
-                    <option value="gpt-5.1">⚡ GPT-5.1 Standard (Legacy General)</option>
-                    <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
-                    <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
+                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
+                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
+                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
+                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
+                    <option value="gpt-5.4-mini">GPT-5.4 Mini (Lightweight &amp; Efficient)</option>
+                    <option value="gpt-5.4-nano">GPT-5.4 Nano (Super Speed)</option>
+                    <option value="gpt-5.3-chat">GPT-5.3 Chat (Conversational)</option>
+                    <option value="gpt-5.3-codex">GPT-5.3 Codex (Programming &amp; Logic)</option>
+                    <option value="gpt-5.2-pro">GPT-5.2 Pro (Professional)</option>
+                    <option value="gpt-5.2-chat">GPT-5.2 Chat (Standard Chat)</option>
+                    <option value="gpt-5.2">GPT-5.2 Standard (General)</option>
+                    <option value="gpt-5.1-chat-latest">GPT-5.1 Chat (Legacy Chat)</option>
+                    <option value="gpt-5.1">GPT-5.1 Standard (Legacy General)</option>
+                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
+                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
                   </>
                 )}
               </select>
@@ -2249,12 +2252,13 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
               >
                 {isGenerating ? (
                   <>
-                    <span className="animate-spin text-xs">🌀</span>
+                    <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
                     <span>Generating...</span>
                   </>
                 ) : (
                   <>
-                    <span>✨ {hasSelection ? "Refine Selection" : "Compose Segment"}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                    <span>{hasSelection ? "Refine Selection" : "Compose Segment"}</span>
                   </>
                 )}
               </button>
@@ -2654,7 +2658,8 @@ const FormattingToolbar = ({
         }}
       >
         <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <span>✨ AI Copilot</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+        <span>AI Copilot</span>
       </button>
       {sep}
       <button className={btn(editor.isActive("bold"))} style={editor.isActive("bold") ? activeStyle : {}} title="Bold (Ctrl+B)" onClick={() => editor.chain().focus().toggleBold().run()}>B</button>
@@ -3156,7 +3161,7 @@ const BlogEditPage = () => {
               <button
                 onClick={() => { setBannerImage(""); setFeaturedImage(""); }}
                 className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
-              >✕</button>
+              ><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
               <label className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                 <span className="text-xs font-geist font-medium text-white bg-black/60 hover:bg-black/80 transition-colors px-3 py-1.5 rounded-lg">Change Banner</span>
                 <input type="file" accept="image/*" className="hidden" onChange={handleBannerImageUpload} />
@@ -3189,7 +3194,8 @@ const BlogEditPage = () => {
                 }}
                 className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
               >
-                ✨ AI Assistant
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                AI Assistant
               </button>
             </div>
           </div>
@@ -3349,7 +3355,8 @@ const BlogEditPage = () => {
                 }}
                 className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
               >
-                ✨ AI Assistant
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                AI Assistant
               </button>
             </div>
             <textarea
@@ -3374,7 +3381,8 @@ const BlogEditPage = () => {
                 }}
                 className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
               >
-                ✨ AI Assistant
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                AI Assistant
               </button>
             </div>
             <div className="flex flex-wrap gap-1.5 mb-2">
@@ -3382,7 +3390,7 @@ const BlogEditPage = () => {
                 <span key={tag} className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
                   style={{ background: "#FFF0E8", color: "#FF5B04" }}>
                   {tag}
-                  <button onClick={() => setTags(tags.filter((t) => t !== tag))} className="opacity-60 hover:opacity-100 leading-none">✕</button>
+                  <button onClick={() => setTags(tags.filter((t) => t !== tag))} className="opacity-60 hover:opacity-100 leading-none flex items-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                 </span>
               ))}
             </div>
