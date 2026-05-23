@@ -385,6 +385,67 @@ const AlertModal = ({
   </Modal>
 );
 
+// ─── Unsaved Changes Guard Modal ─────────────────────────────────────────────
+const UnsavedChangesModal = ({
+  onLeave,
+  onStay,
+}: {
+  onLeave: () => void;
+  onStay: () => void;
+}) => (
+  <div
+    className="fixed inset-0 z-[300] flex items-center justify-center p-4"
+    style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(6px)" }}
+    onClick={onStay}
+  >
+    <div
+      className="bg-white rounded-2xl shadow-2xl p-6 w-[400px] max-w-full relative"
+      style={{ border: "1px solid rgba(0,0,0,0.08)", animation: "fadeSlideIn 0.18s ease" }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Close button */}
+      <button
+        onClick={onStay}
+        className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      <div className="flex items-start gap-4 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-sm font-bold font-geist text-gray-900 mb-1">Unsaved Changes</h3>
+          <p className="text-xs font-geist text-gray-500 leading-relaxed">
+            You have unsaved changes that will be lost if you leave this page.
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={onStay}
+          className="w-full h-10 rounded-xl text-sm font-geist font-semibold text-white transition-opacity hover:opacity-90"
+          style={{ background: "#FF5B04" }}
+        >
+          Keep Editing
+        </button>
+        <button
+          onClick={onLeave}
+          className="w-full h-10 rounded-xl text-sm font-geist font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+        >
+          Discard & Leave
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
 // ─── Publish Confirm Modal ───────────────────────────────────────────────────
 const PublishConfirmModal = ({
   isOpen,
@@ -409,13 +470,26 @@ const PublishConfirmModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+      onClick={() => { if (!isSaving) onClose(); }}
     >
       <div
-        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[460px] max-w-[95vw] border border-black/5"
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[460px] max-w-full border border-black/5 relative"
         style={{ animation: "fadeSlideIn 0.2s ease" }}
+        onClick={(e) => e.stopPropagation()}
       >
+        {/* Close button */}
+        {!isSaving && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
         {isSuccess ? (
           <div className="p-8 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(22, 163, 74, 0.1)" }}>
@@ -546,13 +620,26 @@ const SaveDraftModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+      onClick={() => { if (!isSaving) onClose(); }}
     >
       <div
-        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[400px] max-w-[95vw] border border-black/5"
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[400px] max-w-full border border-black/5 relative"
         style={{ animation: "fadeSlideIn 0.2s ease" }}
+        onClick={(e) => e.stopPropagation()}
       >
+        {/* Close button */}
+        {!isSaving && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
         {isSuccess ? (
           <div className="p-8 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(99, 102, 241, 0.1)" }}>
@@ -2390,7 +2477,10 @@ const FloatingBlockInserter = ({
       if (!isEmpty) return { visible: false, top: 0 };
       try {
         const coords = view.coordsAtPos(selection.from);
-        return { visible: true, top: coords.top };
+        const domRect = view.dom.getBoundingClientRect();
+        // Calculate the vertical center of the current cursor/line
+        const cursorCenter = (coords.top + coords.bottom) / 2;
+        return { visible: true, top: cursorCenter - domRect.top };
       } catch {
         return { visible: false, top: 0 };
       }
@@ -2515,11 +2605,12 @@ const FloatingBlockInserter = ({
   return (
     <div
       ref={menuRef}
-      className="fixed z-[100] flex items-center gap-1"
+      className="absolute z-[100] flex items-center"
       style={{
-        top: top - 14,
-        left: "max(16px, calc(50% - 420px))",
-        transform: "translateX(-48px)",
+        top: top + 16, // Offset by parent py-4
+        left: 12,
+        height: 28,
+        transform: "translateY(-50%)", // Perfect vertical centering
       }}
     >
       {/* + Button */}
@@ -2528,12 +2619,12 @@ const FloatingBlockInserter = ({
           e.preventDefault();
           setOpen((o) => !o);
         }}
-        className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 select-none"
+        className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 select-none flex-shrink-0"
         style={{
-          border: "1.5px solid rgba(0,0,0,0.15)",
-          background: open ? "#FF5B04" : "#fff",
-          color: open ? "#fff" : "#9ca3af",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+          border: "none",
+          background: open ? "#FF5B04" : "#1a1a1a",
+          color: "#fff",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
         }}
         title="Add block"
       >
@@ -2559,7 +2650,7 @@ const FloatingBlockInserter = ({
       {/* Expanded block toolbar */}
       {open && (
         <div
-          className="flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-xl"
+          className="absolute left-9 flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-xl whitespace-nowrap"
           style={{
             background: "#fff",
             border: "1px solid rgba(0,0,0,0.08)",
@@ -2966,17 +3057,102 @@ const BlogEditor = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
+  // Navigation guard + dirty state
+  const [isDirty, setIsDirty] = useState(false);
+  const [isDataInitialized, setIsDataInitialized] = useState(false);
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false);
+  const [savedBlogId, setSavedBlogId] = useState<string>("");
+  const pendingNavHref = useRef<string>("");
+  const pendingNavIsBack = useRef(false);    // true when guard was tripped by browser back/forward
+  const isDirtyRef = useRef(false);          // ref mirror — always current inside event handlers
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-
   const { isLoading: authLoading } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);
+    setIsDataInitialized(true);
+  }, []);
+
+  // Keep ref in sync so event-handler closures are never stale
+  useEffect(() => { isDirtyRef.current = isDirty; }, [isDirty]);
+
+  // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
+  useEffect(() => {
+    if (!isDataInitialized) return;
+    setIsDirty(true);
+  }, [title, excerpt, tags, featuredImage, bannerImage, isDataInitialized]);
+
+  // ── Navigation guards ───────────────────────────────────────────────────────
+  // 1. Tab / window close — uses ref so the handler never needs to be replaced
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (!isDirtyRef.current) return;
+      e.preventDefault();
+      e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+      return e.returnValue;
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
+
+  // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
+  //    Next.js router handles the event, covering all client-side link navigation.
+  useEffect(() => {
+    const handleLinkClick = (e: MouseEvent) => {
+      if (!isDirtyRef.current) return;
+      
+      const anchor = (e.target as HTMLElement).closest("a");
+      if (!anchor) return;
+      
+      const href = anchor.getAttribute("href");
+      const target = anchor.getAttribute("target");
+
+      // Skip if it's an external link, a hash link, or has a target="_blank"
+      if (!href || href.startsWith("http") || href.startsWith("#") || target === "_blank") return;
+      
+      // Resolve relative URLs to absolute for comparison
+      try {
+        const url = new URL(href, window.location.origin);
+        if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        pendingNavHref.current = href;
+        pendingNavIsBack.current = false;
+        setShowUnsavedModal(true);
+      } catch (err) {
+        // Fallback for invalid URLs
+        return;
+      }
+    };
+    document.addEventListener("click", handleLinkClick, true);
+    return () => document.removeEventListener("click", handleLinkClick, true);
+  }, []);
+
+  // 3. Browser back / forward button interception via a history sentinel entry
+  useEffect(() => {
+    // Initial sentinel
+    if (window.history.state?.blogGuard !== true) {
+      window.history.pushState({ blogGuard: true }, "");
+    }
+
+    const handlePopState = (e: PopStateEvent) => {
+      if (!isDirtyRef.current) return;
+      
+      // Re-push our sentinel so the page stays in place visually
+      window.history.pushState({ blogGuard: true }, "");
+      pendingNavIsBack.current = true;
+      pendingNavHref.current = "";
+      setShowUnsavedModal(true);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   const editor = useEditor({
+    autofocus: "end",
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
@@ -2986,6 +3162,8 @@ const BlogEditor = () => {
         allowBase64: true,
       }),
       Placeholder.configure({
+        showOnlyWhenEditable: true,
+        includeChildren: true,
         placeholder: ({ node }) => {
           if (node.type.name === "heading") return "Heading";
           return "Type '/' for commands or click + to add a block…";
@@ -3081,6 +3259,10 @@ const BlogEditor = () => {
         return false;
       },
     },
+    onUpdate: () => {
+      // Mark form dirty whenever editor content changes
+      if (isDataInitialized) setIsDirty(true);
+    },
     immediatelyRender: false,
   });
 
@@ -3137,6 +3319,17 @@ const BlogEditor = () => {
     []
   );
 
+  // Navigate safely — shows unsaved-changes modal if form is dirty
+  const navigateSafely = useCallback((href: string) => {
+    if (isDirty) {
+      pendingNavHref.current = href;
+      pendingNavIsBack.current = false;
+      setShowUnsavedModal(true);
+    } else {
+      router.push(href);
+    }
+  }, [isDirty, router]);
+
   const saveBlog = async (published: boolean) => {
     setIsSaving(true);
     setSaveStatus(published ? "Publishing…" : "Saving…");
@@ -3157,13 +3350,12 @@ const BlogEditor = () => {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Failed to save blog");
+      // Capture the new blog ID so "Keep Editing" can redirect to the edit page
+      const newId = data.data?._id ?? data._id ?? "";
+      setSavedBlogId(newId);
       setSaveStatus(published ? "Published" : "Saved");
       setModalSuccess(published ? "publish" : "draft");
-      
-      // Auto-redirect to dashboard after 3 seconds, but user can also click immediately
-      setTimeout(() => {
-        router.push("/admin/blogs");
-      }, 3000);
+      setIsDirty(false);
     } catch (error: any) {
       setSaveStatus("Error");
       setShowPublishModal(false);
@@ -3250,13 +3442,25 @@ const BlogEditor = () => {
   if (!typeSelected) {
     return (
       <div
-        className="fixed inset-0 z-[300] flex items-center justify-center"
+        className="fixed inset-0 z-[300] flex items-center justify-center p-4"
         style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
+        onClick={() => router.push("/admin/posts")}
       >
         <div
-          className="bg-white rounded-3xl shadow-2xl w-[520px] max-w-[95vw] p-8"
+          className="bg-white rounded-3xl shadow-2xl w-[520px] max-w-full p-8 relative"
           style={{ border: "1px solid rgba(0,0,0,0.07)" }}
+          onClick={(e) => e.stopPropagation()}
         >
+          {/* Close button */}
+          <button
+            onClick={() => router.push("/admin/posts")}
+            className="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+
           {/* Header */}
           <div className="mb-6">
             <p className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-semibold mb-1" style={{ color: "#FF5B04" }}>New Post</p>
@@ -3295,9 +3499,12 @@ const BlogEditor = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            <a href="/admin/blogs" className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors">
+            <button
+              onClick={() => router.push("/admin/posts")}
+              className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors"
+            >
               Cancel
-            </a>
+            </button>
             <button
               onClick={() => setTypeSelected(true)}
               className="ml-auto flex items-center gap-2 text-sm font-semibold font-geist text-white h-10 px-6 rounded-xl transition-colors"
@@ -3344,15 +3551,15 @@ const BlogEditor = () => {
         }}
       >
         <div className="flex items-center gap-3">
-          <a
-            href="/admin/blogs"
+          <button
+            onClick={() => navigateSafely("/admin/blogs")}
             className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
             Posts
-          </a>
+          </button>
           <span className="text-gray-200">/</span>
           <span className="text-sm font-medium font-geist text-gray-900">New Post</span>
           {/* Locked type badge */}
@@ -3402,7 +3609,7 @@ const BlogEditor = () => {
       />
 
       {/* ── Two-column Layout ── */}
-      <div className="flex gap-6 p-6 items-start">
+      <div className="flex gap-6 px-6 pb-6 pt-2 items-start">
         {/* Editor Column */}
         <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
           {/* Banner image area */}
@@ -3440,7 +3647,7 @@ const BlogEditor = () => {
           )}
 
           {/* Title */}
-          <div className={bannerImage ? "px-10 pt-6 pb-4 relative" : "px-10 pt-4 pb-4 relative"}>
+          <div className={bannerImage ? "px-14 pt-6 pb-4 relative" : "px-14 pt-4 pb-4 relative"}>
             <div className="flex items-center gap-3">
               <input
                 className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
@@ -3462,10 +3669,10 @@ const BlogEditor = () => {
             </div>
           </div>
 
-          <div className="h-px mx-10" style={{ background: "rgba(0,0,0,0.06)" }} />
+          <div className="h-px mx-14" style={{ background: "rgba(0,0,0,0.06)" }} />
 
           {/* Editor area */}
-          <div ref={editorRef} className="relative px-2 py-4">
+          <div ref={editorRef} className="relative px-14 py-4">
             {/* Floating Block Inserter */}
             <FloatingBlockInserter
               editor={editor}
@@ -3729,31 +3936,60 @@ const BlogEditor = () => {
 
       <PublishConfirmModal
         isOpen={showPublishModal}
-        onClose={() => setShowPublishModal(false)}
+        onClose={() => { if (!isSaving) { setShowPublishModal(false); setModalSuccess(null); } }}
         onConfirm={() => saveBlog(true)}
         isSaving={isSaving}
         blogData={{ title, bannerImage, excerpt, tags }}
         isSuccess={modalSuccess === "publish"}
         onViewBlogs={() => router.push("/admin/blogs")}
         onKeepEditing={() => {
-          setShowPublishModal(false);
-          setModalSuccess(null);
+          // After creating a post, redirect to its edit page so the user can keep editing
+          if (savedBlogId) {
+            router.push(`/admin/blogs/edit/${savedBlogId}`);
+          } else {
+            setShowPublishModal(false);
+            setModalSuccess(null);
+          }
         }}
       />
 
       <SaveDraftModal
         isOpen={showSaveModal}
-        onClose={() => setShowSaveModal(false)}
+        onClose={() => { if (!isSaving) { setShowSaveModal(false); setModalSuccess(null); } }}
         onConfirm={() => saveBlog(false)}
         isSaving={isSaving}
         blogData={{ title, excerpt }}
         isSuccess={modalSuccess === "draft"}
         onViewBlogs={() => router.push("/admin/blogs")}
         onKeepEditing={() => {
-          setShowSaveModal(false);
-          setModalSuccess(null);
+          // After creating a draft, redirect to its edit page
+          if (savedBlogId) {
+            router.push(`/admin/blogs/edit/${savedBlogId}`);
+          } else {
+            setShowSaveModal(false);
+            setModalSuccess(null);
+          }
         }}
       />
+
+      {/* Navigation guard modal */}
+      {showUnsavedModal && (
+        <UnsavedChangesModal
+          onStay={() => setShowUnsavedModal(false)}
+          onLeave={() => {
+            setIsDirty(false);
+            setShowUnsavedModal(false);
+            if (pendingNavIsBack.current) {
+        // We pushed a sentinel state, so we need to go back twice to actually leave
+        window.history.go(-2);
+      } else if (pendingNavHref.current) {
+        router.push(pendingNavHref.current);
+      } else {
+        router.push("/admin/posts");
+      }
+          }}
+        />
+      )}
 
       {/* ── Styles ── */}
       <style>{`
@@ -3778,7 +4014,7 @@ const BlogEditor = () => {
           border-radius: 4px;
         }
 
-        .notion-editor-wrapper .ProseMirror p.is-editor-empty:first-child::before {
+        .notion-editor-wrapper .ProseMirror p.is-editor-empty::before {
           color: #adb5bd;
           content: attr(data-placeholder);
           float: left;

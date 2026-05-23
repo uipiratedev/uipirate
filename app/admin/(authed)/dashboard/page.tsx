@@ -56,7 +56,7 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-8 py-8">
       {/* Header */}
       <div className="pt-2">
         <p className="text-xs font-jetbrains-mono uppercase tracking-widest mb-1" style={{ color: "#FF5B04" }}>
@@ -110,13 +110,13 @@ export default async function AdminDashboardPage() {
       <div className="bg-white rounded-2xl p-6 shadow-card border border-black/5">
         <h2 className="text-sm font-semibold font-geist text-gray-900 mb-4 uppercase tracking-wider">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
-          <Link href="/admin/blogs/create">
+          <Link href="/admin/posts/create">
             <Button className="font-geist font-medium text-white text-sm h-10 px-5 rounded-xl gap-2"
               style={{ background: "#FF5B04" }}>
               <IconCreate /> New Post
             </Button>
           </Link>
-          <Link href="/admin/blogs">
+          <Link href="/admin/posts">
             <Button variant="flat" className="font-geist font-medium text-sm h-10 px-5 rounded-xl gap-2 bg-black/5 text-gray-700">
               <IconBlogs /> Manage Posts
             </Button>
@@ -129,7 +129,7 @@ export default async function AdminDashboardPage() {
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-sm font-semibold font-geist text-gray-900 uppercase tracking-wider">Recent Posts</h2>
           <Link className="text-xs font-medium font-geist flex items-center gap-1 transition-colors"
-            style={{ color: "#FF5B04" }} href="/admin/blogs">
+            style={{ color: "#FF5B04" }} href="/admin/posts">
             View all →
           </Link>
         </div>
@@ -137,7 +137,7 @@ export default async function AdminDashboardPage() {
         {recentBlogs.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-sm text-gray-400 font-geist mb-4">No posts yet. Write your first one.</p>
-            <Link href="/admin/blogs/create">
+            <Link href="/admin/posts/create">
               <Button className="font-geist font-medium text-white text-sm h-10 px-5 rounded-xl gap-2"
                 style={{ background: "#FF5B04" }}>
                 <IconCreate /> Create Post
@@ -176,7 +176,7 @@ export default async function AdminDashboardPage() {
                     </span>
                   </div>
                 </div>
-                <Link href={`/admin/blogs/edit/${blog._id}`}>
+                <Link href={`/admin/posts/edit/${blog._id}`}>
                   <Button size="sm" variant="flat"
                     className="font-geist text-xs h-8 px-3 rounded-lg bg-black/5 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">
                     <IconEdit style={{ width: 14, height: 14 }} /> Edit

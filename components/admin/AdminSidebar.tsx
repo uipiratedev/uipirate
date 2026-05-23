@@ -14,8 +14,8 @@ import {
 
 const navItems = [
   { label: "Dashboard", href: "/admin/dashboard", Icon: IconDashboard },
-  { label: "Posts",     href: "/admin/blogs",     Icon: IconBlogs    },
-  { label: "Create Post", href: "/admin/blogs/create", Icon: IconCreate },
+  { label: "Posts",     href: "/admin/posts",     Icon: IconBlogs    },
+  { label: "Create Post", href: "/admin/posts/create", Icon: IconCreate }
 ];
 
 const AdminSidebar = () => {
@@ -23,7 +23,7 @@ const AdminSidebar = () => {
   const { logout } = useAuth();
 
   const isActive = (href: string) => {
-    if (href === "/admin/dashboard" || href === "/admin/blogs") {
+    if (href === "/admin/dashboard" || href === "/admin/posts") {
       return pathname === href;
     }
     return pathname.startsWith(href);

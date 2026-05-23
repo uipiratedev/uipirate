@@ -264,7 +264,7 @@ export default function AISettingsPage() {
   const engMeta = ENGINE_META[defaultEngine];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-8 py-8">
       <KeyModal open={keyModal.open} provider={keyModal.provider}
         onClose={closeKeyModal} onSave={saveKey} />
 

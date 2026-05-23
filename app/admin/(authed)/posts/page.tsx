@@ -155,7 +155,7 @@ export default function AdminBlogsPage() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-8 py-8">
       {/* Header */}
       <div className="flex items-center justify-between pt-2">
         <div>
@@ -165,7 +165,7 @@ export default function AdminBlogsPage() {
           <h1 className="text-2xl font-bold font-geist text-gray-900 tracking-tight">Posts</h1>
           <p className="text-sm text-gray-500 mt-1 font-geist">Manage all your published and draft posts</p>
         </div>
-        <Link href="/admin/blogs/create">
+        <Link href="/admin/posts/create">
           <Button className="font-geist font-medium text-white text-sm h-10 px-5 rounded-xl gap-2"
             style={{ background: "#FF5B04" }}>
             <IconCreate /> New Post
@@ -341,7 +341,7 @@ export default function AdminBlogsPage() {
               </p>
             </div>
             {!searchQuery && (
-              <Link href="/admin/blogs/create">
+              <Link href="/admin/posts/create">
                 <Button className="font-geist font-medium text-white text-sm h-10 px-5 rounded-xl gap-2 mt-1"
                   style={{ background: "#FF5B04" }}>
                   <IconCreate /> New Post
@@ -425,7 +425,7 @@ export default function AdminBlogsPage() {
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <Link href={`/admin/blogs/edit/${blog._id}`}>
+                        <Link href={`/admin/posts/edit/${blog._id}`}>
                           <Button size="sm" variant="flat"
                             className="font-geist text-xs h-8 px-3 rounded-lg bg-black/5 text-gray-600 gap-1.5">
                             <IconEdit style={{ width: 13, height: 13 }} /> Edit

@@ -374,6 +374,232 @@ const AlertModal = ({
   </Modal>
 );
 
+// ─── Unsaved Changes Guard Modal ─────────────────────────────────────────────
+const UnsavedChangesModal = ({
+  onLeave,
+  onStay,
+}: {
+  onLeave: () => void;
+  onStay: () => void;
+}) => (
+  <div
+    className="fixed inset-0 z-[300] flex items-center justify-center p-4"
+    style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(6px)" }}
+    onClick={onStay}
+  >
+    <div
+      className="bg-white rounded-2xl shadow-2xl p-6 w-[400px] max-w-full relative"
+      style={{ border: "1px solid rgba(0,0,0,0.08)", animation: "fadeSlideIn 0.18s ease" }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Close button */}
+      <button
+        onClick={onStay}
+        className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      <div className="flex items-start gap-4 mb-6">
+        <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-sm font-bold font-geist text-gray-900 mb-1">Unsaved Changes</h3>
+          <p className="text-xs font-geist text-gray-500 leading-relaxed">
+            You have unsaved changes that will be lost if you leave this page.
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={onStay}
+          className="w-full h-10 rounded-xl text-sm font-geist font-semibold text-white transition-opacity hover:opacity-90"
+          style={{ background: "#FF5B04" }}
+        >
+          Keep Editing
+        </button>
+        <button
+          onClick={onLeave}
+          className="w-full h-10 rounded-xl text-sm font-geist font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+        >
+          Discard & Leave
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+// ─── Unpublish Confirm Modal ──────────────────────────────────────────────────
+const UnpublishConfirmModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  isSaving,
+  postTitle,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isSaving: boolean;
+  postTitle: string;
+}) => {
+  if (!isOpen) return null;
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl w-[420px] max-w-[95vw] border border-black/5"
+        style={{ animation: "fadeSlideIn 0.2s ease" }}
+      >
+        <div className="p-6">
+          <div className="flex items-start gap-4 mb-5">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-base font-bold font-geist text-gray-900 mb-1">Unpublish Post</h3>
+              <p className="text-xs font-geist text-gray-500 leading-relaxed">
+                <span className="font-medium text-gray-700">"{postTitle || "This post"}"</span> will be moved to drafts and will no longer be publicly visible.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-100 rounded-xl p-3.5 flex gap-2.5 mb-5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <p className="text-[11px] font-geist text-amber-800 leading-normal">
+              This action can be reversed by publishing the post again at any time.
+            </p>
+          </div>
+
+          <div className="flex gap-2 border-t border-black/5 pt-4">
+            <button
+              onClick={onConfirm}
+              disabled={isSaving}
+              className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white bg-amber-500 hover:bg-amber-600 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
+            >
+              {isSaving ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                  </svg>
+                  Unpublishing…
+                </>
+              ) : "Confirm Unpublish"}
+            </button>
+            <button
+              onClick={onClose}
+              disabled={isSaving}
+              className="h-11 px-5 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Delete Confirm Modal (high-friction) ────────────────────────────────────
+const DeleteConfirmModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  isDeleting,
+  postTitle,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isDeleting: boolean;
+  postTitle: string;
+}) => {
+  const [confirmText, setConfirmText] = useState("");
+  const canDelete = confirmText === "DELETE";
+  if (!isOpen) return null;
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center"
+      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(6px)" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-2xl w-[440px] max-w-[95vw] border border-black/5"
+        style={{ animation: "fadeSlideIn 0.2s ease" }}
+      >
+        <div className="p-6">
+          <div className="flex items-start gap-4 mb-5">
+            <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center flex-shrink-0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                <line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-base font-bold font-geist text-gray-900 mb-1">Delete Post</h3>
+              <p className="text-xs font-geist text-gray-500 leading-relaxed">
+                <span className="font-medium text-gray-700">"{postTitle || "This post"}"</span> will be permanently deleted. This action cannot be undone.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-red-50 border border-red-100 rounded-xl p-3.5 mb-5">
+            <p className="text-xs font-geist text-gray-600 mb-2.5">
+              Type <span className="font-bold font-jetbrains-mono text-red-600 tracking-wider">DELETE</span> to confirm:
+            </p>
+            <input
+              autoFocus
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              placeholder="Type DELETE here…"
+              className="w-full text-sm font-jetbrains-mono bg-white border border-red-200 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-red-300 placeholder-gray-300"
+            />
+          </div>
+
+          <div className="flex gap-2 border-t border-black/5 pt-4">
+            <button
+              onClick={onConfirm}
+              disabled={!canDelete || isDeleting}
+              className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white bg-red-600 hover:bg-red-700 disabled:opacity-40 flex items-center justify-center gap-2 transition-colors"
+            >
+              {isDeleting ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                  </svg>
+                  Deleting…
+                </>
+              ) : "Delete Permanently"}
+            </button>
+            <button
+              onClick={onClose}
+              disabled={isDeleting}
+              className="h-11 px-5 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors disabled:opacity-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ─── Publish Confirm Modal ───────────────────────────────────────────────────
 const PublishConfirmModal = ({
   isOpen,
@@ -398,13 +624,26 @@ const PublishConfirmModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+      onClick={() => { if (!isSaving) onClose(); }}
     >
       <div
-        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[460px] max-w-[95vw] border border-black/5"
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[460px] max-w-full border border-black/5 relative"
         style={{ animation: "fadeSlideIn 0.2s ease" }}
+        onClick={(e) => e.stopPropagation()}
       >
+        {/* Close button */}
+        {!isSaving && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
         {isSuccess ? (
           <div className="p-8 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(22, 163, 74, 0.1)" }}>
@@ -535,13 +774,26 @@ const SaveDraftModal = ({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
+      onClick={() => { if (!isSaving) onClose(); }}
     >
       <div
-        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[400px] max-w-[95vw] border border-black/5"
+        className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[400px] max-w-full border border-black/5 relative"
         style={{ animation: "fadeSlideIn 0.2s ease" }}
+        onClick={(e) => e.stopPropagation()}
       >
+        {/* Close button */}
+        {!isSaving && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        )}
         {isSuccess ? (
           <div className="p-8 text-center">
             <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(99, 102, 241, 0.1)" }}>
@@ -2378,7 +2630,10 @@ const FloatingBlockInserter = ({
       if (!isEmpty) return { visible: false, top: 0 };
       try {
         const coords = view.coordsAtPos(selection.from);
-        return { visible: true, top: coords.top };
+        const domRect = view.dom.getBoundingClientRect();
+        // Calculate the vertical center of the current cursor/line
+        const cursorCenter = (coords.top + coords.bottom) / 2;
+        return { visible: true, top: cursorCenter - domRect.top };
       } catch {
         return { visible: false, top: 0 };
       }
@@ -2484,21 +2739,22 @@ const FloatingBlockInserter = ({
   return (
     <div
       ref={menuRef}
-      className="fixed z-[100] flex items-center gap-1"
+      className="absolute z-[100] flex items-center"
       style={{
-        top: top - 14,
-        left: "max(16px, calc(50% - 420px))",
-        transform: "translateX(-48px)",
+        top: top + 16, // Offset by parent py-4
+        left: 12,
+        height: 28,
+        transform: "translateY(-50%)", // Perfect vertical centering
       }}
     >
       <button
         onMouseDown={(e) => { e.preventDefault(); setOpen((o) => !o); }}
-        className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 select-none"
+        className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 select-none flex-shrink-0"
         style={{
-          border: "1.5px solid rgba(0,0,0,0.15)",
-          background: open ? "#FF5B04" : "#fff",
-          color: open ? "#fff" : "#9ca3af",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+          border: "none",
+          background: open ? "#FF5B04" : "#1a1a1a",
+          color: "#fff",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
         }}
         title="Add block"
       >
@@ -2514,7 +2770,7 @@ const FloatingBlockInserter = ({
 
       {open && (
         <div
-          className="flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-xl"
+          className="absolute left-9 flex items-center gap-1 rounded-2xl px-2 py-1.5 shadow-xl whitespace-nowrap"
           style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.08)", animation: "fadeSlideIn 0.15s ease" }}
         >
           {blockItems.map((item) => (
@@ -2833,6 +3089,17 @@ const BlogEditPage = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
+  // Navigation guard + dirty state
+  const [isDirty, setIsDirty] = useState(false);
+  const [isDataInitialized, setIsDataInitialized] = useState(false);
+  const [showUnsavedModal, setShowUnsavedModal] = useState(false);
+  const [showUnpublishModal, setShowUnpublishModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const pendingNavHref = useRef<string>("");
+  const pendingNavIsBack = useRef(false);    // true when guard was tripped by browser back/forward
+  const isDirtyRef = useRef(false);          // ref mirror — always current inside event handlers
+  const isEditorReady = useRef(false);
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
 
@@ -2840,11 +3107,90 @@ const BlogEditPage = () => {
 
   useEffect(() => { setMounted(true); }, []);
 
+  // Keep ref in sync so event-handler closures are never stale
+  useEffect(() => { isDirtyRef.current = isDirty; }, [isDirty]);
+
+  // Metadata dirty tracking — only active after fetchBlog has populated initial values
+  useEffect(() => {
+    if (!isDataInitialized) return;
+    setIsDirty(true);
+  }, [title, excerpt, tags, featuredImage, bannerImage, isDataInitialized]);
+
+  // ── Navigation guards ───────────────────────────────────────────────────────
+  // 1. Tab / window close — uses ref so the handler never needs to be replaced
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (!isDirtyRef.current) return;
+      e.preventDefault();
+      e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+      return e.returnValue;
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
+
+  // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
+  //    Next.js router handles the event, covering all client-side link navigation.
+  useEffect(() => {
+    const handleLinkClick = (e: MouseEvent) => {
+      if (!isDirtyRef.current) return;
+      
+      const anchor = (e.target as HTMLElement).closest("a");
+      if (!anchor) return;
+      
+      const href = anchor.getAttribute("href");
+      const target = anchor.getAttribute("target");
+
+      // Skip if it's an external link, a hash link, or has a target="_blank"
+      if (!href || href.startsWith("http") || href.startsWith("#") || target === "_blank") return;
+      
+      // Resolve relative URLs to absolute for comparison
+      try {
+        const url = new URL(href, window.location.origin);
+        if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        pendingNavHref.current = href;
+        pendingNavIsBack.current = false;
+        setShowUnsavedModal(true);
+      } catch (err) {
+        // Fallback for invalid URLs
+        return;
+      }
+    };
+    document.addEventListener("click", handleLinkClick, true);
+    return () => document.removeEventListener("click", handleLinkClick, true);
+  }, []);
+
+  // 3. Browser back / forward button interception via a history sentinel entry
+  useEffect(() => {
+    // Initial sentinel
+    if (window.history.state?.blogGuard !== true) {
+      window.history.pushState({ blogGuard: true }, "");
+    }
+
+    const handlePopState = (e: PopStateEvent) => {
+      if (!isDirtyRef.current) return;
+      
+      // Re-push our sentinel so the page stays in place visually
+      window.history.pushState({ blogGuard: true }, "");
+      pendingNavIsBack.current = true;
+      pendingNavHref.current = "";
+      setShowUnsavedModal(true);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const editor = useEditor({
+    autofocus: "end",
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       Image.configure({ inline: false, allowBase64: true }),
       Placeholder.configure({
+        showOnlyWhenEditable: true,
+        includeChildren: true,
         placeholder: ({ node }) => {
           if (node.type.name === "heading") return "Heading";
           return "Type '/' for commands or click + to add a block…";
@@ -2936,6 +3282,10 @@ const BlogEditPage = () => {
         return false;
       },
     },
+    onUpdate: () => {
+      // Mark dirty only once initial content has been loaded
+      if (isEditorReady.current) setIsDirty(true);
+    },
     immediatelyRender: false,
   });
 
@@ -2980,13 +3330,21 @@ const BlogEditPage = () => {
         setTags(blog.tags || []);
         setPostType(blog.postType || "blog");
         setSaveStatus(blog.published ? "Published" : "Draft");
-        if (editor) editor.commands.setContent(blog.content);
+        if (editor) {
+          // Disable dirty tracking while loading initial content
+          isEditorReady.current = false;
+          editor.commands.setContent(blog.content);
+          // Re-enable after the transaction is committed
+          isEditorReady.current = true;
+        }
+        // After everything is set, enable metadata dirty tracking
+        setIsDataInitialized(true);
       } else {
-        alert("Blog not found");
+        setValidationError("Blog post not found.");
         router.push("/admin/blogs");
       }
     } catch {
-      alert("Failed to load blog");
+      setValidationError("Failed to load blog post. Please try again.");
       router.push("/admin/blogs");
     } finally {
       setLoading(false);
@@ -3025,6 +3383,17 @@ const BlogEditPage = () => {
     []
   );
 
+  // Navigate safely — shows unsaved-changes modal if form is dirty
+  const navigateSafely = useCallback((href: string) => {
+    if (isDirty) {
+      pendingNavHref.current = href;
+      pendingNavIsBack.current = false;
+      setShowUnsavedModal(true);
+    } else {
+      router.push(href);
+    }
+  }, [isDirty, router]);
+
   const saveBlog = async (published: boolean) => {
     setIsSaving(true);
     setSaveStatus(published ? "Publishing…" : "Saving…");
@@ -3038,11 +3407,7 @@ const BlogEditPage = () => {
       if (!response.ok) throw new Error(data.error || "Failed to update blog");
       setSaveStatus(published ? "Published" : "Saved");
       setModalSuccess(published ? "publish" : "draft");
-      
-      // Auto-redirect to dashboard after 3 seconds, but user can also click immediately
-      setTimeout(() => {
-        router.push("/admin/blogs");
-      }, 3000);
+      setIsDirty(false);
     } catch (error: any) {
       setSaveStatus("Error");
       setShowPublishModal(false);
@@ -3050,6 +3415,49 @@ const BlogEditPage = () => {
       setValidationError(error.message || "Failed to update blog");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  // Dedicated unpublish flow (separate from Save Draft)
+  const doUnpublish = async () => {
+    setIsSaving(true);
+    setSaveStatus("Saving…");
+    try {
+      const response = await fetch(`/api/blogs/${blogId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, content: editor?.getHTML() || "", excerpt, featuredImage, bannerImage, tags, published: false, postType }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Failed to unpublish");
+      setSaveStatus("Draft");
+      setIsDirty(false);
+      setShowUnpublishModal(false);
+    } catch (error: any) {
+      setSaveStatus("Error");
+      setShowUnpublishModal(false);
+      setValidationError(error.message || "Failed to unpublish post");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Delete the post permanently
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/blogs/${blogId}`, { method: "DELETE" });
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to delete post");
+      }
+      setIsDirty(false); // prevent beforeunload on push
+      router.push("/admin/blogs");
+    } catch (error: any) {
+      setShowDeleteModal(false);
+      setValidationError(error.message || "Failed to delete post");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -3064,6 +3472,10 @@ const BlogEditPage = () => {
     }
     setShowSaveModal(true);
   }, [title, editor, blogId]);
+
+  const handleUnpublish = useCallback(() => {
+    setShowUnpublishModal(true);
+  }, []);
 
   const handlePublish = useCallback(() => {
     if (!title.trim()) {
@@ -3101,22 +3513,38 @@ const BlogEditPage = () => {
         style={{ background: "rgba(247,247,246,0.95)", borderBottom: "1px solid rgba(0,0,0,0.07)", backdropFilter: "blur(8px)" }}
       >
         <div className="flex items-center gap-3">
-          <a href="/admin/blogs" className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors">
+          <button
+            onClick={() => navigateSafely("/admin/blogs")}
+            className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
+          >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
             Posts
-          </a>
+          </button>
           <span className="text-gray-200">/</span>
           <span className="text-sm font-medium font-geist text-gray-900">Edit Post</span>
         </div>
         <div className="flex items-center gap-2">
+          {/* Delete button */}
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            disabled={isSaving || isDeleting}
+            title="Delete post"
+            className="h-9 w-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-40"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              <line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
+            </svg>
+          </button>
+          <div className="w-px h-5 bg-black/10 mx-1" />
           <span className="text-xs font-geist font-medium transition-colors" style={{ color: statusColor[saveStatus] ?? "#6b7280" }}>
             {saveStatus}
           </span>
           {saveStatus === "Published" ? (
             <>
-              <Button variant="flat" disabled={isSaving} onClick={handleSaveDraft}
+              <Button variant="flat" disabled={isSaving} onClick={handleUnpublish}
                 className="font-geist text-sm h-9 px-4 rounded-xl bg-orange-50 text-[#FF5B04] font-medium hover:bg-orange-100 transition-colors">
                 Unpublish
               </Button>
@@ -3150,7 +3578,7 @@ const BlogEditPage = () => {
       />
 
       {/* ── Two-column Layout ── */}
-      <div className="flex gap-6 p-6 items-start">
+      <div className="flex gap-6 px-6 pb-6 pt-2 items-start">
         {/* Editor Column */}
         <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
           {/* Banner image area */}
@@ -3178,7 +3606,7 @@ const BlogEditPage = () => {
           )}
 
           {/* Title */}
-          <div className={bannerImage ? "px-10 pt-6 pb-4 relative" : "px-10 pt-4 pb-4 relative"}>
+          <div className={bannerImage ? "px-14 pt-6 pb-4 relative" : "px-14 pt-4 pb-4 relative"}>
             <div className="flex items-center gap-3">
               <input
                 className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
@@ -3200,10 +3628,10 @@ const BlogEditPage = () => {
             </div>
           </div>
 
-          <div className="h-px mx-10" style={{ background: "rgba(0,0,0,0.06)" }} />
+          <div className="h-px mx-14" style={{ background: "rgba(0,0,0,0.06)" }} />
 
           {/* Editor area */}
-          <div ref={editorRef} className="relative px-2 py-4">
+          <div ref={editorRef} className="relative px-14 py-4">
             <FloatingBlockInserter
               editor={editor}
               onImageUrl={() => setShowImageUrlModal(true)}
@@ -3495,13 +3923,14 @@ const BlogEditPage = () => {
 
       <PublishConfirmModal
         isOpen={showPublishModal}
-        onClose={() => setShowPublishModal(false)}
+        onClose={() => { if (!isSaving) { setShowPublishModal(false); setModalSuccess(null); } }}
         onConfirm={() => saveBlog(true)}
         isSaving={isSaving}
         blogData={{ title, bannerImage, excerpt, tags }}
         isSuccess={modalSuccess === "publish"}
         onViewBlogs={() => router.push("/admin/blogs")}
         onKeepEditing={() => {
+          // On edit page, keep editing means just close the modal — no redirect needed
           setShowPublishModal(false);
           setModalSuccess(null);
         }}
@@ -3509,7 +3938,7 @@ const BlogEditPage = () => {
 
       <SaveDraftModal
         isOpen={showSaveModal}
-        onClose={() => setShowSaveModal(false)}
+        onClose={() => { if (!isSaving) { setShowSaveModal(false); setModalSuccess(null); } }}
         onConfirm={() => saveBlog(false)}
         isSaving={isSaving}
         blogData={{ title, excerpt }}
@@ -3521,6 +3950,43 @@ const BlogEditPage = () => {
         }}
       />
 
+      {/* Unpublish confirmation */}
+      <UnpublishConfirmModal
+        isOpen={showUnpublishModal}
+        onClose={() => setShowUnpublishModal(false)}
+        onConfirm={doUnpublish}
+        isSaving={isSaving}
+        postTitle={title}
+      />
+
+      {/* Delete confirmation (high-friction) */}
+      <DeleteConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        isDeleting={isDeleting}
+        postTitle={title}
+      />
+
+      {/* Navigation guard modal */}
+      {showUnsavedModal && (
+        <UnsavedChangesModal
+          onStay={() => setShowUnsavedModal(false)}
+          onLeave={() => {
+            setIsDirty(false);
+            setShowUnsavedModal(false);
+            if (pendingNavIsBack.current) {
+        // We pushed a sentinel state, so we need to go back twice to actually leave
+        window.history.go(-2);
+      } else if (pendingNavHref.current) {
+        router.push(pendingNavHref.current);
+      } else {
+        router.push("/admin/posts");
+      }
+          }}
+        />
+      )}
+
       {/* ── Styles ── */}
       <style>{`
         @keyframes fadeSlideIn {
@@ -3530,7 +3996,7 @@ const BlogEditPage = () => {
         .notion-editor-wrapper .ProseMirror { position: relative; outline: none; min-height: 500px; }
         .notion-editor-wrapper .ProseMirror > * { position: relative; margin-bottom: 0.25rem; }
         .notion-editor-wrapper .ProseMirror > *:hover { background-color: rgba(0,0,0,0.02); border-radius: 4px; }
-        .notion-editor-wrapper .ProseMirror p.is-editor-empty:first-child::before { color: #adb5bd; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
+        .notion-editor-wrapper .ProseMirror p.is-editor-empty::before { color: #adb5bd; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
         .notion-editor-wrapper .ProseMirror p { line-height: 1.75; font-size: 1rem; color: #374151; margin: 0.5rem 0; }
         .notion-editor-wrapper .ProseMirror img { max-width: 100%; height: auto; border-radius: 12px; margin: 1.5rem auto; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .notion-editor-wrapper .ProseMirror hr { border: none; border-top: 2px solid rgba(0,0,0,0.08); margin: 2rem 0; border-radius: 4px; }

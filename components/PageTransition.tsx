@@ -90,6 +90,9 @@ const PageTransition = memo(function PageTransition() {
         href === pathname
       ) return;
 
+      // Skip if it's an admin route
+      if (href.startsWith("/admin")) return;
+
       // Skip if modifier keys are pressed
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
       if (phase !== "idle") return;
