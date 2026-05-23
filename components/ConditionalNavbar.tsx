@@ -13,8 +13,10 @@ export const ConditionalNavbar = memo(function ConditionalNavbar() {
   const shouldHideNavbar = useMemo(
     () =>
       pathname.startsWith("/admin") ||
-      HIDDEN_NAVBAR_PATHS.includes(pathname as typeof HIDDEN_NAVBAR_PATHS[number]),
-    [pathname]
+      HIDDEN_NAVBAR_PATHS.includes(
+        pathname as (typeof HIDDEN_NAVBAR_PATHS)[number],
+      ),
+    [pathname],
   );
 
   if (shouldHideNavbar) return null;

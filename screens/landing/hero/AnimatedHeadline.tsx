@@ -45,10 +45,10 @@ const AnimatedHeadline = () => {
         <span key={index}>
           {word.newLine && <br className="max-md:block hidden" />}
           <motion.span
+            animate="visible"
             className="inline-block"
             custom={word.delay}
             initial="hidden"
-            animate="visible"
             variants={wordRevealVariant}
           >
             {word.text}
@@ -62,6 +62,7 @@ const AnimatedHeadline = () => {
             {index === 1 && <br className="max-md:block hidden" />}
             {index === 2 && <br className="max-md:block hidden" />}
             <motion.span
+              animate="visible"
               className={`inline-block ${word.extraClass || ""} ${
                 word.isConvert
                   ? "py-1 px-2 rounded bg-gradient-to-r from-orange-400/30 to-orange-400/30 bg-[length:100%_100%]"
@@ -69,7 +70,6 @@ const AnimatedHeadline = () => {
               }`}
               custom={word.delay}
               initial="hidden"
-              animate="visible"
               variants={wordRevealVariant}
             >
               {word.text}

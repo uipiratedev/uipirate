@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { verifyAuth } from "@/lib/auth";
 import { encrypt, decrypt } from "@/lib/encrypt";
 import dbConnect from "@/lib/mongodb";
@@ -9,30 +10,34 @@ import AIConfig from "@/models/AIConfig";
 // Never exposes actual key values.
 export async function GET() {
   const user = await verifyAuth();
+
   if (!user) {
-    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 },
+    );
   }
 
   await dbConnect();
   const cfg = await AIConfig.findOne().lean();
 
-  const openaiEnv   = !!process.env.OPENAI_API_KEY;
-  const geminiEnv   = !!process.env.GEMINI_API_KEY;
-  const mistralEnv  = !!process.env.MISTRAL_API_KEY;
-  const openaiDb    = !!cfg?.openaiKeyEncrypted;
-  const geminiDb    = !!cfg?.geminiKeyEncrypted;
-  const mistralDb   = !!cfg?.mistralKeyEncrypted;
+  const openaiEnv = !!process.env.OPENAI_API_KEY;
+  const geminiEnv = !!process.env.GEMINI_API_KEY;
+  const mistralEnv = !!process.env.MISTRAL_API_KEY;
+  const openaiDb = !!cfg?.openaiKeyEncrypted;
+  const geminiDb = !!cfg?.geminiKeyEncrypted;
+  const mistralDb = !!cfg?.mistralKeyEncrypted;
 
   return NextResponse.json({
     success: true,
-    openai:        openaiEnv || openaiDb,
-    gemini:        geminiEnv || geminiDb,
-    mistral:       mistralEnv || mistralDb,
-    openaiSource:  openaiEnv ? "env" : openaiDb ? "db" : null,
-    geminiSource:  geminiEnv ? "env" : geminiDb ? "db" : null,
+    openai: openaiEnv || openaiDb,
+    gemini: geminiEnv || geminiDb,
+    mistral: mistralEnv || mistralDb,
+    openaiSource: openaiEnv ? "env" : openaiDb ? "db" : null,
+    geminiSource: geminiEnv ? "env" : geminiDb ? "db" : null,
     mistralSource: mistralEnv ? "env" : mistralDb ? "db" : null,
     defaultEngine: cfg?.defaultEngine ?? "puter",
-    defaultModel:  cfg?.defaultModel  ?? "gpt-4o-mini",
+    defaultModel: cfg?.defaultModel ?? "gpt-4o-mini",
   });
 }
 
@@ -41,16 +46,25 @@ export async function GET() {
 // Send null/empty string for a key to clear it.
 export async function POST(req: NextRequest) {
   const user = await verifyAuth();
+
   if (!user) {
-    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 },
+    );
   }
 
-  const { openaiKey, geminiKey, mistralKey, defaultEngine, defaultModel } = await req.json();
+  const { openaiKey, geminiKey, mistralKey, defaultEngine, defaultModel } =
+    await req.json();
 
   if (!process.env.AI_ENCRYPTION_KEY) {
     return NextResponse.json(
-      { success: false, error: "AI_ENCRYPTION_KEY is not configured on the server. Add it to your .env.local file." },
-      { status: 500 }
+      {
+        success: false,
+        error:
+          "AI_ENCRYPTION_KEY is not configured on the server. Add it to your .env.local file.",
+      },
+      { status: 500 },
     );
   }
 
@@ -58,16 +72,22 @@ export async function POST(req: NextRequest) {
   const cfg = (await AIConfig.findOne()) ?? new AIConfig();
 
   if (typeof openaiKey === "string") {
-    cfg.openaiKeyEncrypted = openaiKey.trim() ? encrypt(openaiKey.trim()) : undefined;
+    cfg.openaiKeyEncrypted = openaiKey.trim()
+      ? encrypt(openaiKey.trim())
+      : undefined;
   }
   if (typeof geminiKey === "string") {
-    cfg.geminiKeyEncrypted = geminiKey.trim() ? encrypt(geminiKey.trim()) : undefined;
+    cfg.geminiKeyEncrypted = geminiKey.trim()
+      ? encrypt(geminiKey.trim())
+      : undefined;
   }
   if (typeof mistralKey === "string") {
-    cfg.mistralKeyEncrypted = mistralKey.trim() ? encrypt(mistralKey.trim()) : undefined;
+    cfg.mistralKeyEncrypted = mistralKey.trim()
+      ? encrypt(mistralKey.trim())
+      : undefined;
   }
   if (defaultEngine) cfg.defaultEngine = defaultEngine;
-  if (defaultModel)  cfg.defaultModel  = defaultModel;
+  if (defaultModel) cfg.defaultModel = defaultModel;
 
   await cfg.save();
 
@@ -75,24 +95,37 @@ export async function POST(req: NextRequest) {
 }
 
 // Helper: get decrypted DB keys (used by the generate route)
-export async function getDecryptedKeys(): Promise<{ openai?: string; gemini?: string; defaultEngine: string; defaultModel: string }> {
+export async function getDecryptedKeys(): Promise<{
+  openai?: string;
+  gemini?: string;
+  mistral?: string;
+  defaultEngine: string;
+  defaultModel: string;
+}> {
   await dbConnect();
   const cfg = await AIConfig.findOne().lean();
+
   if (!cfg) return { defaultEngine: "puter", defaultModel: "gpt-4o-mini" };
 
   let openai: string | undefined;
   let gemini: string | undefined;
   let mistral: string | undefined;
 
-  try { if (cfg.openaiKeyEncrypted) openai = decrypt(cfg.openaiKeyEncrypted); } catch {}
-  try { if (cfg.geminiKeyEncrypted) gemini = decrypt(cfg.geminiKeyEncrypted); } catch {}
-  try { if (cfg.mistralKeyEncrypted) mistral = decrypt(cfg.mistralKeyEncrypted); } catch {}
+  try {
+    if (cfg.openaiKeyEncrypted) openai = decrypt(cfg.openaiKeyEncrypted);
+  } catch {}
+  try {
+    if (cfg.geminiKeyEncrypted) gemini = decrypt(cfg.geminiKeyEncrypted);
+  } catch {}
+  try {
+    if (cfg.mistralKeyEncrypted) mistral = decrypt(cfg.mistralKeyEncrypted);
+  } catch {}
 
   return {
     openai,
     gemini,
     mistral,
     defaultEngine: cfg.defaultEngine ?? "puter",
-    defaultModel:  cfg.defaultModel  ?? "gpt-4o-mini",
+    defaultModel: cfg.defaultModel ?? "gpt-4o-mini",
   };
 }

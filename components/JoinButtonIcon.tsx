@@ -186,18 +186,18 @@ export const JoinButtonIcon = ({
                 fill="black"
               /> */}
               <text
-                x="45%"
-                y="50%"
                 dominantBaseline="middle"
-                textAnchor="middle"
                 fill="black"
                 fontSize="clamp(44px, 8vw, 48px)"
                 fontWeight="600"
                 style={{
-                  marginLeft:"-100px",
-                  textTransform: 'uppercase',
-                  fontFamily: 'var(--font-jakarta), sans-serif'
+                  marginLeft: "-100px",
+                  textTransform: "uppercase",
+                  fontFamily: "var(--font-jakarta), sans-serif",
                 }}
+                textAnchor="middle"
+                x="45%"
+                y="50%"
               >
                 {text}
               </text>

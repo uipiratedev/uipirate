@@ -188,7 +188,8 @@ const TermsAndConditionsScreen = () => {
             </div>
 
             <p className="sub-header text-gray-600">
-              Please read these terms carefully before using our website or engaging with our design and development services.
+              Please read these terms carefully before using our website or
+              engaging with our design and development services.
             </p>
 
             <p
@@ -252,7 +253,10 @@ const TermsAndConditionsScreen = () => {
                   {section.bullets && (
                     <ul className="space-y-2 mb-4">
                       {section.bullets.map((b, bi) => (
-                        <li key={bi} className="flex items-start gap-3 text-gray-600">
+                        <li
+                          key={bi}
+                          className="flex items-start gap-3 text-gray-600"
+                        >
                           <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />
                           {b}
                         </li>

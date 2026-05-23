@@ -7,7 +7,12 @@ export interface OGTemplateProps {
   description: string;
 }
 
-export function OGTemplate({ badge, title, titleHighlight, description }: OGTemplateProps) {
+export function OGTemplate({
+  badge,
+  title,
+  titleHighlight,
+  description,
+}: OGTemplateProps) {
   // Match hero font sizes: xl=61px, 2xl=74px — scale by title length
   const fontSize = title.length > 22 ? 64 : title.length > 16 ? 72 : 80;
 
@@ -27,7 +32,10 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
       <div
         style={{
           position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
           backgroundImage:
             "linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px)," +
             "linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)",
@@ -42,7 +50,10 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
       <div
         style={{
           position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
           backgroundImage:
             "linear-gradient(to top, rgba(250,250,250,1), transparent 0%)," +
             "linear-gradient(to top, rgba(250,250,250,1) 0%, transparent 0%)",
@@ -53,7 +64,9 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
       <div
         style={{
           position: "absolute",
-          top: 0, left: 0, right: 0,
+          top: 0,
+          left: 0,
+          right: 0,
           height: "3px",
           backgroundColor: "#FF5B04",
         }}
@@ -75,9 +88,22 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
         <img
           alt="UI Pirate Logo"
           src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1766234689/logo_lcn2cq.png"
-          style={{ width: "56px", height: "56px", objectFit: "contain", display: "block" }}
+          style={{
+            width: "56px",
+            height: "56px",
+            objectFit: "contain",
+            display: "block",
+          }}
         />
-        <span style={{ color: "#000", fontSize: "20px", fontWeight: 700, lineHeight: 1, marginTop: "-16px" }}>
+        <span
+          style={{
+            color: "#000",
+            fontSize: "20px",
+            fontWeight: 700,
+            lineHeight: 1,
+            marginTop: "-16px",
+          }}
+        >
           UI Pirate
         </span>
       </div>
@@ -98,8 +124,14 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
         <div style={{ display: "flex", height: "0px" }} />
 
         {/* Centre block */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "22px" }}>
-
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "22px",
+          }}
+        >
           {/* Badge — matches the GlassSurface hero badge exactly:
                white solid background, thin border, monospace uppercase */}
           <div
@@ -202,20 +234,51 @@ export function OGTemplate({ badge, title, titleHighlight, description }: OGTemp
           }}
         >
           <div style={{ display: "flex", gap: "32px" }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
-              <span style={{ color: "#FF5B04", fontSize: "19px", fontWeight: 700 }}>9+</span>
-              <span style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px" }}>Years</span>
+            <div
+              style={{ display: "flex", alignItems: "baseline", gap: "6px" }}
+            >
+              <span
+                style={{ color: "#FF5B04", fontSize: "19px", fontWeight: 700 }}
+              >
+                9+
+              </span>
+              <span style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px" }}>
+                Years
+              </span>
             </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
-              <span style={{ color: "#FF5B04", fontSize: "19px", fontWeight: 700 }}>50+</span>
-              <span style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px" }}>Products Shipped</span>
+            <div
+              style={{ display: "flex", alignItems: "baseline", gap: "6px" }}
+            >
+              <span
+                style={{ color: "#FF5B04", fontSize: "19px", fontWeight: 700 }}
+              >
+                50+
+              </span>
+              <span style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px" }}>
+                Products Shipped
+              </span>
             </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
-              <span style={{ color: "#FF5B04", fontSize: "19px", fontWeight: 700 }}>EST/PST</span>
-              <span style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px" }}>Timezone Friendly</span>
+            <div
+              style={{ display: "flex", alignItems: "baseline", gap: "6px" }}
+            >
+              <span
+                style={{ color: "#FF5B04", fontSize: "19px", fontWeight: 700 }}
+              >
+                EST/PST
+              </span>
+              <span style={{ color: "rgba(0,0,0,0.4)", fontSize: "14px" }}>
+                Timezone Friendly
+              </span>
             </div>
           </div>
-          <span style={{ color: "rgba(0,0,0,0.3)", fontSize: "15px", fontWeight: 500, letterSpacing: "0.04em" }}>
+          <span
+            style={{
+              color: "rgba(0,0,0,0.3)",
+              fontSize: "15px",
+              fontWeight: 500,
+              letterSpacing: "0.04em",
+            }}
+          >
             uipirate.com
           </span>
         </div>

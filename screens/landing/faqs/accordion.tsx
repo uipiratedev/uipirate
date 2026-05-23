@@ -1,9 +1,9 @@
 "use client";
-import { AnimatedButton } from "@/components/AnimatedButton";
-import LetsTalkButton from "@/components/LetsTalkButton";
+
 import { Accordion, AccordionItem } from "@heroui/react";
 import { motion } from "framer-motion";
-import NextLink from "next/link";
+
+import LetsTalkButton from "@/components/LetsTalkButton";
 
 // Smooth animation variants for accordion items
 const itemVariants = {
@@ -193,55 +193,60 @@ export default function FaqsAccordion() {
           viewport={{ once: true, amount: 0.2 }}
           whileInView="visible"
         >
-        <Accordion
-          className="mb-0 p-0 -px-2"
-          defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
-          selectionMode="multiple"
-          variant="splitted"
-          style={{padding:0}}
-        >
-          {data.slice(0, 4).map((item, index) => (
-            <AccordionItem
-              key={String(index)}
-              aria-label={item.heading}
-              className="shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:border-l-[3px] data-[open=true]:border-l-brand-orange data-[open=true]:border-gray-200 data-[open=true]:shadow-sm"
-              indicator={({ isOpen }) =>
-                isOpen ? (
-                  <img
-                    alt="icon"
-                    className="rotate-45 transition-transform duration-300"
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
-                  />
-                ) : (
-                  <img
-                    alt="icon"
-                    className="transition-transform duration-300"
-                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
-                  />
-                )
-              }
-              title={
-                <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug text-gray-900">
-                  {item.heading}
-                </p>
-              }
-            >
-              <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
-                <p className="mb-5 text-[15px] text-gray-600">{item.title1}</p>
-                {item.list.map((listItem, i) => (
-                  <p key={i} className="mb-3 text-[15px] text-gray-600 leading-relaxed">
-                    {listItem}
+          <Accordion
+            className="mb-0 p-0 -px-2"
+            defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
+            selectionMode="multiple"
+            style={{ padding: 0 }}
+            variant="splitted"
+          >
+            {data.slice(0, 4).map((item, index) => (
+              <AccordionItem
+                key={String(index)}
+                aria-label={item.heading}
+                className="shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:border-l-[3px] data-[open=true]:border-l-brand-orange data-[open=true]:border-gray-200 data-[open=true]:shadow-sm"
+                indicator={({ isOpen }) =>
+                  isOpen ? (
+                    <img
+                      alt="icon"
+                      className="rotate-45 transition-transform duration-300"
+                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
+                    />
+                  ) : (
+                    <img
+                      alt="icon"
+                      className="transition-transform duration-300"
+                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
+                    />
+                  )
+                }
+                title={
+                  <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug text-gray-900">
+                    {item.heading}
                   </p>
-                ))}
-                {item.title2 && (
-                  <p className="mt-5 text-[15px] text-gray-600">
-                    {item.title2}
+                }
+              >
+                <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
+                  <p className="mb-5 text-[15px] text-gray-600">
+                    {item.title1}
                   </p>
-                )}
-              </div>
-            </AccordionItem>
-          ))}
-        </Accordion>
+                  {item.list.map((listItem, i) => (
+                    <p
+                      key={i}
+                      className="mb-3 text-[15px] text-gray-600 leading-relaxed"
+                    >
+                      {listItem}
+                    </p>
+                  ))}
+                  {item.title2 && (
+                    <p className="mt-5 text-[15px] text-gray-600">
+                      {item.title2}
+                    </p>
+                  )}
+                </div>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </motion.div>
         <motion.div
           custom={4}
@@ -250,16 +255,14 @@ export default function FaqsAccordion() {
           viewport={{ once: true, amount: 0.3 }}
           whileInView="visible"
         >
-      
-        <div className="flex flex-row items-center justify-center mt-6">
-                <LetsTalkButton
-                  
-                  variant="light"
-                  children="See all FAQ’s"
-                  href="/faqs"
-                  target="_self"
-                />
-        </div>
+          <div className="flex flex-row items-center justify-center mt-6">
+            <LetsTalkButton
+              children="See all FAQ’s"
+              href="/faqs"
+              target="_self"
+              variant="light"
+            />
+          </div>
         </motion.div>
       </div>
     </>

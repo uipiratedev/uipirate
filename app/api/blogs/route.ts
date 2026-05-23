@@ -68,7 +68,9 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Failed to fetch blogs";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to fetch blogs";
+
     return NextResponse.json(
       {
         success: false,
@@ -88,6 +90,8 @@ interface BlogCreateData {
   tags: string[];
   published: boolean;
   postType?: string;
+  slug?: string;
+  seo?: any;
 }
 
 // POST /api/blogs - Create a new blog (requires authentication)
@@ -105,7 +109,7 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
-    const body = await request.json() as BlogCreateData;
+    const body = (await request.json()) as BlogCreateData;
     const {
       title,
       content,
@@ -115,18 +119,22 @@ export async function POST(request: NextRequest) {
       tags,
       published,
       postType,
+      slug: providedSlug,
+      seo,
     } = body;
 
-    // Generate slug from title
-    let slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+    // Use provided slug or generate from title
+    let slug =
+      providedSlug ||
+      title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
 
-    // Check if slug already exists and make it unique if needed
+    // Check if slug already exists and make it unique if needed (only if not provided or if provided is taken)
     const existingBlog = await Blog.findOne({ slug }).lean();
 
-    if (existingBlog) {
+    if (existingBlog && !providedSlug) {
       // Add timestamp to make slug unique
       slug = `${slug}-${Date.now()}`;
     }
@@ -142,6 +150,7 @@ export async function POST(request: NextRequest) {
       tags,
       published: published || false,
       postType: postType || "blog",
+      seo: seo || {},
       author: {
         name: user.name || "UI Pirate",
         email: user.email || "",
@@ -160,7 +169,9 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Failed to create blog";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to create blog";
+
     return NextResponse.json(
       {
         success: false,

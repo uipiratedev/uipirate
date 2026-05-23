@@ -1,8 +1,9 @@
 "use client";
 
-import GlassBadge from "@/components/GlassBadge";
 import React, { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+
+import GlassBadge from "@/components/GlassBadge";
 
 // Animation variants for the badge
 const badgeVariants = {
@@ -38,18 +39,19 @@ const AnimatedWord = ({
   const color = useTransform(
     scrollProgress,
     [wordThreshold, wordEndThreshold],
-    ["rgb(209, 213, 219)", "rgb(17, 24, 39)"]
+    ["rgb(209, 213, 219)", "rgb(17, 24, 39)"],
   );
 
   // Transform scroll progress to opacity
   const opacity = useTransform(
     scrollProgress,
     [wordThreshold - 0.05, wordEndThreshold],
-    [0.35, 1]
+    [0.35, 1],
   );
 
   return (
     <motion.span
+      className="transition-none"
       style={{
         color,
         opacity,
@@ -57,7 +59,6 @@ const AnimatedWord = ({
         marginRight: "0.25em",
         willChange: "color, opacity",
       }}
-      className="transition-none"
     >
       {word}
     </motion.span>
@@ -93,14 +94,12 @@ const LandingWhoWeAre = () => {
         {/* Badge with Framer Motion animation */}
         <motion.div
           className="flex justify-center mb-10 md:mb-14 lg:mb-16"
-          variants={badgeVariants}
           initial="hidden"
-          whileInView="visible"
+          variants={badgeVariants}
           viewport={{ once: true, amount: 0.5 }}
+          whileInView="visible"
         >
-          <GlassBadge variant="gradient">
-            WHO WE ARE
-          </GlassBadge>
+          <GlassBadge variant="gradient">WHO WE ARE</GlassBadge>
         </motion.div>
 
         {/* Animated text container */}
@@ -118,10 +117,10 @@ const LandingWhoWeAre = () => {
             {words.map((word, index) => (
               <AnimatedWord
                 key={index}
-                word={word}
                 index={index}
-                totalWords={totalWords}
                 scrollProgress={scrollYProgress}
+                totalWords={totalWords}
+                word={word}
               />
             ))}
           </h2>
@@ -131,9 +130,9 @@ const LandingWhoWeAre = () => {
         <motion.div
           className="flex justify-center mt-12 md:mt-16 lg:mt-20"
           initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          viewport={{ once: true, amount: 0.8 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          viewport={{ once: true, amount: 0.8 }}
+          whileInView={{ opacity: 1, scaleX: 1 }}
         >
           <div className="h-[2px] w-16 md:w-24 bg-gradient-to-r from-transparent via-brand-orange/40 to-transparent rounded-full" />
         </motion.div>

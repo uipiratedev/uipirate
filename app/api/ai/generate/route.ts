@@ -1,59 +1,135 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { verifyAuth } from "@/lib/auth";
 import { getDecryptedKeys } from "@/app/api/admin/ai-config/route";
 
 export async function POST(request: NextRequest) {
   try {
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const body = await request.json();
-    const { action, title, content, postType, prompt, engine, model, selectedText, surroundingContext } = body;
+    const {
+      action,
+      title,
+      content,
+      postType,
+      prompt,
+      engine,
+      model,
+      selectedText,
+      surroundingContext,
+    } = body;
 
     // Keys priority: environment vars first, then encrypted DB keys
-    const envOpenai  = process.env.OPENAI_API_KEY;
-    const envGemini  = process.env.GEMINI_API_KEY;
+    const envOpenai = process.env.OPENAI_API_KEY;
+    const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
-    const dbKeys     = await getDecryptedKeys();
+    const dbKeys = await getDecryptedKeys();
 
-    const openaiApiKey  = envOpenai  || dbKeys.openai;
-    const geminiApiKey  = envGemini  || dbKeys.gemini;
+    const openaiApiKey = envOpenai || dbKeys.openai;
+    const geminiApiKey = envGemini || dbKeys.gemini;
     const mistralApiKey = envMistral || dbKeys.mistral;
 
     // Determine engine: prefer the requested one, fall back to whatever has a key
-    let selectedEngine = engine || (openaiApiKey ? "openai" : geminiApiKey ? "gemini" : mistralApiKey ? "mistral" : "puter");
+    let selectedEngine =
+      engine ||
+      (openaiApiKey
+        ? "openai"
+        : geminiApiKey
+          ? "gemini"
+          : mistralApiKey
+            ? "mistral"
+            : "puter");
 
-    if (selectedEngine === "openai"  && !openaiApiKey)  selectedEngine = geminiApiKey ? "gemini" : mistralApiKey ? "mistral" : "puter";
-    if (selectedEngine === "gemini"  && !geminiApiKey)  selectedEngine = openaiApiKey ? "openai" : mistralApiKey ? "mistral" : "puter";
-    if (selectedEngine === "mistral" && !mistralApiKey) selectedEngine = openaiApiKey ? "openai" : geminiApiKey  ? "gemini"  : "puter";
+    if (selectedEngine === "openai" && !openaiApiKey)
+      selectedEngine = geminiApiKey
+        ? "gemini"
+        : mistralApiKey
+          ? "mistral"
+          : "puter";
+    if (selectedEngine === "gemini" && !geminiApiKey)
+      selectedEngine = openaiApiKey
+        ? "openai"
+        : mistralApiKey
+          ? "mistral"
+          : "puter";
+    if (selectedEngine === "mistral" && !mistralApiKey)
+      selectedEngine = openaiApiKey
+        ? "openai"
+        : geminiApiKey
+          ? "gemini"
+          : "puter";
 
-    let apiKey = selectedEngine === "openai"  ? openaiApiKey
-               : selectedEngine === "gemini"  ? geminiApiKey
-               : selectedEngine === "mistral" ? mistralApiKey
-               : undefined;
+    let apiKey =
+      selectedEngine === "openai"
+        ? openaiApiKey
+        : selectedEngine === "gemini"
+          ? geminiApiKey
+          : selectedEngine === "mistral"
+            ? mistralApiKey
+            : undefined;
 
     if (selectedEngine !== "puter" && !apiKey) {
-      const engineLabel = selectedEngine === "openai" ? "OpenAI" : selectedEngine === "gemini" ? "Gemini" : "Mistral";
+      const engineLabel =
+        selectedEngine === "openai"
+          ? "OpenAI"
+          : selectedEngine === "gemini"
+            ? "Gemini"
+            : "Mistral";
+
       return NextResponse.json(
-        { success: false, error: `${engineLabel} API key is not configured. Add it in Admin → AI Settings.` },
-        { status: 500 }
+        {
+          success: false,
+          error: `${engineLabel} API key is not configured. Add it in Admin → AI Settings.`,
+        },
+        { status: 500 },
       );
     }
 
     let systemInstructions = "";
+
     if (action === "excerpt") {
       systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following post. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${content || title}`;
     } else if (action === "titles") {
       systemInstructions = `Suggest 3 high-impact, highly clickable, and search-optimized alternative titles for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Format your response STRICTLY as a raw JSON array of strings, e.g. ["Optimized Title 1", "Optimized Title 2", "Optimized Title 3"]. Deliver ONLY the JSON array, no markdown backticks, no wrap text, and no leading/trailing spaces.`;
     } else if (action === "tags") {
       systemInstructions = `Suggest 5-8 highly relevant, lowercase, search-optimized tags / keywords for a post with the title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Format your response STRICTLY as a raw JSON array of strings, e.g. ["tech", "javascript", "react"]. Deliver ONLY the JSON array, no markdown backticks, no wrap text, and no leading/trailing spaces.`;
+    } else if (action === "seo-analysis") {
+      systemInstructions = `You are an expert SEO specialist. Analyze the following blog post and provide a comprehensive SEO optimization report.
+      Title: "${title || ""}"
+      Category: "${postType || "blog"}"
+      Content: "${content || ""}"
+      
+      Your response must be a valid JSON object with the following structure:
+      {
+        "metaTitle": "A suggested meta title (max 60 chars)",
+        "metaDescription": "A suggested meta description (max 160 chars)",
+        "focusKeyword": "The primary target keyword",
+        "semanticKeywords": ["3-5 related keywords"],
+        "slug": "An SEO-friendly URL slug",
+        "ogTitle": "Title for social sharing",
+        "ogDescription": "Description for social sharing",
+        "analysis": {
+          "score": 0-100,
+          "strengths": ["list of positive SEO aspects"],
+          "improvements": ["list of actionable improvements"],
+          "keywordGap": ["missing keywords or topics to cover"],
+          "headingStructure": "Analysis of H1, H2, H3 hierarchy",
+          "readability": "Readability score and analysis",
+          "imageOptimization": "Review of image alt tags and suggestions"
+        }
+      }
+      Deliver ONLY the raw JSON object, no backticks, no markdown formatting.`;
     } else if (action === "write") {
       let contextInfo = "";
+
       if (selectedText) {
         contextInfo += `\n\nTARGET TEXT FOR EDITING (Rewrite, expand, improve, or format this selected text directly based on the user prompt): "${selectedText}"`;
       }
@@ -66,15 +142,17 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
     } else {
       return NextResponse.json(
         { success: false, error: "Invalid action" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     let text = "";
 
     if (selectedEngine === "openai" || selectedEngine === "mistral") {
-      const isMistral   = selectedEngine === "mistral";
-      const apiUrl      = isMistral ? "https://api.mistral.ai/v1/chat/completions" : "https://api.openai.com/v1/chat/completions";
+      const isMistral = selectedEngine === "mistral";
+      const apiUrl = isMistral
+        ? "https://api.mistral.ai/v1/chat/completions"
+        : "https://api.openai.com/v1/chat/completions";
       const defaultModel = isMistral ? "mistral-large-latest" : "gpt-4o-mini";
       const selectedModel = model || defaultModel;
 
@@ -82,7 +160,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
+          Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
           model: selectedModel,
@@ -93,10 +171,14 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(`${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`);
+
+        throw new Error(
+          `${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`,
+        );
       }
 
       const data = await response.json();
+
       text = data.choices?.[0]?.message?.content || "";
     } else if (selectedEngine === "gemini") {
       // Gemini API
@@ -107,7 +189,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-goog-api-key": apiKey,
+            "X-goog-api-key": apiKey!,
           },
           body: JSON.stringify({
             contents: [
@@ -120,48 +202,80 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
               },
             ],
           }),
-        }
+        },
       );
 
       if (!response.ok) {
         const errText = await response.text();
+
         throw new Error(`Gemini API Error: ${errText}`);
       }
 
       const data = await response.json();
+
       text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
     }
 
     // Clean up markdown wrappers if the model returned them anyway
     text = text.trim();
     if (text.startsWith("```json")) {
-      text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+      text = text
+        .replace(/^```json/, "")
+        .replace(/```$/, "")
+        .trim();
     } else if (text.startsWith("```html")) {
-      text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+      text = text
+        .replace(/^```html/, "")
+        .replace(/```$/, "")
+        .trim();
     } else if (text.startsWith("```")) {
       text = text.replace(/^```/, "").replace(/```$/, "").trim();
     }
 
-    if (action === "titles" || action === "tags") {
+    if (action === "titles" || action === "tags" || action === "seo-analysis") {
       try {
         const parsed = JSON.parse(text);
-        return NextResponse.json({ success: true, data: parsed, engine: selectedEngine });
+
+        return NextResponse.json({
+          success: true,
+          data: parsed,
+          engine: selectedEngine,
+        });
       } catch (jsonErr) {
+        if (action === "seo-analysis") {
+          throw new Error(
+            "AI failed to return a valid SEO analysis JSON. Please try again.",
+          );
+        }
         // Fallback split parsing if model failed to return strict JSON
         const fallbackItems = text
           .split("\n")
-          .map((t) => t.replace(/^\d+\.\s*/, "").replace(/[\[\]"']/g, "").trim())
+          .map((t) =>
+            t
+              .replace(/^\d+\.\s*/, "")
+              .replace(/[\[\]"']/g, "")
+              .trim(),
+          )
           .filter((t) => t.length > 1)
           .slice(0, 8);
-        return NextResponse.json({ success: true, data: fallbackItems, engine: selectedEngine });
+
+        return NextResponse.json({
+          success: true,
+          data: fallbackItems,
+          engine: selectedEngine,
+        });
       }
     }
 
-    return NextResponse.json({ success: true, data: text, engine: selectedEngine });
+    return NextResponse.json({
+      success: true,
+      data: text,
+      engine: selectedEngine,
+    });
   } catch (error: any) {
     return NextResponse.json(
       { success: false, error: error.message || "AI Generation failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -50,29 +50,49 @@ function LoginForm() {
   return (
     <div className="min-h-screen flex" style={{ background: "#151514" }}>
       {/* Left branding panel */}
-      <div className="hidden lg:flex flex-col justify-between w-80 p-10 flex-shrink-0"
-        style={{ borderRight: "1px solid rgba(255,255,255,0.06)" }}>
+      <div
+        className="hidden lg:flex flex-col justify-between w-80 p-10 flex-shrink-0"
+        style={{ borderRight: "1px solid rgba(255,255,255,0.06)" }}
+      >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#FF5B04" }}>
-            <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
-              <path clipRule="evenodd" fillRule="evenodd"
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ background: "#FF5B04" }}
+          >
+            <svg fill="none" height="16" viewBox="0 0 32 32" width="16">
+              <path
+                clipRule="evenodd"
                 d="M17.648 10.13L15.878 7.026 7.03 22.55h3.498l7.12-12.42zm2.232 3.916l-1.77 3.152 1.284 2.253h-2.549l-1.74 3.099h9.622l-4.847-8.504z"
-                fill="white" />
+                fill="white"
+                fillRule="evenodd"
+              />
             </svg>
           </div>
-          <span className="text-white font-semibold font-geist text-sm">UI Pirate</span>
+          <span className="text-white font-semibold font-geist text-sm">
+            UI Pirate
+          </span>
         </div>
         <div>
-          <p className="text-xs font-jetbrains-mono uppercase tracking-widest mb-3"
-            style={{ color: "#FF5B04" }}>Admin Panel</p>
+          <p
+            className="text-xs font-jetbrains-mono uppercase tracking-widest mb-3"
+            style={{ color: "#FF5B04" }}
+          >
+            Admin Panel
+          </p>
           <p className="text-white font-geist text-2xl font-bold leading-snug">
             Manage your content.
           </p>
-          <p className="mt-2 text-sm font-geist" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <p
+            className="mt-2 text-sm font-geist"
+            style={{ color: "rgba(255,255,255,0.4)" }}
+          >
             Secure access — authorized personnel only.
           </p>
         </div>
-        <p className="text-xs font-geist" style={{ color: "rgba(255,255,255,0.2)" }}>
+        <p
+          className="text-xs font-geist"
+          style={{ color: "rgba(255,255,255,0.2)" }}
+        >
           © {new Date().getFullYear()} UI Pirate
         </p>
       </div>
@@ -82,38 +102,62 @@ function LoginForm() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "#FF5B04" }}>
-              <svg width="16" height="16" viewBox="0 0 32 32" fill="none">
-                <path clipRule="evenodd" fillRule="evenodd"
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: "#FF5B04" }}
+            >
+              <svg fill="none" height="16" viewBox="0 0 32 32" width="16">
+                <path
+                  clipRule="evenodd"
                   d="M17.648 10.13L15.878 7.026 7.03 22.55h3.498l7.12-12.42zm2.232 3.916l-1.77 3.152 1.284 2.253h-2.549l-1.74 3.099h9.622l-4.847-8.504z"
-                  fill="white" />
+                  fill="white"
+                  fillRule="evenodd"
+                />
               </svg>
             </div>
-            <span className="text-white font-semibold font-geist text-sm">UI Pirate Admin</span>
+            <span className="text-white font-semibold font-geist text-sm">
+              UI Pirate Admin
+            </span>
           </div>
 
-          <h1 className="text-2xl font-bold font-geist text-white tracking-tight mb-1">Sign in</h1>
-          <p className="text-sm font-geist mb-8" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <h1 className="text-2xl font-bold font-geist text-white tracking-tight mb-1">
+            Sign in
+          </h1>
+          <p
+            className="text-sm font-geist mb-8"
+            style={{ color: "rgba(255,255,255,0.4)" }}
+          >
             Enter your credentials to continue
           </p>
 
           {error && (
-            <div className="mb-6 p-3.5 rounded-xl border text-sm font-geist"
-              style={{ background: "rgba(239,68,68,0.1)", borderColor: "rgba(239,68,68,0.2)", color: "#F87171" }}>
+            <div
+              className="mb-6 p-3.5 rounded-xl border text-sm font-geist"
+              style={{
+                background: "rgba(239,68,68,0.1)",
+                borderColor: "rgba(239,68,68,0.2)",
+                color: "#F87171",
+              }}
+            >
               {error}
             </div>
           )}
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs font-medium font-geist mb-1.5" style={{ color: "rgba(255,255,255,0.5)" }}>
+              <label
+                className="block text-xs font-medium font-geist mb-1.5"
+                style={{ color: "rgba(255,255,255,0.5)" }}
+              >
                 Email
               </label>
               <Input
                 required
                 classNames={{
-                  inputWrapper: "bg-white/5 border-white/10 hover:border-white/20 data-[focus=true]:border-[#FF5B04]",
-                  input: "text-sm font-geist text-white placeholder:text-white/20",
+                  inputWrapper:
+                    "bg-white/5 border-white/10 hover:border-white/20 data-[focus=true]:border-[#FF5B04]",
+                  input:
+                    "text-sm font-geist text-white placeholder:text-white/20",
                 }}
                 disabled={isLoading}
                 placeholder="admin@uipirate.com"
@@ -123,14 +167,19 @@ function LoginForm() {
               />
             </div>
             <div>
-              <label className="block text-xs font-medium font-geist mb-1.5" style={{ color: "rgba(255,255,255,0.5)" }}>
+              <label
+                className="block text-xs font-medium font-geist mb-1.5"
+                style={{ color: "rgba(255,255,255,0.5)" }}
+              >
                 Password
               </label>
               <Input
                 required
                 classNames={{
-                  inputWrapper: "bg-white/5 border-white/10 hover:border-white/20 data-[focus=true]:border-[#FF5B04]",
-                  input: "text-sm font-geist text-white placeholder:text-white/20",
+                  inputWrapper:
+                    "bg-white/5 border-white/10 hover:border-white/20 data-[focus=true]:border-[#FF5B04]",
+                  input:
+                    "text-sm font-geist text-white placeholder:text-white/20",
                 }}
                 disabled={isLoading}
                 placeholder="••••••••"
@@ -139,18 +188,29 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <Button type="submit" disabled={isLoading} isLoading={isLoading}
+            <Button
               className="w-full h-11 font-geist font-semibold text-sm text-white rounded-xl mt-2"
-              style={{ background: "#FF5B04" }}>
+              disabled={isLoading}
+              isLoading={isLoading}
+              style={{ background: "#FF5B04" }}
+              type="submit"
+            >
               {isLoading ? "Signing in…" : "Sign In"}
             </Button>
           </form>
 
           <div className="mt-8 text-center">
-            <a href="/" className="text-xs font-geist transition-colors"
+            <a
+              className="text-xs font-geist transition-colors"
+              href="/"
               style={{ color: "rgba(255,255,255,0.25)" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.6)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}>
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "rgba(255,255,255,0.6)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "rgba(255,255,255,0.25)")
+              }
+            >
               ← Back to website
             </a>
           </div>

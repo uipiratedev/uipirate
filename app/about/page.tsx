@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Card, CardBody } from "@heroui/react";
+
 import GlassSurface from "@/components/GlassSurface";
 import GlassBadge from "@/components/GlassBadge";
 import { CheckIcon } from "@/components/icons";
@@ -10,7 +11,7 @@ import TheTeam from "@/screens/landing/theTeam";
 import {
   HERO_BADGE_PRESET,
   HERO_BADGE_CLASSNAME,
-  HERO_BADGE_ANIMATION_STYLE
+  HERO_BADGE_ANIMATION_STYLE,
 } from "@/config/glassSurfacePresets";
 
 const stats = [
@@ -83,19 +84,68 @@ const industries = [
 
 // Client logos from cloudinary - matching marquee section
 const clientLogos = [
-  { name: "Pivot Bits", logo: "/assets/logos/pivotbits.png", desc: "Enterprise Security Software", isUS: true, invertColor: true },
-  { name: "Ipsos", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg", desc: "Global Market Research", isUS: false },
-  { name: "Biotex Medical", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp", desc: "MedTech", isUS: true },
-  { name: "Khaitan & Co", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png", desc: "Asia's Largest Law Firm", isUS: false },
-  { name: "RevUp AI", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg", desc: "AI Platform", isUS: true },
-  { name: "Simpleo AI", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682148/Group-2_uduxpp.svg", desc: "AI Solutions", isUS: true },
-  { name: "Sarge", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg", desc: "AI Police Tech Platform", isUS: true },
-  { name: "Awesome Health", logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg", desc: "HealthTech", isUS: true },
-  { name: "Rings & I", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Rings_I_eyrgog.svg", desc: "E-commerce", isUS: true },
-  { name: "Arth Alpha", logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg", desc: "Quant Trading Startup", isUS: false },
+  {
+    name: "Pivot Bits",
+    logo: "/assets/logos/pivotbits.png",
+    desc: "Enterprise Security Software",
+    isUS: true,
+    invertColor: true,
+  },
+  {
+    name: "Ipsos",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
+    desc: "Global Market Research",
+    isUS: false,
+  },
+  {
+    name: "Biotex Medical",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp",
+    desc: "MedTech",
+    isUS: true,
+  },
+  {
+    name: "Khaitan & Co",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png",
+    desc: "Asia's Largest Law Firm",
+    isUS: false,
+  },
+  {
+    name: "RevUp AI",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
+    desc: "AI Platform",
+    isUS: true,
+  },
+  {
+    name: "Simpleo AI",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682148/Group-2_uduxpp.svg",
+    desc: "AI Solutions",
+    isUS: true,
+  },
+  {
+    name: "Sarge",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg",
+    desc: "AI Police Tech Platform",
+    isUS: true,
+  },
+  {
+    name: "Awesome Health",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg",
+    desc: "HealthTech",
+    isUS: true,
+  },
+  {
+    name: "Rings & I",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Rings_I_eyrgog.svg",
+    desc: "E-commerce",
+    isUS: true,
+  },
+  {
+    name: "Arth Alpha",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
+    desc: "Quant Trading Startup",
+    isUS: false,
+  },
 ];
-
-
 
 export default function AboutPage() {
   return (
@@ -178,31 +228,36 @@ export default function AboutPage() {
                   "@type": "Organization",
                   name: "Pivot Bits",
                   url: "http://www.pivotbits.com/",
-                  description: "Enterprise security software company serving Fortune 500, hospitals, and schools in the USA",
+                  description:
+                    "Enterprise security software company serving Fortune 500, hospitals, and schools in the USA",
                 },
                 {
                   "@type": "Organization",
                   name: "Ipsos",
                   url: "https://www.ipsos.com/",
-                  description: "Global market research and consulting firm headquartered in Paris, France",
+                  description:
+                    "Global market research and consulting firm headquartered in Paris, France",
                 },
                 {
                   "@type": "Organization",
                   name: "Biotex Medical",
                   url: "https://biotexmedical.com/",
-                  description: "MedTech and medical device development company based in Texas, USA",
+                  description:
+                    "MedTech and medical device development company based in Texas, USA",
                 },
                 {
                   "@type": "Organization",
                   name: "Khaitan & Co",
                   url: "https://www.khaitanco.com/",
-                  description: "Asia's largest law firm with offices across India",
+                  description:
+                    "Asia's largest law firm with offices across India",
                 },
                 {
                   "@type": "Organization",
                   name: "RevUp AI",
                   url: "https://revupai.com/",
-                  description: "AI-powered business solutions platform based in Dallas, USA",
+                  description:
+                    "AI-powered business solutions platform based in Dallas, USA",
                 },
                 {
                   "@type": "Organization",
@@ -214,13 +269,15 @@ export default function AboutPage() {
                   "@type": "Organization",
                   name: "Sarge",
                   url: "https://sarge.com/",
-                  description: "AI-powered police technology platform supporting law enforcement in Florida, USA",
+                  description:
+                    "AI-powered police technology platform supporting law enforcement in Florida, USA",
                 },
                 {
                   "@type": "Organization",
                   name: "Awesome Health Club",
                   url: "https://awesomehealthclub.com/",
-                  description: "HealthTech and wellness platform based in California, USA",
+                  description:
+                    "HealthTech and wellness platform based in California, USA",
                 },
                 {
                   "@type": "Organization",
@@ -232,7 +289,8 @@ export default function AboutPage() {
                   "@type": "Organization",
                   name: "Arth Alpha",
                   url: "https://www.arthalpha.in/",
-                  description: "Quant trading funded startup based in Bangalore, India",
+                  description:
+                    "Quant trading funded startup based in Bangalore, India",
                 },
               ],
               areaServed: [
@@ -266,7 +324,8 @@ export default function AboutPage() {
         <div
           className="absolute pointer-events-none inset-0"
           style={{
-            background: "linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 40%)",
+            background:
+              "linear-gradient(to top, rgba(250, 250, 250, 1) 0%, transparent 40%)",
           }}
         />
 
@@ -291,7 +350,10 @@ export default function AboutPage() {
 
             {/* Subheading */}
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
-              Not just a design agency — we're your product partner. We help you think through competitive analysis, simplify complex products, design for conversion, and ship production-ready code. From idea to shipped product.
+              Not just a design agency — we're your product partner. We help you
+              think through competitive analysis, simplify complex products,
+              design for conversion, and ship production-ready code. From idea
+              to shipped product.
             </p>
 
             {/* US Market Badge */}
@@ -299,7 +361,10 @@ export default function AboutPage() {
               <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 border border-gray-200 rounded-full">
                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 <span className="text-sm text-gray-600">
-                  <span className="font-semibold text-gray-900">US Timezone Friendly</span> — EST & PST hours
+                  <span className="font-semibold text-gray-900">
+                    US Timezone Friendly
+                  </span>{" "}
+                  — EST & PST hours
                 </span>
               </div>
             </div>
@@ -314,11 +379,11 @@ export default function AboutPage() {
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:border-brand-orange/30 transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, y: 0 }}
               >
                 <p className="text-4xl max-md:text-3xl font-bold text-brand-orange font-jetbrains-mono">
                   {stat.number}
@@ -338,9 +403,7 @@ export default function AboutPage() {
           <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">OUR DNA</GlassBadge>
           </div>
-          <h2 className="heading-center">
-            What Makes Us Different
-          </h2>
+          <h2 className="heading-center">What Makes Us Different</h2>
           <p className="text-gray-500 mt-2 max-w-xl mx-auto">
             Most agencies give you mockups. We give you a shipped product.
           </p>
@@ -378,14 +441,16 @@ export default function AboutPage() {
               ].map((item, i) => (
                 <motion.div
                   key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
                   className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
+                  initial={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  whileInView={{ opacity: 1, y: 0 }}
                 >
                   <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center mb-4">
-                    <span className="text-brand-orange font-bold font-mono text-sm">0{i + 1}</span>
+                    <span className="text-brand-orange font-bold font-mono text-sm">
+                      0{i + 1}
+                    </span>
                   </div>
                   <h3 className="text-white font-semibold text-lg mb-2">
                     {item.title}
@@ -406,9 +471,7 @@ export default function AboutPage() {
           <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">DESIGN PHILOSOPHY</GlassBadge>
           </div>
-          <h2 className="heading-center">
-            Our Design Style
-          </h2>
+          <h2 className="heading-center">Our Design Style</h2>
         </div>
 
         <div className="grid grid-cols-3 max-md:grid-cols-1 gap-4">
@@ -428,18 +491,18 @@ export default function AboutPage() {
           ].map((item, i) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
               className="premium-card"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <div className="premium-card-inner bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] rounded-[20px] p-6 border border-gray-200 h-full">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-brand-orange"><CheckIcon /></span>
-                  <h3 className="font-semibold text-gray-900">
-                    {item.title}
-                  </h3>
+                  <span className="text-brand-orange">
+                    <CheckIcon />
+                  </span>
+                  <h3 className="font-semibold text-gray-900">{item.title}</h3>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
                   {item.desc}
@@ -458,7 +521,9 @@ export default function AboutPage() {
         <div className="px-8 max-md:px-5 relative z-10">
           <div className="text-center mb-10">
             <div className="flex justify-center mb-4">
-              <GlassBadge variant="gradient" className="text-white">THE PROCESS</GlassBadge>
+              <GlassBadge className="text-white" variant="gradient">
+                THE PROCESS
+              </GlassBadge>
             </div>
             <h2 className="text-3xl max-md:text-2xl font-bold tracking-tight text-white mb-3">
               Our Approach
@@ -472,11 +537,11 @@ export default function AboutPage() {
             {process.map((step, i) => (
               <motion.div
                 key={step.step}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, y: 0 }}
               >
                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-brand-orange/20 text-brand-orange font-mono font-bold text-xs mb-4">
                   {step.step}
@@ -509,13 +574,19 @@ export default function AboutPage() {
               {technologies.map((tech) => (
                 <motion.div
                   key={tech.name}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
                   className="bg-white border border-gray-200 rounded-xl px-4 py-2 flex items-center gap-2 hover:border-brand-orange/50 hover:shadow-sm transition-all duration-300"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  viewport={{ once: true }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                 >
-                  <img src={tech.logo} alt={tech.name} className="w-5 h-5 object-contain" />
-                  <span className="text-sm font-medium text-gray-700">{tech.name}</span>
+                  <img
+                    alt={tech.name}
+                    className="w-5 h-5 object-contain"
+                    src={tech.logo}
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    {tech.name}
+                  </span>
                 </motion.div>
               ))}
             </div>
@@ -545,9 +616,7 @@ export default function AboutPage() {
           <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">OUR CLIENTS</GlassBadge>
           </div>
-          <h2 className="heading-center">
-            Trusted by Teams Worldwide
-          </h2>
+          <h2 className="heading-center">Trusted by Teams Worldwide</h2>
           <p className="text-gray-500 mt-2">
             60% of our clients are US-based startups and enterprises
           </p>
@@ -557,23 +626,28 @@ export default function AboutPage() {
           {clientLogos.map((client, i) => (
             <motion.div
               key={client.name}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
               className={`border rounded-xl p-5 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-brand-orange/40 hover:shadow-lg group ${
                 client.isUS
-                  ? 'bg-brand-orange/5 border-brand-orange/20'
-                  : 'bg-white border-gray-200'
+                  ? "bg-brand-orange/5 border-brand-orange/20"
+                  : "bg-white border-gray-200"
               }`}
+              initial={{ opacity: 0, y: 15 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <img
-                src={client.logo}
                 alt={client.name}
                 className="h-8 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                style={client.invertColor ? {
-                  filter: 'invert(1) sepia(1) saturate(5) hue-rotate(180deg) brightness(0.7)',
-                } : undefined}
+                src={client.logo}
+                style={
+                  client.invertColor
+                    ? {
+                        filter:
+                          "invert(1) sepia(1) saturate(5) hue-rotate(180deg) brightness(0.7)",
+                      }
+                    : undefined
+                }
               />
               <span className="mt-2 text-xs text-gray-500 font-medium">
                 {client.desc}
@@ -597,16 +671,18 @@ export default function AboutPage() {
 
             <div className="relative z-10">
               <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4 tracking-tight">
-                Ready to Turn Your Idea Into a <span className="text-brand-orange">Product</span>?
+                Ready to Turn Your Idea Into a{" "}
+                <span className="text-brand-orange">Product</span>?
               </h2>
               <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-                Book a free 15-minute call. Tell us your vision — we'll show you how we can bring it to life.
+                Book a free 15-minute call. Tell us your vision — we'll show you
+                how we can bring it to life.
               </p>
               <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
                 <Link
+                  className="bg-brand-orange text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-300"
                   href="https://cal.com/ui-pirate/15min"
                   target="_blank"
-                  className="bg-brand-orange text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-300"
                 >
                   Book a Free Call
                 </Link>

@@ -1,22 +1,24 @@
 /**
  * DEVELOPER NOTICE & BLOG FORMATTING RULES:
- * 
+ *
  * To ensure high-contrast accessibility (avoiding low-contrast grey or white text on white backgrounds)
  * and full responsive scaling across all viewports, all dynamically generated blog HTML content must:
  *   1. Use only clean semantic HTML tags (<p>, <h2>, <h3>, <ul>, <ol>, <li>, <strong>, <em>, <blockquote>, <table>, etc.)
  *   2. Strictly contain NO custom inline styles (e.g. style="...")
  *   3. Strictly contain NO custom class attributes (e.g. class="..." or className="...")
  *   4. Strictly contain NO custom wrapper divs (e.g. <div class="bg-charcoal text-gray-200">)
- * 
+ *
  * All typography, styling, margins, and custom branding rules are defined globally inside styles/globals.css
  * under the `.blog-prose` selector family.
- * 
+ *
  * For full detailed rules and the recommended system prompt for AI-auto-generation,
  * please refer to the root file: /BLOG_FORMATTING_RULES.md
  */
 
 import { useMemo } from "react";
+
 import HeaderInfo from "./headeInfo";
+
 import GlobalCTA from "@/components/GlobalCTA";
 
 interface BlogData {
@@ -46,10 +48,16 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
 
     // 1. Unwrap outermost styling div if it exists in the cached payload
     const trimmed = content.trim();
+
     if (trimmed.startsWith("<div") && trimmed.endsWith("</div>")) {
       const firstCloseTagIndex = trimmed.indexOf(">");
       const lastOpenTagIndex = trimmed.lastIndexOf("</div");
-      if (firstCloseTagIndex !== -1 && lastOpenTagIndex !== -1 && trimmed.substring(0, firstCloseTagIndex).includes("blog-post-content")) {
+
+      if (
+        firstCloseTagIndex !== -1 &&
+        lastOpenTagIndex !== -1 &&
+        trimmed.substring(0, firstCloseTagIndex).includes("blog-post-content")
+      ) {
         content = trimmed.substring(firstCloseTagIndex + 1, lastOpenTagIndex);
       }
     }
@@ -65,6 +73,7 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
       ) {
         return "";
       }
+
       return match;
     });
 
@@ -74,7 +83,9 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
   return (
     <article className="container mx-auto xl:px-32 2xl:px-40 max-md:px-4 max-md:pt-0 max-xl:px-8 pt-8">
       {/* Bulletproof CSS injection to bypass Next.js compilation cache and force high-contrast colors */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .blog-prose {
           color: #1a1a1a !important;
         }
@@ -96,7 +107,9 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
         .blog-prose em {
           color: #444444 !important;
         }
-      ` }} />
+      `,
+        }}
+      />
 
       <HeaderInfo blog={blog} />
 

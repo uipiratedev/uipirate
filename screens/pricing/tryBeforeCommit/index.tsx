@@ -1,12 +1,17 @@
 "use client";
 import { motion } from "framer-motion";
-import GlassBadge from "@/components/GlassBadge";
 import { Card, CardBody } from "@heroui/react";
+
+import GlassBadge from "@/components/GlassBadge";
 import LetsTalkButton from "@/components/LetsTalkButton";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
 };
 
 const PILOT_OPTIONS = [
@@ -18,18 +23,20 @@ const PILOT_OPTIONS = [
 const TryBeforeCommit = () => {
   return (
     <motion.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
       className="mt-8"
+      initial="hidden"
+      variants={fadeUp}
+      viewport={{ once: true, amount: 0.2 }}
+      whileInView="show"
     >
       {/* Main Card - Dark Theme */}
       <Card className="rounded-[24px] max-md:rounded-[16px] bg-gradient-to-br from-[#212121] to-[#151514] border border-gray-800 shadow-xl noise-texture overflow-hidden">
         <CardBody className="p-8 max-md:p-5">
           {/* Badge */}
           <div className="flex justify-center mb-6">
-            <GlassBadge variant="gradient" className="text-white">ZERO RISK</GlassBadge>
+            <GlassBadge className="text-white" variant="gradient">
+              ZERO RISK
+            </GlassBadge>
           </div>
 
           {/* Heading */}
@@ -38,8 +45,13 @@ const TryBeforeCommit = () => {
           </h2>
 
           <p className="text-gray-400 text-center max-w-2xl mx-auto mb-8 max-md:text-sm">
-            Test our work before committing. See real results in 5 days — your fee is
-            <span className="text-white font-semibold"> fully deductible</span> from the final project invoice.
+            Test our work before committing. See real results in 5 days — your
+            fee is
+            <span className="text-white font-semibold">
+              {" "}
+              fully deductible
+            </span>{" "}
+            from the final project invoice.
           </p>
 
           {/* Benefits */}
@@ -49,10 +61,13 @@ const TryBeforeCommit = () => {
                 <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center">
                   <span className="text-xl">🧩</span>
                 </div>
-                <h4 className="text-white font-semibold">Low-Risk, High-Value</h4>
+                <h4 className="text-white font-semibold">
+                  Low-Risk, High-Value
+                </h4>
               </div>
               <p className="text-gray-400 text-sm">
-                Your pilot fee is deducted from the final invoice when you continue with a full project.
+                Your pilot fee is deducted from the final invoice when you
+                continue with a full project.
               </p>
             </div>
 
@@ -64,7 +79,8 @@ const TryBeforeCommit = () => {
                 <h4 className="text-white font-semibold">Real Deliverables</h4>
               </div>
               <p className="text-gray-400 text-sm">
-                Walk away with a working mini-build or polished design — ready to scale.
+                Walk away with a working mini-build or polished design — ready
+                to scale.
               </p>
             </div>
           </div>
@@ -81,7 +97,8 @@ const TryBeforeCommit = () => {
                     {option.type}
                   </span>
                   <span className="text-2xl font-bold text-white font-jetbrains-mono">
-                    <span className="text-base text-gray-400">$</span>{option.price}
+                    <span className="text-base text-gray-400">$</span>
+                    {option.price}
                   </span>
                 </div>
                 <p className="text-xs text-gray-500">{option.description}</p>
@@ -91,7 +108,7 @@ const TryBeforeCommit = () => {
 
           {/* CTA */}
           <div className="flex flex-col items-center gap-4">
-            <LetsTalkButton variant="color" className="px-8">
+            <LetsTalkButton className="px-8" variant="color">
               Start Your Pilot Project
             </LetsTalkButton>
             <p className="text-gray-500 text-sm flex items-center gap-2">

@@ -97,15 +97,15 @@ const Avatar: React.FC<AvatarProps> = ({
       minWidth: `${size}px`,
       minHeight: `${size}px`,
     }),
-    [size]
+    [size],
   );
 
   if (avatar) {
     return (
       <div className={`relative rounded-full ${className}`} style={sizeStyles}>
         <Image
-          alt={altText}
           fill
+          alt={altText}
           className="rounded-full object-cover"
           src={avatar}
         />

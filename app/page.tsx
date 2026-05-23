@@ -15,7 +15,8 @@ const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
 
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
-  title: "UI Pirate | Product Design & Development Agency — From Idea to Shipped Product",
+  title:
+    "UI Pirate | Product Design & Development Agency — From Idea to Shipped Product",
   description:
     "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. We simplify complexity and design for conversion. 50+ products shipped.",
   keywords:
@@ -35,7 +36,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "UI Pirate | Product Design — Idea to Shipped Product",
-    description: "Product thinking, competitive analysis & conversion-focused design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
+    description:
+      "Product thinking, competitive analysis & conversion-focused design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
   },
 };
 

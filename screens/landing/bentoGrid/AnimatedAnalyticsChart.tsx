@@ -144,28 +144,28 @@ const AnimatedAnalyticsChart = () => {
 
       {/* Area fill */}
       <motion.path
+        animate={isInView ? "visible" : "hidden"}
         d={areaPath}
         fill="url(#areaGradient)"
+        initial="hidden"
         style={{ mixBlendMode: "multiply" }}
         variants={areaVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
       />
 
       {/* Glow line (behind main line) */}
       <motion.path
+        animate={isInView ? "visible" : "hidden"}
         d={linePath}
         fill="none"
         filter="url(#glow)"
+        initial="hidden"
         opacity="0.6"
         stroke="url(#glowGradient)"
+        strokeDasharray={lineLength}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="4"
-        strokeDasharray={lineLength}
         variants={lineVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
       />
 
       {/* Main line - invisible reference for measuring length */}
@@ -179,18 +179,17 @@ const AnimatedAnalyticsChart = () => {
 
       {/* Main line (animated) */}
       <motion.path
+        animate={isInView ? "visible" : "hidden"}
         d={linePath}
         fill="none"
+        initial="hidden"
         stroke="url(#lineGradient)"
+        strokeDasharray={lineLength}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        strokeDasharray={lineLength}
         variants={lineVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
       />
-
     </svg>
   );
 };

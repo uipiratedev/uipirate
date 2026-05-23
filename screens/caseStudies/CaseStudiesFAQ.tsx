@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+
 import GlassBadge from "@/components/GlassBadge";
 
 interface FAQItem {
@@ -53,11 +54,11 @@ const CaseStudiesFAQ = () => {
     <section className="py-16 max-md:py-12 -mt-52">
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="text-center mb-12 max-md:mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }}
         >
           <div className="mb-6 flex flex-row items-center justify-center">
             <GlassBadge variant="gradient">FAQ</GlassBadge>
@@ -74,43 +75,43 @@ const CaseStudiesFAQ = () => {
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
               className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-gray-300 transition-colors"
+              initial={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }}
             >
               <button
-                onClick={() => toggleFAQ(index)}
                 className="w-full px-6 py-5 max-md:px-4 max-md:py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                onClick={() => toggleFAQ(index)}
               >
                 <span className="text-base max-md:text-sm font-semibold text-gray-900 pr-4">
                   {faq.question}
                 </span>
                 <motion.svg
                   animate={{ rotate: openIndex === index ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
                   className="w-5 h-5 text-brand-orange shrink-0"
                   fill="none"
-                  viewBox="0 0 24 24"
                   stroke="currentColor"
+                  transition={{ duration: 0.3 }}
+                  viewBox="0 0 24 24"
                 >
                   <path
+                    d="M19 9l-7 7-7-7"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
                   />
                 </motion.svg>
               </button>
 
               {openIndex === index && (
                 <motion.div
-                  initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
                   className="overflow-hidden"
+                  exit={{ height: 0, opacity: 0 }}
+                  initial={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <div className="px-6 pb-5 max-md:px-4 max-md:pb-4">
                     <p className="text-gray-600 text-sm leading-relaxed">

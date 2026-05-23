@@ -1,6 +1,7 @@
 "use client";
 
 import { Select, SelectItem } from "@heroui/react";
+
 import GlassSurface from "@/components/GlassSurface";
 
 interface FaqsHeroProps {
@@ -29,6 +30,7 @@ const FaqsHero = ({
   // Display name mapping for better UI
   const getDisplayName = (category: string) => {
     if (category === "general") return "GENERAL";
+
     return category;
   };
 
@@ -101,20 +103,17 @@ const FaqsHero = ({
             FAQ&apos;S
           </p>
         </GlassSurface>
-
         {/* Headline */}
         <div className="relative z-10 w-full">
           <h1 className="hero-header">
             <span className="text-[#FF5B04]">Everything</span>{" "}
-            <span className="text-black">you <br/> need to know</span>
+            <span className="text-black">
+              you <br /> need to know
+            </span>
           </h1>
         </div>
-
         {/* Description */}
-        <p className="sub-header text-gray-600">
-          Questions answered in depth.
-        </p>
-
+        <p className="sub-header text-gray-600">Questions answered in depth.</p>
         {/* Search + Category inside pill */}
         <div
           className="mt-8 md:mt-10 w-full max-w-3xl relative z-10 px-4"
@@ -131,7 +130,6 @@ const FaqsHero = ({
 
           {/* On mobile: stacked. On desktop: single pill row */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200 md:bg-white/80 md:p-2 md:pl-4 md:shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:backdrop-blur-md md:focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:focus-within:bg-white/95 md:transition-all md:duration-300">
-
             {/* Search Input — full pill on mobile */}
             <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:flex-1 md:border-none md:shadow-none md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
               <input
@@ -170,6 +168,7 @@ const FaqsHero = ({
                 selectedKeys={[selectedCategory]}
                 onSelectionChange={(keys) => {
                   const selected = Array.from(keys)[0] as string;
+
                   if (selected) {
                     onCategoryChange(selected);
                   }

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+
 import ContactPageClient from "./ContactPageClient";
 
 export const metadata: Metadata = {
@@ -63,8 +64,8 @@ export default function ContactPage() {
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema) }}
+        type="application/ld+json"
       />
       <ContactPageClient />
     </>

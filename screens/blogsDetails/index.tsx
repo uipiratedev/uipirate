@@ -30,11 +30,7 @@ const BlogsDetails = ({ blog }: BlogsDetailsProps) => {
 
   return (
     <div>
-      <BlogsDetailsHero
-        imageUrl={banner}
-        tag={tag}
-        title={blog.title}
-      />
+      <BlogsDetailsHero imageUrl={banner} tag={tag} title={blog.title} />
       <BlogContents blog={blog} />
       <SuggestedReads />
     </div>

@@ -3,9 +3,7 @@ const Loader = ({ isAdmin = false }: { isAdmin?: boolean }) => {
     <>
       <div
         className={`w-full h-screen flex flex-row items-center justify-center fixed top-0 left-0 ${
-          isAdmin 
-            ? "bg-white/10 backdrop-blur-[6px]" 
-            : "bg-white"
+          isAdmin ? "bg-white/10 backdrop-blur-[6px]" : "bg-white"
         }`}
         style={{ zIndex: 9999999999999999999 }}
       >
@@ -26,8 +24,6 @@ const Loader = ({ isAdmin = false }: { isAdmin?: boolean }) => {
 
 export default Loader;
 
-
-
 // const Loader = () => {
 //   return (
 //     <div className="loader-wrapper">
@@ -45,5 +41,3 @@ export default Loader;
 // };
 
 // export default Loader;
-
-

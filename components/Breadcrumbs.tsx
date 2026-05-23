@@ -51,7 +51,8 @@ export default function Breadcrumbs() {
       pathname.startsWith("/admin") ||
       /^\/blogs\/[^/]+/.test(pathname) ||
       /^\/case-studies\/[^/]+/.test(pathname)
-    ) return [];
+    )
+      return [];
 
     const segments = pathname.split("/").filter(Boolean);
     const items: BreadcrumbItem[] = [
@@ -59,6 +60,7 @@ export default function Breadcrumbs() {
     ];
 
     let currentPath = "";
+
     segments.forEach((segment, index) => {
       currentPath += `/${segment}`;
       const isLast = index === segments.length - 1;
@@ -92,9 +94,7 @@ export default function Breadcrumbs() {
       "@type": "ListItem",
       position: index + 1,
       name: item.label,
-      item: item.isCurrentPage
-        ? undefined
-        : `https://uipirate.com${item.href}`,
+      item: item.isCurrentPage ? undefined : `https://uipirate.com${item.href}`,
     })),
   };
 
@@ -117,18 +117,18 @@ export default function Breadcrumbs() {
           {breadcrumbs.map((item, index) => (
             <li key={item.href} className="flex items-center gap-1">
               {index > 0 && (
-                <span className="text-gray-300 mx-1" aria-hidden="true">
+                <span aria-hidden="true" className="text-gray-300 mx-1">
                   /
                 </span>
               )}
               {item.isCurrentPage ? (
-                <span className="text-gray-900 font-medium" aria-current="page">
+                <span aria-current="page" className="text-gray-900 font-medium">
                   {item.label}
                 </span>
               ) : (
                 <Link
-                  href={item.href}
                   className="hover:text-[#FF5B04] transition-colors"
+                  href={item.href}
                 >
                   {item.label}
                 </Link>

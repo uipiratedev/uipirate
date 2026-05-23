@@ -9,20 +9,22 @@ export async function POST(req: NextRequest) {
     if (!name || !email) {
       return NextResponse.json(
         { error: "Name and email are required." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: "Invalid email address." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Store in MongoDB if available
     const mongodbUri = process.env.MONGODB_URI;
+
     if (mongodbUri) {
       try {
         const { default: mongoose } = await import("mongoose");
@@ -35,7 +37,12 @@ export async function POST(req: NextRequest) {
         const LeadSchema = new mongoose.Schema(
           {
             name: { type: String, required: true, trim: true },
-            email: { type: String, required: true, trim: true, lowercase: true },
+            email: {
+              type: String,
+              required: true,
+              trim: true,
+              lowercase: true,
+            },
             company: { type: String, trim: true },
             budget: { type: String },
             projectType: { type: String },
@@ -43,7 +50,7 @@ export async function POST(req: NextRequest) {
             source: { type: String, default: "contact-form" },
             createdAt: { type: Date, default: Date.now },
           },
-          { timestamps: true }
+          { timestamps: true },
         );
 
         // Use existing model or create a new one
@@ -67,23 +74,27 @@ export async function POST(req: NextRequest) {
 
     // Send email notification via a simple fetch to an email service
     // (Uses environment variable for the notification email)
-    const notificationEmail = process.env.NOTIFICATION_EMAIL || "vishal@uipirate.com";
-    
+    const notificationEmail =
+      process.env.NOTIFICATION_EMAIL || "vishal@uipirate.com";
+
     // Log lead for server-side visibility
-    console.log(`[NEW LEAD] ${name} | ${email} | ${company || "N/A"} | Budget: ${budget || "N/A"} | Type: ${projectType || "N/A"}`);
+    console.log(
+      `[NEW LEAD] ${name} | ${email} | ${company || "N/A"} | Budget: ${budget || "N/A"} | Type: ${projectType || "N/A"}`,
+    );
 
     return NextResponse.json(
       {
         success: true,
         message: "Thank you! We'll be in touch within 2 hours.",
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Lead API error:", error);
+
     return NextResponse.json(
       { error: "Something went wrong. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

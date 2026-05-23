@@ -1,7 +1,8 @@
 "use client";
 
-import GlassSurface from "@/components/GlassSurface";
 import { Select, SelectItem } from "@heroui/react";
+
+import GlassSurface from "@/components/GlassSurface";
 
 interface BlogsHeroProps {
   searchQuery: string;
@@ -29,6 +30,7 @@ const BlogsHero = ({
   // Simple display name helper
   const getDisplayName = (name: string) => {
     if (name === "general") return "GENERAL";
+
     return name.toUpperCase();
   };
 
@@ -116,7 +118,6 @@ const BlogsHero = ({
           Fresh ideas, research-backed insights, and real stories from our work
           and the community.
         </p>
-
         {/* Search */}
         <div
           className="mt-8 md:mt-10 w-full max-w-2xl relative z-10 px-4"
@@ -133,7 +134,6 @@ const BlogsHero = ({
 
           {/* On mobile: stacked. On desktop: single pill row */}
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200 md:bg-white/80 md:px-5 md:py-3.5 md:shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:backdrop-blur-md md:focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:focus-within:bg-white/95 md:transition-all md:duration-300">
-
             {/* Search Input — full pill on mobile */}
             <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:flex-1 md:border-none md:shadow-none md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
               <input
@@ -172,6 +172,7 @@ const BlogsHero = ({
                 selectedKeys={[selectedCategory]}
                 onSelectionChange={(keys) => {
                   const selected = Array.from(keys)[0] as string;
+
                   if (selected) {
                     onCategoryChange(selected);
                   }

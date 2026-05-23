@@ -6,6 +6,7 @@ import { verifyAuth } from "@/lib/auth";
 
 interface BlogUpdateData {
   title?: string;
+  slug?: string;
   content?: string;
   excerpt?: string;
   featuredImage?: string;
@@ -13,6 +14,19 @@ interface BlogUpdateData {
   tags?: string[];
   published?: boolean;
   postType?: string;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
+    twitterHandle?: string;
+    twitterCard?: "summary" | "summary_large_image";
+    focusKeyword?: string;
+    canonicalUrl?: string;
+    noIndex?: boolean;
+  };
 }
 
 // GET /api/blogs/[id] - Get a single blog by ID or slug
@@ -29,8 +43,11 @@ export async function GET(
     let blog = await Blog.findById(id);
 
     if (!blog) {
-      const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
-      blog = await Blog.findOne({ slug: { $regex: new RegExp(`^${escapedId}$`, "i") } });
+      const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
+
+      blog = await Blog.findOne({
+        slug: { $regex: new RegExp(`^${escapedId}$`, "i") },
+      });
     }
 
     if (!blog) {
@@ -56,7 +73,9 @@ export async function GET(
       data: blog,
     });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Failed to fetch blog";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to fetch blog";
+
     return NextResponse.json(
       {
         success: false,
@@ -86,9 +105,10 @@ export async function PUT(
     await dbConnect();
 
     const { id } = params;
-    const body = await request.json() as BlogUpdateData;
+    const body = (await request.json()) as BlogUpdateData;
     const {
       title,
+      slug: customSlug,
       content,
       excerpt,
       featuredImage,
@@ -96,6 +116,7 @@ export async function PUT(
       tags,
       published,
       postType,
+      seo,
     } = body;
 
     const blog = await Blog.findById(id);
@@ -110,22 +131,40 @@ export async function PUT(
     // Update fields
     if (title !== undefined) {
       blog.title = title;
-      // Update slug if title changed
-      const newSlug = title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
+      // Update slug automatically only if customSlug is NOT provided
+      if (customSlug === undefined) {
+        const newSlug = title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
 
-      // Check if new slug conflicts with another blog
+        const existingBlog = await Blog.findOne({
+          slug: newSlug,
+          _id: { $ne: id },
+        }).lean();
+
+        if (!existingBlog) {
+          blog.slug = newSlug;
+        }
+      }
+    }
+
+    // Explicitly update slug if provided (manual override)
+    if (customSlug !== undefined && customSlug !== blog.slug) {
       const existingBlog = await Blog.findOne({
-        slug: newSlug,
+        slug: customSlug,
         _id: { $ne: id },
       }).lean();
 
-      if (!existingBlog) {
-        blog.slug = newSlug;
+      if (existingBlog) {
+        return NextResponse.json(
+          { success: false, error: "Slug already exists" },
+          { status: 400 },
+        );
       }
+      blog.slug = customSlug;
     }
+
     if (content !== undefined) blog.content = content;
     if (excerpt !== undefined) blog.excerpt = excerpt;
     if (featuredImage !== undefined) blog.featuredImage = featuredImage;
@@ -133,6 +172,14 @@ export async function PUT(
     if (tags !== undefined) blog.tags = tags;
     if (published !== undefined) blog.published = published;
     if (postType !== undefined) (blog as any).postType = postType;
+
+    // Update SEO fields
+    if (seo !== undefined) {
+      blog.seo = {
+        ...blog.seo,
+        ...seo,
+      };
+    }
 
     // Recalculate read time if content changed
     if (content !== undefined) {
@@ -146,7 +193,9 @@ export async function PUT(
       data: blog,
     });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Failed to update blog";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to update blog";
+
     return NextResponse.json(
       {
         success: false,
@@ -192,7 +241,9 @@ export async function DELETE(
       data: blog,
     });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Failed to delete blog";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to delete blog";
+
     return NextResponse.json(
       {
         success: false,

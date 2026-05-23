@@ -14,13 +14,41 @@ const Sitemap = () => {
       { label: "Contact", href: "/contact" },
     ],
     services: [
-      { label: "UX/UI Design", href: "/services/SaaS-Web-&-Mobile-Apps", desc: "SaaS, AI & mobile app design" },
-      { label: "SaaS & AI Development", href: "/services/SaaS-Web-&-Mobile-Apps", desc: "Angular, React & Next.js frontend" },
-      { label: "Landing Pages & Business Websites", href: "/services/Landing-Pages-&-Business-Websites", desc: "Conversion-focused marketing pages" },
-      { label: "Graphic Design", href: "/services/Graphic-Design", desc: "Brand visuals & illustrations" },
-      { label: "Motion Graphics & Video Editing", href: "/services/Motion-Graphics-&-Video-Editing", desc: "Animation, reels & video" },
-      { label: "UX Audits & Consultation", href: "/services/UX-Audits-&-Consultation", desc: "Heuristic evaluation & UX strategy" },
-      { label: "3D Animation & Rendering", href: "/services/3D-Animation-&-Rendering", desc: "3D assets, animation & renders" },
+      {
+        label: "UX/UI Design",
+        href: "/services/SaaS-Web-&-Mobile-Apps",
+        desc: "SaaS, AI & mobile app design",
+      },
+      {
+        label: "SaaS & AI Development",
+        href: "/services/SaaS-Web-&-Mobile-Apps",
+        desc: "Angular, React & Next.js frontend",
+      },
+      {
+        label: "Landing Pages & Business Websites",
+        href: "/services/Landing-Pages-&-Business-Websites",
+        desc: "Conversion-focused marketing pages",
+      },
+      {
+        label: "Graphic Design",
+        href: "/services/Graphic-Design",
+        desc: "Brand visuals & illustrations",
+      },
+      {
+        label: "Motion Graphics & Video Editing",
+        href: "/services/Motion-Graphics-&-Video-Editing",
+        desc: "Animation, reels & video",
+      },
+      {
+        label: "UX Audits & Consultation",
+        href: "/services/UX-Audits-&-Consultation",
+        desc: "Heuristic evaluation & UX strategy",
+      },
+      {
+        label: "3D Animation & Rendering",
+        href: "/services/3D-Animation-&-Rendering",
+        desc: "3D assets, animation & renders",
+      },
     ],
     resources: [
       { label: "Blogs & Tutorials", href: "/blogs" },
@@ -114,25 +142,32 @@ const Sitemap = () => {
             </div>
 
             <p className="sub-header text-gray-600">
-              Navigate through all pages and sections of UI Pirate. Find everything you need quickly and easily.
+              Navigate through all pages and sections of UI Pirate. Find
+              everything you need quickly and easily.
             </p>
           </div>
         </div>
 
         {/* Sitemap Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-md:gap-4">
-
           {/* Main Pages */}
           <div className="bg-white rounded-3xl p-8 max-md:p-6 border border-gray-100 shadow-sm hover:border-brand-orange/20 hover:shadow-md transition-all">
             <h2 className="text-lg font-bold mb-5 text-gray-900 flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">🏠</span>
+              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">
+                🏠
+              </span>
               Main Pages
             </h2>
             <ul className="space-y-2">
               {sitemapData.main.map((item, index) => (
                 <li key={index}>
-                  <Link className="text-gray-600 hover:text-brand-orange font-medium transition-colors flex items-center gap-2 group text-sm" href={item.href}>
-                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">→</span>
+                  <Link
+                    className="text-gray-600 hover:text-brand-orange font-medium transition-colors flex items-center gap-2 group text-sm"
+                    href={item.href}
+                  >
+                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
                     {item.label}
                   </Link>
                 </li>
@@ -143,14 +178,21 @@ const Sitemap = () => {
           {/* Resources */}
           <div className="bg-white rounded-3xl p-8 max-md:p-6 border border-gray-100 shadow-sm hover:border-brand-orange/20 hover:shadow-md transition-all">
             <h2 className="text-lg font-bold mb-5 text-gray-900 flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">📚</span>
+              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">
+                📚
+              </span>
               Resources
             </h2>
             <ul className="space-y-2">
               {sitemapData.resources.map((item, index) => (
                 <li key={index}>
-                  <Link className="text-gray-600 hover:text-brand-orange font-medium transition-colors flex items-center gap-2 group text-sm" href={item.href}>
-                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">→</span>
+                  <Link
+                    className="text-gray-600 hover:text-brand-orange font-medium transition-colors flex items-center gap-2 group text-sm"
+                    href={item.href}
+                  >
+                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
                     {item.label}
                   </Link>
                 </li>
@@ -161,14 +203,21 @@ const Sitemap = () => {
           {/* Policies & Legal */}
           <div className="bg-white rounded-3xl p-8 max-md:p-6 border border-gray-100 shadow-sm hover:border-brand-orange/20 hover:shadow-md transition-all">
             <h2 className="text-lg font-bold mb-5 text-gray-900 flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">⚖️</span>
+              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">
+                ⚖️
+              </span>
               Policies &amp; Legal
             </h2>
             <ul className="space-y-2">
               {sitemapData.legal.map((item, index) => (
                 <li key={index}>
-                  <Link className="text-gray-600 hover:text-brand-orange font-medium transition-colors flex items-center gap-2 group text-sm" href={item.href}>
-                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">→</span>
+                  <Link
+                    className="text-gray-600 hover:text-brand-orange font-medium transition-colors flex items-center gap-2 group text-sm"
+                    href={item.href}
+                  >
+                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
                     {item.label}
                   </Link>
                 </li>
@@ -179,18 +228,22 @@ const Sitemap = () => {
           {/* Services — spans full width */}
           <div className="md:col-span-2 lg:col-span-3 bg-white rounded-3xl p-8 max-md:p-6 border border-gray-100 shadow-sm hover:border-brand-orange/20 hover:shadow-md transition-all">
             <h2 className="text-lg font-bold mb-5 text-gray-900 flex items-center gap-2">
-              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">⚙️</span>
+              <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">
+                ⚙️
+              </span>
               Services
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {sitemapData.services.map((item, index) => (
                 <Link
                   key={index}
-                  href={item.href}
                   className="group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-brand-orange/30 hover:bg-orange-50/50 transition-all"
+                  href={item.href}
                 >
                   <span className="text-gray-900 font-semibold text-sm group-hover:text-brand-orange transition-colors flex items-center gap-1">
-                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">→</span>
+                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
                     {item.label}
                   </span>
                   <span className="text-gray-400 text-xs">{item.desc}</span>
@@ -206,7 +259,8 @@ const Sitemap = () => {
             Need Help Finding Something?
           </h3>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto text-sm">
-            Can&apos;t find what you&apos;re looking for? Reach out directly — we respond within 2 hours.
+            Can&apos;t find what you&apos;re looking for? Reach out directly —
+            we respond within 2 hours.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <a
@@ -223,7 +277,11 @@ const Sitemap = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <img alt="WhatsApp" className="h-[18px] invert" src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg" />
+              <img
+                alt="WhatsApp"
+                className="h-[18px] invert"
+                src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
+              />
               Chat on WhatsApp
             </a>
           </div>

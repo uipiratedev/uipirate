@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import caseStudies from "@/data/case-studies.json";
@@ -11,29 +12,127 @@ export async function GET() {
 
   // Main pages with hreflang support
   const mainPages = [
-    { url: "/",            priority: "1.0",  changefreq: "daily",   hreflang: true,  image: true  },
-    { url: "/about",       priority: "0.9",  changefreq: "monthly", hreflang: true,  image: false },
-    { url: "/case-studies", priority: "0.95", changefreq: "weekly", hreflang: true,  image: false },
-    { url: "/pricing",     priority: "0.95", changefreq: "weekly",  hreflang: true,  image: false },
-    { url: "/contact",     priority: "0.85", changefreq: "monthly", hreflang: true,  image: false },
-    { url: "/blogs",       priority: "0.8",  changefreq: "weekly",  hreflang: true,  image: false },
-    { url: "/faqs",        priority: "0.8",  changefreq: "monthly", hreflang: true,  image: false },
-    { url: "/community",   priority: "0.7",  changefreq: "weekly",  hreflang: false, image: false },
-    { url: "/apps4sale",   priority: "0.7",  changefreq: "weekly",  hreflang: false, image: false },
-    { url: "/mini-saas-apps", priority: "0.6", changefreq: "monthly", hreflang: false, image: false },
-    { url: "/sitemap",     priority: "0.5",  changefreq: "monthly", hreflang: false, image: false },
-    { url: "/privacy",     priority: "0.3",  changefreq: "yearly",  hreflang: false, image: false },
-    { url: "/terms",       priority: "0.3",  changefreq: "yearly",  hreflang: false, image: false },
+    {
+      url: "/",
+      priority: "1.0",
+      changefreq: "daily",
+      hreflang: true,
+      image: true,
+    },
+    {
+      url: "/about",
+      priority: "0.9",
+      changefreq: "monthly",
+      hreflang: true,
+      image: false,
+    },
+    {
+      url: "/case-studies",
+      priority: "0.95",
+      changefreq: "weekly",
+      hreflang: true,
+      image: false,
+    },
+    {
+      url: "/pricing",
+      priority: "0.95",
+      changefreq: "weekly",
+      hreflang: true,
+      image: false,
+    },
+    {
+      url: "/contact",
+      priority: "0.85",
+      changefreq: "monthly",
+      hreflang: true,
+      image: false,
+    },
+    {
+      url: "/blogs",
+      priority: "0.8",
+      changefreq: "weekly",
+      hreflang: true,
+      image: false,
+    },
+    {
+      url: "/faqs",
+      priority: "0.8",
+      changefreq: "monthly",
+      hreflang: true,
+      image: false,
+    },
+    {
+      url: "/community",
+      priority: "0.7",
+      changefreq: "weekly",
+      hreflang: false,
+      image: false,
+    },
+    {
+      url: "/apps4sale",
+      priority: "0.7",
+      changefreq: "weekly",
+      hreflang: false,
+      image: false,
+    },
+    {
+      url: "/mini-saas-apps",
+      priority: "0.6",
+      changefreq: "monthly",
+      hreflang: false,
+      image: false,
+    },
+    {
+      url: "/sitemap",
+      priority: "0.5",
+      changefreq: "monthly",
+      hreflang: false,
+      image: false,
+    },
+    {
+      url: "/privacy",
+      priority: "0.3",
+      changefreq: "yearly",
+      hreflang: false,
+      image: false,
+    },
+    {
+      url: "/terms",
+      priority: "0.3",
+      changefreq: "yearly",
+      hreflang: false,
+      image: false,
+    },
   ];
 
   // Service detail pages — all active routes under /services/[id]
   const servicePages = [
-    { url: "/services/SaaS-Web-&-Mobile-Apps",           priority: "0.95", changefreq: "weekly" },
-    { url: "/services/Landing-Pages-&-Business-Websites", priority: "0.9",  changefreq: "weekly" },
-    { url: "/services/Graphic-Design",                   priority: "0.85", changefreq: "weekly" },
-    { url: "/services/Motion-Graphics-&-Video-Editing",  priority: "0.85", changefreq: "weekly" },
-    { url: "/services/UX-Audits-&-Consultation",         priority: "0.85", changefreq: "weekly" },
-    { url: "/services/3D-Animation-&-Rendering",         priority: "0.8",  changefreq: "weekly" },
+    {
+      url: "/services/SaaS-Web-&-Mobile-Apps",
+      priority: "0.95",
+      changefreq: "weekly",
+    },
+    {
+      url: "/services/Landing-Pages-&-Business-Websites",
+      priority: "0.9",
+      changefreq: "weekly",
+    },
+    { url: "/services/Graphic-Design", priority: "0.85", changefreq: "weekly" },
+    {
+      url: "/services/Motion-Graphics-&-Video-Editing",
+      priority: "0.85",
+      changefreq: "weekly",
+    },
+    {
+      url: "/services/UX-Audits-&-Consultation",
+      priority: "0.85",
+      changefreq: "weekly",
+    },
+    {
+      url: "/services/3D-Animation-&-Rendering",
+      priority: "0.8",
+      changefreq: "weekly",
+    },
   ];
 
   const hreflangs = ["en-us", "en-gb", "en-sg", "en-in", "en-au"];
@@ -66,15 +165,27 @@ export async function GET() {
   }));
 
   // Fetch published blogs from MongoDB
-  let blogPages: { url: string; priority: string; changefreq: string; lastmod: string }[] = [];
+  let blogPages: {
+    url: string;
+    priority: string;
+    changefreq: string;
+    lastmod: string;
+  }[] = [];
+
   try {
     await dbConnect();
-    const blogs = await Blog.find({ published: true }, { slug: 1, updatedAt: 1 }).lean();
+    const blogs = await Blog.find(
+      { published: true },
+      { slug: 1, updatedAt: 1 },
+    ).lean();
+
     blogPages = blogs.map((blog: any) => ({
       url: `/${blog.slug}`,
       priority: "0.75",
       changefreq: "weekly",
-      lastmod: blog.updatedAt ? new Date(blog.updatedAt).toISOString().split("T")[0] : currentDate,
+      lastmod: blog.updatedAt
+        ? new Date(blog.updatedAt).toISOString().split("T")[0]
+        : currentDate,
     }));
   } catch (error) {
     console.error("Error fetching blogs for sitemap route:", error);

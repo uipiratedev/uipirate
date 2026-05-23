@@ -1,11 +1,6 @@
 "use client";
 
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -23,9 +18,24 @@ import { TableCell } from "@tiptap/extension-table-cell";
 import Link from "@tiptap/extension-link";
 import { Button } from "@heroui/button";
 import { useRouter } from "next/navigation";
+
 import { useAuth } from "@/hooks/useAuth";
 import { loadAIConfig } from "@/components/admin/AIConfigPanel";
 
+// ─── Interfaces ──────────────────────────────────────────────────────────────
+interface PostSEO {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  twitterHandle?: string;
+  twitterCard?: "summary" | "summary_large_image";
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+}
 
 // ─── Modal helpers ───────────────────────────────────────────────────────────
 const Modal = ({
@@ -47,18 +57,750 @@ const Modal = ({
       style={{ border: "1px solid rgba(0,0,0,0.08)" }}
     >
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm font-semibold font-geist text-gray-800">{title}</p>
+        <p className="text-sm font-semibold font-geist text-gray-800">
+          {title}
+        </p>
         <button
-          onClick={onClose}
           className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+          onClick={onClose}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg
+            fill="none"
+            height="14"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+            width="14"
+          >
+            <line x1="18" x2="6" y1="6" y2="18" />
+            <line x1="6" x2="18" y1="6" y2="18" />
+          </svg>
         </button>
       </div>
       {children}
     </div>
   </div>
 );
+
+// ─── SEO Editor Modal ────────────────────────────────────────────────────────
+const SEOEditorModal = ({
+  isOpen,
+  onClose,
+  data,
+  onChange,
+  slug,
+  onSlugChange,
+  postTitle,
+  postContent,
+  postType,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  data: any;
+  onChange: (newData: any) => void;
+  slug: string;
+  onSlugChange: (newSlug: string) => void;
+  postTitle: string;
+  postContent: string;
+  postType: string;
+}) => {
+  const [activeTab, setActiveTab] = useState<"general" | "social" | "analysis">(
+    "general",
+  );
+  const [isAnalyzing, setIsGenerating] = useState(false);
+  const [analysis, setAnalysis] = useState<any>(null);
+  const [error, setError] = useState("");
+
+  const updateField = (field: string, value: any) => {
+    onChange({ ...data, [field]: value });
+  };
+
+  const runAIAnalysis = async () => {
+    setIsGenerating(true);
+    setError("");
+    try {
+      const config = loadAIConfig();
+      const response = await fetch("/api/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "seo-analysis",
+          title: postTitle,
+          content: postContent.replace(/<[^>]*>/g, "").slice(0, 5000), // Strip HTML and limit context
+          postType,
+          engine: config.defaultEngine,
+          model: config.defaultModel,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!result.success) throw new Error(result.error);
+
+      const aiData = result.data;
+
+      setAnalysis(aiData.analysis);
+
+      // Optionally auto-fill fields if they are empty
+      const newData = { ...data };
+
+      if (!newData.metaTitle) newData.metaTitle = aiData.metaTitle;
+      if (!newData.metaDescription)
+        newData.metaDescription = aiData.metaDescription;
+      if (!newData.focusKeyword) newData.focusKeyword = aiData.focusKeyword;
+      if (!newData.keywords || newData.keywords.length === 0)
+        newData.keywords = aiData.semanticKeywords;
+      if (!newData.ogTitle) newData.ogTitle = aiData.ogTitle;
+      if (!newData.ogDescription) newData.ogDescription = aiData.ogDescription;
+
+      onChange(newData);
+      if (!slug) onSlugChange(aiData.slug);
+
+      setActiveTab("analysis");
+    } catch (err: any) {
+      setError(err.message || "Failed to analyze SEO");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-[32px] shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="p-6 border-b border-black/5 flex items-center justify-between bg-gray-50/50">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="px-2 py-0.5 rounded-md bg-orange-100 text-[#FF5B04] text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider">
+                SEO Engine
+              </span>
+              <h2 className="text-xl font-bold font-geist text-gray-900">
+                Search Optimization
+              </h2>
+            </div>
+            <p className="text-xs text-gray-400 font-geist">
+              Configure how your post appears in search engines and social
+              media.
+            </p>
+          </div>
+          <button
+            className="w-10 h-10 rounded-2xl flex items-center justify-center text-gray-400 hover:bg-black/5 transition-all"
+            onClick={onClose}
+          >
+            <svg
+              fill="none"
+              height="20"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="20"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex px-6 bg-gray-50/50 border-b border-black/5">
+          {[
+            {
+              id: "general",
+              label: "General SEO",
+              icon: (
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              ),
+            },
+            {
+              id: "social",
+              label: "Social Media",
+              icon: (
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              ),
+            },
+            {
+              id: "analysis",
+              label: "AI Analysis",
+              icon: (
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                </svg>
+              ),
+            },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold transition-all relative ${
+                activeTab === tab.id
+                  ? "text-[#FF5B04]"
+                  : "text-gray-400 hover:text-gray-600"
+              }`}
+              onClick={() => setActiveTab(tab.id as any)}
+            >
+              {tab.icon}
+              {tab.label}
+              {activeTab === tab.id && (
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF5B04]" />
+              )}
+            </button>
+          ))}
+          <button
+            className="ml-auto my-auto h-9 px-4 rounded-xl bg-black text-white text-xs font-bold flex items-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-all shadow-sm"
+            disabled={isAnalyzing}
+            onClick={runAIAnalysis}
+          >
+            {isAnalyzing ? (
+              <svg
+                className="animate-spin"
+                fill="none"
+                height="12"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="12"
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+            ) : (
+              <svg
+                fill="none"
+                height="12"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="12"
+              >
+                <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+              </svg>
+            )}
+            {isAnalyzing ? "Analyzing..." : "Auto-Optimize with AI"}
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar bg-white">
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex gap-3 animate-in slide-in-from-top-2">
+              <svg
+                className="flex-shrink-0"
+                fill="none"
+                height="20"
+                stroke="#ef4444"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="20"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" x2="12" y1="8" y2="12" />
+                <line x1="12" x2="12.01" y1="16" y2="16" />
+              </svg>
+              <p className="text-sm font-medium text-red-600 font-geist">
+                {error}
+              </p>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* Left Column: Form */}
+            <div className="space-y-8">
+              {activeTab === "general" && (
+                <div className="space-y-6 animate-in fade-in duration-300">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-end">
+                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
+                        Meta Title
+                      </label>
+                      <span
+                        className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaTitle?.length && data.metaTitle.length > 60 ? "text-red-500" : "text-gray-400"}`}
+                      >
+                        {data?.metaTitle?.length || 0}/60
+                      </span>
+                    </div>
+                    <input
+                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                      placeholder="Enter search engine title..."
+                      value={data?.metaTitle || ""}
+                      onChange={(e) => updateField("metaTitle", e.target.value)}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-end">
+                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
+                        URL Slug
+                      </label>
+                    </div>
+                    <div className="flex items-center bg-gray-50 border border-black/5 rounded-2xl px-4 py-3.5 focus-within:ring-2 focus-within:ring-orange-100 transition-all">
+                      <span className="text-xs text-gray-400 pr-1">
+                        uipirate.com/posts/
+                      </span>
+                      <input
+                        className="flex-1 bg-transparent text-sm font-geist outline-none"
+                        placeholder="url-slug-here"
+                        value={slug}
+                        onChange={(e) =>
+                          onSlugChange(
+                            e.target.value
+                              .toLowerCase()
+                              .replace(/\s+/g, "-")
+                              .replace(/[^a-z0-9-]/g, ""),
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-end">
+                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
+                        Meta Description
+                      </label>
+                      <span
+                        className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaDescription?.length && data.metaDescription.length > 160 ? "text-red-500" : "text-gray-400"}`}
+                      >
+                        {data?.metaDescription?.length || 0}/160
+                      </span>
+                    </div>
+                    <textarea
+                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all min-h-[120px] resize-none"
+                      placeholder="Enter short summary for search results..."
+                      value={data?.metaDescription || ""}
+                      onChange={(e) =>
+                        updateField("metaDescription", e.target.value)
+                      }
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
+                        Focus Keyword
+                      </label>
+                      <input
+                        className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                        placeholder="e.g. Next.js SEO"
+                        value={data?.focusKeyword || ""}
+                        onChange={(e) =>
+                          updateField("focusKeyword", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
+                        Canonical URL
+                      </label>
+                      <input
+                        className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                        placeholder="https://..."
+                        value={data?.canonicalUrl || ""}
+                        onChange={(e) =>
+                          updateField("canonicalUrl", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "social" && (
+                <div className="space-y-6 animate-in fade-in duration-300">
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
+                      OG Image URL
+                    </label>
+                    <input
+                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                      placeholder="https://cloudinary.com/..."
+                      value={data?.ogImage || ""}
+                      onChange={(e) => updateField("ogImage", e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
+                      OG Title Override
+                    </label>
+                    <input
+                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all"
+                      placeholder="Title for Facebook/LinkedIn..."
+                      value={data?.ogTitle || ""}
+                      onChange={(e) => updateField("ogTitle", e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
+                      OG Description Override
+                    </label>
+                    <textarea
+                      className="w-full bg-gray-50 border border-black/5 rounded-2xl px-4 py-3 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all min-h-[100px] resize-none"
+                      placeholder="Description for social shares..."
+                      value={data?.ogDescription || ""}
+                      onChange={(e) =>
+                        updateField("ogDescription", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center gap-6 pt-2">
+                    <div className="flex items-center gap-2">
+                      <input
+                        checked={data?.noIndex || false}
+                        className="w-4 h-4 rounded-md border-black/10 text-[#FF5B04] focus:ring-[#FF5B04]/30"
+                        id="noIndex"
+                        type="checkbox"
+                        onChange={(e) =>
+                          updateField("noIndex", e.target.checked)
+                        }
+                      />
+                      <label
+                        className="text-xs font-semibold text-gray-600 cursor-pointer"
+                        htmlFor="noIndex"
+                      >
+                        Hide from Search Engines (noindex)
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "analysis" && (
+                <div className="space-y-6 animate-in fade-in duration-300">
+                  {analysis ? (
+                    <div className="space-y-6">
+                      <div className="flex items-center gap-4 p-5 rounded-[24px] bg-orange-50 border border-orange-100 shadow-sm">
+                        <div className="relative w-16 h-16 flex-shrink-0">
+                          <svg className="w-full h-full" viewBox="0 0 36 36">
+                            <path
+                              className="text-orange-200"
+                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeDasharray="100, 100"
+                              strokeWidth="3"
+                            />
+                            <path
+                              className="text-[#FF5B04]"
+                              d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeDasharray={`${analysis.score}, 100`}
+                              strokeLinecap="round"
+                              strokeWidth="3"
+                            />
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center text-sm font-bold font-jetbrains-mono text-[#FF5B04]">
+                            {analysis.score}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-gray-900 mb-1">
+                            SEO Health Score
+                          </h4>
+                          <p className="text-[11px] text-gray-500 leading-relaxed">
+                            Your content is{" "}
+                            {analysis.score >= 80
+                              ? "excellent"
+                              : analysis.score >= 50
+                                ? "good but needs work"
+                                : "needs significant optimization"}{" "}
+                            for search visibility.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-emerald-500">
+                            Key Strengths
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {analysis.strengths.map((s: string, i: number) => (
+                              <span
+                                key={i}
+                                className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-600 text-[11px] font-medium border border-emerald-100 flex items-center gap-1.5"
+                              >
+                                <svg
+                                  fill="none"
+                                  height="10"
+                                  stroke="currentColor"
+                                  strokeWidth="3"
+                                  viewBox="0 0 24 24"
+                                  width="10"
+                                >
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-orange-500">
+                            Suggested Improvements
+                          </p>
+                          <ul className="space-y-2">
+                            {analysis.improvements.map(
+                              (imp: string, i: number) => (
+                                <li
+                                  key={i}
+                                  className="text-xs text-gray-600 flex gap-2 items-start bg-gray-50 p-3 rounded-xl border border-black/5"
+                                >
+                                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 flex-shrink-0" />
+                                  {imp}
+                                </li>
+                              ),
+                            )}
+                          </ul>
+                        </div>
+                        {analysis.keywordGap &&
+                          analysis.keywordGap.length > 0 && (
+                            <div className="space-y-2">
+                              <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-blue-500">
+                                Keyword Gap Analysis
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                {analysis.keywordGap.map(
+                                  (kw: string, i: number) => (
+                                    <span
+                                      key={i}
+                                      className="px-3 py-1.5 rounded-xl bg-blue-50 text-blue-600 text-[11px] font-medium border border-blue-100 flex items-center gap-1.5"
+                                    >
+                                      <svg
+                                        fill="none"
+                                        height="10"
+                                        stroke="currentColor"
+                                        strokeWidth="3"
+                                        viewBox="0 0 24 24"
+                                        width="10"
+                                      >
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.3-4.3" />
+                                      </svg>
+                                      {kw}
+                                    </span>
+                                  ),
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                          <div className="p-4 rounded-2xl bg-gray-50 border border-black/5">
+                            <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
+                              Structure
+                            </p>
+                            <p className="text-xs text-gray-600 leading-relaxed">
+                              {analysis.headingStructure}
+                            </p>
+                          </div>
+                          <div className="p-4 rounded-2xl bg-gray-50 border border-black/5">
+                            <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
+                              Readability
+                            </p>
+                            <p className="text-xs text-gray-600 leading-relaxed">
+                              {analysis.readability}
+                            </p>
+                          </div>
+                          {analysis.imageOptimization && (
+                            <div className="p-4 rounded-2xl bg-gray-50 border border-black/5 sm:col-span-2">
+                              <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-2">
+                                Images & Alt Text
+                              </p>
+                              <p className="text-xs text-gray-600 leading-relaxed">
+                                {analysis.imageOptimization}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                      <div className="w-16 h-16 rounded-3xl bg-orange-50 flex items-center justify-center text-[#FF5B04] mb-4">
+                        <svg
+                          fill="none"
+                          height="32"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          viewBox="0 0 24 24"
+                          width="32"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                      </div>
+                      <h4 className="text-base font-bold text-gray-900 mb-2">
+                        No Analysis Yet
+                      </h4>
+                      <p className="text-xs text-gray-400 max-w-[280px] leading-relaxed mb-6">
+                        Click the button above to let the AI analyze your
+                        content for SEO best practices and improvements.
+                      </p>
+                      <button
+                        className="h-10 px-6 rounded-xl bg-[#FF5B04] text-white text-xs font-bold hover:shadow-lg hover:shadow-orange-200 transition-all"
+                        disabled={isAnalyzing}
+                        onClick={runAIAnalysis}
+                      >
+                        Start AI Analysis
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Right Column: SERP Preview */}
+            <div className="bg-gray-50/50 rounded-[32px] p-8 space-y-8 border border-black/5 h-fit sticky top-0">
+              <div>
+                <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-6 flex items-center gap-2">
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                  Google Preview
+                </p>
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-black/5 space-y-1.5">
+                  <div className="flex items-center gap-2 mb-1">
+                    <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-[10px] text-gray-400">
+                      UI
+                    </div>
+                    <div>
+                      <div className="text-[11px] text-gray-900 leading-none">
+                        UI Pirate
+                      </div>
+                      <div className="text-[10px] text-gray-400 leading-none mt-0.5">
+                        https://uipirate.com › posts › {slug || "..."}
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-lg text-[#1a0dab] hover:underline cursor-pointer font-arial leading-tight">
+                    {data?.metaTitle || postTitle || "Untitled Post"}
+                  </h3>
+                  <p className="text-sm text-[#4d5156] font-arial leading-relaxed line-clamp-2">
+                    {data?.metaDescription ||
+                      "No description provided. Add a meta description to see how this post will look in search results."}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-[11px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 mb-6 flex items-center gap-2">
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                  </svg>
+                  Social Media Preview
+                </p>
+                <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
+                  <div className="aspect-[1.91/1] bg-gray-100 relative overflow-hidden flex items-center justify-center">
+                    {data?.ogImage ? (
+                      <img
+                        alt="OG Preview"
+                        className="w-full h-full object-cover"
+                        src={data.ogImage}
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center gap-2 text-gray-300">
+                        <svg
+                          fill="none"
+                          height="40"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          viewBox="0 0 24 24"
+                          width="40"
+                        >
+                          <rect height="18" rx="2" width="18" x="3" y="3" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        <span className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-widest">
+                          No OG Image
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4 bg-gray-50/80 border-t border-black/5">
+                    <p className="text-[10px] text-gray-400 uppercase font-bold font-jetbrains-mono mb-1">
+                      UIPIRATE.COM
+                    </p>
+                    <h4 className="text-sm font-bold text-gray-900 line-clamp-1 mb-1">
+                      {data?.ogTitle ||
+                        data?.metaTitle ||
+                        postTitle ||
+                        "Untitled Post"}
+                    </h4>
+                    <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
+                      {data?.ogDescription ||
+                        data?.metaDescription ||
+                        "No description provided."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="p-6 border-t border-black/5 bg-gray-50/50 flex gap-3">
+          <button
+            className="px-8 py-3 rounded-2xl bg-black text-white text-sm font-bold hover:shadow-lg hover:shadow-black/10 transition-all ml-auto"
+            onClick={onClose}
+          >
+            Apply Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // ─── Image URL Modal ─────────────────────────────────────────────────────────
 const ImageUrlModal = ({
@@ -73,7 +815,11 @@ const ImageUrlModal = ({
 
   const insert = () => {
     if (url.trim()) {
-      editor.chain().focus().setImage({ src: url.trim(), alt: alt.trim() || undefined }).run();
+      editor
+        .chain()
+        .focus()
+        .setImage({ src: url.trim(), alt: alt.trim() || undefined })
+        .run();
       onClose();
     }
   };
@@ -82,7 +828,9 @@ const ImageUrlModal = ({
     <Modal title="Insert Image from URL" onClose={onClose}>
       <div className="space-y-3">
         <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">Image URL *</label>
+          <label className="text-xs font-geist text-gray-500 mb-1 block">
+            Image URL *
+          </label>
           <input
             autoFocus
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
@@ -93,7 +841,9 @@ const ImageUrlModal = ({
           />
         </div>
         <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">Alt text (optional)</label>
+          <label className="text-xs font-geist text-gray-500 mb-1 block">
+            Alt text (optional)
+          </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
             placeholder="Describe the image…"
@@ -103,16 +853,16 @@ const ImageUrlModal = ({
         </div>
         <div className="flex gap-2 pt-1">
           <button
-            onClick={insert}
-            disabled={!url.trim()}
             className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity"
+            disabled={!url.trim()}
             style={{ background: "#FF5B04" }}
+            onClick={insert}
           >
             Insert Image
           </button>
           <button
-            onClick={onClose}
             className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
+            onClick={onClose}
           >
             Cancel
           </button>
@@ -136,16 +886,19 @@ const VideoEmbedModal = ({
   const getEmbedUrl = (raw: string): string | null => {
     // YouTube
     const ytMatch = raw.match(
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/,
     );
+
     if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
 
     // Vimeo
     const vimeoMatch = raw.match(/vimeo\.com\/(\d+)/);
+
     if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
 
     // Loom
     const loomMatch = raw.match(/loom\.com\/share\/([a-f0-9]+)/);
+
     if (loomMatch) return `https://www.loom.com/embed/${loomMatch[1]}`;
 
     // Direct iframe URL
@@ -156,10 +909,12 @@ const VideoEmbedModal = ({
 
   const insert = () => {
     const embedUrl = getEmbedUrl(url.trim());
+
     if (embedUrl) {
       const captionHtml = caption
         ? `<p style="text-align:center;font-size:0.8rem;color:#9ca3af;margin-top:0.5rem">${caption}</p>`
         : "";
+
       editor
         .chain()
         .focus()
@@ -169,7 +924,7 @@ const VideoEmbedModal = ({
               <iframe src="${embedUrl}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
             </div>
             ${captionHtml}
-          </div><p></p>`
+          </div><p></p>`,
         )
         .run();
       onClose();
@@ -193,7 +948,9 @@ const VideoEmbedModal = ({
           />
         </div>
         <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">Caption (optional)</label>
+          <label className="text-xs font-geist text-gray-500 mb-1 block">
+            Caption (optional)
+          </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
             placeholder="Add a caption…"
@@ -203,16 +960,16 @@ const VideoEmbedModal = ({
         </div>
         <div className="flex gap-2 pt-1">
           <button
-            onClick={insert}
-            disabled={!url.trim()}
             className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity"
+            disabled={!url.trim()}
             style={{ background: "#FF5B04" }}
+            onClick={insert}
           >
             Embed Video
           </button>
           <button
-            onClick={onClose}
             className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
+            onClick={onClose}
           >
             Cancel
           </button>
@@ -232,15 +989,19 @@ const LinkModal = ({
 }) => {
   const [url, setUrl] = useState("");
   const [linkText, setLinkText] = useState("");
-  const [ctaType, setCtaType] = useState<"none" | "primary" | "secondary">("none");
+  const [ctaType, setCtaType] = useState<"none" | "primary" | "secondary">(
+    "none",
+  );
 
   useEffect(() => {
     if (editor) {
       const { from, to } = editor.state.selection;
       const selectedText = editor.state.doc.textBetween(from, to, " ");
+
       setLinkText(selectedText);
 
       const attrs = editor.getAttributes("link");
+
       if (attrs.href) {
         setUrl(attrs.href);
       }
@@ -255,18 +1016,23 @@ const LinkModal = ({
   const insert = () => {
     const trimmedUrl = url.trim();
     const trimmedText = linkText.trim() || trimmedUrl;
+
     if (trimmedUrl) {
       if (ctaType === "primary") {
         editor
           .chain()
           .focus()
-          .insertContent(`<a href="${trimmedUrl}" class="blog-cta-btn">${trimmedText}</a> `)
+          .insertContent(
+            `<a href="${trimmedUrl}" class="blog-cta-btn">${trimmedText}</a> `,
+          )
           .run();
       } else if (ctaType === "secondary") {
         editor
           .chain()
           .focus()
-          .insertContent(`<a href="${trimmedUrl}" class="blog-cta-btn-secondary">${trimmedText}</a> `)
+          .insertContent(
+            `<a href="${trimmedUrl}" class="blog-cta-btn-secondary">${trimmedText}</a> `,
+          )
           .run();
       } else {
         editor
@@ -283,7 +1049,9 @@ const LinkModal = ({
     <Modal title="Insert or Edit Link" onClose={onClose}>
       <div className="space-y-4">
         <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">Link Text *</label>
+          <label className="text-xs font-geist text-gray-500 mb-1 block">
+            Link Text *
+          </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
             placeholder="Text to display…"
@@ -292,7 +1060,9 @@ const LinkModal = ({
           />
         </div>
         <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">Link URL *</label>
+          <label className="text-xs font-geist text-gray-500 mb-1 block">
+            Link URL *
+          </label>
           <input
             autoFocus
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
@@ -303,50 +1073,58 @@ const LinkModal = ({
           />
         </div>
         <div className="flex flex-col gap-2 select-none">
-          <label className="text-xs font-geist text-gray-600 font-semibold mb-1 block">Link Style</label>
+          <label className="text-xs font-geist text-gray-600 font-semibold mb-1 block">
+            Link Style
+          </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
-              type="radio"
-              name="ctaType"
               checked={ctaType === "none"}
+              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
+              name="ctaType"
+              type="radio"
               onChange={() => setCtaType("none")}
-              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
             />
-            <span className="text-xs font-geist text-gray-700">Standard Link</span>
+            <span className="text-xs font-geist text-gray-700">
+              Standard Link
+            </span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
-              type="radio"
-              name="ctaType"
               checked={ctaType === "primary"}
-              onChange={() => setCtaType("primary")}
               className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
+              name="ctaType"
+              type="radio"
+              onChange={() => setCtaType("primary")}
             />
-            <span className="text-xs font-geist text-gray-700">Primary CTA Button (Orange)</span>
+            <span className="text-xs font-geist text-gray-700">
+              Primary CTA Button (Orange)
+            </span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
-              type="radio"
-              name="ctaType"
               checked={ctaType === "secondary"}
-              onChange={() => setCtaType("secondary")}
               className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
+              name="ctaType"
+              type="radio"
+              onChange={() => setCtaType("secondary")}
             />
-            <span className="text-xs font-geist text-gray-700">Secondary CTA Button (Dark)</span>
+            <span className="text-xs font-geist text-gray-700">
+              Secondary CTA Button (Dark)
+            </span>
           </label>
         </div>
         <div className="flex gap-2 pt-1">
           <button
-            onClick={insert}
-            disabled={!url.trim()}
             className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity cursor-pointer"
+            disabled={!url.trim()}
             style={{ background: "#FF5B04" }}
+            onClick={insert}
           >
             Save Link
           </button>
           <button
-            onClick={onClose}
             className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer"
+            onClick={onClose}
           >
             Cancel
           </button>
@@ -369,15 +1147,26 @@ const AlertModal = ({
   <Modal title={title} onClose={onClose}>
     <div className="text-center py-4">
       <div className="w-12 h-12 bg-red-50 text-[#FF5B04] rounded-full flex items-center justify-center mx-auto mb-3">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        <svg
+          fill="none"
+          height="24"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" x2="12" y1="8" y2="12" />
+          <line x1="12" x2="12.01" y1="16" y2="16" />
         </svg>
       </div>
       <p className="text-sm font-geist text-gray-600 mb-5">{message}</p>
       <button
-        onClick={onClose}
         className="w-full h-10 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
         style={{ background: "#FF5B04" }}
+        onClick={onClose}
       >
         Okay
       </button>
@@ -400,28 +1189,53 @@ const UnsavedChangesModal = ({
   >
     <div
       className="bg-white rounded-2xl shadow-2xl p-6 w-[400px] max-w-full relative"
-      style={{ border: "1px solid rgba(0,0,0,0.08)", animation: "fadeSlideIn 0.18s ease" }}
+      style={{
+        border: "1px solid rgba(0,0,0,0.08)",
+        animation: "fadeSlideIn 0.18s ease",
+      }}
       onClick={(e) => e.stopPropagation()}
     >
       {/* Close button */}
       <button
-        onClick={onStay}
         className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+        onClick={onStay}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2.5"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <line x1="18" x2="6" y1="6" y2="18" />
+          <line x1="6" x2="18" y1="6" y2="18" />
         </svg>
       </button>
 
       <div className="flex items-start gap-4 mb-6">
         <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          <svg
+            fill="none"
+            height="20"
+            stroke="#d97706"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            width="20"
+          >
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" x2="12" y1="9" y2="13" />
+            <line x1="12" x2="12.01" y1="17" y2="17" />
           </svg>
         </div>
         <div>
-          <h3 className="text-sm font-bold font-geist text-gray-900 mb-1">Unsaved Changes</h3>
+          <h3 className="text-sm font-bold font-geist text-gray-900 mb-1">
+            Unsaved Changes
+          </h3>
           <p className="text-xs font-geist text-gray-500 leading-relaxed">
             You have unsaved changes that will be lost if you leave this page.
           </p>
@@ -429,15 +1243,15 @@ const UnsavedChangesModal = ({
       </div>
       <div className="flex flex-col gap-2">
         <button
-          onClick={onStay}
           className="w-full h-10 rounded-xl text-sm font-geist font-semibold text-white transition-opacity hover:opacity-90"
           style={{ background: "#FF5B04" }}
+          onClick={onStay}
         >
           Keep Editing
         </button>
         <button
-          onClick={onLeave}
           className="w-full h-10 rounded-xl text-sm font-geist font-medium text-red-600 bg-red-50 hover:bg-red-100 transition-colors"
+          onClick={onLeave}
         >
           Discard & Leave
         </button>
@@ -461,7 +1275,12 @@ const PublishConfirmModal = ({
   onClose: () => void;
   onConfirm: () => void;
   isSaving: boolean;
-  blogData: { title: string; bannerImage: string; excerpt: string; tags: string[] };
+  blogData: {
+    title: string;
+    bannerImage: string;
+    excerpt: string;
+    tags: string[];
+  };
   isSuccess: boolean;
   onViewBlogs: () => void;
   onKeepEditing: () => void;
@@ -472,7 +1291,9 @@ const PublishConfirmModal = ({
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
-      onClick={() => { if (!isSaving) onClose(); }}
+      onClick={() => {
+        if (!isSaving) onClose();
+      }}
     >
       <div
         className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[460px] max-w-full border border-black/5 relative"
@@ -482,34 +1303,61 @@ const PublishConfirmModal = ({
         {/* Close button */}
         {!isSaving && (
           <button
-            onClick={onClose}
             className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+            onClick={onClose}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            <svg
+              fill="none"
+              height="18"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
             </svg>
           </button>
         )}
         {isSuccess ? (
           <div className="p-8 text-center">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(22, 163, 74, 0.1)" }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse"
+              style={{ background: "rgba(22, 163, 74, 0.1)" }}
+            >
+              <svg
+                className="animate-bounce"
+                fill="none"
+                height="40"
+                stroke="#16a34a"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="3"
+                viewBox="0 0 24 24"
+                width="40"
+              >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">Post Published!</h3>
-            <p className="text-sm font-geist text-gray-500 mb-6">Your post has been successfully published and is now live.</p>
+            <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">
+              Post Published!
+            </h3>
+            <p className="text-sm font-geist text-gray-500 mb-6">
+              Your post has been successfully published and is now live.
+            </p>
             <div className="flex gap-3">
               <button
-                onClick={onViewBlogs}
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
+                onClick={onViewBlogs}
               >
                 Go to Post List
               </button>
               <button
-                onClick={onKeepEditing}
                 className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
+                onClick={onKeepEditing}
               >
                 Keep Editing
               </button>
@@ -518,35 +1366,64 @@ const PublishConfirmModal = ({
         ) : (
           <div>
             {/* Header Preview */}
-            <div className="h-36 bg-gray-100 relative bg-cover bg-center flex items-end p-5" style={{ backgroundImage: blogData.bannerImage ? `url(${blogData.bannerImage})` : "linear-gradient(135deg, #FFF0E8 0%, #FFEBE0 100%)" }}>
+            <div
+              className="h-36 bg-gray-100 relative bg-cover bg-center flex items-end p-5"
+              style={{
+                backgroundImage: blogData.bannerImage
+                  ? `url(${blogData.bannerImage})`
+                  : "linear-gradient(135deg, #FFF0E8 0%, #FFEBE0 100%)",
+              }}
+            >
               {!blogData.bannerImage && (
                 <div className="absolute inset-0 flex items-center justify-center opacity-30">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" />
+                  <svg
+                    fill="none"
+                    height="48"
+                    stroke="#FF5B04"
+                    strokeWidth="1.5"
+                    viewBox="0 0 24 24"
+                    width="48"
+                  >
+                    <rect height="18" rx="2" width="18" x="3" y="3" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <polyline points="21 15 16 10 5 21" />
                   </svg>
                 </div>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/10" />
               <div className="relative z-10 text-white w-full">
-                <p className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-orange-400 font-semibold mb-1">Publish Preview</p>
-                <h4 className="text-lg font-bold font-geist line-clamp-1">{blogData.title || "Untitled Post"}</h4>
+                <p className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-orange-400 font-semibold mb-1">
+                  Publish Preview
+                </p>
+                <h4 className="text-lg font-bold font-geist line-clamp-1">
+                  {blogData.title || "Untitled Post"}
+                </h4>
               </div>
             </div>
 
             <div className="p-6 space-y-4">
               <div>
-                <label className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold mb-1 block">Excerpt Preview</label>
+                <label className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold mb-1 block">
+                  Excerpt Preview
+                </label>
                 <p className="text-xs font-geist text-gray-600 line-clamp-2 italic bg-black/5 rounded-xl p-3">
-                  {blogData.excerpt || "No excerpt provided. A summary will be auto-generated from your content."}
+                  {blogData.excerpt ||
+                    "No excerpt provided. A summary will be auto-generated from your content."}
                 </p>
               </div>
 
               {blogData.tags.length > 0 && (
                 <div>
-                  <label className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold mb-1.5 block">Tags</label>
+                  <label className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold mb-1.5 block">
+                    Tags
+                  </label>
                   <div className="flex flex-wrap gap-1">
                     {blogData.tags.map((tag) => (
-                      <span key={tag} className="text-[10px] font-geist px-2.5 py-0.5 rounded-full" style={{ background: "#FFF0E8", color: "#FF5B04" }}>
+                      <span
+                        key={tag}
+                        className="text-[10px] font-geist px-2.5 py-0.5 rounded-full"
+                        style={{ background: "#FFF0E8", color: "#FF5B04" }}
+                      >
                         {tag}
                       </span>
                     ))}
@@ -555,35 +1432,63 @@ const PublishConfirmModal = ({
               )}
 
               <div className="bg-orange-50 border border-orange-100 rounded-xl p-3.5 flex gap-2.5">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2" className="flex-shrink-0 mt-0.5">
-                  <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+                <svg
+                  className="flex-shrink-0 mt-0.5"
+                  fill="none"
+                  height="18"
+                  stroke="#FF5B04"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="18"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" x2="12" y1="16" y2="12" />
+                  <line x1="12" x2="12.01" y1="8" y2="8" />
                 </svg>
                 <p className="text-[11px] font-geist text-[#FF5B04]/90 leading-normal">
-                  Publishing will make this post immediately live on your blog. Make sure all your details are correct!
+                  Publishing will make this post immediately live on your blog.
+                  Make sure all your details are correct!
                 </p>
               </div>
 
               <div className="flex gap-2 pt-2 border-t border-black/5">
                 <button
-                  onClick={onConfirm}
-                  disabled={isSaving}
                   className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity disabled:opacity-50 hover:opacity-90 flex items-center justify-center gap-2"
+                  disabled={isSaving}
                   style={{ background: "#FF5B04" }}
+                  onClick={onConfirm}
                 >
                   {isSaving ? (
                     <>
-                      <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      <svg
+                        className="animate-spin h-4 w-4 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          fill="currentColor"
+                        />
                       </svg>
                       Publishing...
                     </>
-                  ) : "Confirm & Publish"}
+                  ) : (
+                    "Confirm & Publish"
+                  )}
                 </button>
                 <button
-                  onClick={onClose}
-                  disabled={isSaving}
                   className="h-11 px-5 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors disabled:opacity-50"
+                  disabled={isSaving}
+                  onClick={onClose}
                 >
                   Cancel
                 </button>
@@ -622,7 +1527,9 @@ const SaveDraftModal = ({
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ background: "rgba(0,0,0,0.4)", backdropFilter: "blur(6px)" }}
-      onClick={() => { if (!isSaving) onClose(); }}
+      onClick={() => {
+        if (!isSaving) onClose();
+      }}
     >
       <div
         className="bg-white rounded-3xl shadow-2xl overflow-hidden w-[400px] max-w-full border border-black/5 relative"
@@ -632,34 +1539,61 @@ const SaveDraftModal = ({
         {/* Close button */}
         {!isSaving && (
           <button
-            onClick={onClose}
             className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+            onClick={onClose}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            <svg
+              fill="none"
+              height="18"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
             </svg>
           </button>
         )}
         {isSuccess ? (
           <div className="p-8 text-center">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse" style={{ background: "rgba(99, 102, 241, 0.1)" }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative animate-pulse"
+              style={{ background: "rgba(99, 102, 241, 0.1)" }}
+            >
+              <svg
+                className="animate-bounce"
+                fill="none"
+                height="40"
+                stroke="#6366f1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="3"
+                viewBox="0 0 24 24"
+                width="40"
+              >
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">Draft Saved!</h3>
-            <p className="text-sm font-geist text-gray-500 mb-6">Your progress has been saved successfully as a draft.</p>
+            <h3 className="text-xl font-bold font-geist text-gray-900 mb-2">
+              Draft Saved!
+            </h3>
+            <p className="text-sm font-geist text-gray-500 mb-6">
+              Your progress has been saved successfully as a draft.
+            </p>
             <div className="flex gap-3">
               <button
-                onClick={onViewBlogs}
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90"
                 style={{ background: "#FF5B04" }}
+                onClick={onViewBlogs}
               >
                 Go to Post List
               </button>
               <button
-                onClick={onKeepEditing}
                 className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
+                onClick={onKeepEditing}
               >
                 Keep Editing
               </button>
@@ -669,46 +1603,86 @@ const SaveDraftModal = ({
           <div className="p-6 space-y-4">
             <div className="text-center pb-2">
               <div className="w-12 h-12 bg-orange-50 text-[#FF5B04] rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" />
+                <svg
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                >
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                  <polyline points="17 21 17 13 7 13 7 21" />
+                  <polyline points="7 3 7 8 15 8" />
                 </svg>
               </div>
-              <h3 className="text-lg font-bold font-geist text-gray-900">Save Draft</h3>
-              <p className="text-xs font-geist text-gray-500 mt-1">Save your current progress to finish editing later.</p>
+              <h3 className="text-lg font-bold font-geist text-gray-900">
+                Save Draft
+              </h3>
+              <p className="text-xs font-geist text-gray-500 mt-1">
+                Save your current progress to finish editing later.
+              </p>
             </div>
 
             <div className="bg-black/5 rounded-2xl p-4 space-y-2">
-              <div className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold">Post Title</div>
-              <div className="text-sm font-geist text-gray-800 font-semibold line-clamp-1">{blogData.title || "Untitled Post"}</div>
+              <div className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold">
+                Post Title
+              </div>
+              <div className="text-sm font-geist text-gray-800 font-semibold line-clamp-1">
+                {blogData.title || "Untitled Post"}
+              </div>
               {blogData.excerpt && (
                 <>
-                  <div className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold pt-1">Excerpt</div>
-                  <div className="text-xs font-geist text-gray-500 line-clamp-2">{blogData.excerpt}</div>
+                  <div className="text-[10px] font-jetbrains-mono uppercase tracking-widest text-gray-400 font-semibold pt-1">
+                    Excerpt
+                  </div>
+                  <div className="text-xs font-geist text-gray-500 line-clamp-2">
+                    {blogData.excerpt}
+                  </div>
                 </>
               )}
             </div>
 
             <div className="flex gap-2 pt-2 border-t border-black/5">
               <button
-                onClick={onConfirm}
-                disabled={isSaving}
                 className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity disabled:opacity-50 hover:opacity-90 flex items-center justify-center gap-2"
+                disabled={isSaving}
                 style={{ background: "#FF5B04" }}
+                onClick={onConfirm}
               >
                 {isSaving ? (
                   <>
-                    <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    <svg
+                      className="animate-spin h-4 w-4 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        fill="currentColor"
+                      />
                     </svg>
                     Saving...
                   </>
-                ) : "Save Draft"}
+                ) : (
+                  "Save Draft"
+                )}
               </button>
               <button
-                onClick={onClose}
-                disabled={isSaving}
                 className="h-11 px-5 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors disabled:opacity-50"
+                disabled={isSaving}
+                onClick={onClose}
               >
                 Cancel
               </button>
@@ -742,15 +1716,27 @@ const AIExcerptModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
-  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
+  const [engine, setEngine] = useState<
+    "openai" | "gemini" | "puter" | "mistral"
+  >(
+    () =>
+      (loadAIConfig().defaultEngine ?? "puter") as
+        | "openai"
+        | "gemini"
+        | "puter"
+        | "mistral",
+  );
+  const [model, setModel] = useState<string>(
+    () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
+  );
 
   // Sync default engine models when engine changes
   useEffect(() => {
     if (engine === "gemini") {
       if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
     } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
+      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
+        setModel("mistral-large-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
@@ -773,19 +1759,21 @@ const AIExcerptModal = ({
 
       if (engine === "puter") {
         let systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following content. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${textToSummarize}`;
-        
+
         if (prompt.trim()) {
           systemInstructions += `\n\nAlso incorporate the following custom instructions: "${prompt.trim()}"`;
         }
 
         const { puter } = await import("@heyputer/puter.js");
         const chatResponse = await puter.ai.chat(systemInstructions, { model });
-        
+
         let text = "";
+
         if (chatResponse.message?.content) {
-          text = typeof chatResponse.message.content === "string"
-            ? chatResponse.message.content
-            : String(chatResponse.message.content);
+          text =
+            typeof chatResponse.message.content === "string"
+              ? chatResponse.message.content
+              : String(chatResponse.message.content);
         } else {
           text = String(chatResponse);
         }
@@ -793,13 +1781,19 @@ const AIExcerptModal = ({
         text = text.trim();
         // Clean backticks
         if (text.startsWith("```json")) {
-          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```json/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```html")) {
-          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```html/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```")) {
           text = text.replace(/^```/, "").replace(/```$/, "").trim();
         }
-        
+
         // Remove surrounding quotes if model added them
         if (text.startsWith('"') && text.endsWith('"')) {
           text = text.substring(1, text.length - 1);
@@ -814,7 +1808,7 @@ const AIExcerptModal = ({
           body: JSON.stringify({
             action: "excerpt",
             title: postTitle,
-            content: prompt.trim() 
+            content: prompt.trim()
               ? `${textToSummarize}\n\nCustom Instructions:\n${prompt.trim()}`
               : textToSummarize,
             postType,
@@ -824,11 +1818,13 @@ const AIExcerptModal = ({
         });
 
         const data = await response.json();
+
         if (!data.success) {
           throw new Error(data.error || "Failed to generate excerpt.");
         }
 
         let cleanText = data.data.trim();
+
         if (cleanText.startsWith('"') && cleanText.endsWith('"')) {
           cleanText = cleanText.substring(1, cleanText.length - 1);
         }
@@ -853,13 +1849,16 @@ const AIExcerptModal = ({
     if (len === 0) return "text-gray-400";
     if (len >= 120 && len <= 160) return "text-emerald-500 font-bold";
     if (len > 200) return "text-red-500 font-bold animate-pulse";
+
     return "text-amber-500 font-semibold";
   };
 
   const getCounterBg = (len: number) => {
     if (len === 0) return "bg-gray-100 border-gray-200 text-gray-500";
-    if (len >= 120 && len <= 160) return "bg-emerald-50 border-emerald-200 text-emerald-800";
+    if (len >= 120 && len <= 160)
+      return "bg-emerald-50 border-emerald-200 text-emerald-800";
     if (len > 200) return "bg-red-50 border-red-200 text-red-800";
+
     return "bg-amber-50 border-amber-200 text-amber-800";
   };
 
@@ -876,37 +1875,67 @@ const AIExcerptModal = ({
             engine === "openai"
               ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
               : engine === "gemini"
-              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
-              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+                ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+                : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
         }}
       >
         {/* Header with beautiful gradient badge */}
         <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2">
-            <div 
+            <div
               className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
               style={{
                 background:
                   engine === "openai"
                     ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                     : engine === "gemini"
-                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" x2="8" y1="13" y2="13" />
+                <line x1="16" x2="8" y1="17" y2="17" />
+              </svg>
             </div>
             <div>
-              <h3 className="text-base font-bold font-geist text-gray-900">AI Excerpt Generator</h3>
-              <p className="text-xs text-gray-400 font-geist">Draft perfectly summarized, SEO-friendly snippets</p>
+              <h3 className="text-base font-bold font-geist text-gray-900">
+                AI Excerpt Generator
+              </h3>
+              <p className="text-xs text-gray-400 font-geist">
+                Draft perfectly summarized, SEO-friendly snippets
+              </p>
             </div>
           </div>
           <button
+            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
             type="button"
             onClick={onClose}
-            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg
+              fill="none"
+              height="14"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="14"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
           </button>
         </div>
 
@@ -917,51 +1946,68 @@ const AIExcerptModal = ({
             {/* Engine selector */}
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
-                <span className="text-[10px] text-gray-400 font-geist">Select the AI brain for excerpting</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  AI Intelligence Engine
+                </span>
+                <span className="text-[10px] text-gray-400 font-geist">
+                  Select the AI brain for excerpting
+                </span>
               </div>
               <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
                 <button
-                  type="button"
-                  onClick={() => setEngine("openai")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "openai"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("openai")}
                 >
                   <span className="text-emerald-500 font-bold">●</span> OpenAI
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("gemini")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "gemini"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("gemini")}
                 >
                   <span className="text-blue-500 font-bold">✦</span> Gemini
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("puter")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "puter"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("puter")}
                 >
-                  <svg className="text-[#FF5B04]" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
+                  <svg
+                    className="text-[#FF5B04]"
+                    fill="none"
+                    height="11"
+                    stroke="#FF5B04"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="11"
+                  >
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>{" "}
+                  Puter
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("mistral")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "mistral"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("mistral")}
                 >
                   <span className="text-violet-600 font-bold">◆</span> Mistral
                 </button>
@@ -974,44 +2020,88 @@ const AIExcerptModal = ({
             {/* Model selector */}
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
-                <span className="text-[10px] text-gray-400 font-geist">Choose the specific model capability</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  Model Version
+                </span>
+                <span className="text-[10px] text-gray-400 font-geist">
+                  Choose the specific model capability
+                </span>
               </div>
               <select
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">
+                      Gemini 1.5 Flash (Super Fast)
+                    </option>
+                    <option value="gemini-1.5-pro-latest">
+                      Gemini 1.5 Pro (Deep Reasoning)
+                    </option>
+                    <option value="gemini-2.0-flash-exp">
+                      Gemini 2.0 Flash (Next-Gen Preview)
+                    </option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="mistral-large-latest">
+                      Mistral Large (Most Capable)
+                    </option>
+                    <option value="mistral-small-latest">
+                      Mistral Small (Fast)
+                    </option>
+                    <option value="mistral-nemo">
+                      Mistral Nemo (Lightweight)
+                    </option>
                     <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
-                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
-                    <option value="gpt-5.4-mini">GPT-5.4 Mini (Lightweight &amp; Efficient)</option>
-                    <option value="gpt-5.4-nano">GPT-5.4 Nano (Super Speed)</option>
-                    <option value="gpt-5.3-chat">GPT-5.3 Chat (Conversational)</option>
-                    <option value="gpt-5.3-codex">GPT-5.3 Codex (Programming &amp; Logic)</option>
-                    <option value="gpt-5.2-pro">GPT-5.2 Pro (Professional)</option>
-                    <option value="gpt-5.2-chat">GPT-5.2 Chat (Standard Chat)</option>
+                    <option value="gpt-5.5-pro">
+                      GPT-5.5 Pro (State-of-the-Art)
+                    </option>
+                    <option value="gpt-5.5">
+                      GPT-5.5 Standard (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-5.4-pro">
+                      GPT-5.4 Pro (High Precision)
+                    </option>
+                    <option value="gpt-5.4">
+                      GPT-5.4 Standard (Balanced &amp; Fast)
+                    </option>
+                    <option value="gpt-5.4-mini">
+                      GPT-5.4 Mini (Lightweight &amp; Efficient)
+                    </option>
+                    <option value="gpt-5.4-nano">
+                      GPT-5.4 Nano (Super Speed)
+                    </option>
+                    <option value="gpt-5.3-chat">
+                      GPT-5.3 Chat (Conversational)
+                    </option>
+                    <option value="gpt-5.3-codex">
+                      GPT-5.3 Codex (Programming &amp; Logic)
+                    </option>
+                    <option value="gpt-5.2-pro">
+                      GPT-5.2 Pro (Professional)
+                    </option>
+                    <option value="gpt-5.2-chat">
+                      GPT-5.2 Chat (Standard Chat)
+                    </option>
                     <option value="gpt-5.2">GPT-5.2 Standard (General)</option>
-                    <option value="gpt-5.1-chat-latest">GPT-5.1 Chat (Legacy Chat)</option>
-                    <option value="gpt-5.1">GPT-5.1 Standard (Legacy General)</option>
-                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
-                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
+                    <option value="gpt-5.1-chat-latest">
+                      GPT-5.1 Chat (Legacy Chat)
+                    </option>
+                    <option value="gpt-5.1">
+                      GPT-5.1 Standard (Legacy General)
+                    </option>
+                    <option value="gpt-4o">
+                      GPT-4o Premium (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-4o-mini">
+                      GPT-4o Mini (Fast &amp; Efficient)
+                    </option>
                   </>
                 )}
               </select>
@@ -1024,39 +2114,61 @@ const AIExcerptModal = ({
               Custom Focus Guidelines (Optional)
             </label>
             <input
-              type="text"
               className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 transition-all"
+              disabled={isGenerating}
               placeholder="e.g. 'Emphasize the coding aspect', 'Make it sound casual'"
+              type="text"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              disabled={isGenerating}
             />
           </div>
 
           {/* Action Trigger */}
           <div className="flex justify-end pt-1">
             <button
-              type="button"
-              onClick={handleGenerate}
-              disabled={isGenerating}
               className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
+              disabled={isGenerating}
               style={{
                 background:
                   engine === "openai"
                     ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                     : engine === "gemini"
-                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
+              type="button"
+              onClick={handleGenerate}
             >
               {isGenerating ? (
                 <>
-                  <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                  <svg
+                    className="animate-spin"
+                    fill="none"
+                    height="12"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="12"
+                  >
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
                   <span>Summarizing Post...</span>
                 </>
               ) : (
                 <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                  <svg
+                    fill="none"
+                    height="12"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="12"
+                  >
+                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                  </svg>
                   <span>Generate Excerpt</span>
                 </>
               )}
@@ -1066,57 +2178,104 @@ const AIExcerptModal = ({
           {/* Error Message */}
           {error && (
             <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              <svg
+                className="flex-shrink-0 mt-0.5"
+                fill="none"
+                height="16"
+                stroke="#ef4444"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" x2="12" y1="8" y2="12" />
+                <line x1="12" x2="12.01" y1="16" y2="16" />
               </svg>
-              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+              <p className="text-xs font-geist text-red-600 font-medium">
+                {error}
+              </p>
             </div>
           )}
 
           {/* Result / Preview Box */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <label 
+              <label
                 className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
                 style={{
                   color:
                     engine === "openai"
                       ? "#10B981"
                       : engine === "gemini"
-                      ? "#3B82F6"
-                      : "#FF5B04",
+                        ? "#3B82F6"
+                        : "#FF5B04",
                 }}
               >
                 Draft Excerpt Preview
               </label>
-              
+
               {/* Color-Coded SEO Character Counter */}
-              <div className={`text-xs font-geist px-2 py-0.5 rounded-full border transition-all duration-300 ${getCounterBg(result.length)}`}>
-                <span className={getCounterColor(result.length)}>{result.length}</span> / 160 chars
+              <div
+                className={`text-xs font-geist px-2 py-0.5 rounded-full border transition-all duration-300 ${getCounterBg(result.length)}`}
+              >
+                <span className={getCounterColor(result.length)}>
+                  {result.length}
+                </span>{" "}
+                / 160 chars
                 {result.length >= 120 && result.length <= 160 && (
-                  <span className="ml-1 text-[10px] font-semibold text-emerald-600 flex items-center gap-0.5"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Perfect SEO Length</span>
+                  <span className="ml-1 text-[10px] font-semibold text-emerald-600 flex items-center gap-0.5">
+                    <svg
+                      fill="none"
+                      height="9"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      viewBox="0 0 24 24"
+                      width="9"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>{" "}
+                    Perfect SEO Length
+                  </span>
                 )}
                 {result.length > 200 && (
-                  <span className="ml-1 text-[10px] font-bold text-red-600 flex items-center gap-0.5"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Truncated in search</span>
+                  <span className="ml-1 text-[10px] font-bold text-red-600 flex items-center gap-0.5">
+                    <svg
+                      fill="none"
+                      height="9"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                      width="9"
+                    >
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                      <line x1="12" x2="12" y1="9" y2="13" />
+                      <line x1="12" x2="12.01" y1="17" y2="17" />
+                    </svg>{" "}
+                    Truncated in search
+                  </span>
                 )}
               </div>
             </div>
 
             <textarea
-              rows={4}
               className={`w-full text-sm font-geist bg-gray-50 border rounded-2xl p-4 outline-none resize-none transition-all duration-300 ${
                 isGenerating
                   ? engine === "openai"
                     ? "animate-pulse border-emerald-200"
                     : engine === "gemini"
-                    ? "animate-pulse border-blue-200"
-                    : "animate-pulse border-orange-200"
+                      ? "animate-pulse border-blue-200"
+                      : "animate-pulse border-orange-200"
                   : "border-black/5 focus:border-orange-200 focus:ring-1 focus:ring-orange-100"
               }`}
+              disabled={isGenerating}
               placeholder="Your AI excerpt will generate here, or you can type here to refine manually..."
+              rows={4}
               value={result}
               onChange={(e) => setResult(e.target.value)}
-              disabled={isGenerating}
             />
           </div>
         </div>
@@ -1124,28 +2283,38 @@ const AIExcerptModal = ({
         {/* Modal Footer */}
         <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
           <button
-            type="button"
-            onClick={handleApply}
-            disabled={!result.trim() || isGenerating}
             className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+            disabled={!result.trim() || isGenerating}
             style={{
               background:
                 engine === "openai"
                   ? "#10B981"
                   : engine === "gemini"
-                  ? "#3B82F6"
-                  : "#FF5B04",
+                    ? "#3B82F6"
+                    : "#FF5B04",
             }}
+            type="button"
+            onClick={handleApply}
           >
             <span>Apply Excerpt</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            <svg
+              fill="none"
+              height="14"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="14"
+            >
+              <polyline points="9 11 12 14 22 4" />
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
             </svg>
           </button>
           <button
+            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
             type="button"
             onClick={onClose}
-            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
           >
             Cancel
           </button>
@@ -1176,15 +2345,27 @@ const AITitleModal = ({
   const [selectedTitle, setSelectedTitle] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
-  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
+  const [engine, setEngine] = useState<
+    "openai" | "gemini" | "puter" | "mistral"
+  >(
+    () =>
+      (loadAIConfig().defaultEngine ?? "puter") as
+        | "openai"
+        | "gemini"
+        | "puter"
+        | "mistral",
+  );
+  const [model, setModel] = useState<string>(
+    () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
+  );
 
   // Sync default engine models when engine changes
   useEffect(() => {
     if (engine === "gemini") {
       if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
     } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
+      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
+        setModel("mistral-large-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
@@ -1208,19 +2389,21 @@ const AITitleModal = ({
 
       if (engine === "puter") {
         let systemInstructions = `Suggest 3 high-impact, highly clickable, and search-optimized alternative titles for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${textContext}". Format your response STRICTLY as a raw JSON array of strings, e.g. ["Optimized Title 1", "Optimized Title 2", "Optimized Title 3"]. Deliver ONLY the JSON array, no markdown backticks, no wrap text, and no leading/trailing spaces.`;
-        
+
         if (prompt.trim()) {
           systemInstructions += `\n\nAlso incorporate the following custom instructions: "${prompt.trim()}"`;
         }
 
         const { puter } = await import("@heyputer/puter.js");
         const chatResponse = await puter.ai.chat(systemInstructions, { model });
-        
+
         let text = "";
+
         if (chatResponse.message?.content) {
-          text = typeof chatResponse.message.content === "string"
-            ? chatResponse.message.content
-            : String(chatResponse.message.content);
+          text =
+            typeof chatResponse.message.content === "string"
+              ? chatResponse.message.content
+              : String(chatResponse.message.content);
         } else {
           text = String(chatResponse);
         }
@@ -1228,14 +2411,21 @@ const AITitleModal = ({
         text = text.trim();
         // Clean backticks
         if (text.startsWith("```json")) {
-          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```json/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```html")) {
-          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```html/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```")) {
           text = text.replace(/^```/, "").replace(/```$/, "").trim();
         }
 
         const parsed = JSON.parse(text);
+
         if (Array.isArray(parsed)) {
           setSuggestions(parsed);
         } else {
@@ -1248,7 +2438,7 @@ const AITitleModal = ({
           body: JSON.stringify({
             action: "titles",
             title,
-            content: prompt.trim() 
+            content: prompt.trim()
               ? `${textContext}\n\nCustom Instructions:\n${prompt.trim()}`
               : textContext,
             postType,
@@ -1258,6 +2448,7 @@ const AITitleModal = ({
         });
 
         const data = await response.json();
+
         if (!data.success) {
           throw new Error(data.error || "Failed to generate titles.");
         }
@@ -1293,36 +2484,63 @@ const AITitleModal = ({
             engine === "openai"
               ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
               : engine === "gemini"
-              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
-              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+                ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+                : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
         }}
       >
         <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2">
-            <div 
+            <div
               className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
               style={{
                 background:
                   engine === "openai"
                     ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                     : engine === "gemini"
-                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
             </div>
             <div>
-              <h3 className="text-base font-bold font-geist text-gray-900">AI Title Optimizer</h3>
-              <p className="text-xs text-gray-400 font-geist">Generate high-impact headline recommendations</p>
+              <h3 className="text-base font-bold font-geist text-gray-900">
+                AI Title Optimizer
+              </h3>
+              <p className="text-xs text-gray-400 font-geist">
+                Generate high-impact headline recommendations
+              </p>
             </div>
           </div>
           <button
+            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
             type="button"
             onClick={onClose}
-            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg
+              fill="none"
+              height="14"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="14"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
           </button>
         </div>
 
@@ -1330,50 +2548,65 @@ const AITitleModal = ({
           <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  AI Intelligence Engine
+                </span>
               </div>
               <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
                 <button
-                  type="button"
-                  onClick={() => setEngine("openai")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "openai"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("openai")}
                 >
                   <span className="text-emerald-500 font-bold">●</span> OpenAI
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("gemini")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "gemini"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("gemini")}
                 >
                   <span className="text-blue-500 font-bold">✦</span> Gemini
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("puter")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "puter"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("puter")}
                 >
-                  <svg className="text-[#FF5B04]" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
+                  <svg
+                    className="text-[#FF5B04]"
+                    fill="none"
+                    height="11"
+                    stroke="#FF5B04"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="11"
+                  >
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>{" "}
+                  Puter
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("mistral")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "mistral"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("mistral")}
                 >
                   <span className="text-violet-600 font-bold">◆</span> Mistral
                 </button>
@@ -1384,34 +2617,60 @@ const AITitleModal = ({
 
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  Model Version
+                </span>
               </div>
               <select
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">
+                      Gemini 1.5 Flash (Super Fast)
+                    </option>
+                    <option value="gemini-1.5-pro-latest">
+                      Gemini 1.5 Pro (Deep Reasoning)
+                    </option>
+                    <option value="gemini-2.0-flash-exp">
+                      Gemini 2.0 Flash (Next-Gen Preview)
+                    </option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="mistral-large-latest">
+                      Mistral Large (Most Capable)
+                    </option>
+                    <option value="mistral-small-latest">
+                      Mistral Small (Fast)
+                    </option>
+                    <option value="mistral-nemo">
+                      Mistral Nemo (Lightweight)
+                    </option>
                     <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
-                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
-                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
-                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
+                    <option value="gpt-5.5-pro">
+                      GPT-5.5 Pro (State-of-the-Art)
+                    </option>
+                    <option value="gpt-5.5">
+                      GPT-5.5 Standard (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-5.4-pro">
+                      GPT-5.4 Pro (High Precision)
+                    </option>
+                    <option value="gpt-5.4">
+                      GPT-5.4 Standard (Balanced &amp; Fast)
+                    </option>
+                    <option value="gpt-4o">
+                      GPT-4o Premium (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-4o-mini">
+                      GPT-4o Mini (Fast &amp; Efficient)
+                    </option>
                   </>
                 )}
               </select>
@@ -1423,38 +2682,60 @@ const AITitleModal = ({
               Custom Guidelines / Key Focus Words (Optional)
             </label>
             <input
-              type="text"
               className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 transition-all"
+              disabled={isGenerating}
               placeholder="e.g. 'Make it sound casual', 'Focus on React performance'"
+              type="text"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              disabled={isGenerating}
             />
           </div>
 
           <div className="flex justify-end pt-1">
             <button
-              type="button"
-              onClick={handleGenerate}
-              disabled={isGenerating}
               className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
+              disabled={isGenerating}
               style={{
                 background:
                   engine === "openai"
                     ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                     : engine === "gemini"
-                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
+              type="button"
+              onClick={handleGenerate}
             >
               {isGenerating ? (
                 <>
-                  <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                  <svg
+                    className="animate-spin"
+                    fill="none"
+                    height="12"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="12"
+                  >
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
                   <span>Generating headlines...</span>
                 </>
               ) : (
                 <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                  <svg
+                    fill="none"
+                    height="12"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="12"
+                  >
+                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                  </svg>
                   <span>Generate Alternatives</span>
                 </>
               )}
@@ -1463,54 +2744,68 @@ const AITitleModal = ({
 
           {error && (
             <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              <svg
+                className="flex-shrink-0 mt-0.5"
+                fill="none"
+                height="16"
+                stroke="#ef4444"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" x2="12" y1="8" y2="12" />
+                <line x1="12" x2="12.01" y1="16" y2="16" />
               </svg>
-              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+              <p className="text-xs font-geist text-red-600 font-medium">
+                {error}
+              </p>
             </div>
           )}
 
           {suggestions.length > 0 && (
             <div className="space-y-2.5">
-              <label 
+              <label
                 className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
                 style={{
                   color:
                     engine === "openai"
                       ? "#10B981"
                       : engine === "gemini"
-                      ? "#3B82F6"
-                      : "#FF5B04",
+                        ? "#3B82F6"
+                        : "#FF5B04",
                 }}
               >
                 Select Your Favorite Headline
               </label>
-              
+
               <div className="space-y-2">
                 {suggestions.map((t, idx) => (
                   <button
                     key={idx}
-                    type="button"
-                    onClick={() => setSelectedTitle(t)}
                     className={`w-full text-left text-sm font-geist p-3.5 rounded-2xl transition-all border flex items-start gap-3 cursor-pointer ${
                       selectedTitle === t
                         ? engine === "openai"
                           ? "bg-emerald-50/50 border-emerald-500 text-emerald-950 font-medium shadow-sm"
                           : engine === "gemini"
-                          ? "bg-indigo-50/50 border-indigo-500 text-indigo-950 font-medium shadow-sm"
-                          : "bg-orange-50/50 border-[#FF5B04] text-orange-950 font-medium shadow-sm"
+                            ? "bg-indigo-50/50 border-indigo-500 text-indigo-950 font-medium shadow-sm"
+                            : "bg-orange-50/50 border-[#FF5B04] text-orange-950 font-medium shadow-sm"
                         : "bg-gray-50 border-black/5 hover:border-black/10 text-gray-800"
                     }`}
+                    type="button"
+                    onClick={() => setSelectedTitle(t)}
                   >
-                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold border transition-colors ${
-                      selectedTitle === t
-                        ? engine === "openai"
-                          ? "bg-emerald-500 text-white border-emerald-500"
-                          : engine === "gemini"
-                          ? "bg-indigo-500 text-white border-indigo-500"
-                          : "bg-[#FF5B04] text-white border-[#FF5B04]"
-                        : "bg-white border-black/10 text-gray-400"
-                    }`}>
+                    <span
+                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold border transition-colors ${
+                        selectedTitle === t
+                          ? engine === "openai"
+                            ? "bg-emerald-500 text-white border-emerald-500"
+                            : engine === "gemini"
+                              ? "bg-indigo-500 text-white border-indigo-500"
+                              : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                          : "bg-white border-black/10 text-gray-400"
+                      }`}
+                    >
                       {idx + 1}
                     </span>
                     <span className="flex-1 leading-snug">{t}</span>
@@ -1523,25 +2818,25 @@ const AITitleModal = ({
 
         <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
           <button
-            type="button"
-            onClick={handleApply}
-            disabled={!selectedTitle || isGenerating}
             className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+            disabled={!selectedTitle || isGenerating}
             style={{
               background:
                 engine === "openai"
                   ? "#10B981"
                   : engine === "gemini"
-                  ? "#3B82F6"
-                  : "#FF5B04",
+                    ? "#3B82F6"
+                    : "#FF5B04",
             }}
+            type="button"
+            onClick={handleApply}
           >
             <span>Apply Selected Headline</span>
           </button>
           <button
+            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
             type="button"
             onClick={onClose}
-            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
           >
             Cancel
           </button>
@@ -1574,15 +2869,27 @@ const AITagsModal = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
-  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
+  const [engine, setEngine] = useState<
+    "openai" | "gemini" | "puter" | "mistral"
+  >(
+    () =>
+      (loadAIConfig().defaultEngine ?? "puter") as
+        | "openai"
+        | "gemini"
+        | "puter"
+        | "mistral",
+  );
+  const [model, setModel] = useState<string>(
+    () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
+  );
 
   // Sync default engine models when engine changes
   useEffect(() => {
     if (engine === "gemini") {
       if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
     } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
+      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
+        setModel("mistral-large-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
@@ -1606,19 +2913,21 @@ const AITagsModal = ({
 
       if (engine === "puter") {
         let systemInstructions = `Suggest 5-8 highly relevant, lowercase, search-optimized tags / keywords for a post with the title: "${postTitle || ""}", category: "${postType || "blog"}", and content: "${textContext}". Format your response STRICTLY as a raw JSON array of strings, e.g. ["tech", "javascript", "react"]. Deliver ONLY the JSON array, no markdown backticks, no wrap text, and no leading/trailing spaces.`;
-        
+
         if (prompt.trim()) {
           systemInstructions += `\n\nAlso incorporate the following custom instructions: "${prompt.trim()}"`;
         }
 
         const { puter } = await import("@heyputer/puter.js");
         const chatResponse = await puter.ai.chat(systemInstructions, { model });
-        
+
         let text = "";
+
         if (chatResponse.message?.content) {
-          text = typeof chatResponse.message.content === "string"
-            ? chatResponse.message.content
-            : String(chatResponse.message.content);
+          text =
+            typeof chatResponse.message.content === "string"
+              ? chatResponse.message.content
+              : String(chatResponse.message.content);
         } else {
           text = String(chatResponse);
         }
@@ -1626,17 +2935,24 @@ const AITagsModal = ({
         text = text.trim();
         // Clean backticks
         if (text.startsWith("```json")) {
-          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```json/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```html")) {
-          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```html/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```")) {
           text = text.replace(/^```/, "").replace(/```$/, "").trim();
         }
 
         const parsed = JSON.parse(text);
+
         if (Array.isArray(parsed)) {
-          setSuggestions(parsed.map(t => t.toLowerCase()));
-          setSelectedTags(parsed.map(t => t.toLowerCase()));
+          setSuggestions(parsed.map((t) => t.toLowerCase()));
+          setSelectedTags(parsed.map((t) => t.toLowerCase()));
         } else {
           throw new Error("Failed to parse array from response.");
         }
@@ -1647,7 +2963,7 @@ const AITagsModal = ({
           body: JSON.stringify({
             action: "tags",
             title: postTitle,
-            content: prompt.trim() 
+            content: prompt.trim()
               ? `${textContext}\n\nCustom Instructions:\n${prompt.trim()}`
               : textContext,
             postType,
@@ -1657,11 +2973,13 @@ const AITagsModal = ({
         });
 
         const data = await response.json();
+
         if (!data.success) {
           throw new Error(data.error || "Failed to generate tags.");
         }
 
         const parsedTags = data.data.map((t: string) => t.toLowerCase());
+
         setSuggestions(parsedTags);
         setSelectedTags(parsedTags);
       }
@@ -1682,6 +3000,7 @@ const AITagsModal = ({
 
   const handleApply = () => {
     const combined = Array.from(new Set([...tags, ...selectedTags]));
+
     setTags(combined);
     onClose();
   };
@@ -1701,36 +3020,64 @@ const AITagsModal = ({
             engine === "openai"
               ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
               : engine === "gemini"
-              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
-              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+                ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+                : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
         }}
       >
         <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2">
-            <div 
+            <div
               className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
               style={{
                 background:
                   engine === "openai"
                     ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                     : engine === "gemini"
-                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                <line x1="7" x2="7.01" y1="7" y2="7" />
+              </svg>
             </div>
             <div>
-              <h3 className="text-base font-bold font-geist text-gray-900">AI Tag Suggestor</h3>
-              <p className="text-xs text-gray-400 font-geist">Generate optimized tags and taxonomies</p>
+              <h3 className="text-base font-bold font-geist text-gray-900">
+                AI Tag Suggestor
+              </h3>
+              <p className="text-xs text-gray-400 font-geist">
+                Generate optimized tags and taxonomies
+              </p>
             </div>
           </div>
           <button
+            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
             type="button"
             onClick={onClose}
-            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg
+              fill="none"
+              height="14"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="14"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
           </button>
         </div>
 
@@ -1738,50 +3085,65 @@ const AITagsModal = ({
           <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  AI Intelligence Engine
+                </span>
               </div>
               <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
                 <button
-                  type="button"
-                  onClick={() => setEngine("openai")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "openai"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-950"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("openai")}
                 >
                   <span className="text-emerald-500 font-bold">●</span> OpenAI
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("gemini")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "gemini"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-955"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("gemini")}
                 >
                   <span className="text-blue-500 font-bold">✦</span> Gemini
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("puter")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "puter"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("puter")}
                 >
-                  <svg className="text-[#FF5B04]" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
+                  <svg
+                    className="text-[#FF5B04]"
+                    fill="none"
+                    height="11"
+                    stroke="#FF5B04"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="11"
+                  >
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>{" "}
+                  Puter
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("mistral")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "mistral"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("mistral")}
                 >
                   <span className="text-violet-600 font-bold">◆</span> Mistral
                 </button>
@@ -1792,34 +3154,60 @@ const AITagsModal = ({
 
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  Model Version
+                </span>
               </div>
               <select
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">
+                      Gemini 1.5 Flash (Super Fast)
+                    </option>
+                    <option value="gemini-1.5-pro-latest">
+                      Gemini 1.5 Pro (Deep Reasoning)
+                    </option>
+                    <option value="gemini-2.0-flash-exp">
+                      Gemini 2.0 Flash (Next-Gen Preview)
+                    </option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="mistral-large-latest">
+                      Mistral Large (Most Capable)
+                    </option>
+                    <option value="mistral-small-latest">
+                      Mistral Small (Fast)
+                    </option>
+                    <option value="mistral-nemo">
+                      Mistral Nemo (Lightweight)
+                    </option>
                     <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
-                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
-                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
-                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
+                    <option value="gpt-5.5-pro">
+                      GPT-5.5 Pro (State-of-the-Art)
+                    </option>
+                    <option value="gpt-5.5">
+                      GPT-5.5 Standard (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-5.4-pro">
+                      GPT-5.4 Pro (High Precision)
+                    </option>
+                    <option value="gpt-5.4">
+                      GPT-5.4 Standard (Balanced &amp; Fast)
+                    </option>
+                    <option value="gpt-4o">
+                      GPT-4o Premium (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-4o-mini">
+                      GPT-4o Mini (Fast &amp; Efficient)
+                    </option>
                   </>
                 )}
               </select>
@@ -1831,38 +3219,60 @@ const AITagsModal = ({
               Custom Tag Guidelines (Optional)
             </label>
             <input
-              type="text"
               className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 transition-all"
+              disabled={isGenerating}
               placeholder="e.g. 'Use web development tags', 'Include SEO'"
+              type="text"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              disabled={isGenerating}
             />
           </div>
 
           <div className="flex justify-end pt-1">
             <button
-              type="button"
-              onClick={handleGenerate}
-              disabled={isGenerating}
               className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer shadow-sm hover:scale-[1.01] active:scale-[0.99]"
+              disabled={isGenerating}
               style={{
                 background:
                   engine === "openai"
                     ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                     : engine === "gemini"
-                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
+              type="button"
+              onClick={handleGenerate}
             >
               {isGenerating ? (
                 <>
-                  <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                  <svg
+                    className="animate-spin"
+                    fill="none"
+                    height="12"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="12"
+                  >
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
                   <span>Generating tags...</span>
                 </>
               ) : (
                 <>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                  <svg
+                    fill="none"
+                    height="12"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="12"
+                  >
+                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                  </svg>
                   <span>Generate Tags</span>
                 </>
               )}
@@ -1871,56 +3281,71 @@ const AITagsModal = ({
 
           {error && (
             <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              <svg
+                className="flex-shrink-0 mt-0.5"
+                fill="none"
+                height="16"
+                stroke="#ef4444"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" x2="12" y1="8" y2="12" />
+                <line x1="12" x2="12.01" y1="16" y2="16" />
               </svg>
-              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+              <p className="text-xs font-geist text-red-600 font-medium">
+                {error}
+              </p>
             </div>
           )}
 
           {suggestions.length > 0 && (
             <div className="space-y-2.5">
-              <label 
+              <label
                 className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
                 style={{
                   color:
                     engine === "openai"
                       ? "#10B981"
                       : engine === "gemini"
-                      ? "#3B82F6"
-                      : "#FF5B04",
+                        ? "#3B82F6"
+                        : "#FF5B04",
                 }}
               >
                 Select Tags to Apply
               </label>
-              
+
               <div className="flex flex-wrap gap-2.5">
                 {suggestions.map((t, idx) => {
                   const isSelected = selectedTags.includes(t);
+
                   return (
                     <button
                       key={idx}
-                      type="button"
-                      onClick={() => toggleTag(t)}
                       className={`px-4 py-2 rounded-2xl text-xs font-semibold font-geist border transition-all flex items-center gap-2 cursor-pointer ${
                         isSelected
                           ? engine === "openai"
                             ? "bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm"
                             : engine === "gemini"
-                            ? "bg-indigo-50 border-indigo-300 text-indigo-800 shadow-sm"
-                            : "bg-orange-50 border-orange-300 text-orange-800 shadow-sm"
+                              ? "bg-indigo-50 border-indigo-300 text-indigo-800 shadow-sm"
+                              : "bg-orange-50 border-orange-300 text-orange-800 shadow-sm"
                           : "bg-gray-50 border-black/5 text-gray-600 hover:bg-gray-100"
                       }`}
+                      type="button"
+                      onClick={() => toggleTag(t)}
                     >
-                      <span className={`w-3.5 h-3.5 rounded-md flex items-center justify-center text-[9px] border transition-colors ${
-                        isSelected
-                          ? engine === "openai"
-                            ? "bg-emerald-500 text-white border-emerald-500"
-                            : engine === "gemini"
-                            ? "bg-indigo-500 text-white border-indigo-500"
-                            : "bg-[#FF5B04] text-white border-[#FF5B04]"
-                          : "bg-white border-black/10"
-                      }`}>
+                      <span
+                        className={`w-3.5 h-3.5 rounded-md flex items-center justify-center text-[9px] border transition-colors ${
+                          isSelected
+                            ? engine === "openai"
+                              ? "bg-emerald-500 text-white border-emerald-500"
+                              : engine === "gemini"
+                                ? "bg-indigo-500 text-white border-indigo-500"
+                                : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                            : "bg-white border-black/10"
+                        }`}
+                      >
                         {isSelected && "✓"}
                       </span>
                       <span>#{t}</span>
@@ -1934,25 +3359,25 @@ const AITagsModal = ({
 
         <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
           <button
-            type="button"
-            onClick={handleApply}
-            disabled={selectedTags.length === 0 || isGenerating}
             className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+            disabled={selectedTags.length === 0 || isGenerating}
             style={{
               background:
                 engine === "openai"
                   ? "#10B981"
                   : engine === "gemini"
-                  ? "#3B82F6"
-                  : "#FF5B04",
+                    ? "#3B82F6"
+                    : "#FF5B04",
             }}
+            type="button"
+            onClick={handleApply}
           >
             <span>Apply Selected Tags</span>
           </button>
           <button
+            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
             type="button"
             onClick={onClose}
-            className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
           >
             Cancel
           </button>
@@ -1980,18 +3405,33 @@ const AICopilotModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
-  const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
+  const [engine, setEngine] = useState<
+    "openai" | "gemini" | "puter" | "mistral"
+  >(
+    () =>
+      (loadAIConfig().defaultEngine ?? "puter") as
+        | "openai"
+        | "gemini"
+        | "puter"
+        | "mistral",
+  );
+  const [model, setModel] = useState<string>(
+    () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
+  );
 
   // Selection & Context states
   const [selectedText, setSelectedText] = useState("");
   const [hasSelection, setHasSelection] = useState(false);
-  const [selectionRange, setSelectionRange] = useState<{ from: number; to: number } | null>(null);
+  const [selectionRange, setSelectionRange] = useState<{
+    from: number;
+    to: number;
+  } | null>(null);
 
   useEffect(() => {
     if (isOpen && editor) {
       const { from, to } = editor.state.selection;
       const text = editor.state.doc.textBetween(from, to, " ");
+
       if (text.trim()) {
         setSelectedText(text.trim());
         setHasSelection(true);
@@ -2008,21 +3448,39 @@ const AICopilotModal = ({
     if (engine === "gemini") {
       if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
     } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
+      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
+        setModel("mistral-large-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
   }, [engine]);
 
   const presets = [
-    { label: "Draft Introduction", prompt: "Write a high-converting, engaging introduction paragraph based on the post title and details." },
-    { label: "Step-by-Step Outline", prompt: "Generate a detailed, step-by-step structure/outline with subheadings." },
-    { label: "Make Professional", prompt: "Summarize the key ideas and rewrite them in a highly polished, professional tone." },
-    { label: "Write Key Takeaways", prompt: "Create a visual checklist of the top 5 key takeaways or learnings." },
+    {
+      label: "Draft Introduction",
+      prompt:
+        "Write a high-converting, engaging introduction paragraph based on the post title and details.",
+    },
+    {
+      label: "Step-by-Step Outline",
+      prompt:
+        "Generate a detailed, step-by-step structure/outline with subheadings.",
+    },
+    {
+      label: "Make Professional",
+      prompt:
+        "Summarize the key ideas and rewrite them in a highly polished, professional tone.",
+    },
+    {
+      label: "Write Key Takeaways",
+      prompt:
+        "Create a visual checklist of the top 5 key takeaways or learnings.",
+    },
   ];
 
   const handleGenerate = async (customPrompt?: string) => {
     const activePrompt = customPrompt || prompt;
+
     if (!activePrompt.trim()) return;
 
     setIsGenerating(true);
@@ -2032,12 +3490,14 @@ const AICopilotModal = ({
     try {
       const editorContent = editor ? editor.getHTML() : "";
       const surroundingText = editor ? editor.getText() : "";
-      const surroundingContext = surroundingText.length > 2000
-        ? surroundingText.slice(-2000)
-        : surroundingText;
+      const surroundingContext =
+        surroundingText.length > 2000
+          ? surroundingText.slice(-2000)
+          : surroundingText;
 
       if (engine === "puter") {
         let contextInfo = "";
+
         if (hasSelection && selectedText) {
           contextInfo += `\n\nTARGET TEXT FOR EDITING (Rewrite, expand, improve, or format this selected text directly based on the user prompt): "${selectedText}"`;
         }
@@ -2050,21 +3510,29 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
 
         const { puter } = await import("@heyputer/puter.js");
         const chatResponse = await puter.ai.chat(systemInstructions, { model });
-        
+
         let text = "";
+
         if (chatResponse.message?.content) {
-          text = typeof chatResponse.message.content === "string"
-            ? chatResponse.message.content
-            : String(chatResponse.message.content);
+          text =
+            typeof chatResponse.message.content === "string"
+              ? chatResponse.message.content
+              : String(chatResponse.message.content);
         } else {
           text = String(chatResponse);
         }
 
         text = text.trim();
         if (text.startsWith("```json")) {
-          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```json/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```html")) {
-          text = text.replace(/^```html/, "").replace(/```$/, "").trim();
+          text = text
+            .replace(/^```html/, "")
+            .replace(/```$/, "")
+            .trim();
         } else if (text.startsWith("```")) {
           text = text.replace(/^```/, "").replace(/```$/, "").trim();
         }
@@ -2088,6 +3556,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         });
 
         const data = await response.json();
+
         if (!data.success) {
           throw new Error(data.error || "Failed to generate content.");
         }
@@ -2132,36 +3601,63 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             engine === "openai"
               ? "0 25px 50px -12px rgba(16, 185, 129, 0.15)"
               : engine === "gemini"
-              ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
-              : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
+                ? "0 25px 50px -12px rgba(59, 130, 246, 0.15)"
+                : "0 25px 50px -12px rgba(255, 91, 4, 0.15)",
         }}
       >
         {/* Header with beautiful gradient badge */}
         <div className="p-6 border-b border-black/5 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-2">
-            <div 
+            <div
               className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold transition-all duration-300"
               style={{
                 background:
                   engine === "openai"
                     ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                     : engine === "gemini"
-                    ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                    : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+              <svg
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+              </svg>
             </div>
             <div>
-              <h3 className="text-base font-bold font-geist text-gray-900">AI Writing Copilot</h3>
-              <p className="text-xs text-gray-400 font-geist">Generate structures, intros, and polished sections instantly</p>
+              <h3 className="text-base font-bold font-geist text-gray-900">
+                AI Writing Copilot
+              </h3>
+              <p className="text-xs text-gray-400 font-geist">
+                Generate structures, intros, and polished sections instantly
+              </p>
             </div>
           </div>
           <button
-            onClick={onClose}
             className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+            onClick={onClose}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg
+              fill="none"
+              height="14"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="14"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
           </button>
         </div>
 
@@ -2172,48 +3668,65 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             {/* Engine selector */}
             <div className="flex items-center justify-between flex-wrap gap-2">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">AI Intelligence Engine</span>
-                <span className="text-[10px] text-gray-400 font-geist">Select the AI brain for composition</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  AI Intelligence Engine
+                </span>
+                <span className="text-[10px] text-gray-400 font-geist">
+                  Select the AI brain for composition
+                </span>
               </div>
               <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
                 <button
-                  onClick={() => setEngine("openai")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "openai"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  onClick={() => setEngine("openai")}
                 >
                   <span className="text-emerald-500 font-bold">●</span> OpenAI
                 </button>
                 <button
-                  onClick={() => setEngine("gemini")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "gemini"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  onClick={() => setEngine("gemini")}
                 >
                   <span className="text-blue-500 font-bold">✦</span> Gemini
                 </button>
                 <button
-                  onClick={() => setEngine("puter")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "puter"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  onClick={() => setEngine("puter")}
                 >
-                  <svg className="text-[#FF5B04]" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FF5B04" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Puter
+                  <svg
+                    className="text-[#FF5B04]"
+                    fill="none"
+                    height="11"
+                    stroke="#FF5B04"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="11"
+                  >
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>{" "}
+                  Puter
                 </button>
                 <button
-                  type="button"
-                  onClick={() => setEngine("mistral")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "mistral"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
                       : "text-gray-500 hover:text-gray-900"
                   }`}
+                  type="button"
+                  onClick={() => setEngine("mistral")}
                 >
                   <span className="text-violet-600 font-bold">◆</span> Mistral
                 </button>
@@ -2226,44 +3739,88 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             {/* Model selector */}
             <div className="flex items-center justify-between">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">Model Version</span>
-                <span className="text-[10px] text-gray-400 font-geist">Choose the specific model capability</span>
+                <span className="text-xs font-semibold font-geist text-gray-700">
+                  Model Version
+                </span>
+                <span className="text-[10px] text-gray-400 font-geist">
+                  Choose the specific model capability
+                </span>
               </div>
               <select
+                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm animate-in fade-in duration-200"
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm animate-in fade-in duration-200"
               >
                 {engine === "gemini" ? (
                   <>
-                    <option value="gemini-flash-latest">Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash (Next-Gen Preview)</option>
+                    <option value="gemini-flash-latest">
+                      Gemini 1.5 Flash (Super Fast)
+                    </option>
+                    <option value="gemini-1.5-pro-latest">
+                      Gemini 1.5 Pro (Deep Reasoning)
+                    </option>
+                    <option value="gemini-2.0-flash-exp">
+                      Gemini 2.0 Flash (Next-Gen Preview)
+                    </option>
                   </>
                 ) : engine === "mistral" ? (
                   <>
-                    <option value="mistral-large-latest">Mistral Large (Most Capable)</option>
-                    <option value="mistral-small-latest">Mistral Small (Fast)</option>
-                    <option value="mistral-nemo">Mistral Nemo (Lightweight)</option>
+                    <option value="mistral-large-latest">
+                      Mistral Large (Most Capable)
+                    </option>
+                    <option value="mistral-small-latest">
+                      Mistral Small (Fast)
+                    </option>
+                    <option value="mistral-nemo">
+                      Mistral Nemo (Lightweight)
+                    </option>
                     <option value="codestral-latest">Codestral (Code)</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-5.5-pro">GPT-5.5 Pro (State-of-the-Art)</option>
-                    <option value="gpt-5.5">GPT-5.5 Standard (Advanced &amp; Creative)</option>
-                    <option value="gpt-5.4-pro">GPT-5.4 Pro (High Precision)</option>
-                    <option value="gpt-5.4">GPT-5.4 Standard (Balanced &amp; Fast)</option>
-                    <option value="gpt-5.4-mini">GPT-5.4 Mini (Lightweight &amp; Efficient)</option>
-                    <option value="gpt-5.4-nano">GPT-5.4 Nano (Super Speed)</option>
-                    <option value="gpt-5.3-chat">GPT-5.3 Chat (Conversational)</option>
-                    <option value="gpt-5.3-codex">GPT-5.3 Codex (Programming &amp; Logic)</option>
-                    <option value="gpt-5.2-pro">GPT-5.2 Pro (Professional)</option>
-                    <option value="gpt-5.2-chat">GPT-5.2 Chat (Standard Chat)</option>
+                    <option value="gpt-5.5-pro">
+                      GPT-5.5 Pro (State-of-the-Art)
+                    </option>
+                    <option value="gpt-5.5">
+                      GPT-5.5 Standard (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-5.4-pro">
+                      GPT-5.4 Pro (High Precision)
+                    </option>
+                    <option value="gpt-5.4">
+                      GPT-5.4 Standard (Balanced &amp; Fast)
+                    </option>
+                    <option value="gpt-5.4-mini">
+                      GPT-5.4 Mini (Lightweight &amp; Efficient)
+                    </option>
+                    <option value="gpt-5.4-nano">
+                      GPT-5.4 Nano (Super Speed)
+                    </option>
+                    <option value="gpt-5.3-chat">
+                      GPT-5.3 Chat (Conversational)
+                    </option>
+                    <option value="gpt-5.3-codex">
+                      GPT-5.3 Codex (Programming &amp; Logic)
+                    </option>
+                    <option value="gpt-5.2-pro">
+                      GPT-5.2 Pro (Professional)
+                    </option>
+                    <option value="gpt-5.2-chat">
+                      GPT-5.2 Chat (Standard Chat)
+                    </option>
                     <option value="gpt-5.2">GPT-5.2 Standard (General)</option>
-                    <option value="gpt-5.1-chat-latest">GPT-5.1 Chat (Legacy Chat)</option>
-                    <option value="gpt-5.1">GPT-5.1 Standard (Legacy General)</option>
-                    <option value="gpt-4o">GPT-4o Premium (Advanced &amp; Creative)</option>
-                    <option value="gpt-4o-mini">GPT-4o Mini (Fast &amp; Efficient)</option>
+                    <option value="gpt-5.1-chat-latest">
+                      GPT-5.1 Chat (Legacy Chat)
+                    </option>
+                    <option value="gpt-5.1">
+                      GPT-5.1 Standard (Legacy General)
+                    </option>
+                    <option value="gpt-4o">
+                      GPT-4o Premium (Advanced &amp; Creative)
+                    </option>
+                    <option value="gpt-4o-mini">
+                      GPT-4o Mini (Fast &amp; Efficient)
+                    </option>
                   </>
                 )}
               </select>
@@ -2279,12 +3836,12 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
               {presets.map((preset) => (
                 <button
                   key={preset.label}
+                  className="text-left text-xs font-geist font-medium text-gray-700 bg-black/[0.02] border border-black/5 hover:border-[#FF5B04]/30 hover:bg-orange-50/30 p-3 rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                  disabled={isGenerating}
                   onClick={() => {
                     setPrompt(preset.prompt);
                     handleGenerate(preset.prompt);
                   }}
-                  disabled={isGenerating}
-                  className="text-left text-xs font-geist font-medium text-gray-700 bg-black/[0.02] border border-black/5 hover:border-[#FF5B04]/30 hover:bg-orange-50/30 p-3 rounded-xl transition-all cursor-pointer disabled:opacity-50"
                 >
                   {preset.label}
                 </button>
@@ -2298,66 +3855,98 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
               Custom Instructions
             </label>
             {hasSelection && (
-              <div className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-geist mb-3 border transition-all duration-300 ${
-                engine === "openai"
-                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                  : engine === "gemini"
-                  ? "bg-indigo-50 border-indigo-200 text-indigo-800"
-                  : "bg-orange-50 border-orange-200 text-orange-800"
-              }`}>
+              <div
+                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-geist mb-3 border transition-all duration-300 ${
+                  engine === "openai"
+                    ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                    : engine === "gemini"
+                      ? "bg-indigo-50 border-indigo-200 text-indigo-800"
+                      : "bg-orange-50 border-orange-200 text-orange-800"
+                }`}
+              >
                 <span className="flex h-2 w-2 relative">
-                  <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                    engine === "openai"
-                      ? "bg-emerald-400"
-                      : engine === "gemini"
-                      ? "bg-indigo-400"
-                      : "bg-orange-400"
-                  }`}></span>
-                  <span className={`relative inline-flex rounded-full h-2 w-2 ${
-                    engine === "openai"
-                      ? "bg-emerald-500"
-                      : engine === "gemini"
-                      ? "bg-indigo-500"
-                      : "bg-orange-500"
-                  }`}></span>
+                  <span
+                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                      engine === "openai"
+                        ? "bg-emerald-400"
+                        : engine === "gemini"
+                          ? "bg-indigo-400"
+                          : "bg-orange-400"
+                    }`}
+                  />
+                  <span
+                    className={`relative inline-flex rounded-full h-2 w-2 ${
+                      engine === "openai"
+                        ? "bg-emerald-500"
+                        : engine === "gemini"
+                          ? "bg-indigo-500"
+                          : "bg-orange-500"
+                    }`}
+                  />
                 </span>
                 <span>
-                  <strong>Selection Active:</strong> AI will rewrite and refine your highlighted text (<strong>{selectedText.length} characters</strong>).
+                  <strong>Selection Active:</strong> AI will rewrite and refine
+                  your highlighted text (
+                  <strong>{selectedText.length} characters</strong>).
                 </span>
               </div>
             )}
             <textarea
               autoFocus
-              rows={3}
               className="w-full text-sm font-geist bg-black/5 rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-400 border border-transparent focus:border-orange-100 resize-none transition-all"
+              disabled={isGenerating}
               placeholder="Provide details of what you want to write or refine (e.g., 'Draft a highly engaging 3-paragraph introduction detailing the benefits of modern responsive design...')"
+              rows={3}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              disabled={isGenerating}
             />
             <div className="flex justify-end">
               <button
-                onClick={() => handleGenerate()}
-                disabled={isGenerating || !prompt.trim()}
                 className="h-11 px-6 rounded-xl text-sm font-geist font-medium text-white transition-all disabled:opacity-40 flex items-center gap-1.5 cursor-pointer"
+                disabled={isGenerating || !prompt.trim()}
                 style={{
                   background:
                     engine === "openai"
                       ? "linear-gradient(135deg, #10B981 0%, #059669 100%)"
                       : engine === "gemini"
-                      ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
-                      : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
+                        ? "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)"
+                        : "linear-gradient(135deg, #FF5B04 0%, #FF8C00 100%)",
                 }}
+                onClick={() => handleGenerate()}
               >
                 {isGenerating ? (
                   <>
-                    <svg className="animate-spin" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                    <svg
+                      className="animate-spin"
+                      fill="none"
+                      height="12"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                      width="12"
+                    >
+                      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                    </svg>
                     <span>Generating...</span>
                   </>
                 ) : (
                   <>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
-                    <span>{hasSelection ? "Refine Selection" : "Compose Segment"}</span>
+                    <svg
+                      fill="none"
+                      height="12"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      width="12"
+                    >
+                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                    </svg>
+                    <span>
+                      {hasSelection ? "Refine Selection" : "Compose Segment"}
+                    </span>
                   </>
                 )}
               </button>
@@ -2367,45 +3956,57 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
           {/* Error Message */}
           {error && (
             <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" className="flex-shrink-0 mt-0.5">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              <svg
+                className="flex-shrink-0 mt-0.5"
+                fill="none"
+                height="16"
+                stroke="#ef4444"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" x2="12" y1="8" y2="12" />
+                <line x1="12" x2="12.01" y1="16" y2="16" />
               </svg>
-              <p className="text-xs font-geist text-red-600 font-medium">{error}</p>
+              <p className="text-xs font-geist text-red-600 font-medium">
+                {error}
+              </p>
             </div>
           )}
 
           {/* Generation Preview Area */}
           {(isGenerating || result) && (
             <div className="space-y-2">
-              <label 
+              <label
                 className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider block transition-colors duration-300"
                 style={{
                   color:
                     engine === "openai"
                       ? "#10B981"
                       : engine === "gemini"
-                      ? "#3B82F6"
-                      : "#FF5B04",
+                        ? "#3B82F6"
+                        : "#FF5B04",
                 }}
               >
                 AI Composition Preview
               </label>
-              <div 
+              <div
                 className={`border rounded-2xl p-4 bg-gray-50/50 min-h-[140px] text-sm overflow-y-auto max-h-[260px] font-geist prose prose-sm transition-all duration-300 ${
                   isGenerating
                     ? engine === "openai"
                       ? "animate-pulse border-emerald-200"
                       : engine === "gemini"
-                      ? "animate-pulse border-blue-200"
-                      : "animate-pulse border-orange-200"
+                        ? "animate-pulse border-blue-200"
+                        : "animate-pulse border-orange-200"
                     : "border-black/5"
                 }`}
               >
                 {isGenerating ? (
                   <div className="space-y-2.5">
-                    <div className="h-4 bg-gray-200 rounded-md w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded-md"></div>
-                    <div className="h-4 bg-gray-200 rounded-md w-5/6"></div>
+                    <div className="h-4 bg-gray-200 rounded-md w-3/4" />
+                    <div className="h-4 bg-gray-200 rounded-md" />
+                    <div className="h-4 bg-gray-200 rounded-md w-5/6" />
                   </div>
                 ) : (
                   <div dangerouslySetInnerHTML={{ __html: result }} />
@@ -2419,25 +4020,39 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         {result && !isGenerating && (
           <div className="p-4 border-t border-black/5 bg-gray-50 flex gap-2 flex-shrink-0">
             <button
-              onClick={handleInsert}
               className="flex-1 h-11 rounded-xl text-sm font-geist font-medium text-white transition-opacity hover:opacity-90 flex items-center justify-center gap-1.5 cursor-pointer"
               style={{
                 background:
                   engine === "openai"
                     ? "#10B981"
                     : engine === "gemini"
-                    ? "#3B82F6"
-                    : "#FF5B04",
+                      ? "#3B82F6"
+                      : "#FF5B04",
               }}
+              onClick={handleInsert}
             >
-              <span>{hasSelection ? "Replace Highlighted Text" : "Insert at Cursor Position"}</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+              <span>
+                {hasSelection
+                  ? "Replace Highlighted Text"
+                  : "Insert at Cursor Position"}
+              </span>
+              <svg
+                fill="none"
+                height="14"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="14"
+              >
+                <polyline points="9 11 12 14 22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
               </svg>
             </button>
             <button
-              onClick={onClose}
               className="px-5 h-11 rounded-xl text-sm font-geist font-medium text-gray-600 bg-white border border-black/5 hover:bg-black/5 transition-colors cursor-pointer"
+              onClick={onClose}
             >
               Cancel
             </button>
@@ -2474,12 +4089,14 @@ const FloatingBlockInserter = ({
       const isEmpty =
         $from.parent.type.name === "paragraph" &&
         $from.parent.textContent === "";
+
       if (!isEmpty) return { visible: false, top: 0 };
       try {
         const coords = view.coordsAtPos(selection.from);
         const domRect = view.dom.getBoundingClientRect();
         // Calculate the vertical center of the current cursor/line
         const cursorCenter = (coords.top + coords.bottom) / 2;
+
         return { visible: true, top: cursorCenter - domRect.top };
       } catch {
         return { visible: false, top: 0 };
@@ -2502,7 +4119,9 @@ const FloatingBlockInserter = ({
         setOpen(false);
       }
     };
+
     if (open) document.addEventListener("mousedown", handler);
+
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
@@ -2513,8 +4132,19 @@ const FloatingBlockInserter = ({
       id: "upload-image",
       label: "Upload Image",
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <rect height="18" rx="2" width="18" x="3" y="3" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <polyline points="21 15 16 10 5 21" />
         </svg>
       ),
       action: () => {
@@ -2526,8 +4156,18 @@ const FloatingBlockInserter = ({
       id: "image-url",
       label: "Image URL",
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
         </svg>
       ),
       action: () => {
@@ -2539,8 +4179,18 @@ const FloatingBlockInserter = ({
       id: "video",
       label: "Embed Video",
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <polygon points="23 7 16 12 23 17 23 7" />
+          <rect height="14" rx="2" ry="2" width="15" x="1" y="5" />
         </svg>
       ),
       action: () => {
@@ -2552,8 +4202,18 @@ const FloatingBlockInserter = ({
       id: "code",
       label: "Code Block",
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
         </svg>
       ),
       action: () => {
@@ -2565,8 +4225,19 @@ const FloatingBlockInserter = ({
       id: "divider",
       label: "Divider",
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6" strokeOpacity="0.3"/><line x1="3" y1="18" x2="21" y2="18" strokeOpacity="0.3"/>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <line x1="3" x2="21" y1="12" y2="12" />
+          <line strokeOpacity="0.3" x1="3" x2="21" y1="6" y2="6" />
+          <line strokeOpacity="0.3" x1="3" x2="21" y1="18" y2="18" />
         </svg>
       ),
       action: () => {
@@ -2578,8 +4249,18 @@ const FloatingBlockInserter = ({
       id: "quote",
       label: "Blockquote",
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
         </svg>
       ),
       action: () => {
@@ -2591,13 +4272,26 @@ const FloatingBlockInserter = ({
       id: "table",
       label: "Table",
       icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 3h18v18H3zM21 9H3M21 15H3M12 3v18"/>
+        <svg
+          fill="none"
+          height="16"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+          viewBox="0 0 24 24"
+          width="16"
+        >
+          <path d="M3 3h18v18H3zM21 9H3M21 15H3M12 3v18" />
         </svg>
       ),
       action: () => {
         setOpen(false);
-        editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+        editor
+          .chain()
+          .focus()
+          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+          .run();
       },
     },
   ];
@@ -2615,10 +4309,6 @@ const FloatingBlockInserter = ({
     >
       {/* + Button */}
       <button
-        onMouseDown={(e) => {
-          e.preventDefault();
-          setOpen((o) => !o);
-        }}
         className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 select-none flex-shrink-0"
         style={{
           border: "none",
@@ -2627,23 +4317,27 @@ const FloatingBlockInserter = ({
           boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
         }}
         title="Add block"
+        onMouseDown={(e) => {
+          e.preventDefault();
+          setOpen((o) => !o);
+        }}
       >
         <svg
-          width="13"
-          height="13"
-          viewBox="0 0 24 24"
           fill="none"
+          height="13"
           stroke="currentColor"
-          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
+          strokeWidth="2.5"
           style={{
             transform: open ? "rotate(45deg)" : "rotate(0deg)",
             transition: "transform 0.2s ease",
           }}
+          viewBox="0 0 24 24"
+          width="13"
         >
-          <line x1="12" y1="5" x2="12" y2="19" />
-          <line x1="5" y1="12" x2="19" y2="12" />
+          <line x1="12" x2="12" y1="5" y2="19" />
+          <line x1="5" x2="19" y1="12" y2="12" />
         </svg>
       </button>
 
@@ -2660,12 +4354,12 @@ const FloatingBlockInserter = ({
           {blockItems.map((item) => (
             <button
               key={item.id}
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-gray-500 hover:text-[#FF5B04] hover:bg-orange-50 transition-all duration-150"
+              title={item.label}
               onMouseDown={(e) => {
                 e.preventDefault();
                 item.action();
               }}
-              title={item.label}
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-gray-500 hover:text-[#FF5B04] hover:bg-orange-50 transition-all duration-150"
             >
               {item.icon}
             </button>
@@ -2783,10 +4477,15 @@ const SlashCommandMenu = ({
         title: "Table",
         icon: "田",
         desc: "Insert a 3x3 table",
-        command: () => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+        command: () =>
+          editor
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run(),
       },
     ],
-    [editor, onImageUrl, onVideoEmbed, imageUploadRef]
+    [editor, onImageUrl, onVideoEmbed, imageUploadRef],
   );
 
   useEffect(() => {
@@ -2795,7 +4494,9 @@ const SlashCommandMenu = ({
         onClose();
       }
     };
+
     if (isOpen) document.addEventListener("mousedown", handleClickOutside);
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onClose]);
 
@@ -2853,11 +4554,14 @@ const FormattingToolbar = ({
   onCopilotClick: () => void;
 }) => {
   const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
+
   if (!editor) return null;
 
   const btn = (active: boolean) =>
     `px-2.5 py-1.5 rounded-lg transition-all font-semibold text-sm font-geist ${
-      active ? "text-white" : "text-gray-500 hover:bg-black/5 hover:text-gray-900"
+      active
+        ? "text-white"
+        : "text-gray-500 hover:bg-black/5 hover:text-gray-900"
     }`;
   const activeStyle = { background: "#FF5B04" };
   const sep = <div className="w-px h-5 bg-black/10 mx-1" />;
@@ -2880,23 +4584,69 @@ const FormattingToolbar = ({
       }}
     >
       <button
-        onClick={onCopilotClick}
         className="mr-2 px-3 py-1.5 rounded-lg text-white font-semibold text-sm font-geist transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-sm hover:shadow flex items-center gap-1 cursor-pointer relative overflow-hidden group animate-pulse"
         style={{
           background: "linear-gradient(135deg, #FF5B04 0%, #D946EF 100%)",
         }}
+        onClick={onCopilotClick}
       >
         <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+        <svg
+          fill="none"
+          height="13"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="13"
+        >
+          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+        </svg>
         <span>AI Copilot</span>
       </button>
       {sep}
-      <button className={btn(editor.isActive("bold"))} style={editor.isActive("bold") ? activeStyle : {}} title="Bold (Ctrl+B)" onClick={() => editor.chain().focus().toggleBold().run()}>B</button>
-      <button className={btn(editor.isActive("italic"))} style={editor.isActive("italic") ? activeStyle : {}} title="Italic (Ctrl+I)" onClick={() => editor.chain().focus().toggleItalic().run()}><em>I</em></button>
-      <button className={btn(editor.isActive("strike"))} style={editor.isActive("strike") ? activeStyle : {}} title="Strikethrough" onClick={() => editor.chain().focus().toggleStrike().run()}><s>S</s></button>
-      <button className={btn(editor.isActive("code"))} style={editor.isActive("code") ? activeStyle : {}} title="Inline code" onClick={() => editor.chain().focus().toggleCode().run()}>{"<>"}</button>
-      <button className={btn(editor.isActive("highlight"))} style={editor.isActive("highlight") ? activeStyle : {}} title="Highlight" onClick={() => editor.chain().focus().toggleHighlight().run()}>Mk</button>
-      
+      <button
+        className={btn(editor.isActive("bold"))}
+        style={editor.isActive("bold") ? activeStyle : {}}
+        title="Bold (Ctrl+B)"
+        onClick={() => editor.chain().focus().toggleBold().run()}
+      >
+        B
+      </button>
+      <button
+        className={btn(editor.isActive("italic"))}
+        style={editor.isActive("italic") ? activeStyle : {}}
+        title="Italic (Ctrl+I)"
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+      >
+        <em>I</em>
+      </button>
+      <button
+        className={btn(editor.isActive("strike"))}
+        style={editor.isActive("strike") ? activeStyle : {}}
+        title="Strikethrough"
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+      >
+        <s>S</s>
+      </button>
+      <button
+        className={btn(editor.isActive("code"))}
+        style={editor.isActive("code") ? activeStyle : {}}
+        title="Inline code"
+        onClick={() => editor.chain().focus().toggleCode().run()}
+      >
+        {"<>"}
+      </button>
+      <button
+        className={btn(editor.isActive("highlight"))}
+        style={editor.isActive("highlight") ? activeStyle : {}}
+        title="Highlight"
+        onClick={() => editor.chain().focus().toggleHighlight().run()}
+      >
+        Mk
+      </button>
+
       {/* Sleek Text Color Menu */}
       <div className="relative flex items-center">
         <button
@@ -2906,7 +4656,14 @@ const FormattingToolbar = ({
           onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
         >
           <span className="flex items-center gap-1">
-            A<span className="w-2.5 h-2.5 rounded-full border border-black/10" style={{ backgroundColor: editor.getAttributes("textStyle").color || "#1A1A1A" }} />
+            A
+            <span
+              className="w-2.5 h-2.5 rounded-full border border-black/10"
+              style={{
+                backgroundColor:
+                  editor.getAttributes("textStyle").color || "#1A1A1A",
+              }}
+            />
           </span>
         </button>
         {colorPaletteOpen && (
@@ -2914,22 +4671,22 @@ const FormattingToolbar = ({
             {colors.map((c) => (
               <button
                 key={c.value}
+                className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
+                style={{ backgroundColor: c.value }}
+                title={c.name}
                 onClick={() => {
                   editor.chain().focus().setColor(c.value).run();
                   setColorPaletteOpen(false);
                 }}
-                className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
-                style={{ backgroundColor: c.value }}
-                title={c.name}
               />
             ))}
             <button
+              className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
+              title="Reset Color"
               onClick={() => {
                 editor.chain().focus().unsetColor().run();
                 setColorPaletteOpen(false);
               }}
-              className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
-              title="Reset Color"
             >
               Reset
             </button>
@@ -2956,66 +4713,216 @@ const FormattingToolbar = ({
       )}
 
       {sep}
-      <button className={btn(editor.isActive("heading", { level: 1 }))} style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}} title="Heading 1" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>H1</button>
-      <button className={btn(editor.isActive("heading", { level: 2 }))} style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}} title="Heading 2" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>H2</button>
-      <button className={btn(editor.isActive("heading", { level: 3 }))} style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}} title="Heading 3" onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>H3</button>
+      <button
+        className={btn(editor.isActive("heading", { level: 1 }))}
+        style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
+        title="Heading 1"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+      >
+        H1
+      </button>
+      <button
+        className={btn(editor.isActive("heading", { level: 2 }))}
+        style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
+        title="Heading 2"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+      >
+        H2
+      </button>
+      <button
+        className={btn(editor.isActive("heading", { level: 3 }))}
+        style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
+        title="Heading 3"
+        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+      >
+        H3
+      </button>
       {sep}
-      <button className={btn(editor.isActive("bulletList"))} style={editor.isActive("bulletList") ? activeStyle : {}} title="Bullet List" onClick={() => editor.chain().focus().toggleBulletList().run()}>• List</button>
-      <button className={btn(editor.isActive("orderedList"))} style={editor.isActive("orderedList") ? activeStyle : {}} title="Numbered List" onClick={() => editor.chain().focus().toggleOrderedList().run()}>1. List</button>
-      <button className={btn(editor.isActive("blockquote"))} style={editor.isActive("blockquote") ? activeStyle : {}} title="Blockquote" onClick={() => editor.chain().focus().toggleBlockquote().run()}>&ldquo; Quote</button>
-      <button className={btn(editor.isActive("codeBlock"))} style={editor.isActive("codeBlock") ? activeStyle : {}} title="Code Block" onClick={() => editor.chain().focus().toggleCodeBlock().run()}>{"</>"}</button>
+      <button
+        className={btn(editor.isActive("bulletList"))}
+        style={editor.isActive("bulletList") ? activeStyle : {}}
+        title="Bullet List"
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+      >
+        • List
+      </button>
+      <button
+        className={btn(editor.isActive("orderedList"))}
+        style={editor.isActive("orderedList") ? activeStyle : {}}
+        title="Numbered List"
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+      >
+        1. List
+      </button>
+      <button
+        className={btn(editor.isActive("blockquote"))}
+        style={editor.isActive("blockquote") ? activeStyle : {}}
+        title="Blockquote"
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+      >
+        &ldquo; Quote
+      </button>
+      <button
+        className={btn(editor.isActive("codeBlock"))}
+        style={editor.isActive("codeBlock") ? activeStyle : {}}
+        title="Code Block"
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+      >
+        {"</>"}
+      </button>
       {sep}
-      <button className={btn(false)} title="Horizontal Rule" onClick={() => editor.chain().focus().setHorizontalRule().run()}>—</button>
+      <button
+        className={btn(false)}
+        title="Horizontal Rule"
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      >
+        —
+      </button>
       {editor.isActive("table") && (
         <>
           {sep}
           <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
-            <span className="text-[10px] font-bold font-jetbrains-mono text-[#FF5B04] uppercase tracking-wider mr-1">Table Controls:</span>
-            
-            <button className={btn(false)} title="Add Row Above" onClick={() => editor.chain().focus().addRowBefore().run()}>
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            <span className="text-[10px] font-bold font-jetbrains-mono text-[#FF5B04] uppercase tracking-wider mr-1">
+              Table Controls:
+            </span>
+
+            <button
+              className={btn(false)}
+              title="Add Row Above"
+              onClick={() => editor.chain().focus().addRowBefore().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
               <span className="text-[10px] ml-1">Row ↑</span>
             </button>
-            
-            <button className={btn(false)} title="Add Row Below" onClick={() => editor.chain().focus().addRowAfter().run()}>
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+
+            <button
+              className={btn(false)}
+              title="Add Row Below"
+              onClick={() => editor.chain().focus().addRowAfter().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
               <span className="text-[10px] ml-1">Row ↓</span>
             </button>
-            
-            <button className={btn(false)} title="Delete Row" onClick={() => editor.chain().focus().deleteRow().run()}>
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14"/></svg>
+
+            <button
+              className={btn(false)}
+              title="Delete Row"
+              onClick={() => editor.chain().focus().deleteRow().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 12h14" />
+              </svg>
               <span className="text-[10px] ml-1">Row</span>
             </button>
 
             <div className="w-px h-4 bg-orange-200/50 mx-1" />
 
-            <button className={btn(false)} title="Add Column Before" onClick={() => editor.chain().focus().addColumnBefore().run()}>
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            <button
+              className={btn(false)}
+              title="Add Column Before"
+              onClick={() => editor.chain().focus().addColumnBefore().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
               <span className="text-[10px] ml-1">Col ←</span>
             </button>
-            
-            <button className={btn(false)} title="Add Column After" onClick={() => editor.chain().focus().addColumnAfter().run()}>
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14"/></svg>
+
+            <button
+              className={btn(false)}
+              title="Add Column After"
+              onClick={() => editor.chain().focus().addColumnAfter().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
               <span className="text-[10px] ml-1">Col →</span>
             </button>
-            
-            <button className={btn(false)} title="Delete Column" onClick={() => editor.chain().focus().deleteColumn().run()}>
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14"/></svg>
+
+            <button
+              className={btn(false)}
+              title="Delete Column"
+              onClick={() => editor.chain().focus().deleteColumn().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 12h14" />
+              </svg>
               <span className="text-[10px] ml-1">Col</span>
             </button>
 
             <div className="w-px h-4 bg-orange-200/50 mx-1" />
 
-            <button className={btn(false)} title="Toggle Header Row" onClick={() => editor.chain().focus().toggleHeaderRow().run()}>
+            <button
+              className={btn(false)}
+              title="Toggle Header Row"
+              onClick={() => editor.chain().focus().toggleHeaderRow().run()}
+            >
               <span className="text-[10px]">H-Row</span>
             </button>
 
-            <button className={btn(false)} title="Toggle Header Column" onClick={() => editor.chain().focus().toggleHeaderColumn().run()}>
+            <button
+              className={btn(false)}
+              title="Toggle Header Column"
+              onClick={() => editor.chain().focus().toggleHeaderColumn().run()}
+            >
               <span className="text-[10px]">H-Col</span>
             </button>
 
-            <button className={btn(false)} title="Delete Table" style={{ color: "#dc2626" }} onClick={() => editor.chain().focus().deleteTable().run()}>
-              <svg className="w-3.5 h-3.5 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            <button
+              className={btn(false)}
+              style={{ color: "#dc2626" }}
+              title="Delete Table"
+              onClick={() => editor.chain().focus().deleteTable().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
               <span className="text-[10px] ml-1">Delete</span>
             </button>
           </div>
@@ -3029,7 +4936,10 @@ const FormattingToolbar = ({
 const BlogEditor = () => {
   const [mounted, setMounted] = useState(false);
   const [slashMenuOpen, setSlashMenuOpen] = useState(false);
-  const [slashMenuPosition, setSlashMenuPosition] = useState({ top: 0, left: 0 });
+  const [slashMenuPosition, setSlashMenuPosition] = useState({
+    top: 0,
+    left: 0,
+  });
   const [title, setTitle] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [excerpt, setExcerpt] = useState("");
@@ -3045,7 +4955,9 @@ const BlogEditor = () => {
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [postType, setPostType] = useState<"blog" | "tutorial" | "case-study" | "community-insight">("blog");
+  const [postType, setPostType] = useState<
+    "blog" | "tutorial" | "case-study" | "community-insight"
+  >("blog");
   const [typeSelected, setTypeSelected] = useState(false);
   const [saveStatus, setSaveStatus] = useState<
     "Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"
@@ -3055,16 +4967,22 @@ const BlogEditor = () => {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
-  const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(null);
+  const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(
+    null,
+  );
   const [validationError, setValidationError] = useState<string | null>(null);
   // Navigation guard + dirty state
   const [isDirty, setIsDirty] = useState(false);
   const [isDataInitialized, setIsDataInitialized] = useState(false);
   const [showUnsavedModal, setShowUnsavedModal] = useState(false);
+  const [showSEOModal, setShowSEOModal] = useState(false);
   const [savedBlogId, setSavedBlogId] = useState<string>("");
+  const [seoData, setSeoData] = useState<PostSEO>({});
+  const [currentSlug, setCurrentSlug] = useState("");
+  const [isSlugManual, setIsSlugManual] = useState(false);
   const pendingNavHref = useRef<string>("");
-  const pendingNavIsBack = useRef(false);    // true when guard was tripped by browser back/forward
-  const isDirtyRef = useRef(false);          // ref mirror — always current inside event handlers
+  const pendingNavIsBack = useRef(false); // true when guard was tripped by browser back/forward
+  const isDirtyRef = useRef(false); // ref mirror — always current inside event handlers
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -3075,8 +4993,21 @@ const BlogEditor = () => {
     setIsDataInitialized(true);
   }, []);
 
+  useEffect(() => {
+    if (!isSlugManual && title) {
+      const slug = title
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "");
+
+      setCurrentSlug(slug);
+    }
+  }, [title, isSlugManual]);
+
   // Keep ref in sync so event-handler closures are never stale
-  useEffect(() => { isDirtyRef.current = isDirty; }, [isDirty]);
+  useEffect(() => {
+    isDirtyRef.current = isDirty;
+  }, [isDirty]);
 
   // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
   useEffect(() => {
@@ -3090,10 +5021,14 @@ const BlogEditor = () => {
     const handler = (e: BeforeUnloadEvent) => {
       if (!isDirtyRef.current) return;
       e.preventDefault();
-      e.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+      e.returnValue =
+        "You have unsaved changes. Are you sure you want to leave?";
+
       return e.returnValue;
     };
+
     window.addEventListener("beforeunload", handler);
+
     return () => window.removeEventListener("beforeunload", handler);
   }, []);
 
@@ -3102,20 +5037,32 @@ const BlogEditor = () => {
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
       if (!isDirtyRef.current) return;
-      
+
       const anchor = (e.target as HTMLElement).closest("a");
+
       if (!anchor) return;
-      
+
       const href = anchor.getAttribute("href");
       const target = anchor.getAttribute("target");
 
       // Skip if it's an external link, a hash link, or has a target="_blank"
-      if (!href || href.startsWith("http") || href.startsWith("#") || target === "_blank") return;
-      
+      if (
+        !href ||
+        href.startsWith("http") ||
+        href.startsWith("#") ||
+        target === "_blank"
+      )
+        return;
+
       // Resolve relative URLs to absolute for comparison
       try {
         const url = new URL(href, window.location.origin);
-        if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+
+        if (
+          url.origin !== window.location.origin ||
+          url.pathname === window.location.pathname
+        )
+          return;
 
         e.preventDefault();
         e.stopPropagation();
@@ -3127,7 +5074,9 @@ const BlogEditor = () => {
         return;
       }
     };
+
     document.addEventListener("click", handleLinkClick, true);
+
     return () => document.removeEventListener("click", handleLinkClick, true);
   }, []);
 
@@ -3140,14 +5089,16 @@ const BlogEditor = () => {
 
     const handlePopState = (e: PopStateEvent) => {
       if (!isDirtyRef.current) return;
-      
+
       // Re-push our sentinel so the page stays in place visually
       window.history.pushState({ blogGuard: true }, "");
       pendingNavIsBack.current = true;
       pendingNavHref.current = "";
       setShowUnsavedModal(true);
     };
+
     window.addEventListener("popstate", handlePopState);
+
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
@@ -3166,6 +5117,7 @@ const BlogEditor = () => {
         includeChildren: true,
         placeholder: ({ node }) => {
           if (node.type.name === "heading") return "Heading";
+
           return "Type '/' for commands or click + to add a block…";
         },
       }),
@@ -3198,10 +5150,15 @@ const BlogEditor = () => {
           if (event.key === "/") {
             const { selection } = view.state;
             const { $from } = selection;
-            const textBefore = $from.parent.textContent.slice(0, $from.parentOffset);
+            const textBefore = $from.parent.textContent.slice(
+              0,
+              $from.parentOffset,
+            );
+
             if (textBefore === "" || textBefore.endsWith(" ")) {
               setTimeout(() => {
                 const coords = view.coordsAtPos(selection.from);
+
                 setSlashMenuPosition({
                   top: coords.bottom + window.scrollY,
                   left: coords.left + window.scrollX,
@@ -3211,51 +5168,68 @@ const BlogEditor = () => {
             }
           } else if (event.key === "Escape" && slashMenuOpen) {
             setSlashMenuOpen(false);
+
             return true;
           }
+
           return false;
         },
       },
       handleDrop: (view, event, _slice, moved) => {
         if (!moved && event.dataTransfer?.files?.[0]) {
           const file = event.dataTransfer.files[0];
+
           if (file.type.startsWith("image/")) {
             event.preventDefault();
             const reader = new FileReader();
+
             reader.onload = (e) => {
               const url = e.target?.result as string;
               const { schema } = view.state;
-              const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY });
+              const coordinates = view.posAtCoords({
+                left: event.clientX,
+                top: event.clientY,
+              });
+
               if (coordinates) {
                 const node = schema.nodes.image.create({ src: url });
+
                 view.dispatch(view.state.tr.insert(coordinates.pos, node));
               }
             };
             reader.readAsDataURL(file);
+
             return true;
           }
         }
+
         return false;
       },
       handlePaste: (_view, event) => {
         const items = event.clipboardData?.items;
+
         if (items) {
           for (let i = 0; i < items.length; i++) {
             if (items[i].type.indexOf("image") !== -1) {
               event.preventDefault();
               const file = items[i].getAsFile();
+
               if (file) {
                 const reader = new FileReader();
+
                 reader.onload = (e) => {
                   const url = e.target?.result as string;
+
                   editor?.chain().focus().setImage({ src: url }).run();
                 };
                 reader.readAsDataURL(file);
               }
+
               return true;
             }
           }
         }
+
         return false;
       },
     },
@@ -3270,17 +5244,20 @@ const BlogEditor = () => {
   const editorStats = useEditorState({
     editor,
     selector: (ctx: any) => {
-      if (!ctx.editor) return { words: 0, characters: 0, paragraphs: 0, readTime: 1 };
+      if (!ctx.editor)
+        return { words: 0, characters: 0, paragraphs: 0, readTime: 1 };
       const text = ctx.editor.getText();
       const words = text.trim() ? text.trim().split(/\s+/).length : 0;
       const characters = text.length;
       const readTime = Math.ceil(words / 200) || 1;
       let paragraphs = 0;
+
       ctx.editor.state.doc.descendants((node: any) => {
         if (node.type.name === "paragraph") {
           paragraphs++;
         }
       });
+
       return { words, characters, paragraphs, readTime };
     },
   }) || { words: 0, characters: 0, paragraphs: 0, readTime: 1 };
@@ -3289,10 +5266,13 @@ const BlogEditor = () => {
   const handleInlineImageUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
+
       if (file && editor) {
         const reader = new FileReader();
+
         reader.onload = (e) => {
           const url = e.target?.result as string;
+
           editor.chain().focus().setImage({ src: url }).run();
         };
         reader.readAsDataURL(file);
@@ -3300,35 +5280,41 @@ const BlogEditor = () => {
       // Reset so same file can be re-selected
       event.target.value = "";
     },
-    [editor]
+    [editor],
   );
 
   const handleBannerImageUpload = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
+
       if (file) {
         const reader = new FileReader();
+
         reader.onload = (e) => {
           const url = e.target?.result as string;
+
           setFeaturedImage(url);
           setBannerImage(url);
         };
         reader.readAsDataURL(file);
       }
     },
-    []
+    [],
   );
 
   // Navigate safely — shows unsaved-changes modal if form is dirty
-  const navigateSafely = useCallback((href: string) => {
-    if (isDirty) {
-      pendingNavHref.current = href;
-      pendingNavIsBack.current = false;
-      setShowUnsavedModal(true);
-    } else {
-      router.push(href);
-    }
-  }, [isDirty, router]);
+  const navigateSafely = useCallback(
+    (href: string) => {
+      if (isDirty) {
+        pendingNavHref.current = href;
+        pendingNavIsBack.current = false;
+        setShowUnsavedModal(true);
+      } else {
+        router.push(href);
+      }
+    },
+    [isDirty, router],
+  );
 
   const saveBlog = async (published: boolean) => {
     setIsSaving(true);
@@ -3346,12 +5332,16 @@ const BlogEditor = () => {
           tags,
           published,
           postType,
+          slug: currentSlug,
+          seo: seoData,
         }),
       });
       const data = await response.json();
+
       if (!response.ok) throw new Error(data.error || "Failed to save blog");
       // Capture the new blog ID so "Keep Editing" can redirect to the edit page
       const newId = data.data?._id ?? data._id ?? "";
+
       setSavedBlogId(newId);
       setSaveStatus(published ? "Published" : "Saved");
       setModalSuccess(published ? "publish" : "draft");
@@ -3369,10 +5359,12 @@ const BlogEditor = () => {
   const handleSaveDraft = useCallback(() => {
     if (!title.trim()) {
       setValidationError("Please enter a title for your blog post.");
+
       return;
     }
     if (!editor || editor.isEmpty) {
       setValidationError("Please add some content to your blog post.");
+
       return;
     }
     setShowSaveModal(true);
@@ -3381,10 +5373,12 @@ const BlogEditor = () => {
   const handlePublish = useCallback(() => {
     if (!title.trim()) {
       setValidationError("Please enter a title for your blog post.");
+
       return;
     }
     if (!editor || editor.isEmpty) {
       setValidationError("Please add some content to your blog post.");
+
       return;
     }
     setShowPublishModal(true);
@@ -3399,8 +5393,18 @@ const BlogEditor = () => {
       label: "Blog",
       description: "Share thoughts, insights and perspectives",
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        <svg
+          fill="none"
+          height="22"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.75"
+          viewBox="0 0 24 24"
+          width="22"
+        >
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
         </svg>
       ),
     },
@@ -3409,8 +5413,18 @@ const BlogEditor = () => {
       label: "Tutorial",
       description: "Step-by-step guides and how-tos",
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        <svg
+          fill="none"
+          height="22"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.75"
+          viewBox="0 0 24 24"
+          width="22"
+        >
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
         </svg>
       ),
     },
@@ -3419,8 +5433,18 @@ const BlogEditor = () => {
       label: "Case Study",
       description: "In-depth analysis of a project or problem",
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        <svg
+          fill="none"
+          height="22"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.75"
+          viewBox="0 0 24 24"
+          width="22"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" x2="16.65" y1="21" y2="16.65" />
         </svg>
       ),
     },
@@ -3429,8 +5453,19 @@ const BlogEditor = () => {
       label: "Community Insight",
       description: "Trends, observations and community highlights",
       icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        <svg
+          fill="none"
+          height="22"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.75"
+          viewBox="0 0 24 24"
+          width="22"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" x2="12" y1="8" y2="12" />
+          <line x1="12" x2="12.01" y1="16" y2="16" />
         </svg>
       ),
     },
@@ -3453,19 +5488,38 @@ const BlogEditor = () => {
         >
           {/* Close button */}
           <button
-            onClick={() => router.push("/admin/posts")}
             className="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+            onClick={() => router.push("/admin/posts")}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            <svg
+              fill="none"
+              height="18"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="18"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
             </svg>
           </button>
 
           {/* Header */}
           <div className="mb-6">
-            <p className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-semibold mb-1" style={{ color: "#FF5B04" }}>New Post</p>
-            <h2 className="text-xl font-bold font-geist text-gray-900">What are you creating?</h2>
-            <p className="text-sm text-gray-400 font-geist mt-1">Choose a post type. This can't be changed after you start writing.</p>
+            <p
+              className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-semibold mb-1"
+              style={{ color: "#FF5B04" }}
+            >
+              New Post
+            </p>
+            <h2 className="text-xl font-bold font-geist text-gray-900">
+              What are you creating?
+            </h2>
+            <p className="text-sm text-gray-400 font-geist mt-1">
+              Choose a post type. This can't be changed after you start writing.
+            </p>
           </div>
 
           {/* Type grid */}
@@ -3473,25 +5527,34 @@ const BlogEditor = () => {
             {postTypes.map(({ value, label, description, icon }) => (
               <button
                 key={value}
-                onClick={() => setPostType(value)}
                 className={`flex flex-col items-start gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
                   postType === value
                     ? "border-[#FF5B04] bg-orange-50"
                     : "border-black/8 bg-black/[0.01] hover:border-[#FF5B04]/40 hover:bg-orange-50/40"
                 }`}
+                onClick={() => setPostType(value)}
               >
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
                   style={{
-                    background: postType === value ? "rgba(255,91,4,0.12)" : "rgba(0,0,0,0.05)",
+                    background:
+                      postType === value
+                        ? "rgba(255,91,4,0.12)"
+                        : "rgba(0,0,0,0.05)",
                     color: postType === value ? "#FF5B04" : "#6b7280",
                   }}
                 >
                   {icon}
                 </div>
                 <div>
-                  <p className={`text-sm font-semibold font-geist ${ postType === value ? "text-[#FF5B04]" : "text-gray-800"}`}>{label}</p>
-                  <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">{description}</p>
+                  <p
+                    className={`text-sm font-semibold font-geist ${postType === value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                  >
+                    {label}
+                  </p>
+                  <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">
+                    {description}
+                  </p>
                 </div>
               </button>
             ))}
@@ -3500,19 +5563,29 @@ const BlogEditor = () => {
           {/* Actions */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => router.push("/admin/posts")}
               className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors"
+              onClick={() => router.push("/admin/posts")}
             >
               Cancel
             </button>
             <button
-              onClick={() => setTypeSelected(true)}
               className="ml-auto flex items-center gap-2 text-sm font-semibold font-geist text-white h-10 px-6 rounded-xl transition-colors"
               style={{ background: "#FF5B04" }}
+              onClick={() => setTypeSelected(true)}
             >
               Continue as {selectedTypeInfo.label}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              <svg
+                fill="none"
+                height="14"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="14"
+              >
+                <line x1="5" x2="19" y1="12" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
               </svg>
             </button>
           </div>
@@ -3525,6 +5598,7 @@ const BlogEditor = () => {
     if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
       e.preventDefault();
       const t = tagInput.trim().replace(/,$/, "");
+
       if (t && !tags.includes(t)) setTags([...tags, t]);
       setTagInput("");
     }
@@ -3552,24 +5626,46 @@ const BlogEditor = () => {
       >
         <div className="flex items-center gap-3">
           <button
-            onClick={() => navigateSafely("/admin/blogs")}
             className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
+            onClick={() => navigateSafely("/admin/blogs")}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            <svg
+              fill="none"
+              height="14"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="14"
+            >
+              <line x1="19" x2="5" y1="12" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
             </svg>
             Posts
           </button>
           <span className="text-gray-200">/</span>
-          <span className="text-sm font-medium font-geist text-gray-900">New Post</span>
+          <span className="text-sm font-medium font-geist text-gray-900">
+            New Post
+          </span>
           {/* Locked type badge */}
           <span
             className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
             style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
             title="Post type is locked for this draft"
           >
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            <svg
+              fill="none"
+              height="10"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="10"
+            >
+              <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
             {selectedTypeInfo.label}
           </span>
@@ -3582,19 +5678,19 @@ const BlogEditor = () => {
             {saveStatus}
           </span>
           <Button
-            variant="flat"
-            disabled={isSaving}
-            onClick={handleSaveDraft}
             className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
+            disabled={isSaving}
+            variant="flat"
+            onClick={handleSaveDraft}
           >
             Save Draft
           </Button>
           <Button
+            className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
             disabled={isSaving}
             isLoading={isSaving}
-            onClick={handlePublish}
-            className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
             style={{ background: "#FF5B04" }}
+            onClick={handlePublish}
           >
             Publish
           </Button>
@@ -3602,10 +5698,13 @@ const BlogEditor = () => {
       </div>
 
       {/* ── Formatting Toolbar ── */}
-      <FormattingToolbar 
-        editor={editor} 
-        onLinkClick={() => { editor.chain().focus().extendMarkRange("link").run(); setShowLinkModal(true); }} 
+      <FormattingToolbar
+        editor={editor}
         onCopilotClick={() => setIsCopilotOpen(true)}
+        onLinkClick={() => {
+          editor.chain().focus().extendMarkRange("link").run();
+          setShowLinkModal(true);
+        }}
       />
 
       {/* ── Two-column Layout ── */}
@@ -3616,38 +5715,81 @@ const BlogEditor = () => {
           {bannerImage ? (
             <div className="relative group">
               <img
-                src={bannerImage}
                 alt="Banner"
                 className="w-full h-48 object-cover"
+                src={bannerImage}
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
               <button
-                onClick={() => { setBannerImage(""); setFeaturedImage(""); }}
                 className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+                onClick={() => {
+                  setBannerImage("");
+                  setFeaturedImage("");
+                }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <line x1="18" x2="6" y1="6" y2="18" />
+                  <line x1="6" x2="18" y1="6" y2="18" />
+                </svg>
               </button>
               <label className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                 <span className="text-xs font-geist font-medium text-white bg-black/60 hover:bg-black/80 transition-colors px-3 py-1.5 rounded-lg">
                   Change Banner
                 </span>
-                <input type="file" accept="image/*" className="hidden" onChange={handleBannerImageUpload} />
+                <input
+                  accept="image/*"
+                  className="hidden"
+                  type="file"
+                  onChange={handleBannerImageUpload}
+                />
               </label>
             </div>
           ) : (
             <label className="flex items-center gap-2 px-10 pt-6 pb-2 cursor-pointer group w-fit">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="group-hover:stroke-[#FF5B04] transition-colors">
-                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+              <svg
+                className="group-hover:stroke-[#FF5B04] transition-colors"
+                fill="none"
+                height="16"
+                stroke="#d1d5db"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.75"
+                viewBox="0 0 24 24"
+                width="16"
+              >
+                <rect height="18" rx="2" width="18" x="3" y="3" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
               </svg>
               <span className="text-xs font-geist text-gray-300 group-hover:text-[#FF5B04] transition-colors">
                 Add cover image
               </span>
-              <input type="file" accept="image/*" className="hidden" onChange={handleBannerImageUpload} />
+              <input
+                accept="image/*"
+                className="hidden"
+                type="file"
+                onChange={handleBannerImageUpload}
+              />
             </label>
           )}
 
           {/* Title */}
-          <div className={bannerImage ? "px-14 pt-6 pb-4 relative" : "px-14 pt-4 pb-4 relative"}>
+          <div
+            className={
+              bannerImage
+                ? "px-14 pt-6 pb-4 relative"
+                : "px-14 pt-4 pb-4 relative"
+            }
+          >
             <div className="flex items-center gap-3">
               <input
                 className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
@@ -3657,36 +5799,50 @@ const BlogEditor = () => {
                 onChange={(e) => setTitle(e.target.value)}
               />
               <button
+                className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
                 type="button"
                 onClick={() => {
                   setIsTitleModalOpen(true);
                 }}
-                className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
               >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                <svg
+                  fill="none"
+                  height="11"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="11"
+                >
+                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                </svg>
                 AI Assistant
               </button>
             </div>
           </div>
 
-          <div className="h-px mx-14" style={{ background: "rgba(0,0,0,0.06)" }} />
+          <div
+            className="h-px mx-14"
+            style={{ background: "rgba(0,0,0,0.06)" }}
+          />
 
           {/* Editor area */}
           <div ref={editorRef} className="relative px-14 py-4">
             {/* Floating Block Inserter */}
             <FloatingBlockInserter
               editor={editor}
+              imageUploadRef={inlineImageUploadRef}
               onImageUrl={() => setShowImageUrlModal(true)}
               onVideoEmbed={() => setShowVideoModal(true)}
-              imageUploadRef={inlineImageUploadRef}
             />
 
             {/* Hidden file input for inline image upload */}
             <input
               ref={inlineImageUploadRef}
-              type="file"
               accept="image/*"
               className="hidden"
+              type="file"
               onChange={handleInlineImageUpload}
             />
 
@@ -3696,12 +5852,18 @@ const BlogEditor = () => {
 
             <SlashCommandMenu
               editor={editor}
+              imageUploadRef={inlineImageUploadRef}
               isOpen={slashMenuOpen}
               position={slashMenuPosition}
               onClose={() => setSlashMenuOpen(false)}
-              onImageUrl={() => { setSlashMenuOpen(false); setShowImageUrlModal(true); }}
-              onVideoEmbed={() => { setSlashMenuOpen(false); setShowVideoModal(true); }}
-              imageUploadRef={inlineImageUploadRef}
+              onImageUrl={() => {
+                setSlashMenuOpen(false);
+                setShowImageUrlModal(true);
+              }}
+              onVideoEmbed={() => {
+                setSlashMenuOpen(false);
+                setShowVideoModal(true);
+              }}
             />
           </div>
         </div>
@@ -3715,37 +5877,56 @@ const BlogEditor = () => {
             </p>
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-gray-900">{editorStats.words}</div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Words</div>
+                <div className="text-2xl font-bold font-geist text-gray-900">
+                  {editorStats.words}
+                </div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                  Words
+                </div>
               </div>
               <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-gray-900">{editorStats.characters}</div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Characters</div>
+                <div className="text-2xl font-bold font-geist text-gray-900">
+                  {editorStats.characters}
+                </div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                  Characters
+                </div>
               </div>
               <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-gray-900">{editorStats.paragraphs}</div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Paragraphs</div>
+                <div className="text-2xl font-bold font-geist text-gray-900">
+                  {editorStats.paragraphs}
+                </div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                  Paragraphs
+                </div>
               </div>
               <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-[#FF5B04]">{editorStats.readTime} min</div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">Read Time</div>
+                <div className="text-2xl font-bold font-geist text-[#FF5B04]">
+                  {editorStats.readTime} min
+                </div>
+                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                  Read Time
+                </div>
               </div>
             </div>
-            
+
             {/* Writing Goal Progress */}
             <div className="mt-3.5 pt-3 border-t border-black/5">
               <div className="flex justify-between items-center mb-1">
-                <span className="text-[10px] font-geist text-gray-500 font-medium">Writing Goal</span>
+                <span className="text-[10px] font-geist text-gray-500 font-medium">
+                  Writing Goal
+                </span>
                 <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                  {Math.min(100, Math.round((editorStats.words / 500) * 100))}% ({editorStats.words}/500 words)
+                  {Math.min(100, Math.round((editorStats.words / 500) * 100))}%
+                  ({editorStats.words}/500 words)
                 </span>
               </div>
               <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full rounded-full transition-all duration-500 ease-out"
-                  style={{ 
+                  style={{
                     width: `${Math.min(100, (editorStats.words / 500) * 100)}%`,
-                    background: "#FF5B04"
+                    background: "#FF5B04",
                   }}
                 />
               </div>
@@ -3759,23 +5940,37 @@ const BlogEditor = () => {
                 Excerpt
               </p>
               <button
+                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
                 onClick={() => {
                   if (!editor || editor.isEmpty) {
-                    setValidationError("Please write some content first so the AI can summarize it.");
+                    setValidationError(
+                      "Please write some content first so the AI can summarize it.",
+                    );
+
                     return;
                   }
                   setIsExcerptModalOpen(true);
                 }}
-                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
               >
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                <svg
+                  fill="none"
+                  height="10"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="10"
+                >
+                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                </svg>
                 AI Assistant
               </button>
             </div>
             <textarea
               className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
-              style={{ minHeight: 80 }}
               placeholder="Short summary shown in blog listings…"
+              style={{ minHeight: 80 }}
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
             />
@@ -3788,13 +5983,24 @@ const BlogEditor = () => {
                 Tags
               </p>
               <button
+                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
                 type="button"
                 onClick={() => {
                   setIsTagsModalOpen(true);
                 }}
-                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
               >
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z"/></svg>
+                <svg
+                  fill="none"
+                  height="10"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width="10"
+                >
+                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                </svg>
                 AI Assistant
               </button>
             </div>
@@ -3806,7 +6012,24 @@ const BlogEditor = () => {
                   style={{ background: "#FFF0E8", color: "#FF5B04" }}
                 >
                   {tag}
-                  <button onClick={() => setTags(tags.filter((t) => t !== tag))} className="opacity-60 hover:opacity-100 leading-none flex items-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+                  <button
+                    className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                    onClick={() => setTags(tags.filter((t) => t !== tag))}
+                  >
+                    <svg
+                      fill="none"
+                      height="9"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="3"
+                      viewBox="0 0 24 24"
+                      width="9"
+                    >
+                      <line x1="18" x2="6" y1="6" y2="18" />
+                      <line x1="6" x2="18" y1="6" y2="18" />
+                    </svg>
+                  </button>
                 </span>
               ))}
             </div>
@@ -3819,6 +6042,47 @@ const BlogEditor = () => {
             />
           </div>
 
+          {/* SEO card */}
+          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 overflow-hidden relative group">
+            <div className="flex justify-between items-center mb-3">
+              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                Search Engine
+              </p>
+              <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 text-[9px] font-bold font-jetbrains-mono uppercase">
+                Optimized
+              </span>
+            </div>
+
+            <div className="space-y-3 mb-4">
+              <div className="p-3 bg-black/[0.02] rounded-xl border border-black/5">
+                <p className="text-[9px] font-jetbrains-mono text-gray-400 uppercase mb-1">
+                  Focus Keyword
+                </p>
+                <p className="text-xs font-semibold text-gray-700">
+                  {seoData?.focusKeyword || "Not set"}
+                </p>
+              </div>
+            </div>
+
+            <button
+              className="w-full py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-gray-800 transition-all flex items-center justify-center gap-2"
+              onClick={() => setShowSEOModal(true)}
+            >
+              <svg
+                fill="none"
+                height="12"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="12"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              Open SEO Editor
+            </button>
+          </div>
+
           {/* Quick insert card */}
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
             <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
@@ -3826,45 +6090,100 @@ const BlogEditor = () => {
             </p>
             <div className="space-y-1">
               <label className="flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.75"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <rect height="18" rx="2" width="18" x="3" y="3" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
                 </svg>
                 Upload image
-                <input type="file" accept="image/*" className="hidden" onChange={handleInlineImageUpload} />
+                <input
+                  accept="image/*"
+                  className="hidden"
+                  type="file"
+                  onChange={handleInlineImageUpload}
+                />
               </label>
               <button
-                onClick={() => setShowImageUrlModal(true)}
                 className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                onClick={() => setShowImageUrlModal(true)}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.75"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                 </svg>
                 Image from URL
               </button>
               <button
-                onClick={() => setShowVideoModal(true)}
                 className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                onClick={() => setShowVideoModal(true)}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.75"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <polygon points="23 7 16 12 23 17 23 7" />
+                  <rect height="14" rx="2" ry="2" width="15" x="1" y="5" />
                 </svg>
                 Embed video
               </button>
               <button
-                onClick={() => editor.chain().focus().setHorizontalRule().run()}
                 className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                onClick={() => editor.chain().focus().setHorizontalRule().run()}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="3" y1="12" x2="21" y2="12"/>
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.75"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <line x1="3" x2="21" y1="12" y2="12" />
                 </svg>
                 Add divider
               </button>
               <button
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
                 className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.75"
+                  viewBox="0 0 24 24"
+                  width="14"
+                >
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
                 </svg>
                 Code block
               </button>
@@ -3875,37 +6194,37 @@ const BlogEditor = () => {
 
       {/* ── Modals ── */}
       <AICopilotModal
-        isOpen={isCopilotOpen}
-        onClose={() => setIsCopilotOpen(false)}
         editor={editor}
+        isOpen={isCopilotOpen}
         postTitle={title}
         postType={postType}
+        onClose={() => setIsCopilotOpen(false)}
       />
       <AIExcerptModal
-        isOpen={isExcerptModalOpen}
-        onClose={() => setIsExcerptModalOpen(false)}
         editor={editor}
+        excerpt={excerpt}
+        isOpen={isExcerptModalOpen}
         postTitle={title}
         postType={postType}
-        excerpt={excerpt}
         setExcerpt={setExcerpt}
+        onClose={() => setIsExcerptModalOpen(false)}
       />
       <AITitleModal
-        isOpen={isTitleModalOpen}
-        onClose={() => setIsTitleModalOpen(false)}
         editor={editor}
-        title={title}
-        setTitle={setTitle}
+        isOpen={isTitleModalOpen}
         postType={postType}
+        setTitle={setTitle}
+        title={title}
+        onClose={() => setIsTitleModalOpen(false)}
       />
       <AITagsModal
-        isOpen={isTagsModalOpen}
-        onClose={() => setIsTagsModalOpen(false)}
         editor={editor}
+        isOpen={isTagsModalOpen}
         postTitle={title}
         postType={postType}
-        tags={tags}
         setTags={setTags}
+        tags={tags}
+        onClose={() => setIsTagsModalOpen(false)}
       />
       {showImageUrlModal && (
         <ImageUrlModal
@@ -3920,77 +6239,98 @@ const BlogEditor = () => {
         />
       )}
       {showLinkModal && (
-        <LinkModal
-          editor={editor}
-          onClose={() => setShowLinkModal(false)}
-        />
+        <LinkModal editor={editor} onClose={() => setShowLinkModal(false)} />
       )}
 
       {validationError && (
         <AlertModal
-          title="Attention Required"
           message={validationError}
+          title="Attention Required"
           onClose={() => setValidationError(null)}
         />
       )}
 
       <PublishConfirmModal
-        isOpen={showPublishModal}
-        onClose={() => { if (!isSaving) { setShowPublishModal(false); setModalSuccess(null); } }}
-        onConfirm={() => saveBlog(true)}
-        isSaving={isSaving}
         blogData={{ title, bannerImage, excerpt, tags }}
+        isOpen={showPublishModal}
+        isSaving={isSaving}
         isSuccess={modalSuccess === "publish"}
-        onViewBlogs={() => router.push("/admin/blogs")}
+        onClose={() => {
+          if (!isSaving) {
+            setShowPublishModal(false);
+            setModalSuccess(null);
+          }
+        }}
+        onConfirm={() => saveBlog(true)}
         onKeepEditing={() => {
           // After creating a post, redirect to its edit page so the user can keep editing
           if (savedBlogId) {
-            router.push(`/admin/blogs/edit/${savedBlogId}`);
+            router.push(`/admin/posts/edit/${savedBlogId}`);
           } else {
             setShowPublishModal(false);
             setModalSuccess(null);
           }
         }}
+        onViewBlogs={() => router.push("/admin/posts")}
       />
 
       <SaveDraftModal
-        isOpen={showSaveModal}
-        onClose={() => { if (!isSaving) { setShowSaveModal(false); setModalSuccess(null); } }}
-        onConfirm={() => saveBlog(false)}
-        isSaving={isSaving}
         blogData={{ title, excerpt }}
+        isOpen={showSaveModal}
+        isSaving={isSaving}
         isSuccess={modalSuccess === "draft"}
-        onViewBlogs={() => router.push("/admin/blogs")}
+        onClose={() => {
+          if (!isSaving) {
+            setShowSaveModal(false);
+            setModalSuccess(null);
+          }
+        }}
+        onConfirm={() => saveBlog(false)}
         onKeepEditing={() => {
           // After creating a draft, redirect to its edit page
           if (savedBlogId) {
-            router.push(`/admin/blogs/edit/${savedBlogId}`);
+            router.push(`/admin/posts/edit/${savedBlogId}`);
           } else {
             setShowSaveModal(false);
             setModalSuccess(null);
           }
         }}
+        onViewBlogs={() => router.push("/admin/posts")}
       />
 
       {/* Navigation guard modal */}
       {showUnsavedModal && (
         <UnsavedChangesModal
-          onStay={() => setShowUnsavedModal(false)}
           onLeave={() => {
             setIsDirty(false);
             setShowUnsavedModal(false);
             if (pendingNavIsBack.current) {
-        // We pushed a sentinel state, so we need to go back twice to actually leave
-        window.history.go(-2);
-      } else if (pendingNavHref.current) {
-        router.push(pendingNavHref.current);
-      } else {
-        router.push("/admin/posts");
-      }
+              // We pushed a sentinel state, so we need to go back twice to actually leave
+              window.history.go(-2);
+            } else if (pendingNavHref.current) {
+              router.push(pendingNavHref.current);
+            } else {
+              router.push("/admin/posts");
+            }
           }}
+          onStay={() => setShowUnsavedModal(false)}
         />
       )}
 
+      <SEOEditorModal
+        data={seoData}
+        isOpen={showSEOModal}
+        postContent={editor?.getHTML() || ""}
+        postTitle={title}
+        postType={postType}
+        slug={currentSlug}
+        onChange={setSeoData}
+        onClose={() => setShowSEOModal(false)}
+        onSlugChange={(s) => {
+          setCurrentSlug(s);
+          setIsSlugManual(true);
+        }}
+      />
       {/* ── Styles ── */}
       <style>{`
         @keyframes fadeSlideIn {

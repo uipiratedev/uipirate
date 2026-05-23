@@ -27,7 +27,7 @@ const AIConfigSchema: Schema<IAIConfig> = new Schema(
     },
     defaultModel: { type: String, default: "gpt-4o-mini" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Singleton pattern — only one config document per app

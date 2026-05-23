@@ -20,7 +20,7 @@ const FloatingLetsTalkButton = () => {
   // Detect when footer is visible
   useEffect(() => {
     const footer = document.querySelector("footer");
-    
+
     if (!footer) return;
 
     const observer = new IntersectionObserver(
@@ -31,7 +31,7 @@ const FloatingLetsTalkButton = () => {
       },
       {
         threshold: 0.1, // Trigger when 10% of footer is visible
-      }
+      },
     );
 
     observer.observe(footer);

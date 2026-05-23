@@ -35,7 +35,12 @@ function buildFaqSchema() {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: allFaqs.map(
-      (faq: { heading: string; title1: string; list: string[]; title2?: string }) => ({
+      (faq: {
+        heading: string;
+        title1: string;
+        list: string[];
+        title2?: string;
+      }) => ({
         "@type": "Question",
         name: faq.heading.replace(/^[^\w]*/, "").trim(), // Remove leading emoji
         acceptedAnswer: {
@@ -44,7 +49,7 @@ function buildFaqSchema() {
             .filter(Boolean)
             .join(" "),
         },
-      })
+      }),
     ),
   };
 }

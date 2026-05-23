@@ -16,12 +16,25 @@ export interface IBlog extends Document {
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
-  views?: number;        // Unique human views (deduplicated per IP per 24h)
-  botViews?: number;     // Hits from known bots/crawlers
+  views?: number; // Unique human views (deduplicated per IP per 24h)
+  botViews?: number; // Hits from known bots/crawlers
   duplicateViews?: number; // Repeat visits from same IP within 24h
-  totalViews?: number;   // Raw total = views + duplicateViews + botViews
-  readTime?: number;     // in minutes
+  totalViews?: number; // Raw total = views + duplicateViews + botViews
+  readTime?: number; // in minutes
   postType?: "blog" | "tutorial" | "case-study" | "community-insight";
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
+    twitterHandle?: string;
+    twitterCard?: "summary" | "summary_large_image";
+    focusKeyword?: string;
+    canonicalUrl?: string;
+    noIndex?: boolean;
+  };
   calculateReadTime(): void;
 }
 
@@ -107,6 +120,23 @@ const BlogSchema: Schema = new Schema(
       type: String,
       enum: ["blog", "tutorial", "case-study", "community-insight"],
       default: "blog",
+    },
+    seo: {
+      metaTitle: { type: String, trim: true },
+      metaDescription: { type: String, trim: true },
+      keywords: { type: [String], default: [] },
+      ogTitle: { type: String, trim: true },
+      ogDescription: { type: String, trim: true },
+      ogImage: { type: String, trim: true },
+      twitterHandle: { type: String, trim: true },
+      twitterCard: {
+        type: String,
+        enum: ["summary", "summary_large_image"],
+        default: "summary_large_image",
+      },
+      focusKeyword: { type: String, trim: true },
+      canonicalUrl: { type: String, trim: true },
+      noIndex: { type: Boolean, default: false },
     },
   },
   {

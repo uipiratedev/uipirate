@@ -19,8 +19,10 @@ export const ContainerScroll = ({
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
+
     return () => {
       window.removeEventListener("resize", checkMobile);
     };
@@ -36,8 +38,8 @@ export const ContainerScroll = ({
 
   return (
     <div
-      className="flex items-center justify-center relative"
       ref={containerRef}
+      className="flex items-center justify-center relative"
     >
       <div
         className="py-10 md:py-40 w-full relative"
@@ -45,8 +47,17 @@ export const ContainerScroll = ({
           perspective: isMobile ? "none" : "1000px",
         }}
       >
-        <Header translate={translate} titleComponent={titleComponent} isMobile={isMobile} />
-        <Card rotate={rotate} translate={translate} scale={scale} isMobile={isMobile}>
+        <Header
+          isMobile={isMobile}
+          titleComponent={titleComponent}
+          translate={translate}
+        />
+        <Card
+          isMobile={isMobile}
+          rotate={rotate}
+          scale={scale}
+          translate={translate}
+        >
           {children}
         </Card>
       </div>
@@ -57,18 +68,16 @@ export const ContainerScroll = ({
 const Header = ({ translate, titleComponent, isMobile }: any) => {
   if (isMobile) {
     return (
-      <div className="div max-w-5xl mx-auto text-center">
-        {titleComponent}
-      </div>
+      <div className="div max-w-5xl mx-auto text-center">{titleComponent}</div>
     );
   }
 
   return (
     <motion.div
+      className="div max-w-5xl mx-auto text-center"
       style={{
         translateY: translate,
       }}
-      className="div max-w-5xl mx-auto text-center"
     >
       {titleComponent}
     </motion.div>
@@ -90,24 +99,20 @@ const Card = ({
   if (isMobile) {
     return (
       <div className="mx-auto w-full">
-        <div className="h-full w-full overflow-hidden">
-          {children}
-        </div>
+        <div className="h-full w-full overflow-hidden">{children}</div>
       </div>
     );
   }
 
   return (
     <motion.div
+      className=" -mt-12 mx-auto w-full"
       style={{
         rotateX: rotate,
         scale,
-        }}
-      className=" -mt-12 mx-auto w-full"
+      }}
     >
-      <div className=" h-full w-full  overflow-hidden">
-        {children}
-      </div>
+      <div className=" h-full w-full  overflow-hidden">{children}</div>
     </motion.div>
   );
 };

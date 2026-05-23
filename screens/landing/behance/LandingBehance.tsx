@@ -2,9 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef, memo } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import NextLink from "next/link";
+
 import { useIsMobile } from "@/hooks";
-import { AnimatedButton } from "@/components/AnimatedButton";
 import LetsTalkButton from "@/components/LetsTalkButton";
 
 const data = [
@@ -62,9 +61,7 @@ const getRowConfig = (index: number, isMobile: boolean) => {
       : "70%";
 
   // Y movement varies by row
-  const yTargets = isMobile
-    ? ["-20%", "-20%", "-20%"]
-    : ["90%", "40%", "-60%"];
+  const yTargets = isMobile ? ["-20%", "-20%", "-20%"] : ["90%", "40%", "-60%"];
   const yTarget = yTargets[row] || "-20%";
 
   // Rotation: only on desktop
@@ -75,8 +72,8 @@ const getRowConfig = (index: number, isMobile: boolean) => {
   // Row 0: 0.00 - 0.50
   // Row 1: 0.20 - 0.70
   // Row 2: 0.40 - 0.90
-  const staggerDelay = 0.20; // 20% delay between each row starting
-  const animationDuration = 0.50; // Each row animates over 50% of scroll (slower)
+  const staggerDelay = 0.2; // 20% delay between each row starting
+  const animationDuration = 0.5; // Each row animates over 50% of scroll (slower)
 
   const scrollStart = row * staggerDelay;
   const scrollEnd = scrollStart + animationDuration;
@@ -90,12 +87,25 @@ const BehanceImage = memo(function BehanceImage({
   isMobile,
   containerScrollProgress,
 }: BehanceImageProps) {
-  const { xTarget, yTarget, rotateTarget, scrollStart, scrollEnd } = getRowConfig(index, isMobile);
+  const { xTarget, yTarget, rotateTarget, scrollStart, scrollEnd } =
+    getRowConfig(index, isMobile);
 
   // Transform scroll progress to animation values
-  const x = useTransform(containerScrollProgress, [scrollStart, scrollEnd], ["0%", xTarget]);
-  const y = useTransform(containerScrollProgress, [scrollStart, scrollEnd], ["0%", yTarget]);
-  const rotate = useTransform(containerScrollProgress, [scrollStart, scrollEnd], [0, rotateTarget]);
+  const x = useTransform(
+    containerScrollProgress,
+    [scrollStart, scrollEnd],
+    ["0%", xTarget],
+  );
+  const y = useTransform(
+    containerScrollProgress,
+    [scrollStart, scrollEnd],
+    ["0%", yTarget],
+  );
+  const rotate = useTransform(
+    containerScrollProgress,
+    [scrollStart, scrollEnd],
+    [0, rotateTarget],
+  );
 
   return (
     <div
@@ -124,12 +134,14 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
 
   const updateVisibleData = useCallback(() => {
     const isMobileCheck = window.innerWidth <= 768;
+
     setVisibleData(isMobileCheck ? data.slice(0, 4) : data.slice(0, 6));
   }, []);
 
   useEffect(() => {
     updateVisibleData();
     window.addEventListener("resize", updateVisibleData);
+
     return () => window.removeEventListener("resize", updateVisibleData);
   }, [updateVisibleData]);
 
@@ -148,8 +160,12 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
           creativity and craftsmanship.
         </p>
         <div className="autoShow">
-    
-        <LetsTalkButton fullWidth variant="dark" children="Explore All Work" href="/case-studies"/>
+          <LetsTalkButton
+            children="Explore All Work"
+            fullWidth
+            href="/case-studies"
+            variant="dark"
+          />
         </div>
       </div>
 
@@ -161,10 +177,10 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
         {visibleData.map((item, index) => (
           <BehanceImage
             key={index}
-            item={item}
+            containerScrollProgress={scrollYProgress}
             index={index}
             isMobile={isMobile}
-            containerScrollProgress={scrollYProgress}
+            item={item}
           />
         ))}
       </div>

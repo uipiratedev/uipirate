@@ -67,38 +67,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 3. Blog posts from database (fetched at request time, skipped during build to avoid worker hangs)
   let blogEntries: MetadataRoute.Sitemap = [];
   const isBuild = process.env.NEXT_PHASE === "phase-production-build";
+
   if (!isBuild) {
     try {
       // Use internal API or direct DB query if available
       const mongodbUri = process.env.MONGODB_URI;
-    if (mongodbUri) {
-      const { default: mongoose } = await import("mongoose");
 
-      // Connect if not already connected
-      if (mongoose.connection.readyState !== 1) {
-        await mongoose.connect(mongodbUri);
+      if (mongodbUri) {
+        const { default: mongoose } = await import("mongoose");
+
+        // Connect if not already connected
+        if (mongoose.connection.readyState !== 1) {
+          await mongoose.connect(mongodbUri);
+        }
+
+        // Use the Blog model
+        const { default: Blog } = await import("@/models/Blog");
+        const blogs = await Blog.find(
+          { published: true },
+          { slug: 1, updatedAt: 1 },
+        ).lean();
+
+        blogEntries = blogs.map((blog: any) => ({
+          url: `${BASE_URL}/${blog.slug}`,
+          lastModified: blog.updatedAt
+            ? new Date(blog.updatedAt).toISOString()
+            : now,
+          changeFrequency: "weekly" as const,
+          priority: 0.7,
+        }));
       }
-
-      // Use the Blog model
-      const { default: Blog } = await import("@/models/Blog");
-      const blogs = await Blog.find(
-        { published: true },
-        { slug: 1, updatedAt: 1 }
-      ).lean();
-
-      blogEntries = blogs.map((blog: any) => ({
-        url: `${BASE_URL}/${blog.slug}`,
-        lastModified: blog.updatedAt
-          ? new Date(blog.updatedAt).toISOString()
-          : now,
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      }));
+    } catch (error) {
+      // Silently handle DB errors — sitemap still works with static entries
+      console.warn("Sitemap: Could not fetch blog posts from database:", error);
     }
-  } catch (error) {
-    // Silently handle DB errors — sitemap still works with static entries
-    console.warn("Sitemap: Could not fetch blog posts from database:", error);
-  }
   }
 
   const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({
@@ -108,5 +110,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticEntries, ...serviceEntries, ...caseStudyEntries, ...blogEntries];
+  return [
+    ...staticEntries,
+    ...serviceEntries,
+    ...caseStudyEntries,
+    ...blogEntries,
+  ];
 }

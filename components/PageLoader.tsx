@@ -3,6 +3,7 @@
 import { useEffect, useState, ReactNode, memo } from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+
 import Loader from "@/components/loader";
 
 interface PageLoaderProps {
@@ -34,14 +35,18 @@ const PageLoader = memo(function PageLoader({ children }: PageLoaderProps) {
 
     if (isClientNavigation && !isAdmin) {
       setLoading(false);
+
       return;
     }
 
     sessionStorage.setItem("hasLoaded", "true");
 
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, isAdmin ? 800 : 1500); // Snappier for admin
+    const timer = setTimeout(
+      () => {
+        setLoading(false);
+      },
+      isAdmin ? 800 : 1500,
+    ); // Snappier for admin
 
     return () => clearTimeout(timer);
   }, [isAdmin]);
@@ -58,7 +63,8 @@ const PageLoader = memo(function PageLoader({ children }: PageLoaderProps) {
     return () => clearTimeout(timer);
   }, [pathname, isAdmin]);
 
-  const showLoader = (!isAdmin && loading) || (isAdmin && (loading || isChangingRoute));
+  const showLoader =
+    (!isAdmin && loading) || (isAdmin && (loading || isChangingRoute));
 
   return (
     <>
@@ -74,7 +80,7 @@ const PageLoader = memo(function PageLoader({ children }: PageLoaderProps) {
         className={clsx("page-content-wrapper", {
           "is-loaded": !showLoader || isAdmin,
           "is-loading": showLoader && !isAdmin,
-          "pointer-events-none": showLoader && isAdmin
+          "pointer-events-none": showLoader && isAdmin,
         })}
       >
         {children}
@@ -84,4 +90,3 @@ const PageLoader = memo(function PageLoader({ children }: PageLoaderProps) {
 });
 
 export default PageLoader;
-

@@ -1,12 +1,10 @@
 "use client";
 import { Button } from "@heroui/button";
 import Link from "next/link";
+
 import GlassSurface from "@/components/GlassSurface";
 
 const ServiceDetailsHero = ({ data }: any) => {
-
-
-
   return (
     <>
       <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
@@ -73,17 +71,13 @@ const ServiceDetailsHero = ({ data }: any) => {
             }}
             width="auto"
           >
-            
-
             {/* Text */}
             <p className="badge-text relative z-10 max-md:text-xs uppercase">
               {data.badge || "EMPOWERING 40+ Business ACROSS 6 COUNTRIES"}
             </p>
           </GlassSurface>
-
           {/* Animated Headline Replacement using Data Props */}
           <div className="relative z-10 w-full">
-          
             {data.heading && (
               <h1 className="hero-header">
                 {data.heading.map((line: any, lineIndex: number) => (
@@ -97,18 +91,13 @@ const ServiceDetailsHero = ({ data }: any) => {
                         {word.text}
                         {wordIndex < line.length - 1 && " "}
                       </span>
-                    ))}
-                    {" "}
+                    ))}{" "}
                   </span>
                 ))}
               </h1>
             )}
           </div>
-
-          <p className="sub-header text-[#11181C]">
-            {data.description}
-          </p>
-
+          <p className="sub-header text-[#11181C]">{data.description}</p>
           <div
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
             style={{ overflow: "visible" }}
@@ -212,7 +201,7 @@ const ServiceDetailsHero = ({ data }: any) => {
                     </div>
                   </div>
                 </div>
-                 <div>
+                <div>
                   <img
                     alt="Free consultation badge"
                     className="w-auto h-[30px] max-md:h-[20px]"

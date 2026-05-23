@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
 
-
 import BlogsDetails from "@/screens/blogsDetails";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
@@ -19,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     await dbConnect();
-    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
     const blog = await Blog.findOne({
       slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
       published: true,
@@ -37,12 +36,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       (blog as any).excerpt ||
       (blog as any).description ||
       `Read ${(blog as any).title} on UI Pirate's design blog.`;
-    const imageUrl = (blog as any).featuredImage || (blog as any).bannerImage || "";
+    const imageUrl =
+      (blog as any).featuredImage || (blog as any).bannerImage || "";
 
     return {
       title,
       description,
-      keywords: (blog as any).tags?.join(", ") || "UI/UX, design tips, SaaS design, UI Pirate",
+      keywords:
+        (blog as any).tags?.join(", ") ||
+        "UI/UX, design tips, SaaS design, UI Pirate",
       openGraph: {
         title: (blog as any).title,
         description,
@@ -85,6 +87,7 @@ export async function generateStaticParams() {
   try {
     await dbConnect();
     const blogs = await Blog.find({ published: true }, { slug: 1 }).lean();
+
     return blogs.map((blog: any) => ({ slug: blog.slug }));
   } catch (error) {
     return [];
@@ -103,7 +106,7 @@ const BlogsDetailsPage = async ({ params }: Props) => {
   await dbConnect();
 
   // Fetch blog by slug
-  const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+  const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
   const blog = await Blog.findOne({
     slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
     published: true,
@@ -115,6 +118,7 @@ const BlogsDetailsPage = async ({ params }: Props) => {
 
   // Track this view: deduplicates by IP+slug with 24h TTL, filters bots, skips admins
   const user = await verifyAuth();
+
   trackView(slug, headers(), !!user).catch(() => {});
 
   // Convert MongoDB document to plain object
@@ -136,7 +140,10 @@ const BlogsDetailsPage = async ({ params }: Props) => {
             "@type": "BlogPosting",
             headline: (blog as any).title,
             description: (blog as any).excerpt || (blog as any).description,
-            image: (blog as any).featuredImage || (blog as any).bannerImage || undefined,
+            image:
+              (blog as any).featuredImage ||
+              (blog as any).bannerImage ||
+              undefined,
             author: {
               "@type": "Person",
               name: (blog as any).author?.name || "UI Pirate by Vishal Anand",
@@ -150,7 +157,8 @@ const BlogsDetailsPage = async ({ params }: Props) => {
                 url: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
               },
             },
-            datePublished: blog.publishedAt?.toISOString() || blog.createdAt.toISOString(),
+            datePublished:
+              blog.publishedAt?.toISOString() || blog.createdAt.toISOString(),
             dateModified: blog.updatedAt.toISOString(),
             url: `https://uipirate.com/blogs/${slug}`,
             mainEntityOfPage: `https://uipirate.com/blogs/${slug}`,
