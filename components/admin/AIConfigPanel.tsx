@@ -5,9 +5,8 @@ import { useState, useEffect } from "react";
 export const AI_CONFIG_LS_KEY = "uipirate-ai-config";
 
 export interface AIConfig {
-  openaiKey?: string;
-  geminiKey?: string;
-  defaultEngine?: "openai" | "gemini" | "puter";
+  /** API keys are no longer stored here — they live encrypted in MongoDB */
+  defaultEngine?: "openai" | "gemini" | "puter" | "mistral";
   defaultModel?: string;
 }
 

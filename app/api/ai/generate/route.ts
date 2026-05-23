@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyAuth } from "@/lib/auth";
+import { getDecryptedKeys } from "@/app/api/admin/ai-config/route";
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,26 +13,34 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { action, title, content, postType, prompt, engine, model, selectedText, surroundingContext, clientApiKey } = body;
+    const { action, title, content, postType, prompt, engine, model, selectedText, surroundingContext } = body;
 
-    const geminiApiKey = process.env.GEMINI_API_KEY;
-    const openaiApiKey = process.env.OPENAI_API_KEY;
+    // Keys priority: environment vars first, then encrypted DB keys
+    const envOpenai  = process.env.OPENAI_API_KEY;
+    const envGemini  = process.env.GEMINI_API_KEY;
+    const envMistral = process.env.MISTRAL_API_KEY;
+    const dbKeys     = await getDecryptedKeys();
 
-    // Determine engine: default to 'openai' if key exists, otherwise 'gemini'
-    let selectedEngine = engine || (openaiApiKey ? "openai" : "gemini");
+    const openaiApiKey  = envOpenai  || dbKeys.openai;
+    const geminiApiKey  = envGemini  || dbKeys.gemini;
+    const mistralApiKey = envMistral || dbKeys.mistral;
 
-    if (selectedEngine === "openai" && !openaiApiKey && !clientApiKey) {
-      selectedEngine = "gemini";
-    }
+    // Determine engine: prefer the requested one, fall back to whatever has a key
+    let selectedEngine = engine || (openaiApiKey ? "openai" : geminiApiKey ? "gemini" : mistralApiKey ? "mistral" : "puter");
 
-    // Use env key first, fall back to client-provided key from browser localStorage
-    let apiKey = selectedEngine === "openai"
-      ? (openaiApiKey || clientApiKey)
-      : (geminiApiKey || clientApiKey);
+    if (selectedEngine === "openai"  && !openaiApiKey)  selectedEngine = geminiApiKey ? "gemini" : mistralApiKey ? "mistral" : "puter";
+    if (selectedEngine === "gemini"  && !geminiApiKey)  selectedEngine = openaiApiKey ? "openai" : mistralApiKey ? "mistral" : "puter";
+    if (selectedEngine === "mistral" && !mistralApiKey) selectedEngine = openaiApiKey ? "openai" : geminiApiKey  ? "gemini"  : "puter";
 
-    if (!apiKey) {
+    let apiKey = selectedEngine === "openai"  ? openaiApiKey
+               : selectedEngine === "gemini"  ? geminiApiKey
+               : selectedEngine === "mistral" ? mistralApiKey
+               : undefined;
+
+    if (selectedEngine !== "puter" && !apiKey) {
+      const engineLabel = selectedEngine === "openai" ? "OpenAI" : selectedEngine === "gemini" ? "Gemini" : "Mistral";
       return NextResponse.json(
-        { success: false, error: `${selectedEngine === "openai" ? "OpenAI" : "Gemini"} API key is not configured. Add it in Admin → AI Configuration.` },
+        { success: false, error: `${engineLabel} API key is not configured. Add it in Admin → AI Settings.` },
         { status: 500 }
       );
     }
@@ -63,34 +72,33 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
 
     let text = "";
 
-    if (selectedEngine === "openai") {
-      const openaiModel = model || "gpt-4o-mini";
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    if (selectedEngine === "openai" || selectedEngine === "mistral") {
+      const isMistral   = selectedEngine === "mistral";
+      const apiUrl      = isMistral ? "https://api.mistral.ai/v1/chat/completions" : "https://api.openai.com/v1/chat/completions";
+      const defaultModel = isMistral ? "mistral-large-latest" : "gpt-4o-mini";
+      const selectedModel = model || defaultModel;
+
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          model: openaiModel,
-          messages: [
-            {
-              role: "user",
-              content: systemInstructions,
-            },
-          ],
+          model: selectedModel,
+          messages: [{ role: "user", content: systemInstructions }],
           temperature: 0.7,
         }),
       });
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(`OpenAI API Error: ${errText}`);
+        throw new Error(`${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`);
       }
 
       const data = await response.json();
       text = data.choices?.[0]?.message?.content || "";
-    } else {
+    } else if (selectedEngine === "gemini") {
       // Gemini API
       const geminiModel = model || "gemini-flash-latest";
       const response = await fetch(

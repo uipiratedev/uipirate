@@ -655,17 +655,17 @@ const AIExcerptModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
   const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Sync default engine models when engine changes
   useEffect(() => {
-    if (engine === "openai" || engine === "puter") {
-      if (!model.startsWith("gpt")) {
-        setModel("gpt-5.5");
-      }
+    if (engine === "gemini") {
+      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
+    } else if (engine === "mistral") {
+      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
     } else {
-      setModel("gemini-flash-latest");
+      if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
   }, [engine, model]);
 
@@ -733,7 +733,6 @@ const AIExcerptModal = ({
             postType,
             engine,
             model,
-            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 
@@ -868,6 +867,17 @@ const AIExcerptModal = ({
                 >
                   <span className="text-[#FF5B04] font-bold">⚡</span> Puter
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("mistral")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "mistral"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                </button>
               </div>
             </div>
 
@@ -885,7 +895,20 @@ const AIExcerptModal = ({
                 onChange={(e) => setModel(e.target.value)}
                 className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
               >
-                {engine === "openai" || engine === "puter" ? (
+                {engine === "gemini" ? (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                ) : engine === "mistral" ? (
+                  <>
+                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                  </>
+                ) : (
                   <>
                     <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
                     <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
@@ -902,12 +925,6 @@ const AIExcerptModal = ({
                     <option value="gpt-5.1">⚡ GPT-5.1 Standard (Legacy General)</option>
                     <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
                     <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 )}
               </select>
@@ -1071,17 +1088,17 @@ const AITitleModal = ({
   const [selectedTitle, setSelectedTitle] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
   const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Sync default engine models when engine changes
   useEffect(() => {
-    if (engine === "openai" || engine === "puter") {
-      if (!model.startsWith("gpt")) {
-        setModel("gpt-5.5");
-      }
+    if (engine === "gemini") {
+      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
+    } else if (engine === "mistral") {
+      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
     } else {
-      setModel("gemini-flash-latest");
+      if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
   }, [engine, model]);
 
@@ -1149,7 +1166,6 @@ const AITitleModal = ({
             postType,
             engine,
             model,
-            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 
@@ -1262,6 +1278,17 @@ const AITitleModal = ({
                 >
                   <span className="text-[#FF5B04] font-bold">⚡</span> Puter
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("mistral")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "mistral"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                </button>
               </div>
             </div>
 
@@ -1276,7 +1303,20 @@ const AITitleModal = ({
                 onChange={(e) => setModel(e.target.value)}
                 className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
               >
-                {engine === "openai" || engine === "puter" ? (
+                {engine === "gemini" ? (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                ) : engine === "mistral" ? (
+                  <>
+                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                  </>
+                ) : (
                   <>
                     <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
                     <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
@@ -1284,12 +1324,6 @@ const AITitleModal = ({
                     <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
                     <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
                     <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 )}
               </select>
@@ -1451,17 +1485,17 @@ const AITagsModal = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
   const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Sync default engine models when engine changes
   useEffect(() => {
-    if (engine === "openai" || engine === "puter") {
-      if (!model.startsWith("gpt")) {
-        setModel("gpt-5.5");
-      }
+    if (engine === "gemini") {
+      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
+    } else if (engine === "mistral") {
+      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
     } else {
-      setModel("gemini-flash-latest");
+      if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
   }, [engine, model]);
 
@@ -1530,7 +1564,6 @@ const AITagsModal = ({
             postType,
             engine,
             model,
-            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 
@@ -1647,10 +1680,21 @@ const AITagsModal = ({
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
                     engine === "puter"
                       ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-955"
+                      : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
                   <span className="text-[#FF5B04] font-bold">⚡</span> Puter
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("mistral")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "mistral"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-violet-600 font-bold">◆</span> Mistral
                 </button>
               </div>
             </div>
@@ -1666,7 +1710,20 @@ const AITagsModal = ({
                 onChange={(e) => setModel(e.target.value)}
                 className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
               >
-                {engine === "openai" || engine === "puter" ? (
+                {engine === "gemini" ? (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                ) : engine === "mistral" ? (
+                  <>
+                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                  </>
+                ) : (
                   <>
                     <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
                     <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
@@ -1674,12 +1731,6 @@ const AITagsModal = ({
                     <option value="gpt-5.4">⚡ GPT-5.4 Standard (Balanced & Fast)</option>
                     <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
                     <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 )}
               </select>
@@ -1839,7 +1890,7 @@ const AICopilotModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<"openai" | "gemini" | "puter">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter");
+  const [engine, setEngine] = useState<"openai" | "gemini" | "puter" | "mistral">(() => (loadAIConfig().defaultEngine ?? "puter") as "openai" | "gemini" | "puter" | "mistral");
   const [model, setModel] = useState<string>(() => loadAIConfig().defaultModel ?? "gpt-4o-mini");
 
   // Selection & Context states
@@ -1864,12 +1915,12 @@ const AICopilotModal = ({
   }, [isOpen, editor]);
 
   useEffect(() => {
-    if (engine === "openai" || engine === "puter") {
-      if (!model.startsWith("gpt")) {
-        setModel("gpt-5.5");
-      }
+    if (engine === "gemini") {
+      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
+    } else if (engine === "mistral") {
+      if (!model.startsWith("mistral") && !model.startsWith("codestral")) setModel("mistral-large-latest");
     } else {
-      setModel("gemini-flash-latest");
+      if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
   }, [engine]);
 
@@ -1943,7 +1994,6 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             prompt: activePrompt,
             engine,
             model,
-            clientApiKey: (() => { try { const cfg = JSON.parse(localStorage.getItem("uipirate-ai-config") || "{}"); return engine === "gemini" ? cfg.geminiKey : cfg.openaiKey; } catch { return undefined; } })(),
           }),
         });
 
@@ -2066,6 +2116,17 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                 >
                   <span className="text-[#FF5B04] font-bold">⚡</span> Puter
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setEngine("mistral")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "mistral"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                </button>
               </div>
             </div>
 
@@ -2083,7 +2144,20 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                 onChange={(e) => setModel(e.target.value)}
                 className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm animate-in fade-in duration-200"
               >
-                {engine === "openai" || engine === "puter" ? (
+                {engine === "gemini" ? (
+                  <>
+                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
+                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
+                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
+                  </>
+                ) : engine === "mistral" ? (
+                  <>
+                    <option value="mistral-large-latest">👑 Mistral Large (Most Capable)</option>
+                    <option value="mistral-small-latest">🟢 Mistral Small (Fast)</option>
+                    <option value="mistral-nemo">🌱 Mistral Nemo (Lightweight)</option>
+                    <option value="codestral-latest">💻 Codestral (Code)</option>
+                  </>
+                ) : (
                   <>
                     <option value="gpt-5.5-pro">👑 GPT-5.5 Pro (State-of-the-Art)</option>
                     <option value="gpt-5.5">🔥 GPT-5.5 Standard (Advanced & Creative)</option>
@@ -2100,12 +2174,6 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                     <option value="gpt-5.1">⚡ GPT-5.1 Standard (Legacy General)</option>
                     <option value="gpt-4o">🔥 GPT-4o Premium (Advanced & Creative)</option>
                     <option value="gpt-4o-mini">🟢 GPT-4o Mini (Fast & Efficient)</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gemini-flash-latest">⚡ Gemini 1.5 Flash (Super Fast)</option>
-                    <option value="gemini-1.5-pro-latest">🧬 Gemini 1.5 Pro (Deep Reasoning)</option>
-                    <option value="gemini-2.0-flash-exp">🚀 Gemini 2.0 Flash (Next-Gen Preview)</option>
                   </>
                 )}
               </select>
