@@ -23,7 +23,7 @@ export async function GET() {
   const keys = await ApiKey.find({ tenantId: tenantOid }).sort({ createdAt: -1 }).lean();
 
   // Strip sensitive hashes before returning metadata
-  const results = keys.map((k) => ({
+  const results = (keys as any[]).map((k) => ({
     id: String(k._id),
     name: k.name,
     keyPrefix: k.keyPrefix,

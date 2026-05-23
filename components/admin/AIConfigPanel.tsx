@@ -36,24 +36,31 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [serverStatus, setServerStatus] = useState<{ openai: boolean; gemini: boolean; mistral: boolean; } | null>(null);
   const [puterUser, setPuterUser] = useState<{ username: string } | null>(null);
   const [puterBusy, setPuterBusy] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [showOAKey, setShowOAKey] = useState(false);
   const [showGKey, setShowGKey] = useState(false);
+  const [showMKey, setShowMKey] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     const cfg = loadAIConfig();
 
-    setOpenaiKey(cfg.openaiKey || "");
-    setGeminiKey(cfg.geminiKey || "");
-    setMistralKey(cfg.mistralKey || "");
+    setOpenaiKey("");
+    setGeminiKey("");
+    setMistralKey("");
     setDefaultEngine(cfg.defaultEngine || "puter");
     setDefaultModel(cfg.defaultModel || "gpt-4o-mini");
 
     fetch("/api/admin/ai-config")
       .then((r) => r.json())
       .then((d) => {
-        if (d.success) setServerStatus({ openai: d.openai, gemini: d.gemini, mistral: d.mistral });
+        if (d.success) {
+          setServerStatus({ openai: d.openai, gemini: d.gemini, mistral: d.mistral });
+          if (d.defaultEngine) setDefaultEngine(d.defaultEngine as any);
+          if (d.defaultModel) setDefaultModel(d.defaultModel);
+        }
       })
       .catch(() => {});
 
@@ -68,10 +75,51 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       .catch(() => {});
   }, [open]);
 
-  const save = () => {
-    localStorage.setItem(AI_CONFIG_LS_KEY, JSON.stringify({ openaiKey, geminiKey, mistralKey, defaultEngine, defaultModel }));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const save = async () => {
+    setSaving(true);
+    setSaveError(null);
+    try {
+      const body: Record<string, string> = { defaultEngine, defaultModel };
+      if (openaiKey.trim()) body.openaiKey = openaiKey.trim();
+      if (geminiKey.trim()) body.geminiKey = geminiKey.trim();
+      if (mistralKey.trim()) body.mistralKey = mistralKey.trim();
+
+      const res = await fetch("/api/admin/ai-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || "Save failed");
+
+      // Clear entered keys so placeholder takes over
+      if (openaiKey.trim()) setOpenaiKey("");
+      if (geminiKey.trim()) setOpenaiKey("");
+      if (mistralKey.trim()) setMistralKey("");
+
+      // Update local storage defaults cache for fast loading
+      localStorage.setItem(
+        AI_CONFIG_LS_KEY,
+        JSON.stringify({ defaultEngine, defaultModel })
+      );
+
+      // Refresh server status
+      const refreshed = await fetch("/api/admin/ai-config").then((r) => r.json());
+      if (refreshed.success) {
+        setServerStatus({
+          openai: refreshed.openai,
+          gemini: refreshed.gemini,
+          mistral: refreshed.mistral,
+        });
+      }
+
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err: any) {
+      setSaveError(err.message || "Failed to save settings");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const puterSignIn = async () => {
@@ -224,7 +272,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               focusColor="#3B82F6"
               placeholder={
                 serverStatus?.gemini
-                  ? "Env key active — paste to override"
+                  ? "Saved in Database (encrypted)"
                   : "AIza..."
               }
               show={showGKey}
@@ -234,17 +282,44 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
             />
           </PanelSection>
 
+          {/* ── Mistral AI ── */}
+          <PanelSection label="Mistral AI">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-violet-600 font-bold text-sm">◆</span>
+              <span className="text-sm font-semibold font-geist text-gray-800">
+                Mistral AI
+              </span>
+              {serverStatus?.mistral && <EnvBadge color="violet" />}
+            </div>
+            <KeyInput
+              focusColor="#7C3AED"
+              placeholder={
+                serverStatus?.mistral
+                  ? "Saved in Database (encrypted)"
+                  : "e.g. your Mistral API key"
+              }
+              show={showMKey}
+              value={mistralKey}
+              onChange={setMistralKey}
+              onToggle={() => setShowMKey((v) => !v)}
+            />
+          </PanelSection>
+
           {/* ── Default Engine ── */}
           <PanelSection label="Default Engine">
-            <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
-              {(["openai", "gemini", "puter"] as const).map((eng) => (
+            <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
+              {(["openai", "gemini", "mistral", "puter"] as const).map((eng) => (
                 <button
                   key={eng}
-                  className={`flex-1 py-1.5 rounded-lg text-[11px] font-semibold font-geist transition-all ${defaultEngine === eng ? "bg-white text-gray-900 shadow-sm border border-black/5" : "text-gray-500 hover:text-gray-900"}`}
+                  className={`flex-grow flex-shrink-0 min-w-[64px] py-1.5 rounded-lg text-[11px] font-semibold font-geist transition-all ${defaultEngine === eng ? "bg-white text-gray-900 shadow-sm border border-black/5" : "text-gray-500 hover:text-gray-900"}`}
                   onClick={() => {
                     setDefaultEngine(eng);
                     setDefaultModel(
-                      eng === "gemini" ? "gemini-flash-latest" : "gpt-4o-mini",
+                      eng === "gemini"
+                        ? "gemini-flash-latest"
+                        : eng === "mistral"
+                          ? "mistral-large-latest"
+                          : "gpt-4o-mini",
                     );
                   }}
                 >
@@ -252,7 +327,9 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                     ? "● GPT"
                     : eng === "gemini"
                       ? "✦ Gemini"
-                      : "⚡ Puter"}
+                      : eng === "mistral"
+                        ? "◆ Mistral"
+                        : "⚡ Puter"}
                 </button>
               ))}
             </div>
@@ -278,6 +355,21 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                     🚀 Gemini 2.0 Flash
                   </option>
                 </>
+              ) : defaultEngine === "mistral" ? (
+                <>
+                  <option value="mistral-large-latest">
+                    ◆ Mistral Large
+                  </option>
+                  <option value="mistral-small-latest">
+                    ◆ Mistral Small
+                  </option>
+                  <option value="mistral-nemo">
+                    ◆ Mistral Nemo
+                  </option>
+                  <option value="codestral-latest">
+                    ◆ Codestral
+                  </option>
+                </>
               ) : (
                 <>
                   <option value="gpt-4o-mini">🟢 GPT-4o Mini (fast)</option>
@@ -291,8 +383,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           </PanelSection>
 
           <p className="text-[10px] text-gray-400 font-geist leading-relaxed">
-            Keys are stored in your browser only. They are sent to your own
-            server when making AI requests, never to third parties directly.
+            Keys are securely encrypted using AES-256-GCM and stored in your database. They are never exposed to the browser or third parties.
           </p>
         </div>
 
@@ -301,12 +392,16 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           className="px-5 py-4 flex-shrink-0"
           style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}
         >
+          {saveError && (
+            <p className="text-xs text-red-500 font-geist mb-3 text-center">{saveError}</p>
+          )}
           <button
-            className="w-full py-2.5 rounded-xl text-sm font-semibold font-geist text-white transition-all duration-200"
+            className="w-full py-2.5 rounded-xl text-sm font-semibold font-geist text-white transition-all duration-200 disabled:opacity-50"
+            disabled={saving}
             style={{ background: saved ? "#16a34a" : "#FF5B04" }}
             onClick={save}
           >
-            {saved ? "✓ Saved!" : "Save Settings"}
+            {saving ? "Saving…" : saved ? "✓ Saved!" : "Save Settings"}
           </button>
         </div>
       </div>
@@ -335,10 +430,16 @@ const PanelSection = ({
   </div>
 );
 
-const EnvBadge = ({ color }: { color: "emerald" | "blue" }) => (
+const EnvBadge = ({ color }: { color: "emerald" | "blue" | "violet" }) => (
   <span
     className={`ml-auto text-[10px] font-jetbrains-mono px-2 py-0.5 rounded-full
-    ${color === "emerald" ? "text-emerald-700 bg-emerald-50" : "text-blue-700 bg-blue-50"}`}
+    ${
+      color === "emerald"
+        ? "text-emerald-700 bg-emerald-50"
+        : color === "blue"
+          ? "text-blue-700 bg-blue-50"
+          : "text-violet-700 bg-violet-50"
+    }`}
   >
     .env ✓
   </span>

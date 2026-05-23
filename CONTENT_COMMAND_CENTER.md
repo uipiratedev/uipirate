@@ -1,11 +1,37 @@
 # Content Command Center — Technical Implementation Plan
 
-> **Transform the existing blog management system into a multi-channel content distribution platform.**  
+> **Transform the existing blog management system into a multi-channel content distribution platform.**
 > This document is grounded entirely in the current codebase structure.
+>
+> | Phase | Title | Status |
+> |---|---|---|
+> | **Phase 1** | Content Command Center — Core Platform | 🟢 **Complete** |
+> | **Phase 2** | *(To be defined)* | ⬜ Not started |
+> | **Phase 3** | *(To be defined)* | ⬜ Not started |
+>
+> ---
+>
+> **Phase 1 — Delivery Summary**
+>
+> | Area | Status |
+> |---|---|
+> | Database schemas (`AIConfig`, `Integration`, `ApiKey`, `Blog`) | ✅ Complete |
+> | AI Settings page (`/admin/ai-settings`) — DB-encrypted keys, all 4 engines | ✅ Complete |
+> | `AIConfigPanel` in-editor quick panel — key storage & Mistral engine | ✅ Complete & Verified |
+> | Distribution adapters (WordPress, Medium, Ghost, Buffer) | ✅ Complete |
+> | `PATCH /api/admin/integrations/[platform]` (test connection) | ✅ Complete & Verified (Live probes) |
+> | Distribution Engine, Publish API, Preflight | ✅ Complete |
+> | Distribution Panel UI (4th editor tab) | ✅ Complete |
+> | Integrations Settings page + API Key management | ✅ Complete |
+> | `hooks/useSaveBlog.ts` extraction | ✅ Complete |
+> | Public Content API (`/api/v1/content`) | ✅ Complete |
+> | Multi-tenant isolation across all routes and models | ✅ Complete |
 
 ---
 
 ## Table of Contents
+
+> **This document covers Phase 1** of the Content Command Center roadmap.
 
 0. [SaaS / Multi-Tenancy Architecture](#0-saas--multi-tenancy-architecture)
 1. [Codebase Audit](#1-codebase-audit)
@@ -21,12 +47,13 @@
    - [Public Content API](#35-public-content-api--apiv1content)
 4. [UI/UX Enhancements](#4-uiux-enhancements)
    - [Distribution Sidebar Tab](#41-distribution-sidebar-tab)
-   - [Integrations Settings Page](#42-integrations-settings-page)
+   - [AI Settings Page & AIConfigPanel](#42-ai-settings-page--aiconfigpanel--current-state)
+   - [Integrations Settings Page](#43-integrations-settings-page)
 5. [Workflow Integration](#5-workflow-integration)
    - [AI Pre-distribution Pipeline](#51-ai-pre-distribution-pipeline)
    - [Decoupling saveBlog](#52-decoupling-saveblog)
 6. [Environment Variables](#6-environment-variables)
-7. [Phased Rollout](#7-phased-rollout)
+7. [Phase 1 — Internal Rollout Breakdown](#7-phase-1--internal-rollout-breakdown)
 
 ---
 
@@ -317,8 +344,16 @@ await existing.save();
 
 #### `PATCH /api/admin/integrations/[platform]`
 
-Fires a lightweight connection test (e.g., `GET /wp-json/wp/v2/users/me` for WordPress).
-Updates `lastTestedAt`. Returns `{ success, message: "Connected as @username" }`.
+Updates `lastTestedAt` and returns `{ success, message }`. **Fully implemented with live outbound probes** — the route decrypts stored credentials and makes a real HTTP call to each platform's auth endpoint before saving:
+
+| Platform | Probe endpoint | Extra side-effect |
+|---|---|---|
+| WordPress | `GET {siteUrl}/wp-json/wp/v2/users/me` (HTTP Basic) | Returns `Connected as @{slug}` |
+| Medium | `GET https://api.medium.com/v1/me` (Bearer) | Saves `mediumAuthorId` from response for use in `publish()` |
+| Ghost | `GET {siteUrl}/ghost/api/admin/site/` (HS256 JWT from `id:secret`) | Returns site title + version |
+| Buffer | `GET https://api.bufferapp.com/1/profiles.json` (Bearer) | Saves `bufferProfileIds[]` from response |
+
+Any non-2xx response from the platform is surfaced as `{ success: false, error: "..." }` — the UI never writes `lastTestedAt` on a failed probe.
 
 #### `DELETE /api/admin/integrations/[platform]`
 
@@ -424,7 +459,9 @@ export function runPreflight(blog: Partial<IBlog>): PreflightCheck[] {
 
 ### 3.4 Platform Adapters
 
-All four adapters extend `BaseAdapter` from `lib/distribution/adapters/base.adapter.ts`:
+All four adapters extend `BaseAdapter` from `lib/distribution/adapters/base.adapter.ts`.
+
+**Actual `BaseAdapter` signature (as implemented):**
 
 ```typescript
 export interface DistributionResult {
@@ -433,23 +470,29 @@ export interface DistributionResult {
   url: string;
   status: "success" | "failed";
   errorMessage?: string;
+  distributedAt: Date;        // Added: timestamp of the distribution attempt
 }
 
 export abstract class BaseAdapter {
-  constructor(protected credentials: IPlatformCredentials, protected decrypt: typeof import("@/lib/encrypt").decrypt) {}
+  constructor(
+    protected credentials: IPlatformCredentials,
+    protected decrypt: (cipher: string) => string,  // typed as plain function, not typeof encrypt.decrypt
+  ) {}
   abstract publish(blog: IBlog, options?: PublishOptions): Promise<DistributionResult>;
   abstract update(blog: IBlog, externalId: string): Promise<DistributionResult>;
 }
 ```
 
-| Adapter | Auth | Content Format | Key API Call |
-|---|---|---|---|
-| `WordPressAdapter` | HTTP Basic (`user:app_password` base64) | **HTML** — TipTap output is directly compatible | `POST /wp-json/wp/v2/posts` |
-| `MediumAdapter` | Bearer token | HTML or Markdown (Medium accepts both) | `POST /v1/users/{authorId}/posts` |
-| `GhostAdapter` | JWT derived from `id:secret` Admin API key | Lexical/Mobiledoc JSON (HTML transform needed) | `POST /ghost/api/admin/posts/` |
-| `BufferAdapter` | OAuth Bearer | Plain text excerpt + canonical link | `POST /1/updates/create.json` |
+| Adapter | Auth | Content Format | `publish()` | `update()` |
+|---|---|---|---|---|
+| `WordPressAdapter` | HTTP Basic (`user:app_password` base64) | **HTML** — sent directly to WP REST API | `POST /wp-json/wp/v2/posts` ✅ | `POST /wp-json/wp/v2/posts/:id` ✅ |
+| `MediumAdapter` | Bearer token | **Markdown** — HTML is converted first | `POST /v1/users/{authorId}/posts` ✅ | ❌ Unsupported — Medium API restriction |
+| `GhostAdapter` | JWT from `id:secret` Admin API key | **HTML via `?source=html`** — no Mobiledoc conversion needed | `POST /ghost/api/admin/posts/?source=html` ✅ | `PUT /ghost/api/admin/posts/:id/?source=html` ✅ |
+| `BufferAdapter` | OAuth Bearer | Plain text: title + excerpt (no full HTML) | `POST /1/updates/create.json` ✅ | ❌ Unsupported — social posts are immutable |
 
-`lib/distribution/transform/html-to-markdown.ts` converts TipTap HTML output for Medium and Ghost using the `unified`/`rehype-remark` pipeline.
+**`lib/distribution/transform/html-to-markdown.ts`** — Converts TipTap HTML for Medium using a **custom regex-based pipeline** (not `unified`/`rehype-remark`). Handles headings, lists, blockquotes, code blocks, bold/italic, links, and images. Ghost receives HTML directly via its `?source=html` parameter, bypassing this transformer entirely.
+
+> **Note on `update()` limitations:** Medium and Buffer do not support post updates programmatically. Calls to `adapter.update()` on those two return a `"failed"` `DistributionResult` with a descriptive `errorMessage`. WordPress and Ghost both have full update support.
 
 ---
 
@@ -460,16 +503,30 @@ Uses a separate auth mechanism from the admin JWT cookies — a static Bearer ke
 #### `lib/api-key-auth.ts`
 
 ```typescript
-export async function verifyApiKey(req: NextRequest): Promise<{ scopes: string[] } | null> {
-  const header = req.headers.get("Authorization");
-  if (!header?.startsWith("Bearer ")) return null;
+export interface ApiKeyAuthResult {
+  tenantId: string;           // Returned so v1 routes can scope DB queries
+  scopes: ("read" | "write")[];
+}
 
-  const hash = createHash("sha256").update(header.slice(7)).digest("hex");
+export async function verifyApiKey(req: NextRequest): Promise<ApiKeyAuthResult | null> {
+  const rawKey = req.headers.get("Authorization")?.substring(7).trim();
+  if (!rawKey) return null;
+
+  const requestHash = createHash("sha256").update(rawKey).digest("hex");
   await dbConnect();
-  const key = await ApiKey.findOne({ isActive: true });
-  // timing-safe hash comparison → return key.scopes if matched
+  // Fetches all active keys; the SHA-256 timing-safe comparison identifies the tenant
+  const activeKeys = await ApiKey.find({ isActive: true }).lean();
+  for (const key of activeKeys) {
+    const decryptedHash = decrypt(key.keyHashEncrypted);
+    if (timingSafeEqual(Buffer.from(requestHash, "hex"), Buffer.from(decryptedHash, "hex"))) {
+      return { tenantId: String(key.tenantId), scopes: key.scopes };
+    }
+  }
+  return null;
 }
 ```
+
+> **Implementation note:** `verifyApiKey` loads all active keys across all tenants to locate a match. This is correct at current scale; at very high key volumes a per-tenant indexed lookup would be preferable. The returned `tenantId` is used immediately by the `/api/v1/content` routes to scope every MongoDB query.
 
 #### Endpoints
 
@@ -499,19 +556,28 @@ const tabs = ["content", "seo", "ai", "distribute"] as const;
 
 The `"distribute"` tab renders a shared `<DistributionPanel>` component (`components/admin/DistributionPanel.tsx`) — reused by both `create/page.tsx` and `edit/[id]/page.tsx`.
 
-#### `DistributionPanel` props
+#### `DistributionPanel` props (actual implementation)
 
 ```typescript
 interface DistributionPanelProps {
-  blogId: string | null;         // null if blog has never been saved
+  blogId: string | null;              // null if blog has never been saved
   blogPublished: boolean;
-  blogContent: string;           // for word-count preflight
+  blogContent: string;                // for word-count preflight
   blogExcerpt: string;
   blogTags: string[];
-  blogSeo: PostSEO;
-  onEnsureSaved: () => Promise<string>; // resolves to blogId after save
+  blogSeo: any;                       // PostSEO shape; typed loosely for flexibility
+  distributionRecords: DistributionRecord[]; // current records from blog state
+  onEnsureSaved: () => Promise<string>;      // resolves to blogId after save
+  onUpdateRecords: (records: DistributionRecord[]) => void; // merge results into parent state
+  // Preflight action callbacks — open the relevant modal directly from a checklist item:
+  onNavigateToSEO: () => void;
+  onTriggerExcerptAI: () => void;
+  onTriggerTagsAI: () => void;
+  onTriggerCopilotAI: () => void;
 }
 ```
+
+> The panel fetches live integration status from `GET /api/admin/integrations` on mount. Platforms that are disconnected display a "Connect" shortcut link to `/admin/settings/integrations` rather than being selectable.
 
 #### Panel layout (top → bottom within 288px sidebar)
 
@@ -553,13 +619,44 @@ interface DistributionPanelProps {
 
 ---
 
-### 4.2 Integrations Settings Page
+### 4.2 AI Settings Page & `AIConfigPanel` — Current State
 
-**File:** `app/admin/(authed)/settings/integrations/page.tsx` _(new)_
+#### `app/admin/(authed)/ai-settings/page.tsx` ✅ Complete
+
+The full-page AI settings experience. All API keys are saved **encrypted in MongoDB** via `POST /api/admin/ai-config`. Four engines are supported with independent `KeyModal` dialogs:
+
+| Engine | Key Field | Model Options |
+|---|---|---|
+| Puter AI | None (OAuth sign-in) | Uses GPT models via puter.com for free |
+| OpenAI | `openaiKeyEncrypted` | GPT-4o Mini, GPT-4o, GPT-5.x family |
+| Google Gemini | `geminiKeyEncrypted` | 1.5 Flash, 1.5 Pro, 2.0 Flash |
+| Mistral AI | `mistralKeyEncrypted` | Large, Small, Nemo, Codestral |
+
+The `defaultEngine` / `defaultModel` selection is saved to the DB **and** mirrored to `localStorage` under the key `uipirate-ai-config` as a fast-load cache for the editor UI.
+
+#### `components/admin/AIConfigPanel.tsx` ✅ Complete
+
+This is the **quick-access slide-over panel** that opens from within the blog editor (separate from the settings page). All previously-identified gaps have been resolved:
+
+| Item | Status | Detail |
+|---|---|---|
+| Key storage | ✅ Fixed | `save()` POSTs to `POST /api/admin/ai-config`; API keys are **never** written to localStorage |
+| localStorage cache | ✅ Correct | Only `defaultEngine` and `defaultModel` are cached under `uipirate-ai-config` for fast editor startup |
+| Mistral key input | ✅ Added | Full `PanelSection` with `KeyInput` and violet `EnvBadge`, matching OpenAI/Gemini sections |
+| Mistral engine button | ✅ Added | Four-button selector: `openai \| gemini \| mistral \| puter` with correct model defaults |
+| Footnote | ✅ Updated | Now reads: *"Keys are securely encrypted using AES-256-GCM and stored in your database. They are never exposed to the browser or third parties."* |
+
+On open, the panel fetches `GET /api/admin/ai-config` to populate `serverStatus: { openai, gemini, mistral }` — each key input's placeholder switches to `"Saved in Database (encrypted)"` when the server reports a key is present.
+
+---
+
+### 4.3 Integrations Settings Page
+
+**File:** `app/admin/(authed)/settings/integrations/page.tsx` ✅ Implemented
 
 Structured identically to `app/admin/(authed)/ai-settings/page.tsx` — same card layout, modal pattern, and `#FF5B04` accent colour.
 
-#### Section 1 — Platform Integrations (four cards)
+#### Section 1 — Platform Integrations (four cards, 2×2 grid on md+)
 
 ```
 ┌──────────────────────────────────────────────────────┐
@@ -633,42 +730,51 @@ Failing check items are rendered as tappable buttons that open the relevant moda
 
 **Current problem:** `saveBlog()` (line 6062 of `create/page.tsx`) is an inline `async` closure. The saved blog ID is captured in component state via `setSavedBlogId()`, making it impossible to `await` the ID from the new `DistributionPanel`.
 
-**Solution:** Extract to `hooks/useSaveBlog.ts`
+**Solution:** Extracted to `hooks/useSaveBlog.ts` ✅
+
+**Actual implementation** uses a `getEditorState` callback (lazy evaluation) rather than accepting a static state snapshot. This avoids stale closure bugs when the hook is defined once and called repeatedly:
 
 ```typescript
-// hooks/useSaveBlog.ts
-export function useSaveBlog(editorState: EditorSaveState) {
-  const [blogId, setBlogId] = useState<string | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
+// hooks/useSaveBlog.ts (actual signature)
+interface UseSaveBlogProps {
+  initialBlogId?: string | null;
+  getEditorState: () => EditorSaveState;    // called at save-time, always current
+  onSaveSuccess?: (id: string, published: boolean) => void;
+  onSaveError?: (error: any) => void;
+}
+
+export function useSaveBlog({
+  initialBlogId = null,
+  getEditorState,
+  onSaveSuccess,
+  onSaveError,
+}: UseSaveBlogProps) {
+  const [blogId, setBlogId] = useState<string | null>(initialBlogId);
+  const [saveStatus, setSaveStatus] = useState<
+    "Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"
+  >("Draft");
   const [isDirty, setIsDirty] = useState(false);
 
-  // Core save — returns the persisted blogId
-  const saveBlog = useCallback(async (published: boolean): Promise<string> => {
-    setIsSaving(true);
-    const isNew = !blogId;
-    const res = await fetch(isNew ? "/api/blogs" : `/api/blogs/${blogId}`, {
-      method: isNew ? "POST" : "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...editorState, published }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error);
-    const id = data.data?._id ?? data._id;
-    setBlogId(id);
-    setIsDirty(false);
-    setIsSaving(false);
-    return id;
-  }, [blogId, editorState]);
+  // saveBlog accepts optional SEO / slug overrides (for SEO editor integration)
+  const saveBlog = useCallback(
+    async (published: boolean, customSeo?: any, customSlug?: string): Promise<string> => { ... },
+    [blogId, getEditorState, onSaveSuccess, onSaveError],
+  );
 
-  // Called by DistributionPanel before dispatching — no-op if already clean
+  // ensureSaved uses a ref to avoid capturing stale isDirty
   const ensureSaved = useCallback(async (): Promise<string> => {
-    if (blogId && !isDirty) return blogId;
-    return saveBlog(false); // save as draft, do not publish
-  }, [blogId, isDirty, saveBlog]);
+    if (blogId && !isDirtyRef.current) return blogId;
+    return await saveBlog(false);
+  }, [blogId, saveBlog]);
 
-  return { blogId, isSaving, isDirty, setIsDirty, saveBlog, ensureSaved };
+  return { blogId, setBlogId, isSaving, saveStatus, setSaveStatus, isDirty, setIsDirty, saveBlog, ensureSaved };
 }
 ```
+
+Additional differences vs. the original plan:
+- Returns `saveStatus` enum (`"Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"`) for rich UI feedback
+- `saveBlog()` accepts optional `customSeo` and `customSlug` overrides so the SEO editor can pass updated data without a separate save call
+- `isDirty` is tracked via a `useRef` inside `ensureSaved` to prevent stale closure captures
 
 **State transition model:**
 
@@ -711,13 +817,27 @@ AI_ENCRYPTION_KEY=<64-char-hex>
 
 ---
 
-## 7. Phased Rollout
+## 7. Phase 1 — Internal Rollout Breakdown
 
-| Phase | Deliverables | Touches |
-|---|---|---|
-| **1 — Foundation** | `models/Integration.ts`, `models/ApiKey.ts`, extend `models/Blog.ts`, `app/api/admin/integrations/` routes, adapter stubs returning mock data | Models + API only — zero UI changes |
-| **2 — Distribution Engine** | All four platform adapters implemented, `html-to-markdown.ts`, `content-preflight.ts`, `app/api/distribution/publish/route.ts` | Backend only |
-| **3 — Editor UI** | Extract `hooks/useSaveBlog.ts`, `components/admin/DistributionPanel.tsx`, add "distribute" tab to `create/page.tsx` and `edit/[id]/page.tsx` | Editor pages + new hook |
-| **4 — Settings UI + Public API** | `app/admin/(authed)/settings/integrations/page.tsx`, update `AdminSidebar.tsx`, `app/api/v1/content/` routes, `lib/api-key-auth.ts` | Settings + public API |
+> These are the internal delivery milestones within **Phase 1 — Content Command Center**. All are complete.
 
-Each phase is independently deployable and produces visible, testable output before the next phase begins.
+| Milestone | Deliverables | Touches | Status | Notes |
+|---|---|---|---|---|
+| **1.1 — Foundation** | `models/Integration.ts`, `models/ApiKey.ts`, extend `models/Blog.ts`, `app/api/admin/integrations/` routes | Models + API only | ✅ **Complete** | Compound `{ tenantId, platform }` unique index; `distributionRecords` added to Blog |
+| **1.2 — Distribution Engine** | All four platform adapters, `html-to-markdown.ts`, `content-preflight.ts`, `app/api/distribution/publish/route.ts` | Backend only | ✅ **Complete** | HTML→Markdown uses custom regex pipeline. Ghost and WordPress support `update()`; Medium and Buffer do not |
+| **1.3 — Editor UI** | `hooks/useSaveBlog.ts`, `components/admin/DistributionPanel.tsx`, 4-tab system in `create/page.tsx` | Editor pages + new hook | ✅ **Complete** | Hook uses `getEditorState` callback pattern; panel has extended prop set with AI action callbacks |
+| **1.4 — Settings UI + Public API** | `app/admin/(authed)/settings/integrations/page.tsx`, `AdminSidebar.tsx`, `/api/v1/content/` routes, `lib/api-key-auth.ts` | Settings + public API | ✅ **Complete** | Full API Key creation/revocation UI; SHA-256 timing-safe verification with `tenantId` returned |
+| **1.5 — Polish** | `AIConfigPanel.tsx` DB key storage, Mistral support, live integration probes | Components + route | ✅ **Complete** | All keys encrypted in DB; live HTTP probes for all four platforms |
+
+Each milestone was independently deployable and produced visible, testable output before the next began.
+
+---
+
+## What Comes Next — Phase 2 & Beyond
+
+Phase 1 delivers the complete foundation. Future phases are not yet scoped — the table below is a placeholder to be defined based on product priorities.
+
+| Phase | Working Title | Scope (TBD) | Status |
+|---|---|---|---|
+| **Phase 2** | *(To be defined)* | — | ⬜ Not started |
+| **Phase 3** | *(To be defined)* | — | ⬜ Not started |
