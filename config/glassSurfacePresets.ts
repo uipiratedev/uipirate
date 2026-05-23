@@ -2,7 +2,7 @@ import { CSSProperties } from "react";
 
 /**
  * Standardized GlassSurface presets for consistent UI across the application.
- * 
+ *
  * These presets ensure all hero sections and badges maintain the same
  * premium glassmorphism appearance while preserving the SSR/hydration fixes.
  */
@@ -34,7 +34,7 @@ export interface GlassSurfacePreset {
  * This matches the Apps4Sale visual style exactly.
  */
 export const HERO_BADGE_PRESET: GlassSurfacePreset = {
-  backgroundOpacity: 1.0,  // SOLID - no transparency, hides grid lines
+  backgroundOpacity: 1.0, // SOLID - no transparency, hides grid lines
   blueOffset: 20,
   blur: 11,
   borderRadius: 12,
@@ -44,7 +44,7 @@ export const HERO_BADGE_PRESET: GlassSurfacePreset = {
   distortionScale: -180,
   forceLightMode: true,
   greenOffset: 10,
-  opacity: 1.0,  // SOLID - full opacity
+  opacity: 1.0, // SOLID - full opacity
   redOffset: 0,
   saturation: 1,
   width: "auto",
@@ -54,7 +54,7 @@ export const HERO_BADGE_PRESET: GlassSurfacePreset = {
 /**
  * Standard className for hero badges
  */
-export const HERO_BADGE_CLASSNAME = 
+export const HERO_BADGE_CLASSNAME =
   "md:my-9 max-md:my-5 !flex !flex-row !items-center !gap-3 isolate overflow-visible p-2 px-4 max-md:mx-2";
 
 /**
@@ -66,5 +66,3 @@ export const HERO_BADGE_ANIMATION_STYLE: CSSProperties = {
   opacity: 0,
   transform: "translateY(20px) scale(0.95)",
 };
-
-

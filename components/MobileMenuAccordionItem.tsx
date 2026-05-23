@@ -34,7 +34,8 @@ export const MobileMenuAccordionItem = ({
   onToggle,
   setIsMenuOpen,
 }: MobileMenuAccordionItemProps) => {
-  const hasDropdown = item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
+  const hasDropdown =
+    item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
 
   const handleRowClick = (e: React.MouseEvent) => {
     if (hasDropdown) {
@@ -64,8 +65,8 @@ export const MobileMenuAccordionItem = ({
 
         {hasDropdown && (
           <button
-            type="button"
             className="p-1"
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               onToggle(index);
@@ -94,11 +95,11 @@ export const MobileMenuAccordionItem = ({
       <AnimatePresence mode="wait">
         {isOpen && hasDropdown && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
             className="overflow-hidden"
+            exit={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
           >
             <div className="flex flex-col gap-3 pb-4 pl-4">
               {item.dropdownItems!.map((dropdownItem, idx) => (

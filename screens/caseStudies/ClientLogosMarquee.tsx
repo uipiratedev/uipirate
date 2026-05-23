@@ -44,11 +44,11 @@ const clientLogos = [
 const ClientLogosMarquee = () => {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
       className="py-12 max-md:py-8 bg-gray-50"
+      initial={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.5 }}
+      viewport={{ once: true }}
+      whileInView={{ opacity: 1, y: 0 }}
     >
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
         <p className="text-center text-sm text-gray-400 uppercase tracking-wider mb-8 max-md:mb-6 font-medium">
@@ -59,18 +59,18 @@ const ClientLogosMarquee = () => {
           {clientLogos.map((logo, index) => (
             <motion.div
               key={logo.alt}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
               className="grayscale hover:grayscale-0 opacity-50 hover:opacity-100 transition-all duration-300"
+              initial={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+              viewport={{ once: true }}
+              whileInView={{ opacity: 1, scale: 1 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={logo.url}
                 alt={logo.alt}
                 className="h-8 max-md:h-6 w-auto object-contain"
                 loading="lazy"
+                src={logo.url}
               />
             </motion.div>
           ))}

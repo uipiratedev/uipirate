@@ -2,6 +2,20 @@ import BlogsDetailsHero from "./hero";
 import BlogContents from "./blogContents";
 import SuggestedReads from "./suggestedReads";
 
+interface PostSEO {
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  twitterHandle?: string;
+  twitterCard?: "summary" | "summary_large_image";
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+}
+
 interface BlogData {
   _id: string;
   title: string;
@@ -18,6 +32,7 @@ interface BlogData {
   publishedAt: string | null;
   views?: number;
   readTime?: number;
+  seo?: PostSEO;
 }
 
 interface BlogsDetailsProps {
@@ -30,11 +45,7 @@ const BlogsDetails = ({ blog }: BlogsDetailsProps) => {
 
   return (
     <div>
-      <BlogsDetailsHero
-        imageUrl={banner}
-        tag={tag}
-        title={blog.title}
-      />
+      <BlogsDetailsHero imageUrl={banner} tag={tag} title={blog.title} />
       <BlogContents blog={blog} />
       <SuggestedReads />
     </div>

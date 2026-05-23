@@ -9,18 +9,17 @@ import LetsTalkButton from "@/components/LetsTalkButton";
 import ProjectEstimate from "@/components/ProjectEstimate";
 
 const Pricing = () => {
-
   // Subtle animation for the main container
   const containerVariants = {
     hidden: { opacity: 0, y: 30 },
-    show: { 
-      opacity: 1, 
+    show: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const monthlyRetainerFeatures = [
@@ -77,94 +76,106 @@ const Pricing = () => {
   return (
     <motion.div
       className="py-12 max-md:py-8 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32"
-      variants={containerVariants}
       initial="hidden"
-      whileInView="show"
+      variants={containerVariants}
       viewport={{ once: true, amount: 0.1 }}
+      whileInView="show"
     >
       {/* Header */}
       <div className=" autoShow text-center mb-6 max-md:mb-4">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
-        <h2 className="heading-center">
-          Pricing That Makes Sense
-        </h2>
+        <h2 className="heading-center">Pricing That Makes Sense</h2>
       </div>
 
       {/* Pricing Cards Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 autoShowBottom">
         {/* Monthly Retainer Card */}
         <div>
-          <Card className="rounded-[20px] max-md:rounded-[12px]  bg-gradient-to-br from-[#212121] to-[#151514] border-1 border-gray-800 shadow-lg h-full noise-texture "
-          style={{
-            boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset",
-
-          }}
-          
+          <Card
+            className="rounded-[20px] max-md:rounded-[12px]  bg-gradient-to-br from-[#212121] to-[#151514] border-1 border-gray-800 shadow-lg h-full noise-texture "
+            style={{
+              boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset",
+            }}
           >
-          <CardBody className="p-8 max-md:p-6">
-            {/* Icon and Title aligned together on mobile */}
-            <div className="flex items-center gap-4 max-md:gap-3 mb-6">
-              <div className="w-12 h-12 max-md:w-10 max-md:h-10 rounded-lg flex items-center justify-center">
-               <img src="/assets/gif/kite.gif" alt="Monthly retainer plan icon" aria-hidden="true" />
+            <CardBody className="p-8 max-md:p-6">
+              {/* Icon and Title aligned together on mobile */}
+              <div className="flex items-center gap-4 max-md:gap-3 mb-6">
+                <div className="w-12 h-12 max-md:w-10 max-md:h-10 rounded-lg flex items-center justify-center">
+                  <img
+                    alt="Monthly retainer plan icon"
+                    aria-hidden="true"
+                    src="/assets/gif/kite.gif"
+                  />
+                </div>
+                <h3 className="text-3xl max-md:text-xl font-bold text-white font-jakarta">
+                  Monthly <span className="text-brand-orange">Retainer</span>
+                </h3>
               </div>
-              <h3 className="text-3xl max-md:text-xl font-bold text-white font-jakarta">
-                Monthly <span className="text-brand-orange">Retainer</span>
-              </h3>
-            </div>
 
-            {/* Subtitle */}
-            <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm max-md:text-xs font- mb-6 uppercase tracking-wide font-mono">
-              For teams that need design & dev support, every month
-            </p>
-
-            {/* Features List */}
-            <ul className="space-y-3 mb-8">
-              {monthlyRetainerFeatures.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-start gap-3 text-gray-300"
-                >
-                  <span className="text-[#454545]">  <CheckIcon /></span>
-                  <span className="text-white max-md:text-sm text-base font-jakarta">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            {/* Footer */}
-            <div className="mt-auto">
-              <p className="text-[#777777] text-base max-md:text-sm mb-4 italic font-jakarta">
-                One subscription, endless possibilities
+              {/* Subtitle */}
+              <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm max-md:text-xs font- mb-6 uppercase tracking-wide font-mono">
+                For teams that need design & dev support, every month
               </p>
 
-              {/* Price with Anchor */}
-              <div className="mb-4">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-5xl max-md:text-3xl font-black text-white font-jetbrains-mono">
-                    $2000
-                  </span>
-                  <span className="text-[#999999] text-lg font-jetbrains-mono">/per month</span>
+              {/* Features List */}
+              <ul className="space-y-3 mb-8">
+                {monthlyRetainerFeatures.map((feature, index) => (
+                  <li
+                    key={index}
+                    className="flex items-start gap-3 text-gray-300"
+                  >
+                    <span className="text-[#454545]">
+                      {" "}
+                      <CheckIcon />
+                    </span>
+                    <span className="text-white max-md:text-sm text-base font-jakarta">
+                      {feature}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Footer */}
+              <div className="mt-auto">
+                <p className="text-[#777777] text-base max-md:text-sm mb-4 italic font-jakarta">
+                  One subscription, endless possibilities
+                </p>
+
+                {/* Price with Anchor */}
+                <div className="mb-4">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl max-md:text-3xl font-black text-white font-jetbrains-mono">
+                      $2000
+                    </span>
+                    <span className="text-[#999999] text-lg font-jetbrains-mono">
+                      /per month
+                    </span>
+                  </div>
+                  <p className="text-[#666666] text-sm mt-1 font-jakarta">
+                    vs $8-15k/mo for a typical agency retainer
+                  </p>
                 </div>
-                <p className="text-[#666666] text-sm mt-1 font-jakarta">
-                  vs $8-15k/mo for a typical agency retainer
-                </p>
-              </div>
 
-              {/* Scarcity */}
-              <div className="flex items-center gap-2 mb-4 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
-                <div className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
-                <p className="text-brand-orange text-sm font-semibold">
-                  Only accepting 2 new clients this month
-                </p>
-              </div>
+                {/* Scarcity */}
+                <div className="flex items-center gap-2 mb-4 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
+                  <div className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
+                  <p className="text-brand-orange text-sm font-semibold">
+                    Only accepting 2 new clients this month
+                  </p>
+                </div>
 
-              {/* Buttons */}
-              <div className="grid grid-cols-1 gap-3">
-                <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
+                {/* Buttons */}
+                <div className="grid grid-cols-1 gap-3">
+                  <LetsTalkButton
+                    children="Chat on WhatsApp"
+                    fullWidth
+                    variant="dark"
+                  />
+                </div>
               </div>
-            </div>
-          </CardBody>
+            </CardBody>
           </Card>
         </div>
 
@@ -184,7 +195,11 @@ const Pricing = () => {
                 <div className="flex items-center gap-4 max-md:gap-3 mb-6">
                   {/* Icon */}
                   <div className="w-12 h-12 max-md:w-10 max-md:h-10 flex items-center justify-center">
-                    <img src="/assets/gif/headquater.gif" alt="Custom quote plan icon" aria-hidden="true" />
+                    <img
+                      alt="Custom quote plan icon"
+                      aria-hidden="true"
+                      src="/assets/gif/headquater.gif"
+                    />
                   </div>
 
                   {/* Title */}
@@ -204,7 +219,11 @@ const Pricing = () => {
 
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3 max-md:hidden">
-                  <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
+                  <LetsTalkButton
+                    children="Chat on WhatsApp"
+                    fullWidth
+                    variant="dark"
+                  />
                 </div>
               </div>
 
@@ -216,8 +235,12 @@ const Pricing = () => {
                       key={index}
                       className="flex items-start gap-3 text-gray-700"
                     >
-                      <span className="text-[#E3E3E3]"><CheckIcon /></span>
-                      <span className="text-black max-md:text-sm text-base font-jakarta">{feature}</span>
+                      <span className="text-[#E3E3E3]">
+                        <CheckIcon />
+                      </span>
+                      <span className="text-black max-md:text-sm text-base font-jakarta">
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -226,9 +249,13 @@ const Pricing = () => {
                   Built around your product, not templates
                 </p>
               </div>
-                  <div className="grid grid-cols-1 gap-3 md:hidden">
-                  <LetsTalkButton fullWidth variant="dark" children="Chat on WhatsApp"/>
-                </div>
+              <div className="grid grid-cols-1 gap-3 md:hidden">
+                <LetsTalkButton
+                  children="Chat on WhatsApp"
+                  fullWidth
+                  variant="dark"
+                />
+              </div>
             </div>
           </CardBody>
         </Card>
@@ -240,9 +267,13 @@ const Pricing = () => {
           <div key={index}>
             <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
               <CardBody className="p-6 max-md:p-5">
-
                 <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center  gap-2 font-mono max-md:text-center">
-                  <img src={benefit.icon} alt={benefit.title} className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6" /> {benefit.title}
+                  <img
+                    alt={benefit.title}
+                    className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6"
+                    src={benefit.icon}
+                  />{" "}
+                  {benefit.title}
                 </h4>
                 <p className="text-sm text-[#555555] leading-relaxed font-jakarta">
                   {benefit.description}
@@ -256,14 +287,27 @@ const Pricing = () => {
       {/* Risk Reversal / Guarantee Section */}
       <div className="mt-8 p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 text-center">
         <div className="flex items-center justify-center gap-3 mb-3">
-          <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          <svg
+            className="w-8 h-8 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
-          <h4 className="text-xl md:text-2xl font-bold text-gray-900">100% Satisfaction Guarantee</h4>
+          <h4 className="text-xl md:text-2xl font-bold text-gray-900">
+            100% Satisfaction Guarantee
+          </h4>
         </div>
         <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-          Not happy with the first milestone? We'll refund your deposit — no questions asked.
-          We're confident in our work because we've done this 100+ times for companies like yours.
+          Not happy with the first milestone? We'll refund your deposit — no
+          questions asked. We're confident in our work because we've done this
+          100+ times for companies like yours.
         </p>
       </div>
     </motion.div>

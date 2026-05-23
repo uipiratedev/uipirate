@@ -37,6 +37,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
       setLoading(true);
       const response = await fetch("/api/blogs?published=true&limit=50");
       const data = await response.json();
+
       if (data.success) setBlogs(data.data);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -45,22 +46,31 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
     }
   }, []);
 
-  useEffect(() => { fetchBlogs(); }, [fetchBlogs]);
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   const filteredBlogs = useMemo(() => {
     let result = blogs;
-    if (selectedCategory && selectedCategory !== "All" && selectedCategory !== "general") {
+
+    if (
+      selectedCategory &&
+      selectedCategory !== "All" &&
+      selectedCategory !== "general"
+    ) {
       result = result.filter((b) => b.tags?.includes(selectedCategory));
     }
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
+
       result = result.filter(
         (b) =>
           b.title.toLowerCase().includes(q) ||
           b.excerpt?.toLowerCase().includes(q) ||
-          b.tags?.some((t) => t.toLowerCase().includes(q))
+          b.tags?.some((t) => t.toLowerCase().includes(q)),
       );
     }
+
     return result;
   }, [blogs, selectedCategory, searchQuery]);
 
@@ -71,9 +81,11 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
         <h2 className="text-[22px] md:text-[28px] font-[700] tracking-tight text-[#111]">
           {searchQuery
             ? `Results for "${searchQuery}"`
-            : selectedCategory && selectedCategory !== "All" && selectedCategory !== "general"
-            ? selectedCategory
-            : "All Articles"}
+            : selectedCategory &&
+                selectedCategory !== "All" &&
+                selectedCategory !== "general"
+              ? selectedCategory
+              : "All Articles"}
         </h2>
         {filteredBlogs.length > 0 && (
           <span className="text-sm text-gray-400 font-medium">
@@ -86,7 +98,10 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
       {loading ? (
         <div className="grid md:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse">
+            <div
+              key={i}
+              className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse"
+            >
               <div className="h-[180px] bg-[#F1F5F9]" />
               <div className="px-5 py-4 space-y-3">
                 <div className="h-5 bg-[#F1F5F9] rounded w-[85%]" />
@@ -102,26 +117,39 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
           {filteredBlogs.map((blog) => {
-            const image = blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;
+            const image =
+              blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;
             const tag = blog.tags?.[0];
             const date = new Date(blog.createdAt).toLocaleDateString("en-US", {
-              month: "short", day: "numeric", year: "numeric",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
             });
+
             return (
-              <Link key={blog._id} href={`/blogs/${blog.slug}`} className="group block">
+              <Link
+                key={blog._id}
+                className="group block"
+                href={`/blogs/${blog.slug}`}
+              >
                 <div className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)]">
                   {/* Thumbnail */}
                   <div className="relative h-[180px] overflow-hidden bg-[#F8F9FB]">
                     <Image
-                      src={image}
-                      alt={blog.title}
                       fill
+                      alt={blog.title}
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 33vw"
+                      src={image}
                     />
                     {tag && (
-                      <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-white"
-                        style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}>
+                      <span
+                        className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-white"
+                        style={{
+                          background: "rgba(0,0,0,0.45)",
+                          backdropFilter: "blur(4px)",
+                        }}
+                      >
                         {tag}
                       </span>
                     )}
@@ -142,7 +170,10 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
                       <span>·</span>
                       <span>{blog.readTime || 5} min read</span>
                       <span>·</span>
-                      <span>{(blog.totalViews || blog.views || 0).toLocaleString()} views</span>
+                      <span>
+                        {(blog.totalViews || blog.views || 0).toLocaleString()}{" "}
+                        views
+                      </span>
                     </div>
                   </div>
                 </div>

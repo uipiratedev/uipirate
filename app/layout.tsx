@@ -5,7 +5,15 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 
-import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } from "@/config/fonts";
+import { Providers } from "./providers";
+
+import {
+  fontSans,
+  fontJakarta,
+  fontGeist,
+  fontGeistMono,
+  fontJetBrainsMono,
+} from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
@@ -13,7 +21,6 @@ import { ConditionalFooter } from "@/components/ConditionalFooter";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://uipirate.com"),
@@ -45,8 +52,11 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "UI Pirate | Product Design — Idea to Shipped Product",
-    description: "Product thinking, competitive analysis & conversion-focused design. We simplify complex products. 50+ shipped.",
-    images: ["https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png"],
+    description:
+      "Product thinking, competitive analysis & conversion-focused design. We simplify complex products. 50+ shipped.",
+    images: [
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
+    ],
     site: "@UI_Pirate",
     creator: "@UI_Pirate",
   },
@@ -124,7 +134,8 @@ export default function RootLayout({
               alternateName: ["UI Pirate", "uipirate", "uipirates"],
               url: "https://uipirate.com",
               logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
-              image: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
+              image:
+                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
                 "Product design and frontend development agency that turns ideas into shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
               foundingDate: "2015",
@@ -159,7 +170,8 @@ export default function RootLayout({
                     itemOffered: {
                       "@type": "Service",
                       name: "SaaS Web & Mobile App Design & Development",
-                      description: "UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products",
+                      description:
+                        "UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products",
                     },
                   },
                   {
@@ -167,7 +179,8 @@ export default function RootLayout({
                     itemOffered: {
                       "@type": "Service",
                       name: "Landing Pages & Business Websites",
-                      description: "High-converting landing pages and corporate websites built with Angular, React, Framer, and Webflow for startups and enterprises",
+                      description:
+                        "High-converting landing pages and corporate websites built with Angular, React, Framer, and Webflow for startups and enterprises",
                     },
                   },
                   {
@@ -175,7 +188,8 @@ export default function RootLayout({
                     itemOffered: {
                       "@type": "Service",
                       name: "Design Systems & Component Libraries",
-                      description: "Scalable design systems with custom tokens, UI kits, and documented Angular/React components for enterprise teams",
+                      description:
+                        "Scalable design systems with custom tokens, UI kits, and documented Angular/React components for enterprise teams",
                     },
                   },
                   {
@@ -183,7 +197,8 @@ export default function RootLayout({
                     itemOffered: {
                       "@type": "Service",
                       name: "Graphic Design",
-                      description: "Brand identity, infographics, newsletters, and marketing visuals",
+                      description:
+                        "Brand identity, infographics, newsletters, and marketing visuals",
                     },
                   },
                   {
@@ -191,7 +206,8 @@ export default function RootLayout({
                     itemOffered: {
                       "@type": "Service",
                       name: "Motion Graphics & Video Editing",
-                      description: "2D/3D animations, social media content, and product explainer videos",
+                      description:
+                        "2D/3D animations, social media content, and product explainer videos",
                     },
                   },
                   {
@@ -199,7 +215,8 @@ export default function RootLayout({
                     itemOffered: {
                       "@type": "Service",
                       name: "UX Audits & Consultation",
-                      description: "Heuristic analysis, usability testing, and strategic UX recommendations",
+                      description:
+                        "Heuristic analysis, usability testing, and strategic UX recommendations",
                     },
                   },
                 ],
@@ -227,7 +244,8 @@ export default function RootLayout({
               "@id": "https://uipirate.com/#website",
               url: "https://uipirate.com",
               name: "UI Pirate",
-              description: "Enterprise UI/UX design agency for SaaS & tech companies. Modern, scalable design trusted by Fortune 500.",
+              description:
+                "Enterprise UI/UX design agency for SaaS & tech companies. Modern, scalable design trusted by Fortune 500.",
               publisher: { "@id": "https://uipirate.com/#organization" },
               inLanguage: "en-US",
             }),
@@ -309,7 +327,10 @@ export default function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           {/* Skip Link for Keyboard Navigation */}
-          <a className="skip-link sr-only focus:not-sr-only" href="#main-content">
+          <a
+            className="skip-link sr-only focus:not-sr-only"
+            href="#main-content"
+          >
             Skip to main content
           </a>
 

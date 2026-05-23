@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import FeaturedBlogs from "./featuredBlogs";
 import BlogsHero from "./hero";
 import BlogsNewsletter from "./newsletter";
@@ -11,13 +12,16 @@ const Blogs = () => {
 
   return (
     <div>
-      <BlogsHero 
-        searchQuery={searchQuery} 
-        onSearchChange={setSearchQuery}
+      <BlogsHero
+        searchQuery={searchQuery}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
+        onSearchChange={setSearchQuery}
       />
-      <FeaturedBlogs searchQuery={searchQuery} selectedCategory={selectedCategory} />
+      <FeaturedBlogs
+        searchQuery={searchQuery}
+        selectedCategory={selectedCategory}
+      />
       <BlogsNewsletter />
     </div>
   );

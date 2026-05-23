@@ -56,6 +56,8 @@ export async function POST(request: NextRequest) {
         userId: String(admin._id),
         email: admin.email,
         role: admin.role,
+        tenantId: String(admin._id), // each Admin is their own tenant
+        plan: (admin as any).plan ?? "free",
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN },

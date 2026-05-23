@@ -28,6 +28,7 @@ const SuggestedReads = () => {
     try {
       const response = await fetch("/api/blogs?published=true&limit=3");
       const data = await response.json();
+
       if (data.success) setBlogs(data.data);
     } catch {
       // silent
@@ -36,7 +37,9 @@ const SuggestedReads = () => {
     }
   }, []);
 
-  useEffect(() => { fetchSuggestedBlogs(); }, [fetchSuggestedBlogs]);
+  useEffect(() => {
+    fetchSuggestedBlogs();
+  }, [fetchSuggestedBlogs]);
 
   if (!loading && blogs.length === 0) return null;
 
@@ -47,7 +50,10 @@ const SuggestedReads = () => {
         <h2 className="text-[22px] md:text-[26px] font-[700] tracking-tight text-[#111]">
           More to Read
         </h2>
-        <Link href="/blogs" className="text-sm font-semibold text-[#FF5B04] hover:underline">
+        <Link
+          className="text-sm font-semibold text-[#FF5B04] hover:underline"
+          href="/blogs"
+        >
           All articles →
         </Link>
       </div>
@@ -56,7 +62,10 @@ const SuggestedReads = () => {
       <div className="grid md:grid-cols-3 gap-6">
         {loading
           ? [...Array(3)].map((_, i) => (
-              <div key={i} className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse">
+              <div
+                key={i}
+                className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse"
+              >
                 <div className="h-[180px] bg-[#F1F5F9]" />
                 <div className="px-5 py-4 space-y-3">
                   <div className="h-5 bg-[#F1F5F9] rounded w-[85%]" />
@@ -65,26 +74,42 @@ const SuggestedReads = () => {
               </div>
             ))
           : blogs.map((blog) => {
-              const image = blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;
+              const image =
+                blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;
               const tag = blog.tags?.[0];
-              const date = new Date(blog.createdAt).toLocaleDateString("en-US", {
-                month: "short", day: "numeric", year: "numeric",
-              });
+              const date = new Date(blog.createdAt).toLocaleDateString(
+                "en-US",
+                {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                },
+              );
+
               return (
-                <Link key={blog._id} href={`/blogs/${blog.slug}`} className="group block">
+                <Link
+                  key={blog._id}
+                  className="group block"
+                  href={`/blogs/${blog.slug}`}
+                >
                   <div className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)]">
                     {/* Thumbnail */}
                     <div className="relative h-[180px] overflow-hidden bg-[#F8F9FB]">
                       <Image
-                        src={image}
-                        alt={blog.title}
                         fill
+                        alt={blog.title}
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 33vw"
+                        src={image}
                       />
                       {tag && (
-                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-white"
-                          style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}>
+                        <span
+                          className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider text-white"
+                          style={{
+                            background: "rgba(0,0,0,0.45)",
+                            backdropFilter: "blur(4px)",
+                          }}
+                        >
                           {tag}
                         </span>
                       )}
@@ -104,7 +129,14 @@ const SuggestedReads = () => {
                         <span>·</span>
                         <span>{blog.readTime || 5} min read</span>
                         <span>·</span>
-                        <span>{(blog.totalViews || blog.views || 0).toLocaleString()} views</span>
+                        <span>
+                          {(
+                            blog.totalViews ||
+                            blog.views ||
+                            0
+                          ).toLocaleString()}{" "}
+                          views
+                        </span>
                       </div>
                     </div>
                   </div>

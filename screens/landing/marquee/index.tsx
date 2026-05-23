@@ -118,12 +118,11 @@ const LandingMarquee = () => {
         {/* Section heading with enhanced styling */}
         <div className="mb-6 max-md:mb-6 text-center max-w-4xl mx-auto px-8 max-md:px-0">
           <motion.div
-            variants={headingVariants}
             initial="hidden"
-            whileInView="visible"
+            variants={headingVariants}
             viewport={{ once: false, amount: 0.5 }}
+            whileInView="visible"
           >
-           
             <h2 className="heading-center">
               <span className="text-brand-orange">Trusted by Teams</span>
               <br />{" "}
@@ -132,8 +131,6 @@ const LandingMarquee = () => {
                 <span className="whitespace-nowrap">AI</span>
               </span>
             </h2>
-
-         
           </motion.div>
         </div>
 
@@ -141,10 +138,10 @@ const LandingMarquee = () => {
         <div className="w-full mt-6">
           <motion.div
             className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center justify-items-center"
-            variants={logoContainerVariants}
             initial="hidden"
-            whileInView="visible"
+            variants={logoContainerVariants}
             viewport={{ once: true, amount: 0.3 }}
+            whileInView="visible"
           >
             {premiumLogos.map((logo, index) => (
               <motion.a
@@ -168,18 +165,26 @@ const LandingMarquee = () => {
                 }}
                 target={logo.link ? "_blank" : undefined}
                 variants={logoItemVariants}
-                onHoverStart={() => setHoveredIndex(index)}
                 onHoverEnd={() => setHoveredIndex(null)}
+                onHoverStart={() => setHoveredIndex(index)}
               >
                 {/* Brand Orange Border - appears on hover */}
                 <motion.div
+                  animate={{
+                    opacity: hoveredIndex === index ? 1 : 0,
+                    boxShadow:
+                      hoveredIndex === index
+                        ? "0 0 20px rgba(255, 91, 4, 0.3), 0 0 40px rgba(255, 91, 4, 0.1)"
+                        : "0 0 0px rgba(255, 91, 4, 0)",
+                  }}
                   className="brand-border"
                   style={{
                     position: "absolute",
                     inset: 0,
                     borderRadius: "0.75rem",
                     padding: "2px",
-                    background: "linear-gradient(135deg, #FF5B04 0%, #FF7B34 50%, #FF5B04 100%)",
+                    background:
+                      "linear-gradient(135deg, #FF5B04 0%, #FF7B34 50%, #FF5B04 100%)",
                     WebkitMask:
                       "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
                     WebkitMaskComposite: "xor",
@@ -187,21 +192,15 @@ const LandingMarquee = () => {
                     pointerEvents: "none",
                     zIndex: 1,
                   }}
-                  animate={{
-                    opacity: hoveredIndex === index ? 1 : 0,
-                    boxShadow: hoveredIndex === index
-                      ? "0 0 20px rgba(255, 91, 4, 0.3), 0 0 40px rgba(255, 91, 4, 0.1)"
-                      : "0 0 0px rgba(255, 91, 4, 0)"
-                  }}
                   transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 />
 
                 <motion.img
                   alt={logo.alt}
+                  animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}
                   className="h-[40px] max-h-[40px] max-md:h-[24px] max-md:max-h-[24px] w-auto object-contain relative z-10"
                   loading="lazy"
                   src={logo.url}
-                  animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}
                   transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 />
               </motion.a>

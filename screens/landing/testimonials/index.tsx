@@ -2,6 +2,7 @@
 import React from "react";
 
 import TestimonialCards from "./testimonialCards";
+
 import GlassBadge from "@/components/GlassBadge";
 import testimonialData from "@/data/testimonials.json";
 
@@ -40,15 +41,13 @@ function LandingTestimonials() {
     <div className=" pt-20 max-md:pt-12 ">
       {/* Review schema for Google rich results */}
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        type="application/ld+json"
       />
 
       <div className="autoShow">
         <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-4">
-          <GlassBadge variant="gradient">
-            testimonials
-          </GlassBadge>
+          <GlassBadge variant="gradient">testimonials</GlassBadge>
         </div>
 
         <h2 className="heading-center">

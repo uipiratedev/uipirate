@@ -1,9 +1,8 @@
 import { Card, CardBody, Tooltip } from "@heroui/react";
-import { motion, Variants, AnimatePresence } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useState } from "react";
 
 import GlassBadge from "@/components/GlassBadge";
-import GlassSurface from "@/components/GlassSurface";
 
 const TheTeam = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -30,7 +29,7 @@ const TheTeam = () => {
       image: "/assets/teams/musaddiq.svg",
       bgColor: "bg-gradient-to-br from-blue-400 to-blue-600",
     },
-      {
+    {
       name: "Priyagni",
       role: "Graphic Designer",
       quote: "I’m Priyagni. I work on visual design.",
@@ -44,7 +43,7 @@ const TheTeam = () => {
       image: "/assets/teams/kartik.svg",
       bgColor: "bg-gradient-to-br from-yellow-400 to-yellow-600",
     },
-  
+
     {
       name: "Aniket",
       role: "Lead Backend & AI Dev",
@@ -87,159 +86,161 @@ const TheTeam = () => {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative">
-
       {/* Header */}
       <div className="text-center mb-6 max-md:mb-4 autoShow">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">THE TEAM</GlassBadge>
         </div>
-        <h2 className="heading-center">
-          Meet The Crew On Board
-        </h2>
+        <h2 className="heading-center">Meet The Crew On Board</h2>
       </div>
-<div className="autoShowBottom">
-      {/* Team Grid */}
-      <motion.div
-        className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 max-md:gap-4 relative "
-        initial="hidden"
-        variants={containerVariants}
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        {teamMembers.map((member, index) => (
-          <Tooltip
-            key={index}
-            isOpen={hoveredIndex === index}
-            showArrow
-            classNames={{
-              base: [
-                // Arrow styling - glass effect for arrow
-                "before:bg-white/70",
-                "before:backdrop-blur-md",
-                "before:shadow-sm",
-                "before:z-50",
-              ],
-              content: [
-                // Remove default NextUI background
-                "p-0",
-                "bg-transparent",
-                "shadow-none",
-                "backdrop-blur-none",
-              ],
-            }}
-            closeDelay={100}
-            content={
-              <div
-                className="w-[200px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 252, 253, 0.94) 100%)",
-                  WebkitBackdropFilter:
-                    "blur(20px) saturate(180%) brightness(105%)",
-                  backdropFilter:
-                    "blur(20px) saturate(180%) brightness(105%)",
-                  boxShadow:
-                    "0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 20px 60px -12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(255, 255, 255, 0.7)",
-                }}
-              >
-                {/* Frosted glass texture overlay */}
+      <div className="autoShowBottom">
+        {/* Team Grid */}
+        <motion.div
+          className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 max-md:gap-4 relative "
+          initial="hidden"
+          variants={containerVariants}
+          viewport={{ once: true, amount: 0.2 }}
+          whileInView="visible"
+        >
+          {teamMembers.map((member, index) => (
+            <Tooltip
+              key={index}
+              showArrow
+              classNames={{
+                base: [
+                  // Arrow styling - glass effect for arrow
+                  "before:bg-white/70",
+                  "before:backdrop-blur-md",
+                  "before:shadow-sm",
+                  "before:z-50",
+                ],
+                content: [
+                  // Remove default NextUI background
+                  "p-0",
+                  "bg-transparent",
+                  "shadow-none",
+                  "backdrop-blur-none",
+                ],
+              }}
+              closeDelay={100}
+              content={
                 <div
-                  className="absolute inset-0 pointer-events-none z-0"
+                  className="w-[200px] p-4 rounded-xl border border-white/50 relative overflow-hidden"
                   style={{
                     background:
-                      "radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(245, 248, 255, 0.3) 0%, transparent 50%)",
-                    mixBlendMode: "soft-light",
+                      "linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 252, 253, 0.94) 100%)",
+                    WebkitBackdropFilter:
+                      "blur(20px) saturate(180%) brightness(105%)",
+                    backdropFilter:
+                      "blur(20px) saturate(180%) brightness(105%)",
+                    boxShadow:
+                      "0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 20px 60px -12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -1px 0 rgba(255, 255, 255, 0.7)",
                   }}
-                />
-                {/* Content wrapper with relative positioning */}
-                <div className="relative z-10 text-center">
-                  {/* Quote */}
-                  <p className="text-sm italic text-black mb-1 leading-relaxed font-semibold">
-                    &quot;{member.quote}&quot;
-                  </p>
+                >
+                  {/* Frosted glass texture overlay */}
+                  <div
+                    className="absolute inset-0 pointer-events-none z-0"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 50%), radial-gradient(circle at 70% 80%, rgba(245, 248, 255, 0.3) 0%, transparent 50%)",
+                      mixBlendMode: "soft-light",
+                    }}
+                  />
+                  {/* Content wrapper with relative positioning */}
+                  <div className="relative z-10 text-center">
+                    {/* Quote */}
+                    <p className="text-sm italic text-black mb-1 leading-relaxed font-semibold">
+                      &quot;{member.quote}&quot;
+                    </p>
 
-                  {/* Name and Title */}
-                  <div className="">
-                    {/* <p className="text-xs font-bold text-black">
+                    {/* Name and Title */}
+                    <div className="">
+                      {/* <p className="text-xs font-bold text-black">
                       {member.name}
                     </p> */}
-                    <p className="text-[10px] text-gray-800 font-semibold opacity-70">
-                      {member.role}
-                    </p>
+                      <p className="text-[10px] text-gray-800 font-semibold opacity-70">
+                        {member.role}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            }
-            delay={200}
-            disableAnimation={false}
-            motionProps={{
-              variants: {
-                exit: {
-                  opacity: 0,
-                  y: -8,
-                  scale: 0.96,
-                  transition: {
-                    duration: 0.15,
-                    ease: "easeIn",
+              }
+              delay={200}
+              disableAnimation={false}
+              isOpen={hoveredIndex === index}
+              motionProps={{
+                variants: {
+                  exit: {
+                    opacity: 0,
+                    y: -8,
+                    scale: 0.96,
+                    transition: {
+                      duration: 0.15,
+                      ease: "easeIn",
+                    },
+                  },
+                  enter: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 30,
+                      mass: 0.8,
+                    },
                   },
                 },
-                enter: {
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  transition: {
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 30,
-                    mass: 0.8,
-                  },
-                },
-              },
-            }}
-            offset={12}
-            placement="top"
-          >
-            <motion.div 
-              variants={cardVariants}
-              className={`group cursor-pointer relative ${hoveredIndex === index ? 'z-[100]' : 'z-10'}`}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => setHoveredIndex(hoveredIndex === index ? null : index)}
+              }}
+              offset={12}
+              placement="top"
             >
               <motion.div
-                whileHover={{ 
-                  scale: 1.05,
-                  transition: { duration: 0.3, ease: "easeOut" }
-                }}
+                className={`group cursor-pointer relative ${hoveredIndex === index ? "z-[100]" : "z-10"}`}
+                variants={cardVariants}
+                onClick={() =>
+                  setHoveredIndex(hoveredIndex === index ? null : index)
+                }
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
               >
-                <Card className="rounded-[32px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
-                  <CardBody className="p-0">
-                    <div className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}>
-                      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-                      
-                      {/* Hover Glow */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
-                        <div
-                          className="w-full h-full"
-                          style={{
-                            background: "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%)",
-                          }}
+                <motion.div
+                  whileHover={{
+                    scale: 1.05,
+                    transition: { duration: 0.3, ease: "easeOut" },
+                  }}
+                >
+                  <Card className="rounded-[32px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
+                    <CardBody className="p-0">
+                      <div
+                        className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}
+                      >
+                        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+
+                        {/* Hover Glow */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0">
+                          <div
+                            className="w-full h-full"
+                            style={{
+                              background:
+                                "radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 70%)",
+                            }}
+                          />
+                        </div>
+
+                        <img
+                          alt={member.name}
+                          className="relative z-10 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          src={member.image}
                         />
                       </div>
-
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="relative z-10 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                  </CardBody>
-                </Card>
+                    </CardBody>
+                  </Card>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          </Tooltip>
-        ))}
-      </motion.div>
+            </Tooltip>
+          ))}
+        </motion.div>
       </div>
     </div>
   );

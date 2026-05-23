@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+
 import { OGTemplate } from "../../_og/template";
 
 export const runtime = "edge";
@@ -64,16 +65,13 @@ const SERVICE_OG: Record<string, ServiceMeta> = {
   },
 };
 
-export function generateImageMetadata({
-  params,
-}: {
-  params: { id: string };
-}) {
+export function generateImageMetadata({ params }: { params: { id: string } }) {
   const slug = decodeURIComponent(params.id)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
   const meta = SERVICE_OG[slug];
+
   return [
     {
       id: slug,
@@ -98,10 +96,10 @@ export default function Image({ params }: { params: { id: string } }) {
   return new ImageResponse(
     <OGTemplate
       badge={meta.badge}
+      description={meta.description}
       title={meta.title}
       titleHighlight={meta.titleHighlight}
-      description={meta.description}
     />,
-    { ...size }
+    { ...size },
   );
 }

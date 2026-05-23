@@ -5,7 +5,7 @@ import Link from "next/link";
  * Drives readers toward the contact / estimate flow.
  */
 export default function GlobalCTA({ topic }: { topic?: string } = {}) {
-  const headingText = topic 
+  const headingText = topic
     ? `Struggling with ${topic}? Let's talk about your product.`
     : "Let's Build It Together";
 
@@ -32,24 +32,24 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
           </h3>
           <p className="text-gray-400 text-sm leading-relaxed max-w-md">
             UI Pirate is a product design & development agency trusted by 50+
-            SaaS founders and enterprise teams across the US, UK & beyond.
-            Tell us what you need.
+            SaaS founders and enterprise teams across the US, UK & beyond. Tell
+            us what you need.
           </p>
         </div>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3 relative z-10 flex-shrink-0">
           <Link
+            className="px-6 py-3 rounded-xl bg-[#FF5B04] text-white text-sm font-semibold hover:bg-[#e04e00] transition-colors text-center whitespace-nowrap"
             href="/contact"
             id="global-cta-contact"
-            className="px-6 py-3 rounded-xl bg-[#FF5B04] text-white text-sm font-semibold hover:bg-[#e04e00] transition-colors text-center whitespace-nowrap"
           >
             Get a Free Estimate →
           </Link>
           <Link
+            className="px-6 py-3 rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/20 transition-colors text-center whitespace-nowrap"
             href="/case-studies"
             id="global-cta-works"
-            className="px-6 py-3 rounded-xl bg-white/10 text-white text-sm font-semibold hover:bg-white/20 transition-colors text-center whitespace-nowrap"
           >
             See Our Work
           </Link>

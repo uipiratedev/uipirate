@@ -7,6 +7,17 @@ export interface IAdmin extends Document {
   password: string;
   role: "admin" | "super-admin";
   isActive: boolean;
+  /** Subscription tier — used to gate features and API usage */
+  plan: "free" | "starter" | "pro";
+  /** Stripe customer ID for billing management */
+  stripeCustomerId?: string;
+  /** When a free trial expires; null means no active trial */
+  trialEndsAt?: Date;
+  /** Rolling monthly usage counters — reset by a cron job or Stripe webhook */
+  usageThisMonth: {
+    aiRequests: number;
+    distributions: number;
+  };
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -44,6 +55,23 @@ const AdminSchema: Schema = new Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    plan: {
+      type: String,
+      enum: ["free", "starter", "pro"],
+      default: "free",
+    },
+    stripeCustomerId: {
+      type: String,
+      default: null,
+    },
+    trialEndsAt: {
+      type: Date,
+      default: null,
+    },
+    usageThisMonth: {
+      aiRequests:    { type: Number, default: 0 },
+      distributions: { type: Number, default: 0 },
     },
   },
   {

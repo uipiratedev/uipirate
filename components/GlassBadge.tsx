@@ -62,7 +62,7 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
     lg: "px-4 py-2 text-sm sm:px-5 sm:py-2.5 sm:text-base",
   };
 
-  // For the gradient variant, we want it to be slightly more premium (larger) on desktop 
+  // For the gradient variant, we want it to be slightly more premium (larger) on desktop
   // but still responsive for mobile.
   const gradientSizeClasses = {
     sm: "px-2.5 py-1 text-[10px] sm:px-3 sm:py-1.5 sm:text-xs",

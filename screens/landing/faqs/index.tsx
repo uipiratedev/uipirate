@@ -1,7 +1,8 @@
 "use client";
 
-import GlassBadge from "@/components/GlassBadge";
 import FaqsAccordion from "./accordion";
+
+import GlassBadge from "@/components/GlassBadge";
 
 const LandingFaqs = () => {
   return (
@@ -10,9 +11,7 @@ const LandingFaqs = () => {
       <div className="flex flex-col items-center justify-center pb-4 max-md:pb-0 autoShow">
         <GlassBadge variant="gradient">FAQs</GlassBadge>
       </div>
-      <h2 className="heading-center autoShow">
-        Everything you need to know
-      </h2>
+      <h2 className="heading-center autoShow">Everything you need to know</h2>
 
       {/* Accordion section */}
       <div className="mt-6 max-md:mt-4 autoShowBottom">

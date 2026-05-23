@@ -1,4 +1,5 @@
 import { createHash } from "crypto";
+
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
 import dbConnect from "@/lib/mongodb";
@@ -16,21 +17,26 @@ const BOT_PATTERN =
 function extractIp(headers: ReadonlyHeaders): string {
   // Cloudflare — most reliable when behind CF
   const cfIp = headers.get("cf-connecting-ip");
+
   if (cfIp) return cfIp.trim();
 
   // Standard proxy forward — take first IP (original client)
   const forwardedFor = headers.get("x-forwarded-for");
+
   if (forwardedFor) {
     const first = forwardedFor.split(",")[0].trim();
+
     if (first) return first;
   }
 
   // nginx real IP header
   const realIp = headers.get("x-real-ip");
+
   if (realIp) return realIp.trim();
 
   // Vercel-specific
   const vercelIp = headers.get("x-vercel-forwarded-for");
+
   if (vercelIp) return vercelIp.split(",")[0].trim();
 
   // Fallback for local dev
@@ -50,6 +56,7 @@ function hashIp(ip: string): string {
  */
 function isBot(headers: ReadonlyHeaders): boolean {
   const ua = headers.get("user-agent") || "";
+
   return BOT_PATTERN.test(ua);
 }
 
@@ -69,7 +76,7 @@ function isBot(headers: ReadonlyHeaders): boolean {
 export async function trackView(
   slug: string,
   headers: ReadonlyHeaders,
-  isAdmin = false
+  isAdmin = false,
 ): Promise<void> {
   try {
     // Never track admin previews
@@ -84,8 +91,9 @@ export async function trackView(
       // Count bot hits separately — never touch unique views
       await Blog.findOneAndUpdate(
         { slug: normalizedSlug },
-        { $inc: { botViews: 1, totalViews: 1 } }
+        { $inc: { botViews: 1, totalViews: 1 } },
       );
+
       return;
     }
 
@@ -104,14 +112,14 @@ export async function trackView(
       // ✅ Unique visit — increment unique views + total
       await Blog.findOneAndUpdate(
         { slug: normalizedSlug },
-        { $inc: { views: 1, totalViews: 1 } }
+        { $inc: { views: 1, totalViews: 1 } },
       );
     } catch (err: any) {
       if (err?.code === 11000) {
         // 🔁 Duplicate visit (same IP within 24h) — count separately
         await Blog.findOneAndUpdate(
           { slug: normalizedSlug },
-          { $inc: { duplicateViews: 1, totalViews: 1 } }
+          { $inc: { duplicateViews: 1, totalViews: 1 } },
         );
       } else {
         throw err;

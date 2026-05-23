@@ -1,5 +1,6 @@
-import GlassBadge from "@/components/GlassBadge";
 import ServicesSection from "./servicesSection";
+
+import GlassBadge from "@/components/GlassBadge";
 
 const LandingBusinessHelp = () => {
   return (

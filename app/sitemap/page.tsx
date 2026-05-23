@@ -35,31 +35,112 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://uipirate.com/" },
-        { "@type": "ListItem", "position": 2, "name": "Site Map", "item": "https://uipirate.com/sitemap" },
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://uipirate.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Site Map",
+          item: "https://uipirate.com/sitemap",
+        },
       ],
     },
     {
       "@type": "ItemList",
-      "name": "UI Pirate — All Pages",
-      "description": "Complete sitemap of UI Pirate product design & development agency",
-      "itemListElement": [
-        { "@type": "SiteLinksSearchBox", "url": "https://uipirate.com" },
-        { "@type": "ListItem", "position": 1, "url": "https://uipirate.com/", "name": "Home" },
-        { "@type": "ListItem", "position": 2, "url": "https://uipirate.com/about", "name": "About UI Pirate" },
-        { "@type": "ListItem", "position": 3, "url": "https://uipirate.com/case-studies", "name": "Case Studies & Portfolio" },
-        { "@type": "ListItem", "position": 4, "url": "https://uipirate.com/pricing", "name": "Pricing" },
-        { "@type": "ListItem", "position": 5, "url": "https://uipirate.com/contact", "name": "Contact" },
-        { "@type": "ListItem", "position": 6, "url": "https://uipirate.com/services/SaaS-Web-&-Mobile-Apps", "name": "UX/UI Design — SaaS, AI & Mobile Apps" },
-        { "@type": "ListItem", "position": 7, "url": "https://uipirate.com/services/Landing-Pages-&-Business-Websites", "name": "Landing Pages & Business Websites" },
-        { "@type": "ListItem", "position": 8, "url": "https://uipirate.com/services/Graphic-Design", "name": "Graphic Design" },
-        { "@type": "ListItem", "position": 9, "url": "https://uipirate.com/services/Motion-Graphics-&-Video-Editing", "name": "Motion Graphics & Video Editing" },
-        { "@type": "ListItem", "position": 10, "url": "https://uipirate.com/services/UX-Audits-&-Consultation", "name": "UX Audits & Consultation" },
-        { "@type": "ListItem", "position": 11, "url": "https://uipirate.com/services/3D-Animation-&-Rendering", "name": "3D Animation & Rendering" },
-        { "@type": "ListItem", "position": 12, "url": "https://uipirate.com/blogs", "name": "Blogs & Tutorials" },
-        { "@type": "ListItem", "position": 13, "url": "https://uipirate.com/faqs", "name": "FAQs" },
-        { "@type": "ListItem", "position": 14, "url": "https://uipirate.com/community", "name": "Community Insights" },
+      name: "UI Pirate — All Pages",
+      description:
+        "Complete sitemap of UI Pirate product design & development agency",
+      itemListElement: [
+        { "@type": "SiteLinksSearchBox", url: "https://uipirate.com" },
+        {
+          "@type": "ListItem",
+          position: 1,
+          url: "https://uipirate.com/",
+          name: "Home",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          url: "https://uipirate.com/about",
+          name: "About UI Pirate",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          url: "https://uipirate.com/case-studies",
+          name: "Case Studies & Portfolio",
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          url: "https://uipirate.com/pricing",
+          name: "Pricing",
+        },
+        {
+          "@type": "ListItem",
+          position: 5,
+          url: "https://uipirate.com/contact",
+          name: "Contact",
+        },
+        {
+          "@type": "ListItem",
+          position: 6,
+          url: "https://uipirate.com/services/SaaS-Web-&-Mobile-Apps",
+          name: "UX/UI Design — SaaS, AI & Mobile Apps",
+        },
+        {
+          "@type": "ListItem",
+          position: 7,
+          url: "https://uipirate.com/services/Landing-Pages-&-Business-Websites",
+          name: "Landing Pages & Business Websites",
+        },
+        {
+          "@type": "ListItem",
+          position: 8,
+          url: "https://uipirate.com/services/Graphic-Design",
+          name: "Graphic Design",
+        },
+        {
+          "@type": "ListItem",
+          position: 9,
+          url: "https://uipirate.com/services/Motion-Graphics-&-Video-Editing",
+          name: "Motion Graphics & Video Editing",
+        },
+        {
+          "@type": "ListItem",
+          position: 10,
+          url: "https://uipirate.com/services/UX-Audits-&-Consultation",
+          name: "UX Audits & Consultation",
+        },
+        {
+          "@type": "ListItem",
+          position: 11,
+          url: "https://uipirate.com/services/3D-Animation-&-Rendering",
+          name: "3D Animation & Rendering",
+        },
+        {
+          "@type": "ListItem",
+          position: 12,
+          url: "https://uipirate.com/blogs",
+          name: "Blogs & Tutorials",
+        },
+        {
+          "@type": "ListItem",
+          position: 13,
+          url: "https://uipirate.com/faqs",
+          name: "FAQs",
+        },
+        {
+          "@type": "ListItem",
+          position: 14,
+          url: "https://uipirate.com/community",
+          name: "Community Insights",
+        },
       ],
     },
   ],
@@ -69,8 +150,8 @@ const SitemapPage = () => {
   return (
     <>
       <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        type="application/ld+json"
       />
       <Sitemap />
     </>

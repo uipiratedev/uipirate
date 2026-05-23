@@ -99,7 +99,8 @@ const sections = [
   {
     id: "third-party",
     title: "7. Third-Party Services",
-    content: "Our website uses third-party services that may collect information:",
+    content:
+      "Our website uses third-party services that may collect information:",
     bullets: [
       "Google Analytics — Analytics & behavior tracking",
       "Microsoft Clarity — Analytics & session recording",
@@ -219,7 +220,8 @@ const PrivacyPolicyScreen = () => {
             </div>
 
             <p className="sub-header text-gray-600">
-              We respect your privacy. Here&apos;s everything you need to know about how UI Pirate collects, uses, and protects your information.
+              We respect your privacy. Here&apos;s everything you need to know
+              about how UI Pirate collects, uses, and protects your information.
             </p>
 
             <p
@@ -283,7 +285,10 @@ const PrivacyPolicyScreen = () => {
                   {section.bullets && (
                     <ul className="space-y-2 mb-4">
                       {section.bullets.map((b, bi) => (
-                        <li key={bi} className="flex items-start gap-3 text-gray-600">
+                        <li
+                          key={bi}
+                          className="flex items-start gap-3 text-gray-600"
+                        >
                           <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />
                           {b}
                         </li>

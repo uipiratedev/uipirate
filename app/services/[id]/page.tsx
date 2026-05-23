@@ -21,9 +21,13 @@ const normalize = (str: string) =>
     .replace(/^-+|-+$/g, "");
 
 // SEO metadata mapping for each service
-const SERVICE_META: Record<string, { title: string; description: string; keywords: string }> = {
+const SERVICE_META: Record<
+  string,
+  { title: string; description: string; keywords: string }
+> = {
   "saas-web-mobile-apps": {
-    title: "SaaS & Mobile App Design & Development | Idea to Product | Angular, React | UI Pirate",
+    title:
+      "SaaS & Mobile App Design & Development | Idea to Product | Angular, React | UI Pirate",
     description:
       "Turn your SaaS or mobile app idea into a shipped product. We handle product thinking, competitive analysis, information architecture, UX/UI design & frontend development in Angular and React. From a few lines of vision to a fully built product.",
     keywords:
@@ -38,28 +42,32 @@ const SERVICE_META: Record<string, { title: string; description: string; keyword
       "landing page design and development, business website development, Angular website development, high-converting landing page, product positioning, competitive analysis, startup website design",
   },
   "design-system-component-library": {
-    title: "Design Systems & Component Libraries | Scalable UI Kits | UI Pirate",
+    title:
+      "Design Systems & Component Libraries | Scalable UI Kits | UI Pirate",
     description:
       "Custom design systems with design tokens, branded UI kits, and documented dev-ready components for Angular, React, and other frameworks. Built for enterprise teams that need consistency at scale.",
     keywords:
       "design system agency, Angular component library, component library, design tokens, UI kit, scalable design system, enterprise design system, Angular design system, React component library, Figma component library",
   },
   "graphic-design": {
-    title: "Graphic Design Services | Brand Identity & Marketing Visuals | UI Pirate",
+    title:
+      "Graphic Design Services | Brand Identity & Marketing Visuals | UI Pirate",
     description:
       "Professional graphic design for brand identity, infographics, newsletters, social media, and marketing materials. Consistent brand visuals across all channels.",
     keywords:
       "graphic design agency, brand identity design, infographic design, marketing design, social media graphics, brand assets",
   },
   "motion-graphics-video-editing": {
-    title: "Motion Graphics & Video Editing | Animations & Explainer Videos | UI Pirate",
+    title:
+      "Motion Graphics & Video Editing | Animations & Explainer Videos | UI Pirate",
     description:
       "Professional motion graphics, 2D/3D animations, social media reels, explainer videos, and product demos. Sound design, color grading, and captions included.",
     keywords:
       "motion graphics agency, video editing, explainer videos, product animation, social media video, 2D 3D animation",
   },
   "ux-audits-consultation": {
-    title: "UX Audit & Consultation | Improve Your Product's Usability | UI Pirate",
+    title:
+      "UX Audit & Consultation | Improve Your Product's Usability | UI Pirate",
     description:
       "Expert UX audits with heuristic analysis, usability testing, and actionable recommendations. Identify friction points and improve conversion rates in your SaaS product.",
     keywords:
@@ -74,7 +82,9 @@ const SERVICE_META: Record<string, { title: string; description: string; keyword
   },
 };
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const urlSlug = decodeURIComponent(params.id);
   const normalizedSlug = normalize(urlSlug);
 
@@ -127,14 +137,21 @@ const ServicesByIdPage = ({ params }: PageProps) => {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            name: (service.data as any).hero?.badge || urlSlug.replace(/-/g, " "),
+            name:
+              (service.data as any).hero?.badge || urlSlug.replace(/-/g, " "),
             description: (service.data as any).hero?.description || "",
             provider: {
               "@type": "Organization",
               name: "UI Pirate by Vishal Anand",
               url: "https://uipirate.com",
             },
-            areaServed: ["United States", "United Kingdom", "Singapore", "India", "Australia"],
+            areaServed: [
+              "United States",
+              "United Kingdom",
+              "Singapore",
+              "India",
+              "Australia",
+            ],
             url: `https://uipirate.com/services/${encodeURIComponent(urlSlug)}`,
           }),
         }}

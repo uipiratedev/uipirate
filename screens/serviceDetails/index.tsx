@@ -1,7 +1,6 @@
 "use client";
 
 import LandingWork from "../landing/works";
-import TryBeforeCommit from "../pricing/tryBeforeCommit";
 
 import ServiceDetailsHero from "./hero";
 import StreamlinedProcess from "./streamlinedProcess";
@@ -18,7 +17,7 @@ const ServiceDetails = ({ data }: any) => {
 
   return (
     <PageWrapper showFloatingButton={false}>
-            <div className="space-y-20 max-md:space-y-16">
+      <div className="space-y-20 max-md:space-y-16">
         {data.hero && <ServiceDetailsHero data={data.hero} />}
 
         {data.whatYouGet && (
@@ -27,14 +26,15 @@ const ServiceDetails = ({ data }: any) => {
           </div>
         )}
 
-
         {data.whyThisMatters && (
           <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
             <WhyThisMatters data={data.whyThisMatters} />
           </div>
         )}
 
-        {data.streamlinedProcess && <StreamlinedProcess data={data.streamlinedProcess} />}
+        {data.streamlinedProcess && (
+          <StreamlinedProcess data={data.streamlinedProcess} />
+        )}
 
         <div className="container mx-auto">
           <LandingWork />

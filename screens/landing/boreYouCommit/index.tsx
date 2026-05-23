@@ -3,6 +3,7 @@
 import { Card, CardBody, Chip } from "@heroui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+
 import { CheckIcon } from "@/components/icons";
 import GlassBadge from "@/components/GlassBadge";
 
@@ -106,76 +107,78 @@ const BoreYouCommit = () => {
                 viewport={{ once: true, amount: 0.3 }}
                 whileInView="visible"
               >
-              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <Chip
-                      className="text-sm font-semibold border-4 border-[#262626] bg-[#ffffff] text-[#000]"
-                      variant="flat"
-                    >
-                      Design
-                    </Chip>
-                    <h4 className="text-3xl font-bold max-md:text-2xl flex items-baseline gap-1">
-                      <span className="text-lg">$</span>
-                      150
-                    </h4>
+                <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <Chip
+                        className="text-sm font-semibold border-4 border-[#262626] bg-[#ffffff] text-[#000]"
+                        variant="flat"
+                      >
+                        Design
+                      </Chip>
+                      <h4 className="text-3xl font-bold max-md:text-2xl flex items-baseline gap-1">
+                        <span className="text-lg">$</span>
+                        150
+                      </h4>
+                    </div>
+                    <ul className="space-y-4 text-left">
+                      <li>
+                        <div className="flex flex-row gap-2 items-start">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              Research & Creative Direction
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              Quick discovery phase - understanding your users,
+                              goals, and competitors, while mapping a simple IA
+                              and short user stories.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex flex-row gap-2 items-start">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              1–2 Page Design
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              Designing 1–2 key screens (like a landing page or
+                              dashboard) to define layout, hierarchy, and visual
+                              tone.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex flex-row  gap-2 items-start">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              Styles & Visual Direction
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              We establish your brand direction - colors,
+                              typography, and basic visual language, to set the
+                              foundation for your UI system.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className="space-y-4 text-left">
-                    <li>
-                      <div className="flex flex-row gap-2 items-start">
-                        <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">
-                            Research & Creative Direction
-                          </span>
-                          <p className="text-gray-300 text-sm">
-                            Quick discovery phase - understanding your users,
-                            goals, and competitors, while mapping a simple IA
-                            and short user stories.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex flex-row gap-2 items-start">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">1–2 Page Design</span>
-                          <p className="text-gray-300 text-sm">
-                            Designing 1–2 key screens (like a landing page or
-                            dashboard) to define layout, hierarchy, and visual
-                            tone.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex flex-row  gap-2 items-start">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">
-                            Styles & Visual Direction
-                          </span>
-                          <p className="text-gray-300 text-sm">
-                            We establish your brand direction - colors,
-                            typography, and basic visual language, to set the
-                            foundation for your UI system.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </Card>
+                </Card>
               </motion.div>
 
               {/* Card 2 */}
@@ -186,73 +189,75 @@ const BoreYouCommit = () => {
                 viewport={{ once: true, amount: 0.3 }}
                 whileInView="visible"
               >
-              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <Chip
-                      className="text-sm font-semibold border-4 border-[#262626] bg-white text-black"
-                      variant="flat"
-                    >
-                      Development
-                    </Chip>
-                    <h4 className="text-3xl font-bold max-md:text-2xl">$250</h4>
+                <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <Chip
+                        className="text-sm font-semibold border-4 border-[#262626] bg-white text-black"
+                        variant="flat"
+                      >
+                        Development
+                      </Chip>
+                      <h4 className="text-3xl font-bold max-md:text-2xl">
+                        $250
+                      </h4>
+                    </div>
+                    <ul className="space-y-4 text-left">
+                      <li>
+                        <div className="flex flex-row  items-start gap-2">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              Project Setup on GitHub
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              We initialize your repo, configure folder
+                              structure, dependencies, and version control,
+                              clean and ready for future scale.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex flex-row  items-start gap-2">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              1–2 Page Development
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              We build 1–2 meaningful components or sections
+                              (like a hero, form, or navigation) to show build
+                              quality and structure.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex flex-row  items-start gap-2">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">Hosted URL</span>
+                            <p className="text-gray-300 text-sm">
+                              Your pilot is deployed on a temporary link so you
+                              can test, share, and experience the build directly
+                              in your browser.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className="space-y-4 text-left">
-                    <li>
-                      <div className="flex flex-row  items-start gap-2">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">
-                            Project Setup on GitHub
-                          </span>
-                          <p className="text-gray-300 text-sm">
-                            We initialize your repo, configure folder structure,
-                            dependencies, and version control, clean and ready
-                            for future scale.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex flex-row  items-start gap-2">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">
-                            1–2 Page Development
-                          </span>
-                          <p className="text-gray-300 text-sm">
-                            We build 1–2 meaningful components or sections (like
-                            a hero, form, or navigation) to show build quality
-                            and structure.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex flex-row  items-start gap-2">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">Hosted URL</span>
-                          <p className="text-gray-300 text-sm">
-                            Your pilot is deployed on a temporary link so you
-                            can test, share, and experience the build directly
-                            in your browser.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </Card>
+                </Card>
               </motion.div>
 
               {/* Card 3 */}
@@ -263,75 +268,77 @@ const BoreYouCommit = () => {
                 viewport={{ once: true, amount: 0.3 }}
                 whileInView="visible"
               >
-              <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <Chip
-                      className="text-sm font-semibold border-4 border-[#262626] bg-white text-black"
-                      variant="flat"
-                    >
-                      Design + Development
-                    </Chip>
-                    <h4 className="text-3xl font-bold max-md:text-2xl">$350</h4>
+                <Card className="rounded-3xl bg-black text-white p-4 md:p-6 flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <Chip
+                        className="text-sm font-semibold border-4 border-[#262626] bg-white text-black"
+                        variant="flat"
+                      >
+                        Design + Development
+                      </Chip>
+                      <h4 className="text-3xl font-bold max-md:text-2xl">
+                        $350
+                      </h4>
+                    </div>
+                    <ul className="space-y-4 text-left">
+                      <li>
+                        <div className="flex flex-row  items-start gap-2">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              Hybrid Design & Build
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              We create 1–2 screens and code them into
+                              responsive, functional pages, blending both design
+                              and development seamlessly.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex flex-row  items-start gap-2">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              Components & Visual Integration
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              We implement styled UI components (like buttons,
+                              forms, or layouts) consistent with your brand
+                              direction and design preview.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="flex flex-row  items-start gap-2">
+                          <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
+                            <CheckIcon />
+                          </div>
+
+                          <div>
+                            <span className="font-semibold">
+                              Technical Speed Audit & Code Review
+                            </span>
+                            <p className="text-gray-300 text-sm">
+                              We identify and fix minor performance issues while
+                              reviewing structure and maintainability, ensuring
+                              the pilot is production-grade.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className="space-y-4 text-left">
-                    <li>
-                      <div className="flex flex-row  items-start gap-2">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">
-                            Hybrid Design & Build
-                          </span>
-                          <p className="text-gray-300 text-sm">
-                            We create 1–2 screens and code them into responsive,
-                            functional pages, blending both design and
-                            development seamlessly.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex flex-row  items-start gap-2">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">
-                            Components & Visual Integration
-                          </span>
-                          <p className="text-gray-300 text-sm">
-                            We implement styled UI components (like buttons,
-                            forms, or layouts) consistent with your brand
-                            direction and design preview.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="flex flex-row  items-start gap-2">
-                             <div className="w-5 h-5 min-w-5 minh-5 max-w-5 max-h-5 mt-1 text-success">
-                          <CheckIcon />
-                        </div>
-
-                        <div>
-                          <span className="font-semibold">
-                            Technical Speed Audit & Code Review
-                          </span>
-                          <p className="text-gray-300 text-sm">
-                            We identify and fix minor performance issues while
-                            reviewing structure and maintainability, ensuring
-                            the pilot is production-grade.
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </Card>
+                </Card>
               </motion.div>
             </div>
           </div>

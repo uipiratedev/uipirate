@@ -5,12 +5,11 @@ import dynamic from "next/dynamic";
 
 import LandingHero from "./hero";
 import LandingMarquee from "./marquee";
-import FloatingLetsTalkButton from "@/components/FloatingLetsTalkButton";
-import PageWrapper from "@/components/PageWrapper";
-import WhyChooseUs from "./whyChoosUs";
 import Pricing from "./pricing";
 import TheTeam from "./theTeam";
 import LandingWhoWeAre from "./whoWeAre";
+
+import PageWrapper from "@/components/PageWrapper";
 
 // Dynamically import below-the-fold components for better initial load performance
 const LandingAppScreen = dynamic(() => import("./appScreen"), {
@@ -72,20 +71,19 @@ const Landing = memo(function Landing() {
 
         <LandingBehanceFramor />
 
-            <LandingWhoWeAre />
+        <LandingWhoWeAre />
 
         <LandingAbout />
 
         {/* <WhyChooseUs /> */}
-    
 
         <div id="Services">
           <LandingBusinessHelp />
         </div>
 
-<div id="pricing">
-        <Pricing />
-</div>
+        <div id="pricing">
+          <Pricing />
+        </div>
         <TheTeam />
 
         {/* <BoreYouCommit /> */}

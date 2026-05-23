@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+
 import { OGTemplate } from "../_og/template";
 
 export const runtime = "edge";
@@ -10,10 +11,10 @@ export default function Image() {
   return new ImageResponse(
     <OGTemplate
       badge="Transparent Pricing"
+      description="No contracts. 48hr turnaround. UX/UI design + Angular.js/React/Next.js development. Save 60% vs US agencies. 100% satisfaction guarantee."
       title="$2,000/mo."
       titleHighlight="Design & Development."
-      description="No contracts. 48hr turnaround. UX/UI design + Angular.js/React/Next.js development. Save 60% vs US agencies. 100% satisfaction guarantee."
     />,
-    { ...size }
+    { ...size },
   );
 }

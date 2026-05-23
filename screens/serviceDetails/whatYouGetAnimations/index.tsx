@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+
 import GlassBadge from "@/components/GlassBadge";
 import { ContainerScroll } from "@/components/container-scroll-animation";
 import * as Visuals from "@/components/visuals";
@@ -37,12 +38,7 @@ const VISUAL_MAPPING: Record<string, any> = {
   "Website & Product Integration": Visuals.VisualIntegration,
 };
 
-const WhatYouGetCard = ({
-  heading,
-  description,
-  image,
-  img,
-}: any) => {
+const WhatYouGetCard = ({ heading, description, image, img }: any) => {
   const displayImage = image || img;
   const VisualComponent = VISUAL_MAPPING[heading];
 
@@ -57,11 +53,11 @@ const WhatYouGetCard = ({
         ) : displayImage ? (
           <div className="relative w-[55%] h-[70%] pt-6">
             <Image
-              src={displayImage}
-              alt={heading}
               fill
+              alt={heading}
               className="object-contain"
               sizes="(max-width: 768px) 50vw, 25vw"
+              src={displayImage}
             />
           </div>
         ) : null}
@@ -89,7 +85,9 @@ const WhatYouGetAnimations = ({ data }: any) => {
           <>
             <div className="autoShow text-center mb-10 md:mb-1">
               <div className="flex items-center justify-center mb-6">
-                <GlassBadge variant="gradient" size="sm">{data.badge}</GlassBadge>
+                <GlassBadge size="sm" variant="gradient">
+                  {data.badge}
+                </GlassBadge>
               </div>
               <h2 className="heading-center">{data.heading}</h2>
             </div>
@@ -107,4 +105,3 @@ const WhatYouGetAnimations = ({ data }: any) => {
 };
 
 export default WhatYouGetAnimations;
-

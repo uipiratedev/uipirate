@@ -41,7 +41,8 @@ const BlogsPage = () => {
             "@context": "https://schema.org",
             "@type": "Blog",
             name: "UI Pirate Design Blog",
-            description: "Expert insights on UI/UX design, SaaS product design, design systems, and AI application design.",
+            description:
+              "Expert insights on UI/UX design, SaaS product design, design systems, and AI application design.",
             url: "https://uipirate.com/blogs",
             publisher: {
               "@type": "Organization",

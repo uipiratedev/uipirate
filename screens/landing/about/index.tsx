@@ -1,4 +1,5 @@
 import AboutCardAnimation from "./aboutCard";
+
 import GlassBadge from "@/components/GlassBadge";
 
 const LandingAbout = () => {

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     await dbConnect();
-    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
     const blog = await Blog.findOne({
       slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
       published: true,
@@ -98,7 +98,7 @@ export default async function DynamicBlogPage({ params }: Props) {
   try {
     await dbConnect();
 
-    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
     const blog = await Blog.findOne({
       slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
       published: true,
@@ -110,6 +110,7 @@ export default async function DynamicBlogPage({ params }: Props) {
 
     // Track this view: deduplicates by IP+slug with 24h TTL, filters bots, skips admins
     const user = await verifyAuth();
+
     trackView(slug, headers(), !!user).catch(() => {});
 
     // Convert MongoDB document to plain object
@@ -145,7 +146,8 @@ export default async function DynamicBlogPage({ params }: Props) {
                   url: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
                 },
               },
-              datePublished: blog.publishedAt?.toISOString() || blog.createdAt.toISOString(),
+              datePublished:
+                blog.publishedAt?.toISOString() || blog.createdAt.toISOString(),
               dateModified: blog.updatedAt.toISOString(),
               url: `https://uipirate.com/${slug}`,
               mainEntityOfPage: `https://uipirate.com/${slug}`,

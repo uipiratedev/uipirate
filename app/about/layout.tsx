@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About UI Pirate | Product Design Agency — From Idea to Shipped Product",
+  title:
+    "About UI Pirate | Product Design Agency — From Idea to Shipped Product",
   description:
     "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & conversion-focused UX/UI design. We simplify complex SaaS, AI apps & enterprise software. 9+ years, 50+ products shipped. EST/PST timezone friendly for US clients.",
   keywords:
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "About UI Pirate | Product Design — Idea to Shipped Product",
-    description: "Product thinking, competitive analysis & conversion-focused design. 50+ products shipped. US timezone friendly.",
+    description:
+      "Product thinking, competitive analysis & conversion-focused design. 50+ products shipped. US timezone friendly.",
   },
   alternates: {
     canonical: "https://uipirate.com/about",

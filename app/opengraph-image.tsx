@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+
 import { OGTemplate } from "./_og/template";
 
 export const runtime = "edge";
@@ -10,10 +11,10 @@ export default function Image() {
   return new ImageResponse(
     <OGTemplate
       badge="Product Design & Development Agency"
+      description="Product thinking, competitive analysis & conversion-focused UX/UI design & Development for complex SaaS, AI apps & enterprise software."
       title="From Idea to"
       titleHighlight="Shipped Product"
-      description="Product thinking, competitive analysis & conversion-focused UX/UI design & Development for complex SaaS, AI apps & enterprise software."
     />,
-    { ...size }
+    { ...size },
   );
 }

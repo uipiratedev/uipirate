@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useId, useLayoutEffect } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useId,
+  useLayoutEffect,
+} from "react";
 
 export interface GlassSurfaceProps {
   children?: React.ReactNode;
@@ -213,6 +219,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
     }
 
     const div = document.createElement("div");
+
     div.style.backdropFilter = `url(#${filterId})`;
 
     return div.style.backdropFilter !== "";
@@ -276,7 +283,8 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
         return {
           ...baseStyles,
           // Fully opaque light gray background - matches Apps4Sale exactly
-          background: "linear-gradient(135deg, rgba(248, 248, 248, 1) 0%, rgba(240, 240, 240, 1) 100%)",
+          background:
+            "linear-gradient(135deg, rgba(248, 248, 248, 1) 0%, rgba(240, 240, 240, 1) 100%)",
           // No backdrop-filter transparency - solid surface
           backdropFilter: "none",
           WebkitBackdropFilter: "none",

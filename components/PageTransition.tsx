@@ -39,6 +39,7 @@ const PageTransition = memo(function PageTransition() {
 
       // Reduced delay for snappier transition (100ms vs 150ms)
       const t = setTimeout(() => setPhase("reveal"), 100);
+
       return () => clearTimeout(t);
     }
 
@@ -53,6 +54,7 @@ const PageTransition = memo(function PageTransition() {
       // Shorter total duration: 600ms animation + stagger + small buffer
       const duration = 600 + BAR_COUNT * STAGGER * 1000 + 100;
       const t = setTimeout(() => setPhase("idle"), duration);
+
       return () => clearTimeout(t);
     }
   }, [phase]);
@@ -75,9 +77,11 @@ const PageTransition = memo(function PageTransition() {
   const handleLinkClick = useCallback(
     (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest("a");
+
       if (!anchor) return;
 
       const href = anchor.getAttribute("href");
+
       if (!href) return;
 
       // Skip external links, hash links, same page, etc.
@@ -88,7 +92,11 @@ const PageTransition = memo(function PageTransition() {
         href.startsWith("#") ||
         anchor.getAttribute("target") === "_blank" ||
         href === pathname
-      ) return;
+      )
+        return;
+
+      // Skip if it's an admin route
+      if (href.startsWith("/admin")) return;
 
       // Skip if modifier keys are pressed
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
@@ -101,6 +109,7 @@ const PageTransition = memo(function PageTransition() {
 
   useEffect(() => {
     document.addEventListener("click", handleLinkClick, true);
+
     return () => document.removeEventListener("click", handleLinkClick, true);
   }, [handleLinkClick]);
 
@@ -108,7 +117,7 @@ const PageTransition = memo(function PageTransition() {
   if (phase === "idle") return null;
 
   return (
-    <div className="page-transition-wrapper" aria-hidden="true">
+    <div aria-hidden="true" className="page-transition-wrapper">
       <div className="page-transition-container">
         {Array.from({ length: BAR_COUNT }).map((_, i) => (
           <div
@@ -116,7 +125,7 @@ const PageTransition = memo(function PageTransition() {
             className={`page-transition-bar ${phase}`}
             style={{
               // Use CSS custom property for stagger to avoid inline style recalculation
-              ["--stagger-delay" as string]: `${i * STAGGER}s`
+              ["--stagger-delay" as string]: `${i * STAGGER}s`,
             }}
           />
         ))}

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyAuth } from "@/lib/auth";
 
 interface BlogQuery {
+  tenantId?: mongoose.Types.ObjectId;
   published?: boolean;
   postType?: any;
   $or?: any[];
@@ -27,6 +29,14 @@ export async function GET(request: NextRequest) {
     const isAdmin = !!user;
 
     const query: BlogQuery = {};
+
+    // Scope to the authenticated tenant; public requests see all published posts.
+    // Explicitly cast to ObjectId so MongoDB always receives the correct BSON
+    // type, regardless of whether the Mongoose model schema is cached from an
+    // earlier dev-server session that predates the tenantId field.
+    if (isAdmin) {
+      query.tenantId = new mongoose.Types.ObjectId(user!.tenantId);
+    }
 
     // If not admin, only show published blogs
     if (!isAdmin) {
@@ -68,7 +78,9 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Failed to fetch blogs";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to fetch blogs";
+
     return NextResponse.json(
       {
         success: false,
@@ -88,6 +100,8 @@ interface BlogCreateData {
   tags: string[];
   published: boolean;
   postType?: string;
+  slug?: string;
+  seo?: any;
 }
 
 // POST /api/blogs - Create a new blog (requires authentication)
@@ -105,7 +119,7 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
-    const body = await request.json() as BlogCreateData;
+    const body = (await request.json()) as BlogCreateData;
     const {
       title,
       content,
@@ -115,24 +129,32 @@ export async function POST(request: NextRequest) {
       tags,
       published,
       postType,
+      slug: providedSlug,
+      seo,
     } = body;
 
-    // Generate slug from title
-    let slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+    // Use provided slug or generate from title
+    let slug =
+      providedSlug ||
+      title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
 
-    // Check if slug already exists and make it unique if needed
-    const existingBlog = await Blog.findOne({ slug }).lean();
+    // Explicit ObjectId — bypasses stale schema cache in dev hot-reload
+    const postTenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
-    if (existingBlog) {
-      // Add timestamp to make slug unique
+    // Check if slug already exists within this tenant's namespace
+    const existingBlog = await Blog.findOne({ tenantId: postTenantOid, slug }).lean();
+
+    if (existingBlog && !providedSlug) {
+      // Add timestamp to make slug unique within this tenant
       slug = `${slug}-${Date.now()}`;
     }
 
-    // Create blog with calculated slug
+    // Create blog with tenantId scoping
     const blog = await Blog.create({
+      tenantId: postTenantOid,
       title,
       slug,
       content,
@@ -142,6 +164,7 @@ export async function POST(request: NextRequest) {
       tags,
       published: published || false,
       postType: postType || "blog",
+      seo: seo || {},
       author: {
         name: user.name || "UI Pirate",
         email: user.email || "",
@@ -160,7 +183,9 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Failed to create blog";
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to create blog";
+
     return NextResponse.json(
       {
         success: false,

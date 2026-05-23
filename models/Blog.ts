@@ -1,6 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IBlog extends Document {
+  /** References the Admin._id that owns this post — the tenant boundary */
+  tenantId: mongoose.Types.ObjectId;
   title: string;
   slug: string;
   content: string; // HTML content from TipTap editor
@@ -16,17 +18,36 @@ export interface IBlog extends Document {
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
-  views?: number;        // Unique human views (deduplicated per IP per 24h)
-  botViews?: number;     // Hits from known bots/crawlers
+  views?: number; // Unique human views (deduplicated per IP per 24h)
+  botViews?: number; // Hits from known bots/crawlers
   duplicateViews?: number; // Repeat visits from same IP within 24h
-  totalViews?: number;   // Raw total = views + duplicateViews + botViews
-  readTime?: number;     // in minutes
+  totalViews?: number; // Raw total = views + duplicateViews + botViews
+  readTime?: number; // in minutes
   postType?: "blog" | "tutorial" | "case-study" | "community-insight";
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string[];
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
+    twitterHandle?: string;
+    twitterCard?: "summary" | "summary_large_image";
+    focusKeyword?: string;
+    canonicalUrl?: string;
+    noIndex?: boolean;
+  };
   calculateReadTime(): void;
 }
 
 const BlogSchema: Schema = new Schema(
   {
+    tenantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      required: [true, "tenantId is required"],
+      index: true,
+    },
     title: {
       type: String,
       required: [true, "Please provide a title for this blog"],
@@ -36,7 +57,7 @@ const BlogSchema: Schema = new Schema(
     slug: {
       type: String,
       required: [true, "Please provide a slug for this blog"],
-      unique: true,
+      // unique: true removed — uniqueness is now per-tenant via compound index below
       lowercase: true,
       trim: true,
     },
@@ -108,6 +129,23 @@ const BlogSchema: Schema = new Schema(
       enum: ["blog", "tutorial", "case-study", "community-insight"],
       default: "blog",
     },
+    seo: {
+      metaTitle: { type: String, trim: true },
+      metaDescription: { type: String, trim: true },
+      keywords: { type: [String], default: [] },
+      ogTitle: { type: String, trim: true },
+      ogDescription: { type: String, trim: true },
+      ogImage: { type: String, trim: true },
+      twitterHandle: { type: String, trim: true },
+      twitterCard: {
+        type: String,
+        enum: ["summary", "summary_large_image"],
+        default: "summary_large_image",
+      },
+      focusKeyword: { type: String, trim: true },
+      canonicalUrl: { type: String, trim: true },
+      noIndex: { type: Boolean, default: false },
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt
@@ -115,8 +153,9 @@ const BlogSchema: Schema = new Schema(
 );
 
 // Create indexes for better query performance
-BlogSchema.index({ published: 1, publishedAt: -1 });
-// Note: slug index is created automatically by unique: true
+BlogSchema.index({ tenantId: 1, published: 1, publishedAt: -1 });
+// Slug must be unique within a tenant, not globally
+BlogSchema.index({ tenantId: 1, slug: 1 }, { unique: true });
 BlogSchema.index({ tags: 1 });
 
 // Pre-save middleware to set publishedAt when published status changes

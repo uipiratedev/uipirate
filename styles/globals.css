@@ -2479,13 +2479,15 @@ body.modal-open .main-navbar {
 /* Polished Interactive Table aesthetics matching Brand Design */
 .blog-prose table {
   width: 100%;
-  border-collapse: separate;
+  min-width: 100%;           /* guarantee table fills the column even when content is narrow */
+  border-collapse: separate; /* required for border-radius to apply to the table border */
   border-spacing: 0;
   margin: 2.5rem 0;
   font-size: 0.925rem;
   border: 1px solid rgba(255, 91, 4, 0.15);
   border-radius: 14px;
-  overflow: hidden;
+  /* overflow: hidden removed — it conflicts with border-collapse:separate in some
+     engines and can cause the browser to ignore width:100%, making the table narrow */
   box-shadow: 0 4px 24px rgba(255, 91, 4, 0.03);
 }
 

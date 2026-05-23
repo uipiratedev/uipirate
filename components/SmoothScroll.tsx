@@ -26,6 +26,7 @@ export default function SmoothScroll() {
         lenis.raf(time);
         requestAnimationFrame(raf);
       };
+
       requestAnimationFrame(raf);
 
       // Store lenis instance globally for ScrollStack and other components to use
