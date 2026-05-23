@@ -117,12 +117,7 @@ const SEOEditorModal = ({
     imageOptimization?: string;
   };
 
-  const steps = [
-    { id: "title", label: "Title & Slug" },
-    { id: "desc", label: "Description" },
-    { id: "social", label: "Social Cards" },
-    { id: "review", label: "Final Review" },
-  ] as const;
+
 
   const modelOptions: Record<
     SupportedAIEngine,
@@ -155,11 +150,7 @@ const SEOEditorModal = ({
         ? "mistral-large-latest"
         : "gpt-4o-mini";
 
-  const getTabForStep = (step: number): Exclude<ModalTab, "performance"> => {
-    if (step <= 1) return "general";
-    if (step === 2) return "social";
-    return "analysis";
-  };
+
 
   const plainTextContent = postContent
     .replace(/<[^>]*>/g, " ")
@@ -171,8 +162,9 @@ const SEOEditorModal = ({
   const [generatingAction, setGeneratingAction] = useState<string | null>(null);
   const [analysis, setAnalysis] = useState<SEOAnalysisResult | null>(null);
   const [error, setError] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [workflowStep, setWorkflowStep] = useState(0);
+
   const [selectedEngine, setSelectedEngine] =
     useState<SupportedAIEngine>("openai");
   const [selectedModel, setSelectedModel] = useState("gpt-4o-mini");
@@ -187,12 +179,7 @@ const SEOEditorModal = ({
     setLocalData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const goToStep = useCallback((nextStep: number) => {
-    const safeStep = Math.max(0, Math.min(steps.length - 1, nextStep));
 
-    setWorkflowStep(safeStep);
-    setActiveTab(getTabForStep(safeStep));
-  }, []);
 
   // Performance calculation logic
   const getPerformanceStats = useCallback(() => {
@@ -289,7 +276,6 @@ const SEOEditorModal = ({
     setSelectedEngine(nextEngine);
     setSelectedModel(nextModel);
     setActiveTab("general");
-    setWorkflowStep(0);
     setError("");
     setAnalysis(null);
 
@@ -330,7 +316,7 @@ const SEOEditorModal = ({
         body: JSON.stringify({
           action: apiAction,
           title: postTitle,
-          content: plainTextContent.slice(0, 5000),
+          content: plainTextContent.slice(0, 15000),
           postType,
           engine: selectedEngine,
           model: selectedModel,
@@ -386,6 +372,9 @@ const SEOEditorModal = ({
         if (!newData.ogDescription) newData.ogDescription = aiData.ogDescription;
         setLocalData(newData);
         if (!localSlug) setLocalSlug(aiData.slug);
+
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000);
       } else if (specificAction === "metaTitle") {
         const nextTitle = Array.isArray(aiData)
           ? aiData.find((item) => typeof item === "string" && item.trim())
@@ -424,6 +413,10 @@ const SEOEditorModal = ({
       }
     } catch (err: any) {
       setError(err.message || "Failed to analyze SEO");
+      const container = document.querySelector(".custom-scrollbar");
+      if (container) {
+        container.scrollTo({ top: 0, behavior: "smooth" });
+      }
     } finally {
       setIsGenerating(false);
       setGeneratingAction(null);
@@ -507,57 +500,7 @@ const SEOEditorModal = ({
           </div>
         </div>
 
-        {/* Workflow Progress (Sequential Workflow) */}
-        <div className="px-4 md:px-8 py-3 bg-white border-b border-black/5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-3 overflow-x-auto">
-            {steps.map((step, idx) => (
-              <React.Fragment key={step.id}>
-                <button
-                  className={`flex items-center gap-2 transition-all whitespace-nowrap ${
-                    idx <= workflowStep ? "text-orange-600" : "text-gray-300"
-                  }`}
-                  onClick={() => goToStep(idx)}
-                >
-                  <span
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold border-2 ${
-                      idx <= workflowStep
-                        ? "border-orange-600 bg-orange-50"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    {idx + 1}
-                  </span>
-                  <span className="text-[11px] font-bold uppercase tracking-tight hidden md:block">
-                    {step.label}
-                  </span>
-                </button>
-                {idx < steps.length - 1 && (
-                  <div
-                    className={`w-8 h-px ${
-                      idx < workflowStep ? "bg-orange-600" : "bg-gray-100"
-                    }`}
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <button
-              className="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-500 hover:bg-gray-50 disabled:opacity-30"
-              disabled={workflowStep === 0}
-              onClick={() => goToStep(workflowStep - 1)}
-            >
-              Back
-            </button>
-            <button
-              className="px-4 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200 disabled:opacity-30"
-              disabled={workflowStep === steps.length - 1}
-              onClick={() => goToStep(workflowStep + 1)}
-            >
-              Next
-            </button>
-          </div>
-        </div>
+
 
         {/* Tabs */}
         <div className="flex flex-col xl:flex-row xl:items-center gap-3 px-4 md:px-6 bg-gray-50/50 border-b border-black/5">
@@ -636,17 +579,7 @@ const SEOEditorModal = ({
                     ? "text-[#FF5B04]"
                     : "text-gray-400 hover:text-gray-600"
                 }`}
-                onClick={() => {
-                  if (tab.id === "performance") {
-                    setActiveTab("performance");
-                  } else if (tab.id === "general") {
-                    goToStep(Math.min(workflowStep, 1));
-                  } else if (tab.id === "social") {
-                    goToStep(2);
-                  } else {
-                    goToStep(3);
-                  }
-                }}
+                onClick={() => setActiveTab(tab.id as ModalTab)}
               >
                 {tab.icon}
                 {tab.label}
@@ -679,37 +612,7 @@ const SEOEditorModal = ({
                 </option>
               ))}
             </select>
-            <button
-              className="h-9 px-4 rounded-xl bg-black text-white text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-all shadow-sm shrink-0"
-              disabled={isAnalyzing}
-              onClick={() => runAIAnalysis("seo-analysis")}
-            >
-              {isAnalyzing ? (
-                <svg
-                  className="animate-spin"
-                  fill="none"
-                  height="12"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  viewBox="0 0 24 24"
-                  width="12"
-                >
-                  <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                </svg>
-              ) : (
-                <svg
-                  fill="none"
-                  height="12"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  viewBox="0 0 24 24"
-                  width="12"
-                >
-                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                </svg>
-              )}
-              {isAnalyzing ? "Analyzing..." : "Run AI Optimization"}
-            </button>
+
           </div>
         </div>
 
@@ -742,9 +645,7 @@ const SEOEditorModal = ({
               {activeTab === "general" && (
                 <div className="space-y-6 animate-in fade-in duration-300">
                   {/* Title & Slug Section */}
-                  <div
-                    className={`p-6 rounded-3xl border transition-all ${workflowStep === 0 ? "border-orange-200 bg-orange-50/20" : "border-black/5 bg-gray-50/30"}`}
-                  >
+                  <div className="p-6 rounded-3xl border border-black/5 bg-gray-50/30">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
@@ -810,9 +711,7 @@ const SEOEditorModal = ({
                   </div>
 
                   {/* Description Section */}
-                  <div
-                    className={`p-6 rounded-3xl border transition-all ${workflowStep === 1 ? "border-orange-200 bg-orange-50/20" : "border-black/5 bg-gray-50/30"}`}
-                  >
+                  <div className="p-6 rounded-3xl border border-black/5 bg-gray-50/30">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
@@ -929,9 +828,7 @@ const SEOEditorModal = ({
 
               {activeTab === "social" && (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                  <div
-                    className={`p-6 rounded-3xl border transition-all ${workflowStep === 2 ? "border-orange-200 bg-orange-50/20" : "border-black/5 bg-gray-50/30"}`}
-                  >
+                  <div className="p-6 rounded-3xl border border-black/5 bg-gray-50/30">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
@@ -1016,11 +913,40 @@ const SEOEditorModal = ({
                       </svg>
                     </div>
                     <h3 className="text-xl font-bold mb-2">SEO Strategy Engine</h3>
-                    <p className="text-gray-400 text-sm mb-8 max-w-md">
-                      Our performance evaluation tool assesses your content
-                      against 40+ ranking factors to suggest high-impact
-                      strategies.
-                    </p>
+                    <div className="flex items-center justify-between mb-8">
+                      <p className="text-gray-400 text-sm max-w-md">
+                        Our performance evaluation tool assesses your content
+                        against 40+ ranking factors to suggest high-impact
+                        strategies.
+                      </p>
+                      <div className="flex items-center gap-3 shrink-0">
+                        {showSuccess && (
+                          <span className="text-emerald-400 text-xs font-bold animate-pulse flex items-center gap-1">
+                            <svg fill="none" height="14" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Refreshed!
+                          </span>
+                        )}
+                        <button
+                          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold transition-all disabled:opacity-40"
+                          disabled={isAnalyzing}
+                          onClick={() => runAIAnalysis("seo-analysis")}
+                        >
+                          {isAnalyzing ? (
+                            <svg className="animate-spin" fill="none" height="11" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="11">
+                              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                            </svg>
+                          ) : (
+                            <svg fill="none" height="11" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="11">
+                              <path d="M3 12a9 9 0 1 0 9-9" />
+                              <polyline points="3 3 3 12 12 12" />
+                            </svg>
+                          )}
+                          {isAnalyzing ? "Analyzing..." : "Re-evaluate"}
+                        </button>
+                      </div>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {[
@@ -1102,13 +1028,7 @@ const SEOEditorModal = ({
 
               {activeTab === "analysis" && (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                  <div
-                    className={`p-6 rounded-3xl border transition-all ${
-                      workflowStep === 3
-                        ? "border-orange-200 bg-orange-50/20"
-                        : "border-black/5 bg-gray-50/30"
-                    }`}
-                  >
+                  <div className="p-6 rounded-3xl border border-black/5 bg-gray-50/30">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
