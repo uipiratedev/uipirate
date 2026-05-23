@@ -31,23 +31,52 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       };
     }
 
-    const title = `${(blog as any).title} | UI Pirate Blog`;
+    const seo = (blog as any).seo;
+
+    // Use seo.metaTitle as the page title, fallback to the blog title
+    const metaTitle = seo?.metaTitle?.trim() || (blog as any).title;
+    const title = seo?.metaTitle?.trim() ? seo.metaTitle.trim() : `${(blog as any).title} | UI Pirate Blog`;
+
+    // Use seo.metaDescription as the description, fallback to the blog excerpt/description
     const description =
+      seo?.metaDescription?.trim() ||
       (blog as any).excerpt ||
       (blog as any).description ||
       `Read ${(blog as any).title} on UI Pirate's design blog.`;
+
+    // Map keywords: seo.keywords array joined, fallback to blog.tags array joined
+    const keywords =
+      seo?.keywords && Array.isArray(seo.keywords) && seo.keywords.length > 0
+        ? seo.keywords.join(", ")
+        : (blog as any).tags?.join(", ") ||
+          "UI/UX, design tips, SaaS design, UI Pirate";
+
+    // Configure OG and Twitter cards images: seo.ogImage fallback to featuredImage or bannerImage
     const imageUrl =
-      (blog as any).featuredImage || (blog as any).bannerImage || "";
+      seo?.ogImage?.trim() ||
+      (blog as any).featuredImage ||
+      (blog as any).bannerImage ||
+      "";
+
+    // OG fields with custom title/description support (preferring SEO first, falling back to what it was currently using)
+    const ogTitle = seo?.ogTitle?.trim() || seo?.metaTitle?.trim() || (blog as any).title;
+    const ogDescription =
+      seo?.ogDescription?.trim() ||
+      seo?.metaDescription?.trim() ||
+      (blog as any).excerpt ||
+      (blog as any).description ||
+      `Read ${(blog as any).title} on UI Pirate's design blog.`;
+
+    // Twitter fields
+    const twitterCard = seo?.twitterCard || "summary_large_image";
 
     return {
       title,
       description,
-      keywords:
-        (blog as any).tags?.join(", ") ||
-        "UI/UX, design tips, SaaS design, UI Pirate",
+      keywords,
       openGraph: {
-        title: (blog as any).title,
-        description,
+        title: ogTitle,
+        description: ogDescription,
         url: `https://uipirate.com/blogs/${slug}`,
         siteName: "UI Pirate by Vishal Anand",
         images: imageUrl
@@ -56,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                 url: imageUrl,
                 width: 1200,
                 height: 630,
-                alt: (blog as any).title,
+                alt: ogTitle,
               },
             ]
           : [],
@@ -64,15 +93,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         type: "article",
       },
       twitter: {
-        card: "summary_large_image",
-        title: (blog as any).title,
-        description,
+        card: twitterCard,
+        title: ogTitle,
+        description: ogDescription,
         images: imageUrl ? [imageUrl] : [],
       },
       alternates: {
-        // Point canonical to the primary URL indexed in sitemap (https://uipirate.com/[slug])
-        canonical: `https://uipirate.com/${slug}`,
+        canonical: seo?.canonicalUrl?.trim() || `https://uipirate.com/${slug}`,
       },
+      robots: seo?.noIndex ? { index: false, follow: false } : undefined,
     };
   } catch (error) {
     return {
