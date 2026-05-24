@@ -245,7 +245,7 @@ export default function BillingSettingsPage() {
               {data.plan === "free" && "Enjoy cheap shared-AI models. Upgrade to get scheduled publishing, full content API, and custom keys."}
               {data.plan === "pro" && "Full multi-channel publishing, full content API keys, custom scheduling, and Bring Your Own Key bypass."}
             </p>
-            {data.currentPeriodEnd && (
+            {data.currentPeriodEnd && !isNaN(new Date(data.currentPeriodEnd).getTime()) && (
               <p className="text-[10px] text-gray-400 font-jetbrains-mono pt-2">
                 Renewal: {new Date(data.currentPeriodEnd).toLocaleDateString()}
               </p>
