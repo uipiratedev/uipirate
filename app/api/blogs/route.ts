@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
-import { verifyAuth } from "@/lib/auth";
+import { verifyAuth } from "@/lib/pirateCOS/auth";
 
 interface BlogQuery {
   tenantId?: mongoose.Types.ObjectId;

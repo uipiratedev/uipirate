@@ -3,12 +3,12 @@ import { test, expect } from '@playwright/test';
 test.describe('Admin SEO Editor', () => {
   test.beforeEach(async ({ page }) => {
     // Login logic would go here
-    await page.goto('/admin/login');
+    await page.goto('/pirateCOS/login');
     // ... login steps ...
   });
 
   test('should open SEO editor and run AI analysis', async ({ page }) => {
-    await page.goto('/admin/posts/create');
+    await page.goto('/pirateCOS/posts/create');
     
     // Enter some content
     await page.fill('input[placeholder="Post title…"]', 'My SEO Optimized Post');
@@ -32,7 +32,7 @@ test.describe('Admin SEO Editor', () => {
   });
 
   test('should validate meta tag character limits', async ({ page }) => {
-    await page.goto('/admin/posts/create');
+    await page.goto('/pirateCOS/posts/create');
     await page.click('button:has-text("Open SEO Editor")');
     
     const longTitle = 'A'.repeat(70);

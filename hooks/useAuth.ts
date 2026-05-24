@@ -19,6 +19,10 @@ export function useAuth(requireAuth: boolean = false) {
   const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = !!user;
 
+  const isSubdomain = typeof window !== "undefined" && 
+    (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+  const loginUrl = isSubdomain ? "/login" : "/pirateCOS/login";
+
   useEffect(() => {
     checkAuth();
   }, []);
@@ -26,7 +30,7 @@ export function useAuth(requireAuth: boolean = false) {
   const checkAuth = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/me");
+      const response = await fetch("/api/pirateCOS/auth/me");
       const data = await response.json();
 
       if (data.success && data.user) {
@@ -34,13 +38,13 @@ export function useAuth(requireAuth: boolean = false) {
       } else {
         setUser(null);
         if (requireAuth) {
-          router.push("/admin/login");
+          router.push(loginUrl);
         }
       }
     } catch (error) {
       setUser(null);
       if (requireAuth) {
-        router.push("/admin/login");
+        router.push(loginUrl);
       }
     } finally {
       setIsLoading(false);
@@ -49,9 +53,9 @@ export function useAuth(requireAuth: boolean = false) {
 
   const logout = async () => {
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await fetch("/api/pirateCOS/auth/logout", { method: "POST" });
       setUser(null);
-      router.push("/admin/login");
+      router.push(loginUrl);
     } catch (error) {
       // Logout failed
     }

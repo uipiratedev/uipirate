@@ -6,7 +6,7 @@ import BlogsDetails from "@/screens/blogsDetails";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { trackView } from "@/lib/trackView";
-import { verifyAuth } from "@/lib/auth";
+import { verifyAuth } from "@/lib/pirateCOS/auth";
 
 interface Props {
   params: { slug: string };

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { verifyAuth } from "@/lib/auth";
+import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { getDecryptedKeys } from "@/lib/ai-config";
 
 export async function POST(request: NextRequest) {

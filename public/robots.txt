@@ -3,6 +3,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /pirateCOS/
 Disallow: /blogs/create
 Disallow: /blogs/edit/
 Disallow: /api/

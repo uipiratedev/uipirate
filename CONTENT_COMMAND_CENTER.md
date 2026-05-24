@@ -917,169 +917,243 @@ Phase 1 delivers the complete foundation. Phases 2–8 are formally scoped below
 
 ## Phase 2 — Monetization & Growth Engine
 
-**Goal:** Implement billing infrastructure, usage enforcement, and viral growth features that convert free users into paying customers.
+**Goal:** Implement billing infrastructure, credit-based usage tracking, BYOK/Top-up support, and conversion growth engines that convert free users, protect platform margins, and serve agency/startup content teams effectively.
 
-### 2.1 Core Monetization Features
+### 2.1 Core Monetization Strategy & Plans
+
+The monetization framework combines **Subscriptions + Credit/Top-up + BYOK (Bring Your Own Key)**. This dual-mode structure provides standard users with cheap platform AI credits, while enabling power users and agencies to run massive volumes by connecting their own keys, completely insulating the platform's backend margins.
+
+#### 2.1.1 Core Monetization Features
 
 | Feature | Description | Value Proposition | Implementation |
 |---|---|---|---|
 | **Stripe Billing Integration** | Full subscription lifecycle (checkout, webhooks, portal) | Seamless payment experience with automatic invoicing | `app/api/billing/` routes + Stripe webhook handlers |
 | **Usage Metering & Enforcement** | Track AI requests + distributions; enforce plan limits | Prevents abuse; creates upgrade pressure at natural friction points | Middleware in `/api/ai/generate` and `/api/distribution/publish` |
-| **Plan-Gated Features** | Lock advanced features behind paid tiers | Clear differentiation between Free/Starter/Pro | Feature flags based on `user.plan` from JWT |
+| **Plan-Gated Features** | Lock advanced features behind paid tiers | Clear differentiation between Free/Pro | Feature flags based on `user.plan` from JWT |
 | **Upgrade Prompts & CTAs** | Contextual "Upgrade" buttons when hitting limits | Convert users at the moment they need more capacity | In-app modals + banner components |
 | **Self-Service Plan Management** | Users can upgrade/downgrade without support tickets | Reduces friction; increases conversion rates | `/admin/settings/billing` page with Stripe Customer Portal |
+| **Credit Top-Up System** | Buy credit packs ($5 for 1,000 credits) on the fly | Unlocks heavy shared-AI usage without subscription friction | Stripe Checkout one-time sessions |
+| **BYOK (Bring Your Own Key)** | Connect personal Gemini/OpenAI/Mistral/Claude API keys | Unlimited usage with 0% margin drag for UIpirate | AES-256-GCM database key storage |
 
-### 2.2 Pricing Strategy & Plan Structure
+#### 2.1.2 Pricing Strategy & Plan Structure
 
-**Recommended tiers based on current feature set:**
+**Tiers optimized for cost control and scaling:**
 
-| Plan | Price | AI Requests/mo | Distributions/mo | Platforms | API Access | Support |
-|---|---|---|---|---|---|---|
-| **Free** | $0 | 50 | 10 | 2 platforms | Read-only | Community (Discord/Docs) |
-| **Starter** | $19/mo | 500 | 100 | All 4 platforms | Read + Write | Email (48h response) |
-| **Pro** | $49/mo | 2,000 | Unlimited | All 4 platforms | Full API + Webhooks | Priority email (12h response) |
-| **Enterprise** | Custom | Custom | Unlimited | Custom integrations | Dedicated IP + SSO | Dedicated account manager |
+| Plan | Price | Target Audience | AI Credit Limits | Distributions | API Access | Support |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Free** | $0 | Casual writers, testers | 20 credits/day *(soft limit)* | 10/mo *(basic platforms)* | Read-only | Community (Discord/Docs) |
+| **Pro** | $19–$39/mo | Agencies, SaaS founders | 500 credits/day *(or Unlimited on BYOK)* | Unlimited *(all 4 platforms)* | Full API + Webhooks | Priority Email (24h) |
+| **Enterprise** | Custom | Content agencies, mid-market | Custom credit pools | Unlimited | Full API + SSO | Account Manager |
 
-**Feature differentiation:**
+*   **Shared AI Pool Mode**: Runs on platform-managed, highly optimized cheap models (Gemini 1.5 Flash, GPT-4o Mini) to keep operational cost per free user around ~$0.05–$0.50/month.
+*   **BYOK Mode**: Pro/Enterprise users can toggle Bring Your Own API Key (OpenAI, Gemini, Mistral, Anthropic) to bypass credit deductions entirely on AI runs, enabling unlimited usage with 0% margin drag for UIpirate.
+*   **Top-Up Credit Packs**: Users on any tier can buy one-time credit boosts (e.g., $5 for 1,000 credits) to unlock extra generations or distribution cycles without upgrading their plan.
 
-| Feature | Free | Starter | Pro | Enterprise |
-|---|---|---|---|---|
-| AI Engines | Puter only | All engines | All engines + custom models | White-label AI |
-| Distribution adapters | WordPress + Medium | All 4 platforms | All + scheduled publishing | Custom platform adapters |
-| Content API | ❌ | Read-only | Full access | Dedicated instance |
-| Team seats | 1 | 1 | 3 | Unlimited |
-| Analytics retention | 7 days | 30 days | 12 months | Unlimited |
-| Branded content | UIpirate watermark | Optional branding | No watermark | Full white-label |
+#### 2.1.3 Feature Differentiation
 
-### 2.3 Technical Implementation
+| Feature | Free | Pro | Enterprise |
+|---|---|---|---|
+| **AI Engines** | Cheap Shared Pool (Gemini Flash, GPT-4o Mini) | All engines (Shared pool premium + custom) OR BYOK Mode (unlimited) | White-label / Custom models + BYOK |
+| **Distribution adapters** | WordPress + Medium (with watermark) | All 4 platforms + scheduled publishing (no watermark) | Custom platform adapters |
+| **Content API** | ❌ | Full API + Webhooks | Dedicated instance + SSO |
+| **Team seats** | 1 seat | 1–3 seats | Unlimited seats |
+| **Analytics retention** | 7 days | 12 months | Unlimited |
+| **Branded content** | UIpirate watermark (watermarked footer) | Optional/No watermark | Full white-label |
 
-#### 2.3.1 Database Schema Additions
+---
 
+### 2.2 Credit Consumption Rules
+
+A token/credit-based soft limit strategy provides maximum cost control and clean scaling over arbitrary hard limits:
+
+| User Action | Credit Cost | Technical Context |
+| :--- | :--- | :--- |
+| **Blog Generation** | 5.0 credits | Executes full-post outline generation & multi-paragraph writing |
+| **SEO Audit / Gen** | 1.0 credits | Runs meta title, description, and focus keyword AI pipelines |
+| **Single Enhancement** | 0.5 credits | Tone adjustment, paragraph shortening, title improvement, tags AI |
+| **Outbound Publish** | 1.0 credits | Distributes a post to WordPress, Medium, Ghost, or Buffer |
+
+---
+
+### 2.3 Database Schema Evolution
+
+#### 2.3.1 Extended Tenant Model (`models/Admin.ts`)
 ```typescript
-// models/Admin.ts — extend IAdmin interface
+// models/Admin.ts — Merge of Phase 1 identities and Phase 2 Billing/BYOK schemas
 interface IAdmin {
-  // ... existing fields
+  // ... existing auth fields (userId, email, role, password)
 
-  // Billing (already present in Phase 1, now fully utilized)
-  plan: "free" | "starter" | "pro" | "enterprise";
+  // Stripe Billing & Subscription Status
+  plan: "free" | "pro" | "enterprise";
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
   subscriptionStatus?: "active" | "trialing" | "past_due" | "canceled";
   currentPeriodEnd?: Date;
 
-  // Usage tracking (already present, now enforced)
+  // Credit Tracking & Billing Metrics
+  creditsRemaining: number;              // Total credits available for shared AI and publishing
   usageThisMonth: {
-    aiRequests: number;
-    distributions: number;
+    aiRequests: number;                  // Tracks AI transactions
+    distributions: number;               // Tracks external publishing events
   };
 
-  // NEW: Trial & conversion tracking
+  // BYOK (Bring Your Own Key) Configuration Toggles
+  byokEnabled: {
+    openai: boolean;
+    gemini: boolean;
+    mistral: boolean;
+    anthropic: boolean;
+  };
+
+  // Trial Conversion & Financial Audits
   trialStartedAt?: Date;
   trialEndsAt?: Date;
   convertedFromFreeToPaidAt?: Date;
-  lifetimeValue: number; // sum of all payments
+  lifetimeValue: number;                 // Aggregates total payments from Stripe invoices
 }
+```
 
-// NEW: models/BillingEvent.ts — audit trail
-interface IBillingEvent {
-  tenantId: ObjectId;
-  event: "subscription.created" | "subscription.updated" | "invoice.paid" | "payment_failed";
-  stripeEventId: string;
-  amount?: number;
-  currency?: string;
-  metadata: Record<string, any>;
+#### 2.3.2 Billing Event Audit Schema (`models/BillingEvent.ts`)
+```typescript
+export interface IBillingEvent extends Document {
+  tenantId: mongoose.Types.ObjectId;     // Scoped user/admin doc
+  event: "subscription.created" | "subscription.updated" | "invoice.paid" | "payment_failed" | "credit.topup";
+  stripeEventId: string;                 // Stripe event id hash
+  amount?: number;                       // Payment volume
+  currency?: string;                     // e.g. "usd"
+  metadata: Record<string, any>;         // Purchase metadata
   createdAt: Date;
 }
 ```
 
-#### 2.3.2 API Routes
+---
 
-```
-app/api/billing/
-├── checkout/
-│   └── route.ts              POST — create Stripe Checkout session
-├── portal/
-│   └── route.ts              POST — create Customer Portal session
-├── webhooks/
-│   └── stripe/
-│       └── route.ts          POST — handle Stripe events (raw body)
-└── usage/
-    └── route.ts              GET  — current usage stats for UI display
-```
+### 2.4 Technical Architecture
 
-#### 2.3.3 Usage Enforcement Middleware
-
+#### 2.4.1 Credit Guard & BYOK Middleware (`lib/usage-guard.ts`)
 ```typescript
-// lib/usage-guard.ts
-export async function enforceAILimit(user: User): Promise<void> {
-  const admin = await Admin.findById(user.tenantId);
-  const limits = PLAN_LIMITS[admin.plan];
+import Admin from "@/models/Admin";
 
-  if (admin.usageThisMonth.aiRequests >= limits.aiRequests) {
-    throw new UsageLimitError(
-      `You've used ${admin.usageThisMonth.aiRequests}/${limits.aiRequests} AI requests this month.`,
-      { upgradeUrl: "/admin/settings/billing?reason=ai_limit" }
+export class CreditLimitError extends Error {
+  constructor(message: string, public upgradeUrl: string) {
+    super(message);
+    this.name = "CreditLimitError";
+  }
+}
+
+export async function deductCredits(
+  tenantId: string, 
+  actionType: "blog" | "seo" | "enhance" | "publish"
+): Promise<void> {
+  const admin = await Admin.findById(tenantId);
+  if (!admin) throw new Error("Tenant/Admin document not found");
+
+  const isAIAction = ["blog", "seo", "enhance"].includes(actionType);
+  const usesBYOK = isAIAction && (
+    admin.byokEnabled.openai || 
+    admin.byokEnabled.gemini || 
+    admin.byokEnabled.mistral || 
+    admin.byokEnabled.anthropic
+  );
+
+  // BYOK users enjoy free AI workflows — bypass credit checks
+  if (usesBYOK) {
+    return;
+  }
+
+  const creditCosts = { blog: 5.0, seo: 1.0, enhance: 0.5, publish: 1.0 };
+  const cost = creditCosts[actionType] || 0.5;
+
+  if (admin.creditsRemaining < cost && admin.plan === "free") {
+    throw new CreditLimitError(
+      `Insufficient credits. You need ${cost} credits, but have ${admin.creditsRemaining}.`,
+      `/admin/settings/billing?reason=insufficient_credits&cost=${cost}`
     );
   }
 
-  // Increment counter
+  // Deduct credits and update monthly telemetry
   await Admin.updateOne(
-    { _id: user.tenantId },
-    { $inc: { "usageThisMonth.aiRequests": 1 } }
+    { _id: tenantId },
+    {
+      $inc: { 
+        creditsRemaining: -cost,
+        "usageThisMonth.aiRequests": isAIAction ? 1 : 0,
+        "usageThisMonth.distributions": actionType === "publish" ? 1 : 0
+      }
+    }
   );
 }
-
-// app/api/ai/generate/route.ts — add at top of POST handler
-await enforceAILimit(user);
 ```
 
-#### 2.3.4 Upgrade Prompt Component
+#### 2.4.2 API Routes Outline
+```
+app/api/billing/
+├── checkout/
+│   └── route.ts        POST — create subscription checkout session or Top-Up pack checkout session
+├── portal/
+│   └── route.ts        POST — create self-service Customer Portal session for plan adjustments
+├── webhooks/
+│   └── stripe/
+│       └── route.ts    POST — process webhook callbacks (invoice.paid, topups, cancels)
+└── usage/
+    └── route.ts        GET  — serves real-time credit telemetry and plan tags to the editor
+```
 
+#### 2.4.3 Upgrade UI Component (`components/admin/UpgradePrompt.tsx`)
 ```typescript
-// components/admin/UpgradePrompt.tsx
 interface UpgradePromptProps {
   feature: string;
-  currentPlan: "free" | "starter" | "pro";
-  reason: "ai_limit" | "distribution_limit" | "platform_locked" | "api_locked";
+  currentPlan: "free" | "pro";
+  reason: "insufficient_credits" | "platform_locked" | "byok_locked";
+  requiredCredits?: number;
 }
 
-// Renders a modal with:
-// - "You've hit your [feature] limit"
-// - Usage bar (e.g., "50/50 AI requests used")
-// - Plan comparison table
-// - "Upgrade to Starter" CTA button → /api/billing/checkout
+// Renders a visual checkout overlay containing:
+// 1. Current usage bar (e.g. "0/20 credits remaining today")
+// 2. Clear choice between subscribing to Pro ($19-$39) or purchasing a Top-Up pack ($5 for 1,000 credits)
+// 3. One-click checkout action button leading to Stripe sessions
 ```
 
-### 2.4 Growth & Retention Features
+---
 
-| Feature | Description | Impact on Conversion |
-|---|---|---|
-| **14-day Pro trial** | All new signups start on Pro, downgrade to Free after 14 days | Users experience full power before limits kick in; creates loss aversion |
-| **Usage email notifications** | "You've used 80% of your AI requests" at 80%/95%/100% thresholds | Proactive upgrade prompts before hard limit |
-| **Referral program** | Give 1 month free for each paying referral | Viral loop; reduces CAC |
-| **Annual billing discount** | 20% off for annual commitment | Improves LTV and cash flow |
-| **"Powered by UIpirate" removal** | Free users have a small footer badge on distributed content | Creates upgrade incentive for professional users |
+### 2.5 Growth & Retention Loops
 
-### 2.5 Metrics & Success Criteria
+| Mechanism | Description | Financial / Conversion Impact |
+| :--- | :--- | :--- |
+| **14-day Pro Trial** | All new signups start on Pro (14 days), downgrading to Free if they do not subscribe. | Drives premium feature exploration, creates immediate loss aversion. |
+| **Credit email notices** | Alert notifications dispatched at 80%, 95%, and 100% credit usage. | Timely reminders triggering upgrades right before a workflow block. |
+| **Referral program** | Share code referral: both parties receive 200 free AI credits. | Viral acquisition loops; keeps user acquisition cost (CAC) low. |
+| **Annual billing discount** | 20% savings on annual subscriptions. | Improves immediate cash flow, locks in long-term customer lifetime value (LTV). |
+| **Watermarked outputs** | Free tier publishes contain a subtle "Published via UIpirate" tag. | Turns every Free user's distributed content into a product referral. |
 
-| Metric | Target | Measurement |
-|---|---|---|
-| Free → Paid conversion rate | 5–8% within 30 days | `convertedFromFreeToPaidAt` field |
-| Trial → Paid conversion | 25–40% | Track `subscriptionStatus: "trialing"` → `"active"` transitions |
-| Monthly Recurring Revenue (MRR) | $10k by Month 3 of Phase 2 launch | Stripe dashboard |
-| Churn rate | <5% monthly | `subscription.canceled` webhook events |
-| Average Revenue Per User (ARPU) | $35/user/month | Total MRR ÷ active paid seats |
+---
 
-### 2.6 Timeline Estimate
+### 2.6 Metrics & Success Targets
 
-| Milestone | Effort |
-|---|---|
-| Stripe integration (checkout + webhooks) | 2–3 days |
-| Usage enforcement middleware | 1–2 days |
-| Billing settings page + upgrade modals | 2 days |
-| Trial system + email notifications | 1–2 days |
-| Testing (end-to-end subscription flows) | 1 day |
-| **Total Phase 2** | **~1.5 weeks** |
+*   **Primary Ideal Customer Profile (ICP)**:
+    1.  **Agencies**: Manage multiple brands, publish content daily/weekly, highly value operational time savings. Will happily pay Pro ($19-$39/mo) + Top-up packs.
+    2.  **SaaS Founders**: Leverage content-driven organic strategies without burning initial marketing capital.
+*   **Success Telemetry Metrics**:
+    *   **Free → Paid conversion rate**: 5–8% within the first 30 days.
+    *   **Trial → Paid conversion rate**: 25–40% at the end of the 14-day trial block.
+    *   **MRR Goals**:
+        *   *Near-Term Target:* $300–$1,000/month in 3–9 months (needs only **10–30 paying agency/SaaS users** due to zero-margin drag of BYOK).
+        *   *Long-Term Scale Target:* $10k/month by scaling organic agency distribution networks.
+    *   **Churn threshold**: Limit user churn under <5% monthly.
+    *   **Average Revenue Per User (ARPU)**: $35/user/month (blending Pro subscriptions and Top-up cycles).
+
+---
+
+### 2.7 Timeline Estimate
+
+| Milestone | Deliverables | Effort |
+| :--- | :--- | :--- |
+| **Stripe Checkout & Webhooks** | Subscription flows, customer billing portal, credit packs, webhook event parser | 3 days |
+| **Credit Middleware & Toggles** | `lib/usage-guard.ts` deduction loops, BYOK bypass guards, database model expansions | 2 days |
+| **Upgrade UIs & Billing Panels** | Settings billing card, UpgradePrompt overlay dialog, dynamic credit counters | 2 days |
+| **Trial System & Limits Guard** | 14-day timer checks, automatic daily credit refreshers, email notice triggers | 2 days |
+| **E2E Checkout Testing** | Validation of webhooks, subscription lifecycle events, failed invoices, topups | 1 day |
+| **Total Phase 2 Effort** | **~2 weeks (Fully Tested)** | |
 
 ---
 
