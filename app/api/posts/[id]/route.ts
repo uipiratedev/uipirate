@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 
-// GET /api/blogs/[id] - Get a single published blog by ID or slug (Public only)
+// GET /api/posts/[id] - Get a single published post by ID or slug (Public only)
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } },
@@ -14,31 +14,31 @@ export async function GET(
     const { id } = params;
 
     // Try to find by ID first, then by slug
-    let blog = await Blog.findOne({ _id: id, published: true }).catch(() => null);
+    let post = await Blog.findOne({ _id: id, published: true }).catch(() => null);
 
-    if (!blog) {
+    if (!post) {
       const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 
-      blog = await Blog.findOne({
+      post = await Blog.findOne({
         slug: { $regex: new RegExp(`^${escapedId}$`, "i") },
         published: true,
       });
     }
 
-    if (!blog) {
+    if (!post) {
       return NextResponse.json(
-        { success: false, error: "Blog not found" },
+        { success: false, error: "Post not found" },
         { status: 404 },
       );
     }
 
     return NextResponse.json({
       success: true,
-      data: blog,
+      data: post,
     });
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch blog";
+      error instanceof Error ? error.message : "Failed to fetch post";
 
     return NextResponse.json(
       {

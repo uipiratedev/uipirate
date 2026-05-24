@@ -35,7 +35,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
   const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/blogs?published=true&limit=50");
+      const response = await fetch("/api/posts?published=true&limit=50");
       const data = await response.json();
 
       if (data.success) setBlogs(data.data);

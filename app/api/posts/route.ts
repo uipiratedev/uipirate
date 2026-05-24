@@ -4,13 +4,13 @@ import mongoose from "mongoose";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 
-interface BlogQuery {
+interface PostQuery {
   published: boolean;
   postType?: any;
   $or?: any[];
 }
 
-// GET /api/blogs - Get all published blogs (Public only)
+// GET /api/posts - Get all published posts (Public only)
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
 
     // Public requests can only query published posts
-    const query: BlogQuery = {
+    const query: PostQuery = {
       published: true,
     };
 
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const blogs = await Blog.find(query)
+    const posts = await Blog.find(query)
       .sort({ createdAt: -1, publishedAt: -1 })
       .limit(limit)
       .skip(skip)
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: blogs,
+      data: posts,
       pagination: {
         total,
         page,
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch blogs";
+      error instanceof Error ? error.message : "Failed to fetch posts";
 
     return NextResponse.json(
       {

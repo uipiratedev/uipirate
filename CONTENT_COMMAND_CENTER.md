@@ -1,4 +1,4 @@
-# Content Command Center — Technical Implementation Plan
+# PirateCOS: Content Command Center — Technical Implementation Plan
 
 > **Transform the existing blog management system into a multi-channel content distribution platform.**
 > This document is grounded entirely in the current codebase structure.
@@ -6,14 +6,14 @@
 
 | Phase | Title | Status |
 |---|---|---|
-| **Phase 1** | Content Command Center — Core Platform | 🟢 **Complete** |
-| **Phase 2** | Monetization & Growth Engine | ⬜ Not started |
-| **Phase 3** | API Refinement, LinkedIn Publishing & External Integration | ⬜ Not started |
-| **Phase 4** | AI Intelligence Layer & Content Transformation | ⬜ Not started |
-| **Phase 5** | Advanced Analytics & Content Optimization | ⬜ Not started |
-| **Phase 6** | Social Publishing & Newsletter Platforms | ⬜ Not started |
-| **Phase 7** | Team Collaboration & Enterprise Features | ⬜ Not started |
-| **Phase 8** | Blog Theme Customization & Design System Matching | ⬜ Not started |
+| **Phase 1** | PirateCOS: Content Command Center — Core Platform | 🟢 **Complete** |
+| **Phase 2** | PirateCOS: Monetization & Growth Engine | ⬜ Not started |
+| **Phase 3** | PirateCOS: API Refinement, LinkedIn Publishing & External Integration | ⬜ Not started |
+| **Phase 4** | PirateCOS: AI Intelligence Layer & Content Transformation | ⬜ Not started |
+| **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | ⬜ Not started |
+| **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | ⬜ Not started |
+| **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | ⬜ Not started |
+| **Phase 8** | PirateCOS: Blog Theme Customization & Design System Matching | ⬜ Not started |
 
  ---
 
@@ -146,29 +146,29 @@ A second user (`Admin._id: "def456"`) can have a blog with the same slug `"my-po
 
 | File | Change |
 |---|---|
-| `models/Admin.ts` | Added `plan`, `stripeCustomerId`, `trialEndsAt`, `usageThisMonth` — billing identity lives on the Admin/Tenant document |
+| `models/pirateCOS/Admin.ts` | Added `plan`, `stripeCustomerId`, `trialEndsAt`, `usageThisMonth` — billing identity lives on the Admin/Tenant document |
 | `models/Blog.ts` | Added `tenantId`; removed global `unique: true` on `slug`; added compound `{ tenantId, slug }` unique index |
-| `models/AIConfig.ts` | Added `tenantId`; removed singleton pattern — now one doc per tenant |
-| `lib/auth.ts` | `User` interface now includes `tenantId` and `plan`; `getCurrentUser()` returns both |
-| `lib/ai-config.ts` | `getDecryptedKeys(tenantId)` scopes the DB lookup per tenant |
-| `app/api/auth/login/route.ts` | JWT payload now includes `tenantId` and `plan` |
-| `app/api/blogs/route.ts` | `GET` scopes list to `user.tenantId`; `POST` stamps `tenantId` on creation |
-| `app/api/blogs/[id]/route.ts` | `GET`, `PUT`, `DELETE` all filter with `{ _id, tenantId }` |
-| `app/api/admin/ai-config/route.ts` | Both `GET` and `POST` use `findOne({ tenantId })` |
-| `app/api/ai/generate/route.ts` | Passes `user.tenantId` to `getDecryptedKeys()` |
+| `models/pirateCOS/AIConfig.ts` | Added `tenantId`; removed singleton pattern — now one doc per tenant |
+| `lib/pirateCOS/auth.ts` | `User` interface now includes `tenantId` and `plan`; `getCurrentUser()` returns both |
+| `lib/pirateCOS/ai-config.ts` | `getDecryptedKeys(tenantId)` scopes the DB lookup per tenant |
+| `app/api/pirateCOS/auth/login/route.ts` | JWT payload now includes `tenantId` and `plan` |
+| `app/api/pirateCOS/posts/route.ts` | `GET` scopes list to `user.tenantId`; `POST` stamps `tenantId` on creation |
+| `app/api/pirateCOS/posts/[id]/route.ts` | `GET`, `PUT`, `DELETE` all filter with `{ _id, tenantId }` |
+| `app/api/pirateCOS/ai-config/route.ts` | Both `GET` and `POST` use `findOne({ tenantId })` |
+| `app/api/pirateCOS/ai/generate/route.ts` | Passes `user.tenantId` to `getDecryptedKeys()` |
 | `hooks/useAuth.ts` | Client `User` interface extended with `tenantId` and `plan` |
-| `components/admin/AdminSidebar.tsx` | Displays user name, email, and plan badge in the sidebar footer |
+| `components/pirateCOS/AdminSidebar.tsx` | Displays user name, email, and plan badge in the sidebar footer |
 
 ### Billing fields on `Admin` (Tenant)
 
 ```typescript
-// models/Admin.ts — IAdmin interface additions
+// models/pirateCOS/Admin.ts — IAdmin interface additions
 plan: "free" | "starter" | "pro";   // default: "free"
 stripeCustomerId?: string;           // set on first Stripe checkout
 trialEndsAt?: Date;                  // null if no active trial
 usageThisMonth: {
-  aiRequests: number;                // incremented by /api/ai/generate
-  distributions: number;             // incremented by /api/distribution/publish
+  aiRequests: number;                // incremented by /api/pirateCOS/ai/generate
+  distributions: number;             // incremented by /api/pirateCOS/distribution/publish
 };
 ```
 
@@ -200,13 +200,13 @@ Assets the new system reuses (some with minor tenant-scoping additions — see [
 
 | Asset | File | How it is reused |
 |---|---|---|
-| AES-256-GCM encrypt/decrypt | `lib/encrypt.ts` | All platform credential fields |
-| `verifyAuth()` JWT guard (now returns `tenantId` + `plan`) | `lib/auth.ts` | Every new admin route; tenant scope is automatic |
+| AES-256-GCM encrypt/decrypt | `lib/pirateCOS/encrypt.ts` | All platform credential fields |
+| `verifyAuth()` JWT guard (now returns `tenantId` + `plan`) | `lib/pirateCOS/auth.ts` | Every new admin route; tenant scope is automatic |
 | `dbConnect()` | `lib/mongodb.ts` | All new routes and models |
-| Per-tenant model pattern | `models/AIConfig.ts` | Template for `Integration` model — one doc per tenant |
-| Tabbed sidebar (Content/SEO/AI) | `app/admin/(authed)/posts/create/page.tsx` | Extended with a 4th "Distribute" tab |
-| `POST /api/blogs` (tenant-scoped) | `app/api/blogs/route.ts` | Called by `ensureSaved()` before distribution |
-| AI Settings page layout | `app/admin/(authed)/ai-settings/page.tsx` | Cloned as Integrations Settings page |
+| Per-tenant model pattern | `models/pirateCOS/AIConfig.ts` | Template for `Integration` model — one doc per tenant |
+| Tabbed sidebar (Content/SEO/AI) | `app/pirateCOS/(authed)/posts/create/page.tsx` | Extended with a 4th "Distribute" tab |
+| `POST /api/pirateCOS/posts` (tenant-scoped) | `app/api/pirateCOS/posts/route.ts` | Called by `ensureSaved()` before distribution |
+| AI Settings page layout | `app/pirateCOS/(authed)/ai-settings/page.tsx` | Cloned as Integrations Settings page |
 | `AI_ENCRYPTION_KEY` env var | `.env.local` | Doubles as the integration credential key |
 
 ---
@@ -215,9 +215,9 @@ Assets the new system reuses (some with minor tenant-scoping additions — see [
 
 ### 2.1 New `Integration` Model
 
-**File:** `models/Integration.ts`
+**File:** `models/pirateCOS/Integration.ts`
 
-Follows the **exact same singleton-avoidance pattern** as `models/AIConfig.ts`.
+Follows the **exact same singleton-avoidance pattern** as `models/pirateCOS/AIConfig.ts`.
 All secret fields end in `Encrypted` — matching the `openaiKeyEncrypted` naming convention in `AIConfig.ts`.
 
 ```typescript
@@ -257,14 +257,14 @@ export interface IIntegration extends Document {
 **Schema decisions:**
 - One document per platform **per tenant** — queries use `findOne({ tenantId, platform })`.
 - `isActive` disables a channel without deleting credentials (soft toggle).
-- `lastTestedAt` is set by the `PATCH /api/admin/integrations/[platform]` test endpoint.
-- All `*Encrypted` credential fields use `AI_ENCRYPTION_KEY` via `lib/encrypt.ts` — same key as AI config.
+- `lastTestedAt` is set by the `PATCH /api/pirateCOS/integrations/[platform]` test endpoint.
+- All `*Encrypted` credential fields use `AI_ENCRYPTION_KEY` via `lib/pirateCOS/encrypt.ts` — same key as AI config.
 
 ---
 
 ### 2.2 New `ApiKey` Model
 
-**File:** `models/ApiKey.ts`
+**File:** `models/pirateCOS/ApiKey.ts`
 
 For programmatic access via `/api/v1/content`. The raw key is shown **once at creation and never stored in plaintext**. Only a SHA-256 hash is persisted.
 
@@ -324,52 +324,71 @@ distributionRecords: [
 ### 3.1 Proposed File Tree
 
 ```
-app/api/
-├── admin/
-│   ├── ai-config/route.ts              ← existing, untouched
-│   └── integrations/
-│       ├── route.ts                    ← GET (list) + POST (upsert)  [NEW]
-│       └── [platform]/
-│           └── route.ts               ← DELETE + PATCH (test)        [NEW]
+app/api/pirateCOS/
+├── auth/
+│   ├── login/route.ts                 ← POST (login)
+│   ├── me/route.ts                    ← GET (me)
+│   └── logout/route.ts                ← POST (logout)
+├── ai/
+│   └── generate/route.ts              ← POST (AI generation)
+├── ai-config/
+│   └── route.ts                       ← GET (config) + POST (save keys)
+├── integrations/
+│   ├── route.ts                       ← GET (list) + POST (upsert)
+│   ├── keys/
+│   │   ├── route.ts                   ← GET (list) + POST (create api key)
+│   │   └── [id]/route.ts              ← DELETE (revoke api key)
+│   └── [platform]/
+│       └── route.ts                   ← DELETE + PATCH (test)
 ├── distribution/
 │   └── publish/
-│       └── route.ts                   ← POST { blogId, platforms[] } [NEW]
+│       └── route.ts                   ← POST { blogId, platforms[] }
+├── posts/
+│   ├── route.ts                       ← GET (list) + POST (create post)
+│   └── [id]/route.ts                  ← GET + PUT + DELETE post
 └── v1/
     └── content/
-        ├── route.ts                   ← GET (list) + POST (create)   [NEW]
+        ├── route.ts                   ← GET (list) + POST (create)
         └── [slug]/
-            └── route.ts              ← GET single post               [NEW]
+            └── route.ts               ← GET single post
 
-lib/
-├── encrypt.ts                         ← existing, no changes
-├── api-key-auth.ts                    ← Bearer token verifier         [NEW]
+lib/pirateCOS/
+├── encrypt.ts                         ← AES-256-GCM encryption helper
+├── auth.ts                            ← pirateCOS admin auth helper
+├── ai-config.ts                       ← DB key extraction utility
+├── api-key-auth.ts                    ← Bearer token SHA-256 verifier
 └── distribution/
-    ├── index.ts                       ← dispatch() orchestrator       [NEW]
+    ├── index.ts                       ← dispatch() orchestrator
     ├── adapters/
-    │   ├── base.adapter.ts            ← abstract interface            [NEW]
-    │   ├── wordpress.adapter.ts                                       [NEW]
-    │   ├── medium.adapter.ts                                          [NEW]
-    │   ├── ghost.adapter.ts                                           [NEW]
-    │   └── buffer.adapter.ts                                          [NEW]
+    │   ├── base.adapter.ts            ← abstract interface
+    │   ├── wordpress.adapter.ts
+    │   ├── medium.adapter.ts
+    │   ├── ghost.adapter.ts
+    │   └── buffer.adapter.ts
     └── transform/
-        ├── html-to-markdown.ts        ← for Medium/Ghost              [NEW]
-        └── content-preflight.ts      ← pre-distribution validator    [NEW]
+        ├── html-to-markdown.ts        ← for Medium/Ghost
+        └── content-preflight.ts       ← pre-distribution validator
 
 models/
-├── Blog.ts                            ← +distributionRecords          [MODIFIED]
-├── Integration.ts                                                     [NEW]
-└── ApiKey.ts                                                          [NEW]
+├── Blog.ts                            ← public model, untouched
+├── Estimate.ts                        ← public model, untouched
+├── ViewLog.ts                         ← public model, untouched
+└── pirateCOS/
+    ├── Admin.ts                       ← Admin / tenant model
+    ├── AIConfig.ts                    ← AI configuration model
+    ├── ApiKey.ts                      ← Content API key model
+    └── Integration.ts                 ← Distribution integration model
 ```
 
 ---
 
-### 3.2 Integrations API — `/api/admin/integrations`
+### 3.2 Integrations API — `/api/pirateCOS/integrations`
 
 All routes require `verifyAuth()` (same guard used across existing admin routes).
 
-#### `GET /api/admin/integrations`
+#### `GET /api/pirateCOS/integrations`
 
-Returns connection status for every platform. **Never exposes decrypted credentials.** Pattern mirrors `GET /api/admin/ai-config`.
+Returns connection status for every platform. **Never exposes decrypted credentials.** Pattern mirrors `GET /api/pirateCOS/ai-config`.
 
 ```jsonc
 // Response shape
@@ -390,9 +409,9 @@ Returns connection status for every platform. **Never exposes decrypted credenti
 }
 ```
 
-#### `POST /api/admin/integrations`
+#### `POST /api/pirateCOS/integrations`
 
-Upsert credentials for one platform. Uses `encrypt()` from `lib/encrypt.ts` — same call as `ai-config/route.ts`. All queries are scoped to `user.tenantId` so each tenant manages only their own connections:
+Upsert credentials for one platform. Uses `encrypt()` from `lib/pirateCOS/encrypt.ts` — same call as `ai-config`. All queries are scoped to `user.tenantId` so each tenant manages only their own connections:
 
 ```typescript
 // tenantId comes from verifyAuth() — no extra DB lookup needed
@@ -408,7 +427,7 @@ existing.isActive = true;
 await existing.save();
 ```
 
-#### `PATCH /api/admin/integrations/[platform]`
+#### `PATCH /api/pirateCOS/integrations/[platform]`
 
 Updates `lastTestedAt` and returns `{ success, message }`. **Fully implemented with live outbound probes** — the route decrypts stored credentials and makes a real HTTP call to each platform's auth endpoint before saving:
 
@@ -421,18 +440,18 @@ Updates `lastTestedAt` and returns `{ success, message }`. **Fully implemented w
 
 Any non-2xx response from the platform is surfaced as `{ success: false, error: "..." }` — the UI never writes `lastTestedAt` on a failed probe.
 
-#### `DELETE /api/admin/integrations/[platform]`
+#### `DELETE /api/pirateCOS/integrations/[platform]`
 
 Sets `isActive = false` and clears all `*Encrypted` fields. Document is kept for audit trail.
 
 ---
 
-### 3.3 Distribution Engine — `/api/distribution/publish`
+### 3.3 Distribution Engine — `/api/pirateCOS/distribution/publish`
 
 #### Request
 
 ```typescript
-POST /api/distribution/publish
+POST /api/pirateCOS/distribution/publish
 {
   blogId: string;            // MongoDB _id of a saved Blog document
   platforms: SupportedPlatform[];
@@ -472,11 +491,11 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-#### `lib/distribution/index.ts` — `dispatch()` orchestrator
+#### `lib/pirateCOS/distribution/index.ts` — `dispatch()` orchestrator
 
 ```typescript
-import { decrypt } from "@/lib/encrypt";
-import Integration from "@/models/Integration";
+import { decrypt } from "@/lib/pirateCOS/encrypt";
+import Integration from "@/models/pirateCOS/Integration";
 import { WordPressAdapter } from "./adapters/wordpress.adapter";
 import { MediumAdapter }    from "./adapters/medium.adapter";
 import { GhostAdapter }     from "./adapters/ghost.adapter";
@@ -566,7 +585,7 @@ export abstract class BaseAdapter {
 
 Uses a separate auth mechanism from the admin JWT cookies — a static Bearer key in the `Authorization` header.
 
-#### `lib/api-key-auth.ts`
+#### `lib/pirateCOS/api-key-auth.ts`
 
 ```typescript
 export interface ApiKeyAuthResult {
@@ -608,7 +627,7 @@ export async function verifyApiKey(req: NextRequest): Promise<ApiKeyAuthResult |
 
 ### 4.1 Distribution Sidebar Tab
 
-**Files:** `app/admin/(authed)/posts/create/page.tsx` · `app/admin/(authed)/posts/edit/[id]/page.tsx`
+**Files:** `app/pirateCOS/(authed)/posts/create/page.tsx` · `app/pirateCOS/(authed)/posts/edit/[id]/page.tsx`
 
 The existing sidebar tab system (lines 6644–6665 in `create/page.tsx`) is extended from 3 to 4 tabs:
 
@@ -620,7 +639,7 @@ const tabs = ["content", "seo", "ai"] as const;
 const tabs = ["content", "seo", "ai", "distribute"] as const;
 ```
 
-The `"distribute"` tab renders a shared `<DistributionPanel>` component (`components/admin/DistributionPanel.tsx`) — reused by both `create/page.tsx` and `edit/[id]/page.tsx`.
+The `"distribute"` tab renders a shared `<DistributionPanel>` component (`components/pirateCOS/DistributionPanel.tsx`) — reused by both `create/page.tsx` and `edit/[id]/page.tsx`.
 
 #### `DistributionPanel` props (actual implementation)
 
@@ -643,7 +662,7 @@ interface DistributionPanelProps {
 }
 ```
 
-> The panel fetches live integration status from `GET /api/admin/integrations` on mount. Platforms that are disconnected display a "Connect" shortcut link to `/admin/settings/integrations` rather than being selectable.
+> The panel fetches live integration status from `GET /api/pirateCOS/integrations` on mount. Platforms that are disconnected display a "Connect" shortcut link to `/settings/integrations` (or relevant host-aware settings route) rather than being selectable.
 
 #### Panel layout (top → bottom within 288px sidebar)
 
@@ -687,9 +706,9 @@ interface DistributionPanelProps {
 
 ### 4.2 AI Settings Page & `AIConfigPanel` — Current State
 
-#### `app/admin/(authed)/ai-settings/page.tsx` ✅ Complete
+#### `app/pirateCOS/(authed)/ai-settings/page.tsx` ✅ Complete
 
-The full-page AI settings experience. All API keys are saved **encrypted in MongoDB** via `POST /api/admin/ai-config`. Four engines are supported with independent `KeyModal` dialogs:
+The full-page AI settings experience. All API keys are saved **encrypted in MongoDB** via `POST /api/pirateCOS/ai-config`. Four engines are supported with independent `KeyModal` dialogs:
 
 | Engine | Key Field | Model Options |
 |---|---|---|
@@ -700,27 +719,27 @@ The full-page AI settings experience. All API keys are saved **encrypted in Mong
 
 The `defaultEngine` / `defaultModel` selection is saved to the DB **and** mirrored to `localStorage` under the key `uipirate-ai-config` as a fast-load cache for the editor UI.
 
-#### `components/admin/AIConfigPanel.tsx` ✅ Complete
+#### `components/pirateCOS/AIConfigPanel.tsx` ✅ Complete
 
 This is the **quick-access slide-over panel** that opens from within the blog editor (separate from the settings page). All previously-identified gaps have been resolved:
 
 | Item | Status | Detail |
 |---|---|---|
-| Key storage | ✅ Fixed | `save()` POSTs to `POST /api/admin/ai-config`; API keys are **never** written to localStorage |
+| Key storage | ✅ Fixed | `save()` POSTs to `POST /api/pirateCOS/ai-config`; API keys are **never** written to localStorage |
 | localStorage cache | ✅ Correct | Only `defaultEngine` and `defaultModel` are cached under `uipirate-ai-config` for fast editor startup |
 | Mistral key input | ✅ Added | Full `PanelSection` with `KeyInput` and violet `EnvBadge`, matching OpenAI/Gemini sections |
 | Mistral engine button | ✅ Added | Four-button selector: `openai &#124; gemini &#124; mistral &#124; puter` with correct model defaults |
 | Footnote | ✅ Updated | Now reads: *"Keys are securely encrypted using AES-256-GCM and stored in your database. They are never exposed to the browser or third parties."* |
 
-On open, the panel fetches `GET /api/admin/ai-config` to populate `serverStatus: { openai, gemini, mistral }` — each key input's placeholder switches to `"Saved in Database (encrypted)"` when the server reports a key is present.
+On open, the panel fetches `GET /api/pirateCOS/ai-config` to populate `serverStatus: { openai, gemini, mistral }` — each key input's placeholder switches to `"Saved in Database (encrypted)"` when the server reports a key is present.
 
 ---
 
 ### 4.3 Integrations Settings Page
 
-**File:** `app/admin/(authed)/settings/integrations/page.tsx` ✅ Implemented
+**File:** `app/pirateCOS/(authed)/settings/integrations/page.tsx` ✅ Implemented
 
-Structured identically to `app/admin/(authed)/ai-settings/page.tsx` — same card layout, modal pattern, and `#FF5B04` accent colour.
+Structured identically to `app/pirateCOS/(authed)/ai-settings/page.tsx` — same card layout, modal pattern, and `#FF5B04` accent colour.
 
 #### Section 1 — Platform Integrations (four cards, 2×2 grid on md+)
 
@@ -763,13 +782,13 @@ On create: display the full key **once** in a modal (`uip_live_<32 random chars>
 
 #### Admin Sidebar update
 
-**File:** `components/admin/AdminSidebar.tsx`
+**File:** `components/pirateCOS/AdminSidebar.tsx`
 
 Add a "Settings" nav group beneath the existing items:
 
 ```typescript
 // New nav entry:
-{ label: "Integrations", href: "/admin/settings/integrations", Icon: IconIntegrations }
+{ label: "Integrations", href: "/settings/integrations", Icon: IconIntegrations }
 ```
 
 ---
@@ -889,10 +908,10 @@ AI_ENCRYPTION_KEY=<64-char-hex>
 
 | Milestone | Deliverables | Touches | Status | Notes |
 |---|---|---|---|---|
-| **1.1 — Foundation** | `models/Integration.ts`, `models/ApiKey.ts`, extend `models/Blog.ts`, `app/api/admin/integrations/` routes | Models + API only | ✅ **Complete** | Compound `{ tenantId, platform }` unique index; `distributionRecords` added to Blog |
-| **1.2 — Distribution Engine** | All four platform adapters, `html-to-markdown.ts`, `content-preflight.ts`, `app/api/distribution/publish/route.ts` | Backend only | ✅ **Complete** | HTML→Markdown uses custom regex pipeline. Ghost and WordPress support `update()`; Medium and Buffer do not |
-| **1.3 — Editor UI** | `hooks/useSaveBlog.ts`, `components/admin/DistributionPanel.tsx`, 4-tab system in `create/page.tsx` | Editor pages + new hook | ✅ **Complete** | Hook uses `getEditorState` callback pattern; panel has extended prop set with AI action callbacks |
-| **1.4 — Settings UI + Public API** | `app/admin/(authed)/settings/integrations/page.tsx`, `AdminSidebar.tsx`, `/api/v1/content/` routes, `lib/api-key-auth.ts` | Settings + public API | ✅ **Complete** | Full API Key creation/revocation UI; SHA-256 timing-safe verification with `tenantId` returned |
+| **1.1 — Foundation** | `models/pirateCOS/Integration.ts`, `models/pirateCOS/ApiKey.ts`, extend `models/Blog.ts`, `app/api/pirateCOS/integrations/` routes | Models + API only | ✅ **Complete** | Compound `{ tenantId, platform }` unique index; `distributionRecords` added to Blog |
+| **1.2 — Distribution Engine** | All four platform adapters, `html-to-markdown.ts`, `content-preflight.ts`, `app/api/pirateCOS/distribution/publish/route.ts` | Backend only | ✅ **Complete** | HTML→Markdown uses custom regex pipeline. Ghost and WordPress support `update()`; Medium and Buffer do not |
+| **1.3 — Editor UI** | `hooks/useSaveBlog.ts`, `components/pirateCOS/DistributionPanel.tsx`, 4-tab system in `create/page.tsx` | Editor pages + new hook | ✅ **Complete** | Hook uses `getEditorState` callback pattern; panel has extended prop set with AI action callbacks |
+| **1.4 — Settings UI + Public API** | `app/pirateCOS/(authed)/settings/integrations/page.tsx`, `AdminSidebar.tsx`, `/api/pirateCOS/v1/content/` routes, `lib/pirateCOS/api-key-auth.ts` | Settings + public API | ✅ **Complete** | Full API Key creation/revocation UI; SHA-256 timing-safe verification with `tenantId` returned |
 | **1.5 — Polish** | `AIConfigPanel.tsx` DB key storage, Mistral support, live integration probes | Components + route | ✅ **Complete** | All keys encrypted in DB; live HTTP probes for all four platforms |
 
 Each milestone was independently deployable and produced visible, testable output before the next began.
@@ -928,7 +947,7 @@ The monetization framework combines **Subscriptions + Credit/Top-up + BYOK (Brin
 | Feature | Description | Value Proposition | Implementation |
 |---|---|---|---|
 | **Stripe Billing Integration** | Full subscription lifecycle (checkout, webhooks, portal) | Seamless payment experience with automatic invoicing | `app/api/billing/` routes + Stripe webhook handlers |
-| **Usage Metering & Enforcement** | Track AI requests + distributions; enforce plan limits | Prevents abuse; creates upgrade pressure at natural friction points | Middleware in `/api/ai/generate` and `/api/distribution/publish` |
+| **Usage Metering & Enforcement** | Track AI requests + distributions; enforce plan limits | Prevents abuse; creates upgrade pressure at natural friction points | Middleware in `/api/pirateCOS/ai/generate` and `/api/pirateCOS/distribution/publish` |
 | **Plan-Gated Features** | Lock advanced features behind paid tiers | Clear differentiation between Free/Pro | Feature flags based on `user.plan` from JWT |
 | **Upgrade Prompts & CTAs** | Contextual "Upgrade" buttons when hitting limits | Convert users at the moment they need more capacity | In-app modals + banner components |
 | **Self-Service Plan Management** | Users can upgrade/downgrade without support tickets | Reduces friction; increases conversion rates | `/admin/settings/billing` page with Stripe Customer Portal |
@@ -977,9 +996,9 @@ A token/credit-based soft limit strategy provides maximum cost control and clean
 
 ### 2.3 Database Schema Evolution
 
-#### 2.3.1 Extended Tenant Model (`models/Admin.ts`)
+#### 2.3.1 Extended Tenant Model (`models/pirateCOS/Admin.ts`)
 ```typescript
-// models/Admin.ts — Merge of Phase 1 identities and Phase 2 Billing/BYOK schemas
+// models/pirateCOS/Admin.ts — Merge of Phase 1 identities and Phase 2 Billing/BYOK schemas
 interface IAdmin {
   // ... existing auth fields (userId, email, role, password)
 
@@ -1032,7 +1051,7 @@ export interface IBillingEvent extends Document {
 
 #### 2.4.1 Credit Guard & BYOK Middleware (`lib/usage-guard.ts`)
 ```typescript
-import Admin from "@/models/Admin";
+import Admin from "@/models/pirateCOS/Admin";
 
 export class CreditLimitError extends Error {
   constructor(message: string, public upgradeUrl: string) {
@@ -1183,29 +1202,29 @@ The following files and database objects must be updated:
 - All MongoDB queries update from `Blog.find()` → `Post.find()`
 
 #### API Routes
-- `app/api/blogs/` → `app/api/posts/`
-- `app/api/blogs/[id]/` → `app/api/posts/[id]/`
-- `app/api/distribution/publish/route.ts` — update all `blog` parameter names to `post`
-- Public API remains `/api/v1/content` (no breaking change for external consumers)
+- `app/api/posts/` (public GET endpoints) and `app/api/pirateCOS/posts/` (authenticated write endpoints)
+- `app/api/posts/[id]/` and `app/api/pirateCOS/posts/[id]/`
+- `app/api/pirateCOS/distribution/publish/route.ts` — update all `blog` parameter names to `post`
+- Public API remains `/api/pirateCOS/v1/content` (no breaking change for external consumers)
 
 #### Components & Hooks
 - `hooks/useSaveBlog.ts` → `hooks/useSavePost.ts`
   - Function names: `saveBlog()` → `savePost()`, `blogId` → `postId`
-- `components/admin/DistributionPanel.tsx` — all `blog*` props → `post*`
-- `app/admin/(authed)/posts/create/page.tsx` — variable names: `blogData` → `postData`, `savedBlogId` → `savedPostId`
-- `app/admin/(authed)/posts/edit/[id]/page.tsx` — same pattern
+- `components/pirateCOS/DistributionPanel.tsx` — all `blog*` props → `post*`
+- `app/pirateCOS/(authed)/posts/create/page.tsx` — variable names: `blogData` → `postData`, `savedBlogId` → `savedPostId`
+- `app/pirateCOS/(authed)/posts/edit/[id]/page.tsx` — same pattern
 
 #### Adapter Layer
-- `lib/distribution/adapters/base.adapter.ts` — method signature: `publish(blog: IBlog)` → `publish(post: IPost)`
+- `lib/pirateCOS/distribution/adapters/base.adapter.ts` — method signature: `publish(blog: IBlog)` → `publish(post: IPost)`
 - All four platform adapters update their `publish()` and `update()` method signatures
-- `lib/distribution/index.ts` — `dispatch({ blog, platforms })` → `dispatch({ post, platforms })`
+- `lib/pirateCOS/distribution/index.ts` — `dispatch({ blog, platforms })` → `dispatch({ post, platforms })`
 
 #### Frontend State
 - TipTap editor pages: all `blog` state variables → `post`
 - SEO modal: `blogSlug` → `postSlug`, `blogTitle` → `postTitle`
 
 #### Test Files (if applicable)
-- Update any integration or unit tests referencing `Blog` model or `/api/blogs` routes
+- Update any integration or unit tests referencing `Blog` model or `/api/posts` routes
 
 > **Migration strategy:** Deploy model/route changes first with backward-compatible aliases (e.g., `const Blog = Post; export default Blog;`) to allow gradual cutover. Remove aliases after full deployment.
 
