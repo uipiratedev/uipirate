@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 import dbConnect from "../mongodb";
 
-import Admin from "@/models/Admin";
+import Admin from "@/models/pirateCOS/Admin";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
 

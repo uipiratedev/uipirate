@@ -81,7 +81,7 @@ export default function AdminBlogsPage() {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      let url = "/api/blogs?limit=100";
+      let url = "/api/pirateCOS/posts?limit=100";
 
       if (filterStatus === "published") {
         url += "&published=true";
@@ -112,7 +112,7 @@ export default function AdminBlogsPage() {
     }
 
     try {
-      const response = await fetch(`/api/blogs/${id}`, {
+      const response = await fetch(`/api/pirateCOS/posts/${id}`, {
         method: "DELETE",
       });
 
@@ -141,7 +141,7 @@ export default function AdminBlogsPage() {
     }
 
     try {
-      const response = await fetch(`/api/blogs/${id}`, {
+      const response = await fetch(`/api/pirateCOS/posts/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

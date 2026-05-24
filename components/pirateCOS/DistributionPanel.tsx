@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { runPreflight, PreflightCheck } from "@/lib/distribution/transform/content-preflight";
+import { runPreflight, PreflightCheck } from "@/lib/pirateCOS/distribution/transform/content-preflight";
 
 interface DistributionRecord {
   platform: string;
@@ -125,7 +125,7 @@ export default function DistributionPanel({
       const savedId = await onEnsureSaved();
 
       // 2. Trigger distribution publish request
-      const res = await fetch("/api/distribution/publish", {
+      const res = await fetch("/api/pirateCOS/distribution/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

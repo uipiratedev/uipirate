@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
-import { verifyApiKey } from "@/lib/api-key-auth";
+import { verifyApiKey } from "@/lib/pirateCOS/api-key-auth";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 

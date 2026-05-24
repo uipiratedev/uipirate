@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { encrypt, decrypt } from "@/lib/encrypt";
+import { encrypt, decrypt } from "@/lib/pirateCOS/encrypt";
 import dbConnect from "@/lib/mongodb";
-import AIConfig from "@/models/AIConfig";
+import AIConfig from "@/models/pirateCOS/AIConfig";
 
 // GET /api/admin/ai-config
 // Returns which AI providers have keys (env or DB) and current defaults.

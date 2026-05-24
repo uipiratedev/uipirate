@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { getDecryptedKeys } from "@/lib/ai-config";
+import { getDecryptedKeys } from "@/lib/pirateCOS/ai-config";
 
 export async function POST(request: NextRequest) {
   try {
@@ -93,7 +93,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let systemInstructions = "";    if (action === "excerpt" || action === "metaDescription") {
+    let systemInstructions = "";
+    if (action === "excerpt" || action === "metaDescription") {
       systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following post. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${content || title}`;
     } else if (action === "metaTitle") {
       systemInstructions = `Suggest a single, high-impact, highly clickable, and search-optimized alternative title for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Deliver ONLY the single title text. Do NOT wrap it in quotes, code blocks, or include introductory text.`;

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import dbConnect from "@/lib/mongodb";
-import ApiKey from "@/models/ApiKey";
+import ApiKey from "@/models/pirateCOS/ApiKey";
 
 export async function DELETE(
   req: NextRequest,

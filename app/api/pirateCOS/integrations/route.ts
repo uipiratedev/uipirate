@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { encrypt } from "@/lib/encrypt";
+import { encrypt } from "@/lib/pirateCOS/encrypt";
 import dbConnect from "@/lib/mongodb";
-import Integration, { SupportedPlatform } from "@/models/Integration";
+import Integration, { SupportedPlatform } from "@/models/pirateCOS/Integration";
 
 export async function GET() {
   const user = await verifyAuth();

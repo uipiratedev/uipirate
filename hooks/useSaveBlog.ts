@@ -61,7 +61,7 @@ export function useSaveBlog({
         if (customSeo) payload.seo = customSeo;
         if (customSlug) payload.slug = customSlug;
 
-        const url = isNew ? "/api/blogs" : `/api/blogs/${blogId}`;
+        const url = isNew ? "/api/pirateCOS/posts" : `/api/pirateCOS/posts/${blogId}`;
         const method = isNew ? "POST" : "PUT";
 
         const res = await fetch(url, {

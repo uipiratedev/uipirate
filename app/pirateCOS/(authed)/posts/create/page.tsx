@@ -312,7 +312,7 @@ const SEOEditorModal = ({
         apiAction = specificAction as SEOAction;
       }
 
-      const response = await fetch("/api/ai/generate", {
+      const response = await fetch("/api/pirateCOS/ai/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -2359,7 +2359,7 @@ const AIExcerptModal = ({
         setResult(text);
       } else {
         // Send a custom prompt for excerpt if prompt is provided
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -2989,7 +2989,7 @@ const AITitleModal = ({
           throw new Error("Failed to parse array from response.");
         }
       } else {
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -3532,7 +3532,7 @@ const AITagsModal = ({
           throw new Error("Failed to parse array or keywords from response.");
         }
       } else {
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -4114,7 +4114,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
 
         setResult(text);
       } else {
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -5677,6 +5677,10 @@ const PostPreviewPanel = ({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditor = () => {
+  const isSubdomain = typeof window !== "undefined" && 
+    (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+  const getHref = (path: string) => isSubdomain ? path : `/pirateCOS${path}`;
+
   const [mounted, setMounted] = useState(false);
   const [slashMenuOpen, setSlashMenuOpen] = useState(false);
   const [slashMenuPosition, setSlashMenuPosition] = useState({
@@ -6214,7 +6218,7 @@ const BlogEditor = () => {
       <div
         className="fixed inset-0 z-[300] flex items-center justify-center p-4"
         style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
-        onClick={() => router.push("/admin/posts")}
+        onClick={() => router.push(getHref("/posts"))}
       >
         <div
           className="bg-white rounded-3xl shadow-2xl w-[520px] max-w-full p-8 relative"
@@ -6224,7 +6228,7 @@ const BlogEditor = () => {
           {/* Close button */}
           <button
             className="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
-            onClick={() => router.push("/admin/posts")}
+            onClick={() => router.push(getHref("/posts"))}
           >
             <svg
               fill="none"
@@ -6299,7 +6303,7 @@ const BlogEditor = () => {
           <div className="flex items-center gap-3">
             <button
               className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors"
-              onClick={() => router.push("/admin/posts")}
+              onClick={() => router.push(getHref("/posts"))}
             >
               Cancel
             </button>
@@ -6362,7 +6366,7 @@ const BlogEditor = () => {
         <div className="flex items-center gap-3">
           <button
             className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
-            onClick={() => navigateSafely("/admin/blogs")}
+            onClick={() => navigateSafely(getHref("/posts"))}
           >
             <svg
               fill="none"
@@ -7149,13 +7153,13 @@ const BlogEditor = () => {
         onKeepEditing={() => {
           // After creating a post, redirect to its edit page so the user can keep editing
           if (savedBlogId) {
-            router.push(`/admin/posts/edit/${savedBlogId}`);
+            router.push(getHref(`/posts/edit/${savedBlogId}`));
           } else {
             setShowPublishModal(false);
             setModalSuccess(null);
           }
         }}
-        onViewBlogs={() => router.push("/admin/posts")}
+        onViewBlogs={() => router.push(getHref("/posts"))}
       />
 
       <SaveDraftModal
@@ -7173,13 +7177,13 @@ const BlogEditor = () => {
         onKeepEditing={() => {
           // After creating a draft, redirect to its edit page
           if (savedBlogId) {
-            router.push(`/admin/posts/edit/${savedBlogId}`);
+            router.push(getHref(`/posts/edit/${savedBlogId}`));
           } else {
             setShowSaveModal(false);
             setModalSuccess(null);
           }
         }}
-        onViewBlogs={() => router.push("/admin/posts")}
+        onViewBlogs={() => router.push(getHref("/posts"))}
       />
 
       {/* Navigation guard modal */}
@@ -7194,7 +7198,7 @@ const BlogEditor = () => {
             } else if (pendingNavHref.current) {
               router.push(pendingNavHref.current);
             } else {
-              router.push("/admin/posts");
+              router.push(getHref("/posts"));
             }
           }}
           onStay={() => setShowUnsavedModal(false)}

@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { dispatch } from "@/lib/distribution";
+import { dispatch } from "@/lib/pirateCOS/distribution";
 import dbConnect from "@/lib/mongodb";
 import Blog from "@/models/Blog";
-import { SupportedPlatform } from "@/models/Integration";
+import { SupportedPlatform } from "@/models/pirateCOS/Integration";
 
 export async function POST(req: NextRequest) {
   const user = await verifyAuth();

@@ -1,5 +1,5 @@
 import { IBlog } from "@/models/Blog";
-import { IPlatformCredentials, SupportedPlatform } from "@/models/Integration";
+import { IPlatformCredentials, SupportedPlatform } from "@/models/pirateCOS/Integration";
 
 export interface DistributionResult {
   platform: SupportedPlatform;

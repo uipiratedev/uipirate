@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
-import AIConfig from "@/models/AIConfig";
-import { decrypt } from "@/lib/encrypt";
+import AIConfig from "@/models/pirateCOS/AIConfig";
+import { decrypt } from "@/lib/pirateCOS/encrypt";
 
 export async function getDecryptedKeys(tenantId: string): Promise<{
   openai?: string;

@@ -1,8 +1,8 @@
 import { createHash, timingSafeEqual } from "crypto";
 import { NextRequest } from "next/server";
 import { decrypt } from "./encrypt";
-import dbConnect from "./mongodb";
-import ApiKey from "@/models/ApiKey";
+import dbConnect from "../mongodb";
+import ApiKey from "@/models/pirateCOS/ApiKey";
 
 export interface ApiKeyAuthResult {
   tenantId: string;

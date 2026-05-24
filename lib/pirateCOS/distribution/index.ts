@@ -1,6 +1,6 @@
-import { decrypt } from "@/lib/encrypt";
+import { decrypt } from "@/lib/pirateCOS/encrypt";
 import { IBlog } from "@/models/Blog";
-import Integration, { SupportedPlatform } from "@/models/Integration";
+import Integration, { SupportedPlatform } from "@/models/pirateCOS/Integration";
 import { BufferAdapter } from "./adapters/buffer.adapter";
 import { GhostAdapter } from "./adapters/ghost.adapter";
 import { MediumAdapter } from "./adapters/medium.adapter";

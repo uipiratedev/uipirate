@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 import dbConnect from "@/lib/mongodb";
-import Admin from "@/models/Admin";
+import Admin from "@/models/pirateCOS/Admin";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
 const JWT_EXPIRES_IN = "30d"; // 30 days

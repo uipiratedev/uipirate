@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { decrypt } from "@/lib/encrypt";
+import { decrypt } from "@/lib/pirateCOS/encrypt";
 import dbConnect from "@/lib/mongodb";
-import Integration, { SupportedPlatform } from "@/models/Integration";
+import Integration, { SupportedPlatform } from "@/models/pirateCOS/Integration";
 
 export async function DELETE(
   req: NextRequest,

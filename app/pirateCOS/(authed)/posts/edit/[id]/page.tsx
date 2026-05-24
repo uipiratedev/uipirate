@@ -315,7 +315,7 @@ const SEOEditorModal = ({
     setError("");
 
     try {
-      const response = await fetch("/api/ai/generate", {
+      const response = await fetch("/api/pirateCOS/ai/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -2637,7 +2637,7 @@ const AIExcerptModal = ({
         setResult(text);
       } else {
         // Send a custom prompt for excerpt if prompt is provided
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -3266,7 +3266,7 @@ const AITitleModal = ({
           throw new Error("Failed to parse array from response.");
         }
       } else {
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -3808,7 +3808,7 @@ const AITagsModal = ({
           throw new Error("Failed to parse array or keywords from response.");
         }
       } else {
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -4389,7 +4389,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
 
         setResult(text);
       } else {
-        const response = await fetch("/api/ai/generate", {
+        const response = await fetch("/api/pirateCOS/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -5946,6 +5946,10 @@ const PostPreviewPanel = ({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditPage = () => {
+  const isSubdomain = typeof window !== "undefined" && 
+    (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+  const getHref = (path: string) => isSubdomain ? path : `/pirateCOS${path}`;
+
   const params = useParams();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -6303,7 +6307,7 @@ const BlogEditPage = () => {
   const fetchBlog = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/blogs/${params.id}`);
+      const response = await fetch(`/api/pirateCOS/posts/${params.id}`);
       const data = await response.json();
 
       if (data.success) {
@@ -6331,11 +6335,11 @@ const BlogEditPage = () => {
         setIsDataInitialized(true);
       } else {
         setValidationError("Blog post not found.");
-        router.push("/admin/blogs");
+        router.push(getHref("/posts"));
       }
     } catch {
       setValidationError("Failed to load blog post. Please try again.");
-      router.push("/admin/blogs");
+      router.push(getHref("/posts"));
     } finally {
       setLoading(false);
     }
@@ -6410,7 +6414,7 @@ const BlogEditPage = () => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      const response = await fetch(`/api/blogs/${blogId}`, {
+      const response = await fetch(`/api/pirateCOS/posts/${blogId}`, {
         method: "DELETE",
       });
 
@@ -6420,7 +6424,7 @@ const BlogEditPage = () => {
         throw new Error(data.error || "Failed to delete post");
       }
       setIsDirty(false); // prevent beforeunload on push
-      router.push("/admin/posts");
+      router.push(getHref("/posts"));
     } catch (error: any) {
       setShowDeleteModal(false);
       setValidationError(error.message || "Failed to delete post");
@@ -6496,7 +6500,7 @@ const BlogEditPage = () => {
         <div className="flex items-center gap-3">
           <button
             className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
-            onClick={() => navigateSafely("/admin/posts")}
+            onClick={() => navigateSafely(getHref("/posts"))}
           >
             <svg
               fill="none"
@@ -7426,7 +7430,7 @@ const BlogEditPage = () => {
           setShowPublishModal(false);
           setModalSuccess(null);
         }}
-        onViewBlogs={() => router.push("/admin/posts")}
+        onViewBlogs={() => router.push(getHref("/posts"))}
       />
 
       <SaveDraftModal
@@ -7445,7 +7449,7 @@ const BlogEditPage = () => {
           setShowSaveModal(false);
           setModalSuccess(null);
         }}
-        onViewBlogs={() => router.push("/admin/posts")}
+        onViewBlogs={() => router.push(getHref("/posts"))}
       />
 
       {/* Unpublish confirmation */}
@@ -7478,7 +7482,7 @@ const BlogEditPage = () => {
             } else if (pendingNavHref.current) {
               router.push(pendingNavHref.current);
             } else {
-              router.push("/admin/posts");
+              router.push(getHref("/posts"));
             }
           }}
           onStay={() => setShowUnsavedModal(false)}

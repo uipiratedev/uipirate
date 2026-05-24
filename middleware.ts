@@ -15,6 +15,20 @@ export function middleware(req: NextRequest) {
   requestHeaders.set("x-pathname", url.pathname);
   requestHeaders.set("x-is-cos", isCos ? "true" : "false");
 
+  // 1. For subdomain mode: redirect /admin/posts -> /posts, /admin -> /
+  if (isCosSubdomain && url.pathname.startsWith("/admin")) {
+    const strippedPath = url.pathname.replace(/^\/admin/, "");
+    url.pathname = strippedPath || "/";
+    return NextResponse.redirect(url);
+  }
+
+  // 2. For path mode fallback: redirect /admin/posts -> /pirateCOS/posts
+  if (!isCosSubdomain && url.pathname.startsWith("/admin")) {
+    const namespacedPath = url.pathname.replace(/^\/admin/, "/pirateCOS");
+    url.pathname = namespacedPath || "/pirateCOS";
+    return NextResponse.redirect(url);
+  }
+
   if (isCosSubdomain) {
     // Exclude Next.js system files, static files, and api routes from subdomain rewriting
     if (
