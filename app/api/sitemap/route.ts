@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 import caseStudies from "@/data/case-studies.json";
 
 export const dynamic = "force-dynamic";
@@ -174,7 +174,7 @@ export async function GET() {
 
   try {
     await dbConnect();
-    const blogs = await Blog.find(
+    const blogs = await Post.find(
       { published: true },
       { slug: 1, updatedAt: 1 },
     ).lean();

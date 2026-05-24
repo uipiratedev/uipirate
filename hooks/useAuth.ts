@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface User {
   id: string;
@@ -10,7 +10,7 @@ interface User {
   role: string;
   /** The tenant boundary — equals the Admin._id string */
   tenantId: string;
-  plan: "free" | "starter" | "pro";
+  plan: "free" | "starter" | "pro" | "enterprise";
 }
 
 export function useAuth(requireAuth: boolean = false) {
@@ -19,14 +19,14 @@ export function useAuth(requireAuth: boolean = false) {
   const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = !!user;
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
+  const isSubdomain = typeof window !== "undefined" && 
+    (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+  const loginUrl = isSubdomain ? "/login" : "/pirateCOS/login";
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/me");
+      const response = await fetch("/api/pirateCOS/auth/me");
       const data = await response.json();
 
       if (data.success && data.user) {
@@ -34,28 +34,32 @@ export function useAuth(requireAuth: boolean = false) {
       } else {
         setUser(null);
         if (requireAuth) {
-          router.push("/admin/login");
+          router.push(loginUrl);
         }
       }
     } catch (error) {
       setUser(null);
       if (requireAuth) {
-        router.push("/admin/login");
+        router.push(loginUrl);
       }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [requireAuth, router, loginUrl]);
 
-  const logout = async () => {
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  const logout = useCallback(async () => {
     try {
-      await fetch("/api/auth/logout", { method: "POST" });
+      await fetch("/api/pirateCOS/auth/logout", { method: "POST" });
       setUser(null);
-      router.push("/admin/login");
+      router.push(loginUrl);
     } catch (error) {
       // Logout failed
     }
-  };
+  }, [router, loginUrl]);
 
   return {
     user,

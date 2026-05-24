@@ -26,7 +26,7 @@ const SuggestedReads = () => {
 
   const fetchSuggestedBlogs = useCallback(async () => {
     try {
-      const response = await fetch("/api/blogs?published=true&limit=3");
+      const response = await fetch("/api/posts?published=true&limit=3");
       const data = await response.json();
 
       if (data.success) setBlogs(data.data);

@@ -44,9 +44,18 @@ const contactSchema = {
     email: "vishal@uipirate.com",
     telephone: "+919708636151",
     url: "https://uipirate.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "H.no 48, block campus, namkum",
+      addressLocality: "Ranchi",
+      addressRegion: "Jharkhand",
+      postalCode: "834010",
+      addressCountry: "IN",
+    },
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
+      telephone: "+919708636151",
       email: "vishal@uipirate.com",
       availableLanguage: "English",
       areaServed: ["US", "GB", "SG", "IN", "AU"],

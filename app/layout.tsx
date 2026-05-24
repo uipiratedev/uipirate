@@ -21,6 +21,7 @@ import { ConditionalFooter } from "@/components/ConditionalFooter";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://uipirate.com"),
@@ -88,11 +89,42 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const requestHeaders = await headers();
+  const isCos = requestHeaders.get("x-is-cos") === "true";
+
+  if (isCos) {
+    return (
+      <html suppressHydrationWarning lang="en">
+        <head>
+          <meta content="width=device-width, initial-scale=1" name="viewport" />
+          <link href="/favicon.ico?v=2" rel="icon" />
+          <title>PirateCOS | UI Pirate</title>
+        </head>
+        <body
+          className={clsx(
+            "min-h-screen font-sans antialiased bg-[#F7F7F6]",
+            fontSans.variable,
+            fontJakarta.variable,
+            fontGeist.variable,
+            fontGeistMono.variable,
+            fontJetBrainsMono.variable,
+          )}
+        >
+          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+            <main className="min-h-screen">
+              {children}
+            </main>
+          </Providers>
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html suppressHydrationWarning lang="en">
       <head>

@@ -367,21 +367,41 @@ const PrivacyPolicyScreen = () => {
                   <p className="text-white/50 text-sm mb-4">
                     by Vishal Anand — Design & Development Agency
                   </p>
-                  <div className="flex flex-wrap gap-4">
+
+                  <div className="text-white/70 text-sm mb-6 space-y-4">
+                    <div>
+                      <p className="font-semibold text-white">Registered Address:</p>
+                      <p className="text-white/60 leading-relaxed">
+                        H.no 48, block campus,
+                        <br />
+                        namkum, ranchi, jharkhand, 834010
+                      </p>
+                    </div>
+                    <div className="border-t border-white/5 pt-3">
+                      <p className="font-semibold text-white">Customer Support Address:</p>
+                      <p className="text-white/60 leading-relaxed">
+                        Flat No : 1201, ATS Pious Hideaways,
+                        <br />
+                        Sector 150, Noida, Gautam Budh Nagar,
+                        <br />
+                        Uttar Pradesh, 201312
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-x-6 gap-y-2 pt-4 border-t border-white/10">
                     <a
                       className="text-orange-400 hover:text-orange-300 text-sm font-medium transition-colors"
-                      href="mailto:privacy@uipirate.com"
+                      href="mailto:vishal@uipirate.com"
                     >
-                      privacy@uipirate.com
+                      vishal@uipirate.com
                     </a>
                     <span className="text-white/20">·</span>
                     <a
                       className="text-orange-400 hover:text-orange-300 text-sm font-medium transition-colors"
-                      href="https://uipirate.com"
-                      rel="noopener noreferrer"
-                      target="_blank"
+                      href="tel:+919708636151"
                     >
-                      uipirate.com
+                      +91 97086 36151
                     </a>
                   </div>
                 </div>
