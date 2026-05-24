@@ -365,38 +365,151 @@ export default function ContactPageClient() {
         </section>
       )}
 
-      {/* ── Bottom CTA strip ─────────────────────────────────────────── */}
-      <section className="container mx-auto px-8 max-md:px-4 py-16 max-md:py-12 text-center">
-        <motion.p
-          className="text-gray-400 text-sm mb-3"
-          initial="hidden"
-          variants={fadeUp}
-          viewport={{ once: true }}
-          whileInView="show"
-        >
-          Prefer email?
-        </motion.p>
-        <motion.a
-          className="text-2xl max-md:text-xl font-bold text-gray-900 hover:text-[#FF5B04] transition-colors"
-          custom={1}
-          href="mailto:vishal@uipirate.com"
-          initial="hidden"
-          variants={fadeUp}
-          viewport={{ once: true }}
-          whileInView="show"
-        >
-          vishal@uipirate.com
-        </motion.a>
-        <motion.p
-          className="text-xs text-gray-400 mt-4"
-          custom={2}
-          initial="hidden"
-          variants={fadeUp}
-          viewport={{ once: true }}
-          whileInView="show"
-        >
-          Serving clients in USA · UK · Singapore · India · Australia
-        </motion.p>
+      {/* ── Registered Company Address & Support Details ────────────────── */}
+      <section className="container mx-auto px-8 max-md:px-4 py-16 max-md:py-12">
+        <div className="max-w-5xl mx-auto bg-gray-50 border border-gray-100 rounded-[32px] p-12 max-md:p-6 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/5 blur-[80px] rounded-full pointer-events-none" />
+
+          <div className="grid grid-cols-3 max-lg:grid-cols-1 gap-8 relative z-10 divide-x divide-gray-100 max-lg:divide-x-0 max-lg:divide-y max-lg:divide-gray-100 max-lg:gap-6">
+            <div className="flex flex-col gap-4 pr-6 max-lg:pr-0 max-lg:pb-6">
+              <div className="flex items-col gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400">
+                      Registered Office
+                    </h4>
+                    <p className="text-sm font-bold text-gray-900">
+                      UI Pirate by Vishal Anand
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                H.no 48, block campus,
+                <br />
+                namkum, ranchi, jharkhand, 834010
+              </p>
+
+              <div className="border-t border-gray-100 pt-4 mt-2">
+                <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400 mb-1">
+                  Customer Support Address
+                </h4>
+                <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                  Flat No : 1201, ATS Pious Hideaways,
+                  <br />
+                  Sector 150, Noida, Gautam Budh Nagar,
+                  <br />
+                  Uttar Pradesh, 201312
+                </p>
+              </div>
+            </div>
+
+            {/* Column 2: Direct Support */}
+            <div className="flex flex-col gap-4 px-6 max-lg:px-0 max-lg:py-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400">
+                    Direct Support
+                  </h4>
+                  <p className="text-sm font-bold text-gray-900">
+                    Get in Touch
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <a
+                  className="text-sm font-bold text-gray-800 hover:text-[#FF5B04] transition-colors flex items-center gap-2 group"
+                  href="tel:+919708636151"
+                >
+                  <span>+91 97086 36151</span>
+                  <span className="text-xs font-normal text-gray-400 group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </a>
+                <a
+                  className="text-sm font-bold text-gray-800 hover:text-[#FF5B04] transition-colors flex items-center gap-2 group"
+                  href="mailto:vishal@uipirate.com"
+                >
+                  <span>vishal@uipirate.com</span>
+                  <span className="text-xs font-normal text-gray-400 group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            {/* Column 3: Global Coverage & Hours */}
+            <div className="flex flex-col gap-4 pl-6 max-lg:pl-0 max-lg:pt-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400">
+                    Working Hours
+                  </h4>
+                  <p className="text-sm font-bold text-gray-900">
+                    Availability
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-sm text-gray-600 font-medium">
+                <p>Monday – Friday</p>
+                <p className="text-gray-900 font-bold">
+                  09:00 AM – 10:00 PM IST
+                </p>
+                <p className="text-xs text-gray-400 mt-2">
+                  Serving clients in USA · UK · Singapore · India · Australia
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );

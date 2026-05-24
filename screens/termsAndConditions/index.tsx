@@ -93,8 +93,29 @@ const termsSections = [
       "These Terms shall be governed and construed in accordance with applicable laws, without regard to its conflict of law provisions. Any disputes arising under these terms shall be resolved through mutual negotiation, and if unsuccessful, through appropriate legal proceedings.",
   },
   {
+    id: "refund-policy",
+    title: "11. Refund Policy",
+    content:
+      "We strive to deliver the highest quality UI/UX design and development services. Because our services are highly customized, labor-intensive, and digital in nature, refunds are handled under the following strict terms:",
+    bullets: [
+      "For subscription-based or prepaid monthly design sprint plans, you may request a refund for any sprint or period that has not yet commenced.",
+      "Once design work, scoping, or research has started on a design sprint, phase, or deliverable, the payments made for that active period are fully non-refundable.",
+      "If a project is cancelled or terminated mid-milestone, billing will be prorated based on the hours and work completed up to the date of cancellation."
+    ],
+  },
+  {
+    id: "cancellation-policy",
+    title: "12. Cancellation Policy",
+    content:
+      "You can cancel your subscription or active project contract at any time in accordance with the following terms:",
+    bullets: [
+      "For recurring design subscriptions, you can cancel your subscription through your client portal or by notifying your account manager in writing at least 7 days before the next billing cycle.",
+      "For fixed-scope projects, either party may terminate the engagement with a written notice of at least 14 days. Upon cancellation, you will be billed only for the work completed and milestones achieved up to the termination date. All completed and paid-for design assets will be transferred to you."
+    ],
+  },
+  {
     id: "changes",
-    title: "11. Changes to Terms",
+    title: "13. Changes to Terms",
     content:
       'We reserve the right to modify or replace these Terms at any time at our sole discretion. We will provide reasonable notice of any significant changes by updating the "Last Updated" date. Your continued use of the website after any changes constitutes your acceptance of the new Terms.',
   },
@@ -282,7 +303,7 @@ const TermsAndConditionsScreen = () => {
                 viewport={{ once: true }}
               >
                 <h2 className="text-2xl max-md:text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-100">
-                  12. Contact Us
+                  14. Contact Us
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   If you have any questions about these Terms and Conditions,
@@ -294,21 +315,41 @@ const TermsAndConditionsScreen = () => {
                   <p className="text-white/50 text-sm mb-4">
                     by Vishal Anand — Design & Development Agency
                   </p>
-                  <div className="flex flex-wrap gap-4">
+
+                  <div className="text-white/70 text-sm mb-6 space-y-4">
+                    <div>
+                      <p className="font-semibold text-white">Registered Address:</p>
+                      <p className="text-white/60 leading-relaxed">
+                        H.no 48, block campus,
+                        <br />
+                        namkum, ranchi, jharkhand, 834010
+                      </p>
+                    </div>
+                    <div className="border-t border-white/5 pt-3">
+                      <p className="font-semibold text-white">Customer Support Address:</p>
+                      <p className="text-white/60 leading-relaxed">
+                        Flat No : 1201, ATS Pious Hideaways,
+                        <br />
+                        Sector 150, Noida, Gautam Budh Nagar,
+                        <br />
+                        Uttar Pradesh, 201312
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-x-6 gap-y-2 pt-4 border-t border-white/10">
                     <a
                       className="text-orange-400 hover:text-orange-300 text-sm font-medium transition-colors"
-                      href="mailto:hello@uipirate.com"
+                      href="mailto:vishal@uipirate.com"
                     >
-                      hello@uipirate.com
+                      vishal@uipirate.com
                     </a>
                     <span className="text-white/20">·</span>
                     <a
                       className="text-orange-400 hover:text-orange-300 text-sm font-medium transition-colors"
-                      href="https://uipirate.com"
-                      rel="noopener noreferrer"
-                      target="_blank"
+                      href="tel:+919708636151"
                     >
-                      uipirate.com
+                      +91 97086 36151
                     </a>
                   </div>
                 </div>
