@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 
-interface BlogUpdateData {
+interface PostUpdateData {
   title?: string;
   slug?: string;
   content?: string;
@@ -51,12 +51,12 @@ export async function GET(
     const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
     // Try to find by ID first, then by slug, scoped strictly to tenant
-    let blog = await Blog.findOne({ _id: id, tenantId: tenantOid }).catch(() => null);
+    let blog = await Post.findOne({ _id: id, tenantId: tenantOid }).catch(() => null);
 
     if (!blog) {
       const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 
-      blog = await Blog.findOne({
+      blog = await Post.findOne({
         tenantId: tenantOid,
         slug: { $regex: new RegExp(`^${escapedId}$`, "i") },
       });
@@ -105,7 +105,7 @@ export async function PUT(
     await dbConnect();
 
     const { id } = params;
-    const body = (await request.json()) as BlogUpdateData;
+    const body = (await request.json()) as PostUpdateData;
     const {
       title,
       slug: customSlug,
@@ -120,7 +120,7 @@ export async function PUT(
     } = body;
 
     const putTenantOid = new mongoose.Types.ObjectId(user.tenantId);
-    const blog = await Blog.findOne({ _id: id, tenantId: putTenantOid });
+    const blog = await Post.findOne({ _id: id, tenantId: putTenantOid });
 
     if (!blog) {
       return NextResponse.json(
@@ -138,7 +138,7 @@ export async function PUT(
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/(^-|-$)/g, "");
 
-        const existingBlog = await Blog.findOne({
+        const existingBlog = await Post.findOne({
           tenantId: putTenantOid,
           slug: newSlug,
           _id: { $ne: id },
@@ -151,7 +151,7 @@ export async function PUT(
     }
 
     if (customSlug !== undefined && customSlug !== blog.slug) {
-      const existingBlog = await Blog.findOne({
+      const existingBlog = await Post.findOne({
         tenantId: putTenantOid,
         slug: customSlug,
         _id: { $ne: id },
@@ -225,7 +225,7 @@ export async function DELETE(
 
     const { id } = params;
     const deleteTenantOid = new mongoose.Types.ObjectId(user.tenantId);
-    const blog = await Blog.findOneAndDelete({ _id: id, tenantId: deleteTenantOid });
+    const blog = await Post.findOneAndDelete({ _id: id, tenantId: deleteTenantOid });
 
     if (!blog) {
       return NextResponse.json(

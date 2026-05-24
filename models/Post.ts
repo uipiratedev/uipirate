@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export interface IBlog extends Document {
+export interface IPost extends Document {
   /** References the Admin._id that owns this post — the tenant boundary */
   tenantId: mongoose.Types.ObjectId;
   title: string;
@@ -48,7 +48,7 @@ export interface IBlog extends Document {
   calculateReadTime(): void;
 }
 
-const BlogSchema: Schema = new Schema(
+const PostSchema: Schema = new Schema(
   {
     tenantId: {
       type: Schema.Types.ObjectId,
@@ -58,20 +58,19 @@ const BlogSchema: Schema = new Schema(
     },
     title: {
       type: String,
-      required: [true, "Please provide a title for this blog"],
+      required: [true, "Please provide a title for this post"],
       maxlength: [200, "Title cannot be more than 200 characters"],
       trim: true,
     },
     slug: {
       type: String,
-      required: [true, "Please provide a slug for this blog"],
-      // unique: true removed — uniqueness is now per-tenant via compound index below
+      required: [true, "Please provide a slug for this post"],
       lowercase: true,
       trim: true,
     },
     content: {
       type: String,
-      required: [true, "Please provide content for this blog"],
+      required: [true, "Please provide content for this post"],
     },
     excerpt: {
       type: String,
@@ -171,13 +170,13 @@ const BlogSchema: Schema = new Schema(
 );
 
 // Create indexes for better query performance
-BlogSchema.index({ tenantId: 1, published: 1, publishedAt: -1 });
+PostSchema.index({ tenantId: 1, published: 1, publishedAt: -1 });
 // Slug must be unique within a tenant, not globally
-BlogSchema.index({ tenantId: 1, slug: 1 }, { unique: true });
-BlogSchema.index({ tags: 1 });
+PostSchema.index({ tenantId: 1, slug: 1 }, { unique: true });
+PostSchema.index({ tags: 1 });
 
 // Pre-save middleware to set publishedAt when published status changes
-BlogSchema.pre("save", function (next) {
+PostSchema.pre("save", function (next) {
   if (this.isModified("published") && this.published && !this.publishedAt) {
     this.publishedAt = new Date();
   }
@@ -185,7 +184,7 @@ BlogSchema.pre("save", function (next) {
 });
 
 // Method to calculate read time based on content
-BlogSchema.methods.calculateReadTime = function () {
+PostSchema.methods.calculateReadTime = function () {
   const wordsPerMinute = 200;
   const textContent = this.content.replace(/<[^>]*>/g, ""); // Strip HTML tags
   const wordCount = textContent.split(/\s+/).length;
@@ -193,13 +192,13 @@ BlogSchema.methods.calculateReadTime = function () {
   this.readTime = Math.ceil(wordCount / wordsPerMinute);
 };
 
-// Static method to find published blogs
-BlogSchema.statics.findPublished = function () {
+// Static method to find published posts
+PostSchema.statics.findPublished = function () {
   return this.find({ published: true }).sort({ publishedAt: -1 });
 };
 
 // Prevent model recompilation in development
-const Blog: Model<IBlog> =
-  (mongoose.models.Blog as any) || mongoose.model<IBlog>("Blog", BlogSchema);
+const Post: Model<IPost> =
+  (mongoose.models.Post as any) || mongoose.model<IPost>("Post", PostSchema);
 
-export default Blog;
+export default Post;

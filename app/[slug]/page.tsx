@@ -6,7 +6,7 @@ import { headers } from "next/headers";
 
 import BlogsDetails from "@/screens/blogsDetails";
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 import { trackView } from "@/lib/trackView";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     await dbConnect();
     const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
-    const blog = await Blog.findOne({
+    const blog = await Post.findOne({
       slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
       published: true,
     }).lean();
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export async function generateStaticParams() {
   try {
     await dbConnect();
-    const blogs = await Blog.find({ published: true }, { slug: 1 }).lean();
+    const blogs = await Post.find({ published: true }, { slug: 1 }).lean();
 
     return blogs.map((blog: any) => ({ slug: blog.slug }));
   } catch (error) {
@@ -99,7 +99,7 @@ export default async function DynamicBlogPage({ params }: Props) {
     await dbConnect();
 
     const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
-    const blog = await Blog.findOne({
+    const blog = await Post.findOne({
       slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
       published: true,
     }).lean();

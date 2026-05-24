@@ -81,9 +81,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           await mongoose.connect(mongodbUri);
         }
 
-        // Use the Blog model
-        const { default: Blog } = await import("@/models/Blog");
-        const blogs = await Blog.find(
+        // Use the Post model
+        const { default: Post } = await import("@/models/Post");
+        const blogs = await Post.find(
           { published: true },
           { slug: 1, updatedAt: 1 },
         ).lean();

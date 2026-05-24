@@ -147,7 +147,7 @@ A second user (`Admin._id: "def456"`) can have a blog with the same slug `"my-po
 | File | Change |
 |---|---|
 | `models/pirateCOS/Admin.ts` | Added `plan`, `stripeCustomerId`, `trialEndsAt`, `usageThisMonth` — billing identity lives on the Admin/Tenant document |
-| `models/Blog.ts` | Added `tenantId`; removed global `unique: true` on `slug`; added compound `{ tenantId, slug }` unique index |
+| `models/Post.ts` | Added `tenantId`; removed global `unique: true` on `slug`; added compound `{ tenantId, slug }` unique index |
 | `models/pirateCOS/AIConfig.ts` | Added `tenantId`; removed singleton pattern — now one doc per tenant |
 | `lib/pirateCOS/auth.ts` | `User` interface now includes `tenantId` and `plan`; `getCurrentUser()` returns both |
 | `lib/pirateCOS/ai-config.ts` | `getDecryptedKeys(tenantId)` scopes the DB lookup per tenant |
@@ -287,12 +287,12 @@ Lookup uses timing-safe comparison of SHA-256 hashes (`crypto.timingSafeEqual`).
 
 ---
 
-### 2.3 Extend `Blog` Model
+### 2.3 Extend `Post` Model
 
-**File:** `models/Blog.ts` — append to `IBlog` interface and `BlogSchema`
+**File:** `models/Post.ts` — append to `IPost` interface and `PostSchema`
 
 ```typescript
-// Add to IBlog interface:
+// Add to IPost interface:
 distributionRecords?: Array<{
   platform: string;        // "wordpress" | "medium" | "ghost" | "buffer"
   externalId: string;      // Platform's post ID — used for future updates/deletes
@@ -908,7 +908,7 @@ AI_ENCRYPTION_KEY=<64-char-hex>
 
 | Milestone | Deliverables | Touches | Status | Notes |
 |---|---|---|---|---|
-| **1.1 — Foundation** | `models/pirateCOS/Integration.ts`, `models/pirateCOS/ApiKey.ts`, extend `models/Blog.ts`, `app/api/pirateCOS/integrations/` routes | Models + API only | ✅ **Complete** | Compound `{ tenantId, platform }` unique index; `distributionRecords` added to Blog |
+| **1.1 — Foundation** | `models/pirateCOS/Integration.ts`, `models/pirateCOS/ApiKey.ts`, extend `models/Post.ts`, `app/api/pirateCOS/integrations/` routes | Models + API only | ✅ **Complete** | Compound `{ tenantId, platform }` unique index; `distributionRecords` added to Blog |
 | **1.2 — Distribution Engine** | All four platform adapters, `html-to-markdown.ts`, `content-preflight.ts`, `app/api/pirateCOS/distribution/publish/route.ts` | Backend only | ✅ **Complete** | HTML→Markdown uses custom regex pipeline. Ghost and WordPress support `update()`; Medium and Buffer do not |
 | **1.3 — Editor UI** | `hooks/useSaveBlog.ts`, `components/pirateCOS/DistributionPanel.tsx`, 4-tab system in `create/page.tsx` | Editor pages + new hook | ✅ **Complete** | Hook uses `getEditorState` callback pattern; panel has extended prop set with AI action callbacks |
 | **1.4 — Settings UI + Public API** | `app/pirateCOS/(authed)/settings/integrations/page.tsx`, `AdminSidebar.tsx`, `/api/pirateCOS/v1/content/` routes, `lib/pirateCOS/api-key-auth.ts` | Settings + public API | ✅ **Complete** | Full API Key creation/revocation UI; SHA-256 timing-safe verification with `tenantId` returned |

@@ -1,4 +1,4 @@
-import { IBlog } from "@/models/Blog";
+import { IPost } from "@/models/Post";
 import { htmlToMarkdown } from "../transform/html-to-markdown";
 import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
@@ -27,14 +27,14 @@ export class MediumAdapter extends BaseAdapter {
     return data.data?.id;
   }
 
-  async publish(blog: IBlog, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
     try {
       let authorId = this.credentials.mediumAuthorId?.trim();
       if (!authorId) {
         authorId = await this.fetchAuthorId();
       }
 
-      const markdownContent = htmlToMarkdown(blog.content);
+      const markdownContent = htmlToMarkdown(post.content);
 
       const res = await fetch(`https://api.medium.com/v1/users/${authorId}/posts`, {
         method: "POST",
@@ -44,10 +44,10 @@ export class MediumAdapter extends BaseAdapter {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          title: blog.title,
+          title: post.title,
           contentFormat: "markdown",
-          content: `# ${blog.title}\n\n${markdownContent}`,
-          tags: blog.tags || [],
+          content: `# ${post.title}\n\n${markdownContent}`,
+          tags: post.tags || [],
           publishStatus: "public",
         }),
       });
@@ -77,7 +77,7 @@ export class MediumAdapter extends BaseAdapter {
     }
   }
 
-  async update(blog: IBlog, externalId: string): Promise<DistributionResult> {
+  async update(post: IPost, externalId: string): Promise<DistributionResult> {
     // Medium API does not officially support editing/updating posts programmatically after publication.
     // So we return a message indicating updates must be done directly.
     return {

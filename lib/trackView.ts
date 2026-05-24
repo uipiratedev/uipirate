@@ -3,7 +3,7 @@ import { createHash } from "crypto";
 import { ReadonlyHeaders } from "next/dist/server/web/spec-extension/adapters/headers";
 
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 import ViewLog from "@/models/ViewLog";
 
 // Known bot/crawler User-Agent patterns — these are never counted as views
@@ -63,7 +63,7 @@ function isBot(headers: ReadonlyHeaders): boolean {
 /**
  * Tracks a view for a blog post with full analytics breakdown.
  *
- * Increments one or more of these counters on the Blog document:
+ * Increments one or more of these counters on the Post document:
  *   - totalViews  — always incremented (every raw hit)
  *   - botViews    — incremented when User-Agent matches a known crawler
  *   - views       — incremented only for unique human visitors (new IP+slug in 24h)
@@ -89,7 +89,7 @@ export async function trackView(
     // ── Bot traffic ──────────────────────────────────────────────────────
     if (isBot(headers)) {
       // Count bot hits separately — never touch unique views
-      await Blog.findOneAndUpdate(
+      await Post.findOneAndUpdate(
         { slug: normalizedSlug },
         { $inc: { botViews: 1, totalViews: 1 } },
       );
@@ -110,14 +110,14 @@ export async function trackView(
       });
 
       // ✅ Unique visit — increment unique views + total
-      await Blog.findOneAndUpdate(
+      await Post.findOneAndUpdate(
         { slug: normalizedSlug },
         { $inc: { views: 1, totalViews: 1 } },
       );
     } catch (err: any) {
       if (err?.code === 11000) {
         // 🔁 Duplicate visit (same IP within 24h) — count separately
-        await Blog.findOneAndUpdate(
+        await Post.findOneAndUpdate(
           { slug: normalizedSlug },
           { $inc: { duplicateViews: 1, totalViews: 1 } },
         );

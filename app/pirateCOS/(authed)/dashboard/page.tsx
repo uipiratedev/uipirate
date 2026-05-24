@@ -4,7 +4,7 @@ import { Button } from "@heroui/button";
 
 import { getCurrentUser } from "@/lib/pirateCOS/auth";
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 import {
   IconBlogs,
   IconCheck,
@@ -22,13 +22,13 @@ export default async function AdminDashboardPage() {
 
   await dbConnect();
 
-  // Get blog statistics
-  const totalBlogs = await Blog.countDocuments();
-  const publishedBlogs = await Blog.countDocuments({ published: true });
-  const draftBlogs = await Blog.countDocuments({ published: false });
+  // Get post statistics
+  const totalBlogs = await Post.countDocuments();
+  const publishedBlogs = await Post.countDocuments({ published: true });
+  const draftBlogs = await Post.countDocuments({ published: false });
 
-  // Get recent blogs
-  const recentBlogs = await Blog.find()
+  // Get recent posts
+  const recentBlogs = await Post.find()
     .sort({ createdAt: -1 })
     .limit(5)
     .select(
@@ -37,7 +37,7 @@ export default async function AdminDashboardPage() {
     .lean();
 
   // Aggregate all view counters across all blog posts
-  const viewsResult = await Blog.aggregate([
+  const viewsResult = await Post.aggregate([
     {
       $group: {
         _id: null,

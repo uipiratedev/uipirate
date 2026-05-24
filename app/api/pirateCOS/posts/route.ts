@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 
-interface BlogQuery {
+interface PostQuery {
   tenantId?: mongoose.Types.ObjectId;
   published?: boolean;
   postType?: any;
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1", 10);
     const skip = (page - 1) * limit;
 
-    const query: BlogQuery = {
+    const query: PostQuery = {
       tenantId: new mongoose.Types.ObjectId(user.tenantId),
     };
 
@@ -53,14 +53,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const blogs = await Blog.find(query)
+    const blogs = await Post.find(query)
       .sort({ createdAt: -1, publishedAt: -1 })
       .limit(limit)
       .skip(skip)
       .select("-content")
       .lean();
 
-    const total = await Blog.countDocuments(query);
+    const total = await Post.countDocuments(query);
 
     return NextResponse.json({
       success: true,
@@ -123,13 +123,13 @@ export async function POST(request: NextRequest) {
 
     const postTenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
-    const existingBlog = await Blog.findOne({ tenantId: postTenantOid, slug }).lean();
+    const existingBlog = await Post.findOne({ tenantId: postTenantOid, slug }).lean();
 
     if (existingBlog && !providedSlug) {
       slug = `${slug}-${Date.now()}`;
     }
 
-    const blog = await Blog.create({
+    const blog = await Post.create({
       tenantId: postTenantOid,
       title,
       slug,

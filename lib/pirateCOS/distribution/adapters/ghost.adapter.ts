@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { IBlog } from "@/models/Blog";
+import { IPost } from "@/models/Post";
 import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
 export class GhostAdapter extends BaseAdapter {
@@ -34,16 +34,16 @@ export class GhostAdapter extends BaseAdapter {
     });
   }
 
-  async publish(blog: IBlog, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
     try {
       const token = this.getJWT();
 
-      const existingRecord = blog.distributionRecords?.find(
+      const existingRecord = post.distributionRecords?.find(
         (r) => r.platform === "ghost" && r.status === "success",
       );
 
       if (existingRecord?.externalId && options?.updateIfExists) {
-        return await this.update(blog, existingRecord.externalId);
+        return await this.update(post, existingRecord.externalId);
       }
 
       // Ghost allows HTML intake via ?source=html query parameter
@@ -56,11 +56,11 @@ export class GhostAdapter extends BaseAdapter {
         body: JSON.stringify({
           posts: [
             {
-              title: blog.title,
-              html: blog.content,
-              custom_excerpt: blog.excerpt || "",
+              title: post.title,
+              html: post.content,
+              custom_excerpt: post.excerpt || "",
               status: "published", // Publish immediately
-              tags: blog.tags || [],
+              tags: post.tags || [],
             },
           ],
         }),
@@ -72,15 +72,15 @@ export class GhostAdapter extends BaseAdapter {
         throw new Error(data.errors?.[0]?.message || `Ghost Error: ${res.statusText}`);
       }
 
-      const post = data.posts?.[0];
-      if (!post) {
+      const ghostPost = data.posts?.[0];
+      if (!ghostPost) {
         throw new Error("No post returned from Ghost Admin API");
       }
 
       return {
         platform: "ghost",
-        externalId: post.id,
-        url: post.url,
+        externalId: ghostPost.id,
+        url: ghostPost.url,
         status: "success",
         distributedAt: new Date(),
       };
@@ -96,7 +96,7 @@ export class GhostAdapter extends BaseAdapter {
     }
   }
 
-  async update(blog: IBlog, externalId: string): Promise<DistributionResult> {
+  async update(post: IPost, externalId: string): Promise<DistributionResult> {
     try {
       const token = this.getJWT();
 
@@ -128,11 +128,11 @@ export class GhostAdapter extends BaseAdapter {
         body: JSON.stringify({
           posts: [
             {
-              title: blog.title,
-              html: blog.content,
-              custom_excerpt: blog.excerpt || "",
+              title: post.title,
+              html: post.content,
+              custom_excerpt: post.excerpt || "",
               updated_at: existingPost.updated_at, // Send to prevent edit conflicts
-              tags: blog.tags || [],
+              tags: post.tags || [],
             },
           ],
         }),
@@ -144,12 +144,12 @@ export class GhostAdapter extends BaseAdapter {
         throw new Error(data.errors?.[0]?.message || `Ghost Error: ${res.statusText}`);
       }
 
-      const post = data.posts?.[0];
+      const ghostPost = data.posts?.[0];
 
       return {
         platform: "ghost",
-        externalId: post.id,
-        url: post.url,
+        externalId: ghostPost.id,
+        url: ghostPost.url,
         status: "success",
         distributedAt: new Date(),
       };

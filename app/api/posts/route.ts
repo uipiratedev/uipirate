@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 
 interface PostQuery {
   published: boolean;
@@ -38,14 +38,14 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const posts = await Blog.find(query)
+    const posts = await Post.find(query)
       .sort({ createdAt: -1, publishedAt: -1 })
       .limit(limit)
       .skip(skip)
       .select("-content") // Exclude full content for list view
       .lean();
 
-    const total = await Blog.countDocuments(query);
+    const total = await Post.countDocuments(query);
 
     return NextResponse.json({
       success: true,

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 import { verifyApiKey } from "@/lib/pirateCOS/api-key-auth";
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 
 export async function GET(req: NextRequest) {
   const auth = await verifyApiKey(req);
@@ -47,8 +47,8 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const total = await Blog.countDocuments(query);
-    const blogs = await Blog.find(query)
+    const total = await Post.countDocuments(query);
+    const blogs = await Post.find(query)
       .sort({ publishedAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
         .replace(/[^a-z0-9-]/g, "");
 
     // Uniqueness validation per tenant
-    const existing = await Blog.findOne({ tenantId: tenantOid, slug: resolvedSlug });
+    const existing = await Post.findOne({ tenantId: tenantOid, slug: resolvedSlug });
     if (existing) {
       return NextResponse.json(
         { success: false, error: `Slug "${resolvedSlug}" already exists for this tenant.` },
@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const blog = new Blog({
+    const blog = new Post({
       tenantId: tenantOid,
       title,
       content,

@@ -1,4 +1,4 @@
-import { IBlog } from "@/models/Blog";
+import { IPost } from "@/models/Post";
 import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
 export class WordPressAdapter extends BaseAdapter {
@@ -21,15 +21,15 @@ export class WordPressAdapter extends BaseAdapter {
     return `Basic ${credentialsBase64}`;
   }
 
-  async publish(blog: IBlog, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
     try {
       // If post already has a WordPress external ID and updateIfExists is true, we update instead of publishing new
-      const existingRecord = blog.distributionRecords?.find(
+      const existingRecord = post.distributionRecords?.find(
         (r) => r.platform === "wordpress" && r.status === "success",
       );
 
       if (existingRecord?.externalId && options?.updateIfExists) {
-        return await this.update(blog, existingRecord.externalId);
+        return await this.update(post, existingRecord.externalId);
       }
 
       const res = await fetch(this.getApiUrl("/posts"), {
@@ -39,9 +39,9 @@ export class WordPressAdapter extends BaseAdapter {
           Authorization: this.getAuthHeader(),
         },
         body: JSON.stringify({
-          title: blog.title,
-          content: blog.content,
-          excerpt: blog.excerpt || "",
+          title: post.title,
+          content: post.content,
+          excerpt: post.excerpt || "",
           status: "publish", // Publish immediately
         }),
       });
@@ -71,7 +71,7 @@ export class WordPressAdapter extends BaseAdapter {
     }
   }
 
-  async update(blog: IBlog, externalId: string): Promise<DistributionResult> {
+  async update(post: IPost, externalId: string): Promise<DistributionResult> {
     try {
       const res = await fetch(this.getApiUrl(`/posts/${externalId}`), {
         method: "POST", // WordPress updates posts via POST to /posts/:id or PUT
@@ -80,9 +80,9 @@ export class WordPressAdapter extends BaseAdapter {
           Authorization: this.getAuthHeader(),
         },
         body: JSON.stringify({
-          title: blog.title,
-          content: blog.content,
-          excerpt: blog.excerpt || "",
+          title: post.title,
+          content: post.content,
+          excerpt: post.excerpt || "",
           status: "publish",
         }),
       });

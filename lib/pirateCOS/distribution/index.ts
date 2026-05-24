@@ -1,5 +1,5 @@
 import { decrypt } from "@/lib/pirateCOS/encrypt";
-import { IBlog } from "@/models/Blog";
+import { IPost } from "@/models/Post";
 import Integration, { SupportedPlatform } from "@/models/pirateCOS/Integration";
 import { BufferAdapter } from "./adapters/buffer.adapter";
 import { GhostAdapter } from "./adapters/ghost.adapter";
@@ -15,14 +15,14 @@ const ADAPTER_MAP: Record<SupportedPlatform, any> = {
 };
 
 interface DispatchParams {
-  blog: IBlog;
+  post: IPost;
   platforms: SupportedPlatform[];
   options?: PublishOptions;
   tenantId: string;
 }
 
 export async function dispatch({
-  blog,
+  post,
   platforms,
   options,
   tenantId,
@@ -45,7 +45,7 @@ export async function dispatch({
       }
 
       const adapter = new AdapterClass(integration.credentials, decrypt);
-      return await adapter.publish(blog, options);
+      return await adapter.publish(post, options);
     } catch (err: any) {
       return {
         platform,

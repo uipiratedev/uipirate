@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 import { verifyApiKey } from "@/lib/pirateCOS/api-key-auth";
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 
 export async function GET(
   req: NextRequest,
@@ -37,7 +37,7 @@ export async function GET(
   const tenantOid = new mongoose.Types.ObjectId(auth.tenantId);
 
   try {
-    const blog = await Blog.findOne({
+    const blog = await Post.findOne({
       tenantId: tenantOid,
       slug: slug.toLowerCase().trim(),
       published: true,

@@ -1,4 +1,4 @@
-import { IBlog } from "@/models/Blog";
+import { IPost } from "@/models/Post";
 import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
 export class BufferAdapter extends BaseAdapter {
@@ -9,7 +9,7 @@ export class BufferAdapter extends BaseAdapter {
     return `Bearer ${token}`;
   }
 
-  async publish(blog: IBlog, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
     try {
       const profileIds = this.credentials.bufferProfileIds || [];
       if (profileIds.length === 0) {
@@ -17,7 +17,7 @@ export class BufferAdapter extends BaseAdapter {
       }
 
       // Build social text: Title + Excerpt
-      const text = `${blog.title}\n\n${blog.excerpt || ""}`.trim();
+      const text = `${post.title}\n\n${post.excerpt || ""}`.trim();
 
       const params = new URLSearchParams();
       params.append("text", text);
@@ -70,7 +70,7 @@ export class BufferAdapter extends BaseAdapter {
     }
   }
 
-  async update(blog: IBlog, externalId: string): Promise<DistributionResult> {
+  async update(post: IPost, externalId: string): Promise<DistributionResult> {
     // Buffer updates are social media postings; updates after publishing are usually not supported.
     return {
       platform: "buffer",

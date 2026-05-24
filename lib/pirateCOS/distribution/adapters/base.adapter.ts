@@ -1,4 +1,4 @@
-import { IBlog } from "@/models/Blog";
+import { IPost } from "@/models/Post";
 import { IPlatformCredentials, SupportedPlatform } from "@/models/pirateCOS/Integration";
 
 export interface DistributionResult {
@@ -21,6 +21,6 @@ export abstract class BaseAdapter {
     protected decrypt: (cipher: string) => string,
   ) {}
 
-  abstract publish(blog: IBlog, options?: PublishOptions): Promise<DistributionResult>;
-  abstract update(blog: IBlog, externalId: string): Promise<DistributionResult>;
+  abstract publish(post: IPost, options?: PublishOptions): Promise<DistributionResult>;
+  abstract update(post: IPost, externalId: string): Promise<DistributionResult>;
 }

@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { dispatch } from "@/lib/pirateCOS/distribution";
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 import { SupportedPlatform } from "@/models/pirateCOS/Integration";
 
 export async function POST(req: NextRequest) {
@@ -37,16 +37,16 @@ export async function POST(req: NextRequest) {
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
   // Scoped strictly to the tenant to guarantee tenant boundary
-  const blog = await Blog.findOne({ _id: blogId, tenantId: tenantOid });
+  const post = await Post.findOne({ _id: blogId, tenantId: tenantOid });
 
-  if (!blog) {
+  if (!post) {
     return NextResponse.json(
       { success: false, error: "Blog post not found" },
       { status: 404 },
     );
   }
 
-  if (!blog.published) {
+  if (!post.published) {
     return NextResponse.json(
       { success: false, error: "Please publish the blog locally before distributing." },
       { status: 400 },
@@ -55,25 +55,25 @@ export async function POST(req: NextRequest) {
 
   // Trigger concurrent distribution
   const results = await dispatch({
-    blog,
+    post,
     platforms: platforms as SupportedPlatform[],
     options,
     tenantId: user.tenantId,
   });
 
   // Upsert the results to the blog's distributionRecords
-  if (!blog.distributionRecords) {
-    blog.distributionRecords = [];
+  if (!post.distributionRecords) {
+    post.distributionRecords = [];
   }
 
   for (const result of results) {
-    const existingIndex = blog.distributionRecords.findIndex(
+    const existingIndex = post.distributionRecords.findIndex(
       (r) => r.platform === result.platform,
     );
 
     if (existingIndex > -1) {
       // Update existing record
-      blog.distributionRecords[existingIndex] = {
+      post.distributionRecords[existingIndex] = {
         platform: result.platform,
         externalId: result.externalId,
         url: result.url,
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
       };
     } else {
       // Append new record
-      blog.distributionRecords.push({
+      post.distributionRecords.push({
         platform: result.platform,
         externalId: result.externalId,
         url: result.url,
@@ -95,8 +95,8 @@ export async function POST(req: NextRequest) {
   }
 
   // Use markModified for arrays in Mongoose if needed
-  blog.markModified("distributionRecords");
-  await blog.save();
+  post.markModified("distributionRecords");
+  await post.save();
 
   return NextResponse.json({
     success: true,

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import dbConnect from "@/lib/mongodb";
-import Blog from "@/models/Blog";
+import Post from "@/models/Post";
 
 // GET /api/posts/[id] - Get a single published post by ID or slug (Public only)
 export async function GET(
@@ -14,12 +14,12 @@ export async function GET(
     const { id } = params;
 
     // Try to find by ID first, then by slug
-    let post = await Blog.findOne({ _id: id, published: true }).catch(() => null);
+    let post = await Post.findOne({ _id: id, published: true }).catch(() => null);
 
     if (!post) {
       const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 
-      post = await Blog.findOne({
+      post = await Post.findOne({
         slug: { $regex: new RegExp(`^${escapedId}$`, "i") },
         published: true,
       });
