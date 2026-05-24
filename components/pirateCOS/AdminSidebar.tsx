@@ -28,6 +28,7 @@ const PLAN_LABEL: Record<string, string> = {
   free: "Free",
   starter: "Starter",
   pro: "Pro",
+  enterprise: "Enterprise",
 };
 
 const AdminSidebar = () => {
@@ -257,6 +258,66 @@ const AdminSidebar = () => {
             );
           })()}
 
+          {/* Billing & Usage */}
+          {(() => {
+            const active = pathname === getHref("/settings/billing");
+
+            return (
+              <Link
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+                href={getHref("/settings/billing")}
+                style={{
+                  background: active ? "#FF5B04" : "transparent",
+                  color: active ? "#fff" : "rgba(255,255,255,0.5)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!active) {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(255,255,255,0.06)";
+                    (e.currentTarget as HTMLElement).style.color = "#fff";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!active) {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "transparent";
+                    (e.currentTarget as HTMLElement).style.color =
+                      "rgba(255,255,255,0.5)";
+                  }
+                }}
+              >
+                <svg
+                  className="flex-shrink-0"
+                  fill="none"
+                  height="16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.8"
+                  viewBox="0 0 24 24"
+                  width="16"
+                >
+                  <rect height="14" rx="2" ry="2" width="20" x="2" y="5" />
+                  <line x1="2" x2="22" y1="10" y2="10" />
+                </svg>
+                <span className="text-sm font-medium font-geist">
+                  Billing & Usage
+                </span>
+                {!active && (
+                  <span
+                    className="ml-auto text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded"
+                    style={{
+                      background: "rgba(255,91,4,0.15)",
+                      color: "#FF5B04",
+                    }}
+                  >
+                    $
+                  </span>
+                )}
+              </Link>
+            );
+          })()}
+
           {/* Plan badge */}
           {user && (
             <div className="flex items-center gap-3 px-3 py-2">
@@ -277,7 +338,7 @@ const AdminSidebar = () => {
               <span
                 className="flex-shrink-0 text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded uppercase tracking-wider"
                 style={
-                  user.plan === "pro"
+                  user.plan === "pro" || user.plan === "enterprise"
                     ? { background: "rgba(255,91,4,0.2)", color: "#FF5B04" }
                     : user.plan === "starter"
                       ? { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }

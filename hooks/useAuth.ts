@@ -10,7 +10,7 @@ interface User {
   role: string;
   /** The tenant boundary — equals the Admin._id string */
   tenantId: string;
-  plan: "free" | "starter" | "pro";
+  plan: "free" | "starter" | "pro" | "enterprise";
 }
 
 export function useAuth(requireAuth: boolean = false) {

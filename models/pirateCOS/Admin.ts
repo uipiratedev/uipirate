@@ -8,16 +8,35 @@ export interface IAdmin extends Document {
   role: "admin" | "super-admin";
   isActive: boolean;
   /** Subscription tier — used to gate features and API usage */
-  plan: "free" | "starter" | "pro";
+  plan: "free" | "starter" | "pro" | "enterprise";
   /** Stripe customer ID for billing management */
   stripeCustomerId?: string;
-  /** When a free trial expires; null means no active trial */
-  trialEndsAt?: Date;
-  /** Rolling monthly usage counters — reset by a cron job or Stripe webhook */
+  /** Stripe subscription ID */
+  stripeSubscriptionId?: string;
+  /** Stripe subscription status */
+  subscriptionStatus?: "active" | "trialing" | "past_due" | "canceled";
+  /** End of the current billing cycle */
+  currentPeriodEnd?: Date;
+  /** Credits remaining for shared AI pool generations and publishing */
+  creditsRemaining: number;
+  /** Rolling monthly usage counters — reset by Stripe webhook or cron */
   usageThisMonth: {
     aiRequests: number;
     distributions: number;
   };
+  /** BYOK (Bring Your Own Key) Configuration Toggles */
+  byokEnabled: {
+    openai: boolean;
+    gemini: boolean;
+    mistral: boolean;
+    anthropic: boolean;
+  };
+  /** Trial tracking counters */
+  trialStartedAt?: Date;
+  trialEndsAt?: Date;
+  convertedFromFreeToPaidAt?: Date;
+  /** Lifetime value aggregated from invoice payments */
+  lifetimeValue: number;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -58,20 +77,55 @@ const AdminSchema: Schema = new Schema(
     },
     plan: {
       type: String,
-      enum: ["free", "starter", "pro"],
+      enum: ["free", "starter", "pro", "enterprise"],
       default: "free",
     },
     stripeCustomerId: {
       type: String,
       default: null,
     },
-    trialEndsAt: {
+    stripeSubscriptionId: {
+      type: String,
+      default: null,
+    },
+    subscriptionStatus: {
+      type: String,
+      enum: ["active", "trialing", "past_due", "canceled", null],
+      default: null,
+    },
+    currentPeriodEnd: {
       type: Date,
       default: null,
+    },
+    creditsRemaining: {
+      type: Number,
+      default: 20.0, // Give new/free accounts 20 free credits initially
     },
     usageThisMonth: {
       aiRequests:    { type: Number, default: 0 },
       distributions: { type: Number, default: 0 },
+    },
+    byokEnabled: {
+      openai:    { type: Boolean, default: false },
+      gemini:    { type: Boolean, default: false },
+      mistral:   { type: Boolean, default: false },
+      anthropic: { type: Boolean, default: false },
+    },
+    trialStartedAt: {
+      type: Date,
+      default: null,
+    },
+    trialEndsAt: {
+      type: Date,
+      default: null,
+    },
+    convertedFromFreeToPaidAt: {
+      type: Date,
+      default: null,
+    },
+    lifetimeValue: {
+      type: Number,
+      default: 0,
     },
   },
   {

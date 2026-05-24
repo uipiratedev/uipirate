@@ -5,7 +5,9 @@ import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { dispatch } from "@/lib/pirateCOS/distribution";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
+import Admin from "@/models/pirateCOS/Admin";
 import { SupportedPlatform } from "@/models/pirateCOS/Integration";
+import { deductCredits, CreditLimitError } from "@/lib/usage-guard";
 
 export async function POST(req: NextRequest) {
   const user = await verifyAuth();
@@ -51,6 +53,43 @@ export async function POST(req: NextRequest) {
       { success: false, error: "Please publish the blog locally before distributing." },
       { status: 400 },
     );
+  }
+
+  // --- ENFORCE CREDIT LIMITS FOR outbound PUBLISHING ---
+  const admin = await Admin.findById(user.tenantId);
+  const costPerPlatform = 1.0;
+  const totalCost = platforms.length * costPerPlatform;
+
+  if (admin && admin.creditsRemaining < totalCost && admin.plan === "free") {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Insufficient credits. You need ${totalCost.toFixed(1)} credits to publish to ${platforms.length} channels, but you have ${admin.creditsRemaining.toFixed(1)}.`,
+        upgradeUrl: `/pirateCOS/settings/billing?reason=insufficient_credits&cost=${totalCost}`,
+        limitsReached: true,
+      },
+      { status: 402 }, // 402 Payment Required
+    );
+  }
+
+  // Run credit deductions per channel
+  for (const platform of platforms) {
+    try {
+      await deductCredits(user.tenantId, "publish");
+    } catch (guardErr: any) {
+      if (guardErr instanceof CreditLimitError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: guardErr.message,
+            upgradeUrl: guardErr.upgradeUrl,
+            limitsReached: true,
+          },
+          { status: 402 },
+        );
+      }
+      throw guardErr;
+    }
   }
 
   // Trigger concurrent distribution

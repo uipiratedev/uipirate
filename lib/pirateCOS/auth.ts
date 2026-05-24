@@ -13,7 +13,7 @@ interface JWTPayload {
   email: string;
   role: string;
   tenantId: string;
-  plan: "free" | "starter" | "pro";
+  plan: "free" | "starter" | "pro" | "enterprise";
 }
 
 interface User {
@@ -23,7 +23,7 @@ interface User {
   role: string;
   /** The tenant boundary — equals the Admin._id string */
   tenantId: string;
-  plan: "free" | "starter" | "pro";
+  plan: "free" | "starter" | "pro" | "enterprise";
 }
 
 /**

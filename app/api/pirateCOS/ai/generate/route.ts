@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { getDecryptedKeys } from "@/lib/pirateCOS/ai-config";
+import { deductCredits, CreditLimitError } from "@/lib/usage-guard";
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,7 +39,7 @@ export async function POST(request: NextRequest) {
     const mistralApiKey = envMistral || dbKeys.mistral;
 
     // Determine engine: prefer the requested one, fall back to whatever has a key
-    let selectedEngine =
+    let selectedEngine: "openai" | "gemini" | "mistral" | "puter" =
       engine ||
       (openaiApiKey
         ? "openai"
@@ -93,6 +94,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // --- ENFORCE CREDIT limits BEFORE EXECUTION ---
+    let actionType: "blog" | "seo" | "enhance" = "enhance";
+    if (action === "write") {
+      actionType = "blog";
+    } else if (action === "seo-analysis") {
+      actionType = "seo";
+    }
+
+    try {
+      await deductCredits(
+        user.tenantId,
+        actionType,
+        selectedEngine !== "puter" ? selectedEngine : undefined,
+      );
+    } catch (guardErr: any) {
+      if (guardErr instanceof CreditLimitError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: guardErr.message,
+            upgradeUrl: guardErr.upgradeUrl,
+            limitsReached: true,
+          },
+          { status: 402 }, // 402 Payment Required
+        );
+      }
+      throw guardErr;
+    }
+
     let systemInstructions = "";
     if (action === "excerpt" || action === "metaDescription") {
       systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following post. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${content || title}`;
@@ -130,14 +160,14 @@ export async function POST(request: NextRequest) {
       Deliver ONLY the raw JSON object, no backticks, no markdown formatting.`;
     } else if (action === "write") {
       let contextInfo = "";
-
+ 
       if (selectedText) {
         contextInfo += `\n\nTARGET TEXT FOR EDITING (Rewrite, expand, improve, or format this selected text directly based on the user prompt): "${selectedText}"`;
       }
       if (surroundingContext && surroundingContext.trim()) {
         contextInfo += `\n\nSURROUNDING BLOG CONTEXT (Ensure your generated section matches this writing style, tone, and flow perfectly, without repeating existing paragraphs): \n... ${surroundingContext.trim()}`;
       }
-
+ 
       systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following prompt: "${prompt}". The context of the post is: title: "${title || ""}", category: "${postType || "blog"}".${contextInfo}
 Write a comprehensive, fully detailed, and substantial piece of content. Expand on the concepts deeply with rich explanations, multiple robust and fully-fleshed out paragraphs, structured subheadings, and thorough insights (aim for at least 300 to 600 words or a complete, deep-dive section, unless the prompt explicitly requests a short summary or brief answer). Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
     } else {
