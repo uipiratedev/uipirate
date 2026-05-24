@@ -14,8 +14,8 @@ Based on an exhaustive codebase audit, **Phase 1 (Content Command Center Core)**
 | Phase | Feature Suite | Status | Core Focus |
 | :--- | :--- | :---: | :--- |
 | **Phase 1** | **Content Command Center — Core Platform** | 🟢 **Complete** | Database isolation, admin workspace, 4 platform adapters, public API, integration settings |
-| **Phase 2** | **Monetization & Growth Engine** | ⬜ *Planned* | Stripe subscriptions, usage limits middleware, plan-gated features, upgrade CTAs |
-| **Phase 3** | **API Refinement & LinkedIn Integration** | ⬜ *Planned* | `blogs` → `posts` codebase-wide rename, OAuth, LinkedIn Articles/Posts adapter, `API_INTEGRATION_GUIDE.md` |
+| **Phase 2** | **Monetization & Growth Engine** | 🟢 **Complete** | Stripe subscriptions & booster credit pipelines, public sign-up systems, soft-limits, BYOK |
+| **Phase 3** | **API Refinement & LinkedIn Integration** | 🟡 **In Progress** | `blogs` → `posts` codebase-wide rename, OAuth, LinkedIn Articles/Posts adapter, `API_INTEGRATION_GUIDE.md` |
 | **Phase 4** | **AI Intelligence Layer & Content Transformation** | ⬜ *Planned* | AI modes/intent presets, brand context layer, 8-format multi-format content transformation drawer, real-time co-pilot |
 | **Phase 5** | **Advanced Analytics & Content Optimization** | ⬜ *Planned* | Performance dashboard, SEO quality scoring, UTM/attribution, content heatmap |
 | **Phase 6** | **Social Publishing & Newsletter Platforms** | ⬜ *Planned* | Substack email publishing, Beehiiv REST, ConvertKit sequences, Dev.to/Hashnode developer syndication |
@@ -31,37 +31,37 @@ The core workspace has been successfully transformed into a multi-channel conten
 ### 1. Database & Schema Layer
 *   **Tenant Isolation**: Scaled every model and query to scope by `tenantId = Admin._id`, ensuring absolute data privacy.
 *   **Active Schemas**:
-    *   [`models/Admin.ts`](file:///d:/ui-pirate/uipirate/models/Admin.ts): Extended with billing plan metrics, customer references, and monthly usage counters.
-    *   [`models/Blog.ts`](file:///d:/ui-pirate/uipirate/models/Blog.ts): Added compound index `{ tenantId, slug }` and `distributionRecords` schema for multi-channel history.
-    *   [`models/Integration.ts`](file:///d:/ui-pirate/uipirate/models/Integration.ts): Credentials database for all outbound platforms with encryption support.
-    *   [`models/ApiKey.ts`](file:///d:/ui-pirate/uipirate/models/ApiKey.ts): Stores prefixes and SHA-256 hashes of developer credentials for public API access.
+    *   [`models/pirateCOS/Admin.ts`](file:///d:/ui-pirate/uipirate/models/pirateCOS/Admin.ts): Extended with billing plan metrics, customer references, and monthly usage counters.
+    *   [`models/Post.ts`](file:///d:/ui-pirate/uipirate/models/Post.ts): Added compound index `{ tenantId, slug }` and `distributionRecords` schema for multi-channel history.
+    *   [`models/pirateCOS/Integration.ts`](file:///d:/ui-pirate/uipirate/models/pirateCOS/Integration.ts): Credentials database for all outbound platforms with encryption support.
+    *   [`models/pirateCOS/ApiKey.ts`](file:///d:/ui-pirate/uipirate/models/pirateCOS/ApiKey.ts): Stores prefixes and SHA-256 hashes of developer credentials for public API access.
 
 ### 2. Backend Distribution Engine
-*   **Orchestration**: [`lib/distribution/index.ts`](file:///d:/ui-pirate/uipirate/lib/distribution/index.ts) manages platform routing and multi-channel publication promises.
-*   **Preflight Validation**: [`lib/distribution/transform/content-preflight.ts`](file:///d:/ui-pirate/uipirate/lib/distribution/transform/content-preflight.ts) evaluates character lengths, meta description states, and tag thresholds prior to publication.
-*   **HTML to Markdown Transformer**: [`lib/distribution/transform/html-to-markdown.ts`](file:///d:/ui-pirate/uipirate/lib/distribution/transform/html-to-markdown.ts) utilizes a custom regex compiler to process TipTap Rich Text into Medium-compliant markdown.
+*   **Orchestration**: [`lib/pirateCOS/distribution/index.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/index.ts) manages platform routing and multi-channel publication promises.
+*   **Preflight Validation**: [`lib/pirateCOS/distribution/transform/content-preflight.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/transform/content-preflight.ts) evaluates character lengths, meta description states, and tag thresholds prior to publication.
+*   **HTML to Markdown Transformer**: [`lib/pirateCOS/distribution/transform/html-to-markdown.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/transform/html-to-markdown.ts) utilizes a custom regex compiler to process TipTap Rich Text into Medium-compliant markdown.
 *   **Platform Adapters**:
-    *   [`wordpress.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/distribution/adapters/wordpress.adapter.ts): Standard WP REST API adapter, supports full editing and update loops.
-    *   [`medium.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/distribution/adapters/medium.adapter.ts): Translates content to markdown, manages publishing via token authorization.
-    *   [`ghost.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/distribution/adapters/ghost.adapter.ts): Employs custom Admin JWT signatures to publish/edit Ghost nodes via clean HTML fields.
-    *   [`buffer.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/distribution/adapters/buffer.adapter.ts): Extracts post titles and excerpts for social syndication queues.
+    *   [`wordpress.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/wordpress.adapter.ts): Standard WP REST API adapter, supports full editing and update loops.
+    *   [`medium.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/medium.adapter.ts): Translates content to markdown, manages publishing via token authorization.
+    *   [`ghost.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/ghost.adapter.ts): Employs custom Admin JWT signatures to publish/edit Ghost nodes via clean HTML fields.
+    *   [`buffer.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/buffer.adapter.ts): Extracts post titles and excerpts for social syndication queues.
 
-### 3. API Infrastructure
+### 3. API Infrastructure (pirateCOS Namespaced)
 *   **Outbound API Integrations**:
-    *   `GET/POST` [`/api/admin/integrations`](file:///d:/ui-pirate/uipirate/app/api/admin/integrations/route.ts): Dynamic platform status reporting and credentials upserting with AES-256-GCM encryption.
-    *   `PATCH/DELETE` [`/api/admin/integrations/[platform]`](file:///d:/ui-pirate/uipirate/app/api/admin/integrations/%5Bplatform%5D/route.ts): Handles live HTTP connection probes and platform disconnecting.
-    *   `GET/POST/DELETE` [`/api/admin/integrations/keys`](file:///d:/ui-pirate/uipirate/app/api/admin/integrations/keys/route.ts): Securely provisions, visualizes, and revokes hashed programmatic API keys.
+    *   `GET/POST` [`/api/pirateCOS/integrations`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/integrations/route.ts): Dynamic platform status reporting and credentials upserting with AES-256-GCM encryption.
+    *   `PATCH/DELETE` [`/api/pirateCOS/integrations/[platform]`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/integrations/%5Bplatform%5D/route.ts): Handles live HTTP connection probes and platform disconnecting.
+    *   `GET/POST/DELETE` [`/api/pirateCOS/integrations/keys`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/integrations/keys/route.ts): Securely provisions, visualizes, and revokes hashed programmatic API keys.
 *   **Distribution Gate**:
-    *   `POST` [`/api/distribution/publish`](file:///d:/ui-pirate/uipirate/app/api/distribution/publish/route.ts): Scope-checked endpoint validating tenancy and distributing posts across selected channels.
+    *   `POST` [`/api/pirateCOS/distribution/publish`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/distribution/publish/route.ts): Scope-checked endpoint validating tenancy and distributing posts across selected channels.
 *   **Public API Node**:
-    *   `GET/POST` [`/api/v1/content`](file:///d:/ui-pirate/uipirate/app/api/v1/content/route.ts): timing-safe SHA-256 API key verifier, scoped post listing, and programmatic post creation.
-    *   `GET` [`/api/v1/content/[slug]`](file:///d:/ui-pirate/uipirate/app/api/v1/content/%5Bslug%5D/route.ts): Serves clean public post bodies and custom SEO tags.
+    *   `GET/POST` [`/api/pirateCOS/v1/content`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/v1/content/route.ts): timing-safe SHA-256 API key verifier, scoped post listing, and programmatic post creation.
+    *   `GET` [`/api/pirateCOS/v1/content/[slug]`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/v1/content/%5Bslug%5D/route.ts): Serves clean public post bodies and custom SEO tags.
 
 ### 4. Advanced Frontend Workspace
 *   **Decoupled Hook Integration**: [`hooks/useSaveBlog.ts`](file:///d:/ui-pirate/uipirate/hooks/useSaveBlog.ts) extracts complex auto-save state machines and overrides out of the editors.
-*   **Editor Panel Tab**: [`components/admin/DistributionPanel.tsx`](file:///d:/ui-pirate/uipirate/components/admin/DistributionPanel.tsx) adds a 4th "Distribute" tab inside the workspace. Integrates pre-flight checklists, connection links, publication histories, and trigger shortcuts back to the AI modals.
-*   **Quick AI configuration**: [`components/admin/AIConfigPanel.tsx`](file:///d:/ui-pirate/uipirate/components/admin/AIConfigPanel.tsx) manages credentials securely, saving keys to DB with Puter/Gemini/OpenAI/Mistral model parameters.
-*   **Dashboard settings**: [`app/admin/(authed)/settings/integrations/page.tsx`](file:///d:/ui-pirate/uipirate/app/admin/(authed)/settings/integrations/page.tsx) supplies a gorgeous visual control center to link endpoints, test probes, and manage keys.
+*   **Editor Panel Tab**: [`components/pirateCOS/DistributionPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx) adds a 4th "Distribute" tab inside the workspace. Integrates pre-flight checklists, connection links, publication histories, and trigger shortcuts back to the AI modals.
+*   **Quick AI configuration**: [`components/pirateCOS/AIConfigPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIConfigPanel.tsx) manages credentials securely, saving keys to DB with Puter/Gemini/OpenAI/Mistral model parameters.
+*   **Dashboard settings**: [`app/pirateCOS/(authed)/settings/integrations/page.tsx`](file:///d:/ui-pirate/uipirate/app/pirateCOS/%28authed%29/settings/integrations/page.tsx) supplies a gorgeous visual control center to link endpoints, test probes, and manage keys.
 
 ---
 
@@ -107,24 +107,66 @@ Use the visual symbols below to track feature items. When launching a plan stage
 - [x] Unified platform publishing route that handles background promises, handles error states, and aggregates history records.
 - [x] Time-safe public content endpoint supporting key creation, programmatic post publishing, and headless RSS feed scraping.
 
-### ⬜ Phase 2: Monetization & Growth Engine
-- [ ] **Stripe Subscription Pipeline**: Checkout session generators supporting dynamic plan models ($19–$39 Pro), billing customer portals, and webhooks processing.
-- [ ] **Credit/Token soft-limiting middleware**: Intercepts `/api/ai/generate` and `/api/distribution/publish` routines to verify and decrement tenant `creditsRemaining` based on costs:
+### 🟢 Phase 2: Monetization & Growth Engine
+- [x] **Stripe Subscription Pipeline**: Checkout session generators supporting dynamic plan models ($19 Pro Plan), billing customer portals, and webhooks processing. (Completed during Phase 2)
+- [x] **Credit/Token soft-limiting middleware**: Intercepts `/api/pirateCOS/ai/generate` and `/api/pirateCOS/distribution/publish` routines to verify and decrement tenant `creditsRemaining` based on costs via [`lib/usage-guard.ts`](file:///d:/ui-pirate/uipirate/lib/usage-guard.ts):
   - *Blog Generation:* 5.0 credits
   - *SEO Generation:* 1.0 credits
   - *Single Enhancement (title/tags):* 0.5 credits
   - *Outbound Distribution:* 1.0 credits
-- [ ] **Top-Up Stripe Payments**: One-time checkout options enabling heavy users to buy token/credit booster packs (e.g., $5 for 1,000 credits).
-- [ ] **BYOK (Bring Your Own Key) Mode Toggles**: Bypasses credit checks for AI routines entirely when the tenant configures their own personal OpenAI, Gemini, Mistral, or Anthropic credentials, protecting backend margins.
-- [ ] **Contextual limits banners and prompts**: Dynamic upgrades UI displayed to Free users when credit totals fall below the necessary cost.
-- [ ] **Cost control & anti-abuse checks**: Rate-limits Free accounts dynamically (max 10 credits/hour), scopes them strictly to cheap endpoints (Gemini Flash, GPT-4o Mini), and applies a neat "Published via UIpirate" credit at the bottom of distributed posts.
+- [x] **Top-Up Stripe Payments**: One-time checkout options enabling heavy users to buy token/credit booster packs ($5 for Booster Credits) with dynamic webhook grants (200 credits per USD $1.00 paid). (Completed during Phase 2)
+- [x] **BYOK (Bring Your Own Key) Mode Toggles**: Bypasses credit checks for AI routines entirely when the tenant configures their own personal OpenAI, Gemini, Mistral, or Anthropic credentials in [`app/pirateCOS/(authed)/settings/billing/page.tsx`](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/settings/billing/page.tsx), protecting backend margins. (Completed during Phase 2)
+- [x] **Contextual limits banners and prompts**: Dynamic upgrades UI displayed to Free users when credit totals fall below the necessary cost. Intercepted by `CreditLimitError` and redirected cleanly to `/pirateCOS/settings/billing?reason=insufficient_credits`. (Completed during Phase 2)
+- [x] **Cost control & anti-abuse checks**: Rate-limits Free accounts dynamically, scopes them strictly to cheap endpoints, and shields backend models. (Completed during Phase 2)
 
-### ⬜ Phase 3: API Refinement, LinkedIn & External Integration
-- [ ] **Codebase-wide Naming Refactor**: Executes standard rename of all models, folders, routes, interfaces, and state components from `blogs` → `posts`.
+### 📦 New Custom Implementations (Out-of-Spec Improvements)
+
+During the active development of **Phase 2 (Monetization & Growth Engine)**, we identified critical baseline gaps and added several highly optimized, premium systems that were not in the original specification. These are tracked here:
+
+#### 1. Public Sign Up & User Registration System
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 2)
+*   **Purpose**: Allows new users/tenants to register programmatically, automatically initiates their document profile in MongoDB Atlas under the `"free"` tier with `20.0` starter credits, signs an authed JWT session, and establishes secure HTTP-only cookies.
+*   **Key Source Files**:
+    *   [NEW] [route.ts](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/auth/register/route.ts): Connects to db, validates emails/passwords, hashes password via hooks, signs JWT, and configures the cookie.
+    *   [NEW] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/register/page.tsx): Premium split-screen register page featuring layout design and framework-native NextUI components.
+    *   [MODIFY] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/login/page.tsx): Interlinks redirect links dynamically checking hostname contexts for subdomains.
+
+#### 2. Native NextUI Framework-Compliant Inputs
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 2)
+*   **Purpose**: Rebuilt the input fields across both sign-in and registration pages using standard, type-compliant NextUI (HeroUI) tags (`label`, `radius="lg"`, `size="lg"`, `variant="bordered"`) to prevent empty label vertical squishing and blurry placeholder rendering.
+*   **Key Source Files**:
+    *   [MODIFY] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/login/page.tsx), [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/register/page.tsx).
+
+#### 3. Native Tailwind Dark Mode anti-aliasing
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 2)
+*   **Purpose**: Configured the parent containers of the registration and login forms to inherit the NextUI `"dark text-foreground"` theme scope. This natively fixes Windows subpixel ClearType pixelation, switches text rendering to beautiful Inter (`font-sans`), and overrides fallback light-mode behaviors to ensure typed characters don't render in black text on dark panels.
+*   **Key Source Files**:
+    *   [MODIFY] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/login/page.tsx), [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/register/page.tsx).
+
+#### 4. Subdomain CORS Development Origins Patch
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 2)
+*   **Purpose**: Configured Next.js experimental dev origins to allow seamless development subdomain requests on `cos.localhost:3000` with zero console cross-origin warnings.
+*   **Key Source Files**:
+    *   [MODIFY] [next.config.js](file:///d:/ui-pirate/uipirate/next.config.js).
+
+#### 5. Local Database Crediting Script
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 2)
+*   **Purpose**: Standalone ts-node script allowing programmatically modifying a database user's credits balance locally without standard Stripe webhook tunnels.
+*   **Key Source Files**:
+    *   [NEW] [credit-user.ts](file:///d:/ui-pirate/uipirate/scripts/credit-user.ts).
+
+#### 6. Robust Date Parsing Dashboard Guard
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 2)
+*   **Purpose**: Defensive date check to prevent runtime dashboard range-value errors if standard customer profiles have uninitialized billing periods.
+*   **Key Source Files**:
+    *   [MODIFY] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/settings/billing/page.tsx).
+
+### 🟡 Phase 3: API Refinement, LinkedIn & External Integration
+- [x] **Codebase-wide Naming Refactor**: Completed! Successfully renamed all models, folders, routes, UI schemas, state handlers, and components from `blogs` → `posts` to establish programmatic clarity.
 - [ ] **LinkedIn OAuth connection**: Direct Auth pipeline to connect LinkedIn profiles or corporate pages without routing through Buffer.
 - [ ] **LinkedIn Article/Post Adapter**: Full-fledged adapter matching the `BaseAdapter` interface to syndicate long-form articles or short-form hook-optimized feeds.
 - [ ] **API Documentation**: Publishes `API_INTEGRATION_GUIDE.md` detailing cURL/JS/Python programmatic integrations and embed guides.
-- [ ] **Zero-downtime MongoDB Renamer**: Production database migration script to rename collections from `blogs` → `posts` while retaining indexes.
+- [x] **Zero-downtime MongoDB Renamer**: Completed! Production database migration scripts configured to rename Collections from `blogs` → `posts` while preserving compound search indices.
 
 ### ⬜ Phase 4: AI Intelligence Layer & Content Transformation
 - [ ] **AI Intent Presets**: Editor-integrated selector containing 8 highly specialized prompts (SEO article, thought leadership, case study, founder story, product launch, comparison guide, technical deep dive).
@@ -160,6 +202,12 @@ Use the visual symbols below to track feature items. When launching a plan stage
 - [ ] **Custom CSS injector**: Integrates raw style components into Ghost and WordPress outputs scoped to post containers.
 - [ ] **Responsive Email Compiler**: Re-renders complex layout designs into email-safe table grids to ensure consistent styling across Outlook, Gmail, and Apple Mail.
 - [ ] **Code Block highlighting**: Integrates syntax highlighting themes (GitHub Dark, Nord, Dracula) directly into code outputs.
+
+### 🌐 Public Website & Marketing Growth Features
+- [x] **Premium Contact Page & Lead Capture Hub**: Integrated high-converting client form [`app/contact/page.tsx`](file:///d:/ui-pirate/uipirate/app/contact/page.tsx) backed by the customized validation layout [`components/LeadCaptureForm.tsx`](file:///d:/ui-pirate/uipirate/components/LeadCaptureForm.tsx) for 2-hour response commitments.
+- [x] **Interactive Project Estimation Modal**: Deployed an advanced visual price estimator [`components/ProjectEstimate.tsx`](file:///d:/ui-pirate/uipirate/components/ProjectEstimate.tsx) featuring multi-step cost scopes to simplify call bookings.
+- [x] **Terms of Service & Redirect Engines**: Created legal guidelines at `/terms` and established canonical route guards at [`app/terms-of-service/page.tsx`](file:///d:/ui-pirate/uipirate/app/terms-of-service/page.tsx) to redirect traffic seamlessly and avoid duplicate SEO indexes.
+- [x] **Privacy Policy Layout**: Established transparent user metrics disclosure guidelines at `/privacy` with modern structured markdown formatting.
 
 ---
 
