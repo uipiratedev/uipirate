@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 interface User {
   id: string;
@@ -23,11 +23,7 @@ export function useAuth(requireAuth: boolean = false) {
     (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
   const loginUrl = isSubdomain ? "/login" : "/pirateCOS/login";
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await fetch("/api/pirateCOS/auth/me");
@@ -49,9 +45,13 @@ export function useAuth(requireAuth: boolean = false) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [requireAuth, router, loginUrl]);
 
-  const logout = async () => {
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  const logout = useCallback(async () => {
     try {
       await fetch("/api/pirateCOS/auth/logout", { method: "POST" });
       setUser(null);
@@ -59,7 +59,7 @@ export function useAuth(requireAuth: boolean = false) {
     } catch (error) {
       // Logout failed
     }
-  };
+  }, [router, loginUrl]);
 
   return {
     user,
