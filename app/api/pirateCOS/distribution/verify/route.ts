@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { verifyDistribution } from "@/lib/pirateCOS/distribution";
+import { verifyDistribution, deleteDistribution } from "@/lib/pirateCOS/distribution";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { SupportedPlatform } from "@/models/pirateCOS/Integration";
@@ -55,6 +55,17 @@ export async function POST(req: NextRequest) {
 
     // Support manual reset / clear action to bypass API read scope limits
     if (action === "reset" && post.distributionRecords) {
+      // Trigger live external deletion if platform is connected and supports it
+      try {
+        await deleteDistribution({
+          platform: platform as SupportedPlatform,
+          externalId: record.externalId,
+          tenantId: user.tenantId,
+        });
+      } catch (delErr) {
+        console.error(`Failed to delete syndicated post live on ${platform}:`, delErr);
+      }
+
       post.distributionRecords.splice(index, 1);
       post.markModified("distributionRecords");
       await post.save();

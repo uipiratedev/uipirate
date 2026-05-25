@@ -212,5 +212,34 @@ export class LinkedInAdapter extends BaseAdapter {
       return { exists: true };
     }
   }
+
+  async delete(externalId: string): Promise<{ success: boolean; errorMessage?: string }> {
+    try {
+      const res = await fetch(`https://api.linkedin.com/rest/posts/${encodeURIComponent(externalId)}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: this.getAuthHeader(),
+          "LinkedIn-Version": "202605",
+          "X-Restli-Protocol-Version": "2.0.0",
+        },
+      });
+
+      if (!res.ok && res.status !== 404 && res.status !== 410) {
+        let errorMsg = `LinkedIn Delete Error: ${res.status} ${res.statusText}`;
+        try {
+          const errorData = await res.json();
+          if (errorData.message) {
+            errorMsg = errorData.message;
+          }
+        } catch (_) {}
+        throw new Error(errorMsg);
+      }
+
+      return { success: true };
+    } catch (err: any) {
+      console.error("LinkedIn post deletion failed:", err);
+      return { success: false, errorMessage: err.message || "Failed to delete post on LinkedIn" };
+    }
+  }
 }
 

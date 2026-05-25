@@ -114,4 +114,39 @@ export async function verifyDistribution({
   }
 }
 
+interface DeleteParams {
+  platform: SupportedPlatform;
+  externalId: string;
+  tenantId: string;
+}
+
+export async function deleteDistribution({
+  platform,
+  externalId,
+  tenantId,
+}: DeleteParams): Promise<{ success: boolean; errorMessage?: string }> {
+  try {
+    const integration = await Integration.findOne({
+      tenantId,
+      platform,
+      isActive: true,
+    });
+
+    if (!integration) {
+      throw new Error(`${platform.toUpperCase()} integration not connected`);
+    }
+
+    const AdapterClass = ADAPTER_MAP[platform];
+    if (!AdapterClass) {
+      throw new Error(`No adapter found for platform ${platform}`);
+    }
+
+    const adapter = new AdapterClass(integration.credentials, decrypt);
+    return await adapter.delete(externalId);
+  } catch (err: any) {
+    console.error("Delete operation failed", err);
+    return { success: false, errorMessage: err.message || "Failed to delete from platform" };
+  }
+}
+
 export type { DistributionResult, PublishOptions };
