@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { postId, platform } = await req.json();
+    const { postId, platform, action } = await req.json();
 
     if (!postId || !platform) {
       return NextResponse.json(
@@ -52,6 +52,20 @@ export async function POST(req: NextRequest) {
     }
 
     const record = records[index];
+
+    // Support manual reset / clear action to bypass API read scope limits
+    if (action === "reset" && post.distributionRecords) {
+      post.distributionRecords.splice(index, 1);
+      post.markModified("distributionRecords");
+      await post.save();
+
+      return NextResponse.json({
+        success: true,
+        exists: false,
+        distributionRecords: post.distributionRecords,
+      });
+    }
+
     if (!record.externalId) {
       return NextResponse.json({
         success: true,

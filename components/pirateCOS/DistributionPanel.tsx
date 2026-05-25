@@ -190,6 +190,41 @@ export default function DistributionPanel({
     }
   };
 
+  const handleReset = async (platform: string) => {
+    if (!blogId) return;
+    if (
+      !confirm(
+        `Are you sure you want to reset distribution status for ${
+          PLATFORM_LABELS[platform] || platform
+        }? This will allow you to re-publish.`
+      )
+    ) {
+      return;
+    }
+
+    setVerifyingPlatform(platform);
+    try {
+      const res = await fetch("/api/pirateCOS/distribution/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId: blogId, platform, action: "reset" }),
+      });
+      const data = await res.json();
+      if (data.success && data.distributionRecords) {
+        onUpdateRecords(data.distributionRecords);
+        alert(
+          `Distribution status reset successfully for ${
+            PLATFORM_LABELS[platform] || platform
+          }. You can now select it to re-publish.`
+        );
+      }
+    } catch (err) {
+      console.error("Reset failed", err);
+    } finally {
+      setVerifyingPlatform(null);
+    }
+  };
+
   // Has errors that prevent distribution?
   const hasPreflightErrors = preflight.some((c) => !c.passed && c.severity === "error");
 
@@ -353,6 +388,15 @@ export default function DistributionPanel({
                       ✗ Failed
                     </span>
                   )}
+                  <button
+                    type="button"
+                    disabled={verifyingPlatform !== null}
+                    onClick={() => handleReset(rec.platform)}
+                    className="text-[10px] text-gray-400 hover:text-red-500 transition-colors flex items-center justify-center p-0.5"
+                    title="Reset distribution status to Re-Publish"
+                  >
+                    🗑️
+                  </button>
                 </div>
               </div>
             ))}
