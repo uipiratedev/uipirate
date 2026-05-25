@@ -180,7 +180,11 @@ All milestones for **Phase 3 (API Refinement & LinkedIn Integration)** are fully
 ### 3. Integration API & UI Polish
 *   **Integrations GET/POST/PATCH/DELETE Refinements**: Refactored the core connection loops in [`app/api/pirateCOS/integrations/route.ts`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/integrations/route.ts) and connection testing probes in [`app/api/pirateCOS/integrations/[platform]/route.ts`](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/integrations/%5Bplatform%5D/route.ts) to support complete credential syncing and connection validation for LinkedIn.
 *   **High-Fidelity UI Settings**: Refactored [`app/pirateCOS/(authed)/settings/integrations/page.tsx`](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/settings/integrations/page.tsx) to feature premium LinkedIn branding cards, active Profile IDs, and one-click direct connection redirects.
-*   **Editor Panel Tab**: Updated [`components/pirateCOS/DistributionPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx) checkboxes to include `LinkedIn Direct`.
+*   **Editor Panel Tab & UI Polish**:
+    *   Updated [`components/pirateCOS/DistributionPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx) checkboxes to include `LinkedIn Direct`.
+    *   Implemented sorting on target integrations in `DistributionPanel.tsx` to automatically bubble connected/active channels to the top of the Target Channels card.
+*   **Autosave & Publication Status Preservation**:
+    *   Updated the `ensureSaved` hook in [`hooks/useSaveBlog.ts`](file:///d:/ui-pirate/uipirate/hooks/useSaveBlog.ts) to check the active post publication status (`saveStatus === "Published"`) and preserve it, preventing published posts from reverting back to drafts when syndicating.
 
 ### 4. Developer Integration Documentation
 *   **API Reference Guide**: Created [`API_INTEGRATION_GUIDE.md`](file:///d:/ui-pirate/uipirate/API_INTEGRATION_GUIDE.md) at the repository root detailing Bearer key management, scope access, timing-safe SHA-256 verifications, paginated query payloads, and clean code examples (cURL, Next.js ISR, Python).

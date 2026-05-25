@@ -863,8 +863,9 @@ export function useSaveBlog({
   // ensureSaved uses a ref to avoid capturing stale isDirty
   const ensureSaved = useCallback(async (): Promise<string> => {
     if (blogId && !isDirtyRef.current) return blogId;
-    return await saveBlog(false);
-  }, [blogId, saveBlog]);
+    const currentlyPublished = saveStatus === "Published";
+    return await saveBlog(currentlyPublished);
+  }, [blogId, saveBlog, saveStatus]);
 
   return { blogId, setBlogId, isSaving, saveStatus, setSaveStatus, isDirty, setIsDirty, saveBlog, ensureSaved };
 }
