@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { getDecryptedKeys } from "@/lib/pirateCOS/ai-config";
 import { deductCredits, CreditLimitError } from "@/lib/usage-guard";
+import BrandBrain from "@/models/pirateCOS/BrandBrain";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,6 +27,9 @@ export async function POST(request: NextRequest) {
       model,
       selectedText,
       surroundingContext,
+      customBrandVoice,
+      customAudience,
+      customKeywords,
     } = body;
 
     // Keys priority: environment vars first, then encrypted DB keys
@@ -33,6 +37,9 @@ export async function POST(request: NextRequest) {
     const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
     const dbKeys = await getDecryptedKeys(user.tenantId);
+
+    // Fetch Brand Brain details if they exist for the tenant
+    const brandBrain = await BrandBrain.findOne({ tenantId: user.tenantId }).lean();
 
     const openaiApiKey = envOpenai || dbKeys.openai;
     const geminiApiKey = envGemini || dbKeys.gemini;
@@ -175,6 +182,43 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         { success: false, error: "Invalid action" },
         { status: 400 },
       );
+    }
+
+    // Compile Brand Brain rules and check for post-level overrides
+    let brandContext = "";
+    if (brandBrain || customBrandVoice || customAudience || customKeywords) {
+      const activeName = brandBrain?.companyName || "Our Brand";
+      const activeVoice = customBrandVoice || brandBrain?.brandVoice;
+      const activeProducts = brandBrain?.products;
+      const activeAudience = customAudience || brandBrain?.audienceICP;
+      const activeKeywords = customKeywords || brandBrain?.targetKeywords || [];
+      const forbiddenWords = brandBrain?.forbiddenWords || [];
+      const activeCta = brandBrain?.callToActionTemplate;
+
+      brandContext += `\n\n[STRICT BRAND WRITING IDENTITY RULES]:`;
+      brandContext += `\n- Company/Brand Name: "${activeName}"`;
+      if (activeVoice) {
+        brandContext += `\n- Tone & Brand Voice: Write in a style that is ${activeVoice.trim()}.`;
+      }
+      if (activeProducts) {
+        brandContext += `\n- Brand Products / Core Services: "${activeProducts.trim()}"`;
+      }
+      if (activeAudience) {
+        brandContext += `\n- Target ICP / Audience Profile: Focus content appeal directly towards: "${activeAudience.trim()}"`;
+      }
+      if (activeKeywords.length > 0) {
+        brandContext += `\n- Focus Keywords: Proactively integrate and emphasize these search terms when contextually appropriate: ${activeKeywords.join(", ")}`;
+      }
+      if (forbiddenWords.length > 0) {
+        brandContext += `\n- FORBIDDEN VOCABULARY: Under NO circumstances are you allowed to use any of these words or variants in your generated output: ${forbiddenWords.join(", ")}. Filter them out completely.`;
+      }
+      if (activeCta && action === "write") {
+        brandContext += `\n- Footer CTA Guidance: When appropriate or drafting complete posts, guide the reader in this standard Call-To-Action style: "${activeCta.trim()}"`;
+      }
+    }
+
+    if (brandContext) {
+      systemInstructions = `${systemInstructions}\n${brandContext}`;
     }
 
     let text = "";

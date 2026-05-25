@@ -195,6 +195,66 @@ const AdminSidebar = () => {
             );
           })()}
 
+          {/* Brand Brain */}
+          {(() => {
+            const active = pathname === getHref("/brand-brain");
+
+            return (
+              <Link
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+                href={getHref("/brand-brain")}
+                style={{
+                  background: active ? "#FF5B04" : "transparent",
+                  color: active ? "#fff" : "rgba(255,255,255,0.5)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!active) {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(255,255,255,0.06)";
+                    (e.currentTarget as HTMLElement).style.color = "#fff";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!active) {
+                    (e.currentTarget as HTMLElement).style.background =
+                      "transparent";
+                    (e.currentTarget as HTMLElement).style.color =
+                      "rgba(255,255,255,0.5)";
+                  }
+                }}
+              >
+                <svg
+                  className="flex-shrink-0"
+                  fill="none"
+                  height="16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.8"
+                  viewBox="0 0 24 24"
+                  width="16"
+                >
+                  <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1 0-3.12 3 3 0 0 1 0-3.88 2.5 2.5 0 0 1 0-3.12A2.5 2.5 0 0 1 9.5 2z" />
+                  <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 0-3.12 3 3 0 0 0 0-3.88 2.5 2.5 0 0 0 0-3.12A2.5 2.5 0 0 0 14.5 2z" />
+                </svg>
+                <span className="text-sm font-medium font-geist">
+                  Brand Brain
+                </span>
+                {!active && (
+                  <span
+                    className="ml-auto text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded"
+                    style={{
+                      background: "rgba(255,91,4,0.15)",
+                      color: "#FF5B04",
+                    }}
+                  >
+                    Brain
+                  </span>
+                )}
+              </Link>
+            );
+          })()}
+
           {/* Integrations */}
           {(() => {
             const active = pathname === getHref("/settings/integrations");
