@@ -225,6 +225,15 @@ export default function DistributionPanel({
     }
   };
 
+  // Sort integrations: connected/active channels come first
+  const sortedIntegrations = [...integrations].sort((a, b) => {
+    const aConnected = a.isConnected && a.isActive;
+    const bConnected = b.isConnected && b.isActive;
+    if (aConnected && !bConnected) return -1;
+    if (!aConnected && bConnected) return 1;
+    return 0;
+  });
+
   // Has errors that prevent distribution?
   const hasPreflightErrors = preflight.some((c) => !c.passed && c.severity === "error");
 
@@ -284,7 +293,7 @@ export default function DistributionPanel({
           </div>
         ) : (
           <div className="space-y-2">
-            {integrations.map((platform) => {
+            {sortedIntegrations.map((platform) => {
               const isSelected = selectedPlatforms.includes(platform.platform);
               const disabled = !platform.isConnected || !platform.isActive;
 
