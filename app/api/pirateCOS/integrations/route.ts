@@ -22,7 +22,7 @@ export async function GET() {
   // Fetch all integration documents for the current tenant
   const integrationsList = (await Integration.find({ tenantId: tenantOid }).lean()) as any[];
 
-  const platforms: SupportedPlatform[] = ["wordpress", "medium", "ghost", "buffer"];
+  const platforms: SupportedPlatform[] = ["wordpress", "medium", "ghost", "buffer", "linkedin"];
 
   const results = platforms.map((platform) => {
     const doc = integrationsList.find((i) => i.platform === platform);
@@ -51,6 +51,12 @@ export async function GET() {
         isConnected = !!doc.credentials?.bufferAccessTokenEncrypted;
         metadata = {
           bufferProfileIds: doc.credentials?.bufferProfileIds || [],
+        };
+      } else if (platform === "linkedin") {
+        isConnected = !!doc.credentials?.linkedinTokenEncrypted;
+        metadata = {
+          linkedinUserId: doc.credentials?.linkedinUserId || "",
+          linkedinPreferArticles: doc.credentials?.linkedinPreferArticles !== false,
         };
       }
     }
@@ -101,9 +107,12 @@ export async function POST(req: NextRequest) {
     ghostAdminKey,
     bufferAccessToken,
     bufferProfileIds,
+    linkedinToken,
+    linkedinUserId,
+    linkedinPreferArticles,
   } = await req.json();
 
-  if (!platform || !["wordpress", "medium", "ghost", "buffer"].includes(platform)) {
+  if (!platform || !["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)) {
     return NextResponse.json(
       { success: false, error: "Invalid or missing platform" },
       { status: 400 },
@@ -145,6 +154,12 @@ export async function POST(req: NextRequest) {
     if (Array.isArray(bufferProfileIds)) doc.credentials.bufferProfileIds = bufferProfileIds;
     if (typeof bufferAccessToken === "string" && bufferAccessToken.trim()) {
       doc.credentials.bufferAccessTokenEncrypted = encrypt(bufferAccessToken.trim());
+    }
+  } else if (platform === "linkedin") {
+    if (typeof linkedinUserId === "string") doc.credentials.linkedinUserId = linkedinUserId.trim();
+    if (typeof linkedinPreferArticles === "boolean") doc.credentials.linkedinPreferArticles = linkedinPreferArticles;
+    if (typeof linkedinToken === "string" && linkedinToken.trim()) {
+      doc.credentials.linkedinTokenEncrypted = encrypt(linkedinToken.trim());
     }
   }
 

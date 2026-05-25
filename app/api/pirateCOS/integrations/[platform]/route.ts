@@ -21,7 +21,7 @@ export async function DELETE(
     );
   }
 
-  if (!["wordpress", "medium", "ghost", "buffer"].includes(platform)) {
+  if (!["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)) {
     return NextResponse.json(
       { success: false, error: "Invalid platform" },
       { status: 400 },
@@ -41,6 +41,7 @@ export async function DELETE(
       doc.credentials.mediumTokenEncrypted = undefined;
       doc.credentials.ghostAdminKeyEncrypted = undefined;
       doc.credentials.bufferAccessTokenEncrypted = undefined;
+      doc.credentials.linkedinTokenEncrypted = undefined;
     }
     await doc.save();
   }
@@ -62,7 +63,7 @@ export async function PATCH(
     );
   }
 
-  if (!["wordpress", "medium", "ghost", "buffer"].includes(platform)) {
+  if (!["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)) {
     return NextResponse.json(
       { success: false, error: "Invalid platform" },
       { status: 400 },
@@ -235,6 +236,54 @@ export async function PATCH(
       }
 
       message = `Connected successfully to Buffer with ${count} active social profiles`;
+    } else if (platform === "linkedin") {
+      const token = doc.credentials.linkedinTokenEncrypted
+        ? decrypt(doc.credentials.linkedinTokenEncrypted)
+        : "";
+
+      if (!token) {
+        return NextResponse.json(
+          { success: false, error: "Missing LinkedIn token" },
+          { status: 400 },
+        );
+      }
+
+      let profileUrl = "https://api.linkedin.com/v2/userinfo";
+      let liRes = await fetch(profileUrl, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      let data = await liRes.json();
+      if (!liRes.ok) {
+        profileUrl = "https://api.linkedin.com/v2/me";
+        liRes = await fetch(profileUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+        data = await liRes.json();
+      }
+
+      if (!liRes.ok) {
+        return NextResponse.json(
+          { success: false, error: data.message || `LinkedIn Error: ${liRes.statusText}` },
+          { status: 400 },
+        );
+      }
+
+      const authorId = data.sub || data.id;
+      const name = data.name || (data.localizedFirstName ? `${data.localizedFirstName} ${data.localizedLastName}` : "Member");
+
+      if (authorId && doc.credentials.linkedinUserId !== authorId) {
+        doc.credentials.linkedinUserId = authorId;
+      }
+
+      message = `Connected successfully to LinkedIn as ${name} (ID: ${authorId})`;
     }
   } catch (err: any) {
     return NextResponse.json(

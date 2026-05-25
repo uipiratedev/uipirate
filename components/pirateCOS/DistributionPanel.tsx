@@ -42,6 +42,7 @@ const PLATFORM_LABELS: Record<string, string> = {
   medium: "Medium",
   ghost: "Ghost",
   buffer: "Buffer (X/LinkedIn)",
+  linkedin: "LinkedIn Direct",
 };
 
 export default function DistributionPanel({

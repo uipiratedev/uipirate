@@ -5,6 +5,7 @@ import { BufferAdapter } from "./adapters/buffer.adapter";
 import { GhostAdapter } from "./adapters/ghost.adapter";
 import { MediumAdapter } from "./adapters/medium.adapter";
 import { WordPressAdapter } from "./adapters/wordpress.adapter";
+import { LinkedInAdapter } from "./adapters/linkedin.adapter";
 import { DistributionResult, PublishOptions } from "./adapters/base.adapter";
 
 const ADAPTER_MAP: Record<SupportedPlatform, any> = {
@@ -12,6 +13,7 @@ const ADAPTER_MAP: Record<SupportedPlatform, any> = {
   medium: MediumAdapter,
   ghost: GhostAdapter,
   buffer: BufferAdapter,
+  linkedin: LinkedInAdapter,
 };
 
 interface DispatchParams {
