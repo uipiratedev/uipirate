@@ -168,9 +168,9 @@ During the active development of **Phase 2 (Monetization & Growth Engine)**, we 
 All milestones for **Phase 3 (API Refinement & LinkedIn Integration)** are fully implemented and compiled successfully without any errors.
 
 ### 1. Platform Adapters & Orchestration
-*   **LinkedIn Outbound Adapter**: Created [`lib/pirateCOS/distribution/adapters/linkedin.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/linkedin.adapter.ts) supporting two formats:
-    *   **Articles**: Uses `ugcPosts` with `"shareMediaCategory": "ARTICLE"`, compiling meta summaries and canonical links.
-    *   **Posts**: Uses `"shareMediaCategory": "NONE"`, compiling title and clean post excerpts with auto-mapped tags as hashtags.
+*   **LinkedIn Outbound Adapter**: Created [`lib/pirateCOS/distribution/adapters/linkedin.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/linkedin.adapter.ts) supporting two formats via the modern, versioned REST API:
+    *   **Articles**: Uses `/rest/posts` with `content.article` object, compiling meta summaries and canonical links.
+    *   **Posts**: Uses `/rest/posts` with short-form commentary, compiling title and clean post excerpts with auto-mapped tags as hashtags.
 *   **Pipeline Registration**: Registered under the ADAPTER_MAP orchestrator in [`lib/pirateCOS/distribution/index.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/index.ts).
 
 ### 2. Secure OAuth 2.0 Auth Handshake

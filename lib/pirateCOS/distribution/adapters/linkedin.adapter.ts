@@ -69,67 +69,60 @@ export class LinkedInAdapter extends BaseAdapter {
       if (preferArticles && canonicalUrl) {
         requestBody = {
           author: `urn:li:person:${memberId}`,
-          lifecycleState: "PUBLISHED",
-          specificContent: {
-            "com.linkedin.ugc.ShareContent": {
-              shareCommentary: {
-                text: commentary,
-              },
-              shareMediaCategory: "ARTICLE",
-              media: [
-                {
-                  status: "READY",
-                  description: {
-                    text: cleanExcerpt,
-                  },
-                  originalUrl: canonicalUrl,
-                  title: {
-                    text: post.title,
-                  },
-                },
-              ],
+          commentary: commentary,
+          visibility: "PUBLIC",
+          distribution: {
+            feedDistribution: "MAIN_FEED",
+          },
+          content: {
+            article: {
+              source: canonicalUrl,
+              title: post.title,
+              description: cleanExcerpt,
             },
           },
-          visibility: {
-            "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
-          },
+          lifecycleState: "PUBLISHED",
         };
       } else {
         requestBody = {
           author: `urn:li:person:${memberId}`,
+          commentary: commentary,
+          visibility: "PUBLIC",
+          distribution: {
+            feedDistribution: "MAIN_FEED",
+          },
           lifecycleState: "PUBLISHED",
-          specificContent: {
-            "com.linkedin.ugc.ShareContent": {
-              shareCommentary: {
-                text: commentary,
-              },
-              shareMediaCategory: "NONE",
-            },
-          },
-          visibility: {
-            "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
-          },
         };
       }
 
-      const res = await fetch("https://api.linkedin.com/v2/ugcPosts", {
+      const res = await fetch("https://api.linkedin.com/rest/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: this.getAuthHeader(),
+          "LinkedIn-Version": "202605",
           "X-Restli-Protocol-Version": "2.0.0",
         },
         body: JSON.stringify(requestBody),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.message || `LinkedIn Error: ${res.statusText}`);
+        let errorMsg = `LinkedIn Error: ${res.status} ${res.statusText}`;
+        try {
+          const errorData = await res.json();
+          if (errorData.message) {
+            errorMsg = errorData.message;
+          } else if (errorData.error) {
+            errorMsg = errorData.error;
+          }
+        } catch (_) {
+          // Ignore json parse error
+        }
+        throw new Error(errorMsg);
       }
 
-      // Extract generated Post/UGC ID and construct a clean url
-      const externalId = data.id || "";
+      // Extract generated Post URN from x-restli-id header
+      const externalId = res.headers.get("x-restli-id") || "";
       const url = externalId ? `https://www.linkedin.com/feed/update/${externalId}` : "";
 
       return {
@@ -152,7 +145,7 @@ export class LinkedInAdapter extends BaseAdapter {
   }
 
   async update(post: IPost, externalId: string): Promise<DistributionResult> {
-    // LinkedIn UGC/Share API does not support post updates programmatically.
+    // LinkedIn REST Posts API does not support post updates programmatically.
     return {
       platform: "linkedin",
       externalId,
@@ -162,4 +155,62 @@ export class LinkedInAdapter extends BaseAdapter {
       distributedAt: new Date(),
     };
   }
+
+  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+    try {
+      const res = await fetch(`https://api.linkedin.com/rest/posts/${encodeURIComponent(externalId)}`, {
+        method: "GET",
+        headers: {
+          Authorization: this.getAuthHeader(),
+          "LinkedIn-Version": "202605",
+          "X-Restli-Protocol-Version": "2.0.0",
+        },
+      });
+
+      console.log(`[LinkedIn Verify] Probing externalId: ${externalId}, HTTP Status: ${res.status}`);
+
+      if (res.status === 404 || res.status === 410) {
+        console.log(`[LinkedIn Verify] Post is confirmed deleted (status ${res.status})`);
+        return { exists: false, errorMessage: "Post was deleted or is no longer accessible on LinkedIn." };
+      }
+
+      if (res.status === 403 || res.status === 401) {
+        console.log(`[LinkedIn Verify] Access restricted (status ${res.status}). Treating as exists defensively.`);
+        return { exists: true };
+      }
+
+      let data: any = {};
+      try {
+        const text = await res.text();
+        console.log(`[LinkedIn Verify] Response body:`, text);
+        if (text) {
+          data = JSON.parse(text);
+        }
+      } catch (e) {
+        console.log(`[LinkedIn Verify] Failed to read or parse response body:`, e);
+      }
+
+      if (!res.ok) {
+        throw new Error(data.message || `LinkedIn Error: ${res.statusText}`);
+      }
+
+      const isDeleted = data.lifecycleState === "DELETED";
+      console.log(`[LinkedIn Verify] Lifecycle state: ${data.lifecycleState}, isDeleted: ${isDeleted}`);
+      return { exists: !isDeleted, errorMessage: isDeleted ? "Post was deleted on LinkedIn." : undefined };
+    } catch (err: any) {
+      console.error("LinkedIn verification probe failed:", err);
+      const errMsg = String(err.message || err).toLowerCase();
+      if (
+        errMsg.includes("does not exist") ||
+        errMsg.includes("not found") ||
+        errMsg.includes("deleted") ||
+        errMsg.includes("404")
+      ) {
+        return { exists: false, errorMessage: "Post was deleted or is no longer accessible on LinkedIn." };
+      }
+      // Return true defensively for transient network errors
+      return { exists: true };
+    }
+  }
 }
+

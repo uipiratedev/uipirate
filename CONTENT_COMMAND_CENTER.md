@@ -1316,49 +1316,52 @@ export class LinkedInAdapter extends BaseAdapter {
     const { id: authorId } = await profileRes.json();
 
     // Publish article
-    const articleRes = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+    const articleRes = await fetch('https://api.linkedin.com/rest/posts', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
+        'LinkedIn-Version': '202605',
         'X-Restli-Protocol-Version': '2.0.0',
       },
       body: JSON.stringify({
         author: `urn:li:person:${authorId}`,
-        lifecycleState: 'PUBLISHED',
-        specificContent: {
-          'com.linkedin.ugc.ShareContent': {
-            shareCommentary: {
-              text: this.generateEngagingHook(post),
-            },
-            shareMediaCategory: 'ARTICLE',
-            media: [{
-              status: 'READY',
-              originalUrl: post.canonicalUrl || `https://yoursite.com/posts/${post.slug}`,
-            }],
+        commentary: this.generateEngagingHook(post),
+        visibility: 'PUBLIC',
+        distribution: {
+          feedDistribution: 'MAIN_FEED',
+        },
+        content: {
+          article: {
+            source: post.canonicalUrl || `https://yoursite.com/posts/${post.slug}`,
+            title: post.title,
+            description: post.excerpt || '',
           },
         },
-        visibility: {
-          'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
-        },
+        lifecycleState: 'PUBLISHED',
       }),
     });
 
-    const data = await articleRes.json();
-
     if (!articleRes.ok) {
+      let errMsg = 'LinkedIn publish failed';
+      try {
+        const errorData = await articleRes.json();
+        errMsg = errorData.message || errMsg;
+      } catch (_) {}
       return {
         platform: 'linkedin',
         status: 'failed',
-        errorMessage: data.message || 'LinkedIn publish failed',
+        errorMessage: errMsg,
         distributedAt: new Date(),
       } as DistributionResult;
     }
 
+    const externalId = articleRes.headers.get('x-restli-id') || '';
+
     return {
       platform: 'linkedin',
-      externalId: data.id,
-      url: `https://www.linkedin.com/feed/update/${data.id}`,
+      externalId,
+      url: `https://www.linkedin.com/feed/update/${externalId}`,
       status: 'success',
       distributedAt: new Date(),
     };
@@ -1373,35 +1376,46 @@ export class LinkedInAdapter extends BaseAdapter {
     });
     const { id: authorId } = await profileRes.json();
 
-    const postRes = await fetch('https://api.linkedin.com/v2/ugcPosts', {
+    const postRes = await fetch('https://api.linkedin.com/rest/posts', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
+        'LinkedIn-Version': '202605',
         'X-Restli-Protocol-Version': '2.0.0',
       },
       body: JSON.stringify({
         author: `urn:li:person:${authorId}`,
+        commentary: postText,
+        visibility: 'PUBLIC',
+        distribution: {
+          feedDistribution: 'MAIN_FEED',
+        },
         lifecycleState: 'PUBLISHED',
-        specificContent: {
-          'com.linkedin.ugc.ShareContent': {
-            shareCommentary: { text: postText },
-            shareMediaCategory: 'NONE',
-          },
-        },
-        visibility: {
-          'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC',
-        },
       }),
     });
 
-    const data = await postRes.json();
+    if (!postRes.ok) {
+      let errMsg = 'LinkedIn publish failed';
+      try {
+        const errorData = await postRes.json();
+        errMsg = errorData.message || errMsg;
+      } catch (_) {}
+      return {
+        platform: 'linkedin',
+        status: 'failed',
+        errorMessage: errMsg,
+        distributedAt: new Date(),
+      };
+    }
+
+    const externalId = postRes.headers.get('x-restli-id') || '';
+
     return {
       platform: 'linkedin',
-      externalId: data.id,
-      url: `https://www.linkedin.com/feed/update/${data.id}`,
-      status: articleRes.ok ? 'success' : 'failed',
-      errorMessage: !articleRes.ok ? data.message : undefined,
+      externalId,
+      url: `https://www.linkedin.com/feed/update/${externalId}`,
+      status: 'success',
       distributedAt: new Date(),
     };
   }
@@ -2072,8 +2086,8 @@ interface IAnalyticsSnapshot {
 | Feature | Implementation | API Endpoint |
 |---|---|---|
 | **OAuth 2.0 authentication** | Standard LinkedIn Sign-in with OpenID | `/oauth/v2/authorization` |
-| **Publish as Article** | Long-form content (2,000+ words) with rich media | `POST /v2/ugcPosts` with `article` object |
-| **Publish as Post** | Short-form (1,300 char limit) with excerpt + link | `POST /v2/ugcPosts` with `shareCommentary` |
+| **Publish as Article** | Long-form content (2,000+ words) with rich media | `POST /rest/posts` with `content.article` object |
+| **Publish as Post** | Short-form (1,300 char limit) with excerpt + link | `POST /rest/posts` with `commentary` |
 | **Company Page publishing** | Post on behalf of organization (requires admin role) | `/organizationalEntityAcls` permission check |
 | **Hashtag optimization** | AI suggests 3–5 relevant hashtags based on content | Custom ML model or GPT-4 prompt |
 

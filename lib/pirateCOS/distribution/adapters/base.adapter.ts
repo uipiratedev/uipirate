@@ -23,4 +23,5 @@ export abstract class BaseAdapter {
 
   abstract publish(post: IPost, options?: PublishOptions): Promise<DistributionResult>;
   abstract update(post: IPost, externalId: string): Promise<DistributionResult>;
+  abstract verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }>;
 }

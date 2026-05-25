@@ -89,4 +89,9 @@ export class MediumAdapter extends BaseAdapter {
       distributedAt: new Date(),
     };
   }
+
+  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+    // Medium API does not support fetching posts by ID. We return exists: true defensively.
+    return { exists: true };
+  }
 }

@@ -81,4 +81,9 @@ export class BufferAdapter extends BaseAdapter {
       distributedAt: new Date(),
     };
   }
+
+  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+    // Buffer updates cannot be fetched directly by ID. Return exists: true defensively.
+    return { exists: true };
+  }
 }

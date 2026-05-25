@@ -111,4 +111,23 @@ export class WordPressAdapter extends BaseAdapter {
       };
     }
   }
+
+  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+    try {
+      const res = await fetch(this.getApiUrl(`/posts/${externalId}`), {
+        method: "GET",
+        headers: {
+          Authorization: this.getAuthHeader(),
+        },
+      });
+
+      if (res.status === 404) {
+        return { exists: false, errorMessage: "Post was deleted on WordPress." };
+      }
+
+      return { exists: res.ok, errorMessage: res.ok ? undefined : "Post verification probe returned failure status." };
+    } catch (err: any) {
+      return { exists: true };
+    }
+  }
 }

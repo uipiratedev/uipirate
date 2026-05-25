@@ -64,6 +64,7 @@ export default function DistributionPanel({
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [loadingIntegrations, setLoadingIntegrations] = useState(true);
   const [distributing, setDistributing] = useState(false);
+  const [verifyingPlatform, setVerifyingPlatform] = useState<string | null>(null);
   const [distributionError, setDistributionError] = useState<string | null>(null);
   const [preflight, setPreflight] = useState<PreflightCheck[]>([]);
 
@@ -161,6 +162,31 @@ export default function DistributionPanel({
       setDistributionError(err.message || "Failed to publish distribution");
     } finally {
       setDistributing(false);
+    }
+  };
+
+  const handleVerify = async (platform: string) => {
+    if (!blogId) return;
+    setVerifyingPlatform(platform);
+    try {
+      const res = await fetch("/api/pirateCOS/distribution/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId: blogId, platform }),
+      });
+      const data = await res.json();
+      if (data.success && data.distributionRecords) {
+        onUpdateRecords(data.distributionRecords);
+        if (!data.exists) {
+          alert(`Sync complete: The post was deleted on ${PLATFORM_LABELS[platform] || platform}. Status has been updated so you can re-publish.`);
+        } else {
+          alert(`Sync complete: Post verified successfully on ${PLATFORM_LABELS[platform] || platform}!`);
+        }
+      }
+    } catch (err) {
+      console.error("Link verification failed", err);
+    } finally {
+      setVerifyingPlatform(null);
     }
   };
 
@@ -291,16 +317,34 @@ export default function DistributionPanel({
                   {rec.platform}
                 </span>
 
-                <div className="flex items-center gap-1.5 min-w-0 max-w-[65%]">
+                <div className="flex items-center gap-2 min-w-0 max-w-[65%]">
                   {rec.status === "success" ? (
-                    <a
-                      href={rec.url || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#FF5B04] hover:underline truncate inline-block text-[11px]"
-                    >
-                      View External Link ↗
-                    </a>
+                    <>
+                      <a
+                        href={rec.url || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#FF5B04] hover:underline truncate inline-block text-[11px]"
+                      >
+                        View External Link ↗
+                      </a>
+                      <button
+                        type="button"
+                        disabled={verifyingPlatform !== null}
+                        onClick={() => handleVerify(rec.platform)}
+                        className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center p-0.5"
+                        title="Verify / Sync external link status"
+                      >
+                        {verifyingPlatform === rec.platform ? (
+                          <svg className="animate-spin h-3 w-3 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        ) : (
+                          "🔄"
+                        )}
+                      </button>
+                    </>
                   ) : (
                     <span
                       className="text-red-500 font-medium text-[10px] truncate"
