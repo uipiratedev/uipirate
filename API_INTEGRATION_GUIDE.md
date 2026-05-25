@@ -6,27 +6,36 @@ Welcome to the **pirateCOS Public Content API**. This guide details how develope
 
 ## 🔒 1. Authentication & API Key Management
 
-All programmatic outbound requests use a static Bearer token in the standard HTTP `Authorization` header.
+To authenticate programmatic requests, you generate a **Programmatic API Key (Secret Token)** from the dashboard. This token functions as both a credential and a secret in a single string, providing secure, isolated access to your tenant endpoints.
 
-### Provisioning a Token
-1. Log into your **pirateCOS Dashboard**.
-2. Navigate to **Settings** → **Integrations** (`/settings/integrations`).
-3. Scroll to the **Programmatic API Keys** section and click **+ Create Key**.
-4. Give your key a descriptive name (e.g. `CI Pipeline`, `Static Blog Sync`).
-5. Choose your permission scopes:
-   * **`read`**: Grants read-only access to query and fetch published post listings and slug details.
-   * **`write`**: Grants write access to create drafts programmatically.
-6. Copy the displayed key **once** (`uip_live_<32 character hex string>`). For security, the raw key is never stored in plaintext on the database—only a one-way SHA-256 hash is persisted.
+### Step-by-Step Key Generation
 
-### Header Format
-Include the token in your headers as follows:
+1. **Access Settings**: Log into your **pirateCOS Dashboard** and navigate to the **Integrations** tab in the sidebar (`/settings/integrations`).
+2. **Launch Creator**: Scroll down to the **Programmatic API Keys** card and click the orange **+ Create Key** button.
+3. **Configure Parameters**:
+   * **Key Name**: Enter a descriptive identifier (e.g. `Zapier Lead Sync`, `CI Build Sync`) so you can track usage in the list.
+   * **Permission Scopes**:
+     * `read` *(Required)*: Grants query rights to fetch published post directories and detailed body slugs.
+     * `write` *(Optional)*: Grants rights to create/import new post drafts programmatically.
+4. **Generate & Copy**: Click **Generate Key**. An overlay modal will open showing your new raw secret token:
+   `uip_live_` followed by a cryptographically secure 40-character hex string (e.g., `uip_live_9fa8d0...`).
+5. **Secure the Secret**: Copy the token immediately. 
+
+> [!IMPORTANT]
+> **This is the ONLY time the raw secret token will ever be displayed.** Once you close the modal, the platform cannot recover it. The server stores only a one-way **SHA-256 hash** of the key encrypted with AES-256-GCM for verification.
+
+---
+
+### Header Authentication Format
+To query any content endpoints, pass the copied token in your HTTP headers as a `Bearer` token:
 
 ```http
-Authorization: Bearer uip_live_your_actual_api_key_string
+Authorization: Bearer uip_live_your_copied_secret_token_here
+Accept: application/json
 ```
 
 > [!CAUTION]
-> **Keep your keys secure!** Never expose API keys in client-side code (e.g., in a raw browser `fetch` or React app). Always route queries through a backend server or configure a static-site generator build pipeline using secure environment variables.
+> **Security Guardrails:** Never share your secret tokens or commit them to public client-side files (like frontend Javascript code or raw git repos). Always store them in backend environment configurations (`process.env` or server secrets managers). If a key is compromised, immediately click **Revoke** next to its name on the settings page to destroy access timing-safely.
 
 ---
 
