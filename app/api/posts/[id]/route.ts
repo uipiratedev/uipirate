@@ -14,7 +14,9 @@ export async function GET(
     const { id } = params;
 
     // Try to find by ID first, then by slug
-    let post = await Post.findOne({ _id: id, published: true }).catch(() => null);
+    let post = await Post.findOne({ _id: id, published: true }).catch(
+      () => null,
+    );
 
     if (!post) {
       const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");

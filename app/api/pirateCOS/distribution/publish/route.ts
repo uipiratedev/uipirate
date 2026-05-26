@@ -30,7 +30,10 @@ export async function POST(req: NextRequest) {
 
   if (!Array.isArray(platforms) || platforms.length === 0) {
     return NextResponse.json(
-      { success: false, error: "Please select at least one platform for distribution" },
+      {
+        success: false,
+        error: "Please select at least one platform for distribution",
+      },
       { status: 400 },
     );
   }
@@ -50,7 +53,10 @@ export async function POST(req: NextRequest) {
 
   if (!post.published) {
     return NextResponse.json(
-      { success: false, error: "Please publish the blog locally before distributing." },
+      {
+        success: false,
+        error: "Please publish the blog locally before distributing.",
+      },
       { status: 400 },
     );
   }

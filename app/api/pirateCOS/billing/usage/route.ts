@@ -9,14 +9,22 @@ import AIConfig from "@/models/pirateCOS/AIConfig";
 export async function GET() {
   try {
     const user = await verifyAuth();
+
     if (!user) {
-      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     await dbConnect();
     const admin = await Admin.findById(user.tenantId).lean();
+
     if (!admin) {
-      return NextResponse.json({ success: false, error: "Admin context not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: "Admin context not found" },
+        { status: 404 },
+      );
     }
 
     // Retrieve database AI key presence
@@ -26,16 +34,26 @@ export async function GET() {
     const openaiEnv = !!process.env.OPENAI_API_KEY;
     const geminiEnv = !!process.env.GEMINI_API_KEY;
     const mistralEnv = !!process.env.MISTRAL_API_KEY;
+    const anthropicEnv = !!process.env.ANTHROPIC_API_KEY;
     const openaiDb = !!cfg?.openaiKeyEncrypted;
     const geminiDb = !!cfg?.geminiKeyEncrypted;
     const mistralDb = !!cfg?.mistralKeyEncrypted;
+    const anthropicDb = !!cfg?.anthropicKeyEncrypted;
 
     return NextResponse.json({
       success: true,
       plan: admin.plan || "free",
       creditsRemaining: admin.creditsRemaining ?? 20.0,
-      usageThisMonth: admin.usageThisMonth || { aiRequests: 0, distributions: 0 },
-      byokEnabled: admin.byokEnabled || { openai: false, gemini: false, mistral: false, anthropic: false },
+      usageThisMonth: admin.usageThisMonth || {
+        aiRequests: 0,
+        distributions: 0,
+      },
+      byokEnabled: admin.byokEnabled || {
+        openai: false,
+        gemini: false,
+        mistral: false,
+        anthropic: false,
+      },
       stripeCustomerId: admin.stripeCustomerId || null,
       stripeSubscriptionId: (admin as any).stripeSubscriptionId || null,
       subscriptionStatus: (admin as any).subscriptionStatus || null,
@@ -44,39 +62,58 @@ export async function GET() {
         openai: openaiEnv || openaiDb,
         gemini: geminiEnv || geminiDb,
         mistral: mistralEnv || mistralDb,
-        anthropic: false, // anthropic not yet in AIConfig model schema
+        anthropic: anthropicEnv || anthropicDb,
       },
     });
-
   } catch (err: any) {
     console.error("Usage route GET error:", err);
-    return NextResponse.json({ success: false, error: err.message || "Failed to query usage metrics" }, { status: 500 });
+
+    return NextResponse.json(
+      { success: false, error: err.message || "Failed to query usage metrics" },
+      { status: 500 },
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
     const user = await verifyAuth();
+
     if (!user) {
-      return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const { byokEnabled } = await req.json();
+
     if (!byokEnabled) {
-      return NextResponse.json({ success: false, error: "Missing byokEnabled object" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: "Missing byokEnabled object" },
+        { status: 400 },
+      );
     }
 
     await dbConnect();
     const admin = await Admin.findById(user.tenantId);
+
     if (!admin) {
-      return NextResponse.json({ success: false, error: "Admin context not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: "Admin context not found" },
+        { status: 404 },
+      );
     }
 
     // Set properties
-    if (typeof byokEnabled.openai === "boolean") admin.byokEnabled.openai = byokEnabled.openai;
-    if (typeof byokEnabled.gemini === "boolean") admin.byokEnabled.gemini = byokEnabled.gemini;
-    if (typeof byokEnabled.mistral === "boolean") admin.byokEnabled.mistral = byokEnabled.mistral;
-    if (typeof byokEnabled.anthropic === "boolean") admin.byokEnabled.anthropic = byokEnabled.anthropic;
+    if (typeof byokEnabled.openai === "boolean")
+      admin.byokEnabled.openai = byokEnabled.openai;
+    if (typeof byokEnabled.gemini === "boolean")
+      admin.byokEnabled.gemini = byokEnabled.gemini;
+    if (typeof byokEnabled.mistral === "boolean")
+      admin.byokEnabled.mistral = byokEnabled.mistral;
+    if (typeof byokEnabled.anthropic === "boolean")
+      admin.byokEnabled.anthropic = byokEnabled.anthropic;
 
     await admin.save();
 
@@ -84,9 +121,15 @@ export async function POST(req: NextRequest) {
       success: true,
       byokEnabled: admin.byokEnabled,
     });
-
   } catch (err: any) {
     console.error("Usage route POST error:", err);
-    return NextResponse.json({ success: false, error: err.message || "Failed to update BYOK configuration" }, { status: 500 });
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: err.message || "Failed to update BYOK configuration",
+      },
+      { status: 500 },
+    );
   }
 }

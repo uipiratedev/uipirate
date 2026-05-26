@@ -96,7 +96,9 @@ export async function requireAuth(): Promise<User> {
 
   if (!user) {
     const host = (await headers()).get("host") || "";
-    const isSubdomain = host.startsWith("cos.") || hostnameEquals(host, "cos.uipirate.com");
+    const isSubdomain =
+      host.startsWith("cos.") || hostnameEquals(host, "cos.uipirate.com");
+
     redirect(isSubdomain ? "/login" : "/pirateCOS/login");
   }
 

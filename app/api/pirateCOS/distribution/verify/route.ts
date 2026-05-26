@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { verifyDistribution, deleteDistribution } from "@/lib/pirateCOS/distribution";
+import {
+  verifyDistribution,
+  deleteDistribution,
+} from "@/lib/pirateCOS/distribution";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { SupportedPlatform } from "@/models/pirateCOS/Integration";
@@ -63,7 +66,10 @@ export async function POST(req: NextRequest) {
           tenantId: user.tenantId,
         });
       } catch (delErr) {
-        console.error(`Failed to delete syndicated post live on ${platform}:`, delErr);
+        console.error(
+          `Failed to delete syndicated post live on ${platform}:`,
+          delErr,
+        );
       }
 
       post.distributionRecords.splice(index, 1);
@@ -95,8 +101,9 @@ export async function POST(req: NextRequest) {
     if (!check.exists) {
       // Mark as failed and log external deletion reason
       record.status = "failed";
-      record.errorMessage = check.errorMessage || "Post was deleted on the external platform.";
-      
+      record.errorMessage =
+        check.errorMessage || "Post was deleted on the external platform.";
+
       post.markModified("distributionRecords");
       await post.save();
     }
@@ -108,7 +115,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (err: any) {
     return NextResponse.json(
-      { success: false, error: err.message || "Failed to verify distribution link" },
+      {
+        success: false,
+        error: err.message || "Failed to verify distribution link",
+      },
       { status: 500 },
     );
   }

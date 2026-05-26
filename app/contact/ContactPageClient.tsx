@@ -397,7 +397,7 @@ export default function ContactPageClient() {
                   </p>
                 </div>
               </div>
-              
+
               <p className="text-sm text-gray-600 leading-relaxed font-medium">
                 H.no 48, block campus,
                 <br />

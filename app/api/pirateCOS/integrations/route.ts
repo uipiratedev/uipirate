@@ -20,9 +20,17 @@ export async function GET() {
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
   // Fetch all integration documents for the current tenant
-  const integrationsList = (await Integration.find({ tenantId: tenantOid }).lean()) as any[];
+  const integrationsList = (await Integration.find({
+    tenantId: tenantOid,
+  }).lean()) as any[];
 
-  const platforms: SupportedPlatform[] = ["wordpress", "medium", "ghost", "buffer", "linkedin"];
+  const platforms: SupportedPlatform[] = [
+    "wordpress",
+    "medium",
+    "ghost",
+    "buffer",
+    "linkedin",
+  ];
 
   const results = platforms.map((platform) => {
     const doc = integrationsList.find((i) => i.platform === platform);
@@ -32,7 +40,9 @@ export async function GET() {
 
     if (doc) {
       if (platform === "wordpress") {
-        isConnected = !!doc.credentials?.wpUsername && !!doc.credentials?.wpAppPasswordEncrypted;
+        isConnected =
+          !!doc.credentials?.wpUsername &&
+          !!doc.credentials?.wpAppPasswordEncrypted;
         metadata = {
           siteUrl: doc.credentials?.siteUrl || "",
           wpUsername: doc.credentials?.wpUsername || "",
@@ -43,7 +53,9 @@ export async function GET() {
           mediumAuthorId: doc.credentials?.mediumAuthorId || "",
         };
       } else if (platform === "ghost") {
-        isConnected = !!doc.credentials?.ghostSiteUrl && !!doc.credentials?.ghostAdminKeyEncrypted;
+        isConnected =
+          !!doc.credentials?.ghostSiteUrl &&
+          !!doc.credentials?.ghostAdminKeyEncrypted;
         metadata = {
           ghostSiteUrl: doc.credentials?.ghostSiteUrl || "",
         };
@@ -56,7 +68,8 @@ export async function GET() {
         isConnected = !!doc.credentials?.linkedinTokenEncrypted;
         metadata = {
           linkedinUserId: doc.credentials?.linkedinUserId || "",
-          linkedinPreferArticles: doc.credentials?.linkedinPreferArticles !== false,
+          linkedinPreferArticles:
+            doc.credentials?.linkedinPreferArticles !== false,
         };
       }
     }
@@ -112,7 +125,10 @@ export async function POST(req: NextRequest) {
     linkedinPreferArticles,
   } = await req.json();
 
-  if (!platform || !["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)) {
+  if (
+    !platform ||
+    !["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)
+  ) {
     return NextResponse.json(
       { success: false, error: "Invalid or missing platform" },
       { status: 400 },
@@ -136,28 +152,36 @@ export async function POST(req: NextRequest) {
   // Update credentials based on platform
   if (platform === "wordpress") {
     if (typeof siteUrl === "string") doc.credentials.siteUrl = siteUrl.trim();
-    if (typeof wpUsername === "string") doc.credentials.wpUsername = wpUsername.trim();
+    if (typeof wpUsername === "string")
+      doc.credentials.wpUsername = wpUsername.trim();
     if (typeof wpAppPassword === "string" && wpAppPassword.trim()) {
       doc.credentials.wpAppPasswordEncrypted = encrypt(wpAppPassword.trim());
     }
   } else if (platform === "medium") {
-    if (typeof mediumAuthorId === "string") doc.credentials.mediumAuthorId = mediumAuthorId.trim();
+    if (typeof mediumAuthorId === "string")
+      doc.credentials.mediumAuthorId = mediumAuthorId.trim();
     if (typeof mediumToken === "string" && mediumToken.trim()) {
       doc.credentials.mediumTokenEncrypted = encrypt(mediumToken.trim());
     }
   } else if (platform === "ghost") {
-    if (typeof ghostSiteUrl === "string") doc.credentials.ghostSiteUrl = ghostSiteUrl.trim();
+    if (typeof ghostSiteUrl === "string")
+      doc.credentials.ghostSiteUrl = ghostSiteUrl.trim();
     if (typeof ghostAdminKey === "string" && ghostAdminKey.trim()) {
       doc.credentials.ghostAdminKeyEncrypted = encrypt(ghostAdminKey.trim());
     }
   } else if (platform === "buffer") {
-    if (Array.isArray(bufferProfileIds)) doc.credentials.bufferProfileIds = bufferProfileIds;
+    if (Array.isArray(bufferProfileIds))
+      doc.credentials.bufferProfileIds = bufferProfileIds;
     if (typeof bufferAccessToken === "string" && bufferAccessToken.trim()) {
-      doc.credentials.bufferAccessTokenEncrypted = encrypt(bufferAccessToken.trim());
+      doc.credentials.bufferAccessTokenEncrypted = encrypt(
+        bufferAccessToken.trim(),
+      );
     }
   } else if (platform === "linkedin") {
-    if (typeof linkedinUserId === "string") doc.credentials.linkedinUserId = linkedinUserId.trim();
-    if (typeof linkedinPreferArticles === "boolean") doc.credentials.linkedinPreferArticles = linkedinPreferArticles;
+    if (typeof linkedinUserId === "string")
+      doc.credentials.linkedinUserId = linkedinUserId.trim();
+    if (typeof linkedinPreferArticles === "boolean")
+      doc.credentials.linkedinPreferArticles = linkedinPreferArticles;
     if (typeof linkedinToken === "string" && linkedinToken.trim()) {
       doc.credentials.linkedinTokenEncrypted = encrypt(linkedinToken.trim());
     }

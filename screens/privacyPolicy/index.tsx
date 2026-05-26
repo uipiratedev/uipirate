@@ -370,7 +370,9 @@ const PrivacyPolicyScreen = () => {
 
                   <div className="text-white/70 text-sm mb-6 space-y-4">
                     <div>
-                      <p className="font-semibold text-white">Registered Address:</p>
+                      <p className="font-semibold text-white">
+                        Registered Address:
+                      </p>
                       <p className="text-white/60 leading-relaxed">
                         H.no 48, block campus,
                         <br />
@@ -378,7 +380,9 @@ const PrivacyPolicyScreen = () => {
                       </p>
                     </div>
                     <div className="border-t border-white/5 pt-3">
-                      <p className="font-semibold text-white">Customer Support Address:</p>
+                      <p className="font-semibold text-white">
+                        Customer Support Address:
+                      </p>
                       <p className="text-white/60 leading-relaxed">
                         Flat No : 1201, ATS Pious Hideaways,
                         <br />

@@ -14,14 +14,17 @@ export const ConditionalFooter = memo(function ConditionalFooter() {
   }, []);
 
   const shouldHideFooter = useMemo(() => {
-    const baseHide = pathname.startsWith("/pirateCOS") || pathname.startsWith("/admin");
+    const baseHide =
+      pathname.startsWith("/pirateCOS") || pathname.startsWith("/admin");
 
     if (!mounted) {
       return baseHide;
     }
 
-    const isSubdomain = typeof window !== "undefined" && 
-      (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+    const isSubdomain =
+      typeof window !== "undefined" &&
+      (window.location.hostname.startsWith("cos.") ||
+        window.location.hostname === "cos.uipirate.com");
 
     return isSubdomain || baseHide;
   }, [pathname, mounted]);

@@ -38,12 +38,12 @@ export interface IPost extends Document {
     noIndex?: boolean;
   };
   distributionRecords?: Array<{
-    platform: string;        // "wordpress" | "medium" | "ghost" | "buffer"
-    externalId: string;      // Platform's post ID — used for future updates/deletes
-    url: string;             // Canonical external URL (shown as a link in the UI)
+    platform: string; // "wordpress" | "medium" | "ghost" | "buffer"
+    externalId: string; // Platform's post ID — used for future updates/deletes
+    url: string; // Canonical external URL (shown as a link in the UI)
     distributedAt: Date;
     status: "success" | "failed" | "pending";
-    errorMessage?: string;   // Populated on failure; surfaced in Distribution Panel
+    errorMessage?: string; // Populated on failure; surfaced in Distribution Panel
   }>;
   calculateReadTime(): void;
 }
@@ -159,7 +159,11 @@ const PostSchema: Schema = new Schema(
         externalId: { type: String },
         url: { type: String },
         distributedAt: { type: Date, default: Date.now },
-        status: { type: String, enum: ["success", "failed", "pending"], default: "pending" },
+        status: {
+          type: String,
+          enum: ["success", "failed", "pending"],
+          default: "pending",
+        },
         errorMessage: { type: String },
       },
     ],

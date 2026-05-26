@@ -1,12 +1,19 @@
-import { IPost } from "@/models/Post";
 import { htmlToMarkdown } from "../transform/html-to-markdown";
-import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
+
+import {
+  BaseAdapter,
+  DistributionResult,
+  PublishOptions,
+} from "./base.adapter";
+
+import { IPost } from "@/models/Post";
 
 export class MediumAdapter extends BaseAdapter {
   private getAuthHeader(): string {
     const token = this.credentials.mediumTokenEncrypted
       ? this.decrypt(this.credentials.mediumTokenEncrypted)
       : "";
+
     return `Bearer ${token}`;
   }
 
@@ -20,42 +27,54 @@ export class MediumAdapter extends BaseAdapter {
     });
 
     const data = await res.json();
+
     if (!res.ok) {
-      throw new Error(data.errors?.[0]?.message || "Failed to fetch Medium profile data");
+      throw new Error(
+        data.errors?.[0]?.message || "Failed to fetch Medium profile data",
+      );
     }
 
     return data.data?.id;
   }
 
-  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(
+    post: IPost,
+    options?: PublishOptions,
+  ): Promise<DistributionResult> {
     try {
       let authorId = this.credentials.mediumAuthorId?.trim();
+
       if (!authorId) {
         authorId = await this.fetchAuthorId();
       }
 
       const markdownContent = htmlToMarkdown(post.content);
 
-      const res = await fetch(`https://api.medium.com/v1/users/${authorId}/posts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: this.getAuthHeader(),
-          Accept: "application/json",
+      const res = await fetch(
+        `https://api.medium.com/v1/users/${authorId}/posts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: this.getAuthHeader(),
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            title: post.title,
+            contentFormat: "markdown",
+            content: `# ${post.title}\n\n${markdownContent}`,
+            tags: post.tags || [],
+            publishStatus: "public",
+          }),
         },
-        body: JSON.stringify({
-          title: post.title,
-          contentFormat: "markdown",
-          content: `# ${post.title}\n\n${markdownContent}`,
-          tags: post.tags || [],
-          publishStatus: "public",
-        }),
-      });
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.errors?.[0]?.message || `Medium Error: ${res.statusText}`);
+        throw new Error(
+          data.errors?.[0]?.message || `Medium Error: ${res.statusText}`,
+        );
       }
 
       return {
@@ -85,12 +104,15 @@ export class MediumAdapter extends BaseAdapter {
       externalId,
       url: "",
       status: "failed",
-      errorMessage: "Medium API does not support post updates programmatically.",
+      errorMessage:
+        "Medium API does not support post updates programmatically.",
       distributedAt: new Date(),
     };
   }
 
-  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+  async verify(
+    externalId: string,
+  ): Promise<{ exists: boolean; errorMessage?: string }> {
     // Medium API does not support fetching posts by ID. We return exists: true defensively.
     return { exists: true };
   }

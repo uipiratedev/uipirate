@@ -1,17 +1,27 @@
+import {
+  BaseAdapter,
+  DistributionResult,
+  PublishOptions,
+} from "./base.adapter";
+
 import { IPost } from "@/models/Post";
-import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
 export class BufferAdapter extends BaseAdapter {
   private getAuthHeader(): string {
     const token = this.credentials.bufferAccessTokenEncrypted
       ? this.decrypt(this.credentials.bufferAccessTokenEncrypted)
       : "";
+
     return `Bearer ${token}`;
   }
 
-  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(
+    post: IPost,
+    options?: PublishOptions,
+  ): Promise<DistributionResult> {
     try {
       const profileIds = this.credentials.bufferProfileIds || [];
+
       if (profileIds.length === 0) {
         throw new Error("No social profile IDs connected in Buffer settings");
       }
@@ -20,6 +30,7 @@ export class BufferAdapter extends BaseAdapter {
       const text = `${post.title}\n\n${post.excerpt || ""}`.trim();
 
       const params = new URLSearchParams();
+
       params.append("text", text);
       profileIds.forEach((id) => {
         params.append("profile_ids[]", id);
@@ -31,14 +42,17 @@ export class BufferAdapter extends BaseAdapter {
         params.append("now", "true");
       }
 
-      const res = await fetch("https://api.bufferapp.com/1/updates/create.json", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: this.getAuthHeader(),
+      const res = await fetch(
+        "https://api.bufferapp.com/1/updates/create.json",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: this.getAuthHeader(),
+          },
+          body: params.toString(),
         },
-        body: params.toString(),
-      });
+      );
 
       const data = await res.json();
 
@@ -77,12 +91,15 @@ export class BufferAdapter extends BaseAdapter {
       externalId,
       url: "",
       status: "failed",
-      errorMessage: "Buffer updates are social posts and cannot be updated programmatically.",
+      errorMessage:
+        "Buffer updates are social posts and cannot be updated programmatically.",
       distributedAt: new Date(),
     };
   }
 
-  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+  async verify(
+    externalId: string,
+  ): Promise<{ exists: boolean; errorMessage?: string }> {
     // Buffer updates cannot be fetched directly by ID. Return exists: true defensively.
     return { exists: true };
   }

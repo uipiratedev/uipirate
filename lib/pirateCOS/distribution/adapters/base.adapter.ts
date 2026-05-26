@@ -1,5 +1,8 @@
 import { IPost } from "@/models/Post";
-import { IPlatformCredentials, SupportedPlatform } from "@/models/pirateCOS/Integration";
+import {
+  IPlatformCredentials,
+  SupportedPlatform,
+} from "@/models/pirateCOS/Integration";
 
 export interface DistributionResult {
   platform: SupportedPlatform;
@@ -21,10 +24,20 @@ export abstract class BaseAdapter {
     protected decrypt: (cipher: string) => string,
   ) {}
 
-  abstract publish(post: IPost, options?: PublishOptions): Promise<DistributionResult>;
+  abstract publish(
+    post: IPost,
+    options?: PublishOptions,
+  ): Promise<DistributionResult>;
   abstract update(post: IPost, externalId: string): Promise<DistributionResult>;
-  abstract verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }>;
-  async delete(externalId: string): Promise<{ success: boolean; errorMessage?: string }> {
-    return { success: false, errorMessage: "Deletion not supported on this platform." };
+  abstract verify(
+    externalId: string,
+  ): Promise<{ exists: boolean; errorMessage?: string }>;
+  async delete(
+    externalId: string,
+  ): Promise<{ success: boolean; errorMessage?: string }> {
+    return {
+      success: false,
+      errorMessage: "Deletion not supported on this platform.",
+    };
   }
 }

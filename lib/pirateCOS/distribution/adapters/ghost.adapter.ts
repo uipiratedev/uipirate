@@ -1,14 +1,22 @@
 import jwt from "jsonwebtoken";
+
+import {
+  BaseAdapter,
+  DistributionResult,
+  PublishOptions,
+} from "./base.adapter";
+
 import { IPost } from "@/models/Post";
-import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
 export class GhostAdapter extends BaseAdapter {
   private getApiUrl(endpoint = ""): string {
     let siteUrl = this.credentials.ghostSiteUrl || "";
+
     if (!siteUrl.startsWith("http://") && !siteUrl.startsWith("https://")) {
       siteUrl = `https://${siteUrl}`;
     }
     siteUrl = siteUrl.replace(/\/$/, "");
+
     // Default Ghost admin API path is /ghost/api/admin
     return `${siteUrl}/ghost/api/admin${endpoint}`;
   }
@@ -19,8 +27,11 @@ export class GhostAdapter extends BaseAdapter {
       : "";
 
     const parts = adminKey.split(":");
+
     if (parts.length !== 2) {
-      throw new Error("Invalid Ghost Admin API Key format — expected id:secret.");
+      throw new Error(
+        "Invalid Ghost Admin API Key format — expected id:secret.",
+      );
     }
 
     const [id, secret] = parts;
@@ -34,7 +45,10 @@ export class GhostAdapter extends BaseAdapter {
     });
   }
 
-  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(
+    post: IPost,
+    options?: PublishOptions,
+  ): Promise<DistributionResult> {
     try {
       const token = this.getJWT();
 
@@ -69,10 +83,13 @@ export class GhostAdapter extends BaseAdapter {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.errors?.[0]?.message || `Ghost Error: ${res.statusText}`);
+        throw new Error(
+          data.errors?.[0]?.message || `Ghost Error: ${res.statusText}`,
+        );
       }
 
       const ghostPost = data.posts?.[0];
+
       if (!ghostPost) {
         throw new Error("No post returned from Ghost Admin API");
       }
@@ -109,39 +126,49 @@ export class GhostAdapter extends BaseAdapter {
       });
 
       const getData = await getRes.json();
+
       if (!getRes.ok) {
-        throw new Error(getData.errors?.[0]?.message || "Failed to retrieve existing Ghost post");
+        throw new Error(
+          getData.errors?.[0]?.message ||
+            "Failed to retrieve existing Ghost post",
+        );
       }
 
       const existingPost = getData.posts?.[0];
+
       if (!existingPost) {
         throw new Error("Existing Ghost post not found");
       }
 
       // Update post using PUT and ?source=html
-      const res = await fetch(this.getApiUrl(`/posts/${externalId}/?source=html`), {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Ghost ${token}`,
+      const res = await fetch(
+        this.getApiUrl(`/posts/${externalId}/?source=html`),
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Ghost ${token}`,
+          },
+          body: JSON.stringify({
+            posts: [
+              {
+                title: post.title,
+                html: post.content,
+                custom_excerpt: post.excerpt || "",
+                updated_at: existingPost.updated_at, // Send to prevent edit conflicts
+                tags: post.tags || [],
+              },
+            ],
+          }),
         },
-        body: JSON.stringify({
-          posts: [
-            {
-              title: post.title,
-              html: post.content,
-              custom_excerpt: post.excerpt || "",
-              updated_at: existingPost.updated_at, // Send to prevent edit conflicts
-              tags: post.tags || [],
-            },
-          ],
-        }),
-      });
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.errors?.[0]?.message || `Ghost Error: ${res.statusText}`);
+        throw new Error(
+          data.errors?.[0]?.message || `Ghost Error: ${res.statusText}`,
+        );
       }
 
       const ghostPost = data.posts?.[0];
@@ -165,7 +192,9 @@ export class GhostAdapter extends BaseAdapter {
     }
   }
 
-  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+  async verify(
+    externalId: string,
+  ): Promise<{ exists: boolean; errorMessage?: string }> {
     try {
       const token = this.getJWT();
       const res = await fetch(this.getApiUrl(`/posts/${externalId}/`), {
@@ -179,7 +208,12 @@ export class GhostAdapter extends BaseAdapter {
         return { exists: false, errorMessage: "Post was deleted on Ghost." };
       }
 
-      return { exists: res.ok, errorMessage: res.ok ? undefined : "Ghost post verification probe returned failure status." };
+      return {
+        exists: res.ok,
+        errorMessage: res.ok
+          ? undefined
+          : "Ghost post verification probe returned failure status.",
+      };
     } catch (err: any) {
       return { exists: true };
     }

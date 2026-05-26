@@ -90,11 +90,23 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { title, content, excerpt, featuredImage, tags, postType, slug, seo } = await req.json();
+    const {
+      title,
+      content,
+      excerpt,
+      featuredImage,
+      tags,
+      postType,
+      slug,
+      seo,
+    } = await req.json();
 
     if (!title || !content) {
       return NextResponse.json(
-        { success: false, error: "Missing required fields: title and content are required." },
+        {
+          success: false,
+          error: "Missing required fields: title and content are required.",
+        },
         { status: 400 },
       );
     }
@@ -111,10 +123,17 @@ export async function POST(req: NextRequest) {
         .replace(/[^a-z0-9-]/g, "");
 
     // Uniqueness validation per tenant
-    const existing = await Post.findOne({ tenantId: tenantOid, slug: resolvedSlug });
+    const existing = await Post.findOne({
+      tenantId: tenantOid,
+      slug: resolvedSlug,
+    });
+
     if (existing) {
       return NextResponse.json(
-        { success: false, error: `Slug "${resolvedSlug}" already exists for this tenant.` },
+        {
+          success: false,
+          error: `Slug "${resolvedSlug}" already exists for this tenant.`,
+        },
         { status: 400 },
       );
     }

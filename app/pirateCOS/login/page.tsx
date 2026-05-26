@@ -37,8 +37,10 @@ function LoginForm() {
       }
 
       // Redirect to dashboard or callback URL
-      const isSubdomain = typeof window !== "undefined" &&
-        (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+      const isSubdomain =
+        typeof window !== "undefined" &&
+        (window.location.hostname.startsWith("cos.") ||
+          window.location.hostname === "cos.uipirate.com");
       const defaultDest = isSubdomain ? "/dashboard" : "/pirateCOS/dashboard";
       const callbackUrl = searchParams.get("callbackUrl") || defaultDest;
 
@@ -51,7 +53,10 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex dark text-foreground" style={{ background: "#151514" }}>
+    <div
+      className="min-h-screen flex dark text-foreground"
+      style={{ background: "#151514" }}
+    >
       {/* Left branding panel */}
       <div
         className="hidden lg:flex flex-col justify-between w-80 p-10 flex-shrink-0"
@@ -150,13 +155,6 @@ function LoginForm() {
             <div>
               <Input
                 required
-                label="Email"
-                labelPlacement="outside"
-                placeholder="admin@uipirate.com"
-                type="email"
-                variant="bordered"
-                radius="lg"
-                size="lg"
                 classNames={{
                   label: "text-xs font-medium font-sans !text-white/50 mb-1",
                   inputWrapper:
@@ -165,20 +163,20 @@ function LoginForm() {
                     "text-base font-sans !text-white placeholder:!text-white/40",
                 }}
                 disabled={isLoading}
+                label="Email"
+                labelPlacement="outside"
+                placeholder="admin@uipirate.com"
+                radius="lg"
+                size="lg"
+                type="email"
                 value={email}
+                variant="bordered"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
               <Input
                 required
-                label="Password"
-                labelPlacement="outside"
-                placeholder="••••••••"
-                type="password"
-                variant="bordered"
-                radius="lg"
-                size="lg"
                 classNames={{
                   label: "text-xs font-medium font-sans !text-white/50 mb-1",
                   inputWrapper:
@@ -187,7 +185,14 @@ function LoginForm() {
                     "text-base font-sans !text-white placeholder:!text-white/40",
                 }}
                 disabled={isLoading}
+                label="Password"
+                labelPlacement="outside"
+                placeholder="••••••••"
+                radius="lg"
+                size="lg"
+                type="password"
                 value={password}
+                variant="bordered"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
@@ -207,12 +212,16 @@ function LoginForm() {
               className="text-xs font-geist text-white/50 hover:text-white transition-colors"
               href={
                 typeof window !== "undefined" &&
-                  (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com")
+                (window.location.hostname.startsWith("cos.") ||
+                  window.location.hostname === "cos.uipirate.com")
                   ? "/register"
                   : "/pirateCOS/register"
               }
             >
-              Don't have an account? <span className="font-semibold" style={{ color: "#FF5B04" }}>Sign Up</span>
+              Don't have an account?{" "}
+              <span className="font-semibold" style={{ color: "#FF5B04" }}>
+                Sign Up
+              </span>
             </a>
 
             <a

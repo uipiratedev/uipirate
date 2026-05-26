@@ -30,7 +30,10 @@ export async function DELETE(
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
   // Hard delete or set isActive to false. Hard deleting is clean since it's fully revoked
-  const result = await ApiKey.deleteOne({ _id: new mongoose.Types.ObjectId(id), tenantId: tenantOid });
+  const result = await ApiKey.deleteOne({
+    _id: new mongoose.Types.ObjectId(id),
+    tenantId: tenantOid,
+  });
 
   if (result.deletedCount === 0) {
     return NextResponse.json(

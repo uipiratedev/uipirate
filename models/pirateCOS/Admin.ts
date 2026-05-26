@@ -102,13 +102,13 @@ const AdminSchema: Schema = new Schema(
       default: 20.0, // Give new/free accounts 20 free credits initially
     },
     usageThisMonth: {
-      aiRequests:    { type: Number, default: 0 },
+      aiRequests: { type: Number, default: 0 },
       distributions: { type: Number, default: 0 },
     },
     byokEnabled: {
-      openai:    { type: Boolean, default: false },
-      gemini:    { type: Boolean, default: false },
-      mistral:   { type: Boolean, default: false },
+      openai: { type: Boolean, default: false },
+      gemini: { type: Boolean, default: false },
+      mistral: { type: Boolean, default: false },
       anthropic: { type: Boolean, default: false },
     },
     trialStartedAt: {

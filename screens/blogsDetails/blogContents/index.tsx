@@ -25,34 +25,62 @@ import GlobalCTA from "@/components/GlobalCTA";
 
 // ── TOC helpers ───────────────────────────────────────────────────────────────
 function slugifyHeading(text: string): string {
-  return text.toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").replace(/--+/g, "-");
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/--+/g, "-");
 }
 
-function parseHeadings(html: string): { id: string; text: string; level: 2 | 3 }[] {
+function parseHeadings(
+  html: string,
+): { id: string; text: string; level: 2 | 3 }[] {
   const out: { id: string; text: string; level: 2 | 3 }[] = [];
   const seen: Record<string, number> = {};
   let m: RegExpExecArray | null;
   const re = /<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi;
+
   while ((m = re.exec(html))) {
     const lvl = parseInt(m[1]) as 2 | 3;
     const txt = m[2].replace(/<[^>]+>/g, "").trim();
+
     if (!txt) continue;
     let id = slugifyHeading(txt);
-    if (seen[id] != null) { seen[id]++; id += `-${seen[id]}`; } else { seen[id] = 0; }
+
+    if (seen[id] != null) {
+      seen[id]++;
+      id += `-${seen[id]}`;
+    } else {
+      seen[id] = 0;
+    }
     out.push({ id, text: txt, level: lvl });
   }
+
   return out;
 }
 
 function injectHeadingIds(html: string): string {
   const seen: Record<string, number> = {};
-  return html.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi, (_, lvl, attrs, inner) => {
-    const txt = inner.replace(/<[^>]+>/g, "").trim();
-    if (!txt) return _;
-    let id = slugifyHeading(txt);
-    if (seen[id] != null) { seen[id]++; id += `-${seen[id]}`; } else { seen[id] = 0; }
-    return `<h${lvl}${attrs.replace(/\s*id="[^"]*"/gi, "")} id="${id}">${inner}</h${lvl}>`;
-  });
+
+  return html.replace(
+    /<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi,
+    (_, lvl, attrs, inner) => {
+      const txt = inner.replace(/<[^>]+>/g, "").trim();
+
+      if (!txt) return _;
+      let id = slugifyHeading(txt);
+
+      if (seen[id] != null) {
+        seen[id]++;
+        id += `-${seen[id]}`;
+      } else {
+        seen[id] = 0;
+      }
+
+      return `<h${lvl}${attrs.replace(/\s*id="[^"]*"/gi, "")} id="${id}">${inner}</h${lvl}>`;
+    },
+  );
 }
 
 interface PostSEO {
@@ -131,8 +159,14 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
     return content;
   }, [blog.content]);
 
-  const headings = useMemo(() => parseHeadings(sanitizedContent), [sanitizedContent]);
-  const processedContent = useMemo(() => injectHeadingIds(sanitizedContent), [sanitizedContent]);
+  const headings = useMemo(
+    () => parseHeadings(sanitizedContent),
+    [sanitizedContent],
+  );
+  const processedContent = useMemo(
+    () => injectHeadingIds(sanitizedContent),
+    [sanitizedContent],
+  );
   const [activeId, setActiveId] = useState("");
   const hasToc = headings.length >= 2;
 
@@ -142,16 +176,20 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
       // Walk headings in order; keep updating `current` as long as the heading
       // has scrolled past the 120 px mark from the top of the viewport.
       let current = headings[0].id;
+
       for (const { id } of headings) {
         const el = document.getElementById(id);
+
         if (el && el.getBoundingClientRect().top <= 120) {
           current = id;
         }
       }
       setActiveId(current);
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // initialise on mount so the first heading is highlighted immediately
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [headings]);
 
@@ -217,7 +255,11 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
             <span
               key={tag}
               className="text-xs px-2.5 py-0.5 rounded-full"
-              style={{ background: "#FFF0E8", color: "#FF5B04", fontFamily: "var(--font-geist)" }}
+              style={{
+                background: "#FFF0E8",
+                color: "#FF5B04",
+                fontFamily: "var(--font-geist)",
+              }}
             >
               {tag}
             </span>
@@ -229,7 +271,10 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
       {blog.excerpt && (
         <p
           className="mt-6 text-lg leading-relaxed pl-4 border-l-4 border-orange-200"
-          style={{ color: "#6b7280", fontFamily: "var(--font-jakarta, var(--font-sans))" }}
+          style={{
+            color: "#6b7280",
+            fontFamily: "var(--font-jakarta, var(--font-sans))",
+          }}
         >
           {blog.excerpt}
         </p>
@@ -242,13 +287,16 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
             on mobile without letting them push past the flex-1 column boundary. */}
         <div className="blog-prose-scroll-wrapper min-w-0 flex-1">
           <div
-            className="blog-prose"
             dangerouslySetInnerHTML={{ __html: processedContent }}
+            className="blog-prose"
           />
         </div>
 
         {hasToc && (
-          <aside className="hidden xl:block flex-shrink-0" style={{ width: 220 }}>
+          <aside
+            className="hidden xl:block flex-shrink-0"
+            style={{ width: 220 }}
+          >
             <div className="sticky top-24 bg-gray-50 border border-gray-100 rounded-3xl p-6">
               <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">
                 Contents
@@ -266,7 +314,10 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
                     }}
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      document.getElementById(h.id)?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
                       setActiveId(h.id);
                     }}
                   >

@@ -1,11 +1,17 @@
+import {
+  BaseAdapter,
+  DistributionResult,
+  PublishOptions,
+} from "./base.adapter";
+
 import { IPost } from "@/models/Post";
-import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
 export class LinkedInAdapter extends BaseAdapter {
   private getAuthHeader(): string {
     const token = this.credentials.linkedinTokenEncrypted
       ? this.decrypt(this.credentials.linkedinTokenEncrypted)
       : "";
+
     return `Bearer ${token}`;
   }
 
@@ -21,6 +27,7 @@ export class LinkedInAdapter extends BaseAdapter {
 
       if (res.ok) {
         const data = await res.json();
+
         if (data.sub) {
           return data.sub; // OpenID Connect unique subject identifier
         }
@@ -38,6 +45,7 @@ export class LinkedInAdapter extends BaseAdapter {
     });
 
     const data = await res.json();
+
     if (!res.ok) {
       throw new Error(data.message || "Failed to fetch LinkedIn profile ID");
     }
@@ -45,17 +53,30 @@ export class LinkedInAdapter extends BaseAdapter {
     return data.id;
   }
 
-  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(
+    post: IPost,
+    options?: PublishOptions,
+  ): Promise<DistributionResult> {
     try {
       let memberId = this.credentials.linkedinUserId?.trim();
+
       if (!memberId) {
         memberId = await this.fetchMemberId();
       }
 
       // Clean HTML tags from content/excerpt for commentary text
-      const cleanExcerpt = post.excerpt || post.content.replace(/<[^>]*>/g, "").slice(0, 300).trim() + "...";
+      const cleanExcerpt =
+        post.excerpt ||
+        post.content
+          .replace(/<[^>]*>/g, "")
+          .slice(0, 300)
+          .trim() + "...";
       const hashtags = post.tags?.length
-        ? "\n\n" + post.tags.slice(0, 5).map(tag => `#${tag.replace(/\s/g, "")}`).join(" ")
+        ? "\n\n" +
+          post.tags
+            .slice(0, 5)
+            .map((tag) => `#${tag.replace(/\s/g, "")}`)
+            .join(" ")
         : "";
 
       const commentary = `${post.title}\n\n${cleanExcerpt}${hashtags}`;
@@ -108,8 +129,10 @@ export class LinkedInAdapter extends BaseAdapter {
 
       if (!res.ok) {
         let errorMsg = `LinkedIn Error: ${res.status} ${res.statusText}`;
+
         try {
           const errorData = await res.json();
+
           if (errorData.message) {
             errorMsg = errorData.message;
           } else if (errorData.error) {
@@ -123,7 +146,9 @@ export class LinkedInAdapter extends BaseAdapter {
 
       // Extract generated Post URN from x-restli-id header
       const externalId = res.headers.get("x-restli-id") || "";
-      const url = externalId ? `https://www.linkedin.com/feed/update/${externalId}` : "";
+      const url = externalId
+        ? `https://www.linkedin.com/feed/update/${externalId}`
+        : "";
 
       return {
         platform: "linkedin",
@@ -151,43 +176,66 @@ export class LinkedInAdapter extends BaseAdapter {
       externalId,
       url: `https://www.linkedin.com/feed/update/${externalId}`,
       status: "failed",
-      errorMessage: "LinkedIn API does not support post updates programmatically.",
+      errorMessage:
+        "LinkedIn API does not support post updates programmatically.",
       distributedAt: new Date(),
     };
   }
 
-  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+  async verify(
+    externalId: string,
+  ): Promise<{ exists: boolean; errorMessage?: string }> {
     try {
-      const res = await fetch(`https://api.linkedin.com/rest/posts/${encodeURIComponent(externalId)}`, {
-        method: "GET",
-        headers: {
-          Authorization: this.getAuthHeader(),
-          "LinkedIn-Version": "202605",
-          "X-Restli-Protocol-Version": "2.0.0",
+      const res = await fetch(
+        `https://api.linkedin.com/rest/posts/${encodeURIComponent(externalId)}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: this.getAuthHeader(),
+            "LinkedIn-Version": "202605",
+            "X-Restli-Protocol-Version": "2.0.0",
+          },
         },
-      });
+      );
 
-      console.log(`[LinkedIn Verify] Probing externalId: ${externalId}, HTTP Status: ${res.status}`);
+      console.log(
+        `[LinkedIn Verify] Probing externalId: ${externalId}, HTTP Status: ${res.status}`,
+      );
 
       if (res.status === 404 || res.status === 410) {
-        console.log(`[LinkedIn Verify] Post is confirmed deleted (status ${res.status})`);
-        return { exists: false, errorMessage: "Post was deleted or is no longer accessible on LinkedIn." };
+        console.log(
+          `[LinkedIn Verify] Post is confirmed deleted (status ${res.status})`,
+        );
+
+        return {
+          exists: false,
+          errorMessage:
+            "Post was deleted or is no longer accessible on LinkedIn.",
+        };
       }
 
       if (res.status === 403 || res.status === 401) {
-        console.log(`[LinkedIn Verify] Access restricted (status ${res.status}). Treating as exists defensively.`);
+        console.log(
+          `[LinkedIn Verify] Access restricted (status ${res.status}). Treating as exists defensively.`,
+        );
+
         return { exists: true };
       }
 
       let data: any = {};
+
       try {
         const text = await res.text();
+
         console.log(`[LinkedIn Verify] Response body:`, text);
         if (text) {
           data = JSON.parse(text);
         }
       } catch (e) {
-        console.log(`[LinkedIn Verify] Failed to read or parse response body:`, e);
+        console.log(
+          `[LinkedIn Verify] Failed to read or parse response body:`,
+          e,
+        );
       }
 
       if (!res.ok) {
@@ -195,39 +243,59 @@ export class LinkedInAdapter extends BaseAdapter {
       }
 
       const isDeleted = data.lifecycleState === "DELETED";
-      console.log(`[LinkedIn Verify] Lifecycle state: ${data.lifecycleState}, isDeleted: ${isDeleted}`);
-      return { exists: !isDeleted, errorMessage: isDeleted ? "Post was deleted on LinkedIn." : undefined };
+
+      console.log(
+        `[LinkedIn Verify] Lifecycle state: ${data.lifecycleState}, isDeleted: ${isDeleted}`,
+      );
+
+      return {
+        exists: !isDeleted,
+        errorMessage: isDeleted ? "Post was deleted on LinkedIn." : undefined,
+      };
     } catch (err: any) {
       console.error("LinkedIn verification probe failed:", err);
       const errMsg = String(err.message || err).toLowerCase();
+
       if (
         errMsg.includes("does not exist") ||
         errMsg.includes("not found") ||
         errMsg.includes("deleted") ||
         errMsg.includes("404")
       ) {
-        return { exists: false, errorMessage: "Post was deleted or is no longer accessible on LinkedIn." };
+        return {
+          exists: false,
+          errorMessage:
+            "Post was deleted or is no longer accessible on LinkedIn.",
+        };
       }
+
       // Return true defensively for transient network errors
       return { exists: true };
     }
   }
 
-  async delete(externalId: string): Promise<{ success: boolean; errorMessage?: string }> {
+  async delete(
+    externalId: string,
+  ): Promise<{ success: boolean; errorMessage?: string }> {
     try {
-      const res = await fetch(`https://api.linkedin.com/rest/posts/${encodeURIComponent(externalId)}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: this.getAuthHeader(),
-          "LinkedIn-Version": "202605",
-          "X-Restli-Protocol-Version": "2.0.0",
+      const res = await fetch(
+        `https://api.linkedin.com/rest/posts/${encodeURIComponent(externalId)}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: this.getAuthHeader(),
+            "LinkedIn-Version": "202605",
+            "X-Restli-Protocol-Version": "2.0.0",
+          },
         },
-      });
+      );
 
       if (!res.ok && res.status !== 404 && res.status !== 410) {
         let errorMsg = `LinkedIn Delete Error: ${res.status} ${res.statusText}`;
+
         try {
           const errorData = await res.json();
+
           if (errorData.message) {
             errorMsg = errorData.message;
           }
@@ -238,8 +306,11 @@ export class LinkedInAdapter extends BaseAdapter {
       return { success: true };
     } catch (err: any) {
       console.error("LinkedIn post deletion failed:", err);
-      return { success: false, errorMessage: err.message || "Failed to delete post on LinkedIn" };
+
+      return {
+        success: false,
+        errorMessage: err.message || "Failed to delete post on LinkedIn",
+      };
     }
   }
 }
-

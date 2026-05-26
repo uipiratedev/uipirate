@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import { headers } from "next/headers";
 
 import { Providers } from "./providers";
 
@@ -21,7 +22,6 @@ import { ConditionalFooter } from "@/components/ConditionalFooter";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://uipirate.com"),
@@ -116,9 +116,7 @@ export default async function RootLayout({
           )}
         >
           <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-            <main className="min-h-screen">
-              {children}
-            </main>
+            <main className="min-h-screen">{children}</main>
           </Providers>
         </body>
       </html>

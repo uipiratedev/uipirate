@@ -11,7 +11,9 @@ function wordCount(htmlOrText: string): number {
   // Strip HTML tags
   const text = htmlOrText.replace(/<[^>]*>/g, " ");
   const cleanText = text.trim();
+
   if (!cleanText) return 0;
+
   return cleanText.split(/\s+/).length;
 }
 

@@ -24,16 +24,23 @@ export async function POST(request: NextRequest) {
 
     if (password.length < 6) {
       return NextResponse.json(
-        { success: false, message: "Password must be at least 6 characters long" },
+        {
+          success: false,
+          message: "Password must be at least 6 characters long",
+        },
         { status: 400 },
       );
     }
 
     // 2. Check if user already exists
     const existingUser = await Admin.findOne({ email });
+
     if (existingUser) {
       return NextResponse.json(
-        { success: false, message: "Email is already registered. Please sign in instead." },
+        {
+          success: false,
+          message: "Email is already registered. Please sign in instead.",
+        },
         { status: 400 },
       );
     }
@@ -48,7 +55,12 @@ export async function POST(request: NextRequest) {
       plan: "free",
       creditsRemaining: 20.0,
       usageThisMonth: { aiRequests: 0, distributions: 0 },
-      byokEnabled: { openai: false, gemini: false, mistral: false, anthropic: false },
+      byokEnabled: {
+        openai: false,
+        gemini: false,
+        mistral: false,
+        anthropic: false,
+      },
       lifetimeValue: 0,
     });
 
@@ -69,6 +81,7 @@ export async function POST(request: NextRequest) {
 
     // 5. Set HTTP-Only Cookie
     const cookieStore = await cookies();
+
     cookieStore.set("auth-token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -89,11 +102,14 @@ export async function POST(request: NextRequest) {
       },
       token,
     });
-
   } catch (error: any) {
     console.error("Registration error:", error);
+
     return NextResponse.json(
-      { success: false, message: error.message || "Internal server error during registration" },
+      {
+        success: false,
+        message: error.message || "Internal server error during registration",
+      },
       { status: 500 },
     );
   }

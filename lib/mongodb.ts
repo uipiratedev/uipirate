@@ -48,12 +48,16 @@ async function dbConnect(): Promise<typeof mongoose> {
 
     // Auto-migration: rename "blogs" collection to "posts" if needed
     const db = cached.conn.connection.db;
+
     if (db) {
       const collections = await db.listCollections().toArray();
       const hasBlogs = collections.some((c) => c.name === "blogs");
       const hasPosts = collections.some((c) => c.name === "posts");
+
       if (hasBlogs && !hasPosts) {
-        console.log("Migration: Renaming database collection 'blogs' to 'posts'...");
+        console.log(
+          "Migration: Renaming database collection 'blogs' to 'posts'...",
+        );
         await db.renameCollection("blogs", "posts").catch((err) => {
           console.error("Migration warning during collection rename:", err);
         });
