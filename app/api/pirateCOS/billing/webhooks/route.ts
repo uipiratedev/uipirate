@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import mongoose from "mongoose";
 
 import dbConnect from "@/lib/mongodb";
 import Admin from "@/models/pirateCOS/Admin";
@@ -9,7 +8,9 @@ import BillingEvent from "@/models/pirateCOS/BillingEvent";
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
-const stripe = STRIPE_SECRET_KEY ? new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" as any }) : null;
+const stripe = STRIPE_SECRET_KEY
+  ? new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" as any })
+  : null;
 
 export async function POST(req: NextRequest) {
   const bodyText = await req.text();
@@ -19,19 +20,30 @@ export async function POST(req: NextRequest) {
 
   try {
     if (stripe && STRIPE_WEBHOOK_SECRET) {
-      event = stripe.webhooks.constructEvent(bodyText, sig, STRIPE_WEBHOOK_SECRET);
+      event = stripe.webhooks.constructEvent(
+        bodyText,
+        sig,
+        STRIPE_WEBHOOK_SECRET,
+      );
     } else {
       // Sandbox fallback: parse directly for unverified sandbox emulation
-      console.warn("⚠️ Webhook Signature Verification Bypassed. STRIPE_WEBHOOK_SECRET is not set.");
+      console.warn(
+        "⚠️ Webhook Signature Verification Bypassed. STRIPE_WEBHOOK_SECRET is not set.",
+      );
       event = JSON.parse(bodyText) as any;
     }
   } catch (err: any) {
     console.error("Webhook signature verification failed:", err.message);
-    return NextResponse.json({ success: false, error: "Invalid signature" }, { status: 400 });
+
+    return NextResponse.json(
+      { success: false, error: "Invalid signature" },
+      { status: 400 },
+    );
   }
 
   await dbConnect();
   const type = event.type;
+
   console.log(`🔔 Stripe Webhook Received: ${type} [ID: ${event.id}]`);
 
   try {
@@ -47,6 +59,7 @@ export async function POST(req: NextRequest) {
         }
 
         const admin = await Admin.findById(tenantId);
+
         if (!admin) {
           console.warn(`❌ Tenant ${tenantId} not found in database.`);
           break;
@@ -54,16 +67,20 @@ export async function POST(req: NextRequest) {
 
         if (purchaseType === "subscription") {
           const subId = session.subscription as string;
+
           admin.plan = "pro";
           admin.stripeSubscriptionId = subId;
           admin.subscriptionStatus = "active";
           admin.creditsRemaining += 500; // Provide Pro credit allowance
-          
+
           if (stripe && subId) {
             const sub = (await stripe.subscriptions.retrieve(subId)) as any;
+
             admin.currentPeriodEnd = new Date(sub.current_period_end * 1000);
           } else {
-            admin.currentPeriodEnd = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+            admin.currentPeriodEnd = new Date(
+              Date.now() + 30 * 24 * 60 * 60 * 1000,
+            );
           }
           await admin.save();
 
@@ -71,12 +88,16 @@ export async function POST(req: NextRequest) {
             tenantId: admin._id,
             event: "subscription.created",
             stripeEventId: event.id,
-            amount: session.amount_total ? session.amount_total / 100 : undefined,
+            amount: session.amount_total
+              ? session.amount_total / 100
+              : undefined,
             currency: session.currency || undefined,
             metadata: { stripeSubscriptionId: subId },
           });
 
-          console.log(`🟢 Successfully activated Pro Subscription for tenant ${admin.email}`);
+          console.log(
+            `🟢 Successfully activated Pro Subscription for tenant ${admin.email}`,
+          );
         } else if (purchaseType === "topup") {
           // Dynamically calculate credits based on actual amount paid (200 credits per USD $1.00)
           const centsPaid = session.amount_total || 500;
@@ -94,7 +115,9 @@ export async function POST(req: NextRequest) {
             metadata: { purchaseType: "dynamic_topup", creditsGranted },
           });
 
-          console.log(`🔋 Successfully credited ${creditsGranted.toLocaleString()} top-up credits to tenant ${admin.email} (Paid: $${(centsPaid / 100).toFixed(2)})`);
+          console.log(
+            `🔋 Successfully credited ${creditsGranted.toLocaleString()} top-up credits to tenant ${admin.email} (Paid: $${(centsPaid / 100).toFixed(2)})`,
+          );
         }
         break;
       }
@@ -105,8 +128,11 @@ export async function POST(req: NextRequest) {
         const amountPaid = invoice.amount_paid / 100;
 
         const admin = await Admin.findOne({ stripeCustomerId: customerId });
+
         if (!admin) {
-          console.warn(`❌ No tenant found with Stripe customer ID: ${customerId}`);
+          console.warn(
+            `❌ No tenant found with Stripe customer ID: ${customerId}`,
+          );
           break;
         }
 
@@ -123,7 +149,9 @@ export async function POST(req: NextRequest) {
           metadata: { stripeInvoiceId: invoice.id },
         });
 
-        console.log(`✅ Invoice paid for ${admin.email}: $${amountPaid}. Total lifetime: $${admin.lifetimeValue}`);
+        console.log(
+          `✅ Invoice paid for ${admin.email}: $${amountPaid}. Total lifetime: $${admin.lifetimeValue}`,
+        );
         break;
       }
 
@@ -132,6 +160,7 @@ export async function POST(req: NextRequest) {
         const customerId = invoice.customer as string;
 
         const admin = await Admin.findOne({ stripeCustomerId: customerId });
+
         if (!admin) break;
 
         admin.subscriptionStatus = "past_due";
@@ -146,7 +175,9 @@ export async function POST(req: NextRequest) {
           metadata: { stripeInvoiceId: invoice.id },
         });
 
-        console.warn(`⚠️ Payment failed for ${admin.email}. Status set to past_due.`);
+        console.warn(
+          `⚠️ Payment failed for ${admin.email}. Status set to past_due.`,
+        );
         break;
       }
 
@@ -155,6 +186,7 @@ export async function POST(req: NextRequest) {
         const customerId = sub.customer as string;
 
         const admin = await Admin.findOne({ stripeCustomerId: customerId });
+
         if (!admin) break;
 
         admin.subscriptionStatus = sub.status as any;
@@ -168,7 +200,9 @@ export async function POST(req: NextRequest) {
           metadata: { status: sub.status, stripeSubscriptionId: sub.id },
         });
 
-        console.log(`🔄 Subscription updated for ${admin.email}. Status: ${sub.status}`);
+        console.log(
+          `🔄 Subscription updated for ${admin.email}. Status: ${sub.status}`,
+        );
         break;
       }
 
@@ -177,6 +211,7 @@ export async function POST(req: NextRequest) {
         const customerId = sub.customer as string;
 
         const admin = await Admin.findOne({ stripeCustomerId: customerId });
+
         if (!admin) break;
 
         admin.plan = "free";
@@ -191,7 +226,9 @@ export async function POST(req: NextRequest) {
           metadata: { stripeSubscriptionId: sub.id },
         });
 
-        console.log(`🛑 Subscription canceled for ${admin.email}. Plan downgraded to Free.`);
+        console.log(
+          `🛑 Subscription canceled for ${admin.email}. Plan downgraded to Free.`,
+        );
         break;
       }
 
@@ -202,6 +239,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, received: true });
   } catch (err: any) {
     console.error("Webhook processing error:", err);
-    return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 });
+
+    return NextResponse.json(
+      { success: false, error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

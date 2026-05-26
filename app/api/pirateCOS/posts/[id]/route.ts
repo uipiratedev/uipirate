@@ -51,7 +51,9 @@ export async function GET(
     const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
     // Try to find by ID first, then by slug, scoped strictly to tenant
-    let blog = await Post.findOne({ _id: id, tenantId: tenantOid }).catch(() => null);
+    let blog = await Post.findOne({ _id: id, tenantId: tenantOid }).catch(
+      () => null,
+    );
 
     if (!blog) {
       const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
@@ -225,7 +227,10 @@ export async function DELETE(
 
     const { id } = params;
     const deleteTenantOid = new mongoose.Types.ObjectId(user.tenantId);
-    const blog = await Post.findOneAndDelete({ _id: id, tenantId: deleteTenantOid });
+    const blog = await Post.findOneAndDelete({
+      _id: id,
+      tenantId: deleteTenantOid,
+    });
 
     if (!blog) {
       return NextResponse.json(

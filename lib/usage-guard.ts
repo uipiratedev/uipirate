@@ -1,4 +1,5 @@
 import dbConnect from "./mongodb";
+
 import Admin from "@/models/pirateCOS/Admin";
 
 export class CreditLimitError extends Error {
@@ -27,6 +28,7 @@ export async function deductCredits(
   await dbConnect();
 
   const admin = await Admin.findById(tenantId);
+
   if (!admin) {
     throw new Error("Tenant context not found");
   }
@@ -35,6 +37,7 @@ export async function deductCredits(
 
   // Determine if BYOK is active
   let usesBYOK = false;
+
   if (isAIAction) {
     if (engine && admin.byokEnabled && (admin.byokEnabled as any)[engine]) {
       usesBYOK = true;
@@ -52,7 +55,10 @@ export async function deductCredits(
 
   // BYOK users enjoy unlimited, direct runs with 0% operational cost to the platform
   if (usesBYOK) {
-    console.log(`BYOK Active [engine=${engine || "any"}]: Bypassing credit check for tenant ${tenantId}`);
+    console.log(
+      `BYOK Active [engine=${engine || "any"}]: Bypassing credit check for tenant ${tenantId}`,
+    );
+
     return;
   }
 
@@ -86,5 +92,7 @@ export async function deductCredits(
     },
   );
 
-  console.log(`Deducted ${cost} credits from tenant ${tenantId}. Action: ${actionType}. Balance remaining: ${(admin.creditsRemaining - cost).toFixed(1)}`);
+  console.log(
+    `Deducted ${cost} credits from tenant ${tenantId}. Action: ${actionType}. Balance remaining: ${(admin.creditsRemaining - cost).toFixed(1)}`,
+  );
 }

@@ -13,10 +13,13 @@ export async function GET(req: NextRequest) {
   const errorDescription = req.nextUrl.searchParams.get("error_description");
 
   const host = req.headers.get("host") || "localhost:3000";
-  const isSubdomain = host.startsWith("cos.") || host.includes("localhost") && host.startsWith("cos.");
+  const isSubdomain =
+    host.startsWith("cos.") ||
+    (host.includes("localhost") && host.startsWith("cos."));
   const basePath = isSubdomain ? "" : "/pirateCOS";
 
-  const protocol = host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https";
+  const protocol =
+    host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https";
   const requestOrigin = `${protocol}://${host}`;
 
   if (error) {
@@ -32,7 +35,10 @@ export async function GET(req: NextRequest) {
 
   if (!code || !state) {
     return NextResponse.redirect(
-      new URL(`${basePath}/settings/integrations?error=missing_oauth_params`, requestOrigin),
+      new URL(
+        `${basePath}/settings/integrations?error=missing_oauth_params`,
+        requestOrigin,
+      ),
     );
   }
 
@@ -41,7 +47,10 @@ export async function GET(req: NextRequest) {
   // Validate state matches user's tenant ID for basic CSRF/security check
   if (!user || state !== user.tenantId) {
     return NextResponse.redirect(
-      new URL(`${basePath}/settings/integrations?error=invalid_oauth_state`, requestOrigin),
+      new URL(
+        `${basePath}/settings/integrations?error=invalid_oauth_state`,
+        requestOrigin,
+      ),
     );
   }
 
@@ -58,36 +67,47 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const redirectUri = process.env.LINKEDIN_REDIRECT_URI || `${requestOrigin}/api/oauth/linkedin/callback`;
+    const redirectUri =
+      process.env.LINKEDIN_REDIRECT_URI ||
+      `${requestOrigin}/api/oauth/linkedin/callback`;
 
     // 1. Exchange authorization code for access token
-    const tokenRes = await fetch("https://www.linkedin.com/oauth/v2/accessToken", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+    const tokenRes = await fetch(
+      "https://www.linkedin.com/oauth/v2/accessToken",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          grant_type: "authorization_code",
+          code,
+          client_id: clientId,
+          client_secret: clientSecret,
+          redirect_uri: redirectUri,
+        }),
       },
-      body: new URLSearchParams({
-        grant_type: "authorization_code",
-        code,
-        client_id: clientId,
-        client_secret: clientSecret,
-        redirect_uri: redirectUri,
-      }),
-    });
+    );
 
     const tokenData = await tokenRes.json();
 
     if (!tokenRes.ok) {
-      throw new Error(tokenData.error_description || tokenData.error || "Failed to exchange OAuth token");
+      throw new Error(
+        tokenData.error_description ||
+          tokenData.error ||
+          "Failed to exchange OAuth token",
+      );
     }
 
     const accessToken = tokenData.access_token;
+
     if (!accessToken) {
       throw new Error("No access token returned from LinkedIn OAuth server");
     }
 
     // 2. Fetch member ID and profile info
     let memberId = "";
+
     try {
       const userinfoRes = await fetch("https://api.linkedin.com/v2/userinfo", {
         headers: {
@@ -97,6 +117,7 @@ export async function GET(req: NextRequest) {
 
       if (userinfoRes.ok) {
         const userInfo = await userinfoRes.json();
+
         if (userInfo.sub) {
           memberId = userInfo.sub;
         }
@@ -114,8 +135,11 @@ export async function GET(req: NextRequest) {
       });
 
       const meData = await meRes.json();
+
       if (!meRes.ok) {
-        throw new Error(meData.message || "Failed to fetch LinkedIn profile details");
+        throw new Error(
+          meData.message || "Failed to fetch LinkedIn profile details",
+        );
       }
       memberId = meData.id;
     }
@@ -129,7 +153,10 @@ export async function GET(req: NextRequest) {
     const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
     const encryptedToken = encrypt(accessToken);
 
-    let doc = await Integration.findOne({ tenantId: tenantOid, platform: "linkedin" });
+    let doc = await Integration.findOne({
+      tenantId: tenantOid,
+      platform: "linkedin",
+    });
 
     if (!doc) {
       doc = new Integration({
@@ -150,7 +177,10 @@ export async function GET(req: NextRequest) {
 
     // Redirect to settings integrations page with success parameter
     return NextResponse.redirect(
-      new URL(`${basePath}/settings/integrations?success=linkedin`, requestOrigin),
+      new URL(
+        `${basePath}/settings/integrations?success=linkedin`,
+        requestOrigin,
+      ),
     );
   } catch (err: any) {
     return NextResponse.redirect(

@@ -31,9 +31,15 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [openaiKey, setOpenaiKey] = useState("");
   const [geminiKey, setGeminiKey] = useState("");
   const [mistralKey, setMistralKey] = useState("");
-  const [defaultEngine, setDefaultEngine] = useState<"openai" | "gemini" | "puter" | "mistral">("puter");
+  const [defaultEngine, setDefaultEngine] = useState<
+    "openai" | "gemini" | "puter" | "mistral"
+  >("puter");
   const [defaultModel, setDefaultModel] = useState("gpt-4o-mini");
-  const [serverStatus, setServerStatus] = useState<{ openai: boolean; gemini: boolean; mistral: boolean; } | null>(null);
+  const [serverStatus, setServerStatus] = useState<{
+    openai: boolean;
+    gemini: boolean;
+    mistral: boolean;
+  } | null>(null);
   const [puterUser, setPuterUser] = useState<{ username: string } | null>(null);
   const [puterBusy, setPuterBusy] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -57,7 +63,11 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       .then((r) => r.json())
       .then((d) => {
         if (d.success) {
-          setServerStatus({ openai: d.openai, gemini: d.gemini, mistral: d.mistral });
+          setServerStatus({
+            openai: d.openai,
+            gemini: d.gemini,
+            mistral: d.mistral,
+          });
           if (d.defaultEngine) setDefaultEngine(d.defaultEngine as any);
           if (d.defaultModel) setDefaultModel(d.defaultModel);
         }
@@ -80,6 +90,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     setSaveError(null);
     try {
       const body: Record<string, string> = { defaultEngine, defaultModel };
+
       if (openaiKey.trim()) body.openaiKey = openaiKey.trim();
       if (geminiKey.trim()) body.geminiKey = geminiKey.trim();
       if (mistralKey.trim()) body.mistralKey = mistralKey.trim();
@@ -90,6 +101,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
         body: JSON.stringify(body),
       });
       const data = await res.json();
+
       if (!data.success) throw new Error(data.error || "Save failed");
 
       // Clear entered keys so placeholder takes over
@@ -100,11 +112,14 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       // Update local storage defaults cache for fast loading
       localStorage.setItem(
         AI_CONFIG_LS_KEY,
-        JSON.stringify({ defaultEngine, defaultModel })
+        JSON.stringify({ defaultEngine, defaultModel }),
       );
 
       // Refresh server status
-      const refreshed = await fetch("/api/pirateCOS/ai-config").then((r) => r.json());
+      const refreshed = await fetch("/api/pirateCOS/ai-config").then((r) =>
+        r.json(),
+      );
+
       if (refreshed.success) {
         setServerStatus({
           openai: refreshed.openai,
@@ -308,30 +323,32 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Default Engine ── */}
           <PanelSection label="Default Engine">
             <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
-              {(["openai", "gemini", "mistral", "puter"] as const).map((eng) => (
-                <button
-                  key={eng}
-                  className={`flex-grow flex-shrink-0 min-w-[64px] py-1.5 rounded-lg text-[11px] font-semibold font-geist transition-all ${defaultEngine === eng ? "bg-white text-gray-900 shadow-sm border border-black/5" : "text-gray-500 hover:text-gray-900"}`}
-                  onClick={() => {
-                    setDefaultEngine(eng);
-                    setDefaultModel(
-                      eng === "gemini"
-                        ? "gemini-flash-latest"
+              {(["openai", "gemini", "mistral", "puter"] as const).map(
+                (eng) => (
+                  <button
+                    key={eng}
+                    className={`flex-grow flex-shrink-0 min-w-[64px] py-1.5 rounded-lg text-[11px] font-semibold font-geist transition-all ${defaultEngine === eng ? "bg-white text-gray-900 shadow-sm border border-black/5" : "text-gray-500 hover:text-gray-900"}`}
+                    onClick={() => {
+                      setDefaultEngine(eng);
+                      setDefaultModel(
+                        eng === "gemini"
+                          ? "gemini-flash-latest"
+                          : eng === "mistral"
+                            ? "mistral-large-latest"
+                            : "gpt-4o-mini",
+                      );
+                    }}
+                  >
+                    {eng === "openai"
+                      ? "● GPT"
+                      : eng === "gemini"
+                        ? "✦ Gemini"
                         : eng === "mistral"
-                          ? "mistral-large-latest"
-                          : "gpt-4o-mini",
-                    );
-                  }}
-                >
-                  {eng === "openai"
-                    ? "● GPT"
-                    : eng === "gemini"
-                      ? "✦ Gemini"
-                      : eng === "mistral"
-                        ? "◆ Mistral"
-                        : "⚡ Puter"}
-                </button>
-              ))}
+                          ? "◆ Mistral"
+                          : "⚡ Puter"}
+                  </button>
+                ),
+              )}
             </div>
           </PanelSection>
 
@@ -357,18 +374,10 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                 </>
               ) : defaultEngine === "mistral" ? (
                 <>
-                  <option value="mistral-large-latest">
-                    ◆ Mistral Large
-                  </option>
-                  <option value="mistral-small-latest">
-                    ◆ Mistral Small
-                  </option>
-                  <option value="mistral-nemo">
-                    ◆ Mistral Nemo
-                  </option>
-                  <option value="codestral-latest">
-                    ◆ Codestral
-                  </option>
+                  <option value="mistral-large-latest">◆ Mistral Large</option>
+                  <option value="mistral-small-latest">◆ Mistral Small</option>
+                  <option value="mistral-nemo">◆ Mistral Nemo</option>
+                  <option value="codestral-latest">◆ Codestral</option>
                 </>
               ) : (
                 <>
@@ -383,7 +392,8 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           </PanelSection>
 
           <p className="text-[10px] text-gray-400 font-geist leading-relaxed">
-            Keys are securely encrypted using AES-256-GCM and stored in your database. They are never exposed to the browser or third parties.
+            Keys are securely encrypted using AES-256-GCM and stored in your
+            database. They are never exposed to the browser or third parties.
           </p>
         </div>
 
@@ -393,7 +403,9 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}
         >
           {saveError && (
-            <p className="text-xs text-red-500 font-geist mb-3 text-center">{saveError}</p>
+            <p className="text-xs text-red-500 font-geist mb-3 text-center">
+              {saveError}
+            </p>
           )}
           <button
             className="w-full py-2.5 rounded-xl text-sm font-semibold font-geist text-white transition-all duration-200 disabled:opacity-50"

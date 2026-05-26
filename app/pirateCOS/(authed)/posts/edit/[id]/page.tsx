@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -23,6 +29,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
+import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
+import { useAICopilot } from "@/hooks/useAICopilot";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -119,8 +127,6 @@ const SEOEditorModal = ({
     imageOptimization?: string;
   };
 
-
-
   const modelOptions: Record<
     SupportedAIEngine,
     Array<{ value: string; label: string }>
@@ -152,8 +158,6 @@ const SEOEditorModal = ({
         ? "mistral-large-latest"
         : "gpt-4o-mini";
 
-
-
   const plainTextContent = postContent
     .replace(/<[^>]*>/g, " ")
     .replace(/\s+/g, " ")
@@ -181,8 +185,6 @@ const SEOEditorModal = ({
     setLocalData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-
-
   useEffect(() => {
     if (!isOpen) return;
 
@@ -198,7 +200,9 @@ const SEOEditorModal = ({
         : "openai";
     const nextModel =
       config.defaultModel &&
-      modelOptions[nextEngine].some((option) => option.value === config.defaultModel)
+      modelOptions[nextEngine].some(
+        (option) => option.value === config.defaultModel,
+      )
         ? config.defaultModel
         : getDefaultModelForEngine(nextEngine);
 
@@ -219,7 +223,11 @@ const SEOEditorModal = ({
   }, [isOpen]);
 
   useEffect(() => {
-    if (!modelOptions[selectedEngine].some((option) => option.value === selectedModel)) {
+    if (
+      !modelOptions[selectedEngine].some(
+        (option) => option.value === selectedModel,
+      )
+    ) {
       setSelectedModel(getDefaultModelForEngine(selectedEngine));
     }
   }, [selectedEngine, selectedModel]);
@@ -233,7 +241,9 @@ const SEOEditorModal = ({
       overallScore: 0,
       strategies: [] as { type: "check" | "alert"; text: string }[],
     };
-    const wordCount = plainTextContent ? plainTextContent.split(/\s+/).length : 0;
+    const wordCount = plainTextContent
+      ? plainTextContent.split(/\s+/).length
+      : 0;
 
     stats.contentDepth = Math.min(100, Math.floor((wordCount / 1000) * 100));
 
@@ -311,6 +321,7 @@ const SEOEditorModal = ({
         : specificAction === "metaDescription"
           ? "excerpt"
           : specificAction || "seo-analysis";
+
     setGeneratingAction(specificAction || "seo-analysis");
     setError("");
 
@@ -345,6 +356,7 @@ const SEOEditorModal = ({
         }
 
         updateField("metaTitle", nextTitle.trim());
+
         return;
       }
 
@@ -354,6 +366,7 @@ const SEOEditorModal = ({
         }
 
         updateField("metaDescription", aiData.trim());
+
         return;
       }
 
@@ -373,6 +386,7 @@ const SEOEditorModal = ({
           keywords: nextKeywords,
           focusKeyword: prev?.focusKeyword || nextKeywords[0],
         }));
+
         return;
       }
 
@@ -425,7 +439,9 @@ const SEOEditorModal = ({
             : prev?.focusKeyword,
         keywords: Array.isArray(aiData?.semanticKeywords)
           ? aiData.semanticKeywords
-              .filter((item: unknown) => typeof item === "string" && item.trim())
+              .filter(
+                (item: unknown) => typeof item === "string" && item.trim(),
+              )
               .map((item: string) => item.trim())
           : prev?.keywords,
         ogTitle:
@@ -450,6 +466,7 @@ const SEOEditorModal = ({
     } catch (err: any) {
       setError(err.message || "Failed to analyze SEO");
       const container = document.querySelector(".custom-scrollbar");
+
       if (container) {
         container.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -486,7 +503,8 @@ const SEOEditorModal = ({
                 </h2>
               </div>
               <p className="text-xs text-gray-400 font-geist">
-                Manual AI workflows, section-aware stepping, and in-modal model selection.
+                Manual AI workflows, section-aware stepping, and in-modal model
+                selection.
               </p>
             </div>
           </div>
@@ -534,8 +552,6 @@ const SEOEditorModal = ({
             </button>
           </div>
         </div>
-
-
 
         <div className="flex flex-col xl:flex-row xl:items-center gap-3 px-4 md:px-6 bg-gray-50/50 border-b border-black/5">
           <div className="flex overflow-x-auto no-scrollbar">
@@ -646,7 +662,6 @@ const SEOEditorModal = ({
                 </option>
               ))}
             </select>
-
           </div>
         </div>
 
@@ -676,9 +691,7 @@ const SEOEditorModal = ({
             <div className="space-y-8">
               {activeTab === "general" && (
                 <div className="space-y-6 animate-in fade-in duration-300">
-                  <div
-                    className="p-6 rounded-3xl border border-black/5 bg-gray-50/30"
-                  >
+                  <div className="p-6 rounded-3xl border border-black/5 bg-gray-50/30">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
@@ -691,7 +704,9 @@ const SEOEditorModal = ({
                         disabled={isAnalyzing}
                         onClick={() => runAIAnalysis("metaTitle")}
                       >
-                        {generatingAction === "metaTitle" ? "Generating..." : "Regenerate Title"}
+                        {generatingAction === "metaTitle"
+                          ? "Generating..."
+                          : "Regenerate Title"}
                       </button>
                     </div>
 
@@ -748,9 +763,7 @@ const SEOEditorModal = ({
                     </div>
                   </div>
 
-                  <div
-                    className="p-6 rounded-3xl border border-black/5 bg-gray-50/30"
-                  >
+                  <div className="p-6 rounded-3xl border border-black/5 bg-gray-50/30">
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] flex items-center justify-center">
@@ -763,7 +776,9 @@ const SEOEditorModal = ({
                         disabled={isAnalyzing}
                         onClick={() => runAIAnalysis("metaDescription")}
                       >
-                        {generatingAction === "metaDescription" ? "Generating..." : "Generate Description"}
+                        {generatingAction === "metaDescription"
+                          ? "Generating..."
+                          : "Generate Description"}
                       </button>
                     </div>
 
@@ -805,7 +820,9 @@ const SEOEditorModal = ({
                           disabled={isAnalyzing}
                           onClick={() => runAIAnalysis("tags")}
                         >
-                          {generatingAction === "tags" ? "Generating..." : "Generate Keywords"}
+                          {generatingAction === "tags"
+                            ? "Generating..."
+                            : "Generate Keywords"}
                         </button>
                       </div>
                       <input
@@ -828,19 +845,22 @@ const SEOEditorModal = ({
                               <span
                                 key={idx}
                                 className="px-2 py-0.5 rounded-lg bg-orange-50 text-orange-600 text-[10px] font-bold font-geist border border-orange-100 flex items-center gap-1 cursor-pointer hover:bg-orange-100 transition-all select-none"
+                                title="Set as Focus Keyword"
                                 onClick={() => {
                                   // Click semantic keyword to set as Focus Keyword
                                   updateField("focusKeyword", kw);
                                 }}
-                                title="Set as Focus Keyword"
                               >
                                 {kw}
                                 <button
-                                  type="button"
                                   className="text-orange-400 hover:text-orange-600 font-bold pl-0.5"
+                                  type="button"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    const nextKws = data.keywords.filter((_: any, i: number) => i !== idx);
+                                    const nextKws = data.keywords.filter(
+                                      (_: any, i: number) => i !== idx,
+                                    );
+
                                     updateField("keywords", nextKws);
                                   }}
                                 >
@@ -890,7 +910,9 @@ const SEOEditorModal = ({
                           className="w-full bg-white border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
                           placeholder="https://cloudinary.com/..."
                           value={data?.ogImage || ""}
-                          onChange={(e) => updateField("ogImage", e.target.value)}
+                          onChange={(e) =>
+                            updateField("ogImage", e.target.value)
+                          }
                         />
                       </div>
                       <div className="space-y-2">
@@ -901,7 +923,9 @@ const SEOEditorModal = ({
                           className="w-full bg-white border border-black/5 rounded-2xl px-4 py-3.5 text-sm font-geist focus:ring-2 focus:ring-orange-100 outline-none transition-all shadow-sm"
                           placeholder="Title for Facebook/LinkedIn..."
                           value={data?.ogTitle || ""}
-                          onChange={(e) => updateField("ogTitle", e.target.value)}
+                          onChange={(e) =>
+                            updateField("ogTitle", e.target.value)
+                          }
                         />
                       </div>
                       <div className="space-y-2">
@@ -927,7 +951,9 @@ const SEOEditorModal = ({
                         className="w-4 h-4 rounded-md border-black/10 text-[#FF5B04] focus:ring-[#FF5B04]/30"
                         id="noIndex"
                         type="checkbox"
-                        onChange={(e) => updateField("noIndex", e.target.checked)}
+                        onChange={(e) =>
+                          updateField("noIndex", e.target.checked)
+                        }
                       />
                       <label
                         className="text-xs font-bold font-geist text-gray-600 cursor-pointer"
@@ -977,7 +1003,8 @@ const SEOEditorModal = ({
                           AI Audit Ready
                         </h3>
                         <p className="text-gray-400 text-sm mb-6 text-center max-w-xs">
-                          Run a manual audit when you want recommendations. Opening the modal no longer auto-generates content.
+                          Run a manual audit when you want recommendations.
+                          Opening the modal no longer auto-generates content.
                         </p>
                         <button
                           className="px-6 py-3 rounded-2xl bg-black text-white text-sm font-bold hover:scale-105 transition-all"
@@ -1078,7 +1105,8 @@ const SEOEditorModal = ({
                                 ))
                               ) : (
                                 <li className="text-xs text-gray-500">
-                                  No improvement suggestions were returned for this audit.
+                                  No improvement suggestions were returned for
+                                  this audit.
                                 </li>
                               )}
                             </ul>
@@ -1152,15 +1180,26 @@ const SEOEditorModal = ({
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">SEO Strategy Engine</h3>
+                    <h3 className="text-xl font-bold mb-2">
+                      SEO Strategy Engine
+                    </h3>
                     <div className="flex items-center justify-between mb-8">
                       <p className="text-gray-400 text-sm max-w-md">
-                        This evaluation combines content depth, keyword usage, semantic breadth, and social readiness into practical strategy recommendations.
+                        This evaluation combines content depth, keyword usage,
+                        semantic breadth, and social readiness into practical
+                        strategy recommendations.
                       </p>
                       <div className="flex items-center gap-3 shrink-0">
                         {showSuccess && (
                           <span className="text-emerald-400 text-xs font-bold animate-pulse flex items-center gap-1">
-                            <svg fill="none" height="14" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                            <svg
+                              fill="none"
+                              height="14"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              viewBox="0 0 24 24"
+                              width="14"
+                            >
                               <polyline points="20 6 9 17 4 12" />
                             </svg>
                             Refreshed!
@@ -1172,11 +1211,26 @@ const SEOEditorModal = ({
                           onClick={() => runAIAnalysis("seo-analysis")}
                         >
                           {isAnalyzing ? (
-                            <svg className="animate-spin" fill="none" height="11" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="11">
+                            <svg
+                              className="animate-spin"
+                              fill="none"
+                              height="11"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              viewBox="0 0 24 24"
+                              width="11"
+                            >
                               <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                             </svg>
                           ) : (
-                            <svg fill="none" height="11" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="11">
+                            <svg
+                              fill="none"
+                              height="11"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              viewBox="0 0 24 24"
+                              width="11"
+                            >
                               <path d="M3 12a9 9 0 1 0 9-9" />
                               <polyline points="3 3 3 12 12 12" />
                             </svg>
@@ -1237,7 +1291,10 @@ const SEOEditorModal = ({
                       </h4>
                       <ul className="space-y-3">
                         {perfStats.strategies.map((strategy, i) => (
-                          <li key={`${strategy.text}-${i}`} className="flex gap-3 text-sm">
+                          <li
+                            key={`${strategy.text}-${i}`}
+                            className="flex gap-3 text-sm"
+                          >
                             <span
                               className={
                                 strategy.type === "check"
@@ -1290,12 +1347,14 @@ const SEOEditorModal = ({
                       <span className="font-medium">{slug || "..."}</span>
                     </p>
                     <h4 className="text-xl text-[#1a0dab] font-medium hover:underline cursor-pointer leading-tight line-clamp-2">
-                      {generatingAction === "metaTitle" || generatingAction === "seo-analysis"
+                      {generatingAction === "metaTitle" ||
+                      generatingAction === "seo-analysis"
                         ? "Generating optimized title..."
                         : data?.metaTitle || postTitle || "Untitled Post"}
                     </h4>
                     <p className="text-[14px] text-[#4d5156] line-clamp-2 leading-relaxed">
-                      {generatingAction === "metaDescription" || generatingAction === "seo-analysis"
+                      {generatingAction === "metaDescription" ||
+                      generatingAction === "seo-analysis"
                         ? "Generating optimized meta description..."
                         : data?.metaDescription ||
                           "Please provide a meta description to see how your post will appear in search results..."}
@@ -3782,8 +3841,10 @@ const AITagsModal = ({
         }
 
         let parsedTags: string[] = [];
+
         try {
           const json = JSON.parse(text);
+
           if (Array.isArray(json)) {
             parsedTags = json.map((t) => String(t).toLowerCase());
           }
@@ -4244,12 +4305,14 @@ const AICopilotModal = ({
   editor,
   postTitle,
   postType,
+  preset,
 }: {
   isOpen: boolean;
   onClose: () => void;
   editor: any;
   postTitle: string;
   postType: string;
+  preset?: string;
 }) => {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
@@ -4402,6 +4465,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             prompt: activePrompt,
             engine,
             model,
+            preset: preset || "",
           }),
         });
 
@@ -5392,10 +5456,16 @@ const FormattingToolbar = ({
   editor,
   onLinkClick,
   onCopilotClick,
+  activePreset,
+  onPresetChange,
+  onTransformClick,
 }: {
   editor: any;
   onLinkClick: () => void;
   onCopilotClick: () => void;
+  activePreset: string;
+  onPresetChange: (preset: string) => void;
+  onTransformClick: () => void;
 }) => {
   const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
 
@@ -5448,6 +5518,31 @@ const FormattingToolbar = ({
           <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
         </svg>
         <span>AI Copilot</span>
+      </button>
+      {sep}
+      <select
+        className="bg-white border border-black/10 rounded-lg text-xs px-2.5 py-1 text-gray-700 font-bold focus:outline-none focus:border-[#FF5B04] cursor-pointer"
+        value={activePreset}
+        onChange={(e) => onPresetChange(e.target.value)}
+      >
+        <option value="">Choose AI Preset...</option>
+        <option value="seo-article">📊 SEO Article</option>
+        <option value="thought-leadership">💡 Thought Leadership</option>
+        <option value="linkedin-post">🔗 LinkedIn Post</option>
+        <option value="case-study">📘 Case Study</option>
+        <option value="founder-story">👤 Founder Story</option>
+        <option value="product-launch">🚀 Product Launch</option>
+        <option value="comparison">⚔️ Comparison</option>
+        <option value="technical-deep-dive">🛠️ Tech Deep Dive</option>
+      </select>
+      {sep}
+      <button
+        className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
+        title="Repurpose post into other formats"
+        type="button"
+        onClick={onTransformClick}
+      >
+        <span>⚡ Transform</span>
       </button>
       {sep}
       <button
@@ -5778,60 +5873,124 @@ const FormattingToolbar = ({
 
 // ─── Post Preview Panel ──────────────────────────────────────────────────────
 function slugifyHeading(text: string): string {
-  return text.toLowerCase().replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").replace(/--+/g, "-");
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/--+/g, "-");
 }
-function parseHeadings(html: string): { id: string; text: string; level: 2 | 3 }[] {
+function parseHeadings(
+  html: string,
+): { id: string; text: string; level: 2 | 3 }[] {
   const out: { id: string; text: string; level: 2 | 3 }[] = [];
   const seen: Record<string, number> = {};
   let m: RegExpExecArray | null;
   const re = /<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi;
+
   while ((m = re.exec(html))) {
     const lvl = parseInt(m[1]) as 2 | 3;
     const txt = m[2].replace(/<[^>]+>/g, "").trim();
+
     if (!txt) continue;
     let id = slugifyHeading(txt);
-    if (seen[id] != null) { seen[id]++; id += `-${seen[id]}`; } else { seen[id] = 0; }
+
+    if (seen[id] != null) {
+      seen[id]++;
+      id += `-${seen[id]}`;
+    } else {
+      seen[id] = 0;
+    }
     out.push({ id, text: txt, level: lvl });
   }
+
   return out;
 }
 function injectHeadingIds(html: string): string {
   const seen: Record<string, number> = {};
-  return html.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi, (_, lvl, attrs, inner) => {
-    const txt = inner.replace(/<[^>]+>/g, "").trim();
-    if (!txt) return _;
-    let id = slugifyHeading(txt);
-    if (seen[id] != null) { seen[id]++; id += `-${seen[id]}`; } else { seen[id] = 0; }
-    return `<h${lvl}${attrs.replace(/\s*id="[^"]*"/gi, "")} id="${id}">${inner}</h${lvl}>`;
-  });
+
+  return html.replace(
+    /<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi,
+    (_, lvl, attrs, inner) => {
+      const txt = inner.replace(/<[^>]+>/g, "").trim();
+
+      if (!txt) return _;
+      let id = slugifyHeading(txt);
+
+      if (seen[id] != null) {
+        seen[id]++;
+        id += `-${seen[id]}`;
+      } else {
+        seen[id] = 0;
+      }
+
+      return `<h${lvl}${attrs.replace(/\s*id="[^"]*"/gi, "")} id="${id}">${inner}</h${lvl}>`;
+    },
+  );
 }
 // Minified mirror of globals.css .blog-prose rules, scoped to .preview-prose
 const PREVIEW_PROSE_CSS = `.preview-prose{color:#1a1a1a!important;font-family:var(--font-jakarta),var(--font-sans),sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:-.005em}.preview-prose p{color:#1a1a1a!important;margin-top:0;margin-bottom:1.25rem}.preview-prose li{color:#1a1a1a!important}.preview-prose h1,.preview-prose h2,.preview-prose h3,.preview-prose h4{color:#111!important;font-family:var(--font-geist),sans-serif;font-weight:700;line-height:1.2;margin-top:2.5rem;margin-bottom:.85rem;letter-spacing:-.025em}.preview-prose h1{font-size:2.25rem}.preview-prose h2{font-size:1.625rem;border-left:3.5px solid #FF5B04;padding-left:.85rem;margin-left:-.85rem}.preview-prose h3{font-size:1.35rem}.preview-prose h4{font-size:1.125rem}.preview-prose strong{color:#111!important;font-weight:700}.preview-prose em{color:#444!important;font-style:italic}.preview-prose a{color:#FF5B04;text-decoration:underline;text-underline-offset:3px;font-weight:500}.preview-prose ul{list-style:none;padding-left:0;margin:1.5rem 0}.preview-prose ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;line-height:1.6}.preview-prose ul li::before{content:"•";color:#FF5B04;font-weight:bold;font-size:1.35rem;position:absolute;left:.25rem;top:-.15rem}.preview-prose ol{list-style-type:decimal;padding-left:1.5rem;margin:1.5rem 0}.preview-prose ol li{margin-bottom:.5rem;padding-left:.25rem;line-height:1.6}.preview-prose li strong{color:#111}.preview-prose blockquote{border-left:4px solid #FF5B04;margin:2.25rem 0;padding:.85rem 1.5rem;background:rgba(255,91,4,.035);border-radius:4px 16px 16px 4px;color:#2b2b2b;font-size:1.15rem;line-height:1.7;font-style:italic;font-weight:500}.preview-prose code{font-family:var(--font-geist-mono,monospace);font-size:.85em;background:#f7f7f8;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:.2em .4em;color:#FF5B04;font-weight:500}.preview-prose pre{background:#0c0c0d;border:1px solid rgba(255,255,255,.08);color:#f4f4f5;border-radius:14px;padding:1.5rem 1.75rem;overflow-x:auto;margin:2.25rem 0;font-size:.85rem;line-height:1.75}.preview-prose pre code{background:none;border:none;padding:0;color:inherit}.preview-prose hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.08) 15%,rgba(0,0,0,.08) 85%,transparent);margin:3.5rem 0}.preview-prose img{display:block;max-width:100%;height:auto;border-radius:14px;margin:2rem auto;box-shadow:0 10px 30px rgba(0,0,0,.04)}.preview-prose p:has(>img:only-child){display:flex;justify-content:center}.preview-prose table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;margin:2.5rem 0;font-size:.925rem;border:1px solid rgba(255,91,4,.15);border-radius:14px;box-shadow:0 4px 24px rgba(255,91,4,.03)}.preview-prose th,.preview-prose td{border-bottom:1px solid rgba(255,91,4,.08);border-right:1px solid rgba(255,91,4,.06);padding:.9rem 1.25rem;text-align:left}.preview-prose th:last-child,.preview-prose td:last-child{border-right:none}.preview-prose tr:last-child td{border-bottom:none}.preview-prose th{background:#FFF5F0;color:#1a1a1a;font-weight:700;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;border-bottom:2px solid rgba(255,91,4,.2)!important}.preview-prose tr:hover td{background:rgba(255,91,4,.025)}.preview-prose>p:first-of-type::first-letter{font-size:3.5rem;font-weight:700;float:left;line-height:.85;margin-right:.55rem;margin-top:.15rem;color:#FF5B04;font-family:var(--font-geist),sans-serif}.preview-prose::selection,.preview-prose *::selection{background:rgba(255,91,4,.12);color:#FF5B04}`;
 
 const PostPreviewPanel = ({
-  title, bannerImage, excerpt, tags, contentHtml, postType, onEdit,
+  title,
+  bannerImage,
+  excerpt,
+  tags,
+  contentHtml,
+  postType,
+  onEdit,
 }: {
-  title: string; bannerImage: string; excerpt: string; tags: string[];
-  contentHtml: string; postType: string; onEdit: () => void;
+  title: string;
+  bannerImage: string;
+  excerpt: string;
+  tags: string[];
+  contentHtml: string;
+  postType: string;
+  onEdit: () => void;
 }) => {
-  const typeLabel: Record<string, string> = { blog: "Blog", tutorial: "Tutorial", "case-study": "Case Study", "community-insight": "Community Insight" };
+  const typeLabel: Record<string, string> = {
+    blog: "Blog",
+    tutorial: "Tutorial",
+    "case-study": "Case Study",
+    "community-insight": "Community Insight",
+  };
   const headings = useMemo(() => parseHeadings(contentHtml), [contentHtml]);
-  const processedHtml = useMemo(() => injectHeadingIds(contentHtml), [contentHtml]);
+  const processedHtml = useMemo(
+    () => injectHeadingIds(contentHtml),
+    [contentHtml],
+  );
   const [activeId, setActiveId] = useState("");
-  const readTime = useMemo(() => Math.max(1, Math.ceil(contentHtml.replace(/<[^>]*>/g, " ").trim().split(/\s+/).filter(Boolean).length / 200)), [contentHtml]);
+  const readTime = useMemo(
+    () =>
+      Math.max(
+        1,
+        Math.ceil(
+          contentHtml
+            .replace(/<[^>]*>/g, " ")
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean).length / 200,
+        ),
+      ),
+    [contentHtml],
+  );
 
   useEffect(() => {
     if (!headings.length) return;
     const handleScroll = () => {
       let current = headings[0].id;
+
       for (const { id } of headings) {
         const el = document.getElementById(id);
+
         if (el && el.getBoundingClientRect().top <= 120) current = id;
       }
       setActiveId(current);
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // initialise on mount
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [headings]);
 
@@ -5842,14 +6001,46 @@ const PostPreviewPanel = ({
       {/* Preview toolbar */}
       <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}>
-            <svg fill="none" height="8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+          <span
+            className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
+            style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
+          >
+            <svg
+              fill="none"
+              height="8"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="8"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
             Reader Preview
           </span>
-          <span className="text-xs font-geist text-gray-400">High-fidelity · matches live site</span>
+          <span className="text-xs font-geist text-gray-400">
+            High-fidelity · matches live site
+          </span>
         </div>
-        <button className="text-xs font-geist font-medium text-gray-500 hover:text-gray-800 flex items-center gap-1.5 transition-colors px-3 py-1.5 rounded-lg hover:bg-black/5" onClick={onEdit}>
-          <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="12"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+        <button
+          className="text-xs font-geist font-medium text-gray-500 hover:text-gray-800 flex items-center gap-1.5 transition-colors px-3 py-1.5 rounded-lg hover:bg-black/5"
+          onClick={onEdit}
+        >
+          <svg
+            fill="none"
+            height="12"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            width="12"
+          >
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+          </svg>
           Edit Post
         </button>
       </div>
@@ -5858,20 +6049,68 @@ const PostPreviewPanel = ({
           the inner sticky TOC aside has a full-height scroll track to travel along */}
       <div className="bg-white rounded-2xl shadow-sm border border-black/5">
         {/* ── Hero — mirrors screens/blogsDetails/hero/index.tsx ── */}
-        <div className="relative w-full overflow-hidden group" style={{ height: 340 }}>
-          {bannerImage
-            ? <img alt="Blog banner" className="absolute inset-0 w-full h-full object-cover" src={bannerImage} />
-            : <div className="absolute inset-0" style={{ background: "linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)" }} />}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.35) 50%,rgba(0,0,0,0.10) 100%)" }} />
-          <button className="absolute top-3 right-3 z-20 bg-white/90 text-xs font-geist font-semibold px-3 py-1.5 rounded-lg shadow-md text-gray-700 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity" onClick={onEdit}>
-            <svg fill="none" height="11" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="11"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+        <div
+          className="relative w-full overflow-hidden group"
+          style={{ height: 340 }}
+        >
+          {bannerImage ? (
+            <img
+              alt="Blog banner"
+              className="absolute inset-0 w-full h-full object-cover"
+              src={bannerImage}
+            />
+          ) : (
+            <div
+              className="absolute inset-0"
+              style={{
+                background: "linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)",
+              }}
+            />
+          )}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.35) 50%,rgba(0,0,0,0.10) 100%)",
+            }}
+          />
+          <button
+            className="absolute top-3 right-3 z-20 bg-white/90 text-xs font-geist font-semibold px-3 py-1.5 rounded-lg shadow-md text-gray-700 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+            onClick={onEdit}
+          >
+            <svg
+              fill="none"
+              height="11"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="11"
+            >
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+            </svg>
             Edit
           </button>
           <div className="absolute inset-0 flex flex-col justify-end pb-10 z-10 px-14">
-            <span className="inline-flex items-center self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-white" style={{ background: "rgba(255,255,255,0.18)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.25)" }}>
+            <span
+              className="inline-flex items-center self-start mb-4 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-white"
+              style={{
+                background: "rgba(255,255,255,0.18)",
+                backdropFilter: "blur(6px)",
+                border: "1px solid rgba(255,255,255,0.25)",
+              }}
+            >
               {typeLabel[postType] ?? postType}
             </span>
-            <h1 className="text-white font-bold leading-tight max-w-2xl" style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.25rem)", letterSpacing: "-0.5px" }}>
+            <h1
+              className="text-white font-bold leading-tight max-w-2xl"
+              style={{
+                fontSize: "clamp(1.5rem, 2.5vw, 2.25rem)",
+                letterSpacing: "-0.5px",
+              }}
+            >
               {title || <span className="opacity-40">Untitled Post</span>}
             </h1>
           </div>
@@ -5885,38 +6124,89 @@ const PostPreviewPanel = ({
           {/* Header info — mirrors screens/blogsDetails/blogContents/headeInfo.tsx */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: "#FF5B04" }}>UI</div>
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
+                style={{ background: "#FF5B04" }}
+              >
+                UI
+              </div>
               <div>
-                <p className="text-sm font-bold text-[#111] uppercase tracking-wide" style={{ fontFamily: "var(--font-geist)" }}>UI Pirate</p>
-                <p className="text-xs text-gray-400" style={{ fontFamily: "var(--font-geist)" }}>Preview · {readTime} min read</p>
+                <p
+                  className="text-sm font-bold text-[#111] uppercase tracking-wide"
+                  style={{ fontFamily: "var(--font-geist)" }}
+                >
+                  UI Pirate
+                </p>
+                <p
+                  className="text-xs text-gray-400"
+                  style={{ fontFamily: "var(--font-geist)" }}
+                >
+                  Preview · {readTime} min read
+                </p>
               </div>
             </div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest whitespace-nowrap" style={{ fontFamily: "var(--font-geist)" }}>{readTime} min read | Draft</p>
+            <p
+              className="text-xs font-semibold text-gray-400 uppercase tracking-widest whitespace-nowrap"
+              style={{ fontFamily: "var(--font-geist)" }}
+            >
+              {readTime} min read | Draft
+            </p>
           </div>
           <hr className="mt-6 mb-0 border-gray-100" />
 
           {/* Tags */}
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-6">
-              {tags.map((t) => <span key={t} className="text-xs px-2.5 py-0.5 rounded-full" style={{ background: "#FFF0E8", color: "#FF5B04", fontFamily: "var(--font-geist)" }}>{t}</span>)}
+              {tags.map((t) => (
+                <span
+                  key={t}
+                  className="text-xs px-2.5 py-0.5 rounded-full"
+                  style={{
+                    background: "#FFF0E8",
+                    color: "#FF5B04",
+                    fontFamily: "var(--font-geist)",
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
             </div>
           )}
 
           {/* Excerpt — pull-quote style matching live site */}
-          {excerpt && <p className="mt-6 text-lg leading-relaxed pl-4 border-l-4 border-orange-200" style={{ color: "#6b7280", fontFamily: "var(--font-jakarta,var(--font-sans))" }}>{excerpt}</p>}
+          {excerpt && (
+            <p
+              className="mt-6 text-lg leading-relaxed pl-4 border-l-4 border-orange-200"
+              style={{
+                color: "#6b7280",
+                fontFamily: "var(--font-jakarta,var(--font-sans))",
+              }}
+            >
+              {excerpt}
+            </p>
+          )}
 
           {/* Content + sticky TOC — two-column when there are ≥2 headings */}
           {/* NOTE: no items-start — aside must stretch to article height so sticky has room to travel */}
           <div className={`mt-10 ${hasToc ? "flex gap-10" : ""}`}>
             <div
+              dangerouslySetInnerHTML={{
+                __html:
+                  processedHtml ||
+                  "<p style='color:#d1d5db'>No content yet. Start writing in the editor.</p>",
+              }}
               className="preview-prose min-w-0 flex-1"
-              dangerouslySetInnerHTML={{ __html: processedHtml || "<p style='color:#d1d5db'>No content yet. Start writing in the editor.</p>" }}
             />
             {/* Sticky TOC — pixel-identical to screens/blogsDetails/blogContents */}
             {hasToc && (
-              <aside className="flex-shrink-0 hidden xl:block" style={{ width: 220 }}>
+              <aside
+                className="flex-shrink-0 hidden xl:block"
+                style={{ width: 220 }}
+              >
                 <div className="sticky top-24 bg-gray-50 border border-gray-100 rounded-3xl p-6">
-                  <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">Contents</p>
+                  <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">
+                    Contents
+                  </p>
                   <nav className="flex flex-col gap-2">
                     {headings.map((h) => (
                       <a
@@ -5928,7 +6218,14 @@ const PostPreviewPanel = ({
                           color: activeId === h.id ? "#FF5B04" : "#4b5563",
                           fontWeight: activeId === h.id ? 600 : 400,
                         }}
-                        onClick={(e) => { e.preventDefault(); document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); setActiveId(h.id); }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById(h.id)?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                          setActiveId(h.id);
+                        }}
                       >
                         {h.text}
                       </a>
@@ -5946,9 +6243,11 @@ const PostPreviewPanel = ({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditPage = () => {
-  const isSubdomain = typeof window !== "undefined" && 
-    (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
-  const getHref = (path: string) => isSubdomain ? path : `/pirateCOS${path}`;
+  const isSubdomain =
+    typeof window !== "undefined" &&
+    (window.location.hostname.startsWith("cos.") ||
+      window.location.hostname === "cos.uipirate.com");
+  const getHref = (path: string) => (isSubdomain ? path : `/pirateCOS${path}`);
 
   const params = useParams();
   const router = useRouter();
@@ -5967,6 +6266,8 @@ const BlogEditPage = () => {
   const [isTitleModalOpen, setIsTitleModalOpen] = useState(false);
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+  const [activePreset, setActivePreset] = useState("");
+  const [isRepurposeDrawerOpen, setIsRepurposeDrawerOpen] = useState(false);
 
   // AI API Handlers
 
@@ -5996,7 +6297,9 @@ const BlogEditPage = () => {
   const [seoData, setSeoData] = useState<PostSEO>({});
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [sidebarTab, setSidebarTab] = useState<"content" | "seo" | "ai" | "distribute">("content");
+  const [sidebarTab, setSidebarTab] = useState<
+    "content" | "seo" | "ai" | "distribute"
+  >("content");
   const [distRecords, setDistRecords] = useState<any[]>([]);
 
   const {
@@ -6297,6 +6600,11 @@ const BlogEditPage = () => {
     },
   }) || { words: 0, characters: 0, paragraphs: 0, readTime: 1 };
 
+  const { warnings: copilotWarnings, dismissWarning } = useAICopilot(
+    editor?.getHTML() || "",
+    true,
+  );
+
   // Fetch existing blog data
   useEffect(() => {
     if (params.id && mounted && !authLoading && editor) {
@@ -6561,7 +6869,16 @@ const BlogEditPage = () => {
             }`}
             onClick={() => setShowPreview((v) => !v)}
           >
-            <svg fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
+            <svg
+              fill="none"
+              height="13"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              width="13"
+            >
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
@@ -6614,12 +6931,15 @@ const BlogEditPage = () => {
       {/* ── Formatting Toolbar — hidden in immersive preview mode ── */}
       {!showPreview && (
         <FormattingToolbar
+          activePreset={activePreset}
           editor={editor}
           onCopilotClick={() => setIsCopilotOpen(true)}
           onLinkClick={() => {
             editor.chain().focus().extendMarkRange("link").run();
             setShowLinkModal(true);
           }}
+          onPresetChange={setActivePreset}
+          onTransformClick={() => setIsRepurposeDrawerOpen(true)}
         />
       )}
 
@@ -6637,40 +6957,68 @@ const BlogEditPage = () => {
             onEdit={() => setShowPreview(false)}
           />
         ) : (
-        <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
-          {/* Banner image area */}
-          {bannerImage ? (
-            <div className="relative group">
-              <img
-                alt="Banner"
-                className="w-full h-48 object-cover"
-                src={bannerImage}
-              />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-              <button
-                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
-                onClick={() => {
-                  setBannerImage("");
-                  setFeaturedImage("");
-                }}
-              >
+          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
+            {/* Banner image area */}
+            {bannerImage ? (
+              <div className="relative group">
+                <img
+                  alt="Banner"
+                  className="w-full h-48 object-cover"
+                  src={bannerImage}
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                <button
+                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+                  onClick={() => {
+                    setBannerImage("");
+                    setFeaturedImage("");
+                  }}
+                >
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
+                    <line x1="18" x2="6" y1="6" y2="18" />
+                    <line x1="6" x2="18" y1="6" y2="18" />
+                  </svg>
+                </button>
+                <label className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                  <span className="text-xs font-geist font-medium text-white bg-black/60 hover:bg-black/80 transition-colors px-3 py-1.5 rounded-lg">
+                    Change Banner
+                  </span>
+                  <input
+                    accept="image/*"
+                    className="hidden"
+                    type="file"
+                    onChange={handleBannerImageUpload}
+                  />
+                </label>
+              </div>
+            ) : (
+              <label className="flex items-center gap-2 px-10 pt-6 pb-2 cursor-pointer group w-fit">
                 <svg
+                  className="group-hover:stroke-[#FF5B04] transition-colors"
                   fill="none"
-                  height="14"
-                  stroke="currentColor"
+                  height="16"
+                  stroke="#d1d5db"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="2.5"
+                  strokeWidth="1.75"
                   viewBox="0 0 24 24"
-                  width="14"
+                  width="16"
                 >
-                  <line x1="18" x2="6" y1="6" y2="18" />
-                  <line x1="6" x2="18" y1="6" y2="18" />
+                  <rect height="18" rx="2" width="18" x="3" y="3" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
                 </svg>
-              </button>
-              <label className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                <span className="text-xs font-geist font-medium text-white bg-black/60 hover:bg-black/80 transition-colors px-3 py-1.5 rounded-lg">
-                  Change Banner
+                <span className="text-xs font-geist text-gray-300 group-hover:text-[#FF5B04] transition-colors">
+                  Add cover image
                 </span>
                 <input
                   accept="image/*"
@@ -6679,338 +7027,953 @@ const BlogEditPage = () => {
                   onChange={handleBannerImageUpload}
                 />
               </label>
+            )}
+
+            {/* Title */}
+            <div
+              className={
+                bannerImage
+                  ? "px-14 pt-6 pb-4 relative"
+                  : "px-14 pt-4 pb-4 relative"
+              }
+            >
+              <div className="flex items-center gap-3">
+                <input
+                  className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                  placeholder="Post title…"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+                <button
+                  className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+                  type="button"
+                  onClick={() => {
+                    setIsTitleModalOpen(true);
+                  }}
+                >
+                  <svg
+                    fill="none"
+                    height="11"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="11"
+                  >
+                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                  </svg>
+                  AI Assistant
+                </button>
+              </div>
             </div>
-          ) : (
-            <label className="flex items-center gap-2 px-10 pt-6 pb-2 cursor-pointer group w-fit">
-              <svg
-                className="group-hover:stroke-[#FF5B04] transition-colors"
-                fill="none"
-                height="16"
-                stroke="#d1d5db"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.75"
-                viewBox="0 0 24 24"
-                width="16"
-              >
-                <rect height="18" rx="2" width="18" x="3" y="3" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-              <span className="text-xs font-geist text-gray-300 group-hover:text-[#FF5B04] transition-colors">
-                Add cover image
-              </span>
+
+            <div
+              className="h-px mx-14"
+              style={{ background: "rgba(0,0,0,0.06)" }}
+            />
+
+            {/* Editor area */}
+            <div ref={editorRef} className="relative px-14 py-4">
+              <FloatingBlockInserter
+                editor={editor}
+                imageUploadRef={inlineImageUploadRef}
+                onImageUrl={() => setShowImageUrlModal(true)}
+                onVideoEmbed={() => setShowVideoModal(true)}
+              />
               <input
+                ref={inlineImageUploadRef}
                 accept="image/*"
                 className="hidden"
                 type="file"
-                onChange={handleBannerImageUpload}
+                onChange={handleInlineImageUpload}
               />
-            </label>
-          )}
-
-          {/* Title */}
-          <div
-            className={
-              bannerImage
-                ? "px-14 pt-6 pb-4 relative"
-                : "px-14 pt-4 pb-4 relative"
-            }
-          >
-            <div className="flex items-center gap-3">
-              <input
-                className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-                placeholder="Post title…"
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-              <button
-                className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
-                type="button"
-                onClick={() => {
-                  setIsTitleModalOpen(true);
+              <div className="notion-editor-wrapper min-h-[520px]">
+                <EditorContent editor={editor} />
+              </div>
+              <SlashCommandMenu
+                editor={editor}
+                imageUploadRef={inlineImageUploadRef}
+                isOpen={slashMenuOpen}
+                position={slashMenuPosition}
+                onClose={() => setSlashMenuOpen(false)}
+                onImageUrl={() => {
+                  setSlashMenuOpen(false);
+                  setShowImageUrlModal(true);
                 }}
-              >
-                <svg
-                  fill="none"
-                  height="11"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  width="11"
-                >
-                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                </svg>
-                AI Assistant
-              </button>
+                onVideoEmbed={() => {
+                  setSlashMenuOpen(false);
+                  setShowVideoModal(true);
+                }}
+              />
             </div>
           </div>
-
-          <div
-            className="h-px mx-14"
-            style={{ background: "rgba(0,0,0,0.06)" }}
-          />
-
-          {/* Editor area */}
-          <div ref={editorRef} className="relative px-14 py-4">
-            <FloatingBlockInserter
-              editor={editor}
-              imageUploadRef={inlineImageUploadRef}
-              onImageUrl={() => setShowImageUrlModal(true)}
-              onVideoEmbed={() => setShowVideoModal(true)}
-            />
-            <input
-              ref={inlineImageUploadRef}
-              accept="image/*"
-              className="hidden"
-              type="file"
-              onChange={handleInlineImageUpload}
-            />
-            <div className="notion-editor-wrapper min-h-[520px]">
-              <EditorContent editor={editor} />
-            </div>
-            <SlashCommandMenu
-              editor={editor}
-              imageUploadRef={inlineImageUploadRef}
-              isOpen={slashMenuOpen}
-              position={slashMenuPosition}
-              onClose={() => setSlashMenuOpen(false)}
-              onImageUrl={() => {
-                setSlashMenuOpen(false);
-                setShowImageUrlModal(true);
-              }}
-              onVideoEmbed={() => {
-                setSlashMenuOpen(false);
-                setShowVideoModal(true);
-              }}
-            />
-          </div>
-        </div>
         )}
 
         {/* ── Settings Sidebar — hidden in immersive preview mode ── */}
-        {!showPreview && <div className="w-72 flex-shrink-0 space-y-4">
-          {/* Sidebar Tab Navigation */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
-            {(
-              [
-                { key: "content", label: "Content" },
-                { key: "seo", label: "SEO" },
-                { key: "ai", label: "AI Tools" },
-                { key: "distribute", label: "Distribute" },
-              ] as const
-            ).map(({ key, label }) => (
-              <button
-                key={key}
-                className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
-                  sidebarTab === key
-                    ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
-                    : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
-                }`}
-                onClick={() => setSidebarTab(key)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          {/* ── Content Tab ── */}
-          {sidebarTab === "content" && (
-            <>
-              {/* Analytics Card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-              Analytics
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-gray-900">
-                  {editorStats.words}
-                </div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                  Words
-                </div>
-              </div>
-              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-gray-900">
-                  {editorStats.characters}
-                </div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                  Characters
-                </div>
-              </div>
-              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-gray-900">
-                  {editorStats.paragraphs}
-                </div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                  Paragraphs
-                </div>
-              </div>
-              <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                <div className="text-2xl font-bold font-geist text-[#FF5B04]">
-                  {editorStats.readTime} min
-                </div>
-                <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                  Read Time
-                </div>
-              </div>
-            </div>
-
-            {/* Writing Goal Progress */}
-            <div className="mt-3.5 pt-3 border-t border-black/5">
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-[10px] font-geist text-gray-500 font-medium">
-                  Writing Goal
-                </span>
-                <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                  {Math.min(100, Math.round((editorStats.words / 500) * 100))}%
-                  ({editorStats.words}/500 words)
-                </span>
-              </div>
-              <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-500 ease-out"
-                  style={{
-                    width: `${Math.min(100, (editorStats.words / 500) * 100)}%`,
-                    background: "#FF5B04",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Post Type card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-              Post Type
-            </p>
-            <div className="space-y-1.5">
+        {!showPreview && (
+          <div className="w-72 flex-shrink-0 space-y-4">
+            {/* Sidebar Tab Navigation */}
+            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
               {(
                 [
-                  {
-                    value: "blog",
-                    label: "Blog",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="13"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="13"
-                      >
-                        <path d="M12 20h9" />
-                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-                      </svg>
-                    ),
-                  },
-                  {
-                    value: "tutorial",
-                    label: "Tutorial",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="13"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="13"
-                      >
-                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                      </svg>
-                    ),
-                  },
-                  {
-                    value: "case-study",
-                    label: "Case Study",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="13"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="13"
-                      >
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" x2="16.65" y1="21" y2="16.65" />
-                      </svg>
-                    ),
-                  },
-                  {
-                    value: "community-insight",
-                    label: "Community Insight",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="13"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="13"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="12" x2="12" y1="8" y2="12" />
-                        <line x1="12" x2="12.01" y1="16" y2="16" />
-                      </svg>
-                    ),
-                  },
+                  { key: "content", label: "Content" },
+                  { key: "seo", label: "SEO" },
+                  { key: "ai", label: "AI Tools" },
+                  { key: "distribute", label: "Distribute" },
                 ] as const
-              ).map(({ value, label, icon }) => (
+              ).map(({ key, label }) => (
                 <button
-                  key={value}
-                  className={`w-full flex items-center gap-2.5 text-sm font-geist px-3 py-2 rounded-xl border transition-all ${
-                    postType === value
-                      ? "border-[#FF5B04] bg-orange-50 text-[#FF5B04] font-semibold"
-                      : "border-black/5 bg-black/[0.02] text-gray-600 hover:border-[#FF5B04]/30 hover:bg-orange-50/50"
+                  key={key}
+                  className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
+                    sidebarTab === key
+                      ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
+                      : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
                   }`}
-                  onClick={() => setPostType(value)}
+                  onClick={() => setSidebarTab(key)}
                 >
-                  <span className="flex-shrink-0">{icon}</span>
-                  <span>{label}</span>
-                  {postType === value && (
-                    <span className="ml-auto text-[#FF5B04]">
-                      <svg
-                        fill="none"
-                        height="12"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2.5"
-                        viewBox="0 0 24 24"
-                        width="12"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    </span>
-                  )}
+                  {label}
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Excerpt card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <div className="flex justify-between items-center mb-3">
-              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                Excerpt
-              </p>
-              <button
-                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                onClick={() => {
+            {/* ── Content Tab ── */}
+            {sidebarTab === "content" && (
+              <>
+                {/* Analytics Card */}
+                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+                    Analytics
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                      <div className="text-2xl font-bold font-geist text-gray-900">
+                        {editorStats.words}
+                      </div>
+                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                        Words
+                      </div>
+                    </div>
+                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                      <div className="text-2xl font-bold font-geist text-gray-900">
+                        {editorStats.characters}
+                      </div>
+                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                        Characters
+                      </div>
+                    </div>
+                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                      <div className="text-2xl font-bold font-geist text-gray-900">
+                        {editorStats.paragraphs}
+                      </div>
+                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                        Paragraphs
+                      </div>
+                    </div>
+                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                      <div className="text-2xl font-bold font-geist text-[#FF5B04]">
+                        {editorStats.readTime} min
+                      </div>
+                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                        Read Time
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Writing Goal Progress */}
+                  <div className="mt-3.5 pt-3 border-t border-black/5">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-[10px] font-geist text-gray-500 font-medium">
+                        Writing Goal
+                      </span>
+                      <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
+                        {Math.min(
+                          100,
+                          Math.round((editorStats.words / 500) * 100),
+                        )}
+                        % ({editorStats.words}/500 words)
+                      </span>
+                    </div>
+                    <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-500 ease-out"
+                        style={{
+                          width: `${Math.min(100, (editorStats.words / 500) * 100)}%`,
+                          background: "#FF5B04",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Post Type card */}
+                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+                    Post Type
+                  </p>
+                  <div className="space-y-1.5">
+                    {(
+                      [
+                        {
+                          value: "blog",
+                          label: "Blog",
+                          icon: (
+                            <svg
+                              fill="none"
+                              height="13"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.75"
+                              viewBox="0 0 24 24"
+                              width="13"
+                            >
+                              <path d="M12 20h9" />
+                              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                            </svg>
+                          ),
+                        },
+                        {
+                          value: "tutorial",
+                          label: "Tutorial",
+                          icon: (
+                            <svg
+                              fill="none"
+                              height="13"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.75"
+                              viewBox="0 0 24 24"
+                              width="13"
+                            >
+                              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                            </svg>
+                          ),
+                        },
+                        {
+                          value: "case-study",
+                          label: "Case Study",
+                          icon: (
+                            <svg
+                              fill="none"
+                              height="13"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.75"
+                              viewBox="0 0 24 24"
+                              width="13"
+                            >
+                              <circle cx="11" cy="11" r="8" />
+                              <line x1="21" x2="16.65" y1="21" y2="16.65" />
+                            </svg>
+                          ),
+                        },
+                        {
+                          value: "community-insight",
+                          label: "Community Insight",
+                          icon: (
+                            <svg
+                              fill="none"
+                              height="13"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.75"
+                              viewBox="0 0 24 24"
+                              width="13"
+                            >
+                              <circle cx="12" cy="12" r="10" />
+                              <line x1="12" x2="12" y1="8" y2="12" />
+                              <line x1="12" x2="12.01" y1="16" y2="16" />
+                            </svg>
+                          ),
+                        },
+                      ] as const
+                    ).map(({ value, label, icon }) => (
+                      <button
+                        key={value}
+                        className={`w-full flex items-center gap-2.5 text-sm font-geist px-3 py-2 rounded-xl border transition-all ${
+                          postType === value
+                            ? "border-[#FF5B04] bg-orange-50 text-[#FF5B04] font-semibold"
+                            : "border-black/5 bg-black/[0.02] text-gray-600 hover:border-[#FF5B04]/30 hover:bg-orange-50/50"
+                        }`}
+                        onClick={() => setPostType(value)}
+                      >
+                        <span className="flex-shrink-0">{icon}</span>
+                        <span>{label}</span>
+                        {postType === value && (
+                          <span className="ml-auto text-[#FF5B04]">
+                            <svg
+                              fill="none"
+                              height="12"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2.5"
+                              viewBox="0 0 24 24"
+                              width="12"
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Excerpt card */}
+                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                  <div className="flex justify-between items-center mb-3">
+                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                      Excerpt
+                    </p>
+                    <button
+                      className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+                      onClick={() => {
+                        if (!editor || editor.isEmpty) {
+                          setValidationError(
+                            "Please write some content first so the AI can summarize it.",
+                          );
+
+                          return;
+                        }
+                        setIsExcerptModalOpen(true);
+                      }}
+                    >
+                      <svg
+                        fill="none"
+                        height="10"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        width="10"
+                      >
+                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                      </svg>
+                      AI Assistant
+                    </button>
+                  </div>
+                  <textarea
+                    className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
+                    placeholder="Short summary shown in blog listings…"
+                    style={{ minHeight: 80 }}
+                    value={excerpt}
+                    onChange={(e) => setExcerpt(e.target.value)}
+                  />
+                </div>
+
+                {/* Tags card */}
+                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                  <div className="flex justify-between items-center mb-3">
+                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                      Tags
+                    </p>
+                    <button
+                      className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+                      type="button"
+                      onClick={() => {
+                        setIsTagsModalOpen(true);
+                      }}
+                    >
+                      <svg
+                        fill="none"
+                        height="10"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        width="10"
+                      >
+                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                      </svg>
+                      AI Assistant
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                        style={{ background: "#FFF0E8", color: "#FF5B04" }}
+                      >
+                        {tag}
+                        <button
+                          className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                          onClick={() => setTags(tags.filter((t) => t !== tag))}
+                        >
+                          <svg
+                            fill="none"
+                            height="9"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            viewBox="0 0 24 24"
+                            width="9"
+                          >
+                            <line x1="18" x2="6" y1="6" y2="18" />
+                            <line x1="6" x2="18" y1="6" y2="18" />
+                          </svg>
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                  <input
+                    className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+                    placeholder="Add tag, press Enter…"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={addTag}
+                  />
+                </div>
+
+                {/* Quick insert card */}
+                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+                    Quick Insert
+                  </p>
+                  <div className="space-y-1">
+                    <label className="flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors">
+                      <svg
+                        fill="none"
+                        height="14"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="14"
+                      >
+                        <rect height="18" rx="2" width="18" x="3" y="3" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                      </svg>
+                      Upload image
+                      <input
+                        accept="image/*"
+                        className="hidden"
+                        type="file"
+                        onChange={handleInlineImageUpload}
+                      />
+                    </label>
+                    <button
+                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                      onClick={() => setShowImageUrlModal(true)}
+                    >
+                      <svg
+                        fill="none"
+                        height="14"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="14"
+                      >
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                      </svg>
+                      Image from URL
+                    </button>
+                    <button
+                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                      onClick={() => setShowVideoModal(true)}
+                    >
+                      <svg
+                        fill="none"
+                        height="14"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="14"
+                      >
+                        <polygon points="23 7 16 12 23 17 23 7" />
+                        <rect
+                          height="14"
+                          rx="2"
+                          ry="2"
+                          width="15"
+                          x="1"
+                          y="5"
+                        />
+                      </svg>
+                      Embed video
+                    </button>
+                    <button
+                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                      onClick={() =>
+                        editor.chain().focus().setHorizontalRule().run()
+                      }
+                    >
+                      <svg
+                        fill="none"
+                        height="14"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="14"
+                      >
+                        <line x1="3" x2="21" y1="12" y2="12" />
+                      </svg>
+                      Add divider
+                    </button>
+                    <button
+                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                      onClick={() =>
+                        editor.chain().focus().toggleCodeBlock().run()
+                      }
+                    >
+                      <svg
+                        fill="none"
+                        height="14"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="14"
+                      >
+                        <polyline points="16 18 22 12 16 6" />
+                        <polyline points="8 6 2 12 8 18" />
+                      </svg>
+                      Code block
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* ── SEO Tab ── */}
+            {sidebarTab === "seo" && (
+              <>
+                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                  <div className="flex justify-between items-center mb-4">
+                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                      SEO Health
+                    </p>
+                    {(() => {
+                      const score =
+                        (seoData?.focusKeyword ? 25 : 0) +
+                        (seoData?.metaTitle ? 25 : 0) +
+                        (seoData?.metaDescription ? 25 : 0) +
+                        ((seoData?.keywords?.length ?? 0) > 0 ? 25 : 0);
+                      const color =
+                        score >= 75
+                          ? "#16a34a"
+                          : score >= 50
+                            ? "#FF5B04"
+                            : "#dc2626";
+                      const label =
+                        score >= 75
+                          ? "Good"
+                          : score >= 50
+                            ? "Fair"
+                            : "Needs Work";
+
+                      return (
+                        <div className="flex items-center gap-2">
+                          <div className="relative w-8 h-8">
+                            <svg
+                              className="w-8 h-8 -rotate-90"
+                              viewBox="0 0 32 32"
+                            >
+                              <circle
+                                cx="16"
+                                cy="16"
+                                fill="none"
+                                r="12"
+                                stroke="#f3f4f6"
+                                strokeWidth="4"
+                              />
+                              <circle
+                                cx="16"
+                                cy="16"
+                                fill="none"
+                                r="12"
+                                stroke={color}
+                                strokeDasharray={`${(score / 100) * 75.4} 75.4`}
+                                strokeLinecap="round"
+                                strokeWidth="4"
+                              />
+                            </svg>
+                            <span
+                              className="absolute inset-0 flex items-center justify-center text-[8px] font-bold font-jetbrains-mono"
+                              style={{ color }}
+                            >
+                              {score}
+                            </span>
+                          </div>
+                          <span
+                            className="text-[10px] font-bold font-jetbrains-mono"
+                            style={{ color }}
+                          >
+                            {label}
+                          </span>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                  <div className="space-y-2 mb-4">
+                    {[
+                      {
+                        label: "Focus Keyword",
+                        value: !!seoData?.focusKeyword,
+                      },
+                      { label: "Meta Title", value: !!seoData?.metaTitle },
+                      {
+                        label: "Meta Description",
+                        value: !!seoData?.metaDescription,
+                      },
+                      {
+                        label: "Keywords",
+                        value: (seoData?.keywords?.length ?? 0) > 0,
+                      },
+                    ].map(({ label, value }) => (
+                      <div key={label} className="flex items-center gap-2">
+                        <div
+                          className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                          style={{ background: value ? "#dcfce7" : "#fee2e2" }}
+                        >
+                          {value ? (
+                            <svg
+                              fill="none"
+                              height="8"
+                              stroke="#16a34a"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                              width="8"
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          ) : (
+                            <svg
+                              fill="none"
+                              height="8"
+                              stroke="#dc2626"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                              width="8"
+                            >
+                              <line x1="18" x2="6" y1="6" y2="18" />
+                              <line x1="6" x2="18" y1="6" y2="18" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className="text-xs font-geist text-gray-600">
+                          {label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    className="w-full py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-gray-800 transition-all flex items-center justify-center gap-2"
+                    onClick={() => setShowSEOModal(true)}
+                  >
+                    <svg
+                      fill="none"
+                      height="12"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                      width="12"
+                    >
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="m21 21-4.3-4.3" />
+                    </svg>
+                    Open SEO Editor
+                  </button>
+                </div>
+                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
+                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                    Quick Edit
+                  </p>
+                  <div>
+                    <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
+                      Focus Keyword
+                    </label>
+                    <input
+                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
+                      placeholder="e.g. react performance"
+                      value={seoData?.focusKeyword || ""}
+                      onChange={(e) =>
+                        setSeoData((prev) => ({
+                          ...prev,
+                          focusKeyword: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
+                      Meta Title{" "}
+                      <span className="normal-case font-geist text-gray-300">
+                        ({(seoData?.metaTitle || "").length}/60)
+                      </span>
+                    </label>
+                    <input
+                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
+                      maxLength={60}
+                      placeholder="SEO page title…"
+                      value={seoData?.metaTitle || ""}
+                      onChange={(e) =>
+                        setSeoData((prev) => ({
+                          ...prev,
+                          metaTitle: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
+                      Meta Description{" "}
+                      <span className="normal-case font-geist text-gray-300">
+                        ({(seoData?.metaDescription || "").length}/160)
+                      </span>
+                    </label>
+                    <textarea
+                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none"
+                      maxLength={160}
+                      placeholder="Brief description for search results…"
+                      rows={3}
+                      value={seoData?.metaDescription || ""}
+                      onChange={(e) =>
+                        setSeoData((prev) => ({
+                          ...prev,
+                          metaDescription: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  {currentSlug && (
+                    <div className="pt-1 border-t border-black/5">
+                      <p className="text-[9px] font-jetbrains-mono text-gray-400 uppercase tracking-wider mb-1">
+                        URL Slug
+                      </p>
+                      <p className="text-xs font-geist text-gray-500 break-all">
+                        /{currentSlug}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/* ── AI Tab ── */}
+            {sidebarTab === "ai" && (
+              <div className="space-y-3">
+                <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">
+                  AI Writing Tools
+                </p>
+                {[
+                  {
+                    key: "copilot",
+                    label: "AI Copilot",
+                    description:
+                      "Get AI suggestions and help with your content",
+                    icon: (
+                      <svg
+                        fill="none"
+                        height="20"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="20"
+                      >
+                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                      </svg>
+                    ),
+                    onClick: () => setIsCopilotOpen(true),
+                  },
+                  {
+                    key: "title",
+                    label: "AI Title",
+                    description: "Generate compelling post titles",
+                    icon: (
+                      <svg
+                        fill="none"
+                        height="20"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="20"
+                      >
+                        <path d="M4 6h16M4 12h16M4 18h7" />
+                      </svg>
+                    ),
+                    onClick: () => setIsTitleModalOpen(true),
+                  },
+                  {
+                    key: "excerpt",
+                    label: "AI Excerpt",
+                    description: "Auto-summarize your post content",
+                    icon: (
+                      <svg
+                        fill="none"
+                        height="20"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="20"
+                      >
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" x2="8" y1="13" y2="13" />
+                        <line x1="16" x2="8" y1="17" y2="17" />
+                      </svg>
+                    ),
+                    onClick: () => {
+                      if (!editor || editor.isEmpty) {
+                        setValidationError(
+                          "Please write some content first so the AI can summarize it.",
+                        );
+
+                        return;
+                      }
+                      setIsExcerptModalOpen(true);
+                    },
+                  },
+                  {
+                    key: "tags",
+                    label: "AI Tags",
+                    description: "Generate relevant tags for your post",
+                    icon: (
+                      <svg
+                        fill="none"
+                        height="20"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="20"
+                      >
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                        <line x1="7" x2="7.01" y1="7" y2="7" />
+                      </svg>
+                    ),
+                    onClick: () => setIsTagsModalOpen(true),
+                  },
+                ].map(({ key, label, description, icon, onClick }) => (
+                  <button
+                    key={key}
+                    className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
+                    onClick={onClick}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{
+                          background: "rgba(255,91,4,0.08)",
+                          color: "#FF5B04",
+                        }}
+                      >
+                        {icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
+                          {label}
+                        </p>
+                        <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
+                          {description}
+                        </p>
+                      </div>
+                      <svg
+                        className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
+                        fill="none"
+                        height="14"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        width="14"
+                      >
+                        <line x1="5" x2="19" y1="12" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
+                    </div>
+                  </button>
+                ))}
+
+                {/* Co-Pilot real-time recommendations */}
+                {copilotWarnings.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-black/5 space-y-2">
+                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">
+                      Co-Pilot Alerts ({copilotWarnings.length})
+                    </p>
+                    {copilotWarnings.map((w) => (
+                      <div
+                        key={w.id}
+                        className="bg-amber-50/50 border border-amber-100 rounded-xl p-3.5 space-y-1.5 shadow-sm"
+                      >
+                        <div className="flex items-start gap-2">
+                          <span className="text-amber-500 font-bold text-xs mt-0.5">
+                            ⚠️
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-xs font-bold text-gray-800 capitalize leading-snug">
+                              {w.type} Alert
+                            </p>
+                            <p className="text-[11px] text-gray-500 leading-normal mt-0.5">
+                              {w.message}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="bg-white border border-amber-100 rounded-lg p-2 text-[10px] leading-relaxed text-amber-800">
+                          <span className="font-bold">Suggestion: </span>
+                          {w.suggestion}
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <button
+                            className="text-[9px] font-bold text-gray-400 hover:text-gray-600 transition-colors uppercase tracking-wide"
+                            type="button"
+                            onClick={() => dismissWarning(w.id)}
+                          >
+                            Dismiss
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            {/* ── Distribute Tab ── */}
+            {sidebarTab === "distribute" && (
+              <DistributionPanel
+                blogContent={editor?.getHTML() || ""}
+                blogExcerpt={excerpt}
+                blogId={blogId || null}
+                blogPublished={saveStatus === "Published"}
+                blogSeo={seoData}
+                blogTags={tags}
+                distributionRecords={distRecords}
+                onEnsureSaved={ensureSaved}
+                onNavigateToSEO={() => setSidebarTab("seo")}
+                onTriggerCopilotAI={() => setIsCopilotOpen(true)}
+                onTriggerExcerptAI={() => {
                   if (!editor || editor.isEmpty) {
                     setValidationError(
                       "Please write some content first so the AI can summarize it.",
@@ -7020,339 +7983,12 @@ const BlogEditPage = () => {
                   }
                   setIsExcerptModalOpen(true);
                 }}
-              >
-                <svg
-                  fill="none"
-                  height="10"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  width="10"
-                >
-                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                </svg>
-                AI Assistant
-              </button>
-            </div>
-            <textarea
-              className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
-              placeholder="Short summary shown in blog listings…"
-              style={{ minHeight: 80 }}
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-            />
+                onTriggerTagsAI={() => setIsTagsModalOpen(true)}
+                onUpdateRecords={(recs) => setDistRecords(recs)}
+              />
+            )}
           </div>
-
-          {/* Tags card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <div className="flex justify-between items-center mb-3">
-              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                Tags
-              </p>
-              <button
-                className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                type="button"
-                onClick={() => {
-                  setIsTagsModalOpen(true);
-                }}
-              >
-                <svg
-                  fill="none"
-                  height="10"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  width="10"
-                >
-                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                </svg>
-                AI Assistant
-              </button>
-            </div>
-            <div className="flex flex-wrap gap-1.5 mb-2">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                  style={{ background: "#FFF0E8", color: "#FF5B04" }}
-                >
-                  {tag}
-                  <button
-                    className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                    onClick={() => setTags(tags.filter((t) => t !== tag))}
-                  >
-                    <svg
-                      fill="none"
-                      height="9"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="3"
-                      viewBox="0 0 24 24"
-                      width="9"
-                    >
-                      <line x1="18" x2="6" y1="6" y2="18" />
-                      <line x1="6" x2="18" y1="6" y2="18" />
-                    </svg>
-                  </button>
-                </span>
-              ))}
-            </div>
-            <input
-              className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-              placeholder="Add tag, press Enter…"
-              value={tagInput}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={addTag}
-            />
-          </div>
-
-          {/* Quick insert card */}
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-              Quick Insert
-            </p>
-            <div className="space-y-1">
-              <label className="flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors">
-                <svg
-                  fill="none"
-                  height="14"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                  viewBox="0 0 24 24"
-                  width="14"
-                >
-                  <rect height="18" rx="2" width="18" x="3" y="3" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <polyline points="21 15 16 10 5 21" />
-                </svg>
-                Upload image
-                <input
-                  accept="image/*"
-                  className="hidden"
-                  type="file"
-                  onChange={handleInlineImageUpload}
-                />
-              </label>
-              <button
-                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                onClick={() => setShowImageUrlModal(true)}
-              >
-                <svg
-                  fill="none"
-                  height="14"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                  viewBox="0 0 24 24"
-                  width="14"
-                >
-                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                </svg>
-                Image from URL
-              </button>
-              <button
-                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                onClick={() => setShowVideoModal(true)}
-              >
-                <svg
-                  fill="none"
-                  height="14"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                  viewBox="0 0 24 24"
-                  width="14"
-                >
-                  <polygon points="23 7 16 12 23 17 23 7" />
-                  <rect height="14" rx="2" ry="2" width="15" x="1" y="5" />
-                </svg>
-                Embed video
-              </button>
-              <button
-                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                onClick={() => editor.chain().focus().setHorizontalRule().run()}
-              >
-                <svg
-                  fill="none"
-                  height="14"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                  viewBox="0 0 24 24"
-                  width="14"
-                >
-                  <line x1="3" x2="21" y1="12" y2="12" />
-                </svg>
-                Add divider
-              </button>
-              <button
-                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-              >
-                <svg
-                  fill="none"
-                  height="14"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                  viewBox="0 0 24 24"
-                  width="14"
-                >
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                </svg>
-                Code block
-              </button>
-            </div>
-          </div>
-            </>
-          )}
-
-          {/* ── SEO Tab ── */}
-          {sidebarTab === "seo" && (
-            <>
-              <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                <div className="flex justify-between items-center mb-4">
-                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">SEO Health</p>
-                  {(() => {
-                    const score =
-                      (seoData?.focusKeyword ? 25 : 0) +
-                      (seoData?.metaTitle ? 25 : 0) +
-                      (seoData?.metaDescription ? 25 : 0) +
-                      ((seoData?.keywords?.length ?? 0) > 0 ? 25 : 0);
-                    const color = score >= 75 ? "#16a34a" : score >= 50 ? "#FF5B04" : "#dc2626";
-                    const label = score >= 75 ? "Good" : score >= 50 ? "Fair" : "Needs Work";
-                    return (
-                      <div className="flex items-center gap-2">
-                        <div className="relative w-8 h-8">
-                          <svg className="w-8 h-8 -rotate-90" viewBox="0 0 32 32">
-                            <circle cx="16" cy="16" fill="none" r="12" stroke="#f3f4f6" strokeWidth="4" />
-                            <circle cx="16" cy="16" fill="none" r="12" stroke={color} strokeDasharray={`${(score / 100) * 75.4} 75.4`} strokeLinecap="round" strokeWidth="4" />
-                          </svg>
-                          <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold font-jetbrains-mono" style={{ color }}>{score}</span>
-                        </div>
-                        <span className="text-[10px] font-bold font-jetbrains-mono" style={{ color }}>{label}</span>
-                      </div>
-                    );
-                  })()}
-                </div>
-                <div className="space-y-2 mb-4">
-                  {[
-                    { label: "Focus Keyword", value: !!seoData?.focusKeyword },
-                    { label: "Meta Title", value: !!seoData?.metaTitle },
-                    { label: "Meta Description", value: !!seoData?.metaDescription },
-                    { label: "Keywords", value: (seoData?.keywords?.length ?? 0) > 0 },
-                  ].map(({ label, value }) => (
-                    <div key={label} className="flex items-center gap-2">
-                      <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: value ? "#dcfce7" : "#fee2e2" }}>
-                        {value ? (
-                          <svg fill="none" height="8" stroke="#16a34a" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="8"><polyline points="20 6 9 17 4 12" /></svg>
-                        ) : (
-                          <svg fill="none" height="8" stroke="#dc2626" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="8"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
-                        )}
-                      </div>
-                      <span className="text-xs font-geist text-gray-600">{label}</span>
-                    </div>
-                  ))}
-                </div>
-                <button className="w-full py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-gray-800 transition-all flex items-center justify-center gap-2" onClick={() => setShowSEOModal(true)}>
-                  <svg fill="none" height="12" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" width="12"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-                  Open SEO Editor
-                </button>
-              </div>
-              <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
-                <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">Quick Edit</p>
-                <div>
-                  <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">Focus Keyword</label>
-                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="e.g. react performance" value={seoData?.focusKeyword || ""} onChange={(e) => setSeoData((prev) => ({ ...prev, focusKeyword: e.target.value }))} />
-                </div>
-                <div>
-                  <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
-                    Meta Title <span className="normal-case font-geist text-gray-300">({(seoData?.metaTitle || "").length}/60)</span>
-                  </label>
-                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" maxLength={60} placeholder="SEO page title…" value={seoData?.metaTitle || ""} onChange={(e) => setSeoData((prev) => ({ ...prev, metaTitle: e.target.value }))} />
-                </div>
-                <div>
-                  <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
-                    Meta Description <span className="normal-case font-geist text-gray-300">({(seoData?.metaDescription || "").length}/160)</span>
-                  </label>
-                  <textarea className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none" maxLength={160} placeholder="Brief description for search results…" rows={3} value={seoData?.metaDescription || ""} onChange={(e) => setSeoData((prev) => ({ ...prev, metaDescription: e.target.value }))} />
-                </div>
-                {currentSlug && (
-                  <div className="pt-1 border-t border-black/5">
-                    <p className="text-[9px] font-jetbrains-mono text-gray-400 uppercase tracking-wider mb-1">URL Slug</p>
-                    <p className="text-xs font-geist text-gray-500 break-all">/{currentSlug}</p>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-
-          {/* ── AI Tab ── */}
-          {sidebarTab === "ai" && (
-            <div className="space-y-3">
-              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">AI Writing Tools</p>
-              {[
-                { key: "copilot", label: "AI Copilot", description: "Get AI suggestions and help with your content", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" /></svg>, onClick: () => setIsCopilotOpen(true) },
-                { key: "title", label: "AI Title", description: "Generate compelling post titles", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M4 6h16M4 12h16M4 18h7" /></svg>, onClick: () => setIsTitleModalOpen(true) },
-                { key: "excerpt", label: "AI Excerpt", description: "Auto-summarize your post content", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" x2="8" y1="13" y2="13" /><line x1="16" x2="8" y1="17" y2="17" /></svg>, onClick: () => { if (!editor || editor.isEmpty) { setValidationError("Please write some content first so the AI can summarize it."); return; } setIsExcerptModalOpen(true); } },
-                { key: "tags", label: "AI Tags", description: "Generate relevant tags for your post", icon: <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><line x1="7" x2="7.01" y1="7" y2="7" /></svg>, onClick: () => setIsTagsModalOpen(true) },
-              ].map(({ key, label, description, icon, onClick }) => (
-                <button key={key} className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group" onClick={onClick}>
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "rgba(255,91,4,0.08)", color: "#FF5B04" }}>
-                      {icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">{label}</p>
-                      <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">{description}</p>
-                    </div>
-                    <svg className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1" fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
-                      <line x1="5" x2="19" y1="12" y2="12" /><polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
-          {/* ── Distribute Tab ── */}
-          {sidebarTab === "distribute" && (
-            <DistributionPanel
-              blogId={blogId || null}
-              blogPublished={saveStatus === "Published"}
-              blogContent={editor?.getHTML() || ""}
-              blogExcerpt={excerpt}
-              blogTags={tags}
-              blogSeo={seoData}
-              distributionRecords={distRecords}
-              onEnsureSaved={ensureSaved}
-              onUpdateRecords={(recs) => setDistRecords(recs)}
-              onNavigateToSEO={() => setSidebarTab("seo")}
-              onTriggerExcerptAI={() => {
-                if (!editor || editor.isEmpty) {
-                  setValidationError("Please write some content first so the AI can summarize it.");
-                  return;
-                }
-                setIsExcerptModalOpen(true);
-              }}
-              onTriggerTagsAI={() => setIsTagsModalOpen(true)}
-              onTriggerCopilotAI={() => setIsCopilotOpen(true)}
-            />
-          )}
-        </div>}
-
+        )}
       </div>
 
       {/* ── Modals ── */}
@@ -7361,7 +7997,13 @@ const BlogEditPage = () => {
         isOpen={isCopilotOpen}
         postTitle={title}
         postType={postType}
+        preset={activePreset}
         onClose={() => setIsCopilotOpen(false)}
+      />
+      <RepurposingDrawer
+        isOpen={isRepurposeDrawerOpen}
+        postId={(params.id as string) || ""}
+        onClose={() => setIsRepurposeDrawerOpen(false)}
       />
       <AIExcerptModal
         editor={editor}

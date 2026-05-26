@@ -12,10 +12,11 @@ import BrandBrain from "@/models/pirateCOS/BrandBrain";
 export async function GET(request: NextRequest) {
   try {
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -30,8 +31,11 @@ export async function GET(request: NextRequest) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to fetch brand brain profile" },
-      { status: 500 }
+      {
+        success: false,
+        error: error.message || "Failed to fetch brand brain profile",
+      },
+      { status: 500 },
     );
   }
 }
@@ -43,10 +47,11 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await verifyAuth();
+
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -65,25 +70,28 @@ export async function POST(request: NextRequest) {
     if (!companyName || !companyName.trim()) {
       return NextResponse.json(
         { success: false, error: "Company name is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     if (!brandVoice || !brandVoice.trim()) {
       return NextResponse.json(
         { success: false, error: "Brand voice/tone description is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     if (!products || !products.trim()) {
       return NextResponse.json(
         { success: false, error: "Products/services description is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     if (!audienceICP || !audienceICP.trim()) {
       return NextResponse.json(
-        { success: false, error: "Audience/ICP profile description is required" },
-        { status: 400 }
+        {
+          success: false,
+          error: "Audience/ICP profile description is required",
+        },
+        { status: 400 },
       );
     }
 
@@ -94,20 +102,20 @@ export async function POST(request: NextRequest) {
     const cleanKeywords = Array.isArray(targetKeywords)
       ? targetKeywords.map((k: string) => k.trim()).filter(Boolean)
       : typeof targetKeywords === "string"
-      ? targetKeywords
-          .split(",")
-          .map((k: string) => k.trim())
-          .filter(Boolean)
-      : [];
+        ? targetKeywords
+            .split(",")
+            .map((k: string) => k.trim())
+            .filter(Boolean)
+        : [];
 
     const cleanForbidden = Array.isArray(forbiddenWords)
       ? forbiddenWords.map((w: string) => w.trim()).filter(Boolean)
       : typeof forbiddenWords === "string"
-      ? forbiddenWords
-          .split(",")
-          .map((w: string) => w.trim())
-          .filter(Boolean)
-      : [];
+        ? forbiddenWords
+            .split(",")
+            .map((w: string) => w.trim())
+            .filter(Boolean)
+        : [];
 
     // Find and update, or create if not exists
     const brandBrain = await BrandBrain.findOneAndUpdate(
@@ -125,7 +133,7 @@ export async function POST(request: NextRequest) {
         new: true,
         upsert: true, // creates the document if none matches the tenantId
         runValidators: true,
-      }
+      },
     );
 
     return NextResponse.json({
@@ -134,8 +142,11 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to save brand brain profile" },
-      { status: 500 }
+      {
+        success: false,
+        error: error.message || "Failed to save brand brain profile",
+      },
+      { status: 500 },
     );
   }
 }

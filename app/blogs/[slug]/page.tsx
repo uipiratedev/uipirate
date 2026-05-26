@@ -35,7 +35,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
     // Use seo.metaTitle as the page title, fallback to the blog title
     const metaTitle = seo?.metaTitle?.trim() || (blog as any).title;
-    const title = seo?.metaTitle?.trim() ? seo.metaTitle.trim() : `${(blog as any).title} | UI Pirate Blog`;
+    const title = seo?.metaTitle?.trim()
+      ? seo.metaTitle.trim()
+      : `${(blog as any).title} | UI Pirate Blog`;
 
     // Use seo.metaDescription as the description, fallback to the blog excerpt/description
     const description =
@@ -59,7 +61,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       "";
 
     // OG fields with custom title/description support (preferring SEO first, falling back to what it was currently using)
-    const ogTitle = seo?.ogTitle?.trim() || seo?.metaTitle?.trim() || (blog as any).title;
+    const ogTitle =
+      seo?.ogTitle?.trim() || seo?.metaTitle?.trim() || (blog as any).title;
     const ogDescription =
       seo?.ogDescription?.trim() ||
       seo?.metaDescription?.trim() ||

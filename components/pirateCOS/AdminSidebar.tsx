@@ -13,10 +13,12 @@ import {
 
 import { useAuth } from "@/hooks/useAuth";
 
-const isSubdomain = typeof window !== "undefined" && 
-  (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+const isSubdomain =
+  typeof window !== "undefined" &&
+  (window.location.hostname.startsWith("cos.") ||
+    window.location.hostname === "cos.uipirate.com");
 
-const getHref = (path: string) => isSubdomain ? path : `/pirateCOS${path}`;
+const getHref = (path: string) => (isSubdomain ? path : `/pirateCOS${path}`);
 
 const navItems = [
   { label: "Dashboard", href: getHref("/dashboard"), Icon: IconDashboard },
@@ -401,8 +403,14 @@ const AdminSidebar = () => {
                   user.plan === "pro" || user.plan === "enterprise"
                     ? { background: "rgba(255,91,4,0.2)", color: "#FF5B04" }
                     : user.plan === "starter"
-                      ? { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }
-                      : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.35)" }
+                      ? {
+                          background: "rgba(255,255,255,0.1)",
+                          color: "rgba(255,255,255,0.6)",
+                        }
+                      : {
+                          background: "rgba(255,255,255,0.06)",
+                          color: "rgba(255,255,255,0.35)",
+                        }
                 }
               >
                 {PLAN_LABEL[user.plan] ?? "Free"}

@@ -19,6 +19,7 @@ export function htmlToMarkdown(html: string): string {
       .replace(/&gt;/g, ">")
       .replace(/&amp;/g, "&")
       .replace(/&quot;/g, '"');
+
     return `\n\`\`\`\n${unescaped}\n\`\`\`\n`;
   });
 
@@ -37,28 +38,39 @@ export function htmlToMarkdown(html: string): string {
   // A recursive-style list parser using simple token replacement can work, but we can do a standard clean replace.
   // First, convert list items inside ul
   let ulMatches = md.match(/<ul>([\s\S]*?)<\/ul>/gi);
+
   if (ulMatches) {
     for (const match of ulMatches) {
       const items = match.replace(/<li>([\s\S]*?)<\/li>/gi, "- $1\n");
       const cleanList = items.replace(/<\/?ul>/gi, "");
+
       md = md.replace(match, `\n${cleanList}\n`);
     }
   }
 
   // Convert list items inside ol
   let olMatches = md.match(/<ol>([\s\S]*?)<\/ol>/gi);
+
   if (olMatches) {
     for (const match of olMatches) {
       let index = 1;
-      const items = match.replace(/<li>([\s\S]*?)<\/li>/gi, () => `${index++}. $1\n`);
+      const items = match.replace(
+        /<li>([\s\S]*?)<\/li>/gi,
+        () => `${index++}. $1\n`,
+      );
       const cleanList = items.replace(/<\/?ol>/gi, "");
+
       md = md.replace(match, `\n${cleanList}\n`);
     }
   }
 
   // 6. Blockquotes
   md = md.replace(/<blockquote>([\s\S]*?)<\/blockquote>/gi, (_, inner) => {
-    const lines = inner.trim().split("\n").map((line: string) => `> ${line.trim()}`);
+    const lines = inner
+      .trim()
+      .split("\n")
+      .map((line: string) => `> ${line.trim()}`);
+
     return `\n${lines.join("\n")}\n`;
   });
 
@@ -68,11 +80,20 @@ export function htmlToMarkdown(html: string): string {
   md = md.replace(/<br\s*\/?>/gi, "\n");
 
   // 8. Hyperlinks
-  md = md.replace(/<a\s+[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, "[$2]($1)");
+  md = md.replace(
+    /<a\s+[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi,
+    "[$2]($1)",
+  );
 
   // 9. Images
-  md = md.replace(/<img\s+[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?>/gi, "![$2]($1)");
-  md = md.replace(/<img\s+[^>]*alt="([^"]*)"[^>]*src="([^"]*)"[^>]*\/?>/gi, "![$1]($2)");
+  md = md.replace(
+    /<img\s+[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*\/?>/gi,
+    "![$2]($1)",
+  );
+  md = md.replace(
+    /<img\s+[^>]*alt="([^"]*)"[^>]*src="([^"]*)"[^>]*\/?>/gi,
+    "![$1]($2)",
+  );
   md = md.replace(/<img\s+[^>]*src="([^"]*)"[^>]*\/?>/gi, "![]($1)");
 
   // 10. Inline Bold / Italic / Strikethrough / Code

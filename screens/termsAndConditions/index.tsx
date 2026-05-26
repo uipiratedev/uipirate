@@ -100,7 +100,7 @@ const termsSections = [
     bullets: [
       "For subscription-based or prepaid monthly design sprint plans, you may request a refund for any sprint or period that has not yet commenced.",
       "Once design work, scoping, or research has started on a design sprint, phase, or deliverable, the payments made for that active period are fully non-refundable.",
-      "If a project is cancelled or terminated mid-milestone, billing will be prorated based on the hours and work completed up to the date of cancellation."
+      "If a project is cancelled or terminated mid-milestone, billing will be prorated based on the hours and work completed up to the date of cancellation.",
     ],
   },
   {
@@ -110,7 +110,7 @@ const termsSections = [
       "You can cancel your subscription or active project contract at any time in accordance with the following terms:",
     bullets: [
       "For recurring design subscriptions, you can cancel your subscription through your client portal or by notifying your account manager in writing at least 7 days before the next billing cycle.",
-      "For fixed-scope projects, either party may terminate the engagement with a written notice of at least 14 days. Upon cancellation, you will be billed only for the work completed and milestones achieved up to the termination date. All completed and paid-for design assets will be transferred to you."
+      "For fixed-scope projects, either party may terminate the engagement with a written notice of at least 14 days. Upon cancellation, you will be billed only for the work completed and milestones achieved up to the termination date. All completed and paid-for design assets will be transferred to you.",
     ],
   },
   {
@@ -318,7 +318,9 @@ const TermsAndConditionsScreen = () => {
 
                   <div className="text-white/70 text-sm mb-6 space-y-4">
                     <div>
-                      <p className="font-semibold text-white">Registered Address:</p>
+                      <p className="font-semibold text-white">
+                        Registered Address:
+                      </p>
                       <p className="text-white/60 leading-relaxed">
                         H.no 48, block campus,
                         <br />
@@ -326,7 +328,9 @@ const TermsAndConditionsScreen = () => {
                       </p>
                     </div>
                     <div className="border-t border-white/5 pt-3">
-                      <p className="font-semibold text-white">Customer Support Address:</p>
+                      <p className="font-semibold text-white">
+                        Customer Support Address:
+                      </p>
                       <p className="text-white/60 leading-relaxed">
                         Flat No : 1201, ATS Pious Hideaways,
                         <br />

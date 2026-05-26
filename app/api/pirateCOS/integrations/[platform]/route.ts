@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { decrypt } from "@/lib/pirateCOS/encrypt";
 import dbConnect from "@/lib/mongodb";
-import Integration, { SupportedPlatform } from "@/models/pirateCOS/Integration";
+import Integration from "@/models/pirateCOS/Integration";
 
 export async function DELETE(
   req: NextRequest,
@@ -21,7 +21,9 @@ export async function DELETE(
     );
   }
 
-  if (!["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)) {
+  if (
+    !["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)
+  ) {
     return NextResponse.json(
       { success: false, error: "Invalid platform" },
       { status: 400 },
@@ -63,7 +65,9 @@ export async function PATCH(
     );
   }
 
-  if (!["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)) {
+  if (
+    !["wordpress", "medium", "ghost", "buffer", "linkedin"].includes(platform)
+  ) {
     return NextResponse.json(
       { success: false, error: "Invalid platform" },
       { status: 400 },
@@ -77,7 +81,10 @@ export async function PATCH(
 
   if (!doc || !doc.isActive) {
     return NextResponse.json(
-      { success: false, error: "Integration is not active or credentials missing" },
+      {
+        success: false,
+        error: "Integration is not active or credentials missing",
+      },
       { status: 400 },
     );
   }
@@ -99,7 +106,11 @@ export async function PATCH(
         );
       }
 
-      let url = siteUrl.startsWith("http://") || siteUrl.startsWith("https://") ? siteUrl : `https://${siteUrl}`;
+      let url =
+        siteUrl.startsWith("http://") || siteUrl.startsWith("https://")
+          ? siteUrl
+          : `https://${siteUrl}`;
+
       url = url.replace(/\/$/, "") + "/wp-json/wp/v2/users/me";
 
       const wpRes = await fetch(url, {
@@ -110,9 +121,13 @@ export async function PATCH(
       });
 
       const data = await wpRes.json();
+
       if (!wpRes.ok) {
         return NextResponse.json(
-          { success: false, error: data.message || `WordPress Error: ${wpRes.statusText}` },
+          {
+            success: false,
+            error: data.message || `WordPress Error: ${wpRes.statusText}`,
+          },
           { status: 400 },
         );
       }
@@ -139,9 +154,14 @@ export async function PATCH(
       });
 
       const data = await medRes.json();
+
       if (!medRes.ok) {
         return NextResponse.json(
-          { success: false, error: data.errors?.[0]?.message || `Medium Error: ${medRes.statusText}` },
+          {
+            success: false,
+            error:
+              data.errors?.[0]?.message || `Medium Error: ${medRes.statusText}`,
+          },
           { status: 400 },
         );
       }
@@ -168,9 +188,13 @@ export async function PATCH(
       }
 
       const parts = adminKey.split(":");
+
       if (parts.length !== 2) {
         return NextResponse.json(
-          { success: false, error: "Invalid Ghost Admin API Key format — expected id:secret." },
+          {
+            success: false,
+            error: "Invalid Ghost Admin API Key format — expected id:secret.",
+          },
           { status: 400 },
         );
       }
@@ -183,7 +207,11 @@ export async function PATCH(
         audience: "/admin/",
       });
 
-      let url = siteUrl.startsWith("http://") || siteUrl.startsWith("https://") ? siteUrl : `https://${siteUrl}`;
+      let url =
+        siteUrl.startsWith("http://") || siteUrl.startsWith("https://")
+          ? siteUrl
+          : `https://${siteUrl}`;
+
       url = url.replace(/\/$/, "") + "/ghost/api/admin/site/";
 
       const ghRes = await fetch(url, {
@@ -194,9 +222,14 @@ export async function PATCH(
       });
 
       const data = await ghRes.json();
+
       if (!ghRes.ok) {
         return NextResponse.json(
-          { success: false, error: data.errors?.[0]?.message || `Ghost Error: ${ghRes.statusText}` },
+          {
+            success: false,
+            error:
+              data.errors?.[0]?.message || `Ghost Error: ${ghRes.statusText}`,
+          },
           { status: 400 },
         );
       }
@@ -222,9 +255,13 @@ export async function PATCH(
       });
 
       const profiles = await bufRes.json();
+
       if (!bufRes.ok) {
         return NextResponse.json(
-          { success: false, error: profiles.message || `Buffer Error: ${bufRes.statusText}` },
+          {
+            success: false,
+            error: profiles.message || `Buffer Error: ${bufRes.statusText}`,
+          },
           { status: 400 },
         );
       }
@@ -257,6 +294,7 @@ export async function PATCH(
       });
 
       let data = await liRes.json();
+
       if (!liRes.ok) {
         profileUrl = "https://api.linkedin.com/v2/me";
         liRes = await fetch(profileUrl, {
@@ -271,13 +309,20 @@ export async function PATCH(
 
       if (!liRes.ok) {
         return NextResponse.json(
-          { success: false, error: data.message || `LinkedIn Error: ${liRes.statusText}` },
+          {
+            success: false,
+            error: data.message || `LinkedIn Error: ${liRes.statusText}`,
+          },
           { status: 400 },
         );
       }
 
       const authorId = data.sub || data.id;
-      const name = data.name || (data.localizedFirstName ? `${data.localizedFirstName} ${data.localizedLastName}` : "Member");
+      const name =
+        data.name ||
+        (data.localizedFirstName
+          ? `${data.localizedFirstName} ${data.localizedLastName}`
+          : "Member");
 
       if (authorId && doc.credentials.linkedinUserId !== authorId) {
         doc.credentials.linkedinUserId = authorId;
@@ -287,7 +332,10 @@ export async function PATCH(
     }
   } catch (err: any) {
     return NextResponse.json(
-      { success: false, error: `Connection probe failed: ${err.message || err}` },
+      {
+        success: false,
+        error: `Connection probe failed: ${err.message || err}`,
+      },
       { status: 400 },
     );
   }

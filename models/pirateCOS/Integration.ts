@@ -1,6 +1,11 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export type SupportedPlatform = "wordpress" | "medium" | "ghost" | "buffer" | "linkedin";
+export type SupportedPlatform =
+  | "wordpress"
+  | "medium"
+  | "ghost"
+  | "buffer"
+  | "linkedin";
 
 export interface IPlatformCredentials {
   // WordPress

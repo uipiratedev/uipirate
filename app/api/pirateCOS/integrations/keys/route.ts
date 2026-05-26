@@ -1,4 +1,5 @@
 import { createHash, randomBytes } from "crypto";
+
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
@@ -20,7 +21,9 @@ export async function GET() {
   await dbConnect();
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
-  const keys = await ApiKey.find({ tenantId: tenantOid }).sort({ createdAt: -1 }).lean();
+  const keys = await ApiKey.find({ tenantId: tenantOid })
+    .sort({ createdAt: -1 })
+    .lean();
 
   // Strip sensitive hashes before returning metadata
   const results = (keys as any[]).map((k) => ({

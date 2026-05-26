@@ -27,8 +27,11 @@ export const ConditionalNavbar = memo(function ConditionalNavbar() {
       return baseHide;
     }
 
-    const isSubdomain = typeof window !== "undefined" && 
-      (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+    const isSubdomain =
+      typeof window !== "undefined" &&
+      (window.location.hostname.startsWith("cos.") ||
+        window.location.hostname === "cos.uipirate.com");
+
     return isSubdomain || baseHide;
   }, [pathname, mounted]);
 

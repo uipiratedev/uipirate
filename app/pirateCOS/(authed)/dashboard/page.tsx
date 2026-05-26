@@ -17,8 +17,9 @@ import {
 export default async function AdminDashboardPage() {
   const user = await getCurrentUser();
   const host = (await headers()).get("host") || "";
-  const isSubdomain = host.startsWith("cos.") || host.split(":")[0] === "cos.uipirate.com";
-  const getHref = (path: string) => isSubdomain ? path : `/pirateCOS${path}`;
+  const isSubdomain =
+    host.startsWith("cos.") || host.split(":")[0] === "cos.uipirate.com";
+  const getHref = (path: string) => (isSubdomain ? path : `/pirateCOS${path}`);
 
   await dbConnect();
 

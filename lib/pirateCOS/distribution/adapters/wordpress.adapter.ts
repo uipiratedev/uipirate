@@ -1,14 +1,21 @@
+import {
+  BaseAdapter,
+  DistributionResult,
+  PublishOptions,
+} from "./base.adapter";
+
 import { IPost } from "@/models/Post";
-import { BaseAdapter, DistributionResult, PublishOptions } from "./base.adapter";
 
 export class WordPressAdapter extends BaseAdapter {
   private getApiUrl(endpoint = ""): string {
     let siteUrl = this.credentials.siteUrl || "";
+
     if (!siteUrl.startsWith("http://") && !siteUrl.startsWith("https://")) {
       siteUrl = `https://${siteUrl}`;
     }
     // Remove trailing slash
     siteUrl = siteUrl.replace(/\/$/, "");
+
     return `${siteUrl}/wp-json/wp/v2${endpoint}`;
   }
 
@@ -17,11 +24,17 @@ export class WordPressAdapter extends BaseAdapter {
     const appPassword = this.credentials.wpAppPasswordEncrypted
       ? this.decrypt(this.credentials.wpAppPasswordEncrypted)
       : "";
-    const credentialsBase64 = Buffer.from(`${username}:${appPassword}`).toString("base64");
+    const credentialsBase64 = Buffer.from(
+      `${username}:${appPassword}`,
+    ).toString("base64");
+
     return `Basic ${credentialsBase64}`;
   }
 
-  async publish(post: IPost, options?: PublishOptions): Promise<DistributionResult> {
+  async publish(
+    post: IPost,
+    options?: PublishOptions,
+  ): Promise<DistributionResult> {
     try {
       // If post already has a WordPress external ID and updateIfExists is true, we update instead of publishing new
       const existingRecord = post.distributionRecords?.find(
@@ -112,7 +125,9 @@ export class WordPressAdapter extends BaseAdapter {
     }
   }
 
-  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+  async verify(
+    externalId: string,
+  ): Promise<{ exists: boolean; errorMessage?: string }> {
     try {
       const res = await fetch(this.getApiUrl(`/posts/${externalId}`), {
         method: "GET",
@@ -122,10 +137,18 @@ export class WordPressAdapter extends BaseAdapter {
       });
 
       if (res.status === 404) {
-        return { exists: false, errorMessage: "Post was deleted on WordPress." };
+        return {
+          exists: false,
+          errorMessage: "Post was deleted on WordPress.",
+        };
       }
 
-      return { exists: res.ok, errorMessage: res.ok ? undefined : "Post verification probe returned failure status." };
+      return {
+        exists: res.ok,
+        errorMessage: res.ok
+          ? undefined
+          : "Post verification probe returned failure status.",
+      };
     } catch (err: any) {
       return { exists: true };
     }

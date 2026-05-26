@@ -123,7 +123,10 @@ export async function POST(request: NextRequest) {
 
     const postTenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
-    const existingBlog = await Post.findOne({ tenantId: postTenantOid, slug }).lean();
+    const existingBlog = await Post.findOne({
+      tenantId: postTenantOid,
+      slug,
+    }).lean();
 
     if (existingBlog && !providedSlug) {
       slug = `${slug}-${Date.now()}`;

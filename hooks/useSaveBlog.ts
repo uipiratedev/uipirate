@@ -40,12 +40,17 @@ export function useSaveBlog({
   }, [initialBlogId]);
 
   const isDirtyRef = useRef(false);
+
   useEffect(() => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
 
   const saveBlog = useCallback(
-    async (published: boolean, customSeo?: any, customSlug?: string): Promise<string> => {
+    async (
+      published: boolean,
+      customSeo?: any,
+      customSlug?: string,
+    ): Promise<string> => {
       setIsSaving(true);
       setSaveStatus(published ? "Publishing…" : "Saving…");
 
@@ -58,10 +63,13 @@ export function useSaveBlog({
           ...editorState,
           published,
         };
+
         if (customSeo) payload.seo = customSeo;
         if (customSlug) payload.slug = customSlug;
 
-        const url = isNew ? "/api/pirateCOS/posts" : `/api/pirateCOS/posts/${blogId}`;
+        const url = isNew
+          ? "/api/pirateCOS/posts"
+          : `/api/pirateCOS/posts/${blogId}`;
         const method = isNew ? "POST" : "PUT";
 
         const res = await fetch(url, {
@@ -71,11 +79,13 @@ export function useSaveBlog({
         });
 
         const data = await res.json();
+
         if (!res.ok) {
           throw new Error(data.error || "Failed to save blog post");
         }
 
         const persistedId = data.data?._id ?? data._id ?? "";
+
         setBlogId(persistedId);
         setSaveStatus(published ? "Published" : "Saved");
         setIsDirty(false);
@@ -105,6 +115,7 @@ export function useSaveBlog({
     }
     // Otherwise, save preserving the current published status to ensure it's in the DB
     const currentlyPublished = saveStatus === "Published";
+
     return await saveBlog(currentlyPublished);
   }, [blogId, saveBlog, saveStatus]);
 

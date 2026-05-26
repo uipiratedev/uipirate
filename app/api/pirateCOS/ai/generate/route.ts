@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { getDecryptedKeys } from "@/lib/pirateCOS/ai-config";
 import { deductCredits, CreditLimitError } from "@/lib/usage-guard";
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
+import WorkflowMemory from "@/models/pirateCOS/WorkflowMemory";
+import dbConnect from "@/lib/mongodb";
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,16 +33,25 @@ export async function POST(request: NextRequest) {
       customBrandVoice,
       customAudience,
       customKeywords,
+      preset, // Added Phase 4 AI Intent Preset
     } = body;
 
     // Keys priority: environment vars first, then encrypted DB keys
     const envOpenai = process.env.OPENAI_API_KEY;
     const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
+
+    await dbConnect();
+    const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
     const dbKeys = await getDecryptedKeys(user.tenantId);
 
     // Fetch Brand Brain details if they exist for the tenant
-    const brandBrain = await BrandBrain.findOne({ tenantId: user.tenantId }).lean();
+    const brandBrain = await BrandBrain.findOne({ tenantId: tenantOid }).lean();
+
+    // Fetch Workflow Memory style parameters if they exist
+    const workflowMemory = await WorkflowMemory.findOne({
+      tenantId: tenantOid,
+    }).lean();
 
     const openaiApiKey = envOpenai || dbKeys.openai;
     const geminiApiKey = envGemini || dbKeys.gemini;
@@ -103,6 +115,7 @@ export async function POST(request: NextRequest) {
 
     // --- ENFORCE CREDIT limits BEFORE EXECUTION ---
     let actionType: "blog" | "seo" | "enhance" = "enhance";
+
     if (action === "write") {
       actionType = "blog";
     } else if (action === "seo-analysis") {
@@ -130,7 +143,31 @@ export async function POST(request: NextRequest) {
       throw guardErr;
     }
 
+    // Phase 4: Preset Injection Logic
+    let presetDirective = "";
+
+    if (preset && action === "write") {
+      if (preset === "seo-article") {
+        presetDirective = `Write a comprehensive, search-optimized SEO article. Enforce a robust H2/H3 structural layout, target a length of at least 1,500–2,500 words, provide exhaustive explanations, and include a dedicated 'Frequently Asked Questions' H2 segment at the very end.`;
+      } else if (preset === "thought-leadership") {
+        presetDirective = `Write an inspiring, opinionated thought leadership piece. Challenge conventional wisdom, present strong contrarian/bold viewpoints, write in a conversational yet authoritative first-person style, and detail real-world stories (aim for 800–1,500 words).`;
+      } else if (preset === "linkedin-post") {
+        presetDirective = `Write an algorithm-optimized LinkedIn post (200-300 words). Start with a scroll-stopping primary hook, structure with airy double line spacing, utilize short and readable sentences, include relevant emojis, and conclude with an engaging question to spark comment thread discussion.`;
+      } else if (preset === "case-study") {
+        presetDirective = `Write a professional customer success case study (1,000–1,800 words). Divide content clearly into four sequential sections: 1. Executive Summary, 2. The Challenge (Problem), 3. The Approach (Solution), and 4. The Results. Include placeholders for customer quotes and statistics.`;
+      } else if (preset === "founder-story") {
+        presetDirective = `Write an authentic, highly personal founder's journey post (1,200–2,000 words). Detail core operational struggles, high-friction startup moments, vulnerability, and lessons learned.`;
+      } else if (preset === "product-launch") {
+        presetDirective = `Write a benefits-driven product launch announcement (600–1,200 words). Detail core features with checkbox tables, frame offerings around audience pain points, and close with a clear CTA to sign up for early access.`;
+      } else if (preset === "comparison") {
+        presetDirective = `Write an objective, comprehensive comparison article (1,500–2,500 words). Frame competitors side-by-side, highlight pros/cons for each, and outline clear use-case recommendations.`;
+      } else if (preset === "technical-deep-dive") {
+        presetDirective = `Write a highly technical, step-by-step developer tutorial (2,000–3,500 words). Present clean, well-commented syntax-highlighted code blocks, detail configurations, and present clear structural diagrams.`;
+      }
+    }
+
     let systemInstructions = "";
+
     if (action === "excerpt" || action === "metaDescription") {
       systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following post. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${content || title}`;
     } else if (action === "metaTitle") {
@@ -167,15 +204,19 @@ export async function POST(request: NextRequest) {
       Deliver ONLY the raw JSON object, no backticks, no markdown formatting.`;
     } else if (action === "write") {
       let contextInfo = "";
- 
+
       if (selectedText) {
         contextInfo += `\n\nTARGET TEXT FOR EDITING (Rewrite, expand, improve, or format this selected text directly based on the user prompt): "${selectedText}"`;
       }
       if (surroundingContext && surroundingContext.trim()) {
         contextInfo += `\n\nSURROUNDING BLOG CONTEXT (Ensure your generated section matches this writing style, tone, and flow perfectly, without repeating existing paragraphs): \n... ${surroundingContext.trim()}`;
       }
- 
-      systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following prompt: "${prompt}". The context of the post is: title: "${title || ""}", category: "${postType || "blog"}".${contextInfo}
+
+      const activePrompt = presetDirective
+        ? `${presetDirective}\n\nUser Prompt Instructions: "${prompt}"`
+        : prompt;
+
+      systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following instructions: "${activePrompt}". The context of the post is: title: "${title || ""}", category: "${postType || "blog"}".${contextInfo}
 Write a comprehensive, fully detailed, and substantial piece of content. Expand on the concepts deeply with rich explanations, multiple robust and fully-fleshed out paragraphs, structured subheadings, and thorough insights (aim for at least 300 to 600 words or a complete, deep-dive section, unless the prompt explicitly requests a short summary or brief answer). Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
     } else {
       return NextResponse.json(
@@ -186,15 +227,28 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
 
     // Compile Brand Brain rules and check for post-level overrides
     let brandContext = "";
-    if (brandBrain || customBrandVoice || customAudience || customKeywords) {
-      const activeName = brandBrain?.companyName || "Our Brand";
-      const activeVoice = customBrandVoice || brandBrain?.brandVoice;
-      const activeProducts = brandBrain?.products;
-      const activeAudience = customAudience || brandBrain?.audienceICP;
-      const activeKeywords = customKeywords || brandBrain?.targetKeywords || [];
-      const forbiddenWords = brandBrain?.forbiddenWords || [];
-      const activeCta = brandBrain?.callToActionTemplate;
+    const activeName = brandBrain?.companyName || "Our Brand";
+    const activeVoice =
+      customBrandVoice ||
+      brandBrain?.brandVoice ||
+      workflowMemory?.preferredTone;
+    const activeProducts = brandBrain?.products;
+    const activeAudience = customAudience || brandBrain?.audienceICP;
+    const activeKeywords = customKeywords || brandBrain?.targetKeywords || [];
+    const forbiddenWords = brandBrain?.forbiddenWords || [];
+    const activeCta =
+      brandBrain?.callToActionTemplate || workflowMemory?.defaultCTA;
 
+    const hasBrandBrain = !!brandBrain;
+    const hasWorkflowMemory = !!workflowMemory;
+
+    if (
+      hasBrandBrain ||
+      hasWorkflowMemory ||
+      customBrandVoice ||
+      customAudience ||
+      customKeywords
+    ) {
       brandContext += `\n\n[STRICT BRAND WRITING IDENTITY RULES]:`;
       brandContext += `\n- Company/Brand Name: "${activeName}"`;
       if (activeVoice) {
@@ -212,8 +266,27 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
       if (forbiddenWords.length > 0) {
         brandContext += `\n- FORBIDDEN VOCABULARY: Under NO circumstances are you allowed to use any of these words or variants in your generated output: ${forbiddenWords.join(", ")}. Filter them out completely.`;
       }
+
+      // Inject Workflow Memory structural controls
+      if (workflowMemory) {
+        brandContext += `\n\n[WORKFLOW MEMORY & PREFERENCES]:`;
+        brandContext += `\n- Sentence Complexity: Generate text targeted at a "${workflowMemory.sentenceComplexity}" readability level.`;
+        if (
+          workflowMemory.formattingRules?.alwaysIncludeTakeaways &&
+          action === "write"
+        ) {
+          brandContext += `\n- Formatting Constraint: Proactively begin the text block with a 3-sentence "Key Takeaways" summary block.`;
+        }
+        if (
+          workflowMemory.formattingRules?.alwaysIncludeFAQ &&
+          action === "write"
+        ) {
+          brandContext += `\n- Formatting Constraint: Always append a structured, comprehensive "Frequently Asked Questions" Q&A segment at the end of the post content.`;
+        }
+      }
+
       if (activeCta && action === "write") {
-        brandContext += `\n- Footer CTA Guidance: When appropriate or drafting complete posts, guide the reader in this standard Call-To-Action style: "${activeCta.trim()}"`;
+        brandContext += `\n- Footer CTA Guidance: When appropriate or drafting complete posts, guide the reader in this Call-To-Action style: "${activeCta.trim()}"`;
       }
     }
 
@@ -315,14 +388,23 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         const firstBrace = text.indexOf("{");
         const lastBrace = text.lastIndexOf("}");
 
-        if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
+        if (
+          firstBracket !== -1 &&
+          lastBracket !== -1 &&
+          lastBracket > firstBracket
+        ) {
           try {
             parsed = JSON.parse(text.substring(firstBracket, lastBracket + 1));
           } catch (e) {
             // fallback
           }
         }
-        if (!parsed && firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        if (
+          !parsed &&
+          firstBrace !== -1 &&
+          lastBrace !== -1 &&
+          lastBrace > firstBrace
+        ) {
           try {
             parsed = JSON.parse(text.substring(firstBrace, lastBrace + 1));
           } catch (e) {
@@ -345,7 +427,6 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
           );
         }
         // Fallback split parsing if model failed to return strict JSON
-        // Split by newlines, commas, or semicolons to extract individual keywords
         const fallbackItems = text
           .split(/[\n,;]+/)
           .map((t) =>
@@ -354,7 +435,9 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
               .replace(/[\[\]"']/g, "") // Remove brackets/quotes
               .trim(),
           )
-          .filter((t) => t.length > 1 && t.split(/\s+/).length <= 3 && t.length <= 30)
+          .filter(
+            (t) => t.length > 1 && t.split(/\s+/).length <= 3 && t.length <= 30,
+          )
           .slice(0, 8);
 
         return NextResponse.json({

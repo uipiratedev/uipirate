@@ -19,8 +19,10 @@ export function useAuth(requireAuth: boolean = false) {
   const [isLoading, setIsLoading] = useState(true);
   const isAuthenticated = !!user;
 
-  const isSubdomain = typeof window !== "undefined" && 
-    (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+  const isSubdomain =
+    typeof window !== "undefined" &&
+    (window.location.hostname.startsWith("cos.") ||
+      window.location.hostname === "cos.uipirate.com");
   const loginUrl = isSubdomain ? "/login" : "/pirateCOS/login";
 
   const checkAuth = useCallback(async () => {

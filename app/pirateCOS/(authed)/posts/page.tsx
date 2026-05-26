@@ -32,9 +32,11 @@ interface Blog {
 }
 
 export default function AdminBlogsPage() {
-  const isSubdomain = typeof window !== "undefined" && 
-    (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
-  const getHref = (path: string) => isSubdomain ? path : `/pirateCOS${path}`;
+  const isSubdomain =
+    typeof window !== "undefined" &&
+    (window.location.hostname.startsWith("cos.") ||
+      window.location.hostname === "cos.uipirate.com");
+  const getHref = (path: string) => (isSubdomain ? path : `/pirateCOS${path}`);
 
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);

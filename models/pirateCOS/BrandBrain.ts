@@ -35,12 +35,18 @@ const BrandBrainSchema: Schema<IBrandBrain> = new Schema(
     },
     products: {
       type: String,
-      required: [true, "Please describe your primary products, services, or offerings"],
+      required: [
+        true,
+        "Please describe your primary products, services, or offerings",
+      ],
       trim: true,
     },
     audienceICP: {
       type: String,
-      required: [true, "Please outline your target ideal customer profile (ICP) and paint points"],
+      required: [
+        true,
+        "Please outline your target ideal customer profile (ICP) and paint points",
+      ],
       trim: true,
     },
     targetKeywords: {

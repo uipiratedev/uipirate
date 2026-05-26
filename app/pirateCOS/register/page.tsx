@@ -21,16 +21,19 @@ function RegisterForm() {
     // 1. Client-Side Validations
     if (!name.trim() || !email.trim() || !password.trim()) {
       setError("All fields are required");
+
       return;
     }
 
     if (password.length < 6) {
       setError("Password must be at least 6 characters long");
+
       return;
     }
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+
       return;
     }
 
@@ -50,12 +53,15 @@ function RegisterForm() {
       if (!data.success) {
         setError(data.message || "Registration failed");
         setIsLoading(false);
+
         return;
       }
 
       // Successful registration -> automatic login and redirect
-      const isSubdomain = typeof window !== "undefined" && 
-        (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
+      const isSubdomain =
+        typeof window !== "undefined" &&
+        (window.location.hostname.startsWith("cos.") ||
+          window.location.hostname === "cos.uipirate.com");
       const defaultDest = isSubdomain ? "/dashboard" : "/pirateCOS/dashboard";
 
       router.push(defaultDest);
@@ -67,7 +73,10 @@ function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex dark text-foreground" style={{ background: "#151514" }}>
+    <div
+      className="min-h-screen flex dark text-foreground"
+      style={{ background: "#151514" }}
+    >
       {/* Left branding panel */}
       <div
         className="hidden lg:flex flex-col justify-between w-80 p-10 flex-shrink-0"
@@ -105,7 +114,8 @@ function RegisterForm() {
             className="mt-2 text-sm font-geist"
             style={{ color: "rgba(255,255,255,0.4)" }}
           >
-            Get started with premium AI pools, custom scheduling, and Bring Your Own Key bypass.
+            Get started with premium AI pools, custom scheduling, and Bring Your
+            Own Key bypass.
           </p>
         </div>
         <p
@@ -166,13 +176,6 @@ function RegisterForm() {
             <div>
               <Input
                 required
-                label="Full Name"
-                labelPlacement="outside"
-                placeholder="Vishal Anand"
-                type="text"
-                variant="bordered"
-                radius="lg"
-                size="lg"
                 classNames={{
                   label: "text-xs font-medium font-sans !text-white/50 mb-1",
                   inputWrapper:
@@ -181,7 +184,14 @@ function RegisterForm() {
                     "text-base font-sans !text-white placeholder:!text-white/40",
                 }}
                 disabled={isLoading}
+                label="Full Name"
+                labelPlacement="outside"
+                placeholder="Vishal Anand"
+                radius="lg"
+                size="lg"
+                type="text"
                 value={name}
+                variant="bordered"
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
@@ -189,13 +199,6 @@ function RegisterForm() {
             <div>
               <Input
                 required
-                label="Email"
-                labelPlacement="outside"
-                placeholder="vishal@uipirate.com"
-                type="email"
-                variant="bordered"
-                radius="lg"
-                size="lg"
                 classNames={{
                   label: "text-xs font-medium font-sans !text-white/50 mb-1",
                   inputWrapper:
@@ -204,7 +207,14 @@ function RegisterForm() {
                     "text-base font-sans !text-white placeholder:!text-white/40",
                 }}
                 disabled={isLoading}
+                label="Email"
+                labelPlacement="outside"
+                placeholder="vishal@uipirate.com"
+                radius="lg"
+                size="lg"
+                type="email"
                 value={email}
+                variant="bordered"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -212,13 +222,6 @@ function RegisterForm() {
             <div>
               <Input
                 required
-                label="Password"
-                labelPlacement="outside"
-                placeholder="••••••••"
-                type="password"
-                variant="bordered"
-                radius="lg"
-                size="lg"
                 classNames={{
                   label: "text-xs font-medium font-sans !text-white/50 mb-1",
                   inputWrapper:
@@ -227,7 +230,14 @@ function RegisterForm() {
                     "text-base font-sans !text-white placeholder:!text-white/40",
                 }}
                 disabled={isLoading}
+                label="Password"
+                labelPlacement="outside"
+                placeholder="••••••••"
+                radius="lg"
+                size="lg"
+                type="password"
                 value={password}
+                variant="bordered"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
@@ -235,13 +245,6 @@ function RegisterForm() {
             <div>
               <Input
                 required
-                label="Confirm Password"
-                labelPlacement="outside"
-                placeholder="••••••••"
-                type="password"
-                variant="bordered"
-                radius="lg"
-                size="lg"
                 classNames={{
                   label: "text-xs font-medium font-sans !text-white/50 mb-1",
                   inputWrapper:
@@ -250,7 +253,14 @@ function RegisterForm() {
                     "text-base font-sans !text-white placeholder:!text-white/40",
                 }}
                 disabled={isLoading}
+                label="Confirm Password"
+                labelPlacement="outside"
+                placeholder="••••••••"
+                radius="lg"
+                size="lg"
+                type="password"
                 value={confirmPassword}
+                variant="bordered"
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
@@ -270,13 +280,17 @@ function RegisterForm() {
             <a
               className="text-xs font-geist text-white/50 hover:text-white transition-colors"
               href={
-                typeof window !== "undefined" && 
-                (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com")
+                typeof window !== "undefined" &&
+                (window.location.hostname.startsWith("cos.") ||
+                  window.location.hostname === "cos.uipirate.com")
                   ? "/login"
                   : "/pirateCOS/login"
               }
             >
-              Already have an account? <span className="font-semibold" style={{ color: "#FF5B04" }}>Sign In</span>
+              Already have an account?{" "}
+              <span className="font-semibold" style={{ color: "#FF5B04" }}>
+                Sign In
+              </span>
             </a>
 
             <a

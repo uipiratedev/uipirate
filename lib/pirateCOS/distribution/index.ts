@@ -1,12 +1,13 @@
-import { decrypt } from "@/lib/pirateCOS/encrypt";
-import { IPost } from "@/models/Post";
-import Integration, { SupportedPlatform } from "@/models/pirateCOS/Integration";
 import { BufferAdapter } from "./adapters/buffer.adapter";
 import { GhostAdapter } from "./adapters/ghost.adapter";
 import { MediumAdapter } from "./adapters/medium.adapter";
 import { WordPressAdapter } from "./adapters/wordpress.adapter";
 import { LinkedInAdapter } from "./adapters/linkedin.adapter";
 import { DistributionResult, PublishOptions } from "./adapters/base.adapter";
+
+import Integration, { SupportedPlatform } from "@/models/pirateCOS/Integration";
+import { IPost } from "@/models/Post";
+import { decrypt } from "@/lib/pirateCOS/encrypt";
 
 const ADAPTER_MAP: Record<SupportedPlatform, any> = {
   wordpress: WordPressAdapter,
@@ -29,41 +30,48 @@ export async function dispatch({
   options,
   tenantId,
 }: DispatchParams): Promise<DistributionResult[]> {
-  const promises = platforms.map(async (platform): Promise<DistributionResult> => {
-    try {
-      const integration = await Integration.findOne({
-        tenantId,
-        platform,
-        isActive: true,
-      });
+  const promises = platforms.map(
+    async (platform): Promise<DistributionResult> => {
+      try {
+        const integration = await Integration.findOne({
+          tenantId,
+          platform,
+          isActive: true,
+        });
 
-      if (!integration) {
-        throw new Error(`${platform.toUpperCase()} integration is not connected or active`);
+        if (!integration) {
+          throw new Error(
+            `${platform.toUpperCase()} integration is not connected or active`,
+          );
+        }
+
+        const AdapterClass = ADAPTER_MAP[platform];
+
+        if (!AdapterClass) {
+          throw new Error(`No adapter found for platform ${platform}`);
+        }
+
+        const adapter = new AdapterClass(integration.credentials, decrypt);
+
+        return await adapter.publish(post, options);
+      } catch (err: any) {
+        return {
+          platform,
+          externalId: "",
+          url: "",
+          status: "failed",
+          errorMessage: err.message || `Failed to distribute to ${platform}`,
+          distributedAt: new Date(),
+        };
       }
-
-      const AdapterClass = ADAPTER_MAP[platform];
-      if (!AdapterClass) {
-        throw new Error(`No adapter found for platform ${platform}`);
-      }
-
-      const adapter = new AdapterClass(integration.credentials, decrypt);
-      return await adapter.publish(post, options);
-    } catch (err: any) {
-      return {
-        platform,
-        externalId: "",
-        url: "",
-        status: "failed",
-        errorMessage: err.message || `Failed to distribute to ${platform}`,
-        distributedAt: new Date(),
-      };
-    }
-  });
+    },
+  );
 
   const settled = await Promise.allSettled(promises);
 
   return settled.map((result, index) => {
     const platform = platforms[index];
+
     if (result.status === "fulfilled") {
       return result.value;
     } else {
@@ -72,7 +80,8 @@ export async function dispatch({
         externalId: "",
         url: "",
         status: "failed",
-        errorMessage: result.reason?.message || `Execution rejected on ${platform}`,
+        errorMessage:
+          result.reason?.message || `Execution rejected on ${platform}`,
         distributedAt: new Date(),
       };
     }
@@ -102,14 +111,17 @@ export async function verifyDistribution({
     }
 
     const AdapterClass = ADAPTER_MAP[platform];
+
     if (!AdapterClass) {
       throw new Error(`No adapter found for platform ${platform}`);
     }
 
     const adapter = new AdapterClass(integration.credentials, decrypt);
+
     return await adapter.verify(externalId);
   } catch (err: any) {
     console.error("Verification engine failed", err);
+
     return { exists: true }; // Defensive fallback
   }
 }
@@ -137,15 +149,21 @@ export async function deleteDistribution({
     }
 
     const AdapterClass = ADAPTER_MAP[platform];
+
     if (!AdapterClass) {
       throw new Error(`No adapter found for platform ${platform}`);
     }
 
     const adapter = new AdapterClass(integration.credentials, decrypt);
+
     return await adapter.delete(externalId);
   } catch (err: any) {
     console.error("Delete operation failed", err);
-    return { success: false, errorMessage: err.message || "Failed to delete from platform" };
+
+    return {
+      success: false,
+      errorMessage: err.message || "Failed to delete from platform",
+    };
   }
 }
 
