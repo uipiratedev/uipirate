@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import { AI_CONFIG_LS_KEY } from "@/components/pirateCOS/AIConfigPanel";
 
 /* ── Types & constants ── */
-type Engine = "openai" | "gemini" | "puter" | "mistral";
+type Engine = "openai" | "gemini" | "puter" | "mistral" | "anthropic";
 type KeySource = "env" | "db" | null;
-type KeyProvider = "openai" | "gemini" | "mistral";
+type KeyProvider = "openai" | "gemini" | "mistral" | "anthropic";
 
 const ENGINE_META: Record<
   Engine,
@@ -16,6 +16,11 @@ const ENGINE_META: Record<
   openai: { label: "OpenAI", icon: "●", iconClass: "text-emerald-500" },
   gemini: { label: "Google Gemini", icon: "✦", iconClass: "text-blue-500" },
   mistral: { label: "Mistral AI", icon: "◆", iconClass: "text-violet-600" },
+  anthropic: {
+    label: "Claude",
+    icon: "◆",
+    iconClass: "text-fuchsia-600",
+  },
   puter: { label: "Puter AI", icon: "◎", iconClass: "text-[#FF5B04]" },
 };
 
@@ -32,6 +37,9 @@ const MODEL_LABELS: Record<string, string> = {
   "mistral-small-latest": "Mistral Small",
   "mistral-nemo": "Mistral Nemo",
   "codestral-latest": "Codestral",
+  "claude-3-5-sonnet-latest": "Claude 3.5 Sonnet",
+  "claude-3-5-haiku-latest": "Claude 3.5 Haiku",
+  "claude-3-opus-latest": "Claude 3 Opus",
 };
 
 /* ── KeyModal ── */
@@ -85,6 +93,18 @@ const PROVIDER_INFO: Record<
     description: "Used for Mistral Large, Small, Nemo and Codestral.",
     link: "https://console.mistral.ai/api-keys",
     linkLabel: "console.mistral.ai/api-keys",
+  },
+  anthropic: {
+    label: "Anthropic Claude",
+    icon: "◆",
+    iconClass: "text-fuchsia-600",
+    bgClass: "bg-fuchsia-50",
+    borderClass: "border-fuchsia-100",
+    textClass: "text-fuchsia-700",
+    placeholder: "sk-ant-...",
+    description: "Used for Claude Sonnet, Haiku and Opus models.",
+    link: "https://console.anthropic.com/settings/keys",
+    linkLabel: "console.anthropic.com/settings/keys",
   },
 };
 
@@ -291,6 +311,7 @@ export default function AISettingsPage() {
   const [openaiSource, setOpenaiSource] = useState<KeySource>(null);
   const [geminiSource, setGeminiSource] = useState<KeySource>(null);
   const [mistralSource, setMistralSource] = useState<KeySource>(null);
+  const [anthropicSource, setAnthropicSource] = useState<KeySource>(null);
 
   // Defaults dirty-detection
   const [initialEngine, setInitialEngine] = useState<Engine>("puter");
@@ -337,6 +358,7 @@ export default function AISettingsPage() {
           setOpenaiSource(d.openaiSource);
           setGeminiSource(d.geminiSource);
           setMistralSource(d.mistralSource);
+          setAnthropicSource(d.anthropicSource);
           const eng = (d.defaultEngine ?? "puter") as Engine;
           const mdl = d.defaultModel ?? "gpt-4o-mini";
 
@@ -391,6 +413,7 @@ export default function AISettingsPage() {
     if (provider === "openai") body.openaiKey = key;
     if (provider === "gemini") body.geminiKey = key;
     if (provider === "mistral") body.mistralKey = key;
+    if (provider === "anthropic") body.anthropicKey = key;
     const res = await fetch("/api/pirateCOS/ai-config", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -408,6 +431,7 @@ export default function AISettingsPage() {
       setOpenaiSource(refreshed.openaiSource);
       setGeminiSource(refreshed.geminiSource);
       setMistralSource(refreshed.mistralSource);
+      setAnthropicSource(refreshed.anthropicSource);
     }
   };
 
@@ -654,6 +678,24 @@ export default function AISettingsPage() {
               title="Mistral AI"
               onManageKey={() => openKeyModal("mistral")}
             />
+
+            {/* Claude */}
+            <ProviderKeyCard
+              badgeColor="fuchsia"
+              description="Claude Sonnet, Haiku and Opus models."
+              icon={
+                <span className="text-fuchsia-600 text-lg font-bold">◆</span>
+              }
+              source={anthropicSource}
+              sourceColors={{
+                bg: "bg-fuchsia-50",
+                border: "border-fuchsia-100",
+                dot: "bg-fuchsia-400",
+                text: "text-fuchsia-700",
+              }}
+              title="Anthropic Claude"
+              onManageKey={() => openKeyModal("anthropic")}
+            />
           </div>
 
           {/* ── Defaults ── */}
@@ -761,8 +803,15 @@ export default function AISettingsPage() {
                     Default Engine
                   </p>
                   <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
-                    {(["openai", "gemini", "mistral", "puter"] as Engine[]).map(
-                      (eng) => (
+                    {(
+                      [
+                        "openai",
+                        "gemini",
+                        "anthropic",
+                        "mistral",
+                        "puter",
+                      ] as Engine[]
+                    ).map((eng) => (
                         <button
                           key={eng}
                           className={`flex-1 py-2 rounded-lg text-xs font-semibold font-geist transition-all ${
@@ -775,6 +824,8 @@ export default function AISettingsPage() {
                             setDefaultModel(
                               eng === "gemini"
                                 ? "gemini-flash-latest"
+                                : eng === "anthropic"
+                                  ? "claude-3-5-sonnet-latest"
                                 : eng === "mistral"
                                   ? "mistral-large-latest"
                                   : "gpt-4o-mini",
@@ -786,8 +837,7 @@ export default function AISettingsPage() {
                           </span>{" "}
                           {ENGINE_META[eng].label.split(" ")[0]}
                         </button>
-                      ),
-                    )}
+                    ))}
                   </div>
                 </div>
                 {/* Model selector */}
@@ -825,6 +875,18 @@ export default function AISettingsPage() {
                         </option>
                         <option value="codestral-latest">
                           Codestral — Code
+                        </option>
+                      </>
+                    ) : defaultEngine === "anthropic" ? (
+                      <>
+                        <option value="claude-3-5-sonnet-latest">
+                          Claude 3.5 Sonnet
+                        </option>
+                        <option value="claude-3-5-haiku-latest">
+                          Claude 3.5 Haiku
+                        </option>
+                        <option value="claude-3-opus-latest">
+                          Claude 3 Opus
                         </option>
                       </>
                     ) : (
@@ -1120,7 +1182,7 @@ interface CardProps {
   icon: React.ReactNode;
   title: string;
   badge?: string;
-  badgeColor?: "orange" | "emerald" | "blue" | "violet";
+  badgeColor?: "orange" | "emerald" | "blue" | "violet" | "fuchsia";
   description: string;
   children?: React.ReactNode;
 }
@@ -1148,6 +1210,8 @@ const SettingCard = ({
                 ? "text-blue-700 bg-blue-50"
                 : badgeColor === "violet"
                   ? "text-violet-700 bg-violet-50"
+                  : badgeColor === "fuchsia"
+                    ? "text-fuchsia-700 bg-fuchsia-50"
                   : "text-orange-700 bg-orange-50"
           }`}
         >
@@ -1165,7 +1229,7 @@ const SettingCard = ({
 interface ProviderKeyCardProps {
   icon: React.ReactNode;
   title: string;
-  badgeColor: "emerald" | "blue" | "violet";
+  badgeColor: "emerald" | "blue" | "violet" | "fuchsia";
   source: KeySource;
   description: string;
   sourceColors: { bg: string; border: string; dot: string; text: string };

@@ -405,9 +405,30 @@ The state machine should simplify the UI: show the most relevant next action for
 
 The backend can support sophisticated orchestration, but the frontend must remain guided and lightweight.
 
+Desired user feeling:
+
+> "This makes content operations effortless."
+
 Product rule:
 
 > Prefer one recommended next action over ten visible tools.
+
+The product should feel:
+
+- Calm
+- Lightweight
+- Smooth
+- Intelligent
+- Focused
+- Workflow-guided
+
+The product must not feel like:
+
+- AI chaos
+- Tool overload
+- Dashboard clutter
+- A menu of unrelated generation buttons
+- A system that asks the user to design the workflow manually
 
 Phase 4B should prioritize:
 
@@ -418,6 +439,17 @@ Phase 4B should prioritize:
 - Content multiplication
 
 It should avoid adding more generic AI controls unless they directly improve the lifecycle flow.
+
+UX quality acceptance criteria:
+
+| Check | Requirement |
+|---|---|
+| **Primary action clarity** | Every major state has one obvious recommended next action |
+| **Progressive disclosure** | Advanced tools are available without crowding the main path |
+| **Low cognitive load** | Users should understand the next step without reading documentation |
+| **Contextual AI** | AI actions must be attached to the current intent, goal, state, or chain |
+| **No duplicated choices** | Similar AI actions should be grouped into one guided recommendation |
+| **Operational calm** | Dashboards should summarize status and readiness, not compete for attention |
 
 ---
 

@@ -4,6 +4,13 @@ import mongoose from "mongoose";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { getDecryptedKeys } from "@/lib/pirateCOS/ai-config";
 import { deductCredits, CreditLimitError } from "@/lib/usage-guard";
+import {
+  DEFAULT_MODEL_BY_ENGINE,
+  getAIEngineLabel,
+  getAIKeyForEngine,
+  resolveAIEngine,
+  type AIEngine,
+} from "@/lib/pirateCOS/ai-provider";
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
 import WorkflowMemory from "@/models/pirateCOS/WorkflowMemory";
 import dbConnect from "@/lib/mongodb";
@@ -40,6 +47,7 @@ export async function POST(request: NextRequest) {
     const envOpenai = process.env.OPENAI_API_KEY;
     const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
+    const envAnthropic = process.env.ANTHROPIC_API_KEY;
 
     await dbConnect();
     const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
@@ -56,53 +64,23 @@ export async function POST(request: NextRequest) {
     const openaiApiKey = envOpenai || dbKeys.openai;
     const geminiApiKey = envGemini || dbKeys.gemini;
     const mistralApiKey = envMistral || dbKeys.mistral;
+    const anthropicApiKey = envAnthropic || dbKeys.anthropic;
+    const availableKeys = {
+      openai: openaiApiKey,
+      gemini: geminiApiKey,
+      mistral: mistralApiKey,
+      anthropic: anthropicApiKey,
+    };
 
-    // Determine engine: prefer the requested one, fall back to whatever has a key
-    let selectedEngine: "openai" | "gemini" | "mistral" | "puter" =
-      engine ||
-      (openaiApiKey
-        ? "openai"
-        : geminiApiKey
-          ? "gemini"
-          : mistralApiKey
-            ? "mistral"
-            : "puter");
-
-    if (selectedEngine === "openai" && !openaiApiKey)
-      selectedEngine = geminiApiKey
-        ? "gemini"
-        : mistralApiKey
-          ? "mistral"
-          : "puter";
-    if (selectedEngine === "gemini" && !geminiApiKey)
-      selectedEngine = openaiApiKey
-        ? "openai"
-        : mistralApiKey
-          ? "mistral"
-          : "puter";
-    if (selectedEngine === "mistral" && !mistralApiKey)
-      selectedEngine = openaiApiKey
-        ? "openai"
-        : geminiApiKey
-          ? "gemini"
-          : "puter";
-
-    let apiKey =
-      selectedEngine === "openai"
-        ? openaiApiKey
-        : selectedEngine === "gemini"
-          ? geminiApiKey
-          : selectedEngine === "mistral"
-            ? mistralApiKey
-            : undefined;
+    const selectedEngine: AIEngine = resolveAIEngine({
+      requestedEngine: engine,
+      defaultEngine: dbKeys.defaultEngine,
+      keys: availableKeys,
+    });
+    const apiKey = getAIKeyForEngine(selectedEngine, availableKeys);
 
     if (selectedEngine !== "puter" && !apiKey) {
-      const engineLabel =
-        selectedEngine === "openai"
-          ? "OpenAI"
-          : selectedEngine === "gemini"
-            ? "Gemini"
-            : "Mistral";
+      const engineLabel = getAIEngineLabel(selectedEngine);
 
       return NextResponse.json(
         {
@@ -301,8 +279,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
       const apiUrl = isMistral
         ? "https://api.mistral.ai/v1/chat/completions"
         : "https://api.openai.com/v1/chat/completions";
-      const defaultModel = isMistral ? "mistral-large-latest" : "gpt-4o-mini";
-      const selectedModel = model || defaultModel;
+      const selectedModel = model || DEFAULT_MODEL_BY_ENGINE[selectedEngine];
 
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -328,9 +305,40 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
       const data = await response.json();
 
       text = data.choices?.[0]?.message?.content || "";
+    } else if (selectedEngine === "anthropic") {
+      const selectedModel = model || DEFAULT_MODEL_BY_ENGINE.anthropic;
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey!,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: selectedModel,
+          max_tokens: 4096,
+          temperature: 0.7,
+          messages: [{ role: "user", content: systemInstructions }],
+        }),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+
+        throw new Error(`Claude API Error: ${errText}`);
+      }
+
+      const data = await response.json();
+
+      text =
+        data.content
+          ?.map((part: { type: string; text?: string }) =>
+            part.type === "text" ? part.text || "" : "",
+          )
+          .join("") || "";
     } else if (selectedEngine === "gemini") {
       // Gemini API
-      const geminiModel = model || "gemini-flash-latest";
+      const geminiModel = model || DEFAULT_MODEL_BY_ENGINE.gemini;
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent`,
         {

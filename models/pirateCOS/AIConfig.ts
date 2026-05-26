@@ -9,8 +9,10 @@ export interface IAIConfig extends Document {
   geminiKeyEncrypted?: string;
   /** AES-256-GCM encrypted Mistral API key (iv:tag:ciphertext) */
   mistralKeyEncrypted?: string;
+  /** AES-256-GCM encrypted Anthropic API key (iv:tag:ciphertext) */
+  anthropicKeyEncrypted?: string;
   /** Which engine to pre-select in writing assistants */
-  defaultEngine: "openai" | "gemini" | "puter" | "mistral";
+  defaultEngine: "openai" | "gemini" | "puter" | "mistral" | "anthropic";
   /** Which model to pre-select in writing assistants */
   defaultModel: string;
   createdAt: Date;
@@ -28,9 +30,10 @@ const AIConfigSchema: Schema<IAIConfig> = new Schema(
     openaiKeyEncrypted: { type: String, default: null },
     geminiKeyEncrypted: { type: String, default: null },
     mistralKeyEncrypted: { type: String, default: null },
+    anthropicKeyEncrypted: { type: String, default: null },
     defaultEngine: {
       type: String,
-      enum: ["openai", "gemini", "puter", "mistral"],
+      enum: ["openai", "gemini", "puter", "mistral", "anthropic"],
       default: "puter",
     },
     defaultModel: { type: String, default: "gpt-4o-mini" },

@@ -9,7 +9,8 @@ export interface AIConfig {
   openaiKey?: string;
   geminiKey?: string;
   mistralKey?: string;
-  defaultEngine?: "openai" | "gemini" | "puter" | "mistral";
+  anthropicKey?: string;
+  defaultEngine?: "openai" | "gemini" | "puter" | "mistral" | "anthropic";
   defaultModel?: string;
 }
 
@@ -31,14 +32,16 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [openaiKey, setOpenaiKey] = useState("");
   const [geminiKey, setGeminiKey] = useState("");
   const [mistralKey, setMistralKey] = useState("");
+  const [anthropicKey, setAnthropicKey] = useState("");
   const [defaultEngine, setDefaultEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral"
+    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
   >("puter");
   const [defaultModel, setDefaultModel] = useState("gpt-4o-mini");
   const [serverStatus, setServerStatus] = useState<{
     openai: boolean;
     gemini: boolean;
     mistral: boolean;
+    anthropic: boolean;
   } | null>(null);
   const [puterUser, setPuterUser] = useState<{ username: string } | null>(null);
   const [puterBusy, setPuterBusy] = useState(false);
@@ -48,6 +51,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [showOAKey, setShowOAKey] = useState(false);
   const [showGKey, setShowGKey] = useState(false);
   const [showMKey, setShowMKey] = useState(false);
+  const [showAKey, setShowAKey] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -56,6 +60,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     setOpenaiKey("");
     setGeminiKey("");
     setMistralKey("");
+    setAnthropicKey("");
     setDefaultEngine(cfg.defaultEngine || "puter");
     setDefaultModel(cfg.defaultModel || "gpt-4o-mini");
 
@@ -67,6 +72,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
             openai: d.openai,
             gemini: d.gemini,
             mistral: d.mistral,
+            anthropic: d.anthropic,
           });
           if (d.defaultEngine) setDefaultEngine(d.defaultEngine as any);
           if (d.defaultModel) setDefaultModel(d.defaultModel);
@@ -94,6 +100,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       if (openaiKey.trim()) body.openaiKey = openaiKey.trim();
       if (geminiKey.trim()) body.geminiKey = geminiKey.trim();
       if (mistralKey.trim()) body.mistralKey = mistralKey.trim();
+      if (anthropicKey.trim()) body.anthropicKey = anthropicKey.trim();
 
       const res = await fetch("/api/pirateCOS/ai-config", {
         method: "POST",
@@ -106,8 +113,9 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
 
       // Clear entered keys so placeholder takes over
       if (openaiKey.trim()) setOpenaiKey("");
-      if (geminiKey.trim()) setOpenaiKey("");
+      if (geminiKey.trim()) setGeminiKey("");
       if (mistralKey.trim()) setMistralKey("");
+      if (anthropicKey.trim()) setAnthropicKey("");
 
       // Update local storage defaults cache for fast loading
       localStorage.setItem(
@@ -125,6 +133,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           openai: refreshed.openai,
           gemini: refreshed.gemini,
           mistral: refreshed.mistral,
+          anthropic: refreshed.anthropic,
         });
       }
 
@@ -321,9 +330,31 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           </PanelSection>
 
           {/* ── Default Engine ── */}
+          <PanelSection label="Claude">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-fuchsia-600 font-bold text-sm">◆</span>
+              <span className="text-sm font-semibold font-geist text-gray-800">
+                Anthropic Claude
+              </span>
+              {serverStatus?.anthropic && <EnvBadge color="fuchsia" />}
+            </div>
+            <KeyInput
+              focusColor="#C026D3"
+              placeholder={
+                serverStatus?.anthropic
+                  ? "Saved in Database (encrypted)"
+                  : "sk-ant-..."
+              }
+              show={showAKey}
+              value={anthropicKey}
+              onChange={setAnthropicKey}
+              onToggle={() => setShowAKey((v) => !v)}
+            />
+          </PanelSection>
+
           <PanelSection label="Default Engine">
             <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
-              {(["openai", "gemini", "mistral", "puter"] as const).map(
+              {(["openai", "gemini", "anthropic", "mistral", "puter"] as const).map(
                 (eng) => (
                   <button
                     key={eng}
@@ -333,6 +364,8 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                       setDefaultModel(
                         eng === "gemini"
                           ? "gemini-flash-latest"
+                          : eng === "anthropic"
+                            ? "claude-3-5-sonnet-latest"
                           : eng === "mistral"
                             ? "mistral-large-latest"
                             : "gpt-4o-mini",
@@ -343,6 +376,8 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                       ? "● GPT"
                       : eng === "gemini"
                         ? "✦ Gemini"
+                        : eng === "anthropic"
+                          ? "◆ Claude"
                         : eng === "mistral"
                           ? "◆ Mistral"
                           : "⚡ Puter"}
@@ -378,6 +413,16 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                   <option value="mistral-small-latest">◆ Mistral Small</option>
                   <option value="mistral-nemo">◆ Mistral Nemo</option>
                   <option value="codestral-latest">◆ Codestral</option>
+                </>
+              ) : defaultEngine === "anthropic" ? (
+                <>
+                  <option value="claude-3-5-sonnet-latest">
+                    ◆ Claude 3.5 Sonnet
+                  </option>
+                  <option value="claude-3-5-haiku-latest">
+                    ◆ Claude 3.5 Haiku
+                  </option>
+                  <option value="claude-3-opus-latest">◆ Claude 3 Opus</option>
                 </>
               ) : (
                 <>
@@ -442,7 +487,11 @@ const PanelSection = ({
   </div>
 );
 
-const EnvBadge = ({ color }: { color: "emerald" | "blue" | "violet" }) => (
+const EnvBadge = ({
+  color,
+}: {
+  color: "emerald" | "blue" | "violet" | "fuchsia";
+}) => (
   <span
     className={`ml-auto text-[10px] font-jetbrains-mono px-2 py-0.5 rounded-full
     ${
@@ -450,7 +499,9 @@ const EnvBadge = ({ color }: { color: "emerald" | "blue" | "violet" }) => (
         ? "text-emerald-700 bg-emerald-50"
         : color === "blue"
           ? "text-blue-700 bg-blue-50"
-          : "text-violet-700 bg-violet-50"
+          : color === "fuchsia"
+            ? "text-fuchsia-700 bg-fuchsia-50"
+            : "text-violet-700 bg-violet-50"
     }`}
   >
     .env ✓

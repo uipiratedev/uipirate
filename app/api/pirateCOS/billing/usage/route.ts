@@ -34,9 +34,11 @@ export async function GET() {
     const openaiEnv = !!process.env.OPENAI_API_KEY;
     const geminiEnv = !!process.env.GEMINI_API_KEY;
     const mistralEnv = !!process.env.MISTRAL_API_KEY;
+    const anthropicEnv = !!process.env.ANTHROPIC_API_KEY;
     const openaiDb = !!cfg?.openaiKeyEncrypted;
     const geminiDb = !!cfg?.geminiKeyEncrypted;
     const mistralDb = !!cfg?.mistralKeyEncrypted;
+    const anthropicDb = !!cfg?.anthropicKeyEncrypted;
 
     return NextResponse.json({
       success: true,
@@ -60,7 +62,7 @@ export async function GET() {
         openai: openaiEnv || openaiDb,
         gemini: geminiEnv || geminiDb,
         mistral: mistralEnv || mistralDb,
-        anthropic: false, // anthropic not yet in AIConfig model schema
+        anthropic: anthropicEnv || anthropicDb,
       },
     });
   } catch (err: any) {

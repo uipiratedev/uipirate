@@ -1745,6 +1745,8 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 
 **Strategic Shift:** Move from "generate content" to **Content Lifecycle Orchestration** where publishing is an intelligent workflow stage, not just a final button.
 
+**UX Doctrine:** PirateCOS should feel calm, lightweight, smooth, intelligent, focused, and workflow-guided. The target user feeling is: **"This makes content operations effortless."** Avoid AI chaos, tool overload, and dashboard clutter.
+
 **The 5-Step Lifecycle Flow:**
 
 | Step | Name | What Happens |

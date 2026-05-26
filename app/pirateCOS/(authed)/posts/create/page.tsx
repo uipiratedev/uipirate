@@ -114,7 +114,7 @@ const SEOEditorModal = ({
   postContent: string;
   postType: string;
 }) => {
-  type SupportedAIEngine = "openai" | "gemini" | "mistral";
+  type SupportedAIEngine = "openai" | "gemini" | "mistral" | "anthropic";
   type ModalTab = "general" | "social" | "analysis" | "performance";
   type SEOAction = "seo-analysis" | "titles" | "excerpt" | "tags";
   type SEOAnalysisResult = {
@@ -149,11 +149,18 @@ const SEOEditorModal = ({
       { value: "mistral-nemo", label: "Mistral Nemo" },
       { value: "codestral-latest", label: "Codestral" },
     ],
+    anthropic: [
+      { value: "claude-3-5-sonnet-latest", label: "Claude 3.5 Sonnet" },
+      { value: "claude-3-5-haiku-latest", label: "Claude 3.5 Haiku" },
+      { value: "claude-3-opus-latest", label: "Claude 3 Opus" },
+    ],
   };
 
   const getDefaultModelForEngine = (engine: SupportedAIEngine) =>
     engine === "gemini"
       ? "gemini-flash-latest"
+      : engine === "anthropic"
+        ? "claude-3-5-sonnet-latest"
       : engine === "mistral"
         ? "mistral-large-latest"
         : "gpt-4o-mini";
@@ -270,6 +277,7 @@ const SEOEditorModal = ({
     const config = loadAIConfig();
     const nextEngine: SupportedAIEngine =
       config.defaultEngine === "gemini" ||
+      config.defaultEngine === "anthropic" ||
       config.defaultEngine === "mistral" ||
       config.defaultEngine === "openai"
         ? config.defaultEngine
@@ -615,6 +623,7 @@ const SEOEditorModal = ({
             >
               <option value="openai">OpenAI</option>
               <option value="gemini">Gemini</option>
+              <option value="anthropic">Claude</option>
               <option value="mistral">Mistral</option>
             </select>
             <select

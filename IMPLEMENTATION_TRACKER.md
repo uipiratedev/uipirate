@@ -247,6 +247,7 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [ ] **Distribution Memory**: Learn repeated tenant workflow preferences and suggest saved/default chains such as "Apply your Founder Authority Chain?"
 - [ ] **Post-Publish Actions**: After publishing, prompt the user to generate LinkedIn teasers, X threads, newsletter versions, carousel copy, community summaries, Medium syndication copy, SEO meta packages, and CTA snippets.
 - [ ] **Content State Machine**: Track lifecycle states (`draft`, `structured`, `optimized`, `distribution-ready`, `published`, `repurposed`, `tracked`) to drive guided next actions.
+- [ ] **Phase 4B UX Quality Gate**: Validate the workspace feels calm, lightweight, focused, and workflow-guided; every lifecycle state should surface one obvious recommended next action with advanced tools progressively disclosed.
 - [ ] **AI Repurposing Engine Integration**: Direct drawer options to multiply content into LinkedIn variants, X threads, email summaries, carousel copy, executive summaries, quote snippets, and short-form community posts.
 - [ ] **Goal-Specific AI Prompt Injection**: Backend `generate` API injects goal prioritizations (`aiPriorityPrompt`) into copywriting prompts.
 - [ ] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
