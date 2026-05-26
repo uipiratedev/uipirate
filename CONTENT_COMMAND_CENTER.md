@@ -1,5 +1,16 @@
 # PirateCOS: Content Command Center — Technical Implementation Plan
 
+# PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution Flow
+
+> **Product Philosophy:**
+> PirateCOS is an **AI-Powered Content Production & Distribution Operating System.**
+>
+> NOT an AI writer. NOT a blog editor.
+>
+> **"Create → Optimize → Distribute → Repurpose → Track"**
+>
+> Content is never "done" when you hit publish. Publishing is an **intelligent workflow stage.**
+
 > **Transform the existing blog management system into a multi-channel content distribution platform.**
 > This document is grounded entirely in the current codebase structure.
 >
@@ -10,6 +21,7 @@
 | **Phase 2** | PirateCOS: Monetization & Growth Engine | 🟢 **Complete** |
 | **Phase 3** | PirateCOS: API Refinement, LinkedIn Publishing & External Integration | 🟢 **Complete** |
 | **Phase 4** | PirateCOS: AI Intelligence Layer & Content Transformation | 🟢 **Complete** |
+| **Phase 4B** | PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution | 🟡 **In Progress** |
 | **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | ⬜ Not started |
 | **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | ⬜ Not started |
 | **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | ⬜ Not started |
@@ -63,6 +75,25 @@
 | Multi-Format Repurposing Drawer (`RepurposingDrawer`) with smartphone mockup preview | ✅ Complete & Verified |
 | Real-Time AI Co-pilot background parser with debounced scanning API (`/api/pirateCOS/ai/copilot`) | ✅ Complete & Verified |
 | Analytics Snapshot model (`AnalyticsSnapshot`) for future Phase 5 metrics capturing | ✅ Complete & Verified |
+| **Post Type Preset Rework & Content Lifecycle Orchestration**: Guided creation flow, 11 types, 6 content goals, adaptive workspace, goal-weighted health scoring, AI advisor, and repurposing integrations | 🟡 In Progress |
+
+ ---
+
+ **Phase 4B — Content Lifecycle Orchestration (In Progress)**
+
+| Area | Status |
+|---|---|
+| Plan file (`PRESET_REWORK_PLAN.md`) — full lifecycle spec with 5-step flow | ✅ Complete |
+| Centralized config system (`lib/pirateCOS/postTypeConfig.ts`) — types, goals, health weights | ⬜ Not started |
+| Post model schema — 6 new `postType` enums + new `contentGoal` field | ⬜ Not started |
+| 3-step creation wizard: Intent → Goal → Workspace Preview | ⬜ Not started |
+| Goal Selection system (6 goals: Traffic, Authority, Conversion, Engagement, Lead Gen, Retention) | ⬜ Not started |
+| Editor toolbar + sidebar adaptation per type + goal | ⬜ Not started |
+| Content Health scoring dashboard (weighted by goal) | ⬜ Not started |
+| Distribution Intelligence panel (AI channel recommendations) | ⬜ Not started |
+| Content Repurposing Engine (1 blog → LinkedIn post, X thread, newsletter, quotes) | ⬜ Not started |
+| AI prompt injection per content goal | ⬜ Not started |
+| Edit page adaptation | ⬜ Not started |
 
 ---
 
@@ -1703,6 +1734,55 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 - **Dynamic Flyouts:** Changing presets automatically toggles preset-specific outline structures and settings parameters in a collapsible secondary flyout panel.
 
 **Revenue impact:** Unlocking all 8 presets = **Pro tier feature** (Free users get 3 basic presets)
+
+---
+
+### 4.1B Content Lifecycle Orchestration (Phase 4B)
+
+> **📋 Full specification:** [`PRESET_REWORK_PLAN.md`](file:///d:/ui-pirate/uipirate/PRESET_REWORK_PLAN.md)
+>
+> **Product Philosophy:** PirateCOS = **AI-Powered Content Production & Distribution Operating System.** Not an AI writer. "Create → Optimize → Distribute → Repurpose → Track."
+
+**Strategic Shift:** Move from "generate content" to **Content Lifecycle Orchestration** where publishing is an intelligent workflow stage, not just a final button.
+
+**The 5-Step Lifecycle Flow:**
+
+| Step | Name | What Happens |
+|---|---|---|
+| **Step 1** | Intent Selection | User picks from 11 content types (2 categories) with feature pills |
+| **Step 2** | Goal Selection | User chooses WHY: Traffic, Authority, Conversion, Engagement, Lead Gen, Retention |
+| **Step 3** | Workspace Adapts | Editor, AI prompts, CTA blocks, SEO, publishing recommendations all change |
+| **Step 4** | Content Generation | AI-assisted structure, outline, write, improve, SEO optimize |
+| **Step 5** | Distribution Intelligence | Smart multi-channel publishing + AI advisor + content repurposing engine |
+
+**11 Content Types (2 Categories):**
+
+*Content & Knowledge:* Blog, Tutorial, Case Study, Community Insight, Corporate / PR Post
+*Product & Monetization:* Product Review, Product Launch, Listicle, Comparison, Newsletter, LinkedIn / Social Post
+
+**6 Content Goals:**
+
+| Goal | System Behavior |
+|---|---|
+| 🎯 **Traffic** | Heavy SEO tools, keyword density, meta optimization |
+| 🏩️ **Authority** | Depth, citations, data points, expert tone |
+| 💰 **Conversion** | CTA blocks, benefit-focused structure, urgency |
+| 🔥 **Engagement** | Hook-first, questions, social preview |
+| 🧲 **Lead Generation** | Lead magnets, gated content, newsletter CTAs |
+| 🤝 **Retention** | Tips, updates, product education |
+
+**Distribution Intelligence:**
+- AI recommends best channels per content type + goal
+- Content Distribution Chains: preset launch workflows such as website publish → LinkedIn teaser → X thread → newsletter summary → CTA snippets → scheduled follow-ups
+- Post-Publish Actions: after publishing, prompt the user to generate LinkedIn teasers, X/Twitter threads, newsletter versions, carousel copy, community summaries, Medium syndication copy, SEO meta packages, and CTA snippets
+- Distribution Readiness Score: per-channel fit scores for SEO, LinkedIn, Newsletter, Conversion, and X/Twitter
+- Content Repurposing Engine: 1 blog → LinkedIn post variants, X thread, newsletter summary, carousel copy, executive summary, short-form community post, quote snippets
+- LinkedIn tone variants: Founder, Thought Leadership, Technical, Casual, Viral Hook, Enterprise
+- Content Health dashboard weighted by goal
+
+**Architecture:** Centralized in [`lib/pirateCOS/postTypeConfig.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/postTypeConfig.ts) driving wizard UI, toolbar adaptation, AI prompt injection, and health scoring.
+
+**Competitive Position:** AI writing = commodity. Intelligent operational workflows = defensible moat. PirateCOS becomes "Create, Optimize & Distribute Content Across Every Channel."
 
 ---
 
