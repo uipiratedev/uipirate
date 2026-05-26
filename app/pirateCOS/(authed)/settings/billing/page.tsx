@@ -236,6 +236,15 @@ export default function BillingSettingsPage() {
           Manage your usage boundaries, purchase top-up credits, and toggle
           custom BYOK access toggles.
         </p>
+        <p className="text-xs text-gray-400 mt-2 font-geist">
+          Looking for default engines, models, or writing style preferences?{" "}
+          <a
+            href="/pirateCOS/ai-settings"
+            className="text-[#FF5B04] hover:underline font-semibold"
+          >
+            Go to AI Settings & Tone Guidelines →
+          </a>
+        </p>
       </div>
 
       {/* FEEDBACK BANNERS */}
@@ -387,7 +396,41 @@ export default function BillingSettingsPage() {
       </div>
 
       {/* BYOK CONFIG PANEL */}
-      <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden relative">
+        {!isPro && (
+          <div className="absolute inset-0 bg-white/75 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center text-center p-6 animate-fade-in">
+            <div className="w-12 h-12 bg-orange-50 border border-orange-100 rounded-full flex items-center justify-center mb-3 text-[#FF5B04]">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <h4 className="text-sm font-bold text-gray-800 font-geist">
+              Bring Your Own Key (BYOK) is Locked
+            </h4>
+            <p className="text-xs text-gray-500 mt-1 max-w-sm leading-normal">
+              Upgrade to the <strong>Pro Plan</strong> to connect custom API keys, enable bypass toggles, and enjoy unlimited writing volume!
+            </p>
+            <button
+              className="mt-4 px-4 py-2 text-xs font-bold text-white rounded-xl shadow-sm hover:opacity-95 transition-opacity"
+              style={{ background: "#FF5B04" }}
+              type="button"
+              onClick={() => handleCheckout("subscription")}
+            >
+              Upgrade to Pro ($19/mo)
+            </button>
+          </div>
+        )}
+
         <div className="px-6 py-4 border-b border-black/[0.05]">
           <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider font-jetbrains-mono flex items-center gap-1.5">
             <svg

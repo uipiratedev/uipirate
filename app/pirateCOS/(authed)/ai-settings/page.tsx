@@ -313,6 +313,24 @@ export default function AISettingsPage() {
   const [mistralSource, setMistralSource] = useState<KeySource>(null);
   const [anthropicSource, setAnthropicSource] = useState<KeySource>(null);
 
+  // plan states
+  const [plan, setPlan] = useState<string>("free");
+  const isPro = plan === "pro" || plan === "enterprise";
+
+  // BYOK States
+  const [byokEnabled, setByokEnabled] = useState<{
+    openai: boolean;
+    gemini: boolean;
+    mistral: boolean;
+    anthropic: boolean;
+  }>({
+    openai: false,
+    gemini: false,
+    mistral: false,
+    anthropic: false,
+  });
+  const [updatingBYOK, setUpdatingBYOK] = useState(false);
+
   // Defaults dirty-detection
   const [initialEngine, setInitialEngine] = useState<Engine>("puter");
   const [initialModel, setInitialModel] = useState("gpt-4o-mini");
@@ -355,6 +373,7 @@ export default function AISettingsPage() {
       .then((r) => r.json())
       .then((d) => {
         if (d.success) {
+          setPlan(d.plan ?? "free");
           setOpenaiSource(d.openaiSource);
           setGeminiSource(d.geminiSource);
           setMistralSource(d.mistralSource);
@@ -400,7 +419,43 @@ export default function AISettingsPage() {
             .catch(() => {});
       })
       .catch(() => {});
+
+    // Fetch BYOK Status from billing/usage
+    fetch("/api/pirateCOS/billing/usage")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success && d.byokEnabled) {
+          setByokEnabled(d.byokEnabled);
+        }
+      })
+      .catch(() => {});
   }, []);
+
+  const handleToggleBYOK = async (provider: Engine) => {
+    if (provider === "puter") return;
+    setUpdatingBYOK(true);
+    const nextBYOK = {
+      ...byokEnabled,
+      [provider]: !byokEnabled[provider],
+    };
+
+    try {
+      const res = await fetch("/api/pirateCOS/billing/usage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ byokEnabled: nextBYOK }),
+      });
+      const json = await res.json();
+
+      if (json.success) {
+        setByokEnabled(json.byokEnabled);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setUpdatingBYOK(false);
+    }
+  };
 
   const openKeyModal = (provider: KeyProvider) =>
     setKeyModal({ open: true, provider });
@@ -545,6 +600,15 @@ export default function AISettingsPage() {
             Manage your keys, default AI providers, and customize workflow
             styling memory parameters.
           </p>
+          <p className="text-xs text-gray-400 mt-2 font-geist">
+            Looking to check credit balance or configure Bring Your Own Key (BYOK) billing?{" "}
+            <a
+              href="/pirateCOS/settings/billing"
+              className="text-[#FF5B04] hover:underline font-semibold"
+            >
+              Go to Billing & Subscription Pools →
+            </a>
+          </p>
         </div>
 
         {/* Tab Controls */}
@@ -642,6 +706,10 @@ export default function AISettingsPage() {
                 text: "text-emerald-700",
               }}
               title="OpenAI"
+              isPro={isPro}
+              byokEnabled={byokEnabled.openai}
+              updatingBYOK={updatingBYOK}
+              onToggleBYOK={() => handleToggleBYOK("openai")}
               onManageKey={() => openKeyModal("openai")}
             />
 
@@ -658,6 +726,10 @@ export default function AISettingsPage() {
                 text: "text-blue-700",
               }}
               title="Google Gemini"
+              isPro={isPro}
+              byokEnabled={byokEnabled.gemini}
+              updatingBYOK={updatingBYOK}
+              onToggleBYOK={() => handleToggleBYOK("gemini")}
               onManageKey={() => openKeyModal("gemini")}
             />
 
@@ -676,6 +748,10 @@ export default function AISettingsPage() {
                 text: "text-violet-700",
               }}
               title="Mistral AI"
+              isPro={isPro}
+              byokEnabled={byokEnabled.mistral}
+              updatingBYOK={updatingBYOK}
+              onToggleBYOK={() => handleToggleBYOK("mistral")}
               onManageKey={() => openKeyModal("mistral")}
             />
 
@@ -694,6 +770,10 @@ export default function AISettingsPage() {
                 text: "text-fuchsia-700",
               }}
               title="Anthropic Claude"
+              isPro={isPro}
+              byokEnabled={byokEnabled.anthropic}
+              updatingBYOK={updatingBYOK}
+              onToggleBYOK={() => handleToggleBYOK("anthropic")}
               onManageKey={() => openKeyModal("anthropic")}
             />
           </div>
@@ -1233,6 +1313,10 @@ interface ProviderKeyCardProps {
   source: KeySource;
   description: string;
   sourceColors: { bg: string; border: string; dot: string; text: string };
+  isPro: boolean;
+  byokEnabled: boolean;
+  updatingBYOK: boolean;
+  onToggleBYOK: () => void;
   onManageKey: () => void;
 }
 const ProviderKeyCard = ({
@@ -1242,6 +1326,10 @@ const ProviderKeyCard = ({
   source,
   description,
   sourceColors,
+  isPro,
+  byokEnabled,
+  updatingBYOK,
+  onToggleBYOK,
   onManageKey,
 }: ProviderKeyCardProps) => {
   const badge =
@@ -1277,9 +1365,46 @@ const ProviderKeyCard = ({
           </span>
         </div>
       )}
+
+      {/* BYOK Toggle */}
+      {source && (
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04] relative">
+          <div>
+            <span className="text-[11px] font-bold text-gray-700 block">BYOK Bypass</span>
+            <span className="text-[9px] text-gray-400 block leading-tight">
+              Bypasses shared credit pools
+            </span>
+          </div>
+          <button
+            className={`w-9 h-5 rounded-full p-0.5 transition-colors relative flex items-center ${
+              byokEnabled && isPro ? "bg-green-500" : "bg-gray-200"
+            }`}
+            disabled={updatingBYOK || !isPro}
+            type="button"
+            onClick={onToggleBYOK}
+          >
+            <span
+              className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                byokEnabled && isPro ? "translate-x-4" : "translate-x-0"
+              }`}
+            />
+          </button>
+          {!isPro && (
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-[0.5px] flex items-center justify-end pr-1 text-[10px] font-bold text-[#FF5B04] font-geist">
+              🔒 Locked
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Manage button */}
       <button
-        className="mt-3 w-full py-2 rounded-lg text-xs font-semibold font-geist text-gray-700 bg-gray-50 hover:bg-gray-100 border border-black/5 transition-colors flex items-center justify-center gap-1.5"
+        className={`mt-3 w-full py-2 rounded-lg text-xs font-semibold font-geist border transition-colors flex items-center justify-center gap-1.5 ${
+          isPro 
+            ? "text-gray-700 bg-gray-50 hover:bg-gray-100 border-black/5" 
+            : "text-gray-400 bg-gray-100 border-transparent cursor-not-allowed"
+        }`}
+        disabled={!isPro}
         onClick={onManageKey}
       >
         <svg
@@ -1295,7 +1420,7 @@ const ProviderKeyCard = ({
           <circle cx="7.5" cy="15.5" r="5.5" />
           <path d="M21 2l-9.6 9.6M15.5 7.5l3 3" />
         </svg>
-        {source ? "Update API Key" : "Add API Key"}
+        {isPro ? (source ? "Update API Key" : "Add API Key") : "🔒 Unlock with Pro"}
       </button>
     </SettingCard>
   );

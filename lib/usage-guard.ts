@@ -39,17 +39,20 @@ export async function deductCredits(
   let usesBYOK = false;
 
   if (isAIAction) {
-    if (engine && admin.byokEnabled && (admin.byokEnabled as any)[engine]) {
-      usesBYOK = true;
-    } else if (
-      admin.byokEnabled &&
-      (admin.byokEnabled.openai ||
-        admin.byokEnabled.gemini ||
-        admin.byokEnabled.mistral ||
-        admin.byokEnabled.anthropic)
-    ) {
-      // General fallback if engine not specifically selected but keys exist
-      usesBYOK = true;
+    const isPremiumPlan = ["pro", "enterprise"].includes(admin.plan || "free");
+    if (isPremiumPlan) {
+      if (engine && admin.byokEnabled && (admin.byokEnabled as any)[engine]) {
+        usesBYOK = true;
+      } else if (
+        admin.byokEnabled &&
+        (admin.byokEnabled.openai ||
+          admin.byokEnabled.gemini ||
+          admin.byokEnabled.mistral ||
+          admin.byokEnabled.anthropic)
+      ) {
+        // General fallback if engine not specifically selected but keys exist
+        usesBYOK = true;
+      }
     }
   }
 

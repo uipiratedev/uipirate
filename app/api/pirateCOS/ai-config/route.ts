@@ -5,6 +5,7 @@ import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { encrypt } from "@/lib/pirateCOS/encrypt";
 import dbConnect from "@/lib/mongodb";
 import AIConfig from "@/models/pirateCOS/AIConfig";
+import Admin from "@/models/pirateCOS/Admin";
 
 // GET /api/admin/ai-config
 // Returns which AI providers have keys (env or DB) and current defaults.
@@ -22,6 +23,7 @@ export async function GET() {
   await dbConnect();
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
   const cfg = await AIConfig.findOne({ tenantId: tenantOid }).lean();
+  const admin = await Admin.findById(user.tenantId).lean();
 
   const openaiEnv = !!process.env.OPENAI_API_KEY;
   const geminiEnv = !!process.env.GEMINI_API_KEY;
@@ -34,6 +36,7 @@ export async function GET() {
 
   return NextResponse.json({
     success: true,
+    plan: admin?.plan ?? "free",
     openai: openaiEnv || openaiDb,
     gemini: geminiEnv || geminiDb,
     mistral: mistralEnv || mistralDb,
