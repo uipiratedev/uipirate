@@ -229,6 +229,21 @@ The system actively advises:
 | **Enhancement** | "Consider adding an infographic for better social shares" |
 | **Structure** | "Shorten intro for better engagement on social platforms" |
 
+#### AI Content Strategist Layer
+
+The advisor should feel like a strategist, not a passive checklist. After generation and before distribution, PirateCOS proactively recommends next best actions:
+
+| Strategic Signal | Example Recommendation |
+|---|---|
+| **Format Opportunity** | "This would perform well as carousel content." |
+| **Weak Conversion Path** | "Strong authority piece, but the CTA is weak. Add a benefit-led CTA before the conclusion." |
+| **SEO Expansion** | "Add a comparison table to improve search usefulness." |
+| **Distribution Timing** | "Best distributed Tuesday morning based on audience activity." |
+| **Narrative Variant** | "Generate a founder-story version for LinkedIn?" |
+| **Repurposing Fit** | "This has 5 strong pull quotes. Generate quote snippets?" |
+
+UX principle: PirateCOS should recommend the next best action instead of forcing users to hunt through many AI buttons.
+
 #### 5C. Content Distribution Chains
 
 Distribution Chains are preset multi-step publishing workflows generated from `postType + contentGoal`.
@@ -257,6 +272,36 @@ Example chains:
 | **Newsletter** | Retention | Email publish → website archive → LinkedIn recap → quote snippets |
 
 Distribution Chains are the bridge between creation and operations. They turn one finished post into a guided launch sequence.
+
+##### Chain Templates
+
+Chain Templates are named distribution workflows that users can select, reuse, and eventually customize.
+
+| Chain Template | Primary Goal | Default Workflow |
+|---|---|---|
+| **SEO Growth Chain** | Traffic | Website publish → SEO meta package → internal-link suggestions → LinkedIn teaser → X thread |
+| **Founder Authority Chain** | Authority | Website publish → founder-style LinkedIn post → quote snippets → newsletter summary |
+| **Product Launch Chain** | Conversion | Website publish → LinkedIn announcement → X launch thread → email announcement → CTA snippets |
+| **Newsletter Growth Chain** | Retention | Newsletter publish → web archive → LinkedIn recap → community summary |
+| **Community Expansion Chain** | Engagement | Social post → X thread → community summary → discussion prompt → quote snippets |
+
+The wizard can recommend a default template from `postType + contentGoal`, while advanced users can switch templates before distribution.
+
+##### Distribution Memory
+
+PirateCOS should learn repeated distribution behavior per tenant.
+
+Examples:
+
+- User repeatedly publishes blogs to WordPress, then creates a LinkedIn teaser and X thread.
+- User usually skips newsletter summaries for tutorials.
+- User always chooses Founder Style for case studies.
+
+Over time, the system should suggest:
+
+> "Apply your Founder Authority Chain?"
+
+Distribution Memory turns repeated manual publishing behavior into one-click operational defaults.
 
 #### 5D. Post-Publish Actions
 
@@ -339,6 +384,40 @@ The AI Distribution Advisor should use these scores to recommend improvements, f
 - "Strong for SEO and LinkedIn authority."
 - "Weak for newsletter engagement; shorten the intro and add a clearer takeaway section."
 - "Conversion score is low; add one benefit-focused CTA near the conclusion."
+
+### Content State Machine
+
+To keep the UX clear as workflows become more powerful, every post should have an operational lifecycle state.
+
+| State | Meaning | Typical Next Action |
+|---|---|---|
+| **Draft** | Writing has started | Continue writing or generate outline |
+| **Structured** | Outline and major sections are ready | Expand sections or optimize |
+| **Optimized** | SEO, readability, and goal checks pass | Review distribution readiness |
+| **Distribution Ready** | Channel fit and required metadata are validated | Select chain or publish |
+| **Published** | Primary channel is live | Run post-publish actions |
+| **Repurposed** | Multi-channel assets have been generated | Schedule or distribute variants |
+| **Tracked** | Analytics collection is active | Review performance and improve |
+
+The state machine should simplify the UI: show the most relevant next action for the current state instead of exposing every tool at once.
+
+### UX Complexity Guardrail
+
+The backend can support sophisticated orchestration, but the frontend must remain guided and lightweight.
+
+Product rule:
+
+> Prefer one recommended next action over ten visible tools.
+
+Phase 4B should prioritize:
+
+- Sequencing
+- Recommendations
+- Workspace adaptation
+- Distribution intelligence
+- Content multiplication
+
+It should avoid adding more generic AI controls unless they directly improve the lifecycle flow.
 
 ---
 

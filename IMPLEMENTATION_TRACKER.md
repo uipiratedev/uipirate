@@ -240,9 +240,13 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
   - **Locked badge in editor header**: Displays selected type and goal (e.g. `✏️ Blog × 📈 Traffic`).
 - [ ] **Content Health Dashboard** (`health` tab): Implement scoring dashboard weighted dynamically by content goal metrics.
 - [ ] **Distribution Readiness Score** (`health` + `distribute` tabs): Show per-channel readiness scores for SEO, LinkedIn, Newsletter, Conversion, and X/Twitter fit.
+- [ ] **AI Content Strategist Layer** (`distribute` + `health` tabs): Proactively recommends next best actions such as carousel conversion, CTA strengthening, SEO expansion, timing, narrative variants, and quote extraction.
 - [ ] **AI Distribution Advisor** (`distribute` tab): Displays channel recommendations, weak-fit warnings, improvement suggestions, and scheduling tips.
 - [ ] **Content Distribution Chains**: Generate recommended multi-step launch workflows from `postType + contentGoal` (publish → repurpose → schedule → track).
+- [ ] **Chain Templates**: Provide named reusable launch workflows such as SEO Growth Chain, Founder Authority Chain, Product Launch Chain, Newsletter Growth Chain, and Community Expansion Chain.
+- [ ] **Distribution Memory**: Learn repeated tenant workflow preferences and suggest saved/default chains such as "Apply your Founder Authority Chain?"
 - [ ] **Post-Publish Actions**: After publishing, prompt the user to generate LinkedIn teasers, X threads, newsletter versions, carousel copy, community summaries, Medium syndication copy, SEO meta packages, and CTA snippets.
+- [ ] **Content State Machine**: Track lifecycle states (`draft`, `structured`, `optimized`, `distribution-ready`, `published`, `repurposed`, `tracked`) to drive guided next actions.
 - [ ] **AI Repurposing Engine Integration**: Direct drawer options to multiply content into LinkedIn variants, X threads, email summaries, carousel copy, executive summaries, quote snippets, and short-form community posts.
 - [ ] **Goal-Specific AI Prompt Injection**: Backend `generate` API injects goal prioritizations (`aiPriorityPrompt`) into copywriting prompts.
 - [ ] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
