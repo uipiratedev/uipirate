@@ -2339,14 +2339,15 @@ const AIExcerptModal = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
   const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral"
+    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
   >(
     () =>
       (loadAIConfig().defaultEngine ?? "puter") as
         | "openai"
         | "gemini"
         | "puter"
-        | "mistral",
+        | "mistral"
+        | "anthropic",
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
@@ -2968,14 +2969,15 @@ const AITitleModal = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
   const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral"
+    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
   >(
     () =>
       (loadAIConfig().defaultEngine ?? "puter") as
         | "openai"
         | "gemini"
         | "puter"
-        | "mistral",
+        | "mistral"
+        | "anthropic",
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
@@ -3492,14 +3494,15 @@ const AITagsModal = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
   const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral"
+    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
   >(
     () =>
       (loadAIConfig().defaultEngine ?? "puter") as
         | "openai"
         | "gemini"
         | "puter"
-        | "mistral",
+        | "mistral"
+        | "anthropic",
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
@@ -4050,14 +4053,15 @@ const AICopilotModal = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
   const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral"
+    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
   >(
     () =>
       (loadAIConfig().defaultEngine ?? "puter") as
         | "openai"
         | "gemini"
         | "puter"
-        | "mistral",
+        | "mistral"
+        | "anthropic",
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",

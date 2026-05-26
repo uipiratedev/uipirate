@@ -61,7 +61,7 @@ The core workspace has been successfully transformed into a multi-channel conten
 ### 4. Advanced Frontend Workspace
 *   **Decoupled Hook Integration**: [`hooks/useSaveBlog.ts`](file:///d:/ui-pirate/uipirate/hooks/useSaveBlog.ts) extracts complex auto-save state machines and overrides out of the editors.
 *   **Editor Panel Tab**: [`components/pirateCOS/DistributionPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx) adds a 4th "Distribute" tab inside the workspace. Integrates pre-flight checklists, connection links, publication histories, and trigger shortcuts back to the AI modals.
-*   **Quick AI configuration**: [`components/pirateCOS/AIConfigPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIConfigPanel.tsx) manages credentials securely, saving keys to DB with Puter/Gemini/OpenAI/Mistral model parameters.
+*   **Quick AI configuration**: [`components/pirateCOS/AIConfigPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIConfigPanel.tsx) manages credentials securely, saving keys to DB with Puter/Gemini/OpenAI/Claude/Mistral model parameters.
 *   **Dashboard settings**: [`app/pirateCOS/(authed)/settings/integrations/page.tsx`](file:///d:/ui-pirate/uipirate/app/pirateCOS/%28authed%29/settings/integrations/page.tsx) supplies a gorgeous visual control center to link endpoints, test probes, and manage keys.
 
 ---
@@ -101,7 +101,7 @@ Use the visual symbols below to track feature items. When launching a plan stage
 ### 🟢 Phase 1: Core Content Command Center
 - [x] Multi-tenant isolation at the database, model, and route query scope.
 - [x] Outbound credential encryption using AES-256-GCM and the unified `AI_ENCRYPTION_KEY`.
-- [x] In-editor slide-over `AIConfigPanel` updated to securely encrypt keys and support Google Gemini, OpenAI, Puter, and Mistral AI models.
+- [x] In-editor slide-over `AIConfigPanel` updated to securely encrypt keys and support Google Gemini, OpenAI, Anthropic Claude, Puter, and Mistral AI models.
 - [x] Pre-flight publishing checklist assessing excerpt presence, focus keywords, title and meta lengths, tags, and character boundaries.
 - [x] Custom regex-based HTML-to-Markdown TipTap Rich Text compiler.
 - [x] Distribution Adapters and testing probes for WordPress, Medium, Ghost, and Buffer.
@@ -250,6 +250,8 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [ ] **Phase 4B UX Quality Gate**: Validate the workspace feels calm, lightweight, focused, and workflow-guided; every lifecycle state should surface one obvious recommended next action with advanced tools progressively disclosed.
 - [ ] **AI Repurposing Engine Integration**: Direct drawer options to multiply content into LinkedIn variants, X threads, email summaries, carousel copy, executive summaries, quote snippets, and short-form community posts.
 - [ ] **Goal-Specific AI Prompt Injection**: Backend `generate` API injects goal prioritizations (`aiPriorityPrompt`) into copywriting prompts.
+- [ ] **Multi-engine AI provider policy**: Every AI workflow resolves provider/model through explicit user selection → tenant default → configured provider fallback → Puter fallback; no hardcoded provider-specific AI paths.
+- [ ] **Anthropic Claude integration**: Add Claude key storage, provider status, default engine/model selection, generation route support, repurposing support, and BYOK status alignment.
 - [ ] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization

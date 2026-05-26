@@ -45,6 +45,7 @@ export default function BillingSettingsPage() {
     openaiKey: "",
     geminiKey: "",
     mistralKey: "",
+    anthropicKey: "",
   });
   const [savingKeys, setSavingKeys] = useState(false);
 
@@ -152,7 +153,7 @@ export default function BillingSettingsPage() {
       }
 
       setSuccessMsg("Custom API keys safely encrypted and stored in database.");
-      setKeysForm({ openaiKey: "", geminiKey: "", mistralKey: "" });
+      setKeysForm({ openaiKey: "", geminiKey: "", mistralKey: "", anthropicKey: "" });
       await fetchUsage();
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to save API keys");
@@ -411,7 +412,7 @@ export default function BillingSettingsPage() {
         </div>
 
         {/* Toggles Panel */}
-        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black/[0.05] border-b border-black/[0.05]">
+        <div className="grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-black/[0.05] border-b border-black/[0.05]">
           {/* OpenAI */}
           <div className="p-5 flex items-center justify-between gap-4">
             <div>
@@ -486,6 +487,31 @@ export default function BillingSettingsPage() {
               />
             </button>
           </div>
+
+          {/* Anthropic / Claude */}
+          <div className="p-5 flex items-center justify-between gap-4">
+            <div>
+              <h4 className="font-bold text-gray-800 text-sm">Claude BYOK</h4>
+              <p className="text-[10px] text-gray-400 pt-0.5">
+                Key status:{" "}
+                {data.hasKeys.anthropic ? "🟢 Configured" : "🔴 Missing Key"}
+              </p>
+            </div>
+            <button
+              className={`w-10 h-6 rounded-full p-0.5 transition-colors relative flex items-center ${
+                data.byokEnabled.anthropic ? "bg-green-500" : "bg-gray-200"
+              }`}
+              disabled={updatingBYOK}
+              type="button"
+              onClick={() => handleToggleBYOK("anthropic")}
+            >
+              <span
+                className={`w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-200 block ${
+                  data.byokEnabled.anthropic ? "translate-x-4" : "translate-x-0"
+                }`}
+              />
+            </button>
+          </div>
         </div>
 
         {/* Input Keys Form */}
@@ -494,7 +520,7 @@ export default function BillingSettingsPage() {
             Encrypt & Update Keys
           </h4>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="text-[10px] font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">
                 OpenAI API Key
@@ -547,6 +573,25 @@ export default function BillingSettingsPage() {
                 }
               />
             </div>
+
+            <div>
+              <label className="text-[10px] font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">
+                Claude API Key
+              </label>
+              <input
+                className="w-full text-xs font-geist bg-white rounded-lg px-3 py-2 border border-black/10 outline-none"
+                placeholder={
+                  data.hasKeys.anthropic
+                    ? "••••••••••••••••"
+                    : "Paste sk-ant-... key"
+                }
+                type="password"
+                value={keysForm.anthropicKey}
+                onChange={(e) =>
+                  setKeysForm((p) => ({ ...p, anthropicKey: e.target.value }))
+                }
+              />
+            </div>
           </div>
 
           <div className="flex items-center justify-end pt-2">
@@ -556,7 +601,8 @@ export default function BillingSettingsPage() {
                 savingKeys ||
                 (!keysForm.openaiKey &&
                   !keysForm.geminiKey &&
-                  !keysForm.mistralKey)
+                  !keysForm.mistralKey &&
+                  !keysForm.anthropicKey)
               }
               style={{ background: "#FF5B04" }}
               type="submit"

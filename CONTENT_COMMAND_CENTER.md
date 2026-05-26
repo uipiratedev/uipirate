@@ -34,7 +34,7 @@
 | Area | Status |
 |---|---|
 | Database schemas (`AIConfig`, `Integration`, `ApiKey`, `Blog`) | ✅ Complete |
-| AI Settings page (`/admin/ai-settings`) — DB-encrypted keys, all 4 engines | ✅ Complete |
+| AI Settings page (`/admin/ai-settings`) — DB-encrypted keys, all 5 engines | ✅ Complete |
 | `AIConfigPanel` in-editor quick panel — key storage & Mistral engine | ✅ Complete & Verified |
 | Distribution adapters (WordPress, Medium, Ghost, Buffer) | ✅ Complete |
 | `PATCH /api/admin/integrations/[platform]` (test connection) | ✅ Complete & Verified (Live probes) |
@@ -1746,6 +1746,8 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 **Strategic Shift:** Move from "generate content" to **Content Lifecycle Orchestration** where publishing is an intelligent workflow stage, not just a final button.
 
 **UX Doctrine:** PirateCOS should feel calm, lightweight, smooth, intelligent, focused, and workflow-guided. The target user feeling is: **"This makes content operations effortless."** Avoid AI chaos, tool overload, and dashboard clutter.
+
+**AI Provider Doctrine:** Every AI action should resolve through explicit user selection, then tenant default engine/model, then configured provider fallback, then Puter fallback. Supported engines include Puter, OpenAI, Gemini, Anthropic Claude, and Mistral. Provider choice must not override Brand Brain or Workflow Memory style preferences.
 
 **The 5-Step Lifecycle Flow:**
 

@@ -116,6 +116,37 @@ Based on `Intent + Goal`, the entire workspace transforms:
 | **Publishing Recommendations** | AI suggests best channels based on type + goal |
 | **Content Health Scoring** | Metrics weighted differently per goal (SEO score for Traffic, readability for Engagement) |
 
+### Multi-Engine AI Policy
+
+All AI features in Phase 4B must use the same provider-resolution rule:
+
+```
+Explicit user selection → tenant default engine/model → available configured provider → Puter fallback
+```
+
+No AI workflow should hardcode a provider internally. This applies to:
+
+- Writing generation
+- SEO analysis
+- Title/tag/excerpt generation
+- Repurposing
+- Distribution advisor
+- Content strategist recommendations
+- Health scoring explanations
+- Post-publish action generation
+
+Supported engines:
+
+| Engine | Key Source | Default Model |
+|---|---|---|
+| **Puter AI** | Puter account / free fallback | `gpt-4o-mini` |
+| **OpenAI** | `.env` or encrypted tenant key | `gpt-4o-mini` |
+| **Google Gemini** | `.env` or encrypted tenant key | `gemini-flash-latest` |
+| **Anthropic Claude** | `.env` or encrypted tenant key | `claude-3-5-sonnet-latest` |
+| **Mistral AI** | `.env` or encrypted tenant key | `mistral-large-latest` |
+
+Style and workflow preferences from Brand Brain and Workflow Memory should be injected above provider selection, so the chosen engine changes execution backend without changing the user's preferred writing style.
+
 ---
 
 ### STEP 4 — Content Generation
