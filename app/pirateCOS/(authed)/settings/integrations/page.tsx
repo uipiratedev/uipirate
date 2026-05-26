@@ -11,6 +11,8 @@ interface Integration {
   mediumAuthorId?: string;
   ghostSiteUrl?: string;
   bufferProfileIds?: string[];
+  linkedinUserId?: string;
+  linkedinPreferArticles?: boolean;
   lastTestedAt?: string | null;
 }
 
@@ -29,6 +31,7 @@ const PLATFORM_LABELS: Record<string, string> = {
   medium: "Medium",
   ghost: "Ghost",
   buffer: "Buffer",
+  linkedin: "LinkedIn",
 };
 
 const PLATFORM_ICONS: Record<string, string> = {
@@ -36,6 +39,7 @@ const PLATFORM_ICONS: Record<string, string> = {
   medium: "M",
   ghost: "G",
   buffer: "B",
+  linkedin: "In",
 };
 
 const PLATFORM_COLORS: Record<string, { bg: string; text: string; border: string; accent: string }> = {
@@ -43,6 +47,7 @@ const PLATFORM_COLORS: Record<string, { bg: string; text: string; border: string
   medium: { bg: "bg-gray-50", text: "text-gray-900", border: "border-gray-100", accent: "#00ab6c" },
   ghost: { bg: "bg-indigo-50", text: "text-indigo-700", border: "border-indigo-100", accent: "#30cf43" },
   buffer: { bg: "bg-orange-50", text: "text-orange-700", border: "border-orange-100", accent: "#FF5B04" },
+  linkedin: { bg: "bg-cyan-50/70", text: "text-cyan-700", border: "border-cyan-100", accent: "#0077b5" },
 };
 
 export default function IntegrationsSettingsPage() {
@@ -98,6 +103,14 @@ export default function IntegrationsSettingsPage() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const handleConnect = (platform: string) => {
+    if (platform === "linkedin") {
+      window.location.href = "/api/oauth/linkedin/authorize";
+    } else {
+      openCredentialsModal(platform);
+    }
+  };
 
   const openCredentialsModal = (platform: string) => {
     setErrorText(null);
@@ -321,7 +334,7 @@ export default function IntegrationsSettingsPage() {
                         {PLATFORM_LABELS[platform.platform]}
                       </h3>
                       <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wide">
-                        {platform.platform === "buffer" ? "Social Distribution" : "Blog Publication"}
+                        {platform.platform === "buffer" || platform.platform === "linkedin" ? "Social Distribution" : "Blog Publication"}
                       </p>
                     </div>
                   </div>
@@ -340,7 +353,19 @@ export default function IntegrationsSettingsPage() {
                   {platform.platform === "medium" && "Distribute high-quality Markdown drafts directly to your Medium publication feed."}
                   {platform.platform === "ghost" && "Distribute posts into a Ghost Admin API platform using encrypted integrations."}
                   {platform.platform === "buffer" && "Queue status updates (excerpt + canonical URL link) directly to X/Twitter and LinkedIn."}
+                  {platform.platform === "linkedin" && "Directly share posts or long-form Articles to your LinkedIn personal or professional feeds."}
                 </p>
+
+                {platform.platform === "medium" && (
+                  <span className="text-[10px] leading-relaxed text-amber-600 bg-amber-50 border border-amber-100 p-2.5 rounded-xl flex items-start gap-2 font-medium">
+                    <svg className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span>
+                      <strong>Medium API Update:</strong> Medium has sunsetted new integration tokens. Only existing tokens will continue to work. New accounts must use manual syndication methods.
+                    </span>
+                  </span>
+                )}
 
                 {connected && (
                   <div className="pt-2 border-t border-black/[0.03] space-y-1 text-xs">
@@ -362,6 +387,11 @@ export default function IntegrationsSettingsPage() {
                     {platform.platform === "buffer" && (
                       <p className="text-gray-500 truncate">
                         Queue Profiles: <span className="font-semibold text-gray-700">{platform.bufferProfileIds?.join(", ") || "None connected"}</span>
+                      </p>
+                    )}
+                    {platform.platform === "linkedin" && (
+                      <p className="text-gray-500 truncate">
+                        Profile ID: <span className="font-semibold text-gray-700">{platform.linkedinUserId || "Synced on connect"}</span>
                       </p>
                     )}
                     {platform.lastTestedAt && (
@@ -406,17 +436,17 @@ export default function IntegrationsSettingsPage() {
                     <button
                       type="button"
                       disabled={testingPlatform !== null}
-                      onClick={() => openCredentialsModal(platform.platform)}
+                      onClick={() => handleConnect(platform.platform)}
                       className="text-xs font-semibold text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
                       style={{ background: "#FF5B04" }}
                     >
-                      Edit Config
+                      Reconnect
                     </button>
                   </>
                 ) : (
                   <button
                     type="button"
-                    onClick={() => openCredentialsModal(platform.platform)}
+                    onClick={() => handleConnect(platform.platform)}
                     className="w-full text-xs font-semibold text-white py-2 rounded-xl text-center hover:opacity-90 transition-opacity"
                     style={{ background: "#FF5B04" }}
                   >
@@ -754,8 +784,12 @@ export default function IntegrationsSettingsPage() {
             {rawKeyReturned ? (
               // KEY RETURNING MODAL
               <div className="space-y-4">
-                <div className="text-center space-y-1">
-                  <span className="text-3xl">🔑</span>
+                <div className="text-center space-y-2">
+                  <div className="w-12 h-12 bg-orange-50 border border-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <svg className="w-6 h-6 text-[#FF5B04]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 7a2 2 0 012 2m-2-2a2 2 0 00-2 2m2-2a2 2 0 002 2m0 0V20a2 2 0 01-2 2h-2a2 2 0 01-2-2v-3H9v-3H6v-3H3V9a6 6 0 016-6h6a6 6 0 016 6z" />
+                    </svg>
+                  </div>
                   <h3 className="font-bold text-gray-900 font-geist text-lg">
                     API Key Generated Successfully
                   </h3>

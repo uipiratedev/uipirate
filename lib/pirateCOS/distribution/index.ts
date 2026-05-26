@@ -5,6 +5,7 @@ import { BufferAdapter } from "./adapters/buffer.adapter";
 import { GhostAdapter } from "./adapters/ghost.adapter";
 import { MediumAdapter } from "./adapters/medium.adapter";
 import { WordPressAdapter } from "./adapters/wordpress.adapter";
+import { LinkedInAdapter } from "./adapters/linkedin.adapter";
 import { DistributionResult, PublishOptions } from "./adapters/base.adapter";
 
 const ADAPTER_MAP: Record<SupportedPlatform, any> = {
@@ -12,6 +13,7 @@ const ADAPTER_MAP: Record<SupportedPlatform, any> = {
   medium: MediumAdapter,
   ghost: GhostAdapter,
   buffer: BufferAdapter,
+  linkedin: LinkedInAdapter,
 };
 
 interface DispatchParams {
@@ -76,4 +78,75 @@ export async function dispatch({
     }
   });
 }
+
+interface VerifyParams {
+  platform: SupportedPlatform;
+  externalId: string;
+  tenantId: string;
+}
+
+export async function verifyDistribution({
+  platform,
+  externalId,
+  tenantId,
+}: VerifyParams): Promise<{ exists: boolean; errorMessage?: string }> {
+  try {
+    const integration = await Integration.findOne({
+      tenantId,
+      platform,
+      isActive: true,
+    });
+
+    if (!integration) {
+      throw new Error(`${platform.toUpperCase()} integration not connected`);
+    }
+
+    const AdapterClass = ADAPTER_MAP[platform];
+    if (!AdapterClass) {
+      throw new Error(`No adapter found for platform ${platform}`);
+    }
+
+    const adapter = new AdapterClass(integration.credentials, decrypt);
+    return await adapter.verify(externalId);
+  } catch (err: any) {
+    console.error("Verification engine failed", err);
+    return { exists: true }; // Defensive fallback
+  }
+}
+
+interface DeleteParams {
+  platform: SupportedPlatform;
+  externalId: string;
+  tenantId: string;
+}
+
+export async function deleteDistribution({
+  platform,
+  externalId,
+  tenantId,
+}: DeleteParams): Promise<{ success: boolean; errorMessage?: string }> {
+  try {
+    const integration = await Integration.findOne({
+      tenantId,
+      platform,
+      isActive: true,
+    });
+
+    if (!integration) {
+      throw new Error(`${platform.toUpperCase()} integration not connected`);
+    }
+
+    const AdapterClass = ADAPTER_MAP[platform];
+    if (!AdapterClass) {
+      throw new Error(`No adapter found for platform ${platform}`);
+    }
+
+    const adapter = new AdapterClass(integration.credentials, decrypt);
+    return await adapter.delete(externalId);
+  } catch (err: any) {
+    console.error("Delete operation failed", err);
+    return { success: false, errorMessage: err.message || "Failed to delete from platform" };
+  }
+}
+
 export type { DistributionResult, PublishOptions };

@@ -78,19 +78,23 @@ export async function POST(req: NextRequest) {
 
           console.log(`🟢 Successfully activated Pro Subscription for tenant ${admin.email}`);
         } else if (purchaseType === "topup") {
-          admin.creditsRemaining += 1000.0; // Credit package top-up
+          // Dynamically calculate credits based on actual amount paid (200 credits per USD $1.00)
+          const centsPaid = session.amount_total || 500;
+          const creditsGranted = (centsPaid / 100) * 200;
+
+          admin.creditsRemaining += creditsGranted;
           await admin.save();
 
           await BillingEvent.create({
             tenantId: admin._id,
             event: "credit.topup",
             stripeEventId: event.id,
-            amount: session.amount_total ? session.amount_total / 100 : undefined,
+            amount: centsPaid / 100,
             currency: session.currency || undefined,
-            metadata: { purchaseType: "credit_pack_1000" },
+            metadata: { purchaseType: "dynamic_topup", creditsGranted },
           });
 
-          console.log(`🔋 Successfully credited 1,000 top-up credits to tenant ${admin.email}`);
+          console.log(`🔋 Successfully credited ${creditsGranted.toLocaleString()} top-up credits to tenant ${admin.email} (Paid: $${(centsPaid / 100).toFixed(2)})`);
         }
         break;
       }

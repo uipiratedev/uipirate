@@ -227,12 +227,12 @@ const admin = await Admin.create({
 const isMatch = await admin.comparePassword("securepassword");
 ```
 
-### Blog Model
+### Post Model
 
-**File**: `models/Blog.ts`
+**File**: `models/Post.ts`
 
 ```typescript
-interface IBlog {
+interface IPost {
   title: string;           // Max 200 chars
   slug: string;            // Unique, lowercase, URL-friendly
   content: string;         // HTML from TipTap editor
@@ -248,6 +248,15 @@ interface IBlog {
   publishedAt?: Date;
   views?: number;
   readTime?: number;       // In minutes
+  tenantId: mongoose.Schema.Types.ObjectId; // Multi-tenant boundary
+  distributionRecords?: Array<{
+    platform: string;
+    externalId: string;
+    url: string;
+    distributedAt: Date;
+    status: string;
+    errorMessage?: string;
+  }>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -256,15 +265,15 @@ interface IBlog {
 **Features**:
 - Auto-sets `publishedAt` when published
 - `calculateReadTime()` method (200 words/min)
-- Indexed fields for performance
+- Indexed fields for multi-tenant performance
 - Static `findPublished()` method
 
 **Usage Example**:
 ```typescript
-import Blog from '@/models/Blog';
+import Post from '@/models/Post';
 
-// Create blog post
-const blog = await Blog.create({
+// Create post
+const post = await Post.create({
   title: "My First Post",
   slug: "my-first-post",
   content: "<p>Hello world!</p>",
@@ -272,15 +281,16 @@ const blog = await Blog.create({
     name: "Admin",
     email: "admin@uipirate.com"
   },
-  published: false
+  published: false,
+  tenantId: tenantOid
 });
 
 // Calculate read time
-blog.calculateReadTime();
-await blog.save();
+post.calculateReadTime();
+await post.save();
 
-// Find published blogs
-const publishedBlogs = await Blog.findPublished();
+// Find published posts
+const publishedPosts = await Post.find({ published: true, tenantId: tenantOid });
 ```
 
 ### Database Indexes
@@ -288,11 +298,11 @@ const publishedBlogs = await Blog.findPublished();
 **Admin Collection**:
 - `email` (unique)
 
-**Blog Collection**:
-- `slug` (unique)
+**Post Collection**:
+- Compound: `{ tenantId: 1, slug: 1 }` (unique compound index for secure multi-tenant lookups)
 - `published` (for filtering)
 - `tags` (for tag-based queries)
-- Compound: `{ published: 1, publishedAt: -1 }` (for published blogs sorted by date)
+- Compound: `{ tenantId: 1, published: 1, publishedAt: -1 }` (for published posts sorted by date)
 
 ---
 

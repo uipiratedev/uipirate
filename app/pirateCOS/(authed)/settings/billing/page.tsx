@@ -65,18 +65,18 @@ export default function BillingSettingsPage() {
     // Check URL parameters for Stripe session callbacks
     const params = new URLSearchParams(window.location.search);
     if (params.get("success") === "true") {
-      setSuccessMsg("🎉 Thank you! Your Stripe transaction completed successfully.");
+      setSuccessMsg("Thank you! Your Stripe transaction completed successfully.");
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (params.get("success")?.startsWith("simulated-")) {
       const type = params.get("success")?.split("-")[1];
-      setSuccessMsg(`🚀 [Sandbox] Checkout simulation successful! ${type === "subscription" ? "Pro Plan activated (500 credits added)" : "1,000 Credits booster credited."}`);
+      setSuccessMsg(`[Sandbox] Checkout simulation successful! ${type === "subscription" ? "Pro Plan activated (500 credits added)" : "1,000 Credits booster credited."}`);
       window.history.replaceState({}, document.title, window.location.pathname);
       refreshAuth();
     } else if (params.get("canceled") === "true") {
-      setErrorMsg("⚠️ Stripe transaction was canceled.");
+      setErrorMsg("Stripe transaction was canceled.");
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (params.get("portal") === "simulated") {
-      setSuccessMsg("ℹ️ [Sandbox] Stripe self-service Portal bypass triggered successfully.");
+      setSuccessMsg("[Sandbox] Stripe self-service Portal bypass triggered successfully.");
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, [fetchUsage, refreshAuth]);
@@ -86,7 +86,7 @@ export default function BillingSettingsPage() {
     
     // Warn the user if they enable BYOK but have no keys saved
     if (!data.byokEnabled[provider] && !data.hasKeys[provider]) {
-      alert(`⚠️ You have not connected an API key for ${provider.toUpperCase()} yet. Please input your key first before enabling Bring Your Own Key bypass.`);
+      alert(`You have not connected an API key for ${provider.toUpperCase()} yet. Please input your key first before enabling Bring Your Own Key bypass.`);
       return;
     }
 
@@ -130,7 +130,7 @@ export default function BillingSettingsPage() {
         throw new Error(json.error || "Failed to encrypt keys.");
       }
 
-      setSuccessMsg("🔐 Custom API keys safely encrypted and stored in database.");
+      setSuccessMsg("Custom API keys safely encrypted and stored in database.");
       setKeysForm({ openaiKey: "", geminiKey: "", mistralKey: "" });
       await fetchUsage();
     } catch (err: any) {
@@ -245,7 +245,7 @@ export default function BillingSettingsPage() {
               {data.plan === "free" && "Enjoy cheap shared-AI models. Upgrade to get scheduled publishing, full content API, and custom keys."}
               {data.plan === "pro" && "Full multi-channel publishing, full content API keys, custom scheduling, and Bring Your Own Key bypass."}
             </p>
-            {data.currentPeriodEnd && (
+            {data.currentPeriodEnd && !isNaN(new Date(data.currentPeriodEnd).getTime()) && (
               <p className="text-[10px] text-gray-400 font-jetbrains-mono pt-2">
                 Renewal: {new Date(data.currentPeriodEnd).toLocaleDateString()}
               </p>
@@ -336,7 +336,10 @@ export default function BillingSettingsPage() {
       <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
         <div className="px-6 py-4 border-b border-black/[0.05]">
           <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider font-jetbrains-mono flex items-center gap-1.5">
-            🔐 Bring Your Own Key (BYOK) Bypass
+            <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span>Bring Your Own Key (BYOK) Bypass</span>
           </h3>
           <p className="text-xs text-gray-400 mt-0.5 leading-snug">
             Configure personal API keys to run heavy writing volumes. Toggling BYOK active **bypasses credit deductions entirely**!

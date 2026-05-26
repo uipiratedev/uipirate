@@ -42,6 +42,7 @@ const nextConfig = {
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ["@heroui/react", "framer-motion"],
+    allowedDevOrigins: ["cos.localhost:3000", "localhost:3000"],
   },
 
   // Generate sitemap and robots.txt

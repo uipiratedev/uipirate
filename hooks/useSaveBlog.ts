@@ -103,9 +103,10 @@ export function useSaveBlog({
     if (blogId && !isDirtyRef.current) {
       return blogId;
     }
-    // Otherwise, save as a draft to ensure it's in the DB
-    return await saveBlog(false);
-  }, [blogId, saveBlog]);
+    // Otherwise, save preserving the current published status to ensure it's in the DB
+    const currentlyPublished = saveStatus === "Published";
+    return await saveBlog(currentlyPublished);
+  }, [blogId, saveBlog, saveStatus]);
 
   return {
     blogId,

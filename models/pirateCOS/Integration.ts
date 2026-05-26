@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-export type SupportedPlatform = "wordpress" | "medium" | "ghost" | "buffer";
+export type SupportedPlatform = "wordpress" | "medium" | "ghost" | "buffer" | "linkedin";
 
 export interface IPlatformCredentials {
   // WordPress
@@ -19,6 +19,11 @@ export interface IPlatformCredentials {
   // Buffer
   bufferAccessTokenEncrypted?: string;
   bufferProfileIds?: string[];
+
+  // LinkedIn
+  linkedinTokenEncrypted?: string;
+  linkedinUserId?: string;
+  linkedinPreferArticles?: boolean;
 }
 
 export interface IIntegration extends Document {
@@ -41,7 +46,7 @@ const IntegrationSchema: Schema<IIntegration> = new Schema(
     },
     platform: {
       type: String,
-      enum: ["wordpress", "medium", "ghost", "buffer"],
+      enum: ["wordpress", "medium", "ghost", "buffer", "linkedin"],
       required: true,
     },
     credentials: {
@@ -62,6 +67,11 @@ const IntegrationSchema: Schema<IIntegration> = new Schema(
         // Buffer
         bufferAccessTokenEncrypted: { type: String, default: null },
         bufferProfileIds: { type: [String], default: [] },
+
+        // LinkedIn
+        linkedinTokenEncrypted: { type: String, default: null },
+        linkedinUserId: { type: String, trim: true },
+        linkedinPreferArticles: { type: Boolean, default: true },
       },
       required: true,
       default: {},

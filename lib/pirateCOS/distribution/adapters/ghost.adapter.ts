@@ -164,4 +164,24 @@ export class GhostAdapter extends BaseAdapter {
       };
     }
   }
+
+  async verify(externalId: string): Promise<{ exists: boolean; errorMessage?: string }> {
+    try {
+      const token = this.getJWT();
+      const res = await fetch(this.getApiUrl(`/posts/${externalId}/`), {
+        method: "GET",
+        headers: {
+          Authorization: `Ghost ${token}`,
+        },
+      });
+
+      if (res.status === 404) {
+        return { exists: false, errorMessage: "Post was deleted on Ghost." };
+      }
+
+      return { exists: res.ok, errorMessage: res.ok ? undefined : "Ghost post verification probe returned failure status." };
+    } catch (err: any) {
+      return { exists: true };
+    }
+  }
 }

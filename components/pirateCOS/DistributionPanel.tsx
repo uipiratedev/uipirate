@@ -42,6 +42,7 @@ const PLATFORM_LABELS: Record<string, string> = {
   medium: "Medium",
   ghost: "Ghost",
   buffer: "Buffer (X/LinkedIn)",
+  linkedin: "LinkedIn Direct",
 };
 
 export default function DistributionPanel({
@@ -63,6 +64,7 @@ export default function DistributionPanel({
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [loadingIntegrations, setLoadingIntegrations] = useState(true);
   const [distributing, setDistributing] = useState(false);
+  const [verifyingPlatform, setVerifyingPlatform] = useState<string | null>(null);
   const [distributionError, setDistributionError] = useState<string | null>(null);
   const [preflight, setPreflight] = useState<PreflightCheck[]>([]);
 
@@ -163,6 +165,75 @@ export default function DistributionPanel({
     }
   };
 
+  const handleVerify = async (platform: string) => {
+    if (!blogId) return;
+    setVerifyingPlatform(platform);
+    try {
+      const res = await fetch("/api/pirateCOS/distribution/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId: blogId, platform }),
+      });
+      const data = await res.json();
+      if (data.success && data.distributionRecords) {
+        onUpdateRecords(data.distributionRecords);
+        if (!data.exists) {
+          alert(`Sync complete: The post was deleted on ${PLATFORM_LABELS[platform] || platform}. Status has been updated so you can re-publish.`);
+        } else {
+          alert(`Sync complete: Post verified successfully on ${PLATFORM_LABELS[platform] || platform}!`);
+        }
+      }
+    } catch (err) {
+      console.error("Link verification failed", err);
+    } finally {
+      setVerifyingPlatform(null);
+    }
+  };
+
+  const handleReset = async (platform: string) => {
+    if (!blogId) return;
+    if (
+      !confirm(
+        `Are you sure you want to reset distribution status for ${
+          PLATFORM_LABELS[platform] || platform
+        }? This will allow you to re-publish.`
+      )
+    ) {
+      return;
+    }
+
+    setVerifyingPlatform(platform);
+    try {
+      const res = await fetch("/api/pirateCOS/distribution/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postId: blogId, platform, action: "reset" }),
+      });
+      const data = await res.json();
+      if (data.success && data.distributionRecords) {
+        onUpdateRecords(data.distributionRecords);
+        alert(
+          `Distribution status reset successfully for ${
+            PLATFORM_LABELS[platform] || platform
+          }. You can now select it to re-publish.`
+        );
+      }
+    } catch (err) {
+      console.error("Reset failed", err);
+    } finally {
+      setVerifyingPlatform(null);
+    }
+  };
+
+  // Sort integrations: connected/active channels come first
+  const sortedIntegrations = [...integrations].sort((a, b) => {
+    const aConnected = a.isConnected && a.isActive;
+    const bConnected = b.isConnected && b.isActive;
+    if (aConnected && !bConnected) return -1;
+    if (!aConnected && bConnected) return 1;
+    return 0;
+  });
+
   // Has errors that prevent distribution?
   const hasPreflightErrors = preflight.some((c) => !c.passed && c.severity === "error");
 
@@ -222,7 +293,7 @@ export default function DistributionPanel({
           </div>
         ) : (
           <div className="space-y-2">
-            {integrations.map((platform) => {
+            {sortedIntegrations.map((platform) => {
               const isSelected = selectedPlatforms.includes(platform.platform);
               const disabled = !platform.isConnected || !platform.isActive;
 
@@ -290,16 +361,36 @@ export default function DistributionPanel({
                   {rec.platform}
                 </span>
 
-                <div className="flex items-center gap-1.5 min-w-0 max-w-[65%]">
+                <div className="flex items-center gap-2 min-w-0 max-w-[65%]">
                   {rec.status === "success" ? (
-                    <a
-                      href={rec.url || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#FF5B04] hover:underline truncate inline-block text-[11px]"
-                    >
-                      View External Link ↗
-                    </a>
+                    <>
+                      <a
+                        href={rec.url || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#FF5B04] hover:underline truncate inline-block text-[11px]"
+                      >
+                        View External Link ↗
+                      </a>
+                      <button
+                        type="button"
+                        disabled={verifyingPlatform !== null}
+                        onClick={() => handleVerify(rec.platform)}
+                        className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center p-0.5"
+                        title="Verify / Sync external link status"
+                      >
+                        {verifyingPlatform === rec.platform ? (
+                          <svg className="animate-spin h-3 w-3 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-3.5 h-3.5 text-gray-400 hover:text-gray-600 transition-colors animate-fade-in" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                          </svg>
+                        )}
+                      </button>
+                    </>
                   ) : (
                     <span
                       className="text-red-500 font-medium text-[10px] truncate"
@@ -308,6 +399,17 @@ export default function DistributionPanel({
                       ✗ Failed
                     </span>
                   )}
+                  <button
+                    type="button"
+                    disabled={verifyingPlatform !== null}
+                    onClick={() => handleReset(rec.platform)}
+                    className="text-[10px] text-gray-400 hover:text-[#FF5B04] transition-colors flex items-center justify-center p-0.5"
+                    title="Reset distribution status to Re-Publish"
+                  >
+                    <svg className="w-3.5 h-3.5 text-gray-400 hover:text-[#FF5B04] transition-colors" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.656 48.656 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             ))}

@@ -1,51 +1,67 @@
 "use client";
 
 import { useState, FormEvent, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 
-function LoginForm() {
+function RegisterForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+
+    // 1. Client-Side Validations
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/pirateCOS/auth/login", {
+      const response = await fetch("/api/pirateCOS/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       const data = await response.json();
 
       if (!data.success) {
-        setError(data.message || "Invalid credentials");
+        setError(data.message || "Registration failed");
         setIsLoading(false);
-
         return;
       }
 
-      // Redirect to dashboard or callback URL
-      const isSubdomain = typeof window !== "undefined" &&
+      // Successful registration -> automatic login and redirect
+      const isSubdomain = typeof window !== "undefined" && 
         (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com");
       const defaultDest = isSubdomain ? "/dashboard" : "/pirateCOS/dashboard";
-      const callbackUrl = searchParams.get("callbackUrl") || defaultDest;
 
-      router.push(callbackUrl);
+      router.push(defaultDest);
       router.refresh();
-    } catch (error: any) {
-      setError(error.message || "An error occurred during login");
+    } catch (err: any) {
+      setError(err.message || "An error occurred during registration");
       setIsLoading(false);
     }
   };
@@ -83,13 +99,13 @@ function LoginForm() {
             pirateCOS Panel
           </p>
           <p className="text-white font-geist text-2xl font-bold leading-snug">
-            Manage your content.
+            Create your account.
           </p>
           <p
             className="mt-2 text-sm font-geist"
             style={{ color: "rgba(255,255,255,0.4)" }}
           >
-            Secure access — authorized personnel only.
+            Get started with premium AI pools, custom scheduling, and Bring Your Own Key bypass.
           </p>
         </div>
         <p
@@ -101,7 +117,7 @@ function LoginForm() {
       </div>
 
       {/* Right form panel */}
-      <div className="flex-1 flex items-center justify-center px-6">
+      <div className="flex-1 flex items-center justify-center px-6 py-10 overflow-y-auto">
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
@@ -124,13 +140,13 @@ function LoginForm() {
           </div>
 
           <h1 className="text-2xl font-bold font-geist text-white tracking-tight mb-1">
-            Sign in
+            Create Account
           </h1>
           <p
             className="text-sm font-geist mb-8"
             style={{ color: "rgba(255,255,255,0.4)" }}
           >
-            Enter your credentials to continue
+            Sign up below to access your workspace
           </p>
 
           {error && (
@@ -150,9 +166,32 @@ function LoginForm() {
             <div>
               <Input
                 required
+                label="Full Name"
+                labelPlacement="outside"
+                placeholder="Vishal Anand"
+                type="text"
+                variant="bordered"
+                radius="lg"
+                size="lg"
+                classNames={{
+                  label: "text-xs font-medium font-sans !text-white/50 mb-1",
+                  inputWrapper:
+                    "h-12 bg-white/5 border-white/10 hover:border-white/20 data-[focused=true]:border-[#FF5B04] transition-all",
+                  input:
+                    "text-base font-sans !text-white placeholder:!text-white/40",
+                }}
+                disabled={isLoading}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Input
+                required
                 label="Email"
                 labelPlacement="outside"
-                placeholder="admin@uipirate.com"
+                placeholder="vishal@uipirate.com"
                 type="email"
                 variant="bordered"
                 radius="lg"
@@ -169,6 +208,7 @@ function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+
             <div>
               <Input
                 required
@@ -191,14 +231,38 @@ function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+
+            <div>
+              <Input
+                required
+                label="Confirm Password"
+                labelPlacement="outside"
+                placeholder="••••••••"
+                type="password"
+                variant="bordered"
+                radius="lg"
+                size="lg"
+                classNames={{
+                  label: "text-xs font-medium font-sans !text-white/50 mb-1",
+                  inputWrapper:
+                    "h-12 bg-white/5 border-white/10 hover:border-white/20 data-[focused=true]:border-[#FF5B04] transition-all",
+                  input:
+                    "text-base font-sans !text-white placeholder:!text-white/40",
+                }}
+                disabled={isLoading}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+
             <Button
-              className="w-full h-11 font-geist font-semibold text-sm text-white rounded-xl mt-2"
+              className="w-full h-11 font-geist font-semibold text-sm text-white rounded-xl mt-4"
               disabled={isLoading}
               isLoading={isLoading}
               style={{ background: "#FF5B04" }}
               type="submit"
             >
-              {isLoading ? "Signing in…" : "Sign In"}
+              {isLoading ? "Creating Account…" : "Create Account"}
             </Button>
           </form>
 
@@ -206,17 +270,17 @@ function LoginForm() {
             <a
               className="text-xs font-geist text-white/50 hover:text-white transition-colors"
               href={
-                typeof window !== "undefined" &&
-                  (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com")
-                  ? "/register"
-                  : "/pirateCOS/register"
+                typeof window !== "undefined" && 
+                (window.location.hostname.startsWith("cos.") || window.location.hostname === "cos.uipirate.com")
+                  ? "/login"
+                  : "/pirateCOS/login"
               }
             >
-              Don't have an account? <span className="font-semibold" style={{ color: "#FF5B04" }}>Sign Up</span>
+              Already have an account? <span className="font-semibold" style={{ color: "#FF5B04" }}>Sign In</span>
             </a>
 
             <a
-              className="text-xs font-geist transition-colors mt-2"
+              className="text-xs font-geist mt-2 transition-colors"
               href="/"
               style={{ color: "rgba(255,255,255,0.25)" }}
               onMouseEnter={(e) =>
@@ -235,7 +299,7 @@ function LoginForm() {
   );
 }
 
-export default function PirateCOSLoginPage() {
+export default function PirateCOSRegisterPage() {
   return (
     <Suspense
       fallback={
@@ -247,7 +311,7 @@ export default function PirateCOSLoginPage() {
         </div>
       }
     >
-      <LoginForm />
+      <RegisterForm />
     </Suspense>
   );
 }
