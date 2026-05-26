@@ -84,6 +84,9 @@
 | Area | Status |
 |---|---|
 | Plan file (`PRESET_REWORK_PLAN.md`) — full lifecycle spec with 5-step flow | ✅ Complete |
+| Multi-engine AI provider policy — user choice → tenant default → fallback → Puter | ✅ Complete & Verified |
+| Anthropic Claude full integration — secure key storage, model config, routes, BYOK sync | ✅ Complete & Verified |
+| Out-of-Plan Gating & SaaS Security — Pro/Enterprise BYOK checks, frosted locks for Free users | ✅ Complete & Verified |
 | Centralized config system (`lib/pirateCOS/postTypeConfig.ts`) — types, goals, health weights | ⬜ Not started |
 | Post model schema — 6 new `postType` enums + new `contentGoal` field | ⬜ Not started |
 | 3-step creation wizard: Intent → Goal → Workspace Preview | ⬜ Not started |

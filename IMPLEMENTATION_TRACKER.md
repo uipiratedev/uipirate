@@ -250,8 +250,10 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [ ] **Phase 4B UX Quality Gate**: Validate the workspace feels calm, lightweight, focused, and workflow-guided; every lifecycle state should surface one obvious recommended next action with advanced tools progressively disclosed.
 - [ ] **AI Repurposing Engine Integration**: Direct drawer options to multiply content into LinkedIn variants, X threads, email summaries, carousel copy, executive summaries, quote snippets, and short-form community posts.
 - [ ] **Goal-Specific AI Prompt Injection**: Backend `generate` API injects goal prioritizations (`aiPriorityPrompt`) into copywriting prompts.
-- [ ] **Multi-engine AI provider policy**: Every AI workflow resolves provider/model through explicit user selection → tenant default → configured provider fallback → Puter fallback; no hardcoded provider-specific AI paths.
-- [ ] **Anthropic Claude integration**: Add Claude key storage, provider status, default engine/model selection, generation route support, repurposing support, and BYOK status alignment.
+- [x] **Multi-engine AI provider policy**: Every AI workflow resolves provider/model through explicit user selection → tenant default → configured provider fallback → Puter fallback; no hardcoded provider-specific AI paths. (Complete & Verified)
+- [x] **Anthropic Claude integration**: Add Claude key storage, provider status, default engine/model selection, generation route support, repurposing support, and BYOK status alignment. (Complete & Verified)
+  - *Out-of-Plan Security:* Implemented strict plan-specific BYOK billing guards in `lib/usage-guard.ts` restricting deduction bypass solely to Pro/Enterprise plan tiers.
+  - *SaaS Premium locks:* Engineered frosted-glass locked overlay panels and checkout upgrade call-to-actions on both the Billing page and AI Configuration cards for Free/Starter tier users, fully synchronizing configurations.
 - [ ] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
