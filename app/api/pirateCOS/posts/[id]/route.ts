@@ -15,6 +15,7 @@ interface PostUpdateData {
   tags?: string[];
   published?: boolean;
   postType?: string;
+  contentGoal?: string;
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -118,6 +119,7 @@ export async function PUT(
       tags,
       published,
       postType,
+      contentGoal,
       seo,
     } = body;
 
@@ -175,6 +177,7 @@ export async function PUT(
     if (tags !== undefined) blog.tags = tags;
     if (published !== undefined) blog.published = published;
     if (postType !== undefined) (blog as any).postType = postType;
+    if (contentGoal !== undefined) (blog as any).contentGoal = contentGoal;
 
     if (seo !== undefined) {
       blog.seo = {

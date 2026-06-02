@@ -31,6 +31,16 @@ import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
+import {
+  ContentGoal,
+  getPostTypeConfig,
+  getGoalConfig,
+  getFeatures,
+  CONTENT_GOALS,
+  POST_TYPE_CONFIGS,
+  getPostTypesByCategory,
+} from "@/lib/pirateCOS/postTypeConfig";
+import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -4718,11 +4728,13 @@ const FloatingBlockInserter = ({
   onImageUrl,
   onVideoEmbed,
   imageUploadRef,
+  postType,
 }: {
   editor: any;
   onImageUrl: () => void;
   onVideoEmbed: () => void;
   imageUploadRef: React.RefObject<HTMLInputElement>;
+  postType?: string;
 }) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -4776,7 +4788,7 @@ const FloatingBlockInserter = ({
 
   if (!visible) return null;
 
-  const blockItems = [
+  const allBlockItems = [
     {
       id: "upload-image",
       label: "Upload Image",
@@ -4945,6 +4957,13 @@ const FloatingBlockInserter = ({
     },
   ];
 
+  const blockItems = allBlockItems.filter(item => {
+    if (postType === "social-post") {
+      return item.id === "upload-image" || item.id === "image-url" || item.id === "video";
+    }
+    return true;
+  });
+
   return (
     <div
       ref={menuRef}
@@ -5035,6 +5054,7 @@ const SlashCommandMenu = ({
   onImageUrl,
   onVideoEmbed,
   imageUploadRef,
+  postType,
 }: {
   editor: any;
   isOpen: boolean;
@@ -5043,98 +5063,113 @@ const SlashCommandMenu = ({
   onImageUrl: () => void;
   onVideoEmbed: () => void;
   imageUploadRef: React.RefObject<HTMLInputElement>;
+  postType?: string;
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const commands = React.useMemo(
-    () => [
-      {
-        title: "Heading 1",
-        icon: "H1",
-        desc: "Large section heading",
-        command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-      },
-      {
-        title: "Heading 2",
-        icon: "H2",
-        desc: "Medium section heading",
-        command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-      },
-      {
-        title: "Heading 3",
-        icon: "H3",
-        desc: "Small section heading",
-        command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-      },
-      {
-        title: "Bullet List",
-        icon: "•",
-        desc: "Create a simple list",
-        command: () => editor.chain().focus().toggleBulletList().run(),
-      },
-      {
-        title: "Numbered List",
-        icon: "1.",
-        desc: "Create a numbered list",
-        command: () => editor.chain().focus().toggleOrderedList().run(),
-      },
-      {
-        title: "Task List",
-        icon: "☑",
-        desc: "Track tasks with checkboxes",
-        command: () => editor.chain().focus().toggleTaskList().run(),
-      },
-      {
-        title: "Quote",
-        icon: '"',
-        desc: "Capture a quote",
-        command: () => editor.chain().focus().toggleBlockquote().run(),
-      },
-      {
-        title: "Code Block",
-        icon: "</>",
-        desc: "Add a code snippet",
-        command: () => editor.chain().focus().toggleCodeBlock().run(),
-      },
-      {
-        title: "Divider",
-        icon: "—",
-        desc: "Add a horizontal rule",
-        command: () => editor.chain().focus().setHorizontalRule().run(),
-      },
-      {
-        title: "Image Upload",
-        icon: "🖼",
-        desc: "Upload an image from disk",
-        command: () => {
-          imageUploadRef.current?.click();
+    () => {
+      const features = postType ? getFeatures(postType) : null;
+      const all = [
+        {
+          title: "Heading 1",
+          icon: "H1",
+          desc: "Large section heading",
+          command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
         },
-      },
-      {
-        title: "Image URL",
-        icon: "🔗",
-        desc: "Embed an image via URL",
-        command: onImageUrl,
-      },
-      {
-        title: "Embed Video",
-        icon: "▶",
-        desc: "YouTube, Vimeo, Loom…",
-        command: onVideoEmbed,
-      },
-      {
-        title: "Table",
-        icon: "田",
-        desc: "Insert a 3x3 table",
-        command: () =>
-          editor
-            .chain()
-            .focus()
-            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-            .run(),
-      },
-    ],
-    [editor, onImageUrl, onVideoEmbed, imageUploadRef],
+        {
+          title: "Heading 2",
+          icon: "H2",
+          desc: "Medium section heading",
+          command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+        },
+        {
+          title: "Heading 3",
+          icon: "H3",
+          desc: "Small section heading",
+          command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+        },
+        {
+          title: "Bullet List",
+          icon: "•",
+          desc: "Create a simple list",
+          command: () => editor.chain().focus().toggleBulletList().run(),
+        },
+        {
+          title: "Numbered List",
+          icon: "1.",
+          desc: "Create a numbered list",
+          command: () => editor.chain().focus().toggleOrderedList().run(),
+        },
+        {
+          title: "Task List",
+          icon: "☑",
+          desc: "Track tasks with checkboxes",
+          command: () => editor.chain().focus().toggleTaskList().run(),
+          featureKey: "taskLists",
+        },
+        {
+          title: "Quote",
+          icon: '"',
+          desc: "Capture a quote",
+          command: () => editor.chain().focus().toggleBlockquote().run(),
+        },
+        {
+          title: "Code Block",
+          icon: "</>",
+          desc: "Add a code snippet",
+          command: () => editor.chain().focus().toggleCodeBlock().run(),
+          featureKey: "codeBlocks",
+        },
+        {
+          title: "Divider",
+          icon: "—",
+          desc: "Add a horizontal rule",
+          command: () => editor.chain().focus().setHorizontalRule().run(),
+        },
+        {
+          title: "Image Upload",
+          icon: "🖼",
+          desc: "Upload an image from disk",
+          command: () => {
+            imageUploadRef.current?.click();
+          },
+        },
+        {
+          title: "Image URL",
+          icon: "🔗",
+          desc: "Embed an image via URL",
+          command: onImageUrl,
+        },
+        {
+          title: "Embed Video",
+          icon: "▶",
+          desc: "YouTube, Vimeo, Loom…",
+          command: onVideoEmbed,
+        },
+        {
+          title: "Table",
+          icon: "田",
+          desc: "Insert a 3x3 table",
+          command: () =>
+            editor
+              .chain()
+              .focus()
+              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+              .run(),
+          featureKey: "tables",
+        },
+      ];
+
+      return all.filter((c) => {
+        if (!features) return true;
+        if (c.featureKey === "codeBlocks") return features.codeBlocks !== false;
+        if (c.featureKey === "tables") return features.tables !== false;
+        if (c.featureKey === "taskLists") return !!features.taskLists;
+        return true;
+      });
+    },
+    [editor, onImageUrl, onVideoEmbed, imageUploadRef, postType],
   );
 
   useEffect(() => {
@@ -5200,6 +5235,8 @@ const FormattingToolbar = ({
   activePreset,
   onPresetChange,
   onTransformClick,
+  features,
+  postType,
 }: {
   editor: any;
   onLinkClick: () => void;
@@ -5207,6 +5244,8 @@ const FormattingToolbar = ({
   activePreset: string;
   onPresetChange: (preset: string) => void;
   onTransformClick: () => void;
+  features?: any;
+  postType?: string;
 }) => {
   const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
 
@@ -5261,21 +5300,7 @@ const FormattingToolbar = ({
         <span>AI Copilot</span>
       </button>
       {sep}
-      <select
-        className="bg-white border border-black/10 rounded-lg text-xs px-2.5 py-1 text-gray-700 font-bold focus:outline-none focus:border-[#FF5B04] cursor-pointer"
-        value={activePreset}
-        onChange={(e) => onPresetChange(e.target.value)}
-      >
-        <option value="">Choose AI Preset...</option>
-        <option value="seo-article">📊 SEO Article</option>
-        <option value="thought-leadership">💡 Thought Leadership</option>
-        <option value="linkedin-post">🔗 LinkedIn Post</option>
-        <option value="case-study">📘 Case Study</option>
-        <option value="founder-story">👤 Founder Story</option>
-        <option value="product-launch">🚀 Product Launch</option>
-        <option value="comparison">⚔️ Comparison</option>
-        <option value="technical-deep-dive">🛠️ Tech Deep Dive</option>
-      </select>
+
       {sep}
       <button
         className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
@@ -5285,6 +5310,23 @@ const FormattingToolbar = ({
       >
         <span>⚡ Transform</span>
       </button>
+      {features?.ctaBlocks && (
+        <button
+          className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
+          title="Insert Call-To-Action Block"
+          onClick={() => {
+            editor.chain().focus().insertContent(`
+              <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
+                <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
+                <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
+              </div>
+            `).run();
+          }}
+        >
+          📣 Insert CTA
+        </button>
+      )}
       {sep}
       <button
         className={btn(editor.isActive("bold"))}
@@ -5310,25 +5352,30 @@ const FormattingToolbar = ({
       >
         <s>S</s>
       </button>
-      <button
-        className={btn(editor.isActive("code"))}
-        style={editor.isActive("code") ? activeStyle : {}}
-        title="Inline code"
-        onClick={() => editor.chain().focus().toggleCode().run()}
-      >
-        {"<>"}
-      </button>
-      <button
-        className={btn(editor.isActive("highlight"))}
-        style={editor.isActive("highlight") ? activeStyle : {}}
-        title="Highlight"
-        onClick={() => editor.chain().focus().toggleHighlight().run()}
-      >
-        Mk
-      </button>
+      {postType !== "social-post" && (
+        <>
+          <button
+            className={btn(editor.isActive("code"))}
+            style={editor.isActive("code") ? activeStyle : {}}
+            title="Inline code"
+            onClick={() => editor.chain().focus().toggleCode().run()}
+          >
+            {"<>"}
+          </button>
+          <button
+            className={btn(editor.isActive("highlight"))}
+            style={editor.isActive("highlight") ? activeStyle : {}}
+            title="Highlight"
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+          >
+            Mk
+          </button>
+        </>
+      )}
 
       {/* Sleek Text Color Menu */}
-      <div className="relative flex items-center">
+      {postType !== "social-post" && (
+        <div className="relative flex items-center">
         <button
           className={btn(colorPaletteOpen)}
           style={colorPaletteOpen ? activeStyle : {}}
@@ -5373,6 +5420,7 @@ const FormattingToolbar = ({
           </div>
         )}
       </div>
+      )}
 
       <button
         className={btn(editor.isActive("link"))}
@@ -5382,6 +5430,20 @@ const FormattingToolbar = ({
       >
         🔗 Link
       </button>
+      {features?.affiliateLinks && (
+        <button
+          className={btn(false)}
+          title="Insert Affiliate Link"
+          onClick={() => {
+            const url = prompt("Enter Affiliate URL:");
+            if (url) {
+              editor.chain().focus().setLink({ href: url, target: '_blank', rel: 'nofollow sponsored' }).run();
+            }
+          }}
+        >
+          💰 Affiliate Link
+        </button>
+      )}
       {editor.isActive("link") && (
         <button
           className={btn(false)}
@@ -5393,63 +5455,82 @@ const FormattingToolbar = ({
       )}
 
       {sep}
-      <button
-        className={btn(editor.isActive("heading", { level: 1 }))}
-        style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
-        title="Heading 1"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      >
-        H1
-      </button>
-      <button
-        className={btn(editor.isActive("heading", { level: 2 }))}
-        style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
-        title="Heading 2"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      >
-        H2
-      </button>
-      <button
-        className={btn(editor.isActive("heading", { level: 3 }))}
-        style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
-        title="Heading 3"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-      >
-        H3
-      </button>
-      {sep}
-      <button
-        className={btn(editor.isActive("bulletList"))}
-        style={editor.isActive("bulletList") ? activeStyle : {}}
-        title="Bullet List"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-      >
-        • List
-      </button>
-      <button
-        className={btn(editor.isActive("orderedList"))}
-        style={editor.isActive("orderedList") ? activeStyle : {}}
-        title="Numbered List"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      >
-        1. List
-      </button>
-      <button
-        className={btn(editor.isActive("blockquote"))}
-        style={editor.isActive("blockquote") ? activeStyle : {}}
-        title="Blockquote"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-      >
-        &ldquo; Quote
-      </button>
-      <button
-        className={btn(editor.isActive("codeBlock"))}
-        style={editor.isActive("codeBlock") ? activeStyle : {}}
-        title="Code Block"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-      >
-        {"</>"}
-      </button>
+      {postType !== "social-post" && (
+        <>
+          <button
+            className={btn(editor.isActive("heading", { level: 1 }))}
+            style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
+            title="Heading 1"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          >
+            H1
+          </button>
+          <button
+            className={btn(editor.isActive("heading", { level: 2 }))}
+            style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
+            title="Heading 2"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          >
+            H2
+          </button>
+          <button
+            className={btn(editor.isActive("heading", { level: 3 }))}
+            style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
+            title="Heading 3"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          >
+            H3
+          </button>
+          {sep}
+          <button
+            className={btn(editor.isActive("bulletList"))}
+            style={editor.isActive("bulletList") ? activeStyle : {}}
+            title="Bullet List"
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+          >
+            • List
+          </button>
+          <button
+            className={btn(editor.isActive("orderedList"))}
+            style={editor.isActive("orderedList") ? activeStyle : {}}
+            title="Numbered List"
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          >
+            1. List
+          </button>
+          {sep}
+        </>
+      )}
+      {features?.taskLists && (
+        <button
+          className={btn(editor.isActive("taskList"))}
+          style={editor.isActive("taskList") ? activeStyle : {}}
+          title="Task List"
+          onClick={() => editor.chain().focus().toggleTaskList().run()}
+        >
+          ☑️ Task List
+        </button>
+      )}
+      {postType !== "social-post" && (
+        <button
+          className={btn(editor.isActive("blockquote"))}
+          style={editor.isActive("blockquote") ? activeStyle : {}}
+          title="Blockquote"
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        >
+          &ldquo; Quote
+        </button>
+      )}
+      {features?.codeBlocks !== false && (
+        <button
+          className={btn(editor.isActive("codeBlock"))}
+          style={editor.isActive("codeBlock") ? activeStyle : {}}
+          title="Code Block"
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        >
+          {"</>"}
+        </button>
+      )}
       {sep}
       <button
         className={btn(false)}
@@ -5458,7 +5539,7 @@ const FormattingToolbar = ({
       >
         —
       </button>
-      {editor.isActive("table") && (
+      {features?.tables !== false && editor.isActive("table") && (
         <>
           {sep}
           <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
@@ -6012,9 +6093,9 @@ const BlogEditor = () => {
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [postType, setPostType] = useState<
-    "blog" | "tutorial" | "case-study" | "community-insight"
-  >("blog");
+  const [postType, setPostType] = useState<string>("blog");
+  const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [typeSelected, setTypeSelected] = useState(false);
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
@@ -6034,7 +6115,7 @@ const BlogEditor = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<
-    "content" | "seo" | "ai" | "distribute"
+    "content" | "seo" | "ai" | "distribute" | "health"
   >("content");
   const [distRecords, setDistRecords] = useState<any[]>([]);
 
@@ -6058,6 +6139,7 @@ const BlogEditor = () => {
       bannerImage,
       tags,
       postType,
+      contentGoal,
       slug: currentSlug,
       seo: seoData,
     }),
@@ -6443,209 +6525,388 @@ const BlogEditor = () => {
 
   if (!mounted || !editor || authLoading) return null;
 
-  // ── Post Type definitions (shared between modal and badge) ──
-  const postTypes = [
-    {
-      value: "blog" as const,
-      label: "Blog",
-      description: "Share thoughts, insights and perspectives",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <path d="M12 20h9" />
-          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-        </svg>
-      ),
-    },
-    {
-      value: "tutorial" as const,
-      label: "Tutorial",
-      description: "Step-by-step guides and how-tos",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </svg>
-      ),
-    },
-    {
-      value: "case-study" as const,
-      label: "Case Study",
-      description: "In-depth analysis of a project or problem",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" x2="16.65" y1="21" y2="16.65" />
-        </svg>
-      ),
-    },
-    {
-      value: "community-insight" as const,
-      label: "Community Insight",
-      description: "Trends, observations and community highlights",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" x2="12" y1="8" y2="12" />
-          <line x1="12" x2="12.01" y1="16" y2="16" />
-        </svg>
-      ),
-    },
-  ];
-
-  const selectedTypeInfo = postTypes.find((t) => t.value === postType)!;
-
-  // ── Type selection gate ──
+  // ── 3-Step Guided Wizard selection gate ──
   if (!typeSelected) {
+    const activeTypeConfig = getPostTypeConfig(postType);
+    const activeGoalConfig = getGoalConfig(contentGoal);
+
     return (
       <div
-        className="fixed inset-0 z-[300] flex items-center justify-center p-4"
-        style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
+        className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto"
         onClick={() => router.push(getHref("/posts"))}
       >
         <div
-          className="bg-white rounded-3xl shadow-2xl w-[520px] max-w-full p-8 relative"
-          style={{ border: "1px solid rgba(0,0,0,0.07)" }}
+          className="bg-white rounded-[32px] shadow-2xl w-[720px] max-w-full p-8 relative my-8 animate-in zoom-in-95 duration-200"
+          style={{ border: "1px solid rgba(0,0,0,0.06)" }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close button */}
           <button
-            className="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
+            className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 hover:text-gray-700 transition-all"
             onClick={() => router.push(getHref("/posts"))}
           >
             <svg
               fill="none"
-              height="18"
+              height="20"
               stroke="currentColor"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2.5"
               viewBox="0 0 24 24"
-              width="18"
+              width="20"
             >
               <line x1="18" x2="6" y1="6" y2="18" />
               <line x1="6" x2="18" y1="6" y2="18" />
             </svg>
           </button>
 
-          {/* Header */}
-          <div className="mb-6">
-            <p
-              className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-semibold mb-1"
-              style={{ color: "#FF5B04" }}
-            >
-              New Post
-            </p>
-            <h2 className="text-xl font-bold font-geist text-gray-900">
-              What are you creating?
-            </h2>
-            <p className="text-sm text-gray-400 font-geist mt-1">
-              Choose a post type. This can't be changed after you start writing.
-            </p>
+          {/* Step Indicator Header */}
+          <div className="mb-6 border-b border-black/5 pb-4">
+            <div className="flex items-center gap-1 mb-2">
+              <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-[#FF5B04]">
+                Creation Wizard
+              </span>
+              <span className="text-gray-300 text-[10px]">•</span>
+              <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-gray-400">
+                Step {wizardStep} of 3
+              </span>
+            </div>
+
+            {/* Stepper Progress bar */}
+            <div className="w-full h-1 bg-black/[0.04] rounded-full overflow-hidden flex gap-1">
+              <div className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 1 ? 'bg-[#FF5B04]' : 'bg-black/[0.04]'}`} />
+              <div className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 2 ? 'bg-[#FF5B04]' : 'bg-black/[0.04]'}`} />
+              <div className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 3 ? 'bg-[#FF5B04]' : 'bg-black/[0.04]'}`} />
+            </div>
           </div>
 
-          {/* Type grid */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {postTypes.map(({ value, label, description, icon }) => (
-              <button
-                key={value}
-                className={`flex flex-col items-start gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
-                  postType === value
-                    ? "border-[#FF5B04] bg-orange-50"
-                    : "border-black/8 bg-black/[0.01] hover:border-[#FF5B04]/40 hover:bg-orange-50/40"
-                }`}
-                onClick={() => setPostType(value)}
-              >
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
-                  style={{
-                    background:
-                      postType === value
-                        ? "rgba(255,91,4,0.12)"
-                        : "rgba(0,0,0,0.05)",
-                    color: postType === value ? "#FF5B04" : "#6b7280",
+          {/* ───────────────────────────────────────────────────────────────────
+              STEP 1: INTENT SELECTION
+          ─────────────────────────────────────────────────────────────────── */}
+          {wizardStep === 1 && (
+            <div className="space-y-5 animate-in fade-in duration-200">
+              <div>
+                <h2 className="text-2xl font-bold font-geist text-gray-900 leading-tight">
+                  What are you creating today?
+                </h2>
+                <p className="text-sm text-gray-400 font-geist mt-1.5 leading-relaxed">
+                  Select your content archetype. This adapts your workspace features, limits, and guidelines.
+                </p>
+              </div>
+
+              {/* Group 1: Content & Knowledge */}
+              <div className="space-y-3">
+                <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
+                  📚 Content & Knowledge Archetypes
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {getPostTypesByCategory("content").map((cfg) => (
+                    <button
+                      key={cfg.value}
+                      className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all text-left hover:scale-[1.01] hover:shadow-sm ${
+                        postType === cfg.value
+                          ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
+                          : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                      }`}
+                      onClick={() => setPostType(cfg.value)}
+                    >
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${
+                        postType === cfg.value ? 'bg-[#FF5B04]/10 text-[#FF5B04]' : 'bg-black/5 text-gray-500'
+                      }`}>
+                        {cfg.icon}
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}>
+                          {cfg.label}
+                        </p>
+                        <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
+                          {cfg.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {cfg.featurePills.slice(0, 2).map((p) => (
+                            <span key={p} className="text-[8px] font-bold font-jetbrains-mono uppercase bg-black/[0.04] text-gray-400 px-1.5 py-0.5 rounded">
+                              {p}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Group 2: Product & Monetization */}
+              <div className="space-y-3 pt-1">
+                <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
+                  💰 Product & Monetization Archetypes
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {getPostTypesByCategory("monetization").map((cfg) => (
+                    <button
+                      key={cfg.value}
+                      className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all text-left hover:scale-[1.01] hover:shadow-sm ${
+                        postType === cfg.value
+                          ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
+                          : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                      }`}
+                      onClick={() => setPostType(cfg.value)}
+                    >
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${
+                        postType === cfg.value ? 'bg-[#FF5B04]/10 text-[#FF5B04]' : 'bg-black/5 text-gray-500'
+                      }`}>
+                        {cfg.icon}
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}>
+                          {cfg.label}
+                        </p>
+                        <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
+                          {cfg.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {cfg.featurePills.slice(0, 2).map((p) => (
+                            <span key={p} className="text-[8px] font-bold font-jetbrains-mono uppercase bg-black/[0.04] text-gray-400 px-1.5 py-0.5 rounded">
+                              {p}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer / Actions */}
+              <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
+                <button
+                  className="text-sm font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => router.push(getHref("/posts"))}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="ml-auto flex items-center gap-1.5 text-sm font-semibold font-geist text-white h-11 px-6 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                  style={{ background: "#FF5B04" }}
+                  onClick={() => setWizardStep(2)}
+                >
+                  Continue to Goal
+                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                    <line x1="5" x2="19" y1="12" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ───────────────────────────────────────────────────────────────────
+              STEP 2: GOAL SELECTION
+          ─────────────────────────────────────────────────────────────────── */}
+          {wizardStep === 2 && (
+            <div className="space-y-6 animate-in slide-in-from-right-4 duration-200">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs bg-orange-50 text-[#FF5B04] px-2.5 py-0.5 rounded-full font-semibold">
+                    Archetype: {activeTypeConfig?.icon} {activeTypeConfig?.label}
+                  </span>
+                </div>
+                <h2 className="text-2xl font-bold font-geist text-gray-900 mt-2.5 leading-tight">
+                  What is the primary goal of this content?
+                </h2>
+                <p className="text-sm text-gray-400 font-geist mt-1.5 leading-relaxed">
+                  Choosing a goal tunes the real-time Content Health Advisor and provides dedicated system prompts for the AI Copilot.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                {CONTENT_GOALS.filter((g) => activeTypeConfig?.suggestedGoals.includes(g.value)).map((g) => {
+                  const isSuggested = true;
+                  return (
+                    <button
+                      key={g.value}
+                      className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all text-left relative hover:scale-[1.01] hover:shadow-sm ${
+                        contentGoal === g.value
+                          ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
+                          : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                      }`}
+                      onClick={() => setContentGoal(g.value)}
+                    >
+                      {isSuggested && (
+                        <span className="absolute top-3 right-3 text-[8px] font-bold font-jetbrains-mono uppercase bg-green-50 text-green-600 px-2 py-0.5 rounded-full border border-green-200">
+                          Recommended
+                        </span>
+                      )}
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${
+                        contentGoal === g.value ? 'bg-[#FF5B04]/10 text-[#FF5B04]' : 'bg-black/5 text-gray-500'
+                      }`}>
+                        {g.icon}
+                      </div>
+                      <div className="min-w-0 pr-12">
+                        <p className={`text-sm font-bold font-geist ${contentGoal === g.value ? "text-[#FF5B04]" : "text-gray-800"}`}>
+                          {g.label}
+                        </p>
+                        <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">
+                          {g.description}
+                        </p>
+                        <p className="text-[9px] font-semibold text-gray-500 mt-2 font-jetbrains-mono italic">
+                          {g.hint}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Footer / Actions */}
+              <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
+                <button
+                  className="text-sm font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                  onClick={() => setWizardStep(1)}
+                >
+                  ← Back to Archetype
+                </button>
+                <button
+                  className="ml-auto flex items-center gap-1.5 text-sm font-semibold font-geist text-white h-11 px-6 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                  style={{ background: "#FF5B04" }}
+                  onClick={() => setWizardStep(3)}
+                >
+                  Configure Workspace
+                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                    <line x1="5" x2="19" y1="12" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ───────────────────────────────────────────────────────────────────
+              STEP 3: WORKSPACE PREVIEW & CONFIRMATION
+          ─────────────────────────────────────────────────────────────────── */}
+          {wizardStep === 3 && (
+            <div className="space-y-6 animate-in slide-in-from-right-4 duration-200">
+              <div>
+                <h2 className="text-2xl font-bold font-geist text-gray-900 leading-tight">
+                  Your customized workspace is ready
+                </h2>
+                <p className="text-sm text-gray-400 font-geist mt-1.5 leading-relaxed">
+                  Review the customized features and goals tailored for this post before we open the editor.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Custom Features Column */}
+                <div className="bg-black/[0.01] rounded-2xl border border-black/5 p-5">
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest mb-3.5">
+                    ⚙️ Active Workspace Tools
+                  </p>
+                  
+                  <div className="space-y-2.5 text-xs font-geist">
+                    {activeTypeConfig && Object.entries(activeTypeConfig.features).map(([key, val]) => {
+                      const label = 
+                        key === "seoPanel" ? "SEO Metadata Tools" :
+                        key === "codeBlocks" ? "Formatted Code Blocks" :
+                        key === "tables" ? "Data Tables support" :
+                        key === "affiliateLinks" ? "Nofollow Affiliate Links" :
+                        key === "ctaBlocks" ? "Structured CTA Blocks" :
+                        key === "taskLists" ? "Interactive Task Lists" :
+                        key === "featuredImage" ? "Featured Social Image" :
+                        key === "bannerImage" ? "Top Banner Visuals" :
+                        key === "aiCopilot" ? "Real-time AI Copilot" :
+                        key === "repurposing" ? "Content Repurposer Drawer" :
+                        key === "socialPreview" ? "Live Social Preview" :
+                        "Distribution AI Advisor";
+
+                      return (
+                        <div key={key} className="flex items-center justify-between py-0.5 border-b border-black/[0.02] last:border-0">
+                          <span className="text-gray-600">{label}</span>
+                          <span className={`font-bold font-jetbrains-mono ${val ? 'text-green-500' : 'text-gray-300'}`}>
+                            {val ? "✓ ENABLED" : "✕ HIDDEN"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* AI Tuning Column */}
+                <div className="space-y-4">
+                  {/* Archetype & Goal card */}
+                  <div className="bg-orange-50/40 border border-orange-100 rounded-2xl p-4.5 flex items-center justify-between">
+                    <div>
+                      <p className="text-[9px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-wider">archetype</p>
+                      <p className="text-sm font-bold text-gray-800 mt-0.5">{activeTypeConfig?.icon} {activeTypeConfig?.label}</p>
+                    </div>
+                    <div className="w-px h-8 bg-orange-100 mx-2" />
+                    <div>
+                      <p className="text-[9px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-wider">content goal</p>
+                      <p className="text-sm font-bold text-gray-800 mt-0.5">{activeGoalConfig?.icon} {activeGoalConfig?.label}</p>
+                    </div>
+                  </div>
+
+                  {/* AI Tuning Instructions */}
+                  <div className="bg-black/[0.01] rounded-2xl border border-black/5 p-4.5">
+                    <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest mb-2.5">
+                      🧠 AI Tuning Policy
+                    </p>
+                    <p className="text-xs text-gray-500 leading-relaxed font-geist">
+                      AI suggestions and copilot prompts will automatically inject strategic guidance for: <span className="font-semibold text-[#FF5B04]">"{activeGoalConfig?.label}"</span>.
+                    </p>
+                    <div className="mt-3 bg-white border border-black/5 rounded-xl p-3 text-[10px] text-gray-600 font-jetbrains-mono leading-relaxed max-h-32 overflow-y-auto">
+                      {activeGoalConfig?.aiPriorityPrompt}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Info alert */}
+              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-xs font-geist text-blue-700 flex items-start gap-2.5 leading-relaxed">
+                <span className="text-lg">ℹ️</span>
+                <div>
+                  <p className="font-bold text-blue-800">Archetype & Goal are locked once you start writing</p>
+                  <p className="mt-0.5 text-blue-600">This ensures your content metrics and layout settings remain structured and consistent for distribution.</p>
+                </div>
+              </div>
+
+              {/* Footer / Actions */}
+              <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
+                <button
+                  className="text-sm font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                  onClick={() => setWizardStep(2)}
+                >
+                  ← Back to Goal
+                </button>
+                <button
+                  className="ml-auto flex items-center gap-1.5 text-sm font-bold font-geist text-white h-11 px-7 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
+                  style={{ background: "linear-gradient(135deg, #FF5B04 0%, #E04E00 100%)" }}
+                  onClick={() => {
+                    setTypeSelected(true);
+                    const PRESET_DEFAULTS: Record<string, string> = {
+                      blog: "seo-article",
+                      tutorial: "technical-deep-dive",
+                      "case-study": "case-study",
+                      "community-insight": "thought-leadership",
+                      "corporate-post": "thought-leadership",
+                      "product-review": "seo-article",
+                      "product-launch": "product-launch",
+                      listicle: "seo-article",
+                      comparison: "comparison",
+                      newsletter: "thought-leadership",
+                      "social-post": "linkedin-post",
+                    };
+                    const defaultPreset = PRESET_DEFAULTS[postType] || "";
+                    setActivePreset(defaultPreset);
                   }}
                 >
-                  {icon}
-                </div>
-                <div>
-                  <p
-                    className={`text-sm font-semibold font-geist ${postType === value ? "text-[#FF5B04]" : "text-gray-800"}`}
-                  >
-                    {label}
-                  </p>
-                  <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">
-                    {description}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {/* Actions */}
-          <div className="flex items-center gap-3">
-            <button
-              className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors"
-              onClick={() => router.push(getHref("/posts"))}
-            >
-              Cancel
-            </button>
-            <button
-              className="ml-auto flex items-center gap-2 text-sm font-semibold font-geist text-white h-10 px-6 rounded-xl transition-colors"
-              style={{ background: "#FF5B04" }}
-              onClick={() => setTypeSelected(true)}
-            >
-              Continue as {selectedTypeInfo.label}
-              <svg
-                fill="none"
-                height="14"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                width="14"
-              >
-                <line x1="5" x2="19" y1="12" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </button>
-          </div>
+                  Start Writing!
+                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                    <line x1="5" x2="19" y1="12" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -6709,7 +6970,7 @@ const BlogEditor = () => {
           <span
             className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
             style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
-            title="Post type is locked for this draft"
+            title="Post type and goal are locked for this draft"
           >
             <svg
               fill="none"
@@ -6724,7 +6985,7 @@ const BlogEditor = () => {
               <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            {selectedTypeInfo.label}
+            {getPostTypeConfig(postType)?.icon} {getPostTypeConfig(postType)?.label} × {getGoalConfig(contentGoal)?.icon} {getGoalConfig(contentGoal)?.label}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -6789,6 +7050,8 @@ const BlogEditor = () => {
           }}
           onPresetChange={setActivePreset}
           onTransformClick={() => setIsRepurposeDrawerOpen(true)}
+          features={getFeatures(postType)}
+          postType={postType}
         />
       )}
 
@@ -6886,36 +7149,66 @@ const BlogEditor = () => {
                   : "px-14 pt-4 pb-4 relative"
               }
             >
-              <div className="flex items-center gap-3">
-                <input
-                  className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-                  placeholder="Post title…"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <button
-                  className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
-                  type="button"
-                  onClick={() => {
-                    setIsTitleModalOpen(true);
-                  }}
-                >
-                  <svg
-                    fill="none"
-                    height="11"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    width="11"
+              {postType === "social-post" ? (
+                <div className="flex flex-col gap-2 p-4 rounded-2xl bg-black/[0.015] border border-black/5 backdrop-blur-sm shadow-sm transition-all hover:bg-black/[0.025] hover:border-black/10">
+                  <div className="flex items-center gap-2 text-xs font-bold text-gray-400 font-geist select-none uppercase tracking-wider">
+                    <span>🔗</span>
+                    <span>Internal Social Draft Name (dashboard only):</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <input
+                      className="w-full text-base font-bold font-geist border-none outline-none bg-transparent text-gray-800 placeholder-gray-300"
+                      placeholder="e.g. LinkedIn launch thread..."
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                    {title === "" && (
+                      <button
+                        className="flex-shrink-0 text-[10px] font-bold font-geist text-[#FF5B04] hover:underline cursor-pointer"
+                        type="button"
+                        onClick={() => {
+                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                          setTitle(defaultTitle);
+                        }}
+                      >
+                        Auto-fill Name
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <input
+                    className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                    placeholder="Post title…"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <button
+                    className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+                    type="button"
+                    onClick={() => {
+                      setIsTitleModalOpen(true);
+                    }}
                   >
-                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                  </svg>
-                  AI Assistant
-                </button>
-              </div>
+                    <svg
+                      fill="none"
+                      height="11"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      width="11"
+                    >
+                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                    </svg>
+                    AI Assistant
+                  </button>
+                </div>
+              )}
             </div>
 
             <div
@@ -6931,6 +7224,7 @@ const BlogEditor = () => {
                 imageUploadRef={inlineImageUploadRef}
                 onImageUrl={() => setShowImageUrlModal(true)}
                 onVideoEmbed={() => setShowVideoModal(true)}
+                postType={postType}
               />
 
               {/* Hidden file input for inline image upload */}
@@ -6960,6 +7254,7 @@ const BlogEditor = () => {
                   setSlashMenuOpen(false);
                   setShowVideoModal(true);
                 }}
+                postType={postType}
               />
             </div>
           </div>
@@ -6970,14 +7265,13 @@ const BlogEditor = () => {
           <div className="w-72 flex-shrink-0 space-y-4">
             {/* Sidebar Tab Navigation */}
             <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
-              {(
-                [
-                  { key: "content", label: "Content" },
-                  { key: "seo", label: "SEO" },
-                  { key: "ai", label: "AI Tools" },
-                  { key: "distribute", label: "Distribute" },
-                ] as const
-              ).map(({ key, label }) => (
+              {[
+                { key: "content", label: "Content" },
+                ...(getFeatures(postType).seoPanel ? [{ key: "seo", label: "SEO" }] : []),
+                { key: "ai", label: "AI Tools" },
+                { key: "health", label: "Health" },
+                { key: "distribute", label: "Distribute" },
+              ].map(({ key, label }) => (
                 <button
                   key={key}
                   className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
@@ -6985,7 +7279,7 @@ const BlogEditor = () => {
                       ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
                       : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
                   }`}
-                  onClick={() => setSidebarTab(key)}
+                  onClick={() => setSidebarTab(key as any)}
                 >
                   {label}
                 </button>
@@ -7695,6 +7989,21 @@ const BlogEditor = () => {
                 )}
               </div>
             )}
+            {/* ── Health Tab ── */}
+            {sidebarTab === "health" && (
+              <ContentHealthPanel
+                contentHtml={editor?.getHTML() || ""}
+                excerpt={excerpt}
+                featuredImage={featuredImage}
+                bannerImage={bannerImage}
+                tags={tags}
+                seo={seoData}
+                postType={postType}
+                goal={contentGoal}
+                title={title}
+              />
+            )}
+
             {/* ── Distribute Tab ── */}
             {sidebarTab === "distribute" && (
               <DistributionPanel
@@ -7720,6 +8029,8 @@ const BlogEditor = () => {
                 }}
                 onTriggerTagsAI={() => setIsTagsModalOpen(true)}
                 onUpdateRecords={(recs) => setDistRecords(recs)}
+                postType={postType}
+                contentGoal={contentGoal}
               />
             )}
           </div>

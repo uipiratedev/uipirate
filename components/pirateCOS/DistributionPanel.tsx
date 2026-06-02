@@ -7,6 +7,11 @@ import {
   runPreflight,
   PreflightCheck,
 } from "@/lib/pirateCOS/distribution/transform/content-preflight";
+import {
+  ContentGoal,
+  getPostTypeConfig,
+  getGoalConfig,
+} from "@/lib/pirateCOS/postTypeConfig";
 
 interface DistributionRecord {
   platform: string;
@@ -39,6 +44,8 @@ interface DistributionPanelProps {
   onTriggerExcerptAI: () => void;
   onTriggerTagsAI: () => void;
   onTriggerCopilotAI: () => void;
+  postType: string;
+  contentGoal: ContentGoal;
 }
 
 const PLATFORM_LABELS: Record<string, string> = {
@@ -63,6 +70,8 @@ export default function DistributionPanel({
   onTriggerExcerptAI,
   onTriggerTagsAI,
   onTriggerCopilotAI,
+  postType,
+  contentGoal,
 }: DistributionPanelProps) {
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -269,6 +278,196 @@ export default function DistributionPanel({
 
   return (
     <div className="space-y-4 font-geist text-gray-700">
+      {/* SECTION: AI Distribution Intelligence */}
+      <div className="bg-gradient-to-br from-orange-50/70 to-purple-50/50 rounded-2xl border border-[#FF5B04]/10 p-4 space-y-3 shadow-sm">
+        <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold">
+          🤖 AI Distribution Intelligence
+        </p>
+
+        {/* Channel Fit Matrix */}
+        <div className="space-y-2">
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">
+            Channel Recommendations
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {Object.keys(PLATFORM_LABELS).map((platform) => {
+              const isRecommended = getPostTypeConfig(postType)?.distributionChannels.includes(platform) || false;
+              return (
+                <span
+                  key={platform}
+                  className={`text-[9px] font-bold font-jetbrains-mono uppercase px-2 py-0.5 rounded-full border ${
+                    isRecommended
+                      ? "bg-green-50 text-green-700 border-green-200"
+                      : "bg-black/[0.02] text-gray-400 border-black/5"
+                  }`}
+                  title={isRecommended ? "Ideal fit for this post type!" : "Not recommended as primary channel"}
+                >
+                  {isRecommended ? "✅" : "❌"} {PLATFORM_LABELS[platform] || platform}
+                </span>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Advisor Guidance Text */}
+        <div className="text-xs leading-relaxed font-geist text-gray-600 bg-white/60 rounded-xl p-3 border border-black/[0.02] space-y-1">
+          <span className="font-bold text-gray-800 text-[10px] uppercase tracking-wider block">
+            AI Advisor Guidance:
+          </span>
+          <p>
+            {contentGoal === "traffic" && "Drive organic traffic by targeting high-intent long-tail keywords. Share first on your SEO optimized WordPress or Ghost blog. 📈"}
+            {contentGoal === "authority" && "Establish thought leadership with detailed framework citations. Great fit for publishing directly to LinkedIn and Medium! 🏛️"}
+            {contentGoal === "conversion" && "Structure the post around solving problems with benefit-driven CTAs. Embed lead capture forms in your primary blog post. 💰"}
+            {contentGoal === "engagement" && "Create high visual curiosity with a strong opening hook. Ideal for Twitter threads or LinkedIn slide carousels! 🔥"}
+            {contentGoal === "lead-generation" && "Offer actionable checklists or templates. Gate the deep-dive portion with a newsletter subscription form. 🧲"}
+            {contentGoal === "retention" && "Provide highly practical step-by-step instructions. Ideal for internal newsletters and education portals. 🤝"}
+          </p>
+          <p className="text-[9px] font-semibold text-[#FF5B04] mt-1.5 font-jetbrains-mono italic">
+            Suggested Timing: Tuesday & Thursday, 9:00 AM – 11:30 AM (Peak Engagement window)
+          </p>
+        </div>
+
+        {/* Content Repurposing Shortcuts */}
+        <div className="pt-1.5 border-t border-black/5 space-y-2">
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">
+            Repurposing Actions
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
+              type="button"
+              onClick={onTriggerCopilotAI}
+            >
+              <span>🔗</span> LinkedIn Promo Post
+            </button>
+            <button
+              className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
+              type="button"
+              onClick={onTriggerCopilotAI}
+            >
+              <span>🐦</span> Twitter Thread
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION: Post-Publish Actions */}
+      {distributionRecords.some((r) => r.status === "success") && (
+        <div className="bg-green-50 border border-green-200 rounded-2xl p-4 space-y-2">
+          <p className="text-[10px] font-jetbrains-mono text-green-700 uppercase tracking-widest font-bold flex items-center gap-1.5">
+            🎉 Successfully Distributed! What's next?
+          </p>
+          <p className="text-xs text-green-600 leading-relaxed font-geist">
+            Your post is live! Amplify its reach immediately:
+          </p>
+          <div className="flex gap-2 pt-1">
+            <button
+              className="text-[9px] font-bold uppercase tracking-wider bg-green-600 text-white hover:bg-green-700 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+              onClick={onTriggerCopilotAI}
+            >
+              Generate Social Thread
+            </button>
+            <button
+              className="text-[9px] font-bold uppercase tracking-wider bg-white text-green-700 hover:bg-green-100 border border-green-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+              onClick={() => alert("Setting up newsletter draft...")}
+            >
+              Create Newsletter Digest
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* SECTION: Active Distribution Chain */}
+      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+            Operational Chain
+          </p>
+          <span className="text-[9px] font-extrabold font-jetbrains-mono uppercase bg-orange-50 text-[#FF5B04] px-2.5 py-0.5 rounded-full border border-orange-100 animate-pulse">
+            ✨ {contentGoal === "traffic" ? "SEO Growth Chain" :
+                contentGoal === "authority" ? "Founder Authority Chain" :
+                contentGoal === "conversion" ? "Product Launch Chain" :
+                contentGoal === "engagement" ? "Community Expansion Chain" :
+                contentGoal === "lead-generation" ? "Newsletter Growth Chain" :
+                "Customer Education Chain"}
+          </span>
+        </div>
+
+        {/* Dynamic Vertical Timeline */}
+        <div className="relative pl-6 space-y-5 border-l-2 border-orange-500/20 ml-2.5">
+          {/* Step 1: Local / Website Publish */}
+          <div className="relative">
+            <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
+              blogPublished ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
+            }`}>
+              {blogPublished ? "✓" : "1"}
+            </span>
+            <div>
+              <p className="text-xs font-bold text-gray-800">
+                1. Primary Hub Publish
+              </p>
+              <p className="text-[10px] text-gray-400 mt-0.5">
+                {blogPublished ? "Published live on primary site" : "Draft ready. Click 'Publish' at top right to launch first."}
+              </p>
+            </div>
+          </div>
+
+          {/* Step 2: Goal-Specific Social Post */}
+          <div className="relative">
+            <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
+              2
+            </span>
+            <div className="space-y-1.5">
+              <div>
+                <p className="text-xs font-bold text-gray-800">
+                  {contentGoal === "traffic" ? "2. SEO Meta Package" :
+                   contentGoal === "authority" ? "2. Founder LinkedIn Post" :
+                   contentGoal === "conversion" ? "2. LinkedIn Product Announcement" :
+                   "2. Engagement Post Variant"}
+                </p>
+                <p className="text-[10px] text-gray-400 mt-0.5">
+                  Repurpose content into a platform-native social thread optimized for your goal.
+                </p>
+              </div>
+              <button
+                className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                type="button"
+                onClick={onTriggerCopilotAI}
+              >
+                Generate Variant
+              </button>
+            </div>
+          </div>
+
+          {/* Step 3: Multi-format Repurposing */}
+          <div className="relative">
+            <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
+              3
+            </span>
+            <div className="space-y-1.5">
+              <div>
+                <p className="text-xs font-bold text-gray-800">
+                  {contentGoal === "traffic" ? "3. Twitter Thread Generation" :
+                   contentGoal === "authority" ? "3. Extract Social Quote Snippets" :
+                   contentGoal === "conversion" ? "3. Email Broadcast Version" :
+                   "3. Summary Version"}
+                </p>
+                <p className="text-[10px] text-gray-400 mt-0.5">
+                  Extract actionable takeaways to amplify narrative virality on search and social feeds.
+                </p>
+              </div>
+              <button
+                className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                type="button"
+                onClick={onTriggerCopilotAI}
+              >
+                Trigger Repurpose
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* SECTION: Pre-flight Checklist */}
       <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
         <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">

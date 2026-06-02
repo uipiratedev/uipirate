@@ -31,6 +31,16 @@ import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
+import {
+  ContentGoal,
+  getPostTypeConfig,
+  getGoalConfig,
+  getFeatures,
+  CONTENT_GOALS,
+  POST_TYPE_CONFIGS,
+  getPostTypesByCategory,
+} from "@/lib/pirateCOS/postTypeConfig";
+import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -4994,11 +5004,13 @@ const FloatingBlockInserter = ({
   onImageUrl,
   onVideoEmbed,
   imageUploadRef,
+  postType,
 }: {
   editor: any;
   onImageUrl: () => void;
   onVideoEmbed: () => void;
   imageUploadRef: React.RefObject<HTMLInputElement>;
+  postType?: string;
 }) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -5051,7 +5063,7 @@ const FloatingBlockInserter = ({
 
   if (!visible) return null;
 
-  const blockItems = [
+  const allBlockItems = [
     {
       id: "upload-image",
       label: "Upload Image",
@@ -5220,6 +5232,13 @@ const FloatingBlockInserter = ({
     },
   ];
 
+  const blockItems = allBlockItems.filter(item => {
+    if (postType === "social-post") {
+      return item.id === "upload-image" || item.id === "image-url" || item.id === "video";
+    }
+    return true;
+  });
+
   return (
     <div
       ref={menuRef}
@@ -5308,6 +5327,7 @@ const SlashCommandMenu = ({
   onImageUrl,
   onVideoEmbed,
   imageUploadRef,
+  postType,
 }: {
   editor: any;
   isOpen: boolean;
@@ -5316,98 +5336,113 @@ const SlashCommandMenu = ({
   onImageUrl: () => void;
   onVideoEmbed: () => void;
   imageUploadRef: React.RefObject<HTMLInputElement>;
+  postType?: string;
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const commands = React.useMemo(
-    () => [
-      {
-        title: "Heading 1",
-        icon: "H1",
-        desc: "Large section heading",
-        command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-      },
-      {
-        title: "Heading 2",
-        icon: "H2",
-        desc: "Medium section heading",
-        command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-      },
-      {
-        title: "Heading 3",
-        icon: "H3",
-        desc: "Small section heading",
-        command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-      },
-      {
-        title: "Bullet List",
-        icon: "•",
-        desc: "Create a simple list",
-        command: () => editor.chain().focus().toggleBulletList().run(),
-      },
-      {
-        title: "Numbered List",
-        icon: "1.",
-        desc: "Create a numbered list",
-        command: () => editor.chain().focus().toggleOrderedList().run(),
-      },
-      {
-        title: "Task List",
-        icon: "☑",
-        desc: "Track tasks with checkboxes",
-        command: () => editor.chain().focus().toggleTaskList().run(),
-      },
-      {
-        title: "Quote",
-        icon: '"',
-        desc: "Capture a quote",
-        command: () => editor.chain().focus().toggleBlockquote().run(),
-      },
-      {
-        title: "Code Block",
-        icon: "</>",
-        desc: "Add a code snippet",
-        command: () => editor.chain().focus().toggleCodeBlock().run(),
-      },
-      {
-        title: "Divider",
-        icon: "—",
-        desc: "Add a horizontal rule",
-        command: () => editor.chain().focus().setHorizontalRule().run(),
-      },
-      {
-        title: "Image Upload",
-        icon: "🖼",
-        desc: "Upload an image from disk",
-        command: () => {
-          imageUploadRef.current?.click();
+    () => {
+      const features = postType ? getFeatures(postType) : null;
+      const all = [
+        {
+          title: "Heading 1",
+          icon: "H1",
+          desc: "Large section heading",
+          command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
         },
-      },
-      {
-        title: "Image URL",
-        icon: "🔗",
-        desc: "Embed an image via URL",
-        command: onImageUrl,
-      },
-      {
-        title: "Embed Video",
-        icon: "▶",
-        desc: "YouTube, Vimeo, Loom…",
-        command: onVideoEmbed,
-      },
-      {
-        title: "Table",
-        icon: "田",
-        desc: "Insert a 3x3 table",
-        command: () =>
-          editor
-            .chain()
-            .focus()
-            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-            .run(),
-      },
-    ],
-    [editor, onImageUrl, onVideoEmbed, imageUploadRef],
+        {
+          title: "Heading 2",
+          icon: "H2",
+          desc: "Medium section heading",
+          command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+        },
+        {
+          title: "Heading 3",
+          icon: "H3",
+          desc: "Small section heading",
+          command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+        },
+        {
+          title: "Bullet List",
+          icon: "•",
+          desc: "Create a simple list",
+          command: () => editor.chain().focus().toggleBulletList().run(),
+        },
+        {
+          title: "Numbered List",
+          icon: "1.",
+          desc: "Create a numbered list",
+          command: () => editor.chain().focus().toggleOrderedList().run(),
+        },
+        {
+          title: "Task List",
+          icon: "☑",
+          desc: "Track tasks with checkboxes",
+          command: () => editor.chain().focus().toggleTaskList().run(),
+          featureKey: "taskLists",
+        },
+        {
+          title: "Quote",
+          icon: '"',
+          desc: "Capture a quote",
+          command: () => editor.chain().focus().toggleBlockquote().run(),
+        },
+        {
+          title: "Code Block",
+          icon: "</>",
+          desc: "Add a code snippet",
+          command: () => editor.chain().focus().toggleCodeBlock().run(),
+          featureKey: "codeBlocks",
+        },
+        {
+          title: "Divider",
+          icon: "—",
+          desc: "Add a horizontal rule",
+          command: () => editor.chain().focus().setHorizontalRule().run(),
+        },
+        {
+          title: "Image Upload",
+          icon: "🖼",
+          desc: "Upload an image from disk",
+          command: () => {
+            imageUploadRef.current?.click();
+          },
+        },
+        {
+          title: "Image URL",
+          icon: "🔗",
+          desc: "Embed an image via URL",
+          command: onImageUrl,
+        },
+        {
+          title: "Embed Video",
+          icon: "▶",
+          desc: "YouTube, Vimeo, Loom…",
+          command: onVideoEmbed,
+        },
+        {
+          title: "Table",
+          icon: "田",
+          desc: "Insert a 3x3 table",
+          command: () =>
+            editor
+              .chain()
+              .focus()
+              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+              .run(),
+          featureKey: "tables",
+        },
+      ];
+
+      return all.filter((c) => {
+        if (!features) return true;
+        if (c.featureKey === "codeBlocks") return features.codeBlocks !== false;
+        if (c.featureKey === "tables") return features.tables !== false;
+        if (c.featureKey === "taskLists") return !!features.taskLists;
+        return true;
+      });
+    },
+    [editor, onImageUrl, onVideoEmbed, imageUploadRef, postType],
   );
 
   useEffect(() => {
@@ -5472,6 +5507,8 @@ const FormattingToolbar = ({
   activePreset,
   onPresetChange,
   onTransformClick,
+  features,
+  postType,
 }: {
   editor: any;
   onLinkClick: () => void;
@@ -5479,6 +5516,8 @@ const FormattingToolbar = ({
   activePreset: string;
   onPresetChange: (preset: string) => void;
   onTransformClick: () => void;
+  features?: any;
+  postType?: string;
 }) => {
   const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
 
@@ -5533,21 +5572,7 @@ const FormattingToolbar = ({
         <span>AI Copilot</span>
       </button>
       {sep}
-      <select
-        className="bg-white border border-black/10 rounded-lg text-xs px-2.5 py-1 text-gray-700 font-bold focus:outline-none focus:border-[#FF5B04] cursor-pointer"
-        value={activePreset}
-        onChange={(e) => onPresetChange(e.target.value)}
-      >
-        <option value="">Choose AI Preset...</option>
-        <option value="seo-article">📊 SEO Article</option>
-        <option value="thought-leadership">💡 Thought Leadership</option>
-        <option value="linkedin-post">🔗 LinkedIn Post</option>
-        <option value="case-study">📘 Case Study</option>
-        <option value="founder-story">👤 Founder Story</option>
-        <option value="product-launch">🚀 Product Launch</option>
-        <option value="comparison">⚔️ Comparison</option>
-        <option value="technical-deep-dive">🛠️ Tech Deep Dive</option>
-      </select>
+
       {sep}
       <button
         className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
@@ -5557,6 +5582,23 @@ const FormattingToolbar = ({
       >
         <span>⚡ Transform</span>
       </button>
+      {features?.ctaBlocks && (
+        <button
+          className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
+          title="Insert Call-To-Action Block"
+          onClick={() => {
+            editor.chain().focus().insertContent(`
+              <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
+                <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
+                <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
+              </div>
+            `).run();
+          }}
+        >
+          📣 Insert CTA
+        </button>
+      )}
       {sep}
       <button
         className={btn(editor.isActive("bold"))}
@@ -5582,25 +5624,30 @@ const FormattingToolbar = ({
       >
         <s>S</s>
       </button>
-      <button
-        className={btn(editor.isActive("code"))}
-        style={editor.isActive("code") ? activeStyle : {}}
-        title="Inline code"
-        onClick={() => editor.chain().focus().toggleCode().run()}
-      >
-        {"<>"}
-      </button>
-      <button
-        className={btn(editor.isActive("highlight"))}
-        style={editor.isActive("highlight") ? activeStyle : {}}
-        title="Highlight"
-        onClick={() => editor.chain().focus().toggleHighlight().run()}
-      >
-        Mk
-      </button>
+      {postType !== "social-post" && (
+        <>
+          <button
+            className={btn(editor.isActive("code"))}
+            style={editor.isActive("code") ? activeStyle : {}}
+            title="Inline code"
+            onClick={() => editor.chain().focus().toggleCode().run()}
+          >
+            {"<>"}
+          </button>
+          <button
+            className={btn(editor.isActive("highlight"))}
+            style={editor.isActive("highlight") ? activeStyle : {}}
+            title="Highlight"
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+          >
+            Mk
+          </button>
+        </>
+      )}
 
       {/* Sleek Text Color Menu */}
-      <div className="relative flex items-center">
+      {postType !== "social-post" && (
+        <div className="relative flex items-center">
         <button
           className={btn(colorPaletteOpen)}
           style={colorPaletteOpen ? activeStyle : {}}
@@ -5645,6 +5692,7 @@ const FormattingToolbar = ({
           </div>
         )}
       </div>
+      )}
 
       <button
         className={btn(editor.isActive("link"))}
@@ -5654,6 +5702,20 @@ const FormattingToolbar = ({
       >
         🔗 Link
       </button>
+      {features?.affiliateLinks && (
+        <button
+          className={btn(false)}
+          title="Insert Affiliate Link"
+          onClick={() => {
+            const url = prompt("Enter Affiliate URL:");
+            if (url) {
+              editor.chain().focus().setLink({ href: url, target: '_blank', rel: 'nofollow sponsored' }).run();
+            }
+          }}
+        >
+          💰 Affiliate Link
+        </button>
+      )}
       {editor.isActive("link") && (
         <button
           className={btn(false)}
@@ -5665,63 +5727,82 @@ const FormattingToolbar = ({
       )}
 
       {sep}
-      <button
-        className={btn(editor.isActive("heading", { level: 1 }))}
-        style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
-        title="Heading 1"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      >
-        H1
-      </button>
-      <button
-        className={btn(editor.isActive("heading", { level: 2 }))}
-        style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
-        title="Heading 2"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      >
-        H2
-      </button>
-      <button
-        className={btn(editor.isActive("heading", { level: 3 }))}
-        style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
-        title="Heading 3"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-      >
-        H3
-      </button>
-      {sep}
-      <button
-        className={btn(editor.isActive("bulletList"))}
-        style={editor.isActive("bulletList") ? activeStyle : {}}
-        title="Bullet List"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-      >
-        • List
-      </button>
-      <button
-        className={btn(editor.isActive("orderedList"))}
-        style={editor.isActive("orderedList") ? activeStyle : {}}
-        title="Numbered List"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      >
-        1. List
-      </button>
-      <button
-        className={btn(editor.isActive("blockquote"))}
-        style={editor.isActive("blockquote") ? activeStyle : {}}
-        title="Blockquote"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-      >
-        &ldquo; Quote
-      </button>
-      <button
-        className={btn(editor.isActive("codeBlock"))}
-        style={editor.isActive("codeBlock") ? activeStyle : {}}
-        title="Code Block"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-      >
-        {"</>"}
-      </button>
+      {postType !== "social-post" && (
+        <>
+          <button
+            className={btn(editor.isActive("heading", { level: 1 }))}
+            style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
+            title="Heading 1"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          >
+            H1
+          </button>
+          <button
+            className={btn(editor.isActive("heading", { level: 2 }))}
+            style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
+            title="Heading 2"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          >
+            H2
+          </button>
+          <button
+            className={btn(editor.isActive("heading", { level: 3 }))}
+            style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
+            title="Heading 3"
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          >
+            H3
+          </button>
+          {sep}
+          <button
+            className={btn(editor.isActive("bulletList"))}
+            style={editor.isActive("bulletList") ? activeStyle : {}}
+            title="Bullet List"
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+          >
+            • List
+          </button>
+          <button
+            className={btn(editor.isActive("orderedList"))}
+            style={editor.isActive("orderedList") ? activeStyle : {}}
+            title="Numbered List"
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          >
+            1. List
+          </button>
+          {sep}
+        </>
+      )}
+      {features?.taskLists && (
+        <button
+          className={btn(editor.isActive("taskList"))}
+          style={editor.isActive("taskList") ? activeStyle : {}}
+          title="Task List"
+          onClick={() => editor.chain().focus().toggleTaskList().run()}
+        >
+          ☑️ Task List
+        </button>
+      )}
+      {postType !== "social-post" && (
+        <button
+          className={btn(editor.isActive("blockquote"))}
+          style={editor.isActive("blockquote") ? activeStyle : {}}
+          title="Blockquote"
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        >
+          &ldquo; Quote
+        </button>
+      )}
+      {features?.codeBlocks !== false && (
+        <button
+          className={btn(editor.isActive("codeBlock"))}
+          style={editor.isActive("codeBlock") ? activeStyle : {}}
+          title="Code Block"
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        >
+          {"</>"}
+        </button>
+      )}
       {sep}
       <button
         className={btn(false)}
@@ -5730,7 +5811,7 @@ const FormattingToolbar = ({
       >
         —
       </button>
-      {editor.isActive("table") && (
+      {features?.tables !== false && editor.isActive("table") && (
         <>
           {sep}
           <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
@@ -6288,9 +6369,8 @@ const BlogEditPage = () => {
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [postType, setPostType] = useState<
-    "blog" | "tutorial" | "case-study" | "community-insight"
-  >("blog");
+  const [postType, setPostType] = useState<string>("blog");
+  const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -6311,7 +6391,7 @@ const BlogEditPage = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<
-    "content" | "seo" | "ai" | "distribute"
+    "content" | "seo" | "ai" | "distribute" | "health"
   >("content");
   const [distRecords, setDistRecords] = useState<any[]>([]);
 
@@ -6335,6 +6415,7 @@ const BlogEditPage = () => {
       bannerImage,
       tags,
       postType,
+      contentGoal,
       slug: currentSlug,
       seo: seoData,
     }),
@@ -6640,7 +6721,26 @@ const BlogEditPage = () => {
         setFeaturedImage(blog.featuredImage || "");
         setBannerImage(blog.bannerImage || "");
         setTags(blog.tags || []);
-        setPostType(blog.postType || "blog");
+        const postTypeVal = blog.postType || "blog";
+        setPostType(postTypeVal);
+        setContentGoal(blog.contentGoal || "traffic");
+        
+        // Auto-select recommended AI preset based on loaded postType if not already set
+        const PRESET_DEFAULTS: Record<string, string> = {
+          blog: "seo-article",
+          tutorial: "technical-deep-dive",
+          "case-study": "case-study",
+          "community-insight": "thought-leadership",
+          "corporate-post": "thought-leadership",
+          "product-review": "seo-article",
+          "product-launch": "product-launch",
+          listicle: "seo-article",
+          comparison: "comparison",
+          newsletter: "thought-leadership",
+          "social-post": "linkedin-post",
+        };
+        const defaultPreset = PRESET_DEFAULTS[postTypeVal] || "";
+        setActivePreset(defaultPreset);
         setCurrentSlug(blog.slug || "");
         setSeoData(blog.seo || {});
         setSaveStatus(blog.published ? "Published" : "Draft");
@@ -6842,6 +6942,27 @@ const BlogEditPage = () => {
           <span className="text-sm font-medium font-geist text-gray-900">
             Edit Post
           </span>
+          {/* Locked type badge */}
+          <span
+            className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
+            style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
+            title="Post type and goal are locked for this draft"
+          >
+            <svg
+              fill="none"
+              height="10"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="10"
+            >
+              <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            {getPostTypeConfig(postType)?.icon} {getPostTypeConfig(postType)?.label} × {getGoalConfig(contentGoal)?.icon} {getGoalConfig(contentGoal)?.label}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           {/* Delete button */}
@@ -6953,6 +7074,8 @@ const BlogEditPage = () => {
           }}
           onPresetChange={setActivePreset}
           onTransformClick={() => setIsRepurposeDrawerOpen(true)}
+          features={getFeatures(postType)}
+          postType={postType}
         />
       )}
 
@@ -7050,36 +7173,66 @@ const BlogEditPage = () => {
                   : "px-14 pt-4 pb-4 relative"
               }
             >
-              <div className="flex items-center gap-3">
-                <input
-                  className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-                  placeholder="Post title…"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <button
-                  className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
-                  type="button"
-                  onClick={() => {
-                    setIsTitleModalOpen(true);
-                  }}
-                >
-                  <svg
-                    fill="none"
-                    height="11"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    width="11"
+              {postType === "social-post" ? (
+                <div className="flex flex-col gap-2 p-4 rounded-2xl bg-black/[0.015] border border-black/5 backdrop-blur-sm shadow-sm transition-all hover:bg-black/[0.025] hover:border-black/10">
+                  <div className="flex items-center gap-2 text-xs font-bold text-gray-400 font-geist select-none uppercase tracking-wider">
+                    <span>🔗</span>
+                    <span>Internal Social Draft Name (dashboard only):</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <input
+                      className="w-full text-base font-bold font-geist border-none outline-none bg-transparent text-gray-800 placeholder-gray-300"
+                      placeholder="e.g. LinkedIn launch thread..."
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                    {title === "" && (
+                      <button
+                        className="flex-shrink-0 text-[10px] font-bold font-geist text-[#FF5B04] hover:underline cursor-pointer"
+                        type="button"
+                        onClick={() => {
+                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                          setTitle(defaultTitle);
+                        }}
+                      >
+                        Auto-fill Name
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <input
+                    className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                    placeholder="Post title…"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <button
+                    className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+                    type="button"
+                    onClick={() => {
+                      setIsTitleModalOpen(true);
+                    }}
                   >
-                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                  </svg>
-                  AI Assistant
-                </button>
-              </div>
+                    <svg
+                      fill="none"
+                      height="11"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      width="11"
+                    >
+                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                    </svg>
+                    AI Assistant
+                  </button>
+                </div>
+              )}
             </div>
 
             <div
@@ -7094,6 +7247,7 @@ const BlogEditPage = () => {
                 imageUploadRef={inlineImageUploadRef}
                 onImageUrl={() => setShowImageUrlModal(true)}
                 onVideoEmbed={() => setShowVideoModal(true)}
+                postType={postType}
               />
               <input
                 ref={inlineImageUploadRef}
@@ -7119,6 +7273,7 @@ const BlogEditPage = () => {
                   setSlashMenuOpen(false);
                   setShowVideoModal(true);
                 }}
+                postType={postType}
               />
             </div>
           </div>
@@ -7129,14 +7284,13 @@ const BlogEditPage = () => {
           <div className="w-72 flex-shrink-0 space-y-4">
             {/* Sidebar Tab Navigation */}
             <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
-              {(
-                [
-                  { key: "content", label: "Content" },
-                  { key: "seo", label: "SEO" },
-                  { key: "ai", label: "AI Tools" },
-                  { key: "distribute", label: "Distribute" },
-                ] as const
-              ).map(({ key, label }) => (
+              {[
+                { key: "content", label: "Content" },
+                ...(getFeatures(postType).seoPanel ? [{ key: "seo", label: "SEO" }] : []),
+                { key: "ai", label: "AI Tools" },
+                { key: "health", label: "Health" },
+                { key: "distribute", label: "Distribute" },
+              ].map(({ key, label }) => (
                 <button
                   key={key}
                   className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
@@ -7144,7 +7298,7 @@ const BlogEditPage = () => {
                       ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
                       : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
                   }`}
-                  onClick={() => setSidebarTab(key)}
+                  onClick={() => setSidebarTab(key as any)}
                 >
                   {label}
                 </button>
@@ -7973,6 +8127,21 @@ const BlogEditPage = () => {
                 )}
               </div>
             )}
+            {/* ── Health Tab ── */}
+            {sidebarTab === "health" && (
+              <ContentHealthPanel
+                contentHtml={editor?.getHTML() || ""}
+                excerpt={excerpt}
+                featuredImage={featuredImage}
+                bannerImage={bannerImage}
+                tags={tags}
+                seo={seoData}
+                postType={postType}
+                goal={contentGoal}
+                title={title}
+              />
+            )}
+
             {/* ── Distribute Tab ── */}
             {sidebarTab === "distribute" && (
               <DistributionPanel
@@ -7998,6 +8167,8 @@ const BlogEditPage = () => {
                 }}
                 onTriggerTagsAI={() => setIsTagsModalOpen(true)}
                 onUpdateRecords={(recs) => setDistRecords(recs)}
+                postType={postType}
+                contentGoal={contentGoal}
               />
             )}
           </div>

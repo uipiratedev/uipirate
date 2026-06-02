@@ -14,6 +14,7 @@ import {
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
 import WorkflowMemory from "@/models/pirateCOS/WorkflowMemory";
 import dbConnect from "@/lib/mongodb";
+import { getGoalConfig, getPostTypeConfig } from "@/lib/pirateCOS/postTypeConfig";
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,6 +33,7 @@ export async function POST(request: NextRequest) {
       title,
       content,
       postType,
+      contentGoal,
       prompt,
       engine,
       model,
@@ -201,6 +203,22 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         { success: false, error: "Invalid action" },
         { status: 400 },
       );
+    }
+
+    // Phase 4B: Goal and Type specific context prompt injection
+    const goalConfig = contentGoal ? getGoalConfig(contentGoal) : null;
+    const typeConfig = postType ? getPostTypeConfig(postType) : null;
+    let contentContextPrompt = "";
+
+    if (goalConfig) {
+      contentContextPrompt += `\n\n# CONTENT STRATEGY GOAL: ${goalConfig.label}\n${goalConfig.aiPriorityPrompt}\n`;
+    }
+    if (typeConfig) {
+      contentContextPrompt += `\n\n# CONTENT ARCHETYPE: ${typeConfig.label}\n${typeConfig.templateHint}\n`;
+    }
+
+    if (contentContextPrompt) {
+      systemInstructions = `${contentContextPrompt}\n${systemInstructions}`;
     }
 
     // Compile Brand Brain rules and check for post-level overrides
