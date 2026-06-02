@@ -37,7 +37,6 @@ import {
   getGoalConfig,
   getFeatures,
   CONTENT_GOALS,
-  POST_TYPE_CONFIGS,
   getPostTypesByCategory,
 } from "@/lib/pirateCOS/postTypeConfig";
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
@@ -171,9 +170,9 @@ const SEOEditorModal = ({
       ? "gemini-flash-latest"
       : engine === "anthropic"
         ? "claude-3-5-sonnet-latest"
-      : engine === "mistral"
-        ? "mistral-large-latest"
-        : "gpt-4o-mini";
+        : engine === "mistral"
+          ? "mistral-large-latest"
+          : "gpt-4o-mini";
 
   const plainTextContent = postContent
     .replace(/<[^>]*>/g, " ")
@@ -4957,10 +4956,20 @@ const FloatingBlockInserter = ({
     },
   ];
 
-  const blockItems = allBlockItems.filter(item => {
+  const blockItems = allBlockItems.filter((item) => {
+    const features = getFeatures(postType || "blog");
+
     if (postType === "social-post") {
-      return item.id === "upload-image" || item.id === "image-url" || item.id === "video";
+      return (
+        item.id === "upload-image" ||
+        item.id === "image-url" ||
+        item.id === "video"
+      );
     }
+    if (item.id === "code") return !!features.codeBlocks;
+    if (item.id === "table") return !!features.tables;
+    if (item.id === "quote") return postType !== "social-post";
+
     return true;
   });
 
@@ -5067,110 +5076,108 @@ const SlashCommandMenu = ({
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const commands = React.useMemo(
-    () => {
-      const features = postType ? getFeatures(postType) : null;
-      const all = [
-        {
-          title: "Heading 1",
-          icon: "H1",
-          desc: "Large section heading",
-          command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+  const commands = React.useMemo(() => {
+    const features = postType ? getFeatures(postType) : null;
+    const all = [
+      {
+        title: "Heading 1",
+        icon: "H1",
+        desc: "Large section heading",
+        command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      },
+      {
+        title: "Heading 2",
+        icon: "H2",
+        desc: "Medium section heading",
+        command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      },
+      {
+        title: "Heading 3",
+        icon: "H3",
+        desc: "Small section heading",
+        command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      },
+      {
+        title: "Bullet List",
+        icon: "•",
+        desc: "Create a simple list",
+        command: () => editor.chain().focus().toggleBulletList().run(),
+      },
+      {
+        title: "Numbered List",
+        icon: "1.",
+        desc: "Create a numbered list",
+        command: () => editor.chain().focus().toggleOrderedList().run(),
+      },
+      {
+        title: "Task List",
+        icon: "☑",
+        desc: "Track tasks with checkboxes",
+        command: () => editor.chain().focus().toggleTaskList().run(),
+        featureKey: "taskLists",
+      },
+      {
+        title: "Quote",
+        icon: '"',
+        desc: "Capture a quote",
+        command: () => editor.chain().focus().toggleBlockquote().run(),
+      },
+      {
+        title: "Code Block",
+        icon: "</>",
+        desc: "Add a code snippet",
+        command: () => editor.chain().focus().toggleCodeBlock().run(),
+        featureKey: "codeBlocks",
+      },
+      {
+        title: "Divider",
+        icon: "—",
+        desc: "Add a horizontal rule",
+        command: () => editor.chain().focus().setHorizontalRule().run(),
+      },
+      {
+        title: "Image Upload",
+        icon: "🖼",
+        desc: "Upload an image from disk",
+        command: () => {
+          imageUploadRef.current?.click();
         },
-        {
-          title: "Heading 2",
-          icon: "H2",
-          desc: "Medium section heading",
-          command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-        },
-        {
-          title: "Heading 3",
-          icon: "H3",
-          desc: "Small section heading",
-          command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-        },
-        {
-          title: "Bullet List",
-          icon: "•",
-          desc: "Create a simple list",
-          command: () => editor.chain().focus().toggleBulletList().run(),
-        },
-        {
-          title: "Numbered List",
-          icon: "1.",
-          desc: "Create a numbered list",
-          command: () => editor.chain().focus().toggleOrderedList().run(),
-        },
-        {
-          title: "Task List",
-          icon: "☑",
-          desc: "Track tasks with checkboxes",
-          command: () => editor.chain().focus().toggleTaskList().run(),
-          featureKey: "taskLists",
-        },
-        {
-          title: "Quote",
-          icon: '"',
-          desc: "Capture a quote",
-          command: () => editor.chain().focus().toggleBlockquote().run(),
-        },
-        {
-          title: "Code Block",
-          icon: "</>",
-          desc: "Add a code snippet",
-          command: () => editor.chain().focus().toggleCodeBlock().run(),
-          featureKey: "codeBlocks",
-        },
-        {
-          title: "Divider",
-          icon: "—",
-          desc: "Add a horizontal rule",
-          command: () => editor.chain().focus().setHorizontalRule().run(),
-        },
-        {
-          title: "Image Upload",
-          icon: "🖼",
-          desc: "Upload an image from disk",
-          command: () => {
-            imageUploadRef.current?.click();
-          },
-        },
-        {
-          title: "Image URL",
-          icon: "🔗",
-          desc: "Embed an image via URL",
-          command: onImageUrl,
-        },
-        {
-          title: "Embed Video",
-          icon: "▶",
-          desc: "YouTube, Vimeo, Loom…",
-          command: onVideoEmbed,
-        },
-        {
-          title: "Table",
-          icon: "田",
-          desc: "Insert a 3x3 table",
-          command: () =>
-            editor
-              .chain()
-              .focus()
-              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-              .run(),
-          featureKey: "tables",
-        },
-      ];
+      },
+      {
+        title: "Image URL",
+        icon: "🔗",
+        desc: "Embed an image via URL",
+        command: onImageUrl,
+      },
+      {
+        title: "Embed Video",
+        icon: "▶",
+        desc: "YouTube, Vimeo, Loom…",
+        command: onVideoEmbed,
+      },
+      {
+        title: "Table",
+        icon: "田",
+        desc: "Insert a 3x3 table",
+        command: () =>
+          editor
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run(),
+        featureKey: "tables",
+      },
+    ];
 
-      return all.filter((c) => {
-        if (!features) return true;
-        if (c.featureKey === "codeBlocks") return features.codeBlocks !== false;
-        if (c.featureKey === "tables") return features.tables !== false;
-        if (c.featureKey === "taskLists") return !!features.taskLists;
-        return true;
-      });
-    },
-    [editor, onImageUrl, onVideoEmbed, imageUploadRef, postType],
-  );
+    return all.filter((c) => {
+      if (!features) return true;
+      if (c.featureKey === "codeBlocks") return !!features.codeBlocks;
+      if (c.featureKey === "tables") return !!features.tables;
+      if (c.featureKey === "taskLists") return !!features.taskLists;
+
+      return true;
+    });
+  }, [editor, onImageUrl, onVideoEmbed, imageUploadRef, postType]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -5315,13 +5322,19 @@ const FormattingToolbar = ({
           className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
           title="Insert Call-To-Action Block"
           onClick={() => {
-            editor.chain().focus().insertContent(`
+            editor
+              .chain()
+              .focus()
+              .insertContent(
+                `
               <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
                 <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
                 <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
                 <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
               </div>
-            `).run();
+            `,
+              )
+              .run();
           }}
         >
           📣 Insert CTA
@@ -5376,50 +5389,50 @@ const FormattingToolbar = ({
       {/* Sleek Text Color Menu */}
       {postType !== "social-post" && (
         <div className="relative flex items-center">
-        <button
-          className={btn(colorPaletteOpen)}
-          style={colorPaletteOpen ? activeStyle : {}}
-          title="Text Color"
-          onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
-        >
-          <span className="flex items-center gap-1">
-            A
-            <span
-              className="w-2.5 h-2.5 rounded-full border border-black/10"
-              style={{
-                backgroundColor:
-                  editor.getAttributes("textStyle").color || "#1A1A1A",
-              }}
-            />
-          </span>
-        </button>
-        {colorPaletteOpen && (
-          <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
-            {colors.map((c) => (
-              <button
-                key={c.value}
-                className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
-                style={{ backgroundColor: c.value }}
-                title={c.name}
-                onClick={() => {
-                  editor.chain().focus().setColor(c.value).run();
-                  setColorPaletteOpen(false);
+          <button
+            className={btn(colorPaletteOpen)}
+            style={colorPaletteOpen ? activeStyle : {}}
+            title="Text Color"
+            onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
+          >
+            <span className="flex items-center gap-1">
+              A
+              <span
+                className="w-2.5 h-2.5 rounded-full border border-black/10"
+                style={{
+                  backgroundColor:
+                    editor.getAttributes("textStyle").color || "#1A1A1A",
                 }}
               />
-            ))}
-            <button
-              className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
-              title="Reset Color"
-              onClick={() => {
-                editor.chain().focus().unsetColor().run();
-                setColorPaletteOpen(false);
-              }}
-            >
-              Reset
-            </button>
-          </div>
-        )}
-      </div>
+            </span>
+          </button>
+          {colorPaletteOpen && (
+            <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
+              {colors.map((c) => (
+                <button
+                  key={c.value}
+                  className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
+                  style={{ backgroundColor: c.value }}
+                  title={c.name}
+                  onClick={() => {
+                    editor.chain().focus().setColor(c.value).run();
+                    setColorPaletteOpen(false);
+                  }}
+                />
+              ))}
+              <button
+                className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
+                title="Reset Color"
+                onClick={() => {
+                  editor.chain().focus().unsetColor().run();
+                  setColorPaletteOpen(false);
+                }}
+              >
+                Reset
+              </button>
+            </div>
+          )}
+        </div>
       )}
 
       <button
@@ -5436,8 +5449,17 @@ const FormattingToolbar = ({
           title="Insert Affiliate Link"
           onClick={() => {
             const url = prompt("Enter Affiliate URL:");
+
             if (url) {
-              editor.chain().focus().setLink({ href: url, target: '_blank', rel: 'nofollow sponsored' }).run();
+              editor
+                .chain()
+                .focus()
+                .setLink({
+                  href: url,
+                  target: "_blank",
+                  rel: "nofollow sponsored",
+                })
+                .run();
             }
           }}
         >
@@ -5461,7 +5483,9 @@ const FormattingToolbar = ({
             className={btn(editor.isActive("heading", { level: 1 }))}
             style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
             title="Heading 1"
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
           >
             H1
           </button>
@@ -5469,7 +5493,9 @@ const FormattingToolbar = ({
             className={btn(editor.isActive("heading", { level: 2 }))}
             style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
             title="Heading 2"
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
           >
             H2
           </button>
@@ -5477,7 +5503,9 @@ const FormattingToolbar = ({
             className={btn(editor.isActive("heading", { level: 3 }))}
             style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
             title="Heading 3"
-            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
           >
             H3
           </button>
@@ -5521,7 +5549,7 @@ const FormattingToolbar = ({
           &ldquo; Quote
         </button>
       )}
-      {features?.codeBlocks !== false && (
+      {features?.codeBlocks && (
         <button
           className={btn(editor.isActive("codeBlock"))}
           style={editor.isActive("codeBlock") ? activeStyle : {}}
@@ -5539,7 +5567,7 @@ const FormattingToolbar = ({
       >
         —
       </button>
-      {features?.tables !== false && editor.isActive("table") && (
+      {features?.tables && editor.isActive("table") && (
         <>
           {sep}
           <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
@@ -6097,6 +6125,8 @@ const BlogEditor = () => {
   const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
   const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [typeSelected, setTypeSelected] = useState(false);
+  const [hoveredType, setHoveredType] = useState<string | null>(null);
+  const [hoveredGoal, setHoveredGoal] = useState<string | null>(null);
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -6180,6 +6210,15 @@ const BlogEditor = () => {
   useEffect(() => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
+
+  // Programmatically reset active sidebar tab to "content" if the active tab is hidden (e.g. SEO panel becomes false)
+  useEffect(() => {
+    const features = getFeatures(postType || "blog");
+
+    if (sidebarTab === "seo" && !features.seoPanel) {
+      setSidebarTab("content");
+    }
+  }, [postType, sidebarTab]);
 
   // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
   useEffect(() => {
@@ -6530,19 +6569,148 @@ const BlogEditor = () => {
     const activeTypeConfig = getPostTypeConfig(postType);
     const activeGoalConfig = getGoalConfig(contentGoal);
 
+    // Strategist Board Dictionary
+    const ARCHETYPE_EXPLANATIONS: Record<
+      string,
+      { title: string; desc: string; tip: string }
+    > = {
+      blog: {
+        title: "✏️ Blog Archetype",
+        desc: "Designed to share opinion pieces, stories, and deep insights in an authentic, conversational voice.",
+        tip: "Optimizes the editor for standard blogging. Enables SEO metadata tags and media uploads, while formatting prompts tune the AI to write conversational, rich sections.",
+      },
+      tutorial: {
+        title: "📖 Step-by-Step Tutorial",
+        desc: "Highly technical educational resources, manuals, and developer configurations.",
+        tip: "Workspace is customized for structured learning. Automatically enables syntax-highlighted code blocks, data tables, and checklist elements. AI outlines H2/H3 guides with prerequisite requirements.",
+      },
+      "case-study": {
+        title: "🔍 Customer Case Study",
+        desc: "Professional breakdowns of real-world client wins, builder journeys, and solutions.",
+        tip: "Adapts workspace for high credibility. Restructures Tiptap to include data charts and call-out boxes. AI outlines strictly target challenge statements, solutions, and metrics.",
+      },
+      "community-insight": {
+        title: "💬 Community Insight",
+        desc: "Curated industry roundups, trend analyses, and collaborative community highlights.",
+        tip: "Enables fast social previews and tags. The AI adjusts prompts to formulate conversational opening hooks and pose reflective questions to spark active replies.",
+      },
+      "corporate-post": {
+        title: "🏢 Corporate / PR Post",
+        desc: "Press releases, executive updates, public letters, and company milestone announcements.",
+        tip: "Hides search-engine metrics to focus strictly on public relation outputs. AI implements professional AP news dateline guidelines and objective vision summaries.",
+      },
+      "product-review": {
+        title: "⭐ Product Review",
+        desc: "Monetization-oriented reviews of specific tools, platforms, or hardware.",
+        tip: "Enables affiliate Sponsored link builders, high-contrast CTA buttons, and pros/cons grids. AI structures product reviews around ratings, value ratios, and direct verdicts.",
+      },
+      "product-launch": {
+        title: "🚀 Product Launch",
+        desc: "Feature releases, software launches, and brand announcement campaigns.",
+        tip: "Workspace unlocks custom visual banner components and call-to-actions. AI frames features around ICP problems to drive immediate user action.",
+      },
+      listicle: {
+        title: "📋 Curated Listicle",
+        desc: '"Top N" roundups, product selections, and curated summaries.',
+        tip: "Enables comparison table layouts, affiliate tracking links, and high-converting CTA snippets. AI lists consistently format item descriptions, pricing, and key verdicts.",
+      },
+      comparison: {
+        title: "⚔️ Head-to-Head Comparison",
+        desc: "Detailed side-by-side product comparisons to assist buyer decisions.",
+        tip: "Enables dense comparison tables and nofollow sponsor links. AI structures comparison charts, outlines unique tool advantages, and recommends use-case decisions.",
+      },
+      newsletter: {
+        title: "📧 Email Newsletter",
+        desc: "Conversational weekly digests, product newsletters, and list updates.",
+        tip: "Hides web layout bloat and search-engine keywords. Structures clean, lightweight text containers. AI writes direct, conversational, warm paragraphs.",
+      },
+      "social-post": {
+        title: "🔗 LinkedIn / Social Post",
+        desc: "Sleek, condensed articles optimized for professional social media networks.",
+        tip: "Immersive cleanup. Completely hides headings, tables, list blocks, and SEO tabs to prevent clutter. AI generates scroll-stopping first-line hooks and airy double-line spacing.",
+      },
+    };
+
+    const GOAL_EXPLANATIONS: Record<
+      string,
+      { title: string; desc: string; aiFocus: string }
+    > = {
+      traffic: {
+        title: "📈 Search Traffic Optimization",
+        desc: "Recalibrates Tiptap and the sidebar to display robust SEO metadata panels, canonical inputs, and search keyword densities.",
+        aiFocus:
+          "AI Copilot injects keyword-rich H2/H3 layouts, targets search-intent queries, generates structured FAQ elements, and designs headers for snippet eligibility.",
+      },
+      authority: {
+        title: "🎓 Establish Thought Leadership",
+        desc: "Recalibrates the Content Health Advisor to heavily reward vocabulary depth, section balance, and structural argumentation.",
+        aiFocus:
+          "AI Copilot utilizes expert-level industry terminology, formats contrarian viewpoints, embeds empirical research citations, and frames concepts in unique methodologies.",
+      },
+      conversion: {
+        title: "💳 Drive Sales & Conversions",
+        desc: "Prioritizes conversion tools, enabling high-contrast benefit buttons, action links, and styled CTA cards in the workspace.",
+        aiFocus:
+          "AI Copilot writes reader-centric action copy, structures paragraphs using problem-agitation-solution, objection handling, and implements Urgency triggers.",
+      },
+      engagement: {
+        title: "🔥 Spark Discussion & Comments",
+        desc: "Recalibrates parameters to optimize text scannability, social sharing previews, and conversational clarity.",
+        aiFocus:
+          "AI Copilot leads with scroll-stopping curiosity hooks, integrates open-ended questions throughout the body, and designs content for viral social sharing.",
+      },
+      "lead-generation": {
+        title: "🧲 Lead Capture & Growth",
+        desc: "Prioritizes call-to-actions promoting resource sheets, checklist links, and email newsletter opt-in forms.",
+        aiFocus:
+          "AI Copilot leaves strategic gaps that lead magnets naturally satisfy, leveraging trust and value reciprocity to boost newsletter conversions.",
+      },
+      retention: {
+        title: "🤝 Keep Customers Engaged",
+        desc: "Enables educational elements, focus-checklist indicators, and warm community-supportive language guidelines.",
+        aiFocus:
+          "AI Copilot writes practical, actionable steps, designs advanced pro-tip boxes, and integrates product educational pointers naturally.",
+      },
+    };
+
+    // Calculate Dynamic Strategist Card content
+    const currentTypeVal = hoveredType || postType;
+    const currentTypeConfig = getPostTypeConfig(currentTypeVal);
+    const archetypeExplanation = ARCHETYPE_EXPLANATIONS[currentTypeVal] || {
+      title: `${currentTypeConfig?.icon || "✏️"} Custom Archetype`,
+      desc:
+        currentTypeConfig?.description ||
+        "Select a post archetype to adapt your workspace features.",
+      tip:
+        currentTypeConfig?.templateHint ||
+        "The workspace and AI tuning will be optimized based on your selection.",
+    };
+
+    const currentGoalVal = hoveredGoal || contentGoal;
+    const currentGoalConfig = getGoalConfig(currentGoalVal as ContentGoal);
+    const goalExplanation = GOAL_EXPLANATIONS[currentGoalVal] || {
+      title: `${currentGoalConfig?.icon || "📈"} Custom Goal`,
+      desc:
+        currentGoalConfig?.description ||
+        "Set a strategic goal for the AI to optimize outlines and structures.",
+      aiFocus:
+        currentGoalConfig?.aiPriorityPrompt ||
+        "Strategic parameters will be fine-tuned accordingly.",
+    };
+
     return (
       <div
         className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto"
         onClick={() => router.push(getHref("/posts"))}
       >
         <div
-          className="bg-white rounded-[32px] shadow-2xl w-[720px] max-w-full p-8 relative my-8 animate-in zoom-in-95 duration-200"
+          className="bg-white rounded-[32px] shadow-2xl w-[1080px] max-w-full p-8 relative my-8 animate-in zoom-in-95 duration-200"
           style={{ border: "1px solid rgba(0,0,0,0.06)" }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close button */}
           <button
-            className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 hover:text-gray-700 transition-all"
+            className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 hover:text-gray-700 transition-all cursor-pointer"
             onClick={() => router.push(getHref("/posts"))}
           >
             <svg
@@ -6574,9 +6742,15 @@ const BlogEditor = () => {
 
             {/* Stepper Progress bar */}
             <div className="w-full h-1 bg-black/[0.04] rounded-full overflow-hidden flex gap-1">
-              <div className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 1 ? 'bg-[#FF5B04]' : 'bg-black/[0.04]'}`} />
-              <div className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 2 ? 'bg-[#FF5B04]' : 'bg-black/[0.04]'}`} />
-              <div className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 3 ? 'bg-[#FF5B04]' : 'bg-black/[0.04]'}`} />
+              <div
+                className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 1 ? "bg-[#FF5B04]" : "bg-black/[0.04]"}`}
+              />
+              <div
+                className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 2 ? "bg-[#FF5B04]" : "bg-black/[0.04]"}`}
+              />
+              <div
+                className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 3 ? "bg-[#FF5B04]" : "bg-black/[0.04]"}`}
+              />
             </div>
           </div>
 
@@ -6584,117 +6758,162 @@ const BlogEditor = () => {
               STEP 1: INTENT SELECTION
           ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 1 && (
-            <div className="space-y-5 animate-in fade-in duration-200">
-              <div>
-                <h2 className="text-2xl font-bold font-geist text-gray-900 leading-tight">
-                  What are you creating today?
-                </h2>
-                <p className="text-sm text-gray-400 font-geist mt-1.5 leading-relaxed">
-                  Select your content archetype. This adapts your workspace features, limits, and guidelines.
-                </p>
-              </div>
+            <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in fade-in duration-200">
+              {/* Left Column: Archetype selector cards */}
+              <div className="md:col-span-7 space-y-5 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                <div>
+                  <h2 className="text-2xl font-bold font-geist text-gray-900 leading-tight">
+                    What are you creating today?
+                  </h2>
+                  <p className="text-xs text-gray-400 font-geist mt-1.5 leading-relaxed">
+                    Select a post archetype to adapt your tools, limits, and AI
+                    parameters dynamically.
+                  </p>
+                </div>
 
-              {/* Group 1: Content & Knowledge */}
-              <div className="space-y-3">
-                <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
-                  📚 Content & Knowledge Archetypes
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {getPostTypesByCategory("content").map((cfg) => (
-                    <button
-                      key={cfg.value}
-                      className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all text-left hover:scale-[1.01] hover:shadow-sm ${
-                        postType === cfg.value
-                          ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
-                          : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
-                      }`}
-                      onClick={() => setPostType(cfg.value)}
-                    >
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${
-                        postType === cfg.value ? 'bg-[#FF5B04]/10 text-[#FF5B04]' : 'bg-black/5 text-gray-500'
-                      }`}>
-                        {cfg.icon}
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-sm font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}>
-                          {cfg.label}
-                        </p>
-                        <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
-                          {cfg.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1 mt-1.5">
-                          {cfg.featurePills.slice(0, 2).map((p) => (
-                            <span key={p} className="text-[8px] font-bold font-jetbrains-mono uppercase bg-black/[0.04] text-gray-400 px-1.5 py-0.5 rounded">
-                              {p}
-                            </span>
-                          ))}
+                {/* Group 1: Content & Knowledge */}
+                <div className="space-y-3">
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
+                    📚 Content & Knowledge Archetypes
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {getPostTypesByCategory("content").map((cfg) => (
+                      <button
+                        key={cfg.value}
+                        className={`flex items-start gap-3.5 p-3.5 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                          postType === cfg.value
+                            ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
+                            : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                        }`}
+                        onClick={() => setPostType(cfg.value)}
+                        onMouseEnter={() => setHoveredType(cfg.value)}
+                        onMouseLeave={() => setHoveredType(null)}
+                      >
+                        <div
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
+                            postType === cfg.value
+                              ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                              : "bg-black/5 text-gray-500"
+                          }`}
+                        >
+                          {cfg.icon}
                         </div>
-                      </div>
-                    </button>
-                  ))}
+                        <div className="min-w-0">
+                          <p
+                            className={`text-xs font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                          >
+                            {cfg.label}
+                          </p>
+                          <p className="text-[10px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
+                            {cfg.description}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Group 2: Product & Monetization */}
+                <div className="space-y-3 pt-1">
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
+                    💰 Product & Monetization Archetypes
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {getPostTypesByCategory("monetization").map((cfg) => (
+                      <button
+                        key={cfg.value}
+                        className={`flex items-start gap-3.5 p-3.5 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                          postType === cfg.value
+                            ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
+                            : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                        }`}
+                        onClick={() => setPostType(cfg.value)}
+                        onMouseEnter={() => setHoveredType(cfg.value)}
+                        onMouseLeave={() => setHoveredType(null)}
+                      >
+                        <div
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
+                            postType === cfg.value
+                              ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                              : "bg-black/5 text-gray-500"
+                          }`}
+                        >
+                          {cfg.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <p
+                            className={`text-xs font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                          >
+                            {cfg.label}
+                          </p>
+                          <p className="text-[10px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
+                            {cfg.description}
+                          </p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Left Actions */}
+                <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
+                  <button
+                    className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                    onClick={() => router.push(getHref("/posts"))}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                    style={{ background: "#FF5B04" }}
+                    onClick={() => setWizardStep(2)}
+                  >
+                    Continue to Goal
+                    <svg
+                      fill="none"
+                      height="12"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                      width="12"
+                    >
+                      <line x1="5" x2="19" y1="12" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </button>
                 </div>
               </div>
 
-              {/* Group 2: Product & Monetization */}
-              <div className="space-y-3 pt-1">
-                <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
-                  💰 Product & Monetization Archetypes
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {getPostTypesByCategory("monetization").map((cfg) => (
-                    <button
-                      key={cfg.value}
-                      className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all text-left hover:scale-[1.01] hover:shadow-sm ${
-                        postType === cfg.value
-                          ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
-                          : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
-                      }`}
-                      onClick={() => setPostType(cfg.value)}
-                    >
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${
-                        postType === cfg.value ? 'bg-[#FF5B04]/10 text-[#FF5B04]' : 'bg-black/5 text-gray-500'
-                      }`}>
-                        {cfg.icon}
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-sm font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}>
-                          {cfg.label}
-                        </p>
-                        <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
-                          {cfg.description}
-                        </p>
-                        <div className="flex flex-wrap gap-1 mt-1.5">
-                          {cfg.featurePills.slice(0, 2).map((p) => (
-                            <span key={p} className="text-[8px] font-bold font-jetbrains-mono uppercase bg-black/[0.04] text-gray-400 px-1.5 py-0.5 rounded">
-                              {p}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+              {/* Right Column: Dynamic Strategist Board */}
+              <div className="md:col-span-5 h-full bg-gradient-to-br from-orange-50/30 to-purple-50/20 border border-orange-100 p-6 rounded-3xl sticky top-6 space-y-4 shadow-sm animate-in slide-in-from-right-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🤖</span>
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
+                    AI Strategist Advisor
+                  </p>
                 </div>
-              </div>
-
-              {/* Footer / Actions */}
-              <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
-                <button
-                  className="text-sm font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors"
-                  onClick={() => router.push(getHref("/posts"))}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="ml-auto flex items-center gap-1.5 text-sm font-semibold font-geist text-white h-11 px-6 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
-                  style={{ background: "#FF5B04" }}
-                  onClick={() => setWizardStep(2)}
-                >
-                  Continue to Goal
-                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
-                    <line x1="5" x2="19" y1="12" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </button>
+                <div className="space-y-2 border-b border-black/[0.03] pb-4">
+                  <h3 className="text-base font-extrabold font-geist text-gray-800">
+                    {archetypeExplanation.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 font-geist leading-relaxed">
+                    {archetypeExplanation.desc}
+                  </p>
+                </div>
+                <div className="space-y-2 bg-white/60 border border-black/[0.02] p-4 rounded-2xl">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
+                    🔧 Workspace Tuning
+                  </span>
+                  <p className="text-[11px] text-gray-600 font-geist leading-relaxed">
+                    {archetypeExplanation.tip}
+                  </p>
+                </div>
+                <p className="text-[9px] text-[#FF5B04] font-semibold font-jetbrains-mono italic pt-2">
+                  *Unused formatting options and editor tabs will be completely
+                  hidden to ensure zero focus distractions.
+                </p>
               </div>
             </div>
           )}
@@ -6703,182 +6922,203 @@ const BlogEditor = () => {
               STEP 2: GOAL SELECTION
           ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 2 && (
-            <div className="space-y-6 animate-in slide-in-from-right-4 duration-200">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs bg-orange-50 text-[#FF5B04] px-2.5 py-0.5 rounded-full font-semibold">
-                    Archetype: {activeTypeConfig?.icon} {activeTypeConfig?.label}
-                  </span>
+            <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in slide-in-from-right-4 duration-200">
+              {/* Left Column: Goal Cards */}
+              <div className="md:col-span-7 space-y-5 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] bg-orange-50 text-[#FF5B04] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                      Archetype: {activeTypeConfig?.icon}{" "}
+                      {activeTypeConfig?.label}
+                    </span>
+                  </div>
+                  <h2 className="text-2xl font-bold font-geist text-gray-900 mt-2.5 leading-tight">
+                    What is the goal of this content?
+                  </h2>
+                  <p className="text-xs text-gray-400 font-geist mt-1.5 leading-relaxed">
+                    Specify the business or marketing objective of this post.
+                    This dynamically weights readability & SEO health scores.
+                  </p>
                 </div>
-                <h2 className="text-2xl font-bold font-geist text-gray-900 mt-2.5 leading-tight">
-                  What is the primary goal of this content?
-                </h2>
-                <p className="text-sm text-gray-400 font-geist mt-1.5 leading-relaxed">
-                  Choosing a goal tunes the real-time Content Health Advisor and provides dedicated system prompts for the AI Copilot.
-                </p>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-                {CONTENT_GOALS.filter((g) => activeTypeConfig?.suggestedGoals.includes(g.value)).map((g) => {
-                  const isSuggested = true;
-                  return (
-                    <button
-                      key={g.value}
-                      className={`flex items-start gap-4 p-4 rounded-2xl border-2 transition-all text-left relative hover:scale-[1.01] hover:shadow-sm ${
-                        contentGoal === g.value
-                          ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
-                          : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
-                      }`}
-                      onClick={() => setContentGoal(g.value)}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  {CONTENT_GOALS.filter((g) =>
+                    activeTypeConfig?.suggestedGoals.includes(g.value),
+                  ).map((g) => {
+                    const isSuggested = activeTypeConfig?.suggestedGoals
+                      .slice(0, 2)
+                      .includes(g.value);
+
+                    return (
+                      <button
+                        key={g.value}
+                        className={`flex items-start gap-3.5 p-3.5 rounded-2xl border-2 transition-all text-left relative cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                          contentGoal === g.value
+                            ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
+                            : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                        }`}
+                        onClick={() => setContentGoal(g.value)}
+                        onMouseEnter={() => setHoveredGoal(g.value)}
+                        onMouseLeave={() => setHoveredGoal(null)}
+                      >
+                        {isSuggested && (
+                          <span className="absolute top-2.5 right-2.5 text-[8px] font-bold font-jetbrains-mono uppercase bg-green-50 text-green-600 px-2 py-0.5 rounded-full border border-green-200">
+                            Suggested
+                          </span>
+                        )}
+                        <div
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
+                            contentGoal === g.value
+                              ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                              : "bg-black/5 text-gray-500"
+                          }`}
+                        >
+                          {g.icon}
+                        </div>
+                        <div className="min-w-0 pr-6">
+                          <p
+                            className={`text-xs font-bold font-geist ${contentGoal === g.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                          >
+                            {g.label}
+                          </p>
+                          <p className="text-[10px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
+                            {g.description}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Left Actions */}
+                <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
+                  <button
+                    className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                    onClick={() => setWizardStep(1)}
+                  >
+                    ← Back to Archetype
+                  </button>
+                  <button
+                    className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                    style={{ background: "#FF5B04" }}
+                    onClick={() => setWizardStep(3)}
+                  >
+                    Configure Workspace
+                    <svg
+                      fill="none"
+                      height="12"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                      width="12"
                     >
-                      {isSuggested && (
-                        <span className="absolute top-3 right-3 text-[8px] font-bold font-jetbrains-mono uppercase bg-green-50 text-green-600 px-2 py-0.5 rounded-full border border-green-200">
-                          Recommended
-                        </span>
-                      )}
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0 ${
-                        contentGoal === g.value ? 'bg-[#FF5B04]/10 text-[#FF5B04]' : 'bg-black/5 text-gray-500'
-                      }`}>
-                        {g.icon}
-                      </div>
-                      <div className="min-w-0 pr-12">
-                        <p className={`text-sm font-bold font-geist ${contentGoal === g.value ? "text-[#FF5B04]" : "text-gray-800"}`}>
-                          {g.label}
-                        </p>
-                        <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">
-                          {g.description}
-                        </p>
-                        <p className="text-[9px] font-semibold text-gray-500 mt-2 font-jetbrains-mono italic">
-                          {g.hint}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
+                      <line x1="5" x2="19" y1="12" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
-              {/* Footer / Actions */}
-              <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
-                <button
-                  className="text-sm font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                  onClick={() => setWizardStep(1)}
-                >
-                  ← Back to Archetype
-                </button>
-                <button
-                  className="ml-auto flex items-center gap-1.5 text-sm font-semibold font-geist text-white h-11 px-6 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
-                  style={{ background: "#FF5B04" }}
-                  onClick={() => setWizardStep(3)}
-                >
-                  Configure Workspace
-                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
-                    <line x1="5" x2="19" y1="12" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </button>
+              {/* Right Column: Dynamic Strategist Board */}
+              <div className="md:col-span-5 h-full bg-gradient-to-br from-orange-50/30 to-purple-50/20 border border-orange-100 p-6 rounded-3xl sticky top-6 space-y-4 shadow-sm animate-in slide-in-from-right-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🎯</span>
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
+                    AI Strategy Tuning
+                  </p>
+                </div>
+                <div className="space-y-2 border-b border-black/[0.03] pb-4">
+                  <h3 className="text-base font-extrabold font-geist text-gray-800">
+                    {goalExplanation.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 font-geist leading-relaxed">
+                    {goalExplanation.desc}
+                  </p>
+                </div>
+                <div className="space-y-2 bg-white/60 border border-black/[0.02] p-4 rounded-2xl">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
+                    🧠 Copilot System Focus
+                  </span>
+                  <p className="text-[10px] text-gray-600 font-geist leading-relaxed">
+                    {goalExplanation.aiFocus}
+                  </p>
+                </div>
+                <p className="text-[9px] text-[#FF5B04] font-semibold font-jetbrains-mono italic pt-2">
+                  *Your Content Health tab weights will automatically sync to
+                  prioritize metrics matching this goal.
+                </p>
               </div>
             </div>
           )}
 
           {/* ───────────────────────────────────────────────────────────────────
-              STEP 3: WORKSPACE PREVIEW & CONFIRMATION
+              STEP 3: WORKSPACE PREVIEW & CONFIRMATION (SIMPLIFIED & FOCUS)
           ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 3 && (
             <div className="space-y-6 animate-in slide-in-from-right-4 duration-200">
-              <div>
-                <h2 className="text-2xl font-bold font-geist text-gray-900 leading-tight">
-                  Your customized workspace is ready
+              <div className="text-center max-w-xl mx-auto space-y-2">
+                <h2 className="text-2xl font-extrabold font-geist text-gray-900 leading-tight">
+                  Your Workspace is Ready!
                 </h2>
-                <p className="text-sm text-gray-400 font-geist mt-1.5 leading-relaxed">
-                  Review the customized features and goals tailored for this post before we open the editor.
+                <p className="text-xs text-gray-400 font-geist leading-relaxed">
+                  The AI Strategist has tailored your workspace boundaries and
+                  outlines. No generic layouts or visual clutter. Let's make an
+                  impact!
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Custom Features Column */}
-                <div className="bg-black/[0.01] rounded-2xl border border-black/5 p-5">
-                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest mb-3.5">
-                    ⚙️ Active Workspace Tools
-                  </p>
-                  
-                  <div className="space-y-2.5 text-xs font-geist">
-                    {activeTypeConfig && Object.entries(activeTypeConfig.features).map(([key, val]) => {
-                      const label = 
-                        key === "seoPanel" ? "SEO Metadata Tools" :
-                        key === "codeBlocks" ? "Formatted Code Blocks" :
-                        key === "tables" ? "Data Tables support" :
-                        key === "affiliateLinks" ? "Nofollow Affiliate Links" :
-                        key === "ctaBlocks" ? "Structured CTA Blocks" :
-                        key === "taskLists" ? "Interactive Task Lists" :
-                        key === "featuredImage" ? "Featured Social Image" :
-                        key === "bannerImage" ? "Top Banner Visuals" :
-                        key === "aiCopilot" ? "Real-time AI Copilot" :
-                        key === "repurposing" ? "Content Repurposer Drawer" :
-                        key === "socialPreview" ? "Live Social Preview" :
-                        "Distribution AI Advisor";
-
-                      return (
-                        <div key={key} className="flex items-center justify-between py-0.5 border-b border-black/[0.02] last:border-0">
-                          <span className="text-gray-600">{label}</span>
-                          <span className={`font-bold font-jetbrains-mono ${val ? 'text-green-500' : 'text-gray-300'}`}>
-                            {val ? "✓ ENABLED" : "✕ HIDDEN"}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
+              {/* Large Strategic Badge Card */}
+              <div className="max-w-md mx-auto bg-gradient-to-br from-orange-50/50 to-purple-50/30 border border-orange-100 rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-sm space-y-4">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-3xl">{activeTypeConfig?.icon}</span>
+                  <span className="text-gray-300 text-lg">×</span>
+                  <span className="text-3xl">{activeGoalConfig?.icon}</span>
                 </div>
-
-                {/* AI Tuning Column */}
-                <div className="space-y-4">
-                  {/* Archetype & Goal card */}
-                  <div className="bg-orange-50/40 border border-orange-100 rounded-2xl p-4.5 flex items-center justify-between">
-                    <div>
-                      <p className="text-[9px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-wider">archetype</p>
-                      <p className="text-sm font-bold text-gray-800 mt-0.5">{activeTypeConfig?.icon} {activeTypeConfig?.label}</p>
-                    </div>
-                    <div className="w-px h-8 bg-orange-100 mx-2" />
-                    <div>
-                      <p className="text-[9px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-wider">content goal</p>
-                      <p className="text-sm font-bold text-gray-800 mt-0.5">{activeGoalConfig?.icon} {activeGoalConfig?.label}</p>
-                    </div>
-                  </div>
-
-                  {/* AI Tuning Instructions */}
-                  <div className="bg-black/[0.01] rounded-2xl border border-black/5 p-4.5">
-                    <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest mb-2.5">
-                      🧠 AI Tuning Policy
-                    </p>
-                    <p className="text-xs text-gray-500 leading-relaxed font-geist">
-                      AI suggestions and copilot prompts will automatically inject strategic guidance for: <span className="font-semibold text-[#FF5B04]">"{activeGoalConfig?.label}"</span>.
-                    </p>
-                    <div className="mt-3 bg-white border border-black/5 rounded-xl p-3 text-[10px] text-gray-600 font-jetbrains-mono leading-relaxed max-h-32 overflow-y-auto">
-                      {activeGoalConfig?.aiPriorityPrompt}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Info alert */}
-              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-xs font-geist text-blue-700 flex items-start gap-2.5 leading-relaxed">
-                <span className="text-lg">ℹ️</span>
                 <div>
-                  <p className="font-bold text-blue-800">Archetype & Goal are locked once you start writing</p>
-                  <p className="mt-0.5 text-blue-600">This ensures your content metrics and layout settings remain structured and consistent for distribution.</p>
+                  <p className="text-[9px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-wider">
+                    content strategy mapping
+                  </p>
+                  <h3 className="text-lg font-black text-gray-800 mt-1">
+                    {activeTypeConfig?.label} × {activeGoalConfig?.label}
+                  </h3>
                 </div>
+                <div className="w-full h-px bg-black/[0.04] my-1" />
+                <p className="text-xs text-gray-500 font-geist leading-relaxed px-4">
+                  AI writing suggestions will prioritize{" "}
+                  <span className="font-bold text-[#FF5B04]">
+                    "{activeGoalConfig?.label}"
+                  </span>{" "}
+                  criteria. Active tools, folders, and health parameters are
+                  automatically restricted to only what's required for your{" "}
+                  <span className="font-semibold text-gray-800">
+                    {activeTypeConfig?.label}
+                  </span>{" "}
+                  structure.
+                </p>
               </div>
 
-              {/* Footer / Actions */}
-              <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
+              {/* Warm encouraging quote */}
+              <p className="text-center text-[10px] text-gray-400 font-jetbrains-mono italic max-w-sm mx-auto">
+                "Writing is optimized, tools are focused, distractions are gone.
+                Perfect focus begins now."
+              </p>
+
+              {/* Actions Footer */}
+              <div className="flex items-center justify-center gap-4 pt-4 border-t border-black/5">
                 <button
-                  className="text-sm font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                  className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
                   onClick={() => setWizardStep(2)}
                 >
-                  ← Back to Goal
+                  ← Change Goal
                 </button>
                 <button
-                  className="ml-auto flex items-center gap-1.5 text-sm font-bold font-geist text-white h-11 px-7 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
-                  style={{ background: "linear-gradient(135deg, #FF5B04 0%, #E04E00 100%)" }}
+                  className="flex items-center gap-2 text-xs font-bold font-geist text-white h-11 px-8 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #FF5B04 0%, #E04E00 100%)",
+                  }}
                   onClick={() => {
                     setTypeSelected(true);
                     const PRESET_DEFAULTS: Record<string, string> = {
@@ -6895,11 +7135,21 @@ const BlogEditor = () => {
                       "social-post": "linkedin-post",
                     };
                     const defaultPreset = PRESET_DEFAULTS[postType] || "";
+
                     setActivePreset(defaultPreset);
                   }}
                 >
                   Start Writing!
-                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                  <svg
+                    fill="none"
+                    height="14"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                    width="14"
+                  >
                     <line x1="5" x2="19" y1="12" y2="12" />
                     <polyline points="12 5 19 12 12 19" />
                   </svg>
@@ -6985,7 +7235,10 @@ const BlogEditor = () => {
               <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            {getPostTypeConfig(postType)?.icon} {getPostTypeConfig(postType)?.label} × {getGoalConfig(contentGoal)?.icon} {getGoalConfig(contentGoal)?.label}
+            {getPostTypeConfig(postType)?.icon}{" "}
+            {getPostTypeConfig(postType)?.label} ×{" "}
+            {getGoalConfig(contentGoal)?.icon}{" "}
+            {getGoalConfig(contentGoal)?.label}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -7043,6 +7296,8 @@ const BlogEditor = () => {
         <FormattingToolbar
           activePreset={activePreset}
           editor={editor}
+          features={getFeatures(postType)}
+          postType={postType}
           onCopilotClick={() => setIsCopilotOpen(true)}
           onLinkClick={() => {
             editor.chain().focus().extendMarkRange("link").run();
@@ -7050,8 +7305,6 @@ const BlogEditor = () => {
           }}
           onPresetChange={setActivePreset}
           onTransformClick={() => setIsRepurposeDrawerOpen(true)}
-          features={getFeatures(postType)}
-          postType={postType}
         />
       )}
 
@@ -7168,7 +7421,8 @@ const BlogEditor = () => {
                         className="flex-shrink-0 text-[10px] font-bold font-geist text-[#FF5B04] hover:underline cursor-pointer"
                         type="button"
                         onClick={() => {
-                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`;
+
                           setTitle(defaultTitle);
                         }}
                       >
@@ -7222,9 +7476,9 @@ const BlogEditor = () => {
               <FloatingBlockInserter
                 editor={editor}
                 imageUploadRef={inlineImageUploadRef}
+                postType={postType}
                 onImageUrl={() => setShowImageUrlModal(true)}
                 onVideoEmbed={() => setShowVideoModal(true)}
-                postType={postType}
               />
 
               {/* Hidden file input for inline image upload */}
@@ -7245,6 +7499,7 @@ const BlogEditor = () => {
                 imageUploadRef={inlineImageUploadRef}
                 isOpen={slashMenuOpen}
                 position={slashMenuPosition}
+                postType={postType}
                 onClose={() => setSlashMenuOpen(false)}
                 onImageUrl={() => {
                   setSlashMenuOpen(false);
@@ -7254,7 +7509,6 @@ const BlogEditor = () => {
                   setSlashMenuOpen(false);
                   setShowVideoModal(true);
                 }}
-                postType={postType}
               />
             </div>
           </div>
@@ -7267,7 +7521,9 @@ const BlogEditor = () => {
             <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
               {[
                 { key: "content", label: "Content" },
-                ...(getFeatures(postType).seoPanel ? [{ key: "seo", label: "SEO" }] : []),
+                ...(getFeatures(postType).seoPanel
+                  ? [{ key: "seo", label: "SEO" }]
+                  : []),
                 { key: "ai", label: "AI Tools" },
                 { key: "health", label: "Health" },
                 { key: "distribute", label: "Distribute" },
@@ -7992,14 +8248,14 @@ const BlogEditor = () => {
             {/* ── Health Tab ── */}
             {sidebarTab === "health" && (
               <ContentHealthPanel
+                bannerImage={bannerImage}
                 contentHtml={editor?.getHTML() || ""}
                 excerpt={excerpt}
                 featuredImage={featuredImage}
-                bannerImage={bannerImage}
-                tags={tags}
-                seo={seoData}
-                postType={postType}
                 goal={contentGoal}
+                postType={postType}
+                seo={seoData}
+                tags={tags}
                 title={title}
               />
             )}
@@ -8013,7 +8269,9 @@ const BlogEditor = () => {
                 blogPublished={saveStatus === "Published"}
                 blogSeo={seoData}
                 blogTags={tags}
+                contentGoal={contentGoal}
                 distributionRecords={distRecords}
+                postType={postType}
                 onEnsureSaved={ensureSaved}
                 onNavigateToSEO={() => setSidebarTab("seo")}
                 onTriggerCopilotAI={() => setIsCopilotOpen(true)}
@@ -8029,8 +8287,6 @@ const BlogEditor = () => {
                 }}
                 onTriggerTagsAI={() => setIsTagsModalOpen(true)}
                 onUpdateRecords={(recs) => setDistRecords(recs)}
-                postType={postType}
-                contentGoal={contentGoal}
               />
             )}
           </div>

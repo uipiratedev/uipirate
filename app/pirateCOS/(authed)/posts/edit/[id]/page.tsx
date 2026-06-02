@@ -36,9 +36,6 @@ import {
   getPostTypeConfig,
   getGoalConfig,
   getFeatures,
-  CONTENT_GOALS,
-  POST_TYPE_CONFIGS,
-  getPostTypesByCategory,
 } from "@/lib/pirateCOS/postTypeConfig";
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
 
@@ -171,9 +168,9 @@ const SEOEditorModal = ({
       ? "gemini-flash-latest"
       : engine === "anthropic"
         ? "claude-3-5-sonnet-latest"
-      : engine === "mistral"
-        ? "mistral-large-latest"
-        : "gpt-4o-mini";
+        : engine === "mistral"
+          ? "mistral-large-latest"
+          : "gpt-4o-mini";
 
   const plainTextContent = postContent
     .replace(/<[^>]*>/g, " ")
@@ -5232,10 +5229,20 @@ const FloatingBlockInserter = ({
     },
   ];
 
-  const blockItems = allBlockItems.filter(item => {
+  const blockItems = allBlockItems.filter((item) => {
+    const features = getFeatures(postType || "blog");
+
     if (postType === "social-post") {
-      return item.id === "upload-image" || item.id === "image-url" || item.id === "video";
+      return (
+        item.id === "upload-image" ||
+        item.id === "image-url" ||
+        item.id === "video"
+      );
     }
+    if (item.id === "code") return !!features.codeBlocks;
+    if (item.id === "table") return !!features.tables;
+    if (item.id === "quote") return postType !== "social-post";
+
     return true;
   });
 
@@ -5340,110 +5347,108 @@ const SlashCommandMenu = ({
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const commands = React.useMemo(
-    () => {
-      const features = postType ? getFeatures(postType) : null;
-      const all = [
-        {
-          title: "Heading 1",
-          icon: "H1",
-          desc: "Large section heading",
-          command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+  const commands = React.useMemo(() => {
+    const features = postType ? getFeatures(postType) : null;
+    const all = [
+      {
+        title: "Heading 1",
+        icon: "H1",
+        desc: "Large section heading",
+        command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+      },
+      {
+        title: "Heading 2",
+        icon: "H2",
+        desc: "Medium section heading",
+        command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      },
+      {
+        title: "Heading 3",
+        icon: "H3",
+        desc: "Small section heading",
+        command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      },
+      {
+        title: "Bullet List",
+        icon: "•",
+        desc: "Create a simple list",
+        command: () => editor.chain().focus().toggleBulletList().run(),
+      },
+      {
+        title: "Numbered List",
+        icon: "1.",
+        desc: "Create a numbered list",
+        command: () => editor.chain().focus().toggleOrderedList().run(),
+      },
+      {
+        title: "Task List",
+        icon: "☑",
+        desc: "Track tasks with checkboxes",
+        command: () => editor.chain().focus().toggleTaskList().run(),
+        featureKey: "taskLists",
+      },
+      {
+        title: "Quote",
+        icon: '"',
+        desc: "Capture a quote",
+        command: () => editor.chain().focus().toggleBlockquote().run(),
+      },
+      {
+        title: "Code Block",
+        icon: "</>",
+        desc: "Add a code snippet",
+        command: () => editor.chain().focus().toggleCodeBlock().run(),
+        featureKey: "codeBlocks",
+      },
+      {
+        title: "Divider",
+        icon: "—",
+        desc: "Add a horizontal rule",
+        command: () => editor.chain().focus().setHorizontalRule().run(),
+      },
+      {
+        title: "Image Upload",
+        icon: "🖼",
+        desc: "Upload an image from disk",
+        command: () => {
+          imageUploadRef.current?.click();
         },
-        {
-          title: "Heading 2",
-          icon: "H2",
-          desc: "Medium section heading",
-          command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
-        },
-        {
-          title: "Heading 3",
-          icon: "H3",
-          desc: "Small section heading",
-          command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
-        },
-        {
-          title: "Bullet List",
-          icon: "•",
-          desc: "Create a simple list",
-          command: () => editor.chain().focus().toggleBulletList().run(),
-        },
-        {
-          title: "Numbered List",
-          icon: "1.",
-          desc: "Create a numbered list",
-          command: () => editor.chain().focus().toggleOrderedList().run(),
-        },
-        {
-          title: "Task List",
-          icon: "☑",
-          desc: "Track tasks with checkboxes",
-          command: () => editor.chain().focus().toggleTaskList().run(),
-          featureKey: "taskLists",
-        },
-        {
-          title: "Quote",
-          icon: '"',
-          desc: "Capture a quote",
-          command: () => editor.chain().focus().toggleBlockquote().run(),
-        },
-        {
-          title: "Code Block",
-          icon: "</>",
-          desc: "Add a code snippet",
-          command: () => editor.chain().focus().toggleCodeBlock().run(),
-          featureKey: "codeBlocks",
-        },
-        {
-          title: "Divider",
-          icon: "—",
-          desc: "Add a horizontal rule",
-          command: () => editor.chain().focus().setHorizontalRule().run(),
-        },
-        {
-          title: "Image Upload",
-          icon: "🖼",
-          desc: "Upload an image from disk",
-          command: () => {
-            imageUploadRef.current?.click();
-          },
-        },
-        {
-          title: "Image URL",
-          icon: "🔗",
-          desc: "Embed an image via URL",
-          command: onImageUrl,
-        },
-        {
-          title: "Embed Video",
-          icon: "▶",
-          desc: "YouTube, Vimeo, Loom…",
-          command: onVideoEmbed,
-        },
-        {
-          title: "Table",
-          icon: "田",
-          desc: "Insert a 3x3 table",
-          command: () =>
-            editor
-              .chain()
-              .focus()
-              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-              .run(),
-          featureKey: "tables",
-        },
-      ];
+      },
+      {
+        title: "Image URL",
+        icon: "🔗",
+        desc: "Embed an image via URL",
+        command: onImageUrl,
+      },
+      {
+        title: "Embed Video",
+        icon: "▶",
+        desc: "YouTube, Vimeo, Loom…",
+        command: onVideoEmbed,
+      },
+      {
+        title: "Table",
+        icon: "田",
+        desc: "Insert a 3x3 table",
+        command: () =>
+          editor
+            .chain()
+            .focus()
+            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+            .run(),
+        featureKey: "tables",
+      },
+    ];
 
-      return all.filter((c) => {
-        if (!features) return true;
-        if (c.featureKey === "codeBlocks") return features.codeBlocks !== false;
-        if (c.featureKey === "tables") return features.tables !== false;
-        if (c.featureKey === "taskLists") return !!features.taskLists;
-        return true;
-      });
-    },
-    [editor, onImageUrl, onVideoEmbed, imageUploadRef, postType],
-  );
+    return all.filter((c) => {
+      if (!features) return true;
+      if (c.featureKey === "codeBlocks") return !!features.codeBlocks;
+      if (c.featureKey === "tables") return !!features.tables;
+      if (c.featureKey === "taskLists") return !!features.taskLists;
+
+      return true;
+    });
+  }, [editor, onImageUrl, onVideoEmbed, imageUploadRef, postType]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -5587,13 +5592,19 @@ const FormattingToolbar = ({
           className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
           title="Insert Call-To-Action Block"
           onClick={() => {
-            editor.chain().focus().insertContent(`
+            editor
+              .chain()
+              .focus()
+              .insertContent(
+                `
               <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
                 <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
                 <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
                 <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
               </div>
-            `).run();
+            `,
+              )
+              .run();
           }}
         >
           📣 Insert CTA
@@ -5648,50 +5659,50 @@ const FormattingToolbar = ({
       {/* Sleek Text Color Menu */}
       {postType !== "social-post" && (
         <div className="relative flex items-center">
-        <button
-          className={btn(colorPaletteOpen)}
-          style={colorPaletteOpen ? activeStyle : {}}
-          title="Text Color"
-          onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
-        >
-          <span className="flex items-center gap-1">
-            A
-            <span
-              className="w-2.5 h-2.5 rounded-full border border-black/10"
-              style={{
-                backgroundColor:
-                  editor.getAttributes("textStyle").color || "#1A1A1A",
-              }}
-            />
-          </span>
-        </button>
-        {colorPaletteOpen && (
-          <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
-            {colors.map((c) => (
-              <button
-                key={c.value}
-                className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
-                style={{ backgroundColor: c.value }}
-                title={c.name}
-                onClick={() => {
-                  editor.chain().focus().setColor(c.value).run();
-                  setColorPaletteOpen(false);
+          <button
+            className={btn(colorPaletteOpen)}
+            style={colorPaletteOpen ? activeStyle : {}}
+            title="Text Color"
+            onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
+          >
+            <span className="flex items-center gap-1">
+              A
+              <span
+                className="w-2.5 h-2.5 rounded-full border border-black/10"
+                style={{
+                  backgroundColor:
+                    editor.getAttributes("textStyle").color || "#1A1A1A",
                 }}
               />
-            ))}
-            <button
-              className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
-              title="Reset Color"
-              onClick={() => {
-                editor.chain().focus().unsetColor().run();
-                setColorPaletteOpen(false);
-              }}
-            >
-              Reset
-            </button>
-          </div>
-        )}
-      </div>
+            </span>
+          </button>
+          {colorPaletteOpen && (
+            <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
+              {colors.map((c) => (
+                <button
+                  key={c.value}
+                  className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
+                  style={{ backgroundColor: c.value }}
+                  title={c.name}
+                  onClick={() => {
+                    editor.chain().focus().setColor(c.value).run();
+                    setColorPaletteOpen(false);
+                  }}
+                />
+              ))}
+              <button
+                className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
+                title="Reset Color"
+                onClick={() => {
+                  editor.chain().focus().unsetColor().run();
+                  setColorPaletteOpen(false);
+                }}
+              >
+                Reset
+              </button>
+            </div>
+          )}
+        </div>
       )}
 
       <button
@@ -5708,8 +5719,17 @@ const FormattingToolbar = ({
           title="Insert Affiliate Link"
           onClick={() => {
             const url = prompt("Enter Affiliate URL:");
+
             if (url) {
-              editor.chain().focus().setLink({ href: url, target: '_blank', rel: 'nofollow sponsored' }).run();
+              editor
+                .chain()
+                .focus()
+                .setLink({
+                  href: url,
+                  target: "_blank",
+                  rel: "nofollow sponsored",
+                })
+                .run();
             }
           }}
         >
@@ -5733,7 +5753,9 @@ const FormattingToolbar = ({
             className={btn(editor.isActive("heading", { level: 1 }))}
             style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
             title="Heading 1"
-            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
           >
             H1
           </button>
@@ -5741,7 +5763,9 @@ const FormattingToolbar = ({
             className={btn(editor.isActive("heading", { level: 2 }))}
             style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
             title="Heading 2"
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
           >
             H2
           </button>
@@ -5749,7 +5773,9 @@ const FormattingToolbar = ({
             className={btn(editor.isActive("heading", { level: 3 }))}
             style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
             title="Heading 3"
-            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
           >
             H3
           </button>
@@ -5793,7 +5819,7 @@ const FormattingToolbar = ({
           &ldquo; Quote
         </button>
       )}
-      {features?.codeBlocks !== false && (
+      {features?.codeBlocks && (
         <button
           className={btn(editor.isActive("codeBlock"))}
           style={editor.isActive("codeBlock") ? activeStyle : {}}
@@ -5811,7 +5837,7 @@ const FormattingToolbar = ({
       >
         —
       </button>
-      {features?.tables !== false && editor.isActive("table") && (
+      {features?.tables && editor.isActive("table") && (
         <>
           {sep}
           <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
@@ -6446,6 +6472,15 @@ const BlogEditPage = () => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
 
+  // Programmatically reset active sidebar tab to "content" if the active tab is hidden (e.g. SEO panel becomes false)
+  useEffect(() => {
+    const features = getFeatures(postType || "blog");
+
+    if (sidebarTab === "seo" && !features.seoPanel) {
+      setSidebarTab("content");
+    }
+  }, [postType, sidebarTab]);
+
   // Metadata dirty tracking — only active after fetchBlog has populated initial values
   useEffect(() => {
     if (!isDataInitialized) return;
@@ -6722,9 +6757,10 @@ const BlogEditPage = () => {
         setBannerImage(blog.bannerImage || "");
         setTags(blog.tags || []);
         const postTypeVal = blog.postType || "blog";
+
         setPostType(postTypeVal);
         setContentGoal(blog.contentGoal || "traffic");
-        
+
         // Auto-select recommended AI preset based on loaded postType if not already set
         const PRESET_DEFAULTS: Record<string, string> = {
           blog: "seo-article",
@@ -6740,6 +6776,7 @@ const BlogEditPage = () => {
           "social-post": "linkedin-post",
         };
         const defaultPreset = PRESET_DEFAULTS[postTypeVal] || "";
+
         setActivePreset(defaultPreset);
         setCurrentSlug(blog.slug || "");
         setSeoData(blog.seo || {});
@@ -6961,7 +6998,10 @@ const BlogEditPage = () => {
               <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            {getPostTypeConfig(postType)?.icon} {getPostTypeConfig(postType)?.label} × {getGoalConfig(contentGoal)?.icon} {getGoalConfig(contentGoal)?.label}
+            {getPostTypeConfig(postType)?.icon}{" "}
+            {getPostTypeConfig(postType)?.label} ×{" "}
+            {getGoalConfig(contentGoal)?.icon}{" "}
+            {getGoalConfig(contentGoal)?.label}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -7067,6 +7107,8 @@ const BlogEditPage = () => {
         <FormattingToolbar
           activePreset={activePreset}
           editor={editor}
+          features={getFeatures(postType)}
+          postType={postType}
           onCopilotClick={() => setIsCopilotOpen(true)}
           onLinkClick={() => {
             editor.chain().focus().extendMarkRange("link").run();
@@ -7074,8 +7116,6 @@ const BlogEditPage = () => {
           }}
           onPresetChange={setActivePreset}
           onTransformClick={() => setIsRepurposeDrawerOpen(true)}
-          features={getFeatures(postType)}
-          postType={postType}
         />
       )}
 
@@ -7192,7 +7232,8 @@ const BlogEditPage = () => {
                         className="flex-shrink-0 text-[10px] font-bold font-geist text-[#FF5B04] hover:underline cursor-pointer"
                         type="button"
                         onClick={() => {
-                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`;
+
                           setTitle(defaultTitle);
                         }}
                       >
@@ -7245,9 +7286,9 @@ const BlogEditPage = () => {
               <FloatingBlockInserter
                 editor={editor}
                 imageUploadRef={inlineImageUploadRef}
+                postType={postType}
                 onImageUrl={() => setShowImageUrlModal(true)}
                 onVideoEmbed={() => setShowVideoModal(true)}
-                postType={postType}
               />
               <input
                 ref={inlineImageUploadRef}
@@ -7264,6 +7305,7 @@ const BlogEditPage = () => {
                 imageUploadRef={inlineImageUploadRef}
                 isOpen={slashMenuOpen}
                 position={slashMenuPosition}
+                postType={postType}
                 onClose={() => setSlashMenuOpen(false)}
                 onImageUrl={() => {
                   setSlashMenuOpen(false);
@@ -7273,7 +7315,6 @@ const BlogEditPage = () => {
                   setSlashMenuOpen(false);
                   setShowVideoModal(true);
                 }}
-                postType={postType}
               />
             </div>
           </div>
@@ -7286,7 +7327,9 @@ const BlogEditPage = () => {
             <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
               {[
                 { key: "content", label: "Content" },
-                ...(getFeatures(postType).seoPanel ? [{ key: "seo", label: "SEO" }] : []),
+                ...(getFeatures(postType).seoPanel
+                  ? [{ key: "seo", label: "SEO" }]
+                  : []),
                 { key: "ai", label: "AI Tools" },
                 { key: "health", label: "Health" },
                 { key: "distribute", label: "Distribute" },
@@ -8130,14 +8173,14 @@ const BlogEditPage = () => {
             {/* ── Health Tab ── */}
             {sidebarTab === "health" && (
               <ContentHealthPanel
+                bannerImage={bannerImage}
                 contentHtml={editor?.getHTML() || ""}
                 excerpt={excerpt}
                 featuredImage={featuredImage}
-                bannerImage={bannerImage}
-                tags={tags}
-                seo={seoData}
-                postType={postType}
                 goal={contentGoal}
+                postType={postType}
+                seo={seoData}
+                tags={tags}
                 title={title}
               />
             )}
@@ -8151,7 +8194,9 @@ const BlogEditPage = () => {
                 blogPublished={saveStatus === "Published"}
                 blogSeo={seoData}
                 blogTags={tags}
+                contentGoal={contentGoal}
                 distributionRecords={distRecords}
+                postType={postType}
                 onEnsureSaved={ensureSaved}
                 onNavigateToSEO={() => setSidebarTab("seo")}
                 onTriggerCopilotAI={() => setIsCopilotOpen(true)}
@@ -8167,8 +8212,6 @@ const BlogEditPage = () => {
                 }}
                 onTriggerTagsAI={() => setIsTagsModalOpen(true)}
                 onUpdateRecords={(recs) => setDistRecords(recs)}
-                postType={postType}
-                contentGoal={contentGoal}
               />
             )}
           </div>
