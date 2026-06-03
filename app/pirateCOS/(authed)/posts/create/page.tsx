@@ -7681,7 +7681,8 @@ const BlogEditor = () => {
             {saveStatus}
           </span>
           <button
-            className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all ${
+            disabled={!title.trim() || !editor || editor.isEmpty}
+            className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:bg-black/5 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none ${
               showPreview
                 ? "bg-[#FF5B04] text-white"
                 : "bg-black/5 text-gray-600 hover:bg-black/10"
@@ -7709,23 +7710,31 @@ const BlogEditor = () => {
             </button>
           )}
           <Button
-            className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
-            disabled={isSaving}
+            className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl bg-black/5 text-gray-700 font-medium disabled:opacity-40 disabled:bg-black/5 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none"
+            disabled={isSaving || !title.trim() || !editor || editor.isEmpty}
             variant="flat"
             onClick={handleSaveDraft}
           >
             <span className="hidden sm:inline">Save Draft</span>
             <span className="sm:hidden">Save</span>
           </Button>
-          <Button
-            className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white"
-            disabled={isSaving}
-            isLoading={isSaving}
-            style={{ background: "#FF5B04" }}
-            onClick={handlePublish}
-          >
-            Publish
-          </Button>
+          {(() => {
+            const isDisabled = isSaving || !title.trim() || !editor || editor.isEmpty;
+            return (
+              <Button
+                className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"
+                disabled={isDisabled}
+                isLoading={isSaving}
+                style={{
+                  background: isDisabled ? "rgba(0,0,0,0.06)" : "#FF5B04",
+                  color: isDisabled ? "#a1a1aa" : "white"
+                }}
+                onClick={handlePublish}
+              >
+                Publish
+              </Button>
+            );
+          })()}
         </div>
       </div>
 
