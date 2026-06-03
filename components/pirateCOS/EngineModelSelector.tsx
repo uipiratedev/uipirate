@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 import {
   AIEngine,
   AI_PROVIDERS,
-  getModelsForEngine,
   getDefaultModelForEngine,
 } from "@/lib/pirateCOS/ai-registry";
+import { useAIModels } from "@/hooks/useAIModels";
 
 interface Props {
   selectedEngine: AIEngine;
@@ -21,13 +21,14 @@ export const EngineModelSelector: React.FC<Props> = ({
   onEngineChange,
   onModelChange,
 }) => {
+  const { models, source, isLoading } = useAIModels(selectedEngine);
+
   // Auto-sync model to default when engine changes
   useEffect(() => {
-    const models = getModelsForEngine(selectedEngine);
     if (!models.some((m) => m.id === selectedModel)) {
       onModelChange(getDefaultModelForEngine(selectedEngine));
     }
-  }, [selectedEngine, selectedModel, onModelChange]);
+  }, [selectedEngine, selectedModel, models, onModelChange]);
 
   return (
     <>
@@ -74,7 +75,11 @@ export const EngineModelSelector: React.FC<Props> = ({
             Model Version
           </span>
           <span className="text-[10px] text-gray-400 font-geist">
-            Choose the specific model capability
+            {isLoading
+              ? "Checking provider models..."
+              : source === "mixed"
+                ? "Live provider models plus safe defaults"
+                : "Choose the specific model capability"}
           </span>
         </div>
         <select
@@ -82,7 +87,7 @@ export const EngineModelSelector: React.FC<Props> = ({
           value={selectedModel}
           onChange={(e) => onModelChange(e.target.value)}
         >
-          {getModelsForEngine(selectedEngine).map((m) => (
+          {models.map((m) => (
             <option key={m.id} value={m.id}>
               {m.label} {m.description ? `(${m.description})` : ""}
             </option>

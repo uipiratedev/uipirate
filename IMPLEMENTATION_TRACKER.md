@@ -278,6 +278,7 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [x] **AIConfig Schema Decoupling**: Updated Mongoose schema to dynamically match registry engine IDs.
 - [x] **AIConfigPanel & settings Refactoring**: Replaced hardcoded maps with registry provider loops in `AIConfigPanel.tsx` and settings.
 - [x] **Wizard & Modal Refactoring**: Integrated selector and unified state hooks across all modals in `create/page.tsx` and `edit/[id]/page.tsx`.
+- [x] **Dynamic Discovery Filtering**: Integrated model filters in `lib/pirateCOS/ai-model-discovery.ts` to only allow models best suited for content generation (filtering out coding, embedding, and other non-chat models).
 
 ### ⬜ Phase 4E: PirateCOS: AI-Native Workspace Panel
 
