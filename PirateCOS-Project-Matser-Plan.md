@@ -15,6 +15,8 @@
 > This document is grounded entirely in the current codebase structure.
 >
 
+> **Last codebase audit:** June 3, 2026. Current audit evidence includes `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*`, `lib/pirateCOS/*`, and `components/pirateCOS/*`.
+
 | Phase | Title | Status |
 |---|---|---|
 | **Phase 1** | PirateCOS: Content Command Center — Core Platform | 🟢 **Complete** |
@@ -22,8 +24,8 @@
 | **Phase 3** | PirateCOS: API Refinement, LinkedIn Publishing & External Integration | 🟢 **Complete** |
 | **Phase 4** | PirateCOS: AI Intelligence Layer & Content Transformation | 🟢 **Complete** |
 | **Phase 4B** | PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution | 🟢 **Complete** |
-| **Phase 4C** | PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability | 🟡 **In Progress** |
-| **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | ⬜ Not started |
+| **Phase 4C** | PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability | 🟢 **Complete** |
+| **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | ⬜ Not started; foundations shipped |
 | **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | ⬜ Not started |
 | **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | ⬜ Not started |
 | **Phase 8** | PirateCOS: Blog Theme Customization & Design System Matching | ⬜ Not started |
@@ -34,16 +36,16 @@
 
 | Area | Status |
 |---|---|
-| Database schemas (`AIConfig`, `Integration`, `ApiKey`, `Blog`) | ✅ Complete |
-| AI Settings page (`/admin/ai-settings`) — DB-encrypted keys, all 5 engines | ✅ Complete |
+| Database schemas (`AIConfig`, `Integration`, `ApiKey`, `Post`) | ✅ Complete |
+| AI Settings page (`/pirateCOS/ai-settings`) — DB-encrypted keys, all 5 engines | ✅ Complete |
 | `AIConfigPanel` in-editor quick panel — key storage & Mistral engine | ✅ Complete & Verified |
-| Distribution adapters (WordPress, Medium, Ghost, Buffer) | ✅ Complete |
-| `PATCH /api/admin/integrations/[platform]` (test connection) | ✅ Complete & Verified (Live probes) |
+| Distribution adapters (WordPress, Medium, Ghost, Buffer; LinkedIn added in Phase 3) | ✅ Complete |
+| `PATCH /api/pirateCOS/integrations/[platform]` (test connection) | ✅ Complete & Verified (Live probes) |
 | Distribution Engine, Publish API, Preflight | ✅ Complete |
 | Distribution Panel UI (4th editor tab) | ✅ Complete |
 | Integrations Settings page + API Key management | ✅ Complete |
 | `hooks/useSaveBlog.ts` extraction | ✅ Complete |
-| Public Content API (`/api/v1/content`) | ✅ Complete |
+| Public Content API (`/api/pirateCOS/v1/content`) | ✅ Complete |
 | Multi-tenant isolation across all routes and models | ✅ Complete |
 
  ---
@@ -98,7 +100,20 @@
 | AI prompt injection per content goal | ✅ Complete & Verified |
 | Edit page adaptation | ✅ Complete & Verified |
 
----
+ ---
+ 
+ **Phase 4C — Content Lifecycle & UX Magic (Complete)**
+ 
+ | Area | Status |
+ |---|---|
+ | One-Click Distribution Chains selector and strategy preset templates | ✅ Complete & Verified |
+ | Inline Preflight Autofixes (`⚡ Autofix` actions for tags, keywords, excerpts) | ✅ Complete & Verified |
+ | Background sequential repurposing triggers with progress loader tracking | ✅ Complete & Verified |
+ | Persisted database storage mapping for repurposed outputs on the Post schema | ✅ Complete & Verified |
+ | Adapter connection recovery & direct diagnostics troubleshoot overlay cards | ✅ Complete & Verified |
+ | Wizard interface customization (specs grid, custom SVG icons, selections guard) | ✅ Complete & Verified |
+ 
+ ---
 
 ## Table of Contents
 
@@ -331,7 +346,7 @@ export interface IIntegration extends Document {
 
 **File:** `models/pirateCOS/ApiKey.ts`
 
-For programmatic access via `/api/v1/content`. The raw key is shown **once at creation and never stored in plaintext**. Only a SHA-256 hash is persisted.
+For programmatic access via `/api/pirateCOS/v1/content`. The raw key is shown **once at creation and never stored in plaintext**. Only a SHA-256 hash is persisted.
 
 ```typescript
 export interface IApiKey extends Document {
@@ -569,20 +584,20 @@ import { BufferAdapter }    from "./adapters/buffer.adapter";
 const ADAPTER_MAP = { wordpress: WordPressAdapter, medium: MediumAdapter,
                       ghost: GhostAdapter, buffer: BufferAdapter };
 
-export async function dispatch({ blog, platforms, options, tenantId }) {
+export async function dispatch({ post, platforms, options, tenantId }) {
   return Promise.allSettled(
     platforms.map(async (platform) => {
       // Scoped to tenantId — fetches only this user's integration credentials
       const integration = await Integration.findOne({ tenantId, platform, isActive: true });
       if (!integration) throw new Error(`${platform} not connected`);
       const adapter = new ADAPTER_MAP[platform](integration.credentials, decrypt);
-      return adapter.publish(blog, options);
+      return adapter.publish(post, options);
     })
   ).then(mapSettledResults); // converts PromiseSettledResult[] → DistributionResult[]
 }
 ```
 
-#### `lib/distribution/transform/content-preflight.ts`
+#### `lib/pirateCOS/distribution/transform/content-preflight.ts`
 
 ```typescript
 export interface PreflightCheck {
@@ -592,15 +607,15 @@ export interface PreflightCheck {
   action?: string; // e.g. "Open SEO Editor"
 }
 
-export function runPreflight(blog: Partial<IBlog>): PreflightCheck[] {
+export function runPreflight(post: Partial<IPost>): PreflightCheck[] {
   return [
-    { label: "Excerpt present",      passed: !!blog.excerpt,                severity: "error",   action: "Generate Excerpt" },
-    { label: "Content ≥ 300 words",  passed: wordCount(blog.content) >= 300, severity: "error" },
-    { label: "Focus keyword set",    passed: !!blog.seo?.focusKeyword,       severity: "warning", action: "Open SEO Editor" },
-    { label: "Meta title set",       passed: !!blog.seo?.metaTitle,          severity: "warning", action: "Open SEO Editor" },
-    { label: "Meta description set", passed: !!blog.seo?.metaDescription,    severity: "warning", action: "Open SEO Editor" },
-    { label: "At least one tag",     passed: (blog.tags?.length ?? 0) > 0,   severity: "warning", action: "Generate Tags" },
-    { label: "Featured image set",   passed: !!blog.featuredImage,           severity: "warning" },
+    { label: "Excerpt present",      passed: !!post.excerpt,                severity: "error",   action: "Generate Excerpt" },
+    { label: "Content ≥ 300 words",  passed: wordCount(post.content) >= 300, severity: "error" },
+    { label: "Focus keyword set",    passed: !!post.seo?.focusKeyword,       severity: "warning", action: "Open SEO Editor" },
+    { label: "Meta title set",       passed: !!post.seo?.metaTitle,          severity: "warning", action: "Open SEO Editor" },
+    { label: "Meta description set", passed: !!post.seo?.metaDescription,    severity: "warning", action: "Open SEO Editor" },
+    { label: "At least one tag",     passed: (post.tags?.length ?? 0) > 0,   severity: "warning", action: "Generate Tags" },
+    { label: "Featured image set",   passed: !!post.featuredImage,           severity: "warning" },
   ];
 }
 ```
@@ -628,8 +643,8 @@ export abstract class BaseAdapter {
     protected credentials: IPlatformCredentials,
     protected decrypt: (cipher: string) => string,  // typed as plain function, not typeof encrypt.decrypt
   ) {}
-  abstract publish(blog: IBlog, options?: PublishOptions): Promise<DistributionResult>;
-  abstract update(blog: IBlog, externalId: string): Promise<DistributionResult>;
+  abstract publish(post: IPost, options?: PublishOptions): Promise<DistributionResult>;
+  abstract update(post: IPost, externalId: string): Promise<DistributionResult>;
 }
 ```
 
@@ -640,13 +655,13 @@ export abstract class BaseAdapter {
 | `GhostAdapter` | JWT from `id:secret` Admin API key | **HTML via `?source=html`** — no Mobiledoc conversion needed | `POST /ghost/api/admin/posts/?source=html` ✅ | `PUT /ghost/api/admin/posts/:id/?source=html` ✅ |
 | `BufferAdapter` | OAuth Bearer | Plain text: title + excerpt (no full HTML) | `POST /1/updates/create.json` ✅ | ❌ Unsupported — social posts are immutable |
 
-**`lib/distribution/transform/html-to-markdown.ts`** — Converts TipTap HTML for Medium using a **custom regex-based pipeline** (not `unified`/`rehype-remark`). Handles headings, lists, blockquotes, code blocks, bold/italic, links, and images. Ghost receives HTML directly via its `?source=html` parameter, bypassing this transformer entirely.
+**`lib/pirateCOS/distribution/transform/html-to-markdown.ts`** — Converts TipTap HTML for Medium using a **custom regex-based pipeline** (not `unified`/`rehype-remark`). Handles headings, lists, blockquotes, code blocks, bold/italic, links, and images. Ghost receives HTML directly via its `?source=html` parameter, bypassing this transformer entirely.
 
 > **Note on `update()` limitations:** Medium and Buffer do not support post updates programmatically. Calls to `adapter.update()` on those two return a `"failed"` `DistributionResult` with a descriptive `errorMessage`. WordPress and Ghost both have full update support.
 
 ---
 
-### 3.5 Public Content API — `/api/v1/content`
+### 3.5 Public Content API — `/api/pirateCOS/v1/content`
 
 Uses a separate auth mechanism from the admin JWT cookies — a static Bearer key in the `Authorization` header.
 
@@ -676,15 +691,15 @@ export async function verifyApiKey(req: NextRequest): Promise<ApiKeyAuthResult |
 }
 ```
 
-> **Implementation note:** `verifyApiKey` loads all active keys across all tenants to locate a match. This is correct at current scale; at very high key volumes a per-tenant indexed lookup would be preferable. The returned `tenantId` is used immediately by the `/api/v1/content` routes to scope every MongoDB query.
+> **Implementation note:** `verifyApiKey` loads all active keys across all tenants to locate a match. This is correct at current scale; at very high key volumes a per-tenant indexed lookup would be preferable. The returned `tenantId` is used immediately by the `/api/pirateCOS/v1/content` routes to scope every MongoDB query.
 
 #### Endpoints
 
 | Method | Path | Scope | Description |
 |---|---|---|---|
-| `GET` | `/api/v1/content` | `read` | Paginated list of published blogs. Params: `limit`, `page`, `postType`, `tag` |
-| `GET` | `/api/v1/content/[slug]` | `read` | Single blog by slug — full content + SEO fields |
-| `POST` | `/api/v1/content` | `write` | Create a blog programmatically. Accepts `html` or `markdown` content |
+| `GET` | `/api/pirateCOS/v1/content` | `read` | Paginated list of published posts. Params: `limit`, `page`, `postType`, `tag` |
+| `GET` | `/api/pirateCOS/v1/content/[slug]` | `read` | Single post by slug — full content + SEO fields |
+| `POST` | `/api/pirateCOS/v1/content` | `write` | Create a post programmatically. Accepts HTML content |
 
 ---
 
@@ -986,16 +1001,18 @@ Each milestone was independently deployable and produced visible, testable outpu
 
 ## What Comes Next — Phase 2 & Beyond
 
-Phase 1 delivers the complete foundation. Phases 2–8 are formally scoped below.
+The canonical execution sequence is the same as the top-level roadmap above. Phases 1-4C are complete; Phase 5 has storage and owned-site view-count foundations, but the analytics product remains planned.
 
 | Phase | Title | Status |
 |---|---|---|
-| **Phase 2** | API Refinement, LinkedIn Publishing & External Integration | 🟢 **Complete** |
-| **Phase 3** | Monetization & Growth Engine | 🟢 **Complete** |
-| **Phase 4** | Advanced Analytics & Content Optimization | 🟢 **Complete** |
-| **Phase 5** | Newsletter Platforms (Substack, Beehiiv, ConvertKit) | ⬜ Not started |
-| **Phase 6** | Team Collaboration & Enterprise Features | ⬜ Not started |
-| **Phase 7** | Developer Platforms (Dev.to, Hashnode) | ⬜ Not started |
+| **Phase 2** | Monetization & Growth Engine | 🟢 **Complete** |
+| **Phase 3** | API Refinement, LinkedIn Publishing & External Integration | 🟢 **Complete** |
+| **Phase 4** | AI Intelligence Layer & Content Transformation | 🟢 **Complete** |
+| **Phase 4B** | Content Lifecycle Orchestration — Guided Creation & Distribution | 🟢 **Complete** |
+| **Phase 4C** | Content Lifecycle & UX Magic — Workflow Smoothness & Reliability | 🟢 **Complete** |
+| **Phase 5** | Advanced Analytics & Content Optimization | ⬜ Not started; foundations shipped |
+| **Phase 6** | Social Publishing & Newsletter Platforms | ⬜ Not started |
+| **Phase 7** | Team Collaboration & Enterprise Features | ⬜ Not started |
 | **Phase 8** | Blog Theme Customization & Design System Matching | ⬜ Not started |
 
 ---
@@ -1250,11 +1267,11 @@ interface UpgradePromptProps {
 
 | Milestone | Deliverable | Description | Priority | Status |
 |---|---|---|---|---|
-| **2.1 — Naming Refactor** | `blogs` → `posts` codebase-wide rename | Rename all instances of "blog" to "post" (models, routes, components, database collections, API endpoints) to reflect the product's evolved multi-format content model | 🔴 High | 🟢 **Complete** |
-| **2.2 — LinkedIn Integration** | LinkedIn OAuth + Article/Post publishing | Full LinkedIn distribution adapter with OAuth 2.0 authentication, support for both Articles (long-form 2,000+ words) and Posts (1,300 char short-form), AI-optimized hashtag suggestions | 🔴 High | ⬜ Not started |
-| **2.3 — Public API Documentation** | `API_INTEGRATION_GUIDE.md` | Comprehensive integration guide for end-users: covers API Key creation, SHA-256 authentication pattern, all `/api/v1/content` endpoints, and real-world code samples (JavaScript/fetch, cURL, Python) for embedding distributed content in external websites | 🔴 High | ⬜ Not started |
-| **2.4 — Migration Tooling** | Database migration script | Zero-downtime MongoDB collection rename (`blogs` → `posts`) with index preservation and rollback capability | 🟡 Medium | 🟢 **Complete** (Safely moved 16 legacy posts to active posts) |
-| **2.5 — SDK/Client Library** | Optional TypeScript SDK for `/api/v1/content` | Typed client library to simplify external integrations (could be deferred to later phase based on adoption metrics) | 🟢 Low | ⬜ Not started |
+| **3.1 — Naming Refactor** | `blogs` → `posts` codebase-wide rename | Rename user-facing and programmatic surfaces from blog-centric language to the post model where required by PirateCOS | 🔴 High | 🟢 **Complete** |
+| **3.2 — LinkedIn Integration** | LinkedIn OAuth + Article/Post publishing | Full LinkedIn distribution adapter with OAuth 2.0 authentication, profile resolution, Article/Post publishing, verification, and delete support | 🔴 High | 🟢 **Complete** |
+| **3.3 — Public API Documentation** | `API_INTEGRATION_GUIDE.md` | Comprehensive integration guide for API Key creation, SHA-256 authentication, `/api/pirateCOS/v1/content` endpoints, and cURL/JS/Python samples | 🔴 High | 🟢 **Complete** |
+| **3.4 — Migration Tooling** | Database migration script | Zero-downtime MongoDB collection rename (`blogs` → `posts`) with index preservation and rollback capability | 🟡 Medium | 🟢 **Complete** |
+| **3.5 — SDK/Client Library** | Optional TypeScript SDK for `/api/pirateCOS/v1/content` | Typed client library to simplify external integrations; deferred until external API adoption justifies maintenance overhead | 🟢 Low | ⬜ Deferred |
 
 ### 3.2 Naming Refactor Scope (`blogs` → `posts`)
 
@@ -1607,17 +1624,17 @@ Implementation: Use queue-based publishing (same pattern as Phase 6 newsletter p
     *   SHA-256 Bearer authentication pattern
     *   Scopes: `read` vs. `write`
 *   **Section 3: Endpoints Reference**
-    *   **GET /api/v1/content**
+    *   **GET /api/pirateCOS/v1/content**
         *   List all published posts (paginated)
         *   Query params: `limit`, `page`, `postType`, `tag`
         *   Response schema with example JSON
         *   cURL + JavaScript fetch + Python requests examples
-    *   **GET /api/v1/content/[slug]**
+    *   **GET /api/pirateCOS/v1/content/[slug]**
         *   Single post by slug
         *   Full content + SEO metadata
         *   Response schema with example JSON
         *   Code samples
-    *   **POST /api/v1/content (write scope required)**
+    *   **POST /api/pirateCOS/v1/content (write scope required)**
         *   Programmatic post creation
         *   Accepts `html` or `markdown` content
         *   Request body schema
@@ -1628,7 +1645,7 @@ Implementation: Use queue-based publishing (same pattern as Phase 6 newsletter p
         ```typescript
         // pages/blog.tsx
         export async function getStaticProps() {
-          const res = await fetch('https://yourapp.com/api/v1/content?limit=10', {
+          const res = await fetch('https://yourapp.com/api/pirateCOS/v1/content?limit=10', {
             headers: { Authorization: `Bearer ${process.env.UIPIRATE_API_KEY}` }
           });
           const data = await res.json();
@@ -1654,7 +1671,7 @@ Implementation: Use queue-based publishing (same pattern as Phase 6 newsletter p
 
 | Criterion | Measure |
 |---|---|
-| Zero breaking changes to external API consumers | All `/api/v1/content` endpoints remain stable; internal routes move but are backward-aliased during transition |
+| Zero breaking changes to external API consumers | All `/api/pirateCOS/v1/content` endpoints remain stable; optional aliases should be documented separately if added |
 | Codebase grep: zero `blog` references in non-legacy code | Search for `blog` (case-insensitive) returns only historical comments or migration notes |
 | LinkedIn OAuth flow functional | Users can connect LinkedIn accounts and publish articles/posts successfully |
 | LinkedIn engagement metrics | At least 100 LinkedIn articles published in first 30 days post-launch |
@@ -1808,7 +1825,7 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 
 **Creates:** **Personalization moat** — the more you use it, the smarter it gets, the harder to leave.
 
-**UI:** Preferences dashboard at `/admin/ai-settings/preferences`
+**UI:** Preferences dashboard at `/pirateCOS/ai-settings`; API preferences route at `/api/pirateCOS/ai-config/preferences`
 - Pre-fills AI prompts with learned preferences
 - Suggests presets user has used before
 - Auto-applies formatting user consistently chooses
@@ -2102,6 +2119,8 @@ Never use: "synergy", "disrupt"
 
 ## Phase 5 — Advanced Analytics & Content Optimization
 
+> **Current status after June 3, 2026 audit:** Planned. Foundations already shipped: `models/pirateCOS/AnalyticsSnapshot.ts` for tenant/post/platform/date metric snapshots and owned-site `Post` counters surfaced in the PirateCOS dashboard (`views`, `totalViews`, `botViews`, `duplicateViews`). The remaining Phase 5 work is cross-platform collection, aggregation APIs, analytics UI, UTM attribution, A/B testing, and heatmaps.
+
 **Goal:** Provide actionable insights that make the product indispensable for content marketers, justifying higher-tier pricing.
 
 ### 5.1 Analytics Features
@@ -2110,7 +2129,7 @@ Never use: "synergy", "disrupt"
 |---|---|---|---|
 | **Distribution Performance Dashboard** | Track views, clicks, engagement per platform | Starter+ | Integrate platform APIs (WordPress Stats, Medium Stats API); store in `models/AnalyticsSnapshot.ts` |
 | **AI Content Quality Score** | Automated SEO + readability analysis with recommendations | Pro+ | Custom scoring algorithm: keyword density, Flesch reading ease, meta tag completeness |
-| **A/B Testing for Headlines** | Test multiple headlines; auto-select winner | Pro+ | Variant tracking in `Blog.variants[]`; click-through rate comparison |
+| **A/B Testing for Headlines** | Test multiple headlines; auto-select winner | Pro+ | Future variant tracking on the `Post` model; click-through rate comparison |
 | **Cross-Platform Attribution** | Which platform drives the most traffic back to your site? | Pro+ | UTM parameter injection + Google Analytics integration |
 | **Content Calendar Heatmap** | Visual publishing frequency + optimal posting times | Starter+ | Aggregated `distributedAt` timestamps; ML-based "best time" recommendations |
 | **Competitor Content Tracker** | Monitor competitors' Medium/WordPress posts; get alerts | Pro+ | RSS feed monitoring + keyword matching |
@@ -2971,7 +2990,7 @@ Developer content requires beautiful syntax highlighting.
 **Implementation:**
 
 ```typescript
-// lib/distribution/transform/code-theme.ts
+// lib/pirateCOS/distribution/transform/code-theme.ts
 export function applyCodeTheme(html: string, theme: CodeTheme): string {
   // Parse HTML for <pre><code> blocks
   // Wrap in div with theme class

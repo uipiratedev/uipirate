@@ -4,11 +4,13 @@
 
 This tracker acts as a living document to audit the codebase, document completed milestones, resolve structural roadmap discrepancies, and chart the course for upcoming phases.
 
+> **Last codebase audit:** June 3, 2026. Current audit evidence includes `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*`, `lib/pirateCOS/*`, and `components/pirateCOS/*`.
+
 ---
 
 ## 📊 High-Level Roadmap Status
 
-Based on an exhaustive codebase audit, **Phase 1 (Content Command Center Core)** is **100% Complete & Verified**. 
+Based on the current codebase audit, **Phases 1-4C are Complete & Verified**. Phase 5 has foundation pieces in place, but the full analytics product is still planned.
 
 ### Phase-by-Phase Progress
 | Phase | Feature Suite | Status | Core Focus |
@@ -18,8 +20,8 @@ Based on an exhaustive codebase audit, **Phase 1 (Content Command Center Core)**
 | **Phase 3** | **API Refinement & LinkedIn Integration** | 🟢 **Complete** | `blogs` → `posts` codebase-wide rename, OAuth, LinkedIn Articles/Posts adapter, `API_INTEGRATION_GUIDE.md` |
 | **Phase 4** | **AI Intelligence Layer & Content Transformation** | 🟢 **Complete** | AI modes/intent presets, brand context layer, 8-format multi-format content transformation drawer, real-time co-pilot |
 | **Phase 4B** | **PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution** | 🟢 **Complete** | 3-step wizard (Intent → Goal → Preview), 11 types, 6 goals, adaptive workspace, goal-weighted health scoring, AI advisor, repurposing |
-| **Phase 4C** | **PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability** | 🟡 **In Progress** | One-click distribution chains, preflight autofixes, sequential repurposing flow, diagnostic errors, and UX refinement |
-| **Phase 5** | **Advanced Analytics & Content Optimization** | ⬜ *Planned* | Performance dashboard, SEO quality scoring, UTM/attribution, content heatmap |
+| **Phase 4C** | **PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability** | 🟢 **Complete** | One-click distribution chains, preflight autofixes, sequential repurposing flow, diagnostic errors, and UX refinement |
+| **Phase 5** | **Advanced Analytics & Content Optimization** | ⬜ *Planned; foundations shipped* | `AnalyticsSnapshot` model and basic post view counters exist; cross-platform analytics dashboard, SEO quality scoring, UTM/attribution, and content heatmap remain planned |
 | **Phase 6** | **Social Publishing & Newsletter Platforms** | ⬜ *Planned* | Substack email publishing, Beehiiv REST, ConvertKit sequences, Dev.to/Hashnode developer syndication |
 | **Phase 7** | **Team Collaboration & Enterprise Features** | ⬜ *Planned* | Multi-user seats, Role-Based Access Control (RBAC), approval workflows, SAML SSO, Zapier/webhooks |
 | **Phase 8** | **Blog Theme Customization & Design System Matching** | ⬜ *Planned* | Visual theme builder, design system URL scraper / Figma plugin, email-safe responsive HTML generation |
@@ -67,31 +69,12 @@ The core workspace has been successfully transformed into a multi-channel conten
 
 ---
 
-## 🛠️ Roadmap Inconsistencies & Alignment Check
+## 🛠️ Roadmap Alignment Check
 
 > [!NOTE]
-> During our comprehensive analysis, we identified two competing structures in the `CONTENT_COMMAND_CENTER.md` file regarding future phase numbering. We have aligned them below to preserve exact features while providing a single source of truth.
+> The canonical phase sequence is now the top-level plan sequence used by `PirateCOS-Project-Matser-Plan.md`: Phase 2 Monetization, Phase 3 LinkedIn/API refinement, Phase 4 AI intelligence, Phase 5 Analytics, Phase 6 Social/newsletter platforms, Phase 7 Team/enterprise, and Phase 8 Theme/design-system matching.
 
-### The Two Plan Layouts
-1.  **Section Headings & Table of Contents Map**:
-    *   Phase 2: Monetization & Growth Engine
-    *   Phase 3: API Refinement, LinkedIn & External Integration
-    *   Phase 4: AI Intelligence Layer & Content Transformation
-    *   Phase 5: Advanced Analytics & Content Optimization
-    *   Phase 6: Social Publishing & Newsletters
-    *   Phase 7: Team Collaboration & Enterprise
-    *   Phase 8: Blog Theme Customization & Design Systems
-2.  **Monetization Roadmap Map (Internal Summary Lists)**:
-    *   Phase 2: API Refinement + LinkedIn Publishing
-    *   Phase 3: Billing & Limits (Stripe Integration)
-    *   Phase 4: Analytics (SEO Quality & Dashboard)
-    *   Phase 5: Newsletter Platforms (Substack, Beehiiv)
-    *   Phase 6: Team Collaboration
-    *   Phase 7: Developer Platforms (Dev.to, Hashnode)
-    *   Phase 8: Blog Theme Customization & Design Systems
-
-### 💡 Alignment Agreement
-To prevent developer confusion during execution, **we will utilize the internal roadmap summary flow** because it groups developer integrations and social publish mechanisms sequentially, allowing billing to roll out immediately after the foundation is fully refined.
+Older monetization-summary tables in the master plan used a different numbering sequence. Those sections should be treated as historical business framing only, not execution order.
 
 ---
 
@@ -162,6 +145,12 @@ During the active development of **Phase 2 (Monetization & Growth Engine)**, we 
 *   **Purpose**: Defensive date check to prevent runtime dashboard range-value errors if standard customer profiles have uninitialized billing periods.
 *   **Key Source Files**:
     *   [MODIFY] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/settings/billing/page.tsx).
+
+#### 7. Guided Creation Wizard Enhancements & Form-Validation Safeguards
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4C)
+*   **Purpose**: Redesigned the creation wizard to prevent draft submission errors and improve UX. Rebuilt the Advisor/Tuning panels into dynamic spec matrices (read times, word ranges, feature checklists, and metric focus meters). Replaced all layout emojis with SVG vector icons, initialized states as empty, and blocked page transitions until selections are active.
+*   **Key Source Files**:
+    *   [MODIFY] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
 
 ---
 
@@ -257,17 +246,19 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
   - *SaaS Premium locks:* Engineered frosted-glass locked overlay panels and checkout upgrade call-to-actions on both the Billing page and AI Configuration cards for Free/Starter tier users, fully synchronizing configurations.
 - [x] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
 
-### 🟡 Phase 4C: PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability
+### 🟢 Phase 4C: PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability
 
 > **📋 Full specification:** [`ux_magic_reliability_plan.md`](file:///d:/ui-pirate/uipirate/ux_magic_reliability_plan.md)
 
-- [ ] **One-Click Distribution Chains**: Define preset distribution chain mappings matching content goals to default active channels and recommended templates.
-- [ ] **Inline Preflight Autofixes**: Add `⚡ Autofix` actions in the preflight checklist for missing excerpt, tags, and keywords to trigger background AI updates.
-- [ ] **Sequential Repurposing Flow**: Multi-task repurposing trigger generating LinkedIn teasers, newsletters, and X threads sequentially with a progress loader.
-- [ ] **Persisted Repurposing Storage**: Extend the Post model schema to store generated repurposed content assets persistently in MongoDB.
-- [ ] **Direct Diagnostics & Connection recovery**: Add inline troubleshoot cards and retry CTAs for outbound publication adapter failures.
+- [x] **One-Click Distribution Chains**: Define preset distribution chain mappings matching content goals to default active channels and recommended templates.
+- [x] **Inline Preflight Autofixes**: Add `⚡ Autofix` actions in the preflight checklist for missing excerpt, tags, and keywords to trigger background AI updates.
+- [x] **Sequential Repurposing Flow**: Multi-task repurposing trigger generating LinkedIn teasers, newsletters, and X threads sequentially with a progress loader.
+- [x] **Persisted Repurposing Storage**: Extend the Post model schema to store generated repurposed content assets persistently in MongoDB.
+- [x] **Direct Diagnostics & Connection recovery**: Add inline troubleshoot cards and retry CTAs for outbound publication adapter failures.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
+- [x] **Analytics data model foundation**: `models/pirateCOS/AnalyticsSnapshot.ts` exists with tenant, post, platform, date, and metric counters for views, clicks, shares, claps, likes, impressions, and comments.
+- [x] **Basic owned-site view counters**: dashboard aggregates `Post` view counters (`views`, `totalViews`, `botViews`, `duplicateViews`) for current on-site content visibility.
 - [ ] **Cross-Platform Analytics Snapshots**: Scrapers that query WordPress stats, Medium claps, and social clicks to build daily analytics databases.
 - [ ] **Performance Dashboard**: Central dashboard comparing platform engagement, views, and clicks with dynamic date filtering.
 - [ ] **Headline A/B Testing**: Automates testing across up to 3 headliner versions and automatically picks the one with the highest click-through rates.
