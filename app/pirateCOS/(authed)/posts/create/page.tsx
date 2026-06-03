@@ -6504,8 +6504,8 @@ const BlogEditor = () => {
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [postType, setPostType] = useState<string>("blog");
-  const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
+  const [postType, setPostType] = useState<string>("");
+  const [contentGoal, setContentGoal] = useState<ContentGoal>("" as ContentGoal);
   const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [typeSelected, setTypeSelected] = useState(false);
   const [hoveredType, setHoveredType] = useState<string | null>(null);
@@ -7197,8 +7197,8 @@ const BlogEditor = () => {
 
                 {/* Group 1: Content & Knowledge */}
                 <div className="space-y-3">
-                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
-                    📚 Content & Knowledge Archetypes
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <CosIcon name="list" size={12} className="text-gray-400" /> Content & Knowledge Archetypes
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {getPostTypesByCategory("content").map((cfg) => (
@@ -7281,34 +7281,92 @@ const BlogEditor = () => {
               </div>
 
               {/* Right Column: Dynamic Strategist Board */}
-              <div className="md:col-span-4 h-full bg-white border border-black/5 p-6 rounded-3xl sticky top-24 space-y-4 shadow-sm animate-in slide-in-from-right-2">
-                <div className="flex items-center gap-1.5">
-                  <CosIcon name="bot" size={14} className="text-[#FF5B04]" />
-                  <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
-                    AI Strategist Advisor
-                  </p>
+              <div className="md:col-span-4 h-full bg-white border border-black/[0.06] p-6 rounded-3xl sticky top-24 space-y-6 shadow-sm animate-in slide-in-from-right-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <CosIcon name="bot" size={14} className="text-[#FF5B04]" />
+                    <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
+                      AI Strategist Advisor
+                    </p>
+                  </div>
+                  {currentTypeConfig?.category && (
+                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                      currentTypeConfig.category === "content" 
+                        ? "bg-blue-50 text-blue-600 border border-blue-100" 
+                        : "bg-purple-50 text-purple-600 border border-purple-100"
+                    }`}>
+                      {currentTypeConfig.category === "content" ? "Content" : "Monetization"}
+                    </span>
+                  )}
                 </div>
-                <div className="space-y-2 border-b border-black/[0.03] pb-4">
-                  <h3 className="text-base font-extrabold font-geist text-gray-800 flex items-center gap-1.5">
-                    {currentTypeConfig && <CosIcon name={currentTypeConfig.icon} size={18} className="text-[#FF5B04]" />}
-                    {archetypeExplanation.title}
-                  </h3>
-                  <p className="text-xs text-gray-500 font-geist leading-relaxed">
+
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-[#FF5B04] border border-orange-100/50">
+                      {currentTypeConfig && <CosIcon name={currentTypeConfig.icon} size={16} />}
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-extrabold font-geist text-gray-800 leading-none">
+                        {archetypeExplanation.title}
+                      </h3>
+                      <p className="text-[9px] text-gray-400 mt-1 font-geist font-medium">
+                        Best for: {currentTypeConfig?.bestFor || "General content"}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 font-geist leading-relaxed pt-1">
                     {archetypeExplanation.desc}
                   </p>
                 </div>
-                <div className="space-y-2 bg-black/[0.01] border border-black/[0.02] p-4 rounded-2xl">
-                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
-                    🔧 Workspace Tuning
-                  </span>
-                  <p className="text-[11px] text-gray-600 font-geist leading-relaxed">
+
+                {/* Target Specs Grid */}
+                <div className="grid grid-cols-2 gap-3 bg-black/[0.01] border border-black/[0.02] p-3 rounded-2xl">
+                  <div className="space-y-0.5">
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">Est. Read Time</span>
+                    <p className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
+                      <CosIcon name="draft" size={12} className="text-[#FF5B04]" />
+                      <span>{currentTypeConfig?.estimatedReadTime || "N/A"}</span>
+                    </p>
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">Target Range</span>
+                    <p className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
+                      <CosIcon name="blog" size={12} className="text-[#FF5B04]" />
+                      <span>{currentTypeConfig ? `${currentTypeConfig.minWordCount}–${currentTypeConfig.maxWordCount} words` : "N/A"}</span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Workspace Tuning Features */}
+                {currentTypeConfig?.featurePills && currentTypeConfig.featurePills.length > 0 && (
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono flex items-center gap-1.5">
+                      <CosIcon name="tasks" size={10} className="text-gray-400" />
+                      <span>Calibrated Features</span>
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {currentTypeConfig.featurePills.map((pill) => (
+                        <span key={pill} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-[10px] font-medium text-emerald-700 border border-emerald-100">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          {pill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Advisory Tip */}
+                <div className="space-y-2 bg-gradient-to-br from-orange-50/30 to-orange-50/70 border border-orange-100/60 p-4 rounded-2xl">
+                  <div className="flex items-center gap-1.5 text-[#FF5B04]">
+                    <CosIcon name="bot" size={12} />
+                    <span className="text-[9px] font-bold uppercase tracking-widest font-jetbrains-mono">
+                      Advisor Recommendation
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-700 font-geist leading-relaxed">
                     {archetypeExplanation.tip}
                   </p>
                 </div>
-                <p className="text-[9px] text-[#FF5B04] font-semibold font-jetbrains-mono italic pt-2">
-                  *Unused formatting options and editor tabs will be completely
-                  hidden to ensure zero focus distractions.
-                </p>
               </div>
             </div>
           )}
@@ -7338,11 +7396,11 @@ const BlogEditor = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {CONTENT_GOALS.filter((g) =>
-                    activeTypeConfig?.suggestedGoals.includes(g.value),
+                    activeTypeConfig?.suggestedGoals?.includes(g.value) ?? true,
                   ).map((g) => {
                     const isSuggested = activeTypeConfig?.suggestedGoals
-                      .slice(0, 2)
-                      .includes(g.value);
+                      ? activeTypeConfig.suggestedGoals.slice(0, 2).includes(g.value)
+                      : false;
 
                     return (
                       <button
@@ -7387,31 +7445,79 @@ const BlogEditor = () => {
               </div>
 
               {/* Right Column: Dynamic Strategist Board */}
-              <div className="md:col-span-4 h-full bg-white border border-black/5 p-6 rounded-3xl sticky top-24 space-y-4 shadow-sm animate-in slide-in-from-right-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs">🎯</span>
-                  <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
-                    AI Strategy Tuning
-                  </p>
+              <div className="md:col-span-4 h-full bg-white border border-black/[0.06] p-6 rounded-3xl sticky top-24 space-y-6 shadow-sm animate-in slide-in-from-right-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <CosIcon name="bolt" size={12} className="text-[#FF5B04]" />
+                    <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
+                      AI Strategy Tuning
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-2 border-b border-black/[0.03] pb-4">
-                  <h3 className="text-base font-extrabold font-geist text-gray-800 flex items-center gap-1.5">
-                    {currentGoalConfig && <CosIcon name={currentGoalConfig.icon} size={18} className="text-[#FF5B04]" />}
-                    {goalExplanation.title}
-                  </h3>
-                  <p className="text-xs text-gray-500 font-geist leading-relaxed">
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-[#FF5B04] border border-orange-100/50">
+                      {currentGoalConfig && <CosIcon name={currentGoalConfig.icon} size={16} />}
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-extrabold font-geist text-gray-800 leading-none">
+                        {goalExplanation.title}
+                      </h3>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 font-geist leading-relaxed pt-1">
                     {goalExplanation.desc}
                   </p>
                 </div>
-                <div className="space-y-2 bg-black/[0.01] border border-black/[0.02] p-4 rounded-2xl">
-                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
-                    🧠 Copilot System Focus
-                  </span>
-                  <p className="text-[10px] text-gray-600 font-geist leading-relaxed">
+
+                {/* Health Metric Weights Chart */}
+                {currentGoalConfig && (
+                  <div className="space-y-2.5 bg-black/[0.01] border border-black/[0.02] p-4 rounded-2xl">
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono flex items-center gap-1.5">
+                      <CosIcon name="traffic" size={10} className="text-gray-400" />
+                      <span>Health Metric Focus</span>
+                    </span>
+                    <div className="space-y-2">
+                      {[
+                        { label: "SEO Strength", weight: currentGoalConfig.healthWeights.seoScore },
+                        { label: "Readability", weight: currentGoalConfig.healthWeights.readability },
+                        { label: "Engagement", weight: currentGoalConfig.healthWeights.engagementLikelihood },
+                        { label: "Conversion", weight: currentGoalConfig.healthWeights.conversionStrength },
+                      ].map((item) => (
+                        <div key={item.label} className="space-y-1">
+                          <div className="flex items-center justify-between text-[10px] font-medium text-gray-600">
+                            <span>{item.label}</span>
+                            <span className="text-gray-400 font-jetbrains-mono">
+                              {Math.round(item.weight * 100)}%
+                            </span>
+                          </div>
+                          <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-[#FF5B04] rounded-full transition-all duration-500" 
+                              style={{ width: `${item.weight * 100}%` }}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Copilot Focus */}
+                <div className="space-y-2 bg-gradient-to-br from-orange-50/30 to-orange-50/70 border border-orange-100/60 p-4 rounded-2xl">
+                  <div className="flex items-center gap-1.5 text-[#FF5B04]">
+                    <CosIcon name="bot" size={12} />
+                    <span className="text-[9px] font-bold uppercase tracking-widest font-jetbrains-mono">
+                      Copilot System Focus
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-gray-700 font-geist leading-relaxed">
                     {goalExplanation.aiFocus}
                   </p>
                 </div>
-                <p className="text-[9px] text-[#FF5B04] font-semibold font-jetbrains-mono italic pt-2">
+
+                <p className="text-[9px] text-[#FF5B04] font-semibold font-jetbrains-mono italic">
                   *Your Content Health tab weights will automatically sync to
                   prioritize metrics matching this goal.
                 </p>
@@ -7425,8 +7531,9 @@ const BlogEditor = () => {
           {wizardStep === 3 && (
             <div className="space-y-5 animate-in slide-in-from-right-4 duration-200">
               <div className="space-y-1">
-                <h2 className="text-2xl font-extrabold font-geist text-gray-900 leading-tight">
-                  Your Workspace is Ready! 🎉
+                <h2 className="text-2xl font-extrabold font-geist text-gray-900 leading-tight flex items-center gap-2">
+                  <span>Your Workspace is Ready!</span>
+                  <CosIcon name="celebrate" size={20} className="text-green-500" />
                 </h2>
                 <p className="text-sm text-gray-400 font-geist leading-relaxed">
                   Here's a quick tour of how your workspace is calibrated for this post.
@@ -7468,7 +7575,8 @@ const BlogEditor = () => {
                 Cancel
               </button>
               <button
-                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                disabled={!postType}
+                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
                 style={{ background: "#FF5B04" }}
                 onClick={() => {
                   setWizardStep(2);
@@ -7506,7 +7614,8 @@ const BlogEditor = () => {
                 ← Back to Archetype
               </button>
               <button
-                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                disabled={!contentGoal}
+                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
                 style={{ background: "#FF5B04" }}
                 onClick={() => {
                   setWizardStep(3);
