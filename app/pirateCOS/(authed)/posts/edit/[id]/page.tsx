@@ -2649,6 +2649,8 @@ const AIExcerptModal = ({
     } else if (engine === "mistral") {
       if (!model.startsWith("mistral") && !model.startsWith("codestral"))
         setModel("mistral-large-latest");
+    } else if (engine === "anthropic") {
+      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
@@ -2910,6 +2912,17 @@ const AIExcerptModal = ({
                 >
                   <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
+                <button
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "anthropic"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                  type="button"
+                  onClick={() => setEngine("anthropic")}
+                >
+                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
+                </button>
               </div>
             </div>
 
@@ -2955,6 +2968,18 @@ const AIExcerptModal = ({
                       Mistral Nemo (Lightweight)
                     </option>
                     <option value="codestral-latest">Codestral (Code)</option>
+                  </>
+                ) : engine === "anthropic" ? (
+                  <>
+                    <option value="claude-3-5-sonnet-latest">
+                      Claude 3.5 Sonnet (Most Capable)
+                    </option>
+                    <option value="claude-3-5-haiku-latest">
+                      Claude 3.5 Haiku (Fast)
+                    </option>
+                    <option value="claude-3-opus-latest">
+                      Claude 3 Opus (Deep Reasoning)
+                    </option>
                   </>
                 ) : (
                   <>
@@ -3266,6 +3291,8 @@ const AITitleModal = ({
     } else if (engine === "mistral") {
       if (!model.startsWith("mistral") && !model.startsWith("codestral"))
         setModel("mistral-large-latest");
+    } else if (engine === "anthropic") {
+      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
@@ -3497,6 +3524,17 @@ const AITitleModal = ({
                 >
                   <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
+                <button
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "anthropic"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                  type="button"
+                  onClick={() => setEngine("anthropic")}
+                >
+                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
+                </button>
               </div>
             </div>
 
@@ -3537,6 +3575,18 @@ const AITitleModal = ({
                       Mistral Nemo (Lightweight)
                     </option>
                     <option value="codestral-latest">Codestral (Code)</option>
+                  </>
+                ) : engine === "anthropic" ? (
+                  <>
+                    <option value="claude-3-5-sonnet-latest">
+                      Claude 3.5 Sonnet (Most Capable)
+                    </option>
+                    <option value="claude-3-5-haiku-latest">
+                      Claude 3.5 Haiku (Fast)
+                    </option>
+                    <option value="claude-3-opus-latest">
+                      Claude 3 Opus (Deep Reasoning)
+                    </option>
                   </>
                 ) : (
                   <>
@@ -3778,6 +3828,8 @@ const AITagsModal = ({
     } else if (engine === "mistral") {
       if (!model.startsWith("mistral") && !model.startsWith("codestral"))
         setModel("mistral-large-latest");
+    } else if (engine === "anthropic") {
+      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
@@ -4042,6 +4094,17 @@ const AITagsModal = ({
                 >
                   <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
+                <button
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "anthropic"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                  type="button"
+                  onClick={() => setEngine("anthropic")}
+                >
+                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
+                </button>
               </div>
             </div>
 
@@ -4082,6 +4145,18 @@ const AITagsModal = ({
                       Mistral Nemo (Lightweight)
                     </option>
                     <option value="codestral-latest">Codestral (Code)</option>
+                  </>
+                ) : engine === "anthropic" ? (
+                  <>
+                    <option value="claude-3-5-sonnet-latest">
+                      Claude 3.5 Sonnet (Most Capable)
+                    </option>
+                    <option value="claude-3-5-haiku-latest">
+                      Claude 3.5 Haiku (Fast)
+                    </option>
+                    <option value="claude-3-opus-latest">
+                      Claude 3 Opus (Deep Reasoning)
+                    </option>
                   </>
                 ) : (
                   <>
@@ -4358,6 +4433,8 @@ const AICopilotModal = ({
     } else if (engine === "mistral") {
       if (!model.startsWith("mistral") && !model.startsWith("codestral"))
         setModel("mistral-large-latest");
+    } else if (engine === "anthropic") {
+      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
     } else {
       if (!model.startsWith("gpt")) setModel("gpt-5.5");
     }
@@ -4642,6 +4719,17 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                 >
                   <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
+                <button
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
+                    engine === "anthropic"
+                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                  type="button"
+                  onClick={() => setEngine("anthropic")}
+                >
+                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
+                </button>
               </div>
             </div>
 
@@ -4687,6 +4775,18 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                       Mistral Nemo (Lightweight)
                     </option>
                     <option value="codestral-latest">Codestral (Code)</option>
+                  </>
+                ) : engine === "anthropic" ? (
+                  <>
+                    <option value="claude-3-5-sonnet-latest">
+                      Claude 3.5 Sonnet (Most Capable)
+                    </option>
+                    <option value="claude-3-5-haiku-latest">
+                      Claude 3.5 Haiku (Fast)
+                    </option>
+                    <option value="claude-3-opus-latest">
+                      Claude 3 Opus (Deep Reasoning)
+                    </option>
                   </>
                 ) : (
                   <>
