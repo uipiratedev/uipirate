@@ -2897,19 +2897,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3496,19 +3484,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -4053,19 +4029,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -4666,19 +4630,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   }`}
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${

@@ -29,7 +29,7 @@ const ENGINE_LOGOS: Record<Engine, string> = {
   gemini: "/assets/logos/ai/google-gemini-icon.svg",
   mistral: "/assets/logos/ai/mistral-ai-icon.svg",
   anthropic: "/assets/logos/ai/claude-ai-icon.svg",
-  puter: "",
+  puter: "/assets/logos/ai/puter.svg",
 };
 
 const MODEL_LABELS: Record<string, string> = {
@@ -201,13 +201,21 @@ function KeyModal({ open, provider, onClose, onSave }: KeyModalProps) {
 
         {/* Provider identity strip */}
         <div
-          className={`flex items-start gap-3 px-4 py-3 rounded-xl mb-5 ${info.bgClass} border ${info.borderClass}`}
+          className={`flex items-start gap-3 px-4 py-3 rounded-xl mb-5 ${info.bgClass} border ${info.borderClass} items-center`}
         >
-          <span
-            className={`text-xl leading-none mt-0.5 flex-shrink-0 ${info.iconClass}`}
-          >
-            {info.icon}
-          </span>
+          {ENGINE_LOGOS[provider] ? (
+            <img
+              src={ENGINE_LOGOS[provider]}
+              alt={info.label}
+              className="w-5 h-5 object-contain flex-shrink-0"
+            />
+          ) : (
+            <span
+              className={`text-xl leading-none flex-shrink-0 ${info.iconClass}`}
+            >
+              {info.icon}
+            </span>
+          )}
           <div className="min-w-0">
             <p
               className={`text-xs font-bold font-geist mb-0.5 ${info.textClass}`}
@@ -562,18 +570,11 @@ export default function AISettingsPage() {
               badgeColor="orange"
               description="Use GPT models for free via Puter.com — no API key required."
               icon={
-                <svg
-                  fill="none"
-                  height="18"
-                  stroke="#FF5B04"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2.5"
-                  viewBox="0 0 24 24"
-                  width="18"
-                >
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                </svg>
+                <img
+                  src="/assets/logos/ai/puter.svg"
+                  alt="Puter"
+                  className="w-[18px] h-[18px] object-contain"
+                />
               }
               title="Puter AI"
             >
@@ -758,17 +759,11 @@ export default function AISettingsPage() {
                     Engine
                   </p>
                   <div className="flex items-center gap-2">
-                    {defaultEngine === "puter" ? (
-                      <span className={`text-base ${engMeta.iconClass}`}>
-                        {engMeta.icon}
-                      </span>
-                    ) : (
-                      <img
-                        src={ENGINE_LOGOS[defaultEngine]}
-                        alt={engMeta.label}
-                        className="w-4 h-4 object-contain"
-                      />
-                    )}
+                    <img
+                      src={ENGINE_LOGOS[defaultEngine]}
+                      alt={engMeta.label}
+                      className="w-4 h-4 object-contain"
+                    />
                     <span
                       className="text-sm font-bold font-geist"
                       style={{ color: "#FF5B04" }}
@@ -834,17 +829,11 @@ export default function AISettingsPage() {
                             );
                           }}
                         >
-                          {eng === "puter" ? (
-                            <span className={ENGINE_META[eng].iconClass}>
-                              {ENGINE_META[eng].icon}
-                            </span>
-                          ) : (
-                            <img
-                              src={ENGINE_LOGOS[eng]}
-                              alt={ENGINE_META[eng].label}
-                              className="w-3.5 h-3.5 object-contain"
-                            />
-                          )}
+                          <img
+                            src={ENGINE_LOGOS[eng]}
+                            alt={ENGINE_META[eng].label}
+                            className="w-3.5 h-3.5 object-contain"
+                          />
                           {ENGINE_META[eng].label.split(" ")[0]}
                         </button>
                     ))}

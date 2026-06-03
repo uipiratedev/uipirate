@@ -264,7 +264,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── OpenAI ── */}
           <PanelSection label="OpenAI">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-emerald-500 font-bold text-sm">●</span>
+              <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 OpenAI GPT
               </span>
@@ -287,7 +287,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Gemini ── */}
           <PanelSection label="Google Gemini">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-blue-500 font-bold text-sm">✦</span>
+              <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Gemini
               </span>
@@ -310,7 +310,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Mistral AI ── */}
           <PanelSection label="Mistral AI">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-violet-600 font-bold text-sm">◆</span>
+              <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Mistral AI
               </span>
@@ -333,7 +333,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Default Engine ── */}
           <PanelSection label="Claude">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-fuchsia-600 font-bold text-sm">◆</span>
+              <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Anthropic Claude
               </span>
@@ -373,15 +373,27 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                       );
                     }}
                   >
-                    {eng === "openai"
-                      ? "● GPT"
-                      : eng === "gemini"
-                        ? "✦ Gemini"
-                        : eng === "anthropic"
-                          ? "◆ Claude"
-                        : eng === "mistral"
-                          ? "◆ Mistral"
-                            : <span className="flex items-center gap-1"><CosIcon name="bolt" size={10} /> Puter</span>}
+                    {eng === "openai" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3 h-3 object-contain" /> GPT
+                      </span>
+                    ) : eng === "gemini" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3 h-3 object-contain" /> Gemini
+                      </span>
+                    ) : eng === "anthropic" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3 h-3 object-contain" /> Claude
+                      </span>
+                    ) : eng === "mistral" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3 h-3 object-contain" /> Mistral
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3 h-3 object-contain" /> Puter
+                      </span>
+                    )}
                   </button>
                 ),
               )}
@@ -410,20 +422,20 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                 </>
               ) : defaultEngine === "mistral" ? (
                 <>
-                  <option value="mistral-large-latest">◆ Mistral Large</option>
-                  <option value="mistral-small-latest">◆ Mistral Small</option>
-                  <option value="mistral-nemo">◆ Mistral Nemo</option>
-                  <option value="codestral-latest">◆ Codestral</option>
+                  <option value="mistral-large-latest">Mistral Large</option>
+                  <option value="mistral-small-latest">Mistral Small</option>
+                  <option value="mistral-nemo">Mistral Nemo</option>
+                  <option value="codestral-latest">Codestral</option>
                 </>
               ) : defaultEngine === "anthropic" ? (
                 <>
                   <option value="claude-3-5-sonnet-latest">
-                    ◆ Claude 3.5 Sonnet
+                    Claude 3.5 Sonnet
                   </option>
                   <option value="claude-3-5-haiku-latest">
-                    ◆ Claude 3.5 Haiku
+                    Claude 3.5 Haiku
                   </option>
-                  <option value="claude-3-opus-latest">◆ Claude 3 Opus</option>
+                  <option value="claude-3-opus-latest">Claude 3 Opus</option>
                 </>
               ) : (
                 <>
