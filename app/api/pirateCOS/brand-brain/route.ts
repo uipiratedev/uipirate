@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
       targetKeywords,
       forbiddenWords,
       callToActionTemplate,
+      presetInstructions,
     } = body;
 
     // Validate required fields
@@ -128,6 +129,7 @@ export async function POST(request: NextRequest) {
         targetKeywords: cleanKeywords,
         forbiddenWords: cleanForbidden,
         callToActionTemplate: (callToActionTemplate || "").trim(),
+        presetInstructions: presetInstructions || {},
       },
       {
         new: true,

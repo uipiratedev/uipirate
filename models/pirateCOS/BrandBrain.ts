@@ -10,6 +10,7 @@ export interface IBrandBrain extends Document {
   targetKeywords: string[];
   forbiddenWords: string[];
   callToActionTemplate?: string;
+  presetInstructions?: Map<string, string>;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -61,6 +62,11 @@ const BrandBrainSchema: Schema<IBrandBrain> = new Schema(
       type: String,
       default: "",
       trim: true,
+    },
+    presetInstructions: {
+      type: Map,
+      of: String,
+      default: {},
     },
   },
   {

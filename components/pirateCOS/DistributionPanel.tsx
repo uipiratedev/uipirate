@@ -43,9 +43,11 @@ interface DistributionPanelProps {
   onNavigateToSEO: () => void;
   onTriggerExcerptAI: () => void;
   onTriggerTagsAI: () => void;
-  onTriggerCopilotAI: () => void;
+  onTriggerCopilotAI: (preset?: string, initialPrompt?: string) => void;
   postType: string;
   contentGoal: ContentGoal;
+  blogTitle: string;
+  socialDestination?: "linkedin" | "x";
 }
 
 const PLATFORM_LABELS: Record<string, string> = {
@@ -72,6 +74,8 @@ export default function DistributionPanel({
   onTriggerCopilotAI,
   postType,
   contentGoal,
+  blogTitle,
+  socialDestination = "linkedin",
 }: DistributionPanelProps) {
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -84,6 +88,13 @@ export default function DistributionPanel({
     null,
   );
   const [preflight, setPreflight] = useState<PreflightCheck[]>([]);
+  const [activeSocialDest, setActiveSocialDest] = useState<"linkedin" | "x">("linkedin");
+
+  useEffect(() => {
+    if (socialDestination) {
+      setActiveSocialDest(socialDestination);
+    }
+  }, [socialDestination]);
 
   const isSubdomain =
     typeof window !== "undefined" &&
@@ -100,7 +111,18 @@ export default function DistributionPanel({
       const data = await res.json();
 
       if (data.success) {
-        setIntegrations(data.integrations || []);
+        const list = data.integrations || [];
+        setIntegrations(list);
+        
+        // Auto-select linkedin by default if connected and active
+        const linkedinActive = list.find(
+          (i: Integration) => i.platform === "linkedin" && i.isConnected && i.isActive
+        );
+        if (linkedinActive) {
+          setSelectedPlatforms((prev) =>
+            prev.includes("linkedin") ? prev : [...prev, "linkedin"]
+          );
+        }
       }
     } catch (err) {
       console.error("Failed to load integrations", err);
@@ -115,16 +137,20 @@ export default function DistributionPanel({
 
   // Run preflight evaluation
   useEffect(() => {
-    const checks = runPreflight({
-      content: blogContent,
-      excerpt: blogExcerpt,
-      tags: blogTags,
-      featuredImage: blogSeo?.ogImage || "", // Map from ogImage or fallback
-      seo: blogSeo,
-    });
+    const checks = runPreflight(
+      {
+        content: blogContent,
+        excerpt: blogExcerpt,
+        tags: blogTags,
+        featuredImage: blogSeo?.ogImage || "", // Map from ogImage or fallback
+        seo: blogSeo,
+      },
+      postType,
+      activeSocialDest,
+    );
 
     setPreflight(checks);
-  }, [blogContent, blogExcerpt, blogTags, blogSeo]);
+  }, [blogContent, blogExcerpt, blogTags, blogSeo, postType, activeSocialDest]);
 
   const togglePlatform = (platform: string) => {
     setSelectedPlatforms((prev) =>
@@ -140,6 +166,18 @@ export default function DistributionPanel({
     if (action === "Generate Excerpt") onTriggerExcerptAI();
     if (action === "Generate Tags") onTriggerTagsAI();
     if (action === "AI Copilot") onTriggerCopilotAI();
+    if (action === "AI Hook") {
+      onTriggerCopilotAI(
+        "linkedin-post",
+        "Generate 3 scroll-stopping opening hooks for this post."
+      );
+    }
+    if (action === "Hashtag Ideas") {
+      onTriggerCopilotAI(
+        "linkedin-post",
+        "Generate high-engagement hashtags based on this post content."
+      );
+    }
   };
 
   const handleDistribute = async () => {
@@ -328,31 +366,33 @@ export default function DistributionPanel({
         </div>
 
         {/* Content Repurposing Shortcuts */}
-        <div className="pt-1.5 border-t border-black/5 space-y-2">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">
-            Repurposing Actions
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
-              type="button"
-              onClick={onTriggerCopilotAI}
-            >
-              <span>🔗</span> LinkedIn Promo Post
-            </button>
-            <button
-              className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
-              type="button"
-              onClick={onTriggerCopilotAI}
-            >
-              <span>🐦</span> Twitter Thread
-            </button>
+        {postType !== "social-post" && (
+          <div className="pt-1.5 border-t border-black/5 space-y-2">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">
+              Repurposing Actions
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
+                type="button"
+                onClick={() => onTriggerCopilotAI()}
+              >
+                <span>🔗</span> LinkedIn Promo Post
+              </button>
+              <button
+                className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
+                type="button"
+                onClick={() => onTriggerCopilotAI()}
+              >
+                <span>🐦</span> Twitter Thread
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* SECTION: Post-Publish Actions */}
-      {distributionRecords.some((r) => r.status === "success") && (
+      {postType !== "social-post" && distributionRecords.some((r) => r.status === "success") && (
         <div className="bg-green-50 border border-green-200 rounded-2xl p-4 space-y-2">
           <p className="text-[10px] font-jetbrains-mono text-green-700 uppercase tracking-widest font-bold flex items-center gap-1.5">
             🎉 Successfully Distributed! What's next?
@@ -363,7 +403,7 @@ export default function DistributionPanel({
           <div className="flex gap-2 pt-1">
             <button
               className="text-[9px] font-bold uppercase tracking-wider bg-green-600 text-white hover:bg-green-700 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
-              onClick={onTriggerCopilotAI}
+              onClick={() => onTriggerCopilotAI()}
             >
               Generate Social Thread
             </button>
@@ -384,7 +424,8 @@ export default function DistributionPanel({
             Operational Chain
           </p>
           <span className="text-[9px] font-extrabold font-jetbrains-mono uppercase bg-orange-50 text-[#FF5B04] px-2.5 py-0.5 rounded-full border border-orange-100 animate-pulse">
-            ✨ {contentGoal === "traffic" ? "SEO Growth Chain" :
+            ✨ {postType === "social-post" ? "Social Distribution Chain" :
+                contentGoal === "traffic" ? "SEO Growth Chain" :
                 contentGoal === "authority" ? "Founder Authority Chain" :
                 contentGoal === "conversion" ? "Product Launch Chain" :
                 contentGoal === "engagement" ? "Community Expansion Chain" :
@@ -395,76 +436,179 @@ export default function DistributionPanel({
 
         {/* Dynamic Vertical Timeline */}
         <div className="relative pl-6 space-y-5 border-l-2 border-orange-500/20 ml-2.5">
-          {/* Step 1: Local / Website Publish */}
-          <div className="relative">
-            <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
-              blogPublished ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
-            }`}>
-              {blogPublished ? "✓" : "1"}
-            </span>
-            <div>
-              <p className="text-xs font-bold text-gray-800">
-                1. Primary Hub Publish
-              </p>
-              <p className="text-[10px] text-gray-400 mt-0.5">
-                {blogPublished ? "Published live on primary site" : "Draft ready. Click 'Publish' at top right to launch first."}
-              </p>
-            </div>
-          </div>
+          {postType === "social-post" ? (
+            <>
+              {/* Step 1: Integrations Status */}
+              {(() => {
+                const hasConnectedPlatform = integrations.some(
+                  (i) => i.isConnected && i.isActive
+                );
+                return (
+                  <div className="relative">
+                    <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
+                      hasConnectedPlatform ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
+                    }`}>
+                      {hasConnectedPlatform ? "✓" : "1"}
+                    </span>
+                    <div>
+                      <p className="text-xs font-bold text-gray-800">
+                        1. Integrations Status
+                      </p>
+                      <p className="text-[10px] text-gray-400 mt-0.5">
+                        {hasConnectedPlatform ? "Connected social channel is active." : "No connected social channel is active. Please connect integrations below."}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
 
-          {/* Step 2: Goal-Specific Social Post */}
-          <div className="relative">
-            <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
-              2
-            </span>
-            <div className="space-y-1.5">
-              <div>
-                <p className="text-xs font-bold text-gray-800">
-                  {contentGoal === "traffic" ? "2. SEO Meta Package" :
-                   contentGoal === "authority" ? "2. Founder LinkedIn Post" :
-                   contentGoal === "conversion" ? "2. LinkedIn Product Announcement" :
-                   "2. Engagement Post Variant"}
-                </p>
-                <p className="text-[10px] text-gray-400 mt-0.5">
-                  Repurpose content into a platform-native social thread optimized for your goal.
-                </p>
+              {/* Step 2: Launch Social Update */}
+              <div className="relative">
+                <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
+                  blogPublished ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
+                }`}>
+                  {blogPublished ? "✓" : "2"}
+                </span>
+                <div>
+                  <p className="text-xs font-bold text-gray-800">
+                    2. Launch Social Update
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">
+                    {blogPublished ? "Social update is published live!" : "Draft ready. Select target channels below and click 'Distribute Now' to publish."}
+                  </p>
+                </div>
               </div>
-              <button
-                className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
-                type="button"
-                onClick={onTriggerCopilotAI}
-              >
-                Generate Variant
-              </button>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              {/* Step 1: Primary Hub Publish */}
+              <div className="relative">
+                <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
+                  blogPublished ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
+                }`}>
+                  {blogPublished ? "✓" : "1"}
+                </span>
+                <div>
+                  <p className="text-xs font-bold text-gray-800">
+                    1. Primary Hub Publish
+                  </p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">
+                    {blogPublished ? "Published live on primary site" : "Draft ready. Click 'Publish' at top right to launch first."}
+                  </p>
+                </div>
+              </div>
 
-          {/* Step 3: Multi-format Repurposing */}
-          <div className="relative">
-            <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
-              3
-            </span>
-            <div className="space-y-1.5">
-              <div>
-                <p className="text-xs font-bold text-gray-800">
-                  {contentGoal === "traffic" ? "3. Twitter Thread Generation" :
-                   contentGoal === "authority" ? "3. Extract Social Quote Snippets" :
-                   contentGoal === "conversion" ? "3. Email Broadcast Version" :
-                   "3. Summary Version"}
-                </p>
-                <p className="text-[10px] text-gray-400 mt-0.5">
-                  Extract actionable takeaways to amplify narrative virality on search and social feeds.
-                </p>
-              </div>
-              <button
-                className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
-                type="button"
-                onClick={onTriggerCopilotAI}
-              >
-                Trigger Repurpose
-              </button>
-            </div>
-          </div>
+              {/* Promotional social actions (only show after published) */}
+              {blogPublished && (
+                <>
+                  {/* Step 2: LinkedIn Promo */}
+                  {(() => {
+                    const firstSuccess = distributionRecords.find((r) => r.status === "success");
+                    const liveUrl = firstSuccess?.url || "https://yourbrand.com/posts/live-article";
+                    return (
+                      <div className="relative">
+                        <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
+                          2
+                        </span>
+                        <div className="space-y-1.5">
+                          <div>
+                            <p className="text-xs font-bold text-gray-800">
+                              2. Draft LinkedIn Promo
+                            </p>
+                            <p className="text-[10px] text-gray-400 mt-0.5">
+                              Write a scroll-stopping LinkedIn teaser to share this article.
+                            </p>
+                          </div>
+                          <button
+                            className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                            type="button"
+                            onClick={() =>
+                              onTriggerCopilotAI(
+                                "linkedin-post",
+                                `Draft an engaging LinkedIn promotional post to share my new published article. Title: '${blogTitle}', URL: '${liveUrl}'. Hook the reader, outline key takeaways, and end with a question to drive comments.`
+                              )
+                            }
+                          >
+                            Draft LinkedIn Promo
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Step 3: X (Twitter) Share */}
+                  {(() => {
+                    const firstSuccess = distributionRecords.find((r) => r.status === "success");
+                    const liveUrl = firstSuccess?.url || "https://yourbrand.com/posts/live-article";
+                    return (
+                      <div className="relative">
+                        <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
+                          3
+                        </span>
+                        <div className="space-y-1.5">
+                          <div>
+                            <p className="text-xs font-bold text-gray-800">
+                              3. Draft X Post
+                            </p>
+                            <p className="text-[10px] text-gray-400 mt-0.5">
+                              Create a punchy post to share this article on X.
+                            </p>
+                          </div>
+                          <button
+                            className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                            type="button"
+                            onClick={() =>
+                              onTriggerCopilotAI(
+                                "linkedin-post",
+                                `Draft a punchy promotional tweet (under 280 characters) to share my new published article. Title: '${blogTitle}', URL: '${liveUrl}'. Use a strong hook and relevant hashtags.`
+                              )
+                            }
+                          >
+                            Draft X Post
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Step 4: Newsletter Digest */}
+                  {(() => {
+                    const firstSuccess = distributionRecords.find((r) => r.status === "success");
+                    const liveUrl = firstSuccess?.url || "https://yourbrand.com/posts/live-article";
+                    return (
+                      <div className="relative">
+                        <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
+                          4
+                        </span>
+                        <div className="space-y-1.5">
+                          <div>
+                            <p className="text-xs font-bold text-gray-800">
+                              4. Create Newsletter Digest
+                            </p>
+                            <p className="text-[10px] text-gray-400 mt-0.5">
+                              Summarize this article into a high-converting email newsletter.
+                            </p>
+                          </div>
+                          <button
+                            className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
+                            type="button"
+                            onClick={() =>
+                              onTriggerCopilotAI(
+                                "thought-leadership",
+                                `Convert my published article '${blogTitle}' (URL: '${liveUrl}') into a concise, email newsletter digest. Write in a warm, direct tone introducing the topic, summarizing the 3 key insights, and encouraging readers to click the link to read the full post.`
+                              )
+                            }
+                          >
+                            Create Newsletter Digest
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
 

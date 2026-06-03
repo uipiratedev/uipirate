@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { POST_TYPE_CONFIGS } from "@/lib/pirateCOS/postTypeConfig";
 
 interface BrandBrainData {
   companyName: string;
@@ -12,6 +13,7 @@ interface BrandBrainData {
   targetKeywords: string[];
   forbiddenWords: string[];
   callToActionTemplate?: string;
+  presetInstructions?: Record<string, string>;
 }
 
 const BRAND_VOICE_PRESETS = [
@@ -50,9 +52,9 @@ export default function BrandBrainPage() {
   const [saving, setSaving] = useState(false);
   const [brandBrain, setBrandBrain] = useState<BrandBrainData | null>(null);
 
-  // Tab control ("identity" | "audience" | "vocabulary")
+  // Tab control ("identity" | "audience" | "vocabulary" | "presets")
   const [activeTab, setActiveTab] = useState<
-    "identity" | "audience" | "vocabulary"
+    "identity" | "audience" | "vocabulary" | "presets"
   >("identity");
 
   // Wizard variables (if brandBrain is null)
@@ -66,6 +68,8 @@ export default function BrandBrainPage() {
   const [forbiddenInput, setForbiddenInput] = useState("");
   const [forbiddenWords, setForbiddenWords] = useState<string[]>([]);
   const [callToAction, setCallToAction] = useState("");
+  const [presetInstructions, setPresetInstructions] = useState<Record<string, string>>({});
+  const [selectedPresetType, setSelectedPresetType] = useState<string>("blog");
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -89,6 +93,7 @@ export default function BrandBrainPage() {
         setTargetKeywords(data.brandBrain.targetKeywords || []);
         setForbiddenWords(data.brandBrain.forbiddenWords || []);
         setCallToAction(data.brandBrain.callToActionTemplate || "");
+        setPresetInstructions(data.brandBrain.presetInstructions || {});
       } else {
         setBrandBrain(null);
       }
@@ -135,6 +140,7 @@ export default function BrandBrainPage() {
           targetKeywords,
           forbiddenWords,
           callToActionTemplate: callToAction,
+          presetInstructions,
         }),
       });
 
@@ -729,6 +735,11 @@ export default function BrandBrainPage() {
               label: "Vocabulary Guard",
               desc: "Keywords and bans",
             },
+            {
+              id: "presets",
+              label: "Style Guides",
+              desc: "Custom rules per content type",
+            },
           ].map((tab) => {
             const active = activeTab === tab.id;
 
@@ -953,6 +964,107 @@ export default function BrandBrainPage() {
                       ))}
                     </div>
                   )}
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === "presets" && (
+              <motion.div
+                key="presets-tab"
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6"
+                exit={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.15 }}
+              >
+                <div className="border-b border-black/5 pb-3">
+                  <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
+                    Style Guides & Presets
+                  </h2>
+                  <p className="text-[11px] text-gray-400 leading-relaxed mt-0.5">
+                    Customize style instructions for each content archetype. These instructions will be dynamically injected into the AI generation prompt to guide structure and formatting.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Left Column: Post Type List */}
+                  <div className="md:col-span-1 space-y-1.5 max-h-[380px] overflow-y-auto pr-2 border-r border-black/5">
+                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">
+                      Content Archetypes
+                    </label>
+                    {POST_TYPE_CONFIGS.map((type) => {
+                      const active = selectedPresetType === type.value;
+                      const hasCustom = !!(presetInstructions[type.value]?.trim());
+                      return (
+                        <button
+                          key={type.value}
+                          className={`w-full text-left px-3 py-2.5 rounded-xl transition-all duration-150 flex items-center justify-between gap-2 border ${
+                            active
+                              ? "bg-orange-50/20 border-[#FF5B04]/30 text-[#FF5B04]"
+                              : "hover:bg-gray-50 border-transparent text-gray-600"
+                          }`}
+                          type="button"
+                          onClick={() => setSelectedPresetType(type.value)}
+                        >
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold truncate">
+                              {type.icon} {type.label}
+                            </p>
+                            <p className="text-[9px] text-gray-400 truncate mt-0.5">
+                              {type.category === "content" ? "Content & Knowledge" : "Product & Monetization"}
+                            </p>
+                          </div>
+                          {hasCustom && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" title="Custom style guide set" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Right Column: Custom Instruction Editor */}
+                  <div className="md:col-span-2 space-y-4">
+                    {(() => {
+                      const typeConfig = POST_TYPE_CONFIGS.find((t) => t.value === selectedPresetType);
+                      if (!typeConfig) return null;
+
+                      const customValue = presetInstructions[selectedPresetType] || "";
+
+                      return (
+                        <div className="space-y-4">
+                          <div>
+                            <span className="inline-flex items-center gap-1.5 bg-black/[0.03] border border-black/5 px-2.5 py-1 rounded-lg text-xs font-semibold text-gray-800">
+                              {typeConfig.icon} {typeConfig.label} Guide
+                            </span>
+                            <p className="text-[11px] text-gray-400 leading-relaxed mt-2">
+                              <strong>Default template hint:</strong> {typeConfig.templateHint}
+                            </p>
+                          </div>
+
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
+                              Custom AI Prompt Instructions
+                            </label>
+                            <textarea
+                              className="w-full bg-[#F7F7F6] border border-transparent rounded-xl p-4 text-sm focus:border-[#FF5B04]/30 focus:bg-white outline-none transition-all resize-none leading-relaxed"
+                              placeholder={`Default Fallback: ${typeConfig.templateHint}`}
+                              rows={6}
+                              value={customValue}
+                              onChange={(e) => {
+                                setPresetInstructions({
+                                  ...presetInstructions,
+                                  [selectedPresetType]: e.target.value,
+                                });
+                              }}
+                            />
+                            <p className="text-[10px] text-gray-400 leading-relaxed mt-1">
+                              💡 Leaving this blank will fall back to the default template hint above. Add custom formatting constraints, specific sections, or stylistic rules here.
+                            </p>
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
                 </div>
               </motion.div>
             )}

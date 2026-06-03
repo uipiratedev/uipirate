@@ -4049,6 +4049,7 @@ const AICopilotModal = ({
   postTitle,
   postType,
   preset,
+  initialPrompt = "",
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -4056,6 +4057,7 @@ const AICopilotModal = ({
   postTitle: string;
   postType: string;
   preset?: string;
+  initialPrompt?: string;
 }) => {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
@@ -4085,6 +4087,14 @@ const AICopilotModal = ({
   } | null>(null);
 
   useEffect(() => {
+    if (isOpen) {
+      setPrompt(initialPrompt || "");
+      setResult("");
+      setError("");
+    }
+  }, [isOpen, initialPrompt]);
+
+  useEffect(() => {
     if (isOpen && editor) {
       const { from, to } = editor.state.selection;
       const text = editor.state.doc.textBetween(from, to, " ");
@@ -4112,7 +4122,24 @@ const AICopilotModal = ({
     }
   }, [engine]);
 
-  const presets = [
+  const presets = postType === "social-post" ? [
+    {
+      label: "AI Hook",
+      prompt: "Generate 3 scroll-stopping opening hooks for my social post.",
+    },
+    {
+      label: "Shorten to Limit",
+      prompt: "Intelligently compress my text to fit within social media character limits while retaining the key message.",
+    },
+    {
+      label: "Hashtag Ideas",
+      prompt: "Generate high-engagement hashtag recommendations matching the topic of this post.",
+    },
+    {
+      label: "Professional Rewrite",
+      prompt: "Rewrite this social post in a polished, engaging professional tone.",
+    }
+  ] : [
     {
       label: "Draft Introduction",
       prompt:
@@ -5170,6 +5197,9 @@ const SlashCommandMenu = ({
     ];
 
     return all.filter((c) => {
+      if (postType === "social-post") {
+        return ["Image Upload", "Image URL", "Embed Video"].includes(c.title);
+      }
       if (!features) return true;
       if (c.featureKey === "codeBlocks") return !!features.codeBlocks;
       if (c.featureKey === "tables") return !!features.tables;
@@ -5308,15 +5338,19 @@ const FormattingToolbar = ({
       </button>
       {sep}
 
-      {sep}
-      <button
-        className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-        title="Repurpose post into other formats"
-        type="button"
-        onClick={onTransformClick}
-      >
-        <span>⚡ Transform</span>
-      </button>
+      {postType !== "social-post" && (
+        <>
+          {sep}
+          <button
+            className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
+            title="Repurpose post into other formats"
+            type="button"
+            onClick={onTransformClick}
+          >
+            <span>⚡ Transform</span>
+          </button>
+        </>
+      )}
       {features?.ctaBlocks && (
         <button
           className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
@@ -5559,14 +5593,18 @@ const FormattingToolbar = ({
           {"</>"}
         </button>
       )}
-      {sep}
-      <button
-        className={btn(false)}
-        title="Horizontal Rule"
-        onClick={() => editor.chain().focus().setHorizontalRule().run()}
-      >
-        —
-      </button>
+      {postType !== "social-post" && (
+        <>
+          {sep}
+          <button
+            className={btn(false)}
+            title="Horizontal Rule"
+            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          >
+            —
+          </button>
+        </>
+      )}
       {features?.tables && editor.isActive("table") && (
         <>
           {sep}
@@ -6091,6 +6129,30 @@ const PostPreviewPanel = ({
   );
 };
 
+type SocialDestination = "linkedin" | "x";
+
+interface SocialDestinationConfig {
+  label: string;
+  characterLimit: number;
+  warningAt: number;
+  suggestions: string[];
+}
+
+const SOCIAL_DESTINATIONS: Record<SocialDestination, SocialDestinationConfig> = {
+  linkedin: {
+    label: "LinkedIn Post",
+    characterLimit: 3000,
+    warningAt: 2700,
+    suggestions: ["#ThoughtLeadership", "#Innovation", "#Marketing", "#Tech", "#Strategy"],
+  },
+  x: {
+    label: "X (Twitter) Post",
+    characterLimit: 280,
+    warningAt: 250,
+    suggestions: ["#Tech", "#AI", "#Productivity", "#BuildInPublic", "#Startup"],
+  },
+};
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditor = () => {
   const isSubdomain =
@@ -6147,6 +6209,8 @@ const BlogEditor = () => {
   const [sidebarTab, setSidebarTab] = useState<
     "content" | "seo" | "ai" | "distribute" | "health"
   >("content");
+  const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
+  const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
 
   const {
@@ -6451,6 +6515,31 @@ const BlogEditor = () => {
     immediatelyRender: false,
   });
 
+  const appendHashtag = useCallback((tag: string) => {
+    const normalized = tag.startsWith("#") ? tag : `#${tag}`;
+    if (!tags.includes(normalized)) {
+      setTags((prev) => [...prev, normalized]);
+    }
+    if (editor) {
+      const text = editor.getText();
+      if (!text.includes(normalized)) {
+        const separator = text === "" || /\s$/.test(text) ? "" : " ";
+        editor.chain().focus().insertContent(`${separator}${normalized} `).run();
+      }
+    }
+  }, [tags, editor]);
+
+  const handleAddHashtag = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
+      e.preventDefault();
+      const cleanTag = tagInput.trim().replace(/,$/, "");
+      if (cleanTag) {
+        appendHashtag(cleanTag);
+      }
+      setTagInput("");
+    }
+  }, [tagInput, appendHashtag]);
+
   // Real-time analytics counter hook
   const editorStats = useEditorState({
     editor,
@@ -6577,57 +6666,57 @@ const BlogEditor = () => {
       blog: {
         title: "✏️ Blog Archetype",
         desc: "Designed to share opinion pieces, stories, and deep insights in an authentic, conversational voice.",
-        tip: "Optimizes the editor for standard blogging. Enables SEO metadata tags and media uploads, while formatting prompts tune the AI to write conversational, rich sections.",
+        tip: "Optimizes the layout for traditional web readers. Guides you to structure conversational, rich sections with search visibility, while AI prompts emphasize personal stories and deep insights.",
       },
       tutorial: {
         title: "📖 Step-by-Step Tutorial",
         desc: "Highly technical educational resources, manuals, and developer configurations.",
-        tip: "Workspace is customized for structured learning. Automatically enables syntax-highlighted code blocks, data tables, and checklist elements. AI outlines H2/H3 guides with prerequisite requirements.",
+        tip: "Calibrated for step-by-step guidance. Tailors your layout for structured, educational reading with syntax code examples and sequential guidelines.",
       },
       "case-study": {
         title: "🔍 Customer Case Study",
         desc: "Professional breakdowns of real-world client wins, builder journeys, and solutions.",
-        tip: "Adapts workspace for high credibility. Restructures Tiptap to include data charts and call-out boxes. AI outlines strictly target challenge statements, solutions, and metrics.",
+        tip: "Calibrated for customer proof and business journeys. Emphasizes structured evidence, client quotes, and measurable impact metrics.",
       },
       "community-insight": {
         title: "💬 Community Insight",
         desc: "Curated industry roundups, trend analyses, and collaborative community highlights.",
-        tip: "Enables fast social previews and tags. The AI adjusts prompts to formulate conversational opening hooks and pose reflective questions to spark active replies.",
+        tip: "Calibrated for sharing industry viewpoints. Encourages engaging hooks and conversational tone to start dialogues.",
       },
       "corporate-post": {
         title: "🏢 Corporate / PR Post",
         desc: "Press releases, executive updates, public letters, and company milestone announcements.",
-        tip: "Hides search-engine metrics to focus strictly on public relation outputs. AI implements professional AP news dateline guidelines and objective vision summaries.",
+        tip: "Calibrated for official announcements. Focuses on professional, objective updates and clear milestone summaries.",
       },
       "product-review": {
         title: "⭐ Product Review",
         desc: "Monetization-oriented reviews of specific tools, platforms, or hardware.",
-        tip: "Enables affiliate Sponsored link builders, high-contrast CTA buttons, and pros/cons grids. AI structures product reviews around ratings, value ratios, and direct verdicts.",
+        tip: "Calibrated for comparative evaluations. Helps structure features, pros/cons list, and pricing details.",
       },
       "product-launch": {
         title: "🚀 Product Launch",
         desc: "Feature releases, software launches, and brand announcement campaigns.",
-        tip: "Workspace unlocks custom visual banner components and call-to-actions. AI frames features around ICP problems to drive immediate user action.",
+        tip: "Calibrated for new releases. Focuses on solving user problems and driving clear actions for feature announcements.",
       },
       listicle: {
         title: "📋 Curated Listicle",
         desc: '"Top N" roundups, product selections, and curated summaries.',
-        tip: "Enables comparison table layouts, affiliate tracking links, and high-converting CTA snippets. AI lists consistently format item descriptions, pricing, and key verdicts.",
+        tip: "Calibrated for curated roundups. Formats items, benefits, and quick recommendations clearly.",
       },
       comparison: {
         title: "⚔️ Head-to-Head Comparison",
         desc: "Detailed side-by-side product comparisons to assist buyer decisions.",
-        tip: "Enables dense comparison tables and nofollow sponsor links. AI structures comparison charts, outlines unique tool advantages, and recommends use-case decisions.",
+        tip: "Calibrated for side-by-side product analyses. Frames advantages and clear decision criteria to guide purchase choices.",
       },
       newsletter: {
         title: "📧 Email Newsletter",
         desc: "Conversational weekly digests, product newsletters, and list updates.",
-        tip: "Hides web layout bloat and search-engine keywords. Structures clean, lightweight text containers. AI writes direct, conversational, warm paragraphs.",
+        tip: "Calibrated for direct subscriber communications. Keeps text styling clean and conversational to build personal relationships.",
       },
       "social-post": {
         title: "🔗 LinkedIn / Social Post",
         desc: "Sleek, condensed articles optimized for professional social media networks.",
-        tip: "Immersive cleanup. Completely hides headings, tables, list blocks, and SEO tabs to prevent clutter. AI generates scroll-stopping first-line hooks and airy double-line spacing.",
+        tip: "Calibrated for condensed social updates. Focuses on character limits and scroll-stopping ideas for quick, impactful professional shares.",
       },
     };
 
@@ -6636,40 +6725,40 @@ const BlogEditor = () => {
       { title: string; desc: string; aiFocus: string }
     > = {
       traffic: {
-        title: "📈 Search Traffic Optimization",
-        desc: "Recalibrates Tiptap and the sidebar to display robust SEO metadata panels, canonical inputs, and search keyword densities.",
+        title: "📈 Search Visibility & Growth",
+        desc: "Aligns your content to reach readers looking for solutions on search engines.",
         aiFocus:
-          "AI Copilot injects keyword-rich H2/H3 layouts, targets search-intent queries, generates structured FAQ elements, and designs headers for snippet eligibility.",
+          "AI suggestions highlight clear headings, answer common queries, and prioritize reader search intent.",
       },
       authority: {
         title: "🎓 Establish Thought Leadership",
-        desc: "Recalibrates the Content Health Advisor to heavily reward vocabulary depth, section balance, and structural argumentation.",
+        desc: "Builds credibility by sharing unique viewpoints, data, and expert perspectives.",
         aiFocus:
-          "AI Copilot utilizes expert-level industry terminology, formats contrarian viewpoints, embeds empirical research citations, and frames concepts in unique methodologies.",
+          "AI suggestions draw from industry insights, professional terminology, and contrarian viewpoints.",
       },
       conversion: {
         title: "💳 Drive Sales & Conversions",
-        desc: "Prioritizes conversion tools, enabling high-contrast benefit buttons, action links, and styled CTA cards in the workspace.",
+        desc: "Encourages readers to take action, whether joining a list or viewing a product.",
         aiFocus:
-          "AI Copilot writes reader-centric action copy, structures paragraphs using problem-agitation-solution, objection handling, and implements Urgency triggers.",
+          "AI suggestions highlight customer problems, benefits, objection-handling, and clear next steps.",
       },
       engagement: {
         title: "🔥 Spark Discussion & Comments",
-        desc: "Recalibrates parameters to optimize text scannability, social sharing previews, and conversational clarity.",
+        desc: "Fosters conversational interest, community discussion, and viral reach.",
         aiFocus:
-          "AI Copilot leads with scroll-stopping curiosity hooks, integrates open-ended questions throughout the body, and designs content for viral social sharing.",
+          "AI suggestions lead with hooks, invite reader comments, and ask engaging questions.",
       },
       "lead-generation": {
         title: "🧲 Lead Capture & Growth",
-        desc: "Prioritizes call-to-actions promoting resource sheets, checklist links, and email newsletter opt-in forms.",
+        desc: "Highlights valuable guides or resources to attract new contacts.",
         aiFocus:
-          "AI Copilot leaves strategic gaps that lead magnets naturally satisfy, leveraging trust and value reciprocity to boost newsletter conversions.",
+          "AI suggestions write compelling benefit statements and natural highlights for resources.",
       },
       retention: {
         title: "🤝 Keep Customers Engaged",
-        desc: "Enables educational elements, focus-checklist indicators, and warm community-supportive language guidelines.",
+        desc: "Deepens product usage and values for existing customers.",
         aiFocus:
-          "AI Copilot writes practical, actionable steps, designs advanced pro-tip boxes, and integrates product educational pointers naturally.",
+          "AI suggestions present practical steps, pro-tips, and educational pointers.",
       },
     };
 
@@ -7063,9 +7152,7 @@ const BlogEditor = () => {
                   Your Workspace is Ready!
                 </h2>
                 <p className="text-xs text-gray-400 font-geist leading-relaxed">
-                  The AI Strategist has tailored your workspace boundaries and
-                  outlines. No generic layouts or visual clutter. Let's make an
-                  impact!
+                  Your personalized writing workspace has been configured. Let's make an impact!
                 </p>
               </div>
 
@@ -7086,16 +7173,7 @@ const BlogEditor = () => {
                 </div>
                 <div className="w-full h-px bg-black/[0.04] my-1" />
                 <p className="text-xs text-gray-500 font-geist leading-relaxed px-4">
-                  AI writing suggestions will prioritize{" "}
-                  <span className="font-bold text-[#FF5B04]">
-                    "{activeGoalConfig?.label}"
-                  </span>{" "}
-                  criteria. Active tools, folders, and health parameters are
-                  automatically restricted to only what's required for your{" "}
-                  <span className="font-semibold text-gray-800">
-                    {activeTypeConfig?.label}
-                  </span>{" "}
-                  structure.
+                  Your writing environment is calibrated. AI outlines and copy rules are optimized to match your goals. Let's make an impact!
                 </p>
               </div>
 
@@ -7520,7 +7598,7 @@ const BlogEditor = () => {
             {/* Sidebar Tab Navigation */}
             <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
               {[
-                { key: "content", label: "Content" },
+                { key: "content", label: postType === "social-post" ? "Narrative" : "Content" },
                 ...(getFeatures(postType).seoPanel
                   ? [{ key: "seo", label: "SEO" }]
                   : []),
@@ -7545,180 +7623,359 @@ const BlogEditor = () => {
             {/* ── Content Tab ── */}
             {sidebarTab === "content" && (
               <>
-                {/* Analytics Card */}
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-                    Analytics
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-gray-900">
-                        {editorStats.words}
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Words
-                      </div>
-                    </div>
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-gray-900">
-                        {editorStats.characters}
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Characters
-                      </div>
-                    </div>
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-gray-900">
-                        {editorStats.paragraphs}
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Paragraphs
-                      </div>
-                    </div>
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-[#FF5B04]">
-                        {editorStats.readTime} min
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Read Time
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Writing Goal Progress */}
-                  <div className="mt-3.5 pt-3 border-t border-black/5">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-[10px] font-geist text-gray-500 font-medium">
-                        Writing Goal
-                      </span>
-                      <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                        {Math.min(
-                          100,
-                          Math.round((editorStats.words / 500) * 100),
-                        )}
-                        % ({editorStats.words}/500 words)
-                      </span>
-                    </div>
-                    <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-500 ease-out"
-                        style={{
-                          width: `${Math.min(100, (editorStats.words / 500) * 100)}%`,
-                          background: "#FF5B04",
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Excerpt card */}
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <div className="flex justify-between items-center mb-3">
+                {/* Feed Guardrails or Analytics Card */}
+                {postType === "social-post" ? (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
                     <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                      Excerpt
+                      Feed Guardrails
                     </p>
-                    <button
-                      className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                      onClick={() => {
-                        if (!editor || editor.isEmpty) {
-                          setValidationError(
-                            "Please write some content first so the AI can summarize it.",
-                          );
-
-                          return;
-                        }
-                        setIsExcerptModalOpen(true);
-                      }}
-                    >
-                      <svg
-                        fill="none"
-                        height="10"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        width="10"
-                      >
-                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                      </svg>
-                      AI Assistant
-                    </button>
-                  </div>
-                  <textarea
-                    className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
-                    placeholder="Short summary shown in blog listings…"
-                    style={{ minHeight: 80 }}
-                    value={excerpt}
-                    onChange={(e) => setExcerpt(e.target.value)}
-                  />
-                </div>
-
-                {/* Tags card */}
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <div className="flex justify-between items-center mb-3">
-                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                      Tags
-                    </p>
-                    <button
-                      className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                      type="button"
-                      onClick={() => {
-                        setIsTagsModalOpen(true);
-                      }}
-                    >
-                      <svg
-                        fill="none"
-                        height="10"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        width="10"
-                      >
-                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                      </svg>
-                      AI Assistant
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                        style={{ background: "#FFF0E8", color: "#FF5B04" }}
-                      >
-                        {tag}
+                    
+                    {/* Platform switcher */}
+                    <div className="flex bg-black/5 p-1 rounded-xl">
+                      {(["linkedin", "x"] as const).map((dest) => (
                         <button
-                          className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                          onClick={() => setTags(tags.filter((t) => t !== tag))}
+                          key={dest}
+                          type="button"
+                          onClick={() => setSocialDestination(dest)}
+                          className={`flex-1 py-1 text-xs font-semibold rounded-lg transition-all ${
+                            socialDestination === dest
+                              ? "bg-white text-gray-900 shadow-sm"
+                              : "text-gray-500 hover:text-gray-800"
+                          }`}
                         >
-                          <svg
-                            fill="none"
-                            height="9"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            viewBox="0 0 24 24"
-                            width="9"
-                          >
-                            <line x1="18" x2="6" y1="6" y2="18" />
-                            <line x1="6" x2="18" y1="6" y2="18" />
-                          </svg>
+                          {SOCIAL_DESTINATIONS[dest].label}
                         </button>
-                      </span>
-                    ))}
+                      ))}
+                    </div>
+
+                    {/* Character limit bar */}
+                    <div>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[10px] font-geist text-gray-500 font-medium">
+                          Characters
+                        </span>
+                        <span className={`text-[10px] font-jetbrains-mono font-semibold ${
+                          editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                            ? "text-red-500 font-bold"
+                            : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                            ? "text-amber-500"
+                            : "text-gray-400"
+                        }`}>
+                          {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${
+                            editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                              ? "bg-red-500"
+                              : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                              ? "bg-amber-500"
+                              : "bg-[#FF5B04]"
+                          }`}
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Whitespace Spacing Advisor */}
+                    {editorStats.characters > 0 && (
+                      <div className="pt-3 border-t border-black/5">
+                        {(() => {
+                          const text = editor?.getText() || "";
+                          const paragraphsText = text.split("\n").map(p => p.trim()).filter(Boolean);
+                          const hasLongParagraph = paragraphsText.some(p => p.length > 240);
+                          if (hasLongParagraph) {
+                            return (
+                              <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
+                                <span className="text-amber-500 text-sm">⚠️</span>
+                                <div>
+                                  <p className="text-[10px] font-bold text-amber-800">
+                                    Whitespace Spacing Advisor
+                                  </p>
+                                  <p className="text-[10px] text-amber-700 leading-normal mt-0.5">
+                                    Feeds favor breathing room. Split this into short 1-2 sentence paragraphs for better mobile reading.
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          }
+                          return (
+                            <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
+                              <span className="text-green-500 text-sm">✅</span>
+                              <div>
+                                <p className="text-[10px] font-bold text-green-800">
+                                  Spacing Calibrated
+                                </p>
+                                <p className="text-[10px] text-green-700 leading-normal mt-0.5">
+                                  Excellent spacing! Paragraphs are airy and reader-friendly.
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    )}
                   </div>
-                  <input
-                    className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-                    placeholder="Add tag, press Enter…"
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={addTag}
-                  />
-                </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+                      Analytics
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-gray-900">
+                          {editorStats.words}
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Words
+                        </div>
+                      </div>
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-gray-900">
+                          {editorStats.characters}
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Characters
+                        </div>
+                      </div>
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-gray-900">
+                          {editorStats.paragraphs}
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Paragraphs
+                        </div>
+                      </div>
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-[#FF5B04]">
+                          {editorStats.readTime} min
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Read Time
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Writing Goal Progress */}
+                    {(() => {
+                      const wordGoal = getPostTypeConfig(postType)?.minWordCount ?? 500;
+                      return (
+                        <div className="mt-3.5 pt-3 border-t border-black/5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-[10px] font-geist text-gray-500 font-medium">
+                              Writing Goal
+                            </span>
+                            <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
+                              {Math.min(
+                                100,
+                                Math.round((editorStats.words / wordGoal) * 100),
+                              )}
+                              % ({editorStats.words}/{wordGoal} words)
+                            </span>
+                          </div>
+                          <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all duration-500 ease-out"
+                              style={{
+                                width: `${Math.min(100, (editorStats.words / wordGoal) * 100)}%`,
+                                background: "#FF5B04",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
+
+                {/* Excerpt card - hidden for social posts */}
+                {postType !== "social-post" && (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                        Excerpt
+                      </p>
+                      <button
+                        className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+                        onClick={() => {
+                          if (!editor || editor.isEmpty) {
+                            setValidationError(
+                              "Please write some content first so the AI can summarize it.",
+                            );
+
+                            return;
+                          }
+                          setIsExcerptModalOpen(true);
+                        }}
+                      >
+                        <svg
+                          fill="none"
+                          height="10"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          width="10"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                        AI Assistant
+                      </button>
+                    </div>
+                    <textarea
+                      className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
+                      placeholder="Short summary shown in blog listings…"
+                      style={{ minHeight: 80 }}
+                      value={excerpt}
+                      onChange={(e) => setExcerpt(e.target.value)}
+                    />
+                  </div>
+                )}
+
+                {/* Hashtag Assistant / Tags card */}
+                {postType === "social-post" ? (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                        Hashtag Assistant
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 min-h-[24px]">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                          style={{ background: "#FFF0E8", color: "#FF5B04" }}
+                        >
+                          {tag}
+                          <button
+                            type="button"
+                            className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                            onClick={() => setTags(tags.filter((t) => t !== tag))}
+                          >
+                            <svg
+                              fill="none"
+                              height="9"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                              width="9"
+                            >
+                              <line x1="18" x2="6" y1="6" y2="18" />
+                              <line x1="6" x2="18" y1="6" y2="18" />
+                            </svg>
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
+                        Suggestions
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {SOCIAL_DESTINATIONS[socialDestination].suggestions.map((suggestion) => {
+                          const isSelected = tags.includes(suggestion);
+                          return (
+                            <button
+                              key={suggestion}
+                              type="button"
+                              disabled={isSelected}
+                              onClick={() => appendHashtag(suggestion)}
+                              className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
+                                isSelected
+                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                  : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04]"
+                              }`}
+                            >
+                              {suggestion}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <input
+                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+                      placeholder="Add tag, press Enter…"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={handleAddHashtag}
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                        Tags
+                      </p>
+                      <button
+                        className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+                        type="button"
+                        onClick={() => {
+                          setIsTagsModalOpen(true);
+                        }}
+                      >
+                        <svg
+                          fill="none"
+                          height="10"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          width="10"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                        AI Assistant
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                          style={{ background: "#FFF0E8", color: "#FF5B04" }}
+                        >
+                          {tag}
+                          <button
+                            className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                            onClick={() => setTags(tags.filter((t) => t !== tag))}
+                          >
+                            <svg
+                              fill="none"
+                              height="9"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                              width="9"
+                            >
+                              <line x1="18" x2="6" y1="6" y2="18" />
+                              <line x1="6" x2="18" y1="6" y2="18" />
+                            </svg>
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    <input
+                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+                      placeholder="Add tag, press Enter…"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={addTag}
+                    />
+                  </div>
+                )}
 
                 {/* Quick insert card */}
                 <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
@@ -7794,47 +8051,51 @@ const BlogEditor = () => {
                       </svg>
                       Embed video
                     </button>
-                    <button
-                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                      onClick={() =>
-                        editor.chain().focus().setHorizontalRule().run()
-                      }
-                    >
-                      <svg
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <line x1="3" x2="21" y1="12" y2="12" />
-                      </svg>
-                      Add divider
-                    </button>
-                    <button
-                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                      onClick={() =>
-                        editor.chain().focus().toggleCodeBlock().run()
-                      }
-                    >
-                      <svg
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <polyline points="16 18 22 12 16 6" />
-                        <polyline points="8 6 2 12 8 18" />
-                      </svg>
-                      Code block
-                    </button>
+                    {postType !== "social-post" && (
+                      <>
+                        <button
+                          className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                          onClick={() =>
+                            editor.chain().focus().setHorizontalRule().run()
+                          }
+                        >
+                          <svg
+                            fill="none"
+                            height="14"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="1.75"
+                            viewBox="0 0 24 24"
+                            width="14"
+                          >
+                            <line x1="3" x2="21" y1="12" y2="12" />
+                          </svg>
+                          Add divider
+                        </button>
+                        <button
+                          className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                          onClick={() =>
+                            editor.chain().focus().toggleCodeBlock().run()
+                          }
+                        >
+                          <svg
+                            fill="none"
+                            height="14"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="1.75"
+                            viewBox="0 0 24 24"
+                            width="14"
+                          >
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                          </svg>
+                          Code block
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </>
@@ -8063,144 +8324,255 @@ const BlogEditor = () => {
             {sidebarTab === "ai" && (
               <div className="space-y-3">
                 <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">
-                  AI Writing Tools
+                  {postType === "social-post" ? "Social AI Tools" : "AI Writing Tools"}
                 </p>
-                {[
-                  {
-                    key: "copilot",
-                    label: "AI Copilot",
-                    description:
-                      "Get AI suggestions and help with your content",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                      </svg>
-                    ),
-                    onClick: () => setIsCopilotOpen(true),
-                  },
-                  {
-                    key: "title",
-                    label: "AI Title",
-                    description: "Generate compelling post titles",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M4 6h16M4 12h16M4 18h7" />
-                      </svg>
-                    ),
-                    onClick: () => setIsTitleModalOpen(true),
-                  },
-                  {
-                    key: "excerpt",
-                    label: "AI Excerpt",
-                    description: "Auto-summarize your post content",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="16" x2="8" y1="13" y2="13" />
-                        <line x1="16" x2="8" y1="17" y2="17" />
-                      </svg>
-                    ),
-                    onClick: () => {
-                      if (!editor || editor.isEmpty) {
-                        setValidationError(
-                          "Please write some content first so the AI can summarize it.",
-                        );
 
-                        return;
-                      }
-                      setIsExcerptModalOpen(true);
+                {postType === "social-post" ? (
+                  // ── Social-post quick actions ──────────────────────────────
+                  [
+                    {
+                      key: "copilot",
+                      label: "AI Copilot",
+                      description: "Generate post content with AI",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                      ),
+                      onClick: () => setIsCopilotOpen(true),
                     },
-                  },
-                  {
-                    key: "tags",
-                    label: "AI Tags",
-                    description: "Generate relevant tags for your post",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                        <line x1="7" x2="7.01" y1="7" y2="7" />
-                      </svg>
-                    ),
-                    onClick: () => setIsTagsModalOpen(true),
-                  },
-                ].map(({ key, label, description, icon, onClick }) => (
-                  <button
-                    key={key}
-                    className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
-                    onClick={onClick}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{
-                          background: "rgba(255,91,4,0.08)",
-                          color: "#FF5B04",
-                        }}
-                      >
-                        {icon}
+                    {
+                      key: "hook",
+                      label: "AI Hook",
+                      description: "Generate 3 scroll-stopping opening hooks",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M18.5 9.5a6 6 0 1 1-12 0 6 6 0 0 1 12 0z" />
+                          <path d="M12 15.5v6M8.5 18l3.5 3.5L15.5 18" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Generate 3 scroll-stopping opening hooks for my social post.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                    {
+                      key: "shorten",
+                      label: "Shorten to Limit",
+                      description: "Compress text to fit character limits",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M4 6h16M4 10h10M4 14h7" />
+                          <path d="m17 14 4 4-4 4" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Intelligently compress my text to fit within social media character limits while retaining the key message.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                    {
+                      key: "hashtags",
+                      label: "Hashtag Ideas",
+                      description: "Generate high-engagement hashtag recommendations",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <line x1="4" x2="20" y1="9" y2="9" />
+                          <line x1="4" x2="20" y1="15" y2="15" />
+                          <line x1="10" x2="8" y1="3" y2="21" />
+                          <line x1="16" x2="14" y1="3" y2="21" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Generate high-engagement hashtag recommendations matching the topic of this post.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                    {
+                      key: "rewrite",
+                      label: "Professional Rewrite",
+                      description: "Rewrite in a polished, engaging professional tone",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Rewrite this social post in a polished, engaging professional tone.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                  ].map(({ key, label, description, icon, onClick }) => (
+                    <button
+                      key={key}
+                      className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
+                      onClick={onClick}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={{ background: "rgba(255,91,4,0.08)", color: "#FF5B04" }}
+                        >
+                          {icon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
+                            {label}
+                          </p>
+                          <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
+                            {description}
+                          </p>
+                        </div>
+                        <svg
+                          className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
+                          fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14"
+                        >
+                          <line x1="5" x2="19" y1="12" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
-                          {label}
-                        </p>
-                        <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
-                          {description}
-                        </p>
+                    </button>
+                  ))
+                ) : (
+                  // ── Blog / Article quick actions ───────────────────────────
+                  [
+                    {
+                      key: "copilot",
+                      label: "AI Copilot",
+                      description:
+                        "Get AI suggestions and help with your content",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                      ),
+                      onClick: () => setIsCopilotOpen(true),
+                    },
+                    {
+                      key: "title",
+                      label: "AI Title",
+                      description: "Generate compelling post titles",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M4 6h16M4 12h16M4 18h7" />
+                        </svg>
+                      ),
+                      onClick: () => setIsTitleModalOpen(true),
+                    },
+                    {
+                      key: "excerpt",
+                      label: "AI Excerpt",
+                      description: "Auto-summarize your post content",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                          <line x1="16" x2="8" y1="13" y2="13" />
+                          <line x1="16" x2="8" y1="17" y2="17" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        if (!editor || editor.isEmpty) {
+                          setValidationError(
+                            "Please write some content first so the AI can summarize it.",
+                          );
+
+                          return;
+                        }
+                        setIsExcerptModalOpen(true);
+                      },
+                    },
+                    {
+                      key: "tags",
+                      label: "AI Tags",
+                      description: "Generate relevant tags for your post",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                          <line x1="7" x2="7.01" y1="7" y2="7" />
+                        </svg>
+                      ),
+                      onClick: () => setIsTagsModalOpen(true),
+                    },
+                  ].map(({ key, label, description, icon, onClick }) => (
+                    <button
+                      key={key}
+                      className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
+                      onClick={onClick}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={{
+                            background: "rgba(255,91,4,0.08)",
+                            color: "#FF5B04",
+                          }}
+                        >
+                          {icon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
+                            {label}
+                          </p>
+                          <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
+                            {description}
+                          </p>
+                        </div>
+                        <svg
+                          className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
+                          fill="none"
+                          height="14"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          width="14"
+                        >
+                          <line x1="5" x2="19" y1="12" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
                       </div>
-                      <svg
-                        className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <line x1="5" x2="19" y1="12" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  ))
+                )}
 
                 {/* Co-Pilot real-time recommendations */}
                 {copilotWarnings.length > 0 && (
@@ -8269,12 +8641,18 @@ const BlogEditor = () => {
                 blogPublished={saveStatus === "Published"}
                 blogSeo={seoData}
                 blogTags={tags}
+                blogTitle={title}
                 contentGoal={contentGoal}
                 distributionRecords={distRecords}
                 postType={postType}
+                socialDestination={socialDestination}
                 onEnsureSaved={ensureSaved}
                 onNavigateToSEO={() => setSidebarTab("seo")}
-                onTriggerCopilotAI={() => setIsCopilotOpen(true)}
+                onTriggerCopilotAI={(preset, prompt) => {
+                  if (preset) setActivePreset(preset);
+                  if (prompt) setCopilotInitialPrompt(prompt);
+                  setIsCopilotOpen(true);
+                }}
                 onTriggerExcerptAI={() => {
                   if (!editor || editor.isEmpty) {
                     setValidationError(
@@ -8300,13 +8678,21 @@ const BlogEditor = () => {
         postTitle={title}
         postType={postType}
         preset={activePreset}
-        onClose={() => setIsCopilotOpen(false)}
+        initialPrompt={copilotInitialPrompt}
+        onClose={() => {
+          setIsCopilotOpen(false);
+          setCopilotInitialPrompt("");
+        }}
       />
-      <RepurposingDrawer
-        isOpen={isRepurposeDrawerOpen}
-        postId={savedBlogId || ""}
-        onClose={() => setIsRepurposeDrawerOpen(false)}
-      />
+      {/* RepurposingDrawer is intentionally hidden for social-post — repurposing
+          a social post into another social format is handled by AI Copilot instead */}
+      {postType !== "social-post" && (
+        <RepurposingDrawer
+          isOpen={isRepurposeDrawerOpen}
+          postId={savedBlogId || ""}
+          onClose={() => setIsRepurposeDrawerOpen(false)}
+        />
+      )}
       <AIExcerptModal
         editor={editor}
         excerpt={excerpt}

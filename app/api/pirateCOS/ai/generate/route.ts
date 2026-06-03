@@ -196,8 +196,13 @@ export async function POST(request: NextRequest) {
         ? `${presetDirective}\n\nUser Prompt Instructions: "${prompt}"`
         : prompt;
 
-      systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following instructions: "${activePrompt}". The context of the post is: title: "${title || ""}", category: "${postType || "blog"}".${contextInfo}
+      if (postType === "social-post") {
+        systemInstructions = `You are a world-class professional copywriter and social media content writer. The user wants you to write content based on the following instructions: "${activePrompt}". The context of the post is: title: "${title || ""}", category: "social-post".${contextInfo}
+Write a concise, engaging, and highly readable update. Ensure it is formatted perfectly for social feeds with short, punchy paragraphs and no long blocks of text. Limit the length to be extremely concise (typically 1-3 short paragraphs, under 250 words total). Do NOT include headings (h1, h2, h3), lists, blockquotes, or dividers. Output in simple HTML format (using <p>, <strong>, <em>, and <br> tags). Do NOT use markdown. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
+      } else {
+        systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following instructions: "${activePrompt}". The context of the post is: title: "${title || ""}", category: "${postType || "blog"}".${contextInfo}
 Write a comprehensive, fully detailed, and substantial piece of content. Expand on the concepts deeply with rich explanations, multiple robust and fully-fleshed out paragraphs, structured subheadings, and thorough insights (aim for at least 300 to 600 words or a complete, deep-dive section, unless the prompt explicitly requests a short summary or brief answer). Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
+      }
     } else {
       return NextResponse.json(
         { success: false, error: "Invalid action" },
@@ -214,7 +219,17 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
       contentContextPrompt += `\n\n# CONTENT STRATEGY GOAL: ${goalConfig.label}\n${goalConfig.aiPriorityPrompt}\n`;
     }
     if (typeConfig) {
-      contentContextPrompt += `\n\n# CONTENT ARCHETYPE: ${typeConfig.label}\n${typeConfig.templateHint}\n`;
+      const brandPresetMap = brandBrain?.presetInstructions as any;
+      let activeHint = typeConfig.templateHint;
+      if (brandPresetMap) {
+        const customPrompt = typeof brandPresetMap.get === "function"
+          ? brandPresetMap.get(postType)
+          : brandPresetMap[postType];
+        if (customPrompt && typeof customPrompt === "string" && customPrompt.trim()) {
+          activeHint = customPrompt.trim();
+        }
+      }
+      contentContextPrompt += `\n\n# CONTENT ARCHETYPE: ${typeConfig.label}\n${activeHint}\n`;
     }
 
     if (contentContextPrompt) {
