@@ -6912,7 +6912,9 @@ const BlogEditPage = () => {
 
           {/* Writing Goal Progress */}
           {(() => {
-            const wordGoal = getPostTypeConfig(postType)?.minWordCount ?? 500;
+            const ptConfig = getPostTypeConfig(postType);
+            const minGoal = ptConfig?.minWordCount ?? 500;
+            const maxGoal = ptConfig?.maxWordCount ?? 1500;
             return (
               <div className="mt-3.5 pt-3 border-t border-black/5">
                 <div className="flex justify-between items-center mb-1">
@@ -6922,16 +6924,16 @@ const BlogEditPage = () => {
                   <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
                     {Math.min(
                       100,
-                      Math.round((editorStats.words / wordGoal) * 100),
+                      Math.round((editorStats.words / minGoal) * 100),
                     )}
-                    % ({editorStats.words}/{wordGoal} words)
+                    % ({editorStats.words} / {minGoal}–{maxGoal} words)
                   </span>
                 </div>
                 <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{
-                      width: `${Math.min(100, (editorStats.words / wordGoal) * 100)}%`,
+                      width: `${Math.min(100, (editorStats.words / minGoal) * 100)}%`,
                       background: "#FF5B04",
                     }}
                   />

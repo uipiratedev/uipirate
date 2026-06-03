@@ -594,27 +594,6 @@ export default function ContentHealthPanel({
           </div>
         ))}
       </div>
-
-      {/* ── Word Count Guide ── */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-2.5">
-          Read Time & Word Count
-        </p>
-        <div className="flex items-center justify-between text-xs font-geist">
-          <div>
-            <p className="text-gray-500">Current Word Count</p>
-            <p className="text-lg font-bold text-gray-900 mt-0.5">
-              {analysis.wordCount} words
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-gray-500">Target Range</p>
-            <p className="text-sm font-semibold text-gray-700 mt-1">
-              {typeConfig ? `${typeConfig.minWordCount} – ${typeConfig.maxWordCount} words` : "600 – 1500 words"}
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
