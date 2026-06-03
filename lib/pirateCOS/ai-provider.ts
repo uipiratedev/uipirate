@@ -1,32 +1,25 @@
-export type AIEngine = "openai" | "gemini" | "mistral" | "anthropic" | "puter";
+import {
+  AIEngine,
+  AI_ENGINE_IDS,
+  isAIEngine,
+  getProviderLabel,
+  getDefaultModelForEngine,
+} from "./ai-registry";
+
+export type { AIEngine };
+export { isAIEngine };
 
 export type AIKeyMap = Partial<Record<Exclude<AIEngine, "puter">, string>>;
 
-export const AI_ENGINE_ORDER: AIEngine[] = [
-  "openai",
-  "gemini",
-  "anthropic",
-  "mistral",
-  "puter",
-];
+export const AI_ENGINE_ORDER: AIEngine[] = AI_ENGINE_IDS;
 
 export const DEFAULT_MODEL_BY_ENGINE: Record<AIEngine, string> = {
-  openai: "gpt-4o-mini",
-  gemini: "gemini-flash-latest",
-  mistral: "mistral-large-latest",
-  anthropic: "claude-3-5-sonnet-latest",
-  puter: "gpt-4o-mini",
+  openai: getDefaultModelForEngine("openai"),
+  gemini: getDefaultModelForEngine("gemini"),
+  mistral: getDefaultModelForEngine("mistral"),
+  anthropic: getDefaultModelForEngine("anthropic"),
+  puter: getDefaultModelForEngine("puter"),
 };
-
-export function isAIEngine(value: unknown): value is AIEngine {
-  return (
-    value === "openai" ||
-    value === "gemini" ||
-    value === "mistral" ||
-    value === "anthropic" ||
-    value === "puter"
-  );
-}
 
 export function resolveAIEngine({
   requestedEngine,
@@ -54,10 +47,6 @@ export function getAIKeyForEngine(engine: AIEngine, keys: AIKeyMap) {
   return engine === "puter" ? undefined : keys[engine];
 }
 
-export function getAIEngineLabel(engine: AIEngine) {
-  if (engine === "openai") return "OpenAI";
-  if (engine === "gemini") return "Gemini";
-  if (engine === "mistral") return "Mistral";
-  if (engine === "anthropic") return "Claude";
-  return "Puter";
+export function getAIEngineLabel(engine: AIEngine): string {
+  return getProviderLabel(engine);
 }

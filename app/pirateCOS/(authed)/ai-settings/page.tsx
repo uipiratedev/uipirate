@@ -4,117 +4,22 @@ import { useState, useEffect } from "react";
 
 import { AI_CONFIG_LS_KEY } from "@/components/pirateCOS/AIConfigPanel";
 
+import {
+  AIEngine,
+  AIKeyProvider,
+  AI_PROVIDERS,
+  AI_MODELS,
+  getProvider,
+  getModelsForEngine,
+  getDefaultModelForEngine,
+  getProviderLabel,
+  getProviderLogo,
+} from "@/lib/pirateCOS/ai-registry";
+
 /* ── Types & constants ── */
-type Engine = "openai" | "gemini" | "puter" | "mistral" | "anthropic";
+type Engine = AIEngine;
 type KeySource = "env" | "db" | null;
-type KeyProvider = "openai" | "gemini" | "mistral" | "anthropic";
-
-const ENGINE_META: Record<
-  Engine,
-  { label: string; icon: string; iconClass: string }
-> = {
-  openai: { label: "OpenAI", icon: "●", iconClass: "text-emerald-500" },
-  gemini: { label: "Google Gemini", icon: "✦", iconClass: "text-blue-500" },
-  mistral: { label: "Mistral AI", icon: "◆", iconClass: "text-violet-600" },
-  anthropic: {
-    label: "Claude",
-    icon: "◆",
-    iconClass: "text-fuchsia-600",
-  },
-  puter: { label: "Puter AI", icon: "◎", iconClass: "text-[#FF5B04]" },
-};
-
-const ENGINE_LOGOS: Record<Engine, string> = {
-  openai: "/assets/logos/ai/openai.svg",
-  gemini: "/assets/logos/ai/google-gemini-icon.svg",
-  mistral: "/assets/logos/ai/mistral-ai-icon.svg",
-  anthropic: "/assets/logos/ai/claude-ai-icon.svg",
-  puter: "/assets/logos/ai/puter.svg",
-};
-
-const MODEL_LABELS: Record<string, string> = {
-  "gpt-4o-mini": "GPT-4o Mini",
-  "gpt-4o": "GPT-4o",
-  "gpt-5.5": "GPT-5.5",
-  "gpt-5.4": "GPT-5.4",
-  "gpt-5.4-mini": "GPT-5.4 Mini",
-  "gemini-flash-latest": "Gemini 1.5 Flash",
-  "gemini-1.5-pro-latest": "Gemini 1.5 Pro",
-  "gemini-2.0-flash-exp": "Gemini 2.0 Flash",
-  "mistral-large-latest": "Mistral Large",
-  "mistral-small-latest": "Mistral Small",
-  "mistral-nemo": "Mistral Nemo",
-  "codestral-latest": "Codestral",
-  "claude-3-5-sonnet-latest": "Claude 3.5 Sonnet",
-  "claude-3-5-haiku-latest": "Claude 3.5 Haiku",
-  "claude-3-opus-latest": "Claude 3 Opus",
-};
-
-/* ── KeyModal ── */
-const PROVIDER_INFO: Record<
-  KeyProvider,
-  {
-    label: string;
-    icon: string;
-    iconClass: string;
-    bgClass: string;
-    borderClass: string;
-    textClass: string;
-    placeholder: string;
-    description: string;
-    link: string;
-    linkLabel: string;
-  }
-> = {
-  openai: {
-    label: "OpenAI",
-    icon: "●",
-    iconClass: "text-emerald-500",
-    bgClass: "bg-emerald-50",
-    borderClass: "border-emerald-100",
-    textClass: "text-emerald-700",
-    placeholder: "sk-...",
-    description: "Used for GPT-4o, GPT-5 and newer OpenAI models.",
-    link: "https://platform.openai.com/api-keys",
-    linkLabel: "platform.openai.com/api-keys",
-  },
-  gemini: {
-    label: "Google Gemini",
-    icon: "✦",
-    iconClass: "text-blue-500",
-    bgClass: "bg-blue-50",
-    borderClass: "border-blue-100",
-    textClass: "text-blue-700",
-    placeholder: "AIza...",
-    description: "Used for Gemini 1.5 Flash, Pro and 2.0 models.",
-    link: "https://aistudio.google.com/app/apikey",
-    linkLabel: "aistudio.google.com/app/apikey",
-  },
-  mistral: {
-    label: "Mistral AI",
-    icon: "◆",
-    iconClass: "text-violet-600",
-    bgClass: "bg-violet-50",
-    borderClass: "border-violet-100",
-    textClass: "text-violet-700",
-    placeholder: "e.g. your Mistral API key",
-    description: "Used for Mistral Large, Small, Nemo and Codestral.",
-    link: "https://console.mistral.ai/api-keys",
-    linkLabel: "console.mistral.ai/api-keys",
-  },
-  anthropic: {
-    label: "Anthropic Claude",
-    icon: "◆",
-    iconClass: "text-fuchsia-600",
-    bgClass: "bg-fuchsia-50",
-    borderClass: "border-fuchsia-100",
-    textClass: "text-fuchsia-700",
-    placeholder: "sk-ant-...",
-    description: "Used for Claude Sonnet, Haiku and Opus models.",
-    link: "https://console.anthropic.com/settings/keys",
-    linkLabel: "console.anthropic.com/settings/keys",
-  },
-};
+type KeyProvider = AIKeyProvider;
 
 interface KeyModalProps {
   open: boolean;
@@ -139,7 +44,8 @@ function KeyModal({ open, provider, onClose, onSave }: KeyModalProps) {
   }, [open, provider]);
 
   if (!open) return null;
-  const info = PROVIDER_INFO[provider];
+  const info = getProvider(provider);
+  if (!info) return null;
   const handleSave = async () => {
     if (!keyValue.trim()) return;
     setSaving(true);
@@ -176,7 +82,7 @@ function KeyModal({ open, provider, onClose, onSave }: KeyModalProps) {
               API Key
             </p>
             <h2 className="text-lg font-bold font-geist text-gray-900">
-              Update {info.label} Key
+              Update {info.name} Key
             </h2>
           </div>
           <button
@@ -201,64 +107,67 @@ function KeyModal({ open, provider, onClose, onSave }: KeyModalProps) {
 
         {/* Provider identity strip */}
         <div
-          className={`flex items-start gap-3 px-4 py-3 rounded-xl mb-5 ${info.bgClass} border ${info.borderClass} items-center`}
+          className={`flex items-start gap-3 px-4 py-3 rounded-xl mb-5 ${info.sourceColors?.bg || ""} border ${info.sourceColors?.border || ""} items-center`}
         >
-          {ENGINE_LOGOS[provider] ? (
+          {info.logo ? (
             <img
-              src={ENGINE_LOGOS[provider]}
-              alt={info.label}
+              src={info.logo}
+              alt={info.name}
               className="w-5 h-5 object-contain flex-shrink-0"
             />
           ) : (
             <span
-              className={`text-xl leading-none flex-shrink-0 ${info.iconClass}`}
+              className="text-xl leading-none flex-shrink-0"
+              style={{ color: info.color }}
             >
-              {info.icon}
+              ◆
             </span>
           )}
           <div className="min-w-0">
             <p
-              className={`text-xs font-bold font-geist mb-0.5 ${info.textClass}`}
+              className={`text-xs font-bold font-geist mb-0.5 ${info.sourceColors?.text || ""}`}
             >
-              {info.label}
+              {info.name}
             </p>
             <p className="text-xs font-geist text-gray-500 leading-relaxed">
-              {info.description}
+              {info.keyDescription}
             </p>
-            <a
-              className={`inline-flex items-center gap-1 text-[11px] font-geist mt-1.5 underline underline-offset-2 ${info.textClass} hover:opacity-70 transition-opacity`}
-              href={info.link}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <svg
-                fill="none"
-                height="10"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                width="10"
+            {info.keyLink && (
+              <a
+                className={`inline-flex items-center gap-1 text-[11px] font-geist mt-1.5 underline underline-offset-2 ${info.sourceColors?.text || ""} hover:opacity-70 transition-opacity`}
+                href={info.keyLink}
+                rel="noreferrer"
+                target="_blank"
               >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" x2="21" y1="14" y2="3" />
-              </svg>
-              {info.linkLabel}
-            </a>
+                <svg
+                  fill="none"
+                  height="10"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="10"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" x2="21" y1="14" y2="3" />
+                </svg>
+                {info.keyLinkLabel || info.keyLink}
+              </a>
+            )}
           </div>
         </div>
 
         {/* Key input */}
         <p className="text-xs font-geist text-gray-500 mb-2">
-          {info.label} API Key
+          {info.name} API Key
         </p>
         <div className="relative mb-2">
           <input
             autoFocus
             className="w-full text-sm font-geist bg-gray-50 rounded-lg px-3 py-2.5 pr-14 outline-none placeholder:text-gray-400"
-            placeholder={info.placeholder}
+            placeholder={info.keyPlaceholder}
             style={{ border: "1px solid rgba(0,0,0,0.1)" }}
             type={showKey ? "text" : "password"}
             value={keyValue}
@@ -523,7 +432,8 @@ export default function AISettingsPage() {
     setPuterBusy(false);
   };
 
-  const engMeta = ENGINE_META[defaultEngine];
+  const defaultEngineLabel = getProviderLabel(defaultEngine);
+  const defaultEngineLogo = getProviderLogo(defaultEngine);
 
   return (
     <div className="space-y-8 px-8 py-4 font-geist text-gray-700">
@@ -760,15 +670,15 @@ export default function AISettingsPage() {
                   </p>
                   <div className="flex items-center gap-2">
                     <img
-                      src={ENGINE_LOGOS[defaultEngine]}
-                      alt={engMeta.label}
+                      src={defaultEngineLogo}
+                      alt={defaultEngineLabel}
                       className="w-4 h-4 object-contain"
                     />
                     <span
                       className="text-sm font-bold font-geist"
                       style={{ color: "#FF5B04" }}
                     >
-                      {engMeta.label}
+                      {defaultEngineLabel}
                     </span>
                   </div>
                 </div>
@@ -778,7 +688,7 @@ export default function AISettingsPage() {
                     Model
                   </p>
                   <span className="text-sm font-bold font-geist text-gray-800">
-                    {MODEL_LABELS[defaultModel] ?? defaultModel}
+                    {AI_MODELS.find(m => m.id === defaultModel && m.provider === defaultEngine)?.label ?? defaultModel}
                   </span>
                 </div>
                 <div className="ml-auto hidden sm:block">
@@ -800,41 +710,25 @@ export default function AISettingsPage() {
                     Default Engine
                   </p>
                   <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
-                    {(
-                      [
-                        "openai",
-                        "gemini",
-                        "anthropic",
-                        "mistral",
-                        "puter",
-                      ] as Engine[]
-                    ).map((eng) => (
+                    {AI_PROVIDERS.map((provider) => (
                         <button
-                          key={eng}
+                          key={provider.id}
                           className={`flex-1 py-2 rounded-lg text-xs font-semibold font-geist transition-all flex items-center justify-center gap-1.5 ${
-                            defaultEngine === eng
+                            defaultEngine === provider.id
                               ? "bg-white text-gray-900 shadow-sm border border-black/5"
                               : "text-gray-500 hover:text-gray-900"
                           }`}
                           onClick={() => {
-                            setDefaultEngine(eng);
-                            setDefaultModel(
-                              eng === "gemini"
-                                ? "gemini-flash-latest"
-                                : eng === "anthropic"
-                                  ? "claude-3-5-sonnet-latest"
-                                : eng === "mistral"
-                                  ? "mistral-large-latest"
-                                  : "gpt-4o-mini",
-                            );
+                            setDefaultEngine(provider.id);
+                            setDefaultModel(getDefaultModelForEngine(provider.id));
                           }}
                         >
                           <img
-                            src={ENGINE_LOGOS[eng]}
-                            alt={ENGINE_META[eng].label}
+                            src={provider.logo}
+                            alt={provider.name}
                             className="w-3.5 h-3.5 object-contain"
                           />
-                          {ENGINE_META[eng].label.split(" ")[0]}
+                          {provider.shortName}
                         </button>
                     ))}
                   </div>
@@ -849,54 +743,11 @@ export default function AISettingsPage() {
                     value={defaultModel}
                     onChange={(e) => setDefaultModel(e.target.value)}
                   >
-                    {defaultEngine === "gemini" ? (
-                      <>
-                        <option value="gemini-flash-latest">
-                          Gemini 1.5 Flash
-                        </option>
-                        <option value="gemini-1.5-pro-latest">
-                          Gemini 1.5 Pro
-                        </option>
-                        <option value="gemini-2.0-flash-exp">
-                          Gemini 2.0 Flash
-                        </option>
-                      </>
-                    ) : defaultEngine === "mistral" ? (
-                      <>
-                        <option value="mistral-large-latest">
-                          Mistral Large — Most Capable
-                        </option>
-                        <option value="mistral-small-latest">
-                          Mistral Small — Fast
-                        </option>
-                        <option value="mistral-nemo">
-                          Mistral Nemo — Lightweight
-                        </option>
-                        <option value="codestral-latest">
-                          Codestral — Code
-                        </option>
-                      </>
-                    ) : defaultEngine === "anthropic" ? (
-                      <>
-                        <option value="claude-3-5-sonnet-latest">
-                          Claude 3.5 Sonnet
-                        </option>
-                        <option value="claude-3-5-haiku-latest">
-                          Claude 3.5 Haiku
-                        </option>
-                        <option value="claude-3-opus-latest">
-                          Claude 3 Opus
-                        </option>
-                      </>
-                    ) : (
-                      <>
-                        <option value="gpt-4o-mini">GPT-4o Mini — Fast</option>
-                        <option value="gpt-4o">GPT-4o</option>
-                        <option value="gpt-5.5">GPT-5.5</option>
-                        <option value="gpt-5.4">GPT-5.4</option>
-                        <option value="gpt-5.4-mini">GPT-5.4 Mini</option>
-                      </>
-                    )}
+                    {getModelsForEngine(defaultEngine).map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.label} {m.description ? `— ${m.description}` : ""}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 {/* Save Defaults row */}

@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
+import { AIEngine, AI_ENGINE_IDS } from "@/lib/pirateCOS/ai-registry";
 
 export interface IAIConfig extends Document {
   /** References the Admin._id that owns this config — one doc per tenant */
@@ -12,7 +13,7 @@ export interface IAIConfig extends Document {
   /** AES-256-GCM encrypted Anthropic API key (iv:tag:ciphertext) */
   anthropicKeyEncrypted?: string;
   /** Which engine to pre-select in writing assistants */
-  defaultEngine: "openai" | "gemini" | "puter" | "mistral" | "anthropic";
+  defaultEngine: AIEngine;
   /** Which model to pre-select in writing assistants */
   defaultModel: string;
   createdAt: Date;
@@ -33,7 +34,7 @@ const AIConfigSchema: Schema<IAIConfig> = new Schema(
     anthropicKeyEncrypted: { type: String, default: null },
     defaultEngine: {
       type: String,
-      enum: ["openai", "gemini", "puter", "mistral", "anthropic"],
+      enum: AI_ENGINE_IDS,
       default: "puter",
     },
     defaultModel: { type: String, default: "gpt-4o-mini" },

@@ -152,6 +152,19 @@ During the active development of **Phase 2 (Monetization & Growth Engine)**, we 
 *   **Key Source Files**:
     *   [MODIFY] [page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
 
+#### 8. Dynamic AI Provider & Model Registry Layer
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4C)
+*   **Purpose**: Centralized all AI engines and model lists into a single dynamic configuration/registry layer (`ai-registry.ts`), replacing hardcoded provider arrays and selects across 10+ pages, modals, settings, panels, and schemas with a shared `<EngineModelSelector>` component.
+*   **Key Source Files**:
+    *   [NEW] [ai-registry.ts](file:///d:/ui-pirate/uipirate/lib/pirateCOS/ai-registry.ts)
+    *   [NEW] [EngineModelSelector.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/EngineModelSelector.tsx)
+    *   [MODIFY] [ai-provider.ts](file:///d:/ui-pirate/uipirate/lib/pirateCOS/ai-provider.ts)
+    *   [MODIFY] [AIConfigPanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIConfigPanel.tsx)
+    *   [MODIFY] [ai-settings/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/ai-settings/page.tsx)
+    *   [MODIFY] [AIConfig.ts](file:///d:/ui-pirate/uipirate/models/pirateCOS/AIConfig.ts)
+    *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
+    *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
+
 ---
 
 ## 🔍 Codebase Audit: Phase 3 Core Accomplishments & Files

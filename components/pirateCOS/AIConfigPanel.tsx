@@ -5,13 +5,20 @@ import CosIcon from "./CosIcon";
 
 export const AI_CONFIG_LS_KEY = "uipirate-ai-config";
 
+import {
+  AIEngine,
+  AI_PROVIDERS,
+  getModelsForEngine,
+  getDefaultModelForEngine,
+} from "@/lib/pirateCOS/ai-registry";
+
 export interface AIConfig {
   /** API keys are no longer stored here — they live encrypted in MongoDB */
   openaiKey?: string;
   geminiKey?: string;
   mistralKey?: string;
   anthropicKey?: string;
-  defaultEngine?: "openai" | "gemini" | "puter" | "mistral" | "anthropic";
+  defaultEngine?: AIEngine;
   defaultModel?: string;
 }
 
@@ -34,9 +41,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [geminiKey, setGeminiKey] = useState("");
   const [mistralKey, setMistralKey] = useState("");
   const [anthropicKey, setAnthropicKey] = useState("");
-  const [defaultEngine, setDefaultEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >("puter");
+  const [defaultEngine, setDefaultEngine] = useState<AIEngine>("puter");
   const [defaultModel, setDefaultModel] = useState("gpt-4o-mini");
   const [serverStatus, setServerStatus] = useState<{
     openai: boolean;
@@ -355,48 +360,20 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
 
           <PanelSection label="Default Engine">
             <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
-              {(["openai", "gemini", "anthropic", "mistral", "puter"] as const).map(
-                (eng) => (
-                  <button
-                    key={eng}
-                    className={`flex-grow flex-shrink-0 min-w-[64px] py-1.5 rounded-lg text-[11px] font-semibold font-geist transition-all ${defaultEngine === eng ? "bg-white text-gray-900 shadow-sm border border-black/5" : "text-gray-500 hover:text-gray-900"}`}
-                    onClick={() => {
-                      setDefaultEngine(eng);
-                      setDefaultModel(
-                        eng === "gemini"
-                          ? "gemini-flash-latest"
-                          : eng === "anthropic"
-                            ? "claude-3-5-sonnet-latest"
-                          : eng === "mistral"
-                            ? "mistral-large-latest"
-                            : "gpt-4o-mini",
-                      );
-                    }}
-                  >
-                    {eng === "openai" ? (
-                      <span className="flex items-center justify-center gap-1.5">
-                        <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3 h-3 object-contain" /> GPT
-                      </span>
-                    ) : eng === "gemini" ? (
-                      <span className="flex items-center justify-center gap-1.5">
-                        <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3 h-3 object-contain" /> Gemini
-                      </span>
-                    ) : eng === "anthropic" ? (
-                      <span className="flex items-center justify-center gap-1.5">
-                        <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3 h-3 object-contain" /> Claude
-                      </span>
-                    ) : eng === "mistral" ? (
-                      <span className="flex items-center justify-center gap-1.5">
-                        <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3 h-3 object-contain" /> Mistral
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center gap-1.5">
-                        <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3 h-3 object-contain" /> Puter
-                      </span>
-                    )}
-                  </button>
-                ),
-              )}
+              {AI_PROVIDERS.map((provider) => (
+                <button
+                  key={provider.id}
+                  className={`flex-grow flex-shrink-0 min-w-[64px] py-1.5 rounded-lg text-[11px] font-semibold font-geist transition-all ${defaultEngine === provider.id ? "bg-white text-gray-900 shadow-sm border border-black/5" : "text-gray-500 hover:text-gray-900"}`}
+                  onClick={() => {
+                    setDefaultEngine(provider.id);
+                    setDefaultModel(getDefaultModelForEngine(provider.id));
+                  }}
+                >
+                  <span className="flex items-center justify-center gap-1.5">
+                    <img src={provider.logo} alt={provider.name} className="w-3.5 h-3.5 object-contain" /> {provider.shortName}
+                  </span>
+                </button>
+              ))}
             </div>
           </PanelSection>
 
@@ -408,44 +385,11 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               value={defaultModel}
               onChange={(e) => setDefaultModel(e.target.value)}
             >
-              {defaultEngine === "gemini" ? (
-                <>
-                  <option value="gemini-flash-latest">
-                    Gemini 1.5 Flash
-                  </option>
-                  <option value="gemini-1.5-pro-latest">
-                    Gemini 1.5 Pro
-                  </option>
-                  <option value="gemini-2.0-flash-exp">
-                    Gemini 2.0 Flash
-                  </option>
-                </>
-              ) : defaultEngine === "mistral" ? (
-                <>
-                  <option value="mistral-large-latest">Mistral Large</option>
-                  <option value="mistral-small-latest">Mistral Small</option>
-                  <option value="mistral-nemo">Mistral Nemo</option>
-                  <option value="codestral-latest">Codestral</option>
-                </>
-              ) : defaultEngine === "anthropic" ? (
-                <>
-                  <option value="claude-3-5-sonnet-latest">
-                    Claude 3.5 Sonnet
-                  </option>
-                  <option value="claude-3-5-haiku-latest">
-                    Claude 3.5 Haiku
-                  </option>
-                  <option value="claude-3-opus-latest">Claude 3 Opus</option>
-                </>
-              ) : (
-                <>
-                  <option value="gpt-4o-mini">GPT-4o Mini (fast)</option>
-                  <option value="gpt-4o">GPT-4o</option>
-                  <option value="gpt-5.5">GPT-5.5</option>
-                  <option value="gpt-5.4">GPT-5.4</option>
-                  <option value="gpt-5.4-mini">GPT-5.4 Mini</option>
-                </>
-              )}
+              {getModelsForEngine(defaultEngine).map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label} {m.description ? `— ${m.description}` : ""}
+                </option>
+              ))}
             </select>
           </PanelSection>
 

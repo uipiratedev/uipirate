@@ -9,6 +9,17 @@
 >
 > **"Create → Optimize → Distribute → Repurpose → Track"**
 >
+# PirateCOS: Content Command Center — Technical Implementation Plan
+
+# PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution Flow
+
+> **Product Philosophy:**
+> PirateCOS is an **AI-Powered Content Production & Distribution Operating System.**
+>
+> NOT an AI writer. NOT a blog editor.
+>
+> **"Create → Optimize → Distribute → Repurpose → Track"**
+>
 > Content is never "done" when you hit publish. Publishing is an **intelligent workflow stage.**
 
 > **Transform the existing blog management system into a multi-channel content distribution platform.**
@@ -25,6 +36,7 @@
 | **Phase 4** | PirateCOS: AI Intelligence Layer & Content Transformation | 🟢 **Complete** |
 | **Phase 4B** | PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution | 🟢 **Complete** |
 | **Phase 4C** | PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability | 🟢 **Complete** |
+| **Phase 4D** | PirateCOS: Dynamic Provider Registry System — Unified AI Configuration & Architecture | 🟡 **In Progress** |
 | **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | ⬜ Not started; foundations shipped |
 | **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | ⬜ Not started |
 | **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | ⬜ Not started |
@@ -114,6 +126,18 @@
  | Wizard interface customization (specs grid, custom SVG icons, selections guard) | ✅ Complete & Verified |
  
  ---
+ 
+ **Phase 4D — Dynamic Provider Registry System (Complete)**
+ 
+ | Area | Status |
+ |---|---|
+ | Centralized AI Provider Registry (`lib/pirateCOS/ai-registry.ts`) | ✅ Complete & Verified |
+ | Reusable `<EngineModelSelector>` UI component | ✅ Complete & Verified |
+ | Decouple Mongoose `AIConfig` schema validation | ✅ Complete & Verified |
+ | Refactor `AIConfigPanel.tsx` and `ai-settings/page.tsx` | ✅ Complete & Verified |
+ | Refactor editor wizard/modals in `create/page.tsx` and `edit/[id]/page.tsx` | ✅ Complete & Verified |
+ 
+ ---
 
 ## Table of Contents
 
@@ -165,6 +189,8 @@
 
 10. [Phase 4 — Overview](#phase-4--ai-intelligence-layer--content-transformation)
     - [AI Intent Presets & Modes](#41-ai-intent-presets--modes)
+    - [Content Lifecycle Orchestration (Phase 4B)](#41b-content-lifecycle-orchestration-phase-4b)
+    - [Dynamic Provider Registry System (Phase 4D)](#41d-dynamic-provider-registry-system-phase-4d)
     - [Workflow Memory & Personalization](#42-workflow-memory--personalization)
     - [AI Brand Brain (Context Layer)](#43-ai-brand-brain-context-layer)
     - [Multi-Format Content Transformation](#44-multi-format-content-transformation)
@@ -1010,6 +1036,7 @@ The canonical execution sequence is the same as the top-level roadmap above. Pha
 | **Phase 4** | AI Intelligence Layer & Content Transformation | 🟢 **Complete** |
 | **Phase 4B** | Content Lifecycle Orchestration — Guided Creation & Distribution | 🟢 **Complete** |
 | **Phase 4C** | Content Lifecycle & UX Magic — Workflow Smoothness & Reliability | 🟢 **Complete** |
+| **Phase 4D** | Dynamic Provider Registry System — Unified AI Configuration & Architecture | 🟡 **In Progress** |
 | **Phase 5** | Advanced Analytics & Content Optimization | ⬜ Not started; foundations shipped |
 | **Phase 6** | Social Publishing & Newsletter Platforms | ⬜ Not started |
 | **Phase 7** | Team Collaboration & Enterprise Features | ⬜ Not started |
@@ -1755,8 +1782,6 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 
 **Revenue impact:** Unlocking all 8 presets = **Pro tier feature** (Free users get 3 basic presets)
 
----
-
 ### 4.1B Content Lifecycle Orchestration (Phase 4B)
 
 > **📋 Full specification:** [`PRESET_REWORK_PLAN.md`](file:///d:/ui-pirate/uipirate/PRESET_REWORK_PLAN.md)
@@ -1801,7 +1826,7 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 - Content Distribution Chains: preset launch workflows such as website publish → LinkedIn teaser → X thread → newsletter summary → CTA snippets → scheduled follow-ups
 - Chain Templates: SEO Growth Chain, Founder Authority Chain, Product Launch Chain, Newsletter Growth Chain, and Community Expansion Chain
 - Distribution Memory: learns repeated tenant workflows and suggests default chains like "Apply your Founder Authority Chain?"
-- Post-Publish Actions: after publishing, prompt the user to generate LinkedIn teasers, X/Twitter threads, newsletter versions, carousel copy, community summaries, Medium syndication copy, SEO meta packages, and CTA snippets
+- Post-Publish Actions: after publishing, prompt the user to generate LinkedIn teasers, X/Twitter threads, newsletter versions, carousel copy, executive summary, short-form community post, quote snippets
 - Distribution Readiness Score: per-channel fit scores for SEO, LinkedIn, Newsletter, Conversion, and X/Twitter
 - Content State Machine: tracks Draft → Structured → Optimized → Distribution Ready → Published → Repurposed → Tracked, then surfaces the most relevant next action
 - Content Repurposing Engine: 1 blog → LinkedIn post variants, X thread, newsletter summary, carousel copy, executive summary, short-form community post, quote snippets
@@ -1811,6 +1836,27 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 **Architecture:** Centralized in [`lib/pirateCOS/postTypeConfig.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/postTypeConfig.ts) driving wizard UI, toolbar adaptation, AI prompt injection, and health scoring.
 
 **Competitive Position:** AI writing = commodity. Intelligent operational workflows = defensible moat. PirateCOS becomes "Create, Optimize & Distribute Content Across Every Channel."
+
+### 4.1D Dynamic Provider Registry System (Phase 4D)
+
+> **📋 Full specification:** [`implementation_plan_registry.md`](file:///d:/ui-pirate/uipirate/implementation_plan_registry.md)
+>
+> **Product Philosophy:** AI-native platforms must be provider-agnostic. Hardcoding LLMs/APIs leads to high maintenance and prevents rapid scaling.
+>
+> **Strategic Shift:** Move from hardcoded lists to a **centralized configuration layer** where AI providers and model catalogs are registered dynamically.
+
+**The Architecture:**
+1. **Unified AI Registry (`lib/pirateCOS/ai-registry.ts`):** Single source of truth defining supported engines, display names, logos, colors, status badges, keys required, models list, and default configs.
+2. **Reusable Selector Component (`EngineModelSelector.tsx`):** A single React component that wraps the engine button ribbon and the model dropdown with synchronized default state.
+3. **Database-Safe Decoupling (`AIConfig.ts`):** Mongoose schemas dynamically reference the registry's allowed engine IDs rather than hardcoded string lists.
+4. **Codebase-Wide Deduplication:** Clean up duplicated lists in `AIConfigPanel.tsx`, `ai-settings/page.tsx`, `create/page.tsx`, and `edit/[id]/page.tsx`.
+
+**Supported Engines at Launch:**
+- OpenAI (GPT-4o, GPT-4o Mini)
+- Google Gemini (Gemini 1.5 Pro, Gemini 1.5 Flash)
+- Anthropic Claude (Claude 3 Opus, Claude 3.5 Sonnet, Claude 3 Haiku)
+- Mistral AI (Mistral Large, Mistral Codestral, Mistral Nemo)
+- Puter AI (Puter-GPT-4o, Puter-Claude-3.5, Puter-Gemini-1.5)
 
 ---
 
