@@ -47,8 +47,29 @@ export interface IPost extends Document {
     errorMessage?: string; // Populated on failure; surfaced in Distribution Panel
   }>;
   repurposedOutputs?: Record<string, string>;
+  aiWorkspaceSession?: {
+    messages: Array<{
+      id: string;
+      role: "user" | "assistant";
+      content: string;
+      timestamp: Date;
+      associatedGenerationId?: string;
+      selectedTextContext?: string;
+    }>;
+    generations: Array<{
+      id: string;
+      prompt: string;
+      output: string;
+      mode: string;
+      appliedAt?: Date;
+      isAccepted: boolean;
+      selectedTextContext?: string;
+    }>;
+    lastActiveAt: Date;
+  };
   calculateReadTime(): void;
 }
+
 
 const PostSchema: Schema = new Schema(
   {
@@ -177,6 +198,30 @@ const PostSchema: Schema = new Schema(
       type: Map,
       of: String,
       default: {},
+    },
+    aiWorkspaceSession: {
+      messages: [
+        {
+          id: { type: String, required: true },
+          role: { type: String, enum: ["user", "assistant"], required: true },
+          content: { type: String, required: true },
+          timestamp: { type: Date, default: Date.now },
+          associatedGenerationId: { type: String },
+          selectedTextContext: { type: String },
+        },
+      ],
+      generations: [
+        {
+          id: { type: String, required: true },
+          prompt: { type: String, required: true },
+          output: { type: String, required: true },
+          mode: { type: String, required: true },
+          appliedAt: { type: Date },
+          isAccepted: { type: Boolean, default: false },
+          selectedTextContext: { type: String },
+        },
+      ],
+      lastActiveAt: { type: Date, default: Date.now },
     },
   },
   {

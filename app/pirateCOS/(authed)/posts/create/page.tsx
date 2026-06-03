@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
+import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
@@ -6361,13 +6362,186 @@ const BlogEditor = () => {
   const [excerpt, setExcerpt] = useState("");
 
   // AI States
-  const [isExcerptModalOpen, setIsExcerptModalOpen] = useState(false);
-  const [isTitleModalOpen, setIsTitleModalOpen] = useState(false);
-  const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
-  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+  const [showExcerptAIGuidelines, setShowExcerptAIGuidelines] = useState(false);
   const [activePreset, setActivePreset] = useState("");
   const [isRepurposeDrawerOpen, setIsRepurposeDrawerOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+
+  // Inline AI States & Helpers
+  const [titleSuggestions, setTitleSuggestions] = useState<string[]>([]);
+  const [isOptimizingTitle, setIsOptimizingTitle] = useState(false);
+  const [titleInstructions, setTitleInstructions] = useState("");
+
+  const [suggestedExcerpt, setSuggestedExcerpt] = useState("");
+  const [isGeneratingExcerpt, setIsGeneratingExcerpt] = useState(false);
+  const [excerptInstructions, setExcerptInstructions] = useState("");
+
+  const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
+  const [isGeneratingTags, setIsGeneratingTags] = useState(false);
+
+  const [isSuggestingFocusKeyword, setIsSuggestingFocusKeyword] = useState(false);
+  const [isGeneratingMetaTitle, setIsGeneratingMetaTitle] = useState(false);
+  const [isGeneratingMetaDescription, setIsGeneratingMetaDescription] = useState(false);
+  const [suggestedMetaTitle, setSuggestedMetaTitle] = useState("");
+  const [suggestedMetaDescription, setSuggestedMetaDescription] = useState("");
+
+  const generateTitleSuggestions = async () => {
+    setIsOptimizingTitle(true);
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textContext = plainText.trim().substring(0, 3000);
+      const response = await fetch("/api/pirateCOS/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "titles",
+          title,
+          content: titleInstructions.trim()
+            ? `${textContext}\n\nCustom Instructions:\n${titleInstructions.trim()}`
+            : textContext,
+          postType,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Failed to generate titles.");
+      setTitleSuggestions(data.data);
+    } catch (err: any) {
+      setValidationError(err.message || "Failed to optimize title.");
+    } finally {
+      setIsOptimizingTitle(false);
+    }
+  };
+
+  const generateExcerptInline = async () => {
+    setIsGeneratingExcerpt(true);
+    setSuggestedExcerpt("");
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textToSummarize = plainText.trim() || title || "Untitled Post";
+      const response = await fetch("/api/pirateCOS/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "excerpt",
+          title,
+          content: excerptInstructions.trim()
+            ? `${textToSummarize}\n\nCustom Instructions:\n${excerptInstructions.trim()}`
+            : textToSummarize,
+          postType,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Failed to generate excerpt.");
+      setSuggestedExcerpt(data.data);
+    } catch (err: any) {
+      setValidationError(err.message || "Failed to generate excerpt.");
+    } finally {
+      setIsGeneratingExcerpt(false);
+    }
+  };
+
+  const generateTagsInline = async () => {
+    setIsGeneratingTags(true);
+    setSuggestedTags([]);
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textContext = plainText.trim().substring(0, 3000);
+      const response = await fetch("/api/pirateCOS/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "tags",
+          title,
+          content: textContext,
+          postType,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Failed to generate tags.");
+      setSuggestedTags(data.data);
+    } catch (err: any) {
+      setValidationError(err.message || "Failed to recommend tags.");
+    } finally {
+      setIsGeneratingTags(false);
+    }
+  };
+
+  const generateFocusKeywordInline = async () => {
+    setIsSuggestingFocusKeyword(true);
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textContext = plainText.trim().substring(0, 3000);
+      const response = await fetch("/api/pirateCOS/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "focusKeyword",
+          title,
+          content: textContext,
+          postType,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Failed to suggest focus keyword.");
+      setSeoData((prev) => ({ ...prev, focusKeyword: data.data }));
+    } catch (err: any) {
+      setValidationError(err.message || "Failed to suggest focus keyword.");
+    } finally {
+      setIsSuggestingFocusKeyword(false);
+    }
+  };
+
+  const generateMetaTitleInline = async () => {
+    setIsGeneratingMetaTitle(true);
+    setSuggestedMetaTitle("");
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textContext = plainText.trim().substring(0, 3000);
+      const response = await fetch("/api/pirateCOS/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "metaTitle",
+          title,
+          content: textContext,
+          postType,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Failed to suggest meta title.");
+      setSuggestedMetaTitle(data.data);
+    } catch (err: any) {
+      setValidationError(err.message || "Failed to suggest meta title.");
+    } finally {
+      setIsGeneratingMetaTitle(false);
+    }
+  };
+
+  const generateMetaDescriptionInline = async () => {
+    setIsGeneratingMetaDescription(true);
+    setSuggestedMetaDescription("");
+    try {
+      const plainText = editor ? editor.getText() : "";
+      const textContext = plainText.trim().substring(0, 3000);
+      const response = await fetch("/api/pirateCOS/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "metaDescription",
+          title,
+          content: textContext,
+          postType,
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Failed to suggest meta description.");
+      setSuggestedMetaDescription(data.data);
+    } catch (err: any) {
+      setValidationError(err.message || "Failed to suggest meta description.");
+    } finally {
+      setIsGeneratingMetaDescription(false);
+    }
+  };
 
   // AI API Handlers
   const [featuredImage, setFeaturedImage] = useState("");
@@ -6397,10 +6571,9 @@ const BlogEditor = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [sidebarTab, setSidebarTab] = useState<
-    "content" | "seo" | "ai" | "distribute" | "health"
-  >("content");
+  const [activeSidebarTab, setActiveSidebarTab] = useState<
+    "ai" | "content" | "seo" | "health" | "distribute" | null
+  >(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
@@ -6472,7 +6645,7 @@ const BlogEditor = () => {
   // Prevent background scrolling when mobile settings drawer is open
   useEffect(() => {
     const handleScrollLock = () => {
-      if (isSidebarOpen && window.innerWidth < 1024) {
+      if (activeSidebarTab !== null && window.innerWidth < 1024) {
         document.body.style.overflow = "hidden";
       } else {
         document.body.style.overflow = "";
@@ -6485,7 +6658,7 @@ const BlogEditor = () => {
       document.body.style.overflow = "";
       window.removeEventListener("resize", handleScrollLock);
     };
-  }, [isSidebarOpen]);
+  }, [activeSidebarTab]);
 
   // Onboarding Guided Wizard: Carousel auto-play is now handled internally in WorkspaceTutorialCarousel
 
@@ -6493,10 +6666,10 @@ const BlogEditor = () => {
   useEffect(() => {
     const features = getFeatures(postType || "blog");
 
-    if (sidebarTab === "seo" && !features.seoPanel) {
-      setSidebarTab("content");
+    if (activeSidebarTab === "seo" && !features.seoPanel) {
+      setActiveSidebarTab("content");
     }
-  }, [postType, sidebarTab]);
+  }, [postType, activeSidebarTab]);
 
 
 
@@ -6726,6 +6899,23 @@ const BlogEditor = () => {
     },
     immediatelyRender: false,
   });
+
+  const handleApplyToEditor = useCallback(
+    (text: string, mode: "replace" | "insert-below" | "insert-above") => {
+      if (!editor) return;
+      setIsDirty(true);
+      if (mode === "replace") {
+        editor.chain().focus().insertContent(text).run();
+      } else if (mode === "insert-below") {
+        const { to } = editor.state.selection;
+        editor.chain().focus().insertContentAt(to, text).run();
+      } else if (mode === "insert-above") {
+        const { from } = editor.state.selection;
+        editor.chain().focus().insertContentAt(from, text).run();
+      }
+    },
+    [editor, setIsDirty]
+  );
 
   // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
   useEffect(() => {
@@ -7582,6 +7772,858 @@ const BlogEditor = () => {
     }
   };
 
+  const renderContentTab = () => (
+    <>
+      {/* Feed Guardrails or Analytics Card */}
+      {postType === "social-post" ? (
+        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+            Feed Guardrails
+          </p>
+          
+          {/* Platform switcher */}
+          <div className="flex bg-black/5 p-1 rounded-xl">
+            {(["linkedin", "x"] as const).map((dest) => (
+              <button
+                key={dest}
+                type="button"
+                onClick={() => setSocialDestination(dest)}
+                className={`flex-1 py-1 text-xs font-semibold rounded-lg transition-all ${
+                  socialDestination === dest
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-500 hover:text-gray-800"
+                }`}
+              >
+                {SOCIAL_DESTINATIONS[dest].label}
+              </button>
+            ))}
+          </div>
+
+          {/* Character limit bar */}
+          <div>
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] font-geist text-gray-500 font-medium">
+                Characters
+              </span>
+              <span className={`text-[10px] font-jetbrains-mono font-semibold ${
+                editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                  ? "text-red-500 font-bold"
+                  : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                  ? "text-amber-500"
+                  : "text-gray-400"
+              }`}>
+                {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
+              </span>
+            </div>
+            <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-300 ${
+                  editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                    ? "bg-red-500"
+                    : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                    ? "bg-amber-500"
+                    : "bg-[#FF5B04]"
+                }`}
+                style={{
+                  width: `${Math.min(
+                    100,
+                    (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
+                  )}%`,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Whitespace Spacing Advisor */}
+          {editorStats.characters > 0 && (
+            <div className="pt-3 border-t border-black/5">
+              {(() => {
+                const text = editor?.getText() || "";
+                const paragraphsText = text.split("\n").map(p => p.trim()).filter(Boolean);
+                const hasLongParagraph = paragraphsText.some(p => p.length > 240);
+                if (hasLongParagraph) {
+                  return (
+                    <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
+                    <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-[10px] font-bold text-amber-800">
+                          Whitespace Spacing Advisor
+                        </p>
+                        <p className="text-[10px] text-amber-700 leading-normal mt-0.5">
+                          Feeds favor breathing room. Split this into short 1-2 sentence paragraphs for better mobile reading.
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
+                return (
+                  <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
+                    <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-[10px] font-bold text-green-800">
+                        Spacing Calibrated
+                      </p>
+                      <p className="text-[10px] text-green-700 leading-normal mt-0.5">
+                        Excellent spacing! Paragraphs are airy and reader-friendly.
+                      </p>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+            Analytics
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+              <div className="text-2xl font-bold font-geist text-gray-900">
+                {editorStats.words}
+              </div>
+              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                Words
+              </div>
+            </div>
+            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+              <div className="text-2xl font-bold font-geist text-gray-900">
+                {editorStats.characters}
+              </div>
+              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                Characters
+              </div>
+            </div>
+            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+              <div className="text-2xl font-bold font-geist text-gray-900">
+                {editorStats.paragraphs}
+              </div>
+              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                Paragraphs
+              </div>
+            </div>
+            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+              <div className="text-2xl font-bold font-geist text-[#FF5B04]">
+                {editorStats.readTime} min
+              </div>
+              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                Read Time
+              </div>
+            </div>
+          </div>
+
+          {/* Writing Goal Progress */}
+          {(() => {
+            const wordGoal = getPostTypeConfig(postType)?.minWordCount ?? 500;
+            return (
+              <div className="mt-3.5 pt-3 border-t border-black/5">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-[10px] font-geist text-gray-500 font-medium">
+                    Writing Goal
+                  </span>
+                  <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
+                    {Math.min(
+                      100,
+                      Math.round((editorStats.words / wordGoal) * 100),
+                    )}
+                    % ({editorStats.words}/{wordGoal} words)
+                  </span>
+                </div>
+                <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500 ease-out"
+                    style={{
+                      width: `${Math.min(100, (editorStats.words / wordGoal) * 100)}%`,
+                      background: "#FF5B04",
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+      {/* AI Title Optimizer Card */}
+      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
+        <div className="flex justify-between items-center mb-3">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+            AI Title Optimizer
+          </p>
+        </div>
+        <div className="space-y-3">
+          <textarea
+            className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
+            placeholder="Title guidelines (e.g., 'professional tone', 'under 60 chars', 'punchy')"
+            rows={2}
+            value={titleInstructions}
+            onChange={(e) => setTitleInstructions(e.target.value)}
+          />
+          <button
+            type="button"
+            disabled={isOptimizingTitle}
+            onClick={generateTitleSuggestions}
+            className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isOptimizingTitle ? (
+              <>
+                <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                Optimizing Title...
+              </>
+            ) : (
+              <>
+                <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="12">
+                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                </svg>
+                Optimize Title
+              </>
+            )}
+          </button>
+
+          {titleSuggestions.length > 0 && (
+            <div className="space-y-2 pt-2 border-t border-black/5">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
+                Click to Apply Suggestion
+              </p>
+              <div className="space-y-1.5">
+                {titleSuggestions.map((suggestion, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setTitle(suggestion);
+                      setIsDirty(true);
+                    }}
+                    className={`w-full text-left text-xs font-geist p-2.5 rounded-xl border text-gray-700 transition-all ${
+                      title === suggestion
+                        ? "bg-orange-50 border-[#FF5B04] text-[#FF5B04]"
+                        : "bg-black/[0.01] border-black/5 hover:border-[#FF5B04]/50 hover:bg-black/[0.03]"
+                    }`}
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Excerpt card - hidden for social posts */}
+      {postType !== "social-post" && (
+        <div id="excerpt-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
+          <div className="flex justify-between items-center mb-3">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+              Excerpt
+            </p>
+            <button
+              type="button"
+              className={`text-[10px] font-geist font-semibold transition-colors flex items-center gap-1 cursor-pointer ${
+                showExcerptAIGuidelines ? "text-gray-500 hover:text-gray-700" : "text-[#FF5B04] hover:text-[#e04f03]"
+              }`}
+              onClick={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
+            >
+              <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="10">
+                <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+              </svg>
+              {showExcerptAIGuidelines ? "Hide AI Assistant" : "AI Assistant"}
+            </button>
+          </div>
+          
+          <textarea
+            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
+            placeholder="Short summary shown in blog listings…"
+            style={{ minHeight: 80 }}
+            value={excerpt}
+            onChange={(e) => {
+              setExcerpt(e.target.value);
+              setIsDirty(true);
+            }}
+          />
+
+          {showExcerptAIGuidelines && (
+            <div className="mt-3 pt-3 border-t border-black/5 space-y-2">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
+                AI Excerpt Guidelines
+              </p>
+              <textarea
+                className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-2.5 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
+                placeholder="Guidelines (e.g. concise, professional tone, focus on launch details...)"
+                rows={2}
+                value={excerptInstructions}
+                onChange={(e) => setExcerptInstructions(e.target.value)}
+              />
+              <button
+                type="button"
+                disabled={isGeneratingExcerpt}
+                onClick={async () => {
+                  if (!editor || editor.isEmpty) {
+                    setValidationError("Please write some content first so the AI can summarize it.");
+                    return;
+                  }
+                  await generateExcerptInline();
+                }}
+                className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isGeneratingExcerpt ? (
+                  <>
+                    <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Generating Excerpt...
+                  </>
+                ) : (
+                  <>
+                    <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="12">
+                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                    </svg>
+                    Generate Excerpt
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+
+          {suggestedExcerpt && (
+            <div className="mt-3 p-3 bg-orange-50 border border-[#FF5B04]/30 rounded-xl space-y-2">
+              <p className="text-[10px] font-bold text-[#FF5B04] uppercase tracking-wider font-jetbrains-mono">
+                Suggested Excerpt
+              </p>
+              <p className="text-xs font-geist text-gray-700 leading-relaxed">
+                {suggestedExcerpt}
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setExcerpt(suggestedExcerpt);
+                  setSuggestedExcerpt("");
+                  setIsDirty(true);
+                }}
+                className="w-full text-xs font-semibold py-1.5 px-3 rounded-lg bg-white border border-[#FF5B04]/30 text-[#FF5B04] hover:bg-orange-100/50 transition-colors flex items-center justify-center gap-1"
+              >
+                Apply Suggested Excerpt
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Hashtag Assistant / Tags card */}
+      {postType === "social-post" ? (
+        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3 mt-4">
+          <div className="flex justify-between items-center">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+              Hashtag Assistant
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-1.5 min-h-[24px]">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                style={{ background: "#FFF0E8", color: "#FF5B04" }}
+              >
+                {tag}
+                <button
+                  type="button"
+                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                  onClick={() => {
+                    setTags(tags.filter((t) => t !== tag));
+                    setIsDirty(true);
+                  }}
+                >
+                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
+                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            ))}
+          </div>
+          <div className="space-y-1.5">
+            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
+              Suggestions
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {SOCIAL_DESTINATIONS[socialDestination].suggestions.map((suggestion) => {
+                const isSelected = tags.includes(suggestion);
+                return (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    disabled={isSelected}
+                    onClick={() => {
+                      appendHashtag(suggestion);
+                      setIsDirty(true);
+                    }}
+                    className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
+                      isSelected
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04]"
+                    }`}
+                  >
+                    {suggestion}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <input
+            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+            placeholder="Add tag, press Enter…"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={(e) => {
+              handleAddHashtag(e);
+              setIsDirty(true);
+            }}
+          />
+        </div>
+      ) : (
+        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
+          <div className="flex justify-between items-center mb-3">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+              Tags
+            </p>
+            <button
+              className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
+              type="button"
+              disabled={isGeneratingTags}
+              onClick={async () => {
+                if (!editor || editor.isEmpty) {
+                  setValidationError("Please write some content first so the AI can recommend tags.");
+                  return;
+                }
+                await generateTagsInline();
+              }}
+            >
+              {isGeneratingTags ? (
+                <>
+                  <svg className="animate-spin h-3 w-3 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Recommending...
+                </>
+              ) : (
+                <>
+                  <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="10">
+                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                  </svg>
+                  Recommend Tags
+                </>
+              )}
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                style={{ background: "#FFF0E8", color: "#FF5B04" }}
+              >
+                {tag}
+                <button
+                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                  onClick={() => {
+                    setTags(tags.filter((t) => t !== tag));
+                    setIsDirty(true);
+                  }}
+                >
+                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
+                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
+                  </svg>
+                </button>
+              </span>
+            ))}
+          </div>
+          <input
+            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+            placeholder="Add tag, press Enter…"
+            value={tagInput}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={(e) => {
+              addTag(e);
+              setIsDirty(true);
+            }}
+          />
+
+          {suggestedTags.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-black/5 space-y-1.5">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
+                AI Suggested Tags (Click to Add)
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {suggestedTags.map((tag) => {
+                  const isSelected = tags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      type="button"
+                      disabled={isSelected}
+                      onClick={() => {
+                        setTags([...tags, tag]);
+                        setIsDirty(true);
+                      }}
+                      className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
+                        isSelected
+                          ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-dashed border-gray-200"
+                          : "bg-orange-50/50 border border-[#FF5B04]/20 text-[#FF5B04] hover:bg-[#FF5B04]/10"
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Quick insert card */}
+      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
+        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+          Quick Insert
+        </p>
+        <div className="space-y-1">
+          <label className="flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors">
+            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
+              <rect height="18" rx="2" width="18" x="3" y="3" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+            Upload image
+            <input
+              accept="image/*"
+              className="hidden"
+              type="file"
+              onChange={handleInlineImageUpload}
+            />
+          </label>
+          <button
+            className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+            onClick={() => setShowImageUrlModal(true)}
+          >
+            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+            </svg>
+            Image from URL
+          </button>
+          <button
+            className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+            onClick={() => setShowVideoModal(true)}
+          >
+            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
+              <polygon points="23 7 16 12 23 17 23 7" />
+              <rect height="14" rx="2" ry="2" width="15" x="1" y="5" />
+            </svg>
+            Embed video
+          </button>
+          {postType !== "social-post" && (
+            <>
+              <button
+                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                onClick={() => editor.chain().focus().setHorizontalRule().run()}
+              >
+                <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
+                  <line x1="3" x2="21" y1="12" y2="12" />
+                </svg>
+                Add divider
+              </button>
+              <button
+                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+              >
+                <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
+                </svg>
+                Code block
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+
+  const renderSEOTab = () => (
+    <>
+      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+            SEO Health
+          </p>
+          {(() => {
+            const score =
+              (seoData?.focusKeyword ? 25 : 0) +
+              (seoData?.metaTitle ? 25 : 0) +
+              (seoData?.metaDescription ? 25 : 0) +
+              ((seoData?.keywords?.length ?? 0) > 0 ? 25 : 0);
+            const color =
+              score >= 75
+                ? "#16a34a"
+                : score >= 50
+                  ? "#FF5B04"
+                  : "#dc2626";
+            const label =
+              score >= 75
+                ? "Good"
+                : score >= 50
+                  ? "Fair"
+                  : "Needs Work";
+
+            return (
+              <div className="flex items-center gap-2">
+                <div className="relative w-8 h-8">
+                  <svg className="w-8 h-8 -rotate-90" viewBox="0 0 32 32">
+                    <circle cx="16" cy="16" fill="none" r="12" stroke="#f3f4f6" strokeWidth="4" />
+                    <circle cx="16" cy="16" fill="none" r="12" stroke={color} strokeDasharray={`${(score / 100) * 75.4} 75.4`} strokeLinecap="round" strokeWidth="4" />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold font-jetbrains-mono" style={{ color }}>
+                    {score}
+                  </span>
+                </div>
+                <span className="text-[10px] font-bold font-jetbrains-mono" style={{ color }}>
+                  {label}
+                </span>
+              </div>
+            );
+          })()}
+        </div>
+        <div className="space-y-2 mb-4">
+          {[
+            { label: "Focus Keyword", value: !!seoData?.focusKeyword },
+            { label: "Meta Title", value: !!seoData?.metaTitle },
+            { label: "Meta Description", value: !!seoData?.metaDescription },
+            { label: "Keywords", value: (seoData?.keywords?.length ?? 0) > 0 },
+          ].map(({ label, value }) => (
+            <div key={label} className="flex items-center gap-2">
+              <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: value ? "#dcfce7" : "#fee2e2" }}>
+                {value ? (
+                  <svg fill="none" height="8" stroke="#16a34a" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="8">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                ) : (
+                  <svg fill="none" height="8" stroke="#dc2626" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="8">
+                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
+                  </svg>
+                )}
+              </div>
+              <span className="text-xs font-geist text-gray-600">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3 mt-4">
+        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+          Quick Edit
+        </p>
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider">
+              Focus Keyword
+            </label>
+            <button
+              type="button"
+              disabled={isSuggestingFocusKeyword}
+              onClick={async () => {
+                if (!editor || editor.isEmpty) {
+                  setValidationError("Please write some content first so the AI can suggest a focus keyword.");
+                  return;
+                }
+                await generateFocusKeywordInline();
+              }}
+              className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            >
+              {isSuggestingFocusKeyword ? "Suggesting..." : "✨ Suggest"}
+            </button>
+          </div>
+          <input
+            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
+            placeholder="e.g. react performance"
+            value={seoData?.focusKeyword || ""}
+            onChange={(e) => {
+              setSeoData((prev) => ({ ...prev, focusKeyword: e.target.value }));
+              setIsDirty(true);
+            }}
+          />
+        </div>
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider">
+              Meta Title <span className="normal-case font-geist text-gray-300">({(seoData?.metaTitle || "").length}/60)</span>
+            </label>
+            <button
+              type="button"
+              disabled={isGeneratingMetaTitle}
+              onClick={async () => {
+                if (!editor || editor.isEmpty) {
+                  setValidationError("Please write some content first so the AI can suggest a meta title.");
+                  return;
+                }
+                await generateMetaTitleInline();
+              }}
+              className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            >
+              {isGeneratingMetaTitle ? "Generating..." : "✨ Generate"}
+            </button>
+          </div>
+          <input
+            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
+            maxLength={60}
+            placeholder="SEO page title…"
+            value={seoData?.metaTitle || ""}
+            onChange={(e) => {
+              setSeoData((prev) => ({ ...prev, metaTitle: e.target.value }));
+              setIsDirty(true);
+            }}
+          />
+          {suggestedMetaTitle && (
+            <div className="mt-1.5 p-2 bg-orange-50 border border-[#FF5B04]/20 rounded-lg flex items-center justify-between gap-2">
+              <span className="text-[11px] font-geist text-gray-700 truncate">{suggestedMetaTitle}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setSeoData((prev) => ({ ...prev, metaTitle: suggestedMetaTitle }));
+                  setSuggestedMetaTitle("");
+                  setIsDirty(true);
+                }}
+                className="text-[10px] font-semibold text-[#FF5B04] hover:underline flex-shrink-0"
+              >
+                Apply
+              </button>
+            </div>
+          )}
+        </div>
+        <div>
+          <div className="flex justify-between items-center mb-1">
+            <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider">
+              Meta Description <span className="normal-case font-geist text-gray-300">({(seoData?.metaDescription || "").length}/160)</span>
+            </label>
+            <button
+              type="button"
+              disabled={isGeneratingMetaDescription}
+              onClick={async () => {
+                if (!editor || editor.isEmpty) {
+                  setValidationError("Please write some content first so the AI can suggest a meta description.");
+                  return;
+                }
+                await generateMetaDescriptionInline();
+              }}
+              className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            >
+              {isGeneratingMetaDescription ? "Generating..." : "✨ Generate"}
+            </button>
+          </div>
+          <textarea
+            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none"
+            maxLength={160}
+            placeholder="Brief description for search results…"
+            rows={3}
+            value={seoData?.metaDescription || ""}
+            onChange={(e) => {
+              setSeoData((prev) => ({ ...prev, metaDescription: e.target.value }));
+              setIsDirty(true);
+            }}
+          />
+          {suggestedMetaDescription && (
+            <div className="mt-1.5 p-2 bg-orange-50 border border-[#FF5B04]/20 rounded-lg flex flex-col gap-1.5">
+              <span className="text-[11px] font-geist text-gray-700 leading-normal">{suggestedMetaDescription}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setSeoData((prev) => ({ ...prev, metaDescription: suggestedMetaDescription }));
+                  setSuggestedMetaDescription("");
+                  setIsDirty(true);
+                }}
+                className="self-end text-[10px] font-semibold text-[#FF5B04] hover:underline"
+              >
+                Apply Description
+              </button>
+            </div>
+          )}
+        </div>
+        {currentSlug && (
+          <div className="pt-1 border-t border-black/5">
+            <p className="text-[9px] font-jetbrains-mono text-gray-400 uppercase tracking-wider mb-1">
+              URL Slug
+            </p>
+            <p className="text-xs font-geist text-gray-500 break-all">
+              /{currentSlug}
+            </p>
+          </div>
+        )}
+      </div>
+    </>
+  );
+
+  const renderHealthTab = () => (
+    <ContentHealthPanel
+      bannerImage={bannerImage}
+      contentHtml={editor?.getHTML() || ""}
+      excerpt={excerpt}
+      featuredImage={featuredImage}
+      goal={contentGoal}
+      postType={postType}
+      seo={seoData}
+      tags={tags}
+      title={title}
+    />
+  );
+
+  const renderDistributeTab = () => (
+    <DistributionPanel
+      blogContent={editor?.getHTML() || ""}
+      blogExcerpt={excerpt}
+      blogId={savedBlogId || null}
+      blogPublished={saveStatus === "Published"}
+      blogSeo={seoData}
+      blogTags={tags}
+      blogTitle={title}
+      contentGoal={contentGoal}
+      distributionRecords={distRecords}
+      postType={postType}
+      socialDestination={socialDestination}
+      blogRepurposedOutputs={repurposedOutputs}
+      onUpdateRepurposedOutputs={setRepurposedOutputs}
+      onUpdateExcerpt={setExcerpt}
+      onUpdateTags={setTags}
+      onUpdateSeo={setSeoData}
+      onEnsureSaved={ensureSaved}
+      onNavigateToSEO={() => setActiveSidebarTab("seo")}
+      onTriggerCopilotAI={(preset, prompt) => {
+        if (preset) setActivePreset(preset);
+        if (prompt) setCopilotInitialPrompt(prompt);
+        setActiveSidebarTab("ai");
+      }}
+      onTriggerExcerptAI={() => {
+        setActiveSidebarTab("content");
+        setShowExcerptAIGuidelines(true);
+        setTimeout(() => {
+          const el = document.getElementById("excerpt-section");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 100);
+      }}
+      onTriggerTagsAI={() => {
+        setActiveSidebarTab("content");
+        setTimeout(() => {
+          const el = document.getElementById("tags-section");
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }, 100);
+      }}
+      onUpdateRecords={(recs) => setDistRecords(recs)}
+    />
+  );
+
   const statusColor: Record<string, string> = {
     Draft: "#6b7280",
     "Saving…": "#FF5B04",
@@ -7677,8 +8719,14 @@ const BlogEditor = () => {
           {/* Mobile sidebar toggle */}
           {!showPreview && (
             <button
-              className="lg:hidden h-8 px-2.5 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs font-geist font-medium transition-all"
-              onClick={() => setIsSidebarOpen((v) => !v)}
+              className="h-8 lg:h-9 px-2.5 lg:px-3 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs lg:text-sm font-geist font-medium transition-all"
+              onClick={() => setActiveSidebarTab(activeSidebarTab ? null : "content")}
+              style={{
+                borderColor: activeSidebarTab ? "rgba(255,91,4,0.3)" : "transparent",
+                borderWidth: "1px",
+                color: activeSidebarTab ? "#FF5B04" : "",
+                background: activeSidebarTab ? "rgba(255,91,4,0.05)" : ""
+              }}
             >
               <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
                 <rect height="18" rx="2" width="18" x="3" y="3" />
@@ -7724,7 +8772,7 @@ const BlogEditor = () => {
           editor={editor}
           features={getFeatures(postType)}
           postType={postType}
-          onCopilotClick={() => setIsCopilotOpen(true)}
+          onCopilotClick={() => setActiveSidebarTab("ai")}
           onLinkClick={() => {
             editor.chain().focus().extendMarkRange("link").run();
             setShowLinkModal(true);
@@ -7748,7 +8796,8 @@ const BlogEditor = () => {
             onEdit={() => setShowPreview(false)}
           />
         ) : (
-          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
+          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden flex flex-row items-stretch">
+            <div className="flex-1 min-w-0">
             {/* Banner image area */}
             {bannerImage ? (
               <div className="relative group">
@@ -7870,7 +8919,7 @@ const BlogEditor = () => {
                     className="flex-shrink-0 w-fit text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
                     type="button"
                     onClick={() => {
-                      setIsTitleModalOpen(true);
+                      setActiveSidebarTab("content");
                     }}
                   >
                     <svg
@@ -7938,1140 +8987,29 @@ const BlogEditor = () => {
               />
             </div>
           </div>
-        )}
+          <AIWorkspacePanel
+            postId={savedBlogId || null}
+            postType={postType}
+            contentGoal={contentGoal}
+            editor={editor}
+            onApplyToEditor={handleApplyToEditor}
+            onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
+            activeTab={activeSidebarTab}
+            onTabChange={setActiveSidebarTab}
+            renderContentTab={renderContentTab}
+            renderSEOTab={getFeatures(postType).seoPanel ? renderSEOTab : undefined}
+            renderHealthTab={renderHealthTab}
+            renderDistributeTab={renderDistributeTab}
+            initialPrompt={copilotInitialPrompt}
+            onClearInitialPrompt={() => setCopilotInitialPrompt("")}
+          />
+        </div>
+      )}
 
-        {/* ── Settings Sidebar — hidden in immersive preview mode ── */}
-        {!showPreview && (
-          <>
-            {/* Mobile overlay backdrop */}
-            {isSidebarOpen && (
-              <div
-                className="fixed inset-0 bg-black/30 z-[80] lg:hidden"
-                onClick={() => setIsSidebarOpen(false)}
-              />
-            )}
 
-            {/* Sidebar panel */}
-            <div
-              className={`
-                fixed lg:relative right-0 top-0 bottom-0 z-[90] lg:z-auto
-                w-full lg:w-72 flex-shrink-0
-                bg-[#F7F7F6] lg:bg-transparent
-                flex flex-col
-                transition-transform duration-300 ease-in-out
-                lg:translate-x-0
-                ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}
-                overflow-y-auto lg:overflow-visible
-                space-y-4
-                px-4 lg:px-0
-                shadow-2xl lg:shadow-none
-              `}
-            >
-              {/* Mobile drawer header */}
-              <div className="lg:hidden flex items-center justify-between h-14 border-b border-black/5 -mx-4 px-4 bg-white flex-shrink-0">
-                <span className="text-xs font-jetbrains-mono font-bold uppercase tracking-wider text-gray-800">
-                  Post Settings
-                </span>
-                <button
-                  className="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-gray-500 transition-colors"
-                  onClick={() => setIsSidebarOpen(false)}
-                >
-                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
-                </button>
-              </div>
-            {/* Sidebar Tab Navigation */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden flex-shrink-0">
-              {[
-                { key: "content", label: postType === "social-post" ? "Narrative" : "Content" },
-                ...(getFeatures(postType).seoPanel
-                  ? [{ key: "seo", label: "SEO" }]
-                  : []),
-                { key: "ai", label: "AI Tools" },
-                { key: "health", label: "Health" },
-                { key: "distribute", label: "Distribute" },
-              ].map(({ key, label }) => (
-                <button
-                  key={key}
-                  className={`flex-1 min-w-0 px-1 lg:px-0 py-2.5 text-[8.5px] xs:text-[9px] lg:text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
-                    sidebarTab === key
-                      ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
-                      : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
-                  }`}
-                  onClick={() => setSidebarTab(key as any)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {/* ── Content Tab ── */}
-            {sidebarTab === "content" && (
-              <>
-                {/* Feed Guardrails or Analytics Card */}
-                {postType === "social-post" ? (
-                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
-                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                      Feed Guardrails
-                    </p>
-                    
-                    {/* Platform switcher */}
-                    <div className="flex bg-black/5 p-1 rounded-xl">
-                      {(["linkedin", "x"] as const).map((dest) => (
-                        <button
-                          key={dest}
-                          type="button"
-                          onClick={() => setSocialDestination(dest)}
-                          className={`flex-1 py-1 text-xs font-semibold rounded-lg transition-all ${
-                            socialDestination === dest
-                              ? "bg-white text-gray-900 shadow-sm"
-                              : "text-gray-500 hover:text-gray-800"
-                          }`}
-                        >
-                          {SOCIAL_DESTINATIONS[dest].label}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Character limit bar */}
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] font-geist text-gray-500 font-medium">
-                          Characters
-                        </span>
-                        <span className={`text-[10px] font-jetbrains-mono font-semibold ${
-                          editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                            ? "text-red-500 font-bold"
-                            : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                            ? "text-amber-500"
-                            : "text-gray-400"
-                        }`}>
-                          {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
-                        </span>
-                      </div>
-                      <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all duration-300 ${
-                            editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                              ? "bg-red-500"
-                              : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                              ? "bg-amber-500"
-                              : "bg-[#FF5B04]"
-                          }`}
-                          style={{
-                            width: `${Math.min(
-                              100,
-                              (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
-                            )}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Whitespace Spacing Advisor */}
-                    {editorStats.characters > 0 && (
-                      <div className="pt-3 border-t border-black/5">
-                        {(() => {
-                          const text = editor?.getText() || "";
-                          const paragraphsText = text.split("\n").map(p => p.trim()).filter(Boolean);
-                          const hasLongParagraph = paragraphsText.some(p => p.length > 240);
-                          if (hasLongParagraph) {
-                            return (
-                              <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
-                              <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
-                                <div>
-                                  <p className="text-[10px] font-bold text-amber-800">
-                                    Whitespace Spacing Advisor
-                                  </p>
-                                  <p className="text-[10px] text-amber-700 leading-normal mt-0.5">
-                                    Feeds favor breathing room. Split this into short 1-2 sentence paragraphs for better mobile reading.
-                                  </p>
-                                </div>
-                              </div>
-                            );
-                          }
-                          return (
-                            <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
-                              <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
-                              <div>
-                                <p className="text-[10px] font-bold text-green-800">
-                                  Spacing Calibrated
-                                </p>
-                                <p className="text-[10px] text-green-700 leading-normal mt-0.5">
-                                  Excellent spacing! Paragraphs are airy and reader-friendly.
-                                </p>
-                              </div>
-                            </div>
-                          );
-                        })()}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-                      Analytics
-                    </p>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                        <div className="text-2xl font-bold font-geist text-gray-900">
-                          {editorStats.words}
-                        </div>
-                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                          Words
-                        </div>
-                      </div>
-                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                        <div className="text-2xl font-bold font-geist text-gray-900">
-                          {editorStats.characters}
-                        </div>
-                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                          Characters
-                        </div>
-                      </div>
-                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                        <div className="text-2xl font-bold font-geist text-gray-900">
-                          {editorStats.paragraphs}
-                        </div>
-                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                          Paragraphs
-                        </div>
-                      </div>
-                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                        <div className="text-2xl font-bold font-geist text-[#FF5B04]">
-                          {editorStats.readTime} min
-                        </div>
-                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                          Read Time
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Writing Goal Progress */}
-                    {(() => {
-                      const wordGoal = getPostTypeConfig(postType)?.minWordCount ?? 500;
-                      return (
-                        <div className="mt-3.5 pt-3 border-t border-black/5">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-[10px] font-geist text-gray-500 font-medium">
-                              Writing Goal
-                            </span>
-                            <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                              {Math.min(
-                                100,
-                                Math.round((editorStats.words / wordGoal) * 100),
-                              )}
-                              % ({editorStats.words}/{wordGoal} words)
-                            </span>
-                          </div>
-                          <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                            <div
-                              className="h-full rounded-full transition-all duration-500 ease-out"
-                              style={{
-                                width: `${Math.min(100, (editorStats.words / wordGoal) * 100)}%`,
-                                background: "#FF5B04",
-                              }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                )}
-
-                {/* Excerpt card - hidden for social posts */}
-                {postType !== "social-post" && (
-                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                    <div className="flex justify-between items-center mb-3">
-                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                        Excerpt
-                      </p>
-                      <button
-                        className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                        onClick={() => {
-                          if (!editor || editor.isEmpty) {
-                            setValidationError(
-                              "Please write some content first so the AI can summarize it.",
-                            );
-
-                            return;
-                          }
-                          setIsExcerptModalOpen(true);
-                        }}
-                      >
-                        <svg
-                          fill="none"
-                          height="10"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                          width="10"
-                        >
-                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                        </svg>
-                        AI Assistant
-                      </button>
-                    </div>
-                    <textarea
-                      className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
-                      placeholder="Short summary shown in blog listings…"
-                      style={{ minHeight: 80 }}
-                      value={excerpt}
-                      onChange={(e) => setExcerpt(e.target.value)}
-                    />
-                  </div>
-                )}
-
-                {/* Hashtag Assistant / Tags card */}
-                {postType === "social-post" ? (
-                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
-                    <div className="flex justify-between items-center">
-                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                        Hashtag Assistant
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 min-h-[24px]">
-                      {tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                          style={{ background: "#FFF0E8", color: "#FF5B04" }}
-                        >
-                          {tag}
-                          <button
-                            type="button"
-                            className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                            onClick={() => setTags(tags.filter((t) => t !== tag))}
-                          >
-                            <svg
-                              fill="none"
-                              height="9"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="3"
-                              viewBox="0 0 24 24"
-                              width="9"
-                            >
-                              <line x1="18" x2="6" y1="6" y2="18" />
-                              <line x1="6" x2="18" y1="6" y2="18" />
-                            </svg>
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                    <div className="space-y-1.5">
-                      <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                        Suggestions
-                      </p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {SOCIAL_DESTINATIONS[socialDestination].suggestions.map((suggestion) => {
-                          const isSelected = tags.includes(suggestion);
-                          return (
-                            <button
-                              key={suggestion}
-                              type="button"
-                              disabled={isSelected}
-                              onClick={() => appendHashtag(suggestion)}
-                              className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
-                                isSelected
-                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                  : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04]"
-                              }`}
-                            >
-                              {suggestion}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                    <input
-                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-                      placeholder="Add tag, press Enter…"
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={handleAddHashtag}
-                    />
-                  </div>
-                ) : (
-                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                    <div className="flex justify-between items-center mb-3">
-                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                        Tags
-                      </p>
-                      <button
-                        className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                        type="button"
-                        onClick={() => {
-                          setIsTagsModalOpen(true);
-                        }}
-                      >
-                        <svg
-                          fill="none"
-                          height="10"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                          width="10"
-                        >
-                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                        </svg>
-                        AI Assistant
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                      {tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                          style={{ background: "#FFF0E8", color: "#FF5B04" }}
-                        >
-                          {tag}
-                          <button
-                            className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                            onClick={() => setTags(tags.filter((t) => t !== tag))}
-                          >
-                            <svg
-                              fill="none"
-                              height="9"
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="3"
-                              viewBox="0 0 24 24"
-                              width="9"
-                            >
-                              <line x1="18" x2="6" y1="6" y2="18" />
-                              <line x1="6" x2="18" y1="6" y2="18" />
-                            </svg>
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                    <input
-                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-                      placeholder="Add tag, press Enter…"
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={addTag}
-                    />
-                  </div>
-                )}
-
-                {/* Quick insert card */}
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-                    Quick Insert
-                  </p>
-                  <div className="space-y-1">
-                    <label className="flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors">
-                      <svg
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <rect height="18" rx="2" width="18" x="3" y="3" />
-                        <circle cx="8.5" cy="8.5" r="1.5" />
-                        <polyline points="21 15 16 10 5 21" />
-                      </svg>
-                      Upload image
-                      <input
-                        accept="image/*"
-                        className="hidden"
-                        type="file"
-                        onChange={handleInlineImageUpload}
-                      />
-                    </label>
-                    <button
-                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                      onClick={() => setShowImageUrlModal(true)}
-                    >
-                      <svg
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                      </svg>
-                      Image from URL
-                    </button>
-                    <button
-                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                      onClick={() => setShowVideoModal(true)}
-                    >
-                      <svg
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <polygon points="23 7 16 12 23 17 23 7" />
-                        <rect
-                          height="14"
-                          rx="2"
-                          ry="2"
-                          width="15"
-                          x="1"
-                          y="5"
-                        />
-                      </svg>
-                      Embed video
-                    </button>
-                    {postType !== "social-post" && (
-                      <>
-                        <button
-                          className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                          onClick={() =>
-                            editor.chain().focus().setHorizontalRule().run()
-                          }
-                        >
-                          <svg
-                            fill="none"
-                            height="14"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.75"
-                            viewBox="0 0 24 24"
-                            width="14"
-                          >
-                            <line x1="3" x2="21" y1="12" y2="12" />
-                          </svg>
-                          Add divider
-                        </button>
-                        <button
-                          className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                          onClick={() =>
-                            editor.chain().focus().toggleCodeBlock().run()
-                          }
-                        >
-                          <svg
-                            fill="none"
-                            height="14"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.75"
-                            viewBox="0 0 24 24"
-                            width="14"
-                          >
-                            <polyline points="16 18 22 12 16 6" />
-                            <polyline points="8 6 2 12 8 18" />
-                          </svg>
-                          Code block
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* ── SEO Tab ── */}
-            {sidebarTab === "seo" && (
-              <>
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <div className="flex justify-between items-center mb-4">
-                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                      SEO Health
-                    </p>
-                    {(() => {
-                      const score =
-                        (seoData?.focusKeyword ? 25 : 0) +
-                        (seoData?.metaTitle ? 25 : 0) +
-                        (seoData?.metaDescription ? 25 : 0) +
-                        ((seoData?.keywords?.length ?? 0) > 0 ? 25 : 0);
-                      const color =
-                        score >= 75
-                          ? "#16a34a"
-                          : score >= 50
-                            ? "#FF5B04"
-                            : "#dc2626";
-                      const label =
-                        score >= 75
-                          ? "Good"
-                          : score >= 50
-                            ? "Fair"
-                            : "Needs Work";
-
-                      return (
-                        <div className="flex items-center gap-2">
-                          <div className="relative w-8 h-8">
-                            <svg
-                              className="w-8 h-8 -rotate-90"
-                              viewBox="0 0 32 32"
-                            >
-                              <circle
-                                cx="16"
-                                cy="16"
-                                fill="none"
-                                r="12"
-                                stroke="#f3f4f6"
-                                strokeWidth="4"
-                              />
-                              <circle
-                                cx="16"
-                                cy="16"
-                                fill="none"
-                                r="12"
-                                stroke={color}
-                                strokeDasharray={`${(score / 100) * 75.4} 75.4`}
-                                strokeLinecap="round"
-                                strokeWidth="4"
-                              />
-                            </svg>
-                            <span
-                              className="absolute inset-0 flex items-center justify-center text-[8px] font-bold font-jetbrains-mono"
-                              style={{ color }}
-                            >
-                              {score}
-                            </span>
-                          </div>
-                          <span
-                            className="text-[10px] font-bold font-jetbrains-mono"
-                            style={{ color }}
-                          >
-                            {label}
-                          </span>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                  <div className="space-y-2 mb-4">
-                    {[
-                      {
-                        label: "Focus Keyword",
-                        value: !!seoData?.focusKeyword,
-                      },
-                      { label: "Meta Title", value: !!seoData?.metaTitle },
-                      {
-                        label: "Meta Description",
-                        value: !!seoData?.metaDescription,
-                      },
-                      {
-                        label: "Keywords",
-                        value: (seoData?.keywords?.length ?? 0) > 0,
-                      },
-                    ].map(({ label, value }) => (
-                      <div key={label} className="flex items-center gap-2">
-                        <div
-                          className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
-                          style={{ background: value ? "#dcfce7" : "#fee2e2" }}
-                        >
-                          {value ? (
-                            <svg
-                              fill="none"
-                              height="8"
-                              stroke="#16a34a"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="3"
-                              viewBox="0 0 24 24"
-                              width="8"
-                            >
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          ) : (
-                            <svg
-                              fill="none"
-                              height="8"
-                              stroke="#dc2626"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="3"
-                              viewBox="0 0 24 24"
-                              width="8"
-                            >
-                              <line x1="18" x2="6" y1="6" y2="18" />
-                              <line x1="6" x2="18" y1="6" y2="18" />
-                            </svg>
-                          )}
-                        </div>
-                        <span className="text-xs font-geist text-gray-600">
-                          {label}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    className="w-full py-2.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-gray-800 transition-all flex items-center justify-center gap-2"
-                    onClick={() => setShowSEOModal(true)}
-                  >
-                    <svg
-                      fill="none"
-                      height="12"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      viewBox="0 0 24 24"
-                      width="12"
-                    >
-                      <circle cx="11" cy="11" r="8" />
-                      <path d="m21 21-4.3-4.3" />
-                    </svg>
-                    Open SEO Editor
-                  </button>
-                </div>
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
-                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                    Quick Edit
-                  </p>
-                  <div>
-                    <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
-                      Focus Keyword
-                    </label>
-                    <input
-                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-                      placeholder="e.g. react performance"
-                      value={seoData?.focusKeyword || ""}
-                      onChange={(e) =>
-                        setSeoData((prev) => ({
-                          ...prev,
-                          focusKeyword: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
-                      Meta Title{" "}
-                      <span className="normal-case font-geist text-gray-300">
-                        ({(seoData?.metaTitle || "").length}/60)
-                      </span>
-                    </label>
-                    <input
-                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-                      maxLength={60}
-                      placeholder="SEO page title…"
-                      value={seoData?.metaTitle || ""}
-                      onChange={(e) =>
-                        setSeoData((prev) => ({
-                          ...prev,
-                          metaTitle: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-wider block mb-1">
-                      Meta Description{" "}
-                      <span className="normal-case font-geist text-gray-300">
-                        ({(seoData?.metaDescription || "").length}/160)
-                      </span>
-                    </label>
-                    <textarea
-                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none"
-                      maxLength={160}
-                      placeholder="Brief description for search results…"
-                      rows={3}
-                      value={seoData?.metaDescription || ""}
-                      onChange={(e) =>
-                        setSeoData((prev) => ({
-                          ...prev,
-                          metaDescription: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  {currentSlug && (
-                    <div className="pt-1 border-t border-black/5">
-                      <p className="text-[9px] font-jetbrains-mono text-gray-400 uppercase tracking-wider mb-1">
-                        URL Slug
-                      </p>
-                      <p className="text-xs font-geist text-gray-500 break-all">
-                        /{currentSlug}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-
-            {/* ── AI Tab ── */}
-            {sidebarTab === "ai" && (
-              <div className="space-y-3">
-                <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">
-                  {postType === "social-post" ? "Social AI Tools" : "AI Writing Tools"}
-                </p>
-
-                {postType === "social-post" ? (
-                  // ── Social-post quick actions ──────────────────────────────
-                  [
-                    {
-                      key: "copilot",
-                      label: "AI Copilot",
-                      description: "Generate post content with AI",
-                      icon: (
-                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
-                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                        </svg>
-                      ),
-                      onClick: () => setIsCopilotOpen(true),
-                    },
-                    {
-                      key: "hook",
-                      label: "AI Hook",
-                      description: "Generate 3 scroll-stopping opening hooks",
-                      icon: (
-                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
-                          <path d="M18.5 9.5a6 6 0 1 1-12 0 6 6 0 0 1 12 0z" />
-                          <path d="M12 15.5v6M8.5 18l3.5 3.5L15.5 18" />
-                        </svg>
-                      ),
-                      onClick: () => {
-                        setCopilotInitialPrompt("Generate 3 scroll-stopping opening hooks for my social post.");
-                        setIsCopilotOpen(true);
-                      },
-                    },
-                    {
-                      key: "shorten",
-                      label: "Shorten to Limit",
-                      description: "Compress text to fit character limits",
-                      icon: (
-                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
-                          <path d="M4 6h16M4 10h10M4 14h7" />
-                          <path d="m17 14 4 4-4 4" />
-                        </svg>
-                      ),
-                      onClick: () => {
-                        setCopilotInitialPrompt("Intelligently compress my text to fit within social media character limits while retaining the key message.");
-                        setIsCopilotOpen(true);
-                      },
-                    },
-                    {
-                      key: "hashtags",
-                      label: "Hashtag Ideas",
-                      description: "Generate high-engagement hashtag recommendations",
-                      icon: (
-                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
-                          <line x1="4" x2="20" y1="9" y2="9" />
-                          <line x1="4" x2="20" y1="15" y2="15" />
-                          <line x1="10" x2="8" y1="3" y2="21" />
-                          <line x1="16" x2="14" y1="3" y2="21" />
-                        </svg>
-                      ),
-                      onClick: () => {
-                        setCopilotInitialPrompt("Generate high-engagement hashtag recommendations matching the topic of this post.");
-                        setIsCopilotOpen(true);
-                      },
-                    },
-                    {
-                      key: "rewrite",
-                      label: "Professional Rewrite",
-                      description: "Rewrite in a polished, engaging professional tone",
-                      icon: (
-                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                        </svg>
-                      ),
-                      onClick: () => {
-                        setCopilotInitialPrompt("Rewrite this social post in a polished, engaging professional tone.");
-                        setIsCopilotOpen(true);
-                      },
-                    },
-                  ].map(({ key, label, description, icon, onClick }) => (
-                    <button
-                      key={key}
-                      className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
-                      onClick={onClick}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div
-                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{ background: "rgba(255,91,4,0.08)", color: "#FF5B04" }}
-                        >
-                          {icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
-                            {label}
-                          </p>
-                          <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
-                            {description}
-                          </p>
-                        </div>
-                        <svg
-                          className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
-                          fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14"
-                        >
-                          <line x1="5" x2="19" y1="12" y2="12" />
-                          <polyline points="12 5 19 12 12 19" />
-                        </svg>
-                      </div>
-                    </button>
-                  ))
-                ) : (
-                  // ── Blog / Article quick actions ───────────────────────────
-                  [
-                    {
-                      key: "copilot",
-                      label: "AI Copilot",
-                      description:
-                        "Get AI suggestions and help with your content",
-                      icon: (
-                        <svg
-                          fill="none"
-                          height="20"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.75"
-                          viewBox="0 0 24 24"
-                          width="20"
-                        >
-                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                        </svg>
-                      ),
-                      onClick: () => setIsCopilotOpen(true),
-                    },
-                    {
-                      key: "title",
-                      label: "AI Title",
-                      description: "Generate compelling post titles",
-                      icon: (
-                        <svg
-                          fill="none"
-                          height="20"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.75"
-                          viewBox="0 0 24 24"
-                          width="20"
-                        >
-                          <path d="M4 6h16M4 12h16M4 18h7" />
-                        </svg>
-                      ),
-                      onClick: () => setIsTitleModalOpen(true),
-                    },
-                    {
-                      key: "excerpt",
-                      label: "AI Excerpt",
-                      description: "Auto-summarize your post content",
-                      icon: (
-                        <svg
-                          fill="none"
-                          height="20"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.75"
-                          viewBox="0 0 24 24"
-                          width="20"
-                        >
-                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                          <polyline points="14 2 14 8 20 8" />
-                          <line x1="16" x2="8" y1="13" y2="13" />
-                          <line x1="16" x2="8" y1="17" y2="17" />
-                        </svg>
-                      ),
-                      onClick: () => {
-                        if (!editor || editor.isEmpty) {
-                          setValidationError(
-                            "Please write some content first so the AI can summarize it.",
-                          );
-
-                          return;
-                        }
-                        setIsExcerptModalOpen(true);
-                      },
-                    },
-                    {
-                      key: "tags",
-                      label: "AI Tags",
-                      description: "Generate relevant tags for your post",
-                      icon: (
-                        <svg
-                          fill="none"
-                          height="20"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.75"
-                          viewBox="0 0 24 24"
-                          width="20"
-                        >
-                          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                          <line x1="7" x2="7.01" y1="7" y2="7" />
-                        </svg>
-                      ),
-                      onClick: () => setIsTagsModalOpen(true),
-                    },
-                  ].map(({ key, label, description, icon, onClick }) => (
-                    <button
-                      key={key}
-                      className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
-                      onClick={onClick}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div
-                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                          style={{
-                            background: "rgba(255,91,4,0.08)",
-                            color: "#FF5B04",
-                          }}
-                        >
-                          {icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
-                            {label}
-                          </p>
-                          <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
-                            {description}
-                          </p>
-                        </div>
-                        <svg
-                          className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
-                          fill="none"
-                          height="14"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                          width="14"
-                        >
-                          <line x1="5" x2="19" y1="12" y2="12" />
-                          <polyline points="12 5 19 12 12 19" />
-                        </svg>
-                      </div>
-                    </button>
-                  ))
-                )}
-
-                {/* Co-Pilot real-time recommendations */}
-                {copilotWarnings.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-black/5 space-y-2">
-                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">
-                      Co-Pilot Alerts ({copilotWarnings.length})
-                    </p>
-                    {copilotWarnings.map((w) => (
-                      <div
-                        key={w.id}
-                        className="bg-amber-50/50 border border-amber-100 rounded-xl p-3.5 space-y-1.5 shadow-sm"
-                      >
-                        <div className="flex items-start gap-2">
-                          <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
-                          <div className="min-w-0">
-                            <p className="text-xs font-bold text-gray-800 capitalize leading-snug">
-                              {w.type} Alert
-                            </p>
-                            <p className="text-[11px] text-gray-500 leading-normal mt-0.5">
-                              {w.message}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="bg-white border border-amber-100 rounded-lg p-2 text-[10px] leading-relaxed text-amber-800">
-                          <span className="font-bold">Suggestion: </span>
-                          {w.suggestion}
-                        </div>
-                        <div className="flex justify-end gap-2">
-                          <button
-                            className="text-[9px] font-bold text-gray-400 hover:text-gray-600 transition-colors uppercase tracking-wide"
-                            type="button"
-                            onClick={() => dismissWarning(w.id)}
-                          >
-                            Dismiss
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-            {/* ── Health Tab ── */}
-            {sidebarTab === "health" && (
-              <ContentHealthPanel
-                bannerImage={bannerImage}
-                contentHtml={editor?.getHTML() || ""}
-                excerpt={excerpt}
-                featuredImage={featuredImage}
-                goal={contentGoal}
-                postType={postType}
-                seo={seoData}
-                tags={tags}
-                title={title}
-              />
-            )}
-
-            {/* ── Distribute Tab ── */}
-            {sidebarTab === "distribute" && (
-              <DistributionPanel
-                blogContent={editor?.getHTML() || ""}
-                blogExcerpt={excerpt}
-                blogId={savedBlogId || null}
-                blogPublished={saveStatus === "Published"}
-                blogSeo={seoData}
-                blogTags={tags}
-                blogTitle={title}
-                contentGoal={contentGoal}
-                distributionRecords={distRecords}
-                postType={postType}
-                socialDestination={socialDestination}
-                blogRepurposedOutputs={repurposedOutputs}
-                onUpdateRepurposedOutputs={setRepurposedOutputs}
-                onUpdateExcerpt={setExcerpt}
-                onUpdateTags={setTags}
-                onUpdateSeo={setSeoData}
-                onEnsureSaved={ensureSaved}
-                onNavigateToSEO={() => setSidebarTab("seo")}
-                onTriggerCopilotAI={(preset, prompt) => {
-                  if (preset) setActivePreset(preset);
-                  if (prompt) setCopilotInitialPrompt(prompt);
-                  setIsCopilotOpen(true);
-                }}
-                onTriggerExcerptAI={() => {
-                  if (!editor || editor.isEmpty) {
-                    setValidationError(
-                      "Please write some content first so the AI can summarize it.",
-                    );
-
-                    return;
-                  }
-                  setIsExcerptModalOpen(true);
-                }}
-                onTriggerTagsAI={() => setIsTagsModalOpen(true)}
-                onUpdateRecords={(recs) => setDistRecords(recs)}
-              />
-            )}
-            </div>
-          </>
-        )}
       </div>
 
       {/* ── Modals ── */}
-      <AICopilotModal
-        editor={editor}
-        isOpen={isCopilotOpen}
-        postTitle={title}
-        postType={postType}
-        preset={activePreset}
-        initialPrompt={copilotInitialPrompt}
-        onClose={() => {
-          setIsCopilotOpen(false);
-          setCopilotInitialPrompt("");
-        }}
-      />
       {/* RepurposingDrawer is intentionally hidden for social-post — repurposing
           a social post into another social format is handled by AI Copilot instead */}
       {postType !== "social-post" && (
@@ -9081,32 +9019,6 @@ const BlogEditor = () => {
           onClose={() => setIsRepurposeDrawerOpen(false)}
         />
       )}
-      <AIExcerptModal
-        editor={editor}
-        excerpt={excerpt}
-        isOpen={isExcerptModalOpen}
-        postTitle={title}
-        postType={postType}
-        setExcerpt={setExcerpt}
-        onClose={() => setIsExcerptModalOpen(false)}
-      />
-      <AITitleModal
-        editor={editor}
-        isOpen={isTitleModalOpen}
-        postType={postType}
-        setTitle={setTitle}
-        title={title}
-        onClose={() => setIsTitleModalOpen(false)}
-      />
-      <AITagsModal
-        editor={editor}
-        isOpen={isTagsModalOpen}
-        postTitle={title}
-        postType={postType}
-        setTags={setTags}
-        tags={tags}
-        onClose={() => setIsTagsModalOpen(false)}
-      />
       {showImageUrlModal && (
         <ImageUrlModal
           editor={editor}

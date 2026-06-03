@@ -30,7 +30,9 @@ interface PostUpdateData {
     noIndex?: boolean;
   };
   repurposedOutputs?: Record<string, string>;
+  aiWorkspaceSession?: any;
 }
+
 
 // GET /api/pirateCOS/posts/[id] - Get a single post by ID or slug scoped to tenant
 export async function GET(
@@ -123,7 +125,9 @@ export async function PUT(
       contentGoal,
       seo,
       repurposedOutputs,
+      aiWorkspaceSession,
     } = body;
+
 
     const putTenantOid = new mongoose.Types.ObjectId(user.tenantId);
     const blog = await Post.findOne({ _id: id, tenantId: putTenantOid });
@@ -193,6 +197,12 @@ export async function PUT(
       blog.repurposedOutputs = repurposedOutputs;
       blog.markModified("repurposedOutputs");
     }
+
+    if (aiWorkspaceSession !== undefined) {
+      blog.aiWorkspaceSession = aiWorkspaceSession;
+      blog.markModified("aiWorkspaceSession");
+    }
+
 
     if (content !== undefined) {
       blog.calculateReadTime();
