@@ -152,7 +152,7 @@ export default function AIWorkspacePanel({
       <div
         ref={panelRef}
         style={{ width: activeTab === null ? "56px" : `${width + 56}px` }}
-        className="flex-shrink-0 flex items-stretch transition-all duration-300 relative border-l border-black/5 bg-[#F7F7F6]"
+        className="flex-shrink-0 flex items-stretch transition-all duration-300 relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl"
       >
         {/* Resize Handler Handle */}
         {activeTab !== null && (
@@ -176,15 +176,10 @@ export default function AIWorkspacePanel({
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5B04]"></span>
                     </span>
                     <span className="text-xs font-bold text-gray-700 font-geist tracking-wide truncate">
-                      {activeView === "chat" && "AI Collaborator"}
+                      {activeView === "chat" && "AI Co-pilot"}
                       {activeView === "history" && "Generation History"}
                       {activeView === "snippets" && "Snippet Library"}
                     </span>
-                    {activeView === "chat" && (
-                      <span className="text-[10px] text-gray-400 font-geist truncate">
-                        ({modelLabel})
-                      </span>
-                    )}
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0">
                     {/* New Chat (+) */}
@@ -231,18 +226,7 @@ export default function AIWorkspacePanel({
                       </svg>
                     </button>
 
-                    <div className="h-4 w-px bg-black/5 mx-0.5" />
 
-                    {/* Collapse Panel (X) */}
-                    <button
-                      onClick={() => onTabChange(null)}
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-black/5 transition-all cursor-pointer"
-                      title="Collapse Panel"
-                    >
-                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
 
@@ -392,15 +376,7 @@ export default function AIWorkspacePanel({
                     {activeTab === "health" && "Content Health"}
                     {activeTab === "distribute" && "Distribution Settings"}
                   </span>
-                  <button
-                    onClick={() => onTabChange(null)}
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-black/5 transition-all cursor-pointer"
-                    title="Collapse Panel"
-                  >
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
+
                 </div>
                 {/* Unified Settings Body */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -415,7 +391,7 @@ export default function AIWorkspacePanel({
         )}
 
         {/* Persistent Activity Rail on the right edge */}
-        <div className="w-14 flex flex-col items-center py-4 gap-4 bg-[#F7F7F6] h-full flex-shrink-0 select-none border-l border-black/[0.03]">
+        <div className="w-14 flex flex-col items-center py-4 gap-4 bg-[#F7F7F6] h-full flex-shrink-0 select-none border-l border-black/[0.03] rounded-r-2xl">
           {/* AI Collaborator (bot) */}
           <button
             onClick={() => handleTabClick("ai")}
@@ -424,7 +400,7 @@ export default function AIWorkspacePanel({
                 ? "bg-[#FF5B04] text-white shadow-md shadow-orange-500/10 scale-105"
                 : "text-gray-400 hover:text-gray-700 hover:bg-black/5"
             }`}
-            title="AI Collaborator"
+            title="AI Co-pilot"
           >
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
               <rect height="12" rx="2" width="18" x="3" y="9" />
