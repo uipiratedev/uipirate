@@ -44,8 +44,8 @@ export function labelFromModelId(id: string): string {
   // Check if preview/experimental
   const isPreview = lowerId.endsWith("-exp") || lowerId.endsWith("-preview") || lowerId.includes("preview");
   
-  // Check for Claude models with format: claude-<family>-<v1>-<v2>... (e.g., claude-opus-4-8)
-  const claudeFamilyFirstMatch = lowerId.match(/^claude-([a-z]+)-(\d)-(\d)(.*)$/);
+  // Check for Claude models with format: [claude-]?<family>-<v1>-<v2>... (e.g., claude-opus-4-8, opus-4-8, opus-4.8)
+  const claudeFamilyFirstMatch = lowerId.match(/^(?:claude-)?(opus|haiku|sonnet)[-_]?(\d)[-_.]?(\d)(.*)$/);
   if (claudeFamilyFirstMatch) {
     const family = claudeFamilyFirstMatch[1];
     const major = claudeFamilyFirstMatch[2];
@@ -186,6 +186,20 @@ function getFilteredFallback(engine: AIEngine): AIModelEntry[] {
   return getModelsForEngine(engine).filter((m) => isContentModel(m.id, engine));
 }
 
+interface VersionInfo {
+  major: number;
+  minor: number;
+  dateVal: number;
+  revisionVal: number;
+}
+
+function isBetterVersion(a: VersionInfo, b: VersionInfo): boolean {
+  if (a.major !== b.major) return a.major > b.major;
+  if (a.minor !== b.minor) return a.minor > b.minor;
+  if (a.dateVal !== b.dateVal) return a.dateVal > b.dateVal;
+  return a.revisionVal > b.revisionVal;
+}
+
 function parseModelForDeduplication(entry: AIModelEntry) {
   const label = entry.label;
   
@@ -194,7 +208,7 @@ function parseModelForDeduplication(entry: AIModelEntry) {
   if (!match) {
     return {
       key: label,
-      version: 0,
+      versionInfo: { major: 0, minor: 0, dateVal: 0, revisionVal: 0 },
       entry
     };
   }
@@ -226,9 +240,6 @@ function parseModelForDeduplication(entry: AIModelEntry) {
     revisionVal = parseInt(revMatch[1], 10);
   }
 
-  // Combine into a single numeric score for comparison
-  const version = major * 10000000000000 + minor * 100000000000 + dateVal * 10000 + revisionVal;
-
   const tier = (match[4] || "").trim().toUpperCase();
   
   // Group key: Brand + Major Version + Tier
@@ -236,12 +247,12 @@ function parseModelForDeduplication(entry: AIModelEntry) {
   
   return {
     key,
-    version,
+    versionInfo: { major, minor, dateVal, revisionVal },
     entry
   };
 }
 
-function mergeWithFallback(
+export function mergeWithFallback(
   engine: AIEngine,
   liveModelIds: string[],
 ): AIModelEntry[] {
@@ -266,12 +277,12 @@ function mergeWithFallback(
   }
 
   // Deduplicate live entries: keep only the latest minor version for each brand + major + tier
-  const bestLiveModels = new Map<string, { version: number; entry: AIModelEntry }>();
+  const bestLiveModels = new Map<string, { versionInfo: VersionInfo; entry: AIModelEntry }>();
   for (const entry of liveEntries) {
     const parsed = parseModelForDeduplication(entry);
     const existing = bestLiveModels.get(parsed.key);
-    if (!existing || parsed.version > existing.version) {
-      bestLiveModels.set(parsed.key, { version: parsed.version, entry });
+    if (!existing || isBetterVersion(parsed.versionInfo, existing.versionInfo)) {
+      bestLiveModels.set(parsed.key, { versionInfo: parsed.versionInfo, entry });
     }
   }
 

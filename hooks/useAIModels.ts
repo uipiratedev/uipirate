@@ -10,6 +10,7 @@ import {
 import {
   isContentModel,
   labelFromModelId,
+  mergeWithFallback,
 } from "@/lib/pirateCOS/ai-model-discovery";
 
 type ModelSource = "live" | "fallback" | "mixed";
@@ -37,35 +38,8 @@ export function useAIModels(engine: AIEngine) {
             const puterModels = await puter.ai.listModels();
             if (cancelled) return;
 
-            // Map and filter Puter models
-            const resolved = puterModels
-              .filter((m: any) => {
-                const id = m?.id || m?.name || String(m);
-                // Filter models using the content filtering logic
-                return isContentModel(id, "puter");
-              })
-              .map((m: any) => {
-                const id = m?.id || m?.name || String(m);
-                return {
-                  id,
-                  label: labelFromModelId(id),
-                  provider: "puter" as AIEngine,
-                  description: "live",
-                };
-              });
-
-            // Merge with static fallback list to ensure defaults are preserved
-            const seen = new Set<string>();
-            const merged: AIModelEntry[] = [];
-            for (const model of fallbackModels) {
-              seen.add(model.id);
-              merged.push(model);
-            }
-            for (const model of resolved) {
-              if (seen.has(model.id)) continue;
-              seen.add(model.id);
-              merged.push(model);
-            }
+            const liveIds = puterModels.map((m: any) => m?.id || m?.name || String(m));
+            const merged = mergeWithFallback("puter", liveIds);
 
             setModels(merged.length ? merged : fallbackModels);
             setSource("mixed");
