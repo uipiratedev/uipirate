@@ -21,6 +21,8 @@ Based on the current codebase audit, **Phases 1-4C are Complete & Verified**. Ph
 | **Phase 4** | **AI Intelligence Layer & Content Transformation** | 🟢 **Complete** | AI modes/intent presets, brand context layer, 8-format multi-format content transformation drawer, real-time co-pilot |
 | **Phase 4B** | **PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution** | 🟢 **Complete** | 3-step wizard (Intent → Goal → Preview), 11 types, 6 goals, adaptive workspace, goal-weighted health scoring, AI advisor, repurposing |
 | **Phase 4C** | **PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability** | 🟢 **Complete** | One-click distribution chains, preflight autofixes, sequential repurposing flow, diagnostic errors, and UX refinement |
+| **Phase 4D** | **PirateCOS: Dynamic Provider Registry System — Unified AI Configuration & Architecture** | 🟢 **Complete** | Centralized registry, selector component, decoupled mongoose schemas, registry-based AI config panel and pages |
+| **Phase 4E** | **PirateCOS: AI-Native Workspace Panel** | 🟢 **Complete** | Stateless workspace API, sticky layout, quick actions panel, conversational chat thread, and persistent generation history logs |
 | **Phase 5** | **Advanced Analytics & Content Optimization** | ⬜ *Planned; foundations shipped* | `AnalyticsSnapshot` model and basic post view counters exist; cross-platform analytics dashboard, SEO quality scoring, UTM/attribution, and content heatmap remain planned |
 | **Phase 6** | **Social Publishing & Newsletter Platforms** | ⬜ *Planned* | Substack email publishing, Beehiiv REST, ConvertKit sequences, Dev.to/Hashnode developer syndication |
 | **Phase 7** | **Team Collaboration & Enterprise Features** | ⬜ *Planned* | Multi-user seats, Role-Based Access Control (RBAC), approval workflows, SAML SSO, Zapier/webhooks |
@@ -165,6 +167,29 @@ During the active development of **Phase 2 (Monetization & Growth Engine)**, we 
     *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
     *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
 
+#### 9. Unified Onboarding & Help Tutorial System
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4C/4E refactoring)
+*   **Purpose**: Extracted duplicate onboarding slides and guide elements into a reusable, highly polished shared carousel module `WorkspaceTutorialCarousel.tsx` (containing `WorkspaceTutorialCarousel` and `HelpTutorialCarousel`). This allows all 6 tool guides in the right sidebar and the main workspace onboarding guide to reuse the same beautiful slides, layouts, and animations.
+*   **Key Source Files**:
+    *   [NEW] [WorkspaceTutorialCarousel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/WorkspaceTutorialCarousel.tsx)
+    *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
+    *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
+    *   [MODIFY] [AIWorkspacePanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIWorkspacePanel.tsx)
+
+#### 10. Design System Action Styling for Checklist & History Tables
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4C/4E)
+*   **Purpose**: Upgraded action triggers (Autofix, Open SEO Editor, View External Link, Sync/Verify, Reset) in `DistributionPanel.tsx` to follow premium design tokens (rounded corners, orange-accented borders, custom icons) instead of generic hyperlinks or basic raw text, ensuring perfect UI consistency.
+*   **Key Source Files**:
+    *   [MODIFY] [DistributionPanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx)
+
+#### 11. Consolidated Word Count & Read Time Metrics
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4E/5)
+*   **Purpose**: Consolidated the real-time "Read Time & Word Count" guides into the **Content Settings** tab by removing the duplicate UI block at the bottom of the Content Health tab, and updating the Writing Goal progress element to display the full min–max target range dynamically based on the selected post type.
+*   **Key Source Files**:
+    *   [MODIFY] [ContentHealthPanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/ContentHealthPanel.tsx)
+    *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
+    *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
+
 ---
 
 ## 🔍 Codebase Audit: Phase 3 Core Accomplishments & Files
@@ -280,16 +305,16 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [x] **Wizard & Modal Refactoring**: Integrated selector and unified state hooks across all modals in `create/page.tsx` and `edit/[id]/page.tsx`.
 - [x] **Dynamic Discovery Filtering**: Integrated model filters in `lib/pirateCOS/ai-model-discovery.ts` to only allow models best suited for content generation (filtering out coding, embedding, and other non-chat models).
 
-### ⬜ Phase 4E: PirateCOS: AI-Native Workspace Panel
+### 🟢 Phase 4E: PirateCOS: AI-Native Workspace Panel
 
 > **📋 Full specification:** [`Phase 4E ai workspace panel.md`](file:///d:/ui-pirate/uipirate/Phase%204E%20ai%20workspace%20panel.md)
 
-- [ ] **Extend Post Schema**: Add `aiWorkspaceSession` field to persist message threads and history snapshots.
-- [ ] **Stateless Workspace API**: Build `POST /api/pirateCOS/ai/workspace` with full context mapping and token limits.
-- [ ] **Persistent AIWorkspacePanel Layout**: Build desktop split-pane UI and responsive collapsing toolbar.
-- [ ] **Selection-Aware Quick Actions**: Develop context-traveling action panel (Shorten, Expand, SEO optimize, etc.).
-- [ ] **Conversational Chat Thread**: Develop interaction thread with inline Apply, Replace, Insert, and Variant triggers.
-- [ ] **Generation History Logs**: Persist session execution history in the panel with preview and re-apply options.
+- [x] **Extend Post Schema**: Add `aiWorkspaceSession` field to persist message threads and history snapshots.
+- [x] **Stateless Workspace API**: Build `POST /api/pirateCOS/ai/workspace` with full context mapping and token limits.
+- [x] **Persistent AIWorkspacePanel Layout**: Build desktop split-pane UI and responsive collapsing toolbar.
+- [x] **Selection-Aware Quick Actions**: Develop context-traveling action panel (Shorten, Expand, SEO optimize, etc.).
+- [x] **Conversational Chat Thread**: Develop interaction thread with inline Apply, Replace, Insert, and Variant triggers.
+- [x] **Generation History Logs**: Persist session execution history in the panel with preview and re-apply options.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
 - [x] **Analytics data model foundation**: `models/pirateCOS/AnalyticsSnapshot.ts` exists with tenant, post, platform, date, and metric counters for views, clicks, shares, claps, likes, impressions, and comments.
