@@ -37,6 +37,11 @@ export function useAIWorkspaceSession(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Decoupled Rewrite quick action states
+  const [rewriteOutput, setRewriteOutput] = useState<string | null>(null);
+  const [rewriteLoading, setRewriteLoading] = useState(false);
+  const [rewriteError, setRewriteError] = useState<string | null>(null);
+
   // Load preferences, snippets & session
   useEffect(() => {
     async function loadConfigAndSession() {
@@ -169,11 +174,12 @@ export function useAIWorkspaceSession(
   // Trigger quick actions (improve, shorten, expand, etc.)
   const triggerQuickAction = useCallback(
     async (
-      action: string,
+      action: string | string[],
       selectedText?: string,
       tone?: string,
       engine?: string,
-      model?: string
+      model?: string,
+      instruction?: string
     ) => {
       if (loading) return;
 
@@ -181,11 +187,12 @@ export function useAIWorkspaceSession(
       setError(null);
 
       // Create a user indicator message
-      const promptLabel = tone ? `Tone: ${tone}` : action;
+      const actionNames = Array.isArray(action) ? action.join(" + ") : action;
+      const promptLabel = tone && (action === "tone" || (Array.isArray(action) && action.includes("tone"))) ? `Tone: ${tone}` : "";
       const userMsg: AIWorkspaceMessage = {
         id: Math.random().toString(36).substring(7),
         role: "user",
-        content: `Quick Action: ${action} ${promptLabel ? `(${promptLabel})` : ""}`,
+        content: `Quick Action: ${actionNames} ${promptLabel ? `(${promptLabel})` : ""}${instruction ? ` | Instruction: "${instruction}"` : ""}`,
         timestamp: new Date(),
         selectedTextContext: selectedText,
       };
@@ -205,6 +212,7 @@ export function useAIWorkspaceSession(
             sessionHistory: updatedMessages,
             engine,
             model,
+            userMessage: instruction,
           }),
         });
 
@@ -216,9 +224,9 @@ export function useAIWorkspaceSession(
 
         const genRecord: GenerationRecord = {
           id: data.generationId,
-          prompt: `Action: ${action}`,
+          prompt: `Action: ${actionNames}`,
           output: data.output,
-          mode: action,
+          mode: Array.isArray(action) ? action[0] : action,
           isAccepted: false,
           selectedTextContext: selectedText,
         };
@@ -246,6 +254,72 @@ export function useAIWorkspaceSession(
     },
     [messages, generations, postId, loading, saveSessionToPost]
   );
+
+  // Decoupled Rewrite Action handler (does not affect messages/chat history)
+  const runRewriteAction = useCallback(
+    async (
+      action: string | string[],
+      selectedText?: string,
+      tone?: string,
+      engine?: string,
+      model?: string,
+      instruction?: string
+    ) => {
+      if (rewriteLoading) return;
+
+      setRewriteLoading(true);
+      setRewriteError(null);
+      setRewriteOutput(null);
+
+      try {
+        const response = await fetch("/api/pirateCOS/ai/workspace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            postId,
+            action,
+            selectedText,
+            tone,
+            engine,
+            model,
+            userMessage: instruction,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Failed to rewrite text.");
+        }
+
+        setRewriteOutput(data.output);
+
+        // Record in generations history for completeness
+        const genRecord: GenerationRecord = {
+          id: data.generationId,
+          prompt: `Rewrite: ${Array.isArray(action) ? action.join(" + ") : action}`,
+          output: data.output,
+          mode: Array.isArray(action) ? action[0] : action,
+          isAccepted: false,
+          selectedTextContext: selectedText,
+        };
+
+        const updatedGenerations = [...generations, genRecord];
+        setGenerations(updatedGenerations);
+        saveSessionToPost(messages, updatedGenerations);
+      } catch (err: any) {
+        setRewriteError(err.message || "An error occurred during rewrite.");
+      } finally {
+        setRewriteLoading(false);
+      }
+    },
+    [generations, messages, postId, rewriteLoading, saveSessionToPost]
+  );
+
+  const clearRewriteOutput = useCallback(() => {
+    setRewriteOutput(null);
+    setRewriteError(null);
+  }, []);
 
   // Apply a generated output to the TipTap editor
   const applyGeneration = useCallback(
@@ -436,5 +510,11 @@ export function useAIWorkspaceSession(
     saveUIPreference,
     triggerVariant,
     clearSession,
+    // Decoupled rewrite states & handlers
+    rewriteOutput,
+    rewriteLoading,
+    rewriteError,
+    runRewriteAction,
+    clearRewriteOutput,
   };
 }

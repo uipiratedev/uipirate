@@ -124,28 +124,43 @@ export async function POST(request: NextRequest) {
     }
 
     // Formulate Quick Action directives
-    let actionPrompt = "";
     const targetText = selectedText || postContent || "";
+    let actionPrompt = "";
 
-    if (action === "improve") {
-      actionPrompt = `Improve the writing of the following text, making it more engaging, clear, and professional. Retain the core meaning: "${targetText}"`;
-    } else if (action === "shorten") {
-      actionPrompt = `Shorten the following text by approximately 40%. Keep it concise and punchy while retaining all key information: "${targetText}"`;
-    } else if (action === "expand") {
-      actionPrompt = `Elaborate and expand on the following text by adding more detail, explanations, or context to make it a more comprehensive section: "${targetText}"`;
-    } else if (action === "change-tone") {
-      actionPrompt = `Rewrite the following text in a "${tone || "Professional"}" tone: "${targetText}"`;
-    } else if (action === "seo-optimize") {
-      const keyword = seoDataText(brandBrain, workflowMemory);
-      actionPrompt = `Rewrite the following text to optimize it for search engines, focusing on keyword density and structure. Focus Keyword: "${keyword || "content operations"}" Text: "${targetText}"`;
-    } else if (action === "generate-cta") {
-      actionPrompt = `Generate a compelling, high-converting Call-To-Action (CTA) block based on the context of this document. Context: "${targetText || postTitle || ""}"`;
-    } else if (action === "continue") {
-      actionPrompt = `Continue writing naturally from the end of the following text, maintaining the same flow, style, and tone: "${targetText}"`;
-    } else if (action === "rewrite-linkedin") {
-      actionPrompt = `Rewrite the following text into an engaging, algorithm-optimized LinkedIn post layout. Include scroll-stopping hooks, double line spacing, short sentences, relevant emojis, and conclude with an engaging question: "${targetText}"`;
-    } else if (action === "chat") {
+    const actionList = Array.isArray(action) ? action : [action];
+
+    if (actionList.includes("chat")) {
       actionPrompt = userMessage || "";
+    } else {
+      let promptParts: string[] = [];
+      for (const act of actionList) {
+        if (act === "improve") {
+          promptParts.push("Improve the writing, making it more engaging, clear, and professional.");
+        } else if (act === "shorten") {
+          promptParts.push("Shorten the text by approximately 40%, keeping it concise and punchy while retaining all key information.");
+        } else if (act === "expand") {
+          promptParts.push("Elaborate and expand on the text by adding more detail, explanations, or context to make it a more comprehensive section.");
+        } else if (act === "change-tone") {
+          promptParts.push(`Rewrite the text in a "${tone || "Professional"}" tone.`);
+        } else if (act === "continue") {
+          promptParts.push("Continue writing naturally from the end of the text, maintaining the same flow, style, and tone.");
+        } else if (act === "seo-optimize") {
+          const keyword = seoDataText(brandBrain, workflowMemory);
+          promptParts.push(`Optimize the text for search engines, focusing on keyword density and structure. Focus Keyword: "${keyword || "content operations"}".`);
+        } else if (act === "generate-cta") {
+          promptParts.push("Generate a compelling, high-converting Call-To-Action (CTA) block based on this context.");
+        } else if (act === "rewrite-linkedin") {
+          promptParts.push("Rewrite the text into an engaging, algorithm-optimized LinkedIn post layout. Include scroll-stopping hooks, double line spacing, short sentences, relevant emojis, and conclude with an engaging question.");
+        }
+      }
+
+      if (promptParts.length > 0) {
+        actionPrompt = `${promptParts.join(" Also, ")} ${
+          userMessage ? `Additionally, follow these custom directions: "${userMessage}".` : ""
+        } Apply these changes to this text: "${targetText}"`;
+      } else {
+        actionPrompt = userMessage || "";
+      }
     }
 
     let systemInstructions = "";

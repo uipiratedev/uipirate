@@ -21,7 +21,15 @@ interface ConversationThreadProps {
   onModelChange: (model: string) => void;
   initialPrompt?: string;
   onClearInitialPrompt?: () => void;
+  editorHasContent: boolean;
 }
+
+const POST_IDEA_PROMPTS = [
+  { icon: "🛠", label: "Write a how-to guide", prompt: "Write a comprehensive how-to guide about [insert topic]. Break down the steps clearly, start with a hook explaining why this matters, and include practical examples for each step." },
+  { icon: "📊", label: "Summarize a key insight", prompt: "Summarize the key takeaways and lessons learned from [insert experience/book/project]. Focus on actionable tips that a reader can implement immediately, and explain why these lessons are important." },
+  { icon: "💡", label: "Share an opinion or take", prompt: "Draft a thought-leadership opinion post about the recent trends in [insert industry/field]. State a clear perspective, back it up with 2-3 reasons, and end with an engaging question to spark a discussion." },
+  { icon: "📋", label: "Create a list article", prompt: "Create an engaging listicle detailing [insert number] best practices/tools/tips for [insert target audience]. For each item in the list, provide a brief description and a key takeaway." },
+];
 
 export default function ConversationThread({
   messages,
@@ -38,9 +46,27 @@ export default function ConversationThread({
   onModelChange,
   initialPrompt,
   onClearInitialPrompt,
+  editorHasContent,
 }: ConversationThreadProps) {
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-grow textarea up to 5 lines (112px) before scrolling
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    textarea.style.height = "auto";
+    const maxHeight = 112; // ~5 lines of text-xs
+    if (textarea.scrollHeight > maxHeight) {
+      textarea.style.height = `${maxHeight}px`;
+      textarea.style.overflowY = "auto";
+    } else {
+      textarea.style.height = `${textarea.scrollHeight}px`;
+      textarea.style.overflowY = "hidden";
+    }
+  }, [inputValue]);
 
   useEffect(() => {
     if (initialPrompt) {
@@ -61,10 +87,45 @@ export default function ConversationThread({
   };
 
   return (
-    <div className="relative border border-black/5 rounded-2xl bg-white shadow-sm flex flex-col min-h-[300px] max-h-[500px]">
+    <div className="relative flex-1 flex flex-col h-full min-h-0 w-full bg-white">
       {/* Messages list */}
-      <div className={`flex-1 ${messages.length > 0 ? "overflow-y-auto" : "overflow-hidden"} p-4 space-y-4 rounded-t-2xl ${!isProUser ? "filter blur-sm select-none pointer-events-none" : ""}`}>
-        {messages.length === 0 ? (
+      <div className={`flex-1 overflow-y-auto p-4 space-y-4 min-h-0 ${!isProUser ? "filter blur-sm select-none pointer-events-none" : ""}`}>
+        {messages.length === 0 && !editorHasContent ? (
+          <div className="space-y-5 py-4 max-w-sm mx-auto">
+            <div className="text-center space-y-2 text-gray-400">
+              <CosIcon name="bot" size={32} className="text-gray-300 mx-auto animate-bounce" />
+              <p className="text-xs font-semibold font-geist text-gray-700">AI Conversation</p>
+              <p className="text-[10px] leading-relaxed font-geist text-gray-500">
+                Ask specific editing questions, request formatting tweaks, or draft inline sections.
+              </p>
+            </div>
+            
+            <div className="space-y-2.5 pt-2">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono px-1">
+                Get started with an idea
+              </p>
+              <div className="space-y-1.5">
+                {POST_IDEA_PROMPTS.map((idea) => (
+                  <button
+                    key={idea.label}
+                    type="button"
+                    disabled={loading}
+                    onClick={() => setInputValue(idea.prompt)}
+                    className="w-full text-left flex items-center gap-2.5 p-2.5 bg-white border border-black/5 rounded-xl hover:border-[#FF5B04]/30 hover:bg-orange-50/10 transition-all group cursor-pointer shadow-sm disabled:opacity-40"
+                  >
+                    <span className="text-base flex-shrink-0">{idea.icon}</span>
+                    <span className="text-xs font-medium font-geist text-gray-600 group-hover:text-[#FF5B04] transition-colors">
+                      {idea.label}
+                    </span>
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3 h-3 ml-auto text-gray-300 group-hover:text-[#FF5B04] transition-colors flex-shrink-0">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 text-gray-400 space-y-2">
             <CosIcon name="bot" size={28} className="text-gray-300 animate-bounce" />
             <p className="text-xs font-semibold font-geist text-gray-700">AI Conversation</p>
@@ -104,7 +165,7 @@ export default function ConversationThread({
                   )}
                   {/* Content (HTML wrapper check) */}
                   <div
-                    className="space-y-1"
+                    className="ai-prose"
                     dangerouslySetInnerHTML={{ __html: msg.content }}
                   />
                 </div>
@@ -158,13 +219,13 @@ export default function ConversationThread({
       </div>
 
       {/* Input Box Container */}
-      <div className={`p-3 border-t border-black/5 bg-gray-50/30 flex flex-col flex-shrink-0 relative rounded-b-2xl ${
+      <div className={`p-4 border-t border-black/5 bg-white flex flex-col flex-shrink-0 relative sticky bottom-0 z-10 ${
         !isProUser ? "filter blur-sm select-none pointer-events-none" : ""
       }`}>
         <form onSubmit={handleSend} className="bg-white border border-black/5 rounded-2xl p-2.5 flex flex-col gap-2.5 focus-within:ring-1 focus-within:ring-[#FF5B04]/20 transition-all shadow-sm">
           <textarea
+            ref={textareaRef}
             disabled={loading}
-            rows={2}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => {
@@ -173,12 +234,13 @@ export default function ConversationThread({
                 handleSend(e);
               }
             }}
-            placeholder="Ask anything, @ to mention, / for actions"
+            placeholder="Ask AI Co-pilot anything..."
             className="w-full text-xs font-geist bg-transparent outline-none resize-none placeholder-gray-400 text-gray-800"
+            style={{ maxHeight: "112px", overflowY: "hidden" }}
           />
           <div className="flex items-center justify-between border-t border-black/[0.03] pt-2">
             <div className="flex items-center gap-1.5 relative">
-              {/* Plus icon */}
+              {/* Plus icon (commented out for now)
               <button
                 type="button"
                 className="w-6 h-6 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-all cursor-pointer"
@@ -188,6 +250,7 @@ export default function ConversationThread({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
               </button>
+              */}
 
               {/* Model Pill Trigger */}
               <ModelSelectorPill
@@ -199,7 +262,7 @@ export default function ConversationThread({
             </div>
 
             <div className="flex items-center gap-1.5">
-              {/* Microphone icon */}
+              {/* Microphone icon (commented out for now)
               <button
                 type="button"
                 className="w-7 h-7 rounded-xl flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-all cursor-pointer"
@@ -209,6 +272,7 @@ export default function ConversationThread({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
                 </svg>
               </button>
+              */}
 
               {/* Send Button */}
               <button
@@ -227,7 +291,7 @@ export default function ConversationThread({
 
       {/* Frosted glass tier gate overlay */}
       {!isProUser && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center p-6 bg-white/60 backdrop-blur-md rounded-2xl">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center p-6 bg-white/60 backdrop-blur-md">
           <div className="w-11 h-11 bg-orange-50 rounded-full flex items-center justify-center border border-orange-100 mb-3 shadow-sm animate-pulse">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.25" className="w-5 h-5 text-[#FF5B04]">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />

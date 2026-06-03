@@ -29,6 +29,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
+import { SelectionHighlight } from "@/components/pirateCOS/SelectionHighlight";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
@@ -5805,7 +5806,7 @@ const BlogEditPage = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "content" | "seo" | "health" | "distribute" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null
   >(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
@@ -6365,6 +6366,7 @@ const BlogEditPage = () => {
     autofocus: "end",
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
+      SelectionHighlight,
       Image.configure({ inline: false, allowBase64: true }),
       Placeholder.configure({
         showOnlyWhenEditable: true,
