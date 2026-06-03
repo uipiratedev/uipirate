@@ -269,6 +269,28 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [x] **Persisted Repurposing Storage**: Extend the Post model schema to store generated repurposed content assets persistently in MongoDB.
 - [x] **Direct Diagnostics & Connection recovery**: Add inline troubleshoot cards and retry CTAs for outbound publication adapter failures.
 
+### 🟢 Phase 4D: PirateCOS: Dynamic Provider Registry System — Unified AI Configuration & Architecture
+
+> **📋 Full specification:** [`implementation_plan_registry.md`](file:///d:/ui-pirate/uipirate/implementation_plan_registry.md)
+
+- [x] **Centralized AI Provider Registry**: Export `AIEngine`, `AI_PROVIDERS`, `AI_MODELS` from `lib/pirateCOS/ai-registry.ts`.
+- [x] **Unified Selector UI Component**: Built `<EngineModelSelector>` component encapsulating engine switch buttons and model dropdown.
+- [x] **AIConfig Schema Decoupling**: Updated Mongoose schema to dynamically match registry engine IDs.
+- [x] **AIConfigPanel & settings Refactoring**: Replaced hardcoded maps with registry provider loops in `AIConfigPanel.tsx` and settings.
+- [x] **Wizard & Modal Refactoring**: Integrated selector and unified state hooks across all modals in `create/page.tsx` and `edit/[id]/page.tsx`.
+- [x] **Dynamic Discovery Filtering**: Integrated model filters in `lib/pirateCOS/ai-model-discovery.ts` to only allow models best suited for content generation (filtering out coding, embedding, and other non-chat models).
+
+### ⬜ Phase 4E: PirateCOS: AI-Native Workspace Panel
+
+> **📋 Full specification:** [`Phase 4E ai workspace panel.md`](file:///d:/ui-pirate/uipirate/Phase%204E%20ai%20workspace%20panel.md)
+
+- [ ] **Extend Post Schema**: Add `aiWorkspaceSession` field to persist message threads and history snapshots.
+- [ ] **Stateless Workspace API**: Build `POST /api/pirateCOS/ai/workspace` with full context mapping and token limits.
+- [ ] **Persistent AIWorkspacePanel Layout**: Build desktop split-pane UI and responsive collapsing toolbar.
+- [ ] **Selection-Aware Quick Actions**: Develop context-traveling action panel (Shorten, Expand, SEO optimize, etc.).
+- [ ] **Conversational Chat Thread**: Develop interaction thread with inline Apply, Replace, Insert, and Variant triggers.
+- [ ] **Generation History Logs**: Persist session execution history in the panel with preview and re-apply options.
+
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
 - [x] **Analytics data model foundation**: `models/pirateCOS/AnalyticsSnapshot.ts` exists with tenant, post, platform, date, and metric counters for views, clicks, shares, claps, likes, impressions, and comments.
 - [x] **Basic owned-site view counters**: dashboard aggregates `Post` view counters (`views`, `totalViews`, `botViews`, `duplicateViews`) for current on-site content visibility.

@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import CosIcon from "./CosIcon";
+import { useAIModels } from "@/hooks/useAIModels";
 
 export const AI_CONFIG_LS_KEY = "uipirate-ai-config";
 
 import {
   AIEngine,
   AI_PROVIDERS,
-  getModelsForEngine,
   getDefaultModelForEngine,
 } from "@/lib/pirateCOS/ai-registry";
 
@@ -58,6 +58,11 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [showGKey, setShowGKey] = useState(false);
   const [showMKey, setShowMKey] = useState(false);
   const [showAKey, setShowAKey] = useState(false);
+  const {
+    models: availableModels,
+    source: modelSource,
+    isLoading: modelsLoading,
+  } = useAIModels(defaultEngine);
 
   useEffect(() => {
     if (!open) return;
@@ -378,19 +383,24 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           </PanelSection>
 
           {/* ── Default Model ── */}
-          <PanelSection label="Default Model">
+          <PanelSection label={modelsLoading ? "Default Model (loading)" : "Default Model"}>
             <select
               className="w-full text-xs font-geist bg-white border text-gray-700 px-3 py-2.5 rounded-xl outline-none cursor-pointer"
               style={{ borderColor: "rgba(0,0,0,0.1)" }}
               value={defaultModel}
               onChange={(e) => setDefaultModel(e.target.value)}
             >
-              {getModelsForEngine(defaultEngine).map((m) => (
+              {availableModels.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.label} {m.description ? `— ${m.description}` : ""}
                 </option>
               ))}
             </select>
+            {modelSource !== "fallback" && (
+              <p className="text-[10px] text-gray-400 font-geist leading-relaxed">
+                Showing live provider models with safe defaults.
+              </p>
+            )}
           </PanelSection>
 
           <p className="text-[10px] text-gray-400 font-geist leading-relaxed">

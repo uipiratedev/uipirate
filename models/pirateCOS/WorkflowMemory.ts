@@ -12,9 +12,16 @@ export interface IWorkflowMemory extends Document {
   };
   defaultCTA: string;
   learnedToneProfile?: string; // Analysis snapshot of user writing tone
+  snippetLibrary?: string[];
+  uiPreferences?: {
+    panelWidth?: number;
+    showHistory?: boolean;
+    quickActionsOrder?: string[];
+  };
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 const WorkflowMemorySchema: Schema<IWorkflowMemory> = new Schema(
   {
@@ -58,6 +65,15 @@ const WorkflowMemorySchema: Schema<IWorkflowMemory> = new Schema(
       type: String,
       default: "",
       trim: true,
+    },
+    snippetLibrary: {
+      type: [String],
+      default: [],
+    },
+    uiPreferences: {
+      panelWidth: { type: Number, default: 288 },
+      showHistory: { type: Boolean, default: true },
+      quickActionsOrder: { type: [String], default: [] },
     },
   },
   {

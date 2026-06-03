@@ -149,9 +149,16 @@ export const AI_MODELS: AIModelEntry[] = [
   { id: "claude-3-5-haiku-latest", label: "Claude 3.5 Haiku", provider: "anthropic" },
   { id: "claude-3-opus-latest", label: "Claude 3 Opus", provider: "anthropic" },
 
-  // Puter Models (Free GPT-4o-mini)
+  // Puter Models
   { id: "gpt-4o-mini", label: "GPT-4o Mini", description: "fast", provider: "puter", isDefault: true },
   { id: "gpt-4o", label: "GPT-4o", provider: "puter" },
+  { id: "claude-3-5-sonnet", label: "Claude 3.5 Sonnet", provider: "puter" },
+  { id: "claude-3-opus", label: "Claude 3 Opus", provider: "puter" },
+  { id: "gemini-1.5-flash", label: "Gemini 1.5 Flash", provider: "puter" },
+  { id: "gemini-1.5-pro", label: "Gemini 1.5 Pro", provider: "puter" },
+  { id: "deepseek-chat", label: "DeepSeek Chat", provider: "puter" },
+  { id: "grok-beta", label: "Grok Beta", provider: "puter" },
+  { id: "mistral-large", label: "Mistral Large", provider: "puter" },
   { id: "gpt-5.5", label: "GPT-5.5", provider: "puter" },
   { id: "gpt-5.4", label: "GPT-5.4", provider: "puter" },
   { id: "gpt-5.4-mini", label: "GPT-5.4 Mini", provider: "puter" },

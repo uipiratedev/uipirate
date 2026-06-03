@@ -95,12 +95,8 @@ export default function DistributionPanel({
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [loadingIntegrations, setLoadingIntegrations] = useState(true);
   const [distributing, setDistributing] = useState(false);
-  const [verifyingPlatform, setVerifyingPlatform] = useState<string | null>(
-    null,
-  );
-  const [distributionError, setDistributionError] = useState<string | null>(
-    null,
-  );
+  const [verifyingPlatform, setVerifyingPlatform] = useState<string | null>(null);
+  const [distributionError, setDistributionError] = useState<string | null>(null);
   const [preflight, setPreflight] = useState<PreflightCheck[]>([]);
   const [activeSocialDest, setActiveSocialDest] = useState<"linkedin" | "x">("linkedin");
 
@@ -111,6 +107,7 @@ export default function DistributionPanel({
   const [activeChain, setActiveChain] = useState<string | null>(null);
   const [showRepurposePreview, setShowRepurposePreview] = useState(false);
   const [platformErrors, setPlatformErrors] = useState<Record<string, string>>({});
+  const [copiedFormatId, setCopiedFormatId] = useState<string | null>(null);
 
   useEffect(() => {
     if (socialDestination) {
@@ -488,14 +485,14 @@ export default function DistributionPanel({
 
   return (
     <div className="space-y-4 font-geist text-gray-700">
-      {/* SECTION: One-Click Distribution Chains */}
+      {/* SECTION: Quick Publish Presets */}
       <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl border border-white/10 p-4 space-y-3 shadow-md">
         <div>
           <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold flex items-center gap-1.5">
-            <CosIcon name="bolt" size={12} className="text-orange-500 fill-orange-500" /> One-Click Distribution Chains
+            <CosIcon name="bolt" size={12} className="text-orange-500 fill-orange-500" /> Quick Publish Presets
           </p>
           <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-            Activate a preset chain matching your distribution strategy. This automatically configures channels and repurposing templates.
+            Tap a preset to instantly configure the best channels and content formats for your goal.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-2 pt-1">
@@ -552,55 +549,53 @@ export default function DistributionPanel({
         </div>
       </div>
 
-      {/* SECTION: AI Distribution Intelligence */}
+      {/* SECTION: Where to share this? */}
       <div className="bg-gradient-to-br from-orange-50/70 to-purple-50/50 rounded-2xl border border-[#FF5B04]/10 p-4 space-y-3 shadow-sm">
-        <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold flex items-center gap-1.5">
-          <CosIcon name="bot" size={12} className="text-orange-500" /> AI Distribution Intelligence
-        </p>
-
-        {/* Channel Fit Matrix */}
-        <div className="space-y-2">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">
-            Channel Recommendations
+        <div>
+          <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold flex items-center gap-1.5">
+            <CosIcon name="bot" size={12} className="text-orange-500" /> Where to share this?
           </p>
-          <div className="flex flex-wrap gap-2">
-            {Object.keys(PLATFORM_LABELS).map((platform) => {
-              const isRecommended = getPostTypeConfig(postType)?.distributionChannels.includes(platform) || false;
-              return (
-                <span
-                  key={platform}
-                  className={`text-[9px] font-bold font-jetbrains-mono uppercase px-2 py-0.5 rounded-full border ${
-                    isRecommended
-                      ? "bg-green-50 text-green-700 border-green-200"
-                      : "bg-black/[0.02] text-gray-400 border-black/5"
-                  }`}
-                  title={isRecommended ? "Ideal fit for this post type!" : "Not recommended as primary channel"}
-                >
-                  <span className="flex items-center gap-1">
-                    <CosIcon name={isRecommended ? "check" : "cross"} size={10} className={isRecommended ? "text-green-500" : "text-gray-400"} />
-                    {PLATFORM_LABELS[platform] || platform}
-                  </span>
+          <p className="text-xs text-gray-500 mt-0.5">Best channels for this post type based on your content goal.</p>
+        </div>
+
+        {/* Channel fit badges */}
+        <div className="flex flex-wrap gap-2">
+          {Object.keys(PLATFORM_LABELS).map((platform) => {
+            const isRecommended = getPostTypeConfig(postType)?.distributionChannels.includes(platform) || false;
+            return (
+              <span
+                key={platform}
+                className={`text-[9px] font-bold font-jetbrains-mono uppercase px-2 py-0.5 rounded-full border ${
+                  isRecommended
+                    ? "bg-green-50 text-green-700 border-green-200"
+                    : "bg-black/[0.02] text-gray-400 border-black/5"
+                }`}
+                title={isRecommended ? "Ideal fit for this post type!" : "Not recommended as primary channel"}
+              >
+                <span className="flex items-center gap-1">
+                  <CosIcon name={isRecommended ? "check" : "cross"} size={10} className={isRecommended ? "text-green-500" : "text-gray-400"} />
+                  {PLATFORM_LABELS[platform] || platform}
                 </span>
-              );
-            })}
-          </div>
+              </span>
+            );
+          })}
         </div>
 
         {/* Advisor Guidance Text */}
         <div className="text-xs leading-relaxed font-geist text-gray-600 bg-white/60 rounded-xl p-3 border border-black/[0.02] space-y-1">
           <span className="font-bold text-gray-800 text-[10px] uppercase tracking-wider block">
-            AI Advisor Guidance:
+            AI Tip:
           </span>
           <p>
-            {contentGoal === "traffic" && "Drive organic traffic by targeting high-intent long-tail keywords. Share first on your SEO optimized WordPress or Ghost blog. "}
-            {contentGoal === "authority" && "Establish thought leadership with detailed framework citations. Great fit for publishing directly to LinkedIn and Medium! "}
-            {contentGoal === "conversion" && "Structure the post around solving problems with benefit-driven CTAs. Embed lead capture forms in your primary blog post. "}
-            {contentGoal === "engagement" && "Create high visual curiosity with a strong opening hook. Ideal for Twitter threads or LinkedIn slide carousels! "}
-            {contentGoal === "lead-generation" && "Offer actionable checklists or templates. Gate the deep-dive portion with a newsletter subscription form. "}
-            {contentGoal === "retention" && "Provide highly practical step-by-step instructions. Ideal for internal newsletters and education portals. "}
+            {contentGoal === "traffic" && "Drive organic traffic by targeting high-intent keywords. Publish first on your SEO-optimized blog."}
+            {contentGoal === "authority" && "Establish thought leadership with detailed citations. Great fit for LinkedIn and Medium!"}
+            {contentGoal === "conversion" && "Structure the post around solving problems with clear CTAs. Embed lead capture forms."}
+            {contentGoal === "engagement" && "Create high curiosity with a strong opening hook. Ideal for Twitter threads or LinkedIn carousels!"}
+            {contentGoal === "lead-generation" && "Offer actionable checklists or templates gated behind a newsletter subscription."}
+            {contentGoal === "retention" && "Provide step-by-step instructions. Ideal for internal newsletters and education portals."}
           </p>
           <p className="text-[9px] font-semibold text-[#FF5B04] mt-1.5 font-jetbrains-mono italic">
-            Suggested Timing: Tuesday & Thursday, 9:00 AM – 11:30 AM (Peak Engagement window)
+            Best time: Tuesday & Thursday, 9:00 AM – 11:30 AM
           </p>
         </div>
       </div>
@@ -633,32 +628,31 @@ export default function DistributionPanel({
 
       {/* SECTION: Pre-flight Checklist */}
       <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-          Pre-flight Checklist
-        </p>
+        <div className="mb-3">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">Pre-flight Checklist</p>
+          <p className="text-[10px] text-gray-400 font-geist mt-0.5">Make sure everything is ready before publishing.</p>
+        </div>
         <div className="space-y-2">
           {preflight.map((check) => (
             <div
               key={check.id}
-              className="flex items-center justify-between gap-2 text-xs"
+              className={`flex items-center justify-between gap-2 text-xs p-2 rounded-lg border-l-2 ${
+                check.passed
+                  ? "border-transparent"
+                  : check.severity === "error"
+                    ? "border-red-400 bg-red-50/40"
+                    : "border-amber-400 bg-amber-50/30"
+              }`}
             >
               <div className="flex items-center gap-2 min-w-0">
                 {check.passed ? (
-                  <span className="text-green-500 font-bold flex-shrink-0">
-                    ✓
-                  </span>
+                  <span className="text-green-500 font-bold flex-shrink-0">✓</span>
                 ) : check.severity === "error" ? (
-                  <span className="text-red-500 font-bold flex-shrink-0">
-                    ✗
-                  </span>
+                  <span className="text-red-500 font-bold flex-shrink-0">✗</span>
                 ) : (
-                  <span className="text-amber-500 font-bold flex-shrink-0">
-                    ⚠
-                  </span>
+                  <span className="text-amber-500 font-bold flex-shrink-0">⚠</span>
                 )}
-                <span
-                  className={`truncate ${check.passed ? "text-gray-500" : "text-gray-900 font-medium"}`}
-                >
+                <span className={`truncate ${check.passed ? "text-gray-500" : "text-gray-900 font-medium"}`}>
                   {check.label}
                 </span>
               </div>
@@ -677,7 +671,7 @@ export default function DistributionPanel({
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                             <path className="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor" />
                           </svg>
-                          Autofixing...
+                          Fixing...
                         </>
                       ) : (
                         <span className="flex items-center gap-1">
@@ -779,18 +773,19 @@ export default function DistributionPanel({
         )}
       </div>
 
-      {/* SECTION: Repurpose Output Checkboxes */}
+      {/* SECTION: Create Spin-offs */}
       {postType !== "social-post" && (
         <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-            Repurpose Content
-          </p>
+          <div className="mb-3">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">Create Spin-offs</p>
+            <p className="text-[10px] text-gray-400 font-geist mt-0.5">Let AI transform this post into other formats — results are saved to your post.</p>
+          </div>
           <div className="space-y-2">
             {[
-              { id: "linkedin_promo", label: "LinkedIn Promo (Carousel Slide Copy)", icon: "link" },
-              { id: "twitter_thread", label: "X / Twitter Thread", icon: "social-post" },
-              { id: "newsletter_summary", label: "Newsletter summary / Draft", icon: "envelope" },
-              { id: "quote_snippets", label: "CTA / Quote snippets", icon: "community-insight" },
+              { id: "linkedin_promo", label: "LinkedIn Promo Post", icon: "link", hint: "Carousel slide copy & hook" },
+              { id: "twitter_thread", label: "X / Twitter Thread", icon: "social-post", hint: "Tweet-length breakdown" },
+              { id: "newsletter_summary", label: "Newsletter Summary", icon: "envelope", hint: "Email digest format" },
+              { id: "quote_snippets", label: "CTA & Quote Snippets", icon: "community-insight", hint: "Pull quotes for graphics" },
             ].map((format) => {
               const isSelected = selectedRepurposeFormats.includes(format.id);
               return (
@@ -814,9 +809,12 @@ export default function DistributionPanel({
                       );
                     }}
                   />
-                  <span className="text-xs font-semibold text-gray-800 flex items-center gap-1.5">
-                    <CosIcon name={format.icon} size={14} className="text-gray-500" /> {format.label}
-                  </span>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-semibold text-gray-800 flex items-center gap-1.5">
+                      <CosIcon name={format.icon} size={14} className="text-gray-500" /> {format.label}
+                    </span>
+                    <span className="text-[9px] text-gray-400 font-geist">{format.hint}</span>
+                  </div>
                 </label>
               );
             })}
@@ -931,10 +929,11 @@ export default function DistributionPanel({
                       type="button"
                       onClick={() => {
                         navigator.clipboard.writeText(text);
-                        alert("Copied to clipboard!");
+                        setCopiedFormatId(formatId);
+                        setTimeout(() => setCopiedFormatId(null), 2000);
                       }}
                     >
-                      Copy
+                      {copiedFormatId === formatId ? "✓ Copied!" : "Copy"}
                     </button>
                   </div>
                   <pre className="text-[11px] text-gray-600 font-geist leading-relaxed whitespace-pre-wrap select-all">

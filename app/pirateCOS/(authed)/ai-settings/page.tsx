@@ -3,14 +3,13 @@
 import { useState, useEffect } from "react";
 
 import { AI_CONFIG_LS_KEY } from "@/components/pirateCOS/AIConfigPanel";
+import { useAIModels } from "@/hooks/useAIModels";
 
 import {
   AIEngine,
   AIKeyProvider,
   AI_PROVIDERS,
-  AI_MODELS,
   getProvider,
-  getModelsForEngine,
   getDefaultModelForEngine,
   getProviderLabel,
   getProviderLogo,
@@ -434,6 +433,13 @@ export default function AISettingsPage() {
 
   const defaultEngineLabel = getProviderLabel(defaultEngine);
   const defaultEngineLogo = getProviderLogo(defaultEngine);
+  const {
+    models: availableModels,
+    source: modelSource,
+    isLoading: modelsLoading,
+  } = useAIModels(defaultEngine);
+  const defaultModelLabel =
+    availableModels.find((m) => m.id === defaultModel)?.label ?? defaultModel;
 
   return (
     <div className="space-y-8 px-8 py-4 font-geist text-gray-700">
@@ -688,8 +694,13 @@ export default function AISettingsPage() {
                     Model
                   </p>
                   <span className="text-sm font-bold font-geist text-gray-800">
-                    {AI_MODELS.find(m => m.id === defaultModel && m.provider === defaultEngine)?.label ?? defaultModel}
+                    {defaultModelLabel}
                   </span>
+                  {modelSource !== "fallback" && (
+                    <p className="text-[10px] text-gray-400 font-geist mt-1">
+                      Live provider catalog enabled
+                    </p>
+                  )}
                 </div>
                 <div className="ml-auto hidden sm:block">
                   <span
@@ -736,14 +747,14 @@ export default function AISettingsPage() {
                 {/* Model selector */}
                 <div>
                   <p className="text-xs font-jetbrains-mono uppercase tracking-widest text-gray-400 mb-3">
-                    Default Model
+                    {modelsLoading ? "Loading Models..." : "Default Model"}
                   </p>
                   <select
                     className="w-full text-sm font-geist bg-gray-50 border border-black/[0.08] text-gray-700 px-3 py-2.5 rounded-xl outline-none cursor-pointer"
                     value={defaultModel}
                     onChange={(e) => setDefaultModel(e.target.value)}
                   >
-                    {getModelsForEngine(defaultEngine).map((m) => (
+                    {availableModels.map((m) => (
                       <option key={m.id} value={m.id}>
                         {m.label} {m.description ? `— ${m.description}` : ""}
                       </option>
