@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import CosIcon from "./CosIcon";
 import {
   AIEngine,
   AI_PROVIDERS,
@@ -120,10 +121,10 @@ export const EngineModelSelector: React.FC<Props> = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
               )}
               {activeModel?.description === "fast" && (
-                <span className="text-[10px] shrink-0">⚡</span>
+                <CosIcon name="bolt" size={11} className="text-amber-500 fill-amber-500 shrink-0" />
               )}
               {activeModel?.description === "capable" && (
-                <span className="text-[10px] shrink-0">✨</span>
+                <CosIcon name="sparkles" size={11} className="text-[#FF5B04] fill-[#FF5B04] shrink-0" />
               )}
               <span className="truncate">{activeModel?.label || "Select Model"}</span>
             </div>
@@ -184,23 +185,23 @@ export const EngineModelSelector: React.FC<Props> = ({
                     {/* Badges row */}
                     <div className="flex flex-wrap gap-1 items-center">
                       {m.isDefault && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30">
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-black/[0.03] dark:bg-white/[0.03] text-gray-500 dark:text-gray-400 border border-black/5 dark:border-white/5">
                           Default
                         </span>
                       )}
                       {m.description === "fast" && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30">
-                          ⚡ Fast
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50/50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-900/30 flex items-center gap-1">
+                          <CosIcon name="bolt" size={10} className="text-amber-500 fill-amber-500 shrink-0" /> Fast
                         </span>
                       )}
                       {m.description === "capable" && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 border border-purple-100 dark:border-purple-900/30">
-                          ✨ Capable
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950/20 text-[#FF5B04] dark:text-orange-400 border border-orange-100 dark:border-orange-900/30 flex items-center gap-1">
+                          <CosIcon name="sparkles" size={10} className="text-[#FF5B04] fill-[#FF5B04] shrink-0" /> Capable
                         </span>
                       )}
                       {m.description === "live" && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-900/30 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                           Live API
                         </span>
                       )}

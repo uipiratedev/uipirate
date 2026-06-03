@@ -17,12 +17,12 @@ export class CreditLimitError extends Error {
  * Bypasses checks if Bring Your Own Key (BYOK) is active for the requested engine.
  *
  * @param tenantId The current logged in Admin ID (acting as tenant boundary)
- * @param actionType The action being performed (blog, seo, enhance, publish)
+ * @param actionType The action being performed (blog, seo, enhance, publish, suggest)
  * @param engine The engine being targeted (openai, gemini, mistral, anthropic)
  */
 export async function deductCredits(
   tenantId: string,
-  actionType: "blog" | "seo" | "enhance" | "publish",
+  actionType: "blog" | "seo" | "enhance" | "publish" | "suggest",
   engine?: "openai" | "gemini" | "mistral" | "anthropic",
 ): Promise<void> {
   await dbConnect();
@@ -33,7 +33,7 @@ export async function deductCredits(
     throw new Error("Tenant context not found");
   }
 
-  const isAIAction = ["blog", "seo", "enhance"].includes(actionType);
+  const isAIAction = ["blog", "seo", "enhance", "suggest"].includes(actionType);
 
   // Determine if BYOK is active
   let usesBYOK = false;
@@ -71,6 +71,7 @@ export async function deductCredits(
     seo: 1.0,
     enhance: 0.5,
     publish: 1.0,
+    suggest: 0.1,
   };
 
   const cost = creditCosts[actionType] || 0.5;

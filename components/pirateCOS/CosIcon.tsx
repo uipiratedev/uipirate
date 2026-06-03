@@ -43,7 +43,11 @@ export type CosIconName =
   | "image"
   | "video"
   | "table"
-  | "divider";
+  | "divider"
+  | "briefcase"
+  | "chat"
+  | "beaker"
+  | "heart";
 
 interface CosIconProps extends SVGProps<SVGSVGElement> {
   name: CosIconName | string;
@@ -378,6 +382,35 @@ export default function CosIcon({ name, size = 18, className = "", ...props }: C
       return (
         <svg {...baseProps}>
           <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      );
+
+    case "briefcase":
+      return (
+        <svg {...baseProps}>
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+          <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+        </svg>
+      );
+
+    case "chat":
+      return (
+        <svg {...baseProps}>
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+      );
+
+    case "beaker":
+      return (
+        <svg {...baseProps}>
+          <path d="M6 3h12M14 3v7l5 9a2 2 0 0 1-1.7 3H6.7a2 2 0 0 1-1.7-3l5-9V3M10 14h4" />
+        </svg>
+      );
+
+    case "heart":
+      return (
+        <svg {...baseProps}>
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
         </svg>
       );
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import CosIcon from "../CosIcon";
 
 interface FocusKeywordStripProps {
   postType: string;
@@ -10,16 +11,21 @@ interface FocusKeywordStripProps {
 }
 
 const POST_TYPE_ICONS: Record<string, string> = {
-  "blog-post": "📝",
-  "social-post": "💬",
-  "product-review": "⭐",
-  "listicle": "📋",
-  "how-to": "🛠",
-  "case-study": "📊",
-  "comparison": "⚖️",
-  "news": "📰",
-  "opinion": "💡",
-  "newsletter": "✉️",
+  "blog": "blog",
+  "blog-post": "blog",
+  "social-post": "social-post",
+  "product-review": "product-review",
+  "listicle": "listicle",
+  "how-to": "tutorial",
+  "tutorial": "tutorial",
+  "case-study": "case-study",
+  "comparison": "comparison",
+  "news": "newsletter",
+  "opinion": "sparkles",
+  "newsletter": "newsletter",
+  "community-insight": "community-insight",
+  "corporate-post": "corporate-post",
+  "product-launch": "product-launch",
 };
 
 export default function FocusKeywordStrip({
@@ -32,7 +38,7 @@ export default function FocusKeywordStrip({
   const [localKw, setLocalKw] = useState(focusKeyword || "");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const typeIcon = POST_TYPE_ICONS[postType] || "📝";
+  const typeIcon = POST_TYPE_ICONS[postType] || "blog";
   const typeLabel = postType.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   const handleSave = () => {
@@ -51,10 +57,10 @@ export default function FocusKeywordStrip({
   };
 
   return (
-    <div className="flex items-center justify-between gap-2 px-1 py-0.5">
+    <div className="flex items-center justify-between gap-2.5 px-3.5 py-2.5 bg-white border border-black/5 rounded-2xl shadow-sm">
       {/* Post type badge */}
       <div className="flex items-center gap-1.5 flex-shrink-0">
-        <span className="text-xs">{typeIcon}</span>
+        <CosIcon name={typeIcon} size={14} className="text-[#FF5B04]/70 shrink-0" />
         <span className="text-[10px] font-bold text-gray-400 font-geist capitalize">
           {typeLabel}
         </span>

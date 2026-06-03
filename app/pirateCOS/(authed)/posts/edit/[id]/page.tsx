@@ -29,6 +29,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
+import WorkspaceTutorialCarousel from "@/components/pirateCOS/WorkspaceTutorialCarousel";
+import { SelectionHighlight } from "@/components/pirateCOS/SelectionHighlight";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
@@ -4907,8 +4909,8 @@ const FormattingToolbar = ({
       className="sticky z-40 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
       style={{
         top: "61px",
-        background: "rgba(247,247,246,0.96)",
-        borderBottom: "1px solid rgba(0,0,0,0.07)",
+        background: "rgba(255, 255, 255, 0.95)",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
       }}
     >
       <button
@@ -5800,12 +5802,13 @@ const BlogEditPage = () => {
   const [showUnpublishModal, setShowUnpublishModal] = useState(false);
   const [showSEOModal, setShowSEOModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [seoData, setSeoData] = useState<PostSEO>({});
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "content" | "seo" | "health" | "distribute" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null
   >(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
@@ -6365,6 +6368,7 @@ const BlogEditPage = () => {
     autofocus: "end",
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
+      SelectionHighlight,
       Image.configure({ inline: false, allowBase64: true }),
       Placeholder.configure({
         showOnlyWhenEditable: true,
@@ -6908,7 +6912,9 @@ const BlogEditPage = () => {
 
           {/* Writing Goal Progress */}
           {(() => {
-            const wordGoal = getPostTypeConfig(postType)?.minWordCount ?? 500;
+            const ptConfig = getPostTypeConfig(postType);
+            const minGoal = ptConfig?.minWordCount ?? 500;
+            const maxGoal = ptConfig?.maxWordCount ?? 1500;
             return (
               <div className="mt-3.5 pt-3 border-t border-black/5">
                 <div className="flex justify-between items-center mb-1">
@@ -6918,16 +6924,16 @@ const BlogEditPage = () => {
                   <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
                     {Math.min(
                       100,
-                      Math.round((editorStats.words / wordGoal) * 100),
+                      Math.round((editorStats.words / minGoal) * 100),
                     )}
-                    % ({editorStats.words}/{wordGoal} words)
+                    % ({editorStats.words} / {minGoal}–{maxGoal} words)
                   </span>
                 </div>
                 <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{
-                      width: `${Math.min(100, (editorStats.words / wordGoal) * 100)}%`,
+                      width: `${Math.min(100, (editorStats.words / minGoal) * 100)}%`,
                       background: "#FF5B04",
                     }}
                   />
@@ -6969,10 +6975,8 @@ const BlogEditPage = () => {
               </>
             ) : (
               <>
-                <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="12">
-                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                </svg>
-                Optimize Title
+                <CosIcon name="sparkles" size={12} className="text-white fill-current" />
+                <span>Optimize Title</span>
               </>
             )}
           </button>
@@ -7020,9 +7024,7 @@ const BlogEditPage = () => {
               }`}
               onClick={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
             >
-              <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="10">
-                <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-              </svg>
+              <CosIcon name="sparkles" size={10} className="text-current" />
               {showExcerptAIGuidelines ? "Hide AI Assistant" : "AI Assistant"}
             </button>
           </div>
@@ -7072,10 +7074,8 @@ const BlogEditPage = () => {
                   </>
                 ) : (
                   <>
-                    <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="12">
-                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                    </svg>
-                    Generate Excerpt
+                    <CosIcon name="sparkles" size={12} className="text-white fill-current" />
+                    <span>Generate Excerpt</span>
                   </>
                 )}
               </button>
@@ -7204,10 +7204,8 @@ const BlogEditPage = () => {
                 </>
               ) : (
                 <>
-                  <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="10">
-                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                  </svg>
-                  Recommend Tags
+                  <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                  <span>Recommend Tags</span>
                 </>
               )}
             </button>
@@ -7310,7 +7308,7 @@ const BlogEditPage = () => {
 
         {seoError && (
           <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex gap-2 text-[11px] text-red-600 font-medium font-geist">
-            <span>⚠</span>
+            <CosIcon name="warning" size={12} className="text-red-500 shrink-0 mt-0.5" />
             <p className="flex-1">{seoError}</p>
           </div>
         )}
@@ -7334,7 +7332,14 @@ const BlogEditPage = () => {
                   }}
                   className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
                 >
-                  {isSuggestingFocusKeyword ? "Suggesting..." : "✨ AI Suggest"}
+                  {isSuggestingFocusKeyword ? (
+                    "Suggesting..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                      <span>AI Suggest</span>
+                    </>
+                  )}
                 </button>
               </div>
               <input
@@ -7366,7 +7371,14 @@ const BlogEditPage = () => {
                   }}
                   className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
                 >
-                  {isGeneratingMetaTitle ? "Generating..." : "✨ Generate"}
+                  {isGeneratingMetaTitle ? (
+                    "Generating..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                      <span>Generate</span>
+                    </>
+                  )}
                 </button>
               </div>
               <input
@@ -7405,7 +7417,14 @@ const BlogEditPage = () => {
                   }}
                   className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
                 >
-                  {isGeneratingMetaDescription ? "Generating..." : "✨ Generate"}
+                  {isGeneratingMetaDescription ? (
+                    "Generating..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                      <span>Generate</span>
+                    </>
+                  )}
                 </button>
               </div>
               <textarea
@@ -7431,8 +7450,20 @@ const BlogEditPage = () => {
                   <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">Related Keywords</label>
                   <p className="text-[9px] text-gray-400 font-geist mt-0.5">Supporting terms that help Google understand your topic</p>
                 </div>
-                <button type="button" disabled={isAnalyzingSEO && generatingSEOAction === "tags"} onClick={() => runSEOAIAction("tags")} className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors disabled:opacity-50 flex-shrink-0">
-                  {isAnalyzingSEO && generatingSEOAction === "tags" ? "Generating..." : "✨ AI Generate"}
+                <button
+                  type="button"
+                  disabled={isAnalyzingSEO && generatingSEOAction === "tags"}
+                  onClick={() => runSEOAIAction("tags")}
+                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors disabled:opacity-50 flex-shrink-0"
+                >
+                  {isAnalyzingSEO && generatingSEOAction === "tags" ? (
+                    "Generating..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04] inline mr-1" />
+                      <span>AI Generate</span>
+                    </>
+                  )}
                 </button>
               </div>
               {seoData?.keywords && seoData.keywords.length > 0 ? (
@@ -7673,6 +7704,14 @@ const BlogEditPage = () => {
                 );
               })()}
             </span>
+            <button
+              type="button"
+              onClick={() => setIsHelpModalOpen(true)}
+              className="w-6 h-6 rounded-full flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-[#FF5B04] hover:bg-orange-50 hover:border-orange-200 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold text-xs"
+              title="Workspace Tutorial"
+            >
+              ?
+            </button>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -8160,6 +8199,54 @@ const BlogEditPage = () => {
           }}
           onStay={() => setShowUnsavedModal(false)}
         />
+      )}
+
+      {/* Help Tutorial Modal */}
+      {isHelpModalOpen && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-all duration-300"
+          onClick={() => setIsHelpModalOpen(false)}
+        >
+          <div
+            className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-black/5 p-6 w-full max-w-2xl animate-in fade-in zoom-in duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-md bg-orange-100 text-[#FF5B04] text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider">
+                  Quick Guide
+                </span>
+                <h3 className="text-base font-bold font-geist text-gray-800">
+                  Workspace Tutorial
+                </h3>
+              </div>
+              <button
+                className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-all cursor-pointer"
+                onClick={() => setIsHelpModalOpen(false)}
+              >
+                <svg
+                  fill="none"
+                  height="16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="16"
+                >
+                  <line x1="18" x2="6" y1="6" y2="18" />
+                  <line x1="6" x2="18" y1="6" y2="18" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Tutorial Carousel */}
+            <div className="bg-white/50 p-1.5 rounded-3xl border border-black/[0.02]">
+              <WorkspaceTutorialCarousel />
+            </div>
+          </div>
+        </div>
       )}
 
 

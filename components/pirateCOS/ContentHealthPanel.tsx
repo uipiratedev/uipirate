@@ -404,7 +404,7 @@ export default function ContentHealthPanel({
   const metricGroups = [
     {
       groupLabel: "Writing Quality",
-      groupIcon: "✏️",
+      groupIcon: "edit",
       metrics: [
         {
           name: "Readability",
@@ -428,7 +428,7 @@ export default function ContentHealthPanel({
     },
     {
       groupLabel: "SEO & Reach",
-      groupIcon: "📈",
+      groupIcon: "traffic",
       metrics: [
         {
           name: "Search Ranking",
@@ -446,7 +446,7 @@ export default function ContentHealthPanel({
     },
     {
       groupLabel: "Publish Readiness",
-      groupIcon: "🚀",
+      groupIcon: "product-launch",
       metrics: [
         {
           name: "Call to Action",
@@ -527,7 +527,7 @@ export default function ContentHealthPanel({
         {metricGroups.map((group) => (
           <div key={group.groupLabel} className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-sm">{group.groupIcon}</span>
+              <CosIcon name={group.groupIcon} size={14} className="text-[#FF5B04] shrink-0" />
               <p className="text-[10px] font-bold font-jetbrains-mono text-gray-500 uppercase tracking-widest">
                 {group.groupLabel}
               </p>
@@ -593,27 +593,6 @@ export default function ContentHealthPanel({
             </div>
           </div>
         ))}
-      </div>
-
-      {/* ── Word Count Guide ── */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-2.5">
-          Read Time & Word Count
-        </p>
-        <div className="flex items-center justify-between text-xs font-geist">
-          <div>
-            <p className="text-gray-500">Current Word Count</p>
-            <p className="text-lg font-bold text-gray-900 mt-0.5">
-              {analysis.wordCount} words
-            </p>
-          </div>
-          <div className="text-right">
-            <p className="text-gray-500">Target Range</p>
-            <p className="text-sm font-semibold text-gray-700 mt-1">
-              {typeConfig ? `${typeConfig.minWordCount} – ${typeConfig.maxWordCount} words` : "600 – 1500 words"}
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -803,3 +803,231 @@ export function getSuggestedChainForGoal(goal: ContentGoal): DistributionChain |
   if (goal === "lead-generation") return DISTRIBUTION_CHAINS.find((c) => c.value === "newsletter-growth");
   return DISTRIBUTION_CHAINS.find((c) => c.value === "social-expansion");
 }
+
+// ── Centralized Chat Suggestions ─────────────────────────────────────────────
+
+export interface ChatIdeaSuggestion {
+  label: string;
+  prompt: string;
+  icon: string; // name of CosIcon
+  postTypes: string[] | "*";
+  goals: ContentGoal[] | "*";
+}
+
+export const CHAT_IDEA_SUGGESTIONS: ChatIdeaSuggestion[] = [
+  {
+    label: "Write a how-to guide",
+    icon: "tutorial",
+    prompt: "Write a comprehensive how-to guide about [insert topic]. Break down the steps clearly, start with a hook explaining why this matters, and include practical examples for each step.",
+    postTypes: ["blog", "tutorial"],
+    goals: ["traffic", "authority", "retention"],
+  },
+  {
+    label: "Summarize a key insight",
+    icon: "draft",
+    prompt: "Summarize the key takeaways and lessons learned from [insert experience/book/project]. Focus on actionable tips that a reader can implement immediately, and explain why these lessons are important.",
+    postTypes: ["blog", "corporate-post", "newsletter", "community-insight"],
+    goals: ["authority", "engagement", "retention"],
+  },
+  {
+    label: "Share an opinion or take",
+    icon: "engagement",
+    prompt: "Draft a thought-leadership opinion post about the recent trends in [insert industry/field]. State a clear perspective, back it up with 2-3 reasons, and end with an engaging question to spark a discussion.",
+    postTypes: ["blog", "social-post", "community-insight", "newsletter"],
+    goals: ["authority", "engagement"],
+  },
+  {
+    label: "Create a list article",
+    icon: "listicle",
+    prompt: "Create an engaging listicle detailing [insert number] best practices/tools/tips for [insert target audience]. For each item in the list, provide a brief description and a key takeaway.",
+    postTypes: ["blog", "listicle"],
+    goals: ["traffic", "engagement", "conversion"],
+  },
+  {
+    label: "Draft a conversion copy",
+    icon: "conversion",
+    prompt: "Write a persuasive conversion copy highlighting the benefits of [insert product/service]. Focus on the customer's problem, present the solution, and conclude with a strong Call-To-Action (CTA).",
+    postTypes: ["case-study", "product-review", "product-launch", "comparison", "listicle"],
+    goals: ["conversion", "lead-generation"],
+  },
+  {
+    label: "Outline a comparison guide",
+    icon: "comparison",
+    prompt: "Draft a head-to-head comparison outline between [Product A] and [Product B]. Focus on target audience, pricing, ease of use, and who each tool is best suited for.",
+    postTypes: ["comparison"],
+    goals: ["traffic", "conversion"],
+  },
+  {
+    label: "Write a product launch post",
+    icon: "product-launch",
+    prompt: "Draft a high-impact social media post introducing our new product/feature: [insert product name]. Highlight the main benefit, explain who it's for, and invite readers to try it out with a clear link placeholder.",
+    postTypes: ["product-launch", "social-post"],
+    goals: ["conversion", "engagement", "lead-generation"],
+  },
+  {
+    label: "Write a newsletter opening",
+    icon: "newsletter",
+    prompt: "Draft a warm, personal opening section for a newsletter issue about [insert main topic]. Keep the tone conversational and tease the valuable insights that follow.",
+    postTypes: ["newsletter"],
+    goals: ["retention", "engagement", "lead-generation"],
+  },
+  {
+    label: "Draft client success study",
+    icon: "case-study",
+    prompt: "Help me structure a client success case study about [insert project]. Include sections for the initial challenge, our customized strategy, key performance metrics, and a concluding testimonial.",
+    postTypes: ["case-study"],
+    goals: ["authority", "conversion", "lead-generation"],
+  },
+  {
+    label: "Create dev tutorial intro",
+    icon: "tutorial",
+    prompt: "Draft a beginner-friendly tutorial introduction explaining how to install/configure [insert tech stack]. Highlight what the reader will build, list prerequisites, and explain why this framework is valuable.",
+    postTypes: ["tutorial"],
+    goals: ["authority", "traffic", "retention"],
+  },
+  {
+    label: "Draft corporate release",
+    icon: "corporate-post",
+    prompt: "Draft a polished corporate update or press release announcement celebrating our milestone of [insert milestone]. Include executive quote placeholders and corporate boilerplate info.",
+    postTypes: ["corporate-post"],
+    goals: ["authority", "engagement"],
+  },
+  {
+    label: "Write honest product review",
+    icon: "product-review",
+    prompt: "Structure an in-depth product review of [insert product]. Compare its main features, pros and cons, pricing structure, and wrap up with a final verdict and a high-converting affiliate CTA.",
+    postTypes: ["product-review"],
+    goals: ["conversion", "traffic", "lead-generation"],
+  },
+  {
+    label: "Write social hook variations",
+    icon: "bolt",
+    prompt: "Generate 3 scroll-stopping hook variations for a social media post about [insert topic]. Each variation should target a different style: one question-based, one statistic-based, and one contrarian take.",
+    postTypes: ["social-post"],
+    goals: ["engagement", "authority", "lead-generation"],
+  },
+  {
+    label: "Draft weekly newsletter digest",
+    icon: "newsletter",
+    prompt: "Draft a weekly roundup newsletter digest summarizing recent updates in [insert industry]. Provide short takeaways for 3 articles and invite reader feedback in the closing section.",
+    postTypes: ["newsletter"],
+    goals: ["retention", "engagement"],
+  },
+  {
+    label: "Structure comparison table",
+    icon: "table",
+    prompt: "Design a feature-by-feature comparison table layout comparing [Competitor A] and [Competitor B]. Focus on core metrics like pricing, ease of integration, customer support, and API coverage.",
+    postTypes: ["comparison", "listicle"],
+    goals: ["traffic", "conversion"],
+  },
+  {
+    label: "Draft lead magnet outline",
+    icon: "lead-generation",
+    prompt: "Create a detailed outline for a high-value lead magnet (e.g. ebook or checklist) covering [insert topic]. Outline 5 main chapters/checkpoints and write a promotional copy to drive sign-ups.",
+    postTypes: ["blog", "tutorial", "case-study"],
+    goals: ["lead-generation", "conversion"],
+  },
+  {
+    label: "Draft customer retention update",
+    icon: "retention",
+    prompt: "Draft a warm customer retention educational update teaching our users how to get the most out of [insert feature]. Include a success checklist and link placeholders for our help center.",
+    postTypes: ["corporate-post", "newsletter"],
+    goals: ["retention"],
+  },
+  {
+    label: "Outline community roundup",
+    icon: "community-insight",
+    prompt: "Draft a community roundup post highlighting the best discussions, questions, and insights shared this week about [insert topic]. Conclude with a call-to-action inviting users to join our Slack/Discord.",
+    postTypes: ["community-insight"],
+    goals: ["engagement", "retention"],
+  },
+  {
+    label: "Write troubleshooting guide",
+    icon: "warning",
+    prompt: "Draft a comprehensive troubleshooting guide for resolving [insert common error/issue]. Break down the diagnostic steps, explain the root cause, and provide the fix code block.",
+    postTypes: ["tutorial"],
+    goals: ["retention", "traffic"],
+  },
+  {
+    label: "Draft viral social thread",
+    icon: "social-post",
+    prompt: "Rewrite this concept [insert topic] into a viral Twitter/social thread structure. Draft a compelling hook, 5 follow-up points with clear transitions, and a concluding prompt to retweet.",
+    postTypes: ["social-post", "blog"],
+    goals: ["engagement", "authority"],
+  },
+  {
+    label: "Create PR boilerplate",
+    icon: "corporate-post",
+    prompt: "Write a standard corporate PR media boilerplate and company description for [Company Name]. Focus on our mission of [insert mission] and key industry accomplishments.",
+    postTypes: ["corporate-post"],
+    goals: ["authority"],
+  },
+  {
+    label: "Generate converting CTA",
+    icon: "sparkles",
+    prompt: "Generate 3 benefit-focused, high-converting Call-to-Action (CTA) block copy variations promoting [insert product]. Focus on reducing friction (e.g., 'no credit card required') and highlighting speed.",
+    postTypes: ["comparison", "product-review", "product-launch"],
+    goals: ["conversion", "lead-generation"],
+  },
+  {
+    label: "Structure buying comparison",
+    icon: "comparison",
+    prompt: "Draft a head-to-head buyer guide comparing [insert category, e.g. project management tools]. Detail which tool is best for small teams, which is best for enterprises, and give a clear verdict.",
+    postTypes: ["comparison", "product-review"],
+    goals: ["traffic", "conversion"],
+  },
+  {
+    label: "Write client success study",
+    icon: "celebrate",
+    prompt: "Draft a success story post focusing on how [Client Name] achieved [insert result, e.g., 40% reduction in churn] using our product. Emphasize the implementation timeline and the ROI.",
+    postTypes: ["case-study"],
+    goals: ["conversion", "retention"],
+  },
+];
+
+export function getChatSuggestions(postType: string, goal: ContentGoal): ChatIdeaSuggestion[] {
+  const filtered: ChatIdeaSuggestion[] = [];
+
+  // Tier 1: Matches both postType and goal
+  CHAT_IDEA_SUGGESTIONS.forEach((s) => {
+    const typeMatch = s.postTypes === "*" || s.postTypes.includes(postType);
+    const goalMatch = s.goals === "*" || s.goals.includes(goal);
+    if (typeMatch && goalMatch) {
+      filtered.push(s);
+    }
+  });
+
+  // Tier 2: Matches postType (any goal)
+  if (filtered.length < 4) {
+    CHAT_IDEA_SUGGESTIONS.forEach((s) => {
+      if (filtered.length >= 4) return;
+      const typeMatch = s.postTypes !== "*" && s.postTypes.includes(postType);
+      if (typeMatch && !filtered.find((item) => item.label === s.label)) {
+        filtered.push(s);
+      }
+    });
+  }
+
+  // Tier 3: Matches goal (any postType)
+  if (filtered.length < 4) {
+    CHAT_IDEA_SUGGESTIONS.forEach((s) => {
+      if (filtered.length >= 4) return;
+      const goalMatch = s.goals !== "*" && s.goals.includes(goal);
+      if (goalMatch && !filtered.find((item) => item.label === s.label)) {
+        filtered.push(s);
+      }
+    });
+  }
+
+  // Tier 4: Generic fallbacks (matching "*")
+  if (filtered.length < 4) {
+    CHAT_IDEA_SUGGESTIONS.forEach((s) => {
+      if (filtered.length >= 4) return;
+      if (!filtered.find((item) => item.label === s.label)) {
+        filtered.push(s);
+      }
+    });
+  }
+
+  return filtered.slice(0, 4);
+}
