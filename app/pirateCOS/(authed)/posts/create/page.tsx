@@ -7440,7 +7440,7 @@ const BlogEditor = () => {
         </div>
 
         {/* Viewport-locked Bottom Actions Footer (Always Visible) */}
-        <div className="fixed bottom-0 left-60 right-0 bg-white/90 backdrop-blur-md border-t border-black/5 px-8 py-4 flex items-center justify-between z-30 shadow-[0_-4px_24px_-4px_rgba(0,0,0,0.04)]">
+        <div className="fixed bottom-0 left-0 lg:left-60 right-0 bg-white/90 backdrop-blur-md border-t border-black/5 px-4 lg:px-8 py-3 lg:py-4 flex items-center justify-between z-30 shadow-[0_-4px_24px_-4px_rgba(0,0,0,0.04)]">
           {wizardStep === 1 && (
             <>
               <button
@@ -7598,54 +7598,36 @@ const BlogEditor = () => {
     <div className="min-h-screen" style={{ background: "#F7F7F6" }}>
       {/* ── Top Bar ── */}
       <div
-        className="sticky top-0 z-50 flex items-center justify-between px-6 py-3"
+        className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 px-3 lg:px-6 py-2.5 lg:py-3"
         style={{
           background: "rgba(247,247,246,0.95)",
           borderBottom: "1px solid rgba(0,0,0,0.07)",
           backdropFilter: "blur(8px)",
         }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 lg:gap-3 min-w-0">
           <button
-            className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors flex-shrink-0"
             onClick={() => navigateSafely(getHref("/posts"))}
           >
-            <svg
-              fill="none"
-              height="14"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="14"
-            >
+            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
               <line x1="19" x2="5" y1="12" y2="12" />
               <polyline points="12 19 5 12 12 5" />
             </svg>
-            Posts
+            <span className="hidden sm:inline">Posts</span>
           </button>
-          <span className="text-gray-200">/</span>
-          <span className="text-sm font-medium font-geist text-gray-900">
+          <span className="text-gray-200 hidden sm:inline">/</span>
+          <span className="text-sm font-medium font-geist text-gray-900 truncate">
             New Post
           </span>
-          {/* Locked type badge & help trigger */}
-          <div className="flex items-center gap-2">
+          {/* Locked type badge & help trigger — hidden on small screens */}
+          <div className="hidden md:flex items-center gap-2">
             <span
               className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
               style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
               title="Post type and goal are locked for this draft"
             >
-              <svg
-                fill="none"
-                height="10"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                width="10"
-              >
+              <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="10">
                 <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
@@ -7673,40 +7655,31 @@ const BlogEditor = () => {
             </button>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 lg:gap-2 flex-shrink-0">
           <span
-            className="text-xs font-geist font-medium transition-colors"
+            className="text-xs font-geist font-medium transition-colors hidden sm:inline"
             style={{ color: statusColor[saveStatus] ?? "#6b7280" }}
           >
             {saveStatus}
           </span>
           <button
-            className={`h-9 px-4 rounded-xl text-sm font-geist font-medium flex items-center gap-1.5 transition-all ${
+            className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all ${
               showPreview
                 ? "bg-[#FF5B04] text-white"
                 : "bg-black/5 text-gray-600 hover:bg-black/10"
             }`}
             onClick={() => setShowPreview((v) => !v)}
           >
-            <svg
-              fill="none"
-              height="13"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="13"
-            >
+            <svg fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
-            {showPreview ? "Exit Preview" : "Preview"}
+            <span className="hidden sm:inline">{showPreview ? "Exit Preview" : "Preview"}</span>
           </button>
-          {/* Mobile sidebar toggle — only visible on small screens */}
+          {/* Mobile sidebar toggle */}
           {!showPreview && (
             <button
-              className="lg:hidden h-9 px-3 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-sm font-geist font-medium transition-all"
+              className="lg:hidden h-8 px-2.5 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs font-geist font-medium transition-all"
               onClick={() => setIsSidebarOpen((v) => !v)}
             >
               <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
@@ -7714,19 +7687,20 @@ const BlogEditor = () => {
                 <line x1="3" x2="21" y1="9" y2="9" />
                 <line x1="9" x2="9" y1="21" y2="9" />
               </svg>
-              Settings
+              <span className="hidden sm:inline">Settings</span>
             </button>
           )}
           <Button
-            className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
+            className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
             disabled={isSaving}
             variant="flat"
             onClick={handleSaveDraft}
           >
-            Save Draft
+            <span className="hidden sm:inline">Save Draft</span>
+            <span className="sm:hidden">Save</span>
           </Button>
           <Button
-            className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
+            className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white"
             disabled={isSaving}
             isLoading={isSaving}
             style={{ background: "#FF5B04" }}
@@ -7812,7 +7786,7 @@ const BlogEditor = () => {
                 </label>
               </div>
             ) : (
-              <label className="flex items-center gap-2 px-10 pt-6 pb-2 cursor-pointer group w-fit">
+              <label className="flex items-center gap-2 px-4 lg:px-10 pt-6 pb-2 cursor-pointer group w-fit">
                 <svg
                   className="group-hover:stroke-[#FF5B04] transition-colors"
                   fill="none"
@@ -7844,8 +7818,8 @@ const BlogEditor = () => {
             <div
               className={
                 bannerImage
-                  ? "px-14 pt-6 pb-4 relative"
-                  : "px-14 pt-4 pb-4 relative"
+                  ? "px-4 lg:px-14 pt-6 pb-4 relative"
+                  : "px-4 lg:px-14 pt-4 pb-4 relative"
               }
             >
               {postType === "social-post" ? (
@@ -7878,9 +7852,9 @@ const BlogEditor = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 lg:gap-3">
                   <input
-                    className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                    className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
                     placeholder="Post title…"
                     type="text"
                     value={title}
@@ -7912,12 +7886,12 @@ const BlogEditor = () => {
             </div>
 
             <div
-              className="h-px mx-14"
+              className="h-px mx-4 lg:mx-14"
               style={{ background: "rgba(0,0,0,0.06)" }}
             />
 
             {/* Editor area */}
-            <div ref={editorRef} className="relative px-14 py-4">
+            <div ref={editorRef} className="relative px-4 lg:px-14 py-4">
               {/* Floating Block Inserter */}
               <FloatingBlockInserter
                 editor={editor}
