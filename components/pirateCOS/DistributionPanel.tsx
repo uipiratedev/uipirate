@@ -486,12 +486,12 @@ export default function DistributionPanel({
   return (
     <div className="space-y-4 font-geist text-gray-700">
       {/* SECTION: Quick Publish Presets */}
-      <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl border border-white/10 p-4 space-y-3 shadow-md">
+      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
         <div>
           <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold flex items-center gap-1.5">
-            <CosIcon name="bolt" size={12} className="text-orange-500 fill-orange-500" /> Quick Publish Presets
+            <CosIcon name="bolt" size={12} className="text-[#FF5B04] fill-[#FF5B04]" /> Quick Publish Presets
           </p>
-          <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+          <p className="text-xs text-gray-500 mt-1 leading-relaxed">
             Tap a preset to instantly configure the best channels and content formats for your goal.
           </p>
         </div>
@@ -502,10 +502,10 @@ export default function DistributionPanel({
               <button
                 key={chain.value}
                 type="button"
-                className={`w-full text-left p-3 rounded-xl border transition-all flex items-start gap-3 group ${
+                className={`w-full text-left p-3 rounded-xl border-2 transition-all flex items-start gap-3 group cursor-pointer ${
                   isActive
-                    ? "border-[#FF5B04] bg-[#FF5B04]/10 ring-1 ring-[#FF5B04]/30"
-                    : "border-white/5 bg-white/5 hover:bg-white/10"
+                    ? "border-[#FF5B04] bg-white shadow-sm"
+                    : "border-black/5 bg-black/[0.01] hover:bg-black/[0.03] hover:border-black/10"
                 }`}
                 onClick={() => {
                   setActiveChain(chain.value);
@@ -513,12 +513,14 @@ export default function DistributionPanel({
                   setSelectedRepurposeFormats(chain.recommendedRepurposing);
                 }}
               >
-                <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-lg flex-shrink-0">
-                  <CosIcon name={chain.icon} size={18} className="text-gray-300 group-hover:text-[#FF5B04]" />
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-lg flex-shrink-0 transition-colors ${
+                  isActive ? "bg-[#FF5B04]/10 text-[#FF5B04]" : "bg-black/[0.04] text-gray-400 group-hover:text-gray-600"
+                }`}>
+                  <CosIcon name={chain.icon} size={18} className="shrink-0" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className={`text-xs font-bold ${isActive ? "text-[#FF5B04]" : "text-gray-100"}`}>
+                    <p className={`text-xs font-bold ${isActive ? "text-[#FF5B04]" : "text-gray-700"}`}>
                       {chain.label}
                     </p>
                     {isActive && (
@@ -532,13 +534,17 @@ export default function DistributionPanel({
                   </p>
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {chain.defaultChannels.map((c) => (
-                      <span key={c} className="text-[9px] font-semibold bg-white/5 text-gray-300 px-1.5 py-0.5 rounded border border-white/5 flex items-center gap-1">
+                      <span key={c} className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border flex items-center gap-1 ${
+                        isActive ? "bg-[#FF5B04]/5 text-[#FF5B04] border-[#FF5B04]/10" : "bg-black/[0.02] text-gray-500 border-black/5"
+                      }`}>
                         <CosIcon name="megaphone" size={10} className="text-gray-400" /> {PLATFORM_LABELS[c] || c}
                       </span>
                     ))}
                     {chain.recommendedRepurposing.map((r) => (
-                      <span key={r} className="text-[9px] font-semibold bg-purple-500/10 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/20 flex items-center gap-1">
-                        <CosIcon name="refresh" size={10} className="text-purple-400 animate-spin-slow" /> {r.replace("_", " ")}
+                      <span key={r} className={`text-[9px] font-semibold px-1.5 py-0.5 rounded border flex items-center gap-1 ${
+                        isActive ? "bg-[#FF5B04]/10 text-[#FF5B04] border-[#FF5B04]/20" : "bg-black/[0.03] text-orange-600 border-black/5"
+                      }`}>
+                        <CosIcon name="refresh" size={10} className="text-orange-500 animate-spin-slow" /> {r.replace("_", " ")}
                       </span>
                     ))}
                   </div>
@@ -550,7 +556,7 @@ export default function DistributionPanel({
       </div>
 
       {/* SECTION: Where to share this? */}
-      <div className="bg-gradient-to-br from-orange-50/70 to-purple-50/50 rounded-2xl border border-[#FF5B04]/10 p-4 space-y-3 shadow-sm">
+      <div className="bg-gradient-to-br from-orange-50/70 to-orange-100/20 rounded-2xl border border-[#FF5B04]/10 p-4 space-y-3 shadow-sm">
         <div>
           <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold flex items-center gap-1.5">
             <CosIcon name="bot" size={12} className="text-orange-500" /> Where to share this?
@@ -725,11 +731,11 @@ export default function DistributionPanel({
               return (
                 <div
                   key={platform.platform}
-                  className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
+                  className={`flex items-center justify-between p-2.5 rounded-xl border-2 transition-all ${
                     disabled
                       ? "opacity-50 bg-black/[0.01] border-transparent"
                       : isSelected
-                        ? "border-[#FF5B04]/30 bg-orange-50/20"
+                        ? "border-[#FF5B04] bg-white shadow-sm"
                         : "border-black/5 bg-white hover:border-black/10"
                   }`}
                 >
@@ -791,9 +797,9 @@ export default function DistributionPanel({
               return (
                 <label
                   key={format.id}
-                  className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all cursor-pointer ${
+                  className={`flex items-center gap-3 p-2.5 rounded-xl border-2 transition-all cursor-pointer ${
                     isSelected
-                      ? "border-[#FF5B04]/30 bg-orange-50/20"
+                      ? "border-[#FF5B04] bg-white shadow-sm"
                       : "border-black/5 bg-white hover:border-black/10"
                   }`}
                 >
@@ -875,7 +881,7 @@ export default function DistributionPanel({
 
       {/* SECTION: Repurposing Progress Loader */}
       {repurposingProgress?.active && (
-        <div className="bg-gradient-to-r from-orange-500/10 to-purple-500/10 border border-orange-500/20 rounded-2xl p-4 space-y-3 animate-pulse shadow-sm">
+        <div className="bg-gradient-to-r from-[#FF5B04]/10 to-[#FF7B34]/5 border border-orange-500/20 rounded-2xl p-4 space-y-3 animate-pulse shadow-sm">
           <div className="flex justify-between items-center text-xs">
             <span className="font-bold text-orange-600 flex items-center gap-1.5">
               <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24">
@@ -884,13 +890,13 @@ export default function DistributionPanel({
               </svg>
               AI Repurposing in Progress...
             </span>
-            <span className="font-jetbrains-mono font-bold text-purple-600">
+            <span className="font-jetbrains-mono font-bold text-[#FF5B04]">
               {repurposingProgress.percent}%
             </span>
           </div>
           <div className="w-full h-2 bg-black/5 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-orange-500 to-purple-500 transition-all duration-500"
+              className="h-full bg-gradient-to-r from-[#FF5B04] to-[#FF7B34] transition-all duration-500"
               style={{ width: `${repurposingProgress.percent}%` }}
             />
           </div>
@@ -921,7 +927,7 @@ export default function DistributionPanel({
               {Object.entries(blogRepurposedOutputs).map(([formatId, text]) => (
                 <div key={formatId} className="bg-gray-50 border border-black/5 rounded-xl p-3 space-y-2 animate-in fade-in zoom-in duration-200">
                   <div className="flex justify-between items-center border-b border-black/[0.04] pb-1.5">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-700 font-jetbrains-mono">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF5B04] font-jetbrains-mono">
                       {formatId.replace("_", " ")}
                     </span>
                     <button

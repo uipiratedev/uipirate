@@ -8179,10 +8179,8 @@ const BlogEditor = () => {
               </>
             ) : (
               <>
-                <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="12">
-                  <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                </svg>
-                Optimize Title
+                <CosIcon name="sparkles" size={12} className="text-white fill-current" />
+                <span>Optimize Title</span>
               </>
             )}
           </button>
@@ -8230,9 +8228,7 @@ const BlogEditor = () => {
               }`}
               onClick={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
             >
-              <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="10">
-                <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-              </svg>
+              <CosIcon name="sparkles" size={10} className="text-current" />
               {showExcerptAIGuidelines ? "Hide AI Assistant" : "AI Assistant"}
             </button>
           </div>
@@ -8282,10 +8278,8 @@ const BlogEditor = () => {
                   </>
                 ) : (
                   <>
-                    <svg fill="none" height="12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="12">
-                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                    </svg>
-                    Generate Excerpt
+                    <CosIcon name="sparkles" size={12} className="text-white fill-current" />
+                    <span>Generate Excerpt</span>
                   </>
                 )}
               </button>
@@ -8414,10 +8408,8 @@ const BlogEditor = () => {
                 </>
               ) : (
                 <>
-                  <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="10">
-                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                  </svg>
-                  Recommend Tags
+                  <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                  <span>Recommend Tags</span>
                 </>
               )}
             </button>
@@ -8519,7 +8511,7 @@ const BlogEditor = () => {
 
         {seoError && (
           <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex gap-2 text-[11px] text-red-600 font-medium font-geist">
-            <span>⚠</span>
+            <CosIcon name="warning" size={12} className="text-red-500 shrink-0 mt-0.5" />
             <p className="flex-1">{seoError}</p>
           </div>
         )}
@@ -8549,7 +8541,14 @@ const BlogEditor = () => {
                   }}
                   className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
                 >
-                  {isSuggestingFocusKeyword ? "Suggesting..." : "✨ AI Suggest"}
+                  {isSuggestingFocusKeyword ? (
+                    "Suggesting..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                      <span>AI Suggest</span>
+                    </>
+                  )}
                 </button>
               </div>
               <input
@@ -8590,7 +8589,14 @@ const BlogEditor = () => {
                   }}
                   className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
                 >
-                  {isGeneratingMetaTitle ? "Generating..." : "✨ Generate"}
+                  {isGeneratingMetaTitle ? (
+                    "Generating..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                      <span>Generate</span>
+                    </>
+                  )}
                 </button>
               </div>
               <input
@@ -8648,7 +8654,14 @@ const BlogEditor = () => {
                   }}
                   className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
                 >
-                  {isGeneratingMetaDescription ? "Generating..." : "✨ Generate"}
+                  {isGeneratingMetaDescription ? (
+                    "Generating..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
+                      <span>Generate</span>
+                    </>
+                  )}
                 </button>
               </div>
               <textarea
@@ -8695,7 +8708,14 @@ const BlogEditor = () => {
                   onClick={() => runSEOAIAction("tags")}
                   className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors disabled:opacity-50 flex-shrink-0"
                 >
-                  {isAnalyzingSEO && generatingSEOAction === "tags" ? "Generating..." : "✨ AI Generate"}
+                  {isAnalyzingSEO && generatingSEOAction === "tags" ? (
+                    "Generating..."
+                  ) : (
+                    <>
+                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04] inline mr-1" />
+                      <span>AI Generate</span>
+                    </>
+                  )}
                 </button>
               </div>
               {seoData?.keywords && seoData.keywords.length > 0 ? (

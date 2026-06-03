@@ -257,9 +257,9 @@ export default function ActionChips({
                   type="button"
                   disabled={loading}
                   onClick={() => handleToggleAction(act.id)}
-                  className={`w-full flex items-center justify-between gap-2.5 px-3 py-2.5 rounded-xl border text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer group ${
+                  className={`w-full flex items-center justify-between gap-2.5 px-3 py-2.5 rounded-xl border-2 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer group ${
                     isSelected
-                      ? "bg-orange-50/60 border-[#FF5B04] text-[#FF5B04] shadow-sm shadow-orange-500/[0.03]"
+                      ? "bg-white border-[#FF5B04] text-[#FF5B04] shadow-sm shadow-orange-500/[0.03]"
                       : "bg-white border-black/5 hover:border-black/10 hover:bg-gray-50/50 shadow-sm"
                   }`}
                 >
