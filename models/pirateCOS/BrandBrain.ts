@@ -10,6 +10,13 @@ export interface IBrandBrain extends Document {
   targetKeywords: string[];
   forbiddenWords: string[];
   callToActionTemplate?: string;
+  presetInstructions?: Map<string, string>;
+  sentenceComplexity?: "simple" | "moderate" | "advanced";
+  formattingRules?: {
+    alwaysIncludeTakeaways: boolean;
+    alwaysIncludeFAQ: boolean;
+    autoAppendCTA: boolean;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -61,6 +68,30 @@ const BrandBrainSchema: Schema<IBrandBrain> = new Schema(
       type: String,
       default: "",
       trim: true,
+    },
+    presetInstructions: {
+      type: Map,
+      of: String,
+      default: {},
+    },
+    sentenceComplexity: {
+      type: String,
+      enum: ["simple", "moderate", "advanced"],
+      default: "moderate",
+    },
+    formattingRules: {
+      alwaysIncludeTakeaways: {
+        type: Boolean,
+        default: false,
+      },
+      alwaysIncludeFAQ: {
+        type: Boolean,
+        default: false,
+      },
+      autoAppendCTA: {
+        type: Boolean,
+        default: false,
+      },
     },
   },
   {

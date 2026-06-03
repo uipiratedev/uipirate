@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CosIcon from "./CosIcon";
 
 interface UpgradePromptProps {
   open: boolean;
@@ -77,7 +78,7 @@ export default function UpgradePrompt({
         {/* Header */}
         <div className="text-center space-y-1.5 pt-2">
           <div className="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-2 border border-orange-100 animate-pulse">
-            <span className="text-xl">⚡</span>
+            <CosIcon name="bolt" size={24} className="text-[#FF5B04] fill-[#FF5B04]" />
           </div>
           <h3 className="font-bold text-gray-900 font-geist text-lg tracking-tight">
             Insufficient Credits Balance

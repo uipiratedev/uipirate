@@ -8,6 +8,7 @@ export interface EditorSaveState {
   bannerImage?: string;
   tags?: string[];
   postType?: string;
+  contentGoal?: string;
   slug?: string;
   seo?: any;
 }

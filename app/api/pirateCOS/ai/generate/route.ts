@@ -12,8 +12,8 @@ import {
   type AIEngine,
 } from "@/lib/pirateCOS/ai-provider";
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
-import WorkflowMemory from "@/models/pirateCOS/WorkflowMemory";
 import dbConnect from "@/lib/mongodb";
+import { getGoalConfig, getPostTypeConfig } from "@/lib/pirateCOS/postTypeConfig";
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,6 +32,7 @@ export async function POST(request: NextRequest) {
       title,
       content,
       postType,
+      contentGoal,
       prompt,
       engine,
       model,
@@ -55,11 +56,6 @@ export async function POST(request: NextRequest) {
 
     // Fetch Brand Brain details if they exist for the tenant
     const brandBrain = await BrandBrain.findOne({ tenantId: tenantOid }).lean();
-
-    // Fetch Workflow Memory style parameters if they exist
-    const workflowMemory = await WorkflowMemory.findOne({
-      tenantId: tenantOid,
-    }).lean();
 
     const openaiApiKey = envOpenai || dbKeys.openai;
     const geminiApiKey = envGemini || dbKeys.gemini;
@@ -148,6 +144,8 @@ export async function POST(request: NextRequest) {
 
     if (action === "excerpt" || action === "metaDescription") {
       systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following post. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${content || title}`;
+    } else if (action === "focusKeyword") {
+      systemInstructions = `Suggest a single, high-impact focus keyword or focus phrase (2-4 words) that represents the main organic search term for a post with the title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Deliver ONLY the focus keyword text. Do NOT wrap it in quotes, code blocks, or include introductory text.`;
     } else if (action === "metaTitle") {
       systemInstructions = `Suggest a single, high-impact, highly clickable, and search-optimized alternative title for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Deliver ONLY the single title text. Do NOT wrap it in quotes, code blocks, or include introductory text.`;
     } else if (action === "titles") {
@@ -194,8 +192,13 @@ export async function POST(request: NextRequest) {
         ? `${presetDirective}\n\nUser Prompt Instructions: "${prompt}"`
         : prompt;
 
-      systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following instructions: "${activePrompt}". The context of the post is: title: "${title || ""}", category: "${postType || "blog"}".${contextInfo}
+      if (postType === "social-post") {
+        systemInstructions = `You are a world-class professional copywriter and social media content writer. The user wants you to write content based on the following instructions: "${activePrompt}". The context of the post is: title: "${title || ""}", category: "social-post".${contextInfo}
+Write a concise, engaging, and highly readable update. Ensure it is formatted perfectly for social feeds with short, punchy paragraphs and no long blocks of text. Limit the length to be extremely concise (typically 1-3 short paragraphs, under 250 words total). Do NOT include headings (h1, h2, h3), lists, blockquotes, or dividers. Output in simple HTML format (using <p>, <strong>, <em>, and <br> tags). Do NOT use markdown. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
+      } else {
+        systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following instructions: "${activePrompt}". The context of the post is: title: "${title || ""}", category: "${postType || "blog"}".${contextInfo}
 Write a comprehensive, fully detailed, and substantial piece of content. Expand on the concepts deeply with rich explanations, multiple robust and fully-fleshed out paragraphs, structured subheadings, and thorough insights (aim for at least 300 to 600 words or a complete, deep-dive section, unless the prompt explicitly requests a short summary or brief answer). Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
+      }
     } else {
       return NextResponse.json(
         { success: false, error: "Invalid action" },
@@ -203,26 +206,48 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
       );
     }
 
+    // Phase 4B: Goal and Type specific context prompt injection
+    const goalConfig = contentGoal ? getGoalConfig(contentGoal) : null;
+    const typeConfig = postType ? getPostTypeConfig(postType) : null;
+    let contentContextPrompt = "";
+
+    if (goalConfig) {
+      contentContextPrompt += `\n\n# CONTENT STRATEGY GOAL: ${goalConfig.label}\n${goalConfig.aiPriorityPrompt}\n`;
+    }
+    if (typeConfig) {
+      const brandPresetMap = brandBrain?.presetInstructions as any;
+      let activeHint = typeConfig.templateHint;
+      if (brandPresetMap) {
+        const customPrompt = typeof brandPresetMap.get === "function"
+          ? brandPresetMap.get(postType)
+          : brandPresetMap[postType];
+        if (customPrompt && typeof customPrompt === "string" && customPrompt.trim()) {
+          activeHint = customPrompt.trim();
+        }
+      }
+      contentContextPrompt += `\n\n# CONTENT ARCHETYPE: ${typeConfig.label}\n${activeHint}\n`;
+    }
+
+    if (contentContextPrompt) {
+      systemInstructions = `${contentContextPrompt}\n${systemInstructions}`;
+    }
+
     // Compile Brand Brain rules and check for post-level overrides
     let brandContext = "";
     const activeName = brandBrain?.companyName || "Our Brand";
     const activeVoice =
       customBrandVoice ||
-      brandBrain?.brandVoice ||
-      workflowMemory?.preferredTone;
+      brandBrain?.brandVoice;
     const activeProducts = brandBrain?.products;
     const activeAudience = customAudience || brandBrain?.audienceICP;
     const activeKeywords = customKeywords || brandBrain?.targetKeywords || [];
     const forbiddenWords = brandBrain?.forbiddenWords || [];
-    const activeCta =
-      brandBrain?.callToActionTemplate || workflowMemory?.defaultCTA;
+    const activeCta = brandBrain?.callToActionTemplate;
 
     const hasBrandBrain = !!brandBrain;
-    const hasWorkflowMemory = !!workflowMemory;
 
     if (
       hasBrandBrain ||
-      hasWorkflowMemory ||
       customBrandVoice ||
       customAudience ||
       customKeywords
@@ -245,22 +270,21 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         brandContext += `\n- FORBIDDEN VOCABULARY: Under NO circumstances are you allowed to use any of these words or variants in your generated output: ${forbiddenWords.join(", ")}. Filter them out completely.`;
       }
 
-      // Inject Workflow Memory structural controls
-      if (workflowMemory) {
-        brandContext += `\n\n[WORKFLOW MEMORY & PREFERENCES]:`;
-        brandContext += `\n- Sentence Complexity: Generate text targeted at a "${workflowMemory.sentenceComplexity}" readability level.`;
-        if (
-          workflowMemory.formattingRules?.alwaysIncludeTakeaways &&
-          action === "write"
-        ) {
-          brandContext += `\n- Formatting Constraint: Proactively begin the text block with a 3-sentence "Key Takeaways" summary block.`;
-        }
-        if (
-          workflowMemory.formattingRules?.alwaysIncludeFAQ &&
-          action === "write"
-        ) {
-          brandContext += `\n- Formatting Constraint: Always append a structured, comprehensive "Frequently Asked Questions" Q&A segment at the end of the post content.`;
-        }
+      // Inject Brand Brain style & formatting preferences
+      const sentenceComplexity = brandBrain?.sentenceComplexity || "moderate";
+      brandContext += `\n\n[WORKFLOW MEMORY & PREFERENCES]:`;
+      brandContext += `\n- Sentence Complexity: Generate text targeted at a "${sentenceComplexity}" readability level.`;
+      if (
+        brandBrain?.formattingRules?.alwaysIncludeTakeaways &&
+        action === "write"
+      ) {
+        brandContext += `\n- Formatting Constraint: Proactively begin the text block with a 3-sentence "Key Takeaways" summary block.`;
+      }
+      if (
+        brandBrain?.formattingRules?.alwaysIncludeFAQ &&
+        action === "write"
+      ) {
+        brandContext += `\n- Formatting Constraint: Always append a structured, comprehensive "Frequently Asked Questions" Q&A segment at the end of the post content.`;
       }
 
       if (activeCta && action === "write") {

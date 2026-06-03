@@ -15,6 +15,7 @@ interface PostUpdateData {
   tags?: string[];
   published?: boolean;
   postType?: string;
+  contentGoal?: string;
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -28,6 +29,7 @@ interface PostUpdateData {
     canonicalUrl?: string;
     noIndex?: boolean;
   };
+  repurposedOutputs?: Record<string, string>;
 }
 
 // GET /api/pirateCOS/posts/[id] - Get a single post by ID or slug scoped to tenant
@@ -118,7 +120,9 @@ export async function PUT(
       tags,
       published,
       postType,
+      contentGoal,
       seo,
+      repurposedOutputs,
     } = body;
 
     const putTenantOid = new mongoose.Types.ObjectId(user.tenantId);
@@ -175,6 +179,7 @@ export async function PUT(
     if (tags !== undefined) blog.tags = tags;
     if (published !== undefined) blog.published = published;
     if (postType !== undefined) (blog as any).postType = postType;
+    if (contentGoal !== undefined) (blog as any).contentGoal = contentGoal;
 
     if (seo !== undefined) {
       blog.seo = {
@@ -182,6 +187,11 @@ export async function PUT(
         ...seo,
       };
       blog.markModified("seo");
+    }
+
+    if (repurposedOutputs !== undefined) {
+      blog.repurposedOutputs = repurposedOutputs;
+      blog.markModified("repurposedOutputs");
     }
 
     if (content !== undefined) {

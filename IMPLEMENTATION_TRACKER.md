@@ -17,7 +17,8 @@ Based on an exhaustive codebase audit, **Phase 1 (Content Command Center Core)**
 | **Phase 2** | **Monetization & Growth Engine** | 🟢 **Complete** | Stripe subscriptions & booster credit pipelines, public sign-up systems, soft-limits, BYOK |
 | **Phase 3** | **API Refinement & LinkedIn Integration** | 🟢 **Complete** | `blogs` → `posts` codebase-wide rename, OAuth, LinkedIn Articles/Posts adapter, `API_INTEGRATION_GUIDE.md` |
 | **Phase 4** | **AI Intelligence Layer & Content Transformation** | 🟢 **Complete** | AI modes/intent presets, brand context layer, 8-format multi-format content transformation drawer, real-time co-pilot |
-| **Phase 4B** | **PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution** | 🟡 **In Progress** | 3-step wizard (Intent → Goal → Preview), 11 types, 6 goals, adaptive workspace, goal-weighted health scoring, AI advisor, repurposing |
+| **Phase 4B** | **PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution** | 🟢 **Complete** | 3-step wizard (Intent → Goal → Preview), 11 types, 6 goals, adaptive workspace, goal-weighted health scoring, AI advisor, repurposing |
+| **Phase 4C** | **PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability** | 🟡 **In Progress** | One-click distribution chains, preflight autofixes, sequential repurposing flow, diagnostic errors, and UX refinement |
 | **Phase 5** | **Advanced Analytics & Content Optimization** | ⬜ *Planned* | Performance dashboard, SEO quality scoring, UTM/attribution, content heatmap |
 | **Phase 6** | **Social Publishing & Newsletter Platforms** | ⬜ *Planned* | Substack email publishing, Beehiiv REST, ConvertKit sequences, Dev.to/Hashnode developer syndication |
 | **Phase 7** | **Team Collaboration & Enterprise Features** | ⬜ *Planned* | Multi-user seats, Role-Based Access Control (RBAC), approval workflows, SAML SSO, Zapier/webhooks |
@@ -223,36 +224,48 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [x] **Multi-Format Repurposing Drawer**: Splits the workspace screen to translate posts instantly into 8 formats (LinkedIn feeds, Twitter threads, newsletter layouts, outlines, FAQ schemas, CTA packages). (Completed & Verified)
 - [x] **Real-time AI Co-pilot**: Non-blocking background parser that highlights buzzwords, weak structures, or SEO deficiencies and supplies inline corrections. (Completed & Verified)
 
-### 🟡 Phase 4B: PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution
+### 🟢 Phase 4B: PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution
 
 > **📋 Full specification:** [`PRESET_REWORK_PLAN.md`](file:///d:/ui-pirate/uipirate/PRESET_REWORK_PLAN.md)
 
 - [x] **Plan file created**: `PRESET_REWORK_PLAN.md` with full strategic spec for Content Lifecycle Orchestration (5-step flow). (Complete)
-- [ ] **Centralized post type & goal config** (`lib/pirateCOS/postTypeConfig.ts`): Config mappings for 11 post types and 6 content goals, complete with icons, descriptions, feature flags, and goal-weighted health metrics.
-- [ ] **Post model schema extension**: Extend `postType` enum in `models/Post.ts` with 7 new values (`product-review`, `product-launch`, `listicle`, `comparison`, `newsletter`, `social-post`, `corporate-post`) and add `contentGoal` field.
-- [ ] **3-Step guided creation wizard** (`create/page.tsx`):
+- [x] **Centralized post type & goal config** (`lib/pirateCOS/postTypeConfig.ts`): Config mappings for 11 post types and 6 content goals, complete with icons, descriptions, feature flags, and goal-weighted health metrics.
+- [x] **Post model schema extension**: Extend `postType` enum in `models/Post.ts` with 7 new values (`product-review`, `product-launch`, `listicle`, `comparison`, `newsletter`, `social-post`, `corporate-post`) and add `contentGoal` field.
+- [x] **3-Step guided creation wizard** (`create/page.tsx`):
   - **Step 1: Intent Selection**: 11 post types grouped by purpose, rendering feature pills and estimated read times.
   - **Step 2: Goal Selection**: 6 strategic content goals with detailed operational value cards.
   - **Step 3: Workspace Preview**: Dynamic ✅/❌ checklist of active features and AI copilot focus summaries.
-- [ ] **Dynamic editor workspace adaptation**:
+- [x] **Dynamic editor workspace adaptation**:
   - **FormattingToolbar**: Conditionally render code blocks, tables, and CTA buttons based on active features.
   - **Sidebar tab adaptation**: Hide `seo` panel for newsletters/social, display other panels dynamically.
   - **Locked badge in editor header**: Displays selected type and goal (e.g. `✏️ Blog × 📈 Traffic`).
-- [ ] **Content Health Dashboard** (`health` tab): Implement scoring dashboard weighted dynamically by content goal metrics.
-- [ ] **Distribution Readiness Score** (`health` + `distribute` tabs): Show per-channel readiness scores for SEO, LinkedIn, Newsletter, Conversion, and X/Twitter fit.
-- [ ] **AI Content Strategist Layer** (`distribute` + `health` tabs): Proactively recommends next best actions such as carousel conversion, CTA strengthening, SEO expansion, timing, narrative variants, and quote extraction.
-- [ ] **AI Distribution Advisor** (`distribute` tab): Displays channel recommendations, weak-fit warnings, improvement suggestions, and scheduling tips.
-- [ ] **Content Distribution Chains**: Generate recommended multi-step launch workflows from `postType + contentGoal` (publish → repurpose → schedule → track).
-- [ ] **Chain Templates**: Provide named reusable launch workflows such as SEO Growth Chain, Founder Authority Chain, Product Launch Chain, Newsletter Growth Chain, and Community Expansion Chain.
-- [ ] **Distribution Memory**: Learn repeated tenant workflow preferences and suggest saved/default chains such as "Apply your Founder Authority Chain?"
-- [ ] **Post-Publish Actions**: After publishing, prompt the user to generate LinkedIn teasers, X threads, newsletter versions, carousel copy, community summaries, Medium syndication copy, SEO meta packages, and CTA snippets.
-- [ ] **Content State Machine**: Track lifecycle states (`draft`, `structured`, `optimized`, `distribution-ready`, `published`, `repurposed`, `tracked`) to drive guided next actions.
-- [ ] **Phase 4B UX Quality Gate**: Validate the workspace feels calm, lightweight, focused, and workflow-guided; every lifecycle state should surface one obvious recommended next action with advanced tools progressively disclosed.
-- [ ] **AI Repurposing Engine Integration**: Direct drawer options to multiply content into LinkedIn variants, X threads, email summaries, carousel copy, executive summaries, quote snippets, and short-form community posts.
-- [ ] **Goal-Specific AI Prompt Injection**: Backend `generate` API injects goal prioritizations (`aiPriorityPrompt`) into copywriting prompts.
-- [ ] **Multi-engine AI provider policy**: Every AI workflow resolves provider/model through explicit user selection → tenant default → configured provider fallback → Puter fallback; no hardcoded provider-specific AI paths.
-- [ ] **Anthropic Claude integration**: Add Claude key storage, provider status, default engine/model selection, generation route support, repurposing support, and BYOK status alignment.
-- [ ] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
+- [x] **Content Health Dashboard** (`health` tab): Implement scoring dashboard weighted dynamically by content goal metrics.
+- [x] **Distribution Readiness Score** (`health` + `distribute` tabs): Show per-channel readiness scores for SEO, LinkedIn, Newsletter, Conversion, and X/Twitter fit.
+- [x] **AI Content Strategist Layer** (`distribute` + `health` tabs): Proactively recommends next best actions such as carousel conversion, CTA strengthening, SEO expansion, timing, narrative variants, and quote extraction.
+- [x] **AI Distribution Advisor** (`distribute` tab): Displays channel recommendations, weak-fit warnings, improvement suggestions, and scheduling tips.
+- [x] **Content Distribution Chains**: Generate recommended multi-step launch workflows from `postType + contentGoal` (publish → repurpose → schedule → track).
+- [x] **Chain Templates**: Provide named reusable launch workflows such as SEO Growth Chain, Founder Authority Chain, Product Launch Chain, Newsletter Growth Chain, and Community Expansion Chain.
+- [x] **Distribution Memory**: Learn repeated tenant workflow preferences and suggest saved/default chains such as "Apply your Founder Authority Chain?"
+- [x] **Post-Publish Actions**: After publishing, prompt the user to generate LinkedIn teasers, X threads, newsletter versions, carousel copy, community summaries, Medium syndication copy, SEO meta packages, and CTA snippets.
+- [x] **Content State Machine**: Track lifecycle states (`draft`, `structured`, `optimized`, `distribution-ready`, `published`, `repurposed`, `tracked`) to drive guided next actions.
+- [x] **Phase 4B UX Quality Gate**: Validate the workspace feels calm, lightweight, focused, and workflow-guided; every lifecycle state should surface one obvious recommended next action with advanced tools progressively disclosed.
+- [x] **AI Repurposing Engine Integration**: Direct drawer options to multiply content into LinkedIn variants, X threads, email summaries, carousel copy, executive summaries, quote snippets, and short-form community posts.
+- [x] **Goal-Specific AI Prompt Injection**: Backend `generate` API injects goal prioritizations (`aiPriorityPrompt`) into copywriting prompts.
+- [x] **Multi-engine AI provider policy**: Every AI workflow resolves provider/model through explicit user selection → tenant default → configured provider fallback → Puter fallback; no hardcoded provider-specific AI paths. (Complete & Verified)
+- [x] **Anthropic Claude integration**: Add Claude key storage, provider status, default engine/model selection, generation route support, repurposing support, and BYOK status alignment. (Complete & Verified)
+  - *Out-of-Plan Security:* Implemented strict plan-specific BYOK billing guards in `lib/usage-guard.ts` restricting deduction bypass solely to Pro/Enterprise plan tiers.
+  - *SaaS Premium locks:* Engineered frosted-glass locked overlay panels and checkout upgrade call-to-actions on both the Billing page and AI Configuration cards for Free/Starter tier users, fully synchronizing configurations.
+- [x] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
+
+### 🟡 Phase 4C: PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability
+
+> **📋 Full specification:** [`ux_magic_reliability_plan.md`](file:///d:/ui-pirate/uipirate/ux_magic_reliability_plan.md)
+
+- [ ] **One-Click Distribution Chains**: Define preset distribution chain mappings matching content goals to default active channels and recommended templates.
+- [ ] **Inline Preflight Autofixes**: Add `⚡ Autofix` actions in the preflight checklist for missing excerpt, tags, and keywords to trigger background AI updates.
+- [ ] **Sequential Repurposing Flow**: Multi-task repurposing trigger generating LinkedIn teasers, newsletters, and X threads sequentially with a progress loader.
+- [ ] **Persisted Repurposing Storage**: Extend the Post model schema to store generated repurposed content assets persistently in MongoDB.
+- [ ] **Direct Diagnostics & Connection recovery**: Add inline troubleshoot cards and retry CTAs for outbound publication adapter failures.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
 - [ ] **Cross-Platform Analytics Snapshots**: Scrapers that query WordPress stats, Medium claps, and social clicks to build daily analytics databases.

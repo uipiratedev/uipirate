@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import CosIcon from "./CosIcon";
 
 export const AI_CONFIG_LS_KEY = "uipirate-ai-config";
 
@@ -224,7 +225,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Puter ── */}
           <PanelSection label="Puter AI (Free)">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[#FF5B04] font-bold text-sm">⚡</span>
+              <CosIcon name="bolt" size={14} className="text-[#FF5B04]" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Puter
               </span>
@@ -263,7 +264,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── OpenAI ── */}
           <PanelSection label="OpenAI">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-emerald-500 font-bold text-sm">●</span>
+              <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 OpenAI GPT
               </span>
@@ -286,7 +287,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Gemini ── */}
           <PanelSection label="Google Gemini">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-blue-500 font-bold text-sm">✦</span>
+              <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Gemini
               </span>
@@ -309,7 +310,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Mistral AI ── */}
           <PanelSection label="Mistral AI">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-violet-600 font-bold text-sm">◆</span>
+              <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Mistral AI
               </span>
@@ -332,7 +333,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Default Engine ── */}
           <PanelSection label="Claude">
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-fuchsia-600 font-bold text-sm">◆</span>
+              <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-4 h-4 object-contain" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Anthropic Claude
               </span>
@@ -372,15 +373,27 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                       );
                     }}
                   >
-                    {eng === "openai"
-                      ? "● GPT"
-                      : eng === "gemini"
-                        ? "✦ Gemini"
-                        : eng === "anthropic"
-                          ? "◆ Claude"
-                        : eng === "mistral"
-                          ? "◆ Mistral"
-                          : "⚡ Puter"}
+                    {eng === "openai" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3 h-3 object-contain" /> GPT
+                      </span>
+                    ) : eng === "gemini" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3 h-3 object-contain" /> Gemini
+                      </span>
+                    ) : eng === "anthropic" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3 h-3 object-contain" /> Claude
+                      </span>
+                    ) : eng === "mistral" ? (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3 h-3 object-contain" /> Mistral
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3 h-3 object-contain" /> Puter
+                      </span>
+                    )}
                   </button>
                 ),
               )}
@@ -398,39 +411,39 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               {defaultEngine === "gemini" ? (
                 <>
                   <option value="gemini-flash-latest">
-                    ⚡ Gemini 1.5 Flash
+                    Gemini 1.5 Flash
                   </option>
                   <option value="gemini-1.5-pro-latest">
-                    🧬 Gemini 1.5 Pro
+                    Gemini 1.5 Pro
                   </option>
                   <option value="gemini-2.0-flash-exp">
-                    🚀 Gemini 2.0 Flash
+                    Gemini 2.0 Flash
                   </option>
                 </>
               ) : defaultEngine === "mistral" ? (
                 <>
-                  <option value="mistral-large-latest">◆ Mistral Large</option>
-                  <option value="mistral-small-latest">◆ Mistral Small</option>
-                  <option value="mistral-nemo">◆ Mistral Nemo</option>
-                  <option value="codestral-latest">◆ Codestral</option>
+                  <option value="mistral-large-latest">Mistral Large</option>
+                  <option value="mistral-small-latest">Mistral Small</option>
+                  <option value="mistral-nemo">Mistral Nemo</option>
+                  <option value="codestral-latest">Codestral</option>
                 </>
               ) : defaultEngine === "anthropic" ? (
                 <>
                   <option value="claude-3-5-sonnet-latest">
-                    ◆ Claude 3.5 Sonnet
+                    Claude 3.5 Sonnet
                   </option>
                   <option value="claude-3-5-haiku-latest">
-                    ◆ Claude 3.5 Haiku
+                    Claude 3.5 Haiku
                   </option>
-                  <option value="claude-3-opus-latest">◆ Claude 3 Opus</option>
+                  <option value="claude-3-opus-latest">Claude 3 Opus</option>
                 </>
               ) : (
                 <>
-                  <option value="gpt-4o-mini">🟢 GPT-4o Mini (fast)</option>
-                  <option value="gpt-4o">🔥 GPT-4o</option>
-                  <option value="gpt-5.5">🔥 GPT-5.5</option>
-                  <option value="gpt-5.4">⚡ GPT-5.4</option>
-                  <option value="gpt-5.4-mini">🟢 GPT-5.4 Mini</option>
+                  <option value="gpt-4o-mini">GPT-4o Mini (fast)</option>
+                  <option value="gpt-4o">GPT-4o</option>
+                  <option value="gpt-5.5">GPT-5.5</option>
+                  <option value="gpt-5.4">GPT-5.4</option>
+                  <option value="gpt-5.4-mini">GPT-5.4 Mini</option>
                 </>
               )}
             </select>

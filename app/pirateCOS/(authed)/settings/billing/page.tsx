@@ -220,7 +220,7 @@ export default function BillingSettingsPage() {
   const planLabel = data.plan.toUpperCase();
 
   return (
-    <div className="space-y-8 px-8 py-4 font-geist text-gray-700 max-w-5xl mx-auto">
+    <div className="space-y-8 px-8 py-4 font-geist text-gray-700 w-full">
       {/* HEADER */}
       <div className="pt-2">
         <p

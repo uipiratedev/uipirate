@@ -23,7 +23,8 @@ export interface IPost extends Document {
   duplicateViews?: number; // Repeat visits from same IP within 24h
   totalViews?: number; // Raw total = views + duplicateViews + botViews
   readTime?: number; // in minutes
-  postType?: "blog" | "tutorial" | "case-study" | "community-insight";
+  postType?: "blog" | "tutorial" | "case-study" | "community-insight" | "product-review" | "product-launch" | "listicle" | "comparison" | "newsletter" | "social-post" | "corporate-post";
+  contentGoal?: "traffic" | "authority" | "conversion" | "engagement" | "lead-generation" | "retention";
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -45,6 +46,7 @@ export interface IPost extends Document {
     status: "success" | "failed" | "pending";
     errorMessage?: string; // Populated on failure; surfaced in Distribution Panel
   }>;
+  repurposedOutputs?: Record<string, string>;
   calculateReadTime(): void;
 }
 
@@ -133,8 +135,12 @@ const PostSchema: Schema = new Schema(
     },
     postType: {
       type: String,
-      enum: ["blog", "tutorial", "case-study", "community-insight"],
+      enum: ["blog", "tutorial", "case-study", "community-insight", "product-review", "product-launch", "listicle", "comparison", "newsletter", "social-post", "corporate-post"],
       default: "blog",
+    },
+    contentGoal: {
+      type: String,
+      enum: ["traffic", "authority", "conversion", "engagement", "lead-generation", "retention"],
     },
     seo: {
       metaTitle: { type: String, trim: true },
@@ -167,6 +173,11 @@ const PostSchema: Schema = new Schema(
         errorMessage: { type: String },
       },
     ],
+    repurposedOutputs: {
+      type: Map,
+      of: String,
+      default: {},
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt

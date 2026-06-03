@@ -183,9 +183,9 @@ export default function AdminBlogsPage() {
   ];
 
   return (
-    <div className="space-y-6 px-8 py-4">
+    <div className="space-y-6 px-4 lg:px-8 py-4">
       {/* Header */}
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
         <div>
           <p
             className="text-xs font-jetbrains-mono uppercase tracking-widest mb-1"

@@ -110,6 +110,7 @@ export async function POST(request: NextRequest) {
       tags,
       published,
       postType,
+      contentGoal,
       slug: providedSlug,
       seo,
     } = body;
@@ -143,6 +144,7 @@ export async function POST(request: NextRequest) {
       tags,
       published: published || false,
       postType: postType || "blog",
+      contentGoal,
       seo: seo || {},
       author: {
         name: user.name || "UI Pirate",

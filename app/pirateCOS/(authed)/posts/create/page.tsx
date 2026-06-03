@@ -7,6 +7,7 @@ import React, {
   useRef,
   useMemo,
 } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -28,9 +29,19 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
+import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
+import {
+  ContentGoal,
+  getPostTypeConfig,
+  getGoalConfig,
+  getFeatures,
+  CONTENT_GOALS,
+  getPostTypesByCategory,
+} from "@/lib/pirateCOS/postTypeConfig";
+import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -161,9 +172,9 @@ const SEOEditorModal = ({
       ? "gemini-flash-latest"
       : engine === "anthropic"
         ? "claude-3-5-sonnet-latest"
-      : engine === "mistral"
-        ? "mistral-large-latest"
-        : "gpt-4o-mini";
+        : engine === "mistral"
+          ? "mistral-large-latest"
+          : "gpt-4o-mini";
 
   const plainTextContent = postContent
     .replace(/<[^>]*>/g, " ")
@@ -2586,7 +2597,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -2597,7 +2608,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -2608,20 +2619,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    className="text-[#FF5B04]"
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -2632,7 +2630,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>
@@ -3186,7 +3184,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3197,7 +3195,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3208,20 +3206,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    className="text-[#FF5B04]"
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3232,7 +3217,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>
@@ -3744,7 +3729,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3755,7 +3740,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3766,20 +3751,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    className="text-[#FF5B04]"
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3790,7 +3762,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>
@@ -4040,6 +4012,7 @@ const AICopilotModal = ({
   postTitle,
   postType,
   preset,
+  initialPrompt = "",
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -4047,6 +4020,7 @@ const AICopilotModal = ({
   postTitle: string;
   postType: string;
   preset?: string;
+  initialPrompt?: string;
 }) => {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
@@ -4076,6 +4050,14 @@ const AICopilotModal = ({
   } | null>(null);
 
   useEffect(() => {
+    if (isOpen) {
+      setPrompt(initialPrompt || "");
+      setResult("");
+      setError("");
+    }
+  }, [isOpen, initialPrompt]);
+
+  useEffect(() => {
     if (isOpen && editor) {
       const { from, to } = editor.state.selection;
       const text = editor.state.doc.textBetween(from, to, " ");
@@ -4103,7 +4085,24 @@ const AICopilotModal = ({
     }
   }, [engine]);
 
-  const presets = [
+  const presets = postType === "social-post" ? [
+    {
+      label: "AI Hook",
+      prompt: "Generate 3 scroll-stopping opening hooks for my social post.",
+    },
+    {
+      label: "Shorten to Limit",
+      prompt: "Intelligently compress my text to fit within social media character limits while retaining the key message.",
+    },
+    {
+      label: "Hashtag Ideas",
+      prompt: "Generate high-engagement hashtag recommendations matching the topic of this post.",
+    },
+    {
+      label: "Professional Rewrite",
+      prompt: "Rewrite this social post in a polished, engaging professional tone.",
+    }
+  ] : [
     {
       label: "Draft Introduction",
       prompt:
@@ -4333,7 +4332,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   }`}
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -4343,7 +4342,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   }`}
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -4353,20 +4352,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   }`}
                   onClick={() => setEngine("puter")}
                 >
-                  <svg
-                    className="text-[#FF5B04]"
-                    fill="none"
-                    height="11"
-                    stroke="#FF5B04"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="11"
-                  >
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                  </svg>{" "}
-                  Puter
+                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -4377,7 +4363,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>
@@ -4718,11 +4704,13 @@ const FloatingBlockInserter = ({
   onImageUrl,
   onVideoEmbed,
   imageUploadRef,
+  postType,
 }: {
   editor: any;
   onImageUrl: () => void;
   onVideoEmbed: () => void;
   imageUploadRef: React.RefObject<HTMLInputElement>;
+  postType?: string;
 }) => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -4776,7 +4764,7 @@ const FloatingBlockInserter = ({
 
   if (!visible) return null;
 
-  const blockItems = [
+  const allBlockItems = [
     {
       id: "upload-image",
       label: "Upload Image",
@@ -4945,6 +4933,23 @@ const FloatingBlockInserter = ({
     },
   ];
 
+  const blockItems = allBlockItems.filter((item) => {
+    const features = getFeatures(postType || "blog");
+
+    if (postType === "social-post") {
+      return (
+        item.id === "upload-image" ||
+        item.id === "image-url" ||
+        item.id === "video"
+      );
+    }
+    if (item.id === "code") return !!features.codeBlocks;
+    if (item.id === "table") return !!features.tables;
+    if (item.id === "quote") return postType !== "social-post";
+
+    return true;
+  });
+
   return (
     <div
       ref={menuRef}
@@ -5035,6 +5040,7 @@ const SlashCommandMenu = ({
   onImageUrl,
   onVideoEmbed,
   imageUploadRef,
+  postType,
 }: {
   editor: any;
   isOpen: boolean;
@@ -5043,11 +5049,13 @@ const SlashCommandMenu = ({
   onImageUrl: () => void;
   onVideoEmbed: () => void;
   imageUploadRef: React.RefObject<HTMLInputElement>;
+  postType?: string;
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const commands = React.useMemo(
-    () => [
+  const commands = React.useMemo(() => {
+    const features = postType ? getFeatures(postType) : null;
+    const all = [
       {
         title: "Heading 1",
         icon: "H1",
@@ -5083,6 +5091,7 @@ const SlashCommandMenu = ({
         icon: "☑",
         desc: "Track tasks with checkboxes",
         command: () => editor.chain().focus().toggleTaskList().run(),
+        featureKey: "taskLists",
       },
       {
         title: "Quote",
@@ -5095,6 +5104,7 @@ const SlashCommandMenu = ({
         icon: "</>",
         desc: "Add a code snippet",
         command: () => editor.chain().focus().toggleCodeBlock().run(),
+        featureKey: "codeBlocks",
       },
       {
         title: "Divider",
@@ -5103,8 +5113,14 @@ const SlashCommandMenu = ({
         command: () => editor.chain().focus().setHorizontalRule().run(),
       },
       {
+        title: "Divider",
+        icon: "divider",
+        desc: "Add a horizontal rule",
+        command: () => editor.chain().focus().setHorizontalRule().run(),
+      },
+      {
         title: "Image Upload",
-        icon: "🖼",
+        icon: "image",
         desc: "Upload an image from disk",
         command: () => {
           imageUploadRef.current?.click();
@@ -5112,19 +5128,19 @@ const SlashCommandMenu = ({
       },
       {
         title: "Image URL",
-        icon: "🔗",
+        icon: "link",
         desc: "Embed an image via URL",
         command: onImageUrl,
       },
       {
         title: "Embed Video",
-        icon: "▶",
+        icon: "video",
         desc: "YouTube, Vimeo, Loom…",
         command: onVideoEmbed,
       },
       {
         title: "Table",
-        icon: "田",
+        icon: "table",
         desc: "Insert a 3x3 table",
         command: () =>
           editor
@@ -5132,10 +5148,22 @@ const SlashCommandMenu = ({
             .focus()
             .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
             .run(),
+        featureKey: "tables",
       },
-    ],
-    [editor, onImageUrl, onVideoEmbed, imageUploadRef],
-  );
+    ];
+
+    return all.filter((c) => {
+      if (postType === "social-post") {
+        return ["Image Upload", "Image URL", "Embed Video"].includes(c.title);
+      }
+      if (!features) return true;
+      if (c.featureKey === "codeBlocks") return !!features.codeBlocks;
+      if (c.featureKey === "tables") return !!features.tables;
+      if (c.featureKey === "taskLists") return !!features.taskLists;
+
+      return true;
+    });
+  }, [editor, onImageUrl, onVideoEmbed, imageUploadRef, postType]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -5175,8 +5203,8 @@ const SlashCommandMenu = ({
             onClose();
           }}
         >
-          <span className="text-xs font-bold font-jetbrains-mono text-gray-400 w-7 text-center flex-shrink-0">
-            {command.icon}
+          <span className="text-xs font-bold font-jetbrains-mono text-gray-400 w-7 text-center flex-shrink-0 flex items-center justify-center">
+            <CosIcon name={command.icon} size={14} className="text-gray-400" />
           </span>
           <div className="min-w-0">
             <div className="text-sm font-medium font-geist text-gray-800 leading-snug">
@@ -5200,6 +5228,8 @@ const FormattingToolbar = ({
   activePreset,
   onPresetChange,
   onTransformClick,
+  features,
+  postType,
 }: {
   editor: any;
   onLinkClick: () => void;
@@ -5207,6 +5237,8 @@ const FormattingToolbar = ({
   activePreset: string;
   onPresetChange: (preset: string) => void;
   onTransformClick: () => void;
+  features?: any;
+  postType?: string;
 }) => {
   const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
 
@@ -5261,30 +5293,45 @@ const FormattingToolbar = ({
         <span>AI Copilot</span>
       </button>
       {sep}
-      <select
-        className="bg-white border border-black/10 rounded-lg text-xs px-2.5 py-1 text-gray-700 font-bold focus:outline-none focus:border-[#FF5B04] cursor-pointer"
-        value={activePreset}
-        onChange={(e) => onPresetChange(e.target.value)}
-      >
-        <option value="">Choose AI Preset...</option>
-        <option value="seo-article">📊 SEO Article</option>
-        <option value="thought-leadership">💡 Thought Leadership</option>
-        <option value="linkedin-post">🔗 LinkedIn Post</option>
-        <option value="case-study">📘 Case Study</option>
-        <option value="founder-story">👤 Founder Story</option>
-        <option value="product-launch">🚀 Product Launch</option>
-        <option value="comparison">⚔️ Comparison</option>
-        <option value="technical-deep-dive">🛠️ Tech Deep Dive</option>
-      </select>
-      {sep}
-      <button
-        className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-        title="Repurpose post into other formats"
-        type="button"
-        onClick={onTransformClick}
-      >
-        <span>⚡ Transform</span>
-      </button>
+
+      {postType !== "social-post" && (
+        <>
+          {sep}
+          <button
+            className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
+            title="Repurpose post into other formats"
+            type="button"
+            onClick={onTransformClick}
+          >
+            <span className="flex items-center gap-1">
+              <CosIcon name="bolt" size={12} className="inline mr-1" /> Transform
+            </span>
+          </button>
+        </>
+      )}
+      {features?.ctaBlocks && (
+        <button
+          className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
+          title="Insert Call-To-Action Block"
+          onClick={() => {
+            editor
+              .chain()
+              .focus()
+              .insertContent(
+                `
+              <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
+                <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
+                <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
+              </div>
+            `,
+              )
+              .run();
+          }}
+        >
+          <span className="flex items-center gap-1.5"><CosIcon name="megaphone" size={12} /> Insert CTA</span>
+        </button>
+      )}
       {sep}
       <button
         className={btn(editor.isActive("bold"))}
@@ -5310,69 +5357,75 @@ const FormattingToolbar = ({
       >
         <s>S</s>
       </button>
-      <button
-        className={btn(editor.isActive("code"))}
-        style={editor.isActive("code") ? activeStyle : {}}
-        title="Inline code"
-        onClick={() => editor.chain().focus().toggleCode().run()}
-      >
-        {"<>"}
-      </button>
-      <button
-        className={btn(editor.isActive("highlight"))}
-        style={editor.isActive("highlight") ? activeStyle : {}}
-        title="Highlight"
-        onClick={() => editor.chain().focus().toggleHighlight().run()}
-      >
-        Mk
-      </button>
+      {postType !== "social-post" && (
+        <>
+          <button
+            className={btn(editor.isActive("code"))}
+            style={editor.isActive("code") ? activeStyle : {}}
+            title="Inline code"
+            onClick={() => editor.chain().focus().toggleCode().run()}
+          >
+            {"<>"}
+          </button>
+          <button
+            className={btn(editor.isActive("highlight"))}
+            style={editor.isActive("highlight") ? activeStyle : {}}
+            title="Highlight"
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+          >
+            Mk
+          </button>
+        </>
+      )}
 
       {/* Sleek Text Color Menu */}
-      <div className="relative flex items-center">
-        <button
-          className={btn(colorPaletteOpen)}
-          style={colorPaletteOpen ? activeStyle : {}}
-          title="Text Color"
-          onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
-        >
-          <span className="flex items-center gap-1">
-            A
-            <span
-              className="w-2.5 h-2.5 rounded-full border border-black/10"
-              style={{
-                backgroundColor:
-                  editor.getAttributes("textStyle").color || "#1A1A1A",
-              }}
-            />
-          </span>
-        </button>
-        {colorPaletteOpen && (
-          <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
-            {colors.map((c) => (
-              <button
-                key={c.value}
-                className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
-                style={{ backgroundColor: c.value }}
-                title={c.name}
-                onClick={() => {
-                  editor.chain().focus().setColor(c.value).run();
-                  setColorPaletteOpen(false);
+      {postType !== "social-post" && (
+        <div className="relative flex items-center">
+          <button
+            className={btn(colorPaletteOpen)}
+            style={colorPaletteOpen ? activeStyle : {}}
+            title="Text Color"
+            onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
+          >
+            <span className="flex items-center gap-1">
+              A
+              <span
+                className="w-2.5 h-2.5 rounded-full border border-black/10"
+                style={{
+                  backgroundColor:
+                    editor.getAttributes("textStyle").color || "#1A1A1A",
                 }}
               />
-            ))}
-            <button
-              className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
-              title="Reset Color"
-              onClick={() => {
-                editor.chain().focus().unsetColor().run();
-                setColorPaletteOpen(false);
-              }}
-            >
-              Reset
-            </button>
-          </div>
-        )}
-      </div>
+            </span>
+          </button>
+          {colorPaletteOpen && (
+            <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
+              {colors.map((c) => (
+                <button
+                  key={c.value}
+                  className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
+                  style={{ backgroundColor: c.value }}
+                  title={c.name}
+                  onClick={() => {
+                    editor.chain().focus().setColor(c.value).run();
+                    setColorPaletteOpen(false);
+                  }}
+                />
+              ))}
+              <button
+                className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
+                title="Reset Color"
+                onClick={() => {
+                  editor.chain().focus().unsetColor().run();
+                  setColorPaletteOpen(false);
+                }}
+              >
+                Reset
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       <button
         className={btn(editor.isActive("link"))}
@@ -5380,85 +5433,137 @@ const FormattingToolbar = ({
         title="Insert Link (Ctrl+K)"
         onClick={onLinkClick}
       >
-        🔗 Link
+        <span className="flex items-center gap-1"><CosIcon name="link" size={12} /> Link</span>
       </button>
+      {features?.affiliateLinks && (
+        <button
+          className={btn(false)}
+          title="Insert Affiliate Link"
+          onClick={() => {
+            const url = prompt("Enter Affiliate URL:");
+
+            if (url) {
+              editor
+                .chain()
+                .focus()
+                .setLink({
+                  href: url,
+                  target: "_blank",
+                  rel: "nofollow sponsored",
+                })
+                .run();
+            }
+          }}
+        >
+          <span className="flex items-center gap-1"><CosIcon name="conversion" size={12} /> Affiliate Link</span>
+        </button>
+      )}
       {editor.isActive("link") && (
         <button
           className={btn(false)}
           title="Remove Link"
           onClick={() => editor.chain().focus().unsetLink().run()}
         >
-          Unlink 🔓
+          <span className="flex items-center gap-1">Unlink <CosIcon name="cross" size={12} /></span>
         </button>
       )}
 
       {sep}
-      <button
-        className={btn(editor.isActive("heading", { level: 1 }))}
-        style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
-        title="Heading 1"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      >
-        H1
-      </button>
-      <button
-        className={btn(editor.isActive("heading", { level: 2 }))}
-        style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
-        title="Heading 2"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      >
-        H2
-      </button>
-      <button
-        className={btn(editor.isActive("heading", { level: 3 }))}
-        style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
-        title="Heading 3"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-      >
-        H3
-      </button>
-      {sep}
-      <button
-        className={btn(editor.isActive("bulletList"))}
-        style={editor.isActive("bulletList") ? activeStyle : {}}
-        title="Bullet List"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-      >
-        • List
-      </button>
-      <button
-        className={btn(editor.isActive("orderedList"))}
-        style={editor.isActive("orderedList") ? activeStyle : {}}
-        title="Numbered List"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      >
-        1. List
-      </button>
-      <button
-        className={btn(editor.isActive("blockquote"))}
-        style={editor.isActive("blockquote") ? activeStyle : {}}
-        title="Blockquote"
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-      >
-        &ldquo; Quote
-      </button>
-      <button
-        className={btn(editor.isActive("codeBlock"))}
-        style={editor.isActive("codeBlock") ? activeStyle : {}}
-        title="Code Block"
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-      >
-        {"</>"}
-      </button>
-      {sep}
-      <button
-        className={btn(false)}
-        title="Horizontal Rule"
-        onClick={() => editor.chain().focus().setHorizontalRule().run()}
-      >
-        —
-      </button>
-      {editor.isActive("table") && (
+      {postType !== "social-post" && (
+        <>
+          <button
+            className={btn(editor.isActive("heading", { level: 1 }))}
+            style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
+            title="Heading 1"
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+          >
+            H1
+          </button>
+          <button
+            className={btn(editor.isActive("heading", { level: 2 }))}
+            style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
+            title="Heading 2"
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+          >
+            H2
+          </button>
+          <button
+            className={btn(editor.isActive("heading", { level: 3 }))}
+            style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
+            title="Heading 3"
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
+          >
+            H3
+          </button>
+          {sep}
+          <button
+            className={btn(editor.isActive("bulletList"))}
+            style={editor.isActive("bulletList") ? activeStyle : {}}
+            title="Bullet List"
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+          >
+            • List
+          </button>
+          <button
+            className={btn(editor.isActive("orderedList"))}
+            style={editor.isActive("orderedList") ? activeStyle : {}}
+            title="Numbered List"
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          >
+            1. List
+          </button>
+          {sep}
+        </>
+      )}
+      {features?.taskLists && (
+        <button
+          className={btn(editor.isActive("taskList"))}
+          style={editor.isActive("taskList") ? activeStyle : {}}
+          title="Task List"
+          onClick={() => editor.chain().focus().toggleTaskList().run()}
+        >
+          <span className="flex items-center gap-1"><CosIcon name="tasks" size={12} /> Task List</span>
+        </button>
+      )}
+      {postType !== "social-post" && (
+        <button
+          className={btn(editor.isActive("blockquote"))}
+          style={editor.isActive("blockquote") ? activeStyle : {}}
+          title="Blockquote"
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        >
+          &ldquo; Quote
+        </button>
+      )}
+      {features?.codeBlocks && (
+        <button
+          className={btn(editor.isActive("codeBlock"))}
+          style={editor.isActive("codeBlock") ? activeStyle : {}}
+          title="Code Block"
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        >
+          {"</>"}
+        </button>
+      )}
+      {postType !== "social-post" && (
+        <>
+          {sep}
+          <button
+            className={btn(false)}
+            title="Horizontal Rule"
+            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          >
+            —
+          </button>
+        </>
+      )}
+      {features?.tables && editor.isActive("table") && (
         <>
           {sep}
           <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
@@ -5982,6 +6087,392 @@ const PostPreviewPanel = ({
   );
 };
 
+type SocialDestination = "linkedin" | "x";
+
+interface SocialDestinationConfig {
+  label: string;
+  characterLimit: number;
+  warningAt: number;
+  suggestions: string[];
+}
+
+const SOCIAL_DESTINATIONS: Record<SocialDestination, SocialDestinationConfig> = {
+  linkedin: {
+    label: "LinkedIn Post",
+    characterLimit: 3000,
+    warningAt: 2700,
+    suggestions: ["#ThoughtLeadership", "#Innovation", "#Marketing", "#Tech", "#Strategy"],
+  },
+  x: {
+    label: "X (Twitter) Post",
+    characterLimit: 280,
+    warningAt: 250,
+    suggestions: ["#Tech", "#AI", "#Productivity", "#BuildInPublic", "#Startup"],
+  },
+};
+
+const TUTORIAL_SLIDES = [
+  {
+    title: "1. Dynamic Focus Mode",
+    desc: "Your workspace adapts automatically to your selected archetype. Unused tabs, formatting limits, and sidebar options are hidden to keep you fully focused on creating.",
+    icon: "tasks",
+    badge: "Focus Mode",
+    bg: "from-orange-50/50 via-white to-amber-50/20",
+    border: "border-orange-100",
+    textClass: "text-[#FF5B04]",
+    bgClass: "bg-[#FF5B04]/10",
+    accentColor: "#FF5B04",
+  },
+  {
+    title: "2. Integrated Brand Brain",
+    desc: "Your Brand Voice parameters, target vocabulary, and forbidden terms are automatically injected into the AI writing copilot to maintain strict stylistic alignment.",
+    icon: "bot",
+    badge: "Brand Guard",
+    bg: "from-purple-50/50 via-white to-orange-50/20",
+    border: "border-purple-100",
+    textClass: "text-purple-600",
+    bgClass: "bg-purple-50",
+    accentColor: "#9333ea",
+  },
+  {
+    title: "3. Calibrated SEO & Health",
+    desc: "The Content Health panel tracks readability, paragraph structure, and keyword density. Metric weights are dynamically balanced to align with your chosen business goal.",
+    icon: "traffic",
+    badge: "SEO Insights",
+    bg: "from-emerald-50/50 via-white to-teal-50/20",
+    border: "border-emerald-100",
+    textClass: "text-emerald-600",
+    bgClass: "bg-emerald-50",
+    accentColor: "#059669",
+  },
+  {
+    title: "4. Cross-Channel Repurposing",
+    desc: "Convert your finished article into custom social updates (LinkedIn summaries, X/Twitter posts, newsletters) instantly using the workspace distribution panel.",
+    icon: "conversion",
+    badge: "Multi-Channel",
+    bg: "from-blue-50/50 via-white to-indigo-50/20",
+    border: "border-blue-100",
+    textClass: "text-blue-600",
+    bgClass: "bg-blue-50",
+    accentColor: "#2563eb",
+  },
+];
+
+const WorkspaceTutorialCarousel = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  // Use refs so the interval closure always has the latest values
+  // without needing currentSlide in the dep array (which caused double-advance)
+  const progressRef = useRef(0);
+  const slideRef = useRef(0);
+
+  // Keep refs in sync with state
+  progressRef.current = progress;
+  slideRef.current = currentSlide;
+
+  useEffect(() => {
+    // Reset only the progress ref/state — do NOT touch currentSlide here
+    progressRef.current = 0;
+    setProgress(0);
+
+    const intervalTime = 100; // tick every 100ms
+    const totalTime = 6000;   // 6 seconds per slide
+    const increment = (intervalTime / totalTime) * 100;
+
+    const timer = setInterval(() => {
+      const next = progressRef.current + increment;
+      if (next >= 100) {
+        // Advance slide using the ref so we don't need currentSlide in deps
+        const nextSlide = slideRef.current === TUTORIAL_SLIDES.length - 1
+          ? 0
+          : slideRef.current + 1;
+        progressRef.current = 0;
+        setProgress(0);
+        slideRef.current = nextSlide;
+        setCurrentSlide(nextSlide);
+      } else {
+        progressRef.current = next;
+        setProgress(next);
+      }
+    }, intervalTime);
+
+    return () => clearInterval(timer);
+  // Run once on mount only — the interval reads fresh values via refs
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handlePrev = () => {
+    progressRef.current = 0;
+    setProgress(0);
+    setCurrentSlide((prev) => (prev === 0 ? TUTORIAL_SLIDES.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    progressRef.current = 0;
+    setProgress(0);
+    setCurrentSlide((prev) => (prev === TUTORIAL_SLIDES.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleDotClick = (idx: number) => {
+    progressRef.current = 0;
+    setProgress(0);
+    setCurrentSlide(idx);
+  };
+
+  const slide = TUTORIAL_SLIDES[currentSlide];
+
+  return (
+    <div className="w-full space-y-3">
+      {/* Instagram Story-style progress bars */}
+      <div className="flex gap-1.5 w-full">
+        {TUTORIAL_SLIDES.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={() => handleDotClick(idx)}
+            className="h-[3px] flex-1 bg-black/[0.07] rounded-full overflow-hidden cursor-pointer"
+          >
+            <div
+              className="h-full bg-[#FF5B04] rounded-full"
+              style={{
+                width: currentSlide > idx ? "100%" : currentSlide === idx ? `${progress}%` : "0%",
+                transition: currentSlide === idx && progress > 0 ? "width 100ms linear" : "none",
+              }}
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Main Card */}
+      <div
+        className={`w-full rounded-3xl bg-gradient-to-br ${slide.bg} border ${slide.border} shadow-xl overflow-hidden`}
+        style={{ "--slide-color": slide.accentColor } as React.CSSProperties}
+      >
+        <div className="flex flex-col md:flex-row" style={{ minHeight: 300 }}>
+
+          {/* Left — Illustration panel (fixed height, centered content) */}
+          <div className="w-full md:w-[44%] bg-white/60 backdrop-blur-sm border-b md:border-b-0 md:border-r border-black/[0.05] flex flex-col relative overflow-hidden select-none">
+            {/* Decorative blob */}
+            <div className={`absolute -bottom-8 -right-8 w-48 h-48 rounded-full opacity-[0.10] blur-3xl ${slide.bgClass}`} />
+
+            {/* Top badge strip */}
+            <div className="flex items-center gap-2 px-6 pt-5 pb-0">
+              <span className={`text-[9px] font-black font-jetbrains-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full ${slide.bgClass} ${slide.textClass}`}>
+                {slide.badge}
+              </span>
+              <span className="text-[9px] text-gray-300 font-jetbrains-mono">{currentSlide + 1} / {TUTORIAL_SLIDES.length}</span>
+            </div>
+
+            {/* Illustration — fills remaining space */}
+            <motion.div
+              key={`mockup-${currentSlide}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex-1 flex items-center justify-center px-6 py-5"
+            >
+              {currentSlide === 0 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-gray-100 rounded-t-xl px-3 py-2 flex items-center gap-1.5 border border-black/[0.06]">
+                    <span className="w-2 h-2 rounded-full bg-red-400" />
+                    <span className="w-2 h-2 rounded-full bg-yellow-400" />
+                    <span className="w-2 h-2 rounded-full bg-green-400" />
+                    <span className="flex-1 mx-2 h-4 bg-white rounded text-[8px] text-gray-300 flex items-center px-2">uipirate.com/create</span>
+                  </div>
+                  <div className="bg-white border border-t-0 border-black/[0.06] rounded-b-xl p-4 space-y-2.5">
+                    <div className="flex items-center gap-2 pb-2 border-b border-black/[0.04]">
+                      <span className="text-sm">📝</span>
+                      <span className="text-[11px] font-bold text-gray-700">Writing Draft...</span>
+                      <span className="ml-auto text-[9px] font-jetbrains-mono text-[#FF5B04] bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Blog Post</span>
+                    </div>
+                    <div className="space-y-1.5">
+                      <div className="w-full h-2 bg-gray-100 rounded-full" />
+                      <div className="w-4/5 h-2 bg-gray-100 rounded-full" />
+                      <div className="w-2/3 h-2 bg-gray-100 rounded-full" />
+                    </div>
+                    <div className="flex items-center text-[10px] text-gray-400">
+                      <span>Start with a compelling hook...</span>
+                      <span className="w-0.5 h-3.5 ml-0.5 bg-[#FF5B04] animate-pulse rounded-full" />
+                    </div>
+                    <div className="flex gap-2 mt-1">
+                      <div className="flex-1 h-6 bg-orange-50 rounded-lg border border-orange-100 flex items-center px-2">
+                        <span className="text-[8px] font-bold text-[#FF5B04]">AI Copilot</span>
+                      </div>
+                      <div className="flex-1 h-6 bg-gray-50 rounded-lg border border-black/[0.04] flex items-center px-2">
+                        <span className="text-[8px] text-gray-400">SEO Health</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentSlide === 1 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+                    <div className="flex items-center gap-2 pb-2 border-b border-black/[0.04]">
+                      <span className="text-sm">🧠</span>
+                      <span className="text-[11px] font-bold text-gray-700">Brand Brain Active</span>
+                      <span className="ml-auto w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">✓ Target Keywords</span>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">SaaS</span>
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Design</span>
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">AI Tools</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-bold text-red-400 uppercase tracking-wider block mb-1.5">✗ Forbidden</span>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="text-[9px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-200 line-through opacity-60">Synergy</span>
+                        <span className="text-[9px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-200 line-through opacity-60">Disrupt</span>
+                      </div>
+                    </div>
+                    <div className="text-[8px] text-purple-500 bg-purple-50 px-2.5 py-1.5 rounded-lg border border-purple-100 font-semibold">
+                      🎯 Injected into AI Copilot automatically
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentSlide === 2 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+                    <div className="flex items-center gap-3 pb-3 border-b border-black/[0.04]">
+                      <div className="relative w-14 h-14 flex-shrink-0">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                          <circle strokeWidth="3.5" stroke="#f3f4f6" fill="none" cx="18" cy="18" r="15" />
+                          <circle className="text-emerald-500" strokeWidth="3.5" strokeDasharray="94 100" strokeDashoffset="0" strokeLinecap="round" stroke="currentColor" fill="none" cx="18" cy="18" r="15" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center text-[13px] font-black text-gray-800 font-jetbrains-mono">94</div>
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-bold text-gray-800">Content Health</div>
+                        <div className="text-[9px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full mt-1 inline-block">Excellent</div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      {[
+                        { label: "Keyword Density", pct: 82, color: "bg-emerald-400" },
+                        { label: "Readability", pct: 95, color: "bg-blue-400" },
+                        { label: "Content Depth", pct: 70, color: "bg-orange-400" },
+                      ].map((m) => (
+                        <div key={m.label} className="space-y-0.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[8.5px] text-gray-500">{m.label}</span>
+                            <span className="text-[8.5px] font-bold text-gray-700 font-jetbrains-mono">{m.pct}%</span>
+                          </div>
+                          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div className={`h-full ${m.color} rounded-full`} style={{ width: `${m.pct}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentSlide === 3 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+                    <div className="flex items-center gap-2 pb-2 border-b border-black/[0.04]">
+                      <span className="text-sm">🔁</span>
+                      <span className="text-[11px] font-bold text-gray-700">Repurpose</span>
+                      <span className="ml-auto text-[9px] font-jetbrains-mono text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">3 channels</span>
+                    </div>
+                    {[
+                      { icon: "🔗", label: "LinkedIn Post", pct: 14, color: "bg-blue-400", chars: "420/3000" },
+                      { icon: "✦", label: "X/Twitter Thread", pct: 72, color: "bg-sky-400", chars: "201/280" },
+                      { icon: "📧", label: "Newsletter", pct: 38, color: "bg-purple-400", chars: "890/2500" },
+                    ].map((ch) => (
+                      <div key={ch.label} className="space-y-1">
+                        <div className="flex items-center justify-between text-[8.5px] text-gray-600">
+                          <span className="flex items-center gap-1">{ch.icon} {ch.label}</span>
+                          <span className="text-gray-400 font-jetbrains-mono">{ch.chars}</span>
+                        </div>
+                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className={`h-full ${ch.color} rounded-full`} style={{ width: `${ch.pct}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+          {/* Right — Text & Navigation: vertically centered content, nav pinned at bottom */}
+          <motion.div
+            key={`text-${currentSlide}`}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex-1 flex flex-col p-7"
+          >
+            {/* Vertically centered main content block */}
+            <div className="flex-1 flex flex-col justify-center space-y-4">
+              {/* Icon badge */}
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${slide.bgClass} ${slide.textClass} shadow-sm`}>
+                <CosIcon name={slide.icon} size={24} />
+              </div>
+
+              {/* Title & description */}
+              <div className="space-y-2">
+                <h3 className="text-[21px] font-extrabold text-gray-900 font-geist leading-snug">
+                  {slide.title}
+                </h3>
+                <p className="text-[13px] text-gray-500 leading-relaxed font-geist">
+                  {slide.desc}
+                </p>
+              </div>
+            </div>
+
+            {/* Navigation — always at bottom */}
+            <div className="flex items-center gap-3 pt-5 border-t border-black/[0.05] mt-5">
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="w-9 h-9 rounded-xl flex items-center justify-center border border-black/[0.08] bg-white text-gray-500 hover:text-gray-900 hover:border-black/20 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer text-base font-bold"
+              >
+                ←
+              </button>
+
+              {/* Dots */}
+              <div className="flex items-center gap-1.5">
+                {TUTORIAL_SLIDES.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleDotClick(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                      currentSlide === idx ? "w-6" : "w-1.5 bg-black/10 hover:bg-black/20"
+                    }`}
+                    style={currentSlide === idx ? { backgroundColor: "var(--slide-color)" } : {}}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleNext}
+                className="w-9 h-9 rounded-xl flex items-center justify-center border border-black/[0.08] bg-white text-gray-500 hover:text-gray-900 hover:border-black/20 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer text-base font-bold"
+              >
+                →
+              </button>
+
+              <span className="ml-auto text-[10px] font-jetbrains-mono text-gray-300">
+                {currentSlide + 1} / {TUTORIAL_SLIDES.length}
+              </span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditor = () => {
   const isSubdomain =
@@ -6006,16 +6497,19 @@ const BlogEditor = () => {
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   const [activePreset, setActivePreset] = useState("");
   const [isRepurposeDrawerOpen, setIsRepurposeDrawerOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   // AI API Handlers
   const [featuredImage, setFeaturedImage] = useState("");
   const [bannerImage, setBannerImage] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
-  const [postType, setPostType] = useState<
-    "blog" | "tutorial" | "case-study" | "community-insight"
-  >("blog");
+  const [postType, setPostType] = useState<string>("blog");
+  const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [typeSelected, setTypeSelected] = useState(false);
+  const [hoveredType, setHoveredType] = useState<string | null>(null);
+  const [hoveredGoal, setHoveredGoal] = useState<string | null>(null);
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -6033,10 +6527,14 @@ const BlogEditor = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<
-    "content" | "seo" | "ai" | "distribute"
+    "content" | "seo" | "ai" | "distribute" | "health"
   >("content");
+  const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
+  const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
+  const [repurposedOutputs, setRepurposedOutputs] = useState<Record<string, string>>({});
 
   const {
     blogId: savedBlogId,
@@ -6058,8 +6556,10 @@ const BlogEditor = () => {
       bannerImage,
       tags,
       postType,
+      contentGoal,
       slug: currentSlug,
       seo: seoData,
+      repurposedOutputs,
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
@@ -6099,17 +6599,42 @@ const BlogEditor = () => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
 
-  // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
+  // Prevent background scrolling when mobile settings drawer is open
   useEffect(() => {
-    if (!isDataInitialized) return;
-    setIsDirty(true);
-  }, [title, excerpt, tags, featuredImage, bannerImage, isDataInitialized]);
+    const handleScrollLock = () => {
+      if (isSidebarOpen && window.innerWidth < 1024) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    };
+    handleScrollLock();
+
+    window.addEventListener("resize", handleScrollLock);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("resize", handleScrollLock);
+    };
+  }, [isSidebarOpen]);
+
+  // Onboarding Guided Wizard: Carousel auto-play is now handled internally in WorkspaceTutorialCarousel
+
+  // Programmatically reset active sidebar tab to "content" if the active tab is hidden (e.g. SEO panel becomes false)
+  useEffect(() => {
+    const features = getFeatures(postType || "blog");
+
+    if (sidebarTab === "seo" && !features.seoPanel) {
+      setSidebarTab("content");
+    }
+  }, [postType, sidebarTab]);
+
+
 
   // ── Navigation guards ───────────────────────────────────────────────────────
   // 1. Tab / window close — uses ref so the handler never needs to be replaced
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
-      if (!isDirtyRef.current) return;
+      if (!isDirtyRef.current || !typeSelected) return;
       e.preventDefault();
       e.returnValue =
         "You have unsaved changes. Are you sure you want to leave?";
@@ -6120,13 +6645,13 @@ const BlogEditor = () => {
     window.addEventListener("beforeunload", handler);
 
     return () => window.removeEventListener("beforeunload", handler);
-  }, []);
+  }, [typeSelected]);
 
   // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
   //    Next.js router handles the event, covering all client-side link navigation.
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
-      if (!isDirtyRef.current) return;
+      if (!isDirtyRef.current || !typeSelected) return;
 
       const anchor = (e.target as HTMLElement).closest("a");
 
@@ -6168,10 +6693,12 @@ const BlogEditor = () => {
     document.addEventListener("click", handleLinkClick, true);
 
     return () => document.removeEventListener("click", handleLinkClick, true);
-  }, []);
+  }, [typeSelected]);
 
   // 3. Browser back / forward button interception via a history sentinel entry
   useEffect(() => {
+    if (!typeSelected) return;
+
     // Initial sentinel
     if (window.history.state?.blogGuard !== true) {
       window.history.pushState({ blogGuard: true }, "");
@@ -6190,7 +6717,7 @@ const BlogEditor = () => {
     window.addEventListener("popstate", handlePopState);
 
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [typeSelected]);
 
   const editor = useEditor({
     autofocus: "end",
@@ -6325,10 +6852,53 @@ const BlogEditor = () => {
     },
     onUpdate: () => {
       // Mark form dirty whenever editor content changes
-      if (isDataInitialized) setIsDirty(true);
+      if (isDataInitialized && typeSelected) setIsDirty(true);
     },
     immediatelyRender: false,
   });
+
+  // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
+  useEffect(() => {
+    if (!isDataInitialized || !typeSelected) return;
+    
+    // Check if the user has actually entered any content
+    const hasContent =
+      title.trim() !== "" ||
+      excerpt.trim() !== "" ||
+      tags.length > 0 ||
+      featuredImage !== "" ||
+      bannerImage !== "" ||
+      (editor && !editor.isEmpty);
+
+    if (hasContent) {
+      setIsDirty(true);
+    }
+  }, [title, excerpt, tags, featuredImage, bannerImage, isDataInitialized, typeSelected, editor]);
+
+  const appendHashtag = useCallback((tag: string) => {
+    const normalized = tag.startsWith("#") ? tag : `#${tag}`;
+    if (!tags.includes(normalized)) {
+      setTags((prev) => [...prev, normalized]);
+    }
+    if (editor) {
+      const text = editor.getText();
+      if (!text.includes(normalized)) {
+        const separator = text === "" || /\s$/.test(text) ? "" : " ";
+        editor.chain().focus().insertContent(`${separator}${normalized} `).run();
+      }
+    }
+  }, [tags, editor]);
+
+  const handleAddHashtag = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
+      e.preventDefault();
+      const cleanTag = tagInput.trim().replace(/,$/, "");
+      if (cleanTag) {
+        appendHashtag(cleanTag);
+      }
+      setTagInput("");
+    }
+  }, [tagInput, appendHashtag]);
 
   // Real-time analytics counter hook
   const editorStats = useEditorState({
@@ -6443,209 +7013,581 @@ const BlogEditor = () => {
 
   if (!mounted || !editor || authLoading) return null;
 
-  // ── Post Type definitions (shared between modal and badge) ──
-  const postTypes = [
-    {
-      value: "blog" as const,
-      label: "Blog",
-      description: "Share thoughts, insights and perspectives",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <path d="M12 20h9" />
-          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
-        </svg>
-      ),
-    },
-    {
-      value: "tutorial" as const,
-      label: "Tutorial",
-      description: "Step-by-step guides and how-tos",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </svg>
-      ),
-    },
-    {
-      value: "case-study" as const,
-      label: "Case Study",
-      description: "In-depth analysis of a project or problem",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" x2="16.65" y1="21" y2="16.65" />
-        </svg>
-      ),
-    },
-    {
-      value: "community-insight" as const,
-      label: "Community Insight",
-      description: "Trends, observations and community highlights",
-      icon: (
-        <svg
-          fill="none"
-          height="22"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="1.75"
-          viewBox="0 0 24 24"
-          width="22"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" x2="12" y1="8" y2="12" />
-          <line x1="12" x2="12.01" y1="16" y2="16" />
-        </svg>
-      ),
-    },
-  ];
-
-  const selectedTypeInfo = postTypes.find((t) => t.value === postType)!;
-
-  // ── Type selection gate ──
+  // ── 3-Step Guided Wizard selection gate ──
   if (!typeSelected) {
+    const activeTypeConfig = getPostTypeConfig(postType);
+    const activeGoalConfig = getGoalConfig(contentGoal);
+
+    // Strategist Board Dictionary
+    const ARCHETYPE_EXPLANATIONS: Record<
+      string,
+      { title: string; desc: string; tip: string }
+    > = {
+      blog: {
+        title: "Blog Archetype",
+        desc: "Designed to share opinion pieces, stories, and deep insights in an authentic, conversational voice.",
+        tip: "Optimizes the layout for traditional web readers. Guides you to structure conversational, rich sections with search visibility, while AI prompts emphasize personal stories and deep insights.",
+      },
+      tutorial: {
+        title: "Step-by-Step Tutorial",
+        desc: "Highly technical educational resources, manuals, and developer configurations.",
+        tip: "Calibrated for step-by-step guidance. Tailors your layout for structured, educational reading with syntax code examples and sequential guidelines.",
+      },
+      "case-study": {
+        title: "Customer Case Study",
+        desc: "Professional breakdowns of real-world client wins, builder journeys, and solutions.",
+        tip: "Calibrated for customer proof and business journeys. Emphasizes structured evidence, client quotes, and measurable impact metrics.",
+      },
+      "community-insight": {
+        title: "Community Insight",
+        desc: "Curated industry roundups, trend analyses, and collaborative community highlights.",
+        tip: "Calibrated for sharing industry viewpoints. Encourages engaging hooks and conversational tone to start dialogues.",
+      },
+      "corporate-post": {
+        title: "Corporate / PR Post",
+        desc: "Press releases, executive updates, public letters, and company milestone announcements.",
+        tip: "Calibrated for official announcements. Focuses on professional, objective updates and clear milestone summaries.",
+      },
+      "product-review": {
+        title: "Product Review",
+        desc: "Monetization-oriented reviews of specific tools, platforms, or hardware.",
+        tip: "Calibrated for comparative evaluations. Helps structure features, pros/cons list, and pricing details.",
+      },
+      "product-launch": {
+        title: "Product Launch",
+        desc: "Feature releases, software launches, and brand announcement campaigns.",
+        tip: "Calibrated for new releases. Focuses on solving user problems and driving clear actions for feature announcements.",
+      },
+      listicle: {
+        title: "Curated Listicle",
+        desc: '"Top N" roundups, product selections, and curated summaries.',
+        tip: "Calibrated for curated roundups. Formats items, benefits, and quick recommendations clearly.",
+      },
+      comparison: {
+        title: "Head-to-Head Comparison",
+        desc: "Detailed side-by-side product comparisons to assist buyer decisions.",
+        tip: "Calibrated for side-by-side product analyses. Frames advantages and clear decision criteria to guide purchase choices.",
+      },
+      newsletter: {
+        title: "Email Newsletter",
+        desc: "Conversational weekly digests, product newsletters, and list updates.",
+        tip: "Calibrated for direct subscriber communications. Keeps text styling clean and conversational to build personal relationships.",
+      },
+      "social-post": {
+        title: "LinkedIn / Social Post",
+        desc: "Sleek, condensed articles optimized for professional social media networks.",
+        tip: "Calibrated for condensed social updates. Focuses on character limits and scroll-stopping ideas for quick, impactful professional shares.",
+      },
+    };
+
+    const GOAL_EXPLANATIONS: Record<
+      string,
+      { title: string; desc: string; aiFocus: string }
+    > = {
+      traffic: {
+        title: "Search Visibility & Growth",
+        desc: "Aligns your content to reach readers looking for solutions on search engines.",
+        aiFocus:
+          "AI suggestions highlight clear headings, answer common queries, and prioritize reader search intent.",
+      },
+      authority: {
+        title: "Establish Thought Leadership",
+        desc: "Builds credibility by sharing unique viewpoints, data, and expert perspectives.",
+        aiFocus:
+          "AI suggestions draw from industry insights, professional terminology, and contrarian viewpoints.",
+      },
+      conversion: {
+        title: "Drive Sales & Conversions",
+        desc: "Encourages readers to take action, whether joining a list or viewing a product.",
+        aiFocus:
+          "AI suggestions highlight customer problems, benefits, objection-handling, and clear next steps.",
+      },
+      engagement: {
+        title: "Spark Discussion & Comments",
+        desc: "Fosters conversational interest, community discussion, and viral reach.",
+        aiFocus:
+          "AI suggestions lead with hooks, invite reader comments, and ask engaging questions.",
+      },
+      "lead-generation": {
+        title: "Lead Capture & Growth",
+        desc: "Highlights valuable guides or resources to attract new contacts.",
+        aiFocus:
+          "AI suggestions write compelling benefit statements and natural highlights for resources.",
+      },
+      retention: {
+        title: "Keep Customers Engaged",
+        desc: "Deepens product usage and values for existing customers.",
+        aiFocus:
+          "AI suggestions present practical steps, pro-tips, and educational pointers.",
+      },
+    };
+
+    // Calculate Dynamic Strategist Card content
+    const currentTypeVal = hoveredType || postType;
+    const currentTypeConfig = getPostTypeConfig(currentTypeVal);
+    const archetypeExplanation = ARCHETYPE_EXPLANATIONS[currentTypeVal] || {
+      title: "Custom Archetype",
+      desc:
+        currentTypeConfig?.description ||
+        "Select a post archetype to adapt your workspace features.",
+      tip:
+        currentTypeConfig?.templateHint ||
+        "The workspace and AI tuning will be optimized based on your selection.",
+    };
+
+    const currentGoalVal = hoveredGoal || contentGoal;
+    const currentGoalConfig = getGoalConfig(currentGoalVal as ContentGoal);
+    const goalExplanation = GOAL_EXPLANATIONS[currentGoalVal] || {
+      title: "Custom Goal",
+      desc:
+        currentGoalConfig?.description ||
+        "Set a strategic goal for the AI to optimize outlines and structures.",
+      aiFocus:
+        currentGoalConfig?.aiPriorityPrompt ||
+        "Strategic parameters will be fine-tuned accordingly.",
+    };
+
     return (
-      <div
-        className="fixed inset-0 z-[300] flex items-center justify-center p-4"
-        style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
-        onClick={() => router.push(getHref("/posts"))}
-      >
-        <div
-          className="bg-white rounded-3xl shadow-2xl w-[520px] max-w-full p-8 relative"
-          style={{ border: "1px solid rgba(0,0,0,0.07)" }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Close button */}
-          <button
-            className="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 transition-colors"
-            onClick={() => router.push(getHref("/posts"))}
-          >
-            <svg
-              fill="none"
-              height="18"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              width="18"
-            >
-              <line x1="18" x2="6" y1="6" y2="18" />
-              <line x1="6" x2="18" y1="6" y2="18" />
-            </svg>
-          </button>
-
-          {/* Header */}
-          <div className="mb-6">
-            <p
-              className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-semibold mb-1"
-              style={{ color: "#FF5B04" }}
-            >
-              New Post
-            </p>
-            <h2 className="text-xl font-bold font-geist text-gray-900">
-              What are you creating?
-            </h2>
-            <p className="text-sm text-gray-400 font-geist mt-1">
-              Choose a post type. This can't be changed after you start writing.
-            </p>
+      <div className="w-full min-h-screen pb-28 animate-in fade-in duration-200 bg-[#F7F7F6]">
+        {/* Step Indicator Header (Always Visible) */}
+        <div className="px-8 py-6 border-b border-black/[0.06] bg-white sticky top-0 z-20">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-[#FF5B04]">
+                Creation Wizard
+              </span>
+              <span className="text-gray-300 text-[10px]">•</span>
+              <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-gray-400">
+                Step {wizardStep} of 3
+              </span>
+            </div>
+            {/* Stepper Progress bar */}
+            <div className="w-48 h-1.5 bg-black/[0.04] rounded-full overflow-hidden flex gap-1">
+              <div
+                className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 1 ? "bg-[#FF5B04]" : "bg-black/[0.04]"}`}
+              />
+              <div
+                className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 2 ? "bg-[#FF5B04]" : "bg-black/[0.04]"}`}
+              />
+              <div
+                className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 3 ? "bg-[#FF5B04]" : "bg-black/[0.04]"}`}
+              />
+            </div>
           </div>
+        </div>
 
-          {/* Type grid */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            {postTypes.map(({ value, label, description, icon }) => (
-              <button
-                key={value}
-                className={`flex flex-col items-start gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
-                  postType === value
-                    ? "border-[#FF5B04] bg-orange-50"
-                    : "border-black/8 bg-black/[0.01] hover:border-[#FF5B04]/40 hover:bg-orange-50/40"
-                }`}
-                onClick={() => setPostType(value)}
-              >
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors"
-                  style={{
-                    background:
-                      postType === value
-                        ? "rgba(255,91,4,0.12)"
-                        : "rgba(0,0,0,0.05)",
-                    color: postType === value ? "#FF5B04" : "#6b7280",
-                  }}
-                >
-                  {icon}
-                </div>
+        {/* Content Wrapper */}
+        <div className="px-8 py-8 w-full">
+          {/* ───────────────────────────────────────────────────────────────────
+              STEP 1: INTENT SELECTION
+          ─────────────────────────────────────────────────────────────────── */}
+          {wizardStep === 1 && (
+            <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in fade-in duration-200">
+              {/* Left Column: Archetype selector cards */}
+              <div className="md:col-span-8 space-y-6">
                 <div>
-                  <p
-                    className={`text-sm font-semibold font-geist ${postType === value ? "text-[#FF5B04]" : "text-gray-800"}`}
-                  >
-                    {label}
-                  </p>
-                  <p className="text-[11px] text-gray-400 font-geist mt-0.5 leading-snug">
-                    {description}
+                  <h2 className="text-2xl font-bold font-geist text-gray-900 leading-tight">
+                    What are you creating today?
+                  </h2>
+                  <p className="text-xs text-gray-400 font-geist mt-1.5 leading-relaxed">
+                    Select a post archetype to adapt your tools, limits, and AI
+                    parameters dynamically.
                   </p>
                 </div>
-              </button>
-            ))}
-          </div>
 
-          {/* Actions */}
-          <div className="flex items-center gap-3">
-            <button
-              className="text-sm font-geist text-gray-400 hover:text-gray-600 transition-colors"
-              onClick={() => router.push(getHref("/posts"))}
-            >
-              Cancel
-            </button>
-            <button
-              className="ml-auto flex items-center gap-2 text-sm font-semibold font-geist text-white h-10 px-6 rounded-xl transition-colors"
-              style={{ background: "#FF5B04" }}
-              onClick={() => setTypeSelected(true)}
-            >
-              Continue as {selectedTypeInfo.label}
-              <svg
-                fill="none"
-                height="14"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-                width="14"
+                {/* Group 1: Content & Knowledge */}
+                <div className="space-y-3">
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
+                    📚 Content & Knowledge Archetypes
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {getPostTypesByCategory("content").map((cfg) => (
+                      <button
+                        key={cfg.value}
+                        className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                          postType === cfg.value
+                            ? "border-[#FF5B04] bg-white shadow-sm"
+                            : "border-black/5 bg-white hover:border-[#FF5B04]/40"
+                        }`}
+                        onClick={() => setPostType(cfg.value)}
+                        onMouseEnter={() => setHoveredType(cfg.value)}
+                        onMouseLeave={() => setHoveredType(null)}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              postType === cfg.value
+                                ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                                : "bg-black/5 text-gray-500"
+                            }`}
+                          >
+                            <CosIcon name={cfg.icon} size={14} />
+                          </div>
+                          <p
+                            className={`text-[13px] font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                          >
+                            {cfg.label}
+                          </p>
+                        </div>
+                        <p className="text-[10px] text-gray-400 font-geist leading-snug line-clamp-2">
+                          {cfg.description}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Group 2: Product & Monetization */}
+                <div className="space-y-3 pt-2">
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <CosIcon name="conversion" size={12} className="text-[#FF5B04]" /> Product & Monetization Archetypes
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {getPostTypesByCategory("monetization").map((cfg) => (
+                      <button
+                        key={cfg.value}
+                        className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                          postType === cfg.value
+                            ? "border-[#FF5B04] bg-white shadow-sm"
+                            : "border-black/5 bg-white hover:border-[#FF5B04]/40"
+                        }`}
+                        onClick={() => setPostType(cfg.value)}
+                        onMouseEnter={() => setHoveredType(cfg.value)}
+                        onMouseLeave={() => setHoveredType(null)}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              postType === cfg.value
+                                ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                                : "bg-black/5 text-gray-500"
+                            }`}
+                          >
+                            <CosIcon name={cfg.icon} size={14} />
+                          </div>
+                          <p
+                            className={`text-[13px] font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                          >
+                            {cfg.label}
+                          </p>
+                        </div>
+                        <p className="text-[10px] text-gray-400 font-geist leading-snug line-clamp-2">
+                          {cfg.description}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Dynamic Strategist Board */}
+              <div className="md:col-span-4 h-full bg-white border border-black/5 p-6 rounded-3xl sticky top-24 space-y-4 shadow-sm animate-in slide-in-from-right-2">
+                <div className="flex items-center gap-1.5">
+                  <CosIcon name="bot" size={14} className="text-[#FF5B04]" />
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
+                    AI Strategist Advisor
+                  </p>
+                </div>
+                <div className="space-y-2 border-b border-black/[0.03] pb-4">
+                  <h3 className="text-base font-extrabold font-geist text-gray-800 flex items-center gap-1.5">
+                    {currentTypeConfig && <CosIcon name={currentTypeConfig.icon} size={18} className="text-[#FF5B04]" />}
+                    {archetypeExplanation.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 font-geist leading-relaxed">
+                    {archetypeExplanation.desc}
+                  </p>
+                </div>
+                <div className="space-y-2 bg-black/[0.01] border border-black/[0.02] p-4 rounded-2xl">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
+                    🔧 Workspace Tuning
+                  </span>
+                  <p className="text-[11px] text-gray-600 font-geist leading-relaxed">
+                    {archetypeExplanation.tip}
+                  </p>
+                </div>
+                <p className="text-[9px] text-[#FF5B04] font-semibold font-jetbrains-mono italic pt-2">
+                  *Unused formatting options and editor tabs will be completely
+                  hidden to ensure zero focus distractions.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ───────────────────────────────────────────────────────────────────
+              STEP 2: GOAL SELECTION
+          ─────────────────────────────────────────────────────────────────── */}
+          {wizardStep === 2 && (
+            <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in slide-in-from-right-4 duration-200">
+              {/* Left Column: Goal Cards */}
+              <div className="md:col-span-8 space-y-6">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] bg-orange-50 text-[#FF5B04] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      Archetype: {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={10} className="inline text-[#FF5B04]" />}
+                      {activeTypeConfig?.label}
+                    </span>
+                  </div>
+                  <h2 className="text-2xl font-bold font-geist text-gray-900 mt-2.5 leading-tight">
+                    What is the goal of this content?
+                  </h2>
+                  <p className="text-xs text-gray-400 font-geist mt-1.5 leading-relaxed">
+                    Specify the business or marketing objective of this post.
+                    This dynamically weights readability & SEO health scores.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {CONTENT_GOALS.filter((g) =>
+                    activeTypeConfig?.suggestedGoals.includes(g.value),
+                  ).map((g) => {
+                    const isSuggested = activeTypeConfig?.suggestedGoals
+                      .slice(0, 2)
+                      .includes(g.value);
+
+                    return (
+                      <button
+                        key={g.value}
+                        className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 transition-all text-left relative cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                          contentGoal === g.value
+                            ? "border-[#FF5B04] bg-white shadow-sm"
+                            : "border-black/5 bg-white hover:border-[#FF5B04]/40"
+                        }`}
+                        onClick={() => setContentGoal(g.value)}
+                        onMouseEnter={() => setHoveredGoal(g.value)}
+                        onMouseLeave={() => setHoveredGoal(null)}
+                      >
+                        {isSuggested && (
+                          <span className="absolute top-3 right-3 text-[8px] font-bold font-jetbrains-mono uppercase bg-green-50 text-green-600 px-2 py-0.5 rounded-full border border-green-200">
+                            Suggested
+                          </span>
+                        )}
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              contentGoal === g.value
+                                ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                                : "bg-black/5 text-gray-500"
+                            }`}
+                          >
+                            <CosIcon name={g.icon} size={14} />
+                          </div>
+                          <p
+                            className={`text-[13px] font-bold font-geist ${contentGoal === g.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                          >
+                            {g.label}
+                          </p>
+                        </div>
+                        <p className="text-[10px] text-gray-400 font-geist leading-snug line-clamp-2">
+                          {g.description}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Right Column: Dynamic Strategist Board */}
+              <div className="md:col-span-4 h-full bg-white border border-black/5 p-6 rounded-3xl sticky top-24 space-y-4 shadow-sm animate-in slide-in-from-right-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs">🎯</span>
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
+                    AI Strategy Tuning
+                  </p>
+                </div>
+                <div className="space-y-2 border-b border-black/[0.03] pb-4">
+                  <h3 className="text-base font-extrabold font-geist text-gray-800 flex items-center gap-1.5">
+                    {currentGoalConfig && <CosIcon name={currentGoalConfig.icon} size={18} className="text-[#FF5B04]" />}
+                    {goalExplanation.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 font-geist leading-relaxed">
+                    {goalExplanation.desc}
+                  </p>
+                </div>
+                <div className="space-y-2 bg-black/[0.01] border border-black/[0.02] p-4 rounded-2xl">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
+                    🧠 Copilot System Focus
+                  </span>
+                  <p className="text-[10px] text-gray-600 font-geist leading-relaxed">
+                    {goalExplanation.aiFocus}
+                  </p>
+                </div>
+                <p className="text-[9px] text-[#FF5B04] font-semibold font-jetbrains-mono italic pt-2">
+                  *Your Content Health tab weights will automatically sync to
+                  prioritize metrics matching this goal.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ───────────────────────────────────────────────────────────────────
+              STEP 3: WORKSPACE PREVIEW & CAROUSEL TUTORIAL
+          ─────────────────────────────────────────────────────────────────── */}
+          {wizardStep === 3 && (
+            <div className="space-y-5 animate-in slide-in-from-right-4 duration-200">
+              <div className="space-y-1">
+                <h2 className="text-2xl font-extrabold font-geist text-gray-900 leading-tight">
+                  Your Workspace is Ready! 🎉
+                </h2>
+                <p className="text-sm text-gray-400 font-geist leading-relaxed">
+                  Here's a quick tour of how your workspace is calibrated for this post.
+                </p>
+              </div>
+
+              {/* Full-width Premium Carousel */}
+              <WorkspaceTutorialCarousel />
+
+              {/* Strategy Configuration Summary */}
+              <div className="bg-white border border-black/[0.03] rounded-2xl p-3 flex items-center justify-between text-left shadow-sm">
+                <span className="text-[10px] font-bold text-gray-400 font-jetbrains-mono uppercase tracking-wider">
+                  calibrated layout
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-orange-50 border border-orange-100 text-[10px] font-semibold text-gray-700">
+                    {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={11} className="text-[#FF5B04]" />}
+                    {activeTypeConfig?.label}
+                  </span>
+                  <span className="text-gray-300 text-xs">×</span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#FF5B04]/5 border border-[#FF5B04]/10 text-[10px] font-semibold text-gray-700">
+                    {activeGoalConfig && <CosIcon name={activeGoalConfig.icon} size={11} className="text-[#FF5B04]" />}
+                    {activeGoalConfig?.label}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Viewport-locked Bottom Actions Footer (Always Visible) */}
+        <div className="fixed bottom-0 left-0 lg:left-60 right-0 bg-white/90 backdrop-blur-md border-t border-black/5 px-4 lg:px-8 py-3 lg:py-4 flex items-center justify-between z-30 shadow-[0_-4px_24px_-4px_rgba(0,0,0,0.04)]">
+          {wizardStep === 1 && (
+            <>
+              <button
+                className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                onClick={() => router.push(getHref("/posts"))}
               >
-                <line x1="5" x2="19" y1="12" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </button>
-          </div>
+                Cancel
+              </button>
+              <button
+                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                style={{ background: "#FF5B04" }}
+                onClick={() => {
+                  setWizardStep(2);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                Continue to Goal
+                <svg
+                  fill="none"
+                  height="12"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="12"
+                  className="inline"
+                >
+                  <line x1="5" x2="19" y1="12" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {wizardStep === 2 && (
+            <>
+              <button
+                className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                onClick={() => {
+                  setWizardStep(1);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                ← Back to Archetype
+              </button>
+              <button
+                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                style={{ background: "#FF5B04" }}
+                onClick={() => {
+                  setWizardStep(3);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                Configure Workspace
+                <svg
+                  fill="none"
+                  height="12"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="12"
+                  className="inline"
+                >
+                  <line x1="5" x2="19" y1="12" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {wizardStep === 3 && (
+            <>
+              <button
+                className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                onClick={() => {
+                  setWizardStep(2);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                ← Change Goal
+              </button>
+              <button
+                className="ml-auto flex items-center gap-2 text-xs font-bold font-geist text-white h-11 px-8 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #FF5B04 0%, #E04E00 100%)",
+                }}
+                onClick={() => {
+                  setTypeSelected(true);
+                  const PRESET_DEFAULTS: Record<string, string> = {
+                    blog: "seo-article",
+                    tutorial: "technical-deep-dive",
+                    "case-study": "case-study",
+                    "community-insight": "thought-leadership",
+                    "corporate-post": "thought-leadership",
+                    "product-review": "seo-article",
+                    "product-launch": "product-launch",
+                    listicle: "seo-article",
+                    comparison: "comparison",
+                    newsletter: "thought-leadership",
+                    "social-post": "linkedin-post",
+                  };
+                  const defaultPreset = PRESET_DEFAULTS[postType] || "";
+
+                  setActivePreset(defaultPreset);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                Start Writing!
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="14"
+                  className="inline"
+                >
+                  <line x1="5" x2="19" y1="12" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </>
+          )}
         </div>
       </div>
     );
@@ -6674,106 +7616,125 @@ const BlogEditor = () => {
     <div className="min-h-screen" style={{ background: "#F7F7F6" }}>
       {/* ── Top Bar ── */}
       <div
-        className="sticky top-0 z-50 flex items-center justify-between px-6 py-3"
+        className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 px-3 lg:px-6 py-2.5 lg:py-3"
         style={{
           background: "rgba(247,247,246,0.95)",
           borderBottom: "1px solid rgba(0,0,0,0.07)",
           backdropFilter: "blur(8px)",
         }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 lg:gap-3 min-w-0">
           <button
-            className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors flex-shrink-0"
             onClick={() => navigateSafely(getHref("/posts"))}
           >
-            <svg
-              fill="none"
-              height="14"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="14"
-            >
+            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
               <line x1="19" x2="5" y1="12" y2="12" />
               <polyline points="12 19 5 12 12 5" />
             </svg>
-            Posts
+            <span className="hidden sm:inline">Posts</span>
           </button>
-          <span className="text-gray-200">/</span>
-          <span className="text-sm font-medium font-geist text-gray-900">
+          <span className="text-gray-200 hidden sm:inline">/</span>
+          <span className="text-sm font-medium font-geist text-gray-900 truncate">
             New Post
           </span>
-          {/* Locked type badge */}
-          <span
-            className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
-            style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
-            title="Post type is locked for this draft"
-          >
-            <svg
-              fill="none"
-              height="10"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              width="10"
+          {/* Locked type badge & help trigger — hidden on small screens */}
+          <div className="hidden md:flex items-center gap-2">
+            <span
+              className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
+              style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
+              title="Post type and goal are locked for this draft"
             >
-              <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            {selectedTypeInfo.label}
-          </span>
+              <svg fill="none" height="10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="10">
+                <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              {(() => {
+                const ptConfig = getPostTypeConfig(postType);
+                const gConfig = getGoalConfig(contentGoal);
+                return (
+                  <span className="flex items-center gap-1">
+                    {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
+                    <span>{ptConfig?.label}</span>
+                    <span className="mx-0.5">×</span>
+                    {gConfig && <CosIcon name={gConfig.icon} size={10} />}
+                    <span>{gConfig?.label}</span>
+                  </span>
+                );
+              })()}
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsHelpModalOpen(true)}
+              className="w-6 h-6 rounded-full flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-[#FF5B04] hover:bg-orange-50 hover:border-orange-200 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold text-xs"
+              title="Workspace Tutorial"
+            >
+              ?
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 lg:gap-2 flex-shrink-0">
           <span
-            className="text-xs font-geist font-medium transition-colors"
+            className="text-xs font-geist font-medium transition-colors hidden sm:inline"
             style={{ color: statusColor[saveStatus] ?? "#6b7280" }}
           >
             {saveStatus}
           </span>
           <button
-            className={`h-9 px-4 rounded-xl text-sm font-geist font-medium flex items-center gap-1.5 transition-all ${
+            disabled={!title.trim() || !editor || editor.isEmpty}
+            className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:bg-black/5 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none ${
               showPreview
                 ? "bg-[#FF5B04] text-white"
                 : "bg-black/5 text-gray-600 hover:bg-black/10"
             }`}
             onClick={() => setShowPreview((v) => !v)}
           >
-            <svg
-              fill="none"
-              height="13"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              width="13"
-            >
+            <svg fill="none" height="13" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="13">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
-            {showPreview ? "Exit Preview" : "Preview"}
+            <span className="hidden sm:inline">{showPreview ? "Exit Preview" : "Preview"}</span>
           </button>
+          {/* Mobile sidebar toggle */}
+          {!showPreview && (
+            <button
+              className="lg:hidden h-8 px-2.5 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs font-geist font-medium transition-all"
+              onClick={() => setIsSidebarOpen((v) => !v)}
+            >
+              <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+                <rect height="18" rx="2" width="18" x="3" y="3" />
+                <line x1="3" x2="21" y1="9" y2="9" />
+                <line x1="9" x2="9" y1="21" y2="9" />
+              </svg>
+              <span className="hidden sm:inline">Settings</span>
+            </button>
+          )}
           <Button
-            className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
-            disabled={isSaving}
+            className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl bg-black/5 text-gray-700 font-medium disabled:opacity-40 disabled:bg-black/5 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none"
+            disabled={isSaving || !title.trim() || !editor || editor.isEmpty}
             variant="flat"
             onClick={handleSaveDraft}
           >
-            Save Draft
+            <span className="hidden sm:inline">Save Draft</span>
+            <span className="sm:hidden">Save</span>
           </Button>
-          <Button
-            className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
-            disabled={isSaving}
-            isLoading={isSaving}
-            style={{ background: "#FF5B04" }}
-            onClick={handlePublish}
-          >
-            Publish
-          </Button>
+          {(() => {
+            const isDisabled = isSaving || !title.trim() || !editor || editor.isEmpty;
+            return (
+              <Button
+                className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"
+                disabled={isDisabled}
+                isLoading={isSaving}
+                style={{
+                  background: isDisabled ? "rgba(0,0,0,0.06)" : "#FF5B04",
+                  color: isDisabled ? "#a1a1aa" : "white"
+                }}
+                onClick={handlePublish}
+              >
+                Publish
+              </Button>
+            );
+          })()}
         </div>
       </div>
 
@@ -6782,6 +7743,8 @@ const BlogEditor = () => {
         <FormattingToolbar
           activePreset={activePreset}
           editor={editor}
+          features={getFeatures(postType)}
+          postType={postType}
           onCopilotClick={() => setIsCopilotOpen(true)}
           onLinkClick={() => {
             editor.chain().focus().extendMarkRange("link").run();
@@ -6793,7 +7756,7 @@ const BlogEditor = () => {
       )}
 
       {/* ── Two-column Layout ── */}
-      <div className="flex gap-6 px-6 pb-6 pt-2 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-stretch lg:items-start">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -6850,7 +7813,7 @@ const BlogEditor = () => {
                 </label>
               </div>
             ) : (
-              <label className="flex items-center gap-2 px-10 pt-6 pb-2 cursor-pointer group w-fit">
+              <label className="flex items-center gap-2 px-4 lg:px-10 pt-6 pb-2 cursor-pointer group w-fit">
                 <svg
                   className="group-hover:stroke-[#FF5B04] transition-colors"
                   fill="none"
@@ -6882,53 +7845,85 @@ const BlogEditor = () => {
             <div
               className={
                 bannerImage
-                  ? "px-14 pt-6 pb-4 relative"
-                  : "px-14 pt-4 pb-4 relative"
+                  ? "px-4 lg:px-14 pt-6 pb-4 relative"
+                  : "px-4 lg:px-14 pt-4 pb-4 relative"
               }
             >
-              <div className="flex items-center gap-3">
-                <input
-                  className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-                  placeholder="Post title…"
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <button
-                  className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
-                  type="button"
-                  onClick={() => {
-                    setIsTitleModalOpen(true);
-                  }}
-                >
-                  <svg
-                    fill="none"
-                    height="11"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    width="11"
+              {postType === "social-post" ? (
+                <div className="flex flex-col gap-2 p-4 rounded-2xl bg-black/[0.015] border border-black/5 backdrop-blur-sm shadow-sm transition-all hover:bg-black/[0.025] hover:border-black/10">
+                  <div className="flex items-center gap-2 text-xs font-bold text-gray-400 font-geist select-none uppercase tracking-wider">
+                    <CosIcon name="link" size={12} className="text-gray-400" />
+                    <span>Internal Social Draft Name (dashboard only):</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <input
+                      className="w-full text-base font-bold font-geist border-none outline-none bg-transparent text-gray-800 placeholder-gray-300"
+                      placeholder="e.g. LinkedIn launch thread..."
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                    {title === "" && (
+                      <button
+                        className="flex-shrink-0 text-[10px] font-bold font-geist text-[#FF5B04] hover:underline cursor-pointer"
+                        type="button"
+                        onClick={() => {
+                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`;
+
+                          setTitle(defaultTitle);
+                        }}
+                      >
+                        Auto-fill Name
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <input
+                    className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                    placeholder="Post title…"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <button
+                    className="flex-shrink-0 w-fit text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+                    type="button"
+                    onClick={() => {
+                      setIsTitleModalOpen(true);
+                    }}
                   >
-                    <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                  </svg>
-                  AI Assistant
-                </button>
-              </div>
+                    <svg
+                      fill="none"
+                      height="11"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      width="11"
+                    >
+                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                    </svg>
+                    AI Assistant
+                  </button>
+                </div>
+              )}
             </div>
 
             <div
-              className="h-px mx-14"
+              className="h-px mx-4 lg:mx-14"
               style={{ background: "rgba(0,0,0,0.06)" }}
             />
 
             {/* Editor area */}
-            <div ref={editorRef} className="relative px-14 py-4">
+            <div ref={editorRef} className="relative px-4 lg:px-14 py-4">
               {/* Floating Block Inserter */}
               <FloatingBlockInserter
                 editor={editor}
                 imageUploadRef={inlineImageUploadRef}
+                postType={postType}
                 onImageUrl={() => setShowImageUrlModal(true)}
                 onVideoEmbed={() => setShowVideoModal(true)}
               />
@@ -6951,6 +7946,7 @@ const BlogEditor = () => {
                 imageUploadRef={inlineImageUploadRef}
                 isOpen={slashMenuOpen}
                 position={slashMenuPosition}
+                postType={postType}
                 onClose={() => setSlashMenuOpen(false)}
                 onImageUrl={() => {
                   setSlashMenuOpen(false);
@@ -6967,25 +7963,62 @@ const BlogEditor = () => {
 
         {/* ── Settings Sidebar — hidden in immersive preview mode ── */}
         {!showPreview && (
-          <div className="w-72 flex-shrink-0 space-y-4">
+          <>
+            {/* Mobile overlay backdrop */}
+            {isSidebarOpen && (
+              <div
+                className="fixed inset-0 bg-black/30 z-[80] lg:hidden"
+                onClick={() => setIsSidebarOpen(false)}
+              />
+            )}
+
+            {/* Sidebar panel */}
+            <div
+              className={`
+                fixed lg:relative right-0 top-0 bottom-0 z-[90] lg:z-auto
+                w-full lg:w-72 flex-shrink-0
+                bg-[#F7F7F6] lg:bg-transparent
+                flex flex-col
+                transition-transform duration-300 ease-in-out
+                lg:translate-x-0
+                ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}
+                overflow-y-auto lg:overflow-visible
+                space-y-4
+                px-4 lg:px-0
+                shadow-2xl lg:shadow-none
+              `}
+            >
+              {/* Mobile drawer header */}
+              <div className="lg:hidden flex items-center justify-between h-14 border-b border-black/5 -mx-4 px-4 bg-white flex-shrink-0">
+                <span className="text-xs font-jetbrains-mono font-bold uppercase tracking-wider text-gray-800">
+                  Post Settings
+                </span>
+                <button
+                  className="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-gray-500 transition-colors"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
+                </button>
+              </div>
             {/* Sidebar Tab Navigation */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
-              {(
-                [
-                  { key: "content", label: "Content" },
-                  { key: "seo", label: "SEO" },
-                  { key: "ai", label: "AI Tools" },
-                  { key: "distribute", label: "Distribute" },
-                ] as const
-              ).map(({ key, label }) => (
+            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden flex-shrink-0">
+              {[
+                { key: "content", label: postType === "social-post" ? "Narrative" : "Content" },
+                ...(getFeatures(postType).seoPanel
+                  ? [{ key: "seo", label: "SEO" }]
+                  : []),
+                { key: "ai", label: "AI Tools" },
+                { key: "health", label: "Health" },
+                { key: "distribute", label: "Distribute" },
+              ].map(({ key, label }) => (
                 <button
                   key={key}
-                  className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
+                  className={`flex-1 min-w-0 px-1 lg:px-0 py-2.5 text-[8.5px] xs:text-[9px] lg:text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
                     sidebarTab === key
                       ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
                       : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
                   }`}
-                  onClick={() => setSidebarTab(key)}
+                  onClick={() => setSidebarTab(key as any)}
                 >
                   {label}
                 </button>
@@ -6995,180 +8028,359 @@ const BlogEditor = () => {
             {/* ── Content Tab ── */}
             {sidebarTab === "content" && (
               <>
-                {/* Analytics Card */}
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-                    Analytics
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-gray-900">
-                        {editorStats.words}
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Words
-                      </div>
-                    </div>
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-gray-900">
-                        {editorStats.characters}
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Characters
-                      </div>
-                    </div>
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-gray-900">
-                        {editorStats.paragraphs}
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Paragraphs
-                      </div>
-                    </div>
-                    <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-                      <div className="text-2xl font-bold font-geist text-[#FF5B04]">
-                        {editorStats.readTime} min
-                      </div>
-                      <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                        Read Time
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Writing Goal Progress */}
-                  <div className="mt-3.5 pt-3 border-t border-black/5">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-[10px] font-geist text-gray-500 font-medium">
-                        Writing Goal
-                      </span>
-                      <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                        {Math.min(
-                          100,
-                          Math.round((editorStats.words / 500) * 100),
-                        )}
-                        % ({editorStats.words}/500 words)
-                      </span>
-                    </div>
-                    <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-500 ease-out"
-                        style={{
-                          width: `${Math.min(100, (editorStats.words / 500) * 100)}%`,
-                          background: "#FF5B04",
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Excerpt card */}
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <div className="flex justify-between items-center mb-3">
+                {/* Feed Guardrails or Analytics Card */}
+                {postType === "social-post" ? (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
                     <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                      Excerpt
+                      Feed Guardrails
                     </p>
-                    <button
-                      className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                      onClick={() => {
-                        if (!editor || editor.isEmpty) {
-                          setValidationError(
-                            "Please write some content first so the AI can summarize it.",
-                          );
-
-                          return;
-                        }
-                        setIsExcerptModalOpen(true);
-                      }}
-                    >
-                      <svg
-                        fill="none"
-                        height="10"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        width="10"
-                      >
-                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                      </svg>
-                      AI Assistant
-                    </button>
-                  </div>
-                  <textarea
-                    className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
-                    placeholder="Short summary shown in blog listings…"
-                    style={{ minHeight: 80 }}
-                    value={excerpt}
-                    onChange={(e) => setExcerpt(e.target.value)}
-                  />
-                </div>
-
-                {/* Tags card */}
-                <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                  <div className="flex justify-between items-center mb-3">
-                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                      Tags
-                    </p>
-                    <button
-                      className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
-                      type="button"
-                      onClick={() => {
-                        setIsTagsModalOpen(true);
-                      }}
-                    >
-                      <svg
-                        fill="none"
-                        height="10"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        width="10"
-                      >
-                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                      </svg>
-                      AI Assistant
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                        style={{ background: "#FFF0E8", color: "#FF5B04" }}
-                      >
-                        {tag}
+                    
+                    {/* Platform switcher */}
+                    <div className="flex bg-black/5 p-1 rounded-xl">
+                      {(["linkedin", "x"] as const).map((dest) => (
                         <button
-                          className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                          onClick={() => setTags(tags.filter((t) => t !== tag))}
+                          key={dest}
+                          type="button"
+                          onClick={() => setSocialDestination(dest)}
+                          className={`flex-1 py-1 text-xs font-semibold rounded-lg transition-all ${
+                            socialDestination === dest
+                              ? "bg-white text-gray-900 shadow-sm"
+                              : "text-gray-500 hover:text-gray-800"
+                          }`}
                         >
-                          <svg
-                            fill="none"
-                            height="9"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            viewBox="0 0 24 24"
-                            width="9"
-                          >
-                            <line x1="18" x2="6" y1="6" y2="18" />
-                            <line x1="6" x2="18" y1="6" y2="18" />
-                          </svg>
+                          {SOCIAL_DESTINATIONS[dest].label}
                         </button>
-                      </span>
-                    ))}
+                      ))}
+                    </div>
+
+                    {/* Character limit bar */}
+                    <div>
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[10px] font-geist text-gray-500 font-medium">
+                          Characters
+                        </span>
+                        <span className={`text-[10px] font-jetbrains-mono font-semibold ${
+                          editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                            ? "text-red-500 font-bold"
+                            : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                            ? "text-amber-500"
+                            : "text-gray-400"
+                        }`}>
+                          {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
+                        </span>
+                      </div>
+                      <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${
+                            editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                              ? "bg-red-500"
+                              : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                              ? "bg-amber-500"
+                              : "bg-[#FF5B04]"
+                          }`}
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Whitespace Spacing Advisor */}
+                    {editorStats.characters > 0 && (
+                      <div className="pt-3 border-t border-black/5">
+                        {(() => {
+                          const text = editor?.getText() || "";
+                          const paragraphsText = text.split("\n").map(p => p.trim()).filter(Boolean);
+                          const hasLongParagraph = paragraphsText.some(p => p.length > 240);
+                          if (hasLongParagraph) {
+                            return (
+                              <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
+                              <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
+                                <div>
+                                  <p className="text-[10px] font-bold text-amber-800">
+                                    Whitespace Spacing Advisor
+                                  </p>
+                                  <p className="text-[10px] text-amber-700 leading-normal mt-0.5">
+                                    Feeds favor breathing room. Split this into short 1-2 sentence paragraphs for better mobile reading.
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          }
+                          return (
+                            <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
+                              <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
+                              <div>
+                                <p className="text-[10px] font-bold text-green-800">
+                                  Spacing Calibrated
+                                </p>
+                                <p className="text-[10px] text-green-700 leading-normal mt-0.5">
+                                  Excellent spacing! Paragraphs are airy and reader-friendly.
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    )}
                   </div>
-                  <input
-                    className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-                    placeholder="Add tag, press Enter…"
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={addTag}
-                  />
-                </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                    <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+                      Analytics
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-gray-900">
+                          {editorStats.words}
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Words
+                        </div>
+                      </div>
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-gray-900">
+                          {editorStats.characters}
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Characters
+                        </div>
+                      </div>
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-gray-900">
+                          {editorStats.paragraphs}
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Paragraphs
+                        </div>
+                      </div>
+                      <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
+                        <div className="text-2xl font-bold font-geist text-[#FF5B04]">
+                          {editorStats.readTime} min
+                        </div>
+                        <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
+                          Read Time
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Writing Goal Progress */}
+                    {(() => {
+                      const wordGoal = getPostTypeConfig(postType)?.minWordCount ?? 500;
+                      return (
+                        <div className="mt-3.5 pt-3 border-t border-black/5">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-[10px] font-geist text-gray-500 font-medium">
+                              Writing Goal
+                            </span>
+                            <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
+                              {Math.min(
+                                100,
+                                Math.round((editorStats.words / wordGoal) * 100),
+                              )}
+                              % ({editorStats.words}/{wordGoal} words)
+                            </span>
+                          </div>
+                          <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                            <div
+                              className="h-full rounded-full transition-all duration-500 ease-out"
+                              style={{
+                                width: `${Math.min(100, (editorStats.words / wordGoal) * 100)}%`,
+                                background: "#FF5B04",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
+
+                {/* Excerpt card - hidden for social posts */}
+                {postType !== "social-post" && (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                        Excerpt
+                      </p>
+                      <button
+                        className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+                        onClick={() => {
+                          if (!editor || editor.isEmpty) {
+                            setValidationError(
+                              "Please write some content first so the AI can summarize it.",
+                            );
+
+                            return;
+                          }
+                          setIsExcerptModalOpen(true);
+                        }}
+                      >
+                        <svg
+                          fill="none"
+                          height="10"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          width="10"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                        AI Assistant
+                      </button>
+                    </div>
+                    <textarea
+                      className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 placeholder-gray-300"
+                      placeholder="Short summary shown in blog listings…"
+                      style={{ minHeight: 80 }}
+                      value={excerpt}
+                      onChange={(e) => setExcerpt(e.target.value)}
+                    />
+                  </div>
+                )}
+
+                {/* Hashtag Assistant / Tags card */}
+                {postType === "social-post" ? (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                        Hashtag Assistant
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 min-h-[24px]">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                          style={{ background: "#FFF0E8", color: "#FF5B04" }}
+                        >
+                          {tag}
+                          <button
+                            type="button"
+                            className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                            onClick={() => setTags(tags.filter((t) => t !== tag))}
+                          >
+                            <svg
+                              fill="none"
+                              height="9"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                              width="9"
+                            >
+                              <line x1="18" x2="6" y1="6" y2="18" />
+                              <line x1="6" x2="18" y1="6" y2="18" />
+                            </svg>
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
+                        Suggestions
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {SOCIAL_DESTINATIONS[socialDestination].suggestions.map((suggestion) => {
+                          const isSelected = tags.includes(suggestion);
+                          return (
+                            <button
+                              key={suggestion}
+                              type="button"
+                              disabled={isSelected}
+                              onClick={() => appendHashtag(suggestion)}
+                              className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
+                                isSelected
+                                  ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                  : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04]"
+                              }`}
+                            >
+                              {suggestion}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <input
+                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+                      placeholder="Add tag, press Enter…"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={handleAddHashtag}
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
+                        Tags
+                      </p>
+                      <button
+                        className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#d946ef] transition-colors flex items-center gap-1 cursor-pointer"
+                        type="button"
+                        onClick={() => {
+                          setIsTagsModalOpen(true);
+                        }}
+                      >
+                        <svg
+                          fill="none"
+                          height="10"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          width="10"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                        AI Assistant
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
+                          style={{ background: "#FFF0E8", color: "#FF5B04" }}
+                        >
+                          {tag}
+                          <button
+                            className="opacity-60 hover:opacity-100 leading-none flex items-center"
+                            onClick={() => setTags(tags.filter((t) => t !== tag))}
+                          >
+                            <svg
+                              fill="none"
+                              height="9"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              viewBox="0 0 24 24"
+                              width="9"
+                            >
+                              <line x1="18" x2="6" y1="6" y2="18" />
+                              <line x1="6" x2="18" y1="6" y2="18" />
+                            </svg>
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                    <input
+                      className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
+                      placeholder="Add tag, press Enter…"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={addTag}
+                    />
+                  </div>
+                )}
 
                 {/* Quick insert card */}
                 <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
@@ -7244,47 +8456,51 @@ const BlogEditor = () => {
                       </svg>
                       Embed video
                     </button>
-                    <button
-                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                      onClick={() =>
-                        editor.chain().focus().setHorizontalRule().run()
-                      }
-                    >
-                      <svg
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <line x1="3" x2="21" y1="12" y2="12" />
-                      </svg>
-                      Add divider
-                    </button>
-                    <button
-                      className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                      onClick={() =>
-                        editor.chain().focus().toggleCodeBlock().run()
-                      }
-                    >
-                      <svg
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <polyline points="16 18 22 12 16 6" />
-                        <polyline points="8 6 2 12 8 18" />
-                      </svg>
-                      Code block
-                    </button>
+                    {postType !== "social-post" && (
+                      <>
+                        <button
+                          className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                          onClick={() =>
+                            editor.chain().focus().setHorizontalRule().run()
+                          }
+                        >
+                          <svg
+                            fill="none"
+                            height="14"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="1.75"
+                            viewBox="0 0 24 24"
+                            width="14"
+                          >
+                            <line x1="3" x2="21" y1="12" y2="12" />
+                          </svg>
+                          Add divider
+                        </button>
+                        <button
+                          className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
+                          onClick={() =>
+                            editor.chain().focus().toggleCodeBlock().run()
+                          }
+                        >
+                          <svg
+                            fill="none"
+                            height="14"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="1.75"
+                            viewBox="0 0 24 24"
+                            width="14"
+                          >
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                          </svg>
+                          Code block
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               </>
@@ -7513,144 +8729,255 @@ const BlogEditor = () => {
             {sidebarTab === "ai" && (
               <div className="space-y-3">
                 <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest px-1">
-                  AI Writing Tools
+                  {postType === "social-post" ? "Social AI Tools" : "AI Writing Tools"}
                 </p>
-                {[
-                  {
-                    key: "copilot",
-                    label: "AI Copilot",
-                    description:
-                      "Get AI suggestions and help with your content",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                      </svg>
-                    ),
-                    onClick: () => setIsCopilotOpen(true),
-                  },
-                  {
-                    key: "title",
-                    label: "AI Title",
-                    description: "Generate compelling post titles",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M4 6h16M4 12h16M4 18h7" />
-                      </svg>
-                    ),
-                    onClick: () => setIsTitleModalOpen(true),
-                  },
-                  {
-                    key: "excerpt",
-                    label: "AI Excerpt",
-                    description: "Auto-summarize your post content",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                        <line x1="16" x2="8" y1="13" y2="13" />
-                        <line x1="16" x2="8" y1="17" y2="17" />
-                      </svg>
-                    ),
-                    onClick: () => {
-                      if (!editor || editor.isEmpty) {
-                        setValidationError(
-                          "Please write some content first so the AI can summarize it.",
-                        );
 
-                        return;
-                      }
-                      setIsExcerptModalOpen(true);
+                {postType === "social-post" ? (
+                  // ── Social-post quick actions ──────────────────────────────
+                  [
+                    {
+                      key: "copilot",
+                      label: "AI Copilot",
+                      description: "Generate post content with AI",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                      ),
+                      onClick: () => setIsCopilotOpen(true),
                     },
-                  },
-                  {
-                    key: "tags",
-                    label: "AI Tags",
-                    description: "Generate relevant tags for your post",
-                    icon: (
-                      <svg
-                        fill="none"
-                        height="20"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.75"
-                        viewBox="0 0 24 24"
-                        width="20"
-                      >
-                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                        <line x1="7" x2="7.01" y1="7" y2="7" />
-                      </svg>
-                    ),
-                    onClick: () => setIsTagsModalOpen(true),
-                  },
-                ].map(({ key, label, description, icon, onClick }) => (
-                  <button
-                    key={key}
-                    className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
-                    onClick={onClick}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{
-                          background: "rgba(255,91,4,0.08)",
-                          color: "#FF5B04",
-                        }}
-                      >
-                        {icon}
+                    {
+                      key: "hook",
+                      label: "AI Hook",
+                      description: "Generate 3 scroll-stopping opening hooks",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M18.5 9.5a6 6 0 1 1-12 0 6 6 0 0 1 12 0z" />
+                          <path d="M12 15.5v6M8.5 18l3.5 3.5L15.5 18" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Generate 3 scroll-stopping opening hooks for my social post.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                    {
+                      key: "shorten",
+                      label: "Shorten to Limit",
+                      description: "Compress text to fit character limits",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M4 6h16M4 10h10M4 14h7" />
+                          <path d="m17 14 4 4-4 4" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Intelligently compress my text to fit within social media character limits while retaining the key message.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                    {
+                      key: "hashtags",
+                      label: "Hashtag Ideas",
+                      description: "Generate high-engagement hashtag recommendations",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <line x1="4" x2="20" y1="9" y2="9" />
+                          <line x1="4" x2="20" y1="15" y2="15" />
+                          <line x1="10" x2="8" y1="3" y2="21" />
+                          <line x1="16" x2="14" y1="3" y2="21" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Generate high-engagement hashtag recommendations matching the topic of this post.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                    {
+                      key: "rewrite",
+                      label: "Professional Rewrite",
+                      description: "Rewrite in a polished, engaging professional tone",
+                      icon: (
+                        <svg fill="none" height="20" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="20">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        setCopilotInitialPrompt("Rewrite this social post in a polished, engaging professional tone.");
+                        setIsCopilotOpen(true);
+                      },
+                    },
+                  ].map(({ key, label, description, icon, onClick }) => (
+                    <button
+                      key={key}
+                      className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
+                      onClick={onClick}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={{ background: "rgba(255,91,4,0.08)", color: "#FF5B04" }}
+                        >
+                          {icon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
+                            {label}
+                          </p>
+                          <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
+                            {description}
+                          </p>
+                        </div>
+                        <svg
+                          className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
+                          fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14"
+                        >
+                          <line x1="5" x2="19" y1="12" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
-                          {label}
-                        </p>
-                        <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
-                          {description}
-                        </p>
+                    </button>
+                  ))
+                ) : (
+                  // ── Blog / Article quick actions ───────────────────────────
+                  [
+                    {
+                      key: "copilot",
+                      label: "AI Copilot",
+                      description:
+                        "Get AI suggestions and help with your content",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                      ),
+                      onClick: () => setIsCopilotOpen(true),
+                    },
+                    {
+                      key: "title",
+                      label: "AI Title",
+                      description: "Generate compelling post titles",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M4 6h16M4 12h16M4 18h7" />
+                        </svg>
+                      ),
+                      onClick: () => setIsTitleModalOpen(true),
+                    },
+                    {
+                      key: "excerpt",
+                      label: "AI Excerpt",
+                      description: "Auto-summarize your post content",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                          <line x1="16" x2="8" y1="13" y2="13" />
+                          <line x1="16" x2="8" y1="17" y2="17" />
+                        </svg>
+                      ),
+                      onClick: () => {
+                        if (!editor || editor.isEmpty) {
+                          setValidationError(
+                            "Please write some content first so the AI can summarize it.",
+                          );
+
+                          return;
+                        }
+                        setIsExcerptModalOpen(true);
+                      },
+                    },
+                    {
+                      key: "tags",
+                      label: "AI Tags",
+                      description: "Generate relevant tags for your post",
+                      icon: (
+                        <svg
+                          fill="none"
+                          height="20"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.75"
+                          viewBox="0 0 24 24"
+                          width="20"
+                        >
+                          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                          <line x1="7" x2="7.01" y1="7" y2="7" />
+                        </svg>
+                      ),
+                      onClick: () => setIsTagsModalOpen(true),
+                    },
+                  ].map(({ key, label, description, icon, onClick }) => (
+                    <button
+                      key={key}
+                      className="w-full bg-white rounded-2xl border border-black/5 shadow-sm p-4 text-left hover:border-[#FF5B04]/30 hover:bg-orange-50/30 transition-all group"
+                      onClick={onClick}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={{
+                            background: "rgba(255,91,4,0.08)",
+                            color: "#FF5B04",
+                          }}
+                        >
+                          {icon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold font-geist text-gray-800 group-hover:text-[#FF5B04] transition-colors">
+                            {label}
+                          </p>
+                          <p className="text-xs font-geist text-gray-400 mt-0.5 leading-snug">
+                            {description}
+                          </p>
+                        </div>
+                        <svg
+                          className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
+                          fill="none"
+                          height="14"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          width="14"
+                        >
+                          <line x1="5" x2="19" y1="12" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
                       </div>
-                      <svg
-                        className="flex-shrink-0 text-gray-300 group-hover:text-[#FF5B04] transition-colors mt-1"
-                        fill="none"
-                        height="14"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        width="14"
-                      >
-                        <line x1="5" x2="19" y1="12" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  ))
+                )}
 
                 {/* Co-Pilot real-time recommendations */}
                 {copilotWarnings.length > 0 && (
@@ -7664,9 +8991,7 @@ const BlogEditor = () => {
                         className="bg-amber-50/50 border border-amber-100 rounded-xl p-3.5 space-y-1.5 shadow-sm"
                       >
                         <div className="flex items-start gap-2">
-                          <span className="text-amber-500 font-bold text-xs mt-0.5">
-                            ⚠️
-                          </span>
+                          <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-gray-800 capitalize leading-snug">
                               {w.type} Alert
@@ -7695,6 +9020,21 @@ const BlogEditor = () => {
                 )}
               </div>
             )}
+            {/* ── Health Tab ── */}
+            {sidebarTab === "health" && (
+              <ContentHealthPanel
+                bannerImage={bannerImage}
+                contentHtml={editor?.getHTML() || ""}
+                excerpt={excerpt}
+                featuredImage={featuredImage}
+                goal={contentGoal}
+                postType={postType}
+                seo={seoData}
+                tags={tags}
+                title={title}
+              />
+            )}
+
             {/* ── Distribute Tab ── */}
             {sidebarTab === "distribute" && (
               <DistributionPanel
@@ -7704,10 +9044,23 @@ const BlogEditor = () => {
                 blogPublished={saveStatus === "Published"}
                 blogSeo={seoData}
                 blogTags={tags}
+                blogTitle={title}
+                contentGoal={contentGoal}
                 distributionRecords={distRecords}
+                postType={postType}
+                socialDestination={socialDestination}
+                blogRepurposedOutputs={repurposedOutputs}
+                onUpdateRepurposedOutputs={setRepurposedOutputs}
+                onUpdateExcerpt={setExcerpt}
+                onUpdateTags={setTags}
+                onUpdateSeo={setSeoData}
                 onEnsureSaved={ensureSaved}
                 onNavigateToSEO={() => setSidebarTab("seo")}
-                onTriggerCopilotAI={() => setIsCopilotOpen(true)}
+                onTriggerCopilotAI={(preset, prompt) => {
+                  if (preset) setActivePreset(preset);
+                  if (prompt) setCopilotInitialPrompt(prompt);
+                  setIsCopilotOpen(true);
+                }}
                 onTriggerExcerptAI={() => {
                   if (!editor || editor.isEmpty) {
                     setValidationError(
@@ -7722,7 +9075,8 @@ const BlogEditor = () => {
                 onUpdateRecords={(recs) => setDistRecords(recs)}
               />
             )}
-          </div>
+            </div>
+          </>
         )}
       </div>
 
@@ -7733,13 +9087,21 @@ const BlogEditor = () => {
         postTitle={title}
         postType={postType}
         preset={activePreset}
-        onClose={() => setIsCopilotOpen(false)}
+        initialPrompt={copilotInitialPrompt}
+        onClose={() => {
+          setIsCopilotOpen(false);
+          setCopilotInitialPrompt("");
+        }}
       />
-      <RepurposingDrawer
-        isOpen={isRepurposeDrawerOpen}
-        postId={savedBlogId || ""}
-        onClose={() => setIsRepurposeDrawerOpen(false)}
-      />
+      {/* RepurposingDrawer is intentionally hidden for social-post — repurposing
+          a social post into another social format is handled by AI Copilot instead */}
+      {postType !== "social-post" && (
+        <RepurposingDrawer
+          isOpen={isRepurposeDrawerOpen}
+          postId={savedBlogId || ""}
+          onClose={() => setIsRepurposeDrawerOpen(false)}
+        />
+      )}
       <AIExcerptModal
         editor={editor}
         excerpt={excerpt}
@@ -7872,6 +9234,54 @@ const BlogEditor = () => {
         }}
         onClose={() => setShowSEOModal(false)}
       />
+
+      {/* Help Tutorial Modal */}
+      {isHelpModalOpen && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-all duration-300"
+          onClick={() => setIsHelpModalOpen(false)}
+        >
+          <div
+            className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-black/5 p-6 w-full max-w-2xl animate-in fade-in zoom-in duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-md bg-orange-100 text-[#FF5B04] text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider">
+                  Quick Guide
+                </span>
+                <h3 className="text-base font-bold font-geist text-gray-800">
+                  Workspace Tutorial
+                </h3>
+              </div>
+              <button
+                className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-all cursor-pointer"
+                onClick={() => setIsHelpModalOpen(false)}
+              >
+                <svg
+                  fill="none"
+                  height="16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="16"
+                >
+                  <line x1="18" x2="6" y1="6" y2="18" />
+                  <line x1="6" x2="18" y1="6" y2="18" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Tutorial Carousel */}
+            <div className="bg-white/50 p-1.5 rounded-3xl border border-black/[0.02]">
+              <WorkspaceTutorialCarousel />
+            </div>
+          </div>
+        </div>
+      )}
       {/* ── Styles ── */}
       <style>{`
         @keyframes fadeSlideIn {
