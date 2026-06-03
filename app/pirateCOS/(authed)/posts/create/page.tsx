@@ -7,6 +7,7 @@ import React, {
   useRef,
   useMemo,
 } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -6110,6 +6111,49 @@ const SOCIAL_DESTINATIONS: Record<SocialDestination, SocialDestinationConfig> = 
   },
 };
 
+const TUTORIAL_SLIDES = [
+  {
+    title: "1. Dynamic Focus Mode",
+    desc: "Your workspace adapts automatically to your selected archetype. Unused tabs, formatting limits, and sidebar options are hidden to keep you fully focused on creating.",
+    icon: "tasks",
+    badge: "Focus Mode",
+    bg: "from-orange-50/50 via-white to-amber-50/20",
+    border: "border-orange-100",
+    textClass: "text-[#FF5B04]",
+    bgClass: "bg-[#FF5B04]/10",
+  },
+  {
+    title: "2. Integrated Brand Brain",
+    desc: "Your Brand Voice parameters, target vocabulary, and forbidden terms are automatically injected into the AI writing copilot to maintain strict stylistic alignment.",
+    icon: "bot",
+    badge: "Brand Guard",
+    bg: "from-purple-50/50 via-white to-orange-50/20",
+    border: "border-purple-100",
+    textClass: "text-purple-600",
+    bgClass: "bg-purple-50",
+  },
+  {
+    title: "3. Calibrated SEO & Health",
+    desc: "The Content Health panel tracks readability, paragraph structure, and keyword density. Metric weights are dynamically balanced to align with your chosen business goal.",
+    icon: "traffic",
+    badge: "SEO Insights",
+    bg: "from-emerald-50/50 via-white to-teal-50/20",
+    border: "border-emerald-100",
+    textClass: "text-emerald-600",
+    bgClass: "bg-emerald-50",
+  },
+  {
+    title: "4. Cross-Channel Repurposing",
+    desc: "Convert your finished article into custom social updates (LinkedIn summaries, X/Twitter posts, newsletters) instantly using the workspace distribution panel.",
+    icon: "conversion",
+    badge: "Multi-Channel",
+    bg: "from-blue-50/50 via-white to-indigo-50/20",
+    border: "border-blue-100",
+    textClass: "text-blue-600",
+    bgClass: "bg-blue-50",
+  },
+];
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditor = () => {
   const isSubdomain =
@@ -6143,6 +6187,8 @@ const BlogEditor = () => {
   const [postType, setPostType] = useState<string>("blog");
   const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
   const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [typeSelected, setTypeSelected] = useState(false);
   const [hoveredType, setHoveredType] = useState<string | null>(null);
   const [hoveredGoal, setHoveredGoal] = useState<string | null>(null);
@@ -6233,6 +6279,28 @@ const BlogEditor = () => {
   useEffect(() => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
+
+  // Onboarding Guided Wizard: Carousel auto-play effect with story-style progress indicator
+  useEffect(() => {
+    if (wizardStep !== 3 || typeSelected) return;
+
+    setProgress(0);
+    const intervalTime = 100; // tick every 100ms
+    const totalTime = 6000;   // 6 seconds per slide
+    const increment = (intervalTime / totalTime) * 100;
+
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          setCurrentSlide((slide) => (slide === TUTORIAL_SLIDES.length - 1 ? 0 : slide + 1));
+          return 0;
+        }
+        return prev + increment;
+      });
+    }, intervalTime);
+
+    return () => clearInterval(timer);
+  }, [wizardStep, typeSelected, currentSlide]);
 
   // Programmatically reset active sidebar tab to "content" if the active tab is hidden (e.g. SEO panel becomes false)
   useEffect(() => {
@@ -7035,7 +7103,7 @@ const BlogEditor = () => {
           )}
 
           {/* ───────────────────────────────────────────────────────────────────
-              STEP 3: WORKSPACE PREVIEW & CONFIRMATION
+              STEP 3: WORKSPACE PREVIEW & CAROUSEL TUTORIAL
           ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 3 && (
             <div className="space-y-6 animate-in slide-in-from-right-4 duration-200">
@@ -7044,36 +7112,100 @@ const BlogEditor = () => {
                   Your Workspace is Ready!
                 </h2>
                 <p className="text-xs text-gray-400 font-geist leading-relaxed">
-                  Your personalized writing workspace has been configured. Let's make an impact!
+                  Quick interactive tour of how your workspace is customized for this post.
                 </p>
               </div>
 
-              {/* Large Strategic Badge Card */}
-              <div className="max-w-md mx-auto bg-gradient-to-br from-orange-50/50 to-purple-50/30 border border-orange-100 rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-sm space-y-4">
-                <div className="flex items-center gap-2.5 text-[#FF5B04]">
-                  {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={28} />}
-                  <span className="text-gray-300 text-lg">×</span>
-                  {activeGoalConfig && <CosIcon name={activeGoalConfig.icon} size={28} />}
-                </div>
-                <div>
-                  <p className="text-[9px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-wider">
-                    content strategy mapping
-                  </p>
-                  <h3 className="text-lg font-black text-gray-800 mt-1">
-                    {activeTypeConfig?.label} × {activeGoalConfig?.label}
-                  </h3>
-                </div>
-                <div className="w-full h-px bg-black/[0.04] my-1" />
-                <p className="text-xs text-gray-500 font-geist leading-relaxed px-4">
-                  Your writing environment is calibrated. AI outlines and copy rules are optimized to match your goals. Let's make an impact!
-                </p>
+              {/* Interactive Carousel Card */}
+              <div className="max-w-md mx-auto">
+                {(() => {
+                  const slide = TUTORIAL_SLIDES[currentSlide];
+                  return (
+                    <div className="w-full relative">
+                      <motion.div
+                        key={currentSlide}
+                        initial={{ opacity: 0, x: 15 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className={`w-full min-h-[170px] rounded-3xl p-6 flex flex-col justify-between shadow-md bg-gradient-to-br ${slide.bg} border ${slide.border} relative overflow-hidden`}
+                      >
+                        {/* Background Glow */}
+                        <div className={`absolute -right-10 -bottom-10 w-24 h-24 rounded-full filter blur-xl opacity-20 ${slide.bgClass}`} />
+                        
+                        <div className="space-y-3 relative z-10">
+                          <div className="flex items-center justify-between">
+                            <span className={`text-[9px] font-bold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full ${slide.bgClass} ${slide.textClass}`}>
+                              {slide.badge}
+                            </span>
+                            <div className={`p-1.5 rounded-lg ${slide.bgClass} ${slide.textClass}`}>
+                              <CosIcon name={slide.icon} size={15} />
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <h3 className="text-[14px] font-bold text-gray-900 font-geist">
+                              {slide.title}
+                            </h3>
+                            <p className="text-[11px] text-gray-500 leading-relaxed font-geist">
+                              {slide.desc}
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+
+                      {/* Navigation Controls */}
+                      <div className="flex items-center justify-center gap-3.5 mt-4">
+                        <button
+                          type="button"
+                          onClick={() => setCurrentSlide((prev) => (prev === 0 ? TUTORIAL_SLIDES.length - 1 : prev - 1))}
+                          className="w-7 h-7 rounded-xl flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-gray-800 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold"
+                        >
+                          ←
+                        </button>
+                        
+                        {/* Slide Dots Indicator */}
+                        <div className="flex items-center gap-1.5">
+                          {TUTORIAL_SLIDES.map((_, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => setCurrentSlide(idx)}
+                              className={`h-1 rounded-full transition-all duration-200 cursor-pointer ${
+                                currentSlide === idx ? "w-5 bg-[#FF5B04]" : "w-1 bg-black/[0.08] hover:bg-black/[0.15]"
+                              }`}
+                            />
+                          ))}
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => setCurrentSlide((prev) => (prev === TUTORIAL_SLIDES.length - 1 ? 0 : prev + 1))}
+                          className="w-7 h-7 rounded-xl flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-gray-800 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold"
+                        >
+                          →
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
 
-              {/* Warm encouraging quote */}
-              <p className="text-center text-[10px] text-gray-400 font-jetbrains-mono italic max-w-sm mx-auto">
-                "Writing is optimized, tools are focused, distractions are gone.
-                Perfect focus begins now."
-              </p>
+              {/* Strategy Configuration Summary */}
+              <div className="max-w-md mx-auto bg-white border border-black/[0.03] rounded-2xl p-3 flex items-center justify-between text-left shadow-sm">
+                <span className="text-[10px] font-bold text-gray-400 font-jetbrains-mono uppercase tracking-wider">
+                  calibrated layout
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-orange-50 border border-orange-100 text-[10px] font-semibold text-gray-700">
+                    {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={11} className="text-[#FF5B04]" />}
+                    {activeTypeConfig?.label}
+                  </span>
+                  <span className="text-gray-300 text-xs">×</span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#FF5B04]/5 border border-[#FF5B04]/10 text-[10px] font-semibold text-gray-700">
+                    {activeGoalConfig && <CosIcon name={activeGoalConfig.icon} size={11} className="text-[#FF5B04]" />}
+                    {activeGoalConfig?.label}
+                  </span>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -7091,7 +7223,10 @@ const BlogEditor = () => {
               <button
                 className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
                 style={{ background: "#FF5B04" }}
-                onClick={() => setWizardStep(2)}
+                onClick={() => {
+                  setWizardStep(2);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
               >
                 Continue to Goal
                 <svg
@@ -7116,14 +7251,20 @@ const BlogEditor = () => {
             <>
               <button
                 className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                onClick={() => setWizardStep(1)}
+                onClick={() => {
+                  setWizardStep(1);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
               >
                 ← Back to Archetype
               </button>
               <button
                 className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
                 style={{ background: "#FF5B04" }}
-                onClick={() => setWizardStep(3)}
+                onClick={() => {
+                  setWizardStep(3);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
               >
                 Configure Workspace
                 <svg
@@ -7148,7 +7289,10 @@ const BlogEditor = () => {
             <>
               <button
                 className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                onClick={() => setWizardStep(2)}
+                onClick={() => {
+                  setWizardStep(2);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
               >
                 ← Change Goal
               </button>
@@ -7176,6 +7320,7 @@ const BlogEditor = () => {
                   const defaultPreset = PRESET_DEFAULTS[postType] || "";
 
                   setActivePreset(defaultPreset);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
                 Start Writing!
