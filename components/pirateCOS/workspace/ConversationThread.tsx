@@ -63,7 +63,7 @@ export default function ConversationThread({
   return (
     <div className="relative border border-black/5 rounded-2xl bg-white shadow-sm flex flex-col min-h-[300px] max-h-[500px]">
       {/* Messages list */}
-      <div className={`flex-1 overflow-y-auto p-4 space-y-4 rounded-t-2xl ${!isProUser ? "filter blur-sm select-none pointer-events-none" : ""}`}>
+      <div className={`flex-1 ${messages.length > 0 ? "overflow-y-auto" : "overflow-hidden"} p-4 space-y-4 rounded-t-2xl ${!isProUser ? "filter blur-sm select-none pointer-events-none" : ""}`}>
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center p-6 text-gray-400 space-y-2">
             <CosIcon name="bot" size={28} className="text-gray-300 animate-bounce" />
