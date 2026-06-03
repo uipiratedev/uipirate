@@ -6527,6 +6527,7 @@ const BlogEditor = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<
     "content" | "seo" | "ai" | "distribute" | "health"
   >("content");
@@ -7702,6 +7703,20 @@ const BlogEditor = () => {
             </svg>
             {showPreview ? "Exit Preview" : "Preview"}
           </button>
+          {/* Mobile sidebar toggle — only visible on small screens */}
+          {!showPreview && (
+            <button
+              className="lg:hidden h-9 px-3 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-sm font-geist font-medium transition-all"
+              onClick={() => setIsSidebarOpen((v) => !v)}
+            >
+              <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14">
+                <rect height="18" rx="2" width="18" x="3" y="3" />
+                <line x1="3" x2="21" y1="9" y2="9" />
+                <line x1="9" x2="9" y1="21" y2="9" />
+              </svg>
+              Settings
+            </button>
+          )}
           <Button
             className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
             disabled={isSaving}
@@ -7740,7 +7755,7 @@ const BlogEditor = () => {
       )}
 
       {/* ── Two-column Layout ── */}
-      <div className="flex gap-6 px-6 pb-6 pt-2 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-start">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -7947,7 +7962,39 @@ const BlogEditor = () => {
 
         {/* ── Settings Sidebar — hidden in immersive preview mode ── */}
         {!showPreview && (
-          <div className="w-72 flex-shrink-0 space-y-4">
+          <>
+            {/* Mobile overlay backdrop */}
+            {isSidebarOpen && (
+              <div
+                className="fixed inset-0 bg-black/30 z-30 lg:hidden"
+                onClick={() => setIsSidebarOpen(false)}
+              />
+            )}
+
+            {/* Sidebar panel */}
+            <div
+              className={`
+                fixed lg:relative right-0 top-0 bottom-0 z-40 lg:z-auto
+                w-80 lg:w-72 flex-shrink-0
+                bg-[#F7F7F6] lg:bg-transparent
+                flex flex-col
+                transition-transform duration-300 ease-in-out
+                lg:translate-x-0
+                ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}
+                overflow-y-auto lg:overflow-visible
+                lg:space-y-4
+                pt-14 lg:pt-0
+                px-4 lg:px-0
+                shadow-2xl lg:shadow-none
+              `}
+            >
+              {/* Mobile close button */}
+              <button
+                className="lg:hidden absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-gray-500 transition-colors"
+                onClick={() => setIsSidebarOpen(false)}
+              >
+                <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
+              </button>
             {/* Sidebar Tab Navigation */}
             <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
               {[
@@ -9023,7 +9070,8 @@ const BlogEditor = () => {
                 onUpdateRecords={(recs) => setDistRecords(recs)}
               />
             )}
-          </div>
+            </div>
+          </>
         )}
       </div>
 
