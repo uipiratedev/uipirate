@@ -7747,7 +7747,7 @@ const BlogEditor = () => {
       )}
 
       {/* ── Two-column Layout ── */}
-      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-stretch lg:items-start">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -7870,7 +7870,7 @@ const BlogEditor = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-2 lg:gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <input
                     className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
                     placeholder="Post title…"
@@ -7879,7 +7879,7 @@ const BlogEditor = () => {
                     onChange={(e) => setTitle(e.target.value)}
                   />
                   <button
-                    className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+                    className="flex-shrink-0 w-fit text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
                     type="button"
                     onClick={() => {
                       setIsTitleModalOpen(true);

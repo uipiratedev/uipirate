@@ -7223,7 +7223,7 @@ const BlogEditPage = () => {
       )}
 
       {/* ── Two-column Layout ── */}
-      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-stretch lg:items-start">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -7280,7 +7280,7 @@ const BlogEditPage = () => {
                 </label>
               </div>
             ) : (
-              <label className="flex items-center gap-2 px-10 pt-6 pb-2 cursor-pointer group w-fit">
+              <label className="flex items-center gap-2 px-4 lg:px-10 pt-6 pb-2 cursor-pointer group w-fit">
                 <svg
                   className="group-hover:stroke-[#FF5B04] transition-colors"
                   fill="none"
@@ -7312,8 +7312,8 @@ const BlogEditPage = () => {
             <div
               className={
                 bannerImage
-                  ? "px-14 pt-6 pb-4 relative"
-                  : "px-14 pt-4 pb-4 relative"
+                  ? "px-4 lg:px-14 pt-6 pb-4 relative"
+                  : "px-4 lg:px-14 pt-4 pb-4 relative"
               }
             >
               {postType === "social-post" ? (
@@ -7346,16 +7346,16 @@ const BlogEditPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <input
-                    className="w-full text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                    className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
                     placeholder="Post title…"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />
                   <button
-                    className="flex-shrink-0 text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+                    className="flex-shrink-0 w-fit text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
                     type="button"
                     onClick={() => {
                       setIsTitleModalOpen(true);
@@ -7380,12 +7380,12 @@ const BlogEditPage = () => {
             </div>
 
             <div
-              className="h-px mx-14"
+              className="h-px mx-4 lg:mx-14"
               style={{ background: "rgba(0,0,0,0.06)" }}
             />
 
             {/* Editor area */}
-            <div ref={editorRef} className="relative px-14 py-4">
+            <div ref={editorRef} className="relative px-4 lg:px-14 py-4">
               <FloatingBlockInserter
                 editor={editor}
                 imageUploadRef={inlineImageUploadRef}
