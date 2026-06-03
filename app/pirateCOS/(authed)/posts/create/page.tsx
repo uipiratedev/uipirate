@@ -6599,6 +6599,24 @@ const BlogEditor = () => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
 
+  // Prevent background scrolling when mobile settings drawer is open
+  useEffect(() => {
+    const handleScrollLock = () => {
+      if (isSidebarOpen && window.innerWidth < 1024) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    };
+    handleScrollLock();
+
+    window.addEventListener("resize", handleScrollLock);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("resize", handleScrollLock);
+    };
+  }, [isSidebarOpen]);
+
   // Onboarding Guided Wizard: Carousel auto-play is now handled internally in WorkspaceTutorialCarousel
 
   // Programmatically reset active sidebar tab to "content" if the active tab is hidden (e.g. SEO panel becomes false)
@@ -7940,7 +7958,7 @@ const BlogEditor = () => {
             {/* Mobile overlay backdrop */}
             {isSidebarOpen && (
               <div
-                className="fixed inset-0 bg-black/30 z-30 lg:hidden"
+                className="fixed inset-0 bg-black/30 z-[80] lg:hidden"
                 onClick={() => setIsSidebarOpen(false)}
               />
             )}
@@ -7948,29 +7966,33 @@ const BlogEditor = () => {
             {/* Sidebar panel */}
             <div
               className={`
-                fixed lg:relative right-0 top-0 bottom-0 z-40 lg:z-auto
-                w-80 lg:w-72 flex-shrink-0
+                fixed lg:relative right-0 top-0 bottom-0 z-[90] lg:z-auto
+                w-full lg:w-72 flex-shrink-0
                 bg-[#F7F7F6] lg:bg-transparent
                 flex flex-col
                 transition-transform duration-300 ease-in-out
                 lg:translate-x-0
                 ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}
                 overflow-y-auto lg:overflow-visible
-                lg:space-y-4
-                pt-14 lg:pt-0
+                space-y-4
                 px-4 lg:px-0
                 shadow-2xl lg:shadow-none
               `}
             >
-              {/* Mobile close button */}
-              <button
-                className="lg:hidden absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-gray-500 transition-colors"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
-              </button>
+              {/* Mobile drawer header */}
+              <div className="lg:hidden flex items-center justify-between h-14 border-b border-black/5 -mx-4 px-4 bg-white flex-shrink-0">
+                <span className="text-xs font-jetbrains-mono font-bold uppercase tracking-wider text-gray-800">
+                  Post Settings
+                </span>
+                <button
+                  className="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-gray-500 transition-colors"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
+                </button>
+              </div>
             {/* Sidebar Tab Navigation */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
+            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden flex-shrink-0">
               {[
                 { key: "content", label: postType === "social-post" ? "Narrative" : "Content" },
                 ...(getFeatures(postType).seoPanel
@@ -7982,7 +8004,7 @@ const BlogEditor = () => {
               ].map(({ key, label }) => (
                 <button
                   key={key}
-                  className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
+                  className={`flex-1 min-w-0 px-1 lg:px-0 py-2.5 text-[8.5px] xs:text-[9px] lg:text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
                     sidebarTab === key
                       ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
                       : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"

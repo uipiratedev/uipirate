@@ -6433,6 +6433,7 @@ const BlogEditPage = () => {
   const [seoData, setSeoData] = useState<PostSEO>({});
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [sidebarTab, setSidebarTab] = useState<
     "content" | "seo" | "ai" | "distribute" | "health"
   >("content");
@@ -6492,6 +6493,24 @@ const BlogEditPage = () => {
   useEffect(() => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
+
+  // Prevent background scrolling when mobile settings drawer is open
+  useEffect(() => {
+    const handleScrollLock = () => {
+      if (isSidebarOpen && window.innerWidth < 1024) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+    };
+    handleScrollLock();
+
+    window.addEventListener("resize", handleScrollLock);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("resize", handleScrollLock);
+    };
+  }, [isSidebarOpen]);
 
   // Programmatically reset active sidebar tab to "content" if the active tab is hidden (e.g. SEO panel becomes false)
   useEffect(() => {
@@ -6995,16 +7014,16 @@ const BlogEditPage = () => {
     <div className="min-h-screen" style={{ background: "#F7F7F6" }}>
       {/* ── Top Bar ── */}
       <div
-        className="sticky top-0 z-50 flex items-center justify-between px-6 py-3"
+        className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 px-3 lg:px-6 py-2.5 lg:py-3"
         style={{
           background: "rgba(247,247,246,0.95)",
           borderBottom: "1px solid rgba(0,0,0,0.07)",
           backdropFilter: "blur(8px)",
         }}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 lg:gap-3 min-w-0">
           <button
-            className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-geist text-gray-400 hover:text-gray-700 transition-colors flex-shrink-0"
             onClick={() => navigateSafely(getHref("/posts"))}
           >
             <svg
@@ -7020,50 +7039,52 @@ const BlogEditPage = () => {
               <line x1="19" x2="5" y1="12" y2="12" />
               <polyline points="12 19 5 12 12 5" />
             </svg>
-            Posts
+            <span className="hidden sm:inline">Posts</span>
           </button>
-          <span className="text-gray-200">/</span>
-          <span className="text-sm font-medium font-geist text-gray-900">
+          <span className="text-gray-200 hidden sm:inline">/</span>
+          <span className="text-sm font-medium font-geist text-gray-900 truncate">
             Edit Post
           </span>
           {/* Locked type badge */}
-          <span
-            className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
-            style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
-            title="Post type and goal are locked for this draft"
-          >
-            <svg
-              fill="none"
-              height="10"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              width="10"
+          <div className="hidden md:flex items-center gap-2">
+            <span
+              className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
+              style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
+              title="Post type and goal are locked for this draft"
             >
-              <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            {(() => {
-              const ptConfig = getPostTypeConfig(postType);
-              const gConfig = getGoalConfig(contentGoal);
-              return (
-                <span className="flex items-center gap-1">
-                  {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
-                  <span>{ptConfig?.label}</span>
-                  <span className="mx-0.5">×</span>
-                  {gConfig && <CosIcon name={gConfig.icon} size={10} />}
-                  <span>{gConfig?.label}</span>
-                </span>
-              );
-            })()}
-          </span>
+              <svg
+                fill="none"
+                height="10"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="10"
+              >
+                <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              {(() => {
+                const ptConfig = getPostTypeConfig(postType);
+                const gConfig = getGoalConfig(contentGoal);
+                return (
+                  <span className="flex items-center gap-1">
+                    {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
+                    <span>{ptConfig?.label}</span>
+                    <span className="mx-0.5">×</span>
+                    {gConfig && <CosIcon name={gConfig.icon} size={10} />}
+                    <span>{gConfig?.label}</span>
+                  </span>
+                );
+              })()}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {/* Delete button */}
           <button
-            className="h-9 w-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-40"
+            className="h-8 lg:h-9 w-8 lg:w-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-40"
             disabled={isSaving || isDeleting}
             title="Delete post"
             onClick={() => setShowDeleteModal(true)}
@@ -7084,15 +7105,15 @@ const BlogEditPage = () => {
               <line x1="14" x2="14" y1="11" y2="17" />
             </svg>
           </button>
-          <div className="w-px h-5 bg-black/10 mx-1" />
+          <div className="w-px h-5 bg-black/10 mx-1 hidden sm:block" />
           <span
-            className="text-xs font-geist font-medium transition-colors"
+            className="text-xs font-geist font-medium transition-colors hidden sm:inline"
             style={{ color: statusColor[saveStatus] ?? "#6b7280" }}
           >
             {saveStatus}
           </span>
           <button
-            className={`h-9 px-4 rounded-xl text-sm font-geist font-medium flex items-center gap-1.5 transition-all ${
+            className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all ${
               showPreview
                 ? "bg-[#FF5B04] text-white"
                 : "bg-black/5 text-gray-600 hover:bg-black/10"
@@ -7112,12 +7133,37 @@ const BlogEditPage = () => {
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
-            {showPreview ? "Exit Preview" : "Preview"}
+            <span className="hidden sm:inline">{showPreview ? "Exit Preview" : "Preview"}</span>
           </button>
+
+          {/* Mobile sidebar toggle */}
+          {!showPreview && (
+            <button
+              className="lg:hidden h-8 px-2.5 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs font-geist font-medium transition-all"
+              onClick={() => setIsSidebarOpen((v) => !v)}
+            >
+              <svg
+                fill="none"
+                height="14"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="14"
+              >
+                <rect height="18" rx="2" width="18" x="3" y="3" />
+                <line x1="3" x2="21" y1="9" y2="9" />
+                <line x1="9" x2="9" y1="21" y2="9" />
+              </svg>
+              <span className="hidden sm:inline">Settings</span>
+            </button>
+          )}
+
           {saveStatus === "Published" ? (
             <>
               <Button
-                className="font-geist text-sm h-9 px-4 rounded-xl bg-orange-50 text-[#FF5B04] font-medium hover:bg-orange-100 transition-colors"
+                className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl bg-orange-50 text-[#FF5B04] font-medium hover:bg-orange-100 transition-colors"
                 disabled={isSaving}
                 variant="flat"
                 onClick={handleUnpublish}
@@ -7125,7 +7171,7 @@ const BlogEditPage = () => {
                 Unpublish
               </Button>
               <Button
-                className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
+                className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white"
                 disabled={isSaving}
                 isLoading={isSaving}
                 style={{ background: "#FF5B04" }}
@@ -7137,15 +7183,16 @@ const BlogEditPage = () => {
           ) : (
             <>
               <Button
-                className="font-geist text-sm h-9 px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
+                className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl bg-black/5 text-gray-700 font-medium"
                 disabled={isSaving}
                 variant="flat"
                 onClick={handleSaveDraft}
               >
-                Save Draft
+                <span className="hidden sm:inline">Save Draft</span>
+                <span className="sm:hidden">Save</span>
               </Button>
               <Button
-                className="font-geist text-sm h-9 px-4 rounded-xl font-medium text-white"
+                className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white"
                 disabled={isSaving}
                 isLoading={isSaving}
                 style={{ background: "#FF5B04" }}
@@ -7176,7 +7223,7 @@ const BlogEditPage = () => {
       )}
 
       {/* ── Two-column Layout ── */}
-      <div className="flex gap-6 px-6 pb-6 pt-2 items-start">
+      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-start">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -7378,9 +7425,45 @@ const BlogEditPage = () => {
 
         {/* ── Settings Sidebar — hidden in immersive preview mode ── */}
         {!showPreview && (
-          <div className="w-72 flex-shrink-0 space-y-4">
+          <>
+            {/* Mobile overlay backdrop */}
+            {isSidebarOpen && (
+              <div
+                className="fixed inset-0 bg-black/30 z-[80] lg:hidden"
+                onClick={() => setIsSidebarOpen(false)}
+              />
+            )}
+
+            {/* Sidebar panel */}
+            <div
+              className={`
+                fixed lg:relative right-0 top-0 bottom-0 z-[90] lg:z-auto
+                w-full lg:w-72 flex-shrink-0
+                bg-[#F7F7F6] lg:bg-transparent
+                flex flex-col
+                transition-transform duration-300 ease-in-out
+                lg:translate-x-0
+                ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}
+                overflow-y-auto lg:overflow-visible
+                space-y-4
+                px-4 lg:px-0
+                shadow-2xl lg:shadow-none
+              `}
+            >
+              {/* Mobile drawer header */}
+              <div className="lg:hidden flex items-center justify-between h-14 border-b border-black/5 -mx-4 px-4 bg-white flex-shrink-0">
+                <span className="text-xs font-jetbrains-mono font-bold uppercase tracking-wider text-gray-800">
+                  Post Settings
+                </span>
+                <button
+                  className="w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-gray-500 transition-colors"
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14"><line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" /></svg>
+                </button>
+              </div>
             {/* Sidebar Tab Navigation */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden">
+            <div className="bg-white rounded-2xl border border-black/5 shadow-sm flex overflow-hidden flex-shrink-0">
               {[
                 { key: "content", label: postType === "social-post" ? "Narrative" : "Content" },
                 ...(getFeatures(postType).seoPanel
@@ -7392,7 +7475,7 @@ const BlogEditPage = () => {
               ].map(({ key, label }) => (
                 <button
                   key={key}
-                  className={`flex-1 py-2.5 text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
+                  className={`flex-1 min-w-0 px-1 lg:px-0 py-2.5 text-[8.5px] xs:text-[9px] lg:text-[10px] font-jetbrains-mono uppercase tracking-wider font-bold transition-all border-b-2 ${
                     sidebarTab === key
                       ? "text-[#FF5B04] border-[#FF5B04] bg-orange-50/40"
                       : "text-gray-400 border-transparent hover:text-gray-600 hover:bg-black/[0.02]"
@@ -8639,7 +8722,8 @@ const BlogEditPage = () => {
                 onUpdateRecords={(recs) => setDistRecords(recs)}
               />
             )}
-          </div>
+            </div>
+          </>
         )}
       </div>
 
