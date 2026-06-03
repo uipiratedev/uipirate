@@ -15,6 +15,12 @@ interface BrandBrainData {
   forbiddenWords: string[];
   callToActionTemplate?: string;
   presetInstructions?: Record<string, string>;
+  sentenceComplexity?: "simple" | "moderate" | "advanced";
+  formattingRules?: {
+    alwaysIncludeTakeaways: boolean;
+    alwaysIncludeFAQ: boolean;
+    autoAppendCTA: boolean;
+  };
 }
 
 const BRAND_VOICE_PRESETS = [
@@ -53,9 +59,9 @@ export default function BrandBrainPage() {
   const [saving, setSaving] = useState(false);
   const [brandBrain, setBrandBrain] = useState<BrandBrainData | null>(null);
 
-  // Tab control ("identity" | "audience" | "vocabulary" | "presets")
+  // Tab control ("identity" | "audience" | "vocabulary" | "presets" | "formatting")
   const [activeTab, setActiveTab] = useState<
-    "identity" | "audience" | "vocabulary" | "presets"
+    "identity" | "audience" | "vocabulary" | "presets" | "formatting"
   >("identity");
 
   // Wizard variables (if brandBrain is null)
@@ -71,6 +77,14 @@ export default function BrandBrainPage() {
   const [callToAction, setCallToAction] = useState("");
   const [presetInstructions, setPresetInstructions] = useState<Record<string, string>>({});
   const [selectedPresetType, setSelectedPresetType] = useState<string>("blog");
+
+  // Formatting & Style variables
+  const [sentenceComplexity, setSentenceComplexity] = useState<
+    "simple" | "moderate" | "advanced"
+  >("moderate");
+  const [alwaysIncludeTakeaways, setAlwaysIncludeTakeaways] = useState(false);
+  const [alwaysIncludeFAQ, setAlwaysIncludeFAQ] = useState(false);
+  const [autoAppendCTA, setAutoAppendCTA] = useState(false);
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -95,6 +109,10 @@ export default function BrandBrainPage() {
         setForbiddenWords(data.brandBrain.forbiddenWords || []);
         setCallToAction(data.brandBrain.callToActionTemplate || "");
         setPresetInstructions(data.brandBrain.presetInstructions || {});
+        setSentenceComplexity(data.brandBrain.sentenceComplexity || "moderate");
+        setAlwaysIncludeTakeaways(!!data.brandBrain.formattingRules?.alwaysIncludeTakeaways);
+        setAlwaysIncludeFAQ(!!data.brandBrain.formattingRules?.alwaysIncludeFAQ);
+        setAutoAppendCTA(!!data.brandBrain.formattingRules?.autoAppendCTA);
       } else {
         setBrandBrain(null);
       }
@@ -142,6 +160,12 @@ export default function BrandBrainPage() {
           forbiddenWords,
           callToActionTemplate: callToAction,
           presetInstructions,
+          sentenceComplexity,
+          formattingRules: {
+            alwaysIncludeTakeaways,
+            alwaysIncludeFAQ,
+            autoAppendCTA,
+          },
         }),
       });
 
@@ -724,7 +748,7 @@ export default function BrandBrainPage() {
             {
               id: "identity",
               label: "Brand Identity",
-              desc: "Names, tone presets, CTAs",
+              desc: "Company metadata and voice",
             },
             {
               id: "audience",
@@ -739,7 +763,12 @@ export default function BrandBrainPage() {
             {
               id: "presets",
               label: "Style Guides",
-              desc: "Custom rules per content type",
+              desc: "Custom rules per archetype",
+            },
+            {
+              id: "formatting",
+              label: "Formatting & Style",
+              desc: "Complexity, FAQs, and CTAs",
             },
           ].map((tab) => {
             const active = activeTab === tab.id;
@@ -820,18 +849,6 @@ export default function BrandBrainPage() {
                   </select>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
-                    Call To Action (CTA) Template
-                  </label>
-                  <input
-                    className="w-full bg-[#F7F7F6] border border-transparent rounded-xl px-4 h-11 text-sm focus:border-[#FF5B04]/30 focus:bg-white outline-none transition-all"
-                    placeholder="Standard CTA footer attached to drafts..."
-                    type="text"
-                    value={callToAction}
-                    onChange={(e) => setCallToAction(e.target.value)}
-                  />
-                </div>
               </motion.div>
             )}
 
@@ -1066,6 +1083,129 @@ export default function BrandBrainPage() {
                       );
                     })()}
                   </div>
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === "formatting" && (
+              <motion.div
+                key="formatting-tab"
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6"
+                exit={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.15 }}
+              >
+                <div className="border-b border-black/5 pb-3">
+                  <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
+                    Formatting & Style Preferences
+                  </h2>
+                  <p className="text-[11px] text-gray-400 leading-relaxed mt-0.5">
+                    Customize readability levels, structured content summary boxes, and call-to-actions.
+                  </p>
+                </div>
+
+                {/* Readability Complexity */}
+                <div className="space-y-2 max-w-md">
+                  <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
+                    Sentence Complexity & Readability
+                  </label>
+                  <div className="flex bg-[#F7F7F6] p-1 rounded-xl gap-1">
+                    {(["simple", "moderate", "advanced"] as const).map((comp) => (
+                      <button
+                        key={comp}
+                        className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all capitalize ${
+                          sentenceComplexity === comp
+                            ? "bg-white text-gray-900 shadow-sm border border-black/5"
+                            : "text-gray-400 hover:text-gray-800"
+                        }`}
+                        type="button"
+                        onClick={() => setSentenceComplexity(comp)}
+                      >
+                        {comp}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-gray-400 leading-normal">
+                    {sentenceComplexity === "simple" &&
+                      "💡 Short, punchy sentences ideal for readability and quick skimming."}
+                    {sentenceComplexity === "moderate" &&
+                      "💡 Balanced structure representing typical B2B SaaS and industry tutorials."}
+                    {sentenceComplexity === "advanced" &&
+                      "💡 Multi-clause, detail-rich arguments ideal for technical deep dives."}
+                  </p>
+                </div>
+
+                {/* Formatting Constraints */}
+                <div className="space-y-4 pt-2">
+                  <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
+                    Structural Content Constraints
+                  </label>
+
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      checked={alwaysIncludeTakeaways}
+                      className="mt-1 w-4 h-4 rounded text-[#FF5B04] border-gray-300 focus:ring-[#FF5B04] cursor-pointer"
+                      type="checkbox"
+                      onChange={(e) => setAlwaysIncludeTakeaways(e.target.checked)}
+                    />
+                    <div>
+                      <span className="text-xs font-bold text-gray-800 block group-hover:text-gray-900">
+                        Always generate a 3-sentence "Key Takeaways" block
+                      </span>
+                      <span className="text-[10px] text-gray-400 block mt-0.5">
+                        Places a summarized highlight box at the top of every generated post automatically.
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      checked={alwaysIncludeFAQ}
+                      className="mt-1 w-4 h-4 rounded text-[#FF5B04] border-gray-300 focus:ring-[#FF5B04] cursor-pointer"
+                      type="checkbox"
+                      onChange={(e) => setAlwaysIncludeFAQ(e.target.checked)}
+                    />
+                    <div>
+                      <span className="text-xs font-bold text-gray-800 block group-hover:text-gray-900">
+                        Always append an FAQ segment at the post footer
+                      </span>
+                      <span className="text-[10px] text-gray-400 block mt-0.5">
+                        Generates a structured 'Frequently Asked Questions' H2 header with Q&As at the end of drafts.
+                      </span>
+                    </div>
+                  </label>
+
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                      checked={autoAppendCTA}
+                      className="mt-1 w-4 h-4 rounded text-[#FF5B04] border-gray-300 focus:ring-[#FF5B04] cursor-pointer"
+                      type="checkbox"
+                      onChange={(e) => setAutoAppendCTA(e.target.checked)}
+                    />
+                    <div>
+                      <span className="text-xs font-bold text-gray-800 block group-hover:text-gray-900">
+                        Auto-append standard CTA footer block
+                      </span>
+                      <span className="text-[10px] text-gray-400 block mt-0.5">
+                        Injects the custom call-to-action text below into the closing block of generated posts.
+                      </span>
+                    </div>
+                  </label>
+                </div>
+
+                {/* Call To Action (CTA) Template */}
+                <div className="space-y-1.5 pt-2">
+                  <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
+                    Call To Action (CTA) Template
+                  </label>
+                  <textarea
+                    className="w-full bg-[#F7F7F6] border border-transparent rounded-xl p-4 text-sm focus:border-[#FF5B04]/30 focus:bg-white outline-none transition-all resize-none leading-relaxed text-gray-700 font-medium"
+                    placeholder="e.g. Schedule a 15-minute SaaS design consultation with the UI Pirate crew today at https://uipirate.com!"
+                    rows={3}
+                    value={callToAction}
+                    onChange={(e) => setCallToAction(e.target.value)}
+                  />
                 </div>
               </motion.div>
             )}

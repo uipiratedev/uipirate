@@ -65,6 +65,8 @@ export async function POST(request: NextRequest) {
       forbiddenWords,
       callToActionTemplate,
       presetInstructions,
+      sentenceComplexity,
+      formattingRules,
     } = body;
 
     // Validate required fields
@@ -130,6 +132,12 @@ export async function POST(request: NextRequest) {
         forbiddenWords: cleanForbidden,
         callToActionTemplate: (callToActionTemplate || "").trim(),
         presetInstructions: presetInstructions || {},
+        sentenceComplexity: sentenceComplexity || "moderate",
+        formattingRules: {
+          alwaysIncludeTakeaways: !!formattingRules?.alwaysIncludeTakeaways,
+          alwaysIncludeFAQ: !!formattingRules?.alwaysIncludeFAQ,
+          autoAppendCTA: !!formattingRules?.autoAppendCTA,
+        },
       },
       {
         new: true,

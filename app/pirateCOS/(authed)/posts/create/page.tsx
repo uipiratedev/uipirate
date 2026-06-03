@@ -2596,7 +2596,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -2607,7 +2607,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -2642,7 +2642,7 @@ const AIExcerptModal = ({
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>
@@ -3196,7 +3196,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3207,7 +3207,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3242,7 +3242,7 @@ const AITitleModal = ({
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>
@@ -3754,7 +3754,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3765,7 +3765,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -3800,7 +3800,7 @@ const AITagsModal = ({
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>
@@ -4370,7 +4370,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   }`}
                   onClick={() => setEngine("openai")}
                 >
-                  <span className="text-emerald-500 font-bold">●</span> OpenAI
+                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -4380,7 +4380,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   }`}
                   onClick={() => setEngine("gemini")}
                 >
-                  <span className="text-blue-500 font-bold">✦</span> Gemini
+                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
                 </button>
                 <button
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
@@ -4414,7 +4414,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                   type="button"
                   onClick={() => setEngine("mistral")}
                 >
-                  <span className="text-violet-600 font-bold">◆</span> Mistral
+                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
                 </button>
               </div>
             </div>

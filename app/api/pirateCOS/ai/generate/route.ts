@@ -12,7 +12,6 @@ import {
   type AIEngine,
 } from "@/lib/pirateCOS/ai-provider";
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
-import WorkflowMemory from "@/models/pirateCOS/WorkflowMemory";
 import dbConnect from "@/lib/mongodb";
 import { getGoalConfig, getPostTypeConfig } from "@/lib/pirateCOS/postTypeConfig";
 
@@ -57,11 +56,6 @@ export async function POST(request: NextRequest) {
 
     // Fetch Brand Brain details if they exist for the tenant
     const brandBrain = await BrandBrain.findOne({ tenantId: tenantOid }).lean();
-
-    // Fetch Workflow Memory style parameters if they exist
-    const workflowMemory = await WorkflowMemory.findOne({
-      tenantId: tenantOid,
-    }).lean();
 
     const openaiApiKey = envOpenai || dbKeys.openai;
     const geminiApiKey = envGemini || dbKeys.gemini;
@@ -243,21 +237,17 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
     const activeName = brandBrain?.companyName || "Our Brand";
     const activeVoice =
       customBrandVoice ||
-      brandBrain?.brandVoice ||
-      workflowMemory?.preferredTone;
+      brandBrain?.brandVoice;
     const activeProducts = brandBrain?.products;
     const activeAudience = customAudience || brandBrain?.audienceICP;
     const activeKeywords = customKeywords || brandBrain?.targetKeywords || [];
     const forbiddenWords = brandBrain?.forbiddenWords || [];
-    const activeCta =
-      brandBrain?.callToActionTemplate || workflowMemory?.defaultCTA;
+    const activeCta = brandBrain?.callToActionTemplate;
 
     const hasBrandBrain = !!brandBrain;
-    const hasWorkflowMemory = !!workflowMemory;
 
     if (
       hasBrandBrain ||
-      hasWorkflowMemory ||
       customBrandVoice ||
       customAudience ||
       customKeywords
@@ -280,22 +270,21 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         brandContext += `\n- FORBIDDEN VOCABULARY: Under NO circumstances are you allowed to use any of these words or variants in your generated output: ${forbiddenWords.join(", ")}. Filter them out completely.`;
       }
 
-      // Inject Workflow Memory structural controls
-      if (workflowMemory) {
-        brandContext += `\n\n[WORKFLOW MEMORY & PREFERENCES]:`;
-        brandContext += `\n- Sentence Complexity: Generate text targeted at a "${workflowMemory.sentenceComplexity}" readability level.`;
-        if (
-          workflowMemory.formattingRules?.alwaysIncludeTakeaways &&
-          action === "write"
-        ) {
-          brandContext += `\n- Formatting Constraint: Proactively begin the text block with a 3-sentence "Key Takeaways" summary block.`;
-        }
-        if (
-          workflowMemory.formattingRules?.alwaysIncludeFAQ &&
-          action === "write"
-        ) {
-          brandContext += `\n- Formatting Constraint: Always append a structured, comprehensive "Frequently Asked Questions" Q&A segment at the end of the post content.`;
-        }
+      // Inject Brand Brain style & formatting preferences
+      const sentenceComplexity = brandBrain?.sentenceComplexity || "moderate";
+      brandContext += `\n\n[WORKFLOW MEMORY & PREFERENCES]:`;
+      brandContext += `\n- Sentence Complexity: Generate text targeted at a "${sentenceComplexity}" readability level.`;
+      if (
+        brandBrain?.formattingRules?.alwaysIncludeTakeaways &&
+        action === "write"
+      ) {
+        brandContext += `\n- Formatting Constraint: Proactively begin the text block with a 3-sentence "Key Takeaways" summary block.`;
+      }
+      if (
+        brandBrain?.formattingRules?.alwaysIncludeFAQ &&
+        action === "write"
+      ) {
+        brandContext += `\n- Formatting Constraint: Always append a structured, comprehensive "Frequently Asked Questions" Q&A segment at the end of the post content.`;
       }
 
       if (activeCta && action === "write") {

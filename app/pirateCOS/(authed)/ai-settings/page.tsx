@@ -24,6 +24,14 @@ const ENGINE_META: Record<
   puter: { label: "Puter AI", icon: "◎", iconClass: "text-[#FF5B04]" },
 };
 
+const ENGINE_LOGOS: Record<Engine, string> = {
+  openai: "/assets/logos/ai/openai.svg",
+  gemini: "/assets/logos/ai/google-gemini-icon.svg",
+  mistral: "/assets/logos/ai/mistral-ai-icon.svg",
+  anthropic: "/assets/logos/ai/claude-ai-icon.svg",
+  puter: "",
+};
+
 const MODEL_LABELS: Record<string, string> = {
   "gpt-4o-mini": "GPT-4o Mini",
   "gpt-4o": "GPT-4o",
@@ -303,8 +311,6 @@ function KeyModal({ open, provider, onClose, onSave }: KeyModalProps) {
 
 /* ── Page ── */
 export default function AISettingsPage() {
-  const [activeTab, setActiveTab] = useState<"keys" | "preferences">("keys");
-
   // Config
   const [defaultEngine, setDefaultEngine] = useState<Engine>("puter");
   const [defaultModel, setDefaultModel] = useState("gpt-4o-mini");
@@ -337,21 +343,6 @@ export default function AISettingsPage() {
   const [defaultsSaving, setDefaultsSaving] = useState(false);
   const [defaultsSaved, setDefaultsSaved] = useState(false);
   const [defaultsError, setDefaultsError] = useState<string | null>(null);
-
-  // Preferences / Style Memory
-  const [preferredTone, setPreferredTone] = useState(
-    "Professional & Authoritative",
-  );
-  const [sentenceComplexity, setSentenceComplexity] = useState<
-    "simple" | "moderate" | "advanced"
-  >("moderate");
-  const [alwaysIncludeTakeaways, setAlwaysIncludeTakeaways] = useState(false);
-  const [alwaysIncludeFAQ, setAlwaysIncludeFAQ] = useState(false);
-  const [autoAppendCTA, setAutoAppendCTA] = useState(false);
-  const [defaultCTA, setDefaultCTA] = useState("");
-  const [prefsSaving, setPrefsSaving] = useState(false);
-  const [prefsSaved, setPrefsSaved] = useState(false);
-  const [prefsError, setPrefsError] = useState<string | null>(null);
 
   // Puter
   const [puterUser, setPuterUser] = useState<{ username: string } | null>(null);
@@ -389,26 +380,7 @@ export default function AISettingsPage() {
       })
       .catch(() => {});
 
-    // Fetch Workflow Memory preferences
-    fetch("/api/pirateCOS/ai-config/preferences")
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.success && d.preferences) {
-          setPreferredTone(
-            d.preferences.preferredTone || "Professional & Authoritative",
-          );
-          setSentenceComplexity(d.preferences.sentenceComplexity || "moderate");
-          setAlwaysIncludeTakeaways(
-            !!d.preferences.formattingRules?.alwaysIncludeTakeaways,
-          );
-          setAlwaysIncludeFAQ(
-            !!d.preferences.formattingRules?.alwaysIncludeFAQ,
-          );
-          setAutoAppendCTA(!!d.preferences.formattingRules?.autoAppendCTA);
-          setDefaultCTA(d.preferences.defaultCTA || "");
-        }
-      })
-      .catch(() => {});
+    // Preference fetch removed (consolidated in Brand Brain)
 
     import("@heyputer/puter.js")
       .then(({ puter }) => {
@@ -518,37 +490,7 @@ export default function AISettingsPage() {
     setDefaultsSaving(false);
   };
 
-  // Save workflow memory and style preferences
-  const savePreferences = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setPrefsSaving(true);
-    setPrefsError(null);
-    try {
-      const res = await fetch("/api/pirateCOS/ai-config/preferences", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          preferredTone,
-          sentenceComplexity,
-          formattingRules: {
-            alwaysIncludeTakeaways,
-            alwaysIncludeFAQ,
-            autoAppendCTA,
-          },
-          defaultCTA,
-        }),
-      });
-      const data = await res.json();
-
-      if (!data.success)
-        throw new Error(data.error || "Failed to update preferences");
-      setPrefsSaved(true);
-      setTimeout(() => setPrefsSaved(false), 3000);
-    } catch (e: any) {
-      setPrefsError(e.message ?? "Unknown error occurred.");
-    }
-    setPrefsSaving(false);
-  };
+  // Preferences save logic removed (consolidated in Brand Brain)
 
   const puterSignIn = async () => {
     setPuterBusy(true);
@@ -594,11 +536,10 @@ export default function AISettingsPage() {
             Admin
           </p>
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-            AI Configuration & Style Preferences
+            AI Configuration & Engine Settings
           </h1>
           <p className="text-sm text-gray-400 mt-1">
-            Manage your keys, default AI providers, and customize workflow
-            styling memory parameters.
+            Manage your API keys and default AI engine providers.
           </p>
           <p className="text-xs text-gray-400 mt-2 font-geist">
             Looking to check credit balance or configure Bring Your Own Key (BYOK) billing?{" "}
@@ -610,36 +551,9 @@ export default function AISettingsPage() {
             </a>
           </p>
         </div>
-
-        {/* Tab Controls */}
-        <div className="flex bg-[#F7F7F6] p-1 rounded-xl border border-black/5 self-start">
-          <button
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
-              activeTab === "keys"
-                ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                : "text-gray-400 hover:text-gray-800"
-            }`}
-            type="button"
-            onClick={() => setActiveTab("keys")}
-          >
-            API & Providers
-          </button>
-          <button
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
-              activeTab === "preferences"
-                ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                : "text-gray-400 hover:text-gray-800"
-            }`}
-            type="button"
-            onClick={() => setActiveTab("preferences")}
-          >
-            Style Preferences
-          </button>
-        </div>
       </div>
 
-      {activeTab === "keys" ? (
-        <>
+      <>
           {/* ── Providers row ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {/* Puter — free, no API key */}
@@ -696,7 +610,7 @@ export default function AISettingsPage() {
               badgeColor="emerald"
               description="GPT-4o, GPT-5 and newer models."
               icon={
-                <span className="text-emerald-500 text-lg font-bold">●</span>
+                <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-5 h-5 object-contain" />
               }
               source={openaiSource}
               sourceColors={{
@@ -717,7 +631,7 @@ export default function AISettingsPage() {
             <ProviderKeyCard
               badgeColor="blue"
               description="Gemini 1.5 Flash, Pro and 2.0 models."
-              icon={<span className="text-blue-500 text-lg font-bold">✦</span>}
+              icon={<img src="/assets/logos/ai/google-gemini-icon.svg" alt="Google Gemini" className="w-5 h-5 object-contain" />}
               source={geminiSource}
               sourceColors={{
                 bg: "bg-blue-50",
@@ -738,7 +652,7 @@ export default function AISettingsPage() {
               badgeColor="violet"
               description="Mistral Large, Small, Nemo and Codestral models."
               icon={
-                <span className="text-violet-600 text-lg font-bold">◆</span>
+                <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral AI" className="w-5 h-5 object-contain" />
               }
               source={mistralSource}
               sourceColors={{
@@ -760,7 +674,7 @@ export default function AISettingsPage() {
               badgeColor="fuchsia"
               description="Claude Sonnet, Haiku and Opus models."
               icon={
-                <span className="text-fuchsia-600 text-lg font-bold">◆</span>
+                <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Anthropic Claude" className="w-5 h-5 object-contain" />
               }
               source={anthropicSource}
               sourceColors={{
@@ -844,9 +758,17 @@ export default function AISettingsPage() {
                     Engine
                   </p>
                   <div className="flex items-center gap-2">
-                    <span className={`text-base ${engMeta.iconClass}`}>
-                      {engMeta.icon}
-                    </span>
+                    {defaultEngine === "puter" ? (
+                      <span className={`text-base ${engMeta.iconClass}`}>
+                        {engMeta.icon}
+                      </span>
+                    ) : (
+                      <img
+                        src={ENGINE_LOGOS[defaultEngine]}
+                        alt={engMeta.label}
+                        className="w-4 h-4 object-contain"
+                      />
+                    )}
                     <span
                       className="text-sm font-bold font-geist"
                       style={{ color: "#FF5B04" }}
@@ -894,7 +816,7 @@ export default function AISettingsPage() {
                     ).map((eng) => (
                         <button
                           key={eng}
-                          className={`flex-1 py-2 rounded-lg text-xs font-semibold font-geist transition-all ${
+                          className={`flex-1 py-2 rounded-lg text-xs font-semibold font-geist transition-all flex items-center justify-center gap-1.5 ${
                             defaultEngine === eng
                               ? "bg-white text-gray-900 shadow-sm border border-black/5"
                               : "text-gray-500 hover:text-gray-900"
@@ -912,9 +834,17 @@ export default function AISettingsPage() {
                             );
                           }}
                         >
-                          <span className={ENGINE_META[eng].iconClass}>
-                            {ENGINE_META[eng].icon}
-                          </span>{" "}
+                          {eng === "puter" ? (
+                            <span className={ENGINE_META[eng].iconClass}>
+                              {ENGINE_META[eng].icon}
+                            </span>
+                          ) : (
+                            <img
+                              src={ENGINE_LOGOS[eng]}
+                              alt={ENGINE_META[eng].label}
+                              className="w-3.5 h-3.5 object-contain"
+                            />
+                          )}
                           {ENGINE_META[eng].label.split(" ")[0]}
                         </button>
                     ))}
@@ -1072,186 +1002,7 @@ export default function AISettingsPage() {
               .
             </p>
           </div>
-        </>
-      ) : (
-        /* ── WORKFLOW PREFERENCES / WRITING STYLE MEMORY TAB ── */
-        <form
-          className="bg-white rounded-2xl shadow-card border border-black/5 overflow-hidden flex flex-col min-h-[400px]"
-          onSubmit={savePreferences}
-        >
-          <div className="px-6 py-4 border-b border-black/5">
-            <p className="text-xs font-jetbrains-mono uppercase tracking-widest text-gray-400">
-              Style Preferences & Content Guidelines
-            </p>
-            <p className="text-sm font-geist text-gray-500 mt-0.5">
-              Customize readability, tone directions, and automatic CTA
-              insertions.
-            </p>
-          </div>
-
-          <div className="p-6 space-y-6">
-            {prefsError && (
-              <div className="p-3 bg-red-50 border border-red-100 rounded-xl text-xs text-red-600 font-medium">
-                ✗ {prefsError}
-              </div>
-            )}
-            {prefsSaved && (
-              <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-xs text-emerald-700 font-medium">
-                ✓ Style preferences successfully updated! Downstream AI prompt
-                injection is live.
-              </div>
-            )}
-
-            {/* Tone Selector */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
-                Preferred Writing Tone
-              </label>
-              <select
-                className="w-full max-w-md bg-[#F7F7F6] border border-transparent rounded-xl px-4 h-11 text-sm focus:border-[#FF5B04]/30 focus:bg-white outline-none transition-all cursor-pointer text-gray-700 font-medium"
-                value={preferredTone}
-                onChange={(e) => setPreferredTone(e.target.value)}
-              >
-                <option value="Professional & Authoritative">
-                  Professional & Authoritative (Expert, expert copy)
-                </option>
-                <option value="Conversational & Friendly">
-                  Conversational & Friendly (Engaging, warm)
-                </option>
-                <option value="Bold & Energetic">
-                  Bold & Energetic (Pioneering, inspirational)
-                </option>
-                <option value="Empathetic & Supportive">
-                  Empathetic & Supportive (Compassionate)
-                </option>
-                <option value="Sleek & Minimalist">
-                  Sleek & Minimalist (Premium, designs agency copy)
-                </option>
-              </select>
-            </div>
-
-            {/* Readability Complexity */}
-            <div className="space-y-2 max-w-md">
-              <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
-                Sentence Complexity & Readability
-              </label>
-              <div className="flex bg-[#F7F7F6] p-1 rounded-xl gap-1">
-                {(["simple", "moderate", "advanced"] as const).map((comp) => (
-                  <button
-                    key={comp}
-                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all capitalize ${
-                      sentenceComplexity === comp
-                        ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                        : "text-gray-400 hover:text-gray-800"
-                    }`}
-                    type="button"
-                    onClick={() => setSentenceComplexity(comp)}
-                  >
-                    {comp}
-                  </button>
-                ))}
-              </div>
-              <p className="text-[10px] text-gray-400 leading-normal">
-                {sentenceComplexity === "simple" &&
-                  "💡 Short, punchy sentences ideal for readability and quick skimming."}
-                {sentenceComplexity === "moderate" &&
-                  "💡 Balanced structure representing typical B2B SaaS and industry tutorials."}
-                {sentenceComplexity === "advanced" &&
-                  "💡 Multi-clause, detail-rich arguments ideal for technical deep dives."}
-              </p>
-            </div>
-
-            {/* Formatting Constraints */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
-                Structural Content Constraints
-              </label>
-
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <input
-                  checked={alwaysIncludeTakeaways}
-                  className="mt-1 w-4 h-4 rounded text-[#FF5B04] border-gray-300 focus:ring-[#FF5B04] cursor-pointer"
-                  type="checkbox"
-                  onChange={(e) => setAlwaysIncludeTakeaways(e.target.checked)}
-                />
-                <div>
-                  <span className="text-xs font-bold text-gray-800 block group-hover:text-gray-900">
-                    Always generate a 3-sentence "Key Takeaways" block
-                  </span>
-                  <span className="text-[10px] text-gray-400 block mt-0.5">
-                    Places a summarized highlight box at the top of every
-                    generated post automatically.
-                  </span>
-                </div>
-              </label>
-
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <input
-                  checked={alwaysIncludeFAQ}
-                  className="mt-1 w-4 h-4 rounded text-[#FF5B04] border-gray-300 focus:ring-[#FF5B04] cursor-pointer"
-                  type="checkbox"
-                  onChange={(e) => setAlwaysIncludeFAQ(e.target.checked)}
-                />
-                <div>
-                  <span className="text-xs font-bold text-gray-800 block group-hover:text-gray-900">
-                    Always append an FAQ segment at the post footer
-                  </span>
-                  <span className="text-[10px] text-gray-400 block mt-0.5">
-                    Generates a structured 'Frequently Asked Questions' H2
-                    header with Q&As at the end of drafts.
-                  </span>
-                </div>
-              </label>
-
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <input
-                  checked={autoAppendCTA}
-                  className="mt-1 w-4 h-4 rounded text-[#FF5B04] border-gray-300 focus:ring-[#FF5B04] cursor-pointer"
-                  type="checkbox"
-                  onChange={(e) => setAutoAppendCTA(e.target.checked)}
-                />
-                <div>
-                  <span className="text-xs font-bold text-gray-800 block group-hover:text-gray-900">
-                    Auto-append standard CTA footer block
-                  </span>
-                  <span className="text-[10px] text-gray-400 block mt-0.5">
-                    Injects the custom call-to-action text below into the
-                    closing block of generated posts.
-                  </span>
-                </div>
-              </label>
-            </div>
-
-            {/* Standard CTA Text */}
-            <div className="space-y-1.5 max-w-2xl">
-              <label className="text-xs font-bold text-gray-800 uppercase tracking-wider block">
-                Standard CTA Footnote Template
-              </label>
-              <textarea
-                className="w-full bg-[#F7F7F6] border border-transparent rounded-xl p-4 text-sm focus:border-[#FF5B04]/30 focus:bg-white outline-none transition-all resize-none leading-relaxed text-gray-700 font-medium"
-                placeholder="e.g. Schedule a 15-minute SaaS design consultation with the UI Pirate crew today at https://uipirate.com!"
-                rows={3}
-                value={defaultCTA}
-                onChange={(e) => setDefaultCTA(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="bg-[#F7F7F6] border-t border-black/5 px-6 py-4 flex items-center justify-between">
-            <span className="text-[10px] text-gray-400 font-semibold">
-              💡 Constraints are dynamically injected into active editor writer
-              prompts.
-            </span>
-            <button
-              className="bg-[#FF5B04] text-white text-xs font-bold px-6 h-9 rounded-lg hover:opacity-95 transition-opacity disabled:opacity-50"
-              disabled={prefsSaving}
-              type="submit"
-            >
-              {prefsSaving ? "Saving Guidelines..." : "Save Preferences"}
-            </button>
-          </div>
-        </form>
-      )}
+      </>
     </div>
   );
 }
