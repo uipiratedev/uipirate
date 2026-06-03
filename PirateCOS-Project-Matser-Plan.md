@@ -36,7 +36,8 @@
 | **Phase 4** | PirateCOS: AI Intelligence Layer & Content Transformation | 🟢 **Complete** |
 | **Phase 4B** | PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution | 🟢 **Complete** |
 | **Phase 4C** | PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability | 🟢 **Complete** |
-| **Phase 4D** | PirateCOS: Dynamic Provider Registry System — Unified AI Configuration & Architecture | 🟡 **In Progress** |
+| **Phase 4D** | PirateCOS: Dynamic Provider Registry System — Unified AI Configuration & Architecture | 🟢 **Complete** |
+| **Phase 4E** | PirateCOS: AI-Native Workspace Panel | ⬜ Planned |
 | **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | ⬜ Not started; foundations shipped |
 | **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | ⬜ Not started |
 | **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | ⬜ Not started |
@@ -138,6 +139,19 @@
  | Refactor editor wizard/modals in `create/page.tsx` and `edit/[id]/page.tsx` | ✅ Complete & Verified |
  
  ---
+ 
+ **Phase 4E — AI-Native Workspace Panel (Planned)**
+ 
+ | Area | Status |
+ |---|---|
+ | Extend `models/Post.ts` with `aiWorkspaceSession` schema | ⬜ Planned |
+ | `POST /api/pirateCOS/ai/workspace` stateless API route with context injection | ⬜ Planned |
+ | Sticky `AIWorkspacePanel` desktop layout & responsive sidebar rail | ⬜ Planned |
+ | Context-aware Quick Actions (Improve, Shorten, Expand, CTA, etc.) | ⬜ Planned |
+ | Chat interface with Apply Actions (Replace selection, Insert below, snippets) | ⬜ Planned |
+ | Per-document persistent Generation History log with re-apply | ⬜ Planned |
+ 
+ ---
 
 ## Table of Contents
 
@@ -191,6 +205,7 @@
     - [AI Intent Presets & Modes](#41-ai-intent-presets--modes)
     - [Content Lifecycle Orchestration (Phase 4B)](#41b-content-lifecycle-orchestration-phase-4b)
     - [Dynamic Provider Registry System (Phase 4D)](#41d-dynamic-provider-registry-system-phase-4d)
+    - [AI-Native Workspace Panel (Phase 4E)](#41e-ai-native-workspace-panel-phase-4e)
     - [Workflow Memory & Personalization](#42-workflow-memory--personalization)
     - [AI Brand Brain (Context Layer)](#43-ai-brand-brain-context-layer)
     - [Multi-Format Content Transformation](#44-multi-format-content-transformation)
@@ -1857,6 +1872,23 @@ Phase 3 can begin immediately after Phase 1 deployment to production.
 - Anthropic Claude (Claude 3 Opus, Claude 3.5 Sonnet, Claude 3 Haiku)
 - Mistral AI (Mistral Large, Mistral Codestral, Mistral Nemo)
 - Puter AI (Puter-GPT-4o, Puter-Claude-3.5, Puter-Gemini-1.5)
+
+---
+
+### 4.1E AI-Native Workspace Panel (Phase 4E)
+
+> **📋 Full specification:** [`Phase 4E ai workspace panel.md`](file:///d:/ui-pirate/uipirate/Phase%204E%20ai%20workspace%20panel.md)
+>
+> **Product Philosophy:** PirateCOS moves from "editor with AI buttons" to an **AI-native editing environment**. The AI is not a feature you activate; it is a persistent collaborator embedded in the writing surface itself.
+>
+> **Strategic Shift:** Implement a persistent, sticky **AI Workspace Panel** directly next to the editor that handles context-aware Quick Actions, conversational AI, and generation histories within document-scoped sessions.
+
+**Core Components & Features:**
+1. **Always-On Workspace Panel (`AIWorkspacePanel.tsx`):** A fixed 288px sidebar in the editor that collapses into an icon rail on smaller viewports.
+2. **Context-Aware Quick Actions:** Inline selection-aware triggers (Improve, Shorten, Expand, SEO optimize, LinkedIn, CTAs) that automatically capture active text coordinates and selection context.
+3. **Conversational Thread with Apply Actions:** An interactive chat pane below the fold that supports direct document modifications: `[Replace selection]`, `[Insert below]`, `[Save snippet]`, and `[Try variant]`.
+4. **Isolated Document Session Storage:** Persists conversation logs, generated models, and applied status fields directly on the MongoDB `Post` schema to ensure sessions survive browser refreshes.
+5. **Session-Scoped History Logs:** A chronological timeline in the sidebar showing past generation records with single-click previewing and re-applying options.
 
 ---
 
