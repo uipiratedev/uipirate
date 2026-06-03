@@ -30,6 +30,8 @@ import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
+import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
+import { AIEngine, getModelsForEngine, getDefaultModelForEngine as registryGetDefaultModel, isAIEngine } from "@/lib/pirateCOS/ai-registry";
 import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
 import {
@@ -122,7 +124,6 @@ const SEOEditorModal = ({
   postContent: string;
   postType: string;
 }) => {
-  type SupportedAIEngine = "openai" | "gemini" | "mistral" | "anthropic";
   type ModalTab = "general" | "social" | "analysis" | "performance";
   type SEOAction = "seo-analysis" | "titles" | "excerpt" | "tags";
   type SEOAnalysisResult = {
@@ -134,44 +135,6 @@ const SEOEditorModal = ({
     readability: string;
     imageOptimization?: string;
   };
-
-  const modelOptions: Record<
-    SupportedAIEngine,
-    Array<{ value: string; label: string }>
-  > = {
-    openai: [
-      { value: "gpt-4o-mini", label: "GPT-4o Mini (Default)" },
-      { value: "gpt-4o", label: "GPT-4o" },
-      { value: "gpt-5.4", label: "GPT-5.4" },
-      { value: "gpt-5.4-mini", label: "GPT-5.4 Mini" },
-      { value: "gpt-5.5", label: "GPT-5.5" },
-    ],
-    gemini: [
-      { value: "gemini-flash-latest", label: "Gemini 1.5 Flash" },
-      { value: "gemini-1.5-pro-latest", label: "Gemini 1.5 Pro" },
-      { value: "gemini-2.0-flash-exp", label: "Gemini 2.0 Flash" },
-    ],
-    mistral: [
-      { value: "mistral-large-latest", label: "Mistral Large" },
-      { value: "mistral-small-latest", label: "Mistral Small" },
-      { value: "mistral-nemo", label: "Mistral Nemo" },
-      { value: "codestral-latest", label: "Codestral" },
-    ],
-    anthropic: [
-      { value: "claude-3-5-sonnet-latest", label: "Claude 3.5 Sonnet" },
-      { value: "claude-3-5-haiku-latest", label: "Claude 3.5 Haiku" },
-      { value: "claude-3-opus-latest", label: "Claude 3 Opus" },
-    ],
-  };
-
-  const getDefaultModelForEngine = (engine: SupportedAIEngine) =>
-    engine === "gemini"
-      ? "gemini-flash-latest"
-      : engine === "anthropic"
-        ? "claude-3-5-sonnet-latest"
-        : engine === "mistral"
-          ? "mistral-large-latest"
-          : "gpt-4o-mini";
 
   const plainTextContent = postContent
     .replace(/<[^>]*>/g, " ")
@@ -187,7 +150,7 @@ const SEOEditorModal = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const [selectedEngine, setSelectedEngine] =
-    useState<SupportedAIEngine>("openai");
+    useState<AIEngine>("openai");
   const [selectedModel, setSelectedModel] = useState("gpt-4o-mini");
 
   const [localData, setLocalData] = useState<any>({});
@@ -207,20 +170,15 @@ const SEOEditorModal = ({
     document.body.style.overflow = "hidden";
 
     const config = loadAIConfig();
-    const nextEngine: SupportedAIEngine =
-      config.defaultEngine === "gemini" ||
-      config.defaultEngine === "anthropic" ||
-      config.defaultEngine === "mistral" ||
-      config.defaultEngine === "openai"
-        ? config.defaultEngine
-        : "openai";
+    const nextEngine: AIEngine = isAIEngine(config.defaultEngine)
+      ? config.defaultEngine
+      : "openai";
+    const models = getModelsForEngine(nextEngine);
     const nextModel =
       config.defaultModel &&
-      modelOptions[nextEngine].some(
-        (option) => option.value === config.defaultModel,
-      )
+      models.some((m) => m.id === config.defaultModel)
         ? config.defaultModel
-        : getDefaultModelForEngine(nextEngine);
+        : registryGetDefaultModel(nextEngine);
 
     setSelectedEngine(nextEngine);
     setSelectedModel(nextModel);
@@ -237,16 +195,6 @@ const SEOEditorModal = ({
       document.body.style.overflow = "";
     };
   }, [isOpen]);
-
-  useEffect(() => {
-    if (
-      !modelOptions[selectedEngine].some(
-        (option) => option.value === selectedModel,
-      )
-    ) {
-      setSelectedModel(getDefaultModelForEngine(selectedEngine));
-    }
-  }, [selectedEngine, selectedModel]);
 
   const getPerformanceStats = useCallback(() => {
     const stats = {
@@ -655,30 +603,13 @@ const SEOEditorModal = ({
               </button>
             ))}
           </div>
-          <div className="xl:ml-auto flex flex-col sm:flex-row gap-2 py-3 xl:py-0 xl:my-auto">
-            <select
-              className="h-9 rounded-xl border border-black/5 bg-white px-3 text-xs font-semibold text-gray-700 outline-none"
-              value={selectedEngine}
-              onChange={(e) =>
-                setSelectedEngine(e.target.value as SupportedAIEngine)
-              }
-            >
-              <option value="openai">OpenAI</option>
-              <option value="gemini">Gemini</option>
-              <option value="anthropic">Claude</option>
-              <option value="mistral">Mistral</option>
-            </select>
-            <select
-              className="h-9 min-w-[210px] rounded-xl border border-black/5 bg-white px-3 text-xs font-semibold text-gray-700 outline-none"
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-            >
-              {modelOptions[selectedEngine].map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          <div className="xl:ml-auto py-3 xl:py-0 xl:my-auto">
+            <EngineModelSelector
+              selectedEngine={selectedEngine}
+              selectedModel={selectedModel}
+              onEngineChange={setSelectedEngine}
+              onModelChange={setSelectedModel}
+            />
           </div>
         </div>
 
@@ -2627,34 +2558,15 @@ const AIExcerptModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >(
-    () =>
-      (loadAIConfig().defaultEngine ?? "puter") as
-        | "openai"
-        | "gemini"
-        | "puter"
-        | "mistral"
-        | "anthropic",
+  const [engine, setEngine] = useState<AIEngine>(
+    () => {
+      const cfg = loadAIConfig().defaultEngine;
+      return isAIEngine(cfg) ? cfg : "puter";
+    },
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
-
-  // Sync default engine models when engine changes
-  useEffect(() => {
-    if (engine === "gemini") {
-      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
-    } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
-        setModel("mistral-large-latest");
-    } else if (engine === "anthropic") {
-      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
-    } else {
-      if (!model.startsWith("gpt")) setModel("gpt-5.5");
-    }
-  }, [engine, model]);
 
   // Sync result with initial excerpt if any
   useEffect(() => {
@@ -2857,179 +2769,12 @@ const AIExcerptModal = ({
         <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
           {/* Engine & Model Selector */}
           <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
-            {/* Engine selector */}
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  AI Intelligence Engine
-                </span>
-                <span className="text-[10px] text-gray-400 font-geist">
-                  Select the AI brain for excerpting
-                </span>
-              </div>
-              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "openai"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("openai")}
-                >
-                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "gemini"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("gemini")}
-                >
-                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "puter"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("puter")}
-                >
-                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "mistral"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("mistral")}
-                >
-                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "anthropic"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("anthropic")}
-                >
-                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
-                </button>
-              </div>
-            </div>
-
-            {/* Separator line */}
-            <div className="h-px bg-black/5" />
-
-            {/* Model selector */}
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  Model Version
-                </span>
-                <span className="text-[10px] text-gray-400 font-geist">
-                  Choose the specific model capability
-                </span>
-              </div>
-              <select
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-              >
-                {engine === "gemini" ? (
-                  <>
-                    <option value="gemini-flash-latest">
-                      Gemini 1.5 Flash (Super Fast)
-                    </option>
-                    <option value="gemini-1.5-pro-latest">
-                      Gemini 1.5 Pro (Deep Reasoning)
-                    </option>
-                    <option value="gemini-2.0-flash-exp">
-                      Gemini 2.0 Flash (Next-Gen Preview)
-                    </option>
-                  </>
-                ) : engine === "mistral" ? (
-                  <>
-                    <option value="mistral-large-latest">
-                      Mistral Large (Most Capable)
-                    </option>
-                    <option value="mistral-small-latest">
-                      Mistral Small (Fast)
-                    </option>
-                    <option value="mistral-nemo">
-                      Mistral Nemo (Lightweight)
-                    </option>
-                    <option value="codestral-latest">Codestral (Code)</option>
-                  </>
-                ) : engine === "anthropic" ? (
-                  <>
-                    <option value="claude-3-5-sonnet-latest">
-                      Claude 3.5 Sonnet (Most Capable)
-                    </option>
-                    <option value="claude-3-5-haiku-latest">
-                      Claude 3.5 Haiku (Fast)
-                    </option>
-                    <option value="claude-3-opus-latest">
-                      Claude 3 Opus (Deep Reasoning)
-                    </option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gpt-5.5-pro">
-                      GPT-5.5 Pro (State-of-the-Art)
-                    </option>
-                    <option value="gpt-5.5">
-                      GPT-5.5 Standard (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-5.4-pro">
-                      GPT-5.4 Pro (High Precision)
-                    </option>
-                    <option value="gpt-5.4">
-                      GPT-5.4 Standard (Balanced &amp; Fast)
-                    </option>
-                    <option value="gpt-5.4-mini">
-                      GPT-5.4 Mini (Lightweight &amp; Efficient)
-                    </option>
-                    <option value="gpt-5.4-nano">
-                      GPT-5.4 Nano (Super Speed)
-                    </option>
-                    <option value="gpt-5.3-chat">
-                      GPT-5.3 Chat (Conversational)
-                    </option>
-                    <option value="gpt-5.3-codex">
-                      GPT-5.3 Codex (Programming &amp; Logic)
-                    </option>
-                    <option value="gpt-5.2-pro">
-                      GPT-5.2 Pro (Professional)
-                    </option>
-                    <option value="gpt-5.2-chat">
-                      GPT-5.2 Chat (Standard Chat)
-                    </option>
-                    <option value="gpt-5.2">GPT-5.2 Standard (General)</option>
-                    <option value="gpt-5.1-chat-latest">
-                      GPT-5.1 Chat (Legacy Chat)
-                    </option>
-                    <option value="gpt-5.1">
-                      GPT-5.1 Standard (Legacy General)
-                    </option>
-                    <option value="gpt-4o">
-                      GPT-4o Premium (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-4o-mini">
-                      GPT-4o Mini (Fast &amp; Efficient)
-                    </option>
-                  </>
-                )}
-              </select>
-            </div>
+            <EngineModelSelector
+              selectedEngine={engine}
+              selectedModel={model}
+              onEngineChange={setEngine}
+              onModelChange={setModel}
+            />
           </div>
 
           {/* Custom Focus Instructions */}
@@ -3269,34 +3014,15 @@ const AITitleModal = ({
   const [selectedTitle, setSelectedTitle] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >(
-    () =>
-      (loadAIConfig().defaultEngine ?? "puter") as
-        | "openai"
-        | "gemini"
-        | "puter"
-        | "mistral"
-        | "anthropic",
+  const [engine, setEngine] = useState<AIEngine>(
+    () => {
+      const cfg = loadAIConfig().defaultEngine;
+      return isAIEngine(cfg) ? cfg : "puter";
+    },
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
-
-  // Sync default engine models when engine changes
-  useEffect(() => {
-    if (engine === "gemini") {
-      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
-    } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
-        setModel("mistral-large-latest");
-    } else if (engine === "anthropic") {
-      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
-    } else {
-      if (!model.startsWith("gpt")) setModel("gpt-5.5");
-    }
-  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -3473,145 +3199,12 @@ const AITitleModal = ({
 
         <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
           <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  AI Intelligence Engine
-                </span>
-              </div>
-              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "openai"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("openai")}
-                >
-                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "gemini"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("gemini")}
-                >
-                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "puter"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("puter")}
-                >
-                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "mistral"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("mistral")}
-                >
-                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "anthropic"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("anthropic")}
-                >
-                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
-                </button>
-              </div>
-            </div>
-
-            <div className="h-px bg-black/5" />
-
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  Model Version
-                </span>
-              </div>
-              <select
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-              >
-                {engine === "gemini" ? (
-                  <>
-                    <option value="gemini-flash-latest">
-                      Gemini 1.5 Flash (Super Fast)
-                    </option>
-                    <option value="gemini-1.5-pro-latest">
-                      Gemini 1.5 Pro (Deep Reasoning)
-                    </option>
-                    <option value="gemini-2.0-flash-exp">
-                      Gemini 2.0 Flash (Next-Gen Preview)
-                    </option>
-                  </>
-                ) : engine === "mistral" ? (
-                  <>
-                    <option value="mistral-large-latest">
-                      Mistral Large (Most Capable)
-                    </option>
-                    <option value="mistral-small-latest">
-                      Mistral Small (Fast)
-                    </option>
-                    <option value="mistral-nemo">
-                      Mistral Nemo (Lightweight)
-                    </option>
-                    <option value="codestral-latest">Codestral (Code)</option>
-                  </>
-                ) : engine === "anthropic" ? (
-                  <>
-                    <option value="claude-3-5-sonnet-latest">
-                      Claude 3.5 Sonnet (Most Capable)
-                    </option>
-                    <option value="claude-3-5-haiku-latest">
-                      Claude 3.5 Haiku (Fast)
-                    </option>
-                    <option value="claude-3-opus-latest">
-                      Claude 3 Opus (Deep Reasoning)
-                    </option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gpt-5.5-pro">
-                      GPT-5.5 Pro (State-of-the-Art)
-                    </option>
-                    <option value="gpt-5.5">
-                      GPT-5.5 Standard (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-5.4-pro">
-                      GPT-5.4 Pro (High Precision)
-                    </option>
-                    <option value="gpt-5.4">
-                      GPT-5.4 Standard (Balanced &amp; Fast)
-                    </option>
-                    <option value="gpt-4o">
-                      GPT-4o Premium (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-4o-mini">
-                      GPT-4o Mini (Fast &amp; Efficient)
-                    </option>
-                  </>
-                )}
-              </select>
-            </div>
+            <EngineModelSelector
+              selectedEngine={engine}
+              selectedModel={model}
+              onEngineChange={setEngine}
+              onModelChange={setModel}
+            />
           </div>
 
           <div className="space-y-1.5">
@@ -3806,34 +3399,15 @@ const AITagsModal = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >(
-    () =>
-      (loadAIConfig().defaultEngine ?? "puter") as
-        | "openai"
-        | "gemini"
-        | "puter"
-        | "mistral"
-        | "anthropic",
+  const [engine, setEngine] = useState<AIEngine>(
+    () => {
+      const cfg = loadAIConfig().defaultEngine;
+      return isAIEngine(cfg) ? cfg : "puter";
+    },
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
-
-  // Sync default engine models when engine changes
-  useEffect(() => {
-    if (engine === "gemini") {
-      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
-    } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
-        setModel("mistral-large-latest");
-    } else if (engine === "anthropic") {
-      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
-    } else {
-      if (!model.startsWith("gpt")) setModel("gpt-5.5");
-    }
-  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -4043,145 +3617,12 @@ const AITagsModal = ({
 
         <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
           <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  AI Intelligence Engine
-                </span>
-              </div>
-              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "openai"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-955"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("openai")}
-                >
-                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "gemini"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-955"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("gemini")}
-                >
-                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "puter"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("puter")}
-                >
-                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "mistral"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("mistral")}
-                >
-                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "anthropic"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("anthropic")}
-                >
-                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
-                </button>
-              </div>
-            </div>
-
-            <div className="h-px bg-black/5" />
-
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  Model Version
-                </span>
-              </div>
-              <select
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-              >
-                {engine === "gemini" ? (
-                  <>
-                    <option value="gemini-flash-latest">
-                      Gemini 1.5 Flash (Super Fast)
-                    </option>
-                    <option value="gemini-1.5-pro-latest">
-                      Gemini 1.5 Pro (Deep Reasoning)
-                    </option>
-                    <option value="gemini-2.0-flash-exp">
-                      Gemini 2.0 Flash (Next-Gen Preview)
-                    </option>
-                  </>
-                ) : engine === "mistral" ? (
-                  <>
-                    <option value="mistral-large-latest">
-                      Mistral Large (Most Capable)
-                    </option>
-                    <option value="mistral-small-latest">
-                      Mistral Small (Fast)
-                    </option>
-                    <option value="mistral-nemo">
-                      Mistral Nemo (Lightweight)
-                    </option>
-                    <option value="codestral-latest">Codestral (Code)</option>
-                  </>
-                ) : engine === "anthropic" ? (
-                  <>
-                    <option value="claude-3-5-sonnet-latest">
-                      Claude 3.5 Sonnet (Most Capable)
-                    </option>
-                    <option value="claude-3-5-haiku-latest">
-                      Claude 3.5 Haiku (Fast)
-                    </option>
-                    <option value="claude-3-opus-latest">
-                      Claude 3 Opus (Deep Reasoning)
-                    </option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gpt-5.5-pro">
-                      GPT-5.5 Pro (State-of-the-Art)
-                    </option>
-                    <option value="gpt-5.5">
-                      GPT-5.5 Standard (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-5.4-pro">
-                      GPT-5.4 Pro (High Precision)
-                    </option>
-                    <option value="gpt-5.4">
-                      GPT-5.4 Standard (Balanced &amp; Fast)
-                    </option>
-                    <option value="gpt-4o">
-                      GPT-4o Premium (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-4o-mini">
-                      GPT-4o Mini (Fast &amp; Efficient)
-                    </option>
-                  </>
-                )}
-              </select>
-            </div>
+            <EngineModelSelector
+              selectedEngine={engine}
+              selectedModel={model}
+              onEngineChange={setEngine}
+              onModelChange={setModel}
+            />
           </div>
 
           <div className="space-y-1.5">
@@ -4379,16 +3820,11 @@ const AICopilotModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >(
-    () =>
-      (loadAIConfig().defaultEngine ?? "puter") as
-        | "openai"
-        | "gemini"
-        | "puter"
-        | "mistral"
-        | "anthropic",
+  const [engine, setEngine] = useState<AIEngine>(
+    () => {
+      const cfg = loadAIConfig().defaultEngine;
+      return isAIEngine(cfg) ? cfg : "puter";
+    },
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
@@ -4668,175 +4104,12 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
         <div className="p-6 overflow-y-auto space-y-5 flex-1 min-h-0">
           {/* Engine & Model Selector */}
           <div className="bg-black/[0.02] border border-black/5 rounded-2xl p-4 space-y-3">
-            {/* Engine selector */}
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  AI Intelligence Engine
-                </span>
-                <span className="text-[10px] text-gray-400 font-geist">
-                  Select the AI brain for composition
-                </span>
-              </div>
-              <div className="flex bg-black/[0.04] p-1 rounded-xl gap-1">
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "openai"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  onClick={() => setEngine("openai")}
-                >
-                  <img src="/assets/logos/ai/openai.svg" alt="OpenAI" className="w-3.5 h-3.5 object-contain" /> OpenAI
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "gemini"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  onClick={() => setEngine("gemini")}
-                >
-                  <img src="/assets/logos/ai/google-gemini-icon.svg" alt="Gemini" className="w-3.5 h-3.5 object-contain" /> Gemini
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "puter"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  onClick={() => setEngine("puter")}
-                >
-                  <img src="/assets/logos/ai/puter.svg" alt="Puter" className="w-3.5 h-3.5 object-contain" /> Puter
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "mistral"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  onClick={() => setEngine("mistral")}
-                >
-                  <img src="/assets/logos/ai/mistral-ai-icon.svg" alt="Mistral" className="w-3.5 h-3.5 object-contain" /> Mistral
-                </button>
-                <button
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${
-                    engine === "anthropic"
-                      ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                      : "text-gray-500 hover:text-gray-900"
-                  }`}
-                  type="button"
-                  onClick={() => setEngine("anthropic")}
-                >
-                  <img src="/assets/logos/ai/claude-ai-icon.svg" alt="Claude" className="w-3.5 h-3.5 object-contain" /> Claude
-                </button>
-              </div>
-            </div>
-
-            {/* Separator line */}
-            <div className="h-px bg-black/5" />
-
-            {/* Model selector */}
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold font-geist text-gray-700">
-                  Model Version
-                </span>
-                <span className="text-[10px] text-gray-400 font-geist">
-                  Choose the specific model capability
-                </span>
-              </div>
-              <select
-                className="text-xs font-semibold font-geist bg-white hover:bg-black/[0.02] border border-black/5 text-gray-700 px-3 py-2 rounded-xl outline-none transition-all cursor-pointer shadow-sm animate-in fade-in duration-200"
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-              >
-                {engine === "gemini" ? (
-                  <>
-                    <option value="gemini-flash-latest">
-                      Gemini 1.5 Flash (Super Fast)
-                    </option>
-                    <option value="gemini-1.5-pro-latest">
-                      Gemini 1.5 Pro (Deep Reasoning)
-                    </option>
-                    <option value="gemini-2.0-flash-exp">
-                      Gemini 2.0 Flash (Next-Gen Preview)
-                    </option>
-                  </>
-                ) : engine === "mistral" ? (
-                  <>
-                    <option value="mistral-large-latest">
-                      Mistral Large (Most Capable)
-                    </option>
-                    <option value="mistral-small-latest">
-                      Mistral Small (Fast)
-                    </option>
-                    <option value="mistral-nemo">
-                      Mistral Nemo (Lightweight)
-                    </option>
-                    <option value="codestral-latest">Codestral (Code)</option>
-                  </>
-                ) : engine === "anthropic" ? (
-                  <>
-                    <option value="claude-3-5-sonnet-latest">
-                      Claude 3.5 Sonnet (Most Capable)
-                    </option>
-                    <option value="claude-3-5-haiku-latest">
-                      Claude 3.5 Haiku (Fast)
-                    </option>
-                    <option value="claude-3-opus-latest">
-                      Claude 3 Opus (Deep Reasoning)
-                    </option>
-                  </>
-                ) : (
-                  <>
-                    <option value="gpt-5.5-pro">
-                      GPT-5.5 Pro (State-of-the-Art)
-                    </option>
-                    <option value="gpt-5.5">
-                      GPT-5.5 Standard (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-5.4-pro">
-                      GPT-5.4 Pro (High Precision)
-                    </option>
-                    <option value="gpt-5.4">
-                      GPT-5.4 Standard (Balanced &amp; Fast)
-                    </option>
-                    <option value="gpt-5.4-mini">
-                      GPT-5.4 Mini (Lightweight &amp; Efficient)
-                    </option>
-                    <option value="gpt-5.4-nano">
-                      GPT-5.4 Nano (Super Speed)
-                    </option>
-                    <option value="gpt-5.3-chat">
-                      GPT-5.3 Chat (Conversational)
-                    </option>
-                    <option value="gpt-5.3-codex">
-                      GPT-5.3 Codex (Programming &amp; Logic)
-                    </option>
-                    <option value="gpt-5.2-pro">
-                      GPT-5.2 Pro (Professional)
-                    </option>
-                    <option value="gpt-5.2-chat">
-                      GPT-5.2 Chat (Standard Chat)
-                    </option>
-                    <option value="gpt-5.2">GPT-5.2 Standard (General)</option>
-                    <option value="gpt-5.1-chat-latest">
-                      GPT-5.1 Chat (Legacy Chat)
-                    </option>
-                    <option value="gpt-5.1">
-                      GPT-5.1 Standard (Legacy General)
-                    </option>
-                    <option value="gpt-4o">
-                      GPT-4o Premium (Advanced &amp; Creative)
-                    </option>
-                    <option value="gpt-4o-mini">
-                      GPT-4o Mini (Fast &amp; Efficient)
-                    </option>
-                  </>
-                )}
-              </select>
-            </div>
+            <EngineModelSelector
+              selectedEngine={engine}
+              selectedModel={model}
+              onEngineChange={setEngine}
+              onModelChange={setModel}
+            />
           </div>
 
           {/* Quick Presets */}

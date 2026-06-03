@@ -32,7 +32,7 @@ import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
-import { AIEngine } from "@/lib/pirateCOS/ai-registry";
+import { AIEngine, isAIEngine } from "@/lib/pirateCOS/ai-registry";
 import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
 import {
@@ -2804,34 +2804,15 @@ const AITitleModal = ({
   const [selectedTitle, setSelectedTitle] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >(
-    () =>
-      (loadAIConfig().defaultEngine ?? "puter") as
-        | "openai"
-        | "gemini"
-        | "puter"
-        | "mistral"
-        | "anthropic",
+  const [engine, setEngine] = useState<AIEngine>(
+    () => {
+      const cfg = loadAIConfig().defaultEngine;
+      return isAIEngine(cfg) ? cfg : "puter";
+    },
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
-
-  // Sync default engine models when engine changes
-  useEffect(() => {
-    if (engine === "gemini") {
-      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
-    } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
-        setModel("mistral-large-latest");
-    } else if (engine === "anthropic") {
-      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
-    } else {
-      if (!model.startsWith("gpt")) setModel("gpt-5.5");
-    }
-  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -3341,34 +3322,15 @@ const AITagsModal = ({
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >(
-    () =>
-      (loadAIConfig().defaultEngine ?? "puter") as
-        | "openai"
-        | "gemini"
-        | "puter"
-        | "mistral"
-        | "anthropic",
+  const [engine, setEngine] = useState<AIEngine>(
+    () => {
+      const cfg = loadAIConfig().defaultEngine;
+      return isAIEngine(cfg) ? cfg : "puter";
+    },
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
-
-  // Sync default engine models when engine changes
-  useEffect(() => {
-    if (engine === "gemini") {
-      if (!model.startsWith("gemini")) setModel("gemini-flash-latest");
-    } else if (engine === "mistral") {
-      if (!model.startsWith("mistral") && !model.startsWith("codestral"))
-        setModel("mistral-large-latest");
-    } else if (engine === "anthropic") {
-      if (!model.startsWith("claude")) setModel("claude-3-5-sonnet-latest");
-    } else {
-      if (!model.startsWith("gpt")) setModel("gpt-5.5");
-    }
-  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -3914,16 +3876,11 @@ const AICopilotModal = ({
   const [result, setResult] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState("");
-  const [engine, setEngine] = useState<
-    "openai" | "gemini" | "puter" | "mistral" | "anthropic"
-  >(
-    () =>
-      (loadAIConfig().defaultEngine ?? "puter") as
-        | "openai"
-        | "gemini"
-        | "puter"
-        | "mistral"
-        | "anthropic",
+  const [engine, setEngine] = useState<AIEngine>(
+    () => {
+      const cfg = loadAIConfig().defaultEngine;
+      return isAIEngine(cfg) ? cfg : "puter";
+    },
   );
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
