@@ -13,6 +13,18 @@ const cache = new Map<string, { expiresAt: number; result: DiscoveryResult }>();
 
 export function labelFromModelId(id: string): string {
   let cleanId = id.replace(/^models\//, "");
+
+  // Strip date and revision suffixes from the label name to keep it clean for users
+  // 1. 8-digit date snapshots (e.g. -20251101)
+  cleanId = cleanId.replace(/[-_]?\b\d{8}\b/g, "");
+  // 2. Hyphenated date snapshots (e.g. -2024-05-13)
+  cleanId = cleanId.replace(/[-_]?\d{4}-\d{2}-\d{2}/g, "");
+  // 3. 3-digit or 4-digit version snapshots (e.g. -001, -0613)
+  cleanId = cleanId.replace(/[-_]?\d{3,4}(?:-|$)/g, "");
+
+  // Clean trailing hyphens/spaces that might remain after stripping
+  cleanId = cleanId.replace(/[-_]+$/g, "").replace(/^[-_]+/g, "");
+
   const lowerId = cleanId.toLowerCase();
   
   // Specific mappings for known production models
@@ -94,6 +106,11 @@ export function labelFromModelId(id: string): string {
   // Normalize "3 5" to "3.5" for Claude/Gemini
   formatted = formatted.replace(/\b3\s+5\b/g, "3.5");
 
+  // Standardize GPT hyphen styling (e.g. GPT 4.1 -> GPT-4.1)
+  if (formatted.startsWith("GPT ")) {
+    formatted = "GPT-" + formatted.slice(4);
+  }
+
   if (isPreview) {
     formatted += " (Preview)";
   }
@@ -135,19 +152,7 @@ export function isContentModel(id: string, engine: AIEngine): boolean {
     return false;
   }
 
-  // Filter out developer snapshots, specific date revisions, and intermediate versions
-  // 1. 8-digit date snapshots (e.g., -20240620, -20251101)
-  if (/\b\d{8}\b/.test(lowercaseId)) {
-    return false;
-  }
-  // 2. Hyphenated date snapshots (e.g., -2024-05-13)
-  if (/-\d{4}-\d{2}-\d{2}/.test(lowercaseId)) {
-    return false;
-  }
-  // 3. 3-digit or 4-digit version snapshots (e.g., -001, -0613, -1106, -0125-preview)
-  if (/-\d{3,4}(?:-|$)/.test(lowercaseId)) {
-    return false;
-  }
+
 
   // Engine-specific inclusions
   if (engine === "openai") {
@@ -181,6 +186,61 @@ function getFilteredFallback(engine: AIEngine): AIModelEntry[] {
   return getModelsForEngine(engine).filter((m) => isContentModel(m.id, engine));
 }
 
+function parseModelForDeduplication(entry: AIModelEntry) {
+  const label = entry.label;
+  
+  // Matches brand and major/minor version (e.g. Gemini 3.5 Flash, Claude 4.8 Opus, GPT-5.5 Pro)
+  const match = label.match(/^(Claude|Gemini|GPT|Mistral|O3)[-\s]+(?:(\d+)(?:\.(\d+))?|4o)[-\s]*(.*)$/i);
+  if (!match) {
+    return {
+      key: label,
+      version: 0,
+      entry
+    };
+  }
+
+  const brand = match[1].toUpperCase();
+  const majorStr = match[2];
+  const minorStr = match[3];
+  const is4o = label.toLowerCase().includes("4o");
+  
+  const major = is4o ? 4 : (majorStr ? parseInt(majorStr, 10) : 0);
+  const minor = minorStr ? parseInt(minorStr, 10) : 0;
+
+  // Extract date snapshots (e.g. 20251101 or 2024-05-13) from original ID
+  let dateVal = 0;
+  const dateMatch8 = entry.id.match(/\b\d{8}\b/);
+  if (dateMatch8) {
+    dateVal = parseInt(dateMatch8[0], 10);
+  } else {
+    const dateMatchHyphen = entry.id.match(/-(\d{4})-(\d{2})-(\d{2})/);
+    if (dateMatchHyphen) {
+      dateVal = parseInt(dateMatchHyphen[1] + dateMatchHyphen[2] + dateMatchHyphen[3], 10);
+    }
+  }
+
+  // Extract revision numbers (e.g. -001, -0613) from original ID
+  let revisionVal = 0;
+  const revMatch = entry.id.match(/-(\d{3,4})(?:-|$)/);
+  if (revMatch) {
+    revisionVal = parseInt(revMatch[1], 10);
+  }
+
+  // Combine into a single numeric score for comparison
+  const version = major * 10000000000000 + minor * 100000000000 + dateVal * 10000 + revisionVal;
+
+  const tier = (match[4] || "").trim().toUpperCase();
+  
+  // Group key: Brand + Major Version + Tier
+  const key = `${brand}-${major}-${tier}`;
+  
+  return {
+    key,
+    version,
+    entry
+  };
+}
+
 function mergeWithFallback(
   engine: AIEngine,
   liveModelIds: string[],
@@ -194,16 +254,32 @@ function mergeWithFallback(
     merged.push(model);
   }
 
+  const liveEntries: AIModelEntry[] = [];
   for (const id of liveModelIds) {
     if (!id || seen.has(id) || !isContentModel(id, engine)) continue;
-    seen.add(id);
-    merged.push({
+    liveEntries.push({
       id,
       label: labelFromModelId(id),
       provider: engine,
       description: "live",
     });
   }
+
+  // Deduplicate live entries: keep only the latest minor version for each brand + major + tier
+  const bestLiveModels = new Map<string, { version: number; entry: AIModelEntry }>();
+  for (const entry of liveEntries) {
+    const parsed = parseModelForDeduplication(entry);
+    const existing = bestLiveModels.get(parsed.key);
+    if (!existing || parsed.version > existing.version) {
+      bestLiveModels.set(parsed.key, { version: parsed.version, entry });
+    }
+  }
+
+  // Add the best live models to merged list
+  bestLiveModels.forEach(({ entry }) => {
+    seen.add(entry.id);
+    merged.push(entry);
+  });
 
   return merged;
 }
