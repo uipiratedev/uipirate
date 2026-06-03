@@ -46,6 +46,7 @@ export interface IPost extends Document {
     status: "success" | "failed" | "pending";
     errorMessage?: string; // Populated on failure; surfaced in Distribution Panel
   }>;
+  repurposedOutputs?: Record<string, string>;
   calculateReadTime(): void;
 }
 
@@ -172,6 +173,11 @@ const PostSchema: Schema = new Schema(
         errorMessage: { type: String },
       },
     ],
+    repurposedOutputs: {
+      type: Map,
+      of: String,
+      default: {},
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt

@@ -88,7 +88,7 @@ export const CONTENT_GOALS: ContentGoalConfig[] = [
   {
     value: "traffic",
     label: "Traffic",
-    icon: "📈",
+    icon: "traffic",
     description: "Drive organic search traffic to your site",
     hint: "→ Heavy SEO, keyword tools, meta optimization",
     aiPriorityPrompt: `You are optimizing this content for ORGANIC SEARCH TRAFFIC. Prioritize:
@@ -113,7 +113,7 @@ export const CONTENT_GOALS: ContentGoalConfig[] = [
   {
     value: "authority",
     label: "Authority",
-    icon: "🏛️",
+    icon: "authority",
     description: "Establish thought leadership in your space",
     hint: "→ Depth, citations, data points, expert tone",
     aiPriorityPrompt: `You are optimizing this content to establish THOUGHT LEADERSHIP and AUTHORITY. Prioritize:
@@ -138,7 +138,7 @@ export const CONTENT_GOALS: ContentGoalConfig[] = [
   {
     value: "conversion",
     label: "Conversion",
-    icon: "💰",
+    icon: "conversion",
     description: "Drive sign-ups, purchases, or demo requests",
     hint: "→ CTA blocks, benefit-focused structure, urgency elements",
     aiPriorityPrompt: `You are optimizing this content for CONVERSION (sign-ups, purchases, demos). Prioritize:
@@ -163,7 +163,7 @@ export const CONTENT_GOALS: ContentGoalConfig[] = [
   {
     value: "engagement",
     label: "Engagement",
-    icon: "🔥",
+    icon: "engagement",
     description: "Spark discussion, shares, and comments",
     hint: "→ Hook-first, questions, social preview",
     aiPriorityPrompt: `You are optimizing this content for maximum ENGAGEMENT (shares, comments, discussion). Prioritize:
@@ -188,7 +188,7 @@ export const CONTENT_GOALS: ContentGoalConfig[] = [
   {
     value: "lead-generation",
     label: "Lead Generation",
-    icon: "🧲",
+    icon: "lead-generation",
     description: "Capture emails and grow your subscriber list",
     hint: "→ Lead magnets, gated content, newsletter CTAs",
     aiPriorityPrompt: `You are optimizing this content for LEAD GENERATION (email capture, subscriber growth). Prioritize:
@@ -213,7 +213,7 @@ export const CONTENT_GOALS: ContentGoalConfig[] = [
   {
     value: "retention",
     label: "Retention",
-    icon: "🤝",
+    icon: "retention",
     description: "Keep existing customers engaged and educated",
     hint: "→ Tips, updates, product education, how-tos",
     aiPriorityPrompt: `You are optimizing this content for CUSTOMER RETENTION (keeping existing users engaged). Prioritize:
@@ -256,7 +256,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "3–8 min",
     minWordCount: 600,
     maxWordCount: 1500,
-    icon: "✏️",
+    icon: "blog",
     features: {
       seoPanel: true,
       featuredImage: true,
@@ -286,7 +286,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "5–15 min",
     minWordCount: 1000,
     maxWordCount: 3000,
-    icon: "📖",
+    icon: "tutorial",
     features: {
       seoPanel: true,
       featuredImage: true,
@@ -323,7 +323,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "5–12 min",
     minWordCount: 1000,
     maxWordCount: 2000,
-    icon: "🔍",
+    icon: "case-study",
     features: {
       seoPanel: true,
       featuredImage: true,
@@ -359,7 +359,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "3–7 min",
     minWordCount: 600,
     maxWordCount: 1200,
-    icon: "💬",
+    icon: "community-insight",
     features: {
       seoPanel: true,
       featuredImage: true,
@@ -389,7 +389,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "2–5 min",
     minWordCount: 400,
     maxWordCount: 800,
-    icon: "🏢",
+    icon: "corporate-post",
     features: {
       seoPanel: false,
       featuredImage: true,
@@ -422,7 +422,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "5–12 min",
     minWordCount: 1000,
     maxWordCount: 2500,
-    icon: "⭐",
+    icon: "product-review",
     features: {
       seoPanel: true,
       featuredImage: true,
@@ -458,7 +458,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "3–6 min",
     minWordCount: 500,
     maxWordCount: 1000,
-    icon: "🚀",
+    icon: "product-launch",
     features: {
       seoPanel: false,
       featuredImage: true,
@@ -494,7 +494,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "5–15 min",
     minWordCount: 1200,
     maxWordCount: 3000,
-    icon: "📋",
+    icon: "listicle",
     features: {
       seoPanel: true,
       featuredImage: true,
@@ -530,7 +530,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "8–20 min",
     minWordCount: 1500,
     maxWordCount: 3500,
-    icon: "⚔️",
+    icon: "comparison",
     features: {
       seoPanel: true,
       featuredImage: true,
@@ -566,7 +566,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "2–5 min",
     minWordCount: 400,
     maxWordCount: 1000,
-    icon: "📧",
+    icon: "newsletter",
     features: {
       seoPanel: false,
       featuredImage: false,
@@ -596,7 +596,7 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
     estimatedReadTime: "1–8 min",
     minWordCount: 150,
     maxWordCount: 400,
-    icon: "🔗",
+    icon: "social-post",
     features: {
       seoPanel: false,
       featuredImage: true,
@@ -736,4 +736,70 @@ export function getAllPostTypeValues(): string[] {
  */
 export function getAllContentGoalValues(): ContentGoal[] {
   return CONTENT_GOALS.map((config) => config.value);
+}
+
+// ── Distribution Chain Configuration ─────────────────────────────────────────
+
+export interface DistributionChain {
+  value: string;
+  label: string;
+  icon: string;
+  description: string;
+  defaultChannels: string[];
+  recommendedRepurposing: string[];
+}
+
+export const DISTRIBUTION_CHAINS: DistributionChain[] = [
+  {
+    value: "seo-growth",
+    label: "SEO Growth Chain",
+    icon: "traffic",
+    description: "WordPress/Ghost publish + SEO preflight + LinkedIn & Twitter promos",
+    defaultChannels: ["wordpress", "ghost"],
+    recommendedRepurposing: ["linkedin_promo", "twitter_thread"],
+  },
+  {
+    value: "founder-authority",
+    label: "Founder Authority Chain",
+    icon: "authority",
+    description: "LinkedIn Direct + Medium + Twitter summary & quotes",
+    defaultChannels: ["linkedin", "medium"],
+    recommendedRepurposing: ["twitter_thread", "quote_snippets"],
+  },
+  {
+    value: "product-launch",
+    label: "Product Launch Chain",
+    icon: "product-launch",
+    description: "WordPress/Ghost + Buffer + Newsletter & social promos",
+    defaultChannels: ["wordpress", "ghost", "buffer"],
+    recommendedRepurposing: ["linkedin_promo", "twitter_thread", "newsletter_summary"],
+  },
+  {
+    value: "newsletter-growth",
+    label: "Newsletter Growth Chain",
+    icon: "newsletter",
+    description: "Buffer/LinkedIn + Quote snippets & carousel copy",
+    defaultChannels: ["buffer", "linkedin"],
+    recommendedRepurposing: ["quote_snippets", "carousel_text"],
+  },
+  {
+    value: "social-expansion",
+    label: "Social Expansion Chain",
+    icon: "engagement",
+    description: "LinkedIn + Buffer cross-posting + Discussion hooks",
+    defaultChannels: ["linkedin", "buffer"],
+    recommendedRepurposing: ["quote_snippets"],
+  },
+];
+
+export function getDistributionChain(value: string): DistributionChain | undefined {
+  return DISTRIBUTION_CHAINS.find((chain) => chain.value === value);
+}
+
+export function getSuggestedChainForGoal(goal: ContentGoal): DistributionChain | undefined {
+  if (goal === "traffic") return DISTRIBUTION_CHAINS.find((c) => c.value === "seo-growth");
+  if (goal === "authority") return DISTRIBUTION_CHAINS.find((c) => c.value === "founder-authority");
+  if (goal === "conversion") return DISTRIBUTION_CHAINS.find((c) => c.value === "product-launch");
+  if (goal === "lead-generation") return DISTRIBUTION_CHAINS.find((c) => c.value === "newsletter-growth");
+  return DISTRIBUTION_CHAINS.find((c) => c.value === "social-expansion");
 }

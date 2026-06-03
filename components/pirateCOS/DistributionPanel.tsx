@@ -11,7 +11,11 @@ import {
   ContentGoal,
   getPostTypeConfig,
   getGoalConfig,
+  DISTRIBUTION_CHAINS,
+  getDistributionChain,
+  DistributionChain,
 } from "@/lib/pirateCOS/postTypeConfig";
+import CosIcon from "./CosIcon";
 
 interface DistributionRecord {
   platform: string;
@@ -48,6 +52,11 @@ interface DistributionPanelProps {
   contentGoal: ContentGoal;
   blogTitle: string;
   socialDestination?: "linkedin" | "x";
+  blogRepurposedOutputs?: Record<string, string>;
+  onUpdateRepurposedOutputs?: (outputs: Record<string, string>) => void;
+  onUpdateExcerpt?: (excerpt: string) => void;
+  onUpdateTags?: (tags: string[]) => void;
+  onUpdateSeo?: (seo: any) => void;
 }
 
 const PLATFORM_LABELS: Record<string, string> = {
@@ -76,6 +85,11 @@ export default function DistributionPanel({
   contentGoal,
   blogTitle,
   socialDestination = "linkedin",
+  blogRepurposedOutputs = {},
+  onUpdateRepurposedOutputs,
+  onUpdateExcerpt,
+  onUpdateTags,
+  onUpdateSeo,
 }: DistributionPanelProps) {
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -89,6 +103,14 @@ export default function DistributionPanel({
   );
   const [preflight, setPreflight] = useState<PreflightCheck[]>([]);
   const [activeSocialDest, setActiveSocialDest] = useState<"linkedin" | "x">("linkedin");
+
+  // Phase 4C States
+  const [selectedRepurposeFormats, setSelectedRepurposeFormats] = useState<string[]>([]);
+  const [autofixing, setAutofixing] = useState<Record<string, boolean>>({});
+  const [repurposingProgress, setRepurposingProgress] = useState<{ active: boolean; currentFormat: string; percent: number } | null>(null);
+  const [activeChain, setActiveChain] = useState<string | null>(null);
+  const [showRepurposePreview, setShowRepurposePreview] = useState(false);
+  const [platformErrors, setPlatformErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (socialDestination) {
@@ -152,6 +174,90 @@ export default function DistributionPanel({
     setPreflight(checks);
   }, [blogContent, blogExcerpt, blogTags, blogSeo, postType, activeSocialDest]);
 
+  const handleAutofix = async (checkId: string) => {
+    setAutofixing((prev) => ({ ...prev, [checkId]: true }));
+    setDistributionError(null);
+
+    try {
+      const cleanContent = blogContent.replace(/<[^>]*>/g, " ").trim();
+      const plainTextContent = cleanContent.slice(0, 15000);
+
+      let actionApi = "";
+      if (checkId === "excerpt") actionApi = "excerpt";
+      else if (checkId === "tags") actionApi = "tags";
+      else if (checkId === "focusKeyword") actionApi = "focusKeyword";
+      else if (checkId === "metaTitle") actionApi = "metaTitle";
+      else if (checkId === "metaDescription") actionApi = "metaDescription";
+
+      if (!actionApi) throw new Error("Invalid autofix action");
+
+      const response = await fetch("/api/pirateCOS/ai/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: actionApi,
+          title: blogTitle,
+          content: plainTextContent,
+          postType,
+          contentGoal,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "AI autofix failed");
+      }
+
+      const generatedData = result.data;
+
+      // Update local and parent states
+      let payloadToSave: any = {};
+
+      if (checkId === "excerpt") {
+        const value = typeof generatedData === "string" ? generatedData.trim() : "";
+        onUpdateExcerpt?.(value);
+        payloadToSave = { excerpt: value };
+      } else if (checkId === "tags") {
+        const value = Array.isArray(generatedData) ? generatedData : [];
+        onUpdateTags?.(value);
+        payloadToSave = { tags: value };
+      } else if (checkId === "focusKeyword") {
+        const value = typeof generatedData === "string" ? generatedData.trim() : "";
+        const nextSeo = { ...blogSeo, focusKeyword: value };
+        onUpdateSeo?.(nextSeo);
+        payloadToSave = { seo: nextSeo };
+      } else if (checkId === "metaTitle") {
+        const value = typeof generatedData === "string" ? generatedData.trim() : "";
+        const nextSeo = { ...blogSeo, metaTitle: value };
+        onUpdateSeo?.(nextSeo);
+        payloadToSave = { seo: nextSeo };
+      } else if (checkId === "metaDescription") {
+        const value = typeof generatedData === "string" ? generatedData.trim() : "";
+        const nextSeo = { ...blogSeo, metaDescription: value };
+        onUpdateSeo?.(nextSeo);
+        payloadToSave = { seo: nextSeo };
+      }
+
+      // Save to database instantly if post already has a saved ID
+      if (blogId) {
+        const putRes = await fetch(`/api/pirateCOS/posts/${blogId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payloadToSave),
+        });
+        if (!putRes.ok) {
+          const putErr = await putRes.json();
+          throw new Error(putErr.error || "Failed to save autofix to database");
+        }
+      }
+    } catch (err: any) {
+      setDistributionError(err.message || "Failed to run autofix");
+    } finally {
+      setAutofixing((prev) => ({ ...prev, [checkId]: false }));
+    }
+  };
+
   const togglePlatform = (platform: string) => {
     setSelectedPlatforms((prev) =>
       prev.includes(platform)
@@ -181,54 +287,120 @@ export default function DistributionPanel({
   };
 
   const handleDistribute = async () => {
-    if (selectedPlatforms.length === 0) return;
+    if (selectedPlatforms.length === 0 && selectedRepurposeFormats.length === 0) return;
     setDistributing(true);
     setDistributionError(null);
+    setPlatformErrors({});
 
     try {
       // 1. Ensure blog post is saved to the local database
       const savedId = await onEnsureSaved();
 
-      // 2. Trigger distribution publish request
-      const res = await fetch("/api/pirateCOS/distribution/publish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          blogId: savedId,
-          platforms: selectedPlatforms,
-        }),
-      });
+      // 2. Trigger distribution publish request if platforms are selected
+      if (selectedPlatforms.length > 0) {
+        const res = await fetch("/api/pirateCOS/distribution/publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            blogId: savedId,
+            platforms: selectedPlatforms,
+          }),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || "Distribution publish failed");
+        if (!res.ok) {
+          throw new Error(data.error || "Distribution publish failed");
+        }
+
+        if (data.results) {
+          // Merge fresh results into parent state
+          const updatedRecords = [...distributionRecords];
+          const newPlatformErrors: Record<string, string> = {};
+
+          data.results.forEach((newRec: DistributionRecord) => {
+            if (newRec.status === "failed") {
+              newPlatformErrors[newRec.platform] = newRec.errorMessage || "Unknown distribution error";
+            }
+
+            const idx = updatedRecords.findIndex(
+              (r) => r.platform === newRec.platform,
+            );
+
+            if (idx > -1) {
+              updatedRecords[idx] = newRec;
+            } else {
+              updatedRecords.push(newRec);
+            }
+          });
+
+          setPlatformErrors(newPlatformErrors);
+          onUpdateRecords(updatedRecords);
+          // Clear selected platforms on success
+          setSelectedPlatforms([]);
+        }
       }
 
-      // 3. Update distribution history and trigger success badge feedback
-      if (data.results) {
-        // Merge fresh results into parent state
-        const updatedRecords = [...distributionRecords];
+      // 3. Sequential Repurposing of checked formats
+      if (selectedRepurposeFormats.length > 0 && savedId) {
+        const nextRepurposedOutputs = { ...blogRepurposedOutputs };
+        const REPURPOSE_FORMAT_MAP: Record<string, string> = {
+          linkedin_promo: "linkedin-thread",
+          twitter_thread: "twitter-thread",
+          newsletter_summary: "newsletter",
+          quote_snippets: "cta-blocks",
+        };
 
-        data.results.forEach((newRec: DistributionRecord) => {
-          const idx = updatedRecords.findIndex(
-            (r) => r.platform === newRec.platform,
-          );
+        for (let i = 0; i < selectedRepurposeFormats.length; i++) {
+          const formatId = selectedRepurposeFormats[i];
+          const apiFormat = REPURPOSE_FORMAT_MAP[formatId] || formatId;
 
-          if (idx > -1) {
-            updatedRecords[idx] = newRec;
-          } else {
-            updatedRecords.push(newRec);
+          setRepurposingProgress({
+            active: true,
+            currentFormat: formatId,
+            percent: Math.round((i / selectedRepurposeFormats.length) * 100),
+          });
+
+          try {
+            const repRes = await fetch(`/api/pirateCOS/posts/${savedId}/repurpose`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ format: apiFormat }),
+            });
+            const repData = await repRes.json();
+            if (repData.success && repData.data) {
+              nextRepurposedOutputs[formatId] = repData.data;
+            } else {
+              console.error(`Failed to repurpose format ${formatId}:`, repData.error);
+            }
+          } catch (e) {
+            console.error(`Failed to repurpose format ${formatId}`, e);
           }
-        });
-        onUpdateRecords(updatedRecords);
-        // Clear selected platforms on success
-        setSelectedPlatforms([]);
+        }
+
+        // Save gathered outputs to database
+        try {
+          const saveRes = await fetch(`/api/pirateCOS/posts/${savedId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ repurposedOutputs: nextRepurposedOutputs }),
+          });
+          if (saveRes.ok) {
+            onUpdateRepurposedOutputs?.(nextRepurposedOutputs);
+          }
+        } catch (e) {
+          console.error("Failed to save repurposed outputs to database", e);
+        }
+
+        setRepurposingProgress(null);
+        setSelectedRepurposeFormats([]);
+        setShowRepurposePreview(true); // Open the preview drawer automatically
       }
     } catch (err: any) {
       setDistributionError(err.message || "Failed to publish distribution");
     } finally {
       setDistributing(false);
+      setRepurposingProgress(null);
     }
   };
 
@@ -316,10 +488,74 @@ export default function DistributionPanel({
 
   return (
     <div className="space-y-4 font-geist text-gray-700">
+      {/* SECTION: One-Click Distribution Chains */}
+      <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl border border-white/10 p-4 space-y-3 shadow-md">
+        <div>
+          <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold flex items-center gap-1.5">
+            <CosIcon name="bolt" size={12} className="text-orange-500 fill-orange-500" /> One-Click Distribution Chains
+          </p>
+          <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+            Activate a preset chain matching your distribution strategy. This automatically configures channels and repurposing templates.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-2 pt-1">
+          {DISTRIBUTION_CHAINS.map((chain) => {
+            const isActive = activeChain === chain.value;
+            return (
+              <button
+                key={chain.value}
+                type="button"
+                className={`w-full text-left p-3 rounded-xl border transition-all flex items-start gap-3 group ${
+                  isActive
+                    ? "border-[#FF5B04] bg-[#FF5B04]/10 ring-1 ring-[#FF5B04]/30"
+                    : "border-white/5 bg-white/5 hover:bg-white/10"
+                }`}
+                onClick={() => {
+                  setActiveChain(chain.value);
+                  setSelectedPlatforms(chain.defaultChannels);
+                  setSelectedRepurposeFormats(chain.recommendedRepurposing);
+                }}
+              >
+                <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-lg flex-shrink-0">
+                  <CosIcon name={chain.icon} size={18} className="text-gray-300 group-hover:text-[#FF5B04]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between">
+                    <p className={`text-xs font-bold ${isActive ? "text-[#FF5B04]" : "text-gray-100"}`}>
+                      {chain.label}
+                    </p>
+                    {isActive && (
+                      <span className="text-[8px] font-extrabold uppercase tracking-wider font-jetbrains-mono bg-[#FF5B04] text-white px-2 py-0.5 rounded">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-gray-400 mt-0.5 leading-normal">
+                    {chain.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {chain.defaultChannels.map((c) => (
+                      <span key={c} className="text-[9px] font-semibold bg-white/5 text-gray-300 px-1.5 py-0.5 rounded border border-white/5 flex items-center gap-1">
+                        <CosIcon name="megaphone" size={10} className="text-gray-400" /> {PLATFORM_LABELS[c] || c}
+                      </span>
+                    ))}
+                    {chain.recommendedRepurposing.map((r) => (
+                      <span key={r} className="text-[9px] font-semibold bg-purple-500/10 text-purple-300 px-1.5 py-0.5 rounded border border-purple-500/20 flex items-center gap-1">
+                        <CosIcon name="refresh" size={10} className="text-purple-400 animate-spin-slow" /> {r.replace("_", " ")}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* SECTION: AI Distribution Intelligence */}
       <div className="bg-gradient-to-br from-orange-50/70 to-purple-50/50 rounded-2xl border border-[#FF5B04]/10 p-4 space-y-3 shadow-sm">
-        <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold">
-          🤖 AI Distribution Intelligence
+        <p className="text-[10px] font-jetbrains-mono text-[#FF5B04] uppercase tracking-widest font-bold flex items-center gap-1.5">
+          <CosIcon name="bot" size={12} className="text-orange-500" /> AI Distribution Intelligence
         </p>
 
         {/* Channel Fit Matrix */}
@@ -340,7 +576,10 @@ export default function DistributionPanel({
                   }`}
                   title={isRecommended ? "Ideal fit for this post type!" : "Not recommended as primary channel"}
                 >
-                  {isRecommended ? "✅" : "❌"} {PLATFORM_LABELS[platform] || platform}
+                  <span className="flex items-center gap-1">
+                    <CosIcon name={isRecommended ? "check" : "cross"} size={10} className={isRecommended ? "text-green-500" : "text-gray-400"} />
+                    {PLATFORM_LABELS[platform] || platform}
+                  </span>
                 </span>
               );
             })}
@@ -353,49 +592,24 @@ export default function DistributionPanel({
             AI Advisor Guidance:
           </span>
           <p>
-            {contentGoal === "traffic" && "Drive organic traffic by targeting high-intent long-tail keywords. Share first on your SEO optimized WordPress or Ghost blog. 📈"}
-            {contentGoal === "authority" && "Establish thought leadership with detailed framework citations. Great fit for publishing directly to LinkedIn and Medium! 🏛️"}
-            {contentGoal === "conversion" && "Structure the post around solving problems with benefit-driven CTAs. Embed lead capture forms in your primary blog post. 💰"}
-            {contentGoal === "engagement" && "Create high visual curiosity with a strong opening hook. Ideal for Twitter threads or LinkedIn slide carousels! 🔥"}
-            {contentGoal === "lead-generation" && "Offer actionable checklists or templates. Gate the deep-dive portion with a newsletter subscription form. 🧲"}
-            {contentGoal === "retention" && "Provide highly practical step-by-step instructions. Ideal for internal newsletters and education portals. 🤝"}
+            {contentGoal === "traffic" && "Drive organic traffic by targeting high-intent long-tail keywords. Share first on your SEO optimized WordPress or Ghost blog. "}
+            {contentGoal === "authority" && "Establish thought leadership with detailed framework citations. Great fit for publishing directly to LinkedIn and Medium! "}
+            {contentGoal === "conversion" && "Structure the post around solving problems with benefit-driven CTAs. Embed lead capture forms in your primary blog post. "}
+            {contentGoal === "engagement" && "Create high visual curiosity with a strong opening hook. Ideal for Twitter threads or LinkedIn slide carousels! "}
+            {contentGoal === "lead-generation" && "Offer actionable checklists or templates. Gate the deep-dive portion with a newsletter subscription form. "}
+            {contentGoal === "retention" && "Provide highly practical step-by-step instructions. Ideal for internal newsletters and education portals. "}
           </p>
           <p className="text-[9px] font-semibold text-[#FF5B04] mt-1.5 font-jetbrains-mono italic">
             Suggested Timing: Tuesday & Thursday, 9:00 AM – 11:30 AM (Peak Engagement window)
           </p>
         </div>
-
-        {/* Content Repurposing Shortcuts */}
-        {postType !== "social-post" && (
-          <div className="pt-1.5 border-t border-black/5 space-y-2">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">
-              Repurposing Actions
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
-                type="button"
-                onClick={() => onTriggerCopilotAI()}
-              >
-                <span>🔗</span> LinkedIn Promo Post
-              </button>
-              <button
-                className="text-[10px] font-semibold text-gray-600 hover:text-gray-900 bg-white border border-black/5 hover:border-black/10 rounded-xl py-2 px-2.5 transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer"
-                type="button"
-                onClick={() => onTriggerCopilotAI()}
-              >
-                <span>🐦</span> Twitter Thread
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* SECTION: Post-Publish Actions */}
       {postType !== "social-post" && distributionRecords.some((r) => r.status === "success") && (
         <div className="bg-green-50 border border-green-200 rounded-2xl p-4 space-y-2">
           <p className="text-[10px] font-jetbrains-mono text-green-700 uppercase tracking-widest font-bold flex items-center gap-1.5">
-            🎉 Successfully Distributed! What's next?
+            <CosIcon name="celebrate" size={12} className="text-green-600" /> Successfully Distributed! What's next?
           </p>
           <p className="text-xs text-green-600 leading-relaxed font-geist">
             Your post is live! Amplify its reach immediately:
@@ -417,201 +631,6 @@ export default function DistributionPanel({
         </div>
       )}
 
-      {/* SECTION: Active Distribution Chain */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
-        <div className="flex items-center justify-between">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            Operational Chain
-          </p>
-          <span className="text-[9px] font-extrabold font-jetbrains-mono uppercase bg-orange-50 text-[#FF5B04] px-2.5 py-0.5 rounded-full border border-orange-100 animate-pulse">
-            ✨ {postType === "social-post" ? "Social Distribution Chain" :
-                contentGoal === "traffic" ? "SEO Growth Chain" :
-                contentGoal === "authority" ? "Founder Authority Chain" :
-                contentGoal === "conversion" ? "Product Launch Chain" :
-                contentGoal === "engagement" ? "Community Expansion Chain" :
-                contentGoal === "lead-generation" ? "Newsletter Growth Chain" :
-                "Customer Education Chain"}
-          </span>
-        </div>
-
-        {/* Dynamic Vertical Timeline */}
-        <div className="relative pl-6 space-y-5 border-l-2 border-orange-500/20 ml-2.5">
-          {postType === "social-post" ? (
-            <>
-              {/* Step 1: Integrations Status */}
-              {(() => {
-                const hasConnectedPlatform = integrations.some(
-                  (i) => i.isConnected && i.isActive
-                );
-                return (
-                  <div className="relative">
-                    <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
-                      hasConnectedPlatform ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
-                    }`}>
-                      {hasConnectedPlatform ? "✓" : "1"}
-                    </span>
-                    <div>
-                      <p className="text-xs font-bold text-gray-800">
-                        1. Integrations Status
-                      </p>
-                      <p className="text-[10px] text-gray-400 mt-0.5">
-                        {hasConnectedPlatform ? "Connected social channel is active." : "No connected social channel is active. Please connect integrations below."}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Step 2: Launch Social Update */}
-              <div className="relative">
-                <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
-                  blogPublished ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
-                }`}>
-                  {blogPublished ? "✓" : "2"}
-                </span>
-                <div>
-                  <p className="text-xs font-bold text-gray-800">
-                    2. Launch Social Update
-                  </p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">
-                    {blogPublished ? "Social update is published live!" : "Draft ready. Select target channels below and click 'Distribute Now' to publish."}
-                  </p>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Step 1: Primary Hub Publish */}
-              <div className="relative">
-                <span className={`absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold ${
-                  blogPublished ? "bg-green-500 border-green-500 text-white" : "bg-white border-orange-500 text-orange-500"
-                }`}>
-                  {blogPublished ? "✓" : "1"}
-                </span>
-                <div>
-                  <p className="text-xs font-bold text-gray-800">
-                    1. Primary Hub Publish
-                  </p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">
-                    {blogPublished ? "Published live on primary site" : "Draft ready. Click 'Publish' at top right to launch first."}
-                  </p>
-                </div>
-              </div>
-
-              {/* Promotional social actions (only show after published) */}
-              {blogPublished && (
-                <>
-                  {/* Step 2: LinkedIn Promo */}
-                  {(() => {
-                    const firstSuccess = distributionRecords.find((r) => r.status === "success");
-                    const liveUrl = firstSuccess?.url || "https://yourbrand.com/posts/live-article";
-                    return (
-                      <div className="relative">
-                        <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
-                          2
-                        </span>
-                        <div className="space-y-1.5">
-                          <div>
-                            <p className="text-xs font-bold text-gray-800">
-                              2. Draft LinkedIn Promo
-                            </p>
-                            <p className="text-[10px] text-gray-400 mt-0.5">
-                              Write a scroll-stopping LinkedIn teaser to share this article.
-                            </p>
-                          </div>
-                          <button
-                            className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
-                            type="button"
-                            onClick={() =>
-                              onTriggerCopilotAI(
-                                "linkedin-post",
-                                `Draft an engaging LinkedIn promotional post to share my new published article. Title: '${blogTitle}', URL: '${liveUrl}'. Hook the reader, outline key takeaways, and end with a question to drive comments.`
-                              )
-                            }
-                          >
-                            Draft LinkedIn Promo
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })()}
-
-                  {/* Step 3: X (Twitter) Share */}
-                  {(() => {
-                    const firstSuccess = distributionRecords.find((r) => r.status === "success");
-                    const liveUrl = firstSuccess?.url || "https://yourbrand.com/posts/live-article";
-                    return (
-                      <div className="relative">
-                        <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
-                          3
-                        </span>
-                        <div className="space-y-1.5">
-                          <div>
-                            <p className="text-xs font-bold text-gray-800">
-                              3. Draft X Post
-                            </p>
-                            <p className="text-[10px] text-gray-400 mt-0.5">
-                              Create a punchy post to share this article on X.
-                            </p>
-                          </div>
-                          <button
-                            className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
-                            type="button"
-                            onClick={() =>
-                              onTriggerCopilotAI(
-                                "linkedin-post",
-                                `Draft a punchy promotional tweet (under 280 characters) to share my new published article. Title: '${blogTitle}', URL: '${liveUrl}'. Use a strong hook and relevant hashtags.`
-                              )
-                            }
-                          >
-                            Draft X Post
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })()}
-
-                  {/* Step 4: Newsletter Digest */}
-                  {(() => {
-                    const firstSuccess = distributionRecords.find((r) => r.status === "success");
-                    const liveUrl = firstSuccess?.url || "https://yourbrand.com/posts/live-article";
-                    return (
-                      <div className="relative">
-                        <span className="absolute -left-[22px] top-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-[7px] font-bold">
-                          4
-                        </span>
-                        <div className="space-y-1.5">
-                          <div>
-                            <p className="text-xs font-bold text-gray-800">
-                              4. Create Newsletter Digest
-                            </p>
-                            <p className="text-[10px] text-gray-400 mt-0.5">
-                              Summarize this article into a high-converting email newsletter.
-                            </p>
-                          </div>
-                          <button
-                            className="text-[9px] font-bold uppercase tracking-wider bg-black/5 text-gray-700 hover:bg-black/10 px-2.5 py-1 rounded-md transition-colors cursor-pointer"
-                            type="button"
-                            onClick={() =>
-                              onTriggerCopilotAI(
-                                "thought-leadership",
-                                `Convert my published article '${blogTitle}' (URL: '${liveUrl}') into a concise, email newsletter digest. Write in a warm, direct tone introducing the topic, summarizing the 3 key insights, and encouraging readers to click the link to read the full post.`
-                              )
-                            }
-                          >
-                            Create Newsletter Digest
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })()}
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </div>
-
       {/* SECTION: Pre-flight Checklist */}
       <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
         <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
@@ -621,9 +640,9 @@ export default function DistributionPanel({
           {preflight.map((check) => (
             <div
               key={check.id}
-              className="flex items-start justify-between gap-2 text-xs"
+              className="flex items-center justify-between gap-2 text-xs"
             >
-              <div className="flex items-start gap-2 min-w-0">
+              <div className="flex items-center gap-2 min-w-0">
                 {check.passed ? (
                   <span className="text-green-500 font-bold flex-shrink-0">
                     ✓
@@ -643,14 +662,40 @@ export default function DistributionPanel({
                   {check.label}
                 </span>
               </div>
-              {!check.passed && check.action && (
-                <button
-                  className="text-[10px] font-semibold text-[#FF5B04] hover:underline flex-shrink-0"
-                  type="button"
-                  onClick={() => handlePreflightAction(check.action)}
-                >
-                  {check.action}
-                </button>
+              {!check.passed && (
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {["excerpt", "tags", "focusKeyword", "metaTitle", "metaDescription"].includes(check.id) && (
+                    <button
+                      className="text-[10px] font-bold text-[#FF5B04] hover:text-orange-700 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-md flex items-center gap-1 transition-all disabled:opacity-50 cursor-pointer"
+                      type="button"
+                      disabled={autofixing[check.id]}
+                      onClick={() => handleAutofix(check.id)}
+                    >
+                      {autofixing[check.id] ? (
+                        <>
+                          <svg className="animate-spin h-2.5 w-2.5 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor" />
+                          </svg>
+                          Autofixing...
+                        </>
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <CosIcon name="bolt" size={10} className="fill-current text-[#FF5B04]" /> Autofix
+                        </span>
+                      )}
+                    </button>
+                  )}
+                  {check.action && (
+                    <button
+                      className="text-[10px] font-semibold text-gray-500 hover:text-gray-900 hover:underline"
+                      type="button"
+                      onClick={() => handlePreflightAction(check.action)}
+                    >
+                      {check.action}
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           ))}
@@ -734,6 +779,174 @@ export default function DistributionPanel({
         )}
       </div>
 
+      {/* SECTION: Repurpose Output Checkboxes */}
+      {postType !== "social-post" && (
+        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+            Repurpose Content
+          </p>
+          <div className="space-y-2">
+            {[
+              { id: "linkedin_promo", label: "LinkedIn Promo (Carousel Slide Copy)", icon: "link" },
+              { id: "twitter_thread", label: "X / Twitter Thread", icon: "social-post" },
+              { id: "newsletter_summary", label: "Newsletter summary / Draft", icon: "envelope" },
+              { id: "quote_snippets", label: "CTA / Quote snippets", icon: "community-insight" },
+            ].map((format) => {
+              const isSelected = selectedRepurposeFormats.includes(format.id);
+              return (
+                <label
+                  key={format.id}
+                  className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all cursor-pointer ${
+                    isSelected
+                      ? "border-[#FF5B04]/30 bg-orange-50/20"
+                      : "border-black/5 bg-white hover:border-black/10"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    className="accent-[#FF5B04] h-4 w-4 rounded border-gray-300 text-[#FF5B04] focus:ring-[#FF5B04]/30"
+                    checked={isSelected}
+                    onChange={() => {
+                      setSelectedRepurposeFormats((prev) =>
+                        prev.includes(format.id)
+                          ? prev.filter((x) => x !== format.id)
+                          : [...prev, format.id]
+                      );
+                    }}
+                  />
+                  <span className="text-xs font-semibold text-gray-800 flex items-center gap-1.5">
+                    <CosIcon name={format.icon} size={14} className="text-gray-500" /> {format.label}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* SECTION: Platform Publishing Errors & Diagnostics */}
+      {Object.keys(platformErrors).length > 0 && (
+        <div className="space-y-2">
+          {Object.entries(platformErrors).map(([platform, errMsg]) => (
+            <div
+              key={platform}
+              className="bg-red-50/50 border border-red-200 rounded-2xl p-4 space-y-3 shadow-sm animate-in slide-in-from-top-2"
+            >
+              <div className="flex items-start gap-2.5">
+                <CosIcon name="warning" size={16} className="text-red-500 mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-xs font-bold text-red-800 uppercase tracking-wide">
+                    {PLATFORM_LABELS[platform] || platform} Publishing Failure
+                  </h4>
+                  <p className="text-[11px] text-red-700 leading-normal mt-1 bg-red-100/30 p-2.5 rounded-lg border border-red-200/40">
+                    {errMsg}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex justify-end gap-2 pt-1 border-t border-red-100">
+                <Link
+                  className="text-[10px] font-bold text-[#FF5B04] hover:text-orange-700 bg-white border border-[#FF5B04]/20 hover:border-[#FF5B04]/40 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+                  href={integrationsUrl}
+                >
+                  <CosIcon name="link" size={10} className="mr-1" /> Reconnect
+                </Link>
+                <button
+                  className="text-[10px] font-bold text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+                  type="button"
+                  onClick={() => {
+                    // Retry publishing specifically for this platform
+                    setPlatformErrors(prev => {
+                      const copy = { ...prev };
+                      delete copy[platform];
+                      return copy;
+                    });
+                    setSelectedPlatforms([platform]);
+                    setTimeout(() => {
+                      handleDistribute();
+                    }, 0);
+                  }}
+                >
+                  <CosIcon name="refresh" size={10} className="mr-1" /> Retry Publishing
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* SECTION: Repurposing Progress Loader */}
+      {repurposingProgress?.active && (
+        <div className="bg-gradient-to-r from-orange-500/10 to-purple-500/10 border border-orange-500/20 rounded-2xl p-4 space-y-3 animate-pulse shadow-sm">
+          <div className="flex justify-between items-center text-xs">
+            <span className="font-bold text-orange-600 flex items-center gap-1.5">
+              <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor" />
+              </svg>
+              AI Repurposing in Progress...
+            </span>
+            <span className="font-jetbrains-mono font-bold text-purple-600">
+              {repurposingProgress.percent}%
+            </span>
+          </div>
+          <div className="w-full h-2 bg-black/5 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-orange-500 to-purple-500 transition-all duration-500"
+              style={{ width: `${repurposingProgress.percent}%` }}
+            />
+          </div>
+          <p className="text-[10px] text-gray-500 font-medium">
+            Generating format: <span className="font-mono text-gray-700 capitalize">{repurposingProgress.currentFormat.replace("_", " ")}</span>
+          </p>
+        </div>
+      )}
+
+      {/* SECTION: Generated Repurposed Previews */}
+      {postType !== "social-post" && Object.keys(blogRepurposedOutputs).length > 0 && (
+        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
+          <div className="flex justify-between items-center">
+            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+              <CosIcon name="sparkles" size={12} className="text-[#FF5B04]" /> Repurposed Promotional Assets
+            </p>
+            <button
+              className="text-[10px] font-bold text-[#FF5B04] hover:underline"
+              type="button"
+              onClick={() => setShowRepurposePreview(!showRepurposePreview)}
+            >
+              {showRepurposePreview ? "Hide Previews" : "Show Previews"}
+            </button>
+          </div>
+          
+          {showRepurposePreview && (
+            <div className="space-y-4 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
+              {Object.entries(blogRepurposedOutputs).map(([formatId, text]) => (
+                <div key={formatId} className="bg-gray-50 border border-black/5 rounded-xl p-3 space-y-2 animate-in fade-in zoom-in duration-200">
+                  <div className="flex justify-between items-center border-b border-black/[0.04] pb-1.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-700 font-jetbrains-mono">
+                      {formatId.replace("_", " ")}
+                    </span>
+                    <button
+                      className="text-[9px] font-bold uppercase tracking-wider text-gray-400 hover:text-gray-600 transition-colors"
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(text);
+                        alert("Copied to clipboard!");
+                      }}
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <pre className="text-[11px] text-gray-600 font-geist leading-relaxed whitespace-pre-wrap select-all">
+                    {text}
+                  </pre>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* SECTION: History */}
       {distributionRecords.length > 0 && (
         <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
@@ -790,7 +1003,7 @@ export default function DistributionPanel({
                           </svg>
                         ) : (
                           <svg
-                            className="w-3.5 h-3.5 text-gray-400 hover:text-gray-600 transition-colors animate-fade-in"
+                            className="w-3.5 h-3.5 text-gray-400 hover:text-gray-600 transition-colors"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="2"
@@ -860,7 +1073,7 @@ export default function DistributionPanel({
           disabled={
             distributing ||
             !blogPublished ||
-            selectedPlatforms.length === 0 ||
+            (selectedPlatforms.length === 0 && selectedRepurposeFormats.length === 0) ||
             hasPreflightErrors
           }
           style={{ background: "#FF5B04" }}
@@ -880,7 +1093,7 @@ export default function DistributionPanel({
               >
                 <path d="M21 12a9 9 0 1 1-6.219-8.56" />
               </svg>
-              Distributing…
+              {repurposingProgress?.active ? "Repurposing..." : "Distributing…"}
             </>
           ) : (
             "Distribute Now"

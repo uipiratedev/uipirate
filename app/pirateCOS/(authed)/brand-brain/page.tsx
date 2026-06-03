@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { POST_TYPE_CONFIGS } from "@/lib/pirateCOS/postTypeConfig";
+import CosIcon from "@/components/pirateCOS/CosIcon";
 
 interface BrandBrainData {
   companyName: string;
@@ -1007,8 +1008,8 @@ export default function BrandBrainPage() {
                           onClick={() => setSelectedPresetType(type.value)}
                         >
                           <div className="min-w-0">
-                            <p className="text-xs font-semibold truncate">
-                              {type.icon} {type.label}
+                            <p className="text-xs font-semibold truncate flex items-center gap-1.5">
+                              <CosIcon name={type.icon} size={14} className={active ? "text-[#FF5B04]" : "text-gray-400"} /> {type.label}
                             </p>
                             <p className="text-[9px] text-gray-400 truncate mt-0.5">
                               {type.category === "content" ? "Content & Knowledge" : "Product & Monetization"}
@@ -1034,7 +1035,7 @@ export default function BrandBrainPage() {
                         <div className="space-y-4">
                           <div>
                             <span className="inline-flex items-center gap-1.5 bg-black/[0.03] border border-black/5 px-2.5 py-1 rounded-lg text-xs font-semibold text-gray-800">
-                              {typeConfig.icon} {typeConfig.label} Guide
+                              <CosIcon name={typeConfig.icon} size={14} className="text-gray-500" /> {typeConfig.label} Guide
                             </span>
                             <p className="text-[11px] text-gray-400 leading-relaxed mt-2">
                               <strong>Default template hint:</strong> {typeConfig.templateHint}

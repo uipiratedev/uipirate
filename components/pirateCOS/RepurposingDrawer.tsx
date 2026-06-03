@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import CosIcon from "./CosIcon";
 
 const AnimatePresenceAny = AnimatePresence as any;
 
@@ -14,49 +15,49 @@ const REPURPOSE_FORMATS = [
     id: "linkedin-thread",
     label: "LinkedIn Thread",
     desc: "10-slide carousel script",
-    icon: "🔗",
+    icon: "link",
   },
   {
     id: "twitter-thread",
     label: "Twitter Thread",
     desc: "8-12 sequential tweets",
-    icon: "🐦",
+    icon: "social-post",
   },
   {
     id: "newsletter",
     label: "Email Newsletter",
     desc: "Friendly HTML campaign template",
-    icon: "📧",
+    icon: "envelope",
   },
   {
     id: "summary",
     label: "Executive Summary",
     desc: "200-word digest + bullet takeaways",
-    icon: "📝",
+    icon: "listicle",
   },
   {
     id: "seo-meta",
     label: "SEO Meta Package",
     desc: "Focus slugs, tags and description limits",
-    icon: "📊",
+    icon: "traffic",
   },
   {
     id: "cta-blocks",
     label: "CTA Action Blocks",
     desc: "Soft, medium and hard CTA variations",
-    icon: "⚡",
+    icon: "bolt",
   },
   {
     id: "faq-schema",
     label: "Structured FAQ Schema",
     desc: "Standard Q&A rich snippets",
-    icon: "❓",
+    icon: "case-study",
   },
   {
     id: "infographic",
     label: "Infographic Blueprint",
     desc: "Layout structure & design scripts",
-    icon: "📐",
+    icon: "comparison",
   },
 ];
 
@@ -106,7 +107,7 @@ export default function RepurposingDrawer({
     if (!result) {
       return (
         <div className="h-full flex flex-col items-center justify-center text-center p-8 text-gray-400">
-          <span className="text-3xl mb-3 animate-bounce">🚀</span>
+          <CosIcon name="product-launch" size={32} className="mb-3 animate-bounce text-[#FF5B04]" />
           <p className="text-sm font-bold text-gray-700 font-geist">
             Ready for Transformation
           </p>
@@ -198,7 +199,7 @@ export default function RepurposingDrawer({
           <div className="bg-white rounded-xl border border-black/5 shadow-sm p-6 space-y-4">
             <div className="border-b border-black/5 pb-3">
               <p className="text-[10px] font-semibold text-gray-400">
-                Subject: Dynamic Content Syndication Announcement 🚀
+                Subject: Dynamic Content Syndication Announcement
               </p>
             </div>
             <div
@@ -249,7 +250,7 @@ export default function RepurposingDrawer({
             <div className="px-6 py-4 border-b border-black/5 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-orange-50 text-[#FF5B04] flex items-center justify-center font-bold text-base shadow-sm border border-[#FF5B04]/10">
-                  ⚡
+                  <CosIcon name="bolt" size={18} className="text-[#FF5B04] fill-[#FF5B04]" />
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-gray-900">
@@ -307,7 +308,7 @@ export default function RepurposingDrawer({
                           onClick={() => setSelectedFormat(f.id)}
                         >
                           <span className="text-lg leading-none mt-0.5">
-                            {f.icon}
+                            <CosIcon name={f.icon} size={18} className={selected ? "text-[#FF5B04]" : "text-gray-400"} />
                           </span>
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-gray-900">

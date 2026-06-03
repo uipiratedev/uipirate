@@ -29,6 +29,7 @@ interface PostUpdateData {
     canonicalUrl?: string;
     noIndex?: boolean;
   };
+  repurposedOutputs?: Record<string, string>;
 }
 
 // GET /api/pirateCOS/posts/[id] - Get a single post by ID or slug scoped to tenant
@@ -121,6 +122,7 @@ export async function PUT(
       postType,
       contentGoal,
       seo,
+      repurposedOutputs,
     } = body;
 
     const putTenantOid = new mongoose.Types.ObjectId(user.tenantId);
@@ -185,6 +187,11 @@ export async function PUT(
         ...seo,
       };
       blog.markModified("seo");
+    }
+
+    if (repurposedOutputs !== undefined) {
+      blog.repurposedOutputs = repurposedOutputs;
+      blog.markModified("repurposedOutputs");
     }
 
     if (content !== undefined) {

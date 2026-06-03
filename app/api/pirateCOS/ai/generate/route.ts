@@ -150,6 +150,8 @@ export async function POST(request: NextRequest) {
 
     if (action === "excerpt" || action === "metaDescription") {
       systemInstructions = `Draft a concise, high-converting SEO meta-description / excerpt (maximum 150-160 characters) summarizing the following post. Deliver ONLY the excerpt text. Do NOT wrap it in quotes, code blocks, or include introductory text. Content:\n\n${content || title}`;
+    } else if (action === "focusKeyword") {
+      systemInstructions = `Suggest a single, high-impact focus keyword or focus phrase (2-4 words) that represents the main organic search term for a post with the title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Deliver ONLY the focus keyword text. Do NOT wrap it in quotes, code blocks, or include introductory text.`;
     } else if (action === "metaTitle") {
       systemInstructions = `Suggest a single, high-impact, highly clickable, and search-optimized alternative title for a post with the active title: "${title || ""}", category: "${postType || "blog"}", and content: "${content || ""}". Deliver ONLY the single title text. Do NOT wrap it in quotes, code blocks, or include introductory text.`;
     } else if (action === "titles") {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import CosIcon from "./CosIcon";
 
 export const AI_CONFIG_LS_KEY = "uipirate-ai-config";
 
@@ -224,7 +225,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           {/* ── Puter ── */}
           <PanelSection label="Puter AI (Free)">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-[#FF5B04] font-bold text-sm">⚡</span>
+              <CosIcon name="bolt" size={14} className="text-[#FF5B04]" />
               <span className="text-sm font-semibold font-geist text-gray-800">
                 Puter
               </span>
@@ -380,7 +381,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                           ? "◆ Claude"
                         : eng === "mistral"
                           ? "◆ Mistral"
-                          : "⚡ Puter"}
+                            : <span className="flex items-center gap-1"><CosIcon name="bolt" size={10} /> Puter</span>}
                   </button>
                 ),
               )}
@@ -398,13 +399,13 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               {defaultEngine === "gemini" ? (
                 <>
                   <option value="gemini-flash-latest">
-                    ⚡ Gemini 1.5 Flash
+                    Gemini 1.5 Flash
                   </option>
                   <option value="gemini-1.5-pro-latest">
-                    🧬 Gemini 1.5 Pro
+                    Gemini 1.5 Pro
                   </option>
                   <option value="gemini-2.0-flash-exp">
-                    🚀 Gemini 2.0 Flash
+                    Gemini 2.0 Flash
                   </option>
                 </>
               ) : defaultEngine === "mistral" ? (
@@ -426,11 +427,11 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                 </>
               ) : (
                 <>
-                  <option value="gpt-4o-mini">🟢 GPT-4o Mini (fast)</option>
-                  <option value="gpt-4o">🔥 GPT-4o</option>
-                  <option value="gpt-5.5">🔥 GPT-5.5</option>
-                  <option value="gpt-5.4">⚡ GPT-5.4</option>
-                  <option value="gpt-5.4-mini">🟢 GPT-5.4 Mini</option>
+                  <option value="gpt-4o-mini">GPT-4o Mini (fast)</option>
+                  <option value="gpt-4o">GPT-4o</option>
+                  <option value="gpt-5.5">GPT-5.5</option>
+                  <option value="gpt-5.4">GPT-5.4</option>
+                  <option value="gpt-5.4-mini">GPT-5.4 Mini</option>
                 </>
               )}
             </select>

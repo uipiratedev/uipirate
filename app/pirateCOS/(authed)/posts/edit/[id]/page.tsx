@@ -28,6 +28,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
+import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
@@ -5429,13 +5430,13 @@ const SlashCommandMenu = ({
       },
       {
         title: "Divider",
-        icon: "—",
+        icon: "divider",
         desc: "Add a horizontal rule",
         command: () => editor.chain().focus().setHorizontalRule().run(),
       },
       {
         title: "Image Upload",
-        icon: "🖼",
+        icon: "image",
         desc: "Upload an image from disk",
         command: () => {
           imageUploadRef.current?.click();
@@ -5443,19 +5444,19 @@ const SlashCommandMenu = ({
       },
       {
         title: "Image URL",
-        icon: "🔗",
+        icon: "link",
         desc: "Embed an image via URL",
         command: onImageUrl,
       },
       {
         title: "Embed Video",
-        icon: "▶",
+        icon: "video",
         desc: "YouTube, Vimeo, Loom…",
         command: onVideoEmbed,
       },
       {
         title: "Table",
-        icon: "田",
+        icon: "table",
         desc: "Insert a 3x3 table",
         command: () =>
           editor
@@ -5517,8 +5518,8 @@ const SlashCommandMenu = ({
             onClose();
           }}
         >
-          <span className="text-xs font-bold font-jetbrains-mono text-gray-400 w-7 text-center flex-shrink-0">
-            {command.icon}
+          <span className="text-xs font-bold font-jetbrains-mono text-gray-400 w-7 text-center flex-shrink-0 flex items-center justify-center">
+            <CosIcon name={command.icon} size={14} className="text-gray-400" />
           </span>
           <div className="min-w-0">
             <div className="text-sm font-medium font-geist text-gray-800 leading-snug">
@@ -5617,7 +5618,9 @@ const FormattingToolbar = ({
             type="button"
             onClick={onTransformClick}
           >
-            <span>⚡ Transform</span>
+            <span className="flex items-center gap-1">
+              <CosIcon name="bolt" size={12} className="inline mr-1" /> Transform
+            </span>
           </button>
         </>
       )}
@@ -5641,7 +5644,7 @@ const FormattingToolbar = ({
               .run();
           }}
         >
-          📣 Insert CTA
+          <span className="flex items-center gap-1.5"><CosIcon name="megaphone" size={12} /> Insert CTA</span>
         </button>
       )}
       {sep}
@@ -5745,7 +5748,7 @@ const FormattingToolbar = ({
         title="Insert Link (Ctrl+K)"
         onClick={onLinkClick}
       >
-        🔗 Link
+        <span className="flex items-center gap-1"><CosIcon name="link" size={12} /> Link</span>
       </button>
       {features?.affiliateLinks && (
         <button
@@ -5767,7 +5770,7 @@ const FormattingToolbar = ({
             }
           }}
         >
-          💰 Affiliate Link
+          <span className="flex items-center gap-1"><CosIcon name="conversion" size={12} /> Affiliate Link</span>
         </button>
       )}
       {editor.isActive("link") && (
@@ -5776,7 +5779,7 @@ const FormattingToolbar = ({
           title="Remove Link"
           onClick={() => editor.chain().focus().unsetLink().run()}
         >
-          Unlink 🔓
+          <span className="flex items-center gap-1">Unlink <CosIcon name="cross" size={12} /></span>
         </button>
       )}
 
@@ -5840,7 +5843,7 @@ const FormattingToolbar = ({
           title="Task List"
           onClick={() => editor.chain().focus().toggleTaskList().run()}
         >
-          ☑️ Task List
+          <span className="flex items-center gap-1"><CosIcon name="tasks" size={12} /> Task List</span>
         </button>
       )}
       {postType !== "social-post" && (
@@ -6484,6 +6487,7 @@ const BlogEditPage = () => {
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
+  const [repurposedOutputs, setRepurposedOutputs] = useState<Record<string, string>>({});
 
   const {
     blogId,
@@ -6508,6 +6512,7 @@ const BlogEditPage = () => {
       contentGoal,
       slug: currentSlug,
       seo: seoData,
+      repurposedOutputs,
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
@@ -6871,6 +6876,7 @@ const BlogEditPage = () => {
         setSeoData(blog.seo || {});
         setSaveStatus(blog.published ? "Published" : "Draft");
         setDistRecords(blog.distributionRecords || []);
+        setRepurposedOutputs(blog.repurposedOutputs || {});
         if (editor) {
           // Disable dirty tracking while loading initial content
           isEditorReady.current = false;
@@ -7087,10 +7093,19 @@ const BlogEditPage = () => {
               <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            {getPostTypeConfig(postType)?.icon}{" "}
-            {getPostTypeConfig(postType)?.label} ×{" "}
-            {getGoalConfig(contentGoal)?.icon}{" "}
-            {getGoalConfig(contentGoal)?.label}
+            {(() => {
+              const ptConfig = getPostTypeConfig(postType);
+              const gConfig = getGoalConfig(contentGoal);
+              return (
+                <span className="flex items-center gap-1">
+                  {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
+                  <span>{ptConfig?.label}</span>
+                  <span className="mx-0.5">×</span>
+                  {gConfig && <CosIcon name={gConfig.icon} size={10} />}
+                  <span>{gConfig?.label}</span>
+                </span>
+              );
+            })()}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -7305,7 +7320,7 @@ const BlogEditPage = () => {
               {postType === "social-post" ? (
                 <div className="flex flex-col gap-2 p-4 rounded-2xl bg-black/[0.015] border border-black/5 backdrop-blur-sm shadow-sm transition-all hover:bg-black/[0.025] hover:border-black/10">
                   <div className="flex items-center gap-2 text-xs font-bold text-gray-400 font-geist select-none uppercase tracking-wider">
-                    <span>🔗</span>
+                    <CosIcon name="link" size={12} className="text-gray-400" />
                     <span>Internal Social Draft Name (dashboard only):</span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -7695,7 +7710,7 @@ const BlogEditPage = () => {
                           if (hasLongParagraph) {
                             return (
                               <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
-                                <span className="text-amber-500 text-sm">⚠️</span>
+                              <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
                                 <div>
                                   <p className="text-[10px] font-bold text-amber-800">
                                     Whitespace Spacing Advisor
@@ -7709,7 +7724,7 @@ const BlogEditPage = () => {
                           }
                           return (
                             <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
-                              <span className="text-green-500 text-sm">✅</span>
+                              <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
                               <div>
                                 <p className="text-[10px] font-bold text-green-800">
                                   Spacing Calibrated
@@ -8588,9 +8603,7 @@ const BlogEditPage = () => {
                         className="bg-amber-50/50 border border-amber-100 rounded-xl p-3.5 space-y-1.5 shadow-sm"
                       >
                         <div className="flex items-start gap-2">
-                          <span className="text-amber-500 font-bold text-xs mt-0.5">
-                            ⚠️
-                          </span>
+                          <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-gray-800 capitalize leading-snug">
                               {w.type} Alert
@@ -8648,6 +8661,11 @@ const BlogEditPage = () => {
                 distributionRecords={distRecords}
                 postType={postType}
                 socialDestination={socialDestination}
+                blogRepurposedOutputs={repurposedOutputs}
+                onUpdateRepurposedOutputs={setRepurposedOutputs}
+                onUpdateExcerpt={setExcerpt}
+                onUpdateTags={setTags}
+                onUpdateSeo={setSeoData}
                 onEnsureSaved={ensureSaved}
                 onNavigateToSEO={() => setSidebarTab("seo")}
                 onTriggerCopilotAI={(preset, prompt) => {

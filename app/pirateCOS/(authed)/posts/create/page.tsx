@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
+import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
@@ -5163,8 +5164,14 @@ const SlashCommandMenu = ({
         command: () => editor.chain().focus().setHorizontalRule().run(),
       },
       {
+        title: "Divider",
+        icon: "divider",
+        desc: "Add a horizontal rule",
+        command: () => editor.chain().focus().setHorizontalRule().run(),
+      },
+      {
         title: "Image Upload",
-        icon: "🖼",
+        icon: "image",
         desc: "Upload an image from disk",
         command: () => {
           imageUploadRef.current?.click();
@@ -5172,19 +5179,19 @@ const SlashCommandMenu = ({
       },
       {
         title: "Image URL",
-        icon: "🔗",
+        icon: "link",
         desc: "Embed an image via URL",
         command: onImageUrl,
       },
       {
         title: "Embed Video",
-        icon: "▶",
+        icon: "video",
         desc: "YouTube, Vimeo, Loom…",
         command: onVideoEmbed,
       },
       {
         title: "Table",
-        icon: "田",
+        icon: "table",
         desc: "Insert a 3x3 table",
         command: () =>
           editor
@@ -5247,8 +5254,8 @@ const SlashCommandMenu = ({
             onClose();
           }}
         >
-          <span className="text-xs font-bold font-jetbrains-mono text-gray-400 w-7 text-center flex-shrink-0">
-            {command.icon}
+          <span className="text-xs font-bold font-jetbrains-mono text-gray-400 w-7 text-center flex-shrink-0 flex items-center justify-center">
+            <CosIcon name={command.icon} size={14} className="text-gray-400" />
           </span>
           <div className="min-w-0">
             <div className="text-sm font-medium font-geist text-gray-800 leading-snug">
@@ -5347,7 +5354,9 @@ const FormattingToolbar = ({
             type="button"
             onClick={onTransformClick}
           >
-            <span>⚡ Transform</span>
+            <span className="flex items-center gap-1">
+              <CosIcon name="bolt" size={12} className="inline mr-1" /> Transform
+            </span>
           </button>
         </>
       )}
@@ -5371,7 +5380,7 @@ const FormattingToolbar = ({
               .run();
           }}
         >
-          📣 Insert CTA
+          <span className="flex items-center gap-1.5"><CosIcon name="megaphone" size={12} /> Insert CTA</span>
         </button>
       )}
       {sep}
@@ -5475,7 +5484,7 @@ const FormattingToolbar = ({
         title="Insert Link (Ctrl+K)"
         onClick={onLinkClick}
       >
-        🔗 Link
+        <span className="flex items-center gap-1"><CosIcon name="link" size={12} /> Link</span>
       </button>
       {features?.affiliateLinks && (
         <button
@@ -5497,7 +5506,7 @@ const FormattingToolbar = ({
             }
           }}
         >
-          💰 Affiliate Link
+          <span className="flex items-center gap-1"><CosIcon name="conversion" size={12} /> Affiliate Link</span>
         </button>
       )}
       {editor.isActive("link") && (
@@ -5506,7 +5515,7 @@ const FormattingToolbar = ({
           title="Remove Link"
           onClick={() => editor.chain().focus().unsetLink().run()}
         >
-          Unlink 🔓
+          <span className="flex items-center gap-1">Unlink <CosIcon name="cross" size={12} /></span>
         </button>
       )}
 
@@ -5570,7 +5579,7 @@ const FormattingToolbar = ({
           title="Task List"
           onClick={() => editor.chain().focus().toggleTaskList().run()}
         >
-          ☑️ Task List
+          <span className="flex items-center gap-1"><CosIcon name="tasks" size={12} /> Task List</span>
         </button>
       )}
       {postType !== "social-post" && (
@@ -6212,6 +6221,7 @@ const BlogEditor = () => {
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
+  const [repurposedOutputs, setRepurposedOutputs] = useState<Record<string, string>>({});
 
   const {
     blogId: savedBlogId,
@@ -6236,6 +6246,7 @@ const BlogEditor = () => {
       contentGoal,
       slug: currentSlug,
       seo: seoData,
+      repurposedOutputs,
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
@@ -6664,57 +6675,57 @@ const BlogEditor = () => {
       { title: string; desc: string; tip: string }
     > = {
       blog: {
-        title: "✏️ Blog Archetype",
+        title: "Blog Archetype",
         desc: "Designed to share opinion pieces, stories, and deep insights in an authentic, conversational voice.",
         tip: "Optimizes the layout for traditional web readers. Guides you to structure conversational, rich sections with search visibility, while AI prompts emphasize personal stories and deep insights.",
       },
       tutorial: {
-        title: "📖 Step-by-Step Tutorial",
+        title: "Step-by-Step Tutorial",
         desc: "Highly technical educational resources, manuals, and developer configurations.",
         tip: "Calibrated for step-by-step guidance. Tailors your layout for structured, educational reading with syntax code examples and sequential guidelines.",
       },
       "case-study": {
-        title: "🔍 Customer Case Study",
+        title: "Customer Case Study",
         desc: "Professional breakdowns of real-world client wins, builder journeys, and solutions.",
         tip: "Calibrated for customer proof and business journeys. Emphasizes structured evidence, client quotes, and measurable impact metrics.",
       },
       "community-insight": {
-        title: "💬 Community Insight",
+        title: "Community Insight",
         desc: "Curated industry roundups, trend analyses, and collaborative community highlights.",
         tip: "Calibrated for sharing industry viewpoints. Encourages engaging hooks and conversational tone to start dialogues.",
       },
       "corporate-post": {
-        title: "🏢 Corporate / PR Post",
+        title: "Corporate / PR Post",
         desc: "Press releases, executive updates, public letters, and company milestone announcements.",
         tip: "Calibrated for official announcements. Focuses on professional, objective updates and clear milestone summaries.",
       },
       "product-review": {
-        title: "⭐ Product Review",
+        title: "Product Review",
         desc: "Monetization-oriented reviews of specific tools, platforms, or hardware.",
         tip: "Calibrated for comparative evaluations. Helps structure features, pros/cons list, and pricing details.",
       },
       "product-launch": {
-        title: "🚀 Product Launch",
+        title: "Product Launch",
         desc: "Feature releases, software launches, and brand announcement campaigns.",
         tip: "Calibrated for new releases. Focuses on solving user problems and driving clear actions for feature announcements.",
       },
       listicle: {
-        title: "📋 Curated Listicle",
+        title: "Curated Listicle",
         desc: '"Top N" roundups, product selections, and curated summaries.',
         tip: "Calibrated for curated roundups. Formats items, benefits, and quick recommendations clearly.",
       },
       comparison: {
-        title: "⚔️ Head-to-Head Comparison",
+        title: "Head-to-Head Comparison",
         desc: "Detailed side-by-side product comparisons to assist buyer decisions.",
         tip: "Calibrated for side-by-side product analyses. Frames advantages and clear decision criteria to guide purchase choices.",
       },
       newsletter: {
-        title: "📧 Email Newsletter",
+        title: "Email Newsletter",
         desc: "Conversational weekly digests, product newsletters, and list updates.",
         tip: "Calibrated for direct subscriber communications. Keeps text styling clean and conversational to build personal relationships.",
       },
       "social-post": {
-        title: "🔗 LinkedIn / Social Post",
+        title: "LinkedIn / Social Post",
         desc: "Sleek, condensed articles optimized for professional social media networks.",
         tip: "Calibrated for condensed social updates. Focuses on character limits and scroll-stopping ideas for quick, impactful professional shares.",
       },
@@ -6725,37 +6736,37 @@ const BlogEditor = () => {
       { title: string; desc: string; aiFocus: string }
     > = {
       traffic: {
-        title: "📈 Search Visibility & Growth",
+        title: "Search Visibility & Growth",
         desc: "Aligns your content to reach readers looking for solutions on search engines.",
         aiFocus:
           "AI suggestions highlight clear headings, answer common queries, and prioritize reader search intent.",
       },
       authority: {
-        title: "🎓 Establish Thought Leadership",
+        title: "Establish Thought Leadership",
         desc: "Builds credibility by sharing unique viewpoints, data, and expert perspectives.",
         aiFocus:
           "AI suggestions draw from industry insights, professional terminology, and contrarian viewpoints.",
       },
       conversion: {
-        title: "💳 Drive Sales & Conversions",
+        title: "Drive Sales & Conversions",
         desc: "Encourages readers to take action, whether joining a list or viewing a product.",
         aiFocus:
           "AI suggestions highlight customer problems, benefits, objection-handling, and clear next steps.",
       },
       engagement: {
-        title: "🔥 Spark Discussion & Comments",
+        title: "Spark Discussion & Comments",
         desc: "Fosters conversational interest, community discussion, and viral reach.",
         aiFocus:
           "AI suggestions lead with hooks, invite reader comments, and ask engaging questions.",
       },
       "lead-generation": {
-        title: "🧲 Lead Capture & Growth",
+        title: "Lead Capture & Growth",
         desc: "Highlights valuable guides or resources to attract new contacts.",
         aiFocus:
           "AI suggestions write compelling benefit statements and natural highlights for resources.",
       },
       retention: {
-        title: "🤝 Keep Customers Engaged",
+        title: "Keep Customers Engaged",
         desc: "Deepens product usage and values for existing customers.",
         aiFocus:
           "AI suggestions present practical steps, pro-tips, and educational pointers.",
@@ -6766,7 +6777,7 @@ const BlogEditor = () => {
     const currentTypeVal = hoveredType || postType;
     const currentTypeConfig = getPostTypeConfig(currentTypeVal);
     const archetypeExplanation = ARCHETYPE_EXPLANATIONS[currentTypeVal] || {
-      title: `${currentTypeConfig?.icon || "✏️"} Custom Archetype`,
+      title: "Custom Archetype",
       desc:
         currentTypeConfig?.description ||
         "Select a post archetype to adapt your workspace features.",
@@ -6778,7 +6789,7 @@ const BlogEditor = () => {
     const currentGoalVal = hoveredGoal || contentGoal;
     const currentGoalConfig = getGoalConfig(currentGoalVal as ContentGoal);
     const goalExplanation = GOAL_EXPLANATIONS[currentGoalVal] || {
-      title: `${currentGoalConfig?.icon || "📈"} Custom Goal`,
+      title: "Custom Goal",
       desc:
         currentGoalConfig?.description ||
         "Set a strategic goal for the AI to optimize outlines and structures.",
@@ -6885,7 +6896,7 @@ const BlogEditor = () => {
                               : "bg-black/5 text-gray-500"
                           }`}
                         >
-                          {cfg.icon}
+                          <CosIcon name={cfg.icon} size={18} />
                         </div>
                         <div className="min-w-0">
                           <p
@@ -6904,8 +6915,8 @@ const BlogEditor = () => {
 
                 {/* Group 2: Product & Monetization */}
                 <div className="space-y-3 pt-1">
-                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
-                    💰 Product & Monetization Archetypes
+                  <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <CosIcon name="conversion" size={12} className="text-[#FF5B04]" /> Product & Monetization Archetypes
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {getPostTypesByCategory("monetization").map((cfg) => (
@@ -6927,7 +6938,7 @@ const BlogEditor = () => {
                               : "bg-black/5 text-gray-500"
                           }`}
                         >
-                          {cfg.icon}
+                          <CosIcon name={cfg.icon} size={18} />
                         </div>
                         <div className="min-w-0">
                           <p
@@ -6978,13 +6989,14 @@ const BlogEditor = () => {
               {/* Right Column: Dynamic Strategist Board */}
               <div className="md:col-span-5 h-full bg-gradient-to-br from-orange-50/30 to-purple-50/20 border border-orange-100 p-6 rounded-3xl sticky top-6 space-y-4 shadow-sm animate-in slide-in-from-right-2">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs">🤖</span>
+                  <CosIcon name="bot" size={14} className="text-[#FF5B04]" />
                   <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
                     AI Strategist Advisor
                   </p>
                 </div>
                 <div className="space-y-2 border-b border-black/[0.03] pb-4">
-                  <h3 className="text-base font-extrabold font-geist text-gray-800">
+                  <h3 className="text-base font-extrabold font-geist text-gray-800 flex items-center gap-1.5">
+                    {currentTypeConfig && <CosIcon name={currentTypeConfig.icon} size={18} className="text-[#FF5B04]" />}
                     {archetypeExplanation.title}
                   </h3>
                   <p className="text-xs text-gray-500 font-geist leading-relaxed">
@@ -7016,8 +7028,8 @@ const BlogEditor = () => {
               <div className="md:col-span-7 space-y-5 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] bg-orange-50 text-[#FF5B04] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                      Archetype: {activeTypeConfig?.icon}{" "}
+                    <span className="text-[10px] bg-orange-50 text-[#FF5B04] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
+                      Archetype: {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={10} className="inline text-[#FF5B04]" />}
                       {activeTypeConfig?.label}
                     </span>
                   </div>
@@ -7062,7 +7074,7 @@ const BlogEditor = () => {
                               : "bg-black/5 text-gray-500"
                           }`}
                         >
-                          {g.icon}
+                          <CosIcon name={g.icon} size={18} />
                         </div>
                         <div className="min-w-0 pr-6">
                           <p
@@ -7119,7 +7131,8 @@ const BlogEditor = () => {
                   </p>
                 </div>
                 <div className="space-y-2 border-b border-black/[0.03] pb-4">
-                  <h3 className="text-base font-extrabold font-geist text-gray-800">
+                  <h3 className="text-base font-extrabold font-geist text-gray-800 flex items-center gap-1.5">
+                    {currentGoalConfig && <CosIcon name={currentGoalConfig.icon} size={18} className="text-[#FF5B04]" />}
                     {goalExplanation.title}
                   </h3>
                   <p className="text-xs text-gray-500 font-geist leading-relaxed">
@@ -7158,10 +7171,10 @@ const BlogEditor = () => {
 
               {/* Large Strategic Badge Card */}
               <div className="max-w-md mx-auto bg-gradient-to-br from-orange-50/50 to-purple-50/30 border border-orange-100 rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-sm space-y-4">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-3xl">{activeTypeConfig?.icon}</span>
+                <div className="flex items-center gap-2.5 text-[#FF5B04]">
+                  {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={28} />}
                   <span className="text-gray-300 text-lg">×</span>
-                  <span className="text-3xl">{activeGoalConfig?.icon}</span>
+                  {activeGoalConfig && <CosIcon name={activeGoalConfig.icon} size={28} />}
                 </div>
                 <div>
                   <p className="text-[9px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-wider">
@@ -7313,10 +7326,19 @@ const BlogEditor = () => {
               <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            {getPostTypeConfig(postType)?.icon}{" "}
-            {getPostTypeConfig(postType)?.label} ×{" "}
-            {getGoalConfig(contentGoal)?.icon}{" "}
-            {getGoalConfig(contentGoal)?.label}
+            {(() => {
+              const ptConfig = getPostTypeConfig(postType);
+              const gConfig = getGoalConfig(contentGoal);
+              return (
+                <span className="flex items-center gap-1">
+                  {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
+                  <span>{ptConfig?.label}</span>
+                  <span className="mx-0.5">×</span>
+                  {gConfig && <CosIcon name={gConfig.icon} size={10} />}
+                  <span>{gConfig?.label}</span>
+                </span>
+              );
+            })()}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -7483,7 +7505,7 @@ const BlogEditor = () => {
               {postType === "social-post" ? (
                 <div className="flex flex-col gap-2 p-4 rounded-2xl bg-black/[0.015] border border-black/5 backdrop-blur-sm shadow-sm transition-all hover:bg-black/[0.025] hover:border-black/10">
                   <div className="flex items-center gap-2 text-xs font-bold text-gray-400 font-geist select-none uppercase tracking-wider">
-                    <span>🔗</span>
+                    <CosIcon name="link" size={12} className="text-gray-400" />
                     <span>Internal Social Draft Name (dashboard only):</span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -7693,7 +7715,7 @@ const BlogEditor = () => {
                           if (hasLongParagraph) {
                             return (
                               <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
-                                <span className="text-amber-500 text-sm">⚠️</span>
+                              <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
                                 <div>
                                   <p className="text-[10px] font-bold text-amber-800">
                                     Whitespace Spacing Advisor
@@ -7707,7 +7729,7 @@ const BlogEditor = () => {
                           }
                           return (
                             <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
-                              <span className="text-green-500 text-sm">✅</span>
+                              <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
                               <div>
                                 <p className="text-[10px] font-bold text-green-800">
                                   Spacing Calibrated
@@ -8586,9 +8608,7 @@ const BlogEditor = () => {
                         className="bg-amber-50/50 border border-amber-100 rounded-xl p-3.5 space-y-1.5 shadow-sm"
                       >
                         <div className="flex items-start gap-2">
-                          <span className="text-amber-500 font-bold text-xs mt-0.5">
-                            ⚠️
-                          </span>
+                          <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="text-xs font-bold text-gray-800 capitalize leading-snug">
                               {w.type} Alert
@@ -8646,6 +8666,11 @@ const BlogEditor = () => {
                 distributionRecords={distRecords}
                 postType={postType}
                 socialDestination={socialDestination}
+                blogRepurposedOutputs={repurposedOutputs}
+                onUpdateRepurposedOutputs={setRepurposedOutputs}
+                onUpdateExcerpt={setExcerpt}
+                onUpdateTags={setTags}
+                onUpdateSeo={setSeoData}
                 onEnsureSaved={ensureSaved}
                 onNavigateToSEO={() => setSidebarTab("seo")}
                 onTriggerCopilotAI={(preset, prompt) => {

@@ -5,6 +5,7 @@ import {
   getPostTypeConfig,
   calculateHealthScore,
 } from "@/lib/pirateCOS/postTypeConfig";
+import CosIcon from "./CosIcon";
 
 interface ContentHealthPanelProps {
   contentHtml: string;
@@ -89,19 +90,19 @@ export default function ContentHealthPanel({
       const goodDensity = density >= 0.5 && density <= 2.5;
 
       if (keywordInTitle) {
-        seoScore += 30;
+        seoScore += 15;
       } else {
         seoTips.push(`Add your focus keyword "${seo.focusKeyword}" to your post title.`);
       }
 
       if (keywordInIntro) {
-        seoScore += 20;
+        seoScore += 15;
       } else {
         seoTips.push("Include your focus keyword in the introductory paragraph.");
       }
 
       if (keywordInHeadings) {
-        seoScore += 20;
+        seoScore += 10;
       } else {
         seoTips.push("Use the focus keyword in at least one H2 or H3 heading.");
       }
@@ -114,18 +115,17 @@ export default function ContentHealthPanel({
         seoTips.push("Integrate the focus keyword naturally throughout the body content.");
       }
     } else {
-      seoScore += 40; // Flat base
       seoTips.push("Set a Focus Keyword in the SEO tab to unlock detailed SEO scoring.");
     }
 
     if (seo.metaTitle) {
-      seoScore += 10;
+      seoScore += 20;
     } else {
       seoTips.push("Add a meta title in the SEO tab.");
     }
 
     if (seo.metaDescription) {
-      seoScore += 10;
+      seoScore += 20;
     } else {
       seoTips.push("Add a meta description in the SEO tab.");
     }
@@ -141,170 +141,190 @@ export default function ContentHealthPanel({
     let readability = 0;
     const readTips: string[] = [];
 
-    if (wordsPerSentence > 0 && wordsPerSentence < 16) {
-      readability += 40;
-    } else if (wordsPerSentence >= 16 && wordsPerSentence <= 22) {
-      readability += 30;
-      readTips.push("Some sentences are long. Try breaking them into shorter, punchier thoughts.");
-    } else {
-      readability += 15;
-      readTips.push("High average sentence length. Keep sentences under 15 words for maximum readability.");
-    }
+    if (wordCount > 0) {
+      if (wordsPerSentence > 0 && wordsPerSentence < 16) {
+        readability += 40;
+      } else if (wordsPerSentence >= 16 && wordsPerSentence <= 22) {
+        readability += 30;
+        readTips.push("Some sentences are long. Try breaking them into shorter, punchier thoughts.");
+      } else {
+        readability += 15;
+        readTips.push("High average sentence length. Keep sentences under 15 words for maximum readability.");
+      }
 
-    if (wordsPerParagraph > 0 && wordsPerParagraph < 65) {
-      readability += 30;
-    } else if (wordsPerParagraph >= 65 && wordsPerParagraph <= 100) {
-      readability += 20;
-      readTips.push("Paragraphs are a bit dense. Aim for 2-3 sentences per paragraph.");
-    } else {
-      readability += 10;
-      readTips.push("Paragraphs are too blocky. Add line breaks to create breathing room.");
-    }
+      if (wordsPerParagraph > 0 && wordsPerParagraph < 65) {
+        readability += 30;
+      } else if (wordsPerParagraph >= 65 && wordsPerParagraph <= 100) {
+        readability += 20;
+        readTips.push("Paragraphs are a bit dense. Aim for 2-3 sentences per paragraph.");
+      } else {
+        readability += 10;
+        readTips.push("Paragraphs are too blocky. Add line breaks to create breathing room.");
+      }
 
-    const hasLists = contentHtml.includes("<li>");
-    if (hasLists) {
-      readability += 30;
+      const hasLists = contentHtml.includes("<li>");
+      if (hasLists) {
+        readability += 30;
+      } else {
+        readability += 10;
+        readTips.push("Use bullet points or numbered lists to make the content scannable.");
+      }
+      readability = Math.min(100, readability);
     } else {
-      readability += 10;
-      readTips.push("Use bullet points or numbered lists to make the content scannable.");
+      readTips.push("Write some content in the editor to calculate readability.");
     }
-    readability = Math.min(100, readability);
 
     // 4. Engagement Likelihood
     let engagementLikelihood = 0;
     const engageTips: string[] = [];
 
-    // Hook detection (first 250 characters)
-    const introText = plainText.substring(0, 250).toLowerCase();
-    const hasHookWord = /\b(how|why|secret|reveal|ultimate|surprising|learn|discover|bootstrap|mistake|avoid|boost|grow|proven|guide)\b/.test(introText);
-    const hasNumber = /\b\d+\b/.test(introText);
-    const hasIntroQuestion = introText.includes("?");
+    if (wordCount > 0) {
+      // Hook detection (first 250 characters)
+      const introText = plainText.substring(0, 250).toLowerCase();
+      const hasHookWord = /\b(how|why|secret|reveal|ultimate|surprising|learn|discover|bootstrap|mistake|avoid|boost|grow|proven|guide)\b/.test(introText);
+      const hasNumber = /\b\d+\b/.test(introText);
+      const hasIntroQuestion = introText.includes("?");
 
-    if (hasHookWord || hasNumber || hasIntroQuestion) {
-      engagementLikelihood += 40;
+      if (hasHookWord || hasNumber || hasIntroQuestion) {
+        engagementLikelihood += 40;
+      } else {
+        engageTips.push("Start with an attention-grabbing hook: ask a question, share a stat, or use powerful action verbs.");
+      }
+
+      // Question count
+      const totalQuestions = (plainText.match(/\?/g) || []).length;
+      if (totalQuestions >= 2) {
+        engagementLikelihood += 30;
+      } else if (totalQuestions === 1) {
+        engagementLikelihood += 15;
+        engageTips.push("Add another question to invite active reflection or community discussion.");
+      } else {
+        engageTips.push("Ask 1 or 2 direct questions to the reader to spark engagement.");
+      }
+
+      engagementLikelihood += Math.round(readability * 0.3);
+      engagementLikelihood = Math.min(100, engagementLikelihood);
     } else {
-      engageTips.push("Start with an attention-grabbing hook: ask a question, share a stat, or use powerful action verbs.");
+      engageTips.push("Write some content to analyze engagement likelihood.");
     }
-
-    // Question count
-    const totalQuestions = (plainText.match(/\?/g) || []).length;
-    if (totalQuestions >= 2) {
-      engagementLikelihood += 30;
-    } else if (totalQuestions === 1) {
-      engagementLikelihood += 15;
-      engageTips.push("Add another question to invite active reflection or community discussion.");
-    } else {
-      engageTips.push("Ask 1 or 2 direct questions to the reader to spark engagement.");
-    }
-
-    engagementLikelihood += Math.round(readability * 0.3);
-    engagementLikelihood = Math.min(100, engagementLikelihood);
 
     // 5. Conversion Strength
     let conversionStrength = 0;
     const convTips: string[] = [];
 
-    // Benefit language (you/your vs we/I)
-    const textLower = plainText.toLowerCase();
-    const youCount = (textLower.match(/\b(you|your|yours)\b/g) || []).length;
-    const weCount = (textLower.match(/\b(we|i|our|us|my|me)\b/g) || []).length;
+    if (wordCount > 0) {
+      // Benefit language (you/your vs we/I)
+      const textLower = plainText.toLowerCase();
+      const youCount = (textLower.match(/\b(you|your|yours)\b/g) || []).length;
+      const weCount = (textLower.match(/\b(we|i|our|us|my|me)\b/g) || []).length;
 
-    if (youCount > weCount && youCount > 0) {
-      conversionStrength += 35;
-    } else {
-      convTips.push("Shift language to be reader-centric. Use 'you' and 'your' more than 'we' or 'I'.");
-    }
+      if (youCount > weCount && youCount > 0) {
+        conversionStrength += 35;
+      } else {
+        convTips.push("Shift language to be reader-centric. Use 'you' and 'your' more than 'we' or 'I'.");
+      }
 
-    // Benefit verbs / value words
-    const benefitCount = (textLower.match(/\b(save|boost|improve|grow|free|easy|guarantee|increase|reduce|efficient|solve|transform)\b/g) || []).length;
-    if (benefitCount >= 3) {
-      conversionStrength += 35;
-    } else {
-      convTips.push("Incorporate benefit-driven terms (e.g. 'save', 'grow', 'improve') to articulate value.");
-    }
+      // Benefit verbs / value words
+      const benefitCount = (textLower.match(/\b(save|boost|improve|grow|free|easy|guarantee|increase|reduce|efficient|solve|transform)\b/g) || []).length;
+      if (benefitCount >= 3) {
+        conversionStrength += 35;
+      } else {
+        convTips.push("Incorporate benefit-driven terms (e.g. 'save', 'grow', 'improve') to articulate value.");
+      }
 
-    // Check for CTA buttons/links or styled boxes
-    const hasCTA = linkCount > 0 || contentHtml.includes("cta-block") || contentHtml.includes("border-orange-500");
-    if (hasCTA) {
-      conversionStrength += 30;
+      // Check for CTA buttons/links or styled boxes
+      const hasCTA = linkCount > 0 || contentHtml.includes("cta-block") || contentHtml.includes("border-orange-500");
+      if (hasCTA) {
+        conversionStrength += 30;
+      } else {
+        convTips.push("Insert a clear CTA button or high-contrast box promoting your primary action.");
+      }
+      conversionStrength = Math.min(100, conversionStrength);
     } else {
-      convTips.push("Insert a clear CTA button or high-contrast box promoting your primary action.");
+      convTips.push("Write some content to analyze conversion strength.");
     }
-    conversionStrength = Math.min(100, conversionStrength);
 
     // 6. CTA Strength
     let ctaStrength = 0;
     const ctaTips: string[] = [];
 
-    if (linkCount >= 1 && linkCount <= 4) {
-      ctaStrength += 40;
-    } else if (linkCount > 4) {
-      ctaStrength += 20;
-      ctaTips.push("Too many links. Consolidate your call-to-actions to focus the reader's attention.");
-    } else {
-      ctaTips.push("Add at least one prominent link or call-to-action button.");
-    }
-
-    // Action verbs in link text
-    let linkHasActionVerb = false;
-    const ctaActionRegex = /\b(get|start|download|join|buy|try|sign|subscribe|unlock|launch|register)\b/i;
-    const linkTexts = contentHtml.match(/>([^<]+)<\/a>/g) || [];
-    for (const lt of linkTexts) {
-      if (ctaActionRegex.test(lt)) {
-        linkHasActionVerb = true;
-        break;
+    if (wordCount > 0) {
+      if (linkCount >= 1 && linkCount <= 4) {
+        ctaStrength += 40;
+      } else if (linkCount > 4) {
+        ctaStrength += 20;
+        ctaTips.push("Too many links. Consolidate your call-to-actions to focus the reader's attention.");
+      } else {
+        ctaTips.push("Add at least one prominent link or call-to-action button.");
       }
-    }
 
-    if (linkHasActionVerb) {
-      ctaStrength += 40;
-    } else if (linkCount > 0) {
-      ctaTips.push("Make your CTA link anchor text action-oriented (e.g. 'Get Started' instead of 'Click Here').");
-    }
+      // Action verbs in link text
+      let linkHasActionVerb = false;
+      const ctaActionRegex = /\b(get|start|download|join|buy|try|sign|subscribe|unlock|launch|register)\b/i;
+      const linkTexts = contentHtml.match(/>([^<]+)<\/a>/g) || [];
+      for (const lt of linkTexts) {
+        if (ctaActionRegex.test(lt)) {
+          linkHasActionVerb = true;
+          break;
+        }
+      }
 
-    // Closing CTA (in last 20% of text)
-    const closingText = plainText.substring(Math.round(plainText.length * 0.8)).toLowerCase();
-    const hasClosingLink = contentHtml.substring(Math.round(contentHtml.length * 0.8)).includes("</a>");
-    if (hasClosingLink || closingText.includes("subscribe") || closingText.includes("join")) {
-      ctaStrength += 20;
+      if (linkHasActionVerb) {
+        ctaStrength += 40;
+      } else if (linkCount > 0) {
+        ctaTips.push("Make your CTA link anchor text action-oriented (e.g. 'Get Started' instead of 'Click Here').");
+      }
+
+      // Closing CTA (in last 20% of text)
+      const closingText = plainText.substring(Math.round(plainText.length * 0.8)).toLowerCase();
+      const hasClosingLink = contentHtml.substring(Math.round(contentHtml.length * 0.8)).includes("</a>");
+      if (hasClosingLink || closingText.includes("subscribe") || closingText.includes("join")) {
+        ctaStrength += 20;
+      } else {
+        ctaTips.push("Provide a final, clear next step or call-to-action in the conclusion.");
+      }
+      ctaStrength = Math.min(100, ctaStrength);
     } else {
-      ctaTips.push("Provide a final, clear next step or call-to-action in the conclusion.");
+      ctaTips.push("Write some content to analyze CTA strength.");
     }
-    ctaStrength = Math.min(100, ctaStrength);
 
     // 7. Structure Quality
     let structureQuality = 0;
     const structTips: string[] = [];
 
-    if (h2Count >= 2) {
-      structureQuality += 35;
+    if (wordCount > 0) {
+      if (h2Count >= 2) {
+        structureQuality += 35;
+      } else {
+        structTips.push("Add at least two H2 headings to divide your content logically.");
+      }
+
+      // Balance (under 350 words per section)
+      const wordsPerHeading = headingCount > 0 ? wordCount / headingCount : wordCount;
+      if (wordsPerHeading < 350 && headingCount > 0) {
+        structureQuality += 35;
+      } else if (headingCount > 0) {
+        structureQuality += 20;
+        structTips.push("Some sections are too long. Insert H3 sub-headings to break up large walls of text.");
+      } else {
+        structTips.push("Structure your article with headings so it is not a single giant block of text.");
+      }
+
+      // Rich styling
+      let richCount = 0;
+      if (contentHtml.includes("<strong>") || contentHtml.includes("<b>")) richCount++;
+      if (contentHtml.includes("<em>") || contentHtml.includes("<i>")) richCount++;
+      if (contentHtml.includes("<blockquote>")) richCount++;
+      if (contentHtml.includes("<li>")) richCount++;
+
+      structureQuality += richCount * 7.5; // Up to 30 points
+      if (richCount < 2) {
+        structTips.push("Use formatting like bold text, italics, or blockquotes to emphasize key points.");
+      }
+      structureQuality = Math.min(100, structureQuality);
     } else {
-      structTips.push("Add at least two H2 headings to divide your content logically.");
+      structTips.push("Structure your content to analyze structure quality.");
     }
-
-    // Balance (under 350 words per section)
-    const wordsPerHeading = headingCount > 0 ? wordCount / headingCount : wordCount;
-    if (wordsPerHeading < 350 && headingCount > 0) {
-      structureQuality += 35;
-    } else if (headingCount > 0) {
-      structureQuality += 20;
-      structTips.push("Some sections are too long. Insert H3 sub-headings to break up large walls of text.");
-    } else {
-      structTips.push("Structure your article with headings so it is not a single giant block of text.");
-    }
-
-    // Rich styling
-    let richCount = 0;
-    if (contentHtml.includes("<strong>") || contentHtml.includes("<b>")) richCount++;
-    if (contentHtml.includes("<em>") || contentHtml.includes("<i>")) richCount++;
-    if (contentHtml.includes("<blockquote>")) richCount++;
-    if (contentHtml.includes("<li>")) richCount++;
-
-    structureQuality += richCount * 7.5; // Up to 30 points
-    if (richCount < 2) {
-      structTips.push("Use formatting like bold text, italics, or blockquotes to emphasize key points.");
-    }
-    structureQuality = Math.min(100, structureQuality);
 
     // 8. Distribution Readiness
     let distributionReadiness = 0;
@@ -472,7 +492,7 @@ export default function ContentHealthPanel({
 
         <div className="mt-4 flex flex-col items-center">
           <div className="flex items-center gap-1.5 bg-orange-50 text-[#FF5B04] text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
-            <span>{goalConfig?.icon}</span>
+            {goalConfig?.icon && <CosIcon name={goalConfig.icon} size={14} className="text-[#FF5B04]" />}
             <span>Goal: {goalConfig?.label}</span>
           </div>
           <p className="text-xs text-gray-400 font-geist text-center mt-2 px-2">
@@ -556,7 +576,7 @@ export default function ContentHealthPanel({
                       </div>
                     ) : (
                       <p className="text-green-600 font-semibold flex items-center gap-1 mt-1 text-[10px] uppercase tracking-wider">
-                        ✨ Perfect! No recommendations. Keep it up!
+                        <CosIcon name="sparkles" size={12} className="text-green-600" /> Perfect! No recommendations. Keep it up!
                       </p>
                     )}
                   </div>

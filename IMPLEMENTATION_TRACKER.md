@@ -18,6 +18,7 @@ Based on an exhaustive codebase audit, **Phase 1 (Content Command Center Core)**
 | **Phase 3** | **API Refinement & LinkedIn Integration** | 🟢 **Complete** | `blogs` → `posts` codebase-wide rename, OAuth, LinkedIn Articles/Posts adapter, `API_INTEGRATION_GUIDE.md` |
 | **Phase 4** | **AI Intelligence Layer & Content Transformation** | 🟢 **Complete** | AI modes/intent presets, brand context layer, 8-format multi-format content transformation drawer, real-time co-pilot |
 | **Phase 4B** | **PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution** | 🟢 **Complete** | 3-step wizard (Intent → Goal → Preview), 11 types, 6 goals, adaptive workspace, goal-weighted health scoring, AI advisor, repurposing |
+| **Phase 4C** | **PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability** | 🟡 **In Progress** | One-click distribution chains, preflight autofixes, sequential repurposing flow, diagnostic errors, and UX refinement |
 | **Phase 5** | **Advanced Analytics & Content Optimization** | ⬜ *Planned* | Performance dashboard, SEO quality scoring, UTM/attribution, content heatmap |
 | **Phase 6** | **Social Publishing & Newsletter Platforms** | ⬜ *Planned* | Substack email publishing, Beehiiv REST, ConvertKit sequences, Dev.to/Hashnode developer syndication |
 | **Phase 7** | **Team Collaboration & Enterprise Features** | ⬜ *Planned* | Multi-user seats, Role-Based Access Control (RBAC), approval workflows, SAML SSO, Zapier/webhooks |
@@ -255,6 +256,16 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
   - *Out-of-Plan Security:* Implemented strict plan-specific BYOK billing guards in `lib/usage-guard.ts` restricting deduction bypass solely to Pro/Enterprise plan tiers.
   - *SaaS Premium locks:* Engineered frosted-glass locked overlay panels and checkout upgrade call-to-actions on both the Billing page and AI Configuration cards for Free/Starter tier users, fully synchronizing configurations.
 - [x] **Edit page adaptation**: Fetch `contentGoal` from database and apply full dynamic toolbar/sidebar/header adaptations.
+
+### 🟡 Phase 4C: PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability
+
+> **📋 Full specification:** [`ux_magic_reliability_plan.md`](file:///d:/ui-pirate/uipirate/ux_magic_reliability_plan.md)
+
+- [ ] **One-Click Distribution Chains**: Define preset distribution chain mappings matching content goals to default active channels and recommended templates.
+- [ ] **Inline Preflight Autofixes**: Add `⚡ Autofix` actions in the preflight checklist for missing excerpt, tags, and keywords to trigger background AI updates.
+- [ ] **Sequential Repurposing Flow**: Multi-task repurposing trigger generating LinkedIn teasers, newsletters, and X threads sequentially with a progress loader.
+- [ ] **Persisted Repurposing Storage**: Extend the Post model schema to store generated repurposed content assets persistently in MongoDB.
+- [ ] **Direct Diagnostics & Connection recovery**: Add inline troubleshoot cards and retry CTAs for outbound publication adapter failures.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
 - [ ] **Cross-Platform Analytics Snapshots**: Scrapers that query WordPress stats, Medium claps, and social clicks to build daily analytics databases.
