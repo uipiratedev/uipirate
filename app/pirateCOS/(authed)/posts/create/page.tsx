@@ -6121,6 +6121,7 @@ const TUTORIAL_SLIDES = [
     border: "border-orange-100",
     textClass: "text-[#FF5B04]",
     bgClass: "bg-[#FF5B04]/10",
+    accentColor: "#FF5B04",
   },
   {
     title: "2. Integrated Brand Brain",
@@ -6131,6 +6132,7 @@ const TUTORIAL_SLIDES = [
     border: "border-purple-100",
     textClass: "text-purple-600",
     bgClass: "bg-purple-50",
+    accentColor: "#9333ea",
   },
   {
     title: "3. Calibrated SEO & Health",
@@ -6141,6 +6143,7 @@ const TUTORIAL_SLIDES = [
     border: "border-emerald-100",
     textClass: "text-emerald-600",
     bgClass: "bg-emerald-50",
+    accentColor: "#059669",
   },
   {
     title: "4. Cross-Channel Repurposing",
@@ -6151,8 +6154,324 @@ const TUTORIAL_SLIDES = [
     border: "border-blue-100",
     textClass: "text-blue-600",
     bgClass: "bg-blue-50",
+    accentColor: "#2563eb",
   },
 ];
+
+const WorkspaceTutorialCarousel = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  // Use refs so the interval closure always has the latest values
+  // without needing currentSlide in the dep array (which caused double-advance)
+  const progressRef = useRef(0);
+  const slideRef = useRef(0);
+
+  // Keep refs in sync with state
+  progressRef.current = progress;
+  slideRef.current = currentSlide;
+
+  useEffect(() => {
+    // Reset only the progress ref/state — do NOT touch currentSlide here
+    progressRef.current = 0;
+    setProgress(0);
+
+    const intervalTime = 100; // tick every 100ms
+    const totalTime = 6000;   // 6 seconds per slide
+    const increment = (intervalTime / totalTime) * 100;
+
+    const timer = setInterval(() => {
+      const next = progressRef.current + increment;
+      if (next >= 100) {
+        // Advance slide using the ref so we don't need currentSlide in deps
+        const nextSlide = slideRef.current === TUTORIAL_SLIDES.length - 1
+          ? 0
+          : slideRef.current + 1;
+        progressRef.current = 0;
+        setProgress(0);
+        slideRef.current = nextSlide;
+        setCurrentSlide(nextSlide);
+      } else {
+        progressRef.current = next;
+        setProgress(next);
+      }
+    }, intervalTime);
+
+    return () => clearInterval(timer);
+  // Run once on mount only — the interval reads fresh values via refs
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handlePrev = () => {
+    progressRef.current = 0;
+    setProgress(0);
+    setCurrentSlide((prev) => (prev === 0 ? TUTORIAL_SLIDES.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    progressRef.current = 0;
+    setProgress(0);
+    setCurrentSlide((prev) => (prev === TUTORIAL_SLIDES.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleDotClick = (idx: number) => {
+    progressRef.current = 0;
+    setProgress(0);
+    setCurrentSlide(idx);
+  };
+
+  const slide = TUTORIAL_SLIDES[currentSlide];
+
+  return (
+    <div className="w-full space-y-3">
+      {/* Instagram Story-style progress bars */}
+      <div className="flex gap-1.5 w-full">
+        {TUTORIAL_SLIDES.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={() => handleDotClick(idx)}
+            className="h-[3px] flex-1 bg-black/[0.07] rounded-full overflow-hidden cursor-pointer"
+          >
+            <div
+              className="h-full bg-[#FF5B04] rounded-full"
+              style={{
+                width: currentSlide > idx ? "100%" : currentSlide === idx ? `${progress}%` : "0%",
+                transition: currentSlide === idx && progress > 0 ? "width 100ms linear" : "none",
+              }}
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Main Card */}
+      <div
+        className={`w-full rounded-3xl bg-gradient-to-br ${slide.bg} border ${slide.border} shadow-xl overflow-hidden`}
+        style={{ "--slide-color": slide.accentColor } as React.CSSProperties}
+      >
+        <div className="flex flex-col md:flex-row" style={{ minHeight: 300 }}>
+
+          {/* Left — Illustration panel (fixed height, centered content) */}
+          <div className="w-full md:w-[44%] bg-white/60 backdrop-blur-sm border-b md:border-b-0 md:border-r border-black/[0.05] flex flex-col relative overflow-hidden select-none">
+            {/* Decorative blob */}
+            <div className={`absolute -bottom-8 -right-8 w-48 h-48 rounded-full opacity-[0.10] blur-3xl ${slide.bgClass}`} />
+
+            {/* Top badge strip */}
+            <div className="flex items-center gap-2 px-6 pt-5 pb-0">
+              <span className={`text-[9px] font-black font-jetbrains-mono uppercase tracking-widest px-2.5 py-0.5 rounded-full ${slide.bgClass} ${slide.textClass}`}>
+                {slide.badge}
+              </span>
+              <span className="text-[9px] text-gray-300 font-jetbrains-mono">{currentSlide + 1} / {TUTORIAL_SLIDES.length}</span>
+            </div>
+
+            {/* Illustration — fills remaining space */}
+            <motion.div
+              key={`mockup-${currentSlide}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="flex-1 flex items-center justify-center px-6 py-5"
+            >
+              {currentSlide === 0 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-gray-100 rounded-t-xl px-3 py-2 flex items-center gap-1.5 border border-black/[0.06]">
+                    <span className="w-2 h-2 rounded-full bg-red-400" />
+                    <span className="w-2 h-2 rounded-full bg-yellow-400" />
+                    <span className="w-2 h-2 rounded-full bg-green-400" />
+                    <span className="flex-1 mx-2 h-4 bg-white rounded text-[8px] text-gray-300 flex items-center px-2">uipirate.com/create</span>
+                  </div>
+                  <div className="bg-white border border-t-0 border-black/[0.06] rounded-b-xl p-4 space-y-2.5">
+                    <div className="flex items-center gap-2 pb-2 border-b border-black/[0.04]">
+                      <span className="text-sm">📝</span>
+                      <span className="text-[11px] font-bold text-gray-700">Writing Draft...</span>
+                      <span className="ml-auto text-[9px] font-jetbrains-mono text-[#FF5B04] bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">Blog Post</span>
+                    </div>
+                    <div className="space-y-1.5">
+                      <div className="w-full h-2 bg-gray-100 rounded-full" />
+                      <div className="w-4/5 h-2 bg-gray-100 rounded-full" />
+                      <div className="w-2/3 h-2 bg-gray-100 rounded-full" />
+                    </div>
+                    <div className="flex items-center text-[10px] text-gray-400">
+                      <span>Start with a compelling hook...</span>
+                      <span className="w-0.5 h-3.5 ml-0.5 bg-[#FF5B04] animate-pulse rounded-full" />
+                    </div>
+                    <div className="flex gap-2 mt-1">
+                      <div className="flex-1 h-6 bg-orange-50 rounded-lg border border-orange-100 flex items-center px-2">
+                        <span className="text-[8px] font-bold text-[#FF5B04]">AI Copilot</span>
+                      </div>
+                      <div className="flex-1 h-6 bg-gray-50 rounded-lg border border-black/[0.04] flex items-center px-2">
+                        <span className="text-[8px] text-gray-400">SEO Health</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentSlide === 1 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+                    <div className="flex items-center gap-2 pb-2 border-b border-black/[0.04]">
+                      <span className="text-sm">🧠</span>
+                      <span className="text-[11px] font-bold text-gray-700">Brand Brain Active</span>
+                      <span className="ml-auto w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">✓ Target Keywords</span>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">SaaS</span>
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Design</span>
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">AI Tools</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[9px] font-bold text-red-400 uppercase tracking-wider block mb-1.5">✗ Forbidden</span>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="text-[9px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-200 line-through opacity-60">Synergy</span>
+                        <span className="text-[9px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-200 line-through opacity-60">Disrupt</span>
+                      </div>
+                    </div>
+                    <div className="text-[8px] text-purple-500 bg-purple-50 px-2.5 py-1.5 rounded-lg border border-purple-100 font-semibold">
+                      🎯 Injected into AI Copilot automatically
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentSlide === 2 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+                    <div className="flex items-center gap-3 pb-3 border-b border-black/[0.04]">
+                      <div className="relative w-14 h-14 flex-shrink-0">
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                          <circle strokeWidth="3.5" stroke="#f3f4f6" fill="none" cx="18" cy="18" r="15" />
+                          <circle className="text-emerald-500" strokeWidth="3.5" strokeDasharray="94 100" strokeDashoffset="0" strokeLinecap="round" stroke="currentColor" fill="none" cx="18" cy="18" r="15" />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center text-[13px] font-black text-gray-800 font-jetbrains-mono">94</div>
+                      </div>
+                      <div>
+                        <div className="text-[11px] font-bold text-gray-800">Content Health</div>
+                        <div className="text-[9px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full mt-1 inline-block">Excellent</div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      {[
+                        { label: "Keyword Density", pct: 82, color: "bg-emerald-400" },
+                        { label: "Readability", pct: 95, color: "bg-blue-400" },
+                        { label: "Content Depth", pct: 70, color: "bg-orange-400" },
+                      ].map((m) => (
+                        <div key={m.label} className="space-y-0.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[8.5px] text-gray-500">{m.label}</span>
+                            <span className="text-[8.5px] font-bold text-gray-700 font-jetbrains-mono">{m.pct}%</span>
+                          </div>
+                          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                            <div className={`h-full ${m.color} rounded-full`} style={{ width: `${m.pct}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {currentSlide === 3 && (
+                <div className="w-full max-w-[260px] font-geist">
+                  <div className="bg-white rounded-2xl border border-black/[0.06] p-4 shadow-sm space-y-3">
+                    <div className="flex items-center gap-2 pb-2 border-b border-black/[0.04]">
+                      <span className="text-sm">🔁</span>
+                      <span className="text-[11px] font-bold text-gray-700">Repurpose</span>
+                      <span className="ml-auto text-[9px] font-jetbrains-mono text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">3 channels</span>
+                    </div>
+                    {[
+                      { icon: "🔗", label: "LinkedIn Post", pct: 14, color: "bg-blue-400", chars: "420/3000" },
+                      { icon: "✦", label: "X/Twitter Thread", pct: 72, color: "bg-sky-400", chars: "201/280" },
+                      { icon: "📧", label: "Newsletter", pct: 38, color: "bg-purple-400", chars: "890/2500" },
+                    ].map((ch) => (
+                      <div key={ch.label} className="space-y-1">
+                        <div className="flex items-center justify-between text-[8.5px] text-gray-600">
+                          <span className="flex items-center gap-1">{ch.icon} {ch.label}</span>
+                          <span className="text-gray-400 font-jetbrains-mono">{ch.chars}</span>
+                        </div>
+                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                          <div className={`h-full ${ch.color} rounded-full`} style={{ width: `${ch.pct}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+          {/* Right — Text & Navigation: vertically centered content, nav pinned at bottom */}
+          <motion.div
+            key={`text-${currentSlide}`}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex-1 flex flex-col p-7"
+          >
+            {/* Vertically centered main content block */}
+            <div className="flex-1 flex flex-col justify-center space-y-4">
+              {/* Icon badge */}
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${slide.bgClass} ${slide.textClass} shadow-sm`}>
+                <CosIcon name={slide.icon} size={24} />
+              </div>
+
+              {/* Title & description */}
+              <div className="space-y-2">
+                <h3 className="text-[21px] font-extrabold text-gray-900 font-geist leading-snug">
+                  {slide.title}
+                </h3>
+                <p className="text-[13px] text-gray-500 leading-relaxed font-geist">
+                  {slide.desc}
+                </p>
+              </div>
+            </div>
+
+            {/* Navigation — always at bottom */}
+            <div className="flex items-center gap-3 pt-5 border-t border-black/[0.05] mt-5">
+              <button
+                type="button"
+                onClick={handlePrev}
+                className="w-9 h-9 rounded-xl flex items-center justify-center border border-black/[0.08] bg-white text-gray-500 hover:text-gray-900 hover:border-black/20 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer text-base font-bold"
+              >
+                ←
+              </button>
+
+              {/* Dots */}
+              <div className="flex items-center gap-1.5">
+                {TUTORIAL_SLIDES.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleDotClick(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                      currentSlide === idx ? "w-6" : "w-1.5 bg-black/10 hover:bg-black/20"
+                    }`}
+                    style={currentSlide === idx ? { backgroundColor: "var(--slide-color)" } : {}}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={handleNext}
+                className="w-9 h-9 rounded-xl flex items-center justify-center border border-black/[0.08] bg-white text-gray-500 hover:text-gray-900 hover:border-black/20 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer text-base font-bold"
+              >
+                →
+              </button>
+
+              <span className="ml-auto text-[10px] font-jetbrains-mono text-gray-300">
+                {currentSlide + 1} / {TUTORIAL_SLIDES.length}
+              </span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditor = () => {
@@ -6178,6 +6497,7 @@ const BlogEditor = () => {
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   const [activePreset, setActivePreset] = useState("");
   const [isRepurposeDrawerOpen, setIsRepurposeDrawerOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   // AI API Handlers
   const [featuredImage, setFeaturedImage] = useState("");
@@ -6187,8 +6507,6 @@ const BlogEditor = () => {
   const [postType, setPostType] = useState<string>("blog");
   const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
   const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [typeSelected, setTypeSelected] = useState(false);
   const [hoveredType, setHoveredType] = useState<string | null>(null);
   const [hoveredGoal, setHoveredGoal] = useState<string | null>(null);
@@ -6280,27 +6598,7 @@ const BlogEditor = () => {
     isDirtyRef.current = isDirty;
   }, [isDirty]);
 
-  // Onboarding Guided Wizard: Carousel auto-play effect with story-style progress indicator
-  useEffect(() => {
-    if (wizardStep !== 3 || typeSelected) return;
-
-    setProgress(0);
-    const intervalTime = 100; // tick every 100ms
-    const totalTime = 6000;   // 6 seconds per slide
-    const increment = (intervalTime / totalTime) * 100;
-
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          setCurrentSlide((slide) => (slide === TUTORIAL_SLIDES.length - 1 ? 0 : slide + 1));
-          return 0;
-        }
-        return prev + increment;
-      });
-    }, intervalTime);
-
-    return () => clearInterval(timer);
-  }, [wizardStep, typeSelected, currentSlide]);
+  // Onboarding Guided Wizard: Carousel auto-play is now handled internally in WorkspaceTutorialCarousel
 
   // Programmatically reset active sidebar tab to "content" if the active tab is hidden (e.g. SEO panel becomes false)
   useEffect(() => {
@@ -7106,91 +7404,21 @@ const BlogEditor = () => {
               STEP 3: WORKSPACE PREVIEW & CAROUSEL TUTORIAL
           ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 3 && (
-            <div className="space-y-6 animate-in slide-in-from-right-4 duration-200">
-              <div className="text-center max-w-xl mx-auto space-y-2">
+            <div className="space-y-5 animate-in slide-in-from-right-4 duration-200">
+              <div className="space-y-1">
                 <h2 className="text-2xl font-extrabold font-geist text-gray-900 leading-tight">
-                  Your Workspace is Ready!
+                  Your Workspace is Ready! 🎉
                 </h2>
-                <p className="text-xs text-gray-400 font-geist leading-relaxed">
-                  Quick interactive tour of how your workspace is customized for this post.
+                <p className="text-sm text-gray-400 font-geist leading-relaxed">
+                  Here's a quick tour of how your workspace is calibrated for this post.
                 </p>
               </div>
 
-              {/* Interactive Carousel Card */}
-              <div className="max-w-md mx-auto">
-                {(() => {
-                  const slide = TUTORIAL_SLIDES[currentSlide];
-                  return (
-                    <div className="w-full relative">
-                      <motion.div
-                        key={currentSlide}
-                        initial={{ opacity: 0, x: 15 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className={`w-full min-h-[170px] rounded-3xl p-6 flex flex-col justify-between shadow-md bg-gradient-to-br ${slide.bg} border ${slide.border} relative overflow-hidden`}
-                      >
-                        {/* Background Glow */}
-                        <div className={`absolute -right-10 -bottom-10 w-24 h-24 rounded-full filter blur-xl opacity-20 ${slide.bgClass}`} />
-                        
-                        <div className="space-y-3 relative z-10">
-                          <div className="flex items-center justify-between">
-                            <span className={`text-[9px] font-bold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full ${slide.bgClass} ${slide.textClass}`}>
-                              {slide.badge}
-                            </span>
-                            <div className={`p-1.5 rounded-lg ${slide.bgClass} ${slide.textClass}`}>
-                              <CosIcon name={slide.icon} size={15} />
-                            </div>
-                          </div>
-                          <div className="space-y-1">
-                            <h3 className="text-[14px] font-bold text-gray-900 font-geist">
-                              {slide.title}
-                            </h3>
-                            <p className="text-[11px] text-gray-500 leading-relaxed font-geist">
-                              {slide.desc}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-
-                      {/* Navigation Controls */}
-                      <div className="flex items-center justify-center gap-3.5 mt-4">
-                        <button
-                          type="button"
-                          onClick={() => setCurrentSlide((prev) => (prev === 0 ? TUTORIAL_SLIDES.length - 1 : prev - 1))}
-                          className="w-7 h-7 rounded-xl flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-gray-800 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold"
-                        >
-                          ←
-                        </button>
-                        
-                        {/* Slide Dots Indicator */}
-                        <div className="flex items-center gap-1.5">
-                          {TUTORIAL_SLIDES.map((_, idx) => (
-                            <button
-                              key={idx}
-                              type="button"
-                              onClick={() => setCurrentSlide(idx)}
-                              className={`h-1 rounded-full transition-all duration-200 cursor-pointer ${
-                                currentSlide === idx ? "w-5 bg-[#FF5B04]" : "w-1 bg-black/[0.08] hover:bg-black/[0.15]"
-                              }`}
-                            />
-                          ))}
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() => setCurrentSlide((prev) => (prev === TUTORIAL_SLIDES.length - 1 ? 0 : prev + 1))}
-                          className="w-7 h-7 rounded-xl flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-gray-800 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold"
-                        >
-                          →
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
+              {/* Full-width Premium Carousel */}
+              <WorkspaceTutorialCarousel />
 
               {/* Strategy Configuration Summary */}
-              <div className="max-w-md mx-auto bg-white border border-black/[0.03] rounded-2xl p-3 flex items-center justify-between text-left shadow-sm">
+              <div className="bg-white border border-black/[0.03] rounded-2xl p-3 flex items-center justify-between text-left shadow-sm">
                 <span className="text-[10px] font-bold text-gray-400 font-jetbrains-mono uppercase tracking-wider">
                   calibrated layout
                 </span>
@@ -7400,39 +7628,49 @@ const BlogEditor = () => {
           <span className="text-sm font-medium font-geist text-gray-900">
             New Post
           </span>
-          {/* Locked type badge */}
-          <span
-            className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
-            style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
-            title="Post type and goal are locked for this draft"
-          >
-            <svg
-              fill="none"
-              height="10"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              width="10"
+          {/* Locked type badge & help trigger */}
+          <div className="flex items-center gap-2">
+            <span
+              className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
+              style={{ background: "rgba(255,91,4,0.10)", color: "#FF5B04" }}
+              title="Post type and goal are locked for this draft"
             >
-              <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            {(() => {
-              const ptConfig = getPostTypeConfig(postType);
-              const gConfig = getGoalConfig(contentGoal);
-              return (
-                <span className="flex items-center gap-1">
-                  {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
-                  <span>{ptConfig?.label}</span>
-                  <span className="mx-0.5">×</span>
-                  {gConfig && <CosIcon name={gConfig.icon} size={10} />}
-                  <span>{gConfig?.label}</span>
-                </span>
-              );
-            })()}
-          </span>
+              <svg
+                fill="none"
+                height="10"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+                width="10"
+              >
+                <rect height="11" rx="2" ry="2" width="18" x="3" y="11" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              {(() => {
+                const ptConfig = getPostTypeConfig(postType);
+                const gConfig = getGoalConfig(contentGoal);
+                return (
+                  <span className="flex items-center gap-1">
+                    {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
+                    <span>{ptConfig?.label}</span>
+                    <span className="mx-0.5">×</span>
+                    {gConfig && <CosIcon name={gConfig.icon} size={10} />}
+                    <span>{gConfig?.label}</span>
+                  </span>
+                );
+              })()}
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsHelpModalOpen(true)}
+              className="w-6 h-6 rounded-full flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-[#FF5B04] hover:bg-orange-50 hover:border-orange-200 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold text-xs"
+              title="Workspace Tutorial"
+            >
+              ?
+            </button>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <span
@@ -8943,6 +9181,54 @@ const BlogEditor = () => {
         }}
         onClose={() => setShowSEOModal(false)}
       />
+
+      {/* Help Tutorial Modal */}
+      {isHelpModalOpen && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-all duration-300"
+          onClick={() => setIsHelpModalOpen(false)}
+        >
+          <div
+            className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-black/5 p-6 w-full max-w-2xl animate-in fade-in zoom-in duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-md bg-orange-100 text-[#FF5B04] text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider">
+                  Quick Guide
+                </span>
+                <h3 className="text-base font-bold font-geist text-gray-800">
+                  Workspace Tutorial
+                </h3>
+              </div>
+              <button
+                className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-all cursor-pointer"
+                onClick={() => setIsHelpModalOpen(false)}
+              >
+                <svg
+                  fill="none"
+                  height="16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="16"
+                >
+                  <line x1="18" x2="6" y1="6" y2="18" />
+                  <line x1="6" x2="18" y1="6" y2="18" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Tutorial Carousel */}
+            <div className="bg-white/50 p-1.5 rounded-3xl border border-black/[0.02]">
+              <WorkspaceTutorialCarousel />
+            </div>
+          </div>
+        </div>
+      )}
       {/* ── Styles ── */}
       <style>{`
         @keyframes fadeSlideIn {
