@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 export interface AIWorkspaceMessage {
   id: string;
@@ -19,6 +19,34 @@ export interface GenerationRecord {
   appliedAt?: Date;
   isAccepted: boolean;
   selectedTextContext?: string;
+}
+
+function tokenizeHtml(html: string): string[] {
+  const tokens: string[] = [];
+  let i = 0;
+  while (i < html.length) {
+    if (html[i] === '<') {
+      const endIdx = html.indexOf('>', i);
+      if (endIdx !== -1) {
+        tokens.push(html.substring(i, endIdx + 1));
+        i = endIdx + 1;
+      } else {
+        tokens.push(html[i]);
+        i++;
+      }
+    } else {
+      const nextTag = html.indexOf('<', i);
+      const text = nextTag !== -1 ? html.substring(i, nextTag) : html.substring(i);
+      const words = text.split(/(\s+)/);
+      for (const word of words) {
+        if (word) {
+          tokens.push(word);
+        }
+      }
+      i += text.length;
+    }
+  }
+  return tokens;
 }
 
 export function useAIWorkspaceSession(
@@ -41,6 +69,101 @@ export function useAIWorkspaceSession(
   const [rewriteOutput, setRewriteOutput] = useState<string | null>(null);
   const [rewriteLoading, setRewriteLoading] = useState(false);
   const [rewriteError, setRewriteError] = useState<string | null>(null);
+
+  const [thinkingStatus, setThinkingStatus] = useState<string>("");
+
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const streamingIntervalRef = useRef<any>(null);
+  const timeoutsRef = useRef<any[]>([]);
+
+  // Stop/abort current AI request or typewriter streaming
+  const stopGeneration = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    if (timeoutsRef.current) {
+      timeoutsRef.current.forEach((t) => clearTimeout(t));
+      timeoutsRef.current = [];
+    }
+    if (streamingIntervalRef.current) {
+      clearInterval(streamingIntervalRef.current);
+      streamingIntervalRef.current = null;
+    }
+    setThinkingStatus("");
+    setLoading(false);
+    setRewriteLoading(false);
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutsRef.current) {
+        timeoutsRef.current.forEach((t) => clearTimeout(t));
+      }
+      if (streamingIntervalRef.current) {
+        clearInterval(streamingIntervalRef.current);
+      }
+    };
+  }, []);
+
+  const startTypewriterStream = useCallback(
+    (
+      fullText: string,
+      onUpdate: (text: string) => void,
+      onComplete: (completedText: string) => void
+    ) => {
+      if (streamingIntervalRef.current) {
+        clearInterval(streamingIntervalRef.current);
+      }
+
+      const tokens = tokenizeHtml(fullText);
+      let currentText = "";
+      let tokenIndex = 0;
+
+      // Calculate how many text tokens to append per tick to complete in at most ~70 ticks
+      const tokensPerTick = Math.max(1, Math.ceil(tokens.length / 70));
+
+      const processNextToken = () => {
+        if (tokenIndex >= tokens.length) {
+          if (streamingIntervalRef.current) {
+            clearInterval(streamingIntervalRef.current);
+            streamingIntervalRef.current = null;
+          }
+          onComplete(currentText);
+          return;
+        }
+
+        let processedTextTokens = 0;
+        while (tokenIndex < tokens.length && processedTextTokens < tokensPerTick) {
+          let token = tokens[tokenIndex];
+          currentText += token;
+          tokenIndex++;
+
+          const isTag = token.startsWith("<") && token.endsWith(">");
+          const isWhitespace = /^\s+$/.test(token);
+          if (!isTag && !isWhitespace) {
+            processedTextTokens++;
+          }
+
+          while (
+            tokenIndex < tokens.length &&
+            ((tokens[tokenIndex].startsWith("<") && tokens[tokenIndex].endsWith(">")) ||
+              /^\s+$/.test(tokens[tokenIndex]))
+          ) {
+            currentText += tokens[tokenIndex];
+            tokenIndex++;
+          }
+        }
+
+        onUpdate(currentText);
+      };
+
+      // Faster interval for smooth high-speed streaming
+      streamingIntervalRef.current = setInterval(processNextToken, 12);
+    },
+    []
+  );
 
   // Load preferences, snippets & session
   useEffect(() => {
@@ -104,6 +227,9 @@ export function useAIWorkspaceSession(
     async (content: string, selectedText?: string, engine?: string, model?: string) => {
       if (!content.trim() || loading) return;
 
+      // Abort any existing first
+      stopGeneration();
+
       const userMsg: AIWorkspaceMessage = {
         id: Math.random().toString(36).substring(7),
         role: "user",
@@ -116,6 +242,15 @@ export function useAIWorkspaceSession(
       setMessages(updatedMessages);
       setLoading(true);
       setError(null);
+      setThinkingStatus("Analyzing editor context...");
+
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      // Setup thinking status cycle
+      const t1 = setTimeout(() => setThinkingStatus("Applying Brand Voice guidelines..."), 1000);
+      const t2 = setTimeout(() => setThinkingStatus("Drafting suggestions..."), 2200);
+      timeoutsRef.current = [t1, t2];
 
       try {
         const response = await fetch("/api/pirateCOS/ai/workspace", {
@@ -130,6 +265,7 @@ export function useAIWorkspaceSession(
             engine,
             model,
           }),
+          signal: controller.signal,
         });
 
         const data = await response.json();
@@ -138,37 +274,75 @@ export function useAIWorkspaceSession(
           throw new Error(data.error || "Failed to generate AI response.");
         }
 
+        // Clear thinking timeouts
+        timeoutsRef.current.forEach((t) => clearTimeout(t));
+        timeoutsRef.current = [];
+        setThinkingStatus("");
+
+        const responseData = data.output;
+
         const genRecord: GenerationRecord = {
           id: data.generationId,
           prompt: content,
-          output: data.output,
+          output: responseData,
           mode: "chat",
           isAccepted: false,
           selectedTextContext: selectedText,
         };
 
-        const assistantMsg: AIWorkspaceMessage = {
-          id: Math.random().toString(36).substring(7),
+        const assistantMsgId = Math.random().toString(36).substring(7);
+        const initialAssistantMsg: AIWorkspaceMessage = {
+          id: assistantMsgId,
           role: "assistant",
-          content: data.output,
+          content: "",
           timestamp: new Date(),
           associatedGenerationId: data.generationId,
           selectedTextContext: selectedText,
         };
 
-        const finalMessages = [...updatedMessages, assistantMsg];
-        const finalGenerations = [...generations, genRecord];
+        // Add the empty assistant message
+        setMessages((prev) => [...prev, initialAssistantMsg]);
 
-        setMessages(finalMessages);
-        setGenerations(finalGenerations);
-        saveSessionToPost(finalMessages, finalGenerations);
+        startTypewriterStream(
+          responseData,
+          (chunk) => {
+            setMessages((prev) =>
+              prev.map((m) => (m.id === assistantMsgId ? { ...m, content: chunk } : m))
+            );
+          },
+          (completedText) => {
+            const finalAssistantMsg: AIWorkspaceMessage = {
+              id: assistantMsgId,
+              role: "assistant",
+              content: completedText,
+              timestamp: new Date(),
+              associatedGenerationId: data.generationId,
+              selectedTextContext: selectedText,
+            };
+
+            setMessages((prev) => {
+              const updated = prev.map((m) => (m.id === assistantMsgId ? finalAssistantMsg : m));
+              setGenerations((prevGens) => {
+                const updatedGens = [...prevGens, genRecord];
+                saveSessionToPost(updated, updatedGens);
+                return updatedGens;
+              });
+              return updated;
+            });
+            setLoading(false);
+          }
+        );
+
       } catch (err: any) {
+        if (err.name === "AbortError") {
+          console.log("Chat request aborted by user.");
+          return;
+        }
         setError(err.message || "An error occurred.");
-      } finally {
         setLoading(false);
       }
     },
-    [messages, generations, postId, loading, saveSessionToPost]
+    [messages, generations, postId, loading, saveSessionToPost, stopGeneration, startTypewriterStream]
   );
 
   // Trigger quick actions (improve, shorten, expand, etc.)
@@ -267,9 +441,21 @@ export function useAIWorkspaceSession(
     ) => {
       if (rewriteLoading) return;
 
+      // Abort any existing first
+      stopGeneration();
+
       setRewriteLoading(true);
       setRewriteError(null);
       setRewriteOutput(null);
+      setThinkingStatus("Analyzing editor context...");
+
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      // Setup thinking status cycle
+      const t1 = setTimeout(() => setThinkingStatus("Applying Brand Voice guidelines..."), 1000);
+      const t2 = setTimeout(() => setThinkingStatus("Drafting suggestions..."), 2200);
+      timeoutsRef.current = [t1, t2];
 
       try {
         const response = await fetch("/api/pirateCOS/ai/workspace", {
@@ -284,6 +470,7 @@ export function useAIWorkspaceSession(
             model,
             userMessage: instruction,
           }),
+          signal: controller.signal,
         });
 
         const data = await response.json();
@@ -292,28 +479,48 @@ export function useAIWorkspaceSession(
           throw new Error(data.error || "Failed to rewrite text.");
         }
 
-        setRewriteOutput(data.output);
+        // Clear thinking timeouts
+        timeoutsRef.current.forEach((t) => clearTimeout(t));
+        timeoutsRef.current = [];
+        setThinkingStatus("");
 
-        // Record in generations history for completeness
+        const responseData = data.output;
+
         const genRecord: GenerationRecord = {
           id: data.generationId,
           prompt: `Rewrite: ${Array.isArray(action) ? action.join(" + ") : action}`,
-          output: data.output,
+          output: responseData,
           mode: Array.isArray(action) ? action[0] : action,
           isAccepted: false,
           selectedTextContext: selectedText,
         };
 
-        const updatedGenerations = [...generations, genRecord];
-        setGenerations(updatedGenerations);
-        saveSessionToPost(messages, updatedGenerations);
+        startTypewriterStream(
+          responseData,
+          (chunk) => {
+            setRewriteOutput(chunk);
+          },
+          (completedText) => {
+            setRewriteOutput(completedText);
+            setGenerations((prevGens) => {
+              const updatedGens = [...prevGens, genRecord];
+              saveSessionToPost(messages, updatedGens);
+              return updatedGens;
+            });
+            setRewriteLoading(false);
+          }
+        );
+
       } catch (err: any) {
+        if (err.name === "AbortError") {
+          console.log("Rewrite request aborted by user.");
+          return;
+        }
         setRewriteError(err.message || "An error occurred during rewrite.");
-      } finally {
         setRewriteLoading(false);
       }
     },
-    [generations, messages, postId, rewriteLoading, saveSessionToPost]
+    [generations, messages, postId, rewriteLoading, saveSessionToPost, stopGeneration, startTypewriterStream]
   );
 
   const clearRewriteOutput = useCallback(() => {
@@ -516,5 +723,8 @@ export function useAIWorkspaceSession(
     rewriteError,
     runRewriteAction,
     clearRewriteOutput,
+    // Thinking & Streaming
+    thinkingStatus,
+    stopGeneration,
   };
 }

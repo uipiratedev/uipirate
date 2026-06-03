@@ -100,6 +100,9 @@ export default function AIWorkspacePanel({
     rewriteError,
     runRewriteAction,
     clearRewriteOutput,
+    // Thinking & Streaming
+    thinkingStatus,
+    stopGeneration,
   } = useAIWorkspaceSession(postId, null, onApplyToEditor);
 
   // View state & AI engine/model settings
@@ -230,13 +233,13 @@ export default function AIWorkspacePanel({
                   />
 
                   {/* Rewrite Loading State */}
-                  {rewriteLoading && (
-                    <div className="p-4 bg-white border border-black/5 rounded-2xl shadow-sm flex flex-col items-center justify-center text-center space-y-2.5 animate-pulse">
+                  {rewriteLoading && thinkingStatus && (
+                    <div className="p-4 bg-white border border-black/5 rounded-2xl shadow-sm flex flex-col items-center justify-center text-center space-y-3.5 animate-pulse">
                       <svg className="animate-spin h-5 w-5 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                      <span className="text-xs font-semibold text-gray-700 font-geist">Generating suggestions...</span>
+                      <span className="text-xs font-semibold text-gray-700 font-geist">{thinkingStatus}</span>
                     </div>
                   )}
 
@@ -251,7 +254,7 @@ export default function AIWorkspacePanel({
                   )}
 
                   {/* Rewrite Output Card */}
-                  {rewriteOutput && !rewriteLoading && (
+                  {rewriteOutput !== null && (
                     <div className="p-4 bg-white border border-black/5 rounded-2xl shadow-sm space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
@@ -263,13 +266,15 @@ export default function AIWorkspacePanel({
                           </span>
                         </div>
                         
-                        <button
-                          onClick={clearRewriteOutput}
-                          className="w-5 h-5 rounded-md flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-colors cursor-pointer"
-                          title="Discard suggestion"
-                        >
-                          &times;
-                        </button>
+                        {!rewriteLoading && (
+                          <button
+                            onClick={clearRewriteOutput}
+                            className="w-5 h-5 rounded-md flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-colors cursor-pointer"
+                            title="Discard suggestion"
+                          >
+                            &times;
+                          </button>
+                        )}
                       </div>
 
                       <div
@@ -277,59 +282,72 @@ export default function AIWorkspacePanel({
                         dangerouslySetInnerHTML={{ __html: rewriteOutput }}
                       />
 
-                      <div className="flex flex-wrap gap-1.5 items-center pt-1">
-                        <button
-                          onClick={() => {
-                            onApplyToEditor(rewriteOutput, "replace");
-                            clearRewriteOutput();
-                          }}
-                          className="px-2.5 py-1 text-[10px] font-bold font-geist text-white bg-black hover:bg-gray-800 rounded-md transition-colors shadow-sm cursor-pointer"
-                        >
-                          Replace selection
-                        </button>
-                        <button
-                          onClick={() => {
-                            onApplyToEditor(rewriteOutput, "insert-below");
-                            clearRewriteOutput();
-                          }}
-                          className="px-2.5 py-1 text-[10px] font-semibold font-geist text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors cursor-pointer"
-                        >
-                          Insert below
-                        </button>
-                        
-                        {/* Copy button */}
-                        <button
-                          onClick={() => {
-                            const plainText = rewriteOutput.replace(/<[^>]*>/g, "");
-                            navigator.clipboard.writeText(plainText);
-                            setCopied(true);
-                            setTimeout(() => setCopied(false), 2000);
-                          }}
-                          className="w-6 h-6 rounded-md flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer border border-black/5"
-                          title={copied ? "Copied!" : "Copy to clipboard"}
-                        >
-                          {copied ? (
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" className="w-3 h-3 text-green-500">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                            </svg>
-                          ) : (
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z" />
-                            </svg>
-                          )}
-                        </button>
+                      {rewriteLoading ? (
+                        <div className="flex items-center gap-2 pt-1">
+                          <button
+                            type="button"
+                            onClick={stopGeneration}
+                            className="px-3 py-1.5 text-[10px] font-bold font-geist text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors shadow-sm cursor-pointer flex items-center gap-1.5"
+                          >
+                            <span className="h-1.5 w-1.5 bg-white rounded-full animate-ping" />
+                            Stop Generating
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-wrap gap-1.5 items-center pt-1">
+                          <button
+                            onClick={() => {
+                              onApplyToEditor(rewriteOutput, "replace");
+                              clearRewriteOutput();
+                            }}
+                            className="px-2.5 py-1 text-[10px] font-bold font-geist text-white bg-black hover:bg-gray-800 rounded-md transition-colors shadow-sm cursor-pointer"
+                          >
+                            Replace selection
+                          </button>
+                          <button
+                            onClick={() => {
+                              onApplyToEditor(rewriteOutput, "insert-below");
+                              clearRewriteOutput();
+                            }}
+                            className="px-2.5 py-1 text-[10px] font-semibold font-geist text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors cursor-pointer"
+                          >
+                            Insert below
+                          </button>
+                          
+                          {/* Copy button */}
+                          <button
+                            onClick={() => {
+                              const plainText = rewriteOutput.replace(/<[^>]*>/g, "");
+                              navigator.clipboard.writeText(plainText);
+                              setCopied(true);
+                              setTimeout(() => setCopied(false), 2000);
+                            }}
+                            className="w-6 h-6 rounded-md flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer border border-black/5"
+                            title={copied ? "Copied!" : "Copy to clipboard"}
+                          >
+                            {copied ? (
+                              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" className="w-3 h-3 text-green-500">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                              </svg>
+                            ) : (
+                              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0015 2.25h-1.5a2.251 2.251 0 00-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 00-9-9z" />
+                              </svg>
+                            )}
+                          </button>
 
-                        {/* Save snippet */}
-                        <button
-                          onClick={() => {
-                            saveSnippet(rewriteOutput);
-                          }}
-                          className="w-6 h-6 rounded-md flex items-center justify-center text-gray-400 hover:text-[#FF5B04] hover:bg-orange-50 transition-colors cursor-pointer border border-black/5"
-                          title="Save as snippet"
-                        >
-                          <CosIcon name="tasks" size={12} />
-                        </button>
-                      </div>
+                          {/* Save snippet */}
+                          <button
+                            onClick={() => {
+                              saveSnippet(rewriteOutput);
+                            }}
+                            className="w-6 h-6 rounded-md flex items-center justify-center text-gray-400 hover:text-[#FF5B04] hover:bg-orange-50 transition-colors cursor-pointer border border-black/5"
+                            title="Save as snippet"
+                          >
+                            <CosIcon name="tasks" size={12} />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -412,6 +430,8 @@ export default function AIWorkspacePanel({
                       initialPrompt={initialPrompt}
                       onClearInitialPrompt={onClearInitialPrompt}
                       editorHasContent={editorHasContent}
+                      thinkingStatus={thinkingStatus}
+                      onStop={stopGeneration}
                     />
                   )}
 
