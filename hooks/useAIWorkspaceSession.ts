@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { ChatIdeaSuggestion } from "@/lib/pirateCOS/postTypeConfig";
 
 export interface AIWorkspaceMessage {
   id: string;
@@ -71,6 +72,10 @@ export function useAIWorkspaceSession(
   const [rewriteError, setRewriteError] = useState<string | null>(null);
 
   const [thinkingStatus, setThinkingStatus] = useState<string>("");
+  const [dynamicSuggestions, setDynamicSuggestions] = useState<ChatIdeaSuggestion[] | null>(null);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+  const [activeBrief, setActiveBrief] = useState<string>("");
+  const [activeKeywords, setActiveKeywords] = useState<string>("");
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const streamingIntervalRef = useRef<any>(null);
@@ -264,6 +269,8 @@ export function useAIWorkspaceSession(
             sessionHistory: updatedMessages,
             engine,
             model,
+            brief: activeBrief,
+            keywords: activeKeywords,
           }),
           signal: controller.signal,
         });
@@ -387,6 +394,8 @@ export function useAIWorkspaceSession(
             engine,
             model,
             userMessage: instruction,
+            brief: activeBrief,
+            keywords: activeKeywords,
           }),
         });
 
@@ -469,6 +478,8 @@ export function useAIWorkspaceSession(
             engine,
             model,
             userMessage: instruction,
+            brief: activeBrief,
+            keywords: activeKeywords,
           }),
           signal: controller.signal,
         });
@@ -684,6 +695,9 @@ export function useAIWorkspaceSession(
   const clearSession = useCallback(async () => {
     setMessages([]);
     setGenerations([]);
+    setDynamicSuggestions(null);
+    setActiveBrief("");
+    setActiveKeywords("");
     if (!postId) return;
     try {
       await fetch(`/api/pirateCOS/posts/${postId}`, {
@@ -701,6 +715,50 @@ export function useAIWorkspaceSession(
       console.error("Failed to clear AI workspace session:", err);
     }
   }, [postId]);
+
+  // Load dynamic suggestions using brief and keywords
+  const loadDynamicSuggestions = useCallback(
+    async (brief: string, keywords: string, engine?: string, model?: string) => {
+      setSuggestionsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch("/api/pirateCOS/ai/workspace", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            postId,
+            action: "suggest-ideas",
+            brief,
+            keywords,
+            engine,
+            model,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Failed to load dynamic suggestions.");
+        }
+
+        setDynamicSuggestions(data.suggestions || []);
+        setActiveBrief(brief);
+        setActiveKeywords(keywords);
+      } catch (err: any) {
+        console.error("Failed to load dynamic suggestions:", err);
+        setError(err.message || "An error occurred while fetching suggestions.");
+      } finally {
+        setSuggestionsLoading(false);
+      }
+    },
+    [postId]
+  );
+
+  const clearDynamicSuggestions = useCallback(() => {
+    setDynamicSuggestions(null);
+    setActiveBrief("");
+    setActiveKeywords("");
+  }, []);
 
   return {
     messages,
@@ -726,5 +784,12 @@ export function useAIWorkspaceSession(
     // Thinking & Streaming
     thinkingStatus,
     stopGeneration,
+    // Dynamic suggestions
+    dynamicSuggestions,
+    suggestionsLoading,
+    loadDynamicSuggestions,
+    clearDynamicSuggestions,
+    activeBrief,
+    activeKeywords,
   };
 }

@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEditorSelection } from "@/hooks/useEditorSelection";
 import { useAIWorkspaceSession } from "@/hooks/useAIWorkspaceSession";
 import { AIEngine } from "@/lib/pirateCOS/ai-registry";
+import { getChatSuggestions } from "@/lib/pirateCOS/postTypeConfig";
 
 import FocusKeywordStrip from "./workspace/ContextDisplay";
 import ActionChips from "./workspace/QuickActions";
@@ -103,6 +104,13 @@ export default function AIWorkspacePanel({
     // Thinking & Streaming
     thinkingStatus,
     stopGeneration,
+    // Dynamic suggestions
+    dynamicSuggestions,
+    suggestionsLoading,
+    loadDynamicSuggestions,
+    clearDynamicSuggestions,
+    activeBrief,
+    activeKeywords,
   } = useAIWorkspaceSession(postId, null, onApplyToEditor);
 
   // View state & AI engine/model settings
@@ -432,6 +440,13 @@ export default function AIWorkspacePanel({
                       editorHasContent={editorHasContent}
                       thinkingStatus={thinkingStatus}
                       onStop={stopGeneration}
+                      suggestions={getChatSuggestions(postType, contentGoal as any)}
+                      dynamicSuggestions={dynamicSuggestions}
+                      suggestionsLoading={suggestionsLoading}
+                      onSuggestMore={(brief: string, keywords: string) => loadDynamicSuggestions(brief, keywords, selectedEngine, selectedModel)}
+                      onClearDynamicSuggestions={clearDynamicSuggestions}
+                      activeBrief={activeBrief}
+                      activeKeywords={activeKeywords}
                     />
                   )}
 

@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
       tone,
       engine,
       model,
+      brief,
+      keywords,
     } = body;
 
     await dbConnect();
@@ -100,8 +102,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Enforce credit checks (0.5 for quick action / "enhance", 1.0 for chat / "seo")
-    const actionType = action === "chat" ? "seo" : "enhance";
+    // Enforce credit checks (0.5 for quick action / "enhance", 1.0 for chat / "seo", 0.1 for suggest / "suggest")
+    let actionType: "blog" | "seo" | "enhance" | "publish" | "suggest" = "enhance";
+    if (action === "chat") {
+      actionType = "seo";
+    } else if (action === "suggest-ideas") {
+      actionType = "suggest";
+    }
+
     try {
       await deductCredits(
         user.tenantId,
@@ -121,6 +129,146 @@ export async function POST(request: NextRequest) {
         );
       }
       throw guardErr;
+    }
+
+    // Handle AI-powered suggestion generation
+    if (action === "suggest-ideas") {
+      const systemInstructions = `You are a world-class professional copywriter and AI content strategist.
+Your task is to generate exactly 4 highly creative, targeted, and actionable custom suggestions/prompts that the user can run in their AI writing assistant to write or improve their current post.
+
+Context of the post:
+- Post Type: "${postType}"
+- Content Goal: "${contentGoal}"
+- Post Title: "${postTitle || "(Not set yet)"}"
+- Current Post Content Snippet: "${(postContent || "").substring(0, 1500)}"
+
+User's input for these suggestions:
+- Topic/Brief details: "${brief || "General improvements based on post type"}"
+- Keywords: "${keywords || "None specified"}"
+
+Rules for output:
+1. Generate EXACTLY 4 suggestions/prompts.
+2. The output MUST be a valid JSON array of objects. Do not include any explanation, no markdown blocks except the raw JSON array or a markdown json block.
+3. Each object in the array must have EXACTLY this structure:
+{
+  "label": "A short, actionable button label (2-4 words, NO emojis, e.g. 'Draft tutorial intro')",
+  "prompt": "The detailed prompt that will be sent to the AI when clicked. It should be specific, context-aware, and instruct the AI on exactly what to write or edit, referencing the brief/keywords if applicable. Use placeholders like [insert ...] if needed.",
+  "icon": "One of the following exact string values representing the icon style: 'tutorial', 'draft', 'engagement', 'listicle', 'conversion', 'comparison', 'product-launch', 'newsletter', 'case-study', 'corporate-post', 'product-review', 'bolt', 'table', 'lead-generation', 'retention', 'warning', 'celebrate', 'sparkles'"
+}
+4. Crucial: NO emojis anywhere in the label, prompt, or icon fields. Keep icon names strictly as listed above.`;
+
+      let text = "";
+      if (selectedEngine === "openai" || selectedEngine === "mistral") {
+        const isMistral = selectedEngine === "mistral";
+        const apiUrl = isMistral
+          ? "https://api.mistral.ai/v1/chat/completions"
+          : "https://api.openai.com/v1/chat/completions";
+        const selectedModel = model || DEFAULT_MODEL_BY_ENGINE[selectedEngine];
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model: selectedModel,
+            messages: [
+              { role: "system", content: systemInstructions },
+              { role: "user", content: "Generate the 4 custom suggestions as JSON." }
+            ],
+            temperature: 0.7,
+          }),
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`);
+        }
+
+        const data = await response.json();
+        text = data.choices?.[0]?.message?.content || "";
+      } else if (selectedEngine === "anthropic") {
+        const selectedModel = model || DEFAULT_MODEL_BY_ENGINE.anthropic;
+
+        const response = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey!,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model: selectedModel,
+            max_tokens: 2000,
+            temperature: 0.7,
+            system: systemInstructions,
+            messages: [
+              { role: "user", content: "Generate the 4 custom suggestions as JSON." }
+            ],
+          }),
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Claude API Error: ${errText}`);
+        }
+
+        const data = await response.json();
+        text = data.content?.map((part: any) => part.type === "text" ? part.text || "" : "").join("") || "";
+      } else if (selectedEngine === "gemini") {
+        const geminiModel = model || DEFAULT_MODEL_BY_ENGINE.gemini;
+
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-goog-api-key": apiKey!,
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  role: "user",
+                  parts: [{ text: "Generate the 4 custom suggestions as JSON." }],
+                }
+              ],
+              systemInstruction: {
+                parts: [{ text: systemInstructions }],
+              },
+            }),
+          },
+        );
+
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Gemini API Error: ${errText}`);
+        }
+
+        const data = await response.json();
+        text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+      }
+
+      text = text.trim();
+      if (text.startsWith("```json")) {
+        text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+      } else if (text.startsWith("```")) {
+        text = text.replace(/^```/, "").replace(/```$/, "").trim();
+      }
+
+      let suggestions = [];
+      try {
+        suggestions = JSON.parse(text);
+      } catch (jsonErr) {
+        console.error("Failed to parse suggestions JSON from AI:", text);
+        throw new Error("AI returned invalid JSON suggestions. Please try again.");
+      }
+
+      return NextResponse.json({
+        success: true,
+        suggestions,
+      });
     }
 
     // Formulate Quick Action directives
@@ -161,16 +309,21 @@ export async function POST(request: NextRequest) {
       } else {
         actionPrompt = userMessage || "";
       }
+    }    let systemInstructions = "";
+    const contextInfo = targetText ? `\n\nTARGET CONTEXT: "${targetText.substring(0, 3000)}"` : "";
+    let briefContext = "";
+    if (brief) {
+      briefContext += `\n- Active Topic/Brief context: "${brief}"`;
+    }
+    if (keywords) {
+      briefContext += `\n- Focus Keywords: "${keywords}"`;
     }
 
-    let systemInstructions = "";
-    const contextInfo = targetText ? `\n\nTARGET CONTEXT: "${targetText.substring(0, 3000)}"` : "";
-
     if (postType === "social-post") {
-      systemInstructions = `You are a world-class professional copywriter and social media content writer. The user wants you to write content based on the following instructions: "${actionPrompt}". The context of the post is: title: "${postTitle}", category: "social-post".${contextInfo}
+      systemInstructions = `You are a world-class professional copywriter and social media content writer. The user wants you to write content based on the following instructions: "${actionPrompt}". The context of the post is: title: "${postTitle}", category: "social-post".${contextInfo}${briefContext}
 Write a concise, engaging, and highly readable update. Ensure it is formatted perfectly for social feeds with short, punchy paragraphs and no long blocks of text. Limit the length to be extremely concise (typically 1-3 short paragraphs, under 250 words total). Do NOT include headings (h1, h2, h3), lists, blockquotes, or dividers. Output in simple HTML format (using <p>, <strong>, <em>, and <br> tags). Do NOT use markdown. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
     } else {
-      systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following instructions: "${actionPrompt}". The context of the post is: title: "${postTitle}", category: "${postType}".${contextInfo}
+      systemInstructions = `You are a world-class professional copywriter and technical content author. The user wants you to write content based on the following instructions: "${actionPrompt}". The context of the post is: title: "${postTitle}", category: "${postType}".${contextInfo}${briefContext}
 Write a comprehensive, fully detailed, and substantial piece of content. Expand on the concepts deeply with rich explanations, multiple robust and fully-fleshed out paragraphs, structured subheadings, and thorough insights (aim for at least 150 to 450 words, unless the prompt explicitly requests a short summary or brief answer). Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
     }
 
