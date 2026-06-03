@@ -7,8 +7,8 @@ import { useEditorSelection } from "@/hooks/useEditorSelection";
 import { useAIWorkspaceSession } from "@/hooks/useAIWorkspaceSession";
 import { AIEngine } from "@/lib/pirateCOS/ai-registry";
 
-import ContextDisplay from "./workspace/ContextDisplay";
-import QuickActions from "./workspace/QuickActions";
+import FocusKeywordStrip from "./workspace/ContextDisplay";
+import ActionChips from "./workspace/QuickActions";
 import ConversationThread from "./workspace/ConversationThread";
 import GenerationHistory from "./workspace/GenerationHistory";
 import CosIcon from "./CosIcon";
@@ -22,7 +22,7 @@ interface AIWorkspacePanelProps {
   brandBrain?: any;
   onApplyToEditor: (text: string, mode: "replace" | "insert-below" | "insert-above") => void;
   onOpenRepurposingDrawer: () => void;
-  
+
   // Unified Sidebar Props
   activeTab: "ai" | "content" | "seo" | "health" | "distribute" | null;
   onTabChange: (tab: "ai" | "content" | "seo" | "health" | "distribute" | null) => void;
@@ -32,7 +32,26 @@ interface AIWorkspacePanelProps {
   renderDistributeTab: () => React.ReactNode;
   initialPrompt?: string;
   onClearInitialPrompt?: () => void;
+
+  // SEO focus keyword sync
+  seoFocusKeyword?: string;
+  onSetFocusKeyword?: (kw: string) => void;
 }
+
+const PANEL_DESCRIPTIONS: Record<string, string> = {
+  ai:       "Chat with AI to write, edit, and improve your content",
+  content:  "Configure platform settings, tags, and excerpt",
+  seo:      "Set keywords and metadata for search engines",
+  health:   "Real-time scores for writing quality and readiness",
+  distribute: "Publish to connected platforms and create spin-offs",
+};
+
+const POST_IDEA_PROMPTS = [
+  { icon: "🛠", label: "Write a how-to guide", prompt: "Help me write a detailed how-to guide for my audience." },
+  { icon: "📊", label: "Summarize a key insight", prompt: "Help me write a post summarizing an important insight or lesson I learned." },
+  { icon: "💡", label: "Share an opinion or take", prompt: "Help me write a thought-leadership opinion piece on a trending topic in my space." },
+  { icon: "📋", label: "Create a list article", prompt: "Help me write an engaging listicle with clear takeaways for my audience." },
+];
 
 export default function AIWorkspacePanel({
   postId,
@@ -50,6 +69,8 @@ export default function AIWorkspacePanel({
   renderDistributeTab,
   initialPrompt,
   onClearInitialPrompt,
+  seoFocusKeyword,
+  onSetFocusKeyword,
 }: AIWorkspacePanelProps) {
   const { user } = useAuth();
   const isProUser = user ? ["pro", "enterprise", "starter"].includes(user.plan) : false;
@@ -80,6 +101,17 @@ export default function AIWorkspacePanel({
   const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash");
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
+  // Track whether editor has content (reactive)
+  const [editorHasContent, setEditorHasContent] = useState(false);
+
+  useEffect(() => {
+    if (!editor) { setEditorHasContent(false); return; }
+    const update = () => setEditorHasContent(!editor.isEmpty);
+    editor.on("update", update);
+    update();
+    return () => { editor.off("update", update); };
+  }, [editor]);
+
   // Width & resizing state
   const [width, setWidth] = useState(288);
   const [isResizing, setIsResizing] = useState(false);
@@ -94,7 +126,7 @@ export default function AIWorkspacePanel({
     }
   }, [uiPreferences]);
 
-  // Resizing mouse mousemove/mouseup handlers
+  // Resizing handlers
   const startResizing = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsResizing(true);
@@ -106,8 +138,7 @@ export default function AIWorkspacePanel({
     const handleMouseMove = (e: MouseEvent) => {
       if (!panelRef.current) return;
       const rect = panelRef.current.getBoundingClientRect();
-      // resizing is on the left edge of panel, so delta = rect.right - mouseX - 56 (rail width)
-      const newWidth = Math.max(240, Math.min(400, rect.right - e.clientX - 56));
+      const newWidth = Math.max(260, Math.min(420, rect.right - e.clientX - 56));
       setWidth(newWidth);
     };
 
@@ -125,12 +156,10 @@ export default function AIWorkspacePanel({
     };
   }, [isResizing, width, saveUIPreference]);
 
-  // Apply quick action handler
   const handleTriggerQuickAction = (actionId: string, tone?: string) => {
     triggerQuickAction(actionId, selectedText, tone, selectedEngine, selectedModel);
   };
 
-  // Handle snippet click insertion
   const handleInsertSnippet = (snippet: string) => {
     if (editor) {
       editor.chain().focus().insertContent(snippet).run();
@@ -145,7 +174,12 @@ export default function AIWorkspacePanel({
     }
   };
 
-  const modelLabel = selectedModel.split("/").pop() || selectedModel;
+  // Inject idea prompt into chat
+  const handleIdeaPrompt = (prompt: string) => {
+    // We trigger a sendMessage with the suggestion
+    sendMessage(prompt, "", selectedEngine, selectedModel);
+    setActiveView("chat");
+  };
 
   return (
     <>
@@ -154,7 +188,7 @@ export default function AIWorkspacePanel({
         style={{ width: activeTab === null ? "56px" : `${width + 56}px` }}
         className="flex-shrink-0 flex items-stretch transition-all duration-300 relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl"
       >
-        {/* Resize Handler Handle */}
+        {/* Resize Handle */}
         {activeTab !== null && (
           <div
             ref={resizeRef}
@@ -163,7 +197,7 @@ export default function AIWorkspacePanel({
           />
         )}
 
-        {/* Drawer content (visible only when expanded) */}
+        {/* Drawer content */}
         {activeTab !== null && (
           <div style={{ width: `${width}px` }} className="flex-1 flex flex-col h-full overflow-hidden border-r border-black/5 bg-[#F7F7F6]">
             {activeTab === "ai" ? (
@@ -171,7 +205,7 @@ export default function AIWorkspacePanel({
                 {/* AI Header */}
                 <div className="flex items-center justify-between px-4 py-3 border-b border-black/5 bg-white flex-shrink-0">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <span className="relative flex h-2 w-2">
+                    <span className="relative flex h-2 w-2 flex-shrink-0">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5B04]"></span>
                     </span>
@@ -184,10 +218,7 @@ export default function AIWorkspacePanel({
                   <div className="flex items-center gap-1.5 flex-shrink-0">
                     {/* New Chat (+) */}
                     <button
-                      onClick={() => {
-                        clearSession();
-                        setActiveView("chat");
-                      }}
+                      onClick={() => { clearSession(); setActiveView("chat"); }}
                       className="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-black/5 transition-all cursor-pointer"
                       title="New Chat Session"
                     >
@@ -196,7 +227,7 @@ export default function AIWorkspacePanel({
                       </svg>
                     </button>
 
-                    {/* Toggle History (clock) */}
+                    {/* History */}
                     <button
                       onClick={() => setActiveView(activeView === "history" ? "chat" : "history")}
                       className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
@@ -211,7 +242,7 @@ export default function AIWorkspacePanel({
                       </svg>
                     </button>
 
-                    {/* Toggle Snippets (...) */}
+                    {/* Snippets */}
                     <button
                       onClick={() => setActiveView(activeView === "snippets" ? "chat" : "snippets")}
                       className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
@@ -225,33 +256,62 @@ export default function AIWorkspacePanel({
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                       </svg>
                     </button>
-
-
                   </div>
                 </div>
 
                 {/* AI Body */}
-                <div className="flex-1 flex flex-col min-h-0 overflow-y-auto p-4 space-y-4">
+                <div className="flex-1 flex flex-col min-h-0 overflow-y-auto p-4 space-y-3">
                   {activeView === "chat" && (
                     <>
-                      {/* strategy context display */}
-                      <ContextDisplay
+                      {/* Focus Keyword Strip */}
+                      <FocusKeywordStrip
                         postType={postType}
-                        contentGoal={contentGoal}
-                        brandVoice={brandBrain?.brandVoice}
-                        focusKeyword={brandBrain?.targetKeywords?.[0]}
+                        focusKeyword={seoFocusKeyword}
+                        onSetFocusKeyword={onSetFocusKeyword}
                         selectedTextLength={wordCount}
                       />
 
-                      {/* quick actions grid */}
-                      <QuickActions
-                        selectedText={selectedText}
-                        onTriggerAction={handleTriggerQuickAction}
-                        onOpenRepurposingDrawer={onOpenRepurposingDrawer}
-                        loading={loading}
-                      />
+                      {/* Empty State — Post Idea Suggestions */}
+                      {!editorHasContent && messages.length === 0 && (
+                        <div className="space-y-2.5 py-1">
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono px-1">
+                            Get started with an idea
+                          </p>
+                          <div className="space-y-1.5">
+                            {POST_IDEA_PROMPTS.map((idea) => (
+                              <button
+                                key={idea.label}
+                                type="button"
+                                disabled={loading}
+                                onClick={() => handleIdeaPrompt(idea.prompt)}
+                                className="w-full text-left flex items-center gap-2.5 p-2.5 bg-white border border-black/5 rounded-xl hover:border-[#FF5B04]/30 hover:bg-orange-50/10 transition-all group cursor-pointer shadow-sm disabled:opacity-40"
+                              >
+                                <span className="text-base flex-shrink-0">{idea.icon}</span>
+                                <span className="text-xs font-medium font-geist text-gray-600 group-hover:text-[#FF5B04] transition-colors">
+                                  {idea.label}
+                                </span>
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3 h-3 ml-auto text-gray-300 group-hover:text-[#FF5B04] transition-colors flex-shrink-0">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                                </svg>
+                              </button>
+                            ))}
+                          </div>
+                          <p className="text-[9px] text-gray-300 text-center font-geist pt-1">
+                            Or type your own question below ↓
+                          </p>
+                        </div>
+                      )}
 
-                      {/* conversational chat card */}
+                      {/* Action Chips (only when content exists) */}
+                      {editorHasContent && (
+                        <ActionChips
+                          editorHasContent={editorHasContent}
+                          onTriggerAction={handleTriggerQuickAction}
+                          loading={loading}
+                        />
+                      )}
+
+                      {/* Conversational chat card */}
                       <ConversationThread
                         messages={messages}
                         loading={loading}
@@ -319,7 +379,7 @@ export default function AIWorkspacePanel({
                           <div className="space-y-1.5 flex-1 overflow-y-auto pr-1">
                             {snippetLibrary.length === 0 ? (
                               <p className="text-[10px] text-gray-400 font-geist text-center py-6">
-                                Snippet library is empty. Save generated outputs or selections as snippets.
+                                Snippet library is empty. Save generated outputs as snippets to reuse them.
                               </p>
                             ) : (
                               snippetLibrary.map((snip, index) => (
@@ -369,14 +429,16 @@ export default function AIWorkspacePanel({
             ) : (
               <div className="flex-1 flex flex-col h-full overflow-hidden">
                 {/* Unified Settings Header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-black/5 bg-white flex-shrink-0">
+                <div className="flex flex-col px-4 py-3 border-b border-black/5 bg-white flex-shrink-0 gap-0.5">
                   <span className="text-xs font-bold text-gray-700 font-geist tracking-wide">
                     {activeTab === "content" && (postType === "social-post" ? "Narrative Settings" : "Content Settings")}
-                    {activeTab === "seo" && "SEO Configuration"}
+                    {activeTab === "seo" && "SEO & Metadata"}
                     {activeTab === "health" && "Content Health"}
-                    {activeTab === "distribute" && "Distribution Settings"}
+                    {activeTab === "distribute" && "Distribute"}
                   </span>
-
+                  <span className="text-[10px] text-gray-400 font-geist leading-tight">
+                    {PANEL_DESCRIPTIONS[activeTab as string] || ""}
+                  </span>
                 </div>
                 {/* Unified Settings Body */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -392,7 +454,7 @@ export default function AIWorkspacePanel({
 
         {/* Persistent Activity Rail on the right edge */}
         <div className="w-14 flex flex-col items-center py-4 gap-4 bg-[#F7F7F6] h-full flex-shrink-0 select-none border-l border-black/[0.03] rounded-r-2xl">
-          {/* AI Collaborator (bot) */}
+          {/* AI Co-pilot */}
           <button
             onClick={() => handleTabClick("ai")}
             className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
@@ -410,7 +472,7 @@ export default function AIWorkspacePanel({
 
           <div className="h-px w-6 bg-black/[0.06]" />
 
-          {/* Content / Narrative Settings */}
+          {/* Content Settings */}
           <button
             onClick={() => handleTabClick("content")}
             className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
@@ -425,7 +487,7 @@ export default function AIWorkspacePanel({
             </svg>
           </button>
 
-          {/* SEO (if renderSEOTab is provided) */}
+          {/* SEO */}
           {renderSEOTab && (
             <button
               onClick={() => handleTabClick("seo")}
@@ -434,7 +496,7 @@ export default function AIWorkspacePanel({
                   ? "bg-[#FF5B04] text-white shadow-md shadow-orange-500/10 scale-105"
                   : "text-gray-400 hover:text-gray-700 hover:bg-black/5"
               }`}
-              title="SEO Configuration"
+              title="SEO & Metadata"
             >
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
@@ -457,7 +519,7 @@ export default function AIWorkspacePanel({
             </svg>
           </button>
 
-          {/* Share / Distribute */}
+          {/* Distribute */}
           <button
             onClick={() => handleTabClick("distribute")}
             className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
@@ -465,7 +527,7 @@ export default function AIWorkspacePanel({
                 ? "bg-[#FF5B04] text-white shadow-md shadow-orange-500/10 scale-105"
                 : "text-gray-400 hover:text-gray-700 hover:bg-black/5"
             }`}
-            title="Distribution Settings"
+            title="Distribute"
           >
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
               <circle cx="18" cy="5" r="3" />
@@ -478,7 +540,7 @@ export default function AIWorkspacePanel({
         </div>
       </div>
 
-      {/* billing/upgrade prompt modal */}
+      {/* Upgrade prompt modal */}
       <UpgradePrompt
         open={upgradeOpen}
         onClose={() => setUpgradeOpen(false)}

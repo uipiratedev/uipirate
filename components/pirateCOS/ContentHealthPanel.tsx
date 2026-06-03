@@ -401,50 +401,71 @@ export default function ContentHealthPanel({
     return "#10b981"; // green
   };
 
-  const metrics: MetricDetails[] = [
+  const metricGroups = [
     {
-      name: "SEO Optimization",
-      score: analysis.seoScore,
-      description: "How well optimized this post is for organic search and keywords.",
-      tips: analysis.seoTips,
+      groupLabel: "Writing Quality",
+      groupIcon: "✏️",
+      metrics: [
+        {
+          name: "Readability",
+          score: analysis.readability,
+          description: "Sentence length, paragraph size, and use of lists for easy skimming.",
+          tips: analysis.readTips,
+        },
+        {
+          name: "Engagement",
+          score: analysis.engagementLikelihood,
+          description: "How well the opening hook, questions, and tone draw readers in.",
+          tips: analysis.engageTips,
+        },
+        {
+          name: "Structure",
+          score: analysis.structureQuality,
+          description: "Use of headings, bold text, quotes, and lists to organize content.",
+          tips: analysis.structTips,
+        },
+      ],
     },
     {
-      name: "Readability & Scannability",
-      score: analysis.readability,
-      description: "Structure of sentences, paragraphs, and list items for easy reading.",
-      tips: analysis.readTips,
+      groupLabel: "SEO & Reach",
+      groupIcon: "📈",
+      metrics: [
+        {
+          name: "Search Ranking",
+          score: analysis.seoScore,
+          description: "How well this post is optimized to appear in Google search results.",
+          tips: analysis.seoTips,
+        },
+        {
+          name: "Conversion",
+          score: analysis.conversionStrength,
+          description: "Reader-centric language and benefit-driven vocabulary.",
+          tips: analysis.convTips,
+        },
+      ],
     },
     {
-      name: "Engagement Likelihood",
-      score: analysis.engagementLikelihood,
-      description: "Hook strength, questions, and conversational elements.",
-      tips: analysis.engageTips,
-    },
-    {
-      name: "Conversion Strength",
-      score: analysis.conversionStrength,
-      description: "Reader-centric language and benefit-oriented vocabulary.",
-      tips: analysis.convTips,
-    },
-    {
-      name: "CTA Clear Placement",
-      score: analysis.ctaStrength,
-      description: "Compelling call-to-actions, action-verbs, and layout density.",
-      tips: analysis.ctaTips,
-    },
-    {
-      name: "Structure Quality",
-      score: analysis.structureQuality,
-      description: "Use of diverse heading hierarchies and markdown formatting elements.",
-      tips: analysis.structTips,
-    },
-    {
-      name: "Distribution Readiness",
-      score: analysis.distributionReadiness,
-      description: "Checking if meta assets (tags, image, excerpt) are complete.",
-      tips: analysis.distTips,
+      groupLabel: "Publish Readiness",
+      groupIcon: "🚀",
+      metrics: [
+        {
+          name: "Call to Action",
+          score: analysis.ctaStrength,
+          description: "Whether there's a clear, compelling next step for the reader.",
+          tips: analysis.ctaTips,
+        },
+        {
+          name: "Publish Ready",
+          score: analysis.distributionReadiness,
+          description: "Whether meta assets (image, excerpt, tags) are complete.",
+          tips: analysis.distTips,
+        },
+      ],
     },
   ];
+
+  // Flatten for backward compatibility
+  const metrics: MetricDetails[] = metricGroups.flatMap((g) => g.metrics);
 
   return (
     <div className="space-y-4">
@@ -501,90 +522,77 @@ export default function ContentHealthPanel({
         </div>
       </div>
 
-      {/* ── Metric Details List ── */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3.5">
-        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-          Score Breakdown
-        </p>
+      {/* ── Metric Groups ── */}
+      <div className="space-y-3.5">
+        {metricGroups.map((group) => (
+          <div key={group.groupLabel} className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="text-sm">{group.groupIcon}</span>
+              <p className="text-[10px] font-bold font-jetbrains-mono text-gray-500 uppercase tracking-widest">
+                {group.groupLabel}
+              </p>
+            </div>
 
-        <div className="space-y-3">
-          {metrics.map((m) => {
-            const isExpanded = expandedMetric === m.name;
-            const weight = goalConfig?.healthWeights[
-              m.name === "SEO Optimization" ? "seoScore" :
-              m.name === "Readability & Scannability" ? "readability" :
-              m.name === "Engagement Likelihood" ? "engagementLikelihood" :
-              m.name === "Conversion Strength" ? "conversionStrength" :
-              m.name === "CTA Clear Placement" ? "ctaStrength" :
-              m.name === "Structure Quality" ? "structureQuality" :
-              "distributionReadiness"
-            ] || 0.5;
-
-            return (
-              <div
-                key={m.name}
-                className="border border-black/[0.03] rounded-xl p-2.5 hover:bg-black/[0.01] transition-all cursor-pointer"
-                onClick={() => setExpandedMetric(isExpanded ? null : m.name)}
-              >
-                <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-semibold font-geist text-gray-800">
-                      {m.name}
-                    </span>
-                    <span
-                      className="text-[9px] px-1.5 py-0.5 rounded-full bg-black/5 font-jetbrains-mono text-gray-400 font-medium"
-                      title="Importance weight for your active goal"
-                    >
-                      w:{weight}
-                    </span>
-                  </div>
-                  <span
-                    className="text-xs font-bold font-geist"
-                    style={{ color: getScoreColor(m.score) }}
-                  >
-                    {m.score}/100
-                  </span>
-                </div>
-
-                {/* Progress bar */}
-                <div className="w-full h-1.5 bg-black/[0.04] rounded-full overflow-hidden">
+            <div className="space-y-2.5">
+              {group.metrics.map((m) => {
+                const isExpanded = expandedMetric === m.name;
+                return (
                   <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${m.score}%`,
-                      backgroundColor: getScoreColor(m.score),
-                    }}
-                  />
-                </div>
+                    key={m.name}
+                    className="border border-black/[0.03] rounded-xl p-2.5 hover:bg-black/[0.01] transition-all cursor-pointer"
+                    onClick={() => setExpandedMetric(isExpanded ? null : m.name)}
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs font-semibold font-geist text-gray-800">
+                        {m.name}
+                      </span>
+                      <span
+                        className="text-xs font-bold font-geist"
+                        style={{ color: getScoreColor(m.score) }}
+                      >
+                        {m.score}/100
+                      </span>
+                    </div>
 
-                {/* Expanded Details & Tips */}
-                {isExpanded && (
-                  <div className="mt-3 space-y-2 border-t border-black/5 pt-2 text-xs font-geist animate-in slide-in-from-top-1 duration-150">
-                    <p className="text-gray-500 italic leading-snug">{m.description}</p>
-                    {m.tips.length > 0 ? (
-                      <div className="space-y-1.5 mt-2">
-                        <p className="font-bold text-gray-700 text-[10px] uppercase tracking-wider">
-                          Recommendations to Improve:
-                        </p>
-                        <ul className="space-y-1.5 pl-3 list-disc text-gray-600">
-                          {m.tips.map((t, idx) => (
-                            <li key={idx} className="leading-snug">
-                              {t}
-                            </li>
-                          ))}
-                        </ul>
+                    {/* Progress bar */}
+                    <div className="w-full h-1.5 bg-black/[0.04] rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{
+                          width: `${m.score}%`,
+                          backgroundColor: getScoreColor(m.score),
+                        }}
+                      />
+                    </div>
+
+                    {/* Expanded Tips */}
+                    {isExpanded && (
+                      <div className="mt-3 space-y-2 border-t border-black/5 pt-2 text-xs font-geist animate-in slide-in-from-top-1 duration-150">
+                        <p className="text-gray-500 italic leading-snug">{m.description}</p>
+                        {m.tips.length > 0 ? (
+                          <div className="space-y-1.5 mt-2">
+                            <p className="font-bold text-gray-700 text-[10px] uppercase tracking-wider">
+                              How to improve:
+                            </p>
+                            <ul className="space-y-1.5 pl-3 list-disc text-gray-600">
+                              {m.tips.map((t, idx) => (
+                                <li key={idx} className="leading-snug">{t}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : (
+                          <p className="text-green-600 font-semibold flex items-center gap-1 mt-1 text-[10px]">
+                            <CosIcon name="sparkles" size={12} className="text-green-600" /> Looks great!
+                          </p>
+                        )}
                       </div>
-                    ) : (
-                      <p className="text-green-600 font-semibold flex items-center gap-1 mt-1 text-[10px] uppercase tracking-wider">
-                        <CosIcon name="sparkles" size={12} className="text-green-600" /> Perfect! No recommendations. Keep it up!
-                      </p>
                     )}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* ── Word Count Guide ── */}
