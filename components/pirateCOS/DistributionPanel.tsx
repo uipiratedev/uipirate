@@ -666,7 +666,7 @@ export default function DistributionPanel({
                 <div className="flex items-center gap-2 flex-shrink-0">
                   {["excerpt", "tags", "focusKeyword", "metaTitle", "metaDescription"].includes(check.id) && (
                     <button
-                      className="text-[10px] font-bold text-[#FF5B04] hover:text-orange-700 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-md flex items-center gap-1 transition-all disabled:opacity-50 cursor-pointer"
+                      className="h-7 px-2.5 bg-orange-50 hover:bg-orange-100/70 border border-orange-200/50 text-[#FF5B04] rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
                       type="button"
                       disabled={autofixing[check.id]}
                       onClick={() => handleAutofix(check.id)}
@@ -688,7 +688,7 @@ export default function DistributionPanel({
                   )}
                   {check.action && (
                     <button
-                      className="text-[10px] font-semibold text-gray-500 hover:text-gray-900 hover:underline"
+                      className="h-7 px-2.5 bg-gray-50 hover:bg-gray-100 text-gray-600 border border-black/5 rounded-lg text-[10px] font-bold flex items-center justify-center transition-all cursor-pointer shadow-sm"
                       type="button"
                       onClick={() => handlePreflightAction(check.action)}
                     >
@@ -962,95 +962,55 @@ export default function DistributionPanel({
             {distributionRecords.map((rec) => (
               <div
                 key={rec.platform}
-                className="flex items-center justify-between text-xs py-1 border-b border-black/[0.03] last:border-0 last:pb-0"
+                className="flex items-center justify-between text-xs py-2 border-b border-black/[0.03] last:border-0 last:pb-0"
               >
                 <span className="font-semibold text-gray-800 uppercase text-[10px] font-jetbrains-mono">
                   {rec.platform}
                 </span>
 
-                <div className="flex items-center gap-2 min-w-0 max-w-[65%]">
+                <div className="flex items-center gap-1.5 min-w-0 max-w-[70%]">
                   {rec.status === "success" ? (
                     <>
                       <a
-                        className="text-[#FF5B04] hover:underline truncate inline-block text-[11px]"
+                        className="h-7 px-2 bg-orange-50 hover:bg-orange-100/80 text-[#FF5B04] rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all border border-orange-100/50 whitespace-nowrap shadow-sm"
                         href={rec.url || "#"}
                         rel="noopener noreferrer"
                         target="_blank"
                       >
-                        View External Link ↗
+                        View ↗
                       </a>
                       <button
-                        className="text-[10px] text-gray-400 hover:text-gray-600 transition-colors flex items-center justify-center p-0.5"
+                        className="h-7 px-2 bg-gray-50 hover:bg-gray-100 text-gray-600 border border-black/5 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer disabled:opacity-50 shadow-sm"
                         disabled={verifyingPlatform !== null}
                         title="Verify / Sync external link status"
                         type="button"
                         onClick={() => handleVerify(rec.platform)}
                       >
-                        {verifyingPlatform === rec.platform ? (
-                          <svg
-                            className="animate-spin h-3 w-3 text-[#FF5B04]"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            />
-                            <path
-                              className="opacity-75"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                        ) : (
-                          <svg
-                            className="w-3.5 h-3.5 text-gray-400 hover:text-gray-600 transition-colors"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        )}
+                        <CosIcon
+                          name="refresh"
+                          size={10}
+                          className={verifyingPlatform === rec.platform ? "animate-spin text-[#FF5B04]" : "text-gray-500"}
+                        />
+                        Sync
                       </button>
                     </>
                   ) : (
                     <span
-                      className="text-red-500 font-medium text-[10px] truncate flex items-center gap-1"
+                      className="inline-flex text-[10px] font-semibold font-jetbrains-mono px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-100/50"
                       title={rec.errorMessage || "Distribution failed"}
                     >
-                      <CosIcon name="cross" size={10} className="text-red-500 shrink-0" /> Failed
+                      <CosIcon name="cross" size={9} className="text-red-500 shrink-0 mt-0.5 mr-1" /> Failed
                     </span>
                   )}
                   <button
-                    className="text-[10px] text-gray-400 hover:text-[#FF5B04] transition-colors flex items-center justify-center p-0.5"
+                    className="h-7 px-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/40 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer disabled:opacity-50 shadow-sm"
                     disabled={verifyingPlatform !== null}
                     title="Reset distribution status to Re-Publish"
                     type="button"
                     onClick={() => handleReset(rec.platform)}
                   >
-                    <svg
-                      className="w-3.5 h-3.5 text-gray-400 hover:text-[#FF5B04] transition-colors"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.656 48.656 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    <CosIcon name="cross" size={10} className="text-red-500" />
+                    Reset
                   </button>
                 </div>
               </div>

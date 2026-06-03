@@ -29,6 +29,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
+import WorkspaceTutorialCarousel from "@/components/pirateCOS/WorkspaceTutorialCarousel";
 import { SelectionHighlight } from "@/components/pirateCOS/SelectionHighlight";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
@@ -5801,6 +5802,7 @@ const BlogEditPage = () => {
   const [showUnpublishModal, setShowUnpublishModal] = useState(false);
   const [showSEOModal, setShowSEOModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [seoData, setSeoData] = useState<PostSEO>({});
   const [currentSlug, setCurrentSlug] = useState("");
@@ -7700,6 +7702,14 @@ const BlogEditPage = () => {
                 );
               })()}
             </span>
+            <button
+              type="button"
+              onClick={() => setIsHelpModalOpen(true)}
+              className="w-6 h-6 rounded-full flex items-center justify-center border border-black/5 bg-white text-gray-500 hover:text-[#FF5B04] hover:bg-orange-50 hover:border-orange-200 shadow-sm transition-all hover:scale-105 active:scale-95 cursor-pointer font-bold text-xs"
+              title="Workspace Tutorial"
+            >
+              ?
+            </button>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -8187,6 +8197,54 @@ const BlogEditPage = () => {
           }}
           onStay={() => setShowUnsavedModal(false)}
         />
+      )}
+
+      {/* Help Tutorial Modal */}
+      {isHelpModalOpen && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-all duration-300"
+          onClick={() => setIsHelpModalOpen(false)}
+        >
+          <div
+            className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-black/5 p-6 w-full max-w-2xl animate-in fade-in zoom-in duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-md bg-orange-100 text-[#FF5B04] text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider">
+                  Quick Guide
+                </span>
+                <h3 className="text-base font-bold font-geist text-gray-800">
+                  Workspace Tutorial
+                </h3>
+              </div>
+              <button
+                className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-black/5 transition-all cursor-pointer"
+                onClick={() => setIsHelpModalOpen(false)}
+              >
+                <svg
+                  fill="none"
+                  height="16"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="16"
+                >
+                  <line x1="18" x2="6" y1="6" y2="18" />
+                  <line x1="6" x2="18" y1="6" y2="18" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Tutorial Carousel */}
+            <div className="bg-white/50 p-1.5 rounded-3xl border border-black/[0.02]">
+              <WorkspaceTutorialCarousel />
+            </div>
+          </div>
+        </div>
       )}
 
 
