@@ -325,13 +325,13 @@ const AdminSidebar = () => {
   return (
     <>
       {/* ── Desktop sidebar (always visible ≥ lg) ── */}
-      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-60 z-40">
+      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-60 z-[60]">
         <SidebarContent />
       </aside>
 
       {/* ── Mobile top bar ── */}
       <div
-        className="lg:hidden fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 h-14"
+        className="lg:hidden fixed top-0 left-0 right-0 z-[60] flex items-center justify-between px-4 h-14"
         style={{
           background: "#151514",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
@@ -364,7 +364,7 @@ const AdminSidebar = () => {
       {/* ── Mobile drawer overlay ── */}
       {mobileOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-50 flex"
+          className="lg:hidden fixed inset-0 z-[70] flex"
           onClick={() => setMobileOpen(false)}
         >
           {/* Backdrop */}
