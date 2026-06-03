@@ -4,13 +4,13 @@
 
 This tracker acts as a living document to audit the codebase, document completed milestones, resolve structural roadmap discrepancies, and chart the course for upcoming phases.
 
-> **Last codebase audit:** June 3, 2026. Current audit evidence includes `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*`, `lib/pirateCOS/*`, and `components/pirateCOS/*`.
+> **Last codebase audit:** June 4, 2026. Full deep audit of `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*` (all 8 schemas), `lib/pirateCOS/*` (all adapters, transforms, registry), `components/pirateCOS/*` (all 12 top-level + 4 workspace sub-components), `hooks/*` (all 9 hooks), and all distribution/auth/billing API routes.
 
 ---
 
 ## 📊 High-Level Roadmap Status
 
-Based on the current codebase audit, **Phases 1-4C are Complete & Verified**. Phase 5 has foundation pieces in place, but the full analytics product is still planned.
+Based on the current codebase audit, **Phases 1–4E are Complete & Verified**. Phase 5 has foundation pieces in place, but the full analytics product is still planned.
 
 ### Phase-by-Phase Progress
 | Phase | Feature Suite | Status | Core Focus |
@@ -190,6 +190,14 @@ During the active development of **Phase 2 (Monetization & Growth Engine)**, we 
     *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
     *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
 
+#### 12. Decoupled Rewrite Action & Dynamic AI Suggestion Cards
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented as part of Phase 4E)
+*   **Purpose**: Extended the AI Workspace hook with two non-spec capabilities: (1) a `runRewriteAction` path that applies quick actions without polluting the chat thread — the output renders in a side panel with Apply/Dismiss controls; (2) `loadDynamicSuggestions` that calls the workspace API's `suggest-ideas` action to generate 4 fully contextualized, AI-authored prompt cards (with labels, prompts, and icon names) based on the post type, content goal, title, and user-provided brief+keywords.
+*   **Key Source Files**:
+    *   [MODIFY] [useAIWorkspaceSession.ts](file:///d:/ui-pirate/uipirate/hooks/useAIWorkspaceSession.ts)
+    *   [MODIFY] [AIWorkspacePanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIWorkspacePanel.tsx)
+    *   [MODIFY] [route.ts](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/ai/workspace/route.ts)
+
 ---
 
 ## 🔍 Codebase Audit: Phase 3 Core Accomplishments & Files
@@ -315,6 +323,28 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [x] **Selection-Aware Quick Actions**: Develop context-traveling action panel (Shorten, Expand, SEO optimize, etc.).
 - [x] **Conversational Chat Thread**: Develop interaction thread with inline Apply, Replace, Insert, and Variant triggers.
 - [x] **Generation History Logs**: Persist session execution history in the panel with preview and re-apply options.
+
+> **📋 Phase 4E Deep Audit Notes (June 4, 2026):**
+>
+> **Session Persistence Architecture (Key Deviation from Spec):** The workspace API (`POST /api/pirateCOS/ai/workspace`) is intentionally **stateless** — it does NOT auto-save sessions server-side. Session persistence is entirely managed client-side by [`hooks/useAIWorkspaceSession.ts`](file:///d:/ui-pirate/uipirate/hooks/useAIWorkspaceSession.ts), which calls `PUT /api/pirateCOS/posts/${postId}` to write the `aiWorkspaceSession` JSON blob back to the Post document after each interaction. The last 20 messages are trimmed automatically per save call. This is a deliberate performance design choice.
+>
+> **Extra Out-of-Spec Hook Capabilities Verified in `useAIWorkspaceSession`:**
+> - `triggerVariant(generationId)` — Re-requests a new variation of an existing generation from the same prompt context.
+> - `runRewriteAction(action, selectedText)` — A **decoupled rewrite** path that does NOT add entries to the chat thread but does persist to generation history.
+> - `loadDynamicSuggestions(brief, keywords)` — Fetches 4 AI-generated custom action suggestion cards tailored to the post type, goal, brief, and keywords.
+> - **Typewriter streaming animation** — `startTypewriterStream()` breaks AI HTML output into token groups and replays them at a 12ms interval, targeting completion in ~70 ticks regardless of output length.
+> - `saveUIPreference()` — Persists `panelWidth`, `showHistory`, and `quickActionsOrder` to `WorkflowMemory.uiPreferences` via `/api/pirateCOS/ai-config/preferences`.
+> - `clearSession()` — Empties messages + generations in state and flushes an empty `aiWorkspaceSession` object to the DB.
+>
+> **Legacy `blog*` Naming — Known Intentional Deviations:**
+> - [`components/pirateCOS/DistributionPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx): Component props interface still uses `blogId`, `blogContent`, `blogTitle`, `blogTags`, `blogExcerpt`, `blogSeo`, `blogPublished`, `blogRepurposedOutputs`. These are **component-level prop names** that were intentionally not renamed in Phase 3 to avoid churn at all call-sites (`create/page.tsx`, `edit/[id]/page.tsx`). The API calls inside correctly use `postId` and `/api/pirateCOS/posts/...`.
+> - [`hooks/useSaveBlog.ts`](file:///d:/ui-pirate/uipirate/hooks/useSaveBlog.ts): The hook export is `useSaveBlog`, returns `blogId`, and uses `initialBlogId` as a prop. The error message reads `"Failed to save blog post"`. This is intentional technical debt — the hook is stable and renaming would ripple across both editor pages. The actual API routes (`/api/pirateCOS/posts`) are all correctly named.
+> - **API route internal variables** (`/api/pirateCOS/posts/route.ts`, `/api/pirateCOS/posts/[id]/route.ts`, `/api/pirateCOS/v1/content/route.ts`): Use `const blog = await Post.findOne(...)` as internal local variable names. This is cosmetic only — routes, model names, and response shapes are all correct.
+> - **Tutorial display strings**: [`WorkspaceTutorialCarousel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/WorkspaceTutorialCarousel.tsx) shows `"Blog Post"` and `uipirate.com/blogs/react-performance` as mock UI examples in tutorial slides. These are intentional display strings in visual demonstrations.
+>
+> **All 5 AI Engines Verified in Workspace Route:** OpenAI (GPT-4o family, GPT-5.x), Google Gemini (1.5 Flash/Pro, 2.0 Flash), Anthropic Claude (3.5 Sonnet/Haiku, 3 Opus), Mistral AI (Large, Small, Nemo, Codestral), Puter AI (free, no key required) — all resolve correctly through `resolveAIEngine()` fallback chain.
+>
+> **Credit Cost Map for Workspace Actions:** `"enhance"` (quick actions) = 0.5 credits; `"seo"` (chat) = 1.0 credit; `"suggest"` (dynamic suggestions) = 0.1 credits. BYOK users on Pro+ bypass all credit checks.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
 - [x] **Analytics data model foundation**: `models/pirateCOS/AnalyticsSnapshot.ts` exists with tenant, post, platform, date, and metric counters for views, clicks, shares, claps, likes, impressions, and comments.

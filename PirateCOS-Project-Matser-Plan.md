@@ -26,7 +26,7 @@
 > This document is grounded entirely in the current codebase structure.
 >
 
-> **Last codebase audit:** June 3, 2026. Current audit evidence includes `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*`, `lib/pirateCOS/*`, and `components/pirateCOS/*`.
+> **Last codebase audit:** June 4, 2026. Full deep audit of all 9 hooks, 12 pirateCOS components (+ 4 workspace sub-components), all 8 Mongoose schemas, lib distribution adapters, transforms, and all API routes under `app/api/pirateCOS/*`.
 
 | Phase | Title | Status |
 |---|---|---|
@@ -150,6 +150,10 @@
  | Context-aware Quick Actions (Improve, Shorten, Expand, CTA, etc.) | ✅ Complete & Verified |
  | Chat interface with Apply Actions (Replace selection, Insert below, snippets) | ✅ Complete & Verified |
  | Per-document persistent Generation History log with re-apply | ✅ Complete & Verified |
+ | **Session persistence model**: Stateless server API; sessions persisted client-side by `useAIWorkspaceSession.ts` via `PUT /posts/:id` after each exchange (last 20 messages trimmed per save) | ✅ Complete & Verified |
+ | **Extra hook capabilities (out-of-spec)**: `triggerVariant`, `runRewriteAction` (decoupled rewrite without chat thread pollution), `loadDynamicSuggestions` (4 AI-authored custom prompt cards), `startTypewriterStream` (12ms interval HTML streaming), `clearSession`, `saveUIPreference` (persists to `WorkflowMemory.uiPreferences`) | ✅ Complete & Verified |
+ | **5-engine full coverage**: OpenAI (GPT-4o, GPT-5.x), Gemini (1.5/2.0), Claude (3.5 Sonnet/Haiku, 3 Opus), Mistral (Large/Small/Nemo/Codestral), Puter (free fallback) | ✅ Complete & Verified |
+ | **Credit routing**: Quick actions = 0.5 credits (`enhance`); Chat = 1.0 credit (`seo`); Suggestions = 0.1 credits (`suggest`); BYOK Pro+ users bypass all credit checks | ✅ Complete & Verified |
  
  ---
 
