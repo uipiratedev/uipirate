@@ -245,7 +245,7 @@ export default function BrandBrainPage() {
   // ---------------- WIZARD STATE (Onboarding) ----------------
   if (!brandBrain) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-8 font-geist text-gray-700">
+      <div className="w-full px-8 py-8 font-geist text-gray-700">
         {/* Banner Header */}
         <div className="text-center mb-8">
           <div
@@ -641,7 +641,7 @@ export default function BrandBrainPage() {
   const completeness = calculateCompleteness();
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 font-geist text-gray-700 space-y-6">
+    <div className="w-full px-8 py-6 font-geist text-gray-700 space-y-6">
       {/* Visual Workspace Banner */}
       <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-start gap-4">

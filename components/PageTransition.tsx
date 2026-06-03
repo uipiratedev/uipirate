@@ -95,8 +95,24 @@ const PageTransition = memo(function PageTransition() {
       )
         return;
 
-      // Skip if it's an admin route
-      if (href.startsWith("/admin")) return;
+      // Skip if it's an admin/dashboard route
+      const isCosSubdomain =
+        typeof window !== "undefined" &&
+        (window.location.hostname.startsWith("cos.") ||
+          window.location.hostname === "cos.uipirate.com");
+
+      if (
+        href.startsWith("/pirateCOS") ||
+        href.startsWith("/admin") ||
+        (isCosSubdomain &&
+          (href.startsWith("/dashboard") ||
+            href.startsWith("/posts") ||
+            href.startsWith("/ai-settings") ||
+            href.startsWith("/brand-brain") ||
+            href.startsWith("/settings") ||
+            href === "/"))
+      )
+        return;
 
       // Skip if modifier keys are pressed
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;

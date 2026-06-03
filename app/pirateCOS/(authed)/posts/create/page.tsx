@@ -6295,17 +6295,13 @@ const BlogEditor = () => {
     }
   }, [postType, sidebarTab]);
 
-  // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
-  useEffect(() => {
-    if (!isDataInitialized) return;
-    setIsDirty(true);
-  }, [title, excerpt, tags, featuredImage, bannerImage, isDataInitialized]);
+
 
   // ── Navigation guards ───────────────────────────────────────────────────────
   // 1. Tab / window close — uses ref so the handler never needs to be replaced
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
-      if (!isDirtyRef.current) return;
+      if (!isDirtyRef.current || !typeSelected) return;
       e.preventDefault();
       e.returnValue =
         "You have unsaved changes. Are you sure you want to leave?";
@@ -6316,13 +6312,13 @@ const BlogEditor = () => {
     window.addEventListener("beforeunload", handler);
 
     return () => window.removeEventListener("beforeunload", handler);
-  }, []);
+  }, [typeSelected]);
 
   // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
   //    Next.js router handles the event, covering all client-side link navigation.
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
-      if (!isDirtyRef.current) return;
+      if (!isDirtyRef.current || !typeSelected) return;
 
       const anchor = (e.target as HTMLElement).closest("a");
 
@@ -6364,10 +6360,12 @@ const BlogEditor = () => {
     document.addEventListener("click", handleLinkClick, true);
 
     return () => document.removeEventListener("click", handleLinkClick, true);
-  }, []);
+  }, [typeSelected]);
 
   // 3. Browser back / forward button interception via a history sentinel entry
   useEffect(() => {
+    if (!typeSelected) return;
+
     // Initial sentinel
     if (window.history.state?.blogGuard !== true) {
       window.history.pushState({ blogGuard: true }, "");
@@ -6386,7 +6384,7 @@ const BlogEditor = () => {
     window.addEventListener("popstate", handlePopState);
 
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [typeSelected]);
 
   const editor = useEditor({
     autofocus: "end",
@@ -6521,10 +6519,28 @@ const BlogEditor = () => {
     },
     onUpdate: () => {
       // Mark form dirty whenever editor content changes
-      if (isDataInitialized) setIsDirty(true);
+      if (isDataInitialized && typeSelected) setIsDirty(true);
     },
     immediatelyRender: false,
   });
+
+  // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
+  useEffect(() => {
+    if (!isDataInitialized || !typeSelected) return;
+    
+    // Check if the user has actually entered any content
+    const hasContent =
+      title.trim() !== "" ||
+      excerpt.trim() !== "" ||
+      tags.length > 0 ||
+      featuredImage !== "" ||
+      bannerImage !== "" ||
+      (editor && !editor.isEmpty);
+
+    if (hasContent) {
+      setIsDirty(true);
+    }
+  }, [title, excerpt, tags, featuredImage, bannerImage, isDataInitialized, typeSelected, editor]);
 
   const appendHashtag = useCallback((tag: string) => {
     const normalized = tag.startsWith("#") ? tag : `#${tag}`;
@@ -6799,38 +6815,11 @@ const BlogEditor = () => {
     };
 
     return (
-      <div
-        className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto"
-        onClick={() => router.push(getHref("/posts"))}
-      >
-        <div
-          className="bg-white rounded-[32px] shadow-2xl w-[1080px] max-w-full p-8 relative my-8 animate-in zoom-in-95 duration-200"
-          style={{ border: "1px solid rgba(0,0,0,0.06)" }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Close button */}
-          <button
-            className="absolute top-6 right-6 w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:bg-black/5 hover:text-gray-700 transition-all cursor-pointer"
-            onClick={() => router.push(getHref("/posts"))}
-          >
-            <svg
-              fill="none"
-              height="20"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              width="20"
-            >
-              <line x1="18" x2="6" y1="6" y2="18" />
-              <line x1="6" x2="18" y1="6" y2="18" />
-            </svg>
-          </button>
-
-          {/* Step Indicator Header */}
-          <div className="mb-6 border-b border-black/5 pb-4">
-            <div className="flex items-center gap-1 mb-2">
+      <div className="w-full min-h-screen pb-28 animate-in fade-in duration-200 bg-[#F7F7F6]">
+        {/* Step Indicator Header (Always Visible) */}
+        <div className="px-8 py-6 border-b border-black/[0.06] bg-white sticky top-0 z-20">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
               <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-[#FF5B04]">
                 Creation Wizard
               </span>
@@ -6839,9 +6828,8 @@ const BlogEditor = () => {
                 Step {wizardStep} of 3
               </span>
             </div>
-
             {/* Stepper Progress bar */}
-            <div className="w-full h-1 bg-black/[0.04] rounded-full overflow-hidden flex gap-1">
+            <div className="w-48 h-1.5 bg-black/[0.04] rounded-full overflow-hidden flex gap-1">
               <div
                 className={`h-full flex-1 transition-all duration-300 ${wizardStep >= 1 ? "bg-[#FF5B04]" : "bg-black/[0.04]"}`}
               />
@@ -6853,14 +6841,17 @@ const BlogEditor = () => {
               />
             </div>
           </div>
+        </div>
 
+        {/* Content Wrapper */}
+        <div className="px-8 py-8 w-full">
           {/* ───────────────────────────────────────────────────────────────────
               STEP 1: INTENT SELECTION
           ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 1 && (
             <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in fade-in duration-200">
               {/* Left Column: Archetype selector cards */}
-              <div className="md:col-span-7 space-y-5 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="md:col-span-8 space-y-6">
                 <div>
                   <h2 className="text-2xl font-bold font-geist text-gray-900 leading-tight">
                     What are you creating today?
@@ -6876,118 +6867,88 @@ const BlogEditor = () => {
                   <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest">
                     📚 Content & Knowledge Archetypes
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {getPostTypesByCategory("content").map((cfg) => (
                       <button
                         key={cfg.value}
-                        className={`flex items-start gap-3.5 p-3.5 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                        className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
                           postType === cfg.value
-                            ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
-                            : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                            ? "border-[#FF5B04] bg-white shadow-sm"
+                            : "border-black/5 bg-white hover:border-[#FF5B04]/40"
                         }`}
                         onClick={() => setPostType(cfg.value)}
                         onMouseEnter={() => setHoveredType(cfg.value)}
                         onMouseLeave={() => setHoveredType(null)}
                       >
-                        <div
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
-                            postType === cfg.value
-                              ? "bg-[#FF5B04]/10 text-[#FF5B04]"
-                              : "bg-black/5 text-gray-500"
-                          }`}
-                        >
-                          <CosIcon name={cfg.icon} size={18} />
-                        </div>
-                        <div className="min-w-0">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              postType === cfg.value
+                                ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                                : "bg-black/5 text-gray-500"
+                            }`}
+                          >
+                            <CosIcon name={cfg.icon} size={14} />
+                          </div>
                           <p
-                            className={`text-xs font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                            className={`text-[13px] font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
                           >
                             {cfg.label}
                           </p>
-                          <p className="text-[10px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
-                            {cfg.description}
-                          </p>
                         </div>
+                        <p className="text-[10px] text-gray-400 font-geist leading-snug line-clamp-2">
+                          {cfg.description}
+                        </p>
                       </button>
                     ))}
                   </div>
                 </div>
 
                 {/* Group 2: Product & Monetization */}
-                <div className="space-y-3 pt-1">
+                <div className="space-y-3 pt-2">
                   <p className="text-[10px] font-jetbrains-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1.5">
                     <CosIcon name="conversion" size={12} className="text-[#FF5B04]" /> Product & Monetization Archetypes
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {getPostTypesByCategory("monetization").map((cfg) => (
                       <button
                         key={cfg.value}
-                        className={`flex items-start gap-3.5 p-3.5 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                        className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
                           postType === cfg.value
-                            ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
-                            : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                            ? "border-[#FF5B04] bg-white shadow-sm"
+                            : "border-black/5 bg-white hover:border-[#FF5B04]/40"
                         }`}
                         onClick={() => setPostType(cfg.value)}
                         onMouseEnter={() => setHoveredType(cfg.value)}
                         onMouseLeave={() => setHoveredType(null)}
                       >
-                        <div
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
-                            postType === cfg.value
-                              ? "bg-[#FF5B04]/10 text-[#FF5B04]"
-                              : "bg-black/5 text-gray-500"
-                          }`}
-                        >
-                          <CosIcon name={cfg.icon} size={18} />
-                        </div>
-                        <div className="min-w-0">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              postType === cfg.value
+                                ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                                : "bg-black/5 text-gray-500"
+                            }`}
+                          >
+                            <CosIcon name={cfg.icon} size={14} />
+                          </div>
                           <p
-                            className={`text-xs font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                            className={`text-[13px] font-bold font-geist ${postType === cfg.value ? "text-[#FF5B04]" : "text-gray-800"}`}
                           >
                             {cfg.label}
                           </p>
-                          <p className="text-[10px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
-                            {cfg.description}
-                          </p>
                         </div>
+                        <p className="text-[10px] text-gray-400 font-geist leading-snug line-clamp-2">
+                          {cfg.description}
+                        </p>
                       </button>
                     ))}
                   </div>
                 </div>
-
-                {/* Left Actions */}
-                <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
-                  <button
-                    className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                    onClick={() => router.push(getHref("/posts"))}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
-                    style={{ background: "#FF5B04" }}
-                    onClick={() => setWizardStep(2)}
-                  >
-                    Continue to Goal
-                    <svg
-                      fill="none"
-                      height="12"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2.5"
-                      viewBox="0 0 24 24"
-                      width="12"
-                    >
-                      <line x1="5" x2="19" y1="12" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </button>
-                </div>
               </div>
 
               {/* Right Column: Dynamic Strategist Board */}
-              <div className="md:col-span-5 h-full bg-gradient-to-br from-orange-50/30 to-purple-50/20 border border-orange-100 p-6 rounded-3xl sticky top-6 space-y-4 shadow-sm animate-in slide-in-from-right-2">
+              <div className="md:col-span-4 h-full bg-white border border-black/5 p-6 rounded-3xl sticky top-24 space-y-4 shadow-sm animate-in slide-in-from-right-2">
                 <div className="flex items-center gap-1.5">
                   <CosIcon name="bot" size={14} className="text-[#FF5B04]" />
                   <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
@@ -7003,7 +6964,7 @@ const BlogEditor = () => {
                     {archetypeExplanation.desc}
                   </p>
                 </div>
-                <div className="space-y-2 bg-white/60 border border-black/[0.02] p-4 rounded-2xl">
+                <div className="space-y-2 bg-black/[0.01] border border-black/[0.02] p-4 rounded-2xl">
                   <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
                     🔧 Workspace Tuning
                   </span>
@@ -7025,7 +6986,7 @@ const BlogEditor = () => {
           {wizardStep === 2 && (
             <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in slide-in-from-right-4 duration-200">
               {/* Left Column: Goal Cards */}
-              <div className="md:col-span-7 space-y-5 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+              <div className="md:col-span-8 space-y-6">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] bg-orange-50 text-[#FF5B04] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider flex items-center gap-1.5">
@@ -7042,7 +7003,7 @@ const BlogEditor = () => {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {CONTENT_GOALS.filter((g) =>
                     activeTypeConfig?.suggestedGoals.includes(g.value),
                   ).map((g) => {
@@ -7053,77 +7014,47 @@ const BlogEditor = () => {
                     return (
                       <button
                         key={g.value}
-                        className={`flex items-start gap-3.5 p-3.5 rounded-2xl border-2 transition-all text-left relative cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
+                        className={`flex flex-col gap-2.5 p-4 rounded-2xl border-2 transition-all text-left relative cursor-pointer hover:scale-[1.01] hover:shadow-sm ${
                           contentGoal === g.value
-                            ? "border-[#FF5B04] bg-orange-50/50 shadow-sm"
-                            : "border-black/5 bg-black/[0.005] hover:border-[#FF5B04]/40 hover:bg-orange-50/10"
+                            ? "border-[#FF5B04] bg-white shadow-sm"
+                            : "border-black/5 bg-white hover:border-[#FF5B04]/40"
                         }`}
                         onClick={() => setContentGoal(g.value)}
                         onMouseEnter={() => setHoveredGoal(g.value)}
                         onMouseLeave={() => setHoveredGoal(null)}
                       >
                         {isSuggested && (
-                          <span className="absolute top-2.5 right-2.5 text-[8px] font-bold font-jetbrains-mono uppercase bg-green-50 text-green-600 px-2 py-0.5 rounded-full border border-green-200">
+                          <span className="absolute top-3 right-3 text-[8px] font-bold font-jetbrains-mono uppercase bg-green-50 text-green-600 px-2 py-0.5 rounded-full border border-green-200">
                             Suggested
                           </span>
                         )}
-                        <div
-                          className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${
-                            contentGoal === g.value
-                              ? "bg-[#FF5B04]/10 text-[#FF5B04]"
-                              : "bg-black/5 text-gray-500"
-                          }`}
-                        >
-                          <CosIcon name={g.icon} size={18} />
-                        </div>
-                        <div className="min-w-0 pr-6">
+                        <div className="flex items-center gap-2.5">
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              contentGoal === g.value
+                                ? "bg-[#FF5B04]/10 text-[#FF5B04]"
+                                : "bg-black/5 text-gray-500"
+                            }`}
+                          >
+                            <CosIcon name={g.icon} size={14} />
+                          </div>
                           <p
-                            className={`text-xs font-bold font-geist ${contentGoal === g.value ? "text-[#FF5B04]" : "text-gray-800"}`}
+                            className={`text-[13px] font-bold font-geist ${contentGoal === g.value ? "text-[#FF5B04]" : "text-gray-800"}`}
                           >
                             {g.label}
                           </p>
-                          <p className="text-[10px] text-gray-400 font-geist mt-0.5 leading-snug line-clamp-2">
-                            {g.description}
-                          </p>
                         </div>
+                        <p className="text-[10px] text-gray-400 font-geist leading-snug line-clamp-2">
+                          {g.description}
+                        </p>
                       </button>
                     );
                   })}
                 </div>
-
-                {/* Left Actions */}
-                <div className="flex items-center gap-3 border-t border-black/5 pt-4 mt-6">
-                  <button
-                    className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                    onClick={() => setWizardStep(1)}
-                  >
-                    ← Back to Archetype
-                  </button>
-                  <button
-                    className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
-                    style={{ background: "#FF5B04" }}
-                    onClick={() => setWizardStep(3)}
-                  >
-                    Configure Workspace
-                    <svg
-                      fill="none"
-                      height="12"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2.5"
-                      viewBox="0 0 24 24"
-                      width="12"
-                    >
-                      <line x1="5" x2="19" y1="12" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </button>
-                </div>
               </div>
 
               {/* Right Column: Dynamic Strategist Board */}
-              <div className="md:col-span-5 h-full bg-gradient-to-br from-orange-50/30 to-purple-50/20 border border-orange-100 p-6 rounded-3xl sticky top-6 space-y-4 shadow-sm animate-in slide-in-from-right-2">
+              <div className="md:col-span-4 h-full bg-white border border-black/5 p-6 rounded-3xl sticky top-24 space-y-4 shadow-sm animate-in slide-in-from-right-2">
                 <div className="flex items-center gap-1.5">
                   <span className="text-xs">🎯</span>
                   <p className="text-[10px] font-jetbrains-mono font-bold text-[#FF5B04] uppercase tracking-widest">
@@ -7139,7 +7070,7 @@ const BlogEditor = () => {
                     {goalExplanation.desc}
                   </p>
                 </div>
-                <div className="space-y-2 bg-white/60 border border-black/[0.02] p-4 rounded-2xl">
+                <div className="space-y-2 bg-black/[0.01] border border-black/[0.02] p-4 rounded-2xl">
                   <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest font-jetbrains-mono block">
                     🧠 Copilot System Focus
                   </span>
@@ -7156,7 +7087,7 @@ const BlogEditor = () => {
           )}
 
           {/* ───────────────────────────────────────────────────────────────────
-              STEP 3: WORKSPACE PREVIEW & CONFIRMATION (SIMPLIFIED & FOCUS)
+              STEP 3: WORKSPACE PREVIEW & CONFIRMATION
           ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 3 && (
             <div className="space-y-6 animate-in slide-in-from-right-4 duration-200">
@@ -7195,58 +7126,127 @@ const BlogEditor = () => {
                 "Writing is optimized, tools are focused, distractions are gone.
                 Perfect focus begins now."
               </p>
-
-              {/* Actions Footer */}
-              <div className="flex items-center justify-center gap-4 pt-4 border-t border-black/5">
-                <button
-                  className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
-                  onClick={() => setWizardStep(2)}
-                >
-                  ← Change Goal
-                </button>
-                <button
-                  className="flex items-center gap-2 text-xs font-bold font-geist text-white h-11 px-8 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FF5B04 0%, #E04E00 100%)",
-                  }}
-                  onClick={() => {
-                    setTypeSelected(true);
-                    const PRESET_DEFAULTS: Record<string, string> = {
-                      blog: "seo-article",
-                      tutorial: "technical-deep-dive",
-                      "case-study": "case-study",
-                      "community-insight": "thought-leadership",
-                      "corporate-post": "thought-leadership",
-                      "product-review": "seo-article",
-                      "product-launch": "product-launch",
-                      listicle: "seo-article",
-                      comparison: "comparison",
-                      newsletter: "thought-leadership",
-                      "social-post": "linkedin-post",
-                    };
-                    const defaultPreset = PRESET_DEFAULTS[postType] || "";
-
-                    setActivePreset(defaultPreset);
-                  }}
-                >
-                  Start Writing!
-                  <svg
-                    fill="none"
-                    height="14"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="14"
-                  >
-                    <line x1="5" x2="19" y1="12" y2="12" />
-                    <polyline points="12 5 19 12 12 19" />
-                  </svg>
-                </button>
-              </div>
             </div>
+          )}
+        </div>
+
+        {/* Viewport-locked Bottom Actions Footer (Always Visible) */}
+        <div className="fixed bottom-0 left-60 right-0 bg-white/90 backdrop-blur-md border-t border-black/5 px-8 py-4 flex items-center justify-between z-30 shadow-[0_-4px_24px_-4px_rgba(0,0,0,0.04)]">
+          {wizardStep === 1 && (
+            <>
+              <button
+                className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                onClick={() => router.push(getHref("/posts"))}
+              >
+                Cancel
+              </button>
+              <button
+                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                style={{ background: "#FF5B04" }}
+                onClick={() => setWizardStep(2)}
+              >
+                Continue to Goal
+                <svg
+                  fill="none"
+                  height="12"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="12"
+                  className="inline"
+                >
+                  <line x1="5" x2="19" y1="12" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {wizardStep === 2 && (
+            <>
+              <button
+                className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                onClick={() => setWizardStep(1)}
+              >
+                ← Back to Archetype
+              </button>
+              <button
+                className="ml-auto flex items-center gap-1.5 text-xs font-semibold font-geist text-white h-10 px-5 rounded-xl transition-all shadow-sm cursor-pointer hover:shadow hover:scale-[1.02]"
+                style={{ background: "#FF5B04" }}
+                onClick={() => setWizardStep(3)}
+              >
+                Configure Workspace
+                <svg
+                  fill="none"
+                  height="12"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="12"
+                  className="inline"
+                >
+                  <line x1="5" x2="19" y1="12" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          {wizardStep === 3 && (
+            <>
+              <button
+                className="text-xs font-bold font-geist text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+                onClick={() => setWizardStep(2)}
+              >
+                ← Change Goal
+              </button>
+              <button
+                className="ml-auto flex items-center gap-2 text-xs font-bold font-geist text-white h-11 px-8 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #FF5B04 0%, #E04E00 100%)",
+                }}
+                onClick={() => {
+                  setTypeSelected(true);
+                  const PRESET_DEFAULTS: Record<string, string> = {
+                    blog: "seo-article",
+                    tutorial: "technical-deep-dive",
+                    "case-study": "case-study",
+                    "community-insight": "thought-leadership",
+                    "corporate-post": "thought-leadership",
+                    "product-review": "seo-article",
+                    "product-launch": "product-launch",
+                    listicle: "seo-article",
+                    comparison: "comparison",
+                    newsletter: "thought-leadership",
+                    "social-post": "linkedin-post",
+                  };
+                  const defaultPreset = PRESET_DEFAULTS[postType] || "";
+
+                  setActivePreset(defaultPreset);
+                }}
+              >
+                Start Writing!
+                <svg
+                  fill="none"
+                  height="14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 24"
+                  width="14"
+                  className="inline"
+                >
+                  <line x1="5" x2="19" y1="12" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </>
           )}
         </div>
       </div>
