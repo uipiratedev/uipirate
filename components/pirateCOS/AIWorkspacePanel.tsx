@@ -186,7 +186,7 @@ export default function AIWorkspacePanel({
       <div
         ref={panelRef}
         style={{ width: activeTab === null ? "56px" : `${width + 56}px` }}
-        className="flex-shrink-0 flex items-stretch transition-all duration-300 relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl"
+        className="flex-shrink-0 flex items-stretch transition-all duration-300 relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl h-full"
       >
         {/* Resize Handle */}
         {activeTab !== null && (

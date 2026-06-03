@@ -8485,72 +8485,6 @@ const BlogEditor = () => {
           )}
         </div>
       )}
-
-      {/* Quick insert card */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-          Quick Insert
-        </p>
-        <div className="space-y-1">
-          <label className="flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors">
-            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
-              <rect height="18" rx="2" width="18" x="3" y="3" />
-              <circle cx="8.5" cy="8.5" r="1.5" />
-              <polyline points="21 15 16 10 5 21" />
-            </svg>
-            Upload image
-            <input
-              accept="image/*"
-              className="hidden"
-              type="file"
-              onChange={handleInlineImageUpload}
-            />
-          </label>
-          <button
-            className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-            onClick={() => setShowImageUrlModal(true)}
-          >
-            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-            </svg>
-            Image from URL
-          </button>
-          <button
-            className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-            onClick={() => setShowVideoModal(true)}
-          >
-            <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
-              <polygon points="23 7 16 12 23 17 23 7" />
-              <rect height="14" rx="2" ry="2" width="15" x="1" y="5" />
-            </svg>
-            Embed video
-          </button>
-          {postType !== "social-post" && (
-            <>
-              <button
-                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                onClick={() => editor.chain().focus().setHorizontalRule().run()}
-              >
-                <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
-                  <line x1="3" x2="21" y1="12" y2="12" />
-                </svg>
-                Add divider
-              </button>
-              <button
-                className="w-full flex items-center gap-2 text-sm font-geist text-gray-600 cursor-pointer hover:text-[#FF5B04] hover:bg-orange-50 rounded-xl px-3 py-2.5 transition-colors text-left"
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-              >
-                <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" viewBox="0 0 24 24" width="14">
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                </svg>
-                Code block
-              </button>
-            </>
-          )}
-        </div>
-      </div>
     </>
   );
 
@@ -9045,7 +8979,7 @@ const BlogEditor = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#F7F7F6" }}>
+    <div className="h-screen flex flex-col overflow-hidden" style={{ background: "#F7F7F6" }}>
       {/* ── Top Bar ── */}
       <div
         className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 px-3 lg:px-6 py-2.5 lg:py-3"
@@ -9194,7 +9128,7 @@ const BlogEditor = () => {
       )}
 
       {/* ── Two-column Layout ── */}
-      <div className="flex flex-col lg:flex-row gap-6 px-4 lg:px-6 pb-6 pt-2 items-stretch lg:items-start">
+      <div className="flex flex-col lg:flex-row gap-3 px-4 lg:px-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -9207,8 +9141,9 @@ const BlogEditor = () => {
             onEdit={() => setShowPreview(false)}
           />
         ) : (
-          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden flex flex-row items-stretch">
-            <div className="flex-1 min-w-0">
+          <>
+            <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-y-auto">
+              <div className="flex-1 min-w-0">
             {/* Banner image area */}
             {bannerImage ? (
               <div className="relative group">
@@ -9398,6 +9333,7 @@ const BlogEditor = () => {
               />
             </div>
           </div>
+          </div>
           <AIWorkspacePanel
             postId={savedBlogId || null}
             postType={postType}
@@ -9416,7 +9352,7 @@ const BlogEditor = () => {
             seoFocusKeyword={seoData?.focusKeyword || ""}
             onSetFocusKeyword={(kw) => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }}
           />
-        </div>
+        </>
       )}
 
 
