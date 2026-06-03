@@ -48,12 +48,6 @@ const PANEL_DESCRIPTIONS: Record<string, string> = {
   distribute: "Publish to connected platforms and create spin-offs",
 };
 
-const POST_IDEA_PROMPTS = [
-  { icon: "🛠", label: "Write a how-to guide", prompt: "Help me write a detailed how-to guide for my audience." },
-  { icon: "📊", label: "Summarize a key insight", prompt: "Help me write a post summarizing an important insight or lesson I learned." },
-  { icon: "💡", label: "Share an opinion or take", prompt: "Help me write a thought-leadership opinion piece on a trending topic in my space." },
-  { icon: "📋", label: "Create a list article", prompt: "Help me write an engaging listicle with clear takeaways for my audience." },
-];
 
 export default function AIWorkspacePanel({
   postId,
@@ -238,6 +232,7 @@ export default function AIWorkspacePanel({
                     onTriggerAction={handleTriggerRewriteAction}
                     loading={rewriteLoading}
                     selectedText={selectedText}
+                    onSwitchToChat={() => onTabChange("ai")}
                   />
 
                   {/* Rewrite Loading State */}
@@ -254,8 +249,9 @@ export default function AIWorkspacePanel({
                   {/* Rewrite Error State */}
                   {rewriteError && (
                     <div className="p-3.5 bg-red-50/50 border border-red-100 rounded-2xl space-y-2 text-red-600">
-                      <div className="flex items-center gap-1.5 text-xs font-bold font-geist">
-                        <span>⚠️ Rewrite Failed</span>
+                      <div className="flex items-center gap-1.5 text-xs font-bold font-geist text-red-600">
+                        <CosIcon name="warning" size={12} className="text-red-500 shrink-0" />
+                        <span>Rewrite Failed</span>
                       </div>
                       <p className="text-[10px] leading-relaxed font-geist text-red-500">{rewriteError}</p>
                     </div>
@@ -447,6 +443,8 @@ export default function AIWorkspacePanel({
                       onClearDynamicSuggestions={clearDynamicSuggestions}
                       activeBrief={activeBrief}
                       activeKeywords={activeKeywords}
+                      postType={postType}
+                      contentGoal={contentGoal}
                     />
                   )}
 

@@ -986,21 +986,47 @@ export const CHAT_IDEA_SUGGESTIONS: ChatIdeaSuggestion[] = [
 ];
 
 export function getChatSuggestions(postType: string, goal: ContentGoal): ChatIdeaSuggestion[] {
-  // Filter suggestions by postType and goal
-  const filtered = CHAT_IDEA_SUGGESTIONS.filter((s) => {
+  const filtered: ChatIdeaSuggestion[] = [];
+
+  // Tier 1: Matches both postType and goal
+  CHAT_IDEA_SUGGESTIONS.forEach((s) => {
     const typeMatch = s.postTypes === "*" || s.postTypes.includes(postType);
     const goalMatch = s.goals === "*" || s.goals.includes(goal);
-    return typeMatch && goalMatch;
+    if (typeMatch && goalMatch) {
+      filtered.push(s);
+    }
   });
 
-  // If fewer than 4, fill up using suggestions matching "*" or other relevant fallbacks
+  // Tier 2: Matches postType (any goal)
   if (filtered.length < 4) {
-    for (const s of CHAT_IDEA_SUGGESTIONS) {
-      if (filtered.length >= 4) break;
+    CHAT_IDEA_SUGGESTIONS.forEach((s) => {
+      if (filtered.length >= 4) return;
+      const typeMatch = s.postTypes !== "*" && s.postTypes.includes(postType);
+      if (typeMatch && !filtered.find((item) => item.label === s.label)) {
+        filtered.push(s);
+      }
+    });
+  }
+
+  // Tier 3: Matches goal (any postType)
+  if (filtered.length < 4) {
+    CHAT_IDEA_SUGGESTIONS.forEach((s) => {
+      if (filtered.length >= 4) return;
+      const goalMatch = s.goals !== "*" && s.goals.includes(goal);
+      if (goalMatch && !filtered.find((item) => item.label === s.label)) {
+        filtered.push(s);
+      }
+    });
+  }
+
+  // Tier 4: Generic fallbacks (matching "*")
+  if (filtered.length < 4) {
+    CHAT_IDEA_SUGGESTIONS.forEach((s) => {
+      if (filtered.length >= 4) return;
       if (!filtered.find((item) => item.label === s.label)) {
         filtered.push(s);
       }
-    }
+    });
   }
 
   return filtered.slice(0, 4);

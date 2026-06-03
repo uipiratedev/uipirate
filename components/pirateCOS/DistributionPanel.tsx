@@ -646,11 +646,11 @@ export default function DistributionPanel({
             >
               <div className="flex items-center gap-2 min-w-0">
                 {check.passed ? (
-                  <span className="text-green-500 font-bold flex-shrink-0">✓</span>
+                  <CosIcon name="check" size={12} className="text-green-500 shrink-0" />
                 ) : check.severity === "error" ? (
-                  <span className="text-red-500 font-bold flex-shrink-0">✗</span>
+                  <CosIcon name="cross" size={12} className="text-red-500 shrink-0" />
                 ) : (
-                  <span className="text-amber-500 font-bold flex-shrink-0">⚠</span>
+                  <CosIcon name="warning" size={12} className="text-amber-500 shrink-0" />
                 )}
                 <span className={`truncate ${check.passed ? "text-gray-500" : "text-gray-900 font-medium"}`}>
                   {check.label}
@@ -1019,10 +1019,10 @@ export default function DistributionPanel({
                     </>
                   ) : (
                     <span
-                      className="text-red-500 font-medium text-[10px] truncate"
+                      className="text-red-500 font-medium text-[10px] truncate flex items-center gap-1"
                       title={rec.errorMessage || "Distribution failed"}
                     >
-                      ✗ Failed
+                      <CosIcon name="cross" size={10} className="text-red-500 shrink-0" /> Failed
                     </span>
                   )}
                   <button
@@ -1056,9 +1056,12 @@ export default function DistributionPanel({
       {/* SECTION: Distribute Now CTA */}
       <div className="pt-2">
         {!blogPublished && (
-          <p className="text-[10px] text-amber-500 bg-amber-50 border border-amber-100 p-2.5 rounded-xl mb-3 leading-relaxed">
-            ⚠ Please publish the blog locally (via the "Publish" button at the
-            top right) to enable multi-channel distribution.
+          <p className="text-[10px] text-amber-600 bg-amber-50 border border-amber-100 p-2.5 rounded-xl mb-3 leading-relaxed flex items-start gap-1.5 font-geist">
+            <CosIcon name="warning" size={12} className="text-amber-500 shrink-0 mt-0.5" />
+            <span>
+              Please publish the blog locally (via the "Publish" button at the
+              top right) to enable multi-channel distribution.
+            </span>
           </p>
         )}
         {distributionError && (

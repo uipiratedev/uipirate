@@ -32,6 +32,8 @@ interface ConversationThreadProps {
   onClearDynamicSuggestions: () => void;
   activeBrief: string;
   activeKeywords: string;
+  postType: string;
+  contentGoal: string;
 }
 
 export default function ConversationThread({
@@ -59,6 +61,8 @@ export default function ConversationThread({
   onClearDynamicSuggestions,
   activeBrief,
   activeKeywords,
+  postType,
+  contentGoal,
 }: ConversationThreadProps) {
   const [inputValue, setInputValue] = useState("");
   const [showBuilderForm, setShowBuilderForm] = useState(false);
@@ -170,7 +174,7 @@ export default function ConversationThread({
                     required
                     value={brief}
                     onChange={(e) => setBrief(e.target.value)}
-                    placeholder="e.g. Next.js performance optimization tips"
+                    placeholder={getBriefPlaceholder(postType, contentGoal)}
                     className="w-full text-xs font-geist bg-white border border-black/5 rounded-lg px-3 py-2 outline-none focus:border-[#FF5B04]/30"
                   />
                 </div>
@@ -182,7 +186,7 @@ export default function ConversationThread({
                     type="text"
                     value={keywords}
                     onChange={(e) => setKeywords(e.target.value)}
-                    placeholder="e.g. nextjs, performance, seo"
+                    placeholder={getKeywordPlaceholder(postType)}
                     className="w-full text-xs font-geist bg-white border border-black/5 rounded-lg px-3 py-2 outline-none focus:border-[#FF5B04]/30"
                   />
                 </div>
@@ -379,7 +383,7 @@ export default function ConversationThread({
                   handleSend(e);
                 }
               }}
-              placeholder="Ask AI Co-pilot anything..."
+              placeholder={getDynamicPlaceholder(postType, contentGoal)}
               className="w-full text-xs font-geist bg-transparent outline-none resize-none placeholder-gray-400 text-gray-800"
               style={{ maxHeight: "112px", overflowY: "hidden" }}
             />
@@ -606,4 +610,73 @@ function ModelSelectorPill({
       )}
     </div>
   );
+}
+
+function getDynamicPlaceholder(postType: string, contentGoal: string): string {
+  const typeLabels: Record<string, string> = {
+    blog: "blog post",
+    tutorial: "step-by-step tutorial",
+    "case-study": "case study",
+    "community-insight": "community post",
+    "corporate-post": "corporate announcement",
+    "product-review": "product review",
+    "product-launch": "product launch update",
+    listicle: "listicle article",
+    comparison: "comparison guide",
+    newsletter: "newsletter digest",
+    "social-post": "social media post",
+  };
+
+  const label = typeLabels[postType] || "content";
+
+  switch (contentGoal) {
+    case "traffic":
+      return `Ask AI to optimize this ${label} for SEO keywords, write an FAQ schema, or improve heading readability...`;
+    case "authority":
+      return `Ask AI to cite statistics, insert credible data points, or refine the expert voice in this ${label}...`;
+    case "conversion":
+      return `Ask AI to write a high-converting CTA, outline product benefits, or address objections in this ${label}...`;
+    case "engagement":
+      return `Ask AI to write an attention-grabbing hook, draft open-ended questions, or rewrite this ${label} to drive shares...`;
+    case "lead-generation":
+      return `Ask AI to draft a teaser for a lead magnet, add a newsletter sign-up prompt, or design a downloadable checklist for this ${label}...`;
+    case "retention":
+      return `Ask AI to add advanced user tips, write step-by-step troubleshooting notes, or highlight help center links in this ${label}...`;
+    default:
+      return `Ask AI Co-pilot to write, edit, or optimize this ${label} based on your strategic goals...`;
+  }
+}
+
+function getBriefPlaceholder(postType: string, contentGoal: string): string {
+  switch (postType) {
+    case "tutorial":
+      return "e.g. Next.js App Router API caching tutorial";
+    case "product-review":
+      return "e.g. In-depth review of Apple AirPods Pro 2";
+    case "comparison":
+      return "e.g. comparison between Slack and Microsoft Teams";
+    case "newsletter":
+      return "e.g. Weekly tech roundup newsletter covering AI news";
+    case "social-post":
+      return "e.g. LinkedIn post sharing lessons from a startup launch";
+    case "listicle":
+      return "e.g. 7 best productivity tools for remote developers";
+    case "case-study":
+      return "e.g. How we helped client X increase sales by 40%";
+    default:
+      return "e.g. A comprehensive guide on [your topic]";
+  }
+}
+
+function getKeywordPlaceholder(postType: string): string {
+  switch (postType) {
+    case "tutorial":
+      return "e.g. nextjs, api, cache, react";
+    case "product-review":
+      return "e.g. review, airpods, apple, audio";
+    case "social-post":
+      return "e.g. startup, leadership, startup-lessons";
+    default:
+      return "e.g. keyword1, keyword2";
+  }
 }

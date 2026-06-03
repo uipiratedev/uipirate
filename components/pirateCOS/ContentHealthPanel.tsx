@@ -404,7 +404,7 @@ export default function ContentHealthPanel({
   const metricGroups = [
     {
       groupLabel: "Writing Quality",
-      groupIcon: "✏️",
+      groupIcon: "edit",
       metrics: [
         {
           name: "Readability",
@@ -428,7 +428,7 @@ export default function ContentHealthPanel({
     },
     {
       groupLabel: "SEO & Reach",
-      groupIcon: "📈",
+      groupIcon: "traffic",
       metrics: [
         {
           name: "Search Ranking",
@@ -446,7 +446,7 @@ export default function ContentHealthPanel({
     },
     {
       groupLabel: "Publish Readiness",
-      groupIcon: "🚀",
+      groupIcon: "product-launch",
       metrics: [
         {
           name: "Call to Action",
@@ -527,7 +527,7 @@ export default function ContentHealthPanel({
         {metricGroups.map((group) => (
           <div key={group.groupLabel} className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-sm">{group.groupIcon}</span>
+              <CosIcon name={group.groupIcon} size={14} className="text-[#FF5B04] shrink-0" />
               <p className="text-[10px] font-bold font-jetbrains-mono text-gray-500 uppercase tracking-widest">
                 {group.groupLabel}
               </p>

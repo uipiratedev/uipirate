@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import CosIcon from "../CosIcon";
 
 interface ActionChipsProps {
   editorHasContent: boolean;
   onTriggerAction: (actionIds: string[], tone?: string, customInstruction?: string) => void;
   loading: boolean;
   selectedText?: string;
+  onSwitchToChat: () => void;
 }
 
 export default function ActionChips({
@@ -14,6 +16,7 @@ export default function ActionChips({
   onTriggerAction,
   loading,
   selectedText = "",
+  onSwitchToChat,
 }: ActionChipsProps) {
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
   const [selectedTone, setSelectedTone] = useState<string>("Professional");
@@ -36,17 +39,51 @@ export default function ActionChips({
     }
   }, [customInstruction]);
 
-  if (!editorHasContent) return null;
+  if (!editorHasContent) {
+    return (
+      <div className="p-4 bg-white border border-black/5 rounded-2xl flex flex-col gap-3 shadow-sm text-gray-500 font-geist">
+        <div className="flex items-start gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center border border-orange-100/50 flex-shrink-0 text-orange-600">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </div>
+          <div className="space-y-1 min-w-0">
+            <p className="text-xs font-bold text-gray-700 font-geist">Quick Rewrite Tool</p>
+            <p className="text-[10px] leading-relaxed text-gray-500">
+              This panel helps you quickly rewrite, edit, or adjust the tone of your text in the editor.
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-black/[0.04] pt-3 flex flex-col gap-2">
+          <p className="text-[10px] text-gray-400 leading-normal">
+            To use this, first write some content in the editor (or generate it in the AI Chat) and then highlight the text you want to edit.
+          </p>
+          <button
+            type="button"
+            onClick={onSwitchToChat}
+            className="w-full h-8 rounded-lg bg-[#FF5B04]/5 hover:bg-[#FF5B04]/10 border border-[#FF5B04]/10 text-[10px] font-bold text-[#FF5B04] transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+          >
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            Write with AI Chat Co-pilot
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const hasSelection = selectedText && selectedText.trim().length > 0;
   const wordCount = hasSelection ? selectedText.trim().split(/\s+/).filter(Boolean).length : 0;
 
   const toneVariants = [
-    { id: "Professional", icon: "💼" },
-    { id: "Conversational", icon: "💬" },
-    { id: "Bold", icon: "⚡" },
-    { id: "Technical", icon: "🔬" },
-    { id: "Empathetic", icon: "🤝" },
+    { id: "Professional", icon: "briefcase" },
+    { id: "Conversational", icon: "chat" },
+    { id: "Bold", icon: "bolt" },
+    { id: "Technical", icon: "beaker" },
+    { id: "Empathetic", icon: "heart" },
   ];
 
   const actions = [
@@ -105,13 +142,35 @@ export default function ActionChips({
 
   if (!hasSelection) {
     return (
-      <div className="p-3.5 bg-gray-50 border border-black/5 rounded-2xl flex items-start gap-2.5 shadow-sm text-gray-500">
-        <span className="text-base mt-0.5">💡</span>
-        <div className="space-y-1">
-          <p className="text-xs font-bold font-geist text-gray-700">Quick Rewrite Tool</p>
-          <p className="text-[10px] leading-relaxed font-geist">
-            Highlight any text in the editor to unlock quick suggestions. You can select multiple presets, write custom directions, and run them combined.
+      <div className="p-4 bg-white border border-black/5 rounded-2xl flex flex-col gap-3 shadow-sm text-gray-500 font-geist">
+        <div className="flex items-start gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center border border-orange-100/50 flex-shrink-0 text-orange-600">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </div>
+          <div className="space-y-1 min-w-0">
+            <p className="text-xs font-bold text-gray-700 font-geist">Quick Rewrite Tool</p>
+            <p className="text-[10px] leading-relaxed text-gray-500">
+              Highlight text in the editor to run quick edits (improve, shorten, change tone) directly.
+            </p>
+          </div>
+        </div>
+        
+        <div className="border-t border-black/[0.04] pt-3 flex flex-col gap-2">
+          <p className="text-[10px] text-gray-400 leading-normal">
+            No text highlighted? Use the AI Co-pilot chat to generate content from scratch or get tailored ideas.
           </p>
+          <button
+            type="button"
+            onClick={onSwitchToChat}
+            className="w-full h-8 rounded-lg bg-gray-50 hover:bg-gray-100 border border-black/5 hover:border-black/10 text-[10px] font-bold text-gray-700 transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+          >
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5 text-[#FF5B04]">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            Open AI Co-pilot Chat
+          </button>
         </div>
       </div>
     );
@@ -250,7 +309,13 @@ export default function ActionChips({
                               : "bg-white border-black/5 hover:border-[#FF5B04]/40 hover:text-[#FF5B04] text-gray-700"
                           }`}
                         >
-                          <span>{tone.icon}</span>
+                          <CosIcon
+                            name={tone.icon}
+                            size={11}
+                            className={`shrink-0 ${
+                              selectedTone === tone.id ? "text-white" : "text-gray-500 group-hover:text-[#FF5B04]"
+                            }`}
+                          />
                           {tone.id}
                         </button>
                       ))}

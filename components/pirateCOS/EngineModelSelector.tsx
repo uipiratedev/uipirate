@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
+import CosIcon from "./CosIcon";
 import {
   AIEngine,
   AI_PROVIDERS,
@@ -120,10 +121,10 @@ export const EngineModelSelector: React.FC<Props> = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
               )}
               {activeModel?.description === "fast" && (
-                <span className="text-[10px] shrink-0">⚡</span>
+                <CosIcon name="bolt" size={11} className="text-amber-500 fill-amber-500 shrink-0" />
               )}
               {activeModel?.description === "capable" && (
-                <span className="text-[10px] shrink-0">✨</span>
+                <CosIcon name="sparkles" size={11} className="text-purple-500 fill-purple-500 shrink-0" />
               )}
               <span className="truncate">{activeModel?.label || "Select Model"}</span>
             </div>
@@ -189,13 +190,13 @@ export const EngineModelSelector: React.FC<Props> = ({
                         </span>
                       )}
                       {m.description === "fast" && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30">
-                          ⚡ Fast
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30 flex items-center gap-1">
+                          <CosIcon name="bolt" size={10} className="text-amber-500 fill-amber-500 shrink-0" /> Fast
                         </span>
                       )}
                       {m.description === "capable" && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 border border-purple-100 dark:border-purple-900/30">
-                          ✨ Capable
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 border border-purple-100 dark:border-purple-900/30 flex items-center gap-1">
+                          <CosIcon name="sparkles" size={10} className="text-purple-500 fill-purple-500 shrink-0" /> Capable
                         </span>
                       )}
                       {m.description === "live" && (

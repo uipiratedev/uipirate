@@ -4908,8 +4908,8 @@ const FormattingToolbar = ({
       className="sticky z-40 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
       style={{
         top: "61px",
-        background: "rgba(247,247,246,0.96)",
-        borderBottom: "1px solid rgba(0,0,0,0.07)",
+        background: "rgba(255, 255, 255, 0.95)",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
       }}
     >
       <button
