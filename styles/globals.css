@@ -2688,4 +2688,41 @@ body.modal-open .main-navbar {
   border-radius: 0.25rem;
   font-family: monospace;
 }
-
+
+/* ========================================
+   PIRATECOSEDITOR — PROSEMIRROR LIST STYLES
+   Applied globally so both create + edit pages
+   get bullets regardless of which wrapper is used.
+   Tailwind preflight resets list-style to none —
+   these rules explicitly restore disc/decimal.
+   ======================================== */
+.notion-editor-wrapper .ProseMirror ul {
+  list-style-type: disc !important;
+  padding-left: 1.75rem;
+  margin: 0.75rem 0;
+}
+.notion-editor-wrapper .ProseMirror ol {
+  list-style-type: decimal !important;
+  padding-left: 1.75rem;
+  margin: 0.75rem 0;
+}
+.notion-editor-wrapper .ProseMirror li {
+  display: list-item !important;
+  margin: 0.35rem 0;
+  line-height: 1.75;
+}
+.notion-editor-wrapper .ProseMirror ul ul {
+  list-style-type: circle !important;
+  margin: 0.25rem 0;
+}
+.notion-editor-wrapper .ProseMirror ul ul ul {
+  list-style-type: square !important;
+}
+/* Keep task lists as plain flex rows (no bullet) */
+.notion-editor-wrapper .ProseMirror ul[data-type="taskList"] {
+  list-style: none !important;
+  padding-left: 0;
+}
+.notion-editor-wrapper .ProseMirror ul[data-type="taskList"] li {
+  display: flex !important;
+}

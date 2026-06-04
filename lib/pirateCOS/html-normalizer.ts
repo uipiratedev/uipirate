@@ -67,8 +67,31 @@ export function normalizeHTML(
   if (opts.enforcePostTypeConstraints && postType) {
     html = enforcePostTypeConstraints(html, postType);
   }
-  
+
+  // Step 6: Strip empty paragraphs that LLMs insert as spacers
+  html = stripEmptyParagraphs(html);
+
   return html.trim();
+}
+
+// ============================================================================
+// Step 0: Strip Empty Paragraphs
+// ============================================================================
+
+/**
+ * Remove empty paragraphs that LLMs insert as vertical spacers
+ *
+ * LLMs frequently emit <p></p>, <p> </p>, <p>&nbsp;</p> between blocks.
+ * TipTap treats each one as a real paragraph node → extra blank lines in editor.
+ */
+function stripEmptyParagraphs(html: string): string {
+  // Remove <p> tags that contain only whitespace / &nbsp;
+  html = html.replace(/<p(\s[^>]*)?>(\s|&nbsp;)*<\/p>/gi, "");
+  // Remove <p><br></p> variants
+  html = html.replace(/<p(\s[^>]*)?>(\s*<br\s*\/?>\s*)*<\/p>/gi, "");
+  // Collapse 3+ consecutive newlines down to 2 (one blank line max between blocks)
+  html = html.replace(/(\r?\n){3,}/g, "\n\n");
+  return html;
 }
 
 // ============================================================================
