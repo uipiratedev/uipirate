@@ -3,6 +3,17 @@
 import React from "react";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 
+// ─── Badge helpers (used by parent ContentSettingsPanel for AccordionItem titles) ──
+export const getTagsBadge = (tags: string[]) => ({
+  badge: tags.length > 0 ? `${tags.length} ${tags.length === 1 ? "tag" : "tags"}` : undefined,
+  badgeColor: "bg-blue-50 text-blue-600",
+});
+
+export const getHashtagAssistantBadge = (tags: string[]) => ({
+  badge: tags.length > 0 ? `${tags.length} ${tags.length === 1 ? "hashtag" : "hashtags"}` : undefined,
+  badgeColor: tags.length >= 5 ? "bg-green-100 text-green-700" : "bg-blue-50 text-blue-600",
+});
+
 // ─── Tags Card (Blog Posts) ──────────────────────────────────────────────────
 
 interface TagsCardProps {
@@ -14,10 +25,11 @@ interface TagsCardProps {
   onAddTag?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onRemoveTag?: (tag: string) => void;
   onGenerateTags?: () => void;
+  onTagsChange?: (tags: string[]) => void;
   onDirtyChange: () => void;
 }
 
-export const TagsCard: React.FC<TagsCardProps> = ({
+export const TagsContent: React.FC<TagsCardProps> = ({
   tags,
   tagInput = "",
   suggestedTags = [],
@@ -26,47 +38,13 @@ export const TagsCard: React.FC<TagsCardProps> = ({
   onAddTag,
   onRemoveTag,
   onGenerateTags,
+  onTagsChange,
   onDirtyChange,
 }) => {
   return (
-    <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-      <div className="flex justify-between items-center mb-3">
-        <div className="flex items-center gap-2">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            Tags
-          </p>
-          {tags.length > 0 && (
-            <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">
-              {tags.length} {tags.length === 1 ? 'tag' : 'tags'}
-            </span>
-          )}
-        </div>
-        {onGenerateTags && (
-          <button
-            className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
-            type="button"
-            disabled={isGeneratingTags}
-            onClick={onGenerateTags}
-          >
-            {isGeneratingTags ? (
-              <>
-                <svg className="animate-spin h-3 w-3 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Generating...
-              </>
-            ) : (
-              <>
-                <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                <span>AI Suggest</span>
-              </>
-            )}
-          </button>
-        )}
-      </div>
-
-      <div className="flex flex-wrap gap-1.5 min-h-[24px] mb-3">
+    <div className="space-y-3">
+      {/* Current tags */}
+      <div className="flex flex-wrap gap-1.5 min-h-[24px]">
         {tags.map((tag) => (
           <span
             key={tag}
@@ -95,23 +73,58 @@ export const TagsCard: React.FC<TagsCardProps> = ({
         )}
       </div>
 
+      {/* Tag input */}
       {onTagInputChange && onAddTag && (
-        <input
-          className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300 focus:ring-1 focus:ring-[#FF5B04]/30 transition-all"
-          placeholder="Add tag, press Enter…"
-          value={tagInput}
-          onChange={(e) => onTagInputChange(e.target.value)}
-          onKeyDown={(e) => {
-            onAddTag(e);
-            onDirtyChange();
-          }}
-        />
+        <div className="relative">
+          <input
+            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl px-3 py-2.5 outline-none placeholder-gray-400 focus:ring-1 focus:ring-[#FF5B04]/30 transition-all"
+            placeholder="Type tag and press Enter…"
+            value={tagInput}
+            onChange={(e) => onTagInputChange(e.target.value)}
+            onKeyDown={(e) => {
+              onAddTag(e);
+              onDirtyChange();
+            }}
+          />
+          {tagInput && (
+            <div className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] text-gray-400 font-semibold">
+              Press Enter
+            </div>
+          )}
+        </div>
       )}
 
+      {/* Generate AI Tags button - styled to match Title Optimizer */}
+      {onGenerateTags && (
+        <button
+          type="button"
+          disabled={isGeneratingTags}
+          onClick={onGenerateTags}
+          className="w-full text-xs font-semibold py-2.5 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
+        >
+          {isGeneratingTags ? (
+            <>
+              <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              <span>Generating Tags...</span>
+            </>
+          ) : (
+            <>
+              <CosIcon name="sparkles" size={12} className="text-white fill-current" />
+              <span>Generate AI Tags</span>
+            </>
+          )}
+        </button>
+      )}
+
+      {/* AI Suggestions - styled to match Title Optimizer */}
       {suggestedTags && suggestedTags.length > 0 && (
-        <div className="mt-3 pt-3 border-t border-black/5 space-y-1.5">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-            AI Suggested Tags (Click to Add)
+        <div className="space-y-2 pt-2 border-t border-black/5 animate-in slide-in-from-top-2">
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono flex items-center gap-1">
+            <CosIcon name="check" size={10} className="text-green-500" />
+            AI Suggestions
           </p>
           <div className="flex flex-wrap gap-1.5">
             {suggestedTags.map((tag) => {
@@ -122,14 +135,16 @@ export const TagsCard: React.FC<TagsCardProps> = ({
                   type="button"
                   disabled={isSelected}
                   onClick={() => {
-                    if (!isSelected && onRemoveTag) {
+                    if (isSelected) return;
+                    if (onTagsChange) {
+                      onTagsChange([...tags, tag]);
                       onDirtyChange();
                     }
                   }}
-                  className={`text-[10px] font-semibold px-2.5 py-1.5 rounded-lg transition-all ${
+                  className={`text-[10px] font-semibold px-2.5 py-1.5 rounded-lg border transition-all ${
                     isSelected
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed line-through"
-                      : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04] hover:shadow-sm"
+                      ? "bg-gray-50 border-gray-100 text-gray-400 cursor-not-allowed line-through"
+                      : "bg-black/[0.01] border-black/5 text-gray-700 hover:border-[#FF5B04]/50 hover:bg-[#FF5B04]/5 hover:text-[#FF5B04]"
                   }`}
                 >
                   {isSelected && <CosIcon name="check" size={8} className="inline mr-0.5" />}
@@ -144,7 +159,7 @@ export const TagsCard: React.FC<TagsCardProps> = ({
   );
 };
 
-// ─── Hashtag Assistant Card (Social Posts) ──────────────────────────────────
+// ─── Hashtag Assistant Content (Social Posts) ───────────────────────────────
 
 interface HashtagAssistantCardProps {
   tags: string[];
@@ -158,7 +173,7 @@ interface HashtagAssistantCardProps {
   onDirtyChange: () => void;
 }
 
-export const HashtagAssistantCard: React.FC<HashtagAssistantCardProps> = ({
+export const HashtagAssistantContent: React.FC<HashtagAssistantCardProps> = ({
   tags,
   tagInput = "",
   socialDestination,
@@ -170,27 +185,8 @@ export const HashtagAssistantCard: React.FC<HashtagAssistantCardProps> = ({
   onDirtyChange,
 }) => {
   return (
-    <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3 mt-4">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            Hashtag Assistant
-          </p>
-          {tags.length > 0 && (
-            <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">
-              {tags.length} {tags.length === 1 ? 'hashtag' : 'hashtags'}
-            </span>
-          )}
-        </div>
-        {tags.length >= 5 && (
-          <div className="flex items-center gap-1 text-[9px] font-semibold text-green-600">
-            <CosIcon name="check" size={10} className="text-green-500" />
-            Optimal
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-wrap gap-1.5 min-h-[24px]">
+    <div className="space-y-3">
+          <div className="flex flex-wrap gap-1.5 min-h-[24px]">
         {tags.map((tag) => (
           <span
             key={tag}
@@ -257,7 +253,7 @@ export const HashtagAssistantCard: React.FC<HashtagAssistantCardProps> = ({
       {onTagInputChange && onAddTag && (
         <div className="relative">
           <input
-            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2.5 outline-none placeholder-gray-300 focus:ring-1 focus:ring-[#FF5B04]/30 transition-all"
+            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl px-3 py-2.5 outline-none placeholder-gray-400 focus:ring-1 focus:ring-[#FF5B04]/30 transition-all"
             placeholder="Type hashtag and press Enter…"
             value={tagInput}
             onChange={(e) => onTagInputChange(e.target.value)}

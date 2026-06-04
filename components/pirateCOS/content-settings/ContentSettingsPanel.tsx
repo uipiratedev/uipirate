@@ -1,10 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { Accordion, AccordionItem } from "@heroui/accordion";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { getPostTypeConfig } from "@/lib/pirateCOS/postTypeConfig";
-import { TitleOptimizerCard, ExcerptCard } from "./ContentSettingsSubComponents";
-import { TagsCard, HashtagAssistantCard } from "./ContentSettingsTags";
+import {
+  TitleOptimizerContent,
+  ExcerptContent,
+  getTitleOptimizerBadge,
+  getExcerptBadge,
+} from "./ContentSettingsSubComponents";
+import {
+  TagsContent,
+  HashtagAssistantContent,
+  getTagsBadge,
+  getHashtagAssistantBadge,
+} from "./ContentSettingsTags";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface EditorStats {
@@ -77,6 +88,20 @@ interface ContentSettingsPanelProps {
   // Social destinations config
   socialDestinations?: Record<string, SocialDestination>;
 }
+
+// Helper component for accordion titles with badges
+const AccordionTitle: React.FC<{ title: string; badge?: string; badgeColor?: string }> = ({ title, badge, badgeColor }) => (
+  <div className="flex items-center gap-2">
+    <span className="text-[10px] font-jetbrains-mono text-gray-700 uppercase tracking-widest font-bold">
+      {title}
+    </span>
+    {badge && (
+      <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${badgeColor || "bg-blue-100 text-blue-700"}`}>
+        {badge}
+      </span>
+    )}
+  </div>
+);
 
 export const ContentSettingsPanel: React.FC<ContentSettingsPanelProps> = ({
   postType,
@@ -209,147 +234,200 @@ export const ContentSettingsPanel: React.FC<ContentSettingsPanelProps> = ({
         </div>
       )}
 
-      {/* Analytics or Feed Guardrails */}
-      {showAnalytics && (
-        isSocialPost ? (
-          // Feed Guardrails for Social Posts
-          <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
-            <div className="flex justify-between items-center">
-              <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-                Feed Guardrails
-              </p>
-              <button
-                type="button"
-                className="flex items-center gap-1 text-[9px] font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors"
-                title="Preview how this looks on the platform"
+      {/* Unified Accordion for all settings */}
+      {(() => {
+        const items: React.ReactElement[] = [];
+
+        if (showAnalytics) {
+          if (isSocialPost) {
+            items.push(
+              <AccordionItem
+                key="guardrails"
+                title={
+                  <AccordionTitle
+                    title="Feed Guardrails"
+                    badge={SOCIAL_DESTINATIONS[socialDestination].label}
+                    badgeColor="bg-[#FF5B04]/10 text-[#FF5B04]"
+                  />
+                }
               >
-                <CosIcon name="eye" size={10} />
-                Preview
-              </button>
-            </div>
+                <div className="space-y-4">
+                  {onSocialDestinationChange && (
+                    <div className="flex bg-black/5 p-1 rounded-xl">
+                      {(["linkedin", "x"] as const).map((dest) => (
+                        <button
+                          key={dest}
+                          type="button"
+                          onClick={() => onSocialDestinationChange(dest)}
+                          className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                            socialDestination === dest
+                              ? "bg-white text-gray-900 shadow-sm"
+                              : "text-gray-500 hover:text-gray-800"
+                          }`}
+                        >
+                          <CosIcon name={dest === "linkedin" ? "linkedin" : "twitter"} size={12} />
+                          {SOCIAL_DESTINATIONS[dest].label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  <div>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-[10px] font-geist text-gray-500 font-medium">Characters</span>
+                      <span className={`text-[10px] font-jetbrains-mono font-semibold ${
+                        editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                          ? "text-red-500 font-bold"
+                          : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                          ? "text-amber-500"
+                          : "text-gray-400"
+                      }`}>
+                        {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
+                      </span>
+                    </div>
+                    <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-300 ${
+                          editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
+                            ? "bg-red-500"
+                            : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
+                            ? "bg-amber-500"
+                            : "bg-[#FF5B04]"
+                        }`}
+                        style={{
+                          width: `${Math.min(
+                            100,
+                            (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
+                          )}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </AccordionItem>
+            );
+          } else {
+            const analyticsBadge = getAnalyticsBadge(editorStats, postType);
+            items.push(
+              <AccordionItem
+                key="analytics"
+                title={<AccordionTitle title="Analytics" badge={analyticsBadge.badge} badgeColor={analyticsBadge.badgeColor} />}
+              >
+                <AnalyticsContent editorStats={editorStats} postType={postType} />
+              </AccordionItem>
+            );
+          }
+        }
 
-            {/* Platform switcher with icons */}
-            {onSocialDestinationChange && (
-              <div className="flex bg-black/5 p-1 rounded-xl">
-                {(["linkedin", "x"] as const).map((dest) => (
-                  <button
-                    key={dest}
-                    type="button"
-                    onClick={() => onSocialDestinationChange(dest)}
-                    className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-                      socialDestination === dest
-                        ? "bg-white text-gray-900 shadow-sm"
-                        : "text-gray-500 hover:text-gray-800"
-                    }`}
-                  >
-                    <CosIcon name={dest === "linkedin" ? "linkedin" : "twitter"} size={12} />
-                    {SOCIAL_DESTINATIONS[dest].label}
-                  </button>
-                ))}
-              </div>
-            )}
+        if (showTitleOptimizer) {
+          const titleBadge = getTitleOptimizerBadge(title);
+          items.push(
+            <AccordionItem
+              key="title"
+              title={<AccordionTitle title="AI Title Optimizer" badge={titleBadge.badge} badgeColor={titleBadge.badgeColor} />}
+            >
+              <TitleOptimizerContent
+                title={title}
+                titleInstructions={titleInstructions}
+                titleSuggestions={titleSuggestions}
+                isOptimizingTitle={isOptimizingTitle}
+                onTitleInstructionsChange={onTitleInstructionsChange}
+                onGenerateTitleSuggestions={onGenerateTitleSuggestions}
+                onTitleChange={onTitleChange}
+                onDirtyChange={onDirtyChange}
+              />
+            </AccordionItem>
+          );
+        }
 
-            {/* Character limit bar */}
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-[10px] font-geist text-gray-500 font-medium">
-                  Characters
-                </span>
-                <span className={`text-[10px] font-jetbrains-mono font-semibold ${
-                  editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                    ? "text-red-500 font-bold"
-                    : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                    ? "text-amber-500"
-                    : "text-gray-400"
-                }`}>
-                  {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
-                </span>
-              </div>
-              <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-300 ${
-                    editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                      ? "bg-red-500"
-                      : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                      ? "bg-amber-500"
-                      : "bg-[#FF5B04]"
-                  }`}
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
-                    )}%`,
-                  }}
+        if (showExcerpt && !isSocialPost) {
+          const excerptBadge = getExcerptBadge(excerpt);
+          items.push(
+            <AccordionItem
+              key="excerpt"
+              title={<AccordionTitle title="Excerpt" badge={excerptBadge.badge} badgeColor={excerptBadge.badgeColor} />}
+            >
+              <ExcerptContent
+                excerpt={excerpt}
+                excerptInstructions={excerptInstructions}
+                showExcerptAIGuidelines={showExcerptAIGuidelines}
+                suggestedExcerpt={suggestedExcerpt}
+                isGeneratingExcerpt={isGeneratingExcerpt}
+                onExcerptChange={onExcerptChange}
+                onExcerptInstructionsChange={onExcerptInstructionsChange}
+                onToggleExcerptAI={onToggleExcerptAI}
+                onGenerateExcerpt={onGenerateExcerpt}
+                onApplySuggestedExcerpt={onApplySuggestedExcerpt}
+                onDismissSuggestedExcerpt={onDismissSuggestedExcerpt}
+                onDirtyChange={onDirtyChange}
+              />
+            </AccordionItem>
+          );
+        }
+
+        if (showTags) {
+          if (isSocialPost) {
+            const hashtagBadge = getHashtagAssistantBadge(tags);
+            items.push(
+              <AccordionItem
+                key="hashtags"
+                title={<AccordionTitle title="Hashtag Assistant" badge={hashtagBadge.badge} badgeColor={hashtagBadge.badgeColor} />}
+              >
+                <HashtagAssistantContent
+                  tags={tags}
+                  tagInput={tagInput}
+                  socialDestination={socialDestination}
+                  socialDestinations={SOCIAL_DESTINATIONS}
+                  onTagInputChange={onTagInputChange}
+                  onAddTag={onAddTag}
+                  onRemoveTag={onRemoveTag}
+                  onAppendHashtag={onAppendHashtag}
+                  onDirtyChange={onDirtyChange}
                 />
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Analytics for Blog Posts
-          <AnalyticsCard editorStats={editorStats} postType={postType} />
-        )
-      )}
+              </AccordionItem>
+            );
+          } else {
+            const tagsBadge = getTagsBadge(tags);
+            items.push(
+              <AccordionItem
+                key="tags"
+                title={<AccordionTitle title="Tags" badge={tagsBadge.badge} badgeColor={tagsBadge.badgeColor} />}
+              >
+                <TagsContent
+                  tags={tags}
+                  tagInput={tagInput}
+                  suggestedTags={suggestedTags}
+                  isGeneratingTags={isGeneratingTags}
+                  onTagInputChange={onTagInputChange}
+                  onAddTag={onAddTag}
+                  onRemoveTag={onRemoveTag}
+                  onGenerateTags={onGenerateTags}
+                  onTagsChange={onTagsChange}
+                  onDirtyChange={onDirtyChange}
+                />
+              </AccordionItem>
+            );
+          }
+        }
 
-      {/* Title Optimizer */}
-      {showTitleOptimizer && (
-        <TitleOptimizerCard
-          title={title}
-          titleInstructions={titleInstructions}
-          titleSuggestions={titleSuggestions}
-          isOptimizingTitle={isOptimizingTitle}
-          onTitleInstructionsChange={onTitleInstructionsChange}
-          onGenerateTitleSuggestions={onGenerateTitleSuggestions}
-          onTitleChange={onTitleChange}
-          onDirtyChange={onDirtyChange}
-        />
-      )}
+        if (items.length === 0) return null;
 
-      {/* Excerpt Section */}
-      {showExcerpt && !isSocialPost && (
-        <ExcerptCard
-          excerpt={excerpt}
-          excerptInstructions={excerptInstructions}
-          showExcerptAIGuidelines={showExcerptAIGuidelines}
-          suggestedExcerpt={suggestedExcerpt}
-          isGeneratingExcerpt={isGeneratingExcerpt}
-          onExcerptChange={onExcerptChange}
-          onExcerptInstructionsChange={onExcerptInstructionsChange}
-          onToggleExcerptAI={onToggleExcerptAI}
-          onGenerateExcerpt={onGenerateExcerpt}
-          onApplySuggestedExcerpt={onApplySuggestedExcerpt}
-          onDismissSuggestedExcerpt={onDismissSuggestedExcerpt}
-          onDirtyChange={onDirtyChange}
-        />
-      )}
-
-      {/* Tags Section */}
-      {showTags && (
-        isSocialPost ? (
-          <HashtagAssistantCard
-            tags={tags}
-            tagInput={tagInput}
-            socialDestination={socialDestination}
-            socialDestinations={SOCIAL_DESTINATIONS}
-            onTagInputChange={onTagInputChange}
-            onAddTag={onAddTag}
-            onRemoveTag={onRemoveTag}
-            onAppendHashtag={onAppendHashtag}
-            onDirtyChange={onDirtyChange}
-          />
-        ) : (
-          <TagsCard
-            tags={tags}
-            tagInput={tagInput}
-            suggestedTags={suggestedTags}
-            isGeneratingTags={isGeneratingTags}
-            onTagInputChange={onTagInputChange}
-            onAddTag={onAddTag}
-            onRemoveTag={onRemoveTag}
-            onGenerateTags={onGenerateTags}
-            onDirtyChange={onDirtyChange}
-          />
-        )
-      )}
+        return (
+          <Accordion
+            variant="splitted"
+            selectionMode="single"
+            defaultExpandedKeys={showAnalytics ? (isSocialPost ? ["guardrails"] : ["analytics"]) : []}
+            className="px-0"
+            itemClasses={{
+              base: "shadow-sm mb-3",
+              title: "text-[10px] font-jetbrains-mono text-gray-700 uppercase tracking-widest font-bold",
+              trigger: " py-3 hover:bg-black/[0.02]",
+              content: " pb-3",
+            }}
+          >
+            {items}
+          </Accordion>
+        );
+      })()}
     </>
   );
 };
@@ -361,27 +439,28 @@ interface AnalyticsCardProps {
   postType: string;
 }
 
-const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ editorStats, postType }) => {
+const getAnalyticsBadge = (editorStats: EditorStats, postType: string) => {
+  const ptConfig = getPostTypeConfig(postType);
+  const minGoal = ptConfig?.minWordCount ?? 500;
+  const progress = (editorStats.words / minGoal) * 100;
+  const status = progress >= 100 ? "complete" : progress >= 50 ? "progress" : "start";
+  return {
+    badge: status === "complete" ? "Complete" : status === "progress" ? "In Progress" : "Getting Started",
+    badgeColor: status === "complete"
+      ? "bg-green-100 text-green-700"
+      : status === "progress"
+      ? "bg-amber-100 text-amber-700"
+      : "bg-gray-100 text-gray-500",
+  };
+};
+
+const AnalyticsContent: React.FC<AnalyticsCardProps> = ({ editorStats, postType }) => {
   const ptConfig = getPostTypeConfig(postType);
   const minGoal = ptConfig?.minWordCount ?? 500;
   const maxGoal = ptConfig?.maxWordCount ?? 1500;
-  const progress = (editorStats.words / minGoal) * 100;
-  const status = progress >= 100 ? "complete" : progress >= 50 ? "progress" : "start";
 
   return (
-    <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-      <div className="flex justify-between items-center mb-3">
-        <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-          Analytics
-        </p>
-        <div className="flex items-center gap-1.5">
-          <div className={`w-1.5 h-1.5 rounded-full ${status === "complete" ? "bg-green-500 animate-pulse" : status === "progress" ? "bg-amber-500" : "bg-gray-300"}`} />
-          <span className={`text-[9px] font-semibold ${status === "complete" ? "text-green-600" : status === "progress" ? "text-amber-600" : "text-gray-400"}`}>
-            {status === "complete" ? "Complete" : status === "progress" ? "In Progress" : "Getting Started"}
-          </span>
-        </div>
-      </div>
-
+    <>
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5 hover:border-black/10 transition-all group">
           <div className="flex items-baseline justify-between">
@@ -432,26 +511,26 @@ const AnalyticsCard: React.FC<AnalyticsCardProps> = ({ editorStats, postType }) 
         </div>
       </div>
 
-      {/* Writing Goal Progress */}
-      <div className="mt-3.5 pt-3 border-t border-black/5">
-        <div className="flex justify-between items-center mb-1">
-          <span className="text-[10px] font-geist text-gray-500 font-medium">
-            Writing Goal
-          </span>
-          <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-            {Math.min(100, Math.round((editorStats.words / minGoal) * 100))}% ({editorStats.words} / {minGoal}–{maxGoal} words)
-          </span>
+        {/* Writing Goal Progress */}
+        <div className="mt-3.5 pt-3 border-t border-black/5">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-[10px] font-geist text-gray-500 font-medium">
+              Writing Goal
+            </span>
+            <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
+              {Math.min(100, Math.round((editorStats.words / minGoal) * 100))}% ({editorStats.words} / {minGoal}–{maxGoal} words)
+            </span>
+          </div>
+          <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-500 ease-out"
+              style={{
+                width: `${Math.min(100, (editorStats.words / minGoal) * 100)}%`,
+                background: "#FF5B04",
+              }}
+            />
+          </div>
         </div>
-        <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-500 ease-out"
-            style={{
-              width: `${Math.min(100, (editorStats.words / minGoal) * 100)}%`,
-              background: "#FF5B04",
-            }}
-          />
-        </div>
-      </div>
-    </div>
+    </>
   );
 };

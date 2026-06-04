@@ -6,5 +6,5 @@
  */
 
 export { ContentSettingsPanel } from './ContentSettingsPanel';
-export { TitleOptimizerCard, ExcerptCard } from './ContentSettingsSubComponents';
-export { TagsCard, HashtagAssistantCard } from './ContentSettingsTags';
+export { TitleOptimizerContent, ExcerptContent } from './ContentSettingsSubComponents';
+export { TagsContent, HashtagAssistantContent } from './ContentSettingsTags';
