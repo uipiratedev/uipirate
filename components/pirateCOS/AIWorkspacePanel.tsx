@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEditorSelection } from "@/hooks/useEditorSelection";
 import { useAIWorkspaceSession } from "@/hooks/useAIWorkspaceSession";
 import { AIEngine } from "@/lib/pirateCOS/ai-registry";
-import { getChatSuggestions } from "@/lib/pirateCOS/postTypeConfig";
+import { getChatSuggestions, getFeatures } from "@/lib/pirateCOS/postTypeConfig";
 
 import FocusKeywordStrip from "./workspace/ContextDisplay";
 import ActionChips from "./workspace/QuickActions";
@@ -15,7 +15,6 @@ import GenerationHistory from "./workspace/GenerationHistory";
 import CosIcon from "./CosIcon";
 import UpgradePrompt from "./UpgradePrompt";
 import { HelpTutorialCarousel } from "./WorkspaceTutorialCarousel";
-import { ModelSelectorPill } from "./ModelSelectorPill";
 
 interface AIWorkspacePanelProps {
   postId: string | null;
@@ -25,6 +24,7 @@ interface AIWorkspacePanelProps {
   brandBrain?: any;
   onApplyToEditor: (text: string, mode: "replace" | "insert-below" | "insert-above") => void;
   onOpenRepurposingDrawer: () => void;
+  onInsertCTA?: () => void;
 
   // Unified Sidebar Props
   activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null;
@@ -404,6 +404,7 @@ export default function AIWorkspacePanel({
   brandBrain,
   onApplyToEditor,
   onOpenRepurposingDrawer,
+  onInsertCTA,
   activeTab,
   onTabChange,
   renderContentTab,
@@ -421,6 +422,12 @@ export default function AIWorkspacePanel({
 
   const { selectedText } = useEditorSelection(editor);
   const wordCount = selectedText ? selectedText.split(/\s+/).filter(Boolean).length : 0;
+
+  // Workspace-level actions (consolidated from former editor toolbar)
+  const panelFeatures = getFeatures(postType);
+  const showTransformAction = postType !== "social-post";
+  const showInsertCtaAction = !!panelFeatures?.ctaBlocks && !!onInsertCTA;
+  const showWorkspaceActions = showTransformAction || showInsertCtaAction;
 
   const {
     messages,
@@ -572,15 +579,45 @@ export default function AIWorkspacePanel({
                       ?
                     </button>
                   </div>
-                  <ModelSelectorPill
-                    selectedEngine={selectedEngine}
-                    selectedModel={selectedModel}
-                    onEngineChange={setSelectedEngine}
-                    onModelChange={setSelectedModel}
-                  />
                 </div>
                 {/* Rewrite Body */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  {/* Workspace Actions (Transform, Insert CTA) */}
+                  {showWorkspaceActions && (
+                    <div className="p-3 bg-white border border-black/5 rounded-2xl shadow-sm space-y-2">
+                      <div className="flex items-center gap-1.5">
+                        <CosIcon name="bolt" size={12} className="text-[#FF5B04]" />
+                        <span className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-widest text-gray-400">
+                          Workspace Actions
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {showTransformAction && (
+                          <button
+                            type="button"
+                            onClick={onOpenRepurposingDrawer}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold font-geist text-gray-700 bg-gray-50 hover:bg-orange-50 hover:text-[#FF5B04] border border-black/5 hover:border-[#FF5B04]/30 transition-all cursor-pointer shadow-sm"
+                            title="Repurpose post into other formats"
+                          >
+                            <CosIcon name="bolt" size={12} />
+                            Transform
+                          </button>
+                        )}
+                        {showInsertCtaAction && (
+                          <button
+                            type="button"
+                            onClick={onInsertCTA}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold font-geist text-gray-700 bg-gray-50 hover:bg-orange-50 hover:text-[#FF5B04] border border-black/5 hover:border-[#FF5B04]/30 transition-all cursor-pointer shadow-sm"
+                            title="Insert Call-To-Action block"
+                          >
+                            <CosIcon name="megaphone" size={12} />
+                            Insert CTA
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Focus Keyword Strip */}
                   <FocusKeywordStrip
                     postType={postType}
@@ -744,14 +781,6 @@ export default function AIWorkspacePanel({
                     </button>
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0">
-                    {/* Model Selector */}
-                    <ModelSelectorPill
-                      selectedEngine={selectedEngine}
-                      selectedModel={selectedModel}
-                      onEngineChange={setSelectedEngine}
-                      onModelChange={setSelectedModel}
-                    />
-
                     {/* New Chat (+) */}
                     <button
                       onClick={() => { clearSession(); setActiveView("chat"); }}
@@ -944,12 +973,6 @@ export default function AIWorkspacePanel({
                       ?
                     </button>
                   </div>
-                  <ModelSelectorPill
-                    selectedEngine={selectedEngine}
-                    selectedModel={selectedModel}
-                    onEngineChange={setSelectedEngine}
-                    onModelChange={setSelectedModel}
-                  />
                 </div>
                 {/* Unified Settings Body */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">

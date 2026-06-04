@@ -4868,19 +4868,15 @@ const SlashCommandMenu = ({
 const FormattingToolbar = ({
   editor,
   onLinkClick,
-  onCopilotClick,
   activePreset,
   onPresetChange,
-  onTransformClick,
   features,
   postType,
 }: {
   editor: any;
   onLinkClick: () => void;
-  onCopilotClick: () => void;
   activePreset: string;
   onPresetChange: (preset: string) => void;
-  onTransformClick: () => void;
   features?: any;
   postType?: string;
 }) => {
@@ -4914,69 +4910,6 @@ const FormattingToolbar = ({
         borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
       }}
     >
-      <button
-        className="mr-2 px-3 py-1.5 rounded-lg text-white font-semibold text-sm font-geist transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-sm hover:shadow flex items-center gap-1 cursor-pointer relative overflow-hidden group animate-pulse"
-        style={{
-          background: "linear-gradient(135deg, #FF5B04 0%, #D946EF 100%)",
-        }}
-        onClick={onCopilotClick}
-      >
-        <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <svg
-          fill="none"
-          height="13"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="13"
-        >
-          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-        </svg>
-        <span>AI Copilot</span>
-      </button>
-      {sep}
-
-      {postType !== "social-post" && (
-        <>
-          {sep}
-          <button
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-            title="Repurpose post into other formats"
-            type="button"
-            onClick={onTransformClick}
-          >
-            <span className="flex items-center gap-1">
-              <CosIcon name="bolt" size={12} className="inline mr-1" /> Transform
-            </span>
-          </button>
-        </>
-      )}
-      {features?.ctaBlocks && (
-        <button
-          className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-          title="Insert Call-To-Action Block"
-          onClick={() => {
-            editor
-              .chain()
-              .focus()
-              .insertContent(
-                `
-              <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
-                <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
-                <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
-              </div>
-            `,
-              )
-              .run();
-          }}
-        >
-          <span className="flex items-center gap-1.5"><CosIcon name="megaphone" size={12} /> Insert CTA</span>
-        </button>
-      )}
-      {sep}
       <button
         className={btn(editor.isActive("bold"))}
         style={editor.isActive("bold") ? activeStyle : {}}
@@ -7958,13 +7891,11 @@ const BlogEditPage = () => {
           editor={editor}
           features={getFeatures(postType)}
           postType={postType}
-          onCopilotClick={() => setActiveSidebarTab("ai")}
           onLinkClick={() => {
             editor.chain().focus().extendMarkRange("link").run();
             setShowLinkModal(true);
           }}
           onPresetChange={setActivePreset}
-          onTransformClick={() => setIsRepurposeDrawerOpen(true)}
         />
       )}
 
@@ -8177,6 +8108,22 @@ const BlogEditPage = () => {
             editor={editor}
             onApplyToEditor={handleApplyToEditor}
             onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
+            onInsertCTA={() => {
+              if (!editor) return;
+              editor
+                .chain()
+                .focus()
+                .insertContent(
+                  `
+              <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
+                <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
+                <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
+              </div>
+            `,
+                )
+                .run();
+            }}
             activeTab={activeSidebarTab}
             onTabChange={setActiveSidebarTab}
             renderContentTab={renderContentTab}
