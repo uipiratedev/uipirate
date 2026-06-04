@@ -3,8 +3,8 @@
 import React from "react";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 import { getPostTypeConfig } from "@/lib/pirateCOS/postTypeConfig";
-import { TitleOptimizerCard, ExcerptCard } from "@/components/pirateCOS/ContentSettingsSubComponents";
-import { TagsCard, HashtagAssistantCard } from "@/components/pirateCOS/ContentSettingsTags";
+import { TitleOptimizerCard, ExcerptCard } from "./ContentSettingsSubComponents";
+import { TagsCard, HashtagAssistantCard } from "./ContentSettingsTags";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface EditorStats {

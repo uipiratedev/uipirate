@@ -46,7 +46,7 @@ import {
 
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
 import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
-import { ContentSettingsPanel } from "@/components/pirateCOS/ContentSettingsPanel";
+import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {

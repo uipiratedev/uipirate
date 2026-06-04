@@ -48,7 +48,7 @@ import {
 } from "@/lib/pirateCOS/postTypeConfig";
 import { DEFAULT_CTA_BLOCK_HTML } from "@/lib/pirateCOS/cta-template";
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
-import { ContentSettingsPanel } from "@/components/pirateCOS/ContentSettingsPanel";
+import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 
 // â”€â”€â”€ Interfaces â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface PostSEO {
@@ -6416,7 +6416,7 @@ const BlogEditor = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null
   >(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
