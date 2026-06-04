@@ -6,7 +6,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEditorSelection } from "@/hooks/useEditorSelection";
 import { useAIWorkspaceSession } from "@/hooks/useAIWorkspaceSession";
 import { AIEngine } from "@/lib/pirateCOS/ai-registry";
-import { getChatSuggestions } from "@/lib/pirateCOS/postTypeConfig";
+import { getChatSuggestions, getFeatures } from "@/lib/pirateCOS/postTypeConfig";
+import { CTA_TEMPLATES, renderCTAHtml } from "@/lib/pirateCOS/cta-template";
 
 import FocusKeywordStrip from "./workspace/ContextDisplay";
 import ActionChips from "./workspace/QuickActions";
@@ -24,14 +25,16 @@ interface AIWorkspacePanelProps {
   brandBrain?: any;
   onApplyToEditor: (text: string, mode: "replace" | "insert-below" | "insert-above") => void;
   onOpenRepurposingDrawer: () => void;
+  onInsertCTA?: (html: string) => void;
 
   // Unified Sidebar Props
-  activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null;
-  onTabChange: (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null) => void;
+  activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null;
+  onTabChange: (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null) => void;
   renderContentTab: () => React.ReactNode;
   renderSEOTab?: () => React.ReactNode;
   renderHealthTab: () => React.ReactNode;
   renderDistributeTab: () => React.ReactNode;
+  renderVersionTab?: () => React.ReactNode;
   initialPrompt?: string;
   onClearInitialPrompt?: () => void;
 
@@ -47,6 +50,7 @@ const PANEL_DESCRIPTIONS: Record<string, string> = {
   seo:      "Set keywords and metadata for search engines",
   health:   "Real-time scores for writing quality and readiness",
   distribute: "Publish to connected platforms and create spin-offs",
+  version:  "View, compare, and restore previous versions of your post",
 };
 
 
@@ -59,6 +63,7 @@ const HELP_TAB_ICONS: Record<string, string> = {
   seo: "search",
   health: "traffic",
   distribute: "bolt",
+  version: "clock",
 };
 
 const HELP_TAB_COLORS: Record<string, { bgClass: string; textClass: string; accentColor: string }> = {
@@ -70,6 +75,7 @@ const HELP_TAB_COLORS: Record<string, { bgClass: string; textClass: string; acce
   seo: { bgClass: "bg-emerald-50", textClass: "text-emerald-600", accentColor: "#059669" },
   health: { bgClass: "bg-teal-50", textClass: "text-teal-600", accentColor: "#0d9488" },
   distribute: { bgClass: "bg-indigo-50", textClass: "text-indigo-600", accentColor: "#4f46e5" },
+  version: { bgClass: "bg-gray-50", textClass: "text-gray-600", accentColor: "#6b7280" },
 };
 
 
@@ -351,6 +357,44 @@ const helpContent: Record<string, { title: string; badge: string; description: R
       </div>
     ),
   },
+  version: {
+    title: "Version History Guide",
+    badge: "Time Travel",
+    description: (
+      <div className="space-y-2.5 text-[11px] font-geist">
+        <p className="text-gray-500 font-medium">The <strong>Version History</strong> tab tracks all saved versions of your post:</p>
+        <div className="space-y-2">
+          <div className="bg-white p-2.5 rounded-xl border border-black/5 flex items-start gap-2.5">
+            <div className="w-5 h-5 rounded-md bg-orange-50 text-[#FF5B04] flex items-center justify-center shrink-0">
+              <CosIcon name="clock" size={11} />
+            </div>
+            <div>
+              <p className="font-bold text-gray-800 text-[11px]">Automatic Snapshots</p>
+              <p className="text-gray-400 mt-0.5 leading-snug">Every time you save or publish, a new version is automatically created with a timestamp and preview.</p>
+            </div>
+          </div>
+          <div className="bg-white p-2.5 rounded-xl border border-black/5 flex items-start gap-2.5">
+            <div className="w-5 h-5 rounded-md bg-orange-50 text-[#FF5B04] flex items-center justify-center shrink-0">
+              <CosIcon name="refresh" size={11} />
+            </div>
+            <div>
+              <p className="font-bold text-gray-800 text-[11px]">Restore Previous Versions</p>
+              <p className="text-gray-400 mt-0.5 leading-snug">Click any version to expand it, then click "Restore" to revert your post to that exact state.</p>
+            </div>
+          </div>
+          <div className="bg-white p-2.5 rounded-xl border border-black/5 flex items-start gap-2.5">
+            <div className="w-5 h-5 rounded-md bg-orange-50 text-[#FF5B04] flex items-center justify-center shrink-0">
+              <CosIcon name="list" size={11} />
+            </div>
+            <div>
+              <p className="font-bold text-gray-800 text-[11px]">Version Timeline</p>
+              <p className="text-gray-400 mt-0.5 leading-snug">Browse the complete history chronologically, with each version showing major or minor change indicators.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  },
 };
 
 export default function AIWorkspacePanel({
@@ -361,12 +405,14 @@ export default function AIWorkspacePanel({
   brandBrain,
   onApplyToEditor,
   onOpenRepurposingDrawer,
+  onInsertCTA,
   activeTab,
   onTabChange,
   renderContentTab,
   renderSEOTab,
   renderHealthTab,
   renderDistributeTab,
+  renderVersionTab,
   initialPrompt,
   onClearInitialPrompt,
   seoFocusKeyword,
@@ -377,6 +423,27 @@ export default function AIWorkspacePanel({
 
   const { selectedText } = useEditorSelection(editor);
   const wordCount = selectedText ? selectedText.split(/\s+/).filter(Boolean).length : 0;
+
+  // Workspace-level actions (consolidated from former editor toolbar)
+  const panelFeatures = getFeatures(postType);
+  const showTransformAction = postType !== "social-post";
+  const showInsertCtaAction = !!panelFeatures?.ctaBlocks && !!onInsertCTA;
+  const showWorkspaceActions = showTransformAction || showInsertCtaAction;
+
+  const [ctaPickerOpen, setCtaPickerOpen] = useState(false);
+  const ctaPickerRef = useRef<HTMLDivElement>(null);
+  const [activeQuickTab, setActiveQuickTab] = useState<"edits" | "transform" | "cta">("edits");
+
+  useEffect(() => {
+    if (!ctaPickerOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (ctaPickerRef.current && !ctaPickerRef.current.contains(e.target as Node)) {
+        setCtaPickerOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [ctaPickerOpen]);
 
   const {
     messages,
@@ -453,16 +520,35 @@ export default function AIWorkspacePanel({
   useEffect(() => {
     if (!isResizing) return;
 
+    // Set cursor to col-resize on body during resize
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!panelRef.current) return;
+
+      // Direct DOM manipulation for instant response
       const rect = panelRef.current.getBoundingClientRect();
       const newWidth = Math.max(260, Math.min(420, rect.right - e.clientX - 56));
-      setWidth(newWidth);
+
+      // Update width directly via style for instant visual feedback
+      panelRef.current.style.width = `${newWidth + 56}px`;
     };
 
     const handleMouseUp = () => {
+      if (!panelRef.current) return;
+
+      // Calculate final width and update React state once
+      const rect = panelRef.current.getBoundingClientRect();
+      const finalWidth = Math.max(260, Math.min(420, rect.right - rect.left - 56));
+
+      setWidth(finalWidth);
       setIsResizing(false);
-      saveUIPreference({ panelWidth: width });
+      saveUIPreference({ panelWidth: finalWidth });
+
+      // Reset cursor
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
     };
 
     document.addEventListener("mousemove", handleMouseMove);
@@ -471,8 +557,11 @@ export default function AIWorkspacePanel({
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
+      // Cleanup cursor
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
     };
-  }, [isResizing, width, saveUIPreference]);
+  }, [isResizing, saveUIPreference]);
 
   const handleTriggerRewriteAction = (actionId: string | string[], tone?: string, instruction?: string) => {
     runRewriteAction(actionId, selectedText, tone, selectedEngine, selectedModel, instruction);
@@ -484,7 +573,7 @@ export default function AIWorkspacePanel({
     }
   };
 
-  const handleTabClick = (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute") => {
+  const handleTabClick = (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version") => {
     if (activeTab === tab) {
       onTabChange(null);
     } else {
@@ -497,20 +586,26 @@ export default function AIWorkspacePanel({
       <div
         ref={panelRef}
         style={{ width: activeTab === null ? "56px" : `${width + 56}px` }}
-        className="flex-shrink-0 flex items-stretch transition-all duration-300 relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl h-full"
+        className={`flex-shrink-0 flex items-stretch relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl h-full ${isResizing ? '' : 'transition-all duration-300'}`}
       >
         {/* Resize Handle */}
         {activeTab !== null && (
           <div
             ref={resizeRef}
             onMouseDown={startResizing}
-            className="absolute top-0 left-0 bottom-0 w-1 cursor-col-resize hover:bg-[#FF5B04]/50 transition-colors z-30"
+            className="absolute top-0 left-0 bottom-0 w-1 cursor-col-resize bg-black/10 hover:bg-[#FF5B04]/60 active:bg-[#FF5B04] transition-colors z-30"
           />
         )}
 
         {/* Drawer content */}
-        {activeTab !== null && (
-          <div style={{ width: `${width}px` }} className="flex-1 flex flex-col h-full overflow-hidden border-r border-black/5 bg-[#F7F7F6]">
+        <div
+          style={{
+            width: `${width}px`,
+            opacity: activeTab === null ? 0 : 1,
+            pointerEvents: activeTab === null ? 'none' : 'auto'
+          }}
+          className="flex-1 flex flex-col h-full overflow-hidden border-r border-black/5 bg-[#F7F7F6] transition-opacity duration-300"
+        >
             {activeTab === "rewrite" ? (
               <div className="flex-1 flex flex-col h-full overflow-hidden">
                 {/* Rewrite Header */}
@@ -530,22 +625,148 @@ export default function AIWorkspacePanel({
                   </div>
                 </div>
                 {/* Rewrite Body */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                  {/* Focus Keyword Strip */}
-                  <FocusKeywordStrip
-                    postType={postType}
-                    focusKeyword={seoFocusKeyword}
-                    onSetFocusKeyword={onSetFocusKeyword}
-                    selectedTextLength={wordCount}
-                  />
+                <div className="flex-1 flex flex-col overflow-hidden">
+                  {/* Tabs Header */}
+                  <div className="flex items-center gap-1 px-4 py-2 border-b border-black/5 bg-gray-50/50">
+                    <button
+                      type="button"
+                      onClick={() => setActiveQuickTab("edits")}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold font-geist transition-all ${
+                        activeQuickTab === "edits"
+                          ? "bg-[#FF5B04] text-white shadow-sm"
+                          : "text-gray-600 hover:bg-white hover:text-gray-900"
+                      }`}
+                    >
+                      <CosIcon name="edit" size={12} />
+                      Quick Edits
+                    </button>
+                    {showTransformAction && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveQuickTab("transform")}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold font-geist transition-all ${
+                          activeQuickTab === "transform"
+                            ? "bg-[#FF5B04] text-white shadow-sm"
+                            : "text-gray-600 hover:bg-white hover:text-gray-900"
+                        }`}
+                      >
+                        <CosIcon name="bolt" size={12} />
+                        Transform
+                      </button>
+                    )}
+                    {showInsertCtaAction && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveQuickTab("cta")}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold font-geist transition-all ${
+                          activeQuickTab === "cta"
+                            ? "bg-[#FF5B04] text-white shadow-sm"
+                            : "text-gray-600 hover:bg-white hover:text-gray-900"
+                        }`}
+                      >
+                        <CosIcon name="megaphone" size={12} />
+                        Insert CTA
+                      </button>
+                    )}
+                  </div>
 
-                  <ActionChips
-                    editorHasContent={editorHasContent}
-                    onTriggerAction={handleTriggerRewriteAction}
-                    loading={rewriteLoading}
-                    selectedText={selectedText}
-                    onSwitchToChat={() => onTabChange("ai")}
-                  />
+                  {/* Tab Content */}
+                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                    {/* Quick Edits Tab */}
+                    {activeQuickTab === "edits" && (
+                      <div className="space-y-4 animate-in fade-in duration-200">
+                        <FocusKeywordStrip
+                          postType={postType}
+                          focusKeyword={seoFocusKeyword}
+                          onSetFocusKeyword={onSetFocusKeyword}
+                          selectedTextLength={wordCount}
+                        />
+
+                        <ActionChips
+                          editorHasContent={editorHasContent}
+                          onTriggerAction={handleTriggerRewriteAction}
+                          loading={rewriteLoading}
+                          selectedText={selectedText}
+                          onSwitchToChat={() => onTabChange("ai")}
+                        />
+                      </div>
+                    )}
+
+                    {/* Transform Tab */}
+                    {activeQuickTab === "transform" && showTransformAction && (
+                      <div className="space-y-3 animate-in fade-in duration-200">
+                        <div className="p-4 bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-100/50 rounded-2xl space-y-3">
+                          <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-[#FF5B04] flex items-center justify-center flex-shrink-0">
+                              <CosIcon name="bolt" size={16} className="text-white" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-sm font-bold text-gray-900 font-geist mb-1">
+                                Repurpose Content
+                              </h3>
+                              <p className="text-[11px] text-gray-600 leading-relaxed">
+                                Transform this post into different formats like LinkedIn posts, Twitter threads, newsletters, or email campaigns.
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={onOpenRepurposingDrawer}
+                            className="w-full px-4 py-3 rounded-xl bg-[#FF5B04] hover:bg-[#FF5B04]/90 text-white text-sm font-bold font-geist shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                          >
+                            <CosIcon name="bolt" size={14} />
+                            Open Transform Tool
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CTA Tab */}
+                    {activeQuickTab === "cta" && showInsertCtaAction && (
+                      <div className="space-y-3 animate-in fade-in duration-200">
+                        <div className="px-1 py-0.5">
+                          <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-widest text-gray-400">
+                            Choose a Template
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          {CTA_TEMPLATES.map((tpl) => (
+                            <button
+                              key={tpl.id}
+                              type="button"
+                              onClick={() => {
+                                onInsertCTA?.(renderCTAHtml(tpl));
+                              }}
+                              className="w-full text-left p-4 rounded-2xl bg-white hover:bg-orange-50 border border-black/5 hover:border-[#FF5B04]/30 transition-all group cursor-pointer shadow-sm hover:shadow-md"
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-orange-50 group-hover:bg-orange-100 flex items-center justify-center flex-shrink-0 transition-colors">
+                                  <CosIcon name="megaphone" size={16} className="text-[#FF5B04]" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm font-bold font-geist text-gray-900 group-hover:text-[#FF5B04] transition-colors mb-1">
+                                    {tpl.name}
+                                  </div>
+                                  <div className="text-[11px] font-geist text-gray-600 leading-relaxed">
+                                    {tpl.description}
+                                  </div>
+                                  <div className="mt-2 pt-2 border-t border-black/5">
+                                    <div className="text-[10px] text-gray-500">
+                                      <span className="font-bold">Preview:</span> {tpl.title}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Common outputs below tabs */}
+                <div className="px-4 pb-4 space-y-4">
 
                   {/* Rewrite Loading State */}
                   {rewriteLoading && thinkingStatus && (
@@ -571,8 +792,8 @@ export default function AIWorkspacePanel({
 
                   {/* Rewrite Output Card */}
                   {rewriteOutput !== null && (
-                    <div className="p-4 bg-white border border-black/5 rounded-2xl shadow-sm space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <div className="flex items-center justify-between">
+                    <div className="bg-white border border-black/5 rounded-2xl shadow-sm animate-in fade-in slide-in-from-top-2 duration-200 flex flex-col max-h-[400px]">
+                      <div className="flex items-center justify-between px-4 pt-4 pb-2 flex-shrink-0">
                         <div className="flex items-center gap-1.5">
                           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5 text-[#FF5B04]">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 21l-1.813-5.096L2.096 15 7.187 13.187 9 8.096l1.813 5.091L15.904 15l-5.091 1.813z" />
@@ -581,7 +802,7 @@ export default function AIWorkspacePanel({
                             AI Suggested Rewrite
                           </span>
                         </div>
-                        
+
                         {!rewriteLoading && (
                           <button
                             onClick={clearRewriteOutput}
@@ -594,12 +815,12 @@ export default function AIWorkspacePanel({
                       </div>
 
                       <div
-                        className="ai-prose bg-orange-50/5 p-3 rounded-xl border border-orange-100/30 max-h-60 overflow-y-auto"
+                        className="ai-prose bg-orange-50/5 p-3 mx-4 rounded-xl border border-orange-100/30 flex-1 overflow-y-auto"
                         dangerouslySetInnerHTML={{ __html: rewriteOutput }}
                       />
 
                       {rewriteLoading ? (
-                        <div className="flex items-center gap-2 pt-1">
+                        <div className="flex items-center gap-2 px-4 py-3 border-t border-black/5 bg-gray-50/50 flex-shrink-0">
                           <button
                             type="button"
                             onClick={stopGeneration}
@@ -610,7 +831,7 @@ export default function AIWorkspacePanel({
                           </button>
                         </div>
                       ) : (
-                        <div className="flex flex-wrap gap-1.5 items-center pt-1">
+                        <div className="flex flex-wrap gap-1.5 items-center px-4 py-3 border-t border-black/5 bg-gray-50/50 flex-shrink-0">
                           <button
                             onClick={() => {
                               onApplyToEditor(rewriteOutput, "replace");
@@ -875,6 +1096,7 @@ export default function AIWorkspacePanel({
                       {activeTab === "seo" && "SEO & Metadata"}
                       {activeTab === "health" && "Content Health"}
                       {activeTab === "distribute" && "Distribute"}
+                      {activeTab === "version" && "Version History"}
                     </span>
                     <button
                       type="button"
@@ -892,11 +1114,11 @@ export default function AIWorkspacePanel({
                   {activeTab === "seo" && renderSEOTab && renderSEOTab()}
                   {activeTab === "health" && renderHealthTab()}
                   {activeTab === "distribute" && renderDistributeTab()}
+                  {activeTab === "version" && renderVersionTab && renderVersionTab()}
                 </div>
               </div>
             )}
-          </div>
-        )}
+        </div>
 
         {/* Persistent Activity Rail on the right edge */}
         <div className="w-14 flex flex-col items-center py-4 gap-4 bg-[#F7F7F6] h-full flex-shrink-0 select-none border-l border-black/[0.03] rounded-r-2xl">
@@ -995,8 +1217,38 @@ export default function AIWorkspacePanel({
               <circle cx="18" cy="5" r="3" />
               <circle cx="6" cy="12" r="3" />
               <circle cx="18" cy="19" r="3" />
-              <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" strokeLinecap="round" strokeLinejoin="round" />
-              <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" strokeLinecap="round" strokeLinejoin="round" />
+              <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+              <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+            </svg>
+          </button>
+
+          {/* Version History */}
+          {renderVersionTab && (
+            <button
+              onClick={() => handleTabClick("version")}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                activeTab === "version"
+                  ? "bg-[#FF5B04] text-white shadow-md shadow-orange-500/10 scale-105"
+                  : "text-gray-400 hover:text-gray-700 hover:bg-black/5"
+              }`}
+              title="Version History"
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+          )}
+
+          <div className="flex-1" />
+
+          {/* Help icon */}
+          <button
+            onClick={() => setHelpTab(activeTab)}
+            className="w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer text-gray-400 hover:text-gray-700 hover:bg-black/5"
+            title="Help & Guide"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </button>
         </div>

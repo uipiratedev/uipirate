@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, {
   useEffect,
@@ -43,7 +43,11 @@ import {
   getGoalConfig,
   getFeatures,
 } from "@/lib/pirateCOS/postTypeConfig";
-import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
+
+import { ContentHealthPanel } from "@/components/pirateCOS/content-health";
+import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
+import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
+import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -4867,19 +4871,15 @@ const SlashCommandMenu = ({
 const FormattingToolbar = ({
   editor,
   onLinkClick,
-  onCopilotClick,
   activePreset,
   onPresetChange,
-  onTransformClick,
   features,
   postType,
 }: {
   editor: any;
   onLinkClick: () => void;
-  onCopilotClick: () => void;
   activePreset: string;
   onPresetChange: (preset: string) => void;
-  onTransformClick: () => void;
   features?: any;
   postType?: string;
 }) => {
@@ -4906,76 +4906,12 @@ const FormattingToolbar = ({
 
   return (
     <div
-      className="sticky z-40 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
+      className="sticky top-0 z-10 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
       style={{
-        top: "61px",
         background: "rgba(255, 255, 255, 0.95)",
         borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
       }}
     >
-      <button
-        className="mr-2 px-3 py-1.5 rounded-lg text-white font-semibold text-sm font-geist transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-sm hover:shadow flex items-center gap-1 cursor-pointer relative overflow-hidden group animate-pulse"
-        style={{
-          background: "linear-gradient(135deg, #FF5B04 0%, #D946EF 100%)",
-        }}
-        onClick={onCopilotClick}
-      >
-        <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <svg
-          fill="none"
-          height="13"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="13"
-        >
-          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-        </svg>
-        <span>AI Copilot</span>
-      </button>
-      {sep}
-
-      {postType !== "social-post" && (
-        <>
-          {sep}
-          <button
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-            title="Repurpose post into other formats"
-            type="button"
-            onClick={onTransformClick}
-          >
-            <span className="flex items-center gap-1">
-              <CosIcon name="bolt" size={12} className="inline mr-1" /> Transform
-            </span>
-          </button>
-        </>
-      )}
-      {features?.ctaBlocks && (
-        <button
-          className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-          title="Insert Call-To-Action Block"
-          onClick={() => {
-            editor
-              .chain()
-              .focus()
-              .insertContent(
-                `
-              <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
-                <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
-                <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
-              </div>
-            `,
-              )
-              .run();
-          }}
-        >
-          <span className="flex items-center gap-1.5"><CosIcon name="megaphone" size={12} /> Insert CTA</span>
-        </button>
-      )}
-      {sep}
       <button
         className={btn(editor.isActive("bold"))}
         style={editor.isActive("bold") ? activeStyle : {}}
@@ -5787,6 +5723,8 @@ const BlogEditPage = () => {
   const [tagInput, setTagInput] = useState("");
   const [postType, setPostType] = useState<string>("blog");
   const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
+  const [teamId, setTeamId] = useState<string>(""); // Phase 5.4+: Team assignment
+  const [teams, setTeams] = useState<any[]>([]); // Phase 5.4+: Available teams
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -5808,7 +5746,7 @@ const BlogEditPage = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null
   >(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
@@ -6216,6 +6154,7 @@ const BlogEditPage = () => {
       slug: currentSlug,
       seo: seoData,
       repurposedOutputs,
+      teamId: teamId || undefined, // Phase 5.4+: Team assignment
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
@@ -6376,7 +6315,7 @@ const BlogEditPage = () => {
         placeholder: ({ node }) => {
           if (node.type.name === "heading") return "Heading";
 
-          return "Type '/' for commands or click + to add a block…";
+          return "Type '/' for commands or click + to add a block...";
         },
       }),
       TaskList,
@@ -6574,6 +6513,22 @@ const BlogEditPage = () => {
     }
   }, [params.id, mounted, authLoading, editor]);
 
+  // Phase 5.4+: Load available teams
+  useEffect(() => {
+    const loadTeams = async () => {
+      try {
+        const response = await fetch("/api/pirateCOS/teams");
+        const data = await response.json();
+        if (data.success) {
+          setTeams(data.data.teams || []);
+        }
+      } catch (error) {
+        console.error("Failed to load teams:", error);
+      }
+    };
+    loadTeams();
+  }, []);
+
   const fetchBlog = async () => {
     try {
       setLoading(true);
@@ -6593,6 +6548,7 @@ const BlogEditPage = () => {
 
         setPostType(postTypeVal);
         setContentGoal(blog.contentGoal || "traffic");
+        setTeamId(blog.teamId || ""); // Phase 5.4+: Load team assignment
 
         // Auto-select recommended AI preset based on loaded postType if not already set
         const PRESET_DEFAULTS: Record<string, string> = {
@@ -6770,803 +6726,100 @@ const BlogEditPage = () => {
   };
 
   const renderContentTab = () => (
-    <>
-      {/* Feed Guardrails or Analytics Card */}
-      {postType === "social-post" ? (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            Feed Guardrails
-          </p>
-          
-          {/* Platform switcher */}
-          <div className="flex bg-black/5 p-1 rounded-xl">
-            {(["linkedin", "x"] as const).map((dest) => (
-              <button
-                key={dest}
-                type="button"
-                onClick={() => setSocialDestination(dest)}
-                className={`flex-1 py-1 text-xs font-semibold rounded-lg transition-all ${
-                  socialDestination === dest
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-800"
-                }`}
-              >
-                {SOCIAL_DESTINATIONS[dest].label}
-              </button>
-            ))}
-          </div>
+    <ContentSettingsPanel
+      // Post data
+      postType={postType}
+      title={title}
+      excerpt={excerpt}
+      tags={tags}
+      editorStats={editorStats}
 
-          {/* Character limit bar */}
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[10px] font-geist text-gray-500 font-medium">
-                Characters
-              </span>
-              <span className={`text-[10px] font-jetbrains-mono font-semibold ${
-                editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                  ? "text-red-500 font-bold"
-                  : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                  ? "text-amber-500"
-                  : "text-gray-400"
-              }`}>
-                {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
-              </span>
-            </div>
-            <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-300 ${
-                  editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                    ? "bg-red-500"
-                    : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                    ? "bg-amber-500"
-                    : "bg-[#FF5B04]"
-                }`}
-                style={{
-                  width: `${Math.min(
-                    100,
-                    (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
-                  )}%`,
-                }}
-              />
-            </div>
-          </div>
+      // Social post specific
+      socialDestination={socialDestination}
+      onSocialDestinationChange={setSocialDestination}
 
-          {/* Whitespace Spacing Advisor */}
-          {editorStats.characters > 0 && (
-            <div className="pt-3 border-t border-black/5">
-              {(() => {
-                const text = editor?.getText() || "";
-                const paragraphsText = text.split("\n").map(p => p.trim()).filter(Boolean);
-                const hasLongParagraph = paragraphsText.some(p => p.length > 240);
-                if (hasLongParagraph) {
-                  return (
-                    <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
-                    <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-[10px] font-bold text-amber-800">
-                          Whitespace Spacing Advisor
-                        </p>
-                        <p className="text-[10px] text-amber-700 leading-normal mt-0.5">
-                          Feeds favor breathing room. Split this into short 1-2 sentence paragraphs for better mobile reading.
-                        </p>
-                      </div>
-                    </div>
-                  );
-                }
-                return (
-                  <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
-                    <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-bold text-green-800">
-                        Spacing Calibrated
-                      </p>
-                      <p className="text-[10px] text-green-700 leading-normal mt-0.5">
-                        Excellent spacing! Paragraphs are airy and reader-friendly.
-                      </p>
-                    </div>
-                  </div>
-                );
-              })()}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-            Analytics
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.words}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Words
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.characters}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Characters
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.paragraphs}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Paragraphs
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-[#FF5B04]">
-                {editorStats.readTime} min
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Read Time
-              </div>
-            </div>
-          </div>
+      // Title optimizer
+      titleInstructions={titleInstructions}
+      titleSuggestions={titleSuggestions}
+      isOptimizingTitle={isOptimizingTitle}
+      onTitleInstructionsChange={setTitleInstructions}
+      onGenerateTitleSuggestions={generateTitleSuggestions}
 
-          {/* Writing Goal Progress */}
-          {(() => {
-            const ptConfig = getPostTypeConfig(postType);
-            const minGoal = ptConfig?.minWordCount ?? 500;
-            const maxGoal = ptConfig?.maxWordCount ?? 1500;
-            return (
-              <div className="mt-3.5 pt-3 border-t border-black/5">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[10px] font-geist text-gray-500 font-medium">
-                    Writing Goal
-                  </span>
-                  <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                    {Math.min(
-                      100,
-                      Math.round((editorStats.words / minGoal) * 100),
-                    )}
-                    % ({editorStats.words} / {minGoal}–{maxGoal} words)
-                  </span>
-                </div>
-                <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500 ease-out"
-                    style={{
-                      width: `${Math.min(100, (editorStats.words / minGoal) * 100)}%`,
-                      background: "#FF5B04",
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-      )}
+      // Excerpt
+      excerptInstructions={excerptInstructions}
+      showExcerptAIGuidelines={showExcerptAIGuidelines}
+      suggestedExcerpt={suggestedExcerpt}
+      isGeneratingExcerpt={isGeneratingExcerpt}
+      onExcerptInstructionsChange={setExcerptInstructions}
+      onToggleExcerptAI={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
+      onGenerateExcerpt={generateExcerptInline}
+      onApplySuggestedExcerpt={() => {
+        setExcerpt(suggestedExcerpt);
+        setSuggestedExcerpt("");
+        setIsDirty(true);
+      }}
+      onDismissSuggestedExcerpt={() => setSuggestedExcerpt("")}
 
-      {/* AI Title Optimizer Card */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-        <div className="flex justify-between items-center mb-3">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            AI Title Optimizer
-          </p>
-        </div>
-        <div className="space-y-3">
-          <textarea
-            className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-            placeholder="Title guidelines (e.g., 'professional tone', 'under 60 chars', 'punchy')"
-            rows={2}
-            value={titleInstructions}
-            onChange={(e) => setTitleInstructions(e.target.value)}
-          />
-          <button
-            type="button"
-            disabled={isOptimizingTitle}
-            onClick={generateTitleSuggestions}
-            className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isOptimizingTitle ? (
-              <>
-                <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Optimizing Title...
-              </>
-            ) : (
-              <>
-                <CosIcon name="sparkles" size={12} className="text-white fill-current" />
-                <span>Optimize Title</span>
-              </>
-            )}
-          </button>
+      // Tags
+      tagInput={tagInput}
+      suggestedTags={suggestedTags}
+      isGeneratingTags={isGeneratingTags}
+      onTagInputChange={setTagInput}
+      onAddTag={addTag}
+      onRemoveTag={(tag) => {
+        setTags(tags.filter((t) => t !== tag));
+        setIsDirty(true);
+      }}
+      onGenerateTags={generateTagsInline}
+      onAppendHashtag={appendHashtag}
 
-          {titleSuggestions.length > 0 && (
-            <div className="space-y-2 pt-2 border-t border-black/5">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                Click to Apply Suggestion
-              </p>
-              <div className="space-y-1.5">
-                {titleSuggestions.map((suggestion, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      setTitle(suggestion);
-                      setIsDirty(true);
-                    }}
-                    className={`w-full text-left text-xs font-geist p-2.5 rounded-xl border text-gray-700 transition-all ${
-                      title === suggestion
-                        ? "bg-orange-50 border-[#FF5B04] text-[#FF5B04]"
-                        : "bg-black/[0.01] border-black/5 hover:border-[#FF5B04]/50 hover:bg-black/[0.03]"
-                    }`}
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      // Core callbacks
+      onTitleChange={setTitle}
+      onExcerptChange={setExcerpt}
+      onTagsChange={setTags}
+      onDirtyChange={() => setIsDirty(true)}
 
-      {/* Excerpt card - hidden for social posts */}
-      {postType !== "social-post" && (
-        <div id="excerpt-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Excerpt
-            </p>
-            <button
-              type="button"
-              className={`text-[10px] font-geist font-semibold transition-colors flex items-center gap-1 cursor-pointer ${
-                showExcerptAIGuidelines ? "text-gray-500 hover:text-gray-700" : "text-[#FF5B04] hover:text-[#e04f03]"
-              }`}
-              onClick={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
-            >
-              <CosIcon name="sparkles" size={10} className="text-current" />
-              {showExcerptAIGuidelines ? "Hide AI Assistant" : "AI Assistant"}
-            </button>
-          </div>
-          
-          <textarea
-            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-            placeholder="Short summary shown in blog listings…"
-            style={{ minHeight: 80 }}
-            value={excerpt}
-            onChange={(e) => {
-              setExcerpt(e.target.value);
-              setIsDirty(true);
-            }}
-          />
-
-          {showExcerptAIGuidelines && (
-            <div className="mt-3 pt-3 border-t border-black/5 space-y-2">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                AI Excerpt Guidelines
-              </p>
-              <textarea
-                className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-2.5 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-                placeholder="Guidelines (e.g. concise, professional tone, focus on launch details...)"
-                rows={2}
-                value={excerptInstructions}
-                onChange={(e) => setExcerptInstructions(e.target.value)}
-              />
-              <button
-                type="button"
-                disabled={isGeneratingExcerpt}
-                onClick={async () => {
-                  if (!editor || editor.isEmpty) {
-                    setValidationError("Please write some content first so the AI can summarize it.");
-                    return;
-                  }
-                  await generateExcerptInline();
-                }}
-                className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isGeneratingExcerpt ? (
-                  <>
-                    <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Generating Excerpt...
-                  </>
-                ) : (
-                  <>
-                    <CosIcon name="sparkles" size={12} className="text-white fill-current" />
-                    <span>Generate Excerpt</span>
-                  </>
-                )}
-              </button>
-            </div>
-          )}
-
-          {suggestedExcerpt && (
-            <div className="mt-3 p-3 bg-orange-50 border border-[#FF5B04]/30 rounded-xl space-y-2">
-              <p className="text-[10px] font-bold text-[#FF5B04] uppercase tracking-wider font-jetbrains-mono">
-                Suggested Excerpt
-              </p>
-              <p className="text-xs font-geist text-gray-700 leading-relaxed">
-                {suggestedExcerpt}
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setExcerpt(suggestedExcerpt);
-                  setSuggestedExcerpt("");
-                  setIsDirty(true);
-                }}
-                className="w-full text-xs font-semibold py-1.5 px-3 rounded-lg bg-white border border-[#FF5B04]/30 text-[#FF5B04] hover:bg-orange-100/50 transition-colors flex items-center justify-center gap-1"
-              >
-                Apply Suggested Excerpt
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Hashtag Assistant / Tags card */}
-      {postType === "social-post" ? (
-        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3 mt-4">
-          <div className="flex justify-between items-center">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Hashtag Assistant
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-1.5 min-h-[24px]">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                style={{ background: "#FFF0E8", color: "#FF5B04" }}
-              >
-                {tag}
-                <button
-                  type="button"
-                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                  onClick={() => {
-                    setTags(tags.filter((t) => t !== tag));
-                    setIsDirty(true);
-                  }}
-                >
-                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
-                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-          <div className="space-y-1.5">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-              Suggestions
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {SOCIAL_DESTINATIONS[socialDestination].suggestions.map((suggestion) => {
-                const isSelected = tags.includes(suggestion);
-                return (
-                  <button
-                    key={suggestion}
-                    type="button"
-                    disabled={isSelected}
-                    onClick={() => {
-                      appendHashtag(suggestion);
-                      setIsDirty(true);
-                    }}
-                    className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
-                      isSelected
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04]"
-                    }`}
-                  >
-                    {suggestion}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-            placeholder="Add tag, press Enter…"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => {
-              handleAddHashtag(e);
-              setIsDirty(true);
-            }}
-          />
-        </div>
-      ) : (
-        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Tags
-            </p>
-            <button
-              className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
-              type="button"
-              disabled={isGeneratingTags}
-              onClick={async () => {
-                if (!editor || editor.isEmpty) {
-                  setValidationError("Please write some content first so the AI can recommend tags.");
-                  return;
-                }
-                await generateTagsInline();
-              }}
-            >
-              {isGeneratingTags ? (
-                <>
-                  <svg className="animate-spin h-3 w-3 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Recommending...
-                </>
-              ) : (
-                <>
-                  <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                  <span>Recommend Tags</span>
-                </>
-              )}
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                style={{ background: "#FFF0E8", color: "#FF5B04" }}
-              >
-                {tag}
-                <button
-                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                  onClick={() => {
-                    setTags(tags.filter((t) => t !== tag));
-                    setIsDirty(true);
-                  }}
-                >
-                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
-                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-            placeholder="Add tag, press Enter…"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => {
-              addTag(e);
-              setIsDirty(true);
-            }}
-          />
-
-          {suggestedTags.length > 0 && (
-            <div className="mt-3 pt-3 border-t border-black/5 space-y-1.5">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                AI Suggested Tags (Click to Add)
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {suggestedTags.map((tag) => {
-                  const isSelected = tags.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      disabled={isSelected}
-                      onClick={() => {
-                        setTags([...tags, tag]);
-                        setIsDirty(true);
-                      }}
-                      className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
-                        isSelected
-                          ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-dashed border-gray-200"
-                          : "bg-orange-50/50 border border-[#FF5B04]/20 text-[#FF5B04] hover:bg-[#FF5B04]/10"
-                      }`}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-    </>
+      // Features (all enabled by default)
+      showAnalytics={true}
+      showTitleOptimizer={true}
+      showExcerpt={true}
+      showTags={true}
+      showProgressChecklist={true}
+    />
   );
 
-  const renderSEOTab = () => {
-    return (
-      <div className="space-y-4">
-        {/* 2-Tab Navigation */}
-        <div className="flex border-b border-black/5 mb-3 gap-1 pb-1">
-          {[
-            { id: "general", label: "Core SEO" },
-            { id: "social", label: "Social & Preview" },
-          ].map((tab) => {
-            const isActive = activeSEOTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveSEOTab(tab.id as any)}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider font-jetbrains-mono transition-all whitespace-nowrap cursor-pointer ${
-                  isActive
-                    ? "bg-black text-white shadow-sm"
-                    : "text-gray-400 hover:text-gray-800 hover:bg-black/5"
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {seoError && (
-          <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex gap-2 text-[11px] text-red-600 font-medium font-geist">
-            <CosIcon name="warning" size={12} className="text-red-500 shrink-0 mt-0.5" />
-            <p className="flex-1">{seoError}</p>
-          </div>
-        )}
-
-        {/* Core SEO Tab */}
-        {activeSEOTab === "general" && (
-          <div className="space-y-4 text-left">
-            {/* Focus Keyword */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">Focus Keyword</label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">The main term you want to rank for in Google</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isSuggestingFocusKeyword}
-                  onClick={async () => {
-                    if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
-                    await generateFocusKeywordInline();
-                  }}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
-                >
-                  {isSuggestingFocusKeyword ? (
-                    "Suggesting..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                      <span>AI Suggest</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              <input
-                className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-                placeholder="e.g. react performance tips"
-                value={seoData?.focusKeyword || ""}
-                onChange={(e) => { setSeoData((prev) => ({ ...prev, focusKeyword: e.target.value })); setIsDirty(true); }}
-              />
-            </div>
-
-            {/* Meta Title */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                    Meta Title
-                    <span className={`normal-case font-geist ml-1 ${(seoData?.metaTitle || "").length > 60 ? "text-red-400" : (seoData?.metaTitle || "").length >= 50 ? "text-green-500" : "text-gray-300"}`}>
-                      {(seoData?.metaTitle || "").length}/60
-                    </span>
-                  </label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">Shown as the title in Google search results (50–60 chars ideal)</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isGeneratingMetaTitle}
-                  onClick={async () => {
-                    if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
-                    await generateMetaTitleInline();
-                  }}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
-                >
-                  {isGeneratingMetaTitle ? (
-                    "Generating..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                      <span>Generate</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              <input
-                className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-                maxLength={60}
-                placeholder="SEO page title…"
-                value={seoData?.metaTitle || ""}
-                onChange={(e) => { setSeoData((prev) => ({ ...prev, metaTitle: e.target.value })); setIsDirty(true); }}
-              />
-              {suggestedMetaTitle && (
-                <div className="mt-1 p-2 bg-orange-50 border border-[#FF5B04]/20 rounded-lg flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-geist text-gray-700 truncate">{suggestedMetaTitle}</span>
-                  <button type="button" onClick={() => { setSeoData((prev) => ({ ...prev, metaTitle: suggestedMetaTitle })); setSuggestedMetaTitle(""); setIsDirty(true); }} className="text-[10px] font-semibold text-[#FF5B04] hover:underline flex-shrink-0">Apply</button>
-                </div>
-              )}
-            </div>
-
-            {/* Meta Description */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                    Meta Description
-                    <span className={`normal-case font-geist ml-1 ${(seoData?.metaDescription || "").length > 160 ? "text-red-400" : (seoData?.metaDescription || "").length >= 140 ? "text-green-500" : "text-gray-300"}`}>
-                      {(seoData?.metaDescription || "").length}/160
-                    </span>
-                  </label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">The snippet shown below the title in search results (140–160 chars)</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isGeneratingMetaDescription}
-                  onClick={async () => {
-                    if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
-                    await generateMetaDescriptionInline();
-                  }}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
-                >
-                  {isGeneratingMetaDescription ? (
-                    "Generating..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                      <span>Generate</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              <textarea
-                className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none"
-                maxLength={160}
-                placeholder="Brief description for search results…"
-                rows={3}
-                value={seoData?.metaDescription || ""}
-                onChange={(e) => { setSeoData((prev) => ({ ...prev, metaDescription: e.target.value })); setIsDirty(true); }}
-              />
-              {suggestedMetaDescription && (
-                <div className="mt-1 p-2 bg-orange-50 border border-[#FF5B04]/20 rounded-lg flex flex-col gap-1">
-                  <span className="text-[11px] font-geist text-gray-700 leading-normal">{suggestedMetaDescription}</span>
-                  <button type="button" onClick={() => { setSeoData((prev) => ({ ...prev, metaDescription: suggestedMetaDescription })); setSuggestedMetaDescription(""); setIsDirty(true); }} className="self-end text-[10px] font-semibold text-[#FF5B04] hover:underline">Apply Description</button>
-                </div>
-              )}
-            </div>
-
-            {/* Related Keywords */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">Related Keywords</label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">Supporting terms that help Google understand your topic</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isAnalyzingSEO && generatingSEOAction === "tags"}
-                  onClick={() => runSEOAIAction("tags")}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors disabled:opacity-50 flex-shrink-0"
-                >
-                  {isAnalyzingSEO && generatingSEOAction === "tags" ? (
-                    "Generating..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04] inline mr-1" />
-                      <span>AI Generate</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              {seoData?.keywords && seoData.keywords.length > 0 ? (
-                <div className="flex flex-wrap gap-1.5">
-                  {seoData.keywords.map((kw: string, idx: number) => (
-                    <span key={idx} onClick={() => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }} className="px-2 py-0.5 rounded-lg bg-orange-50 text-orange-600 text-[10px] font-bold font-geist border border-orange-100 flex items-center gap-1 cursor-pointer hover:bg-orange-100 transition-all select-none" title="Set as Focus Keyword">
-                      {kw}
-                      <button type="button" onClick={(e) => { e.stopPropagation(); const nextKws = seoData.keywords!.filter((_: any, i: number) => i !== idx); setSeoData((prev) => ({ ...prev, keywords: nextKws })); setIsDirty(true); }} className="text-orange-400 hover:text-orange-600 font-bold pl-0.5">×</button>
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-[10px] text-gray-400 italic font-geist">No keywords yet — click "AI Generate" to get suggestions.</p>
-              )}
-            </div>
-
-            {/* Advanced */}
-            <details className="group">
-              <summary className="text-[10px] font-bold text-gray-400 font-jetbrains-mono uppercase tracking-wider cursor-pointer hover:text-gray-600 transition-colors list-none flex items-center gap-1.5 select-none">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3 h-3 group-open:rotate-90 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                Advanced Options
-              </summary>
-              <div className="mt-3 space-y-3 bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">URL Slug</label>
-                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="url-slug-here" value={currentSlug} onChange={(e) => { const val = e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""); setCurrentSlug(val); setIsDirty(true); }} />
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">Canonical URL</label>
-                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="https://yourdomain.com/posts/..." value={seoData?.canonicalUrl || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, canonicalUrl: e.target.value })); setIsDirty(true); }} />
-                </div>
-              </div>
-            </details>
-          </div>
-        )}
-
-        {/* Social & Preview Tab */}
-        {activeSEOTab === "social" && (
-          <div className="space-y-4 text-left">
-            {/* Google SERP Preview */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">Google Search Preview</p>
-              <div className="p-3.5 bg-white border border-black/5 rounded-xl text-left">
-                <p className="text-[11px] text-[#202124] truncate leading-tight">uipirate.com/posts/<span className="font-semibold">{currentSlug || "..."}</span></p>
-                <h4 className="text-sm text-[#1a0dab] font-semibold hover:underline cursor-pointer leading-snug line-clamp-2 mt-0.5">{seoData?.metaTitle || title || "Untitled Post"}</h4>
-                <p className="text-xs text-[#4d5156] line-clamp-2 leading-relaxed mt-1">{seoData?.metaDescription || "Add a meta description to see how your post will appear in Google results."}</p>
-              </div>
-            </div>
-
-            {/* Social Card Preview */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">Social Card Preview</p>
-              <div className="bg-white border border-black/5 rounded-xl overflow-hidden shadow-sm">
-                <div className="aspect-[1.91/1] bg-gray-100 flex items-center justify-center">
-                  {seoData?.ogImage ? (
-                    <img alt="OG Preview" className="w-full h-full object-cover" src={seoData.ogImage} />
-                  ) : (
-                    <div className="text-gray-300 flex flex-col items-center justify-center gap-1">
-                      <svg fill="none" height="24" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><rect height="18" rx="2" width="18" x="3" y="3" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></svg>
-                      <span className="text-[8px] font-bold uppercase tracking-widest">No Image</span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-3 bg-gray-50/50 border-t border-black/5 text-left">
-                  <p className="text-[8px] text-gray-400 uppercase font-bold font-jetbrains-mono mb-1">UIPIRATE.COM</p>
-                  <h4 className="text-xs font-bold text-gray-900 line-clamp-1 mb-1">{seoData?.ogTitle || seoData?.metaTitle || title || "Untitled Post"}</h4>
-                  <p className="text-[10px] text-gray-500 line-clamp-2 leading-snug">{seoData?.ogDescription || seoData?.metaDescription || "No description provided."}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">Social Share Image URL</label>
-              <p className="text-[9px] text-gray-400 font-geist">Appears when someone shares this link on LinkedIn, X, etc.</p>
-              <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="https://cloudinary.com/..." value={seoData?.ogImage || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, ogImage: e.target.value })); setIsDirty(true); }} />
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">Social Title Override</label>
-              <p className="text-[9px] text-gray-400 font-geist">Optional: use a different title for Facebook/LinkedIn shares</p>
-              <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="Defaults to Meta Title if blank..." value={seoData?.ogTitle || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, ogTitle: e.target.value })); setIsDirty(true); }} />
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">Social Description Override</label>
-              <p className="text-[9px] text-gray-400 font-geist">Optional: use a different description for social shares</p>
-              <textarea className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none" placeholder="Defaults to Meta Description if blank..." rows={3} value={seoData?.ogDescription || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, ogDescription: e.target.value })); setIsDirty(true); }} />
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-              <div className="flex items-center gap-3">
-                <input id="noIndexEdit" type="checkbox" checked={seoData?.noIndex || false} onChange={(e) => { setSeoData((prev) => ({ ...prev, noIndex: e.target.checked })); setIsDirty(true); }} className="w-4 h-4 rounded-md border-black/10 text-[#FF5B04] focus:ring-[#FF5B04]/30 cursor-pointer" />
-                <div>
-                  <label htmlFor="noIndexEdit" className="text-xs font-bold font-geist text-gray-700 cursor-pointer select-none block">Hide from search engines</label>
-                  <p className="text-[9px] text-gray-400 font-geist">Adds a no-index tag so Google won't index this page</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
+  const renderSEOTab = () => (
+    <SEOPanel
+      seo={seoData}
+      title={title}
+      currentSlug={currentSlug}
+      onSeoChange={(patch) => setSeoData((prev) => ({ ...prev, ...patch }))}
+      onSlugChange={setCurrentSlug}
+      onDirtyChange={() => setIsDirty(true)}
+      seoError={seoError}
+      isSuggestingFocusKeyword={isSuggestingFocusKeyword}
+      onGenerateFocusKeyword={async () => {
+        if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
+        await generateFocusKeywordInline();
+      }}
+      isGeneratingMetaTitle={isGeneratingMetaTitle}
+      suggestedMetaTitle={suggestedMetaTitle}
+      onGenerateMetaTitle={async () => {
+        if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
+        await generateMetaTitleInline();
+      }}
+      onApplySuggestedMetaTitle={() => { setSeoData((prev) => ({ ...prev, metaTitle: suggestedMetaTitle })); setSuggestedMetaTitle(""); setIsDirty(true); }}
+      isGeneratingMetaDescription={isGeneratingMetaDescription}
+      suggestedMetaDescription={suggestedMetaDescription}
+      onGenerateMetaDescription={async () => {
+        if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
+        await generateMetaDescriptionInline();
+      }}
+      onApplySuggestedMetaDescription={() => { setSeoData((prev) => ({ ...prev, metaDescription: suggestedMetaDescription })); setSuggestedMetaDescription(""); setIsDirty(true); }}
+      isGeneratingKeywords={isAnalyzingSEO && generatingSEOAction === "tags"}
+      onGenerateKeywords={() => runSEOAIAction("tags")}
+    />
+  );
 
   const renderHealthTab = () => (
     <ContentHealthPanel
@@ -7581,6 +6834,38 @@ const BlogEditPage = () => {
       title={title}
     />
   );
+
+  const renderVersionTab = () => {
+    if (!blogId) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-sm font-semibold font-geist text-gray-700 mb-2">No Version History Yet</p>
+          <p className="text-xs text-gray-500 font-geist max-w-xs">
+            Save your post as a draft or publish it to start tracking version history.
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="h-full flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <VersionHistoryPanel
+            postId={blogId}
+            onRestore={(version: number) => {
+              console.log(`Restored to version ${version}`);
+              router.refresh();
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
 
   const renderDistributeTab = () => (
     <DistributionPanel
@@ -7854,25 +7139,8 @@ const BlogEditPage = () => {
         </div>
       </div>
 
-      {/* ── Formatting Toolbar — hidden in immersive preview mode ── */}
-      {!showPreview && (
-        <FormattingToolbar
-          activePreset={activePreset}
-          editor={editor}
-          features={getFeatures(postType)}
-          postType={postType}
-          onCopilotClick={() => setActiveSidebarTab("ai")}
-          onLinkClick={() => {
-            editor.chain().focus().extendMarkRange("link").run();
-            setShowLinkModal(true);
-          }}
-          onPresetChange={setActivePreset}
-          onTransformClick={() => setIsRepurposeDrawerOpen(true)}
-        />
-      )}
-
       {/* ── Two-column Layout ── */}
-      <div className="flex flex-col lg:flex-row gap-3 px-4 lg:px-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
+      <div className="flex flex-col lg:flex-row pl-4 lg:pl-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -7886,8 +7154,21 @@ const BlogEditPage = () => {
           />
         ) : (
           <>
-          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-y-auto">
-            <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden">
+            {/* Formatting Toolbar — sticky inside editor column */}
+            <FormattingToolbar
+              activePreset={activePreset}
+              editor={editor}
+              features={getFeatures(postType)}
+              postType={postType}
+              onLinkClick={() => {
+                editor.chain().focus().extendMarkRange("link").run();
+                setShowLinkModal(true);
+              }}
+              onPresetChange={setActivePreset}
+            />
+
+            <div className="flex-1 min-w-0 overflow-y-auto">
             {/* Banner image area */}
             {bannerImage ? (
               <div className="relative group">
@@ -8080,12 +7361,17 @@ const BlogEditPage = () => {
             editor={editor}
             onApplyToEditor={handleApplyToEditor}
             onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
+            onInsertCTA={(html) => {
+              if (!editor) return;
+              editor.chain().focus().insertContent(html).run();
+            }}
             activeTab={activeSidebarTab}
             onTabChange={setActiveSidebarTab}
             renderContentTab={renderContentTab}
             renderSEOTab={getFeatures(postType).seoPanel ? renderSEOTab : undefined}
             renderHealthTab={renderHealthTab}
             renderDistributeTab={renderDistributeTab}
+            renderVersionTab={renderVersionTab}
             initialPrompt={copilotInitialPrompt}
             onClearInitialPrompt={() => setCopilotInitialPrompt("")}
             seoFocusKeyword={seoData?.focusKeyword || ""}
@@ -8259,7 +7545,7 @@ const BlogEditPage = () => {
         .notion-editor-wrapper .ProseMirror { position: relative; outline: none; min-height: 500px; }
         .notion-editor-wrapper .ProseMirror > * { position: relative; margin-bottom: 0.25rem; }
         .notion-editor-wrapper .ProseMirror > *:hover { background-color: rgba(0,0,0,0.02); border-radius: 4px; }
-        .notion-editor-wrapper .ProseMirror p.is-editor-empty::before { color: #adb5bd; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
+        .notion-editor-wrapper .ProseMirror p.is-empty::before { color: #adb5bd; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
         .notion-editor-wrapper .ProseMirror p { line-height: 1.75; font-size: 1rem; color: #374151; margin: 0.5rem 0; }
         .notion-editor-wrapper .ProseMirror img { max-width: 100%; height: auto; border-radius: 12px; margin: 1.5rem auto; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .notion-editor-wrapper .ProseMirror hr { border: none; border-top: 2px solid rgba(0,0,0,0.08); margin: 2rem 0; border-radius: 4px; }

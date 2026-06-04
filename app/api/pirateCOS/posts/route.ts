@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
 
 interface PostQuery {
   tenantId?: mongoose.Types.ObjectId;
@@ -113,6 +114,7 @@ export async function POST(request: NextRequest) {
       contentGoal,
       slug: providedSlug,
       seo,
+      teamId, // Phase 5.4+: Team assignment
     } = body;
 
     let slug =
@@ -135,6 +137,7 @@ export async function POST(request: NextRequest) {
 
     const blog = await Post.create({
       tenantId: postTenantOid,
+      teamId: teamId ? new mongoose.Types.ObjectId(teamId) : undefined, // Phase 5.4+
       title,
       slug,
       content,
@@ -154,6 +157,25 @@ export async function POST(request: NextRequest) {
 
     blog.calculateReadTime();
     await blog.save();
+
+    // Phase 4F.2: Create initial version snapshot
+    try {
+      await createSnapshot(
+        blog._id.toString(),
+        blog.content,
+        user.tenantId.toString(),
+        user.id,
+        "manual",
+        {
+          title: blog.title,
+          postType: blog.postType,
+          commitMessage: "Initial post creation",
+        }
+      );
+    } catch (versionError) {
+      console.error("Failed to create initial version snapshot:", versionError);
+      // Don't fail post creation if versioning fails
+    }
 
     return NextResponse.json(
       {

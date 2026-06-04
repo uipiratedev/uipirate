@@ -3,9 +3,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import CosIcon from "../CosIcon";
 import { AIWorkspaceMessage } from "@/hooks/useAIWorkspaceSession";
-import { useAIModels } from "@/hooks/useAIModels";
-import { AIEngine, AI_PROVIDERS } from "@/lib/pirateCOS/ai-registry";
+import { AIEngine } from "@/lib/pirateCOS/ai-registry";
 import { ChatIdeaSuggestion } from "@/lib/pirateCOS/postTypeConfig";
+import { ModelSelectorPill } from "../ModelSelectorPill";
 
 interface ConversationThreadProps {
   messages: AIWorkspaceMessage[];
@@ -35,6 +35,9 @@ interface ConversationThreadProps {
   postType: string;
   contentGoal: string;
 }
+
+// Phase 5.2: Feedback state type
+type FeedbackStatus = "pending" | "accepted" | "rejected";
 
 export default function ConversationThread({
   messages,
@@ -72,6 +75,9 @@ export default function ConversationThread({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const lastMessageCountRef = useRef(messages.length);
+
+  // Phase 5.2: Feedback state - track feedback status per generation
+  const [feedbackStatus, setFeedbackStatus] = useState<Record<string, FeedbackStatus>>({});
 
   // Auto-grow textarea up to 5 lines (112px) before scrolling
   useEffect(() => {
@@ -115,6 +121,40 @@ export default function ConversationThread({
     if (!inputValue.trim() || loading) return;
     onSendMessage(inputValue);
     setInputValue("");
+  };
+
+  // Phase 5.2: Submit feedback to RLHF API
+  const submitFeedback = async (
+    generationId: string,
+    action: "accepted" | "rejected"
+  ) => {
+    // Optimistically update UI
+    setFeedbackStatus((prev) => ({ ...prev, [generationId]: action }));
+
+    try {
+      const response = await fetch("/api/pirateCOS/ai-generation-log/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ generationId, action }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit feedback");
+      }
+    } catch (error) {
+      console.error("Failed to submit feedback:", error);
+      // Revert optimistic update on error
+      setFeedbackStatus((prev) => ({ ...prev, [generationId]: "pending" }));
+    }
+  };
+
+  // Phase 5.2: Handle accept feedback (and apply)
+  const handleAcceptAndApply = (
+    generationId: string,
+    mode: "replace" | "insert-below" | "insert-above"
+  ) => {
+    submitFeedback(generationId, "accepted");
+    onApply(generationId, mode);
   };
 
   return (
@@ -309,6 +349,15 @@ export default function ConversationThread({
                       {msg.selectedTextContext.length > 60 && "..."}
                     </div>
                   )}
+
+                  {/* Phase 4F: Change Summary Badge */}
+                  {!isUser && msg.changeSummary && (
+                    <div className="mb-2 p-2 bg-emerald-50/60 border border-emerald-200/60 rounded-lg flex items-center gap-1.5 text-[10px] text-emerald-700 font-semibold animate-in fade-in duration-200">
+                      <span className="text-emerald-600">✏️</span>
+                      <span>{msg.changeSummary}</span>
+                    </div>
+                  )}
+
                   {/* Content (HTML wrapper check) */}
                   <div
                     className="ai-prose"
@@ -318,32 +367,91 @@ export default function ConversationThread({
 
                 {/* Apply Actions for assistant outputs */}
                 {!isUser && msg.associatedGenerationId && (
-                  <div className="flex flex-wrap gap-1 mt-1 justify-start max-w-[90%] animate-in slide-in-from-top-1 duration-200">
-                    <button
-                      onClick={() => onApply(msg.associatedGenerationId!, "replace")}
-                      className="px-2 py-1 text-[10px] font-bold font-geist text-white bg-black hover:bg-gray-800 rounded-md transition-colors shadow-sm"
-                    >
-                      Replace selection
-                    </button>
-                    <button
-                      onClick={() => onApply(msg.associatedGenerationId!, "insert-below")}
-                      className="px-2 py-1 text-[10px] font-semibold font-geist text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                    >
-                      Insert below
-                    </button>
-                    <button
-                      onClick={() => onSaveSnippet(msg.content)}
-                      className="px-2 py-1 text-[10px] font-semibold font-geist text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                      title="Save output to Workflow Snippets"
-                    >
-                      Save snippet
-                    </button>
-                    <button
-                      onClick={() => onTriggerVariant(msg.associatedGenerationId!)}
-                      className="px-2 py-1 text-[10px] font-semibold font-geist text-orange-600 bg-orange-50 hover:bg-orange-100 rounded-md transition-colors border border-orange-100"
-                    >
-                      Try a variant
-                    </button>
+                  <div className="flex flex-col gap-2 mt-1 max-w-[90%]">
+                    {/* Phase 5.2: Feedback buttons */}
+                    {feedbackStatus[msg.associatedGenerationId] ? (
+                      <div className="flex items-center gap-1.5 px-2 py-1.5 bg-gray-50 rounded-md border border-gray-200">
+                        <span className="text-[10px] font-semibold text-gray-600 font-geist">
+                          {feedbackStatus[msg.associatedGenerationId] === "accepted" ? (
+                            <>
+                              <span className="text-green-600">✓</span> Accepted
+                            </>
+                          ) : (
+                            <>
+                              <span className="text-red-600">✗</span> Rejected
+                            </>
+                          )}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex flex-wrap gap-1 animate-in slide-in-from-top-1 duration-200">
+                        {/* Accept/Reject feedback buttons */}
+                        <button
+                          onClick={() => submitFeedback(msg.associatedGenerationId!, "accepted")}
+                          className="px-2 py-1 text-[10px] font-semibold font-geist text-green-700 bg-green-50 hover:bg-green-100 rounded-md transition-colors border border-green-200 flex items-center gap-1"
+                          title="This output is good"
+                        >
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                          </svg>
+                          Accept
+                        </button>
+                        <button
+                          onClick={() => submitFeedback(msg.associatedGenerationId!, "rejected")}
+                          className="px-2 py-1 text-[10px] font-semibold font-geist text-red-700 bg-red-50 hover:bg-red-100 rounded-md transition-colors border border-red-200 flex items-center gap-1"
+                          title="This output is not good"
+                        >
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                          Reject
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Apply actions */}
+                    <div className="flex flex-wrap gap-1 animate-in slide-in-from-top-1 duration-200">
+                      {/* Phase 4F: Show "Recommended" badge on suggested apply mode */}
+                      <button
+                        onClick={() => handleAcceptAndApply(msg.associatedGenerationId!, "replace")}
+                        className={`px-2 py-1 text-[10px] font-bold font-geist rounded-md transition-colors shadow-sm flex items-center gap-1 ${
+                          msg.suggestedApplyMode === "replace"
+                            ? "text-white bg-emerald-600 hover:bg-emerald-700 ring-2 ring-emerald-200"
+                            : "text-white bg-black hover:bg-gray-800"
+                        }`}
+                      >
+                        Replace selection
+                        {msg.suggestedApplyMode === "replace" && (
+                          <span className="text-[8px] px-1 py-0.5 bg-emerald-800/30 rounded-sm font-bold">REC</span>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleAcceptAndApply(msg.associatedGenerationId!, "insert-below")}
+                        className={`px-2 py-1 text-[10px] font-semibold font-geist rounded-md transition-colors flex items-center gap-1 ${
+                          msg.suggestedApplyMode === "insert-below"
+                            ? "text-white bg-emerald-600 hover:bg-emerald-700 ring-2 ring-emerald-200 font-bold"
+                            : "text-gray-700 bg-gray-100 hover:bg-gray-200"
+                        }`}
+                      >
+                        Insert below
+                        {msg.suggestedApplyMode === "insert-below" && (
+                          <span className="text-[8px] px-1 py-0.5 bg-emerald-800/30 rounded-sm font-bold">REC</span>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => onSaveSnippet(msg.content)}
+                        className="px-2 py-1 text-[10px] font-semibold font-geist text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                        title="Save output to Workflow Snippets"
+                      >
+                        Save snippet
+                      </button>
+                      <button
+                        onClick={() => onTriggerVariant(msg.associatedGenerationId!)}
+                        className="px-2 py-1 text-[10px] font-semibold font-geist text-orange-600 bg-orange-50 hover:bg-orange-100 rounded-md transition-colors border border-orange-100"
+                      >
+                        Try a variant
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -472,140 +580,6 @@ export default function ConversationThread({
           >
             Upgrade to Pro
           </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ModelSelectorPill({
-  selectedEngine,
-  selectedModel,
-  onEngineChange,
-  onModelChange,
-}: {
-  selectedEngine: AIEngine;
-  selectedModel: string;
-  onEngineChange: (engine: AIEngine) => void;
-  onModelChange: (model: string) => void;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { models, isLoading } = useAIModels(selectedEngine);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Find label of active model
-  const activeModel = models.find((m) => m.id === selectedModel) || { label: selectedModel.split("/").pop() || selectedModel };
-  const activeLabel = activeModel.label;
-
-  return (
-    <div className="relative font-geist" ref={containerRef}>
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="h-6 px-2 rounded-lg bg-black/[0.04] hover:bg-black/[0.08] text-gray-500 hover:text-gray-800 text-[10px] font-semibold transition-all cursor-pointer flex items-center gap-1 border border-black/[0.02] shadow-sm select-none"
-      >
-        <span className="truncate max-w-[120px]">{activeLabel}</span>
-        <svg
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="3"
-          className={`w-2.5 h-2.5 text-gray-400 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      {isOpen && (
-        <div className="absolute bottom-full left-0 mb-1.5 w-64 bg-white border border-black/5 rounded-xl shadow-xl z-50 p-2 flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2 duration-150">
-          <div className="text-[9px] font-bold text-gray-400 font-jetbrains-mono uppercase tracking-wider px-1">
-            AI Engine
-          </div>
-          {/* Engine tabs switcher */}
-          <div className="flex bg-black/[0.03] p-0.5 rounded-lg gap-0.5 border border-black/[0.01]">
-            {AI_PROVIDERS.map((provider) => (
-              <button
-                key={provider.id}
-                type="button"
-                onClick={() => onEngineChange(provider.id)}
-                className={`flex-1 py-1 rounded-md text-[9px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                  selectedEngine === provider.id
-                    ? "bg-white text-gray-900 shadow-sm border border-black/5"
-                    : "text-gray-400 hover:text-gray-600"
-                }`}
-              >
-                <img
-                  src={provider.logo}
-                  alt={provider.name}
-                  className="w-2.5 h-2.5 object-contain"
-                />
-                <span className="hidden xs:inline">{provider.shortName}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="h-px bg-black/5" />
-
-          <div className="text-[9px] font-bold text-gray-400 font-jetbrains-mono uppercase tracking-wider px-1">
-            Model Version
-          </div>
-          {/* Models list */}
-          <div className="flex flex-col gap-0.5 max-h-64 overflow-y-auto pr-1">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-4 text-[10px] text-gray-400 gap-1.5">
-                <svg className="animate-spin h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                <span>Loading models...</span>
-              </div>
-            ) : (
-              models.map((m) => {
-                const isSelected = m.id === selectedModel;
-                return (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => {
-                      onModelChange(m.id);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full text-left px-2 py-1.5 rounded-lg flex flex-col gap-0.5 transition-all cursor-pointer ${
-                      isSelected
-                        ? "bg-black/[0.04]"
-                        : "hover:bg-black/[0.02]"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className={`text-[10px] font-semibold ${isSelected ? "text-gray-900" : "text-gray-600"}`}>
-                        {m.label}
-                      </span>
-                      {isSelected && (
-                        <svg className="w-3 h-3 text-[#FF5B04] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                    </div>
-                  </button>
-                );
-              })
-            )}
-          </div>
         </div>
       )}
     </div>

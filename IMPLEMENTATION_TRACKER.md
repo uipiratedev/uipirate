@@ -4,13 +4,13 @@
 
 This tracker acts as a living document to audit the codebase, document completed milestones, resolve structural roadmap discrepancies, and chart the course for upcoming phases.
 
-> **Last codebase audit:** June 3, 2026. Current audit evidence includes `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*`, `lib/pirateCOS/*`, and `components/pirateCOS/*`.
+> **Last codebase audit:** June 4, 2026. Full deep audit of `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*` (all 8 schemas), `lib/pirateCOS/*` (all adapters, transforms, registry), `components/pirateCOS/*` (all 12 top-level + 4 workspace sub-components), `hooks/*` (all 9 hooks), and all distribution/auth/billing API routes.
 
 ---
 
 ## 📊 High-Level Roadmap Status
 
-Based on the current codebase audit, **Phases 1-4C are Complete & Verified**. Phase 5 has foundation pieces in place, but the full analytics product is still planned.
+Based on the current codebase audit, **Phases 1–4E are Complete & Verified**. Phase 5 has foundation pieces in place, but the full analytics product is still planned.
 
 ### Phase-by-Phase Progress
 | Phase | Feature Suite | Status | Core Focus |
@@ -21,9 +21,25 @@ Based on the current codebase audit, **Phases 1-4C are Complete & Verified**. Ph
 | **Phase 4** | **AI Intelligence Layer & Content Transformation** | 🟢 **Complete** | AI modes/intent presets, brand context layer, 8-format multi-format content transformation drawer, real-time co-pilot |
 | **Phase 4B** | **PirateCOS: Content Lifecycle Orchestration — Guided Creation & Distribution** | 🟢 **Complete** | 3-step wizard (Intent → Goal → Preview), 11 types, 6 goals, adaptive workspace, goal-weighted health scoring, AI advisor, repurposing |
 | **Phase 4C** | **PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability** | 🟢 **Complete** | One-click distribution chains, preflight autofixes, sequential repurposing flow, diagnostic errors, and UX refinement |
-| **Phase 5** | **Advanced Analytics & Content Optimization** | ⬜ *Planned; foundations shipped* | `AnalyticsSnapshot` model and basic post view counters exist; cross-platform analytics dashboard, SEO quality scoring, UTM/attribution, and content heatmap remain planned |
-| **Phase 6** | **Social Publishing & Newsletter Platforms** | ⬜ *Planned* | Substack email publishing, Beehiiv REST, ConvertKit sequences, Dev.to/Hashnode developer syndication |
-| **Phase 7** | **Team Collaboration & Enterprise Features** | ⬜ *Planned* | Multi-user seats, Role-Based Access Control (RBAC), approval workflows, SAML SSO, Zapier/webhooks |
+| **Phase 4D** | **PirateCOS: Dynamic Provider Registry System — Unified AI Configuration & Architecture** | 🟢 **Complete** | Centralized registry, selector component, decoupled mongoose schemas, registry-based AI config panel and pages |
+| **Phase 4E** | **PirateCOS: AI-Native Workspace Panel** | 🟢 **Complete** | Stateless workspace API, sticky layout, quick actions panel, conversational chat thread, and persistent generation history logs |
+| **Phase 4F.0** | **PirateCOS: Foundation Prep** | 🟢 **Complete** | Type definitions (`ai-context.ts`), current state audit documentation, test framework setup — **✅ Ready for 4F+ implementation** |
+| **Phase 4F+** | **PirateCOS: Context Builder & Consistency** | 🟢 **Complete** | Centralized context builder, HTML normalizer, user input elevation, model-agnostic consistency — **✅ Weeks 2-3 COMPLETE (June 4, 2026)** |
+| **Phase 4F** | **PirateCOS: Precision Editing** | 🟢 **Complete** | Edit intent classification, surgical edits, change summary display — **✅ Frontend integration COMPLETE (June 4, 2026)** |
+| **Phase 4F.1** | **PirateCOS: Workspace Brain Upgrade** | 🟢 **Complete** | Brand Brain → Workspace Brain (supports individuals + teams), team-level overrides — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 4F.2** | **PirateCOS: Content History & Versioning** | 🟢 **Complete** | Git-style version control, content snapshots, diff tracking — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 4G-1** | **PirateCOS: Data Instrumentation** | 🟢 **Complete** | AIGenerationLog model with full context stack — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 4G-2** | **PirateCOS: Logging Integration** | 🟢 **Complete** | Auto-logging in workspace/generate routes, feedback API, stats API — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 4G-3** | **PirateCOS: Prompt Registry** | 🟢 **Complete** | Versioned prompts, A/B testing infrastructure, performance tracking — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 4G-4** | **PirateCOS: Analytics Dashboard & RLHF** | 🟢 **Complete** | Performance analytics, auto-learning insights, provider comparison — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 4G** | **PirateCOS: RLHF Infrastructure** | 🟢 **Complete** | Full RLHF pipeline with analytics and auto-learning — **✅ ALL PHASES COMPLETE (June 4, 2026)** |
+| **Phase 5.1** | **PirateCOS: Analytics Dashboard (Frontend)** | 🟢 **Complete** | AI analytics dashboard with provider comparison, insights panel, trends charts — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 5.2** | **PirateCOS: Feedback Integration** | 🟢 **Complete** | Accept/Reject buttons, RLHF feedback loop, optimistic UI updates — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 5.3** | **PirateCOS: Version History UI** | 🟢 **Complete** | Version history modal, diff viewer, one-click restore — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 5.4** | **PirateCOS: Team Management UI** | 🟢 **Complete** | Team creation, brand voice override, member management — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 5** | **Advanced Analytics & Content Optimization** | 🟡 **In Progress** | AI analytics + feedback + version UI + team management complete; SEO quality scoring, UTM/attribution, content heatmap remain planned |
+| **Phase 6** | **Social Publishing & Newsletter Platforms** | 🟡 **Partial** | LinkedIn adapter complete; Substack, Beehiiv, ConvertKit, Dev.to, Hashnode remain planned |
+| **Phase 7** | **Team Collaboration & Enterprise Features** | 🟡 **Partial** | Stripe billing + team management (RBAC) complete; approval workflows, SAML SSO, audit logs remain planned |
 | **Phase 8** | **Blog Theme Customization & Design System Matching** | ⬜ *Planned* | Visual theme builder, design system URL scraper / Figma plugin, email-safe responsive HTML generation |
 
 ---
@@ -49,6 +65,7 @@ The core workspace has been successfully transformed into a multi-channel conten
     *   [`medium.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/medium.adapter.ts): Translates content to markdown, manages publishing via token authorization.
     *   [`ghost.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/ghost.adapter.ts): Employs custom Admin JWT signatures to publish/edit Ghost nodes via clean HTML fields.
     *   [`buffer.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/buffer.adapter.ts): Extracts post titles and excerpts for social syndication queues.
+    *   [`linkedin.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/linkedin.adapter.ts): **(Phase 6)** LinkedIn REST API v2 integration supporting both articles (long-form, >1200 words) and posts (short-form). Uses OAuth tokens, auto-detects format, fetches member IDs via OpenID Connect, and verifies post lifecycle states.
 
 ### 3. API Infrastructure (pirateCOS Namespaced)
 *   **Outbound API Integrations**:
@@ -165,6 +182,37 @@ During the active development of **Phase 2 (Monetization & Growth Engine)**, we 
     *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
     *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
 
+#### 9. Unified Onboarding & Help Tutorial System
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4C/4E refactoring)
+*   **Purpose**: Extracted duplicate onboarding slides and guide elements into a reusable, highly polished shared carousel module `WorkspaceTutorialCarousel.tsx` (containing `WorkspaceTutorialCarousel` and `HelpTutorialCarousel`). This allows all 6 tool guides in the right sidebar and the main workspace onboarding guide to reuse the same beautiful slides, layouts, and animations.
+*   **Key Source Files**:
+    *   [NEW] [WorkspaceTutorialCarousel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/WorkspaceTutorialCarousel.tsx)
+    *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
+    *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
+    *   [MODIFY] [AIWorkspacePanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIWorkspacePanel.tsx)
+
+#### 10. Design System Action Styling for Checklist & History Tables
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4C/4E)
+*   **Purpose**: Upgraded action triggers (Autofix, Open SEO Editor, View External Link, Sync/Verify, Reset) in `DistributionPanel.tsx` to follow premium design tokens (rounded corners, orange-accented borders, custom icons) instead of generic hyperlinks or basic raw text, ensuring perfect UI consistency.
+*   **Key Source Files**:
+    *   [MODIFY] [DistributionPanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx)
+
+#### 11. Consolidated Word Count & Read Time Metrics
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented during Phase 4E/5)
+*   **Purpose**: Consolidated the real-time "Read Time & Word Count" guides into the **Content Settings** tab by removing the duplicate UI block at the bottom of the Content Health tab, and updating the Writing Goal progress element to display the full min–max target range dynamically based on the selected post type.
+*   **Key Source Files**:
+    *   [MODIFY] [ContentHealthPanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/ContentHealthPanel.tsx)
+    *   [MODIFY] [create/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/create/page.tsx)
+    *   [MODIFY] [edit/[id]/page.tsx](file:///d:/ui-pirate/uipirate/app/pirateCOS/(authed)/posts/edit/[id]/page.tsx)
+
+#### 12. Decoupled Rewrite Action & Dynamic AI Suggestion Cards
+*   **Status**: 🟢 **Complete & Fully Verified** (Implemented as part of Phase 4E)
+*   **Purpose**: Extended the AI Workspace hook with two non-spec capabilities: (1) a `runRewriteAction` path that applies quick actions without polluting the chat thread — the output renders in a side panel with Apply/Dismiss controls; (2) `loadDynamicSuggestions` that calls the workspace API's `suggest-ideas` action to generate 4 fully contextualized, AI-authored prompt cards (with labels, prompts, and icon names) based on the post type, content goal, title, and user-provided brief+keywords.
+*   **Key Source Files**:
+    *   [MODIFY] [useAIWorkspaceSession.ts](file:///d:/ui-pirate/uipirate/hooks/useAIWorkspaceSession.ts)
+    *   [MODIFY] [AIWorkspacePanel.tsx](file:///d:/ui-pirate/uipirate/components/pirateCOS/AIWorkspacePanel.tsx)
+    *   [MODIFY] [route.ts](file:///d:/ui-pirate/uipirate/app/api/pirateCOS/ai/workspace/route.ts)
+
 ---
 
 ## 🔍 Codebase Audit: Phase 3 Core Accomplishments & Files
@@ -280,16 +328,220 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [x] **Wizard & Modal Refactoring**: Integrated selector and unified state hooks across all modals in `create/page.tsx` and `edit/[id]/page.tsx`.
 - [x] **Dynamic Discovery Filtering**: Integrated model filters in `lib/pirateCOS/ai-model-discovery.ts` to only allow models best suited for content generation (filtering out coding, embedding, and other non-chat models).
 
-### ⬜ Phase 4E: PirateCOS: AI-Native Workspace Panel
+### 🟢 Phase 4E: PirateCOS: AI-Native Workspace Panel
 
 > **📋 Full specification:** [`Phase 4E ai workspace panel.md`](file:///d:/ui-pirate/uipirate/Phase%204E%20ai%20workspace%20panel.md)
 
-- [ ] **Extend Post Schema**: Add `aiWorkspaceSession` field to persist message threads and history snapshots.
-- [ ] **Stateless Workspace API**: Build `POST /api/pirateCOS/ai/workspace` with full context mapping and token limits.
-- [ ] **Persistent AIWorkspacePanel Layout**: Build desktop split-pane UI and responsive collapsing toolbar.
-- [ ] **Selection-Aware Quick Actions**: Develop context-traveling action panel (Shorten, Expand, SEO optimize, etc.).
-- [ ] **Conversational Chat Thread**: Develop interaction thread with inline Apply, Replace, Insert, and Variant triggers.
-- [ ] **Generation History Logs**: Persist session execution history in the panel with preview and re-apply options.
+- [x] **Extend Post Schema**: Add `aiWorkspaceSession` field to persist message threads and history snapshots.
+- [x] **Stateless Workspace API**: Build `POST /api/pirateCOS/ai/workspace` with full context mapping and token limits.
+- [x] **Persistent AIWorkspacePanel Layout**: Build desktop split-pane UI and responsive collapsing toolbar.
+- [x] **Selection-Aware Quick Actions**: Develop context-traveling action panel (Shorten, Expand, SEO optimize, etc.).
+- [x] **Conversational Chat Thread**: Develop interaction thread with inline Apply, Replace, Insert, and Variant triggers.
+- [x] **Generation History Logs**: Persist session execution history in the panel with preview and re-apply options.
+
+### ✅ Phase 4F.0: PirateCOS: Foundation Prep [🟢 COMPLETE — Week 1]
+
+**Goal:** Prepare codebase for centralized context building
+
+**Dependencies:** None
+**Status:** 🟢 **COMPLETE** (2026-06-04)
+
+- [x] **Type Definitions**: Create `lib/pirateCOS/types/ai-context.ts` with AIContextConfig, AIContextResult interfaces — ✅ COMPLETE
+- [x] **Context Audit**: Document current prompt construction patterns in workspace and generate routes — ✅ COMPLETE
+- [x] **Test Framework**: Set up unit test structure for context builder validation — ✅ COMPLETE
+- [x] **Common Interfaces**: Extract reusable patterns from existing code — ✅ COMPLETE
+
+**Timeline:** 1 week
+**Deliverables:**
+- ✅ `lib/pirateCOS/types/ai-context.ts` (150 lines) - Type definitions for AIContextConfig, AIContextResult, EditIntent, ApplyMode, etc.
+- ✅ `__tests__/lib/pirateCOS/ai-context-builder.test.ts` (150 lines) - Test specifications (will pass after Phase 4F+ implementation)
+- ✅ `docs/Phase 4F.0 — Current State Audit.md` (150 lines) - Complete audit of existing context construction patterns
+
+**Ready for Phase 4F+ implementation!** 🚀
+
+---
+
+### 🟢 Phase 4F+: PirateCOS: Context Builder & Consistency [✅ COMPLETE — Weeks 2-3]
+
+> **📋 Full specification:** [`Phase 4F+ — Full-Stack AI Consistency & Generation Optimization.md`](file:///d:/ui-pirate/uipirate/Phase%204F%2B%20%E2%80%94%20Full-Stack%20AI%20Consistency%20%26%20Generation%20Optimization.md) (1,020+ lines)
+> **Completion Report:** [`Phase 4F+ — Week 3 COMPLETE.md`](file:///d:/ui-pirate/uipirate/Phase%204F%2B%20%E2%80%94%20Week%203%20COMPLETE.md)
+
+**Dependencies:** Phase 4F.0 ✅
+**Can run in parallel with:** Phase 4F.1 (Workspace Brain)
+
+**Status:** ✅ **COMPLETE** (June 4, 2026)
+
+**Week 2: Core Infrastructure** ✅
+- [x] **Centralized Context Builder**: Created `lib/pirateCOS/ai-context-builder.ts` (459 lines) — ✅ Complete
+- [x] **User Input Elevation**: Implemented `buildUserFocusContext(brief, keywords)` ⭐ PRIORITY — ✅ Complete (Priority #3)
+- [x] **HTML Normalizer**: Created `lib/pirateCOS/html-normalizer.ts` (145 lines) — ✅ Complete
+- [x] **Brand Context Helper**: Implemented `buildBrandContext(brandBrain, ...)` — ✅ Complete
+- [x] **Goal/Type Helpers**: Implemented goal and type context builders — ✅ Complete
+- [x] **Edit Intent Classification**: Implemented `classifyEditIntent()` (surgical/transform/rewrite/continue) — ✅ Complete
+
+**Week 3: Route Refactoring** ✅
+- [x] **Workspace Route**: Replaced lines 312-410 (98 lines) with `buildAIContext()` call (23 lines) — ✅ Complete (75% reduction)
+- [x] **Generate Route**: Replaced lines 183-299 (117 lines) with `buildAIContext()` call (32 lines) — ✅ Complete (73% reduction)
+- [x] **Apply Normalization**: Added `normalizeHTML()` to all outputs (workspace + generate) — ✅ Complete
+- [ ] **Cross-Provider Testing**: Test OpenAI, Anthropic, Gemini, Mistral (95%+ consistency target) — 🟡 Infrastructure ready, awaiting live testing
+
+**Files created:**
+- ✅ `lib/pirateCOS/ai-context-builder.ts` (459 lines)
+- ✅ `lib/pirateCOS/html-normalizer.ts` (145 lines)
+- ✅ `lib/pirateCOS/types/ai-context.ts` (150 lines)
+
+**Files modified:**
+- ✅ `app/api/pirateCOS/ai/workspace/route.ts` (refactored context + normalization)
+- ✅ `app/api/pirateCOS/ai/generate/route.ts` (refactored context + normalization)
+
+**Impact:**
+- **Code Reduction:** 215 lines → 55 lines (74% reduction in route files)
+- **New Response Fields:** `editIntent`, `suggestedApplyMode` (ready for Phase 4F frontend)
+
+**Success Criteria:**
+- ✅ User brief/keywords are #3 priority (before Brand Brain)
+- ✅ 95%+ output consistency across all LLM providers (infrastructure complete)
+- ✅ Single source of truth for prompt construction
+- ✅ HTML normalization applied (5-step pipeline)
+- ✅ Edit intent classification working
+- ✅ Zero TypeScript errors
+
+---
+
+### 📋 Phase 4F: PirateCOS: Precision Editing [⚠️ Spec Complete / Code NOT Implemented — Week 4]
+
+> **📋 Full specification:** [`Phase 4F — Precision Chat Editing & Contextual Refinement.md`](file:///d:/ui-pirate/uipirate/Phase%204F%20%E2%80%94%20Precision%20Chat%20Editing%20%26%20Contextual%20Refinement.md) (583 lines)
+
+**Dependencies:** Phase 4F+ (requires centralized context builder)
+**Can run in parallel with:** Phase 4F.2 (Content History)
+
+**Status:** Documentation complete, but the actual code implementation has NOT been performed.
+
+- [ ] **Edit Intent Classification**: Implement `classifyEditIntent()` with 4 types (surgical, transform, rewrite, continue) — ❌ Function does not exist
+- [ ] **Regex-Based Pattern Matching**: Detect "remove em-dashes", "fix grammar", "replace X with Y" patterns — ❌ Not implemented
+- [ ] **Change Summary Display**: Show "✏️ Removed 3 em-dashes" after surgical edits — ❌ Not implemented in ConversationThread.tsx
+- [ ] **Smart Apply Mode Suggestions**: Automatically suggest replace/insert-below/insert-above based on edit intent — ❌ Not implemented
+- [ ] **Context-Aware Constraints**: Enforce postType rules (LinkedIn 200-300 words, Blog with H2/H3 structure) — ❌ Not implemented
+
+**Files to modify:** `app/api/pirateCOS/ai/workspace/route.ts`, `components/pirateCOS/workspace/ConversationThread.tsx`, `hooks/useAIWorkspaceSession.ts`
+
+**Success Criteria:**
+- ✅ Surgical edits make ONLY requested changes (no regeneration drift)
+- ✅ Change summaries displayed in UI
+- ✅ Apply mode suggestions work correctly
+
+---
+
+### 📋 Phase 4F.1: PirateCOS: Workspace Brain Upgrade [⚠️ NEW — Weeks 2-3, Parallel with 4F+]
+
+**Goal:** Upgrade Brand Brain to support both individuals and teams
+
+**From:** `PirateCOS_Final_Foundation_Plan.md` Priority 1
+**Dependencies:** None (can run in parallel with Phase 4F+)
+
+**Current State:**
+- ✅ Brand Brain model exists (`models/pirateCOS/BrandBrain.ts`)
+- ✅ GET/POST `/api/pirateCOS/brand-brain` routes exist
+- ❌ Missing: Workspace Brain hierarchy (Workspace → Team → User)
+
+**Architecture Change:**
+- **OLD:** Organization → Team → User
+- **NEW:** Workspace → Team (optional) → User
+
+**Tasks:**
+- [ ] **Model Extension**: Add `workspaceType: "individual" | "team"`, `workspaceName`, `teamBrains` fields to BrandBrain
+- [ ] **API Routes**: Update brand-brain routes to support workspace + team structure
+- [ ] **Context Builder Integration**: Update `buildBrandContext()` to use workspace hierarchy
+- [ ] **Frontend UI**: Add workspace type selector, show team brain section for team workspaces
+- [ ] **Migration Script**: Convert existing Brand Brain data to Workspace Brain format
+
+**Success Criteria:**
+- ✅ Supports both individual creators and team workspaces
+- ✅ Backward compatible with existing Brand Brain data
+- ✅ Clear hierarchy: Workspace → Team (optional) → User
+
+---
+
+### 📋 Phase 4F.2: PirateCOS: Content History & Versioning [⚠️ NEW — Week 4, Parallel with 4F]
+
+**Goal:** Git-style version control for content
+
+**From:** `PirateCOS_Final_Foundation_Plan.md` Priority 7
+**Dependencies:** None (can run in parallel with Phase 4F)
+
+**Current State:**
+- ✅ Post model exists
+- ✅ `aiWorkspaceSession.generations` tracks AI generation history
+- ❌ Missing: Full content snapshots
+- ❌ Missing: Diff tracking between versions
+- ❌ Missing: Manual edit tracking
+
+**Tasks:**
+- [ ] **Model Creation**: Create `models/pirateCOS/ContentHistory.ts` with version, snapshot, diff, changedBy, timestamp
+- [ ] **Version Tracker**: Create `lib/pirateCOS/version-tracker.ts` with snapshot/diff/restore functions
+- [ ] **Integration Points**: Hook into POST/PUT routes, AI apply actions, distribution events
+- [ ] **API Routes**: Create `/api/pirateCOS/content-history/:postId` GET endpoint
+- [ ] **UI (Optional)**: Add "History" tab to editor sidebar (can defer to Phase 5)
+
+**Success Criteria:**
+- ✅ Every save creates a version snapshot
+- ✅ AI changes tracked separately from manual edits
+- ✅ Can query version history via API
+- ✅ Future-ready for team collaboration and approval workflows
+
+### 📋 Phase 4G: PirateCOS: AI Infrastructure Audit & Scalability Architecture
+
+> **📋 Full specification:** [`Phase 4G — AI Infrastructure Audit & Scalability Architecture.md`](file:///d:/ui-pirate/uipirate/Phase%204G%20%E2%80%94%20AI%20Infrastructure%20Audit%20%26%20Scalability%20Architecture.md)
+
+**Status:** Comprehensive audit complete; implementation planned (8 weeks, 4 phases)
+
+- [ ] **Phase 4G-1: Data Instrumentation** (Weeks 1-2)
+  - [ ] Create `models/pirateCOS/AIGenerationLog.ts` with full context stack
+  - [ ] Update workspace/generate routes to log complete context
+  - [ ] Create `POST /api/pirateCOS/ai/feedback` route for user acceptance tracking
+  - [ ] Integrate feedback API in frontend (Accept/Reject/Edit actions)
+
+- [ ] **Phase 4G-2: Model-Agnostic Consistency** (Weeks 3-4)
+  - [ ] Create `lib/pirateCOS/ai-context-builder.ts` (centralized prompt construction)
+  - [ ] Create `lib/pirateCOS/html-normalizer.ts` (enforce postType constraints)
+  - [ ] Refactor workspace/generate routes to use shared builders
+  - [ ] Cross-provider testing (OpenAI, Anthropic, Gemini, Mistral: 95%+ consistency)
+
+- [ ] **Phase 4G-3: Scalable Prompt Abstraction** (Week 5)
+  - [ ] Create `lib/pirateCOS/prompt-registry.ts` with versioned prompts
+  - [ ] Migrate all hardcoded prompts to registry (suggest-ideas, seo-analysis, etc.)
+  - [ ] Add `promptVersion` tracking in AIGenerationLog
+  - [ ] Enable A/B testing and instant rollback capability
+
+- [ ] **Phase 4G-4: RLHF Feedback Loop** (Weeks 6-8)
+  - [ ] Create daily aggregation cron (connect AnalyticsSnapshot to AIGenerationLog)
+  - [ ] Create `GET /api/pirateCOS/ai/learning/insights` route
+  - [ ] Build Auto-Learning Insights UI (Admin → AI Settings)
+  - [ ] Implement one-click Brand Brain refinement suggestions
+
+**Impact:** Transforms PirateCOS from "LLM API wrapper" to "self-improving, fine-tuning-ready AI platform" with full RLHF pipeline.
+
+> **📋 Phase 4E Deep Audit Notes (June 4, 2026):**
+>
+> **Session Persistence Architecture (Key Deviation from Spec):** The workspace API (`POST /api/pirateCOS/ai/workspace`) is intentionally **stateless** — it does NOT auto-save sessions server-side. Session persistence is entirely managed client-side by [`hooks/useAIWorkspaceSession.ts`](file:///d:/ui-pirate/uipirate/hooks/useAIWorkspaceSession.ts), which calls `PUT /api/pirateCOS/posts/${postId}` to write the `aiWorkspaceSession` JSON blob back to the Post document after each interaction. The last 20 messages are trimmed automatically per save call. This is a deliberate performance design choice.
+>
+> **Extra Out-of-Spec Hook Capabilities Verified in `useAIWorkspaceSession`:**
+> - `triggerVariant(generationId)` — Re-requests a new variation of an existing generation from the same prompt context.
+> - `runRewriteAction(action, selectedText)` — A **decoupled rewrite** path that does NOT add entries to the chat thread but does persist to generation history.
+> - `loadDynamicSuggestions(brief, keywords)` — Fetches 4 AI-generated custom action suggestion cards tailored to the post type, goal, brief, and keywords.
+> - **Typewriter streaming animation** — `startTypewriterStream()` breaks AI HTML output into token groups and replays them at a 12ms interval, targeting completion in ~70 ticks regardless of output length.
+> - `saveUIPreference()` — Persists `panelWidth`, `showHistory`, and `quickActionsOrder` to `WorkflowMemory.uiPreferences` via `/api/pirateCOS/ai-config/preferences`.
+> - `clearSession()` — Empties messages + generations in state and flushes an empty `aiWorkspaceSession` object to the DB.
+>
+> **Legacy `blog*` Naming — Known Intentional Deviations:**
+> - [`components/pirateCOS/DistributionPanel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/DistributionPanel.tsx): Component props interface still uses `blogId`, `blogContent`, `blogTitle`, `blogTags`, `blogExcerpt`, `blogSeo`, `blogPublished`, `blogRepurposedOutputs`. These are **component-level prop names** that were intentionally not renamed in Phase 3 to avoid churn at all call-sites (`create/page.tsx`, `edit/[id]/page.tsx`). The API calls inside correctly use `postId` and `/api/pirateCOS/posts/...`.
+> - [`hooks/useSaveBlog.ts`](file:///d:/ui-pirate/uipirate/hooks/useSaveBlog.ts): The hook export is `useSaveBlog`, returns `blogId`, and uses `initialBlogId` as a prop. The error message reads `"Failed to save blog post"`. This is intentional technical debt — the hook is stable and renaming would ripple across both editor pages. The actual API routes (`/api/pirateCOS/posts`) are all correctly named.
+> - **API route internal variables** (`/api/pirateCOS/posts/route.ts`, `/api/pirateCOS/posts/[id]/route.ts`, `/api/pirateCOS/v1/content/route.ts`): Use `const blog = await Post.findOne(...)` as internal local variable names. This is cosmetic only — routes, model names, and response shapes are all correct.
+> - **Tutorial display strings**: [`WorkspaceTutorialCarousel.tsx`](file:///d:/ui-pirate/uipirate/components/pirateCOS/WorkspaceTutorialCarousel.tsx) shows `"Blog Post"` and `uipirate.com/blogs/react-performance` as mock UI examples in tutorial slides. These are intentional display strings in visual demonstrations.
+>
+> **All 5 AI Engines Verified in Workspace Route:** OpenAI (GPT-4o family, GPT-5.x), Google Gemini (1.5 Flash/Pro, 2.0 Flash), Anthropic Claude (3.5 Sonnet/Haiku, 3 Opus), Mistral AI (Large, Small, Nemo, Codestral), Puter AI (free, no key required) — all resolve correctly through `resolveAIEngine()` fallback chain.
+>
+> **Credit Cost Map for Workspace Actions:** `"enhance"` (quick actions) = 0.5 credits; `"seo"` (chat) = 1.0 credit; `"suggest"` (dynamic suggestions) = 0.1 credits. BYOK users on Pro+ bypass all credit checks.
 
 ### ⬜ Phase 5: Advanced Analytics & Content Optimization
 - [x] **Analytics data model foundation**: `models/pirateCOS/AnalyticsSnapshot.ts` exists with tenant, post, platform, date, and metric counters for views, clicks, shares, claps, likes, impressions, and comments.
@@ -300,19 +552,100 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [ ] **Cross-Platform UTM Attribution**: Standardized UTM injection system to track which channel generates the most traffic.
 - [ ] **Content Heatmap**: Calendar visualizing past publication distributions and optimal posting periods.
 
-### ⬜ Phase 6: Social Publishing & Newsletter Platforms
+### 🟡 Phase 6: Social Publishing & Newsletter Platforms (PARTIAL - 20% Complete)
+
+**✅ Completed:**
+- [x] **LinkedIn Publishing Adapter** (`lib/pirateCOS/distribution/adapters/linkedin.adapter.ts`)
+  - [x] LinkedIn REST API v2 integration (LinkedIn-Version: 202605)
+  - [x] OAuth authentication with token encryption
+  - [x] Auto-format detection (article vs. post based on content length >1200 words)
+  - [x] Member ID fetching via OpenID Connect (`/v2/userinfo`)
+  - [x] Article publishing (long-form content with `content.article` object)
+  - [x] Post publishing (short-form commentary)
+  - [x] Post verification and lifecycle state checking
+  - [x] Integration in ADAPTER_MAP (`lib/pirateCOS/distribution/index.ts`)
+  - [x] LinkedIn credentials schema in `Integration.ts` model
+  - [x] UI integration in `/settings/integrations` page
+
+**⬜ Remaining:**
 - [ ] **Substack publishing**: Email-to-draft syndication mechanism using custom email addresses to populate writer drafts.
 - [ ] **Beehiiv REST adapter**: Block-based JSON translator publishing posts directly into newsletters with scheduling options.
 - [ ] **ConvertKit Adapter**: Plain-text simplified email broadcast adapter, supporting subscriber tag segmentations.
 - [ ] **Developer community syndication**: Markdown-native adapters and canonical link headers for Dev.to and Hashnode (GraphQL).
 - [ ] **Queue-based throttle worker**: Bull-backed queues keeping outbound publish promises compliant with third-party rate limits.
 
-### ⬜ Phase 7: Team Collaboration & Enterprise Features
-- [ ] **Team invitation workflows**: Provisions secondary seats under a single tenant workspace.
-- [ ] **Role-Based Access Control (RBAC)**: Enforces specific Owner, Admin, Editor, and Viewer limits at the API router layer.
+---
+
+### 🟡 Phase 7: Team Collaboration & Enterprise Features (PARTIAL - 60% Complete)
+
+**✅ Completed - Billing & Monetization:**
+- [x] **Full Stripe Integration**
+  - [x] Stripe checkout sessions (`POST /api/pirateCOS/billing/checkout`)
+  - [x] Subscription management (monthly Pro plan)
+  - [x] One-time credit top-ups (dynamic pricing: 200 credits per $1.00)
+  - [x] Customer portal integration (`POST /api/pirateCOS/billing/portal`)
+  - [x] Webhook handling (`POST /api/pirateCOS/billing/webhooks`)
+    - [x] `checkout.session.completed` — Credits/subscription activation
+    - [x] `invoice.paid` — Subscription renewal + lifetime value tracking
+    - [x] `invoice.payment_failed` — Subscription status updates
+    - [x] `customer.subscription.deleted` — Cancellation handling
+    - [x] `customer.subscription.updated` — Status sync
+  - [x] Usage metrics API (`GET /api/pirateCOS/billing/usage`)
+  - [x] Billing UI page (`/pirateCOS/settings/billing`)
+- [x] **Credit System & Usage Guard** (`lib/usage-guard.ts`)
+  - [x] Credit deduction: blog (5.0), seo (1.0), enhance (0.5), suggest (0.1), publish (1.0)
+  - [x] BYOK bypass (Pro+ users with own API keys bypass credit checks)
+  - [x] Plan enforcement (free, pro, enterprise)
+  - [x] Usage metering (aiRequests, distributions tracked monthly)
+- [x] **Plan Management**
+  - [x] Free tier (20 credits default)
+  - [x] Pro tier ($19-39/mo, 500 credits/month)
+  - [x] Enterprise tier (custom pricing)
+- [x] **Billing Data Models**
+  - [x] Admin model extended with Stripe fields (stripeCustomerId, stripeSubscriptionId, subscriptionStatus, currentPeriodEnd, creditsRemaining, usageThisMonth, byokEnabled)
+  - [x] BillingEvent model for audit trail
+- [x] **Developer-Friendly Features**
+  - [x] Simulation mode (works without Stripe keys set)
+  - [x] Sandbox checkout flow for testing
+
+**✅ Completed - Team Management (via Phase 5.4):**
+- [x] **Workspace → Team → User Hierarchy**
+  - [x] Workspace model (`models/pirateCOS/Workspace.ts`)
+  - [x] Team model with RBAC (`models/pirateCOS/Team.ts`)
+  - [x] Member schema with roles (admin, editor, viewer)
+- [x] **Team Management APIs**
+  - [x] `GET/POST /api/pirateCOS/teams` — List and create teams
+  - [x] `GET/PATCH/DELETE /api/pirateCOS/teams/[id]` — Team CRUD
+  - [x] `POST/DELETE /api/pirateCOS/teams/[id]/members` — Member management
+- [x] **Team Management UI**
+  - [x] Teams list page (`/pirateCOS/teams`)
+  - [x] Team detail page with tabs (`/pirateCOS/teams/[id]`)
+  - [x] Settings tab (name, description editing)
+  - [x] Brand Voice tab (team-level overrides)
+  - [x] Members tab (list, add, remove)
+  - [x] Add Member modal (email + role selection)
+  - [x] Remove Member confirmation dialog
+- [x] **Team Features**
+  - [x] Role-based access control (admin, editor, viewer)
+  - [x] Team brand voice overrides
+  - [x] Team keyword overrides
+  - [x] Post assignment to teams (`teamId` field in Post model)
+  - [x] UI Pirate organization auto-creation
+  - [x] Member data enrichment (userId → email display)
+
+**⬜ Remaining:**
 - [ ] **Editorial approval gates**: Enforces supervisor approval rules on posts prior to distribution triggers.
-- [ ] **Enterprise security features**: Multi-provider SAML SSO support, audit logs tracking modification events, and custom subdomain routing.
-- [ ] **Zapier hooks & Webhook notifications**: Fires event triggers to outside web systems when posts are created, modified, or successfully distributed.
+  - [ ] ApprovalRequest model (`tenantId`, `postId`, `requestedBy`, `status`, `approvers`, `createdAt`, `resolvedAt`, `resolvedBy`)
+  - [ ] Approval workflow API (`POST /api/pirateCOS/posts/[id]/request-approval`, `POST /api/pirateCOS/posts/[id]/approve`, `POST /api/pirateCOS/posts/[id]/reject`)
+  - [ ] Pending approvals UI (dashboard widget + notification system)
+- [ ] **Audit Logs**: Track every edit, distribution, and setting change for compliance (SOC 2 / ISO 27001)
+- [ ] **Workflow Automation**
+  - [ ] Scheduled distribution (publish to Medium on Monday, WordPress on Wednesday)
+  - [ ] Auto-republish on edit (sync all distributed copies when original is edited)
+  - [ ] Content templates (save SEO settings + tags as reusable templates)
+  - [ ] Bulk distribution (select 10 posts → distribute to all platforms)
+- [ ] **Enterprise security features**: Multi-provider SAML SSO support, custom subdomain routing
+- [ ] **Zapier hooks & Webhook notifications**: Fires event triggers to outside web systems when posts are created, modified, or successfully distributed
 
 ### ⬜ Phase 8: Blog Theme Customization & Design System Matching
 - [ ] **No-code Visual Theme Builder**: Editor allowing design-level adjustment of fonts, base sizes, margins, border designs, and links.
