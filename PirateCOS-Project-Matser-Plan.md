@@ -42,6 +42,7 @@
 > - ✅ Phase 5.3 (Version Control UI) — Complete
 > - ✅ Phase 5.4 (Team Management UI) — Complete
 > - ✅ Phase 5.5 (Shared Editor Component System) — Complete
+> - ✅ Phase 5.6 (Editor UX Refinements & AI Content Quality) — Complete
 
 | Phase | Title | Status |
 |---|---|---|
@@ -65,6 +66,7 @@
 | **Phase 5.3** | PirateCOS: Git-Style Version Control UI | 🟢 **Complete** |
 | **Phase 5.4** | PirateCOS: Team Management & Collaboration | 🟢 **Complete** |
 | **Phase 5.5** | PirateCOS: Shared Editor Component System (Architecture Refactor) | 🟢 **Complete** |
+| **Phase 5.6** | PirateCOS: Editor UX Refinements & AI Content Quality | 🟢 **Complete** |
 | **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | 🟡 **In Progress** (AI analytics complete, content analytics remaining) |
 | **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | 🟡 **Partial** (LinkedIn ✅, newsletter platforms ⬜) |
 | **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | 🟡 **Partial** (Billing ✅, Teams ✅, approval workflows ⬜) |
@@ -906,6 +908,28 @@
 
  ---
 
+ **Phase 5.6 — Editor UX Refinements & AI Content Quality (Complete)**
+
+ > **Goal:** Fix bullet rendering, eliminate phantom empty lines on AI content insertion, and add undo/redo to the formatting toolbar.
+ > **Status:** 🟢 Complete (June 4, 2026)
+
+ | Area | File | Change |
+ |---|---|---|
+ | Undo/Redo toolbar buttons | `FormattingToolbar.tsx` | SVG buttons at far-left; disabled via `editor.can().undo/redo()`; History extension already in StarterKit |
+ | Global list bullet CSS | `styles/globals.css` | `list-style-type: disc/decimal !important` + `display: list-item !important` on `.notion-editor-wrapper .ProseMirror ul/ol/li`; applies to both Create and Edit pages unconditionally |
+ | Inline list CSS sync | `PirateCOSEditorArea.tsx` | Updated `EDITOR_STYLES` to match globals (disc → circle → square for nested) |
+ | Block-boundary insertion | `edit/[id]/page.tsx` + `create/page.tsx` | `handleApplyToEditor` changed from `insertContentAt(to/from)` to `$to.after(1)` / `$from.before(1)` + `preserveWhitespace: false` |
+ | HTML normalizer list cleanup | `html-normalizer.ts` | New `normalizeListContent()` Step 6: strips empty `<li>`, unwraps `<p><ul>`, removes trailing empty `<p>` inside `<li>` |
+ | System prompt hardening | `ai-context-builder.ts` | Added: "Do NOT wrap `<ul>`/`<ol>` inside `<p>` tags. Do NOT include empty `<li>` elements." |
+ | Dead code removal | `AIWorkspacePanel.tsx` | Removed orphaned `renderStickyButton` prop and `quickEditButtonProps` sticky button block |
+
+ **Root causes resolved:**
+ - Bullets invisible on Edit page → `PirateCOSEditorArea` (and its `EDITOR_STYLES`) was never used by the Edit page; global CSS now covers both
+ - Extra blank lines on insert → `insertContentAt(to)` inserts mid-block → ProseMirror splits the node; `$to.after(1)` targets block gap
+ - Extra phantom bullets → LLMs emit empty `<li>` and `<p><ul>` wrappers; normalizer now strips both before TipTap parses
+
+ ---
+
  **Phase 6 — Social Publishing & Newsletter Platforms (Partial Implementation)**
 
  > **Goal:** Expand distribution beyond blogs to social media and newsletter platforms
@@ -1078,9 +1102,13 @@
     - [Success Criteria](#54-success-criteria)
     - [Timeline Estimate](#55-timeline-estimate)
 
+### Phase 5.6 — Editor UX Refinements & AI Content Quality
+
+12. [Phase 5.6 — Overview](#phase-56--editor-ux-refinements--ai-content-quality) ✅ Complete (June 4, 2026)
+
 ### Phase 6 — Social Publishing & Newsletter Platforms
 
-12. [Phase 6 — Overview](#phase-6--social-publishing--newsletter-platforms)
+13. [Phase 6 — Overview](#phase-6--social-publishing--newsletter-platforms)
 
 ### Phase 7 — Team Collaboration & Enterprise Features
 

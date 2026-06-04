@@ -36,6 +36,7 @@ Based on the current codebase audit, **Phases 1–4E are Complete & Verified**. 
 | **Phase 5.1** | **PirateCOS: Analytics Dashboard (Frontend)** | 🟢 **Complete** | AI analytics dashboard with provider comparison, insights panel, trends charts — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.2** | **PirateCOS: Feedback Integration** | 🟢 **Complete** | Accept/Reject buttons, RLHF feedback loop, optimistic UI updates — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.5** | **PirateCOS: Shared Editor Component System** | 🟢 **Complete** | Extracted `FloatingBlockInserter`, `SlashCommandMenu`, `FormattingToolbar` into shared module; unified `PirateCOSEditorArea` wrapper eliminates ~1,400 lines of duplication across Create/Edit pages — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 5.6** | **PirateCOS: Editor UX Refinements & AI Content Quality** | 🟢 **Complete** | Undo/Redo toolbar buttons, global list bullet CSS fix, AI insertion block-boundary logic, HTML normalizer list cleanup, system prompt hardening — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.3** | **PirateCOS: Version History UI** | 🟢 **Complete** | Version history modal, diff viewer, one-click restore — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.4** | **PirateCOS: Team Management UI** | 🟢 **Complete** | Team creation, brand voice override, member management — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5** | **Advanced Analytics & Content Optimization** | 🟡 **In Progress** | AI analytics + feedback + version UI + team management complete; SEO quality scoring, UTM/attribution, content heatmap remain planned |
@@ -867,6 +868,53 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - `PirateCOSEditorArea` `children` prop renders the hidden file input and page-specific banner/title area — pages retain only content unique to them
 - `imageUploadRef` is forwarded from the page into the component so `FloatingBlockInserter` and `SlashCommandMenu` can trigger image uploads without page-level wiring
 - Both pages now have identical editor surface behaviour; future editor changes need only one file touched
+
+---
+
+### 🟢 Phase 5.6: Editor UX Refinements & AI Content Quality (June 4, 2026)
+
+**Status:** ✅ Complete (June 4, 2026)
+
+**Goal:** Fix editor bullet rendering, eliminate phantom empty lines when inserting AI output, and add undo/redo to the formatting toolbar.
+
+#### UI / Toolbar
+- [x] **Undo/Redo buttons added to `FormattingToolbar.tsx`** — SVG arrow icons rendered at the far left of the toolbar; disabled state tied to `editor.can().undo()` / `editor.can().redo()`; keyboard shortcuts Ctrl+Z / Ctrl+Y already provided by TipTap `StarterKit` History extension — no new extension required
+
+#### Bullet / List Rendering Fix
+- [x] **Root cause identified** — Tailwind preflight resets `list-style: none` globally; `EDITOR_STYLES` in `PirateCOSEditorArea` were never applied to the Edit page (which has its own inline `notion-editor-wrapper`, not using `PirateCOSEditorArea`)
+- [x] **`styles/globals.css`** — Added `.notion-editor-wrapper .ProseMirror ul/ol/li` rules with `list-style-type: disc/decimal !important` and `display: list-item !important` so both Create and Edit pages receive them unconditionally
+- [x] **`components/pirateCOS/editor/PirateCOSEditorArea.tsx`** — Inline `EDITOR_STYLES` also updated to be consistent (disc/decimal/circle/square for nested lists)
+
+#### AI Insertion Empty-Line Fix
+- [x] **`handleApplyToEditor` in `edit/[id]/page.tsx`** — Replaced raw `to` / `from` position with `$to.after(1)` / `$from.before(1)` (block boundary, not mid-block offset); added `parseOptions: { preserveWhitespace: false }` to all three insertion modes
+- [x] **`handleApplyToEditor` in `create/page.tsx`** — Same fix applied
+- [x] **Root cause** — `insertContentAt(to, html)` inserted at a raw cursor offset *inside* a paragraph; ProseMirror split the node to accommodate block-level HTML → empty paragraph above + below every insertion
+
+#### HTML Normalizer List Cleanup (`lib/pirateCOS/html-normalizer.ts`)
+- [x] **`normalizeListContent()`** — New Step 6 in the normalization pipeline:
+  - Removes empty `<li>` elements (whitespace/`&nbsp;`/`<br>` only) → eliminates phantom bullets
+  - Unwraps `<p><ul>…</ul></p>` and `<p><ol>…</ol></p>` (invalid HTML that causes TipTap parser recovery to insert extra nodes)
+  - Removes trailing empty `<p>` tags inside `<li>` elements (extra lines within list items)
+- [x] **`stripEmptyParagraphs()`** — Promoted to Step 7, runs after list cleanup
+
+#### System Prompt Hardening (`lib/pirateCOS/ai-context-builder.ts`)
+- [x] **Regular content base instructions** — Added explicit constraints: `"Do NOT wrap <ul> or <ol> elements inside <p> tags. Do NOT include empty <li> elements."` — upstream prevention before normalizer has to clean up
+
+#### Dead Code Removal (`components/pirateCOS/AIWorkspacePanel.tsx`)
+- [x] Removed residual `renderStickyButton` prop on `<ActionChips>` (prop does not exist on `ActionChipsProps`)
+- [x] Removed dead "Quick Edits Apply Button (Sticky)" JSX block that referenced `quickEditButtonProps` (undefined variable)
+
+**Files changed in Phase 5.6:**
+| File | Change |
+|---|---|
+| `components/pirateCOS/editor/FormattingToolbar.tsx` | Added Undo + Redo buttons with disabled state |
+| `styles/globals.css` | Added global `notion-editor-wrapper` list CSS rules |
+| `components/pirateCOS/editor/PirateCOSEditorArea.tsx` | Updated inline list CSS (disc/decimal/circle/square) |
+| `app/pirateCOS/(authed)/posts/edit/[id]/page.tsx` | `handleApplyToEditor` — block-boundary insertion + `preserveWhitespace: false` |
+| `app/pirateCOS/(authed)/posts/create/page.tsx` | Same as edit page |
+| `lib/pirateCOS/html-normalizer.ts` | Added `normalizeListContent()` Step 6; `stripEmptyParagraphs()` becomes Step 7 |
+| `lib/pirateCOS/ai-context-builder.ts` | System prompt: forbids `<p>`-wrapped lists and empty `<li>` elements |
+| `components/pirateCOS/AIWorkspacePanel.tsx` | Removed dead `renderStickyButton` prop and orphaned sticky button block |
 
 ---
 
