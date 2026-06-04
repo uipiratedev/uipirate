@@ -43,7 +43,7 @@ import {
   getGoalConfig,
   getFeatures,
 } from "@/lib/pirateCOS/postTypeConfig";
-import { DEFAULT_CTA_BLOCK_HTML } from "@/lib/pirateCOS/cta-template";
+
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
 import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
 
@@ -8109,9 +8109,9 @@ const BlogEditPage = () => {
             editor={editor}
             onApplyToEditor={handleApplyToEditor}
             onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
-            onInsertCTA={() => {
+            onInsertCTA={(html) => {
               if (!editor) return;
-              editor.chain().focus().insertContent(DEFAULT_CTA_BLOCK_HTML).run();
+              editor.chain().focus().insertContent(html).run();
             }}
             activeTab={activeSidebarTab}
             onTabChange={setActiveSidebarTab}

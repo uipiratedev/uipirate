@@ -7,6 +7,7 @@ import { useEditorSelection } from "@/hooks/useEditorSelection";
 import { useAIWorkspaceSession } from "@/hooks/useAIWorkspaceSession";
 import { AIEngine } from "@/lib/pirateCOS/ai-registry";
 import { getChatSuggestions, getFeatures } from "@/lib/pirateCOS/postTypeConfig";
+import { CTA_TEMPLATES, renderCTAHtml } from "@/lib/pirateCOS/cta-template";
 
 import FocusKeywordStrip from "./workspace/ContextDisplay";
 import ActionChips from "./workspace/QuickActions";
@@ -24,7 +25,7 @@ interface AIWorkspacePanelProps {
   brandBrain?: any;
   onApplyToEditor: (text: string, mode: "replace" | "insert-below" | "insert-above") => void;
   onOpenRepurposingDrawer: () => void;
-  onInsertCTA?: () => void;
+  onInsertCTA?: (html: string) => void;
 
   // Unified Sidebar Props
   activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null;
@@ -429,6 +430,20 @@ export default function AIWorkspacePanel({
   const showInsertCtaAction = !!panelFeatures?.ctaBlocks && !!onInsertCTA;
   const showWorkspaceActions = showTransformAction || showInsertCtaAction;
 
+  const [ctaPickerOpen, setCtaPickerOpen] = useState(false);
+  const ctaPickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ctaPickerOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (ctaPickerRef.current && !ctaPickerRef.current.contains(e.target as Node)) {
+        setCtaPickerOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [ctaPickerOpen]);
+
   const {
     messages,
     generations,
@@ -604,15 +619,53 @@ export default function AIWorkspacePanel({
                           </button>
                         )}
                         {showInsertCtaAction && (
-                          <button
-                            type="button"
-                            onClick={onInsertCTA}
-                            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold font-geist text-gray-700 bg-gray-50 hover:bg-orange-50 hover:text-[#FF5B04] border border-black/5 hover:border-[#FF5B04]/30 transition-all cursor-pointer shadow-sm"
-                            title="Insert Call-To-Action block"
-                          >
-                            <CosIcon name="megaphone" size={12} />
-                            Insert CTA
-                          </button>
+                          <div className="relative" ref={ctaPickerRef}>
+                            <button
+                              type="button"
+                              onClick={() => setCtaPickerOpen((v) => !v)}
+                              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-bold font-geist text-gray-700 bg-gray-50 hover:bg-orange-50 hover:text-[#FF5B04] border border-black/5 hover:border-[#FF5B04]/30 transition-all cursor-pointer shadow-sm"
+                              title="Insert Call-To-Action block"
+                            >
+                              <CosIcon name="megaphone" size={12} />
+                              Insert CTA
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className={`w-3 h-3 transition-transform ${ctaPickerOpen ? "rotate-180" : ""}`}
+                              >
+                                <polyline points="6 9 12 15 18 9" />
+                              </svg>
+                            </button>
+                            {ctaPickerOpen && (
+                              <div className="absolute z-50 mt-1.5 left-0 w-64 bg-white border border-black/5 rounded-2xl shadow-lg p-1.5 max-h-80 overflow-y-auto">
+                                <div className="px-2.5 py-1.5 text-[9px] font-bold font-jetbrains-mono uppercase tracking-widest text-gray-400">
+                                  Pick a CTA Template
+                                </div>
+                                {CTA_TEMPLATES.map((tpl) => (
+                                  <button
+                                    key={tpl.id}
+                                    type="button"
+                                    onClick={() => {
+                                      onInsertCTA?.(renderCTAHtml(tpl));
+                                      setCtaPickerOpen(false);
+                                    }}
+                                    className="w-full text-left px-2.5 py-2 rounded-xl hover:bg-orange-50 transition-colors group cursor-pointer"
+                                  >
+                                    <div className="text-[12px] font-bold font-geist text-gray-900 group-hover:text-[#FF5B04]">
+                                      {tpl.name}
+                                    </div>
+                                    <div className="text-[10px] font-geist text-gray-500 mt-0.5">
+                                      {tpl.description}
+                                    </div>
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
                     </div>
