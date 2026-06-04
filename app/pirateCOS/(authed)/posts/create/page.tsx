@@ -51,7 +51,7 @@ import { ContentHealthPanel } from "@/components/pirateCOS/content-health";
 import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 
-// â”€â”€â”€ Interfaces â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
   metaTitle?: string;
   metaDescription?: string;
@@ -66,7 +66,7 @@ interface PostSEO {
   noIndex?: boolean;
 }
 
-// â”€â”€â”€ Modal helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Modal helpers ───────────────────────────────────────────────────────────
 const Modal = ({
   title,
   children,
@@ -113,7 +113,7 @@ const Modal = ({
   </div>
 );
 
-// â”€â”€â”€ SEO Editor Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── SEO Editor Modal ────────────────────────────────────────────────────────
 const SEOEditorModal = ({
   isOpen,
   onClose,
@@ -853,7 +853,7 @@ const SEOEditorModal = ({
                                     updateField("keywords", nextKws);
                                   }}
                                 >
-                                  Ã—
+                                  ×
                                 </button>
                               </span>
                             ))}
@@ -1089,7 +1089,7 @@ const SEOEditorModal = ({
                                   : "text-orange-500"
                               }
                             >
-                              {strategy.type === "check" ? "âœ“" : "!"}
+                              {strategy.type === "check" ? "✓" : "!"}
                             </span>
                             <span
                               className={
@@ -1443,7 +1443,7 @@ const SEOEditorModal = ({
   );
 };
 
-// â”€â”€â”€ Image URL Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Image URL Modal ─────────────────────────────────────────────────────────
 const ImageUrlModal = ({
   editor,
   onClose,
@@ -1487,7 +1487,7 @@ const ImageUrlModal = ({
           </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Describe the imageâ€¦"
+            placeholder="Describe the image…"
             value={alt}
             onChange={(e) => setAlt(e.target.value)}
           />
@@ -1513,7 +1513,7 @@ const ImageUrlModal = ({
   );
 };
 
-// â”€â”€â”€ Video Embed Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Video Embed Modal ────────────────────────────────────────────────────────
 const VideoEmbedModal = ({
   editor,
   onClose,
@@ -1594,7 +1594,7 @@ const VideoEmbedModal = ({
           </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Add a captionâ€¦"
+            placeholder="Add a caption…"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
           />
@@ -1620,7 +1620,7 @@ const VideoEmbedModal = ({
   );
 };
 
-// â”€â”€â”€ Link Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Link Modal ──────────────────────────────────────────────────────────────
 const LinkModal = ({
   editor,
   onClose,
@@ -1695,7 +1695,7 @@ const LinkModal = ({
           </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Text to displayâ€¦"
+            placeholder="Text to display…"
             value={linkText}
             onChange={(e) => setLinkText(e.target.value)}
           />
@@ -1775,7 +1775,7 @@ const LinkModal = ({
   );
 };
 
-// â”€â”€â”€ Custom Alert Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Custom Alert Modal ──────────────────────────────────────────────────────
 const AlertModal = ({
   title,
   message,
@@ -1815,7 +1815,7 @@ const AlertModal = ({
   </Modal>
 );
 
-// â”€â”€â”€ Unsaved Changes Guard Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Unsaved Changes Guard Modal ─────────────────────────────────────────────
 const UnsavedChangesModal = ({
   onLeave,
   onStay,
@@ -1901,7 +1901,7 @@ const UnsavedChangesModal = ({
   </div>
 );
 
-// â”€â”€â”€ Publish Confirm Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Publish Confirm Modal ───────────────────────────────────────────────────
 const PublishConfirmModal = ({
   isOpen,
   onClose,
@@ -2142,7 +2142,7 @@ const PublishConfirmModal = ({
   );
 };
 
-// â”€â”€â”€ Save Draft Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Save Draft Modal ────────────────────────────────────────────────────────
 const SaveDraftModal = ({
   isOpen,
   onClose,
@@ -2335,7 +2335,7 @@ const SaveDraftModal = ({
   );
 };
 
-// â”€â”€â”€ AI Excerpt Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── AI Excerpt Modal ────────────────────────────────────────────────────────
 const AIExcerptModal = ({
   isOpen,
   onClose,
@@ -2789,7 +2789,7 @@ const AIExcerptModal = ({
   );
 };
 
-// â”€â”€â”€ AI Title Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── AI Title Modal ─────────────────────────────────────────────────────────
 const AITitleModal = ({
   isOpen,
   onClose,
@@ -3305,7 +3305,7 @@ const AITitleModal = ({
   );
 };
 
-// â”€â”€â”€ AI Tags Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── AI Tags Modal ──────────────────────────────────────────────────────────
 const AITagsModal = ({
   isOpen,
   onClose,
@@ -3819,7 +3819,7 @@ const AITagsModal = ({
                             : "bg-white border-black/10"
                         }`}
                       >
-                        {isSelected && "âœ“"}
+                        {isSelected && "✓"}
                       </span>
                       <span>#{t}</span>
                     </button>
@@ -3860,7 +3860,7 @@ const AITagsModal = ({
   );
 };
 
-// â”€â”€â”€ AI Copilot Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── AI Copilot Modal ────────────────────────────────────────────────────────
 const AICopilotModal = ({
   isOpen,
   onClose,
@@ -4574,7 +4574,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
   );
 };
 
-// â”€â”€â”€ Floating Block Inserter (Medium-style) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Floating Block Inserter (Medium-style) ───────────────────────────────────
 const FloatingBlockInserter = ({
   editor,
   onImageUrl,
@@ -4591,7 +4591,7 @@ const FloatingBlockInserter = ({
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Use Tiptap v3's reactive hook â€” re-renders on every selection change
+  // Use Tiptap v3's reactive hook — re-renders on every selection change
   const editorState = useEditorState({
     editor,
     selector: (ctx: any) => {
@@ -4907,7 +4907,7 @@ const FloatingBlockInserter = ({
   );
 };
 
-// â”€â”€â”€ Slash Command Menu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Slash Command Menu ───────────────────────────────────────────────────────
 const SlashCommandMenu = ({
   editor,
   isOpen,
@@ -4952,7 +4952,7 @@ const SlashCommandMenu = ({
       },
       {
         title: "Bullet List",
-        icon: "â€¢",
+        icon: "•",
         desc: "Create a simple list",
         command: () => editor.chain().focus().toggleBulletList().run(),
       },
@@ -4964,7 +4964,7 @@ const SlashCommandMenu = ({
       },
       {
         title: "Task List",
-        icon: "â˜‘",
+        icon: "☑",
         desc: "Track tasks with checkboxes",
         command: () => editor.chain().focus().toggleTaskList().run(),
         featureKey: "taskLists",
@@ -4984,7 +4984,7 @@ const SlashCommandMenu = ({
       },
       {
         title: "Divider",
-        icon: "â€”",
+        icon: "—",
         desc: "Add a horizontal rule",
         command: () => editor.chain().focus().setHorizontalRule().run(),
       },
@@ -5011,7 +5011,7 @@ const SlashCommandMenu = ({
       {
         title: "Embed Video",
         icon: "video",
-        desc: "YouTube, Vimeo, Loomâ€¦",
+        desc: "YouTube, Vimeo, Loom…",
         command: onVideoEmbed,
       },
       {
@@ -5096,23 +5096,19 @@ const SlashCommandMenu = ({
   );
 };
 
-// â”€â”€â”€ Formatting Toolbar (top) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Formatting Toolbar (top) ─────────────────────────────────────────────────
 const FormattingToolbar = ({
   editor,
   onLinkClick,
-  onCopilotClick,
   activePreset,
   onPresetChange,
-  onTransformClick,
   features,
   postType,
 }: {
   editor: any;
   onLinkClick: () => void;
-  onCopilotClick: () => void;
   activePreset: string;
   onPresetChange: (preset: string) => void;
-  onTransformClick: () => void;
   features?: any;
   postType?: string;
 }) => {
@@ -5145,69 +5141,6 @@ const FormattingToolbar = ({
         borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
       }}
     >
-      <button
-        className="mr-2 px-3 py-1.5 rounded-lg text-white font-semibold text-sm font-geist transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] shadow-sm hover:shadow flex items-center gap-1 cursor-pointer relative overflow-hidden group animate-pulse"
-        style={{
-          background: "linear-gradient(135deg, #FF5B04 0%, #D946EF 100%)",
-        }}
-        onClick={onCopilotClick}
-      >
-        <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-        <svg
-          fill="none"
-          height="13"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          width="13"
-        >
-          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-        </svg>
-        <span>AI Copilot</span>
-      </button>
-      {sep}
-
-      {postType !== "social-post" && (
-        <>
-          {sep}
-          <button
-            className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-            title="Repurpose post into other formats"
-            type="button"
-            onClick={onTransformClick}
-          >
-            <span className="flex items-center gap-1">
-              <CosIcon name="bolt" size={12} className="inline mr-1" /> Transform
-            </span>
-          </button>
-        </>
-      )}
-      {features?.ctaBlocks && (
-        <button
-          className="px-2.5 py-1.5 rounded-lg text-xs font-bold font-geist text-gray-500 hover:bg-black/5 hover:text-gray-900 flex items-center gap-1 cursor-pointer"
-          title="Insert Call-To-Action Block"
-          onClick={() => {
-            editor
-              .chain()
-              .focus()
-              .insertContent(
-                `
-              <div class="cta-block border-2 border-orange-500 rounded-2xl p-6 my-6 bg-orange-50/50 flex flex-col items-center text-center">
-                <h3 class="text-lg font-bold text-gray-900 mb-2">Ready to take the next step?</h3>
-                <p class="text-sm text-gray-600 mb-4">Get started today and see the difference.</p>
-                <a href="#" class="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-semibold shadow hover:bg-orange-600 transition-colors">Click Here to Start</a>
-              </div>
-            `,
-              )
-              .run();
-          }}
-        >
-          <span className="flex items-center gap-1.5"><CosIcon name="megaphone" size={12} /> Insert CTA</span>
-        </button>
-      )}
-      {sep}
       <button
         className={btn(editor.isActive("bold"))}
         style={editor.isActive("bold") ? activeStyle : {}}
@@ -5383,7 +5316,7 @@ const FormattingToolbar = ({
             title="Bullet List"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
-            â€¢ List
+            • List
           </button>
           <button
             className={btn(editor.isActive("orderedList"))}
@@ -5434,7 +5367,7 @@ const FormattingToolbar = ({
             title="Horizontal Rule"
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
           >
-            â€”
+            —
           </button>
         </>
       )}
@@ -5460,7 +5393,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Row â†‘</span>
+              <span className="text-[10px] ml-1">Row ↑</span>
             </button>
 
             <button
@@ -5477,7 +5410,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Row â†“</span>
+              <span className="text-[10px] ml-1">Row ↓</span>
             </button>
 
             <button
@@ -5513,7 +5446,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Col â†</span>
+              <span className="text-[10px] ml-1">Col ←</span>
             </button>
 
             <button
@@ -5530,7 +5463,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Col â†’</span>
+              <span className="text-[10px] ml-1">Col →</span>
             </button>
 
             <button
@@ -5592,7 +5525,7 @@ const FormattingToolbar = ({
   );
 };
 
-// â”€â”€â”€ Post Preview Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Post Preview Panel ──────────────────────────────────────────────────────
 function slugifyHeading(text: string): string {
   return text
     .toLowerCase()
@@ -5650,7 +5583,7 @@ function injectHeadingIds(html: string): string {
   );
 }
 // Minified mirror of globals.css .blog-prose rules, scoped to .preview-prose
-const PREVIEW_PROSE_CSS = `.preview-prose{color:#1a1a1a!important;font-family:var(--font-jakarta),var(--font-sans),sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:-.005em}.preview-prose p{color:#1a1a1a!important;margin-top:0;margin-bottom:1.25rem}.preview-prose li{color:#1a1a1a!important}.preview-prose h1,.preview-prose h2,.preview-prose h3,.preview-prose h4{color:#111!important;font-family:var(--font-geist),sans-serif;font-weight:700;line-height:1.2;margin-top:2.5rem;margin-bottom:.85rem;letter-spacing:-.025em}.preview-prose h1{font-size:2.25rem}.preview-prose h2{font-size:1.625rem;border-left:3.5px solid #FF5B04;padding-left:.85rem;margin-left:-.85rem}.preview-prose h3{font-size:1.35rem}.preview-prose h4{font-size:1.125rem}.preview-prose strong{color:#111!important;font-weight:700}.preview-prose em{color:#444!important;font-style:italic}.preview-prose a{color:#FF5B04;text-decoration:underline;text-underline-offset:3px;font-weight:500}.preview-prose ul{list-style:none;padding-left:0;margin:1.5rem 0}.preview-prose ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;line-height:1.6}.preview-prose ul li::before{content:"â€¢";color:#FF5B04;font-weight:bold;font-size:1.35rem;position:absolute;left:.25rem;top:-.15rem}.preview-prose ol{list-style-type:decimal;padding-left:1.5rem;margin:1.5rem 0}.preview-prose ol li{margin-bottom:.5rem;padding-left:.25rem;line-height:1.6}.preview-prose li strong{color:#111}.preview-prose blockquote{border-left:4px solid #FF5B04;margin:2.25rem 0;padding:.85rem 1.5rem;background:rgba(255,91,4,.035);border-radius:4px 16px 16px 4px;color:#2b2b2b;font-size:1.15rem;line-height:1.7;font-style:italic;font-weight:500}.preview-prose code{font-family:var(--font-geist-mono,monospace);font-size:.85em;background:#f7f7f8;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:.2em .4em;color:#FF5B04;font-weight:500}.preview-prose pre{background:#0c0c0d;border:1px solid rgba(255,255,255,.08);color:#f4f4f5;border-radius:14px;padding:1.5rem 1.75rem;overflow-x:auto;margin:2.25rem 0;font-size:.85rem;line-height:1.75}.preview-prose pre code{background:none;border:none;padding:0;color:inherit}.preview-prose hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.08) 15%,rgba(0,0,0,.08) 85%,transparent);margin:3.5rem 0}.preview-prose img{display:block;max-width:100%;height:auto;border-radius:14px;margin:2rem auto;box-shadow:0 10px 30px rgba(0,0,0,.04)}.preview-prose p:has(>img:only-child){display:flex;justify-content:center}.preview-prose table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;margin:2.5rem 0;font-size:.925rem;border:1px solid rgba(255,91,4,.15);border-radius:14px;box-shadow:0 4px 24px rgba(255,91,4,.03)}.preview-prose th,.preview-prose td{border-bottom:1px solid rgba(255,91,4,.08);border-right:1px solid rgba(255,91,4,.06);padding:.9rem 1.25rem;text-align:left}.preview-prose th:last-child,.preview-prose td:last-child{border-right:none}.preview-prose tr:last-child td{border-bottom:none}.preview-prose th{background:#FFF5F0;color:#1a1a1a;font-weight:700;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;border-bottom:2px solid rgba(255,91,4,.2)!important}.preview-prose tr:hover td{background:rgba(255,91,4,.025)}.preview-prose>p:first-of-type::first-letter{font-size:3.5rem;font-weight:700;float:left;line-height:.85;margin-right:.55rem;margin-top:.15rem;color:#FF5B04;font-family:var(--font-geist),sans-serif}.preview-prose::selection,.preview-prose *::selection{background:rgba(255,91,4,.12);color:#FF5B04}`;
+const PREVIEW_PROSE_CSS = `.preview-prose{color:#1a1a1a!important;font-family:var(--font-jakarta),var(--font-sans),sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:-.005em}.preview-prose p{color:#1a1a1a!important;margin-top:0;margin-bottom:1.25rem}.preview-prose li{color:#1a1a1a!important}.preview-prose h1,.preview-prose h2,.preview-prose h3,.preview-prose h4{color:#111!important;font-family:var(--font-geist),sans-serif;font-weight:700;line-height:1.2;margin-top:2.5rem;margin-bottom:.85rem;letter-spacing:-.025em}.preview-prose h1{font-size:2.25rem}.preview-prose h2{font-size:1.625rem;border-left:3.5px solid #FF5B04;padding-left:.85rem;margin-left:-.85rem}.preview-prose h3{font-size:1.35rem}.preview-prose h4{font-size:1.125rem}.preview-prose strong{color:#111!important;font-weight:700}.preview-prose em{color:#444!important;font-style:italic}.preview-prose a{color:#FF5B04;text-decoration:underline;text-underline-offset:3px;font-weight:500}.preview-prose ul{list-style:none;padding-left:0;margin:1.5rem 0}.preview-prose ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;line-height:1.6}.preview-prose ul li::before{content:"•";color:#FF5B04;font-weight:bold;font-size:1.35rem;position:absolute;left:.25rem;top:-.15rem}.preview-prose ol{list-style-type:decimal;padding-left:1.5rem;margin:1.5rem 0}.preview-prose ol li{margin-bottom:.5rem;padding-left:.25rem;line-height:1.6}.preview-prose li strong{color:#111}.preview-prose blockquote{border-left:4px solid #FF5B04;margin:2.25rem 0;padding:.85rem 1.5rem;background:rgba(255,91,4,.035);border-radius:4px 16px 16px 4px;color:#2b2b2b;font-size:1.15rem;line-height:1.7;font-style:italic;font-weight:500}.preview-prose code{font-family:var(--font-geist-mono,monospace);font-size:.85em;background:#f7f7f8;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:.2em .4em;color:#FF5B04;font-weight:500}.preview-prose pre{background:#0c0c0d;border:1px solid rgba(255,255,255,.08);color:#f4f4f5;border-radius:14px;padding:1.5rem 1.75rem;overflow-x:auto;margin:2.25rem 0;font-size:.85rem;line-height:1.75}.preview-prose pre code{background:none;border:none;padding:0;color:inherit}.preview-prose hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.08) 15%,rgba(0,0,0,.08) 85%,transparent);margin:3.5rem 0}.preview-prose img{display:block;max-width:100%;height:auto;border-radius:14px;margin:2rem auto;box-shadow:0 10px 30px rgba(0,0,0,.04)}.preview-prose p:has(>img:only-child){display:flex;justify-content:center}.preview-prose table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;margin:2.5rem 0;font-size:.925rem;border:1px solid rgba(255,91,4,.15);border-radius:14px;box-shadow:0 4px 24px rgba(255,91,4,.03)}.preview-prose th,.preview-prose td{border-bottom:1px solid rgba(255,91,4,.08);border-right:1px solid rgba(255,91,4,.06);padding:.9rem 1.25rem;text-align:left}.preview-prose th:last-child,.preview-prose td:last-child{border-right:none}.preview-prose tr:last-child td{border-bottom:none}.preview-prose th{background:#FFF5F0;color:#1a1a1a;font-weight:700;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;border-bottom:2px solid rgba(255,91,4,.2)!important}.preview-prose tr:hover td{background:rgba(255,91,4,.025)}.preview-prose>p:first-of-type::first-letter{font-size:3.5rem;font-weight:700;float:left;line-height:.85;margin-right:.55rem;margin-top:.15rem;color:#FF5B04;font-family:var(--font-geist),sans-serif}.preview-prose::selection,.preview-prose *::selection{background:rgba(255,91,4,.12);color:#FF5B04}`;
 
 const PostPreviewPanel = ({
   title,
@@ -5742,7 +5675,7 @@ const PostPreviewPanel = ({
             Reader Preview
           </span>
           <span className="text-xs font-geist text-gray-400">
-            High-fidelity Â· matches live site
+            High-fidelity · matches live site
           </span>
         </div>
         <button
@@ -5766,10 +5699,10 @@ const PostPreviewPanel = ({
         </button>
       </div>
 
-      {/* Preview card â€” no overflow-hidden here; the hero div owns its own clip so
+      {/* Preview card — no overflow-hidden here; the hero div owns its own clip so
           the inner sticky TOC aside has a full-height scroll track to travel along */}
       <div className="bg-white rounded-2xl shadow-sm border border-black/5">
-        {/* â”€â”€ Hero â€” mirrors screens/blogsDetails/hero/index.tsx â”€â”€ */}
+        {/* ── Hero — mirrors screens/blogsDetails/hero/index.tsx ── */}
         <div
           className="relative w-full overflow-hidden group"
           style={{ height: 340 }}
@@ -5837,12 +5770,12 @@ const PostPreviewPanel = ({
           </div>
         </div>
 
-        {/* â”€â”€ Article body â€” mirrors screens/blogsDetails/blogContents/ layout â”€â”€ */}
+        {/* ── Article body — mirrors screens/blogsDetails/blogContents/ layout ── */}
         <article className="px-14 pt-8 pb-16">
           {/* Inject prose CSS identical to live site's bulletproof style block */}
           <style dangerouslySetInnerHTML={{ __html: PREVIEW_PROSE_CSS }} />
 
-          {/* Header info â€” mirrors screens/blogsDetails/blogContents/headeInfo.tsx */}
+          {/* Header info — mirrors screens/blogsDetails/blogContents/headeInfo.tsx */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div
@@ -5862,7 +5795,7 @@ const PostPreviewPanel = ({
                   className="text-xs text-gray-400"
                   style={{ fontFamily: "var(--font-geist)" }}
                 >
-                  Preview Â· {readTime} min read
+                  Preview · {readTime} min read
                 </p>
               </div>
             </div>
@@ -5894,7 +5827,7 @@ const PostPreviewPanel = ({
             </div>
           )}
 
-          {/* Excerpt â€” pull-quote style matching live site */}
+          {/* Excerpt — pull-quote style matching live site */}
           {excerpt && (
             <p
               className="mt-6 text-lg leading-relaxed pl-4 border-l-4 border-orange-200"
@@ -5907,8 +5840,8 @@ const PostPreviewPanel = ({
             </p>
           )}
 
-          {/* Content + sticky TOC â€” two-column when there are â‰¥2 headings */}
-          {/* NOTE: no items-start â€” aside must stretch to article height so sticky has room to travel */}
+          {/* Content + sticky TOC — two-column when there are ≥2 headings */}
+          {/* NOTE: no items-start — aside must stretch to article height so sticky has room to travel */}
           <div className={`mt-10 ${hasToc ? "flex gap-10" : ""}`}>
             <div
               dangerouslySetInnerHTML={{
@@ -5918,7 +5851,7 @@ const PostPreviewPanel = ({
               }}
               className="preview-prose min-w-0 flex-1"
             />
-            {/* Sticky TOC â€” pixel-identical to screens/blogsDetails/blogContents */}
+            {/* Sticky TOC — pixel-identical to screens/blogsDetails/blogContents */}
             {hasToc && (
               <aside
                 className="flex-shrink-0 hidden xl:block"
@@ -5988,7 +5921,7 @@ const SOCIAL_DESTINATIONS: Record<SocialDestination, SocialDestinationConfig> = 
 
 
 
-// â”€â”€â”€ Main Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Main Component ───────────────────────────────────────────────────────────
 const BlogEditor = () => {
   const isSubdomain =
     typeof window !== "undefined" &&
@@ -6466,7 +6399,7 @@ const BlogEditor = () => {
   });
   const pendingNavHref = useRef<string>("");
   const pendingNavIsBack = useRef(false); // true when guard was tripped by browser back/forward
-  const isDirtyRef = useRef(false); // ref mirror â€” always current inside event handlers
+  const isDirtyRef = useRef(false); // ref mirror — always current inside event handlers
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -6524,8 +6457,8 @@ const BlogEditor = () => {
 
 
 
-  // â”€â”€ Navigation guards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-  // 1. Tab / window close â€” uses ref so the handler never needs to be replaced
+  // ── Navigation guards ───────────────────────────────────────────────────────
+  // 1. Tab / window close — uses ref so the handler never needs to be replaced
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
       if (!isDirtyRef.current || !typeSelected) return;
@@ -6541,7 +6474,7 @@ const BlogEditor = () => {
     return () => window.removeEventListener("beforeunload", handler);
   }, [typeSelected]);
 
-  // 2. Sidebar <Link> and every other <a> click â€” capture phase intercepts before
+  // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
   //    Next.js router handles the event, covering all client-side link navigation.
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
@@ -6630,7 +6563,7 @@ const BlogEditor = () => {
         placeholder: ({ node }) => {
           if (node.type.name === "heading") return "Heading";
 
-          return "Type '/' for commands or click + to add a blockâ€¦";
+          return "Type '/' for commands or click + to add a block...";
         },
       }),
       TaskList,
@@ -6769,7 +6702,7 @@ const BlogEditor = () => {
     [editor, setIsDirty]
   );
 
-  // Dirty tracking â€” skip first run (initial mount), mark dirty on any subsequent change
+  // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
   useEffect(() => {
     if (!isDataInitialized || !typeSelected) return;
     
@@ -6879,7 +6812,7 @@ const BlogEditor = () => {
     [],
   );
 
-  // Navigate safely â€” shows unsaved-changes modal if form is dirty
+  // Navigate safely — shows unsaved-changes modal if form is dirty
   const navigateSafely = useCallback(
     (href: string) => {
       if (isDirty) {
@@ -6925,7 +6858,7 @@ const BlogEditor = () => {
 
   if (!mounted || !editor || authLoading) return null;
 
-  // â”€â”€ 3-Step Guided Wizard selection gate â”€â”€
+  // ── 3-Step Guided Wizard selection gate ──
   if (!typeSelected) {
     const activeTypeConfig = getPostTypeConfig(postType);
     const activeGoalConfig = getGoalConfig(contentGoal);
@@ -7068,7 +7001,7 @@ const BlogEditor = () => {
               <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-[#FF5B04]">
                 Creation Wizard
               </span>
-              <span className="text-gray-300 text-[10px]">â€¢</span>
+              <span className="text-gray-300 text-[10px]">•</span>
               <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-gray-400">
                 Step {wizardStep} of 3
               </span>
@@ -7090,9 +7023,9 @@ const BlogEditor = () => {
 
         {/* Content Wrapper */}
         <div className="px-8 py-8 w-full">
-          {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+          {/* ───────────────────────────────────────────────────────────────────
               STEP 1: INTENT SELECTION
-          â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+          ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 1 && (
             <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in fade-in duration-200">
               {/* Left Column: Archetype selector cards */}
@@ -7244,7 +7177,7 @@ const BlogEditor = () => {
                     <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">Target Range</span>
                     <p className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
                       <CosIcon name="blog" size={12} className="text-[#FF5B04]" />
-                      <span>{currentTypeConfig ? `${currentTypeConfig.minWordCount}â€“${currentTypeConfig.maxWordCount} words` : "N/A"}</span>
+                      <span>{currentTypeConfig ? `${currentTypeConfig.minWordCount}–${currentTypeConfig.maxWordCount} words` : "N/A"}</span>
                     </p>
                   </div>
                 </div>
@@ -7283,9 +7216,9 @@ const BlogEditor = () => {
             </div>
           )}
 
-          {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+          {/* ───────────────────────────────────────────────────────────────────
               STEP 2: GOAL SELECTION
-          â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+          ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 2 && (
             <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in slide-in-from-right-4 duration-200">
               {/* Left Column: Goal Cards */}
@@ -7437,9 +7370,9 @@ const BlogEditor = () => {
             </div>
           )}
 
-          {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+          {/* ───────────────────────────────────────────────────────────────────
               STEP 3: WORKSPACE PREVIEW & CAROUSEL TUTORIAL
-          â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+          ─────────────────────────────────────────────────────────────────── */}
           {wizardStep === 3 && (
             <div className="space-y-5 animate-in slide-in-from-right-4 duration-200">
               <div className="space-y-1">
@@ -7465,7 +7398,7 @@ const BlogEditor = () => {
                     {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={11} className="text-[#FF5B04]" />}
                     {activeTypeConfig?.label}
                   </span>
-                  <span className="text-gray-300 text-xs">Ã—</span>
+                  <span className="text-gray-300 text-xs">×</span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#FF5B04]/5 border border-[#FF5B04]/10 text-[10px] font-semibold text-gray-700">
                     {activeGoalConfig && <CosIcon name={activeGoalConfig.icon} size={11} className="text-[#FF5B04]" />}
                     {activeGoalConfig?.label}
@@ -7523,7 +7456,7 @@ const BlogEditor = () => {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
-                â† Back to Archetype
+                ← Back to Archetype
               </button>
               <button
                 disabled={!contentGoal}
@@ -7562,7 +7495,7 @@ const BlogEditor = () => {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
-                â† Change Goal
+                ← Change Goal
               </button>
               <button
                 className="ml-auto flex items-center gap-2 text-xs font-bold font-geist text-white h-11 px-8 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
@@ -7780,8 +7713,8 @@ const BlogEditor = () => {
 
   const statusColor: Record<string, string> = {
     Draft: "#6b7280",
-    "Savingâ€¦": "#FF5B04",
-    "Publishingâ€¦": "#FF5B04",
+    "Saving…": "#FF5B04",
+    "Publishing…": "#FF5B04",
     Saved: "#16a34a",
     Published: "#16a34a",
     Error: "#dc2626",
@@ -7789,7 +7722,7 @@ const BlogEditor = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ background: "#F7F7F6" }}>
-      {/* â”€â”€ Top Bar â”€â”€ */}
+      {/* ── Top Bar ── */}
       <div
         className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 px-3 lg:px-6 py-2.5 lg:py-3"
         style={{
@@ -7813,7 +7746,7 @@ const BlogEditor = () => {
           <span className="text-sm font-medium font-geist text-gray-900 truncate">
             New Post
           </span>
-          {/* Locked type badge & help trigger â€” hidden on small screens */}
+          {/* Locked type badge & help trigger — hidden on small screens */}
           <div className="hidden md:flex items-center gap-2">
             <span
               className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
@@ -7831,7 +7764,7 @@ const BlogEditor = () => {
                   <span className="flex items-center gap-1">
                     {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
                     <span>{ptConfig?.label}</span>
-                    <span className="mx-0.5">Ã—</span>
+                    <span className="mx-0.5">×</span>
                     {gConfig && <CosIcon name={gConfig.icon} size={10} />}
                     <span>{gConfig?.label}</span>
                   </span>
@@ -7919,7 +7852,7 @@ const BlogEditor = () => {
         </div>
       </div>
 
-      {/* â”€â”€ Two-column Layout â”€â”€ */}
+      {/* ── Two-column Layout ── */}
       <div className="flex flex-col lg:flex-row pl-4 lg:pl-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
         {/* Editor / Preview Column */}
         {showPreview ? (
@@ -7935,19 +7868,17 @@ const BlogEditor = () => {
         ) : (
           <>
             <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden">
-              {/* Formatting Toolbar â€” sticky inside editor column */}
+              {/* Formatting Toolbar — sticky inside editor column */}
               <FormattingToolbar
                 activePreset={activePreset}
                 editor={editor}
                 features={getFeatures(postType)}
                 postType={postType}
-                onCopilotClick={() => setActiveSidebarTab("ai")}
                 onLinkClick={() => {
                   editor.chain().focus().extendMarkRange("link").run();
                   setShowLinkModal(true);
                 }}
                 onPresetChange={setActivePreset}
-                onTransformClick={() => setIsRepurposeDrawerOpen(true)}
               />
 
               <div className="flex-1 min-w-0 overflow-y-auto">
@@ -8063,7 +7994,7 @@ const BlogEditor = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <input
                     className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-                    placeholder="Post titleâ€¦"
+                    placeholder="Post title…"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -8165,8 +8096,8 @@ const BlogEditor = () => {
 
       </div>
 
-      {/* â”€â”€ Modals â”€â”€ */}
-      {/* RepurposingDrawer is intentionally hidden for social-post â€” repurposing
+      {/* ── Modals ── */}
+      {/* RepurposingDrawer is intentionally hidden for social-post — repurposing
           a social post into another social format is handled by AI Copilot instead */}
       {postType !== "social-post" && (
         <RepurposingDrawer
@@ -8315,7 +8246,7 @@ const BlogEditor = () => {
           </div>
         </div>
       )}
-      {/* â”€â”€ Styles â”€â”€ */}
+      {/* ── Styles ── */}
       <style>{`
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(-4px); }
@@ -8338,7 +8269,7 @@ const BlogEditor = () => {
           border-radius: 4px;
         }
 
-        .notion-editor-wrapper .ProseMirror p.is-editor-empty::before {
+        .notion-editor-wrapper .ProseMirror p.is-empty::before {
           color: #adb5bd;
           content: attr(data-placeholder);
           float: left;
