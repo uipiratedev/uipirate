@@ -44,7 +44,7 @@ import {
   getFeatures,
 } from "@/lib/pirateCOS/postTypeConfig";
 
-import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
+import { ContentHealthPanel } from "@/components/pirateCOS/content-health";
 import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
 import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 

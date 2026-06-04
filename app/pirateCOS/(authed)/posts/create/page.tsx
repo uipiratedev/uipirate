@@ -47,7 +47,7 @@ import {
   getPostTypesByCategory,
 } from "@/lib/pirateCOS/postTypeConfig";
 import { DEFAULT_CTA_BLOCK_HTML } from "@/lib/pirateCOS/cta-template";
-import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
+import { ContentHealthPanel } from "@/components/pirateCOS/content-health";
 import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 
 // â”€â”€â”€ Interfaces â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
