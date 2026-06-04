@@ -38,8 +38,8 @@ Based on the current codebase audit, **Phases 1–4E are Complete & Verified**. 
 | **Phase 5.3** | **PirateCOS: Version History UI** | 🟢 **Complete** | Version history modal, diff viewer, one-click restore — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.4** | **PirateCOS: Team Management UI** | 🟢 **Complete** | Team creation, brand voice override, member management — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5** | **Advanced Analytics & Content Optimization** | 🟡 **In Progress** | AI analytics + feedback + version UI + team management complete; SEO quality scoring, UTM/attribution, content heatmap remain planned |
-| **Phase 6** | **Social Publishing & Newsletter Platforms** | ⬜ *Planned* | Substack email publishing, Beehiiv REST, ConvertKit sequences, Dev.to/Hashnode developer syndication |
-| **Phase 7** | **Team Collaboration & Enterprise Features** | ⬜ *Planned* | Multi-user seats, Role-Based Access Control (RBAC), approval workflows, SAML SSO, Zapier/webhooks |
+| **Phase 6** | **Social Publishing & Newsletter Platforms** | 🟡 **Partial** | LinkedIn adapter complete; Substack, Beehiiv, ConvertKit, Dev.to, Hashnode remain planned |
+| **Phase 7** | **Team Collaboration & Enterprise Features** | 🟡 **Partial** | Stripe billing + team management (RBAC) complete; approval workflows, SAML SSO, audit logs remain planned |
 | **Phase 8** | **Blog Theme Customization & Design System Matching** | ⬜ *Planned* | Visual theme builder, design system URL scraper / Figma plugin, email-safe responsive HTML generation |
 
 ---
@@ -65,6 +65,7 @@ The core workspace has been successfully transformed into a multi-channel conten
     *   [`medium.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/medium.adapter.ts): Translates content to markdown, manages publishing via token authorization.
     *   [`ghost.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/ghost.adapter.ts): Employs custom Admin JWT signatures to publish/edit Ghost nodes via clean HTML fields.
     *   [`buffer.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/buffer.adapter.ts): Extracts post titles and excerpts for social syndication queues.
+    *   [`linkedin.adapter.ts`](file:///d:/ui-pirate/uipirate/lib/pirateCOS/distribution/adapters/linkedin.adapter.ts): **(Phase 6)** LinkedIn REST API v2 integration supporting both articles (long-form, >1200 words) and posts (short-form). Uses OAuth tokens, auto-detects format, fetches member IDs via OpenID Connect, and verifies post lifecycle states.
 
 ### 3. API Infrastructure (pirateCOS Namespaced)
 *   **Outbound API Integrations**:
@@ -551,19 +552,100 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
 - [ ] **Cross-Platform UTM Attribution**: Standardized UTM injection system to track which channel generates the most traffic.
 - [ ] **Content Heatmap**: Calendar visualizing past publication distributions and optimal posting periods.
 
-### ⬜ Phase 6: Social Publishing & Newsletter Platforms
+### 🟡 Phase 6: Social Publishing & Newsletter Platforms (PARTIAL - 20% Complete)
+
+**✅ Completed:**
+- [x] **LinkedIn Publishing Adapter** (`lib/pirateCOS/distribution/adapters/linkedin.adapter.ts`)
+  - [x] LinkedIn REST API v2 integration (LinkedIn-Version: 202605)
+  - [x] OAuth authentication with token encryption
+  - [x] Auto-format detection (article vs. post based on content length >1200 words)
+  - [x] Member ID fetching via OpenID Connect (`/v2/userinfo`)
+  - [x] Article publishing (long-form content with `content.article` object)
+  - [x] Post publishing (short-form commentary)
+  - [x] Post verification and lifecycle state checking
+  - [x] Integration in ADAPTER_MAP (`lib/pirateCOS/distribution/index.ts`)
+  - [x] LinkedIn credentials schema in `Integration.ts` model
+  - [x] UI integration in `/settings/integrations` page
+
+**⬜ Remaining:**
 - [ ] **Substack publishing**: Email-to-draft syndication mechanism using custom email addresses to populate writer drafts.
 - [ ] **Beehiiv REST adapter**: Block-based JSON translator publishing posts directly into newsletters with scheduling options.
 - [ ] **ConvertKit Adapter**: Plain-text simplified email broadcast adapter, supporting subscriber tag segmentations.
 - [ ] **Developer community syndication**: Markdown-native adapters and canonical link headers for Dev.to and Hashnode (GraphQL).
 - [ ] **Queue-based throttle worker**: Bull-backed queues keeping outbound publish promises compliant with third-party rate limits.
 
-### ⬜ Phase 7: Team Collaboration & Enterprise Features
-- [ ] **Team invitation workflows**: Provisions secondary seats under a single tenant workspace.
-- [ ] **Role-Based Access Control (RBAC)**: Enforces specific Owner, Admin, Editor, and Viewer limits at the API router layer.
+---
+
+### 🟡 Phase 7: Team Collaboration & Enterprise Features (PARTIAL - 60% Complete)
+
+**✅ Completed - Billing & Monetization:**
+- [x] **Full Stripe Integration**
+  - [x] Stripe checkout sessions (`POST /api/pirateCOS/billing/checkout`)
+  - [x] Subscription management (monthly Pro plan)
+  - [x] One-time credit top-ups (dynamic pricing: 200 credits per $1.00)
+  - [x] Customer portal integration (`POST /api/pirateCOS/billing/portal`)
+  - [x] Webhook handling (`POST /api/pirateCOS/billing/webhooks`)
+    - [x] `checkout.session.completed` — Credits/subscription activation
+    - [x] `invoice.paid` — Subscription renewal + lifetime value tracking
+    - [x] `invoice.payment_failed` — Subscription status updates
+    - [x] `customer.subscription.deleted` — Cancellation handling
+    - [x] `customer.subscription.updated` — Status sync
+  - [x] Usage metrics API (`GET /api/pirateCOS/billing/usage`)
+  - [x] Billing UI page (`/pirateCOS/settings/billing`)
+- [x] **Credit System & Usage Guard** (`lib/usage-guard.ts`)
+  - [x] Credit deduction: blog (5.0), seo (1.0), enhance (0.5), suggest (0.1), publish (1.0)
+  - [x] BYOK bypass (Pro+ users with own API keys bypass credit checks)
+  - [x] Plan enforcement (free, pro, enterprise)
+  - [x] Usage metering (aiRequests, distributions tracked monthly)
+- [x] **Plan Management**
+  - [x] Free tier (20 credits default)
+  - [x] Pro tier ($19-39/mo, 500 credits/month)
+  - [x] Enterprise tier (custom pricing)
+- [x] **Billing Data Models**
+  - [x] Admin model extended with Stripe fields (stripeCustomerId, stripeSubscriptionId, subscriptionStatus, currentPeriodEnd, creditsRemaining, usageThisMonth, byokEnabled)
+  - [x] BillingEvent model for audit trail
+- [x] **Developer-Friendly Features**
+  - [x] Simulation mode (works without Stripe keys set)
+  - [x] Sandbox checkout flow for testing
+
+**✅ Completed - Team Management (via Phase 5.4):**
+- [x] **Workspace → Team → User Hierarchy**
+  - [x] Workspace model (`models/pirateCOS/Workspace.ts`)
+  - [x] Team model with RBAC (`models/pirateCOS/Team.ts`)
+  - [x] Member schema with roles (admin, editor, viewer)
+- [x] **Team Management APIs**
+  - [x] `GET/POST /api/pirateCOS/teams` — List and create teams
+  - [x] `GET/PATCH/DELETE /api/pirateCOS/teams/[id]` — Team CRUD
+  - [x] `POST/DELETE /api/pirateCOS/teams/[id]/members` — Member management
+- [x] **Team Management UI**
+  - [x] Teams list page (`/pirateCOS/teams`)
+  - [x] Team detail page with tabs (`/pirateCOS/teams/[id]`)
+  - [x] Settings tab (name, description editing)
+  - [x] Brand Voice tab (team-level overrides)
+  - [x] Members tab (list, add, remove)
+  - [x] Add Member modal (email + role selection)
+  - [x] Remove Member confirmation dialog
+- [x] **Team Features**
+  - [x] Role-based access control (admin, editor, viewer)
+  - [x] Team brand voice overrides
+  - [x] Team keyword overrides
+  - [x] Post assignment to teams (`teamId` field in Post model)
+  - [x] UI Pirate organization auto-creation
+  - [x] Member data enrichment (userId → email display)
+
+**⬜ Remaining:**
 - [ ] **Editorial approval gates**: Enforces supervisor approval rules on posts prior to distribution triggers.
-- [ ] **Enterprise security features**: Multi-provider SAML SSO support, audit logs tracking modification events, and custom subdomain routing.
-- [ ] **Zapier hooks & Webhook notifications**: Fires event triggers to outside web systems when posts are created, modified, or successfully distributed.
+  - [ ] ApprovalRequest model (`tenantId`, `postId`, `requestedBy`, `status`, `approvers`, `createdAt`, `resolvedAt`, `resolvedBy`)
+  - [ ] Approval workflow API (`POST /api/pirateCOS/posts/[id]/request-approval`, `POST /api/pirateCOS/posts/[id]/approve`, `POST /api/pirateCOS/posts/[id]/reject`)
+  - [ ] Pending approvals UI (dashboard widget + notification system)
+- [ ] **Audit Logs**: Track every edit, distribution, and setting change for compliance (SOC 2 / ISO 27001)
+- [ ] **Workflow Automation**
+  - [ ] Scheduled distribution (publish to Medium on Monday, WordPress on Wednesday)
+  - [ ] Auto-republish on edit (sync all distributed copies when original is edited)
+  - [ ] Content templates (save SEO settings + tags as reusable templates)
+  - [ ] Bulk distribution (select 10 posts → distribute to all platforms)
+- [ ] **Enterprise security features**: Multi-provider SAML SSO support, custom subdomain routing
+- [ ] **Zapier hooks & Webhook notifications**: Fires event triggers to outside web systems when posts are created, modified, or successfully distributed
 
 ### ⬜ Phase 8: Blog Theme Customization & Design System Matching
 - [ ] **No-code Visual Theme Builder**: Editor allowing design-level adjustment of fonts, base sizes, margins, border designs, and links.
