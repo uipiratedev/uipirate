@@ -3,6 +3,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface IPost extends Document {
   /** References the Admin._id that owns this post — the tenant boundary */
   tenantId: mongoose.Types.ObjectId;
+  /** Optional: References the Team._id if this post is assigned to a team (Phase 5.4+) */
+  teamId?: mongoose.Types.ObjectId;
   title: string;
   slug: string;
   content: string; // HTML content from TipTap editor
@@ -78,6 +80,12 @@ const PostSchema: Schema = new Schema(
       ref: "Admin",
       required: [true, "tenantId is required"],
       index: true,
+    },
+    teamId: {
+      type: Schema.Types.ObjectId,
+      ref: "Team",
+      index: true,
+      // Phase 5.4+: Optional team assignment
     },
     title: {
       type: String,

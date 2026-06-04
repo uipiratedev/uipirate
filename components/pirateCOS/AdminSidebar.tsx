@@ -25,6 +25,28 @@ const navItems = [
   { label: "Dashboard", href: getHref("/dashboard"), Icon: IconDashboard },
   { label: "Posts", href: getHref("/posts"), Icon: IconBlogs },
   { label: "Create Post", href: getHref("/posts/create"), Icon: IconCreate },
+  {
+    label: "AI Analytics",
+    href: getHref("/analytics/ai"),
+    Icon: (props: any) => (
+      <svg {...props} fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" viewBox="0 0 24 24" width="16">
+        <path d="M3 3v18h18" />
+        <path d="m19 9-5 5-4-4-3 3" />
+      </svg>
+    )
+  },
+  {
+    label: "Teams",
+    href: getHref("/teams"),
+    Icon: (props: any) => (
+      <svg {...props} fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" viewBox="0 0 24 24" width="16">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    )
+  },
 ];
 
 const PLAN_LABEL: Record<string, string> = {

@@ -6393,6 +6393,8 @@ const BlogEditor = () => {
   const [tagInput, setTagInput] = useState("");
   const [postType, setPostType] = useState<string>("");
   const [contentGoal, setContentGoal] = useState<ContentGoal>("" as ContentGoal);
+  const [teamId, setTeamId] = useState<string>(""); // Phase 5.4+: Team assignment
+  const [teams, setTeams] = useState<any[]>([]); // Phase 5.4+: Available teams
   const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [typeSelected, setTypeSelected] = useState(false);
   const [hoveredType, setHoveredType] = useState<string | null>(null);
@@ -6446,6 +6448,7 @@ const BlogEditor = () => {
       slug: currentSlug,
       seo: seoData,
       repurposedOutputs,
+      teamId: teamId || undefined, // Phase 5.4+: Team assignment
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
@@ -6467,6 +6470,22 @@ const BlogEditor = () => {
   useEffect(() => {
     setMounted(true);
     setIsDataInitialized(true);
+  }, []);
+
+  // Phase 5.4+: Load available teams
+  useEffect(() => {
+    const loadTeams = async () => {
+      try {
+        const response = await fetch("/api/pirateCOS/teams");
+        const data = await response.json();
+        if (data.success) {
+          setTeams(data.data.teams || []);
+        }
+      } catch (error) {
+        console.error("Failed to load teams:", error);
+      }
+    };
+    loadTeams();
   }, []);
 
   useEffect(() => {
@@ -8120,6 +8139,50 @@ const BlogEditor = () => {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Phase 5.4+: Team Assignment */}
+      {teams.length > 0 && (
+        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+            Team Assignment
+          </p>
+          <select
+            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 cursor-pointer"
+            value={teamId}
+            onChange={(e) => {
+              setTeamId(e.target.value);
+              setIsDirty(true);
+            }}
+          >
+            <option value="">No Team (Workspace-wide)</option>
+            {teams.map((team: any) => (
+              <option key={team._id} value={team._id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+          {teamId && (() => {
+            const selectedTeam = teams.find((t: any) => t._id === teamId);
+            return selectedTeam ? (
+              <div className="mt-3 pt-3 border-t border-black/5">
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono mb-2">
+                  Team Settings
+                </p>
+                {selectedTeam.brandVoiceOverride && (
+                  <div className="text-xs text-gray-600 font-geist mb-2">
+                    <span className="font-semibold">Brand Voice:</span> {selectedTeam.brandVoiceOverride.substring(0, 60)}...
+                  </div>
+                )}
+                {selectedTeam.keywordsOverride && selectedTeam.keywordsOverride.length > 0 && (
+                  <div className="text-xs text-gray-600 font-geist">
+                    <span className="font-semibold">Keywords:</span> {selectedTeam.keywordsOverride.join(", ")}
+                  </div>
+                )}
+              </div>
+            ) : null;
+          })()}
         </div>
       )}
     </>

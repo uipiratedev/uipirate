@@ -44,6 +44,7 @@ import {
   getFeatures,
 } from "@/lib/pirateCOS/postTypeConfig";
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
+import VersionHistoryButton from "@/components/pirateCOS/version-history/VersionHistoryButton";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -5787,6 +5788,8 @@ const BlogEditPage = () => {
   const [tagInput, setTagInput] = useState("");
   const [postType, setPostType] = useState<string>("blog");
   const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
+  const [teamId, setTeamId] = useState<string>(""); // Phase 5.4+: Team assignment
+  const [teams, setTeams] = useState<any[]>([]); // Phase 5.4+: Available teams
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -6216,6 +6219,7 @@ const BlogEditPage = () => {
       slug: currentSlug,
       seo: seoData,
       repurposedOutputs,
+      teamId: teamId || undefined, // Phase 5.4+: Team assignment
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
@@ -6574,6 +6578,22 @@ const BlogEditPage = () => {
     }
   }, [params.id, mounted, authLoading, editor]);
 
+  // Phase 5.4+: Load available teams
+  useEffect(() => {
+    const loadTeams = async () => {
+      try {
+        const response = await fetch("/api/pirateCOS/teams");
+        const data = await response.json();
+        if (data.success) {
+          setTeams(data.data.teams || []);
+        }
+      } catch (error) {
+        console.error("Failed to load teams:", error);
+      }
+    };
+    loadTeams();
+  }, []);
+
   const fetchBlog = async () => {
     try {
       setLoading(true);
@@ -6593,6 +6613,7 @@ const BlogEditPage = () => {
 
         setPostType(postTypeVal);
         setContentGoal(blog.contentGoal || "traffic");
+        setTeamId(blog.teamId || ""); // Phase 5.4+: Load team assignment
 
         // Auto-select recommended AI preset based on loaded postType if not already set
         const PRESET_DEFAULTS: Record<string, string> = {
@@ -7276,6 +7297,50 @@ const BlogEditPage = () => {
         </div>
       )}
 
+      {/* Phase 5.4+: Team Assignment */}
+      {teams.length > 0 && (
+        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
+          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
+            Team Assignment
+          </p>
+          <select
+            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 cursor-pointer"
+            value={teamId}
+            onChange={(e) => {
+              setTeamId(e.target.value);
+              setIsDirty(true);
+            }}
+          >
+            <option value="">No Team (Workspace-wide)</option>
+            {teams.map((team: any) => (
+              <option key={team._id} value={team._id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+          {teamId && (() => {
+            const selectedTeam = teams.find((t: any) => t._id === teamId);
+            return selectedTeam ? (
+              <div className="mt-3 pt-3 border-t border-black/5">
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono mb-2">
+                  Team Settings
+                </p>
+                {selectedTeam.brandVoiceOverride && (
+                  <div className="text-xs text-gray-600 font-geist mb-2">
+                    <span className="font-semibold">Brand Voice:</span> {selectedTeam.brandVoiceOverride.substring(0, 60)}...
+                  </div>
+                )}
+                {selectedTeam.keywordsOverride && selectedTeam.keywordsOverride.length > 0 && (
+                  <div className="text-xs text-gray-600 font-geist">
+                    <span className="font-semibold">Keywords:</span> {selectedTeam.keywordsOverride.join(", ")}
+                  </div>
+                )}
+              </div>
+            ) : null;
+          })()}
+        </div>
+      )}
+
     </>
   );
 
@@ -7769,6 +7834,11 @@ const BlogEditPage = () => {
             </svg>
             <span className="hidden sm:inline">{showPreview ? "Exit Preview" : "Preview"}</span>
           </button>
+
+          {/* Phase 5.3: Version History Button */}
+          {!showPreview && blogId && (
+            <VersionHistoryButton postId={blogId} variant="icon" />
+          )}
 
           {/* Settings sidebar toggle */}
           {!showPreview && (

@@ -3,6 +3,18 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChatIdeaSuggestion } from "@/lib/pirateCOS/postTypeConfig";
 
+// Phase 4F: Parse change summary from AI response
+function parseChangeSummary(content: string): { summary: string | null; cleanContent: string } {
+  const summaryMatch = content.match(/✏️ Change summary: (.+?)(?:\n|$)/i);
+  if (summaryMatch) {
+    return {
+      summary: summaryMatch[1].trim(),
+      cleanContent: content.replace(/✏️ Change summary: .+?(?:\n|$)/i, '').trim(),
+    };
+  }
+  return { summary: null, cleanContent: content };
+}
+
 export interface AIWorkspaceMessage {
   id: string;
   role: "user" | "assistant";
@@ -10,6 +22,10 @@ export interface AIWorkspaceMessage {
   timestamp: Date;
   associatedGenerationId?: string;
   selectedTextContext?: string;
+  // Phase 4F: Precision Editing metadata
+  editIntent?: "surgical" | "transform" | "rewrite" | "continue";
+  suggestedApplyMode?: "replace" | "insert-below" | "insert-above";
+  changeSummary?: string; // Parsed from AI response
 }
 
 export interface GenerationRecord {
@@ -288,10 +304,13 @@ export function useAIWorkspaceSession(
 
         const responseData = data.output;
 
+        // Phase 4F: Parse change summary from response
+        const { summary, cleanContent } = parseChangeSummary(responseData);
+
         const genRecord: GenerationRecord = {
           id: data.generationId,
           prompt: content,
-          output: responseData,
+          output: cleanContent, // Store clean content without summary
           mode: "chat",
           isAccepted: false,
           selectedTextContext: selectedText,
@@ -305,13 +324,17 @@ export function useAIWorkspaceSession(
           timestamp: new Date(),
           associatedGenerationId: data.generationId,
           selectedTextContext: selectedText,
+          // Phase 4F: Add precision editing metadata
+          editIntent: data.editIntent,
+          suggestedApplyMode: data.suggestedApplyMode,
+          changeSummary: summary || undefined,
         };
 
         // Add the empty assistant message
         setMessages((prev) => [...prev, initialAssistantMsg]);
 
         startTypewriterStream(
-          responseData,
+          cleanContent, // Stream clean content
           (chunk) => {
             setMessages((prev) =>
               prev.map((m) => (m.id === assistantMsgId ? { ...m, content: chunk } : m))
@@ -325,6 +348,10 @@ export function useAIWorkspaceSession(
               timestamp: new Date(),
               associatedGenerationId: data.generationId,
               selectedTextContext: selectedText,
+              // Phase 4F: Add precision editing metadata
+              editIntent: data.editIntent,
+              suggestedApplyMode: data.suggestedApplyMode,
+              changeSummary: summary || undefined,
             };
 
             setMessages((prev) => {
@@ -405,10 +432,13 @@ export function useAIWorkspaceSession(
           throw new Error(data.error || "Failed to trigger quick action.");
         }
 
+        // Phase 4F: Parse change summary from response
+        const { summary, cleanContent } = parseChangeSummary(data.output);
+
         const genRecord: GenerationRecord = {
           id: data.generationId,
           prompt: `Action: ${actionNames}`,
-          output: data.output,
+          output: cleanContent, // Store clean content without summary
           mode: Array.isArray(action) ? action[0] : action,
           isAccepted: false,
           selectedTextContext: selectedText,
@@ -417,10 +447,14 @@ export function useAIWorkspaceSession(
         const assistantMsg: AIWorkspaceMessage = {
           id: Math.random().toString(36).substring(7),
           role: "assistant",
-          content: data.output,
+          content: cleanContent,
           timestamp: new Date(),
           associatedGenerationId: data.generationId,
           selectedTextContext: selectedText,
+          // Phase 4F: Add precision editing metadata
+          editIntent: data.editIntent,
+          suggestedApplyMode: data.suggestedApplyMode,
+          changeSummary: summary || undefined,
         };
 
         const finalMessages = [...updatedMessages, assistantMsg];

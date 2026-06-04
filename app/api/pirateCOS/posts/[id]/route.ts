@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
 
 interface PostUpdateData {
   title?: string;
@@ -16,6 +17,7 @@ interface PostUpdateData {
   published?: boolean;
   postType?: string;
   contentGoal?: string;
+  teamId?: string; // Phase 5.4+: Team assignment
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -126,6 +128,7 @@ export async function PUT(
       seo,
       repurposedOutputs,
       aiWorkspaceSession,
+      teamId, // Phase 5.4+: Team assignment
     } = body;
 
 
@@ -184,6 +187,7 @@ export async function PUT(
     if (published !== undefined) blog.published = published;
     if (postType !== undefined) (blog as any).postType = postType;
     if (contentGoal !== undefined) (blog as any).contentGoal = contentGoal;
+    if (teamId !== undefined) (blog as any).teamId = teamId ? new mongoose.Types.ObjectId(teamId) : null; // Phase 5.4+
 
     if (seo !== undefined) {
       blog.seo = {
@@ -209,6 +213,27 @@ export async function PUT(
     }
 
     await blog.save();
+
+    // Phase 4F.2: Create version snapshot when content changes
+    if (content !== undefined && content !== blog.content) {
+      try {
+        await createSnapshot(
+          id,
+          blog.content,
+          user.tenantId.toString(),
+          user.id,
+          "manual",
+          {
+            title: blog.title,
+            postType: blog.postType,
+            commitMessage: "Manual content update",
+          }
+        );
+      } catch (versionError) {
+        console.error("Failed to create version snapshot:", versionError);
+        // Don't fail the update if versioning fails
+      }
+    }
 
     return NextResponse.json({
       success: true,
