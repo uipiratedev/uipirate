@@ -136,8 +136,11 @@ const EDITOR_STYLES = `
   .notion-editor-wrapper .ProseMirror p { line-height: 1.75; font-size: 1rem; color: #374151; margin: 0.5rem 0; }
   .notion-editor-wrapper .ProseMirror img { max-width: 100%; height: auto; border-radius: 12px; margin: 1.5rem auto; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
   .notion-editor-wrapper .ProseMirror hr { border: none; border-top: 2px solid rgba(0,0,0,0.08); margin: 2rem 0; border-radius: 4px; }
-  .notion-editor-wrapper .ProseMirror ul, .notion-editor-wrapper .ProseMirror ol { padding-left: 1.5rem; margin: 1rem 0; }
-  .notion-editor-wrapper .ProseMirror li { margin: 0.5rem 0; line-height: 1.75; }
+  .notion-editor-wrapper .ProseMirror ul { padding-left: 1.75rem; margin: 1rem 0; list-style-type: disc; }
+  .notion-editor-wrapper .ProseMirror ol { padding-left: 1.75rem; margin: 1rem 0; list-style-type: decimal; }
+  .notion-editor-wrapper .ProseMirror li { margin: 0.5rem 0; line-height: 1.75; display: list-item; }
+  .notion-editor-wrapper .ProseMirror ul ul { list-style-type: circle; margin: 0.25rem 0; }
+  .notion-editor-wrapper .ProseMirror ul ul ul { list-style-type: square; }
   .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] { list-style: none; padding-left: 0; }
   .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] li { display: flex; align-items: flex-start; gap: 0.5rem; }
   .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] li > label { flex: 0 0 auto; margin-top: 0.25rem; user-select: none; }

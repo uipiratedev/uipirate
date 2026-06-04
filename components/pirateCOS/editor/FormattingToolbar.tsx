@@ -49,6 +49,24 @@ export const FormattingToolbar = ({
         borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
       }}
     >
+      {/* Undo / Redo */}
+      <button
+        className={btn(false)}
+        disabled={!editor.can().undo()}
+        title="Undo (Ctrl+Z)"
+        onClick={() => editor.chain().focus().undo().run()}
+      >
+        <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+      </button>
+      <button
+        className={btn(false)}
+        disabled={!editor.can().redo()}
+        title="Redo (Ctrl+Y)"
+        onClick={() => editor.chain().focus().redo().run()}
+      >
+        <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+      </button>
+      {sep}
       <button
         className={btn(editor.isActive("bold"))}
         style={editor.isActive("bold") ? activeStyle : {}}

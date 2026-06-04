@@ -67,8 +67,64 @@ export function normalizeHTML(
   if (opts.enforcePostTypeConstraints && postType) {
     html = enforcePostTypeConstraints(html, postType);
   }
-  
+
+  // Step 6: Normalize list structure
+  html = normalizeListContent(html);
+
+  // Step 7: Strip empty paragraphs that LLMs insert as spacers
+  html = stripEmptyParagraphs(html);
+
   return html.trim();
+}
+
+// ============================================================================
+// Step 6: Normalize List Content
+// ============================================================================
+
+/**
+ * Fix common LLM list output problems before TipTap parses them:
+ *
+ * 1. Empty <li> elements → phantom bullets in the editor
+ * 2. <p><ul>…</ul></p> — <p> wrapping a block element is invalid HTML;
+ *    TipTap's parser tries to recover by inserting extra nodes
+ * 3. Multiple <p> tags inside a single <li> — each extra <p> becomes
+ *    an extra blank line inside the list item
+ */
+function normalizeListContent(html: string): string {
+  // 1. Remove <li> elements that contain only whitespace / &nbsp; / <br>
+  html = html.replace(/<li(\s[^>]*)?>(\s|&nbsp;)*(<br\s*\/?>)*(\s|&nbsp;)*<\/li>/gi, "");
+
+  // 2. Unwrap invalid <p> wrappers around block-level lists
+  //    <p><ul>…</ul></p>  →  <ul>…</ul>
+  //    <p><ol>…</ol></p>  →  <ol>…</ol>
+  html = html.replace(/<p[^>]*>\s*(<(?:ul|ol)[^>]*>)/gi, "$1");
+  html = html.replace(/(<\/(?:ul|ol)>)\s*<\/p>/gi, "$1");
+
+  // 3. Remove trailing empty <p> tags inside <li> elements
+  //    <li><p>content</p><p></p></li>  →  <li><p>content</p></li>
+  html = html.replace(/(<p[^>]*>[^<]+<\/p>)(\s*<p(\s[^>]*)?>(\s|&nbsp;)*<\/p>)+(\s*<\/li>)/gi, "$1$5");
+
+  return html;
+}
+
+// ============================================================================
+// Step 0 (now Step 7): Strip Empty Paragraphs
+// ============================================================================
+
+/**
+ * Remove empty paragraphs that LLMs insert as vertical spacers
+ *
+ * LLMs frequently emit <p></p>, <p> </p>, <p>&nbsp;</p> between blocks.
+ * TipTap treats each one as a real paragraph node → extra blank lines in editor.
+ */
+function stripEmptyParagraphs(html: string): string {
+  // Remove <p> tags that contain only whitespace / &nbsp;
+  html = html.replace(/<p(\s[^>]*)?>(\s|&nbsp;)*<\/p>/gi, "");
+  // Remove <p><br></p> variants
+  html = html.replace(/<p(\s[^>]*)?>(\s*<br\s*\/?>\s*)*<\/p>/gi, "");
+  // Collapse 3+ consecutive newlines down to 2 (one blank line max between blocks)
+  html = html.replace(/(\r?\n){3,}/g, "\n\n");
+  return html;
 }
 
 // ============================================================================

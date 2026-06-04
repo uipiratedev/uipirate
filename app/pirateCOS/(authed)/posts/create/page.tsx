@@ -4701,9 +4701,9 @@ const PostPreviewPanel = ({
   const hasToc = headings.length >= 2;
 
   return (
-    <div className="flex-1 min-w-0">
+    <div className="flex-1 min-w-0 flex flex-col min-h-0 overflow-y-auto">
       {/* Preview toolbar */}
-      <div className="flex items-center justify-between mb-3 px-1">
+      <div className="flex items-center justify-between mb-3 px-1 flex-shrink-0">
         <div className="flex items-center gap-2">
           <span
             className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
@@ -5703,14 +5703,17 @@ const BlogEditor = () => {
     (text: string, mode: "replace" | "insert-below" | "insert-above") => {
       if (!editor) return;
       setIsDirty(true);
+      const parseOptions = { preserveWhitespace: false as const };
       if (mode === "replace") {
-        editor.chain().focus().insertContent(text).run();
+        editor.chain().focus().insertContent(text, { parseOptions }).run();
       } else if (mode === "insert-below") {
-        const { to } = editor.state.selection;
-        editor.chain().focus().insertContentAt(to, text).run();
+        const { $to } = editor.state.selection;
+        const insertPos = $to.depth >= 1 ? $to.after(1) : $to.pos;
+        editor.chain().focus().insertContentAt(insertPos, text, { parseOptions }).run();
       } else if (mode === "insert-above") {
-        const { from } = editor.state.selection;
-        editor.chain().focus().insertContentAt(from, text).run();
+        const { $from } = editor.state.selection;
+        const insertPos = $from.depth >= 1 ? $from.before(1) : $from.pos;
+        editor.chain().focus().insertContentAt(insertPos, text, { parseOptions }).run();
       }
     },
     [editor, setIsDirty]
@@ -6820,7 +6823,7 @@ const BlogEditor = () => {
           {/* Mobile sidebar toggle */}
           {!showPreview && (
             <button
-              className="h-8 lg:h-9 px-2.5 lg:px-3 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs lg:text-sm font-geist font-medium transition-all"
+              className="lg:hidden h-8 px-2.5 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs font-geist font-medium transition-all"
               onClick={() => setActiveSidebarTab(activeSidebarTab ? null : "content")}
               style={{
                 borderColor: activeSidebarTab ? "rgba(255,91,4,0.3)" : "transparent",

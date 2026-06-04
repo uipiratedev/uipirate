@@ -422,7 +422,7 @@ Do NOT include headings (h1, h2, h3), lists, blockquotes, or dividers. Output in
 
 Write a comprehensive, fully detailed, and substantial piece of content. Expand on the concepts deeply with rich explanations, multiple robust and fully-fleshed out paragraphs, structured subheadings, and thorough insights (aim for at least 150 to 450 words, unless the prompt explicitly requests a short summary or brief answer).
 
-Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
+Output in standard clean HTML format (using <h2>, <h3>, <p>, <ul>, <li>, <strong>, <em>, <blockquote> as appropriate). Do NOT use markdown. Do NOT use <html>, <head>, or <body> tags. Do NOT wrap <ul> or <ol> elements inside <p> tags. Do NOT include empty <li> elements. Deliver ONLY the raw HTML block, no backticks, no markdown formatting, and no wrapper comments.`;
 }
 
 // ============================================================================

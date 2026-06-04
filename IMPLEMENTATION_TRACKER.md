@@ -1,10 +1,10 @@
-# UIpirate — Implementation Status Tracker
+﻿# UIpirate — Implementation Status Tracker
 
 > **A premium, high-fidelity operations tracker to audit and trace feature development against the Content Command Center Technical Implementation Plan.**
 
 This tracker acts as a living document to audit the codebase, document completed milestones, resolve structural roadmap discrepancies, and chart the course for upcoming phases.
 
-> **Last codebase audit:** June 4, 2026. Full deep audit of `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*` (all 8 schemas), `lib/pirateCOS/*` (all adapters, transforms, registry), `components/pirateCOS/*` (all 12 top-level + 4 workspace sub-components), `hooks/*` (all 9 hooks), and all distribution/auth/billing API routes.
+> **Last codebase audit:** June 4, 2026. Full deep audit of `app/pirateCOS/(authed)/*`, `app/api/pirateCOS/*`, `models/Post.ts`, `models/pirateCOS/*` (**13 schemas** — including newly confirmed `AnalyticsSnapshot`, `BillingEvent`, `WorkflowMemory`), `lib/pirateCOS/*` (13 lib files — including `ai-model-discovery.ts`, `cta-template.ts`, `api-key-auth.ts`, `ai-config.ts`, `ai-provider.ts`), `components/pirateCOS/*` (**35+ components** — 4 top-level panels, 4 fully modularized panel directories, 5 shared editor components, analytics module, workspace sub-components, `ModelSelectorPill`, `CosIcon`, `SelectionHighlight`), `hooks/*` (**9 hooks** — including `useAIModels`, `useEditorSelection`, `useClickSound`, `useIsMobile`), and all distribution/auth/billing/analytics/ai-models API routes (35+ endpoints).
 
 ---
 
@@ -35,6 +35,8 @@ Based on the current codebase audit, **Phases 1–4E are Complete & Verified**. 
 | **Phase 4G** | **PirateCOS: RLHF Infrastructure** | 🟢 **Complete** | Full RLHF pipeline with analytics and auto-learning — **✅ ALL PHASES COMPLETE (June 4, 2026)** |
 | **Phase 5.1** | **PirateCOS: Analytics Dashboard (Frontend)** | 🟢 **Complete** | AI analytics dashboard with provider comparison, insights panel, trends charts — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.2** | **PirateCOS: Feedback Integration** | 🟢 **Complete** | Accept/Reject buttons, RLHF feedback loop, optimistic UI updates — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 5.5** | **PirateCOS: Shared Editor Component System** | 🟢 **Complete** | Extracted `FloatingBlockInserter`, `SlashCommandMenu`, `FormattingToolbar` into shared module; unified `PirateCOSEditorArea` wrapper eliminates ~1,400 lines of duplication across Create/Edit pages — **✅ COMPLETE (June 4, 2026)** |
+| **Phase 5.6** | **PirateCOS: Editor UX Refinements & AI Content Quality** | 🟢 **Complete** | Undo/Redo toolbar buttons, global list bullet CSS fix, AI insertion block-boundary logic, HTML normalizer list cleanup, system prompt hardening — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.3** | **PirateCOS: Version History UI** | 🟢 **Complete** | Version history modal, diff viewer, one-click restore — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5.4** | **PirateCOS: Team Management UI** | 🟢 **Complete** | Team creation, brand voice override, member management — **✅ COMPLETE (June 4, 2026)** |
 | **Phase 5** | **Advanced Analytics & Content Optimization** | 🟡 **In Progress** | AI analytics + feedback + version UI + team management complete; SEO quality scoring, UTM/attribution, content heatmap remain planned |
@@ -95,7 +97,199 @@ Older monetization-summary tables in the master plan used a different numbering 
 
 ---
 
-## 🚀 Tracing What's in Place: Detailed Feature Tracker
+## [INVENTORY] Full Codebase Inventory (June 4, 2026 Audit)
+
+### Models — 13 Mongoose Schemas
+| File | Purpose | Phase |
+|---|---|---|
+| `models/Post.ts` | Core content model (`distributionRecords`, `aiWorkspaceSession`, compound index) | Phase 1 |
+| `models/pirateCOS/Admin.ts` | Tenant model with billing plan, usage counters, Stripe customer refs | Phase 1 |
+| `models/pirateCOS/Integration.ts` | Distribution platform credentials (encrypted) | Phase 1 |
+| `models/pirateCOS/ApiKey.ts` | Hashed + scoped public Content API keys | Phase 1 |
+| `models/pirateCOS/AIConfig.ts` | AI provider config (encrypted keys, default engine/model per tenant) | Phase 4D |
+| `models/pirateCOS/BrandBrain.ts` | Brand voice, tone, audience, competitors | Phase 4F.1 |
+| `models/pirateCOS/Workspace.ts` | Workspace model (AI session, settings, linked teams) | Phase 5.4 |
+| `models/pirateCOS/Team.ts` | Team with members, roles, and brand voice override | Phase 5.4 |
+| `models/pirateCOS/ContentHistory.ts` | Git-style version snapshots per post | Phase 4F.2 |
+| `models/pirateCOS/AIGenerationLog.ts` | RLHF instrumentation (prompt, response, feedback, context stack) | Phase 4G-1 |
+| `models/pirateCOS/AnalyticsSnapshot.ts` | Per-platform daily metrics (views, clicks, shares, claps, likes, impressions) | Phase 4G-4 |
+| `models/pirateCOS/BillingEvent.ts` | Stripe audit log (subscription events, invoice.paid, credit top-ups) | Phase 2 |
+| `models/pirateCOS/WorkflowMemory.ts` | Per-tenant style prefs, CTA defaults, snippet library, UI preferences | Phase 4G-3 |
+
+### Libraries & Utilities — 13 lib files
+| File | Purpose | Phase |
+|---|---|---|
+| `lib/pirateCOS/auth.ts` | Session authentication & tenant verification | Phase 1 |
+| `lib/pirateCOS/encrypt.ts` | AES-256-GCM encryption for API keys & integration credentials | Phase 1 |
+| `lib/pirateCOS/postTypeConfig.ts` | Content type & goal configurations (11 types, 6 goals) | Phase 4B |
+| `lib/pirateCOS/ai-registry.ts` | Provider registry with static model catalogue | Phase 4D |
+| `lib/pirateCOS/ai-model-discovery.ts` | Live model discovery from provider APIs with 6-hour TTL cache & static fallback | Phase 4D |
+| `lib/pirateCOS/ai-config.ts` | Decrypted AI key fetching helpers for server routes | Phase 4D |
+| `lib/pirateCOS/ai-provider.ts` | Provider-level call utilities | Phase 4D |
+| `lib/pirateCOS/ai-context-builder.ts` | Centralized AI prompt construction from post + brand + workspace context | Phase 4F+ |
+| `lib/pirateCOS/html-normalizer.ts` | Output consistency layer (removes hallucinated headers, normalizes structure) | Phase 4F+ |
+| `lib/pirateCOS/version-tracker.ts` | Git-style versioning (createSnapshot, diffSnapshots, restoreSnapshot) | Phase 4F.2 |
+| `lib/pirateCOS/types/ai-context.ts` | Type definitions for the AI context stack | Phase 4F.0 |
+| `lib/pirateCOS/prompt-registry.ts` | Versioned prompt registry with A/B test metrics | Phase 4G-3 |
+| `lib/pirateCOS/cta-template.ts` | Predefined CTA template definitions used by repurposing & editor | Phase 4B |
+| `lib/pirateCOS/api-key-auth.ts` | Hashed API key verification for the public Content API (`/v1/content`) | Phase 1 |
+| **Distribution sub-system** | | |
+| `lib/pirateCOS/distribution/index.ts` | Orchestration layer — platform routing & multi-channel publish | Phase 1 |
+| `lib/pirateCOS/distribution/transform/content-preflight.ts` | Pre-publication validation (length, tags, meta) | Phase 1 |
+| `lib/pirateCOS/distribution/transform/html-to-markdown.ts` | TipTap HTML → Medium-compliant markdown | Phase 1 |
+| `lib/pirateCOS/distribution/adapters/base.adapter.ts` | Abstract adapter interface | Phase 1 |
+| `lib/pirateCOS/distribution/adapters/wordpress.adapter.ts` | WordPress REST API | Phase 1 |
+| `lib/pirateCOS/distribution/adapters/medium.adapter.ts` | Medium API (markdown) | Phase 1 |
+| `lib/pirateCOS/distribution/adapters/ghost.adapter.ts` | Ghost Admin JWT | Phase 1 |
+| `lib/pirateCOS/distribution/adapters/buffer.adapter.ts` | Buffer social queue | Phase 1 |
+| `lib/pirateCOS/distribution/adapters/linkedin.adapter.ts` | LinkedIn v2 REST (articles + posts, OAuth) | Phase 3 |
+
+### Hooks — 9 Custom React Hooks
+| File | Purpose | Phase |
+|---|---|---|
+| `hooks/useSaveBlog.ts` | Auto-save, publish, dirty-state machine | Phase 4B |
+| `hooks/useAuth.ts` | Authentication state & current user | Phase 1 |
+| `hooks/useAIWorkspaceSession.ts` | AI chat session persistence, quick actions, rewrite, suggestions | Phase 4E |
+| `hooks/useAICopilot.ts` | Background co-pilot scan with debounce | Phase 4E |
+| `hooks/useAIModels.ts` | Live model list fetch from `/api/pirateCOS/ai-models` with static fallback | Phase 4D |
+| `hooks/useEditorSelection.ts` | TipTap selection tracking (selected text + range, falls back to focused block) | Phase 5.5 |
+| `hooks/useClickSound.ts` | UI click sound effect player | Phase 4B |
+| `hooks/useIsMobile.ts` | Viewport breakpoint detection | Phase 4B |
+| `hooks/index.ts` | Barrel export | Phase 1 |
+
+### Components — 35+ React Components
+#### Top-level (`components/pirateCOS/`)
+| File | Purpose |
+|---|---|
+| `AIWorkspacePanel.tsx` | Unified sidebar (AI, SEO, Health, Distribute, Version tabs) |
+| `AIConfigPanel.tsx` | AI provider credentials panel |
+| `RepurposingDrawer.tsx` | Multi-format content transformation (8 formats) |
+| `EngineModelSelector.tsx` | Full AI provider + model selector |
+| `ModelSelectorPill.tsx` | Compact inline engine/model selector pill for editor toolbar |
+| `CosIcon.tsx` | Unified icon system (goals, post types, UI actions — 50+ named icons) |
+| `SelectionHighlight.ts` | TipTap ProseMirror extension for active selection highlighting |
+| `WorkspaceTutorialCarousel.tsx` | Help system with tutorials |
+| `UpgradePrompt.tsx` | Plan-gate upgrade nudge overlay |
+| `AdminSidebar.tsx` | Authenticated nav sidebar |
+| `AdminIcons.tsx` | Dashboard-specific icon set |
+
+#### Content Settings Module (`components/pirateCOS/content-settings/`)
+| File | Purpose |
+|---|---|
+| `ContentSettingsPanel.tsx` | Full panel (title optimizer, excerpt, tags, analytics) |
+| `ContentSettingsSubComponents.tsx` | Individual setting sub-components |
+| `ContentSettingsTags.tsx` | Tag input with AI suggestions |
+| `index.ts` | Barrel export |
+
+#### SEO Panel Module (`components/pirateCOS/seo-panel/`)
+| File | Purpose |
+|---|---|
+| `SEOPanel.tsx` | Full SEO panel (focus keyword, meta title/description, keywords) |
+| `SEOPanelSubComponents.tsx` | Individual SEO field sub-components |
+| `index.ts` | Barrel export |
+
+#### Distribution Panel Module (`components/pirateCOS/distribute-panel/`)
+| File | Purpose |
+|---|---|
+| `DistributePanel.tsx` | Full distribution panel (channel cards, publish, repurpose) |
+| `DistributePanelSubComponents.tsx` | Channel cards, status badges, action rows |
+| `index.ts` | Barrel export |
+
+#### Content Health Module (`components/pirateCOS/content-health/`)
+| File | Purpose |
+|---|---|
+| `ContentHealthPanel.tsx` | Goal-weighted health score dashboard |
+| `ContentHealthSubComponents.tsx` | Score rings, checklist items, metric rows |
+| `index.ts` | Barrel export |
+
+#### Shared Editor Module (`components/pirateCOS/editor/`) — Phase 5.5
+| File | Purpose |
+|---|---|
+| `PirateCOSEditorArea.tsx` | Unified editor wrapper (toolbar + canvas + slash menu + styles) |
+| `FloatingBlockInserter.tsx` | "+" block inserter with image/video/command support |
+| `SlashCommandMenu.tsx` | "/" command picker with full command set |
+| `FormattingToolbar.tsx` | Sticky formatting bar with AI preset support |
+| `index.ts` | Barrel export |
+
+#### Analytics Module (`components/pirateCOS/analytics/`)
+| File | Purpose |
+|---|---|
+| `AIAnalyticsDashboard.tsx` | Full analytics page component |
+| `SummaryStats.tsx` | Top-level stat cards |
+| `ProviderComparison.tsx` | Side-by-side provider performance |
+| `InsightsPanel.tsx` | Auto-learning recommendations |
+| `TrendsChart.tsx` | Temporal performance charts |
+
+#### Version History Module (`components/pirateCOS/version-history/`)
+| File | Purpose |
+|---|---|
+| `VersionHistoryPanel.tsx` | Inline version timeline |
+| `VersionHistoryModal.tsx` | Full-screen version viewer with diff |
+| `VersionHistoryButton.tsx` | Version control trigger |
+
+#### Workspace Sub-components (`components/pirateCOS/workspace/`)
+| File | Purpose |
+|---|---|
+| `ContextDisplay.tsx` | Focus keyword strip & context display |
+| `ConversationThread.tsx` | AI chat interface |
+| `GenerationHistory.tsx` | AI generation log |
+| `QuickActions.tsx` | Context-aware AI actions |
+
+### API Routes — 35+ Endpoints
+| Route | Method(s) | Purpose | Phase |
+|---|---|---|---|
+| `/api/pirateCOS/auth/register` | POST | Tenant registration | Phase 1 |
+| `/api/pirateCOS/auth/login` | POST | JWT session login | Phase 1 |
+| `/api/pirateCOS/auth/logout` | POST | Session invalidation | Phase 1 |
+| `/api/pirateCOS/auth/me` | GET | Current user session | Phase 1 |
+| `/api/pirateCOS/posts` | GET, POST | Post listing + creation | Phase 1 |
+| `/api/pirateCOS/posts/[id]` | GET, PATCH, DELETE | Post CRUD | Phase 1 |
+| `/api/pirateCOS/integrations` | GET, POST | Platform connection management | Phase 1 |
+| `/api/pirateCOS/integrations/[platform]` | PATCH, DELETE | Platform probe & disconnect | Phase 1 |
+| `/api/pirateCOS/integrations/keys` | GET, POST, DELETE | API key provisioning & revocation | Phase 1 |
+| `/api/pirateCOS/distribution/publish` | POST | Multi-channel publishing | Phase 1 |
+| `/api/pirateCOS/distribution/verify` | POST | Distribution verification & deletion | Phase 1 |
+| `/api/pirateCOS/v1/content` | GET, POST | Public API (API-key auth) | Phase 1 |
+| `/api/pirateCOS/billing/checkout` | POST | Stripe checkout session | Phase 2 |
+| `/api/pirateCOS/billing/portal` | POST | Stripe billing portal | Phase 2 |
+| `/api/pirateCOS/billing/usage` | GET | Usage stats & plan limits | Phase 2 |
+| `/api/pirateCOS/billing/webhooks` | POST | Stripe webhook processor | Phase 2 |
+| `/api/pirateCOS/ai/generate` | POST | Content generation | Phase 4 |
+| `/api/pirateCOS/ai/workspace` | POST | AI chat & quick actions | Phase 4E |
+| `/api/pirateCOS/ai/copilot` | POST | Background real-time co-pilot scanner | Phase 4E |
+| `/api/pirateCOS/ai-config` | GET, POST | AI provider config CRUD | Phase 4D |
+| `/api/pirateCOS/ai-config/preferences` | GET, PATCH | Workflow memory / style preferences | Phase 4G-3 |
+| `/api/pirateCOS/ai-models` | GET | Live model discovery (`?engine=`) | Phase 4D |
+| `/api/pirateCOS/brand-brain` | GET, POST | Brand voice management | Phase 4F.1 |
+| `/api/pirateCOS/prompts` | GET, POST | Prompt registry read + write | Phase 4G-3 |
+| `/api/pirateCOS/ai-generation-log` | GET | Generation log listing | Phase 4G-1 |
+| `/api/pirateCOS/ai-generation-log/feedback` | POST | RLHF thumbs up/down feedback | Phase 4G-2 |
+| `/api/pirateCOS/analytics/summary` | GET | High-level AI usage stats | Phase 4G-4 |
+| `/api/pirateCOS/analytics/ai-performance` | GET | Provider/action comparison | Phase 4G-4 |
+| `/api/pirateCOS/analytics/insights` | GET | Auto-learning recommendations | Phase 4G-4 |
+| `/api/pirateCOS/content-history/[postId]` | GET | Version snapshot listing | Phase 4F.2 |
+| `/api/pirateCOS/content-history/restore` | POST | One-click version restore | Phase 4F.2 |
+| `/api/pirateCOS/teams` | GET, POST | Team list + creation | Phase 5.4 |
+| `/api/pirateCOS/teams/[id]` | GET, PATCH, DELETE | Team CRUD | Phase 5.4 |
+| `/api/pirateCOS/teams/[id]/members` | GET, POST, DELETE | Member management | Phase 5.4 |
+
+### Authenticated Pages — 10 Routes
+| Route | Purpose | Phase |
+|---|---|---|
+| `/pirateCOS/dashboard` | Overview dashboard (recent posts, quick actions) | Phase 1 |
+| `/pirateCOS/posts` | Posts listing with search, filter, and management actions | Phase 1 |
+| `/pirateCOS/posts/create` | 3-step content creation wizard + editor | Phase 4B |
+| `/pirateCOS/posts/edit/[id]` | Full editor with AI workspace sidebar | Phase 4E |
+| `/pirateCOS/ai-settings` | AI provider configuration | Phase 4D |
+| `/pirateCOS/analytics/ai` | AI performance analytics dashboard | Phase 4G-4 |
+| `/pirateCOS/settings/integrations` | Distribution platform management | Phase 1 |
+| `/pirateCOS/settings/billing` | Stripe billing & plan management | Phase 2 |
+| `/pirateCOS/teams` | Team list page | Phase 5.4 |
+| `/pirateCOS/brand-brain` | Brand voice configuration | Phase 4F.1 |
+
+---
+
+## [TRACKER] Tracing What's in Place: Detailed Feature Tracker
 
 Use the visual symbols below to track feature items. When launching a plan stage for a new feature, update its entry status to `🟡` or `🟢`.
 
@@ -646,6 +840,83 @@ All completed milestones for **Phase 4 (AI Intelligence Layer & Content Transfor
   - [ ] Bulk distribution (select 10 posts → distribute to all platforms)
 - [ ] **Enterprise security features**: Multi-provider SAML SSO support, custom subdomain routing
 - [ ] **Zapier hooks & Webhook notifications**: Fires event triggers to outside web systems when posts are created, modified, or successfully distributed
+
+### 🟢 Phase 5.5: Shared Editor Component System (Architecture Refactor)
+
+**Status:** ✅ Complete (June 4, 2026)
+
+**Goal:** Eliminate duplicated editor code between Create and Edit pages; establish a single reusable editor module with zero divergence between the two pages.
+
+- [x] **`components/pirateCOS/editor/FloatingBlockInserter.tsx`** — Extracted from both pages; "+" block inserter with image, video, and slash command support
+- [x] **`components/pirateCOS/editor/SlashCommandMenu.tsx`** — Extracted from both pages; "/" command picker with full command set
+- [x] **`components/pirateCOS/editor/FormattingToolbar.tsx`** — Extracted from both pages; sticky formatting bar with AI preset support
+- [x] **`components/pirateCOS/editor/PirateCOSEditorArea.tsx`** — New unified wrapper; owns slash menu state, keydown handler, `editorRef`, all editor CSS, and renders toolbar + canvas + inserter + menu
+- [x] **`components/pirateCOS/editor/index.ts`** — Barrel export for the module
+- [x] **Create page** (`/posts/create`) migrated: local component defs removed, `slashMenuOpen`/`slashMenuPosition` state removed, `editorRef` removed, `handleDOMEvents` block removed, style block removed, JSX replaced with `<PirateCOSEditorArea>`
+- [x] **Edit page** (`/posts/edit/[id]`) migrated: same cleanup as Create page
+- [x] **UTF-8 placeholder text** encoding fixed (ellipsis `…` replaced with safe ASCII `...`)
+- [x] **Zero TypeScript errors** on all affected files post-migration
+
+**Line count impact:**
+| File | Before | After | Reduction |
+|---|---|---|---|
+| `edit/[id]/page.tsx` | 7,616 | 6,533 | −1,083 lines |
+| `create/page.tsx` | 7,533 | 7,228 | −305 lines |
+| **Total removed** | — | — | **~1,400 lines** |
+
+**Architecture notes:**
+- `PirateCOSEditorArea` `children` prop renders the hidden file input and page-specific banner/title area — pages retain only content unique to them
+- `imageUploadRef` is forwarded from the page into the component so `FloatingBlockInserter` and `SlashCommandMenu` can trigger image uploads without page-level wiring
+- Both pages now have identical editor surface behaviour; future editor changes need only one file touched
+
+---
+
+### 🟢 Phase 5.6: Editor UX Refinements & AI Content Quality (June 4, 2026)
+
+**Status:** ✅ Complete (June 4, 2026)
+
+**Goal:** Fix editor bullet rendering, eliminate phantom empty lines when inserting AI output, and add undo/redo to the formatting toolbar.
+
+#### UI / Toolbar
+- [x] **Undo/Redo buttons added to `FormattingToolbar.tsx`** — SVG arrow icons rendered at the far left of the toolbar; disabled state tied to `editor.can().undo()` / `editor.can().redo()`; keyboard shortcuts Ctrl+Z / Ctrl+Y already provided by TipTap `StarterKit` History extension — no new extension required
+
+#### Bullet / List Rendering Fix
+- [x] **Root cause identified** — Tailwind preflight resets `list-style: none` globally; `EDITOR_STYLES` in `PirateCOSEditorArea` were never applied to the Edit page (which has its own inline `notion-editor-wrapper`, not using `PirateCOSEditorArea`)
+- [x] **`styles/globals.css`** — Added `.notion-editor-wrapper .ProseMirror ul/ol/li` rules with `list-style-type: disc/decimal !important` and `display: list-item !important` so both Create and Edit pages receive them unconditionally
+- [x] **`components/pirateCOS/editor/PirateCOSEditorArea.tsx`** — Inline `EDITOR_STYLES` also updated to be consistent (disc/decimal/circle/square for nested lists)
+
+#### AI Insertion Empty-Line Fix
+- [x] **`handleApplyToEditor` in `edit/[id]/page.tsx`** — Replaced raw `to` / `from` position with `$to.after(1)` / `$from.before(1)` (block boundary, not mid-block offset); added `parseOptions: { preserveWhitespace: false }` to all three insertion modes
+- [x] **`handleApplyToEditor` in `create/page.tsx`** — Same fix applied
+- [x] **Root cause** — `insertContentAt(to, html)` inserted at a raw cursor offset *inside* a paragraph; ProseMirror split the node to accommodate block-level HTML → empty paragraph above + below every insertion
+
+#### HTML Normalizer List Cleanup (`lib/pirateCOS/html-normalizer.ts`)
+- [x] **`normalizeListContent()`** — New Step 6 in the normalization pipeline:
+  - Removes empty `<li>` elements (whitespace/`&nbsp;`/`<br>` only) → eliminates phantom bullets
+  - Unwraps `<p><ul>…</ul></p>` and `<p><ol>…</ol></p>` (invalid HTML that causes TipTap parser recovery to insert extra nodes)
+  - Removes trailing empty `<p>` tags inside `<li>` elements (extra lines within list items)
+- [x] **`stripEmptyParagraphs()`** — Promoted to Step 7, runs after list cleanup
+
+#### System Prompt Hardening (`lib/pirateCOS/ai-context-builder.ts`)
+- [x] **Regular content base instructions** — Added explicit constraints: `"Do NOT wrap <ul> or <ol> elements inside <p> tags. Do NOT include empty <li> elements."` — upstream prevention before normalizer has to clean up
+
+#### Dead Code Removal (`components/pirateCOS/AIWorkspacePanel.tsx`)
+- [x] Removed residual `renderStickyButton` prop on `<ActionChips>` (prop does not exist on `ActionChipsProps`)
+- [x] Removed dead "Quick Edits Apply Button (Sticky)" JSX block that referenced `quickEditButtonProps` (undefined variable)
+
+**Files changed in Phase 5.6:**
+| File | Change |
+|---|---|
+| `components/pirateCOS/editor/FormattingToolbar.tsx` | Added Undo + Redo buttons with disabled state |
+| `styles/globals.css` | Added global `notion-editor-wrapper` list CSS rules |
+| `components/pirateCOS/editor/PirateCOSEditorArea.tsx` | Updated inline list CSS (disc/decimal/circle/square) |
+| `app/pirateCOS/(authed)/posts/edit/[id]/page.tsx` | `handleApplyToEditor` — block-boundary insertion + `preserveWhitespace: false` |
+| `app/pirateCOS/(authed)/posts/create/page.tsx` | Same as edit page |
+| `lib/pirateCOS/html-normalizer.ts` | Added `normalizeListContent()` Step 6; `stripEmptyParagraphs()` becomes Step 7 |
+| `lib/pirateCOS/ai-context-builder.ts` | System prompt: forbids `<p>`-wrapped lists and empty `<li>` elements |
+| `components/pirateCOS/AIWorkspacePanel.tsx` | Removed dead `renderStickyButton` prop and orphaned sticky button block |
+
+---
 
 ### ⬜ Phase 8: Blog Theme Customization & Design System Matching
 - [ ] **No-code Visual Theme Builder**: Editor allowing design-level adjustment of fonts, base sizes, margins, border designs, and links.
