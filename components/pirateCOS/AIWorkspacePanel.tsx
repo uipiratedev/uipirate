@@ -519,16 +519,35 @@ export default function AIWorkspacePanel({
   useEffect(() => {
     if (!isResizing) return;
 
+    // Set cursor to col-resize on body during resize
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!panelRef.current) return;
+
+      // Direct DOM manipulation for instant response
       const rect = panelRef.current.getBoundingClientRect();
       const newWidth = Math.max(260, Math.min(420, rect.right - e.clientX - 56));
-      setWidth(newWidth);
+
+      // Update width directly via style for instant visual feedback
+      panelRef.current.style.width = `${newWidth + 56}px`;
     };
 
     const handleMouseUp = () => {
+      if (!panelRef.current) return;
+
+      // Calculate final width and update React state once
+      const rect = panelRef.current.getBoundingClientRect();
+      const finalWidth = Math.max(260, Math.min(420, rect.right - rect.left - 56));
+
+      setWidth(finalWidth);
       setIsResizing(false);
-      saveUIPreference({ panelWidth: width });
+      saveUIPreference({ panelWidth: finalWidth });
+
+      // Reset cursor
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
     };
 
     document.addEventListener("mousemove", handleMouseMove);
@@ -537,8 +556,11 @@ export default function AIWorkspacePanel({
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
+      // Cleanup cursor
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
     };
-  }, [isResizing, width, saveUIPreference]);
+  }, [isResizing, saveUIPreference]);
 
   const handleTriggerRewriteAction = (actionId: string | string[], tone?: string, instruction?: string) => {
     runRewriteAction(actionId, selectedText, tone, selectedEngine, selectedModel, instruction);
@@ -563,20 +585,26 @@ export default function AIWorkspacePanel({
       <div
         ref={panelRef}
         style={{ width: activeTab === null ? "56px" : `${width + 56}px` }}
-        className="flex-shrink-0 flex items-stretch transition-all duration-300 relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl h-full"
+        className={`flex-shrink-0 flex items-stretch relative border-l border-black/5 bg-[#F7F7F6] rounded-r-2xl h-full ${isResizing ? '' : 'transition-all duration-300'}`}
       >
         {/* Resize Handle */}
         {activeTab !== null && (
           <div
             ref={resizeRef}
             onMouseDown={startResizing}
-            className="absolute top-0 left-0 bottom-0 w-1 cursor-col-resize hover:bg-[#FF5B04]/50 transition-colors z-30"
+            className="absolute top-0 left-0 bottom-0 w-1 cursor-col-resize bg-black/10 hover:bg-[#FF5B04]/60 active:bg-[#FF5B04] transition-colors z-30"
           />
         )}
 
         {/* Drawer content */}
-        {activeTab !== null && (
-          <div style={{ width: `${width}px` }} className="flex-1 flex flex-col h-full overflow-hidden border-r border-black/5 bg-[#F7F7F6]">
+        <div
+          style={{
+            width: `${width}px`,
+            opacity: activeTab === null ? 0 : 1,
+            pointerEvents: activeTab === null ? 'none' : 'auto'
+          }}
+          className="flex-1 flex flex-col h-full overflow-hidden border-r border-black/5 bg-[#F7F7F6] transition-opacity duration-300"
+        >
             {activeTab === "rewrite" ? (
               <div className="flex-1 flex flex-col h-full overflow-hidden">
                 {/* Rewrite Header */}
@@ -1037,8 +1065,7 @@ export default function AIWorkspacePanel({
                 </div>
               </div>
             )}
-          </div>
-        )}
+        </div>
 
         {/* Persistent Activity Rail on the right edge */}
         <div className="w-14 flex flex-col items-center py-4 gap-4 bg-[#F7F7F6] h-full flex-shrink-0 select-none border-l border-black/[0.03] rounded-r-2xl">

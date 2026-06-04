@@ -8776,7 +8776,7 @@ const BlogEditor = () => {
       </div>
 
       {/* ── Two-column Layout ── */}
-      <div className="flex flex-col lg:flex-row gap-3 pl-4 lg:pl-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
+      <div className="flex flex-col lg:flex-row pl-4 lg:pl-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
         {/* Editor / Preview Column */}
         {showPreview ? (
           <PostPreviewPanel
@@ -8790,7 +8790,7 @@ const BlogEditor = () => {
           />
         ) : (
           <>
-            <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden mr-3 lg:mr-0">
+            <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden">
               {/* Formatting Toolbar — sticky inside editor column */}
               <FormattingToolbar
                 activePreset={activePreset}
