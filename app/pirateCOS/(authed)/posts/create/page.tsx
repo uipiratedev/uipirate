@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, {
   useEffect,
@@ -48,8 +48,9 @@ import {
 } from "@/lib/pirateCOS/postTypeConfig";
 import { DEFAULT_CTA_BLOCK_HTML } from "@/lib/pirateCOS/cta-template";
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
+import { ContentSettingsPanel } from "@/components/pirateCOS/ContentSettingsPanel";
 
-// ─── Interfaces ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ Interfaces â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface PostSEO {
   metaTitle?: string;
   metaDescription?: string;
@@ -64,7 +65,7 @@ interface PostSEO {
   noIndex?: boolean;
 }
 
-// ─── Modal helpers ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Modal helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const Modal = ({
   title,
   children,
@@ -111,7 +112,7 @@ const Modal = ({
   </div>
 );
 
-// ─── SEO Editor Modal ────────────────────────────────────────────────────────
+// â”€â”€â”€ SEO Editor Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SEOEditorModal = ({
   isOpen,
   onClose,
@@ -851,7 +852,7 @@ const SEOEditorModal = ({
                                     updateField("keywords", nextKws);
                                   }}
                                 >
-                                  ×
+                                  Ã—
                                 </button>
                               </span>
                             ))}
@@ -1087,7 +1088,7 @@ const SEOEditorModal = ({
                                   : "text-orange-500"
                               }
                             >
-                              {strategy.type === "check" ? "✓" : "!"}
+                              {strategy.type === "check" ? "âœ“" : "!"}
                             </span>
                             <span
                               className={
@@ -1441,7 +1442,7 @@ const SEOEditorModal = ({
   );
 };
 
-// ─── Image URL Modal ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Image URL Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const ImageUrlModal = ({
   editor,
   onClose,
@@ -1485,7 +1486,7 @@ const ImageUrlModal = ({
           </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Describe the image…"
+            placeholder="Describe the imageâ€¦"
             value={alt}
             onChange={(e) => setAlt(e.target.value)}
           />
@@ -1511,7 +1512,7 @@ const ImageUrlModal = ({
   );
 };
 
-// ─── Video Embed Modal ────────────────────────────────────────────────────────
+// â”€â”€â”€ Video Embed Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const VideoEmbedModal = ({
   editor,
   onClose,
@@ -1592,7 +1593,7 @@ const VideoEmbedModal = ({
           </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Add a caption…"
+            placeholder="Add a captionâ€¦"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
           />
@@ -1618,7 +1619,7 @@ const VideoEmbedModal = ({
   );
 };
 
-// ─── Link Modal ──────────────────────────────────────────────────────────────
+// â”€â”€â”€ Link Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const LinkModal = ({
   editor,
   onClose,
@@ -1693,7 +1694,7 @@ const LinkModal = ({
           </label>
           <input
             className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Text to display…"
+            placeholder="Text to displayâ€¦"
             value={linkText}
             onChange={(e) => setLinkText(e.target.value)}
           />
@@ -1773,7 +1774,7 @@ const LinkModal = ({
   );
 };
 
-// ─── Custom Alert Modal ──────────────────────────────────────────────────────
+// â”€â”€â”€ Custom Alert Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AlertModal = ({
   title,
   message,
@@ -1813,7 +1814,7 @@ const AlertModal = ({
   </Modal>
 );
 
-// ─── Unsaved Changes Guard Modal ─────────────────────────────────────────────
+// â”€â”€â”€ Unsaved Changes Guard Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const UnsavedChangesModal = ({
   onLeave,
   onStay,
@@ -1899,7 +1900,7 @@ const UnsavedChangesModal = ({
   </div>
 );
 
-// ─── Publish Confirm Modal ───────────────────────────────────────────────────
+// â”€â”€â”€ Publish Confirm Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const PublishConfirmModal = ({
   isOpen,
   onClose,
@@ -2140,7 +2141,7 @@ const PublishConfirmModal = ({
   );
 };
 
-// ─── Save Draft Modal ────────────────────────────────────────────────────────
+// â”€â”€â”€ Save Draft Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SaveDraftModal = ({
   isOpen,
   onClose,
@@ -2333,7 +2334,7 @@ const SaveDraftModal = ({
   );
 };
 
-// ─── AI Excerpt Modal ────────────────────────────────────────────────────────
+// â”€â”€â”€ AI Excerpt Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AIExcerptModal = ({
   isOpen,
   onClose,
@@ -2787,7 +2788,7 @@ const AIExcerptModal = ({
   );
 };
 
-// ─── AI Title Modal ─────────────────────────────────────────────────────────
+// â”€â”€â”€ AI Title Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AITitleModal = ({
   isOpen,
   onClose,
@@ -3303,7 +3304,7 @@ const AITitleModal = ({
   );
 };
 
-// ─── AI Tags Modal ──────────────────────────────────────────────────────────
+// â”€â”€â”€ AI Tags Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AITagsModal = ({
   isOpen,
   onClose,
@@ -3817,7 +3818,7 @@ const AITagsModal = ({
                             : "bg-white border-black/10"
                         }`}
                       >
-                        {isSelected && "✓"}
+                        {isSelected && "âœ“"}
                       </span>
                       <span>#{t}</span>
                     </button>
@@ -3858,7 +3859,7 @@ const AITagsModal = ({
   );
 };
 
-// ─── AI Copilot Modal ────────────────────────────────────────────────────────
+// â”€â”€â”€ AI Copilot Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const AICopilotModal = ({
   isOpen,
   onClose,
@@ -4572,7 +4573,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
   );
 };
 
-// ─── Floating Block Inserter (Medium-style) ───────────────────────────────────
+// â”€â”€â”€ Floating Block Inserter (Medium-style) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const FloatingBlockInserter = ({
   editor,
   onImageUrl,
@@ -4589,7 +4590,7 @@ const FloatingBlockInserter = ({
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Use Tiptap v3's reactive hook — re-renders on every selection change
+  // Use Tiptap v3's reactive hook â€” re-renders on every selection change
   const editorState = useEditorState({
     editor,
     selector: (ctx: any) => {
@@ -4905,7 +4906,7 @@ const FloatingBlockInserter = ({
   );
 };
 
-// ─── Slash Command Menu ───────────────────────────────────────────────────────
+// â”€â”€â”€ Slash Command Menu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const SlashCommandMenu = ({
   editor,
   isOpen,
@@ -4950,7 +4951,7 @@ const SlashCommandMenu = ({
       },
       {
         title: "Bullet List",
-        icon: "•",
+        icon: "â€¢",
         desc: "Create a simple list",
         command: () => editor.chain().focus().toggleBulletList().run(),
       },
@@ -4962,7 +4963,7 @@ const SlashCommandMenu = ({
       },
       {
         title: "Task List",
-        icon: "☑",
+        icon: "â˜‘",
         desc: "Track tasks with checkboxes",
         command: () => editor.chain().focus().toggleTaskList().run(),
         featureKey: "taskLists",
@@ -4982,7 +4983,7 @@ const SlashCommandMenu = ({
       },
       {
         title: "Divider",
-        icon: "—",
+        icon: "â€”",
         desc: "Add a horizontal rule",
         command: () => editor.chain().focus().setHorizontalRule().run(),
       },
@@ -5009,7 +5010,7 @@ const SlashCommandMenu = ({
       {
         title: "Embed Video",
         icon: "video",
-        desc: "YouTube, Vimeo, Loom…",
+        desc: "YouTube, Vimeo, Loomâ€¦",
         command: onVideoEmbed,
       },
       {
@@ -5094,7 +5095,7 @@ const SlashCommandMenu = ({
   );
 };
 
-// ─── Formatting Toolbar (top) ─────────────────────────────────────────────────
+// â”€â”€â”€ Formatting Toolbar (top) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const FormattingToolbar = ({
   editor,
   onLinkClick,
@@ -5381,7 +5382,7 @@ const FormattingToolbar = ({
             title="Bullet List"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
-            • List
+            â€¢ List
           </button>
           <button
             className={btn(editor.isActive("orderedList"))}
@@ -5432,7 +5433,7 @@ const FormattingToolbar = ({
             title="Horizontal Rule"
             onClick={() => editor.chain().focus().setHorizontalRule().run()}
           >
-            —
+            â€”
           </button>
         </>
       )}
@@ -5458,7 +5459,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Row ↑</span>
+              <span className="text-[10px] ml-1">Row â†‘</span>
             </button>
 
             <button
@@ -5475,7 +5476,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Row ↓</span>
+              <span className="text-[10px] ml-1">Row â†“</span>
             </button>
 
             <button
@@ -5511,7 +5512,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Col ←</span>
+              <span className="text-[10px] ml-1">Col â†</span>
             </button>
 
             <button
@@ -5528,7 +5529,7 @@ const FormattingToolbar = ({
               >
                 <path d="M12 5v14M5 12h14" />
               </svg>
-              <span className="text-[10px] ml-1">Col →</span>
+              <span className="text-[10px] ml-1">Col â†’</span>
             </button>
 
             <button
@@ -5590,7 +5591,7 @@ const FormattingToolbar = ({
   );
 };
 
-// ─── Post Preview Panel ──────────────────────────────────────────────────────
+// â”€â”€â”€ Post Preview Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function slugifyHeading(text: string): string {
   return text
     .toLowerCase()
@@ -5648,7 +5649,7 @@ function injectHeadingIds(html: string): string {
   );
 }
 // Minified mirror of globals.css .blog-prose rules, scoped to .preview-prose
-const PREVIEW_PROSE_CSS = `.preview-prose{color:#1a1a1a!important;font-family:var(--font-jakarta),var(--font-sans),sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:-.005em}.preview-prose p{color:#1a1a1a!important;margin-top:0;margin-bottom:1.25rem}.preview-prose li{color:#1a1a1a!important}.preview-prose h1,.preview-prose h2,.preview-prose h3,.preview-prose h4{color:#111!important;font-family:var(--font-geist),sans-serif;font-weight:700;line-height:1.2;margin-top:2.5rem;margin-bottom:.85rem;letter-spacing:-.025em}.preview-prose h1{font-size:2.25rem}.preview-prose h2{font-size:1.625rem;border-left:3.5px solid #FF5B04;padding-left:.85rem;margin-left:-.85rem}.preview-prose h3{font-size:1.35rem}.preview-prose h4{font-size:1.125rem}.preview-prose strong{color:#111!important;font-weight:700}.preview-prose em{color:#444!important;font-style:italic}.preview-prose a{color:#FF5B04;text-decoration:underline;text-underline-offset:3px;font-weight:500}.preview-prose ul{list-style:none;padding-left:0;margin:1.5rem 0}.preview-prose ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;line-height:1.6}.preview-prose ul li::before{content:"•";color:#FF5B04;font-weight:bold;font-size:1.35rem;position:absolute;left:.25rem;top:-.15rem}.preview-prose ol{list-style-type:decimal;padding-left:1.5rem;margin:1.5rem 0}.preview-prose ol li{margin-bottom:.5rem;padding-left:.25rem;line-height:1.6}.preview-prose li strong{color:#111}.preview-prose blockquote{border-left:4px solid #FF5B04;margin:2.25rem 0;padding:.85rem 1.5rem;background:rgba(255,91,4,.035);border-radius:4px 16px 16px 4px;color:#2b2b2b;font-size:1.15rem;line-height:1.7;font-style:italic;font-weight:500}.preview-prose code{font-family:var(--font-geist-mono,monospace);font-size:.85em;background:#f7f7f8;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:.2em .4em;color:#FF5B04;font-weight:500}.preview-prose pre{background:#0c0c0d;border:1px solid rgba(255,255,255,.08);color:#f4f4f5;border-radius:14px;padding:1.5rem 1.75rem;overflow-x:auto;margin:2.25rem 0;font-size:.85rem;line-height:1.75}.preview-prose pre code{background:none;border:none;padding:0;color:inherit}.preview-prose hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.08) 15%,rgba(0,0,0,.08) 85%,transparent);margin:3.5rem 0}.preview-prose img{display:block;max-width:100%;height:auto;border-radius:14px;margin:2rem auto;box-shadow:0 10px 30px rgba(0,0,0,.04)}.preview-prose p:has(>img:only-child){display:flex;justify-content:center}.preview-prose table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;margin:2.5rem 0;font-size:.925rem;border:1px solid rgba(255,91,4,.15);border-radius:14px;box-shadow:0 4px 24px rgba(255,91,4,.03)}.preview-prose th,.preview-prose td{border-bottom:1px solid rgba(255,91,4,.08);border-right:1px solid rgba(255,91,4,.06);padding:.9rem 1.25rem;text-align:left}.preview-prose th:last-child,.preview-prose td:last-child{border-right:none}.preview-prose tr:last-child td{border-bottom:none}.preview-prose th{background:#FFF5F0;color:#1a1a1a;font-weight:700;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;border-bottom:2px solid rgba(255,91,4,.2)!important}.preview-prose tr:hover td{background:rgba(255,91,4,.025)}.preview-prose>p:first-of-type::first-letter{font-size:3.5rem;font-weight:700;float:left;line-height:.85;margin-right:.55rem;margin-top:.15rem;color:#FF5B04;font-family:var(--font-geist),sans-serif}.preview-prose::selection,.preview-prose *::selection{background:rgba(255,91,4,.12);color:#FF5B04}`;
+const PREVIEW_PROSE_CSS = `.preview-prose{color:#1a1a1a!important;font-family:var(--font-jakarta),var(--font-sans),sans-serif;font-size:1.0625rem;line-height:1.85;letter-spacing:-.005em}.preview-prose p{color:#1a1a1a!important;margin-top:0;margin-bottom:1.25rem}.preview-prose li{color:#1a1a1a!important}.preview-prose h1,.preview-prose h2,.preview-prose h3,.preview-prose h4{color:#111!important;font-family:var(--font-geist),sans-serif;font-weight:700;line-height:1.2;margin-top:2.5rem;margin-bottom:.85rem;letter-spacing:-.025em}.preview-prose h1{font-size:2.25rem}.preview-prose h2{font-size:1.625rem;border-left:3.5px solid #FF5B04;padding-left:.85rem;margin-left:-.85rem}.preview-prose h3{font-size:1.35rem}.preview-prose h4{font-size:1.125rem}.preview-prose strong{color:#111!important;font-weight:700}.preview-prose em{color:#444!important;font-style:italic}.preview-prose a{color:#FF5B04;text-decoration:underline;text-underline-offset:3px;font-weight:500}.preview-prose ul{list-style:none;padding-left:0;margin:1.5rem 0}.preview-prose ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;line-height:1.6}.preview-prose ul li::before{content:"â€¢";color:#FF5B04;font-weight:bold;font-size:1.35rem;position:absolute;left:.25rem;top:-.15rem}.preview-prose ol{list-style-type:decimal;padding-left:1.5rem;margin:1.5rem 0}.preview-prose ol li{margin-bottom:.5rem;padding-left:.25rem;line-height:1.6}.preview-prose li strong{color:#111}.preview-prose blockquote{border-left:4px solid #FF5B04;margin:2.25rem 0;padding:.85rem 1.5rem;background:rgba(255,91,4,.035);border-radius:4px 16px 16px 4px;color:#2b2b2b;font-size:1.15rem;line-height:1.7;font-style:italic;font-weight:500}.preview-prose code{font-family:var(--font-geist-mono,monospace);font-size:.85em;background:#f7f7f8;border:1px solid rgba(0,0,0,.06);border-radius:6px;padding:.2em .4em;color:#FF5B04;font-weight:500}.preview-prose pre{background:#0c0c0d;border:1px solid rgba(255,255,255,.08);color:#f4f4f5;border-radius:14px;padding:1.5rem 1.75rem;overflow-x:auto;margin:2.25rem 0;font-size:.85rem;line-height:1.75}.preview-prose pre code{background:none;border:none;padding:0;color:inherit}.preview-prose hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(0,0,0,.08) 15%,rgba(0,0,0,.08) 85%,transparent);margin:3.5rem 0}.preview-prose img{display:block;max-width:100%;height:auto;border-radius:14px;margin:2rem auto;box-shadow:0 10px 30px rgba(0,0,0,.04)}.preview-prose p:has(>img:only-child){display:flex;justify-content:center}.preview-prose table{width:100%;min-width:100%;border-collapse:separate;border-spacing:0;margin:2.5rem 0;font-size:.925rem;border:1px solid rgba(255,91,4,.15);border-radius:14px;box-shadow:0 4px 24px rgba(255,91,4,.03)}.preview-prose th,.preview-prose td{border-bottom:1px solid rgba(255,91,4,.08);border-right:1px solid rgba(255,91,4,.06);padding:.9rem 1.25rem;text-align:left}.preview-prose th:last-child,.preview-prose td:last-child{border-right:none}.preview-prose tr:last-child td{border-bottom:none}.preview-prose th{background:#FFF5F0;color:#1a1a1a;font-weight:700;text-transform:uppercase;font-size:.75rem;letter-spacing:.05em;border-bottom:2px solid rgba(255,91,4,.2)!important}.preview-prose tr:hover td{background:rgba(255,91,4,.025)}.preview-prose>p:first-of-type::first-letter{font-size:3.5rem;font-weight:700;float:left;line-height:.85;margin-right:.55rem;margin-top:.15rem;color:#FF5B04;font-family:var(--font-geist),sans-serif}.preview-prose::selection,.preview-prose *::selection{background:rgba(255,91,4,.12);color:#FF5B04}`;
 
 const PostPreviewPanel = ({
   title,
@@ -5740,7 +5741,7 @@ const PostPreviewPanel = ({
             Reader Preview
           </span>
           <span className="text-xs font-geist text-gray-400">
-            High-fidelity · matches live site
+            High-fidelity Â· matches live site
           </span>
         </div>
         <button
@@ -5764,10 +5765,10 @@ const PostPreviewPanel = ({
         </button>
       </div>
 
-      {/* Preview card — no overflow-hidden here; the hero div owns its own clip so
+      {/* Preview card â€” no overflow-hidden here; the hero div owns its own clip so
           the inner sticky TOC aside has a full-height scroll track to travel along */}
       <div className="bg-white rounded-2xl shadow-sm border border-black/5">
-        {/* ── Hero — mirrors screens/blogsDetails/hero/index.tsx ── */}
+        {/* â”€â”€ Hero â€” mirrors screens/blogsDetails/hero/index.tsx â”€â”€ */}
         <div
           className="relative w-full overflow-hidden group"
           style={{ height: 340 }}
@@ -5835,12 +5836,12 @@ const PostPreviewPanel = ({
           </div>
         </div>
 
-        {/* ── Article body — mirrors screens/blogsDetails/blogContents/ layout ── */}
+        {/* â”€â”€ Article body â€” mirrors screens/blogsDetails/blogContents/ layout â”€â”€ */}
         <article className="px-14 pt-8 pb-16">
           {/* Inject prose CSS identical to live site's bulletproof style block */}
           <style dangerouslySetInnerHTML={{ __html: PREVIEW_PROSE_CSS }} />
 
-          {/* Header info — mirrors screens/blogsDetails/blogContents/headeInfo.tsx */}
+          {/* Header info â€” mirrors screens/blogsDetails/blogContents/headeInfo.tsx */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div
@@ -5860,7 +5861,7 @@ const PostPreviewPanel = ({
                   className="text-xs text-gray-400"
                   style={{ fontFamily: "var(--font-geist)" }}
                 >
-                  Preview · {readTime} min read
+                  Preview Â· {readTime} min read
                 </p>
               </div>
             </div>
@@ -5892,7 +5893,7 @@ const PostPreviewPanel = ({
             </div>
           )}
 
-          {/* Excerpt — pull-quote style matching live site */}
+          {/* Excerpt â€” pull-quote style matching live site */}
           {excerpt && (
             <p
               className="mt-6 text-lg leading-relaxed pl-4 border-l-4 border-orange-200"
@@ -5905,8 +5906,8 @@ const PostPreviewPanel = ({
             </p>
           )}
 
-          {/* Content + sticky TOC — two-column when there are ≥2 headings */}
-          {/* NOTE: no items-start — aside must stretch to article height so sticky has room to travel */}
+          {/* Content + sticky TOC â€” two-column when there are â‰¥2 headings */}
+          {/* NOTE: no items-start â€” aside must stretch to article height so sticky has room to travel */}
           <div className={`mt-10 ${hasToc ? "flex gap-10" : ""}`}>
             <div
               dangerouslySetInnerHTML={{
@@ -5916,7 +5917,7 @@ const PostPreviewPanel = ({
               }}
               className="preview-prose min-w-0 flex-1"
             />
-            {/* Sticky TOC — pixel-identical to screens/blogsDetails/blogContents */}
+            {/* Sticky TOC â€” pixel-identical to screens/blogsDetails/blogContents */}
             {hasToc && (
               <aside
                 className="flex-shrink-0 hidden xl:block"
@@ -5986,7 +5987,7 @@ const SOCIAL_DESTINATIONS: Record<SocialDestination, SocialDestinationConfig> = 
 
 
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// â”€â”€â”€ Main Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const BlogEditor = () => {
   const isSubdomain =
     typeof window !== "undefined" &&
@@ -6422,6 +6423,12 @@ const BlogEditor = () => {
   const [distRecords, setDistRecords] = useState<any[]>([]);
   const [repurposedOutputs, setRepurposedOutputs] = useState<Record<string, string>>({});
 
+  // Collapsible section states for better UX
+  const [isAnalyticsExpanded, setIsAnalyticsExpanded] = useState(true);
+  const [isTitleOptimizerExpanded, setIsTitleOptimizerExpanded] = useState(true);
+  const [isExcerptExpanded, setIsExcerptExpanded] = useState(true);
+  const [isTagsExpanded, setIsTagsExpanded] = useState(true);
+
   const {
     blogId: savedBlogId,
     setBlogId: setSavedBlogId,
@@ -6458,7 +6465,7 @@ const BlogEditor = () => {
   });
   const pendingNavHref = useRef<string>("");
   const pendingNavIsBack = useRef(false); // true when guard was tripped by browser back/forward
-  const isDirtyRef = useRef(false); // ref mirror — always current inside event handlers
+  const isDirtyRef = useRef(false); // ref mirror â€” always current inside event handlers
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -6516,8 +6523,8 @@ const BlogEditor = () => {
 
 
 
-  // ── Navigation guards ───────────────────────────────────────────────────────
-  // 1. Tab / window close — uses ref so the handler never needs to be replaced
+  // â”€â”€ Navigation guards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // 1. Tab / window close â€” uses ref so the handler never needs to be replaced
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
       if (!isDirtyRef.current || !typeSelected) return;
@@ -6533,7 +6540,7 @@ const BlogEditor = () => {
     return () => window.removeEventListener("beforeunload", handler);
   }, [typeSelected]);
 
-  // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
+  // 2. Sidebar <Link> and every other <a> click â€” capture phase intercepts before
   //    Next.js router handles the event, covering all client-side link navigation.
   useEffect(() => {
     const handleLinkClick = (e: MouseEvent) => {
@@ -6622,7 +6629,7 @@ const BlogEditor = () => {
         placeholder: ({ node }) => {
           if (node.type.name === "heading") return "Heading";
 
-          return "Type '/' for commands or click + to add a block…";
+          return "Type '/' for commands or click + to add a blockâ€¦";
         },
       }),
       TaskList,
@@ -6761,7 +6768,7 @@ const BlogEditor = () => {
     [editor, setIsDirty]
   );
 
-  // Dirty tracking — skip first run (initial mount), mark dirty on any subsequent change
+  // Dirty tracking â€” skip first run (initial mount), mark dirty on any subsequent change
   useEffect(() => {
     if (!isDataInitialized || !typeSelected) return;
     
@@ -6871,7 +6878,7 @@ const BlogEditor = () => {
     [],
   );
 
-  // Navigate safely — shows unsaved-changes modal if form is dirty
+  // Navigate safely â€” shows unsaved-changes modal if form is dirty
   const navigateSafely = useCallback(
     (href: string) => {
       if (isDirty) {
@@ -6917,7 +6924,7 @@ const BlogEditor = () => {
 
   if (!mounted || !editor || authLoading) return null;
 
-  // ── 3-Step Guided Wizard selection gate ──
+  // â”€â”€ 3-Step Guided Wizard selection gate â”€â”€
   if (!typeSelected) {
     const activeTypeConfig = getPostTypeConfig(postType);
     const activeGoalConfig = getGoalConfig(contentGoal);
@@ -7060,7 +7067,7 @@ const BlogEditor = () => {
               <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-[#FF5B04]">
                 Creation Wizard
               </span>
-              <span className="text-gray-300 text-[10px]">•</span>
+              <span className="text-gray-300 text-[10px]">â€¢</span>
               <span className="text-[10px] font-jetbrains-mono uppercase tracking-widest font-bold text-gray-400">
                 Step {wizardStep} of 3
               </span>
@@ -7082,9 +7089,9 @@ const BlogEditor = () => {
 
         {/* Content Wrapper */}
         <div className="px-8 py-8 w-full">
-          {/* ───────────────────────────────────────────────────────────────────
+          {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
               STEP 1: INTENT SELECTION
-          ─────────────────────────────────────────────────────────────────── */}
+          â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {wizardStep === 1 && (
             <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in fade-in duration-200">
               {/* Left Column: Archetype selector cards */}
@@ -7236,7 +7243,7 @@ const BlogEditor = () => {
                     <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">Target Range</span>
                     <p className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
                       <CosIcon name="blog" size={12} className="text-[#FF5B04]" />
-                      <span>{currentTypeConfig ? `${currentTypeConfig.minWordCount}–${currentTypeConfig.maxWordCount} words` : "N/A"}</span>
+                      <span>{currentTypeConfig ? `${currentTypeConfig.minWordCount}â€“${currentTypeConfig.maxWordCount} words` : "N/A"}</span>
                     </p>
                   </div>
                 </div>
@@ -7275,9 +7282,9 @@ const BlogEditor = () => {
             </div>
           )}
 
-          {/* ───────────────────────────────────────────────────────────────────
+          {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
               STEP 2: GOAL SELECTION
-          ─────────────────────────────────────────────────────────────────── */}
+          â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {wizardStep === 2 && (
             <div className="md:grid md:grid-cols-12 gap-8 items-start animate-in slide-in-from-right-4 duration-200">
               {/* Left Column: Goal Cards */}
@@ -7429,9 +7436,9 @@ const BlogEditor = () => {
             </div>
           )}
 
-          {/* ───────────────────────────────────────────────────────────────────
+          {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
               STEP 3: WORKSPACE PREVIEW & CAROUSEL TUTORIAL
-          ─────────────────────────────────────────────────────────────────── */}
+          â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           {wizardStep === 3 && (
             <div className="space-y-5 animate-in slide-in-from-right-4 duration-200">
               <div className="space-y-1">
@@ -7457,7 +7464,7 @@ const BlogEditor = () => {
                     {activeTypeConfig && <CosIcon name={activeTypeConfig.icon} size={11} className="text-[#FF5B04]" />}
                     {activeTypeConfig?.label}
                   </span>
-                  <span className="text-gray-300 text-xs">×</span>
+                  <span className="text-gray-300 text-xs">Ã—</span>
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-[#FF5B04]/5 border border-[#FF5B04]/10 text-[10px] font-semibold text-gray-700">
                     {activeGoalConfig && <CosIcon name={activeGoalConfig.icon} size={11} className="text-[#FF5B04]" />}
                     {activeGoalConfig?.label}
@@ -7515,7 +7522,7 @@ const BlogEditor = () => {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
-                ← Back to Archetype
+                â† Back to Archetype
               </button>
               <button
                 disabled={!contentGoal}
@@ -7554,7 +7561,7 @@ const BlogEditor = () => {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
-                ← Change Goal
+                â† Change Goal
               </button>
               <button
                 className="ml-auto flex items-center gap-2 text-xs font-bold font-geist text-white h-11 px-8 rounded-xl transition-all shadow-md cursor-pointer hover:shadow-lg hover:scale-[1.02]"
@@ -7617,512 +7624,66 @@ const BlogEditor = () => {
   };
 
   const renderContentTab = () => (
-    <>
-      {/* Feed Guardrails or Analytics Card */}
-      {postType === "social-post" ? (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            Feed Guardrails
-          </p>
-          
-          {/* Platform switcher */}
-          <div className="flex bg-black/5 p-1 rounded-xl">
-            {(["linkedin", "x"] as const).map((dest) => (
-              <button
-                key={dest}
-                type="button"
-                onClick={() => setSocialDestination(dest)}
-                className={`flex-1 py-1 text-xs font-semibold rounded-lg transition-all ${
-                  socialDestination === dest
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-800"
-                }`}
-              >
-                {SOCIAL_DESTINATIONS[dest].label}
-              </button>
-            ))}
-          </div>
+    <ContentSettingsPanel
+      // Post data
+      postType={postType}
+      title={title}
+      excerpt={excerpt}
+      tags={tags}
+      editorStats={editorStats}
 
-          {/* Character limit bar */}
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[10px] font-geist text-gray-500 font-medium">
-                Characters
-              </span>
-              <span className={`text-[10px] font-jetbrains-mono font-semibold ${
-                editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                  ? "text-red-500 font-bold"
-                  : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                  ? "text-amber-500"
-                  : "text-gray-400"
-              }`}>
-                {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
-              </span>
-            </div>
-            <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-300 ${
-                  editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                    ? "bg-red-500"
-                    : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                    ? "bg-amber-500"
-                    : "bg-[#FF5B04]"
-                }`}
-                style={{
-                  width: `${Math.min(
-                    100,
-                    (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
-                  )}%`,
-                }}
-              />
-            </div>
-          </div>
+      // Social post specific
+      socialDestination={socialDestination}
+      onSocialDestinationChange={setSocialDestination}
 
-          {/* Whitespace Spacing Advisor */}
-          {editorStats.characters > 0 && (
-            <div className="pt-3 border-t border-black/5">
-              {(() => {
-                const text = editor?.getText() || "";
-                const paragraphsText = text.split("\n").map(p => p.trim()).filter(Boolean);
-                const hasLongParagraph = paragraphsText.some(p => p.length > 240);
-                if (hasLongParagraph) {
-                  return (
-                    <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
-                    <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-[10px] font-bold text-amber-800">
-                          Whitespace Spacing Advisor
-                        </p>
-                        <p className="text-[10px] text-amber-700 leading-normal mt-0.5">
-                          Feeds favor breathing room. Split this into short 1-2 sentence paragraphs for better mobile reading.
-                        </p>
-                      </div>
-                    </div>
-                  );
-                }
-                return (
-                  <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
-                    <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-bold text-green-800">
-                        Spacing Calibrated
-                      </p>
-                      <p className="text-[10px] text-green-700 leading-normal mt-0.5">
-                        Excellent spacing! Paragraphs are airy and reader-friendly.
-                      </p>
-                    </div>
-                  </div>
-                );
-              })()}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-            Analytics
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.words}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Words
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.characters}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Characters
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.paragraphs}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Paragraphs
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-[#FF5B04]">
-                {editorStats.readTime} min
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Read Time
-              </div>
-            </div>
-          </div>
+      // Title optimizer
+      titleInstructions={titleInstructions}
+      titleSuggestions={titleSuggestions}
+      isOptimizingTitle={isOptimizingTitle}
+      onTitleInstructionsChange={setTitleInstructions}
+      onGenerateTitleSuggestions={generateTitleSuggestions}
 
-          {/* Writing Goal Progress */}
-          {(() => {
-            const ptConfig = getPostTypeConfig(postType);
-            const minGoal = ptConfig?.minWordCount ?? 500;
-            const maxGoal = ptConfig?.maxWordCount ?? 1500;
-            return (
-              <div className="mt-3.5 pt-3 border-t border-black/5">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[10px] font-geist text-gray-500 font-medium">
-                    Writing Goal
-                  </span>
-                  <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                    {Math.min(
-                      100,
-                      Math.round((editorStats.words / minGoal) * 100),
-                    )}
-                    % ({editorStats.words} / {minGoal}–{maxGoal} words)
-                  </span>
-                </div>
-                <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500 ease-out"
-                    style={{
-                      width: `${Math.min(100, (editorStats.words / minGoal) * 100)}%`,
-                      background: "#FF5B04",
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-      )}
+      // Excerpt
+      excerptInstructions={excerptInstructions}
+      showExcerptAIGuidelines={showExcerptAIGuidelines}
+      suggestedExcerpt={suggestedExcerpt}
+      isGeneratingExcerpt={isGeneratingExcerpt}
+      onExcerptInstructionsChange={setExcerptInstructions}
+      onToggleExcerptAI={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
+      onGenerateExcerpt={generateExcerptInline}
+      onApplySuggestedExcerpt={() => {
+        setExcerpt(suggestedExcerpt);
+        setSuggestedExcerpt("");
+        setIsDirty(true);
+      }}
+      onDismissSuggestedExcerpt={() => setSuggestedExcerpt("")}
 
-      {/* AI Title Optimizer Card */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-        <div className="flex justify-between items-center mb-3">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            AI Title Optimizer
-          </p>
-        </div>
-        <div className="space-y-3">
-          <textarea
-            className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-            placeholder="Title guidelines (e.g., 'professional tone', 'under 60 chars', 'punchy')"
-            rows={2}
-            value={titleInstructions}
-            onChange={(e) => setTitleInstructions(e.target.value)}
-          />
-          <button
-            type="button"
-            disabled={isOptimizingTitle}
-            onClick={generateTitleSuggestions}
-            className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isOptimizingTitle ? (
-              <>
-                <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Optimizing Title...
-              </>
-            ) : (
-              <>
-                <CosIcon name="sparkles" size={12} className="text-white fill-current" />
-                <span>Optimize Title</span>
-              </>
-            )}
-          </button>
+      // Tags
+      tagInput={tagInput}
+      suggestedTags={suggestedTags}
+      isGeneratingTags={isGeneratingTags}
+      onTagInputChange={setTagInput}
+      onAddTag={addTag}
+      onRemoveTag={(tag) => {
+        setTags(tags.filter((t) => t !== tag));
+        setIsDirty(true);
+      }}
+      onGenerateTags={generateTagsInline}
+      onAppendHashtag={appendHashtag}
 
-          {titleSuggestions.length > 0 && (
-            <div className="space-y-2 pt-2 border-t border-black/5">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                Click to Apply Suggestion
-              </p>
-              <div className="space-y-1.5">
-                {titleSuggestions.map((suggestion, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      setTitle(suggestion);
-                      setIsDirty(true);
-                    }}
-                    className={`w-full text-left text-xs font-geist p-2.5 rounded-xl border text-gray-700 transition-all ${
-                      title === suggestion
-                        ? "bg-orange-50 border-[#FF5B04] text-[#FF5B04]"
-                        : "bg-black/[0.01] border-black/5 hover:border-[#FF5B04]/50 hover:bg-black/[0.03]"
-                    }`}
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      // Core callbacks
+      onTitleChange={setTitle}
+      onExcerptChange={setExcerpt}
+      onTagsChange={setTags}
+      onDirtyChange={() => setIsDirty(true)}
 
-      {/* Excerpt card - hidden for social posts */}
-      {postType !== "social-post" && (
-        <div id="excerpt-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Excerpt
-            </p>
-            <button
-              type="button"
-              className={`text-[10px] font-geist font-semibold transition-colors flex items-center gap-1 cursor-pointer ${
-                showExcerptAIGuidelines ? "text-gray-500 hover:text-gray-700" : "text-[#FF5B04] hover:text-[#e04f03]"
-              }`}
-              onClick={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
-            >
-              <CosIcon name="sparkles" size={10} className="text-current" />
-              {showExcerptAIGuidelines ? "Hide AI Assistant" : "AI Assistant"}
-            </button>
-          </div>
-          
-          <textarea
-            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-            placeholder="Short summary shown in blog listings…"
-            style={{ minHeight: 80 }}
-            value={excerpt}
-            onChange={(e) => {
-              setExcerpt(e.target.value);
-              setIsDirty(true);
-            }}
-          />
-
-          {showExcerptAIGuidelines && (
-            <div className="mt-3 pt-3 border-t border-black/5 space-y-2">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                AI Excerpt Guidelines
-              </p>
-              <textarea
-                className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-2.5 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-                placeholder="Guidelines (e.g. concise, professional tone, focus on launch details...)"
-                rows={2}
-                value={excerptInstructions}
-                onChange={(e) => setExcerptInstructions(e.target.value)}
-              />
-              <button
-                type="button"
-                disabled={isGeneratingExcerpt}
-                onClick={async () => {
-                  if (!editor || editor.isEmpty) {
-                    setValidationError("Please write some content first so the AI can summarize it.");
-                    return;
-                  }
-                  await generateExcerptInline();
-                }}
-                className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isGeneratingExcerpt ? (
-                  <>
-                    <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Generating Excerpt...
-                  </>
-                ) : (
-                  <>
-                    <CosIcon name="sparkles" size={12} className="text-white fill-current" />
-                    <span>Generate Excerpt</span>
-                  </>
-                )}
-              </button>
-            </div>
-          )}
-
-          {suggestedExcerpt && (
-            <div className="mt-3 p-3 bg-orange-50 border border-[#FF5B04]/30 rounded-xl space-y-2">
-              <p className="text-[10px] font-bold text-[#FF5B04] uppercase tracking-wider font-jetbrains-mono">
-                Suggested Excerpt
-              </p>
-              <p className="text-xs font-geist text-gray-700 leading-relaxed">
-                {suggestedExcerpt}
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setExcerpt(suggestedExcerpt);
-                  setSuggestedExcerpt("");
-                  setIsDirty(true);
-                }}
-                className="w-full text-xs font-semibold py-1.5 px-3 rounded-lg bg-white border border-[#FF5B04]/30 text-[#FF5B04] hover:bg-orange-100/50 transition-colors flex items-center justify-center gap-1"
-              >
-                Apply Suggested Excerpt
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Hashtag Assistant / Tags card */}
-      {postType === "social-post" ? (
-        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3 mt-4">
-          <div className="flex justify-between items-center">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Hashtag Assistant
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-1.5 min-h-[24px]">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                style={{ background: "#FFF0E8", color: "#FF5B04" }}
-              >
-                {tag}
-                <button
-                  type="button"
-                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                  onClick={() => {
-                    setTags(tags.filter((t) => t !== tag));
-                    setIsDirty(true);
-                  }}
-                >
-                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
-                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-          <div className="space-y-1.5">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-              Suggestions
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {SOCIAL_DESTINATIONS[socialDestination].suggestions.map((suggestion) => {
-                const isSelected = tags.includes(suggestion);
-                return (
-                  <button
-                    key={suggestion}
-                    type="button"
-                    disabled={isSelected}
-                    onClick={() => {
-                      appendHashtag(suggestion);
-                      setIsDirty(true);
-                    }}
-                    className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
-                      isSelected
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04]"
-                    }`}
-                  >
-                    {suggestion}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-            placeholder="Add tag, press Enter…"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => {
-              handleAddHashtag(e);
-              setIsDirty(true);
-            }}
-          />
-        </div>
-      ) : (
-        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Tags
-            </p>
-            <button
-              className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
-              type="button"
-              disabled={isGeneratingTags}
-              onClick={async () => {
-                if (!editor || editor.isEmpty) {
-                  setValidationError("Please write some content first so the AI can recommend tags.");
-                  return;
-                }
-                await generateTagsInline();
-              }}
-            >
-              {isGeneratingTags ? (
-                <>
-                  <svg className="animate-spin h-3 w-3 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Recommending...
-                </>
-              ) : (
-                <>
-                  <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                  <span>Recommend Tags</span>
-                </>
-              )}
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                style={{ background: "#FFF0E8", color: "#FF5B04" }}
-              >
-                {tag}
-                <button
-                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                  onClick={() => {
-                    setTags(tags.filter((t) => t !== tag));
-                    setIsDirty(true);
-                  }}
-                >
-                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
-                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-            placeholder="Add tag, press Enter…"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => {
-              addTag(e);
-              setIsDirty(true);
-            }}
-          />
-
-          {suggestedTags.length > 0 && (
-            <div className="mt-3 pt-3 border-t border-black/5 space-y-1.5">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                AI Suggested Tags (Click to Add)
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {suggestedTags.map((tag) => {
-                  const isSelected = tags.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      disabled={isSelected}
-                      onClick={() => {
-                        setTags([...tags, tag]);
-                        setIsDirty(true);
-                      }}
-                      className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
-                        isSelected
-                          ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-dashed border-gray-200"
-                          : "bg-orange-50/50 border border-[#FF5B04]/20 text-[#FF5B04] hover:bg-[#FF5B04]/10"
-                      }`}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </>
+      // Features (all enabled by default)
+      showAnalytics={true}
+      showTitleOptimizer={true}
+      showExcerpt={true}
+      showTags={true}
+      showProgressChecklist={true}
+    />
   );
 
   const renderSEOTab = () => {
@@ -8218,7 +7779,7 @@ const BlogEditor = () => {
                       {(seoData?.metaTitle || "").length}/60
                     </span>
                   </label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">Shown as the title in Google search results (50–60 chars ideal)</p>
+                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">Shown as the title in Google search results (50â€“60 chars ideal)</p>
                 </div>
                 <button
                   type="button"
@@ -8245,7 +7806,7 @@ const BlogEditor = () => {
               <input
                 className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
                 maxLength={60}
-                placeholder="SEO page title…"
+                placeholder="SEO page titleâ€¦"
                 value={seoData?.metaTitle || ""}
                 onChange={(e) => {
                   setSeoData((prev) => ({ ...prev, metaTitle: e.target.value }));
@@ -8283,7 +7844,7 @@ const BlogEditor = () => {
                       {(seoData?.metaDescription || "").length}/160
                     </span>
                   </label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">The snippet shown below the title in search results (140–160 chars)</p>
+                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">The snippet shown below the title in search results (140â€“160 chars)</p>
                 </div>
                 <button
                   type="button"
@@ -8310,7 +7871,7 @@ const BlogEditor = () => {
               <textarea
                 className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none"
                 maxLength={160}
-                placeholder="Brief description for search results…"
+                placeholder="Brief description for search resultsâ€¦"
                 rows={3}
                 value={seoData?.metaDescription || ""}
                 onChange={(e) => {
@@ -8384,13 +7945,13 @@ const BlogEditor = () => {
                         }}
                         className="text-orange-400 hover:text-orange-600 font-bold pl-0.5"
                       >
-                        ×
+                        Ã—
                       </button>
                     </span>
                   ))}
                 </div>
               ) : (
-                <p className="text-[10px] text-gray-400 italic font-geist">No keywords yet — click "AI Generate" to get suggestions.</p>
+                <p className="text-[10px] text-gray-400 italic font-geist">No keywords yet â€” click "AI Generate" to get suggestions.</p>
               )}
             </div>
 
@@ -8443,7 +8004,7 @@ const BlogEditor = () => {
         {/* Social & Preview Tab */}
         {activeSEOTab === "social" && (
           <div className="space-y-4 text-left">
-            {/* Google SERP Preview — shown first */}
+            {/* Google SERP Preview â€” shown first */}
             <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
               <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">
                 Google Search Preview
@@ -8636,8 +8197,8 @@ const BlogEditor = () => {
 
   const statusColor: Record<string, string> = {
     Draft: "#6b7280",
-    "Saving…": "#FF5B04",
-    "Publishing…": "#FF5B04",
+    "Savingâ€¦": "#FF5B04",
+    "Publishingâ€¦": "#FF5B04",
     Saved: "#16a34a",
     Published: "#16a34a",
     Error: "#dc2626",
@@ -8645,7 +8206,7 @@ const BlogEditor = () => {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ background: "#F7F7F6" }}>
-      {/* ── Top Bar ── */}
+      {/* â”€â”€ Top Bar â”€â”€ */}
       <div
         className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 px-3 lg:px-6 py-2.5 lg:py-3"
         style={{
@@ -8669,7 +8230,7 @@ const BlogEditor = () => {
           <span className="text-sm font-medium font-geist text-gray-900 truncate">
             New Post
           </span>
-          {/* Locked type badge & help trigger — hidden on small screens */}
+          {/* Locked type badge & help trigger â€” hidden on small screens */}
           <div className="hidden md:flex items-center gap-2">
             <span
               className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
@@ -8687,7 +8248,7 @@ const BlogEditor = () => {
                   <span className="flex items-center gap-1">
                     {ptConfig && <CosIcon name={ptConfig.icon} size={10} />}
                     <span>{ptConfig?.label}</span>
-                    <span className="mx-0.5">×</span>
+                    <span className="mx-0.5">Ã—</span>
                     {gConfig && <CosIcon name={gConfig.icon} size={10} />}
                     <span>{gConfig?.label}</span>
                   </span>
@@ -8775,7 +8336,7 @@ const BlogEditor = () => {
         </div>
       </div>
 
-      {/* ── Two-column Layout ── */}
+      {/* â”€â”€ Two-column Layout â”€â”€ */}
       <div className="flex flex-col lg:flex-row pl-4 lg:pl-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
         {/* Editor / Preview Column */}
         {showPreview ? (
@@ -8791,7 +8352,7 @@ const BlogEditor = () => {
         ) : (
           <>
             <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden">
-              {/* Formatting Toolbar — sticky inside editor column */}
+              {/* Formatting Toolbar â€” sticky inside editor column */}
               <FormattingToolbar
                 activePreset={activePreset}
                 editor={editor}
@@ -8919,7 +8480,7 @@ const BlogEditor = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <input
                     className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-                    placeholder="Post title…"
+                    placeholder="Post titleâ€¦"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -9021,8 +8582,8 @@ const BlogEditor = () => {
 
       </div>
 
-      {/* ── Modals ── */}
-      {/* RepurposingDrawer is intentionally hidden for social-post — repurposing
+      {/* â”€â”€ Modals â”€â”€ */}
+      {/* RepurposingDrawer is intentionally hidden for social-post â€” repurposing
           a social post into another social format is handled by AI Copilot instead */}
       {postType !== "social-post" && (
         <RepurposingDrawer
@@ -9171,7 +8732,7 @@ const BlogEditor = () => {
           </div>
         </div>
       )}
-      {/* ── Styles ── */}
+      {/* â”€â”€ Styles â”€â”€ */}
       <style>{`
         @keyframes fadeSlideIn {
           from { opacity: 0; transform: translateY(-4px); }

@@ -46,6 +46,7 @@ import {
 
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
 import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
+import { ContentSettingsPanel } from "@/components/pirateCOS/ContentSettingsPanel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -6724,557 +6725,66 @@ const BlogEditPage = () => {
   };
 
   const renderContentTab = () => (
-    <>
-      {/* Feed Guardrails or Analytics Card */}
-      {postType === "social-post" ? (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            Feed Guardrails
-          </p>
-          
-          {/* Platform switcher */}
-          <div className="flex bg-black/5 p-1 rounded-xl">
-            {(["linkedin", "x"] as const).map((dest) => (
-              <button
-                key={dest}
-                type="button"
-                onClick={() => setSocialDestination(dest)}
-                className={`flex-1 py-1 text-xs font-semibold rounded-lg transition-all ${
-                  socialDestination === dest
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-800"
-                }`}
-              >
-                {SOCIAL_DESTINATIONS[dest].label}
-              </button>
-            ))}
-          </div>
+    <ContentSettingsPanel
+      // Post data
+      postType={postType}
+      title={title}
+      excerpt={excerpt}
+      tags={tags}
+      editorStats={editorStats}
 
-          {/* Character limit bar */}
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[10px] font-geist text-gray-500 font-medium">
-                Characters
-              </span>
-              <span className={`text-[10px] font-jetbrains-mono font-semibold ${
-                editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                  ? "text-red-500 font-bold"
-                  : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                  ? "text-amber-500"
-                  : "text-gray-400"
-              }`}>
-                {editorStats.characters} / {SOCIAL_DESTINATIONS[socialDestination].characterLimit}
-              </span>
-            </div>
-            <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-300 ${
-                  editorStats.characters > SOCIAL_DESTINATIONS[socialDestination].characterLimit
-                    ? "bg-red-500"
-                    : editorStats.characters >= SOCIAL_DESTINATIONS[socialDestination].warningAt
-                    ? "bg-amber-500"
-                    : "bg-[#FF5B04]"
-                }`}
-                style={{
-                  width: `${Math.min(
-                    100,
-                    (editorStats.characters / SOCIAL_DESTINATIONS[socialDestination].characterLimit) * 100
-                  )}%`,
-                }}
-              />
-            </div>
-          </div>
+      // Social post specific
+      socialDestination={socialDestination}
+      onSocialDestinationChange={setSocialDestination}
 
-          {/* Whitespace Spacing Advisor */}
-          {editorStats.characters > 0 && (
-            <div className="pt-3 border-t border-black/5">
-              {(() => {
-                const text = editor?.getText() || "";
-                const paragraphsText = text.split("\n").map(p => p.trim()).filter(Boolean);
-                const hasLongParagraph = paragraphsText.some(p => p.length > 240);
-                if (hasLongParagraph) {
-                  return (
-                    <div className="bg-amber-50 border border-amber-200/60 rounded-xl p-3 flex gap-2">
-                    <CosIcon name="warning" size={14} className="text-amber-500 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-[10px] font-bold text-amber-800">
-                          Whitespace Spacing Advisor
-                        </p>
-                        <p className="text-[10px] text-amber-700 leading-normal mt-0.5">
-                          Feeds favor breathing room. Split this into short 1-2 sentence paragraphs for better mobile reading.
-                        </p>
-                      </div>
-                    </div>
-                  );
-                }
-                return (
-                  <div className="bg-green-50 border border-green-200/60 rounded-xl p-3 flex gap-2">
-                    <CosIcon name="check" size={14} className="text-green-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-bold text-green-800">
-                        Spacing Calibrated
-                      </p>
-                      <p className="text-[10px] text-green-700 leading-normal mt-0.5">
-                        Excellent spacing! Paragraphs are airy and reader-friendly.
-                      </p>
-                    </div>
-                  </div>
-                );
-              })()}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-            Analytics
-          </p>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.words}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Words
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.characters}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Characters
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-gray-900">
-                {editorStats.paragraphs}
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Paragraphs
-              </div>
-            </div>
-            <div className="bg-black/[0.02] rounded-xl p-3 border border-black/5">
-              <div className="text-2xl font-bold font-geist text-[#FF5B04]">
-                {editorStats.readTime} min
-              </div>
-              <div className="text-[9px] font-jetbrains-mono uppercase text-gray-400 tracking-wider mt-1">
-                Read Time
-              </div>
-            </div>
-          </div>
+      // Title optimizer
+      titleInstructions={titleInstructions}
+      titleSuggestions={titleSuggestions}
+      isOptimizingTitle={isOptimizingTitle}
+      onTitleInstructionsChange={setTitleInstructions}
+      onGenerateTitleSuggestions={generateTitleSuggestions}
 
-          {/* Writing Goal Progress */}
-          {(() => {
-            const ptConfig = getPostTypeConfig(postType);
-            const minGoal = ptConfig?.minWordCount ?? 500;
-            const maxGoal = ptConfig?.maxWordCount ?? 1500;
-            return (
-              <div className="mt-3.5 pt-3 border-t border-black/5">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[10px] font-geist text-gray-500 font-medium">
-                    Writing Goal
-                  </span>
-                  <span className="text-[10px] font-jetbrains-mono text-gray-400 font-semibold">
-                    {Math.min(
-                      100,
-                      Math.round((editorStats.words / minGoal) * 100),
-                    )}
-                    % ({editorStats.words} / {minGoal}–{maxGoal} words)
-                  </span>
-                </div>
-                <div className="w-full h-1.5 bg-black/5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500 ease-out"
-                    style={{
-                      width: `${Math.min(100, (editorStats.words / minGoal) * 100)}%`,
-                      background: "#FF5B04",
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-      )}
+      // Excerpt
+      excerptInstructions={excerptInstructions}
+      showExcerptAIGuidelines={showExcerptAIGuidelines}
+      suggestedExcerpt={suggestedExcerpt}
+      isGeneratingExcerpt={isGeneratingExcerpt}
+      onExcerptInstructionsChange={setExcerptInstructions}
+      onToggleExcerptAI={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
+      onGenerateExcerpt={generateExcerptInline}
+      onApplySuggestedExcerpt={() => {
+        setExcerpt(suggestedExcerpt);
+        setSuggestedExcerpt("");
+        setIsDirty(true);
+      }}
+      onDismissSuggestedExcerpt={() => setSuggestedExcerpt("")}
 
-      {/* AI Title Optimizer Card */}
-      <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-        <div className="flex justify-between items-center mb-3">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-            AI Title Optimizer
-          </p>
-        </div>
-        <div className="space-y-3">
-          <textarea
-            className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-            placeholder="Title guidelines (e.g., 'professional tone', 'under 60 chars', 'punchy')"
-            rows={2}
-            value={titleInstructions}
-            onChange={(e) => setTitleInstructions(e.target.value)}
-          />
-          <button
-            type="button"
-            disabled={isOptimizingTitle}
-            onClick={generateTitleSuggestions}
-            className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isOptimizingTitle ? (
-              <>
-                <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-                Optimizing Title...
-              </>
-            ) : (
-              <>
-                <CosIcon name="sparkles" size={12} className="text-white fill-current" />
-                <span>Optimize Title</span>
-              </>
-            )}
-          </button>
+      // Tags
+      tagInput={tagInput}
+      suggestedTags={suggestedTags}
+      isGeneratingTags={isGeneratingTags}
+      onTagInputChange={setTagInput}
+      onAddTag={addTag}
+      onRemoveTag={(tag) => {
+        setTags(tags.filter((t) => t !== tag));
+        setIsDirty(true);
+      }}
+      onGenerateTags={generateTagsInline}
+      onAppendHashtag={appendHashtag}
 
-          {titleSuggestions.length > 0 && (
-            <div className="space-y-2 pt-2 border-t border-black/5">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                Click to Apply Suggestion
-              </p>
-              <div className="space-y-1.5">
-                {titleSuggestions.map((suggestion, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => {
-                      setTitle(suggestion);
-                      setIsDirty(true);
-                    }}
-                    className={`w-full text-left text-xs font-geist p-2.5 rounded-xl border text-gray-700 transition-all ${
-                      title === suggestion
-                        ? "bg-orange-50 border-[#FF5B04] text-[#FF5B04]"
-                        : "bg-black/[0.01] border-black/5 hover:border-[#FF5B04]/50 hover:bg-black/[0.03]"
-                    }`}
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      // Core callbacks
+      onTitleChange={setTitle}
+      onExcerptChange={setExcerpt}
+      onTagsChange={setTags}
+      onDirtyChange={() => setIsDirty(true)}
 
-      {/* Excerpt card - hidden for social posts */}
-      {postType !== "social-post" && (
-        <div id="excerpt-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Excerpt
-            </p>
-            <button
-              type="button"
-              className={`text-[10px] font-geist font-semibold transition-colors flex items-center gap-1 cursor-pointer ${
-                showExcerptAIGuidelines ? "text-gray-500 hover:text-gray-700" : "text-[#FF5B04] hover:text-[#e04f03]"
-              }`}
-              onClick={() => setShowExcerptAIGuidelines(!showExcerptAIGuidelines)}
-            >
-              <CosIcon name="sparkles" size={10} className="text-current" />
-              {showExcerptAIGuidelines ? "Hide AI Assistant" : "AI Assistant"}
-            </button>
-          </div>
-          
-          <textarea
-            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-            placeholder="Short summary shown in blog listings…"
-            style={{ minHeight: 80 }}
-            value={excerpt}
-            onChange={(e) => {
-              setExcerpt(e.target.value);
-              setIsDirty(true);
-            }}
-          />
-
-          {showExcerptAIGuidelines && (
-            <div className="mt-3 pt-3 border-t border-black/5 space-y-2">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                AI Excerpt Guidelines
-              </p>
-              <textarea
-                className="w-full text-xs font-geist text-gray-700 bg-black/5 rounded-xl p-2.5 resize-none outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-400"
-                placeholder="Guidelines (e.g. concise, professional tone, focus on launch details...)"
-                rows={2}
-                value={excerptInstructions}
-                onChange={(e) => setExcerptInstructions(e.target.value)}
-              />
-              <button
-                type="button"
-                disabled={isGeneratingExcerpt}
-                onClick={async () => {
-                  if (!editor || editor.isEmpty) {
-                    setValidationError("Please write some content first so the AI can summarize it.");
-                    return;
-                  }
-                  await generateExcerptInline();
-                }}
-                className="w-full text-xs font-semibold py-2 px-3 rounded-xl bg-[#FF5B04] text-white hover:bg-[#e04f03] transition-colors flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isGeneratingExcerpt ? (
-                  <>
-                    <svg className="animate-spin h-3 w-3 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Generating Excerpt...
-                  </>
-                ) : (
-                  <>
-                    <CosIcon name="sparkles" size={12} className="text-white fill-current" />
-                    <span>Generate Excerpt</span>
-                  </>
-                )}
-              </button>
-            </div>
-          )}
-
-          {suggestedExcerpt && (
-            <div className="mt-3 p-3 bg-orange-50 border border-[#FF5B04]/30 rounded-xl space-y-2">
-              <p className="text-[10px] font-bold text-[#FF5B04] uppercase tracking-wider font-jetbrains-mono">
-                Suggested Excerpt
-              </p>
-              <p className="text-xs font-geist text-gray-700 leading-relaxed">
-                {suggestedExcerpt}
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setExcerpt(suggestedExcerpt);
-                  setSuggestedExcerpt("");
-                  setIsDirty(true);
-                }}
-                className="w-full text-xs font-semibold py-1.5 px-3 rounded-lg bg-white border border-[#FF5B04]/30 text-[#FF5B04] hover:bg-orange-100/50 transition-colors flex items-center justify-center gap-1"
-              >
-                Apply Suggested Excerpt
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Hashtag Assistant / Tags card */}
-      {postType === "social-post" ? (
-        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-3 mt-4">
-          <div className="flex justify-between items-center">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Hashtag Assistant
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-1.5 min-h-[24px]">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                style={{ background: "#FFF0E8", color: "#FF5B04" }}
-              >
-                {tag}
-                <button
-                  type="button"
-                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                  onClick={() => {
-                    setTags(tags.filter((t) => t !== tag));
-                    setIsDirty(true);
-                  }}
-                >
-                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
-                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-          <div className="space-y-1.5">
-            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-              Suggestions
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {SOCIAL_DESTINATIONS[socialDestination].suggestions.map((suggestion) => {
-                const isSelected = tags.includes(suggestion);
-                return (
-                  <button
-                    key={suggestion}
-                    type="button"
-                    disabled={isSelected}
-                    onClick={() => {
-                      appendHashtag(suggestion);
-                      setIsDirty(true);
-                    }}
-                    className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
-                      isSelected
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-black/[0.03] text-gray-600 hover:bg-[#FF5B04]/10 hover:text-[#FF5B04]"
-                    }`}
-                  >
-                    {suggestion}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-            placeholder="Add tag, press Enter…"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => {
-              handleAddHashtag(e);
-              setIsDirty(true);
-            }}
-          />
-        </div>
-      ) : (
-        <div id="tags-section" className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <div className="flex justify-between items-center mb-3">
-            <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest">
-              Tags
-            </p>
-            <button
-              className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
-              type="button"
-              disabled={isGeneratingTags}
-              onClick={async () => {
-                if (!editor || editor.isEmpty) {
-                  setValidationError("Please write some content first so the AI can recommend tags.");
-                  return;
-                }
-                await generateTagsInline();
-              }}
-            >
-              {isGeneratingTags ? (
-                <>
-                  <svg className="animate-spin h-3 w-3 text-[#FF5B04]" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Recommending...
-                </>
-              ) : (
-                <>
-                  <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                  <span>Recommend Tags</span>
-                </>
-              )}
-            </button>
-          </div>
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center gap-1 text-xs font-geist px-2 py-0.5 rounded-full"
-                style={{ background: "#FFF0E8", color: "#FF5B04" }}
-              >
-                {tag}
-                <button
-                  className="opacity-60 hover:opacity-100 leading-none flex items-center"
-                  onClick={() => {
-                    setTags(tags.filter((t) => t !== tag));
-                    setIsDirty(true);
-                  }}
-                >
-                  <svg fill="none" height="9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
-                    <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none placeholder-gray-300"
-            placeholder="Add tag, press Enter…"
-            value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
-            onKeyDown={(e) => {
-              addTag(e);
-              setIsDirty(true);
-            }}
-          />
-
-          {suggestedTags.length > 0 && (
-            <div className="mt-3 pt-3 border-t border-black/5 space-y-1.5">
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono">
-                AI Suggested Tags (Click to Add)
-              </p>
-              <div className="flex flex-wrap gap-1.5">
-                {suggestedTags.map((tag) => {
-                  const isSelected = tags.includes(tag);
-                  return (
-                    <button
-                      key={tag}
-                      type="button"
-                      disabled={isSelected}
-                      onClick={() => {
-                        setTags([...tags, tag]);
-                        setIsDirty(true);
-                      }}
-                      className={`text-[10px] font-geist px-2.5 py-1 rounded-lg transition-all ${
-                        isSelected
-                          ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-dashed border-gray-200"
-                          : "bg-orange-50/50 border border-[#FF5B04]/20 text-[#FF5B04] hover:bg-[#FF5B04]/10"
-                      }`}
-                    >
-                      {tag}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Phase 5.4+: Team Assignment */}
-      {teams.length > 0 && (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-            Team Assignment
-          </p>
-          <select
-            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 cursor-pointer"
-            value={teamId}
-            onChange={(e) => {
-              setTeamId(e.target.value);
-              setIsDirty(true);
-            }}
-          >
-            <option value="">No Team (Workspace-wide)</option>
-            {teams.map((team: any) => (
-              <option key={team._id} value={team._id}>
-                {team.name}
-              </option>
-            ))}
-          </select>
-          {teamId && (() => {
-            const selectedTeam = teams.find((t: any) => t._id === teamId);
-            return selectedTeam ? (
-              <div className="mt-3 pt-3 border-t border-black/5">
-                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono mb-2">
-                  Team Settings
-                </p>
-                {selectedTeam.brandVoiceOverride && (
-                  <div className="text-xs text-gray-600 font-geist mb-2">
-                    <span className="font-semibold">Brand Voice:</span> {selectedTeam.brandVoiceOverride.substring(0, 60)}...
-                  </div>
-                )}
-                {selectedTeam.keywordsOverride && selectedTeam.keywordsOverride.length > 0 && (
-                  <div className="text-xs text-gray-600 font-geist">
-                    <span className="font-semibold">Keywords:</span> {selectedTeam.keywordsOverride.join(", ")}
-                  </div>
-                )}
-              </div>
-            ) : null;
-          })()}
-        </div>
-      )}
-
-    </>
+      // Features (all enabled by default)
+      showAnalytics={true}
+      showTitleOptimizer={true}
+      showExcerpt={true}
+      showTags={true}
+      showProgressChecklist={true}
+    />
   );
 
   const renderSEOTab = () => {

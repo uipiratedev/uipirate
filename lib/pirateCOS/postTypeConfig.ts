@@ -401,10 +401,10 @@ export const POST_TYPE_CONFIGS: PostTypeConfig[] = [
       affiliateLinks: false,
       socialPreview: true,
       taskLists: false,
-      ctaBlocks: false,
+      ctaBlocks: true,
       distributionAI: true,
     },
-    featurePills: ["Social Preview", "AI Copilot", "Repurposing"],
+    featurePills: ["Social Preview", "CTA Blocks", "AI Copilot", "Repurposing"],
     templateHint:
       "Structure as a press release or corporate announcement: headline, dateline, lead paragraph (who/what/when/where/why), supporting details with quotes, boilerplate company description, contact information.",
     suggestedGoals: ["authority", "engagement", "conversion"],
