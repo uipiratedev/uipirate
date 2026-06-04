@@ -5703,14 +5703,17 @@ const BlogEditor = () => {
     (text: string, mode: "replace" | "insert-below" | "insert-above") => {
       if (!editor) return;
       setIsDirty(true);
+      const parseOptions = { preserveWhitespace: false as const };
       if (mode === "replace") {
-        editor.chain().focus().insertContent(text).run();
+        editor.chain().focus().insertContent(text, { parseOptions }).run();
       } else if (mode === "insert-below") {
-        const { to } = editor.state.selection;
-        editor.chain().focus().insertContentAt(to, text).run();
+        const { $to } = editor.state.selection;
+        const insertPos = $to.depth >= 1 ? $to.after(1) : $to.pos;
+        editor.chain().focus().insertContentAt(insertPos, text, { parseOptions }).run();
       } else if (mode === "insert-above") {
-        const { from } = editor.state.selection;
-        editor.chain().focus().insertContentAt(from, text).run();
+        const { $from } = editor.state.selection;
+        const insertPos = $from.depth >= 1 ? $from.before(1) : $from.pos;
+        editor.chain().focus().insertContentAt(insertPos, text, { parseOptions }).run();
       }
     },
     [editor, setIsDirty]
