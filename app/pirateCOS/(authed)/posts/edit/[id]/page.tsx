@@ -4904,9 +4904,8 @@ const FormattingToolbar = ({
 
   return (
     <div
-      className="sticky z-40 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
+      className="sticky top-0 z-10 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
       style={{
-        top: "61px",
         background: "rgba(255, 255, 255, 0.95)",
         borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
       }}
@@ -7885,21 +7884,6 @@ const BlogEditPage = () => {
         </div>
       </div>
 
-      {/* ── Formatting Toolbar — hidden in immersive preview mode ── */}
-      {!showPreview && (
-        <FormattingToolbar
-          activePreset={activePreset}
-          editor={editor}
-          features={getFeatures(postType)}
-          postType={postType}
-          onLinkClick={() => {
-            editor.chain().focus().extendMarkRange("link").run();
-            setShowLinkModal(true);
-          }}
-          onPresetChange={setActivePreset}
-        />
-      )}
-
       {/* ── Two-column Layout ── */}
       <div className="flex flex-col lg:flex-row gap-3 px-4 lg:px-6 pb-4 pt-2 flex-1 min-h-0 overflow-hidden items-stretch">
         {/* Editor / Preview Column */}
@@ -7915,8 +7899,21 @@ const BlogEditPage = () => {
           />
         ) : (
           <>
-          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-y-auto">
-            <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden">
+            {/* Formatting Toolbar — sticky inside editor column */}
+            <FormattingToolbar
+              activePreset={activePreset}
+              editor={editor}
+              features={getFeatures(postType)}
+              postType={postType}
+              onLinkClick={() => {
+                editor.chain().focus().extendMarkRange("link").run();
+                setShowLinkModal(true);
+              }}
+              onPresetChange={setActivePreset}
+            />
+
+            <div className="flex-1 min-w-0 overflow-y-auto">
             {/* Banner image area */}
             {bannerImage ? (
               <div className="relative group">
