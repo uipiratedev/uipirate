@@ -4701,9 +4701,9 @@ const PostPreviewPanel = ({
   const hasToc = headings.length >= 2;
 
   return (
-    <div className="flex-1 min-w-0">
+    <div className="flex-1 min-w-0 flex flex-col min-h-0 overflow-y-auto">
       {/* Preview toolbar */}
-      <div className="flex items-center justify-between mb-3 px-1">
+      <div className="flex items-center justify-between mb-3 px-1 flex-shrink-0">
         <div className="flex items-center gap-2">
           <span
             className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
@@ -6820,7 +6820,7 @@ const BlogEditor = () => {
           {/* Mobile sidebar toggle */}
           {!showPreview && (
             <button
-              className="h-8 lg:h-9 px-2.5 lg:px-3 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs lg:text-sm font-geist font-medium transition-all"
+              className="lg:hidden h-8 px-2.5 rounded-xl bg-black/5 text-gray-600 hover:bg-black/10 flex items-center gap-1.5 text-xs font-geist font-medium transition-all"
               onClick={() => setActiveSidebarTab(activeSidebarTab ? null : "content")}
               style={{
                 borderColor: activeSidebarTab ? "rgba(255,91,4,0.3)" : "transparent",
