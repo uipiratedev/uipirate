@@ -15,6 +15,7 @@ import GenerationHistory from "./workspace/GenerationHistory";
 import CosIcon from "./CosIcon";
 import UpgradePrompt from "./UpgradePrompt";
 import { HelpTutorialCarousel } from "./WorkspaceTutorialCarousel";
+import { ModelSelectorPill } from "./ModelSelectorPill";
 
 interface AIWorkspacePanelProps {
   postId: string | null;
@@ -571,6 +572,12 @@ export default function AIWorkspacePanel({
                       ?
                     </button>
                   </div>
+                  <ModelSelectorPill
+                    selectedEngine={selectedEngine}
+                    selectedModel={selectedModel}
+                    onEngineChange={setSelectedEngine}
+                    onModelChange={setSelectedModel}
+                  />
                 </div>
                 {/* Rewrite Body */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -737,6 +744,14 @@ export default function AIWorkspacePanel({
                     </button>
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0">
+                    {/* Model Selector */}
+                    <ModelSelectorPill
+                      selectedEngine={selectedEngine}
+                      selectedModel={selectedModel}
+                      onEngineChange={setSelectedEngine}
+                      onModelChange={setSelectedModel}
+                    />
+
                     {/* New Chat (+) */}
                     <button
                       onClick={() => { clearSession(); setActiveView("chat"); }}
@@ -929,6 +944,12 @@ export default function AIWorkspacePanel({
                       ?
                     </button>
                   </div>
+                  <ModelSelectorPill
+                    selectedEngine={selectedEngine}
+                    selectedModel={selectedModel}
+                    onEngineChange={setSelectedEngine}
+                    onModelChange={setSelectedModel}
+                  />
                 </div>
                 {/* Unified Settings Body */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
