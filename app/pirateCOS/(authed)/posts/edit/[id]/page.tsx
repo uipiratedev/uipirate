@@ -47,6 +47,7 @@ import {
 import { ContentHealthPanel } from "@/components/pirateCOS/content-health";
 import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
 import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
+import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -6787,294 +6788,38 @@ const BlogEditPage = () => {
     />
   );
 
-  const renderSEOTab = () => {
-    return (
-      <div className="space-y-4">
-        {/* 2-Tab Navigation */}
-        <div className="flex border-b border-black/5 mb-3 gap-1 pb-1">
-          {[
-            { id: "general", label: "Core SEO" },
-            { id: "social", label: "Social & Preview" },
-          ].map((tab) => {
-            const isActive = activeSEOTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveSEOTab(tab.id as any)}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider font-jetbrains-mono transition-all whitespace-nowrap cursor-pointer ${
-                  isActive
-                    ? "bg-black text-white shadow-sm"
-                    : "text-gray-400 hover:text-gray-800 hover:bg-black/5"
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {seoError && (
-          <div className="p-3 bg-red-50 border border-red-100 rounded-xl flex gap-2 text-[11px] text-red-600 font-medium font-geist">
-            <CosIcon name="warning" size={12} className="text-red-500 shrink-0 mt-0.5" />
-            <p className="flex-1">{seoError}</p>
-          </div>
-        )}
-
-        {/* Core SEO Tab */}
-        {activeSEOTab === "general" && (
-          <div className="space-y-4 text-left">
-            {/* Focus Keyword */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">Focus Keyword</label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">The main term you want to rank for in Google</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isSuggestingFocusKeyword}
-                  onClick={async () => {
-                    if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
-                    await generateFocusKeywordInline();
-                  }}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
-                >
-                  {isSuggestingFocusKeyword ? (
-                    "Suggesting..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                      <span>AI Suggest</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              <input
-                className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-                placeholder="e.g. react performance tips"
-                value={seoData?.focusKeyword || ""}
-                onChange={(e) => { setSeoData((prev) => ({ ...prev, focusKeyword: e.target.value })); setIsDirty(true); }}
-              />
-            </div>
-
-            {/* Meta Title */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                    Meta Title
-                    <span className={`normal-case font-geist ml-1 ${(seoData?.metaTitle || "").length > 60 ? "text-red-400" : (seoData?.metaTitle || "").length >= 50 ? "text-green-500" : "text-gray-300"}`}>
-                      {(seoData?.metaTitle || "").length}/60
-                    </span>
-                  </label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">Shown as the title in Google search results (50–60 chars ideal)</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isGeneratingMetaTitle}
-                  onClick={async () => {
-                    if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
-                    await generateMetaTitleInline();
-                  }}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
-                >
-                  {isGeneratingMetaTitle ? (
-                    "Generating..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                      <span>Generate</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              <input
-                className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-                maxLength={60}
-                placeholder="SEO page title…"
-                value={seoData?.metaTitle || ""}
-                onChange={(e) => { setSeoData((prev) => ({ ...prev, metaTitle: e.target.value })); setIsDirty(true); }}
-              />
-              {suggestedMetaTitle && (
-                <div className="mt-1 p-2 bg-orange-50 border border-[#FF5B04]/20 rounded-lg flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-geist text-gray-700 truncate">{suggestedMetaTitle}</span>
-                  <button type="button" onClick={() => { setSeoData((prev) => ({ ...prev, metaTitle: suggestedMetaTitle })); setSuggestedMetaTitle(""); setIsDirty(true); }} className="text-[10px] font-semibold text-[#FF5B04] hover:underline flex-shrink-0">Apply</button>
-                </div>
-              )}
-            </div>
-
-            {/* Meta Description */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">
-                    Meta Description
-                    <span className={`normal-case font-geist ml-1 ${(seoData?.metaDescription || "").length > 160 ? "text-red-400" : (seoData?.metaDescription || "").length >= 140 ? "text-green-500" : "text-gray-300"}`}>
-                      {(seoData?.metaDescription || "").length}/160
-                    </span>
-                  </label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">The snippet shown below the title in search results (140–160 chars)</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isGeneratingMetaDescription}
-                  onClick={async () => {
-                    if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
-                    await generateMetaDescriptionInline();
-                  }}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50 flex-shrink-0"
-                >
-                  {isGeneratingMetaDescription ? (
-                    "Generating..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04]" />
-                      <span>Generate</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              <textarea
-                className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none"
-                maxLength={160}
-                placeholder="Brief description for search results…"
-                rows={3}
-                value={seoData?.metaDescription || ""}
-                onChange={(e) => { setSeoData((prev) => ({ ...prev, metaDescription: e.target.value })); setIsDirty(true); }}
-              />
-              {suggestedMetaDescription && (
-                <div className="mt-1 p-2 bg-orange-50 border border-[#FF5B04]/20 rounded-lg flex flex-col gap-1">
-                  <span className="text-[11px] font-geist text-gray-700 leading-normal">{suggestedMetaDescription}</span>
-                  <button type="button" onClick={() => { setSeoData((prev) => ({ ...prev, metaDescription: suggestedMetaDescription })); setSuggestedMetaDescription(""); setIsDirty(true); }} className="self-end text-[10px] font-semibold text-[#FF5B04] hover:underline">Apply Description</button>
-                </div>
-              )}
-            </div>
-
-            {/* Related Keywords */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <div className="flex justify-between items-center">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500 block">Related Keywords</label>
-                  <p className="text-[9px] text-gray-400 font-geist mt-0.5">Supporting terms that help Google understand your topic</p>
-                </div>
-                <button
-                  type="button"
-                  disabled={isAnalyzingSEO && generatingSEOAction === "tags"}
-                  onClick={() => runSEOAIAction("tags")}
-                  className="text-[10px] font-geist font-semibold text-[#FF5B04] hover:text-[#e04f03] transition-colors disabled:opacity-50 flex-shrink-0"
-                >
-                  {isAnalyzingSEO && generatingSEOAction === "tags" ? (
-                    "Generating..."
-                  ) : (
-                    <>
-                      <CosIcon name="sparkles" size={10} className="text-[#FF5B04] inline mr-1" />
-                      <span>AI Generate</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              {seoData?.keywords && seoData.keywords.length > 0 ? (
-                <div className="flex flex-wrap gap-1.5">
-                  {seoData.keywords.map((kw: string, idx: number) => (
-                    <span key={idx} onClick={() => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }} className="px-2 py-0.5 rounded-lg bg-orange-50 text-orange-600 text-[10px] font-bold font-geist border border-orange-100 flex items-center gap-1 cursor-pointer hover:bg-orange-100 transition-all select-none" title="Set as Focus Keyword">
-                      {kw}
-                      <button type="button" onClick={(e) => { e.stopPropagation(); const nextKws = seoData.keywords!.filter((_: any, i: number) => i !== idx); setSeoData((prev) => ({ ...prev, keywords: nextKws })); setIsDirty(true); }} className="text-orange-400 hover:text-orange-600 font-bold pl-0.5">×</button>
-                    </span>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-[10px] text-gray-400 italic font-geist">No keywords yet — click "AI Generate" to get suggestions.</p>
-              )}
-            </div>
-
-            {/* Advanced */}
-            <details className="group">
-              <summary className="text-[10px] font-bold text-gray-400 font-jetbrains-mono uppercase tracking-wider cursor-pointer hover:text-gray-600 transition-colors list-none flex items-center gap-1.5 select-none">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" className="w-3 h-3 group-open:rotate-90 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                Advanced Options
-              </summary>
-              <div className="mt-3 space-y-3 bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">URL Slug</label>
-                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="url-slug-here" value={currentSlug} onChange={(e) => { const val = e.target.value.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""); setCurrentSlug(val); setIsDirty(true); }} />
-                </div>
-                <div>
-                  <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">Canonical URL</label>
-                  <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="https://yourdomain.com/posts/..." value={seoData?.canonicalUrl || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, canonicalUrl: e.target.value })); setIsDirty(true); }} />
-                </div>
-              </div>
-            </details>
-          </div>
-        )}
-
-        {/* Social & Preview Tab */}
-        {activeSEOTab === "social" && (
-          <div className="space-y-4 text-left">
-            {/* Google SERP Preview */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">Google Search Preview</p>
-              <div className="p-3.5 bg-white border border-black/5 rounded-xl text-left">
-                <p className="text-[11px] text-[#202124] truncate leading-tight">uipirate.com/posts/<span className="font-semibold">{currentSlug || "..."}</span></p>
-                <h4 className="text-sm text-[#1a0dab] font-semibold hover:underline cursor-pointer leading-snug line-clamp-2 mt-0.5">{seoData?.metaTitle || title || "Untitled Post"}</h4>
-                <p className="text-xs text-[#4d5156] line-clamp-2 leading-relaxed mt-1">{seoData?.metaDescription || "Add a meta description to see how your post will appear in Google results."}</p>
-              </div>
-            </div>
-
-            {/* Social Card Preview */}
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <p className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400">Social Card Preview</p>
-              <div className="bg-white border border-black/5 rounded-xl overflow-hidden shadow-sm">
-                <div className="aspect-[1.91/1] bg-gray-100 flex items-center justify-center">
-                  {seoData?.ogImage ? (
-                    <img alt="OG Preview" className="w-full h-full object-cover" src={seoData.ogImage} />
-                  ) : (
-                    <div className="text-gray-300 flex flex-col items-center justify-center gap-1">
-                      <svg fill="none" height="24" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><rect height="18" rx="2" width="18" x="3" y="3" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></svg>
-                      <span className="text-[8px] font-bold uppercase tracking-widest">No Image</span>
-                    </div>
-                  )}
-                </div>
-                <div className="p-3 bg-gray-50/50 border-t border-black/5 text-left">
-                  <p className="text-[8px] text-gray-400 uppercase font-bold font-jetbrains-mono mb-1">UIPIRATE.COM</p>
-                  <h4 className="text-xs font-bold text-gray-900 line-clamp-1 mb-1">{seoData?.ogTitle || seoData?.metaTitle || title || "Untitled Post"}</h4>
-                  <p className="text-[10px] text-gray-500 line-clamp-2 leading-snug">{seoData?.ogDescription || seoData?.metaDescription || "No description provided."}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">Social Share Image URL</label>
-              <p className="text-[9px] text-gray-400 font-geist">Appears when someone shares this link on LinkedIn, X, etc.</p>
-              <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="https://cloudinary.com/..." value={seoData?.ogImage || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, ogImage: e.target.value })); setIsDirty(true); }} />
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">Social Title Override</label>
-              <p className="text-[9px] text-gray-400 font-geist">Optional: use a different title for Facebook/LinkedIn shares</p>
-              <input className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300" placeholder="Defaults to Meta Title if blank..." value={seoData?.ogTitle || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, ogTitle: e.target.value })); setIsDirty(true); }} />
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 space-y-2">
-              <label className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-gray-400 block">Social Description Override</label>
-              <p className="text-[9px] text-gray-400 font-geist">Optional: use a different description for social shares</p>
-              <textarea className="w-full text-sm font-geist bg-black/5 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 placeholder-gray-300 resize-none" placeholder="Defaults to Meta Description if blank..." rows={3} value={seoData?.ogDescription || ""} onChange={(e) => { setSeoData((prev) => ({ ...prev, ogDescription: e.target.value })); setIsDirty(true); }} />
-            </div>
-
-            <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4">
-              <div className="flex items-center gap-3">
-                <input id="noIndexEdit" type="checkbox" checked={seoData?.noIndex || false} onChange={(e) => { setSeoData((prev) => ({ ...prev, noIndex: e.target.checked })); setIsDirty(true); }} className="w-4 h-4 rounded-md border-black/10 text-[#FF5B04] focus:ring-[#FF5B04]/30 cursor-pointer" />
-                <div>
-                  <label htmlFor="noIndexEdit" className="text-xs font-bold font-geist text-gray-700 cursor-pointer select-none block">Hide from search engines</label>
-                  <p className="text-[9px] text-gray-400 font-geist">Adds a no-index tag so Google won't index this page</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
+  const renderSEOTab = () => (
+    <SEOPanel
+      seo={seoData}
+      title={title}
+      currentSlug={currentSlug}
+      onSeoChange={(patch) => setSeoData((prev) => ({ ...prev, ...patch }))}
+      onSlugChange={setCurrentSlug}
+      onDirtyChange={() => setIsDirty(true)}
+      seoError={seoError}
+      isSuggestingFocusKeyword={isSuggestingFocusKeyword}
+      onGenerateFocusKeyword={async () => {
+        if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
+        await generateFocusKeywordInline();
+      }}
+      isGeneratingMetaTitle={isGeneratingMetaTitle}
+      suggestedMetaTitle={suggestedMetaTitle}
+      onGenerateMetaTitle={async () => {
+        if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
+        await generateMetaTitleInline();
+      }}
+      onApplySuggestedMetaTitle={() => { setSeoData((prev) => ({ ...prev, metaTitle: suggestedMetaTitle })); setSuggestedMetaTitle(""); setIsDirty(true); }}
+      isGeneratingMetaDescription={isGeneratingMetaDescription}
+      suggestedMetaDescription={suggestedMetaDescription}
+      onGenerateMetaDescription={async () => {
+        if (!editor || editor.isEmpty) { setValidationError("Please write some content first."); return; }
+        await generateMetaDescriptionInline();
+      }}
+      onApplySuggestedMetaDescription={() => { setSeoData((prev) => ({ ...prev, metaDescription: suggestedMetaDescription })); setSuggestedMetaDescription(""); setIsDirty(true); }}
+      isGeneratingKeywords={isAnalyzingSEO && generatingSEOAction === "tags"}
+      onGenerateKeywords={() => runSEOAIAction("tags")}
+    />
+  );
 
   const renderHealthTab = () => (
     <ContentHealthPanel
