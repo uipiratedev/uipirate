@@ -38,6 +38,12 @@
 | **Phase 4C** | PirateCOS: Content Lifecycle & UX Magic — Workflow Smoothness & Reliability | 🟢 **Complete** |
 | **Phase 4D** | PirateCOS: Dynamic Provider Registry System — Unified AI Configuration & Architecture | 🟢 **Complete** |
 | **Phase 4E** | PirateCOS: AI-Native Workspace Panel | 🟢 **Complete** |
+| **Phase 4F.0** | PirateCOS: Foundation Prep (Type definitions, test framework) | 📋 **Planned** — Week 1 |
+| **Phase 4F+** | PirateCOS: Context Builder & Consistency | 📋 **Spec Complete / Code NOT Implemented** — Weeks 2-3 |
+| **Phase 4F** | PirateCOS: Precision Editing | 📋 **Spec Complete / Code NOT Implemented** — Week 4 (depends on 4F+) |
+| **Phase 4F.1** | PirateCOS: Workspace Brain Upgrade (Brand Brain → Workspace + Teams) | 📋 **Planned** — Weeks 2-3 (parallel) |
+| **Phase 4F.2** | PirateCOS: Content History & Versioning (Git-style) | 📋 **Planned** — Week 4 (parallel) |
+| **Phase 4G** | PirateCOS: RLHF Infrastructure | 📋 **Spec Complete / Code NOT Implemented** — Weeks 5-12 (depends on 4F, 4F+, 4F.1) |
 | **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | ⬜ Not started; foundations shipped |
 | **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | ⬜ Not started |
 | **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | ⬜ Not started |
@@ -154,7 +160,186 @@
  | **Extra hook capabilities (out-of-spec)**: `triggerVariant`, `runRewriteAction` (decoupled rewrite without chat thread pollution), `loadDynamicSuggestions` (4 AI-authored custom prompt cards), `startTypewriterStream` (12ms interval HTML streaming), `clearSession`, `saveUIPreference` (persists to `WorkflowMemory.uiPreferences`) | ✅ Complete & Verified |
  | **5-engine full coverage**: OpenAI (GPT-4o, GPT-5.x), Gemini (1.5/2.0), Claude (3.5 Sonnet/Haiku, 3 Opus), Mistral (Large/Small/Nemo/Codestral), Puter (free fallback) | ✅ Complete & Verified |
  | **Credit routing**: Quick actions = 0.5 credits (`enhance`); Chat = 1.0 credit (`seo`); Suggestions = 0.1 credits (`suggest`); BYOK Pro+ users bypass all credit checks | ✅ Complete & Verified |
- 
+
+ ---
+
+ **Phase 4F.0 — Foundation Prep (⚠️ NEW — Week 1)**
+
+ > **Goal:** Prepare codebase for centralized context building
+
+ **Dependencies:** None
+ **Timeline:** Week 1
+
+ | Area | Code Implementation Status |
+ |---|---|
+ | Type definitions (`lib/pirateCOS/types/ai-context.ts`) | ⬜ Not Started |
+ | Audit existing context construction patterns | ⬜ Not Started |
+ | Test framework setup | ⬜ Not Started |
+ | Extract common interfaces from workspace/generate routes | ⬜ Not Started |
+
+ **Deliverables:** AIContextConfig/AIContextResult types, test framework, documentation of current state
+
+ ---
+
+ **Phase 4F+ — Context Builder & Consistency (⚠️ Spec Complete / Code NOT Implemented — Weeks 2-3)**
+
+ > **📋 Full specification:** [`Phase 4F+ — Full-Stack AI Consistency & Generation Optimization.md`](file:///d:/ui-pirate/uipirate/Phase%204F%2B%20%E2%80%94%20Full-Stack%20AI%20Consistency%20%26%20Generation%20Optimization.md) (1,020+ lines)
+
+ **Dependencies:** Phase 4F.0
+ **Runs in parallel with:** Phase 4F.1 (Workspace Brain)
+ **Status:** Documentation is complete, but the actual code implementation has NOT been performed.
+
+ **Week 2: Core Infrastructure**
+
+ | Area | Code Implementation Status |
+ |---|---|
+ | Centralized context builder (`lib/pirateCOS/ai-context-builder.ts`) | ❌ File does NOT exist |
+ | `buildUserFocusContext(brief, keywords)` — USER INPUT PRIORITY ⭐ | ❌ NOT implemented (still using weak footnote) |
+ | HTML normalizer (`lib/pirateCOS/html-normalizer.ts`) | ❌ File does NOT exist |
+ | `buildBrandContext()`, `buildGoalContext()`, `buildTypeContext()` | ❌ NOT implemented |
+
+ **Week 3: Route Refactoring**
+
+ | Area | Code Implementation Status |
+ |---|---|
+ | Refactor workspace route (replace lines 312-410) | ❌ NOT implemented |
+ | Refactor generate route (replace lines 181-233) | ❌ NOT implemented |
+ | Apply `normalizeHTML()` to all outputs | ❌ NOT implemented |
+ | Cross-provider testing (OpenAI, Anthropic, Gemini, Mistral) | ❌ NOT done |
+
+ **Files to create:** `lib/pirateCOS/ai-context-builder.ts`, `lib/pirateCOS/html-normalizer.ts`
+ **Files to modify:** `app/api/pirateCOS/ai/workspace/route.ts`, `app/api/pirateCOS/ai/generate/route.ts`
+
+ **Success Criteria:**
+ - ✅ User brief/keywords are #3 priority (before Brand Brain)
+ - ✅ 95%+ output consistency across all LLM providers
+ - ✅ Single source of truth for prompt construction
+
+ ---
+
+ **Phase 4F — Precision Editing (⚠️ Spec Complete / Code NOT Implemented — Week 4)**
+
+ > **📋 Full specification:** [`Phase 4F — Precision Chat Editing & Contextual Refinement.md`](file:///d:/ui-pirate/uipirate/Phase%204F%20%E2%80%94%20Precision%20Chat%20Editing%20%26%20Contextual%20Refinement.md) (583 lines)
+
+ **Dependencies:** Phase 4F+ (requires centralized context builder)
+ **Runs in parallel with:** Phase 4F.2 (Content History)
+ **Status:** Documentation is complete, but the actual code implementation has NOT been performed.
+
+ | Area | Code Implementation Status |
+ |---|---|
+ | Edit Intent Classification (surgical/transform/rewrite/continue) | ❌ `classifyEditIntent()` function NOT in codebase |
+ | Regex-based pattern matching for surgical edits ("remove em-dashes", "replace X with Y") | ❌ NOT implemented |
+ | Change summary display ("✏️ Removed 3 em-dashes") | ❌ NOT implemented in ConversationThread.tsx |
+ | Smart apply mode suggestions (replace/insert-below/insert-above based on intent) | ❌ NOT implemented |
+ | Context-aware postType constraints (LinkedIn 200-300 words, Blog H2/H3 structure) | ❌ NOT implemented |
+ | **Technical innovation**: Prevents "regeneration drift" where AI rewrites entire sections for minor edits | ❌ NOT YET ACHIEVED (still regenerates everything) |
+
+ **Files to modify:** `app/api/pirateCOS/ai/workspace/route.ts`, `components/pirateCOS/workspace/ConversationThread.tsx`, `hooks/useAIWorkspaceSession.ts`
+
+ **Success Criteria:**
+ - ✅ Surgical edits make ONLY requested changes (no regeneration drift)
+ - ✅ Change summaries displayed in UI
+ - ✅ Apply mode suggestions work correctly
+
+ ---
+
+ **Phase 4F.1 — Workspace Brain Upgrade (⚠️ NEW — Weeks 2-3, Parallel with 4F+)**
+
+ > **Goal:** Upgrade Brand Brain to support both individuals and teams
+ > **From:** `PirateCOS_Final_Foundation_Plan.md` Priority 1
+
+ **Dependencies:** None (runs in parallel with Phase 4F+)
+ **Status:** NEW phase — integrates Final Foundation Plan requirements
+
+ **Current State:**
+ - ✅ Brand Brain model exists (`models/pirateCOS/BrandBrain.ts`)
+ - ✅ GET/POST `/api/pirateCOS/brand-brain` routes exist
+ - ❌ Missing: Workspace Brain hierarchy (Workspace → Team → User)
+
+ **Architecture Change:**
+ - **OLD:** Organization → Team → User
+ - **NEW:** Workspace → Team (optional) → User
+
+ | Area | Code Implementation Status |
+ |---|---|
+ | Model Extension: Add `workspaceType`, `workspaceName`, `teamBrains` fields | ⬜ Not Started |
+ | API Routes: Update brand-brain routes for workspace + team structure | ⬜ Not Started |
+ | Context Builder Integration: Update `buildBrandContext()` with hierarchy | ⬜ Not Started |
+ | Frontend UI: Add workspace type selector, team brain section | ⬜ Not Started |
+ | Migration Script: Convert existing Brand Brain → Workspace Brain | ⬜ Not Started |
+
+ **Success Criteria:**
+ - ✅ Supports both individual creators and team workspaces
+ - ✅ Backward compatible with existing Brand Brain data
+ - ✅ Clear hierarchy: Workspace → Team (optional) → User
+
+ ---
+
+ **Phase 4F.2 — Content History & Versioning (⚠️ NEW — Week 4, Parallel with 4F)**
+
+ > **Goal:** Git-style version control for content
+ > **From:** `PirateCOS_Final_Foundation_Plan.md` Priority 7
+
+ **Dependencies:** None (runs in parallel with Phase 4F)
+ **Status:** NEW phase — integrates Final Foundation Plan requirements
+
+ **Current State:**
+ - ✅ Post model exists
+ - ✅ `aiWorkspaceSession.generations` tracks AI generation history
+ - ❌ Missing: Full content snapshots
+ - ❌ Missing: Diff tracking between versions
+ - ❌ Missing: Manual edit tracking
+
+ | Area | Code Implementation Status |
+ |---|---|
+ | Model Creation: `models/pirateCOS/ContentHistory.ts` | ⬜ Not Started |
+ | Version Tracker: `lib/pirateCOS/version-tracker.ts` (snapshot/diff/restore) | ⬜ Not Started |
+ | Integration: Hook into POST/PUT routes, AI apply actions | ⬜ Not Started |
+ | API Routes: `/api/pirateCOS/content-history/:postId` GET endpoint | ⬜ Not Started |
+ | UI (Optional): "History" tab in editor sidebar | ⬜ Not Started (can defer to Phase 5) |
+
+ **Success Criteria:**
+ - ✅ Every save creates a version snapshot
+ - ✅ AI changes tracked separately from manual edits
+ - ✅ Can query version history via API
+ - ✅ Future-ready for team collaboration and approval workflows
+
+ ---
+
+ **Phase 4G — AI Infrastructure Audit & Scalability Architecture (Planned)**
+
+ > **📋 Full specifications:**
+ > - [`Phase 4G — AI Infrastructure Audit & Scalability Architecture.md`](file:///d:/ui-pirate/uipirate/Phase%204G%20%E2%80%94%20AI%20Infrastructure%20Audit%20%26%20Scalability%20Architecture.md) (880 lines)
+ > - [`Phase 4G — Architecture Comparison & Migration Guide.md`](file:///d:/ui-pirate/uipirate/Phase%204G%20%E2%80%94%20Architecture%20Comparison%20%26%20Migration%20Guide.md)
+ > - [`Phase 4G — Executive Summary & Audit Results.md`](file:///d:/ui-pirate/uipirate/Phase%204G%20%E2%80%94%20Executive%20Summary%20%26%20Audit%20Results.md)
+ > - [`Phase 4G — Implementation Checklist.md`](file:///d:/ui-pirate/uipirate/Phase%204G%20%E2%80%94%20Implementation%20Checklist.md)
+
+ | Phase | Timeline | Status |
+ |---|---|---|
+ | **4G-1: Data Instrumentation** | Weeks 1-2 | 📋 Planned |
+ | AIGenerationLog model with full context stack | — | ⬜ Not Started |
+ | Logging in workspace/generate routes | — | ⬜ Not Started |
+ | Feedback API for user acceptance tracking | — | ⬜ Not Started |
+ | **4G-2: Model-Agnostic Consistency** | Weeks 3-4 | 📋 Planned |
+ | Centralized context builder (`ai-context-builder.ts`) | — | ⬜ Not Started |
+ | HTML normalizer (`html-normalizer.ts`) | — | ⬜ Not Started |
+ | Cross-provider testing (95%+ consistency) | — | ⬜ Not Started |
+ | **4G-3: Scalable Prompt Abstraction** | Week 5 | 📋 Planned |
+ | Versioned prompt registry (`prompt-registry.ts`) | — | ⬜ Not Started |
+ | Migrate hardcoded prompts to registry | — | ⬜ Not Started |
+ | **4G-4: RLHF Feedback Loop** | Weeks 6-8 | 📋 Planned |
+ | Performance aggregation cron (Analytics → AIGenerationLog) | — | ⬜ Not Started |
+ | Auto-learning insights API and UI | — | ⬜ Not Started |
+ | Brand Brain auto-refinement suggestions | — | ⬜ Not Started |
+
+ **Strategic Impact:** Transforms PirateCOS from "LLM API wrapper" to "self-improving AI platform" with:
+ - ✅ Full RLHF pipeline (user feedback → performance tracking → Brand Brain refinement)
+ - ✅ Fine-tuning readiness (complete context logging for training data export)
+ - ✅ Model-agnostic consistency (95%+ output parity across OpenAI, Anthropic, Gemini, Mistral)
+ - ✅ **Market differentiation**: Only AI content platform with performance-based autonomous learning
+
+ **Projected ROI:** $10-15K ARR from reduced churn (15-20%), 15-20 dev hours saved per prompt update
+
  ---
 
 ## Table of Contents
