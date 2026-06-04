@@ -44,7 +44,7 @@ import {
   getFeatures,
 } from "@/lib/pirateCOS/postTypeConfig";
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
-import VersionHistoryButton from "@/components/pirateCOS/version-history/VersionHistoryButton";
+import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -5811,7 +5811,7 @@ const BlogEditPage = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null
   >(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
@@ -7647,6 +7647,38 @@ const BlogEditPage = () => {
     />
   );
 
+  const renderVersionTab = () => {
+    if (!blogId) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-sm font-semibold font-geist text-gray-700 mb-2">No Version History Yet</p>
+          <p className="text-xs text-gray-500 font-geist max-w-xs">
+            Save your post as a draft or publish it to start tracking version history.
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="h-full flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <VersionHistoryPanel
+            postId={blogId}
+            onRestore={(version: number) => {
+              console.log(`Restored to version ${version}`);
+              router.refresh();
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
+
   const renderDistributeTab = () => (
     <DistributionPanel
       blogContent={editor?.getHTML() || ""}
@@ -7834,11 +7866,6 @@ const BlogEditPage = () => {
             </svg>
             <span className="hidden sm:inline">{showPreview ? "Exit Preview" : "Preview"}</span>
           </button>
-
-          {/* Phase 5.3: Version History Button */}
-          {!showPreview && blogId && (
-            <VersionHistoryButton postId={blogId} variant="icon" />
-          )}
 
           {/* Settings sidebar toggle */}
           {!showPreview && (
@@ -8156,6 +8183,7 @@ const BlogEditPage = () => {
             renderSEOTab={getFeatures(postType).seoPanel ? renderSEOTab : undefined}
             renderHealthTab={renderHealthTab}
             renderDistributeTab={renderDistributeTab}
+            renderVersionTab={renderVersionTab}
             initialPrompt={copilotInitialPrompt}
             onClearInitialPrompt={() => setCopilotInitialPrompt("")}
             seoFocusKeyword={seoData?.focusKeyword || ""}

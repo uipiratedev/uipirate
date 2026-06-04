@@ -47,6 +47,7 @@ import {
   getPostTypesByCategory,
 } from "@/lib/pirateCOS/postTypeConfig";
 import ContentHealthPanel from "@/components/pirateCOS/ContentHealthPanel";
+import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -5716,9 +5717,9 @@ const PostPreviewPanel = ({
   const hasToc = headings.length >= 2;
 
   return (
-    <div className="flex-1 min-w-0">
+    <div className="flex-1 min-w-0 flex flex-col overflow-hidden">
       {/* Preview toolbar */}
-      <div className="flex items-center justify-between mb-3 px-1">
+      <div className="flex items-center justify-between mb-3 px-1 flex-shrink-0">
         <div className="flex items-center gap-2">
           <span
             className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
@@ -5764,9 +5765,8 @@ const PostPreviewPanel = ({
         </button>
       </div>
 
-      {/* Preview card — no overflow-hidden here; the hero div owns its own clip so
-          the inner sticky TOC aside has a full-height scroll track to travel along */}
-      <div className="bg-white rounded-2xl shadow-sm border border-black/5">
+      {/* Preview card — overflow-y-auto to allow scrolling */}
+      <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-y-auto flex-1 min-h-0">
         {/* ── Hero — mirrors screens/blogsDetails/hero/index.tsx ── */}
         <div
           className="relative w-full overflow-hidden group"
@@ -6393,8 +6393,6 @@ const BlogEditor = () => {
   const [tagInput, setTagInput] = useState("");
   const [postType, setPostType] = useState<string>("");
   const [contentGoal, setContentGoal] = useState<ContentGoal>("" as ContentGoal);
-  const [teamId, setTeamId] = useState<string>(""); // Phase 5.4+: Team assignment
-  const [teams, setTeams] = useState<any[]>([]); // Phase 5.4+: Available teams
   const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
   const [typeSelected, setTypeSelected] = useState(false);
   const [hoveredType, setHoveredType] = useState<string | null>(null);
@@ -6417,7 +6415,7 @@ const BlogEditor = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null
   >(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
@@ -6448,7 +6446,6 @@ const BlogEditor = () => {
       slug: currentSlug,
       seo: seoData,
       repurposedOutputs,
-      teamId: teamId || undefined, // Phase 5.4+: Team assignment
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
@@ -6470,22 +6467,6 @@ const BlogEditor = () => {
   useEffect(() => {
     setMounted(true);
     setIsDataInitialized(true);
-  }, []);
-
-  // Phase 5.4+: Load available teams
-  useEffect(() => {
-    const loadTeams = async () => {
-      try {
-        const response = await fetch("/api/pirateCOS/teams");
-        const data = await response.json();
-        if (data.success) {
-          setTeams(data.data.teams || []);
-        }
-      } catch (error) {
-        console.error("Failed to load teams:", error);
-      }
-    };
-    loadTeams();
   }, []);
 
   useEffect(() => {
@@ -8141,50 +8122,6 @@ const BlogEditor = () => {
           )}
         </div>
       )}
-
-      {/* Phase 5.4+: Team Assignment */}
-      {teams.length > 0 && (
-        <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-4 mt-4">
-          <p className="text-[10px] font-jetbrains-mono text-gray-400 uppercase tracking-widest mb-3">
-            Team Assignment
-          </p>
-          <select
-            className="w-full text-sm font-geist text-gray-700 bg-black/5 rounded-xl p-3 outline-none focus:ring-1 focus:ring-[#FF5B04]/30 cursor-pointer"
-            value={teamId}
-            onChange={(e) => {
-              setTeamId(e.target.value);
-              setIsDirty(true);
-            }}
-          >
-            <option value="">No Team (Workspace-wide)</option>
-            {teams.map((team: any) => (
-              <option key={team._id} value={team._id}>
-                {team.name}
-              </option>
-            ))}
-          </select>
-          {teamId && (() => {
-            const selectedTeam = teams.find((t: any) => t._id === teamId);
-            return selectedTeam ? (
-              <div className="mt-3 pt-3 border-t border-black/5">
-                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider font-jetbrains-mono mb-2">
-                  Team Settings
-                </p>
-                {selectedTeam.brandVoiceOverride && (
-                  <div className="text-xs text-gray-600 font-geist mb-2">
-                    <span className="font-semibold">Brand Voice:</span> {selectedTeam.brandVoiceOverride.substring(0, 60)}...
-                  </div>
-                )}
-                {selectedTeam.keywordsOverride && selectedTeam.keywordsOverride.length > 0 && (
-                  <div className="text-xs text-gray-600 font-geist">
-                    <span className="font-semibold">Keywords:</span> {selectedTeam.keywordsOverride.join(", ")}
-                  </div>
-                )}
-              </div>
-            ) : null;
-          })()}
-        </div>
-      )}
     </>
   );
 
@@ -8653,6 +8590,38 @@ const BlogEditor = () => {
     />
   );
 
+  const renderVersionTab = () => {
+    if (!savedBlogId) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-sm font-semibold font-geist text-gray-700 mb-2">No Version History Yet</p>
+          <p className="text-xs text-gray-500 font-geist max-w-xs">
+            Save your post as a draft or publish it to start tracking version history.
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="h-full flex flex-col">
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <VersionHistoryPanel
+            postId={savedBlogId}
+            onRestore={(version) => {
+              console.log(`Restored to version ${version}`);
+              router.refresh();
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
+
   const renderDistributeTab = () => (
     <DistributionPanel
       blogContent={editor?.getHTML() || ""}
@@ -9075,6 +9044,7 @@ const BlogEditor = () => {
             renderSEOTab={getFeatures(postType).seoPanel ? renderSEOTab : undefined}
             renderHealthTab={renderHealthTab}
             renderDistributeTab={renderDistributeTab}
+            renderVersionTab={renderVersionTab}
             initialPrompt={copilotInitialPrompt}
             onClearInitialPrompt={() => setCopilotInitialPrompt("")}
             seoFocusKeyword={seoData?.focusKeyword || ""}

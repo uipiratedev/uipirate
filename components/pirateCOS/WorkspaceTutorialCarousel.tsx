@@ -785,6 +785,79 @@ export const HELP_TAB_SLIDES: Record<string, TutorialSlide[]> = {
       ),
     },
   ],
+  version: [
+    {
+      title: "1. Automatic snapshots",
+      desc: "Every time you save or publish your post, a new version is automatically created with a timestamp and content preview.",
+      icon: "clock",
+      badge: "Auto-Save",
+      bg: "from-gray-50/50 via-white to-slate-50/20",
+      border: "border-gray-200",
+      textClass: "text-gray-700",
+      bgClass: "bg-gray-100",
+      accentColor: "#6b7280",
+      mockup: (
+        <div className="bg-white border border-black/[0.06] rounded-xl p-3.5 space-y-2 font-geist w-full max-w-[240px]">
+          <div className="flex justify-between items-start">
+            <div>
+              <div className="text-[9px] font-bold text-gray-800">Version 3</div>
+              <div className="text-[8px] text-gray-500">2 mins ago</div>
+            </div>
+            <span className="text-[7px] px-1.5 py-0.5 rounded-full font-bold bg-orange-100 text-[#FF5B04]">MAJOR</span>
+          </div>
+          <div className="text-[8px] text-gray-600 line-clamp-2">Updated conclusion and added new section...</div>
+        </div>
+      ),
+    },
+    {
+      title: "2. Version timeline",
+      desc: "Browse your complete editing history chronologically. Each version shows major or minor change indicators to track significant edits.",
+      icon: "list",
+      badge: "Timeline",
+      bg: "from-gray-50/50 via-white to-slate-50/20",
+      border: "border-gray-200",
+      textClass: "text-gray-700",
+      bgClass: "bg-gray-100",
+      accentColor: "#6b7280",
+      mockup: (
+        <div className="bg-white border border-black/[0.06] rounded-xl p-3.5 space-y-1.5 font-geist w-full max-w-[240px]">
+          <div className="flex justify-between text-[8px] border-b border-black/5 pb-1">
+            <span className="font-bold text-gray-800">Version 3</span>
+            <span className="text-gray-500">Today 2:30 PM</span>
+          </div>
+          <div className="flex justify-between text-[8px] border-b border-black/5 pb-1">
+            <span className="font-bold text-gray-800">Version 2</span>
+            <span className="text-gray-500">Today 10:15 AM</span>
+          </div>
+          <div className="flex justify-between text-[8px]">
+            <span className="font-bold text-gray-800">Version 1</span>
+            <span className="text-gray-500">Yesterday</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "3. One-click restore",
+      desc: "Click any version to expand it, then hit 'Restore' to instantly revert your post to that exact state. Like GitHub time travel for your content.",
+      icon: "refresh",
+      badge: "Restore",
+      bg: "from-gray-50/50 via-white to-slate-50/20",
+      border: "border-gray-200",
+      textClass: "text-gray-700",
+      bgClass: "bg-gray-100",
+      accentColor: "#6b7280",
+      mockup: (
+        <div className="bg-white border border-black/[0.06] rounded-xl p-3.5 font-geist w-full max-w-[240px]">
+          <div className="p-2 border border-orange-100 bg-orange-50/40 rounded-lg">
+            <div className="text-[9px] font-bold text-gray-800 mb-1">Version 2 Selected</div>
+            <button className="w-full bg-[#FF5B04] text-white text-[8px] font-bold px-2 py-1 rounded">
+              Restore This Version
+            </button>
+          </div>
+        </div>
+      ),
+    },
+  ],
 };
 
 // ─── Help / Tool-Specific Carousel component ─────────────────────────────────

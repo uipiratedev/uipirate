@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import VersionHistoryModal from "./VersionHistoryModal";
+import VersionHistoryPanel from "./VersionHistoryPanel";
 
 interface VersionHistoryButtonProps {
   postId: string;
-  variant?: "default" | "icon";
+  variant?: "default" | "icon" | "panel";
   className?: string;
 }
 
@@ -20,6 +21,11 @@ export default function VersionHistoryButton({
     console.log(`Restored to version ${version}`);
     // Modal will reload the page
   };
+
+  // Panel variant - renders inline without modal
+  if (variant === "panel") {
+    return <VersionHistoryPanel postId={postId} onRestore={handleRestore} />;
+  }
 
   if (variant === "icon") {
     return (
