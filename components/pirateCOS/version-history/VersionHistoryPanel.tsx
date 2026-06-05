@@ -21,6 +21,8 @@ interface VersionHistoryPanelProps {
   postId: string;
   onRestore: (version: number) => void;
   currentContent?: string;
+  /** Increment this value after a save to trigger a silent history re-fetch. */
+  refreshKey?: number;
 }
 
 /**
@@ -30,8 +32,13 @@ interface VersionHistoryPanelProps {
  */
 const cleanDiffContent = (raw: string): string =>
   raw
-    .replace(/src="data:[^"]{10,}"/gi, 'src="[image]"')
-    .replace(/href="data:[^"]{10,}"/gi, 'href="[data]"')
+    // Replace entire media elements with visible tokens BEFORE tag-stripping,
+    // so the placeholders are not swallowed by the generic <tag> remover.
+    .replace(/<img[^>]*>/gi, " [image] ")
+    .replace(/<video[^>]*>.*?<\/video>/gi, " [video] ")
+    .replace(/<audio[^>]*>.*?<\/audio>/gi, " [audio] ")
+    .replace(/<iframe[^>]*>.*?<\/iframe>/gi, " [embed] ")
+    // Strip all remaining HTML tags
     .replace(/<[^>]*>/g, " ")
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
@@ -41,6 +48,43 @@ const cleanDiffContent = (raw: string): string =>
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+
+const MEDIA_TOKEN_RE = /(\[image\]|\[video\]|\[audio\]|\[embed\])/g;
+
+/** Render diff line content, turning [image]/[video]/etc. into visible coloured badges. */
+function renderDiffLine(
+  content: string,
+  isAdded: boolean,
+  isRemoved: boolean,
+) {
+  const parts = content.split(MEDIA_TOKEN_RE);
+  return parts.map((part, i) => {
+    if (/^\[(image|video|audio|embed)\]$/.test(part)) {
+      const icon =
+        part === "[image]"
+          ? "🖼"
+          : part === "[video]"
+            ? "🎬"
+            : part === "[audio]"
+              ? "🎵"
+              : "📎";
+      return (
+        <span
+          key={i}
+          className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold font-jetbrains-mono mx-0.5 align-middle ${isAdded
+              ? "bg-green-200 text-green-800"
+              : isRemoved
+                ? "bg-red-200 text-red-800"
+                : "bg-gray-200 text-gray-600"
+            }`}
+        >
+          {icon} {part}
+        </span>
+      );
+    }
+    return part ? <span key={i}>{part}</span> : null;
+  });
+}
 
 /** Inline unified-diff renderer for "View Changes" (what changed *in* this version). */
 const renderDiff = (diff?: string) => {
@@ -91,7 +135,7 @@ const renderDiff = (diff?: string) => {
                   : "text-gray-500"
                 }`}
             >
-              {content}
+              {renderDiffLine(content, isAdded, isRemoved)}
             </span>
           </div>
         );
@@ -223,6 +267,7 @@ export default function VersionHistoryPanel({
   postId,
   onRestore,
   currentContent,
+  refreshKey,
 }: VersionHistoryPanelProps) {
   const router = useRouter();
   const [versions, setVersions] = useState<Version[]>([]);
@@ -246,7 +291,7 @@ export default function VersionHistoryPanel({
 
   useEffect(() => {
     fetchVersions();
-  }, [postId]);
+  }, [postId, refreshKey]);
 
   const fetchVersions = async () => {
     setLoading(true);

@@ -469,8 +469,8 @@ const SEOEditorModal = ({
     >
       <div
         className={`bg-white shadow-2xl flex flex-col overflow-hidden transition-all duration-500 ease-in-out ${isFullscreen
-            ? "w-full h-full rounded-none"
-            : "w-full max-w-6xl h-[90vh] rounded-[32px]"
+          ? "w-full h-full rounded-none"
+          : "w-full max-w-6xl h-[90vh] rounded-[32px]"
           } animate-in fade-in zoom-in duration-300`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -608,8 +608,8 @@ const SEOEditorModal = ({
               <button
                 key={tab.id}
                 className={`flex items-center gap-2 px-4 md:px-6 py-4 text-sm font-semibold transition-all relative whitespace-nowrap ${activeTab === tab.id
-                    ? "text-[#FF5B04]"
-                    : "text-gray-400 hover:text-gray-600"
+                  ? "text-[#FF5B04]"
+                  : "text-gray-400 hover:text-gray-600"
                   }`}
                 onClick={() => setActiveTab(tab.id as ModalTab)}
               >
@@ -684,9 +684,9 @@ const SEOEditorModal = ({
                           </label>
                           <span
                             className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaTitle?.length &&
-                                data.metaTitle.length > 60
-                                ? "text-red-500"
-                                : "text-gray-400"
+                              data.metaTitle.length > 60
+                              ? "text-red-500"
+                              : "text-gray-400"
                               }`}
                           >
                             {data?.metaTitle?.length || 0}/60
@@ -754,9 +754,9 @@ const SEOEditorModal = ({
                         </label>
                         <span
                           className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaDescription?.length &&
-                              data.metaDescription.length > 160
-                              ? "text-red-500"
-                              : "text-gray-400"
+                            data.metaDescription.length > 160
+                            ? "text-red-500"
+                            : "text-gray-400"
                             }`}
                         >
                           {data?.metaDescription?.length || 0}/160
@@ -2624,12 +2624,12 @@ const AIExcerptModal = ({
 
             <textarea
               className={`w-full text-sm font-geist bg-gray-50 border rounded-2xl p-4 outline-none resize-none transition-all duration-300 ${isGenerating
-                  ? engine === "openai"
-                    ? "animate-pulse border-emerald-200"
-                    : engine === "gemini"
-                      ? "animate-pulse border-blue-200"
-                      : "animate-pulse border-orange-200"
-                  : "border-black/5 focus:border-orange-200 focus:ring-1 focus:ring-orange-100"
+                ? engine === "openai"
+                  ? "animate-pulse border-emerald-200"
+                  : engine === "gemini"
+                    ? "animate-pulse border-blue-200"
+                    : "animate-pulse border-orange-200"
+                : "border-black/5 focus:border-orange-200 focus:ring-1 focus:ring-orange-100"
                 }`}
               disabled={isGenerating}
               placeholder="Your AI excerpt will generate here, or you can type here to refine manually..."
@@ -3005,24 +3005,24 @@ const AITitleModal = ({
                   <button
                     key={idx}
                     className={`w-full text-left text-sm font-geist p-3.5 rounded-2xl transition-all border flex items-start gap-3 cursor-pointer ${selectedTitle === t
-                        ? engine === "openai"
-                          ? "bg-emerald-50/50 border-emerald-500 text-emerald-950 font-medium shadow-sm"
-                          : engine === "gemini"
-                            ? "bg-indigo-50/50 border-indigo-500 text-indigo-950 font-medium shadow-sm"
-                            : "bg-orange-50/50 border-[#FF5B04] text-orange-950 font-medium shadow-sm"
-                        : "bg-gray-50 border-black/5 hover:border-black/10 text-gray-800"
+                      ? engine === "openai"
+                        ? "bg-emerald-50/50 border-emerald-500 text-emerald-950 font-medium shadow-sm"
+                        : engine === "gemini"
+                          ? "bg-indigo-50/50 border-indigo-500 text-indigo-950 font-medium shadow-sm"
+                          : "bg-orange-50/50 border-[#FF5B04] text-orange-950 font-medium shadow-sm"
+                      : "bg-gray-50 border-black/5 hover:border-black/10 text-gray-800"
                       }`}
                     type="button"
                     onClick={() => setSelectedTitle(t)}
                   >
                     <span
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold border transition-colors ${selectedTitle === t
-                          ? engine === "openai"
-                            ? "bg-emerald-500 text-white border-emerald-500"
-                            : engine === "gemini"
-                              ? "bg-indigo-500 text-white border-indigo-500"
-                              : "bg-[#FF5B04] text-white border-[#FF5B04]"
-                          : "bg-white border-black/10 text-gray-400"
+                        ? engine === "openai"
+                          ? "bg-emerald-500 text-white border-emerald-500"
+                          : engine === "gemini"
+                            ? "bg-indigo-500 text-white border-indigo-500"
+                            : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                        : "bg-white border-black/10 text-gray-400"
                         }`}
                     >
                       {idx + 1}
@@ -3424,24 +3424,24 @@ const AITagsModal = ({
                     <button
                       key={idx}
                       className={`px-4 py-2 rounded-2xl text-xs font-semibold font-geist border transition-all flex items-center gap-2 cursor-pointer ${isSelected
-                          ? engine === "openai"
-                            ? "bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm"
-                            : engine === "gemini"
-                              ? "bg-indigo-50 border-indigo-300 text-indigo-800 shadow-sm"
-                              : "bg-orange-50 border-orange-300 text-orange-800 shadow-sm"
-                          : "bg-gray-50 border-black/5 text-gray-600 hover:bg-gray-100"
+                        ? engine === "openai"
+                          ? "bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm"
+                          : engine === "gemini"
+                            ? "bg-indigo-50 border-indigo-300 text-indigo-800 shadow-sm"
+                            : "bg-orange-50 border-orange-300 text-orange-800 shadow-sm"
+                        : "bg-gray-50 border-black/5 text-gray-600 hover:bg-gray-100"
                         }`}
                       type="button"
                       onClick={() => toggleTag(t)}
                     >
                       <span
                         className={`w-3.5 h-3.5 rounded-md flex items-center justify-center text-[9px] border transition-colors ${isSelected
-                            ? engine === "openai"
-                              ? "bg-emerald-500 text-white border-emerald-500"
-                              : engine === "gemini"
-                                ? "bg-indigo-500 text-white border-indigo-500"
-                                : "bg-[#FF5B04] text-white border-[#FF5B04]"
-                            : "bg-white border-black/10"
+                          ? engine === "openai"
+                            ? "bg-emerald-500 text-white border-emerald-500"
+                            : engine === "gemini"
+                              ? "bg-indigo-500 text-white border-indigo-500"
+                              : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                          : "bg-white border-black/10"
                           }`}
                       >
                         {isSelected && "✓"}
@@ -3829,27 +3829,27 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             {hasSelection && (
               <div
                 className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-geist mb-3 border transition-all duration-300 ${engine === "openai"
-                    ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                    : engine === "gemini"
-                      ? "bg-indigo-50 border-indigo-200 text-indigo-800"
-                      : "bg-orange-50 border-orange-200 text-orange-800"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                  : engine === "gemini"
+                    ? "bg-indigo-50 border-indigo-200 text-indigo-800"
+                    : "bg-orange-50 border-orange-200 text-orange-800"
                   }`}
               >
                 <span className="flex h-2 w-2 relative">
                   <span
                     className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${engine === "openai"
-                        ? "bg-emerald-400"
-                        : engine === "gemini"
-                          ? "bg-indigo-400"
-                          : "bg-orange-400"
+                      ? "bg-emerald-400"
+                      : engine === "gemini"
+                        ? "bg-indigo-400"
+                        : "bg-orange-400"
                       }`}
                   />
                   <span
                     className={`relative inline-flex rounded-full h-2 w-2 ${engine === "openai"
-                        ? "bg-emerald-500"
-                        : engine === "gemini"
-                          ? "bg-indigo-500"
-                          : "bg-orange-500"
+                      ? "bg-emerald-500"
+                      : engine === "gemini"
+                        ? "bg-indigo-500"
+                        : "bg-orange-500"
                       }`}
                   />
                 </span>
@@ -3962,12 +3962,12 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
               </label>
               <div
                 className={`border rounded-2xl p-4 bg-gray-50/50 min-h-[140px] text-sm overflow-y-auto max-h-[260px] font-geist prose prose-sm transition-all duration-300 ${isGenerating
-                    ? engine === "openai"
-                      ? "animate-pulse border-emerald-200"
-                      : engine === "gemini"
-                        ? "animate-pulse border-blue-200"
-                        : "animate-pulse border-orange-200"
-                    : "border-black/5"
+                  ? engine === "openai"
+                    ? "animate-pulse border-emerald-200"
+                    : engine === "gemini"
+                      ? "animate-pulse border-blue-200"
+                      : "animate-pulse border-orange-200"
+                  : "border-black/5"
                   }`}
               >
                 {isGenerating ? (
@@ -4979,6 +4979,7 @@ const BlogEditPage = () => {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [versionRefreshKey, setVersionRefreshKey] = useState(0);
   const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(
     null,
   );
@@ -5407,6 +5408,7 @@ const BlogEditPage = () => {
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
+      setVersionRefreshKey((k) => k + 1);
     },
     onSaveError: (err) => {
       setShowPublishModal(false);
@@ -6127,6 +6129,7 @@ const BlogEditPage = () => {
           <VersionHistoryPanel
             postId={blogId}
             currentContent={editor?.getHTML() || ""}
+            refreshKey={versionRefreshKey}
             onRestore={(version: number) => {
               console.log(`Restored to version ${version}`);
               fetchBlog();
@@ -6303,8 +6306,8 @@ const BlogEditPage = () => {
           <button
             disabled={!title.trim() || !editor || editor.isEmpty}
             className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:bg-black/5 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none ${showPreview
-                ? "bg-[#FF5B04] text-white"
-                : "bg-black/5 text-gray-600 hover:bg-black/10"
+              ? "bg-[#FF5B04] text-white"
+              : "bg-black/5 text-gray-600 hover:bg-black/10"
               }`}
             onClick={() => setShowPreview((v) => !v)}
           >
