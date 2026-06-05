@@ -1,6 +1,7 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
+import { useEditorState } from "@tiptap/react";
 
 import CosIcon from "@/components/pirateCOS/CosIcon";
 
@@ -21,6 +22,21 @@ export const FormattingToolbar = ({
   postType?: string;
 }) => {
   const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
+
+  // Re-render when editor state changes to update active buttons and show image controls
+  const { isImage, imageAttrs } = useEditorState({
+    editor,
+    selector: (ctx: any) => {
+      if (!ctx.editor) return { isImage: false, imageAttrs: null };
+
+      return {
+        isImage: ctx.editor.isActive("image"),
+        imageAttrs: ctx.editor.isActive("image")
+          ? ctx.editor.getAttributes("image")
+          : null,
+      };
+    },
+  });
 
   if (!editor) return null;
 
@@ -56,7 +72,19 @@ export const FormattingToolbar = ({
         title="Undo (Ctrl+Z)"
         onClick={() => editor.chain().focus().undo().run()}
       >
-        <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+        <svg
+          fill="none"
+          height="14"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="14"
+        >
+          <path d="M3 7v6h6" />
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+        </svg>
       </button>
       <button
         className={btn(false)}
@@ -64,7 +92,19 @@ export const FormattingToolbar = ({
         title="Redo (Ctrl+Y)"
         onClick={() => editor.chain().focus().redo().run()}
       >
-        <svg fill="none" height="14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="14"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+        <svg
+          fill="none"
+          height="14"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          width="14"
+        >
+          <path d="M21 7v6h-6" />
+          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+        </svg>
       </button>
       {sep}
       <button
@@ -167,7 +207,9 @@ export const FormattingToolbar = ({
         title="Insert Link (Ctrl+K)"
         onClick={onLinkClick}
       >
-        <span className="flex items-center gap-1"><CosIcon name="link" size={12} /> Link</span>
+        <span className="flex items-center gap-1">
+          <CosIcon name="link" size={12} /> Link
+        </span>
       </button>
       {features?.affiliateLinks && (
         <button
@@ -189,7 +231,9 @@ export const FormattingToolbar = ({
             }
           }}
         >
-          <span className="flex items-center gap-1"><CosIcon name="conversion" size={12} /> Affiliate Link</span>
+          <span className="flex items-center gap-1">
+            <CosIcon name="conversion" size={12} /> Affiliate Link
+          </span>
         </button>
       )}
       {editor.isActive("link") && (
@@ -198,7 +242,9 @@ export const FormattingToolbar = ({
           title="Remove Link"
           onClick={() => editor.chain().focus().unsetLink().run()}
         >
-          <span className="flex items-center gap-1">Unlink <CosIcon name="cross" size={12} /></span>
+          <span className="flex items-center gap-1">
+            Unlink <CosIcon name="cross" size={12} />
+          </span>
         </button>
       )}
 
@@ -262,7 +308,9 @@ export const FormattingToolbar = ({
           title="Task List"
           onClick={() => editor.chain().focus().toggleTaskList().run()}
         >
-          <span className="flex items-center gap-1"><CosIcon name="tasks" size={12} /> Task List</span>
+          <span className="flex items-center gap-1">
+            <CosIcon name="tasks" size={12} /> Task List
+          </span>
         </button>
       )}
       {postType !== "social-post" && (
@@ -297,6 +345,73 @@ export const FormattingToolbar = ({
           </button>
         </>
       )}
+      {isImage && (
+        <>
+          {sep}
+          <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5 animate-in fade-in duration-100">
+            <span className="text-[10px] font-bold font-jetbrains-mono text-[#FF5B04] uppercase tracking-wider mr-1">
+              Image Size:
+            </span>
+            {[
+              { id: "auto", label: "Original" },
+              { id: "25%", label: "25%" },
+              { id: "50%", label: "50%" },
+              { id: "75%", label: "75%" },
+              { id: "100%", label: "Fit" }
+            ].map((size) => {
+              const currentWidth = imageAttrs?.width || "auto";
+
+              return (
+                <button
+                  key={size.id}
+                  className={btn(currentWidth === size.id)}
+                  style={currentWidth === size.id ? activeStyle : {}}
+                  onClick={() =>
+                    editor
+                      .chain()
+                      .focus()
+                      .updateAttributes("image", { width: size.id })
+                      .run()
+                  }
+                >
+                  {size.label}
+                </button>
+              );
+            })}
+
+            <div className="w-px h-4 bg-orange-200/50 mx-1" />
+
+            <span className="text-[10px] font-bold font-jetbrains-mono text-[#FF5B04] uppercase tracking-wider mr-1">
+              Align:
+            </span>
+            {[
+              { id: "left", label: "Left" },
+              { id: "center", label: "Center" },
+              { id: "right", label: "Right" },
+            ].map((alignment) => {
+              const currentAlign = imageAttrs?.align || "center";
+
+              return (
+                <button
+                  key={alignment.id}
+                  className={btn(currentAlign === alignment.id)}
+                  style={currentAlign === alignment.id ? activeStyle : {}}
+                  onClick={() =>
+                    editor
+                      .chain()
+                      .focus()
+                      .updateAttributes("image", { align: alignment.id })
+                      .run()
+                  }
+                >
+                  {alignment.label}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
+
       {features?.tables && editor.isActive("table") && (
         <>
           {sep}

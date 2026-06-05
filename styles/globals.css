@@ -2455,6 +2455,7 @@ body.modal-open .main-navbar {
 
 /* Gradient Fade Divider */
 .blog-prose hr {
+  clear: both;
   border: none;
   height: 1px;
   background: linear-gradient(to right, transparent, rgba(0,0,0,0.08) 15%, rgba(0,0,0,0.08) 85%, transparent);

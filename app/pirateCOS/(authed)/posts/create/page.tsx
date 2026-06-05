@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, {
   useEffect,
@@ -10,7 +10,6 @@ import React, {
 import { motion, AnimatePresence } from "framer-motion";
 import { useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
@@ -50,7 +49,19 @@ import { DEFAULT_CTA_BLOCK_HTML } from "@/lib/pirateCOS/cta-template";
 import { ContentHealthPanel } from "@/components/pirateCOS/content-health";
 import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 import { SEOPanel } from "@/components/pirateCOS/seo-panel";
-import { PirateCOSEditorArea } from "@/components/pirateCOS/editor";
+import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomImage } from "@/components/pirateCOS/editor";
+import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
+
+const isEditorContentEmpty = (editor: any): boolean => {
+  if (!editor) return true;
+  const html = editor.getHTML();
+  const cleaned = html
+    .replace(/<p><br><\/p>/g, "")
+    .replace(/<p>\s*<\/p>/g, "")
+    .replace(/<br>/g, "")
+    .trim();
+  return cleaned === "";
+};
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -1441,338 +1452,6 @@ const SEOEditorModal = ({
         </div>
       </div>
     </div>
-  );
-};
-
-// ─── Image URL Modal ─────────────────────────────────────────────────────────
-const ImageUrlModal = ({
-  editor,
-  onClose,
-}: {
-  editor: any;
-  onClose: () => void;
-}) => {
-  const [url, setUrl] = useState("");
-  const [alt, setAlt] = useState("");
-
-  const insert = () => {
-    if (url.trim()) {
-      editor
-        .chain()
-        .focus()
-        .setImage({ src: url.trim(), alt: alt.trim() || undefined })
-        .run();
-      onClose();
-    }
-  };
-
-  return (
-    <Modal title="Insert Image from URL" onClose={onClose}>
-      <div className="space-y-3">
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Image URL *
-          </label>
-          <input
-            autoFocus
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="https://example.com/image.png"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && insert()}
-          />
-        </div>
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Alt text (optional)
-          </label>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Describe the image…"
-            value={alt}
-            onChange={(e) => setAlt(e.target.value)}
-          />
-        </div>
-        <div className="flex gap-2 pt-1">
-          <button
-            className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity"
-            disabled={!url.trim()}
-            style={{ background: "#FF5B04" }}
-            onClick={insert}
-          >
-            Insert Image
-          </button>
-          <button
-            className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-// ─── Video Embed Modal ────────────────────────────────────────────────────────
-const VideoEmbedModal = ({
-  editor,
-  onClose,
-}: {
-  editor: any;
-  onClose: () => void;
-}) => {
-  const [url, setUrl] = useState("");
-  const [caption, setCaption] = useState("");
-
-  const getEmbedUrl = (raw: string): string | null => {
-    // YouTube
-    const ytMatch = raw.match(
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/,
-    );
-
-    if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
-
-    // Vimeo
-    const vimeoMatch = raw.match(/vimeo\.com\/(\d+)/);
-
-    if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
-
-    // Loom
-    const loomMatch = raw.match(/loom\.com\/share\/([a-f0-9]+)/);
-
-    if (loomMatch) return `https://www.loom.com/embed/${loomMatch[1]}`;
-
-    // Direct iframe URL
-    if (raw.startsWith("http")) return raw;
-
-    return null;
-  };
-
-  const insert = () => {
-    const embedUrl = getEmbedUrl(url.trim());
-
-    if (embedUrl) {
-      const captionHtml = caption
-        ? `<p style="text-align:center;font-size:0.8rem;color:#9ca3af;margin-top:0.5rem">${caption}</p>`
-        : "";
-
-      editor
-        .chain()
-        .focus()
-        .insertContent(
-          `<div class="video-embed-wrapper" contenteditable="false">
-            <div class="video-embed-ratio">
-              <iframe src="${embedUrl}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-            </div>
-            ${captionHtml}
-          </div><p></p>`,
-        )
-        .run();
-      onClose();
-    }
-  };
-
-  return (
-    <Modal title="Embed Video" onClose={onClose}>
-      <div className="space-y-3">
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Video URL (YouTube, Vimeo, Loom) *
-          </label>
-          <input
-            autoFocus
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="https://youtube.com/watch?v=..."
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && insert()}
-          />
-        </div>
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Caption (optional)
-          </label>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Add a caption…"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-          />
-        </div>
-        <div className="flex gap-2 pt-1">
-          <button
-            className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity"
-            disabled={!url.trim()}
-            style={{ background: "#FF5B04" }}
-            onClick={insert}
-          >
-            Embed Video
-          </button>
-          <button
-            className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-// ─── Link Modal ──────────────────────────────────────────────────────────────
-const LinkModal = ({
-  editor,
-  onClose,
-}: {
-  editor: any;
-  onClose: () => void;
-}) => {
-  const [url, setUrl] = useState("");
-  const [linkText, setLinkText] = useState("");
-  const [ctaType, setCtaType] = useState<"none" | "primary" | "secondary">(
-    "none",
-  );
-
-  useEffect(() => {
-    if (editor) {
-      const { from, to } = editor.state.selection;
-      const selectedText = editor.state.doc.textBetween(from, to, " ");
-
-      setLinkText(selectedText);
-
-      const attrs = editor.getAttributes("link");
-
-      if (attrs.href) {
-        setUrl(attrs.href);
-      }
-      if (attrs.class && attrs.class.includes("blog-cta-btn-secondary")) {
-        setCtaType("secondary");
-      } else if (attrs.class && attrs.class.includes("blog-cta-btn")) {
-        setCtaType("primary");
-      }
-    }
-  }, [editor]);
-
-  const insert = () => {
-    const trimmedUrl = url.trim();
-    const trimmedText = linkText.trim() || trimmedUrl;
-
-    if (trimmedUrl) {
-      if (ctaType === "primary") {
-        editor
-          .chain()
-          .focus()
-          .insertContent(
-            `<a href="${trimmedUrl}" class="blog-cta-btn">${trimmedText}</a> `,
-          )
-          .run();
-      } else if (ctaType === "secondary") {
-        editor
-          .chain()
-          .focus()
-          .insertContent(
-            `<a href="${trimmedUrl}" class="blog-cta-btn-secondary">${trimmedText}</a> `,
-          )
-          .run();
-      } else {
-        editor
-          .chain()
-          .focus()
-          .insertContent(`<a href="${trimmedUrl}">${trimmedText}</a>`)
-          .run();
-      }
-      onClose();
-    }
-  };
-
-  return (
-    <Modal title="Insert or Edit Link" onClose={onClose}>
-      <div className="space-y-4">
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Link Text *
-          </label>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Text to display…"
-            value={linkText}
-            onChange={(e) => setLinkText(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Link URL *
-          </label>
-          <input
-            autoFocus
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="https://example.com"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && insert()}
-          />
-        </div>
-        <div className="flex flex-col gap-2 select-none">
-          <label className="text-xs font-geist text-gray-600 font-semibold mb-1 block">
-            Link Style
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              checked={ctaType === "none"}
-              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
-              name="ctaType"
-              type="radio"
-              onChange={() => setCtaType("none")}
-            />
-            <span className="text-xs font-geist text-gray-700">
-              Standard Link
-            </span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              checked={ctaType === "primary"}
-              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
-              name="ctaType"
-              type="radio"
-              onChange={() => setCtaType("primary")}
-            />
-            <span className="text-xs font-geist text-gray-700">
-              Primary CTA Button (Orange)
-            </span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              checked={ctaType === "secondary"}
-              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
-              name="ctaType"
-              type="radio"
-              onChange={() => setCtaType("secondary")}
-            />
-            <span className="text-xs font-geist text-gray-700">
-              Secondary CTA Button (Dark)
-            </span>
-          </label>
-        </div>
-        <div className="flex gap-2 pt-1">
-          <button
-            className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity cursor-pointer"
-            disabled={!url.trim()}
-            style={{ background: "#FF5B04" }}
-            onClick={insert}
-          >
-            Save Link
-          </button>
-          <button
-            className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </Modal>
   );
 };
 
@@ -5597,8 +5276,9 @@ const BlogEditor = () => {
         heading: { levels: [1, 2, 3] },
       }),
       SelectionHighlight,
-      Image.configure({
-        inline: false,
+      VideoEmbed,
+      CustomImage.configure({
+        inline: true,
         allowBase64: true,
       }),
       Placeholder.configure({
@@ -5730,7 +5410,7 @@ const BlogEditor = () => {
       tags.length > 0 ||
       featuredImage !== "" ||
       bannerImage !== "" ||
-      (editor && !editor.isEmpty);
+      !isEditorContentEmpty(editor);
 
     if (hasContent) {
       setIsDirty(true);
@@ -5801,13 +5481,14 @@ const BlogEditor = () => {
           const url = e.target?.result as string;
 
           editor.chain().focus().setImage({ src: url }).run();
+          setIsDirty(true);
         };
         reader.readAsDataURL(file);
       }
       // Reset so same file can be re-selected
       event.target.value = "";
     },
-    [editor],
+    [editor, setIsDirty],
   );
 
   const handleBannerImageUpload = useCallback(
@@ -5851,7 +5532,7 @@ const BlogEditor = () => {
 
       return;
     }
-    if (!editor || editor.isEmpty) {
+    if (isEditorContentEmpty(editor)) {
       setValidationError("Please add some content to your blog post.");
 
       return;
@@ -5865,7 +5546,7 @@ const BlogEditor = () => {
 
       return;
     }
-    if (!editor || editor.isEmpty) {
+    if (isEditorContentEmpty(editor)) {
       setValidationError("Please add some content to your blog post.");
 
       return;
@@ -7089,16 +6770,18 @@ const BlogEditor = () => {
         <ImageUrlModal
           editor={editor}
           onClose={() => setShowImageUrlModal(false)}
+          setIsDirty={setIsDirty}
         />
       )}
       {showVideoModal && (
         <VideoEmbedModal
           editor={editor}
           onClose={() => setShowVideoModal(false)}
+          setIsDirty={setIsDirty}
         />
       )}
       {showLinkModal && (
-        <LinkModal editor={editor} onClose={() => setShowLinkModal(false)} />
+        <LinkModal editor={editor} onClose={() => setShowLinkModal(false)} setIsDirty={setIsDirty} />
       )}
 
       {validationError && (

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, {
   useEffect,
@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import { useEditor, EditorContent, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
@@ -48,6 +47,19 @@ import { ContentHealthPanel } from "@/components/pirateCOS/content-health";
 import VersionHistoryPanel from "@/components/pirateCOS/version-history/VersionHistoryPanel";
 import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 import { SEOPanel } from "@/components/pirateCOS/seo-panel";
+import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomImage, FormattingToolbar } from "@/components/pirateCOS/editor";
+import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
+
+const isEditorContentEmpty = (editor: any): boolean => {
+  if (!editor) return true;
+  const html = editor.getHTML();
+  const cleaned = html
+    .replace(/<p><br><\/p>/g, "")
+    .replace(/<p>\s*<\/p>/g, "")
+    .replace(/<br>/g, "")
+    .trim();
+  return cleaned === "";
+};
 
 // ─── Interfaces ──────────────────────────────────────────────────────────────
 interface PostSEO {
@@ -1410,330 +1422,6 @@ const SEOEditorModal = ({
   );
 };
 
-// ─── Image URL Modal ─────────────────────────────────────────────────────────
-const ImageUrlModal = ({
-  editor,
-  onClose,
-}: {
-  editor: any;
-  onClose: () => void;
-}) => {
-  const [url, setUrl] = useState("");
-  const [alt, setAlt] = useState("");
-
-  const insert = () => {
-    if (url.trim()) {
-      editor
-        .chain()
-        .focus()
-        .setImage({ src: url.trim(), alt: alt.trim() || undefined })
-        .run();
-      onClose();
-    }
-  };
-
-  return (
-    <Modal title="Insert Image from URL" onClose={onClose}>
-      <div className="space-y-3">
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Image URL *
-          </label>
-          <input
-            autoFocus
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="https://example.com/image.png"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && insert()}
-          />
-        </div>
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Alt text (optional)
-          </label>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Describe the image…"
-            value={alt}
-            onChange={(e) => setAlt(e.target.value)}
-          />
-        </div>
-        <div className="flex gap-2 pt-1">
-          <button
-            className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity"
-            disabled={!url.trim()}
-            style={{ background: "#FF5B04" }}
-            onClick={insert}
-          >
-            Insert Image
-          </button>
-          <button
-            className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-// ─── Video Embed Modal ────────────────────────────────────────────────────────
-const VideoEmbedModal = ({
-  editor,
-  onClose,
-}: {
-  editor: any;
-  onClose: () => void;
-}) => {
-  const [url, setUrl] = useState("");
-  const [caption, setCaption] = useState("");
-
-  const getEmbedUrl = (raw: string): string | null => {
-    const ytMatch = raw.match(
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/,
-    );
-
-    if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
-    const vimeoMatch = raw.match(/vimeo\.com\/(\d+)/);
-
-    if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
-    const loomMatch = raw.match(/loom\.com\/share\/([a-f0-9]+)/);
-
-    if (loomMatch) return `https://www.loom.com/embed/${loomMatch[1]}`;
-    if (raw.startsWith("http")) return raw;
-
-    return null;
-  };
-
-  const insert = () => {
-    const embedUrl = getEmbedUrl(url.trim());
-
-    if (embedUrl) {
-      const captionHtml = caption
-        ? `<p style="text-align:center;font-size:0.8rem;color:#9ca3af;margin-top:0.5rem">${caption}</p>`
-        : "";
-
-      editor
-        .chain()
-        .focus()
-        .insertContent(
-          `<div class="video-embed-wrapper" contenteditable="false">
-            <div class="video-embed-ratio">
-              <iframe src="${embedUrl}" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-            </div>
-            ${captionHtml}
-          </div><p></p>`,
-        )
-        .run();
-      onClose();
-    }
-  };
-
-  return (
-    <Modal title="Embed Video" onClose={onClose}>
-      <div className="space-y-3">
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Video URL (YouTube, Vimeo, Loom) *
-          </label>
-          <input
-            autoFocus
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="https://youtube.com/watch?v=..."
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && insert()}
-          />
-        </div>
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Caption (optional)
-          </label>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Add a caption…"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-          />
-        </div>
-        <div className="flex gap-2 pt-1">
-          <button
-            className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity"
-            disabled={!url.trim()}
-            style={{ background: "#FF5B04" }}
-            onClick={insert}
-          >
-            Embed Video
-          </button>
-          <button
-            className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-// ─── Link Modal ──────────────────────────────────────────────────────────────
-const LinkModal = ({
-  editor,
-  onClose,
-}: {
-  editor: any;
-  onClose: () => void;
-}) => {
-  const [url, setUrl] = useState("");
-  const [linkText, setLinkText] = useState("");
-  const [ctaType, setCtaType] = useState<"none" | "primary" | "secondary">(
-    "none",
-  );
-
-  useEffect(() => {
-    if (editor) {
-      const { from, to } = editor.state.selection;
-      const selectedText = editor.state.doc.textBetween(from, to, " ");
-
-      setLinkText(selectedText);
-
-      const attrs = editor.getAttributes("link");
-
-      if (attrs.href) {
-        setUrl(attrs.href);
-      }
-      if (attrs.class && attrs.class.includes("blog-cta-btn-secondary")) {
-        setCtaType("secondary");
-      } else if (attrs.class && attrs.class.includes("blog-cta-btn")) {
-        setCtaType("primary");
-      }
-    }
-  }, [editor]);
-
-  const insert = () => {
-    const trimmedUrl = url.trim();
-    const trimmedText = linkText.trim() || trimmedUrl;
-
-    if (trimmedUrl) {
-      if (ctaType === "primary") {
-        editor
-          .chain()
-          .focus()
-          .insertContent(
-            `<a href="${trimmedUrl}" class="blog-cta-btn">${trimmedText}</a> `,
-          )
-          .run();
-      } else if (ctaType === "secondary") {
-        editor
-          .chain()
-          .focus()
-          .insertContent(
-            `<a href="${trimmedUrl}" class="blog-cta-btn-secondary">${trimmedText}</a> `,
-          )
-          .run();
-      } else {
-        editor
-          .chain()
-          .focus()
-          .insertContent(`<a href="${trimmedUrl}">${trimmedText}</a>`)
-          .run();
-      }
-      onClose();
-    }
-  };
-
-  return (
-    <Modal title="Insert or Edit Link" onClose={onClose}>
-      <div className="space-y-4">
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Link Text *
-          </label>
-          <input
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="Text to display…"
-            value={linkText}
-            onChange={(e) => setLinkText(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="text-xs font-geist text-gray-500 mb-1 block">
-            Link URL *
-          </label>
-          <input
-            autoFocus
-            className="w-full text-sm font-geist bg-black/5 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-[#FF5B04]/30 placeholder-gray-300"
-            placeholder="https://example.com"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && insert()}
-          />
-        </div>
-        <div className="flex flex-col gap-2 select-none">
-          <label className="text-xs font-geist text-gray-600 font-semibold mb-1 block">
-            Link Style
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              checked={ctaType === "none"}
-              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
-              name="ctaType"
-              type="radio"
-              onChange={() => setCtaType("none")}
-            />
-            <span className="text-xs font-geist text-gray-700">
-              Standard Link
-            </span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              checked={ctaType === "primary"}
-              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
-              name="ctaType"
-              type="radio"
-              onChange={() => setCtaType("primary")}
-            />
-            <span className="text-xs font-geist text-gray-700">
-              Primary CTA Button (Orange)
-            </span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              checked={ctaType === "secondary"}
-              className="w-4 h-4 text-[#FF5B04] focus:ring-[#FF5B04] cursor-pointer"
-              name="ctaType"
-              type="radio"
-              onChange={() => setCtaType("secondary")}
-            />
-            <span className="text-xs font-geist text-gray-700">
-              Secondary CTA Button (Dark)
-            </span>
-          </label>
-        </div>
-        <div className="flex gap-2 pt-1">
-          <button
-            className="flex-1 h-10 rounded-xl text-sm font-geist font-medium text-white disabled:opacity-40 transition-opacity cursor-pointer"
-            disabled={!url.trim()}
-            style={{ background: "#FF5B04" }}
-            onClick={insert}
-          >
-            Save Link
-          </button>
-          <button
-            className="h-10 px-4 rounded-xl text-sm font-geist font-medium text-gray-600 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
 
 // ─── Custom Alert Modal ──────────────────────────────────────────────────────
 const AlertModal = ({
@@ -4867,434 +4555,7 @@ const SlashCommandMenu = ({
   );
 };
 
-// ─── Formatting Toolbar ───────────────────────────────────────────────────────
-const FormattingToolbar = ({
-  editor,
-  onLinkClick,
-  activePreset,
-  onPresetChange,
-  features,
-  postType,
-}: {
-  editor: any;
-  onLinkClick: () => void;
-  activePreset: string;
-  onPresetChange: (preset: string) => void;
-  features?: any;
-  postType?: string;
-}) => {
-  const [colorPaletteOpen, setColorPaletteOpen] = useState(false);
 
-  if (!editor) return null;
-
-  const btn = (active: boolean) =>
-    `px-2.5 py-1.5 rounded-lg transition-all font-semibold text-sm font-geist ${
-      active
-        ? "text-white"
-        : "text-gray-500 hover:bg-black/5 hover:text-gray-900"
-    }`;
-  const activeStyle = { background: "#FF5B04" };
-  const sep = <div className="w-px h-5 bg-black/10 mx-1" />;
-
-  const colors = [
-    { name: "Orange", value: "#FF5B04" },
-    { name: "Black", value: "#1A1A1A" },
-    { name: "Blue", value: "#1D4ED8" },
-    { name: "Green", value: "#15803D" },
-    { name: "Purple", value: "#6D28D9" },
-  ];
-
-  return (
-    <div
-      className="sticky top-0 z-10 backdrop-blur-md py-2 px-4 flex items-center gap-0.5 flex-wrap"
-      style={{
-        background: "rgba(255, 255, 255, 0.95)",
-        borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
-      }}
-    >
-      <button
-        className={btn(editor.isActive("bold"))}
-        style={editor.isActive("bold") ? activeStyle : {}}
-        title="Bold (Ctrl+B)"
-        onClick={() => editor.chain().focus().toggleBold().run()}
-      >
-        B
-      </button>
-      <button
-        className={btn(editor.isActive("italic"))}
-        style={editor.isActive("italic") ? activeStyle : {}}
-        title="Italic (Ctrl+I)"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-      >
-        <em>I</em>
-      </button>
-      <button
-        className={btn(editor.isActive("strike"))}
-        style={editor.isActive("strike") ? activeStyle : {}}
-        title="Strikethrough"
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-      >
-        <s>S</s>
-      </button>
-      {postType !== "social-post" && (
-        <>
-          <button
-            className={btn(editor.isActive("code"))}
-            style={editor.isActive("code") ? activeStyle : {}}
-            title="Inline code"
-            onClick={() => editor.chain().focus().toggleCode().run()}
-          >
-            {"<>"}
-          </button>
-          <button
-            className={btn(editor.isActive("highlight"))}
-            style={editor.isActive("highlight") ? activeStyle : {}}
-            title="Highlight"
-            onClick={() => editor.chain().focus().toggleHighlight().run()}
-          >
-            Mk
-          </button>
-        </>
-      )}
-
-      {/* Sleek Text Color Menu */}
-      {postType !== "social-post" && (
-        <div className="relative flex items-center">
-          <button
-            className={btn(colorPaletteOpen)}
-            style={colorPaletteOpen ? activeStyle : {}}
-            title="Text Color"
-            onClick={() => setColorPaletteOpen(!colorPaletteOpen)}
-          >
-            <span className="flex items-center gap-1">
-              A
-              <span
-                className="w-2.5 h-2.5 rounded-full border border-black/10"
-                style={{
-                  backgroundColor:
-                    editor.getAttributes("textStyle").color || "#1A1A1A",
-                }}
-              />
-            </span>
-          </button>
-          {colorPaletteOpen && (
-            <div className="absolute top-full left-0 mt-1 flex items-center gap-1.5 bg-white border border-black/10 shadow-lg rounded-xl p-2 z-50 animate-in fade-in duration-100">
-              {colors.map((c) => (
-                <button
-                  key={c.value}
-                  className="w-4 h-4 rounded-full border border-black/10 transition-transform hover:scale-125 cursor-pointer"
-                  style={{ backgroundColor: c.value }}
-                  title={c.name}
-                  onClick={() => {
-                    editor.chain().focus().setColor(c.value).run();
-                    setColorPaletteOpen(false);
-                  }}
-                />
-              ))}
-              <button
-                className="text-[10px] font-geist px-1.5 py-0.5 bg-black/5 hover:bg-black/10 rounded-md border border-black/10 text-gray-500 hover:text-black transition-colors cursor-pointer"
-                title="Reset Color"
-                onClick={() => {
-                  editor.chain().focus().unsetColor().run();
-                  setColorPaletteOpen(false);
-                }}
-              >
-                Reset
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      <button
-        className={btn(editor.isActive("link"))}
-        style={editor.isActive("link") ? activeStyle : {}}
-        title="Insert Link (Ctrl+K)"
-        onClick={onLinkClick}
-      >
-        <span className="flex items-center gap-1"><CosIcon name="link" size={12} /> Link</span>
-      </button>
-      {features?.affiliateLinks && (
-        <button
-          className={btn(false)}
-          title="Insert Affiliate Link"
-          onClick={() => {
-            const url = prompt("Enter Affiliate URL:");
-
-            if (url) {
-              editor
-                .chain()
-                .focus()
-                .setLink({
-                  href: url,
-                  target: "_blank",
-                  rel: "nofollow sponsored",
-                })
-                .run();
-            }
-          }}
-        >
-          <span className="flex items-center gap-1"><CosIcon name="conversion" size={12} /> Affiliate Link</span>
-        </button>
-      )}
-      {editor.isActive("link") && (
-        <button
-          className={btn(false)}
-          title="Remove Link"
-          onClick={() => editor.chain().focus().unsetLink().run()}
-        >
-          <span className="flex items-center gap-1">Unlink <CosIcon name="cross" size={12} /></span>
-        </button>
-      )}
-
-      {sep}
-      {postType !== "social-post" && (
-        <>
-          <button
-            className={btn(editor.isActive("heading", { level: 1 }))}
-            style={editor.isActive("heading", { level: 1 }) ? activeStyle : {}}
-            title="Heading 1"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-          >
-            H1
-          </button>
-          <button
-            className={btn(editor.isActive("heading", { level: 2 }))}
-            style={editor.isActive("heading", { level: 2 }) ? activeStyle : {}}
-            title="Heading 2"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-          >
-            H2
-          </button>
-          <button
-            className={btn(editor.isActive("heading", { level: 3 }))}
-            style={editor.isActive("heading", { level: 3 }) ? activeStyle : {}}
-            title="Heading 3"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
-          >
-            H3
-          </button>
-          {sep}
-          <button
-            className={btn(editor.isActive("bulletList"))}
-            style={editor.isActive("bulletList") ? activeStyle : {}}
-            title="Bullet List"
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-          >
-            • List
-          </button>
-          <button
-            className={btn(editor.isActive("orderedList"))}
-            style={editor.isActive("orderedList") ? activeStyle : {}}
-            title="Numbered List"
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          >
-            1. List
-          </button>
-          {sep}
-        </>
-      )}
-      {features?.taskLists && (
-        <button
-          className={btn(editor.isActive("taskList"))}
-          style={editor.isActive("taskList") ? activeStyle : {}}
-          title="Task List"
-          onClick={() => editor.chain().focus().toggleTaskList().run()}
-        >
-          <span className="flex items-center gap-1"><CosIcon name="tasks" size={12} /> Task List</span>
-        </button>
-      )}
-      {postType !== "social-post" && (
-        <button
-          className={btn(editor.isActive("blockquote"))}
-          style={editor.isActive("blockquote") ? activeStyle : {}}
-          title="Blockquote"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        >
-          &ldquo; Quote
-        </button>
-      )}
-      {features?.codeBlocks && (
-        <button
-          className={btn(editor.isActive("codeBlock"))}
-          style={editor.isActive("codeBlock") ? activeStyle : {}}
-          title="Code Block"
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        >
-          {"</>"}
-        </button>
-      )}
-      {postType !== "social-post" && (
-        <>
-          {sep}
-          <button
-            className={btn(false)}
-            title="Horizontal Rule"
-            onClick={() => editor.chain().focus().setHorizontalRule().run()}
-          >
-            —
-          </button>
-        </>
-      )}
-      {features?.tables && editor.isActive("table") && (
-        <>
-          {sep}
-          <div className="flex items-center gap-1 bg-orange-50/60 border border-orange-100 rounded-xl px-2 py-0.5">
-            <span className="text-[10px] font-bold font-jetbrains-mono text-[#FF5B04] uppercase tracking-wider mr-1">
-              Table Controls:
-            </span>
-
-            <button
-              className={btn(false)}
-              title="Add Row Above"
-              onClick={() => editor.chain().focus().addRowBefore().run()}
-            >
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              <span className="text-[10px] ml-1">Row ↑</span>
-            </button>
-
-            <button
-              className={btn(false)}
-              title="Add Row Below"
-              onClick={() => editor.chain().focus().addRowAfter().run()}
-            >
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              <span className="text-[10px] ml-1">Row ↓</span>
-            </button>
-
-            <button
-              className={btn(false)}
-              title="Delete Row"
-              onClick={() => editor.chain().focus().deleteRow().run()}
-            >
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M5 12h14" />
-              </svg>
-              <span className="text-[10px] ml-1">Row</span>
-            </button>
-
-            <div className="w-px h-4 bg-orange-200/50 mx-1" />
-
-            <button
-              className={btn(false)}
-              title="Add Column Before"
-              onClick={() => editor.chain().focus().addColumnBefore().run()}
-            >
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              <span className="text-[10px] ml-1">Col ←</span>
-            </button>
-
-            <button
-              className={btn(false)}
-              title="Add Column After"
-              onClick={() => editor.chain().focus().addColumnAfter().run()}
-            >
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              <span className="text-[10px] ml-1">Col →</span>
-            </button>
-
-            <button
-              className={btn(false)}
-              title="Delete Column"
-              onClick={() => editor.chain().focus().deleteColumn().run()}
-            >
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M5 12h14" />
-              </svg>
-              <span className="text-[10px] ml-1">Col</span>
-            </button>
-
-            <div className="w-px h-4 bg-orange-200/50 mx-1" />
-
-            <button
-              className={btn(false)}
-              title="Toggle Header Row"
-              onClick={() => editor.chain().focus().toggleHeaderRow().run()}
-            >
-              <span className="text-[10px]">H-Row</span>
-            </button>
-
-            <button
-              className={btn(false)}
-              title="Toggle Header Column"
-              onClick={() => editor.chain().focus().toggleHeaderColumn().run()}
-            >
-              <span className="text-[10px]">H-Col</span>
-            </button>
-
-            <button
-              className={btn(false)}
-              style={{ color: "#dc2626" }}
-              title="Delete Table"
-              onClick={() => editor.chain().focus().deleteTable().run()}
-            >
-              <svg
-                className="w-3.5 h-3.5 text-red-600"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 24"
-              >
-                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-              </svg>
-              <span className="text-[10px] ml-1">Delete</span>
-            </button>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
 
 // ─── Post Preview Panel ──────────────────────────────────────────────────────
 function slugifyHeading(text: string): string {
@@ -6308,7 +5569,8 @@ const BlogEditPage = () => {
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
       SelectionHighlight,
-      Image.configure({ inline: false, allowBase64: true }),
+      VideoEmbed,
+      CustomImage.configure({ inline: true, allowBase64: true }),
       Placeholder.configure({
         showOnlyWhenEditable: true,
         includeChildren: true,
@@ -6612,12 +5874,13 @@ const BlogEditPage = () => {
           const url = e.target?.result as string;
 
           editor.chain().focus().setImage({ src: url }).run();
+          setIsDirty(true);
         };
         reader.readAsDataURL(file);
       }
       event.target.value = "";
     },
-    [editor],
+    [editor, setIsDirty],
   );
 
   const handleBannerImageUpload = useCallback(
@@ -6695,7 +5958,7 @@ const BlogEditPage = () => {
 
       return;
     }
-    if (!editor || editor.isEmpty) {
+    if (isEditorContentEmpty(editor)) {
       setValidationError("Please add some content to your blog post.");
 
       return;
@@ -6713,7 +5976,7 @@ const BlogEditPage = () => {
 
       return;
     }
-    if (!editor || editor.isEmpty) {
+    if (isEditorContentEmpty(editor)) {
       setValidationError("Please add some content to your blog post.");
 
       return;
@@ -7399,16 +6662,18 @@ const BlogEditPage = () => {
         <ImageUrlModal
           editor={editor}
           onClose={() => setShowImageUrlModal(false)}
+          setIsDirty={setIsDirty}
         />
       )}
       {showVideoModal && (
         <VideoEmbedModal
           editor={editor}
           onClose={() => setShowVideoModal(false)}
+          setIsDirty={setIsDirty}
         />
       )}
       {showLinkModal && (
-        <LinkModal editor={editor} onClose={() => setShowLinkModal(false)} />
+        <LinkModal editor={editor} onClose={() => setShowLinkModal(false)} setIsDirty={setIsDirty} />
       )}
 
       {validationError && (
@@ -7556,7 +6821,7 @@ const BlogEditPage = () => {
         .notion-editor-wrapper .ProseMirror p.is-empty::before { color: #adb5bd; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
         .notion-editor-wrapper .ProseMirror p { line-height: 1.75; font-size: 1rem; color: #374151; margin: 0.5rem 0; }
         .notion-editor-wrapper .ProseMirror img { max-width: 100%; height: auto; border-radius: 12px; margin: 1.5rem auto; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .notion-editor-wrapper .ProseMirror hr { border: none; border-top: 2px solid rgba(0,0,0,0.08); margin: 2rem 0; border-radius: 4px; }
+        .notion-editor-wrapper .ProseMirror hr { clear: both; border: none; border-top: 2px solid rgba(0,0,0,0.08); margin: 2rem 0; border-radius: 4px; }
         .notion-editor-wrapper .ProseMirror ul, .notion-editor-wrapper .ProseMirror ol { padding-left: 1.5rem; margin: 1rem 0; }
         .notion-editor-wrapper .ProseMirror li { margin: 0.5rem 0; line-height: 1.75; }
         .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] { list-style: none; padding-left: 0; }
@@ -7572,6 +6837,8 @@ const BlogEditPage = () => {
         .notion-editor-wrapper .ProseMirror h1 { font-size: 2.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #111827; line-height: 1.2; }
         .notion-editor-wrapper .ProseMirror h2 { font-size: 1.875rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.875rem; color: #1f2937; line-height: 1.3; }
         .notion-editor-wrapper .ProseMirror h3 { font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #374151; line-height: 1.4; }
+        .notion-editor-wrapper .ProseMirror img.ProseMirror-selectednode { outline: 3px solid #FF5B04; outline-offset: 2px; }
+        .video-embed-wrapper.ProseMirror-selectednode { outline: 3px solid #FF5B04; outline-offset: 2px; border-radius: 12px; }
         .video-embed-wrapper { margin: 1.5rem 0; }
         .video-embed-ratio { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; background: #000; }
         .video-embed-ratio iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px; }
