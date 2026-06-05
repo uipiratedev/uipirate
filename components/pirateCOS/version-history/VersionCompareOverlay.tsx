@@ -145,6 +145,105 @@ const changeTypeLabel = (t: string) => {
   }
 };
 
+// ─── GitHub-style display rows ────────────────────────────────────────────────
+
+/** Lines of unchanged context shown above and below each change hunk. */
+const CONTEXT_LINES = 3;
+
+type DisplayRow =
+  | { kind: "context"; line: string; rowKey: string }
+  | { kind: "collapse"; hiddenCount: number; hunkId: string; rowKey: string }
+  | { kind: "removed"; line: string; rowKey: string }
+  | { kind: "added"; line: string; rowKey: string }
+  | {
+    kind: "pick-strip";
+    hunk: Hunk;
+    changeNum: number;
+    totalChanges: number;
+    rowKey: string;
+  };
+
+/**
+ * Convert raw hunks into a flat list of display rows.
+ * Unchanged hunks are split into:
+ *   • up to CONTEXT_LINES shown at top (after previous change)
+ *   • a single "collapse" row for hidden middle lines
+ *   • up to CONTEXT_LINES shown at bottom (before next change)
+ * Expanded hunks (tracked in `expandedHunks`) show all lines.
+ */
+function buildDisplayRows(
+  hunks: Hunk[],
+  expandedHunks: Set<string>,
+): DisplayRow[] {
+  const rows: DisplayRow[] = [];
+  let changeNum = 0;
+  const totalChanges = hunks.filter((h) => h.kind !== "unchanged").length;
+
+  for (let i = 0; i < hunks.length; i++) {
+    const h = hunks[i];
+
+    if (h.kind !== "unchanged") {
+      changeNum++;
+      rows.push({
+        kind: "pick-strip",
+        hunk: h,
+        changeNum,
+        totalChanges,
+        rowKey: `ps-${h.id}`,
+      });
+      // Removed lines go on the left; show one row per token
+      if (h.kind === "removed" || h.kind === "changed") {
+        h.oldLines.forEach((line, j) =>
+          rows.push({ kind: "removed", line, rowKey: `rem-${h.id}-${j}` }),
+        );
+      }
+      // Added lines go on the right; show one row per token
+      if (h.kind === "added" || h.kind === "changed") {
+        h.newLines.forEach((line, j) =>
+          rows.push({ kind: "added", line, rowKey: `add-${h.id}-${j}` }),
+        );
+      }
+      continue;
+    }
+
+    // ── Unchanged hunk: apply context collapsing ──────────────────────────
+    const lines = h.oldLines; // identical to newLines for "unchanged"
+    const hasPrev = i > 0;
+    const hasNext = i < hunks.length - 1;
+    const showFirst = hasPrev ? CONTEXT_LINES : 0;
+    const showLast = hasNext ? CONTEXT_LINES : 0;
+
+    if (expandedHunks.has(h.id) || lines.length <= showFirst + showLast) {
+      // Show everything — hunk is small or the user expanded it
+      lines.forEach((line, j) =>
+        rows.push({ kind: "context", line, rowKey: `ctx-${h.id}-${j}` }),
+      );
+    } else {
+      // Top context (after previous change)
+      lines
+        .slice(0, showFirst)
+        .forEach((line, j) =>
+          rows.push({ kind: "context", line, rowKey: `top-${h.id}-${j}` }),
+        );
+      // Collapse indicator
+      rows.push({
+        kind: "collapse",
+        hiddenCount: lines.length - showFirst - showLast,
+        hunkId: h.id,
+        rowKey: `col-${h.id}`,
+      });
+      // Bottom context (before next change)
+      lines
+        .slice(lines.length - showLast)
+        .forEach((line, j) =>
+          rows.push({ kind: "context", line, rowKey: `bot-${h.id}-${j}` }),
+        );
+    }
+  }
+
+  return rows;
+}
+
 
 export default function VersionCompareOverlay({
   postId,
@@ -170,6 +269,15 @@ export default function VersionCompareOverlay({
     Record<string, "current" | "historical">
   >({});
   const [applying, setApplying] = useState(false);
+  const [expandedHunks, setExpandedHunks] = useState<Set<string>>(new Set());
+
+  const expandHunk = (id: string) =>
+    setExpandedHunks((prev) => new Set([...prev, id]));
+
+  const displayRows = useMemo(
+    () => buildDisplayRows(hunks, expandedHunks),
+    [hunks, expandedHunks],
+  );
 
   const setPick = (id: string, side: "current" | "historical") =>
     setSelections((s) => ({ ...s, [id]: side }));
@@ -254,6 +362,11 @@ export default function VersionCompareOverlay({
     (s) => s === "historical",
   ).length;
   const changeableHunks = hunks.filter((h) => h.kind !== "unchanged").length;
+  const isIdentical = hunks.length > 0 && changeableHunks === 0;
+  const bothEmpty =
+    hunks.length === 0 &&
+    !version.snapshot &&
+    !currentContent;
 
   return (
     <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
@@ -284,19 +397,30 @@ export default function VersionCompareOverlay({
                 {version.commitMessage}
               </p>
             )}
-            <div className="flex items-center gap-3 text-xs text-gray-500 font-geist mt-1">
+            <div className="flex items-center gap-3 text-xs text-gray-500 font-geist mt-1 flex-wrap">
               <span>{new Date(version.timestamp).toLocaleString()}</span>
               <span>•</span>
-              <span className="font-jetbrains-mono text-green-600">
-                +{stats.added}
-              </span>
-              <span className="font-jetbrains-mono text-red-600">
-                -{stats.removed}
-              </span>
-              <span>•</span>
-              <span>
-                {changeableHunks} hunk{changeableHunks === 1 ? "" : "s"}
-              </span>
+              {isIdentical || bothEmpty ? (
+                <span className="font-semibold text-blue-600 flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {bothEmpty ? "Both sides empty" : "Identical to current draft"}
+                </span>
+              ) : (
+                <>
+                  <span className="font-jetbrains-mono text-green-600">
+                    +{stats.added} added
+                  </span>
+                  <span className="font-jetbrains-mono text-red-600">
+                    -{stats.removed} removed
+                  </span>
+                  <span>•</span>
+                  <span>
+                    {changeableHunks} hunk{changeableHunks === 1 ? "" : "s"}
+                  </span>
+                </>
+              )}
             </div>
           </div>
           <button
@@ -308,35 +432,229 @@ export default function VersionCompareOverlay({
           </button>
         </div>
 
-        {/* Split panes */}
-        <div className="flex-1 grid grid-cols-2 overflow-hidden">
-          <div className="border-r border-gray-200 overflow-auto bg-red-50/20">
-            <div className="px-4 py-2 sticky top-0 bg-white border-b border-gray-200 z-10">
-              <p className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-red-700">
-                Historical · v{version.version}
+        {/* ── Diff body ─────────────────────────────────────────────────── */}
+        {bothEmpty ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center text-gray-400 font-geist">
+              <p className="text-4xl mb-3">📭</p>
+              <p className="font-semibold text-gray-600">Both sides are empty</p>
+              <p className="text-sm mt-1">
+                The historical snapshot and current draft both contain no content.
               </p>
             </div>
-            <div className="p-4 space-y-1">
-              {hunks.map((h) => renderPane(h, "old", selections, setPick))}
-            </div>
           </div>
-          <div className="overflow-auto bg-green-50/20">
-            <div className="px-4 py-2 sticky top-0 bg-white border-b border-gray-200 z-10">
-              <p className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-green-700">
-                Current Draft
+        ) : isIdentical ? (
+          /* ── Identical state: show content with blue banner ── */
+          <div className="flex-1 overflow-hidden flex flex-col">
+            <div className="px-6 py-3 bg-blue-50 border-b border-blue-200 flex items-center gap-2">
+              <svg
+                className="w-4 h-4 text-blue-600 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <p className="text-sm font-semibold font-geist text-blue-800">
+                This version&apos;s content is identical to your current draft.
+              </p>
+              <p className="text-xs text-blue-600 font-geist ml-1">
+                No changes have been made since this snapshot was saved.
               </p>
             </div>
-            <div className="p-4 space-y-1">
-              {hunks.map((h) => renderPane(h, "new", selections, setPick))}
+            <div className="flex-1 grid grid-cols-2 overflow-hidden">
+              <div className="border-r border-gray-200 overflow-auto">
+                <div className="px-4 py-2 sticky top-0 bg-white border-b border-gray-200 z-10">
+                  <p className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
+                    Historical · v{version.version}
+                  </p>
+                </div>
+                <div
+                  className="p-4 prose prose-sm max-w-none text-gray-700 font-geist"
+                  dangerouslySetInnerHTML={{ __html: version.snapshot }}
+                />
+              </div>
+              <div className="overflow-auto">
+                <div className="px-4 py-2 sticky top-0 bg-white border-b border-gray-200 z-10">
+                  <p className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-gray-500">
+                    Current Draft
+                  </p>
+                </div>
+                <div
+                  className="p-4 prose prose-sm max-w-none text-gray-700 font-geist"
+                  dangerouslySetInnerHTML={{ __html: currentContent }}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          /* ── GitHub-style hunk view ── */
+          <div className="flex-1 overflow-auto">
+            {/* Sticky column headers */}
+            <div className="grid grid-cols-2 sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
+              <div className="px-4 py-2 border-r border-gray-200 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
+                <span className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-red-600">
+                  Historical · v{version.version}
+                </span>
+              </div>
+              <div className="px-4 py-2 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+                <span className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-green-600">
+                  Current Draft
+                </span>
+              </div>
+            </div>
+
+            {/* Diff rows */}
+            {displayRows.map((row) => {
+              /* ── Collapse indicator ── */
+              if (row.kind === "collapse") {
+                return (
+                  <div
+                    key={row.rowKey}
+                    className="flex items-center gap-3 px-4 py-2 bg-gray-50 border-y border-gray-200 select-none"
+                  >
+                    <span className="text-gray-300 font-jetbrains-mono text-sm leading-none">
+                      ⋯
+                    </span>
+                    <span className="text-xs font-jetbrains-mono text-gray-400">
+                      {row.hiddenCount} unchanged{" "}
+                      {row.hiddenCount === 1 ? "block" : "blocks"} hidden
+                    </span>
+                    <button
+                      onClick={() => expandHunk(row.hunkId)}
+                      className="text-[11px] font-semibold font-geist text-blue-600 hover:text-blue-800 underline underline-offset-2 transition-colors"
+                    >
+                      Show all
+                    </button>
+                    <span className="text-gray-300 font-jetbrains-mono text-sm leading-none">
+                      ⋯
+                    </span>
+                  </div>
+                );
+              }
+
+              /* ── Pick-strip (hunk header) ── */
+              if (row.kind === "pick-strip") {
+                const h = row.hunk;
+                const picked = selections[h.id] === "historical";
+                const kindLabel =
+                  h.kind === "added"
+                    ? "addition"
+                    : h.kind === "removed"
+                      ? "deletion"
+                      : "change";
+                return (
+                  <div
+                    key={row.rowKey}
+                    className="flex items-center gap-3 px-4 py-1.5 bg-gray-100 border-y border-gray-300"
+                  >
+                    <span className="text-[10px] font-jetbrains-mono text-gray-400 select-none shrink-0">
+                      @@ {kindLabel} {row.changeNum}/{row.totalChanges}
+                    </span>
+                    <div className="ml-auto flex items-center gap-1.5 shrink-0">
+                      <button
+                        onClick={() => setPick(h.id, "historical")}
+                        className={`text-[11px] font-semibold font-geist px-2.5 py-0.5 rounded border transition-colors ${picked
+                          ? "bg-red-600 text-white border-red-600"
+                          : "text-red-700 border-red-300 bg-white hover:bg-red-50"
+                          }`}
+                      >
+                        Use Historical
+                      </button>
+                      <button
+                        onClick={() => setPick(h.id, "current")}
+                        className={`text-[11px] font-semibold font-geist px-2.5 py-0.5 rounded border transition-colors ${!picked
+                          ? "bg-green-600 text-white border-green-600"
+                          : "text-green-700 border-green-300 bg-white hover:bg-green-50"
+                          }`}
+                      >
+                        Keep Current
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+
+              /* ── Unchanged context ── */
+              if (row.kind === "context") {
+                return (
+                  <div
+                    key={row.rowKey}
+                    className="grid grid-cols-2 border-b border-gray-100"
+                  >
+                    <div
+                      className="px-4 py-1.5 border-r border-gray-100 text-sm font-geist text-gray-400 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden"
+                      dangerouslySetInnerHTML={{ __html: row.line }}
+                    />
+                    <div
+                      className="px-4 py-1.5 text-sm font-geist text-gray-400 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden"
+                      dangerouslySetInnerHTML={{ __html: row.line }}
+                    />
+                  </div>
+                );
+              }
+
+              /* ── Removed line (left column only) ── */
+              if (row.kind === "removed") {
+                return (
+                  <div
+                    key={row.rowKey}
+                    className="grid grid-cols-2 border-b border-red-100"
+                  >
+                    <div
+                      className="px-4 py-1.5 border-r border-red-200 bg-red-50 text-sm font-geist text-red-900 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden"
+                      dangerouslySetInnerHTML={{ __html: row.line }}
+                    />
+                    <div
+                      className="bg-gray-50 border-r-0"
+                      style={{
+                        backgroundImage:
+                          "repeating-linear-gradient(135deg,transparent,transparent 5px,rgba(0,0,0,0.04) 5px,rgba(0,0,0,0.04) 10px)",
+                      }}
+                    />
+                  </div>
+                );
+              }
+
+              /* ── Added line (right column only) ── */
+              if (row.kind === "added") {
+                return (
+                  <div
+                    key={row.rowKey}
+                    className="grid grid-cols-2 border-b border-green-100"
+                  >
+                    <div
+                      className="border-r border-green-200 bg-gray-50"
+                      style={{
+                        backgroundImage:
+                          "repeating-linear-gradient(135deg,transparent,transparent 5px,rgba(0,0,0,0.04) 5px,rgba(0,0,0,0.04) 10px)",
+                      }}
+                    />
+                    <div
+                      className="px-4 py-1.5 bg-green-50 text-sm font-geist text-green-900 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden"
+                      dangerouslySetInnerHTML={{ __html: row.line }}
+                    />
+                  </div>
+                );
+              }
+
+              return null;
+            })}
+          </div>
+        )}
 
         {/* Footer */}
         <div className="px-6 py-3 border-t border-gray-200 flex items-center justify-between gap-3 bg-gray-50">
           <div className="text-xs text-gray-600 font-geist">
-            {changeableHunks === 0 ? (
-              <span>No differences between this version and the current draft.</span>
+            {isIdentical || bothEmpty ? (
+              <span className="text-blue-600 font-medium">
+                {bothEmpty
+                  ? "Both sides are empty."
+                  : "Content is identical — no changes to pick. You can still restore this version as a new entry."}
+              </span>
             ) : (
               <span>
                 <span className="font-semibold font-jetbrains-mono text-gray-900">
@@ -358,22 +676,24 @@ export default function VersionCompareOverlay({
             >
               Cancel
             </button>
-            <button
-              onClick={restoreFull}
-              disabled={applying || changeableHunks === 0}
-              className="px-3 py-1.5 text-xs font-semibold font-geist text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg border border-purple-200 disabled:opacity-50"
-            >
-              {applying ? "Working..." : "Restore Full Version"}
-            </button>
-            <button
-              onClick={applySelective}
-              disabled={applying || pickedCount === 0}
-              className="px-3 py-1.5 text-xs font-semibold font-geist text-white bg-[#FF5B04] hover:opacity-90 rounded-lg disabled:opacity-50"
-            >
-              {applying
-                ? "Applying..."
-                : `Apply Picked (${pickedCount})`}
-            </button>
+            {!bothEmpty && (
+              <button
+                onClick={restoreFull}
+                disabled={applying}
+                className="px-3 py-1.5 text-xs font-semibold font-geist text-purple-700 bg-purple-50 hover:bg-purple-100 rounded-lg border border-purple-200 disabled:opacity-50"
+              >
+                {applying ? "Working..." : "Restore Full Version"}
+              </button>
+            )}
+            {!isIdentical && !bothEmpty && (
+              <button
+                onClick={applySelective}
+                disabled={applying || pickedCount === 0}
+                className="px-3 py-1.5 text-xs font-semibold font-geist text-white bg-[#FF5B04] hover:opacity-90 rounded-lg disabled:opacity-50"
+              >
+                {applying ? "Applying..." : `Apply Picked (${pickedCount})`}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -381,75 +701,4 @@ export default function VersionCompareOverlay({
   );
 }
 
-function renderPane(
-  h: Hunk,
-  side: "old" | "new",
-  selections: Record<string, "current" | "historical">,
-  setPick: (id: string, side: "current" | "historical") => void,
-) {
-  const isOld = side === "old";
-  const lines = isOld ? h.oldLines : h.newLines;
-  if (h.kind === "unchanged") {
-    return (
-      <div key={`${side}-${h.id}`} className="opacity-60 px-2">
-        <div
-          className="prose prose-sm max-w-none text-gray-700 font-geist"
-          dangerouslySetInnerHTML={{ __html: lines.join("\n") }}
-        />
-      </div>
-    );
-  }
 
-  // For changed/added/removed hunks: show a picker on the side that has content
-  const picked = selections[h.id] === "historical";
-  const showOnThisSide =
-    (isOld && h.oldLines.length > 0) || (!isOld && h.newLines.length > 0);
-  if (!showOnThisSide) {
-    return (
-      <div
-        key={`${side}-${h.id}`}
-        className="text-[10px] font-jetbrains-mono italic text-gray-400 px-2 py-2 border border-dashed border-gray-200 rounded-md"
-      >
-        (no content on this side)
-      </div>
-    );
-  }
-  const tone = isOld
-    ? "bg-red-50 border-red-200 text-red-900"
-    : "bg-green-50 border-green-200 text-green-900";
-  return (
-    <div
-      key={`${side}-${h.id}`}
-      className={`border rounded-md ${tone} ${picked && isOld ? "ring-2 ring-red-400" : ""} ${!picked && !isOld ? "ring-2 ring-green-400" : ""}`}
-    >
-      <div className="flex items-center justify-between px-2 py-1 border-b border-current/10">
-        <span className="text-[10px] font-jetbrains-mono font-bold uppercase tracking-wider">
-          {isOld ? "− Historical" : "+ Current"}
-        </span>
-        <button
-          onClick={() => setPick(h.id, isOld ? "historical" : "current")}
-          className={`text-[10px] font-semibold font-geist px-2 py-0.5 rounded border ${(isOld && picked) || (!isOld && !picked)
-            ? "bg-white border-current/30"
-            : "bg-transparent border-current/20 opacity-70 hover:opacity-100"
-            }`}
-        >
-          {(isOld && picked) || (!isOld && !picked) ? "Picked" : "Pick this"}
-        </button>
-      </div>
-      <div className="p-2 space-y-1">
-        <div
-          className="prose prose-sm max-w-none font-geist"
-          dangerouslySetInnerHTML={{ __html: lines.join("\n") }}
-        />
-        <details className="mt-1">
-          <summary className="text-[10px] font-jetbrains-mono cursor-pointer opacity-60 hover:opacity-100">
-            view source
-          </summary>
-          <pre className="text-[10px] font-jetbrains-mono whitespace-pre-wrap break-all bg-white/60 rounded p-1 mt-1 border border-current/10">
-            {lines.join("\n")}
-          </pre>
-        </details>
-      </div>
-    </div>
-  );
-}
