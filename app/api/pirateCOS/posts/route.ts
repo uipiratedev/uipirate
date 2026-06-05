@@ -5,6 +5,7 @@ import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
+import type { IContentHistory } from "@/models/pirateCOS/ContentHistory";
 
 interface PostQuery {
   tenantId?: mongoose.Types.ObjectId;
@@ -115,7 +116,16 @@ export async function POST(request: NextRequest) {
       slug: providedSlug,
       seo,
       teamId, // Phase 5.4+: Team assignment
-    } = body;
+      // Phase 4F.2: optional version-tracking metadata
+      changeType: bodyChangeType,
+      commitMessage: bodyCommitMessage,
+      aiMetadata: bodyAiMetadata,
+    } = body as {
+      [key: string]: any;
+      changeType?: IContentHistory["changeType"];
+      commitMessage?: string;
+      aiMetadata?: IContentHistory["aiMetadata"];
+    };
 
     let slug =
       providedSlug ||
@@ -159,17 +169,21 @@ export async function POST(request: NextRequest) {
     await blog.save();
 
     // Phase 4F.2: Create initial version snapshot
+    const initialChangeType: IContentHistory["changeType"] =
+      bodyChangeType ?? "manual";
+    const isAiInitial = initialChangeType.startsWith("ai-");
     try {
       await createSnapshot(
         blog._id.toString(),
-        blog.content,
+        blog.content ?? "",
         user.tenantId.toString(),
-        user.id,
-        "manual",
+        isAiInitial ? "ai" : user.id,
+        initialChangeType,
         {
           title: blog.title,
           postType: blog.postType,
-          commitMessage: "Initial post creation",
+          commitMessage: bodyCommitMessage ?? "Initial post creation",
+          aiMetadata: bodyAiMetadata,
         }
       );
     } catch (versionError) {

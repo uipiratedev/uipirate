@@ -8,12 +8,14 @@ interface VersionHistoryButtonProps {
   postId: string;
   variant?: "default" | "icon" | "panel";
   className?: string;
+  currentContent?: string;
 }
 
 export default function VersionHistoryButton({
   postId,
   variant = "default",
   className = "",
+  currentContent,
 }: VersionHistoryButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -24,7 +26,13 @@ export default function VersionHistoryButton({
 
   // Panel variant - renders inline without modal
   if (variant === "panel") {
-    return <VersionHistoryPanel postId={postId} onRestore={handleRestore} />;
+    return (
+      <VersionHistoryPanel
+        postId={postId}
+        onRestore={handleRestore}
+        currentContent={currentContent}
+      />
+    );
   }
 
   if (variant === "icon") {
@@ -54,6 +62,7 @@ export default function VersionHistoryButton({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onRestore={handleRestore}
+          currentContent={currentContent}
         />
       </>
     );
@@ -85,6 +94,7 @@ export default function VersionHistoryButton({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onRestore={handleRestore}
+        currentContent={currentContent}
       />
     </>
   );

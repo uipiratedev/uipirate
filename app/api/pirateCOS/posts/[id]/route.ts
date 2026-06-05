@@ -5,6 +5,7 @@ import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
+import type { IContentHistory } from "@/models/pirateCOS/ContentHistory";
 
 interface PostUpdateData {
   title?: string;
@@ -33,6 +34,10 @@ interface PostUpdateData {
   };
   repurposedOutputs?: Record<string, string>;
   aiWorkspaceSession?: any;
+  // Phase 4F.2: optional version-tracking metadata
+  changeType?: IContentHistory["changeType"];
+  commitMessage?: string;
+  aiMetadata?: IContentHistory["aiMetadata"];
 }
 
 
@@ -129,6 +134,9 @@ export async function PUT(
       repurposedOutputs,
       aiWorkspaceSession,
       teamId, // Phase 5.4+: Team assignment
+      changeType: bodyChangeType, // Phase 4F.2
+      commitMessage: bodyCommitMessage, // Phase 4F.2
+      aiMetadata: bodyAiMetadata, // Phase 4F.2
     } = body;
 
 
@@ -179,6 +187,11 @@ export async function PUT(
       blog.slug = customSlug;
     }
 
+    // Phase 4F.2: Capture the previous content BEFORE mutation so we can
+    // detect a real change after save (and avoid the no-op snapshot bug
+    // where blog.content has already been overwritten).
+    const previousContent = blog.content ?? "";
+
     if (content !== undefined) blog.content = content;
     if (excerpt !== undefined) blog.excerpt = excerpt;
     if (featuredImage !== undefined) blog.featuredImage = featuredImage;
@@ -214,19 +227,27 @@ export async function PUT(
 
     await blog.save();
 
-    // Phase 4F.2: Create version snapshot when content changes
-    if (content !== undefined && content !== blog.content) {
+    // Phase 4F.2: Create version snapshot only when content actually changed.
+    // Compare against the pre-mutation `previousContent` (the old buggy check
+    // compared against `blog.content`, which had already been reassigned).
+    if (content !== undefined && content !== previousContent) {
+      const updateChangeType: IContentHistory["changeType"] =
+        bodyChangeType ?? "manual";
+      const isAiUpdate = updateChangeType.startsWith("ai-");
       try {
         await createSnapshot(
           id,
           blog.content,
           user.tenantId.toString(),
-          user.id,
-          "manual",
+          isAiUpdate ? "ai" : user.id,
+          updateChangeType,
           {
             title: blog.title,
             postType: blog.postType,
-            commitMessage: "Manual content update",
+            commitMessage:
+              bodyCommitMessage ??
+              (isAiUpdate ? "AI content update" : "Manual content update"),
+            aiMetadata: bodyAiMetadata,
           }
         );
       } catch (versionError) {
