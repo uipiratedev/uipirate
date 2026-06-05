@@ -44,6 +44,19 @@ export async function createSnapshot(
     .sort({ version: -1 })
     .select("version snapshot");
 
+  // Skip duplicate snapshots: if content is identical to the latest version,
+  // return the existing version instead of creating a redundant entry.
+  // This guards against frequent autosaves / no-op PATCH calls.
+  if (latestVersion && latestVersion.snapshot === content) {
+    const existing = await ContentHistory.findOne({
+      postId,
+      version: latestVersion.version,
+    });
+    if (existing) {
+      return existing;
+    }
+  }
+
   const newVersion = latestVersion ? latestVersion.version + 1 : 1;
 
   // Calculate diff if there's a previous version

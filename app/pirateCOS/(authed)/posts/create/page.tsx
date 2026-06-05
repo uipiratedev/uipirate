@@ -51,6 +51,7 @@ import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomImage } from "@/components/pirateCOS/editor";
 import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
+import { compressImage } from "@/utils/imageCompressor";
 
 const isEditorContentEmpty = (editor: any): boolean => {
   if (!editor) return true;
@@ -5471,19 +5472,24 @@ const BlogEditor = () => {
 
   // Inline image upload handler (from the + toolbar)
   const handleInlineImageUpload = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
 
       if (file && editor) {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          const url = e.target?.result as string;
-
-          editor.chain().focus().setImage({ src: url }).run();
+        try {
+          const compressedUrl = await compressImage(file);
+          editor.chain().focus().setImage({ src: compressedUrl }).run();
           setIsDirty(true);
-        };
-        reader.readAsDataURL(file);
+        } catch (error) {
+          console.error("Image compression failed, falling back to original:", error);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const url = e.target?.result as string;
+            editor.chain().focus().setImage({ src: url }).run();
+            setIsDirty(true);
+          };
+          reader.readAsDataURL(file);
+        }
       }
       // Reset so same file can be re-selected
       event.target.value = "";
@@ -5492,19 +5498,24 @@ const BlogEditor = () => {
   );
 
   const handleBannerImageUpload = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
 
       if (file) {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          const url = e.target?.result as string;
-
-          setFeaturedImage(url);
-          setBannerImage(url);
-        };
-        reader.readAsDataURL(file);
+        try {
+          const compressedUrl = await compressImage(file);
+          setFeaturedImage(compressedUrl);
+          setBannerImage(compressedUrl);
+        } catch (error) {
+          console.error("Banner image compression failed, falling back to original:", error);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const url = e.target?.result as string;
+            setFeaturedImage(url);
+            setBannerImage(url);
+          };
+          reader.readAsDataURL(file);
+        }
       }
     },
     [],
@@ -6628,32 +6639,37 @@ const BlogEditor = () => {
                 </label>
               </div>
             ) : (
-              <label className="flex items-center gap-2 px-4 lg:px-10 pt-6 pb-2 cursor-pointer group w-fit">
-                <svg
-                  className="group-hover:stroke-[#FF5B04] transition-colors"
-                  fill="none"
-                  height="16"
-                  stroke="#d1d5db"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                  viewBox="0 0 24 24"
-                  width="16"
-                >
-                  <rect height="18" rx="2" width="18" x="3" y="3" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <polyline points="21 15 16 10 5 21" />
-                </svg>
-                <span className="text-xs font-geist text-gray-300 group-hover:text-[#FF5B04] transition-colors">
-                  Add cover image
-                </span>
-                <input
-                  accept="image/*"
-                  className="hidden"
-                  type="file"
-                  onChange={handleBannerImageUpload}
-                />
-              </label>
+              <div className="flex flex-col gap-1 px-4 lg:px-10 pt-6 pb-2">
+                <label className="flex items-center gap-2 cursor-pointer group w-fit">
+                  <svg
+                    className="group-hover:stroke-[#FF5B04] transition-colors"
+                    fill="none"
+                    height="16"
+                    stroke="#d1d5db"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.75"
+                    viewBox="0 0 24 24"
+                    width="16"
+                  >
+                    <rect height="18" rx="2" width="18" x="3" y="3" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <polyline points="21 15 16 10 5 21" />
+                  </svg>
+                  <span className="text-xs font-geist text-gray-300 group-hover:text-[#FF5B04] transition-colors">
+                    Add cover image
+                  </span>
+                  <input
+                    accept="image/*"
+                    className="hidden"
+                    type="file"
+                    onChange={handleBannerImageUpload}
+                  />
+                </label>
+                <p className="text-[10px] font-geist text-gray-400 select-none">
+                  Supports JPG, PNG, WebP up to 5MB. Images larger than 200KB are auto-compressed for performance.
+                </p>
+              </div>
             )}
 
             {/* Title */}

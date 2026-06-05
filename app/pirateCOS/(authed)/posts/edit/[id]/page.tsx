@@ -49,6 +49,7 @@ import { ContentSettingsPanel } from "@/components/pirateCOS/content-settings";
 import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomImage, FormattingToolbar } from "@/components/pirateCOS/editor";
 import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
+import { compressImage } from "@/utils/imageCompressor";
 
 const isEditorContentEmpty = (editor: any): boolean => {
   if (!editor) return true;
@@ -195,7 +196,7 @@ const SEOEditorModal = ({
     const models = getModelsForEngine(nextEngine);
     const nextModel =
       config.defaultModel &&
-      models.some((m) => m.id === config.defaultModel)
+        models.some((m) => m.id === config.defaultModel)
         ? config.defaultModel
         : registryGetDefaultModel(nextEngine);
 
@@ -288,7 +289,7 @@ const SEOEditorModal = ({
         stats.keywordDensity +
         stats.mobileReadiness +
         stats.semanticRichness) /
-        4,
+      4,
     );
 
     return stats;
@@ -356,8 +357,8 @@ const SEOEditorModal = ({
       if (apiAction === "tags") {
         const nextKeywords = Array.isArray(aiData)
           ? aiData
-              .filter((item) => typeof item === "string" && item.trim())
-              .map((item) => item.trim())
+            .filter((item) => typeof item === "string" && item.trim())
+            .map((item) => item.trim())
           : [];
 
         if (!nextKeywords.length) {
@@ -376,32 +377,32 @@ const SEOEditorModal = ({
       const nextAnalysis =
         aiData?.analysis && typeof aiData.analysis === "object"
           ? {
-              score:
-                typeof aiData.analysis.score === "number"
-                  ? Math.max(0, Math.min(100, aiData.analysis.score))
-                  : perfStats.overallScore,
-              strengths: Array.isArray(aiData.analysis.strengths)
-                ? aiData.analysis.strengths
-                : [],
-              improvements: Array.isArray(aiData.analysis.improvements)
-                ? aiData.analysis.improvements
-                : [],
-              keywordGap: Array.isArray(aiData.analysis.keywordGap)
-                ? aiData.analysis.keywordGap
-                : [],
-              headingStructure:
-                typeof aiData.analysis.headingStructure === "string"
-                  ? aiData.analysis.headingStructure
-                  : "Heading structure review unavailable.",
-              readability:
-                typeof aiData.analysis.readability === "string"
-                  ? aiData.analysis.readability
-                  : "Readability review unavailable.",
-              imageOptimization:
-                typeof aiData.analysis.imageOptimization === "string"
-                  ? aiData.analysis.imageOptimization
-                  : "",
-            }
+            score:
+              typeof aiData.analysis.score === "number"
+                ? Math.max(0, Math.min(100, aiData.analysis.score))
+                : perfStats.overallScore,
+            strengths: Array.isArray(aiData.analysis.strengths)
+              ? aiData.analysis.strengths
+              : [],
+            improvements: Array.isArray(aiData.analysis.improvements)
+              ? aiData.analysis.improvements
+              : [],
+            keywordGap: Array.isArray(aiData.analysis.keywordGap)
+              ? aiData.analysis.keywordGap
+              : [],
+            headingStructure:
+              typeof aiData.analysis.headingStructure === "string"
+                ? aiData.analysis.headingStructure
+                : "Heading structure review unavailable.",
+            readability:
+              typeof aiData.analysis.readability === "string"
+                ? aiData.analysis.readability
+                : "Readability review unavailable.",
+            imageOptimization:
+              typeof aiData.analysis.imageOptimization === "string"
+                ? aiData.analysis.imageOptimization
+                : "",
+          }
           : null;
 
       setAnalysis(nextAnalysis);
@@ -413,7 +414,7 @@ const SEOEditorModal = ({
             : prev?.metaTitle,
         metaDescription:
           typeof aiData?.metaDescription === "string" &&
-          aiData.metaDescription.trim()
+            aiData.metaDescription.trim()
             ? aiData.metaDescription.trim()
             : prev?.metaDescription,
         focusKeyword:
@@ -422,10 +423,10 @@ const SEOEditorModal = ({
             : prev?.focusKeyword,
         keywords: Array.isArray(aiData?.semanticKeywords)
           ? aiData.semanticKeywords
-              .filter(
-                (item: unknown) => typeof item === "string" && item.trim(),
-              )
-              .map((item: string) => item.trim())
+            .filter(
+              (item: unknown) => typeof item === "string" && item.trim(),
+            )
+            .map((item: string) => item.trim())
           : prev?.keywords,
         ogTitle:
           typeof aiData?.ogTitle === "string" && aiData.ogTitle.trim()
@@ -433,7 +434,7 @@ const SEOEditorModal = ({
             : prev?.ogTitle,
         ogDescription:
           typeof aiData?.ogDescription === "string" &&
-          aiData.ogDescription.trim()
+            aiData.ogDescription.trim()
             ? aiData.ogDescription.trim()
             : prev?.ogDescription,
       }));
@@ -467,11 +468,10 @@ const SEOEditorModal = ({
       onClick={onClose}
     >
       <div
-        className={`bg-white shadow-2xl flex flex-col overflow-hidden transition-all duration-500 ease-in-out ${
-          isFullscreen
-            ? "w-full h-full rounded-none"
-            : "w-full max-w-6xl h-[90vh] rounded-[32px]"
-        } animate-in fade-in zoom-in duration-300`}
+        className={`bg-white shadow-2xl flex flex-col overflow-hidden transition-all duration-500 ease-in-out ${isFullscreen
+          ? "w-full h-full rounded-none"
+          : "w-full max-w-6xl h-[90vh] rounded-[32px]"
+          } animate-in fade-in zoom-in duration-300`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 border-b border-black/5 flex items-center justify-between bg-gray-50/50">
@@ -607,11 +607,10 @@ const SEOEditorModal = ({
             ].map((tab) => (
               <button
                 key={tab.id}
-                className={`flex items-center gap-2 px-4 md:px-6 py-4 text-sm font-semibold transition-all relative whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? "text-[#FF5B04]"
-                    : "text-gray-400 hover:text-gray-600"
-                }`}
+                className={`flex items-center gap-2 px-4 md:px-6 py-4 text-sm font-semibold transition-all relative whitespace-nowrap ${activeTab === tab.id
+                  ? "text-[#FF5B04]"
+                  : "text-gray-400 hover:text-gray-600"
+                  }`}
                 onClick={() => setActiveTab(tab.id as ModalTab)}
               >
                 {tab.icon}
@@ -684,12 +683,11 @@ const SEOEditorModal = ({
                             Meta Title
                           </label>
                           <span
-                            className={`text-[10px] font-bold font-jetbrains-mono ${
-                              data?.metaTitle?.length &&
+                            className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaTitle?.length &&
                               data.metaTitle.length > 60
-                                ? "text-red-500"
-                                : "text-gray-400"
-                            }`}
+                              ? "text-red-500"
+                              : "text-gray-400"
+                              }`}
                           >
                             {data?.metaTitle?.length || 0}/60
                           </span>
@@ -755,12 +753,11 @@ const SEOEditorModal = ({
                           Meta Description
                         </label>
                         <span
-                          className={`text-[10px] font-bold font-jetbrains-mono ${
-                            data?.metaDescription?.length &&
+                          className={`text-[10px] font-bold font-jetbrains-mono ${data?.metaDescription?.length &&
                             data.metaDescription.length > 160
-                              ? "text-red-500"
-                              : "text-gray-400"
-                          }`}
+                            ? "text-red-500"
+                            : "text-gray-400"
+                            }`}
                         >
                           {data?.metaDescription?.length || 0}/160
                         </span>
@@ -1315,16 +1312,16 @@ const SEOEditorModal = ({
                     </p>
                     <h4 className="text-xl text-[#1a0dab] font-medium hover:underline cursor-pointer leading-tight line-clamp-2">
                       {generatingAction === "metaTitle" ||
-                      generatingAction === "seo-analysis"
+                        generatingAction === "seo-analysis"
                         ? "Generating optimized title..."
                         : data?.metaTitle || postTitle || "Untitled Post"}
                     </h4>
                     <p className="text-[14px] text-[#4d5156] line-clamp-2 leading-relaxed">
                       {generatingAction === "metaDescription" ||
-                      generatingAction === "seo-analysis"
+                        generatingAction === "seo-analysis"
                         ? "Generating optimized meta description..."
                         : data?.metaDescription ||
-                          "Please provide a meta description to see how your post will appear in search results..."}
+                        "Please provide a meta description to see how your post will appear in search results..."}
                     </p>
                   </div>
                 </div>
@@ -2626,15 +2623,14 @@ const AIExcerptModal = ({
             </div>
 
             <textarea
-              className={`w-full text-sm font-geist bg-gray-50 border rounded-2xl p-4 outline-none resize-none transition-all duration-300 ${
-                isGenerating
-                  ? engine === "openai"
-                    ? "animate-pulse border-emerald-200"
-                    : engine === "gemini"
-                      ? "animate-pulse border-blue-200"
-                      : "animate-pulse border-orange-200"
-                  : "border-black/5 focus:border-orange-200 focus:ring-1 focus:ring-orange-100"
-              }`}
+              className={`w-full text-sm font-geist bg-gray-50 border rounded-2xl p-4 outline-none resize-none transition-all duration-300 ${isGenerating
+                ? engine === "openai"
+                  ? "animate-pulse border-emerald-200"
+                  : engine === "gemini"
+                    ? "animate-pulse border-blue-200"
+                    : "animate-pulse border-orange-200"
+                : "border-black/5 focus:border-orange-200 focus:ring-1 focus:ring-orange-100"
+                }`}
               disabled={isGenerating}
               placeholder="Your AI excerpt will generate here, or you can type here to refine manually..."
               rows={4}
@@ -3008,28 +3004,26 @@ const AITitleModal = ({
                 {suggestions.map((t, idx) => (
                   <button
                     key={idx}
-                    className={`w-full text-left text-sm font-geist p-3.5 rounded-2xl transition-all border flex items-start gap-3 cursor-pointer ${
-                      selectedTitle === t
-                        ? engine === "openai"
-                          ? "bg-emerald-50/50 border-emerald-500 text-emerald-950 font-medium shadow-sm"
-                          : engine === "gemini"
-                            ? "bg-indigo-50/50 border-indigo-500 text-indigo-950 font-medium shadow-sm"
-                            : "bg-orange-50/50 border-[#FF5B04] text-orange-950 font-medium shadow-sm"
-                        : "bg-gray-50 border-black/5 hover:border-black/10 text-gray-800"
-                    }`}
+                    className={`w-full text-left text-sm font-geist p-3.5 rounded-2xl transition-all border flex items-start gap-3 cursor-pointer ${selectedTitle === t
+                      ? engine === "openai"
+                        ? "bg-emerald-50/50 border-emerald-500 text-emerald-950 font-medium shadow-sm"
+                        : engine === "gemini"
+                          ? "bg-indigo-50/50 border-indigo-500 text-indigo-950 font-medium shadow-sm"
+                          : "bg-orange-50/50 border-[#FF5B04] text-orange-950 font-medium shadow-sm"
+                      : "bg-gray-50 border-black/5 hover:border-black/10 text-gray-800"
+                      }`}
                     type="button"
                     onClick={() => setSelectedTitle(t)}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold border transition-colors ${
-                        selectedTitle === t
-                          ? engine === "openai"
-                            ? "bg-emerald-500 text-white border-emerald-500"
-                            : engine === "gemini"
-                              ? "bg-indigo-500 text-white border-indigo-500"
-                              : "bg-[#FF5B04] text-white border-[#FF5B04]"
-                          : "bg-white border-black/10 text-gray-400"
-                      }`}
+                      className={`w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold border transition-colors ${selectedTitle === t
+                        ? engine === "openai"
+                          ? "bg-emerald-500 text-white border-emerald-500"
+                          : engine === "gemini"
+                            ? "bg-indigo-500 text-white border-indigo-500"
+                            : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                        : "bg-white border-black/10 text-gray-400"
+                        }`}
                     >
                       {idx + 1}
                     </span>
@@ -3429,28 +3423,26 @@ const AITagsModal = ({
                   return (
                     <button
                       key={idx}
-                      className={`px-4 py-2 rounded-2xl text-xs font-semibold font-geist border transition-all flex items-center gap-2 cursor-pointer ${
-                        isSelected
-                          ? engine === "openai"
-                            ? "bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm"
-                            : engine === "gemini"
-                              ? "bg-indigo-50 border-indigo-300 text-indigo-800 shadow-sm"
-                              : "bg-orange-50 border-orange-300 text-orange-800 shadow-sm"
-                          : "bg-gray-50 border-black/5 text-gray-600 hover:bg-gray-100"
-                      }`}
+                      className={`px-4 py-2 rounded-2xl text-xs font-semibold font-geist border transition-all flex items-center gap-2 cursor-pointer ${isSelected
+                        ? engine === "openai"
+                          ? "bg-emerald-50 border-emerald-300 text-emerald-800 shadow-sm"
+                          : engine === "gemini"
+                            ? "bg-indigo-50 border-indigo-300 text-indigo-800 shadow-sm"
+                            : "bg-orange-50 border-orange-300 text-orange-800 shadow-sm"
+                        : "bg-gray-50 border-black/5 text-gray-600 hover:bg-gray-100"
+                        }`}
                       type="button"
                       onClick={() => toggleTag(t)}
                     >
                       <span
-                        className={`w-3.5 h-3.5 rounded-md flex items-center justify-center text-[9px] border transition-colors ${
-                          isSelected
-                            ? engine === "openai"
-                              ? "bg-emerald-500 text-white border-emerald-500"
-                              : engine === "gemini"
-                                ? "bg-indigo-500 text-white border-indigo-500"
-                                : "bg-[#FF5B04] text-white border-[#FF5B04]"
-                            : "bg-white border-black/10"
-                        }`}
+                        className={`w-3.5 h-3.5 rounded-md flex items-center justify-center text-[9px] border transition-colors ${isSelected
+                          ? engine === "openai"
+                            ? "bg-emerald-500 text-white border-emerald-500"
+                            : engine === "gemini"
+                              ? "bg-indigo-500 text-white border-indigo-500"
+                              : "bg-[#FF5B04] text-white border-[#FF5B04]"
+                          : "bg-white border-black/10"
+                          }`}
                       >
                         {isSelected && "✓"}
                       </span>
@@ -3836,32 +3828,29 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
             </label>
             {hasSelection && (
               <div
-                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-geist mb-3 border transition-all duration-300 ${
-                  engine === "openai"
-                    ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                    : engine === "gemini"
-                      ? "bg-indigo-50 border-indigo-200 text-indigo-800"
-                      : "bg-orange-50 border-orange-200 text-orange-800"
-                }`}
+                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-geist mb-3 border transition-all duration-300 ${engine === "openai"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
+                  : engine === "gemini"
+                    ? "bg-indigo-50 border-indigo-200 text-indigo-800"
+                    : "bg-orange-50 border-orange-200 text-orange-800"
+                  }`}
               >
                 <span className="flex h-2 w-2 relative">
                   <span
-                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                      engine === "openai"
-                        ? "bg-emerald-400"
-                        : engine === "gemini"
-                          ? "bg-indigo-400"
-                          : "bg-orange-400"
-                    }`}
+                    className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${engine === "openai"
+                      ? "bg-emerald-400"
+                      : engine === "gemini"
+                        ? "bg-indigo-400"
+                        : "bg-orange-400"
+                      }`}
                   />
                   <span
-                    className={`relative inline-flex rounded-full h-2 w-2 ${
-                      engine === "openai"
-                        ? "bg-emerald-500"
-                        : engine === "gemini"
-                          ? "bg-indigo-500"
-                          : "bg-orange-500"
-                    }`}
+                    className={`relative inline-flex rounded-full h-2 w-2 ${engine === "openai"
+                      ? "bg-emerald-500"
+                      : engine === "gemini"
+                        ? "bg-indigo-500"
+                        : "bg-orange-500"
+                      }`}
                   />
                 </span>
                 <span>
@@ -3972,15 +3961,14 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                 AI Composition Preview
               </label>
               <div
-                className={`border rounded-2xl p-4 bg-gray-50/50 min-h-[140px] text-sm overflow-y-auto max-h-[260px] font-geist prose prose-sm transition-all duration-300 ${
-                  isGenerating
-                    ? engine === "openai"
-                      ? "animate-pulse border-emerald-200"
-                      : engine === "gemini"
-                        ? "animate-pulse border-blue-200"
-                        : "animate-pulse border-orange-200"
-                    : "border-black/5"
-                }`}
+                className={`border rounded-2xl p-4 bg-gray-50/50 min-h-[140px] text-sm overflow-y-auto max-h-[260px] font-geist prose prose-sm transition-all duration-300 ${isGenerating
+                  ? engine === "openai"
+                    ? "animate-pulse border-emerald-200"
+                    : engine === "gemini"
+                      ? "animate-pulse border-blue-200"
+                      : "animate-pulse border-orange-200"
+                  : "border-black/5"
+                  }`}
               >
                 {isGenerating ? (
                   <div className="space-y-2.5">
@@ -4991,6 +4979,7 @@ const BlogEditPage = () => {
   const [showLinkModal, setShowLinkModal] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [versionRefreshKey, setVersionRefreshKey] = useState(0);
   const [modalSuccess, setModalSuccess] = useState<"draft" | "publish" | null>(
     null,
   );
@@ -5051,7 +5040,7 @@ const BlogEditPage = () => {
       const models = getModelsForEngine(nextEngine);
       const nextModel =
         config.defaultModel &&
-        models.some((m) => m.id === config.defaultModel)
+          models.some((m) => m.id === config.defaultModel)
           ? config.defaultModel
           : registryGetDefaultModel(nextEngine);
 
@@ -5281,8 +5270,8 @@ const BlogEditPage = () => {
       if (apiAction === "tags") {
         const nextKeywords = Array.isArray(aiData)
           ? aiData
-              .filter((item: any) => typeof item === "string" && item.trim())
-              .map((item: any) => item.trim())
+            .filter((item: any) => typeof item === "string" && item.trim())
+            .map((item: any) => item.trim())
           : [];
 
         if (!nextKeywords.length) {
@@ -5305,38 +5294,38 @@ const BlogEditPage = () => {
           (seoData?.focusKeyword ? 100 : 0) + // keywordDensity estimate or similar
           95 + // mobileReadiness
           Math.min(100, (seoData?.keywords?.length ?? 0) * 10)) /
-          4,
+        4,
       );
 
       const nextAnalysis =
         aiData?.analysis && typeof aiData.analysis === "object"
           ? {
-              score:
-                typeof aiData.analysis.score === "number"
-                  ? Math.max(0, Math.min(100, aiData.analysis.score))
-                  : calculatedOverallScore,
-              strengths: Array.isArray(aiData.analysis.strengths)
-                ? aiData.analysis.strengths
-                : [],
-              improvements: Array.isArray(aiData.analysis.improvements)
-                ? aiData.analysis.improvements
-                : [],
-              keywordGap: Array.isArray(aiData.analysis.keywordGap)
-                ? aiData.analysis.keywordGap
-                : [],
-              headingStructure:
-                typeof aiData.analysis.headingStructure === "string"
-                  ? aiData.analysis.headingStructure
-                  : "Heading structure review unavailable.",
-              readability:
-                typeof aiData.analysis.readability === "string"
-                  ? aiData.analysis.readability
-                  : "Readability review unavailable.",
-              imageOptimization:
-                typeof aiData.analysis.imageOptimization === "string"
-                  ? aiData.analysis.imageOptimization
-                  : "",
-            }
+            score:
+              typeof aiData.analysis.score === "number"
+                ? Math.max(0, Math.min(100, aiData.analysis.score))
+                : calculatedOverallScore,
+            strengths: Array.isArray(aiData.analysis.strengths)
+              ? aiData.analysis.strengths
+              : [],
+            improvements: Array.isArray(aiData.analysis.improvements)
+              ? aiData.analysis.improvements
+              : [],
+            keywordGap: Array.isArray(aiData.analysis.keywordGap)
+              ? aiData.analysis.keywordGap
+              : [],
+            headingStructure:
+              typeof aiData.analysis.headingStructure === "string"
+                ? aiData.analysis.headingStructure
+                : "Heading structure review unavailable.",
+            readability:
+              typeof aiData.analysis.readability === "string"
+                ? aiData.analysis.readability
+                : "Readability review unavailable.",
+            imageOptimization:
+              typeof aiData.analysis.imageOptimization === "string"
+                ? aiData.analysis.imageOptimization
+                : "",
+          }
           : null;
 
       setSeoAnalysis(nextAnalysis);
@@ -5349,7 +5338,7 @@ const BlogEditPage = () => {
               : prev?.metaTitle,
           metaDescription:
             typeof aiData?.metaDescription === "string" &&
-            aiData.metaDescription.trim()
+              aiData.metaDescription.trim()
               ? aiData.metaDescription.trim()
               : prev?.metaDescription,
           focusKeyword:
@@ -5358,10 +5347,10 @@ const BlogEditPage = () => {
               : prev?.focusKeyword,
           keywords: Array.isArray(aiData?.keywords || aiData?.semanticKeywords)
             ? (aiData.keywords || aiData.semanticKeywords)
-                .filter(
-                  (item: unknown) => typeof item === "string" && item.trim(),
-                )
-                .map((item: string) => item.trim())
+              .filter(
+                (item: unknown) => typeof item === "string" && item.trim(),
+              )
+              .map((item: string) => item.trim())
             : prev?.keywords,
           ogTitle:
             typeof aiData?.ogTitle === "string" && aiData.ogTitle.trim()
@@ -5369,7 +5358,7 @@ const BlogEditPage = () => {
               : prev?.ogTitle,
           ogDescription:
             typeof aiData?.ogDescription === "string" &&
-            aiData.ogDescription.trim()
+              aiData.ogDescription.trim()
               ? aiData.ogDescription.trim()
               : prev?.ogDescription,
         };
@@ -5419,6 +5408,7 @@ const BlogEditPage = () => {
     }),
     onSaveSuccess: (id, published) => {
       setModalSuccess(published ? "publish" : "draft");
+      setVersionRefreshKey((k) => k + 1);
     },
     onSaveError: (err) => {
       setShowPublishModal(false);
@@ -5864,19 +5854,24 @@ const BlogEditPage = () => {
   };
 
   const handleInlineImageUpload = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
 
       if (file && editor) {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          const url = e.target?.result as string;
-
-          editor.chain().focus().setImage({ src: url }).run();
+        try {
+          const compressedUrl = await compressImage(file);
+          editor.chain().focus().setImage({ src: compressedUrl }).run();
           setIsDirty(true);
-        };
-        reader.readAsDataURL(file);
+        } catch (error) {
+          console.error("Image compression failed, falling back to original:", error);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const url = e.target?.result as string;
+            editor.chain().focus().setImage({ src: url }).run();
+            setIsDirty(true);
+          };
+          reader.readAsDataURL(file);
+        }
       }
       event.target.value = "";
     },
@@ -5884,19 +5879,24 @@ const BlogEditPage = () => {
   );
 
   const handleBannerImageUpload = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
 
       if (file) {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          const url = e.target?.result as string;
-
-          setFeaturedImage(url);
-          setBannerImage(url);
-        };
-        reader.readAsDataURL(file);
+        try {
+          const compressedUrl = await compressImage(file);
+          setFeaturedImage(compressedUrl);
+          setBannerImage(compressedUrl);
+        } catch (error) {
+          console.error("Banner image compression failed, falling back to original:", error);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const url = e.target?.result as string;
+            setFeaturedImage(url);
+            setBannerImage(url);
+          };
+          reader.readAsDataURL(file);
+        }
       }
     },
     [],
@@ -6128,9 +6128,11 @@ const BlogEditPage = () => {
         <div className="flex-1 min-h-0 overflow-hidden">
           <VersionHistoryPanel
             postId={blogId}
+            currentContent={editor?.getHTML() || ""}
+            refreshKey={versionRefreshKey}
             onRestore={(version: number) => {
               console.log(`Restored to version ${version}`);
-              router.refresh();
+              fetchBlog();
             }}
           />
         </div>
@@ -6303,11 +6305,10 @@ const BlogEditPage = () => {
           </span>
           <button
             disabled={!title.trim() || !editor || editor.isEmpty}
-            className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:bg-black/5 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none ${
-              showPreview
-                ? "bg-[#FF5B04] text-white"
-                : "bg-black/5 text-gray-600 hover:bg-black/10"
-            }`}
+            className={`h-8 lg:h-9 px-3 lg:px-4 rounded-xl text-xs lg:text-sm font-geist font-medium flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:bg-black/5 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none ${showPreview
+              ? "bg-[#FF5B04] text-white"
+              : "bg-black/5 text-gray-600 hover:bg-black/10"
+              }`}
             onClick={() => setShowPreview((v) => !v)}
           >
             <svg
@@ -6425,231 +6426,236 @@ const BlogEditPage = () => {
           />
         ) : (
           <>
-          <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden">
-            {/* Formatting Toolbar — sticky inside editor column */}
-            <FormattingToolbar
-              activePreset={activePreset}
-              editor={editor}
-              features={getFeatures(postType)}
-              postType={postType}
-              onLinkClick={() => {
-                editor.chain().focus().extendMarkRange("link").run();
-                setShowLinkModal(true);
-              }}
-              onPresetChange={setActivePreset}
-            />
+            <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-black/5 flex flex-col overflow-hidden">
+              {/* Formatting Toolbar — sticky inside editor column */}
+              <FormattingToolbar
+                activePreset={activePreset}
+                editor={editor}
+                features={getFeatures(postType)}
+                postType={postType}
+                onLinkClick={() => {
+                  editor.chain().focus().extendMarkRange("link").run();
+                  setShowLinkModal(true);
+                }}
+                onPresetChange={setActivePreset}
+              />
 
-            <div className="flex-1 min-w-0 overflow-y-auto">
-            {/* Banner image area */}
-            {bannerImage ? (
-              <div className="relative group">
-                <img
-                  alt="Banner"
-                  className="w-full h-48 object-cover"
-                  src={bannerImage}
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                <button
-                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
-                  onClick={() => {
-                    setBannerImage("");
-                    setFeaturedImage("");
-                  }}
+              <div className="flex-1 min-w-0 overflow-y-auto">
+                {/* Banner image area */}
+                {bannerImage ? (
+                  <div className="relative group">
+                    <img
+                      alt="Banner"
+                      className="w-full h-48 object-cover"
+                      src={bannerImage}
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                    <button
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+                      onClick={() => {
+                        setBannerImage("");
+                        setFeaturedImage("");
+                      }}
+                    >
+                      <svg
+                        fill="none"
+                        height="14"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2.5"
+                        viewBox="0 0 24 24"
+                        width="14"
+                      >
+                        <line x1="18" x2="6" y1="6" y2="18" />
+                        <line x1="6" x2="18" y1="6" y2="18" />
+                      </svg>
+                    </button>
+                    <label className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                      <span className="text-xs font-geist font-medium text-white bg-black/60 hover:bg-black/80 transition-colors px-3 py-1.5 rounded-lg">
+                        Change Banner
+                      </span>
+                      <input
+                        accept="image/*"
+                        className="hidden"
+                        type="file"
+                        onChange={handleBannerImageUpload}
+                      />
+                    </label>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-1 px-4 lg:px-10 pt-6 pb-2">
+                    <label className="flex items-center gap-2 cursor-pointer group w-fit">
+                      <svg
+                        className="group-hover:stroke-[#FF5B04] transition-colors"
+                        fill="none"
+                        height="16"
+                        stroke="#d1d5db"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.75"
+                        viewBox="0 0 24 24"
+                        width="16"
+                      >
+                        <rect height="18" rx="2" width="18" x="3" y="3" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                      </svg>
+                      <span className="text-xs font-geist text-gray-300 group-hover:text-[#FF5B04] transition-colors">
+                        Add cover image
+                      </span>
+                      <input
+                        accept="image/*"
+                        className="hidden"
+                        type="file"
+                        onChange={handleBannerImageUpload}
+                      />
+                    </label>
+                    <p className="text-[10px] font-geist text-gray-400 select-none">
+                      Supports JPG, PNG, WebP up to 5MB. Images larger than 200KB are auto-compressed for performance.
+                    </p>
+                  </div>
+                )}
+
+                {/* Title */}
+                <div
+                  className={
+                    bannerImage
+                      ? "px-4 lg:px-14 pt-6 pb-4 relative"
+                      : "px-4 lg:px-14 pt-4 pb-4 relative"
+                  }
                 >
-                  <svg
-                    fill="none"
-                    height="14"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
-                    width="14"
-                  >
-                    <line x1="18" x2="6" y1="6" y2="18" />
-                    <line x1="6" x2="18" y1="6" y2="18" />
-                  </svg>
-                </button>
-                <label className="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  <span className="text-xs font-geist font-medium text-white bg-black/60 hover:bg-black/80 transition-colors px-3 py-1.5 rounded-lg">
-                    Change Banner
-                  </span>
+                  {postType === "social-post" ? (
+                    <div className="flex flex-col gap-2 p-4 rounded-2xl bg-black/[0.015] border border-black/5 backdrop-blur-sm shadow-sm transition-all hover:bg-black/[0.025] hover:border-black/10">
+                      <div className="flex items-center gap-2 text-xs font-bold text-gray-400 font-geist select-none uppercase tracking-wider">
+                        <CosIcon name="link" size={12} className="text-gray-400" />
+                        <span>Internal Social Draft Name (dashboard only):</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <input
+                          className="w-full text-base font-bold font-geist border-none outline-none bg-transparent text-gray-800 placeholder-gray-300"
+                          placeholder="e.g. LinkedIn launch thread..."
+                          type="text"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                        />
+                        {title === "" && (
+                          <button
+                            className="flex-shrink-0 text-[10px] font-bold font-geist text-[#FF5B04] hover:underline cursor-pointer"
+                            type="button"
+                            onClick={() => {
+                              const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`;
+
+                              setTitle(defaultTitle);
+                            }}
+                          >
+                            Auto-fill Name
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <input
+                        className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
+                        placeholder="Post title…"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                      />
+                      <button
+                        className="flex-shrink-0 w-fit text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
+                        type="button"
+                        onClick={() => {
+                          setActiveSidebarTab("content");
+                        }}
+                      >
+                        <svg
+                          fill="none"
+                          height="11"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                          width="11"
+                        >
+                          <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
+                        </svg>
+                        AI Assistant
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  className="h-px mx-4 lg:mx-14"
+                  style={{ background: "rgba(0,0,0,0.06)" }}
+                />
+
+                {/* Editor area */}
+                <div ref={editorRef} className="relative px-4 lg:px-14 py-4">
+                  <FloatingBlockInserter
+                    editor={editor}
+                    imageUploadRef={inlineImageUploadRef}
+                    postType={postType}
+                    onImageUrl={() => setShowImageUrlModal(true)}
+                    onVideoEmbed={() => setShowVideoModal(true)}
+                  />
                   <input
+                    ref={inlineImageUploadRef}
                     accept="image/*"
                     className="hidden"
                     type="file"
-                    onChange={handleBannerImageUpload}
+                    onChange={handleInlineImageUpload}
                   />
-                </label>
-              </div>
-            ) : (
-              <label className="flex items-center gap-2 px-4 lg:px-10 pt-6 pb-2 cursor-pointer group w-fit">
-                <svg
-                  className="group-hover:stroke-[#FF5B04] transition-colors"
-                  fill="none"
-                  height="16"
-                  stroke="#d1d5db"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                  viewBox="0 0 24 24"
-                  width="16"
-                >
-                  <rect height="18" rx="2" width="18" x="3" y="3" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <polyline points="21 15 16 10 5 21" />
-                </svg>
-                <span className="text-xs font-geist text-gray-300 group-hover:text-[#FF5B04] transition-colors">
-                  Add cover image
-                </span>
-                <input
-                  accept="image/*"
-                  className="hidden"
-                  type="file"
-                  onChange={handleBannerImageUpload}
-                />
-              </label>
-            )}
-
-            {/* Title */}
-            <div
-              className={
-                bannerImage
-                  ? "px-4 lg:px-14 pt-6 pb-4 relative"
-                  : "px-4 lg:px-14 pt-4 pb-4 relative"
-              }
-            >
-              {postType === "social-post" ? (
-                <div className="flex flex-col gap-2 p-4 rounded-2xl bg-black/[0.015] border border-black/5 backdrop-blur-sm shadow-sm transition-all hover:bg-black/[0.025] hover:border-black/10">
-                  <div className="flex items-center gap-2 text-xs font-bold text-gray-400 font-geist select-none uppercase tracking-wider">
-                    <CosIcon name="link" size={12} className="text-gray-400" />
-                    <span>Internal Social Draft Name (dashboard only):</span>
+                  <div className="notion-editor-wrapper min-h-[520px]">
+                    <EditorContent editor={editor} />
                   </div>
-                  <div className="flex items-center gap-3">
-                    <input
-                      className="w-full text-base font-bold font-geist border-none outline-none bg-transparent text-gray-800 placeholder-gray-300"
-                      placeholder="e.g. LinkedIn launch thread..."
-                      type="text"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                    />
-                    {title === "" && (
-                      <button
-                        className="flex-shrink-0 text-[10px] font-bold font-geist text-[#FF5B04] hover:underline cursor-pointer"
-                        type="button"
-                        onClick={() => {
-                          const defaultTitle = `LinkedIn Post - ${new Date().toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`;
-
-                          setTitle(defaultTitle);
-                        }}
-                      >
-                        Auto-fill Name
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <input
-                    className="w-full text-2xl lg:text-4xl font-bold font-geist border-none outline-none bg-transparent text-gray-900 placeholder-gray-200 leading-tight"
-                    placeholder="Post title…"
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                  <button
-                    className="flex-shrink-0 w-fit text-xs font-semibold font-geist px-3 py-1.5 rounded-xl border border-orange-100 hover:border-[#FF5B04] text-[#FF5B04] hover:bg-orange-50/50 transition-all duration-200 flex items-center gap-1 cursor-pointer shadow-sm bg-white"
-                    type="button"
-                    onClick={() => {
-                      setActiveSidebarTab("content");
+                  <SlashCommandMenu
+                    editor={editor}
+                    imageUploadRef={inlineImageUploadRef}
+                    isOpen={slashMenuOpen}
+                    position={slashMenuPosition}
+                    postType={postType}
+                    onClose={() => setSlashMenuOpen(false)}
+                    onImageUrl={() => {
+                      setSlashMenuOpen(false);
+                      setShowImageUrlModal(true);
                     }}
-                  >
-                    <svg
-                      fill="none"
-                      height="11"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      width="11"
-                    >
-                      <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7z" />
-                    </svg>
-                    AI Assistant
-                  </button>
+                    onVideoEmbed={() => {
+                      setSlashMenuOpen(false);
+                      setShowVideoModal(true);
+                    }}
+                  />
                 </div>
-              )}
-            </div>
-
-            <div
-              className="h-px mx-4 lg:mx-14"
-              style={{ background: "rgba(0,0,0,0.06)" }}
-            />
-
-            {/* Editor area */}
-            <div ref={editorRef} className="relative px-4 lg:px-14 py-4">
-              <FloatingBlockInserter
-                editor={editor}
-                imageUploadRef={inlineImageUploadRef}
-                postType={postType}
-                onImageUrl={() => setShowImageUrlModal(true)}
-                onVideoEmbed={() => setShowVideoModal(true)}
-              />
-              <input
-                ref={inlineImageUploadRef}
-                accept="image/*"
-                className="hidden"
-                type="file"
-                onChange={handleInlineImageUpload}
-              />
-              <div className="notion-editor-wrapper min-h-[520px]">
-                <EditorContent editor={editor} />
               </div>
-              <SlashCommandMenu
-                editor={editor}
-                imageUploadRef={inlineImageUploadRef}
-                isOpen={slashMenuOpen}
-                position={slashMenuPosition}
-                postType={postType}
-                onClose={() => setSlashMenuOpen(false)}
-                onImageUrl={() => {
-                  setSlashMenuOpen(false);
-                  setShowImageUrlModal(true);
-                }}
-                onVideoEmbed={() => {
-                  setSlashMenuOpen(false);
-                  setShowVideoModal(true);
-                }}
-              />
             </div>
-          </div>
-          </div>
-          <AIWorkspacePanel
-            postId={typeof params.id === "string" ? params.id : ""}
-            postType={postType}
-            contentGoal={contentGoal}
-            editor={editor}
-            onApplyToEditor={handleApplyToEditor}
-            onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
-            onInsertCTA={(html) => {
-              if (!editor) return;
-              editor.chain().focus().insertContent(html).run();
-            }}
-            activeTab={activeSidebarTab}
-            onTabChange={setActiveSidebarTab}
-            renderContentTab={renderContentTab}
-            renderSEOTab={getFeatures(postType).seoPanel ? renderSEOTab : undefined}
-            renderHealthTab={renderHealthTab}
-            renderDistributeTab={renderDistributeTab}
-            renderVersionTab={renderVersionTab}
-            initialPrompt={copilotInitialPrompt}
-            onClearInitialPrompt={() => setCopilotInitialPrompt("")}
-            seoFocusKeyword={seoData?.focusKeyword || ""}
-            onSetFocusKeyword={(kw) => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }}
-          />
-        </>
-      )}
+            <AIWorkspacePanel
+              postId={typeof params.id === "string" ? params.id : ""}
+              postType={postType}
+              contentGoal={contentGoal}
+              editor={editor}
+              onApplyToEditor={handleApplyToEditor}
+              onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
+              onInsertCTA={(html) => {
+                if (!editor) return;
+                editor.chain().focus().insertContent(html).run();
+              }}
+              activeTab={activeSidebarTab}
+              onTabChange={setActiveSidebarTab}
+              renderContentTab={renderContentTab}
+              renderSEOTab={getFeatures(postType).seoPanel ? renderSEOTab : undefined}
+              renderHealthTab={renderHealthTab}
+              renderDistributeTab={renderDistributeTab}
+              renderVersionTab={renderVersionTab}
+              initialPrompt={copilotInitialPrompt}
+              onClearInitialPrompt={() => setCopilotInitialPrompt("")}
+              seoFocusKeyword={seoData?.focusKeyword || ""}
+              onSetFocusKeyword={(kw) => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }}
+            />
+          </>
+        )}
       </div>
 
       {/* ── Modals ── */}
@@ -6799,7 +6805,7 @@ const BlogEditPage = () => {
                 </svg>
               </button>
             </div>
-            
+
             {/* Tutorial Carousel */}
             <div className="bg-white/50 p-1.5 rounded-3xl border border-black/[0.02]">
               <WorkspaceTutorialCarousel />
