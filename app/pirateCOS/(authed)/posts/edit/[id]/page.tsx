@@ -50,7 +50,7 @@ import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomImage, FormattingToolbar } from "@/components/pirateCOS/editor";
 import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
 import { compressImage } from "@/utils/imageCompressor";
-import { uploadImageToCloudinary } from "@/utils/mediaUploader";
+import { uploadImageToCloudinary, deleteImagesFromCloudinary, extractImageUrlsFromHtml } from "@/utils/mediaUploader";
 
 
 const isEditorContentEmpty = (editor: any): boolean => {
@@ -5411,6 +5411,26 @@ const BlogEditPage = () => {
       teamId: teamId || undefined, // Phase 5.4+: Team assignment
     }),
     onSaveSuccess: (id, published) => {
+      const activeUrls = [
+        ...extractImageUrlsFromHtml(editor?.getHTML() || ""),
+        bannerImage,
+        featuredImage,
+      ].filter(Boolean);
+
+      const deletedUrls = sessionUploadedUrlsRef.current.filter(
+        (url) => !activeUrls.includes(url)
+      );
+
+      if (deletedUrls.length > 0) {
+        deleteImagesFromCloudinary(deletedUrls).catch((err) =>
+          console.error("Failed to delete unused images on save:", err)
+        );
+      }
+
+      sessionUploadedUrlsRef.current = sessionUploadedUrlsRef.current.filter(
+        (url) => activeUrls.includes(url)
+      );
+
       setModalSuccess(published ? "publish" : "draft");
       setVersionRefreshKey((k) => k + 1);
     },
@@ -5426,6 +5446,7 @@ const BlogEditPage = () => {
   const isEditorReady = useRef(false);
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
+  const sessionUploadedUrlsRef = useRef<string[]>([]);
 
   const { isLoading: authLoading } = useAuth(true);
 
@@ -5486,6 +5507,18 @@ const BlogEditPage = () => {
     window.addEventListener("beforeunload", handler);
 
     return () => window.removeEventListener("beforeunload", handler);
+  }, []);
+
+  // Tab / window close cleanup for uploaded images
+  useEffect(() => {
+    const handleUnload = () => {
+      if (isDirtyRef.current && sessionUploadedUrlsRef.current.length > 0) {
+        deleteImagesFromCloudinary(sessionUploadedUrlsRef.current, true);
+      }
+    };
+    window.addEventListener("pagehide", handleUnload);
+
+    return () => window.removeEventListener("pagehide", handleUnload);
   }, []);
 
   // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
@@ -5647,6 +5680,7 @@ const BlogEditPage = () => {
 
               uploadImageToCloudinary(file)
                 .then((url) => {
+                  sessionUploadedUrlsRef.current.push(url);
                   const { state, dispatch } = view;
                   state.doc.descendants((n, pos) => {
                     if (n.type.name === "image" && n.attrs.src === tempSrc) {
@@ -5696,6 +5730,7 @@ const BlogEditPage = () => {
 
                 uploadImageToCloudinary(file)
                   .then((url) => {
+                    sessionUploadedUrlsRef.current.push(url);
                     const { state, dispatch } = view;
                     state.doc.descendants((n, pos) => {
                       if (n.type.name === "image" && n.attrs.src === tempSrc) {
@@ -5911,6 +5946,7 @@ const BlogEditPage = () => {
 
         try {
           const url = await uploadImageToCloudinary(file);
+          sessionUploadedUrlsRef.current.push(url);
           const { state, dispatch } = editor.view;
           state.doc.descendants((node, pos) => {
             if (node.type.name === "image" && node.attrs.src === tempSrc) {
@@ -5948,6 +5984,7 @@ const BlogEditPage = () => {
         setIsUploadingBanner(true);
         try {
           const url = await uploadImageToCloudinary(file);
+          sessionUploadedUrlsRef.current.push(url);
           setFeaturedImage(url);
           setBannerImage(url);
           setIsDirty(true);
@@ -5993,6 +6030,12 @@ const BlogEditPage = () => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
+      if (sessionUploadedUrlsRef.current.length > 0) {
+        deleteImagesFromCloudinary(sessionUploadedUrlsRef.current).catch((err) =>
+          console.error("Failed to delete session images on post delete:", err)
+        );
+        sessionUploadedUrlsRef.current = [];
+      }
       const response = await fetch(`/api/pirateCOS/posts/${blogId}`, {
         method: "DELETE",
       });
@@ -6821,6 +6864,10 @@ const BlogEditPage = () => {
       {showUnsavedModal && (
         <UnsavedChangesModal
           onLeave={() => {
+            if (sessionUploadedUrlsRef.current.length > 0) {
+              deleteImagesFromCloudinary(sessionUploadedUrlsRef.current);
+              sessionUploadedUrlsRef.current = [];
+            }
             setIsDirty(false);
             setShowUnsavedModal(false);
             if (pendingNavIsBack.current) {

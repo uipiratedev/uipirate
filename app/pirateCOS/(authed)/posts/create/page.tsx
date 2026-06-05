@@ -52,7 +52,7 @@ import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomImage } from "@/components/pirateCOS/editor";
 import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
 import { compressImage } from "@/utils/imageCompressor";
-import { uploadImageToCloudinary } from "@/utils/mediaUploader";
+import { uploadImageToCloudinary, deleteImagesFromCloudinary, extractImageUrlsFromHtml } from "@/utils/mediaUploader";
 
 
 const isEditorContentEmpty = (editor: any): boolean => {
@@ -5118,6 +5118,26 @@ const BlogEditor = () => {
       repurposedOutputs,
     }),
     onSaveSuccess: (id, published) => {
+      const activeUrls = [
+        ...extractImageUrlsFromHtml(editor?.getHTML() || ""),
+        bannerImage,
+        featuredImage,
+      ].filter(Boolean);
+
+      const deletedUrls = sessionUploadedUrlsRef.current.filter(
+        (url) => !activeUrls.includes(url)
+      );
+
+      if (deletedUrls.length > 0) {
+        deleteImagesFromCloudinary(deletedUrls).catch((err) =>
+          console.error("Failed to delete unused images on save:", err)
+        );
+      }
+
+      sessionUploadedUrlsRef.current = sessionUploadedUrlsRef.current.filter(
+        (url) => activeUrls.includes(url)
+      );
+
       setModalSuccess(published ? "publish" : "draft");
     },
     onSaveError: (err) => {
@@ -5130,6 +5150,7 @@ const BlogEditor = () => {
   const pendingNavIsBack = useRef(false); // true when guard was tripped by browser back/forward
   const isDirtyRef = useRef(false); // ref mirror — always current inside event handlers
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
+  const sessionUploadedUrlsRef = useRef<string[]>([]);
   const router = useRouter();
   const { isLoading: authLoading } = useAuth(true);
 
@@ -5201,6 +5222,18 @@ const BlogEditor = () => {
 
     return () => window.removeEventListener("beforeunload", handler);
   }, [typeSelected]);
+
+  // Tab / window close cleanup for uploaded images
+  useEffect(() => {
+    const handleUnload = () => {
+      if (isDirtyRef.current && sessionUploadedUrlsRef.current.length > 0) {
+        deleteImagesFromCloudinary(sessionUploadedUrlsRef.current, true);
+      }
+    };
+    window.addEventListener("pagehide", handleUnload);
+
+    return () => window.removeEventListener("pagehide", handleUnload);
+  }, []);
 
   // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
   //    Next.js router handles the event, covering all client-side link navigation.
@@ -5338,6 +5371,7 @@ const BlogEditor = () => {
 
               uploadImageToCloudinary(file)
                 .then((url) => {
+                  sessionUploadedUrlsRef.current.push(url);
                   const { state, dispatch } = view;
                   state.doc.descendants((n, pos) => {
                     if (n.type.name === "image" && n.attrs.src === tempSrc) {
@@ -5387,6 +5421,7 @@ const BlogEditor = () => {
 
                 uploadImageToCloudinary(file)
                   .then((url) => {
+                    sessionUploadedUrlsRef.current.push(url);
                     const { state, dispatch } = view;
                     state.doc.descendants((n, pos) => {
                       if (n.type.name === "image" && n.attrs.src === tempSrc) {
@@ -5529,6 +5564,7 @@ const BlogEditor = () => {
 
         try {
           const url = await uploadImageToCloudinary(file);
+          sessionUploadedUrlsRef.current.push(url);
           const { state, dispatch } = editor.view;
           state.doc.descendants((node, pos) => {
             if (node.type.name === "image" && node.attrs.src === tempSrc) {
@@ -5567,6 +5603,7 @@ const BlogEditor = () => {
         setIsUploadingBanner(true);
         try {
           const url = await uploadImageToCloudinary(file);
+          sessionUploadedUrlsRef.current.push(url);
           setFeaturedImage(url);
           setBannerImage(url);
           setIsDirty(true);
@@ -6930,6 +6967,10 @@ const BlogEditor = () => {
       {showUnsavedModal && (
         <UnsavedChangesModal
           onLeave={() => {
+            if (sessionUploadedUrlsRef.current.length > 0) {
+              deleteImagesFromCloudinary(sessionUploadedUrlsRef.current);
+              sessionUploadedUrlsRef.current = [];
+            }
             setIsDirty(false);
             setShowUnsavedModal(false);
             if (pendingNavIsBack.current) {
