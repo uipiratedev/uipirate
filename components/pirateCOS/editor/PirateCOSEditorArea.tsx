@@ -135,7 +135,9 @@ const EDITOR_STYLES = `
   .notion-editor-wrapper .ProseMirror p.is-empty::before { color: #adb5bd; content: attr(data-placeholder); float: left; height: 0; pointer-events: none; }
   .notion-editor-wrapper .ProseMirror p { line-height: 1.75; font-size: 1rem; color: #374151; margin: 0.5rem 0; }
   .notion-editor-wrapper .ProseMirror img { max-width: 100%; height: auto; border-radius: 12px; margin: 1.5rem auto; display: block; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-  .notion-editor-wrapper .ProseMirror hr { border: none; border-top: 2px solid rgba(0,0,0,0.08); margin: 2rem 0; border-radius: 4px; }
+  .notion-editor-wrapper .ProseMirror img.ProseMirror-selectednode { outline: 3px solid #FF5B04; outline-offset: 2px; }
+  .video-embed-wrapper.ProseMirror-selectednode { outline: 3px solid #FF5B04; outline-offset: 2px; border-radius: 12px; }
+  .notion-editor-wrapper .ProseMirror hr { clear: both; border: none; border-top: 2px solid rgba(0,0,0,0.08); margin: 2rem 0; border-radius: 4px; }
   .notion-editor-wrapper .ProseMirror ul { padding-left: 1.75rem; margin: 1rem 0; list-style-type: disc; }
   .notion-editor-wrapper .ProseMirror ol { padding-left: 1.75rem; margin: 1rem 0; list-style-type: decimal; }
   .notion-editor-wrapper .ProseMirror li { margin: 0.5rem 0; line-height: 1.75; display: list-item; }
