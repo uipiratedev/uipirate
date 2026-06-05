@@ -408,6 +408,25 @@ export const FormattingToolbar = ({
                 </button>
               );
             })}
+
+            <div className="w-px h-4 bg-orange-200/50 mx-1" />
+
+            <button
+              className={btn(false)}
+              style={{ color: "#dc2626" }}
+              title="Delete Image"
+              onClick={() => editor.chain().focus().deleteSelection().run()}
+            >
+              <svg
+                className="w-3.5 h-3.5 text-red-600"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
+            </button>
           </div>
         </>
       )}

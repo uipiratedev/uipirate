@@ -50,6 +50,8 @@ import { SEOPanel } from "@/components/pirateCOS/seo-panel";
 import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomImage, FormattingToolbar } from "@/components/pirateCOS/editor";
 import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
 import { compressImage } from "@/utils/imageCompressor";
+import { uploadImageToCloudinary, deleteImagesFromCloudinary, extractImageUrlsFromHtml } from "@/utils/mediaUploader";
+
 
 const isEditorContentEmpty = (editor: any): boolean => {
   if (!editor) return true;
@@ -5002,6 +5004,8 @@ const BlogEditPage = () => {
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
   const [repurposedOutputs, setRepurposedOutputs] = useState<Record<string, string>>({});
+  const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+
 
   // Inline AI States & Helpers
   const [titleSuggestions, setTitleSuggestions] = useState<string[]>([]);
@@ -5407,6 +5411,26 @@ const BlogEditPage = () => {
       teamId: teamId || undefined, // Phase 5.4+: Team assignment
     }),
     onSaveSuccess: (id, published) => {
+      const activeUrls = [
+        ...extractImageUrlsFromHtml(editor?.getHTML() || ""),
+        bannerImage,
+        featuredImage,
+      ].filter(Boolean);
+
+      const deletedUrls = sessionUploadedUrlsRef.current.filter(
+        (url) => !activeUrls.includes(url)
+      );
+
+      if (deletedUrls.length > 0) {
+        deleteImagesFromCloudinary(deletedUrls).catch((err) =>
+          console.error("Failed to delete unused images on save:", err)
+        );
+      }
+
+      sessionUploadedUrlsRef.current = sessionUploadedUrlsRef.current.filter(
+        (url) => activeUrls.includes(url)
+      );
+
       setModalSuccess(published ? "publish" : "draft");
       setVersionRefreshKey((k) => k + 1);
     },
@@ -5422,6 +5446,7 @@ const BlogEditPage = () => {
   const isEditorReady = useRef(false);
   const editorRef = useRef<HTMLDivElement>(null);
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
+  const sessionUploadedUrlsRef = useRef<string[]>([]);
 
   const { isLoading: authLoading } = useAuth(true);
 
@@ -5482,6 +5507,18 @@ const BlogEditPage = () => {
     window.addEventListener("beforeunload", handler);
 
     return () => window.removeEventListener("beforeunload", handler);
+  }, []);
+
+  // Tab / window close cleanup for uploaded images
+  useEffect(() => {
+    const handleUnload = () => {
+      if (isDirtyRef.current && sessionUploadedUrlsRef.current.length > 0) {
+        deleteImagesFromCloudinary(sessionUploadedUrlsRef.current, true);
+      }
+    };
+    window.addEventListener("pagehide", handleUnload);
+
+    return () => window.removeEventListener("pagehide", handleUnload);
   }, []);
 
   // 2. Sidebar <Link> and every other <a> click — capture phase intercepts before
@@ -5630,23 +5667,45 @@ const BlogEditPage = () => {
 
           if (file.type.startsWith("image/")) {
             event.preventDefault();
-            const reader = new FileReader();
+            const tempSrc = `uploading-${Math.random().toString(36).substring(2, 9)}`;
+            const coordinates = view.posAtCoords({
+              left: event.clientX,
+              top: event.clientY,
+            });
 
-            reader.onload = (e) => {
-              const url = e.target?.result as string;
+            if (coordinates) {
               const { schema } = view.state;
-              const coordinates = view.posAtCoords({
-                left: event.clientX,
-                top: event.clientY,
-              });
+              const node = schema.nodes.image.create({ src: tempSrc, alt: "Uploading image..." });
+              view.dispatch(view.state.tr.insert(coordinates.pos, node));
 
-              if (coordinates) {
-                const node = schema.nodes.image.create({ src: url });
-
-                view.dispatch(view.state.tr.insert(coordinates.pos, node));
-              }
-            };
-            reader.readAsDataURL(file);
+              uploadImageToCloudinary(file)
+                .then((url) => {
+                  sessionUploadedUrlsRef.current.push(url);
+                  const { state, dispatch } = view;
+                  state.doc.descendants((n, pos) => {
+                    if (n.type.name === "image" && n.attrs.src === tempSrc) {
+                      dispatch(
+                        state.tr.setNodeMarkup(pos, undefined, {
+                          ...n.attrs,
+                          src: url,
+                          alt: file.name,
+                        })
+                      );
+                    }
+                  });
+                  setIsDirty(true);
+                })
+                .catch((err) => {
+                  console.error("Cloudinary drop upload failed:", err);
+                  const { state, dispatch } = view;
+                  state.doc.descendants((n, pos) => {
+                    if (n.type.name === "image" && n.attrs.src === tempSrc) {
+                      dispatch(state.tr.delete(pos, pos + n.nodeSize));
+                    }
+                  });
+                  alert("Failed to upload image to Cloudinary.");
+                });
+            }
 
             return true;
           }
@@ -5654,7 +5713,7 @@ const BlogEditPage = () => {
 
         return false;
       },
-      handlePaste: (_view, event) => {
+      handlePaste: (view, event) => {
         const items = event.clipboardData?.items;
 
         if (items) {
@@ -5664,14 +5723,38 @@ const BlogEditPage = () => {
               const file = items[i].getAsFile();
 
               if (file) {
-                const reader = new FileReader();
+                const tempSrc = `uploading-${Math.random().toString(36).substring(2, 9)}`;
+                const { schema } = view.state;
+                const node = schema.nodes.image.create({ src: tempSrc, alt: "Uploading image..." });
+                view.dispatch(view.state.tr.insert(view.state.selection.from, node));
 
-                reader.onload = (e) => {
-                  const url = e.target?.result as string;
-
-                  editor?.chain().focus().setImage({ src: url }).run();
-                };
-                reader.readAsDataURL(file);
+                uploadImageToCloudinary(file)
+                  .then((url) => {
+                    sessionUploadedUrlsRef.current.push(url);
+                    const { state, dispatch } = view;
+                    state.doc.descendants((n, pos) => {
+                      if (n.type.name === "image" && n.attrs.src === tempSrc) {
+                        dispatch(
+                          state.tr.setNodeMarkup(pos, undefined, {
+                            ...n.attrs,
+                            src: url,
+                            alt: file.name,
+                          })
+                        );
+                      }
+                    });
+                    setIsDirty(true);
+                  })
+                  .catch((err) => {
+                    console.error("Cloudinary paste upload failed:", err);
+                    const { state, dispatch } = view;
+                    state.doc.descendants((n, pos) => {
+                      if (n.type.name === "image" && n.attrs.src === tempSrc) {
+                        dispatch(state.tr.delete(pos, pos + n.nodeSize));
+                      }
+                    });
+                    alert("Failed to upload image to Cloudinary.");
+                  });
               }
 
               return true;
@@ -5858,19 +5941,34 @@ const BlogEditPage = () => {
       const file = event.target.files?.[0];
 
       if (file && editor) {
+        const tempSrc = `uploading-${Math.random().toString(36).substring(2, 9)}`;
+        editor.chain().focus().setImage({ src: tempSrc, alt: "Uploading image..." }).run();
+
         try {
-          const compressedUrl = await compressImage(file);
-          editor.chain().focus().setImage({ src: compressedUrl }).run();
+          const url = await uploadImageToCloudinary(file);
+          sessionUploadedUrlsRef.current.push(url);
+          const { state, dispatch } = editor.view;
+          state.doc.descendants((node, pos) => {
+            if (node.type.name === "image" && node.attrs.src === tempSrc) {
+              dispatch(
+                state.tr.setNodeMarkup(pos, undefined, {
+                  ...node.attrs,
+                  src: url,
+                  alt: file.name,
+                })
+              );
+            }
+          });
           setIsDirty(true);
         } catch (error) {
-          console.error("Image compression failed, falling back to original:", error);
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const url = e.target?.result as string;
-            editor.chain().focus().setImage({ src: url }).run();
-            setIsDirty(true);
-          };
-          reader.readAsDataURL(file);
+          console.error("Cloudinary upload failed:", error);
+          const { state, dispatch } = editor.view;
+          state.doc.descendants((node, pos) => {
+            if (node.type.name === "image" && node.attrs.src === tempSrc) {
+              dispatch(state.tr.delete(pos, pos + node.nodeSize));
+            }
+          });
+          alert("Failed to upload image to Cloudinary.");
         }
       }
       event.target.value = "";
@@ -5883,19 +5981,18 @@ const BlogEditPage = () => {
       const file = event.target.files?.[0];
 
       if (file) {
+        setIsUploadingBanner(true);
         try {
-          const compressedUrl = await compressImage(file);
-          setFeaturedImage(compressedUrl);
-          setBannerImage(compressedUrl);
+          const url = await uploadImageToCloudinary(file);
+          sessionUploadedUrlsRef.current.push(url);
+          setFeaturedImage(url);
+          setBannerImage(url);
+          setIsDirty(true);
         } catch (error) {
-          console.error("Banner image compression failed, falling back to original:", error);
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const url = e.target?.result as string;
-            setFeaturedImage(url);
-            setBannerImage(url);
-          };
-          reader.readAsDataURL(file);
+          console.error("Banner image upload failed:", error);
+          alert("Failed to upload banner image to Cloudinary.");
+        } finally {
+          setIsUploadingBanner(false);
         }
       }
     },
@@ -5933,6 +6030,12 @@ const BlogEditPage = () => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
+      if (sessionUploadedUrlsRef.current.length > 0) {
+        deleteImagesFromCloudinary(sessionUploadedUrlsRef.current).catch((err) =>
+          console.error("Failed to delete session images on post delete:", err)
+        );
+        sessionUploadedUrlsRef.current = [];
+      }
       const response = await fetch(`/api/pirateCOS/posts/${blogId}`, {
         method: "DELETE",
       });
@@ -6450,6 +6553,11 @@ const BlogEditPage = () => {
                       src={bannerImage}
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                    {isUploadingBanner && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white" />
+                      </div>
+                    )}
                     <button
                       className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white text-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
                       onClick={() => {
@@ -6484,7 +6592,12 @@ const BlogEditPage = () => {
                     </label>
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-1 px-4 lg:px-10 pt-6 pb-2">
+                  <div className="flex flex-col gap-1 px-4 lg:px-10 pt-6 pb-2 relative">
+                    {isUploadingBanner && (
+                      <div className="absolute inset-0 bg-white/60 dark:bg-black/60 flex items-center justify-center rounded-lg z-10">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#FF5B04]" />
+                      </div>
+                    )}
                     <label className="flex items-center gap-2 cursor-pointer group w-fit">
                       <svg
                         className="group-hover:stroke-[#FF5B04] transition-colors"
@@ -6751,6 +6864,10 @@ const BlogEditPage = () => {
       {showUnsavedModal && (
         <UnsavedChangesModal
           onLeave={() => {
+            if (sessionUploadedUrlsRef.current.length > 0) {
+              deleteImagesFromCloudinary(sessionUploadedUrlsRef.current);
+              sessionUploadedUrlsRef.current = [];
+            }
             setIsDirty(false);
             setShowUnsavedModal(false);
             if (pendingNavIsBack.current) {
