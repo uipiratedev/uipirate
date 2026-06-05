@@ -153,8 +153,8 @@ const CONTEXT_LINES = 3;
 type DisplayRow =
   | { kind: "context"; line: string; rowKey: string }
   | { kind: "collapse"; hiddenCount: number; hunkId: string; rowKey: string }
-  | { kind: "removed"; line: string; rowKey: string }
-  | { kind: "added"; line: string; rowKey: string }
+  | { kind: "removed"; line: string; hunkId: string; rowKey: string }
+  | { kind: "added"; line: string; hunkId: string; rowKey: string }
   | {
     kind: "pick-strip";
     hunk: Hunk;
@@ -194,13 +194,13 @@ function buildDisplayRows(
       // Removed lines go on the left; show one row per token
       if (h.kind === "removed" || h.kind === "changed") {
         h.oldLines.forEach((line, j) =>
-          rows.push({ kind: "removed", line, rowKey: `rem-${h.id}-${j}` }),
+          rows.push({ kind: "removed", line, hunkId: h.id, rowKey: `rem-${h.id}-${j}` }),
         );
       }
       // Added lines go on the right; show one row per token
       if (h.kind === "added" || h.kind === "changed") {
         h.newLines.forEach((line, j) =>
-          rows.push({ kind: "added", line, rowKey: `add-${h.id}-${j}` }),
+          rows.push({ kind: "added", line, hunkId: h.id, rowKey: `add-${h.id}-${j}` }),
         );
       }
       continue;
@@ -272,7 +272,11 @@ export default function VersionCompareOverlay({
   const [expandedHunks, setExpandedHunks] = useState<Set<string>>(new Set());
 
   const expandHunk = (id: string) =>
-    setExpandedHunks((prev) => new Set([...prev, id]));
+    setExpandedHunks((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
 
   const displayRows = useMemo(
     () => buildDisplayRows(hunks, expandedHunks),
@@ -281,6 +285,17 @@ export default function VersionCompareOverlay({
 
   const setPick = (id: string, side: "current" | "historical") =>
     setSelections((s) => ({ ...s, [id]: side }));
+
+  const changeableHunkIds = useMemo(
+    () => hunks.filter((h) => h.kind !== "unchanged").map((h) => h.id),
+    [hunks],
+  );
+
+  const selectAllHistorical = () =>
+    setSelections(Object.fromEntries(changeableHunkIds.map((id) => [id, "historical"])));
+
+  const clearAllSelections = () =>
+    setSelections(Object.fromEntries(changeableHunkIds.map((id) => [id, "current"])));
 
   const stats = useMemo(() => {
     let added = 0;
@@ -491,20 +506,42 @@ export default function VersionCompareOverlay({
         ) : (
           /* ── GitHub-style hunk view ── */
           <div className="flex-1 overflow-auto">
-            {/* Sticky column headers */}
-            <div className="grid grid-cols-2 sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
-              <div className="px-4 py-2 border-r border-gray-200 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
-                <span className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-red-600">
-                  Historical · v{version.version}
-                </span>
+            {/* Sticky column headers + bulk actions */}
+            <div className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
+              <div className="grid grid-cols-2">
+                <div className="px-4 py-2 border-r border-gray-200 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-red-400 shrink-0" />
+                  <span className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-red-600">
+                    Historical · v{version.version}
+                  </span>
+                </div>
+                <div className="px-4 py-2 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+                  <span className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-green-600">
+                    Current Draft
+                  </span>
+                </div>
               </div>
-              <div className="px-4 py-2 flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
-                <span className="text-xs font-bold font-jetbrains-mono uppercase tracking-wider text-green-600">
-                  Current Draft
-                </span>
-              </div>
+              {/* Bulk-pick shortcuts */}
+              {changeableHunkIds.length > 1 && (
+                <div className="flex items-center gap-2 px-4 py-1.5 border-t border-gray-100 bg-gray-50">
+                  <span className="text-[10px] text-gray-400 font-geist mr-1">
+                    Quick select:
+                  </span>
+                  <button
+                    onClick={selectAllHistorical}
+                    className="text-[11px] font-semibold font-geist px-2 py-0.5 rounded border border-red-300 text-red-700 bg-white hover:bg-red-50 transition-colors"
+                  >
+                    ← Use all from history
+                  </button>
+                  <button
+                    onClick={clearAllSelections}
+                    className="text-[11px] font-semibold font-geist px-2 py-0.5 rounded border border-green-300 text-green-700 bg-white hover:bg-green-50 transition-colors"
+                  >
+                    Keep all current →
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Diff rows */}
@@ -599,13 +636,19 @@ export default function VersionCompareOverlay({
 
               /* ── Removed line (left column only) ── */
               if (row.kind === "removed") {
+                // "historical" = restoring this old line → full red
+                // "current" (default) = old line is already gone → dim it
+                const historicalWins = (selections[row.hunkId] ?? "current") === "historical";
                 return (
                   <div
                     key={row.rowKey}
                     className="grid grid-cols-2 border-b border-red-100"
                   >
                     <div
-                      className="px-4 py-1.5 border-r border-red-200 bg-red-50 text-sm font-geist text-red-900 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden"
+                      className={`px-4 py-1.5 border-r border-red-200 text-sm font-geist [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden transition-opacity ${historicalWins
+                        ? "bg-red-50 text-red-900 opacity-100"
+                        : "bg-red-50/30 text-red-300 opacity-50"
+                        }`}
                       dangerouslySetInnerHTML={{ __html: row.line }}
                     />
                     <div
@@ -621,6 +664,9 @@ export default function VersionCompareOverlay({
 
               /* ── Added line (right column only) ── */
               if (row.kind === "added") {
+                // "current" (default) = keeping this new line → full green
+                // "historical" = replacing with old content → dim it
+                const currentWins = (selections[row.hunkId] ?? "current") === "current";
                 return (
                   <div
                     key={row.rowKey}
@@ -634,7 +680,10 @@ export default function VersionCompareOverlay({
                       }}
                     />
                     <div
-                      className="px-4 py-1.5 bg-green-50 text-sm font-geist text-green-900 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden"
+                      className={`px-4 py-1.5 text-sm font-geist [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 overflow-hidden transition-opacity ${currentWins
+                        ? "bg-green-50 text-green-900 opacity-100"
+                        : "bg-green-50/30 text-green-300 opacity-50"
+                        }`}
                       dangerouslySetInnerHTML={{ __html: row.line }}
                     />
                   </div>
@@ -655,16 +704,19 @@ export default function VersionCompareOverlay({
                   ? "Both sides are empty."
                   : "Content is identical — no changes to pick. You can still restore this version as a new entry."}
               </span>
+            ) : pickedCount === 0 ? (
+              <span className="text-gray-400 italic">
+                Click <span className="font-semibold not-italic text-red-600">Use Historical</span> on any change to cherry-pick it, or use the quick-select buttons above.
+              </span>
+            ) : pickedCount === changeableHunks ? (
+              <span>
+                All <span className="font-semibold font-jetbrains-mono text-gray-900">{changeableHunks}</span> change{changeableHunks === 1 ? "" : "s"} will be taken from history — equivalent to a full restore.
+              </span>
             ) : (
               <span>
-                <span className="font-semibold font-jetbrains-mono text-gray-900">
-                  {pickedCount}
-                </span>{" "}
-                of{" "}
-                <span className="font-semibold font-jetbrains-mono text-gray-900">
-                  {changeableHunks}
-                </span>{" "}
-                hunk{changeableHunks === 1 ? "" : "s"} picked from history
+                <span className="font-semibold font-jetbrains-mono text-red-700">{pickedCount}</span> change{pickedCount === 1 ? "" : "s"} from history
+                {" · "}
+                <span className="font-semibold font-jetbrains-mono text-green-700">{changeableHunks - pickedCount}</span> kept as current
               </span>
             )}
           </div>

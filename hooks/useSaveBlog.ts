@@ -79,10 +79,27 @@ export function useSaveBlog({
           body: JSON.stringify(payload),
         });
 
-        const data = await res.json();
+        // Safely parse JSON or handle plain text/HTML errors (like 413 Payload Too Large)
+        let data: any = {};
+        let parseError: string | null = null;
+        try {
+          const text = await res.text();
+          try {
+            data = JSON.parse(text);
+          } catch (e) {
+            parseError = text || `${res.status} ${res.statusText}`;
+          }
+        } catch (e) {
+          parseError = `${res.status} ${res.statusText}`;
+        }
 
         if (!res.ok) {
-          throw new Error(data.error || "Failed to save blog post");
+          if (res.status === 413) {
+            throw new Error(
+              "Payload too large: The post content (possibly containing large base64 images) exceeds the server's size limit. Please compress your images or use image URLs."
+            );
+          }
+          throw new Error(data?.error || parseError || "Failed to save blog post");
         }
 
         const persistedId = data.data?._id ?? data._id ?? "";

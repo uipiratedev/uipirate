@@ -23,30 +23,76 @@ interface VersionHistoryPanelProps {
   currentContent?: string;
 }
 
+/**
+ * Strip HTML markup from a diff line so we display readable prose,
+ * not a wall of tags. Base64 image data is replaced with a short
+ * placeholder before tag-stripping to avoid kilobyte-long lines.
+ */
+const cleanDiffContent = (raw: string): string =>
+  raw
+    .replace(/src="data:[^"]{10,}"/gi, 'src="[image]"')
+    .replace(/href="data:[^"]{10,}"/gi, 'href="[data]"')
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+/** Inline unified-diff renderer for "View Changes" (what changed *in* this version). */
 const renderDiff = (diff?: string) => {
   if (!diff || diff === "No changes") {
     return (
-      <p className="text-[11px] italic font-geist text-gray-500 py-2">
-        No changes (Initial Version)
+      <p className="text-[11px] italic font-geist text-gray-400 py-1">
+        No diff recorded — this is likely the initial version.
       </p>
     );
   }
+
+  const lines = diff.split("\n").filter((l) => l.trim().length > 0);
+
   return (
-    <div className="text-[11px] leading-relaxed font-jetbrains-mono bg-gray-50 border border-gray-200 rounded-lg overflow-auto max-h-60">
-      {diff.split("\n").map((line, idx) => {
-        const ch = line.charAt(0);
-        const cls =
-          ch === "+"
-            ? "bg-green-50 text-green-700"
-            : ch === "-"
-              ? "bg-red-50 text-red-700"
-              : "text-gray-500";
+    <div className="rounded-lg border border-gray-200 overflow-auto max-h-52 text-[11px] font-geist leading-relaxed divide-y divide-gray-100">
+      {lines.map((line, idx) => {
+        const isAdded = line.startsWith("+ ");
+        const isRemoved = line.startsWith("- ");
+        const content = cleanDiffContent(
+          isAdded || isRemoved ? line.slice(2) : line,
+        );
+        if (!content) return null;
         return (
           <div
             key={idx}
-            className={`px-2 whitespace-pre-wrap break-all ${cls}`}
+            className={`flex gap-2 px-3 py-1.5 ${isAdded
+                ? "bg-green-50 border-l-2 border-green-400"
+                : isRemoved
+                  ? "bg-red-50 border-l-2 border-red-400"
+                  : "bg-white"
+              }`}
           >
-            {line || "\u00A0"}
+            <span
+              className={`select-none shrink-0 font-jetbrains-mono font-bold ${isAdded
+                  ? "text-green-500"
+                  : isRemoved
+                    ? "text-red-500"
+                    : "text-gray-300"
+                }`}
+            >
+              {isAdded ? "+" : isRemoved ? "−" : " "}
+            </span>
+            <span
+              className={`break-words min-w-0 ${isAdded
+                  ? "text-green-900"
+                  : isRemoved
+                    ? "text-red-900"
+                    : "text-gray-500"
+                }`}
+            >
+              {content}
+            </span>
           </div>
         );
       })}
@@ -86,11 +132,11 @@ export default function VersionHistoryPanel({
     null,
   );
 
-  const toggleDiff = (version: number) => {
+  const toggleDiff = (versionNum: number) => {
     setDiffOpen((prev) => {
       const next = new Set(prev);
-      if (next.has(version)) next.delete(version);
-      else next.add(version);
+      if (next.has(versionNum)) next.delete(versionNum);
+      else next.add(versionNum);
       return next;
     });
   };
@@ -215,25 +261,29 @@ export default function VersionHistoryPanel({
               </p>
             )}
 
-            <div className="flex gap-2 mt-2 flex-wrap">
+            <div className="flex gap-1.5 mt-2 flex-wrap">
+              {/* What changed IN this version (inline diff from stored diff string) */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleDiff(ver.version);
                 }}
+                title="Show what changed within this specific save"
                 className="px-2.5 py-1 text-[11px] font-semibold font-geist text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-md border border-gray-200 transition-colors"
               >
                 {diffOpen.has(ver.version) ? "Hide Changes" : "View Changes"}
               </button>
+              {/* How this snapshot compares to the live draft (full overlay) */}
               {currentContent !== undefined && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     openCompare(ver);
                   }}
+                  title="Compare this snapshot side-by-side with your current draft"
                   className="px-2.5 py-1 text-[11px] font-semibold font-geist text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md border border-blue-200 transition-colors"
                 >
-                  Compare with Current
+                  vs. Current
                 </button>
               )}
               {selectedVersion === ver.version && (
@@ -243,18 +293,22 @@ export default function VersionHistoryPanel({
                     handleRestore(ver.version);
                   }}
                   disabled={restoring}
-                  className="flex-1 px-3 py-1 bg-[#FF5B04] text-white text-[11px] font-semibold font-geist rounded-md hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className="ml-auto px-3 py-1 bg-[#FF5B04] text-white text-[11px] font-semibold font-geist rounded-md hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {restoring ? "Restoring..." : "Restore"}
                 </button>
               )}
             </div>
 
+            {/* Inline diff — "what happened in this version" */}
             {diffOpen.has(ver.version) && (
               <div
                 className="mt-3 pt-3 border-t border-gray-200"
                 onClick={(e) => e.stopPropagation()}
               >
+                <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider font-jetbrains-mono mb-1.5">
+                  What changed in this version
+                </p>
                 {renderDiff(ver.diff)}
               </div>
             )}
