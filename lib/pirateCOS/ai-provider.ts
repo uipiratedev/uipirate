@@ -18,6 +18,7 @@ export const DEFAULT_MODEL_BY_ENGINE: Record<AIEngine, string> = {
   gemini: getDefaultModelForEngine("gemini"),
   mistral: getDefaultModelForEngine("mistral"),
   anthropic: getDefaultModelForEngine("anthropic"),
+  grok: getDefaultModelForEngine("grok"),
   puter: getDefaultModelForEngine("puter"),
 };
 

@@ -10,6 +10,7 @@ function getEnvKey(engine: AIEngine): string | undefined {
   if (engine === "gemini") return process.env.GEMINI_API_KEY;
   if (engine === "mistral") return process.env.MISTRAL_API_KEY;
   if (engine === "anthropic") return process.env.ANTHROPIC_API_KEY;
+  if (engine === "grok") return process.env.XAI_API_KEY || process.env.GROK_API_KEY;
   return undefined;
 }
 

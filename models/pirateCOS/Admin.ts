@@ -30,6 +30,7 @@ export interface IAdmin extends Document {
     gemini: boolean;
     mistral: boolean;
     anthropic: boolean;
+    grok: boolean;
   };
   /** Trial tracking counters */
   trialStartedAt?: Date;
@@ -110,6 +111,7 @@ const AdminSchema: Schema = new Schema(
       gemini: { type: Boolean, default: false },
       mistral: { type: Boolean, default: false },
       anthropic: { type: Boolean, default: false },
+      grok: { type: Boolean, default: false },
     },
     trialStartedAt: {
       type: Date,

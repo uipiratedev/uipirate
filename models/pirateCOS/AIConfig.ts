@@ -12,6 +12,8 @@ export interface IAIConfig extends Document {
   mistralKeyEncrypted?: string;
   /** AES-256-GCM encrypted Anthropic API key (iv:tag:ciphertext) */
   anthropicKeyEncrypted?: string;
+  /** AES-256-GCM encrypted Grok API key (iv:tag:ciphertext) */
+  grokKeyEncrypted?: string;
   /** Which engine to pre-select in writing assistants */
   defaultEngine: AIEngine;
   /** Which model to pre-select in writing assistants */
@@ -32,6 +34,7 @@ const AIConfigSchema: Schema<IAIConfig> = new Schema(
     geminiKeyEncrypted: { type: String, default: null },
     mistralKeyEncrypted: { type: String, default: null },
     anthropicKeyEncrypted: { type: String, default: null },
+    grokKeyEncrypted: { type: String, default: null },
     defaultEngine: {
       type: String,
       enum: AI_ENGINE_IDS,

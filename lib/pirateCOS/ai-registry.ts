@@ -1,4 +1,4 @@
-export type AIEngine = "openai" | "gemini" | "mistral" | "anthropic" | "puter";
+export type AIEngine = "openai" | "gemini" | "mistral" | "anthropic" | "puter" | "grok";
 export type AIKeyProvider = Exclude<AIEngine, "puter">;
 
 export interface AIProviderEntry {
@@ -115,6 +115,25 @@ export const AI_PROVIDERS: AIProviderEntry[] = [
     badgeColor: "orange",
     requiresKey: false,
   },
+  {
+    id: "grok",
+    name: "xAI Grok",
+    shortName: "Grok",
+    logo: "/assets/logos/ai/xai-grok.svg",
+    color: "#000000",
+    badgeColor: "gray",
+    requiresKey: true,
+    keyPlaceholder: "xai-...",
+    keyDescription: "Used for Grok 2 and Grok Beta models.",
+    keyLink: "https://console.x.ai/",
+    keyLinkLabel: "console.x.ai",
+    sourceColors: {
+      bg: "bg-gray-50",
+      border: "border-gray-100",
+      dot: "bg-gray-400",
+      text: "text-gray-700",
+    },
+  },
 ];
 
 export const AI_ENGINE_IDS: AIEngine[] = [
@@ -122,6 +141,7 @@ export const AI_ENGINE_IDS: AIEngine[] = [
   "gemini",
   "anthropic",
   "mistral",
+  "grok",
   "puter",
 ];
 
@@ -148,6 +168,10 @@ export const AI_MODELS: AIModelEntry[] = [
   { id: "claude-3-5-sonnet-latest", label: "Claude 3.5 Sonnet", provider: "anthropic", isDefault: true },
   { id: "claude-3-5-haiku-latest", label: "Claude 3.5 Haiku", provider: "anthropic" },
   { id: "claude-3-opus-latest", label: "Claude 3 Opus", provider: "anthropic" },
+
+  // Grok Models
+  { id: "grok-2-1212", label: "Grok 2", description: "capable", provider: "grok", isDefault: true },
+  { id: "grok-beta", label: "Grok Beta", provider: "grok" },
 
   // Puter Models
   { id: "gpt-4o-mini", label: "GPT-4o Mini", description: "fast", provider: "puter", isDefault: true },

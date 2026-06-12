@@ -234,6 +234,7 @@ export default function AISettingsPage() {
   const [geminiSource, setGeminiSource] = useState<KeySource>(null);
   const [mistralSource, setMistralSource] = useState<KeySource>(null);
   const [anthropicSource, setAnthropicSource] = useState<KeySource>(null);
+  const [grokSource, setGrokSource] = useState<KeySource>(null);
 
   // plan states
   const [plan, setPlan] = useState<string>("free");
@@ -245,11 +246,13 @@ export default function AISettingsPage() {
     gemini: boolean;
     mistral: boolean;
     anthropic: boolean;
+    grok: boolean;
   }>({
     openai: false,
     gemini: false,
     mistral: false,
     anthropic: false,
+    grok: false,
   });
   const [updatingBYOK, setUpdatingBYOK] = useState(false);
 
@@ -285,6 +288,7 @@ export default function AISettingsPage() {
           setGeminiSource(d.geminiSource);
           setMistralSource(d.mistralSource);
           setAnthropicSource(d.anthropicSource);
+          setGrokSource(d.grokSource);
           const eng = (d.defaultEngine ?? "puter") as Engine;
           const mdl = d.defaultModel ?? "gpt-4o-mini";
 
@@ -357,6 +361,7 @@ export default function AISettingsPage() {
     if (provider === "gemini") body.geminiKey = key;
     if (provider === "mistral") body.mistralKey = key;
     if (provider === "anthropic") body.anthropicKey = key;
+    if (provider === "grok") body.grokKey = key;
     const res = await fetch("/api/pirateCOS/ai-config", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -375,6 +380,7 @@ export default function AISettingsPage() {
       setGeminiSource(refreshed.geminiSource);
       setMistralSource(refreshed.mistralSource);
       setAnthropicSource(refreshed.anthropicSource);
+      setGrokSource(refreshed.grokSource);
     }
   };
 
@@ -606,6 +612,28 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("anthropic")}
               onManageKey={() => openKeyModal("anthropic")}
+            />
+
+            {/* Grok */}
+            <ProviderKeyCard
+              badgeColor="gray"
+              description="Grok 2 and Grok Beta models."
+              icon={
+                <img src="/assets/logos/ai/xai-grok.svg" alt="xAI Grok" className="w-5 h-5 object-contain" />
+              }
+              source={grokSource}
+              sourceColors={{
+                bg: "bg-gray-50",
+                border: "border-gray-100",
+                dot: "bg-gray-400",
+                text: "text-gray-700",
+              }}
+              title="xAI Grok"
+              isPro={isPro}
+              byokEnabled={byokEnabled.grok}
+              updatingBYOK={updatingBYOK}
+              onToggleBYOK={() => handleToggleBYOK("grok")}
+              onManageKey={() => openKeyModal("grok")}
             />
           </div>
 
@@ -864,7 +892,7 @@ interface CardProps {
   icon: React.ReactNode;
   title: string;
   badge?: string;
-  badgeColor?: "orange" | "emerald" | "blue" | "violet" | "fuchsia";
+  badgeColor?: "orange" | "emerald" | "blue" | "violet" | "fuchsia" | "gray";
   description: string;
   children?: React.ReactNode;
 }
@@ -894,6 +922,8 @@ const SettingCard = ({
                   ? "text-violet-700 bg-violet-50"
                   : badgeColor === "fuchsia"
                     ? "text-fuchsia-700 bg-fuchsia-50"
+                  : badgeColor === "gray"
+                    ? "text-gray-700 bg-gray-50"
                   : "text-orange-700 bg-orange-50"
           }`}
         >
@@ -911,7 +941,7 @@ const SettingCard = ({
 interface ProviderKeyCardProps {
   icon: React.ReactNode;
   title: string;
-  badgeColor: "emerald" | "blue" | "violet" | "fuchsia";
+  badgeColor: "emerald" | "blue" | "violet" | "fuchsia" | "gray";
   source: KeySource;
   description: string;
   sourceColors: { bg: string; border: string; dot: string; text: string };

@@ -29,10 +29,12 @@ export async function GET() {
   const geminiEnv = !!process.env.GEMINI_API_KEY;
   const mistralEnv = !!process.env.MISTRAL_API_KEY;
   const anthropicEnv = !!process.env.ANTHROPIC_API_KEY;
+  const grokEnv = !!(process.env.XAI_API_KEY || process.env.GROK_API_KEY);
   const openaiDb = !!cfg?.openaiKeyEncrypted;
   const geminiDb = !!cfg?.geminiKeyEncrypted;
   const mistralDb = !!cfg?.mistralKeyEncrypted;
   const anthropicDb = !!cfg?.anthropicKeyEncrypted;
+  const grokDb = !!cfg?.grokKeyEncrypted;
 
   return NextResponse.json({
     success: true,
@@ -41,10 +43,12 @@ export async function GET() {
     gemini: geminiEnv || geminiDb,
     mistral: mistralEnv || mistralDb,
     anthropic: anthropicEnv || anthropicDb,
+    grok: grokEnv || grokDb,
     openaiSource: openaiEnv ? "env" : openaiDb ? "db" : null,
     geminiSource: geminiEnv ? "env" : geminiDb ? "db" : null,
     mistralSource: mistralEnv ? "env" : mistralDb ? "db" : null,
     anthropicSource: anthropicEnv ? "env" : anthropicDb ? "db" : null,
+    grokSource: grokEnv ? "env" : grokDb ? "db" : null,
     defaultEngine: cfg?.defaultEngine ?? "puter",
     defaultModel: cfg?.defaultModel ?? "gpt-4o-mini",
   });
@@ -68,6 +72,7 @@ export async function POST(req: NextRequest) {
     geminiKey,
     mistralKey,
     anthropicKey,
+    grokKey,
     defaultEngine,
     defaultModel,
   } = await req.json();
@@ -107,6 +112,11 @@ export async function POST(req: NextRequest) {
   if (typeof anthropicKey === "string") {
     cfg.anthropicKeyEncrypted = anthropicKey.trim()
       ? encrypt(anthropicKey.trim())
+      : undefined;
+  }
+  if (typeof grokKey === "string") {
+    cfg.grokKeyEncrypted = grokKey.trim()
+      ? encrypt(grokKey.trim())
       : undefined;
   }
   if (defaultEngine) cfg.defaultEngine = defaultEngine;

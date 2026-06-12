@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
     const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
     const envAnthropic = process.env.ANTHROPIC_API_KEY;
+    const envGrok = process.env.XAI_API_KEY || process.env.GROK_API_KEY;
 
     await dbConnect();
     const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
@@ -64,11 +65,13 @@ export async function POST(request: NextRequest) {
     const geminiApiKey = envGemini || dbKeys.gemini;
     const mistralApiKey = envMistral || dbKeys.mistral;
     const anthropicApiKey = envAnthropic || dbKeys.anthropic;
+    const grokApiKey = envGrok || dbKeys.grok;
     const availableKeys = {
       openai: openaiApiKey,
       gemini: geminiApiKey,
       mistral: mistralApiKey,
       anthropic: anthropicApiKey,
+      grok: grokApiKey,
     };
 
     const selectedEngine: AIEngine = resolveAIEngine({
@@ -217,11 +220,14 @@ export async function POST(request: NextRequest) {
     let text = "";
     const selectedModel = model || DEFAULT_MODEL_BY_ENGINE[selectedEngine]; // Phase 4G-2: Hoist for logging
 
-    if (selectedEngine === "openai" || selectedEngine === "mistral") {
+    if (selectedEngine === "openai" || selectedEngine === "mistral" || selectedEngine === "grok") {
       const isMistral = selectedEngine === "mistral";
-      const apiUrl = isMistral
-        ? "https://api.mistral.ai/v1/chat/completions"
-        : "https://api.openai.com/v1/chat/completions";
+      const isGrok = selectedEngine === "grok";
+      const apiUrl = isGrok
+        ? "https://api.x.ai/v1/chat/completions"
+        : isMistral
+          ? "https://api.mistral.ai/v1/chat/completions"
+          : "https://api.openai.com/v1/chat/completions";
 
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -240,7 +246,7 @@ export async function POST(request: NextRequest) {
         const errText = await response.text();
 
         throw new Error(
-          `${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`,
+          `${isGrok ? "Grok" : isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`,
         );
       }
 

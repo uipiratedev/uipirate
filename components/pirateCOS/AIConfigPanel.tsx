@@ -41,6 +41,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [geminiKey, setGeminiKey] = useState("");
   const [mistralKey, setMistralKey] = useState("");
   const [anthropicKey, setAnthropicKey] = useState("");
+  const [grokKey, setGrokKey] = useState("");
   const [defaultEngine, setDefaultEngine] = useState<AIEngine>("puter");
   const [defaultModel, setDefaultModel] = useState("gpt-4o-mini");
   const [serverStatus, setServerStatus] = useState<{
@@ -48,6 +49,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     gemini: boolean;
     mistral: boolean;
     anthropic: boolean;
+    grok: boolean;
   } | null>(null);
   const [puterUser, setPuterUser] = useState<{ username: string } | null>(null);
   const [puterBusy, setPuterBusy] = useState(false);
@@ -58,6 +60,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [showGKey, setShowGKey] = useState(false);
   const [showMKey, setShowMKey] = useState(false);
   const [showAKey, setShowAKey] = useState(false);
+  const [showGrokKey, setShowGrokKey] = useState(false);
   const {
     models: availableModels,
     source: modelSource,
@@ -72,6 +75,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     setGeminiKey("");
     setMistralKey("");
     setAnthropicKey("");
+    setGrokKey("");
     setDefaultEngine(cfg.defaultEngine || "puter");
     setDefaultModel(cfg.defaultModel || "gpt-4o-mini");
 
@@ -84,6 +88,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
             gemini: d.gemini,
             mistral: d.mistral,
             anthropic: d.anthropic,
+            grok: d.grok,
           });
           if (d.defaultEngine) setDefaultEngine(d.defaultEngine as any);
           if (d.defaultModel) setDefaultModel(d.defaultModel);
@@ -112,6 +117,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       if (geminiKey.trim()) body.geminiKey = geminiKey.trim();
       if (mistralKey.trim()) body.mistralKey = mistralKey.trim();
       if (anthropicKey.trim()) body.anthropicKey = anthropicKey.trim();
+      if (grokKey.trim()) body.grokKey = grokKey.trim();
 
       const res = await fetch("/api/pirateCOS/ai-config", {
         method: "POST",
@@ -127,6 +133,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       if (geminiKey.trim()) setGeminiKey("");
       if (mistralKey.trim()) setMistralKey("");
       if (anthropicKey.trim()) setAnthropicKey("");
+      if (grokKey.trim()) setGrokKey("");
 
       // Update local storage defaults cache for fast loading
       localStorage.setItem(
@@ -145,6 +152,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           gemini: refreshed.gemini,
           mistral: refreshed.mistral,
           anthropic: refreshed.anthropic,
+          grok: refreshed.grok,
         });
       }
 
@@ -360,6 +368,28 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               value={anthropicKey}
               onChange={setAnthropicKey}
               onToggle={() => setShowAKey((v) => !v)}
+            />
+          </PanelSection>
+
+          {/* ── xAI Grok ── */}
+          <PanelSection label="xAI Grok">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-semibold font-geist text-gray-800">
+                xAI Grok
+              </span>
+              {serverStatus?.grok && <EnvBadge color="violet" />}
+            </div>
+            <KeyInput
+              focusColor="#000000"
+              placeholder={
+                serverStatus?.grok
+                  ? "Saved in Database (encrypted)"
+                  : "xai-..."
+              }
+              show={showGrokKey}
+              value={grokKey}
+              onChange={setGrokKey}
+              onToggle={() => setShowGrokKey((v) => !v)}
             />
           </PanelSection>
 

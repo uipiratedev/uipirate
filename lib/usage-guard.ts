@@ -23,7 +23,7 @@ export class CreditLimitError extends Error {
 export async function deductCredits(
   tenantId: string,
   actionType: "blog" | "seo" | "enhance" | "publish" | "suggest",
-  engine?: "openai" | "gemini" | "mistral" | "anthropic",
+  engine?: "openai" | "gemini" | "mistral" | "anthropic" | "grok",
 ): Promise<void> {
   await dbConnect();
 
@@ -48,7 +48,8 @@ export async function deductCredits(
         (admin.byokEnabled.openai ||
           admin.byokEnabled.gemini ||
           admin.byokEnabled.mistral ||
-          admin.byokEnabled.anthropic)
+          admin.byokEnabled.anthropic ||
+          (admin.byokEnabled as any).grok)
       ) {
         // General fallback if engine not specifically selected but keys exist
         usesBYOK = true;
