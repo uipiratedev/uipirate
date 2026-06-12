@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
 import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
 import type { IContentHistory } from "@/models/pirateCOS/ContentHistory";
 
@@ -147,6 +149,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const denied = checkRole(user, ["org-admin", "admin", "editor"]);
+    if (denied) return denied;
+
     await dbConnect();
 
     const body = await request.json();
@@ -214,6 +219,7 @@ export async function POST(request: NextRequest) {
 
     blog.calculateReadTime();
     await blog.save();
+    await audit(user, "post.create", { targetId: blog._id.toString(), targetType: "post", meta: { title: blog.title } });
 
     // Phase 4F.2: Create initial version snapshot
     const initialChangeType: IContentHistory["changeType"] =

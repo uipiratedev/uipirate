@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
 import { dispatch } from "@/lib/pirateCOS/distribution";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
@@ -19,13 +21,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { requireOrgRole } = await import("@/lib/pirateCOS/require-role");
-  if (user.orgRole !== "individual" && !requireOrgRole(user, ["org-admin", "admin"])) {
-    return NextResponse.json(
-      { success: false, error: "Forbidden" },
-      { status: 403 },
-    );
-  }
+  const denied = checkRole(user, ["org-admin", "admin", "editor"]);
+  if (denied) return denied;
 
   const { blogId, platforms, options } = await req.json();
 
@@ -69,6 +66,27 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Editors may only distribute posts that have been approved by an admin.
+  // Org-admins and admins can bypass the approval gate (they self-approve).
+  const isPrivileged =
+    user.accountType === "individual" ||
+    user.orgRole === "org-admin" ||
+    user.orgRole === "admin";
+
+  if (!isPrivileged && post.approvalStatus !== "approved") {
+    return NextResponse.json(
+      {
+        success: false,
+        error:
+          post.approvalStatus === "pending_review"
+            ? "This post is awaiting admin approval before it can be distributed."
+            : "This post must be approved by an admin before distribution. Submit it for review first.",
+        approvalStatus: post.approvalStatus ?? "draft",
+      },
+      { status: 403 },
+    );
+  }
+
   // --- ENFORCE CREDIT LIMITS FOR outbound PUBLISHING ---
   const admin = await Admin.findById(user.tenantId);
   const costPerPlatform = 1.0;
@@ -87,7 +105,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Run credit deductions per channel
-  for (const platform of platforms) {
+  for (const _platform of platforms) {
     try {
       await deductCredits(user.tenantId, "publish");
     } catch (guardErr: any) {
@@ -150,6 +168,11 @@ export async function POST(req: NextRequest) {
   // Use markModified for arrays in Mongoose if needed
   post.markModified("distributionRecords");
   await post.save();
+  await audit(user, "post.publish", {
+    targetId: blogId,
+    targetType: "post",
+    meta: { platforms },
+  });
 
   return NextResponse.json({
     success: true,

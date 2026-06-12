@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
 import dbConnect from "@/lib/mongodb";
 import Admin from "@/models/pirateCOS/Admin";
 
@@ -20,6 +21,9 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
+
+    const denied = checkRole(user, ["org-admin"]);
+    if (denied) return denied;
 
     await dbConnect();
     const admin = await Admin.findById(user.tenantId);

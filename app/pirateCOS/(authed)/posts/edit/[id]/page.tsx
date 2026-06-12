@@ -5066,6 +5066,8 @@ const BlogEditPage = () => {
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
   const [repurposedOutputs, setRepurposedOutputs] = useState<Record<string, string>>({});
+  const [approvalStatus, setApprovalStatus] = useState<string>("draft");
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
 
 
@@ -5586,7 +5588,7 @@ const BlogEditPage = () => {
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const sessionUploadedUrlsRef = useRef<string[]>([]);
 
-  const { isLoading: authLoading } = useAuth(true);
+  const { isLoading: authLoading, user: editorUser } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);
@@ -6068,6 +6070,7 @@ const BlogEditPage = () => {
         setSaveStatus(blog.published ? "Published" : "Draft");
         setDistRecords(blog.distributionRecords || []);
         setRepurposedOutputs(blog.repurposedOutputs || {});
+        setApprovalStatus(blog.approvalStatus || "draft");
         if (editor) {
           // Disable dirty tracking while loading initial content
           isEditorReady.current = false;
@@ -6239,6 +6242,26 @@ const BlogEditPage = () => {
     }
     setShowPublishModal(true);
   }, [title, editor, blogId]);
+
+  const isEditorOnlyUser = !!editorUser && editorUser.accountType !== "individual" && editorUser.orgRole === "editor";
+
+  const handleSubmitForReview = useCallback(async () => {
+    if (!blogId) return;
+    setIsSubmittingReview(true);
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${blogId}/request-review`, { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        setApprovalStatus("pending_review");
+      } else {
+        setValidationError(data.error || "Failed to submit for review");
+      }
+    } catch {
+      setValidationError("Failed to submit for review");
+    } finally {
+      setIsSubmittingReview(false);
+    }
+  }, [blogId]);
 
   if (!mounted || !editor || authLoading || loading) return null;
 
@@ -6650,18 +6673,33 @@ const BlogEditPage = () => {
                   <span className="hidden sm:inline">Save Draft</span>
                   <span className="sm:hidden">Save</span>
                 </Button>
-                <Button
-                  className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"
-                  disabled={isDisabled}
-                  isLoading={isSaving}
-                  style={{
-                    background: isDisabled ? "rgba(0,0,0,0.06)" : "#FF5B04",
-                    color: isDisabled ? "#a1a1aa" : "white"
-                  }}
-                  onClick={handlePublish}
-                >
-                  Publish
-                </Button>
+                {isEditorOnlyUser ? (
+                  <Button
+                    className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium disabled:cursor-not-allowed disabled:pointer-events-none"
+                    disabled={isDisabled || approvalStatus === "pending_review" || approvalStatus === "approved"}
+                    isLoading={isSubmittingReview}
+                    style={{
+                      background: (isDisabled || approvalStatus === "pending_review" || approvalStatus === "approved") ? "rgba(0,0,0,0.06)" : "rgba(234,179,8,0.15)",
+                      color: (isDisabled || approvalStatus === "pending_review" || approvalStatus === "approved") ? "#a1a1aa" : "#A16207"
+                    }}
+                    onClick={handleSubmitForReview}
+                  >
+                    {approvalStatus === "pending_review" ? "In Review" : approvalStatus === "approved" ? "Approved" : "Submit for Review"}
+                  </Button>
+                ) : (
+                  <Button
+                    className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"
+                    disabled={isDisabled}
+                    isLoading={isSaving}
+                    style={{
+                      background: isDisabled ? "rgba(0,0,0,0.06)" : "#FF5B04",
+                      color: isDisabled ? "#a1a1aa" : "white"
+                    }}
+                    onClick={handlePublish}
+                  >
+                    Publish
+                  </Button>
+                )}
               </>
             );
           })()}

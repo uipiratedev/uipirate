@@ -27,6 +27,7 @@ interface Blog {
   botViews?: number;
   duplicateViews?: number;
   postType?: string;
+  approvalStatus?: "draft" | "pending_review" | "approved" | "rejected";
   author: {
     name: string;
   };
@@ -65,7 +66,7 @@ export default function AdminBlogsPage() {
   const typeRef = useRef<HTMLDivElement>(null);
   const teamRef = useRef<HTMLDivElement>(null);
 
-  useAuth(true); // Require authentication
+  const { user } = useAuth(true);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -216,6 +217,53 @@ export default function AdminBlogsPage() {
       }
     } catch (error) {
       alert(`Failed to ${action} post`);
+    }
+  };
+
+  const canDelete = !user || user.accountType === "individual" || ["org-admin", "admin"].includes(user.orgRole);
+  const canApprove = !user || user.accountType === "individual" || ["org-admin", "admin"].includes(user.orgRole);
+  const isEditorOnly = !!user && user.accountType !== "individual" && user.orgRole === "editor";
+
+  const handleRequestReview = async (id: string) => {
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${id}/request-review`, { method: "POST" });
+      const data = await res.json();
+      if (data.success) fetchBlogs();
+      else alert(data.error || "Failed to submit for review");
+    } catch {
+      alert("Failed to submit for review");
+    }
+  };
+
+  const handleApprovePost = async (id: string) => {
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${id}/approve-review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json();
+      if (data.success) fetchBlogs();
+      else alert(data.error || "Failed to approve post");
+    } catch {
+      alert("Failed to approve post");
+    }
+  };
+
+  const handleRejectPost = async (id: string, title: string) => {
+    const note = prompt(`Reason for rejecting "${title}"? (optional)`);
+    if (note === null) return;
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${id}/reject-review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ note }),
+      });
+      const data = await res.json();
+      if (data.success) fetchBlogs();
+      else alert(data.error || "Failed to reject post");
+    } catch {
+      alert("Failed to reject post");
     }
   };
 
@@ -697,14 +745,31 @@ export default function AdminBlogsPage() {
                         </div>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex text-[10px] font-medium font-jetbrains-mono px-2.5 py-1 rounded-full ${blog.published
-                            ? "bg-green-50 text-green-600"
-                            : "bg-orange-50 text-[#FF5B04]"
-                            }`}
-                        >
-                          {blog.published ? "Published" : "Draft"}
-                        </span>
+                        <div className="flex flex-col gap-1">
+                          <span
+                            className={`inline-flex text-[10px] font-medium font-jetbrains-mono px-2.5 py-1 rounded-full ${blog.published
+                              ? "bg-green-50 text-green-600"
+                              : "bg-orange-50 text-[#FF5B04]"
+                              }`}
+                          >
+                            {blog.published ? "Published" : "Draft"}
+                          </span>
+                          {blog.approvalStatus && blog.approvalStatus !== "draft" && (
+                            <span className={`inline-flex text-[10px] font-medium font-jetbrains-mono px-2.5 py-1 rounded-full ${
+                              blog.approvalStatus === "approved"
+                                ? "bg-blue-50 text-blue-600"
+                                : blog.approvalStatus === "pending_review"
+                                  ? "bg-yellow-50 text-yellow-600"
+                                  : "bg-red-50 text-red-600"
+                            }`}>
+                              {blog.approvalStatus === "approved"
+                                ? "Approved"
+                                : blog.approvalStatus === "pending_review"
+                                  ? "In Review"
+                                  : "Rejected"}
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
                         <div className="flex flex-col gap-0.5">
@@ -795,18 +860,53 @@ export default function AdminBlogsPage() {
                           >
                             {blog.published ? "Unpublish" : "Publish"}
                           </Button>
-                          <Button
-                            className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
-                            size="sm"
-                            style={{
-                              background: "rgba(239,68,68,0.08)",
-                              color: "#DC2626",
-                            }}
-                            variant="flat"
-                            onClick={() => handleDelete(blog._id, blog.title)}
-                          >
-                            <IconTrash style={{ width: 13, height: 13 }} /> Delete
-                          </Button>
+                          {/* Submit for Review — editors only, unpublished posts not yet approved */}
+                          {isEditorOnly && !blog.published && blog.approvalStatus !== "pending_review" && blog.approvalStatus !== "approved" && (
+                            <Button
+                              className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                              size="sm"
+                              style={{ background: "rgba(234,179,8,0.1)", color: "#A16207" }}
+                              variant="flat"
+                              onPress={() => handleRequestReview(blog._id)}
+                            >
+                              Submit for Review
+                            </Button>
+                          )}
+                          {/* Approve / Reject — admins and org-admins */}
+                          {canApprove && blog.approvalStatus === "pending_review" && (
+                            <>
+                              <Button
+                                className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                                size="sm"
+                                style={{ background: "rgba(37,99,235,0.08)", color: "#1D4ED8" }}
+                                variant="flat"
+                                onPress={() => handleApprovePost(blog._id)}
+                              >
+                                Approve
+                              </Button>
+                              <Button
+                                className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                                size="sm"
+                                style={{ background: "rgba(239,68,68,0.08)", color: "#DC2626" }}
+                                variant="flat"
+                                onPress={() => handleRejectPost(blog._id, blog.title)}
+                              >
+                                Reject
+                              </Button>
+                            </>
+                          )}
+                          {/* Delete — org-admin and admin only */}
+                          {canDelete && (
+                            <Button
+                              className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                              size="sm"
+                              style={{ background: "rgba(239,68,68,0.08)", color: "#DC2626" }}
+                              variant="flat"
+                              onPress={() => handleDelete(blog._id, blog.title)}
+                            >
+                              <IconTrash style={{ width: 13, height: 13 }} /> Delete
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>

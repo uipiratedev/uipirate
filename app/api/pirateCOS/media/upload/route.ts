@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
 
 if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
   throw new Error("Missing required Cloudinary environment variables: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET");
@@ -22,6 +23,9 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
+
+    const denied = checkRole(user, ["org-admin", "admin", "editor"]);
+    if (denied) return denied;
 
     const formData = await req.formData();
     const file = formData.get("file") as File | null;

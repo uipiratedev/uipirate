@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
 import dbConnect from "@/lib/mongodb";
 import Admin from "@/models/pirateCOS/Admin";
 import AIConfig from "@/models/pirateCOS/AIConfig";
@@ -16,6 +17,9 @@ export async function GET() {
         { status: 401 },
       );
     }
+
+    const denied = checkRole(user, ["org-admin", "admin"]);
+    if (denied) return denied;
 
     await dbConnect();
     const admin = await Admin.findById(user.tenantId).lean();

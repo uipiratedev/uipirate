@@ -5230,6 +5230,8 @@ const BlogEditor = () => {
   const [isExcerptExpanded, setIsExcerptExpanded] = useState(true);
   const [isTagsExpanded, setIsTagsExpanded] = useState(true);
 
+  const reviewAfterSaveRef = useRef(false);
+
   const {
     blogId: savedBlogId,
     setBlogId: setSavedBlogId,
@@ -5276,9 +5278,16 @@ const BlogEditor = () => {
         (url) => activeUrls.includes(url)
       );
 
+      if (reviewAfterSaveRef.current && id) {
+        reviewAfterSaveRef.current = false;
+        fetch(`/api/pirateCOS/posts/${id}/request-review`, { method: "POST" }).catch(() => {});
+        router.push(getHref("/posts"));
+        return;
+      }
       setModalSuccess(published ? "publish" : "draft");
     },
     onSaveError: (err) => {
+      reviewAfterSaveRef.current = false;
       setShowPublishModal(false);
       setShowSaveModal(false);
       setValidationError(err.message || "Failed to save blog");
@@ -5290,7 +5299,7 @@ const BlogEditor = () => {
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const sessionUploadedUrlsRef = useRef<string[]>([]);
   const router = useRouter();
-  const { isLoading: authLoading } = useAuth(true);
+  const { isLoading: authLoading, user: editorUser } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);
@@ -5799,6 +5808,21 @@ const BlogEditor = () => {
     }
     setShowPublishModal(true);
   }, [title, editor]);
+
+  const isEditorOnlyUser = !!editorUser && editorUser.accountType !== "individual" && editorUser.orgRole === "editor";
+
+  const handleSubmitForReview = useCallback(() => {
+    if (!title.trim()) {
+      setValidationError("Please enter a title for your blog post.");
+      return;
+    }
+    if (isEditorContentEmpty(editor)) {
+      setValidationError("Please add some content to your blog post.");
+      return;
+    }
+    reviewAfterSaveRef.current = true;
+    saveBlog(false);
+  }, [title, editor, saveBlog]);
 
   if (!mounted || !editor || authLoading) return null;
 
@@ -6779,6 +6803,22 @@ const BlogEditor = () => {
           </Button>
           {(() => {
             const isDisabled = isSaving || !title.trim() || !editor || editor.isEmpty;
+            if (isEditorOnlyUser) {
+              return (
+                <Button
+                  className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium disabled:cursor-not-allowed disabled:pointer-events-none"
+                  disabled={isDisabled}
+                  isLoading={isSaving}
+                  style={{
+                    background: isDisabled ? "rgba(0,0,0,0.06)" : "rgba(234,179,8,0.15)",
+                    color: isDisabled ? "#a1a1aa" : "#A16207"
+                  }}
+                  onClick={handleSubmitForReview}
+                >
+                  Submit for Review
+                </Button>
+              );
+            }
             return (
               <Button
                 className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"

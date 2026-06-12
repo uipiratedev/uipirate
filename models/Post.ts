@@ -69,6 +69,13 @@ export interface IPost extends Document {
     }>;
     lastActiveAt: Date;
   };
+  // Approval workflow (enterprise)
+  approvalStatus?: "draft" | "pending_review" | "approved" | "rejected";
+  approvalRequestedBy?: string;   // actor email
+  approvalRequestedAt?: Date;
+  approvalReviewedBy?: string;    // actor email
+  approvalReviewedAt?: Date;
+  approvalNote?: string;          // reviewer note / rejection reason
   calculateReadTime(): void;
 }
 
@@ -207,6 +214,18 @@ const PostSchema: Schema = new Schema(
       of: String,
       default: {},
     },
+    // Approval workflow (enterprise)
+    approvalStatus: {
+      type: String,
+      enum: ["draft", "pending_review", "approved", "rejected"],
+      default: "draft",
+      index: true,
+    },
+    approvalRequestedBy: { type: String },
+    approvalRequestedAt: { type: Date },
+    approvalReviewedBy: { type: String },
+    approvalReviewedAt: { type: Date },
+    approvalNote: { type: String },
     aiWorkspaceSession: {
       messages: [
         {

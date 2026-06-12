@@ -1,11 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
 import Team from "@/models/pirateCOS/Team";
 import Workspace from "@/models/pirateCOS/Workspace";
+import mongoose from "mongoose";
+
+/**
+ * Find the canonical workspace for a user, backfilling tenantId on legacy docs
+ * that were created before the tenantId field was added.  Returns an up-to-date
+ * workspace document (never null after the function resolves without throwing).
+ */
+async function resolveWorkspace(userEmail: string, tenantId: string) {
+  // Fast path: workspace already has tenantId set correctly
+  let workspace = await Workspace.findOne({ tenantId: new mongoose.Types.ObjectId(tenantId) });
+
+  if (!workspace) {
+    // Legacy path: find by owner email (documents created before tenantId existed)
+    workspace = await Workspace.findOne({
+      owner: userEmail,
+      tenantId: { $exists: false },
+    }).sort({ createdAt: 1 }); // oldest first — the canonical one
+  }
+
+  if (workspace && !workspace.tenantId) {
+    // Backfill tenantId so future lookups hit the fast path; bypass Mongoose
+    // validation via collection.updateOne to avoid "required" rejection on
+    // documents that are otherwise valid.
+    await Workspace.collection.updateOne(
+      { _id: workspace._id },
+      { $set: { tenantId: new mongoose.Types.ObjectId(tenantId) } }
+    );
+    (workspace as any).tenantId = new mongoose.Types.ObjectId(tenantId);
+  }
+
+  if (!workspace) {
+    workspace = await Workspace.create({
+      owner: userEmail,
+      name: "UI Pirate",
+      tenantId: new mongoose.Types.ObjectId(tenantId),
+      description: "Central workspace for UI Pirate organization",
+    });
+    console.log(`✅ Auto-created workspace for tenant ${tenantId}`);
+  }
+
+  return workspace;
+}
 
 // GET /api/pirateCOS/teams - List all teams for the user's workspace
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     const user = await verifyAuth();
     if (!user) {
@@ -17,21 +60,17 @@ export async function GET(req: NextRequest) {
 
     await dbConnect();
 
-    // Get or create shared "UI Pirate" workspace scoped to tenant
-    let workspace = await Workspace.findOne({ tenantId: user.tenantId });
-    if (!workspace) {
-      // Auto-create UI Pirate organization workspace
-      workspace = await Workspace.create({
-        owner: user.email,
-        name: "UI Pirate",
-        tenantId: user.tenantId,
-        description: "Central workspace for UI Pirate organization",
-      });
-      console.log(`✅ Auto-created UI Pirate workspace for tenant ${user.tenantId}`);
-    }
+    const workspace = await resolveWorkspace(user.email, user.tenantId);
 
-    // Get all teams for this workspace
-    const teams = await Team.find({ workspace: workspace._id })
+    // Cover both tenantId-stamped docs and legacy docs tied to this workspace
+    const teamsQuery = {
+      $or: [
+        { tenantId: new mongoose.Types.ObjectId(user.tenantId) },
+        { workspace: workspace._id },
+      ],
+    };
+
+    const teams = await Team.find(teamsQuery)
       .sort({ createdAt: -1 })
       .lean();
 
@@ -68,20 +107,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const denied = checkRole(user, ["org-admin", "admin"]);
+    if (denied) return denied;
+
     await dbConnect();
 
-    // Get or create shared "UI Pirate" workspace scoped to tenant
-    let workspace = await Workspace.findOne({ tenantId: user.tenantId });
-    if (!workspace) {
-      // Auto-create UI Pirate organization workspace
-      workspace = await Workspace.create({
-        owner: user.email,
-        name: "UI Pirate",
-        tenantId: user.tenantId,
-        description: "Central workspace for UI Pirate organization",
-      });
-      console.log(`✅ Auto-created UI Pirate workspace for tenant ${user.tenantId}`);
-    }
+    const workspace = await resolveWorkspace(user.email, user.tenantId);
 
     const body = await req.json();
     const { name, description, brandVoiceOverride, keywordsOverride } = body;
@@ -95,6 +126,7 @@ export async function POST(req: NextRequest) {
 
     // Create new team
     const team = await Team.create({
+      tenantId: workspace.tenantId, // Direct tenant boundary for fast isolation
       name: name.trim(),
       description: description?.trim() || undefined,
       workspace: workspace._id,
