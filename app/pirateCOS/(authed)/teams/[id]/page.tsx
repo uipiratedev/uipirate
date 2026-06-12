@@ -42,6 +42,10 @@ export default function TeamDetailPage() {
   const [newMemberRole, setNewMemberRole] = useState<"admin" | "editor" | "viewer">("editor");
   const [addingMember, setAddingMember] = useState(false);
 
+  // Org members for the dropdown
+  const [orgMembers, setOrgMembers] = useState<Array<{ _id: string; name: string; email: string; orgRole: string }>>([]);
+  const [orgMembersLoading, setOrgMembersLoading] = useState(false);
+
   useEffect(() => {
     if (params.id) {
       fetchTeam();
@@ -97,6 +101,28 @@ export default function TeamDetailPage() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const fetchOrgMembers = async () => {
+    setOrgMembersLoading(true);
+    try {
+      const res = await fetch("/api/pirateCOS/org/details");
+      const data = await res.json();
+      if (data.success) {
+        setOrgMembers(data.data.members || []);
+      }
+    } catch {
+      // silently fail — user can still type email manually
+    } finally {
+      setOrgMembersLoading(false);
+    }
+  };
+
+  const openAddMemberModal = () => {
+    setNewMemberEmail("");
+    setNewMemberRole("editor");
+    setShowAddMemberModal(true);
+    fetchOrgMembers();
   };
 
   const handleAddMember = async () => {
@@ -361,7 +387,7 @@ export default function TeamDetailPage() {
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold font-geist text-gray-900">Team Members</h3>
               <button
-                onClick={() => setShowAddMemberModal(true)}
+                onClick={openAddMemberModal}
                 className="px-3 py-1.5 bg-[#FF5B04] text-white rounded-lg text-sm font-semibold font-geist hover:opacity-90 transition-opacity"
               >
                 Add Member
@@ -431,16 +457,48 @@ export default function TeamDetailPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold font-geist text-gray-700 mb-2">
-                  Email Address
+                  Organisation Member
                 </label>
-                <input
-                  type="email"
-                  value={newMemberEmail}
-                  onChange={(e) => setNewMemberEmail(e.target.value)}
-                  placeholder="user@example.com"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg font-geist text-sm focus:outline-none focus:ring-2 focus:ring-[#FF5B04]/20 focus:border-[#FF5B04]"
-                  autoFocus
-                />
+                {orgMembersLoading ? (
+                  <div className="flex items-center gap-2 px-4 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-400 font-geist">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400" />
+                    Loading members…
+                  </div>
+                ) : orgMembers.length > 0 ? (
+                  <>
+                    <select
+                      value={newMemberEmail}
+                      onChange={(e) => setNewMemberEmail(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg font-geist text-sm focus:outline-none focus:ring-2 focus:ring-[#FF5B04]/20 focus:border-[#FF5B04]"
+                    >
+                      <option value="">— select an org member —</option>
+                      {orgMembers
+                        .filter((m) => !team?.members.some((tm) => tm.userId === m.email))
+                        .map((m) => (
+                          <option key={m._id} value={m.email}>
+                            {m.name} ({m.email})
+                          </option>
+                        ))}
+                    </select>
+                    <p className="text-xs text-gray-400 font-geist mt-1.5">
+                      Only showing org members not yet in this team.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <input
+                      type="email"
+                      value={newMemberEmail}
+                      onChange={(e) => setNewMemberEmail(e.target.value)}
+                      placeholder="user@example.com"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg font-geist text-sm focus:outline-none focus:ring-2 focus:ring-[#FF5B04]/20 focus:border-[#FF5B04]"
+                      autoFocus
+                    />
+                    <p className="text-xs text-gray-400 font-geist mt-1.5">
+                      No org members found. Add members to your organisation first, or type an email to add directly.
+                    </p>
+                  </>
+                )}
               </div>
 
               <div>
