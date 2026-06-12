@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CosIcon from "./CosIcon";
 
+// ─── Shared exports (reused by the dedicated Transform page) ──────────────────
+
 const AnimatePresenceAny = AnimatePresence as any;
 
 interface RepurposingDrawerProps {
@@ -10,7 +12,7 @@ interface RepurposingDrawerProps {
   postId: string;
 }
 
-const REPURPOSE_FORMATS = [
+export const REPURPOSE_FORMATS = [
   {
     id: "linkedin-thread",
     label: "LinkedIn Thread",
@@ -60,6 +62,108 @@ const REPURPOSE_FORMATS = [
     icon: "comparison",
   },
 ];
+
+/**
+ * Pure preview renderer — shared between RepurposingDrawer and the dedicated
+ * Transform page (/pirateCOS/posts/transform/[id]).
+ */
+export function renderFormatPreview(
+  formatId: string,
+  result: string,
+  postTitle?: string,
+): React.ReactNode {
+  if (formatId === "linkedin-thread") {
+    const slides = result.split(/Slide \d+/gi).filter(Boolean);
+    return (
+      <div className="space-y-4 font-geist bg-gray-50 rounded-xl p-4 overflow-y-auto">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+          Simulated LinkedIn Feed Carousel
+        </p>
+        {slides.map((slide, idx) => (
+          <div key={idx} className="bg-white rounded-xl border border-black/5 p-4 shadow-sm">
+            <div className="flex items-center gap-2 border-b border-black/5 pb-2.5 mb-3">
+              <div className="w-8 h-8 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] flex items-center justify-center font-bold text-xs">
+                UA
+              </div>
+              <div>
+                <p className="text-[11px] font-bold text-gray-900 leading-none">Vishal Anand</p>
+                <p className="text-[9px] text-gray-400 mt-0.5 leading-none">Product Studio Founder</p>
+              </div>
+              <span className="ml-auto bg-orange-50 text-[#FF5B04] text-[9px] font-bold px-2 py-0.5 rounded">
+                Slide {idx + 1}
+              </span>
+            </div>
+            <pre className="text-xs text-gray-700 whitespace-pre-wrap font-geist leading-relaxed">
+              {slide.replace(/^:\s*/, "").trim()}
+            </pre>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (formatId === "twitter-thread") {
+    const tweets = result.split(/\d+\/|\d+\./gi).filter(Boolean);
+    return (
+      <div className="font-geist bg-gray-50 rounded-xl p-4 overflow-y-auto relative">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">
+          Simulated Twitter/X Thread
+        </p>
+        <div className="absolute left-[34px] top-12 bottom-8 w-0.5 bg-gray-200" />
+        {tweets.map((tweet, idx) => (
+          <div key={idx} className="flex gap-3 relative mb-6">
+            <div className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs z-10 flex-shrink-0">
+              P9
+            </div>
+            <div className="bg-white rounded-xl border border-black/5 p-3 shadow-sm flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <span className="text-[11px] font-bold text-gray-900 leading-none">UI Pirate</span>
+                <span className="text-[9px] text-gray-400 leading-none">@uipirate · {idx + 1}/</span>
+              </div>
+              <pre className="text-xs text-gray-700 whitespace-pre-wrap font-geist leading-relaxed">
+                {tweet.trim()}
+              </pre>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (formatId === "newsletter") {
+    return (
+      <div className="font-geist bg-gray-50 rounded-xl p-4 overflow-y-auto">
+        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+          Newsletter Email Preview
+        </p>
+        <div className="bg-white rounded-xl border border-black/5 shadow-sm p-6 space-y-4">
+          <div className="border-b border-black/5 pb-3">
+            <p className="text-[10px] font-semibold text-gray-400">
+              Subject: {postTitle ?? "Newsletter"}
+            </p>
+          </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: result }}
+            className="text-xs text-gray-700 leading-relaxed font-geist newsletter-preview space-y-3"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="font-geist bg-gray-50 rounded-xl p-4 overflow-y-auto">
+      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">
+        Generated Output
+      </p>
+      <div className="bg-white rounded-xl border border-black/5 shadow-sm p-4">
+        <pre className="text-xs text-gray-700 whitespace-pre-wrap leading-relaxed font-geist">
+          {result}
+        </pre>
+      </div>
+    </div>
+  );
+}
 
 export default function RepurposingDrawer({
   isOpen,
@@ -299,11 +403,10 @@ export default function RepurposingDrawer({
                       return (
                         <button
                           key={f.id}
-                          className={`w-full text-left p-3 rounded-xl border flex items-start gap-3 transition-all duration-150 ${
-                            selected
-                              ? "border-[#FF5B04] bg-orange-50/10 shadow-sm"
-                              : "border-black/5 hover:border-black/10 bg-white"
-                          }`}
+                          className={`w-full text-left p-3 rounded-xl border flex items-start gap-3 transition-all duration-150 ${selected
+                            ? "border-[#FF5B04] bg-orange-50/10 shadow-sm"
+                            : "border-black/5 hover:border-black/10 bg-white"
+                            }`}
                           type="button"
                           onClick={() => setSelectedFormat(f.id)}
                         >

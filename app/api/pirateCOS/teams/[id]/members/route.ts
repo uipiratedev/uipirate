@@ -3,6 +3,7 @@ import dbConnect from "@/lib/mongodb";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import Team from "@/models/pirateCOS/Team";
 import Admin from "@/models/pirateCOS/Admin";
+import { requireOrgRole } from "@/lib/pirateCOS/require-role";
 
 // POST /api/pirateCOS/teams/[id]/members - Add a member to team
 export async function POST(
@@ -15,6 +16,13 @@ export async function POST(
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
+      );
+    }
+
+    if (!requireOrgRole(user, ["org-admin", "admin"])) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden" },
+        { status: 403 }
       );
     }
 
@@ -90,6 +98,13 @@ export async function DELETE(
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 }
+      );
+    }
+
+    if (!requireOrgRole(user, ["org-admin", "admin"])) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden" },
+        { status: 403 }
       );
     }
 

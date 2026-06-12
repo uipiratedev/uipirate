@@ -23,7 +23,7 @@ import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import Link from "@tiptap/extension-link";
 import { Button } from "@heroui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
@@ -35,7 +35,6 @@ import { SelectionHighlight } from "@/components/pirateCOS/SelectionHighlight";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
 import { AIEngine, getModelsForEngine, getDefaultModelForEngine as registryGetDefaultModel, isAIEngine } from "@/lib/pirateCOS/ai-registry";
-import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
 import {
   ContentGoal,
@@ -4700,7 +4699,6 @@ const BlogEditor = () => {
   // AI States
   const [showExcerptAIGuidelines, setShowExcerptAIGuidelines] = useState(false);
   const [activePreset, setActivePreset] = useState("");
-  const [isRepurposeDrawerOpen, setIsRepurposeDrawerOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   // Inline AI States & Helpers
@@ -5109,8 +5107,9 @@ const BlogEditor = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null
   >(null);
+  const [selectedTransformFormat, setSelectedTransformFormat] = useState<string | null>(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
@@ -6525,6 +6524,7 @@ const BlogEditor = () => {
       onUpdateSeo={setSeoData}
       onEnsureSaved={ensureSaved}
       onNavigateToSEO={() => setActiveSidebarTab("seo")}
+      onNavigateToTransform={(formatId) => { setSelectedTransformFormat(formatId); setActiveSidebarTab("transform"); }}
       onTriggerCopilotAI={(preset, prompt) => {
         if (preset) setActivePreset(preset);
         if (prompt) setCopilotInitialPrompt(prompt);
@@ -6893,7 +6893,6 @@ const BlogEditor = () => {
             contentGoal={contentGoal}
             editor={editor}
             onApplyToEditor={handleApplyToEditor}
-            onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
             activeTab={activeSidebarTab}
             onTabChange={setActiveSidebarTab}
             renderContentTab={renderContentTab}
@@ -6904,6 +6903,11 @@ const BlogEditor = () => {
             onClearInitialPrompt={() => setCopilotInitialPrompt("")}
             seoFocusKeyword={seoData?.focusKeyword || ""}
             onSetFocusKeyword={(kw) => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }}
+            postTitle={title}
+            repurposedOutputs={repurposedOutputs}
+            onUpdateRepurposedOutputs={setRepurposedOutputs}
+            selectedTransformFormat={selectedTransformFormat}
+            setSelectedTransformFormat={setSelectedTransformFormat}
           />
         </>
       )}
@@ -6912,15 +6916,6 @@ const BlogEditor = () => {
       </div>
 
       {/* ── Modals ── */}
-      {/* RepurposingDrawer is intentionally hidden for social-post — repurposing
-          a social post into another social format is handled by AI Copilot instead */}
-      {postType !== "social-post" && (
-        <RepurposingDrawer
-          isOpen={isRepurposeDrawerOpen}
-          postId={savedBlogId || ""}
-          onClose={() => setIsRepurposeDrawerOpen(false)}
-        />
-      )}
       {showImageUrlModal && (
         <ImageUrlModal
           editor={editor}

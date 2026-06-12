@@ -22,7 +22,7 @@ interface JWTPayload {
   avatar?: string;
 }
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;

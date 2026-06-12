@@ -285,6 +285,14 @@ export async function DELETE(
       );
     }
 
+    const { requireOrgRole } = await import("@/lib/pirateCOS/require-role");
+    if (user.orgRole !== "individual" && !requireOrgRole(user, ["org-admin", "admin"])) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden" },
+        { status: 403 },
+      );
+    }
+
     await dbConnect();
 
     const { id } = params;

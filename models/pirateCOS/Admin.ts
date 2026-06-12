@@ -42,6 +42,8 @@ export interface IAdmin extends Document {
   accountType: "individual" | "organization";
   orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
   parentOrgId: mongoose.Types.ObjectId | null;
+  seatCount: number;
+  seatLimit: number;
   avatar?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -149,6 +151,14 @@ const AdminSchema: Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Admin",
       default: null,
+    },
+    seatCount: {
+      type: Number,
+      default: 1,
+    },
+    seatLimit: {
+      type: Number,
+      default: 1,
     },
     avatar: {
       type: String,

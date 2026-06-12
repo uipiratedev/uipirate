@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
           admin.stripeSubscriptionId = subId;
           admin.subscriptionStatus = "active";
           admin.creditsRemaining += 500; // Provide Pro credit allowance
+          admin.seatLimit = 20; // Pro seat limit
 
           if (stripe && subId) {
             const sub = (await stripe.subscriptions.retrieve(subId)) as any;
@@ -146,6 +147,25 @@ export async function POST(req: NextRequest) {
 
         admin.subscriptionStatus = "active";
         admin.lifetimeValue += amountPaid;
+
+        // Reset monthly counters
+        admin.usageThisMonth = { aiRequests: 0, distributions: 0 };
+
+        // Refill credits by plan
+        const PLAN_CREDITS: Record<string, number> = {
+          free: 0,
+          starter: 200,
+          pro: 1000,
+          enterprise: -1,
+        };
+        const refill = PLAN_CREDITS[admin.plan || "free"] ?? 0;
+        if (refill > 0) {
+          const seatBonus = admin.plan === "pro" ? (admin.seatCount ?? 1) * 50 : 0;
+          admin.creditsRemaining = refill + seatBonus;
+        } else if (refill === -1) {
+          admin.creditsRemaining = 999999; // Represents unlimited
+        }
+
         await admin.save();
 
         await BillingEvent.create({
@@ -199,6 +219,16 @@ export async function POST(req: NextRequest) {
 
         admin.subscriptionStatus = sub.status as any;
         admin.currentPeriodEnd = new Date(sub.current_period_end * 1000);
+
+        // Update seat limits on plan change
+        const SEAT_LIMITS: Record<string, number> = {
+          free: 1,
+          starter: 5,
+          pro: 20,
+          enterprise: -1,
+        };
+        admin.seatLimit = SEAT_LIMITS[admin.plan || "free"] ?? 1;
+
         await admin.save();
 
         await BillingEvent.create({
@@ -225,6 +255,7 @@ export async function POST(req: NextRequest) {
         admin.plan = "free";
         admin.subscriptionStatus = "canceled";
         admin.stripeSubscriptionId = undefined;
+        admin.seatLimit = 1; // free plan limit
         await admin.save();
 
         await BillingEvent.create({

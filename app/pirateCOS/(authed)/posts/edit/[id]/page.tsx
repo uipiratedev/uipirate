@@ -22,7 +22,7 @@ import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import Link from "@tiptap/extension-link";
 import { Button } from "@heroui/button";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
@@ -34,7 +34,6 @@ import CosIcon from "@/components/pirateCOS/CosIcon";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
 import { AIEngine, getModelsForEngine, getDefaultModelForEngine as registryGetDefaultModel, isAIEngine } from "@/lib/pirateCOS/ai-registry";
-import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
 import {
   ContentGoal,
@@ -4996,7 +4995,6 @@ const BlogEditPage = () => {
   // AI States
   const [showExcerptAIGuidelines, setShowExcerptAIGuidelines] = useState(false);
   const [activePreset, setActivePreset] = useState("");
-  const [isRepurposeDrawerOpen, setIsRepurposeDrawerOpen] = useState(false);
 
   // AI API Handlers
 
@@ -5030,8 +5028,9 @@ const BlogEditPage = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null
   >(null);
+  const [selectedTransformFormat, setSelectedTransformFormat] = useState<string | null>(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
@@ -5888,6 +5887,21 @@ const BlogEditPage = () => {
     }
   }, [params.id, mounted, authLoading, editor]);
 
+  // Check for tab query parameter to open specific sidebar tab on mount
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (mounted && searchParams) {
+      const tab = searchParams.get("tab");
+      if (tab === "transform") {
+        setActiveSidebarTab("transform");
+        const format = searchParams.get("format");
+        if (format) {
+          setSelectedTransformFormat(format);
+        }
+      }
+    }
+  }, [mounted, searchParams]);
+
   // Phase 5.4+: Load available teams
   useEffect(() => {
     const loadTeams = async () => {
@@ -6295,6 +6309,7 @@ const BlogEditPage = () => {
       onUpdateSeo={setSeoData}
       onEnsureSaved={ensureSaved}
       onNavigateToSEO={() => setActiveSidebarTab("seo")}
+      onNavigateToTransform={(formatId) => { setSelectedTransformFormat(formatId); setActiveSidebarTab("transform"); }}
       onTriggerCopilotAI={(preset, prompt) => {
         if (preset) setActivePreset(preset);
         if (prompt) setCopilotInitialPrompt(prompt);
@@ -6782,7 +6797,6 @@ const BlogEditPage = () => {
               contentGoal={contentGoal}
               editor={editor}
               onApplyToEditor={handleApplyToEditor}
-              onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
               onInsertCTA={(html) => {
                 if (!editor) return;
                 editor.chain().focus().insertContent(html).run();
@@ -6798,17 +6812,17 @@ const BlogEditPage = () => {
               onClearInitialPrompt={() => setCopilotInitialPrompt("")}
               seoFocusKeyword={seoData?.focusKeyword || ""}
               onSetFocusKeyword={(kw) => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }}
+              postTitle={title}
+              repurposedOutputs={repurposedOutputs}
+              onUpdateRepurposedOutputs={setRepurposedOutputs}
+              selectedTransformFormat={selectedTransformFormat}
+              setSelectedTransformFormat={setSelectedTransformFormat}
             />
           </>
         )}
       </div>
 
       {/* ── Modals ── */}
-      <RepurposingDrawer
-        isOpen={isRepurposeDrawerOpen}
-        postId={(params.id as string) || ""}
-        onClose={() => setIsRepurposeDrawerOpen(false)}
-      />
       {showImageUrlModal && (
         <ImageUrlModal
           editor={editor}

@@ -57,10 +57,12 @@ export const getChannelsBadge = (selected: string[]) => ({
   badge: selected.length > 0 ? `${selected.length} selected` : "None",
   badgeColor: selected.length > 0 ? "bg-orange-50 text-orange-600" : "bg-gray-100 text-gray-400",
 });
-export const getSpinoffsBadge = (selected: string[]) => ({
-  badge: selected.length > 0 ? `${selected.length} format${selected.length > 1 ? "s" : ""}` : "None",
-  badgeColor: selected.length > 0 ? "bg-orange-50 text-orange-600" : "bg-gray-100 text-gray-400",
-});
+export const getSpinoffsBadge = (selected: string[], outputs: Record<string, string> = {}) => {
+  const generated = Object.keys(outputs).length;
+  const badge = generated > 0 ? `${generated} generated` : selected.length > 0 ? `${selected.length} selected` : "None";
+  const badgeColor = generated > 0 ? "bg-green-50 text-green-600" : selected.length > 0 ? "bg-orange-50 text-orange-600" : "bg-gray-100 text-gray-400";
+  return { badge, badgeColor };
+};
 
 // ─── Quick Presets Content ────────────────────────────────────────────────────
 interface QuickPresetsContentProps {
@@ -293,37 +295,56 @@ export function TargetChannelsContent({ integrations, selectedPlatforms, loading
 
 // ─── Spinoffs Content ─────────────────────────────────────────────────────────
 const SPINOFF_FORMATS = [
-  { id: "linkedin_promo", label: "LinkedIn Promo Post", icon: "link", hint: "Carousel slide copy & hook" },
-  { id: "twitter_thread", label: "X / Twitter Thread", icon: "social-post", hint: "Tweet-length breakdown" },
-  { id: "newsletter_summary", label: "Newsletter Summary", icon: "envelope", hint: "Email digest format" },
-  { id: "quote_snippets", label: "CTA & Quote Snippets", icon: "community-insight", hint: "Pull quotes for graphics" },
+  { id: "linkedin-thread", label: "LinkedIn Thread", icon: "link", hint: "10-slide carousel script" },
+  { id: "twitter-thread", label: "Twitter Thread", icon: "social-post", hint: "8-12 sequential tweets" },
+  { id: "newsletter", label: "Email Newsletter", icon: "envelope", hint: "Friendly HTML campaign template" },
+  { id: "summary", label: "Executive Summary", icon: "listicle", hint: "200-word digest + bullet takeaways" },
+  { id: "seo-meta", label: "SEO Meta Package", icon: "traffic", hint: "Focus slugs, tags and description limits" },
+  { id: "cta-blocks", label: "CTA Action Blocks", icon: "bolt", hint: "Soft, medium and hard CTA variations" },
+  { id: "faq-schema", label: "FAQ Schema", icon: "case-study", hint: "Structured Q&A schema" },
+  { id: "infographic", label: "Infographic Blueprint", icon: "comparison", hint: "Visual blueprint scripts" },
 ];
+
 interface SpinoffsContentProps {
-  selectedFormats: string[];
-  onToggle: (id: string) => void;
+  repurposedOutputs?: Record<string, string>;
+  onNavigateToTransform?: (formatId: string) => void;
 }
-export function SpinoffsContent({ selectedFormats, onToggle }: SpinoffsContentProps) {
+
+export function SpinoffsContent({ repurposedOutputs = {}, onNavigateToTransform }: SpinoffsContentProps) {
   return (
     <div className="space-y-3">
-      <p className="text-xs text-gray-500 leading-relaxed">Let AI transform this post into other formats — results are saved to your post.</p>
+      <p className="text-xs text-gray-500 leading-relaxed">
+        Let AI transform this post into other formats. Select an asset format to generate or view:
+      </p>
       <div className="space-y-2">
         {SPINOFF_FORMATS.map((format) => {
-          const isSelected = selectedFormats.includes(format.id);
+          const isGenerated = !!repurposedOutputs?.[format.id];
           return (
-            <label
+            <button
               key={format.id}
-              className={`flex items-center gap-3 p-2.5 rounded-xl border-2 transition-all cursor-pointer ${
-                isSelected ? "border-[#FF5B04] bg-white shadow-sm" : "border-black/5 bg-white hover:border-black/10"
-              }`}
+              type="button"
+              onClick={() => onNavigateToTransform?.(format.id)}
+              className="w-full flex items-center gap-3 p-2.5 rounded-xl border border-black/5 bg-white hover:border-[#FF5B04]/30 hover:bg-orange-50/5 text-left transition-all cursor-pointer shadow-sm group"
             >
-              <input type="checkbox" className="accent-[#FF5B04] h-4 w-4 rounded border-gray-300" checked={isSelected} onChange={() => onToggle(format.id)} />
-              <div className="flex-1 min-w-0">
-                <span className="text-xs font-semibold text-gray-800 flex items-center gap-1.5">
-                  <CosIcon name={format.icon} size={14} className="text-gray-500" /> {format.label}
-                </span>
-                <span className="text-[9px] text-gray-400 font-geist">{format.hint}</span>
+              <div className="flex-1 min-w-0 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-semibold text-gray-800 group-hover:text-[#FF5B04] transition-colors flex items-center gap-1.5">
+                    <CosIcon name={format.icon} size={14} className="text-gray-500 group-hover:text-[#FF5B04] transition-colors" /> {format.label}
+                  </span>
+                  <span className="text-[9px] text-gray-400 font-geist block mt-0.5">{format.hint}</span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  {isGenerated && (
+                    <span className="text-[9px] font-semibold text-green-600 bg-green-50 border border-green-200 px-1.5 py-0.5 rounded-full">
+                      ✓ Generated
+                    </span>
+                  )}
+                  <span className="text-gray-300 group-hover:text-[#FF5B04] transition-colors font-bold text-xs">
+                    →
+                  </span>
+                </div>
               </div>
-            </label>
+            </button>
           );
         })}
       </div>

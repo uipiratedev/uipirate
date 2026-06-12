@@ -19,6 +19,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const { requireOrgRole } = await import("@/lib/pirateCOS/require-role");
+  if (user.orgRole !== "individual" && !requireOrgRole(user, ["org-admin", "admin"])) {
+    return NextResponse.json(
+      { success: false, error: "Forbidden" },
+      { status: 403 },
+    );
+  }
+
   const { blogId, platforms, options } = await req.json();
 
   if (!blogId || !mongoose.Types.ObjectId.isValid(blogId)) {

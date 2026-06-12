@@ -56,6 +56,7 @@ export interface DistributePanelProps {
   onUpdateExcerpt?: (excerpt: string) => void;
   onUpdateTags?: (tags: string[]) => void;
   onUpdateSeo?: (seo: any) => void;
+  onNavigateToTransform?: (formatId: string) => void;
 }
 
 // ─── AccordionTitle ───────────────────────────────────────────────────────────
@@ -75,6 +76,7 @@ export function DistributePanel({
   onTriggerExcerptAI, onTriggerTagsAI, onTriggerCopilotAI, postType, contentGoal,
   blogTitle, socialDestination = "linkedin", blogRepurposedOutputs = {},
   onUpdateRepurposedOutputs, onUpdateExcerpt, onUpdateTags, onUpdateSeo,
+  onNavigateToTransform,
 }: DistributePanelProps) {
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
@@ -228,7 +230,7 @@ export function DistributePanel({
     const { badge: psBadge, badgeColor: psColor } = getPresetsBadge(activeChain);
     const { badge: pfBadge, badgeColor: pfColor } = getPreflightBadge(preflight);
     const { badge: chBadge, badgeColor: chColor } = getChannelsBadge(selectedPlatforms);
-    const { badge: spBadge, badgeColor: spColor } = getSpinoffsBadge(selectedRepurposeFormats);
+    const { badge: spBadge, badgeColor: spColor } = getSpinoffsBadge(selectedRepurposeFormats, blogRepurposedOutputs);
 
     const all: React.ReactElement[] = [
       <AccordionItem key="presets" title={<AccordionTitle label="Quick Presets" badge={psBadge} badgeColor={psColor} />}>
@@ -265,8 +267,8 @@ export function DistributePanel({
       all.push(
         <AccordionItem key="spinoffs" title={<AccordionTitle label="Create Spin-offs" badge={spBadge} badgeColor={spColor} />}>
           <SpinoffsContent
-            selectedFormats={selectedRepurposeFormats}
-            onToggle={(id: string) => setSelectedRepurposeFormats((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id])}
+            repurposedOutputs={blogRepurposedOutputs}
+            onNavigateToTransform={onNavigateToTransform}
           />
         </AccordionItem>
       );
