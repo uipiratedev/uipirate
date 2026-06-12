@@ -40,6 +40,34 @@ export default function ProfilePage() {
   const [converting, setConverting] = useState(false);
   const [convertError, setConvertError] = useState<string | null>(null);
 
+  // Organisation Details State
+  const [orgDetails, setOrgDetails] = useState<any>(null);
+  const [orgLoading, setOrgLoading] = useState(false);
+  const [orgDetailsError, setOrgDetailsError] = useState<string | null>(null);
+
+  const fetchOrgDetails = async () => {
+    setOrgLoading(true);
+    setOrgDetailsError(null);
+    try {
+      const res = await fetch("/api/pirateCOS/org/details");
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.error || "Failed to load organisation details");
+      }
+      setOrgDetails(data.data);
+    } catch (err: any) {
+      setOrgDetailsError(err.message || "An unexpected error occurred");
+    } finally {
+      setOrgLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "organisation" && user?.accountType === "organization" && !orgDetails) {
+      fetchOrgDetails();
+    }
+  }, [activeTab, user]);
+
   useEffect(() => {
     if (user) {
       setName(user.name);
@@ -507,45 +535,254 @@ export default function ProfilePage() {
         {activeTab === "organisation" && (
           <div className="animate-fadeIn">
             {user.accountType === "organization" ? (
-              /* Converted Organisation Status Dashboard */
-              <div className="bg-white rounded-2xl p-8 shadow-card border border-black/5 flex flex-col items-center text-center py-12">
-                <div className="w-16 h-16 rounded-full bg-orange-50 border border-[#FF5B04]/20 flex items-center justify-center text-[#FF5B04] mb-6">
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
+              orgLoading ? (
+                <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-black/5 shadow-card min-h-[350px]">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF5B04] mb-4"></div>
+                  <p className="text-xs text-gray-500 font-semibold animate-pulse">Retrieving organisation configuration...</p>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">Organisation Setup Active</h2>
-                <p className="text-sm text-gray-500 max-w-md mb-6">
-                  Your account is successfully converted to an organisation. You can now invite and collaborate with team members in shared workspaces.
-                </p>
-                
-                <div className="w-full max-w-xl bg-gray-50 rounded-xl p-4 border border-black/5 text-left mb-6 space-y-2.5">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">Account Type</span>
-                    <span className="font-semibold text-gray-900 capitalize">{user.accountType}</span>
+              ) : orgDetailsError ? (
+                <div className="p-8 bg-white rounded-2xl border border-red-100 shadow-card text-center max-w-xl mx-auto py-12">
+                  <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-red-500 mx-auto mb-4">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
                   </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">My Role</span>
-                    <span className="font-semibold text-gray-900">
-                      {user.orgRole === "org-admin" ? "Organisation Owner" : user.orgRole}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-gray-400">Workspace Boundary ID</span>
-                    <span className="font-mono text-gray-600 text-[10px]">{user.tenantId}</span>
-                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1">Failed to Load Details</h3>
+                  <p className="text-xs text-gray-500 mb-4">{orgDetailsError}</p>
+                  <button
+                    onClick={fetchOrgDetails}
+                    className="px-4 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 transition-colors"
+                  >
+                    Retry Loading
+                  </button>
                 </div>
-                
-                <a
-                  href="/pirateCOS/teams"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#FF5B04] hover:bg-[#e04f03] text-sm font-semibold text-white transition-all shadow-md"
-                >
-                  Manage Teams & Members
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </a>
-              </div>
+              ) : orgDetails ? (
+                <div className="space-y-6 animate-fadeIn">
+                  
+                  {/* Row 1: Workspace Profile & Details */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="md:col-span-2 bg-white rounded-2xl p-6 shadow-card border border-black/5 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-sm font-bold text-gray-900">Workspace Profile</h3>
+                          <span className="inline-flex px-2 py-0.5 bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-bold rounded-full">
+                            Active Tenant
+                          </span>
+                        </div>
+                        <div className="space-y-3">
+                          <div>
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Organisation Name</span>
+                            <span className="text-sm font-semibold text-gray-800">{orgDetails.workspace?.name || orgDetails.brandBrain?.workspaceName || "UI Pirate"}</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Website URL</span>
+                            {orgDetails.brandBrain?.companyWebsite ? (
+                              <a href={orgDetails.brandBrain.companyWebsite} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#FF5B04] hover:underline">
+                                {orgDetails.brandBrain.companyWebsite}
+                              </a>
+                            ) : (
+                              <span className="text-sm text-gray-400">Not configured</span>
+                            )}
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Industry / Business Scope</span>
+                            <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
+                              {orgDetails.brandBrain?.workspaceDescription || orgDetails.workspace?.description || "Central workspace details for the organisation."}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-2xl p-6 shadow-card border border-black/5 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-sm font-bold text-gray-900 mb-4">Account Metadata</h3>
+                        <div className="space-y-3 text-xs">
+                          <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">My Role</span>
+                            <span className="font-semibold text-gray-800 capitalize">
+                              {user.orgRole === "org-admin" ? "Organisation Owner" : user.orgRole}
+                            </span>
+                          </div>
+                          <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Account Type</span>
+                            <span className="font-semibold text-gray-800 capitalize">{user.accountType}</span>
+                          </div>
+                          <div className="flex justify-between border-b border-gray-50 pb-2">
+                            <span className="text-gray-400">Tenant Owner</span>
+                            <span className="font-semibold text-gray-800 truncate max-w-[120px]">{orgDetails.owner?.name || orgDetails.owner?.email}</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Tenant ID Boundary</span>
+                            <span className="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-1.5 py-0.5 block text-gray-500 select-all overflow-x-auto whitespace-nowrap">
+                              {user.tenantId}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Brand Settings (AI Config Profile) */}
+                  <div className="bg-white rounded-2xl p-6 shadow-card border border-black/5">
+                    <h3 className="text-sm font-bold text-gray-900 mb-4">Brand Brain & AI Core Parameters</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="bg-gray-50/50 rounded-xl p-4 border border-gray-100">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Primary Writing Focus</span>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          {orgDetails.brandBrain?.products || "Not specified."}
+                        </p>
+                      </div>
+                      <div className="bg-gray-50/50 rounded-xl p-4 border border-gray-100">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Target ICP / Audience ICP</span>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          {orgDetails.brandBrain?.audienceICP || "Not specified."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Row 3: Team Members & Collaboration */}
+                  <div className="bg-white rounded-2xl p-6 shadow-card border border-black/5">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-sm font-bold text-gray-900">Organisation Members</h3>
+                        <p className="text-[10px] text-gray-400 mt-0.5">Manage editors, administrators, and guest accounts.</p>
+                      </div>
+                      <a
+                        href="/pirateCOS/teams"
+                        className="px-3.5 py-1.5 rounded-lg border border-[#FF5B04]/20 hover:border-[#FF5B04]/50 bg-orange-50/20 hover:bg-orange-50/50 text-xs font-bold text-[#FF5B04] transition-all"
+                      >
+                        Manage Teams
+                      </a>
+                    </div>
+                    
+                    <div className="overflow-hidden border border-gray-100 rounded-xl bg-gray-50/50">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-gray-100 text-[10px] font-bold uppercase tracking-wider text-gray-400 bg-gray-50">
+                            <th className="px-4 py-3">Member</th>
+                            <th className="px-4 py-3">Role</th>
+                            <th className="px-4 py-3">Status</th>
+                            <th className="px-4 py-3">Joined Date</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 text-xs">
+                          {orgDetails.members?.map((member: any) => (
+                            <tr key={member._id} className="hover:bg-gray-50/80 transition-colors">
+                              <td className="px-4 py-3 flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full overflow-hidden bg-white border border-gray-100 flex items-center justify-center font-bold text-gray-500 text-xs shadow-sm flex-shrink-0">
+                                  {member.avatar ? (
+                                    <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+                                  ) : (
+                                    <span>
+                                      {member.name
+                                        ? member.name
+                                            .split(" ")
+                                            .map((n: string) => n[0])
+                                            .join("")
+                                            .toUpperCase()
+                                            .slice(0, 2)
+                                        : "?"}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="font-bold text-gray-800 truncate">{member.name}</div>
+                                  <div className="text-[10px] text-gray-400 truncate">{member.email}</div>
+                                </div>
+                              </td>
+                              <td className="px-4 py-3">
+                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border capitalize ${
+                                  member.orgRole === "org-admin"
+                                    ? "bg-orange-50 text-[#FF5B04] border-[#FF5B04]/20"
+                                    : member.orgRole === "admin"
+                                    ? "bg-blue-50 text-blue-600 border-blue-200"
+                                    : "bg-gray-50 text-gray-600 border-gray-200"
+                                }`}>
+                                  {member.orgRole === "org-admin" ? "Owner" : member.orgRole}
+                                </span>
+                              </td>
+                              <td className="px-4 py-3">
+                                <span className={`inline-flex items-center gap-1 text-[10px] font-semibold ${
+                                  member.isActive ? "text-emerald-600" : "text-gray-400"
+                                }`}>
+                                  <span className={`w-1.5 h-1.5 rounded-full ${
+                                    member.isActive ? "bg-emerald-500" : "bg-gray-300"
+                                  }`} />
+                                  {member.isActive ? "Active" : "Inactive"}
+                                </span>
+                              </td>
+                              <td className="px-4 py-3 text-gray-400 font-mono text-[10px]">
+                                {new Date(member.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Row 4: API Keys */}
+                  <div className="bg-white rounded-2xl p-6 shadow-card border border-black/5">
+                    <h3 className="text-sm font-bold text-gray-900 mb-1">Organisation Access Credentials</h3>
+                    <p className="text-[10px] text-gray-400 mb-4">Use these API keys to integrate and publish content programmatically.</p>
+                    
+                    <div className="overflow-hidden border border-gray-100 rounded-xl bg-gray-50/50">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr className="border-b border-gray-100 text-[10px] font-bold uppercase tracking-wider text-gray-400 bg-gray-50">
+                            <th className="px-4 py-3">Key Name</th>
+                            <th className="px-4 py-3">Prefix</th>
+                            <th className="px-4 py-3">Scopes</th>
+                            <th className="px-4 py-3">Status</th>
+                            <th className="px-4 py-3">Created</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 text-xs">
+                          {orgDetails.apiKeys && orgDetails.apiKeys.length > 0 ? (
+                            orgDetails.apiKeys.map((apiKey: any) => (
+                              <tr key={apiKey.keyPrefix} className="hover:bg-gray-50/80 transition-colors">
+                                <td className="px-4 py-3 font-semibold text-gray-800">{apiKey.name}</td>
+                                <td className="px-4 py-3 font-mono text-gray-600 text-[10px]">{apiKey.keyPrefix}</td>
+                                <td className="px-4 py-3">
+                                  <div className="flex gap-1 flex-wrap">
+                                    {apiKey.scopes?.map((s: string) => (
+                                      <span key={s} className="inline-flex px-1.5 py-0.5 bg-gray-100 border border-gray-200 text-gray-500 text-[9px] rounded font-bold uppercase">
+                                        {s}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </td>
+                                <td className="px-4 py-3">
+                                  <span className={`inline-flex items-center gap-1 text-[10px] font-semibold ${
+                                    apiKey.isActive ? "text-emerald-600" : "text-gray-400"
+                                  }`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${
+                                      apiKey.isActive ? "bg-emerald-500" : "bg-gray-300"
+                                    }`} />
+                                    {apiKey.isActive ? "Active" : "Inactive"}
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3 text-gray-400 font-mono text-[10px]">
+                                  {new Date(apiKey.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan={5} className="px-4 py-8 text-center text-gray-400 text-xs">
+                                No active organisation API keys found.
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+              ) : null
             ) : (
               /* Onboarding Multi-Step Wizard */
               <div className="w-full">
