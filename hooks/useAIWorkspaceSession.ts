@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChatIdeaSuggestion } from "@/lib/pirateCOS/postTypeConfig";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 
 // Phase 4F: Parse change summary from AI response
 function parseChangeSummary(content: string): { summary: string | null; cleanContent: string } {
@@ -13,6 +14,46 @@ function parseChangeSummary(content: string): { summary: string | null; cleanCon
     };
   }
   return { summary: null, cleanContent: content };
+}
+
+// Extract content from Puter SDK chat response robustly
+function extractPuterContent(chatResponse: any): string {
+  if (!chatResponse) return "";
+  if (typeof chatResponse === "string") return chatResponse;
+
+  const message = chatResponse.message;
+  if (message) {
+    if (typeof message === "string") return message;
+    const content = message.content;
+    if (content) {
+      if (typeof content === "string") return content;
+      if (Array.isArray(content)) {
+        const textParts = content
+          .map((part) => {
+            if (typeof part === "string") return part;
+            if (part && typeof part === "object" && typeof part.text === "string") {
+              return part.text;
+            }
+            return "";
+          })
+          .filter(Boolean);
+        if (textParts.length > 0) return textParts.join("\n");
+      }
+      if (typeof content === "object" && typeof content.text === "string") {
+        return content.text;
+      }
+    }
+  }
+
+  if (typeof chatResponse.content === "string") return chatResponse.content;
+  if (typeof chatResponse.text === "string") return chatResponse.text;
+  if (typeof chatResponse.result === "string") return chatResponse.result;
+
+  try {
+    return JSON.stringify(chatResponse);
+  } catch {
+    return String(chatResponse);
+  }
 }
 
 export interface AIWorkspaceMessage {
@@ -310,13 +351,7 @@ export function useAIWorkspaceSession(
         if (data.requiresClientPuter) {
           const { puter } = await import("@heyputer/puter.js");
           const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
-          if (chatResponse.message?.content) {
-            responseData = typeof chatResponse.message.content === "string"
-              ? chatResponse.message.content
-              : String(chatResponse.message.content);
-          } else {
-            responseData = String(chatResponse);
-          }
+          responseData = extractPuterContent(chatResponse);
           finalEditIntent = data.editIntent || "rewrite";
           finalSuggestedApplyMode = data.suggestedApplyMode || "replace";
         }
@@ -389,7 +424,7 @@ export function useAIWorkspaceSession(
           console.log("Chat request aborted by user.");
           return;
         }
-        setError(err.message || "An error occurred.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred."));
         setLoading(false);
       }
     },
@@ -457,13 +492,7 @@ export function useAIWorkspaceSession(
         if (data.requiresClientPuter) {
           const { puter } = await import("@heyputer/puter.js");
           const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
-          if (chatResponse.message?.content) {
-            responseData = typeof chatResponse.message.content === "string"
-              ? chatResponse.message.content
-              : String(chatResponse.message.content);
-          } else {
-            responseData = String(chatResponse);
-          }
+          responseData = extractPuterContent(chatResponse);
           finalEditIntent = data.editIntent || "rewrite";
           finalSuggestedApplyMode = data.suggestedApplyMode || "replace";
         }
@@ -500,7 +529,7 @@ export function useAIWorkspaceSession(
         setGenerations(finalGenerations);
         saveSessionToPost(finalMessages, finalGenerations);
       } catch (err: any) {
-        setError(err.message || "An error occurred.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred."));
       } finally {
         setLoading(false);
       }
@@ -571,13 +600,7 @@ export function useAIWorkspaceSession(
         if (data.requiresClientPuter) {
           const { puter } = await import("@heyputer/puter.js");
           const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
-          if (chatResponse.message?.content) {
-            responseData = typeof chatResponse.message.content === "string"
-              ? chatResponse.message.content
-              : String(chatResponse.message.content);
-          } else {
-            responseData = String(chatResponse);
-          }
+          responseData = extractPuterContent(chatResponse);
         }
 
         const genRecord: GenerationRecord = {
@@ -610,7 +633,7 @@ export function useAIWorkspaceSession(
           console.log("Rewrite request aborted by user.");
           return;
         }
-        setRewriteError(err.message || "An error occurred during rewrite.");
+        setRewriteError(parseAIError(engine || "puter", 500, err.message || "An error occurred during rewrite."));
         setRewriteLoading(false);
       }
     },
@@ -747,13 +770,7 @@ export function useAIWorkspaceSession(
         if (data.requiresClientPuter) {
           const { puter } = await import("@heyputer/puter.js");
           const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
-          if (chatResponse.message?.content) {
-            responseData = typeof chatResponse.message.content === "string"
-              ? chatResponse.message.content
-              : String(chatResponse.message.content);
-          } else {
-            responseData = String(chatResponse);
-          }
+          responseData = extractPuterContent(chatResponse);
         }
 
         const genRecord: GenerationRecord = {
@@ -781,7 +798,7 @@ export function useAIWorkspaceSession(
         setGenerations(finalGenerations);
         saveSessionToPost(finalMessages, finalGenerations);
       } catch (err: any) {
-        setError(err.message || "An error occurred.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred."));
       } finally {
         setLoading(false);
       }
@@ -844,7 +861,7 @@ export function useAIWorkspaceSession(
         if (data.requiresClientPuter) {
           const { puter } = await import("@heyputer/puter.js");
           const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
-          let text = chatResponse.message?.content ? String(chatResponse.message.content) : String(chatResponse);
+          let text = extractPuterContent(chatResponse);
           text = text.trim();
           if (text.startsWith("```json")) {
             text = text.replace(/^```json/, "").replace(/```$/, "").trim();
@@ -859,7 +876,7 @@ export function useAIWorkspaceSession(
         setActiveKeywords(keywords);
       } catch (err: any) {
         console.error("Failed to load dynamic suggestions:", err);
-        setError(err.message || "An error occurred while fetching suggestions.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred while fetching suggestions."));
       } finally {
         setSuggestionsLoading(false);
       }

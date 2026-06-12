@@ -12,6 +12,16 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
   else if (engine === "gemini") engineLabel = "Gemini";
   else if (engine === "grok") engineLabel = "Grok";
   else if (engine === "openrouter") engineLabel = "OpenRouter";
+  else if (engine === "puter") engineLabel = "Puter";
+
+  // If the error message is prepended by an HTTP status code (common with Puter SDK), parse it out
+  if (errText) {
+    const statusMatch = errText.trim().match(/^(\d{3})\s+([\s\S]*)$/);
+    if (statusMatch) {
+      status = parseInt(statusMatch[1], 10);
+      errText = statusMatch[2].trim();
+    }
+  }
 
   let friendlyMessage = `${engineLabel} API error (${status})`;
 
@@ -67,6 +77,21 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
       } else if (msg) {
         friendlyMessage = msg;
       }
+    } else if (engine === "puter") {
+      const type = errJson?.error?.type || errJson?.type || "";
+      const msg = errJson?.error?.message || errJson?.message || "";
+      if (type === "not_found_error" && msg.startsWith("model: ")) {
+        const modelId = msg.replace("model: ", "");
+        friendlyMessage = `Model "${modelId}" is not supported by Puter. Please select a different version from the AI model pill or switch engines.`;
+      } else if (type === "not_found_error" || msg.toLowerCase().includes("model not found")) {
+        friendlyMessage = `Selected model is not supported by Puter. Please choose a different model.`;
+      } else if (status === 404) {
+        friendlyMessage = `Model or endpoint not found on Puter. Please verify the model selection.`;
+      } else if (status === 429) {
+        friendlyMessage = "Puter rate limit reached. Please wait a moment and try again.";
+      } else if (msg) {
+        friendlyMessage = msg;
+      }
     } else {
       const msg = errJson?.error?.message || errJson?.message || errJson?.error || "";
       if (msg) {
@@ -81,6 +106,12 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
       friendlyMessage = `${engineLabel} rate limit reached. Please wait a moment and try again.`;
     } else if (status === 403) {
       friendlyMessage = `${engineLabel} access denied. Please verify your API credentials and access levels.`;
+    } else if (status === 404) {
+      if (engine === "puter") {
+        friendlyMessage = `Model or endpoint not found on Puter. Please verify the model selection.`;
+      } else {
+        friendlyMessage = `${engineLabel} resource not found (404).`;
+      }
     } else if (errText && errText.length < 150) {
       friendlyMessage = errText;
     }

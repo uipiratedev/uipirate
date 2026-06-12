@@ -191,7 +191,6 @@ export const AI_MODELS: AIModelEntry[] = [
 
   // Grok Models
   { id: "grok-2", label: "Grok 2", description: "capable", provider: "grok", isDefault: true },
-  { id: "grok-beta", label: "Grok Beta", provider: "grok" },
 
   // OpenRouter Models
   { id: "meta-llama/llama-3-8b-instruct:free", label: "Llama 3 8B (Free)", description: "fast", provider: "openrouter", isDefault: true },
@@ -202,16 +201,16 @@ export const AI_MODELS: AIModelEntry[] = [
   // Puter Models
   { id: "gpt-4o-mini", label: "GPT-4o Mini", description: "fast", provider: "puter", isDefault: true },
   { id: "gpt-4o", label: "GPT-4o", provider: "puter" },
-  { id: "claude-3-5-sonnet", label: "Claude 3.5 Sonnet", provider: "puter" },
-  { id: "claude-3-opus", label: "Claude 3 Opus", provider: "puter" },
-  { id: "gemini-1.5-flash", label: "Gemini 1.5 Flash", provider: "puter" },
-  { id: "gemini-1.5-pro", label: "Gemini 1.5 Pro", provider: "puter" },
-  { id: "deepseek-chat", label: "DeepSeek Chat", provider: "puter" },
-  { id: "grok-beta", label: "Grok Beta", provider: "puter" },
-  { id: "mistral-large", label: "Mistral Large", provider: "puter" },
-  { id: "gpt-5.5", label: "GPT-5.5", provider: "puter" },
-  { id: "gpt-5.4", label: "GPT-5.4", provider: "puter" },
-  { id: "gpt-5.4-mini", label: "GPT-5.4 Mini", provider: "puter" },
+  { id: "gpt-5", label: "GPT-5", provider: "puter" },
+  { id: "gpt-5-mini", label: "GPT-5 Mini", provider: "puter" },
+  { id: "claude-3-5-sonnet-20241022", label: "Claude 3.5 Sonnet", provider: "puter" },
+  { id: "claude-opus-4-8", label: "Claude Opus 4.8", provider: "puter" },
+  { id: "gemini-2.5-pro", label: "Gemini 2.5 Pro", provider: "puter" },
+  { id: "gemini-2.0-flash", label: "Gemini 2.0 Flash", provider: "puter" },
+  { id: "deepseek-v4-pro", label: "DeepSeek Chat", provider: "puter" },
+  { id: "grok-3-mini", label: "Grok 3 Mini", provider: "puter" },
+  { id: "grok-4-fast", label: "Grok 4 Fast", provider: "puter" },
+  { id: "mistral-large-2512", label: "Mistral Large 3", provider: "puter" },
 ];
 
 export function getProvider(id: AIEngine): AIProviderEntry | undefined {

@@ -21,7 +21,7 @@ export function ModelSelectorPill({
   const [dropdownPosition, setDropdownPosition] = useState<"top" | "bottom">("bottom");
   const [horizontalAlign, setHorizontalAlign] = useState<"left" | "right">("left");
   const containerRef = useRef<HTMLDivElement>(null);
-  const { models, isLoading, enabledProviders, enabledEngines } = useAIModels(selectedEngine);
+  const { models, isLoading, error, enabledProviders, enabledEngines } = useAIModels(selectedEngine);
 
   // Fall back to first enabled engine if current is disabled
   useEffect(() => {
@@ -145,35 +145,48 @@ export function ModelSelectorPill({
                 <span>Loading models...</span>
               </div>
             ) : (
-              models.map((m) => {
-                const isSelected = m.id === selectedModel;
-                return (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => {
-                      onModelChange(m.id);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full text-left px-2 py-1.5 rounded-lg flex flex-col gap-0.5 transition-all cursor-pointer ${
-                      isSelected
-                        ? "bg-black/[0.04]"
-                        : "hover:bg-black/[0.02]"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className={`text-[10px] font-semibold ${isSelected ? "text-gray-900" : "text-gray-600"}`}>
-                        {m.label}
-                      </span>
-                      {isSelected && (
-                        <svg className="w-3 h-3 text-[#FF5B04] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                    </div>
-                  </button>
-                );
-              })
+              <>
+                {models.map((m) => {
+                  const isSelected = m.id === selectedModel;
+                  return (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => {
+                        onModelChange(m.id);
+                        setIsOpen(false);
+                      }}
+                      className={`w-full text-left px-2 py-1.5 rounded-lg flex flex-col gap-0.5 transition-all cursor-pointer ${
+                        isSelected
+                          ? "bg-black/[0.04]"
+                          : "hover:bg-black/[0.02]"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className={`text-[10px] font-semibold ${isSelected ? "text-gray-900" : "text-gray-600"}`}>
+                          {m.label}
+                        </span>
+                        {isSelected && (
+                          <svg className="w-3 h-3 text-[#FF5B04] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+                {error && (
+                  <div className="mt-2 p-2 rounded-lg bg-amber-50 border border-amber-200/50 text-amber-800 text-[9px] leading-relaxed font-geist">
+                    <span className="font-bold flex items-center gap-1 mb-0.5 text-amber-900">
+                      <svg className="w-2.5 h-2.5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      Provider Discovery Error:
+                    </span>
+                    {error}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

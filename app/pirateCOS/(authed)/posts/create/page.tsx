@@ -36,6 +36,8 @@ import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
 import { AIEngine, getModelsForEngine, getDefaultModelForEngine as registryGetDefaultModel, isAIEngine } from "@/lib/pirateCOS/ai-registry";
 import { useAICopilot } from "@/hooks/useAICopilot";
+import { useAIModels } from "@/hooks/useAIModels";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 import {
   ContentGoal,
   getPostTypeConfig,
@@ -2046,6 +2048,13 @@ const AIExcerptModal = ({
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
 
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
+
   // Sync result with initial excerpt if any
   useEffect(() => {
     if (isOpen) {
@@ -2501,6 +2510,13 @@ const AITitleModal = ({
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
+
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -3019,6 +3035,13 @@ const AITagsModal = ({
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
+
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -3573,6 +3596,13 @@ const AICopilotModal = ({
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
+
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
 
   // Selection & Context states
   const [selectedText, setSelectedText] = useState("");
@@ -4729,6 +4759,8 @@ const BlogEditor = () => {
   const [seoError, setSeoError] = useState("");
   const [seoSuccess, setSeoSuccess] = useState(false);
 
+  const { models: seoModels } = useAIModels(seoEngine);
+
   useEffect(() => {
     try {
       const config = loadAIConfig();
@@ -4749,6 +4781,52 @@ const BlogEditor = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (seoModels.length > 0 && !seoModels.some((m) => m.id === seoModel)) {
+      const defaultModel = seoModels.find((m) => m.isDefault)?.id || seoModels[0].id;
+      setSeoModel(defaultModel);
+    }
+  }, [seoEngine, seoModel, seoModels]);
+
+  const extractPuterContent = (chatResponse: any): string => {
+    if (!chatResponse) return "";
+    if (typeof chatResponse === "string") return chatResponse;
+
+    const message = chatResponse.message;
+    if (message) {
+      if (typeof message === "string") return message;
+      const content = message.content;
+      if (content) {
+        if (typeof content === "string") return content;
+        if (Array.isArray(content)) {
+          const textParts = content
+            .map((part) => {
+              if (typeof part === "string") return part;
+              if (part && typeof part === "object" && typeof part.text === "string") {
+                return part.text;
+              }
+              return "";
+            })
+            .filter(Boolean);
+          if (textParts.length > 0) return textParts.join("\n");
+        }
+        if (typeof content === "object" && typeof content.text === "string") {
+          return content.text;
+        }
+      }
+    }
+
+    if (typeof chatResponse.content === "string") return chatResponse.content;
+    if (typeof chatResponse.text === "string") return chatResponse.text;
+    if (typeof chatResponse.result === "string") return chatResponse.result;
+
+    try {
+      return JSON.stringify(chatResponse);
+    } catch {
+      return String(chatResponse);
+    }
+  };
+
   const callAIGenerate = async (body: any) => {
     const response = await fetch("/api/pirateCOS/ai/generate", {
       method: "POST",
@@ -4766,31 +4844,36 @@ const BlogEditor = () => {
     }
     const data = await response.json();
     if (data.success && data.requiresClientPuter) {
-      const { puter } = await import("@heyputer/puter.js");
-      const chatResponse = await puter.ai.chat(data.systemInstructions, { model: body.model });
-      let text = chatResponse.message?.content ? String(chatResponse.message.content) : String(chatResponse);
-      text = text.trim();
-      if (text.startsWith("```json")) {
-        text = text.replace(/^```json/, "").replace(/```$/, "").trim();
-      } else if (text.startsWith("```")) {
-        text = text.replace(/^```/, "").replace(/```$/, "").trim();
-      }
-      if (body.action === "titles" || body.action === "tags" || body.action === "seo-analysis") {
-        try {
-          return { success: true, data: JSON.parse(text) };
-        } catch {
-          if (body.action === "titles" || body.action === "tags") {
-            const fallbackItems = text
-              .split(/[\n,;]+/)
-              .map((t) => t.replace(/^\d+\.\s*/, "").replace(/[\[\]"']/g, "").trim())
-              .filter((t) => t.length > 0)
-              .slice(0, 8);
-            return { success: true, data: fallbackItems };
-          }
-          return { success: false, error: "Puter AI failed to return a valid JSON response." };
+      try {
+        const { puter } = await import("@heyputer/puter.js");
+        const chatResponse = await puter.ai.chat(data.systemInstructions, { model: body.model });
+        let text = extractPuterContent(chatResponse);
+        text = text.trim();
+        if (text.startsWith("```json")) {
+          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```")) {
+          text = text.replace(/^```/, "").replace(/```$/, "").trim();
         }
+        if (body.action === "titles" || body.action === "tags" || body.action === "seo-analysis") {
+          try {
+            return { success: true, data: JSON.parse(text) };
+          } catch {
+            if (body.action === "titles" || body.action === "tags") {
+              const fallbackItems = text
+                .split(/[\n,;]+/)
+                .map((t) => t.replace(/^\d+\.\s*/, "").replace(/[\[\]"']/g, "").trim())
+                .filter((t) => t.length > 0)
+                .slice(0, 8);
+              return { success: true, data: fallbackItems };
+            }
+            return { success: false, error: "Puter AI failed to return a valid JSON response." };
+          }
+        }
+        return { success: true, data: text };
+      } catch (puterErr: any) {
+        console.error("Client-side Puter generation failed:", puterErr);
+        return { success: false, error: parseAIError("puter", 500, puterErr.message || String(puterErr)) };
       }
-      return { success: true, data: text };
     }
     return data;
   };
