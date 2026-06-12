@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("AI Generation Feedback API error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to update feedback" },
+      { success: false, error: "Failed to update feedback" },
       { status: 500 }
     );
   }
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error("AI Generation Feedback Stats API error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to fetch feedback stats" },
+      { success: false, error: "Failed to fetch feedback stats" },
       { status: 500 }
     );
   }

@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
   } catch (error: any) {
     console.error("Error fetching teams:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to fetch teams" },
+      { success: false, error: "Failed to fetch teams" },
       { status: 500 }
     );
   }
@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Error creating team:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to create team" },
+      { success: false, error: "Failed to create team" },
       { status: 500 }
     );
   }

@@ -81,7 +81,7 @@ export async function POST(
   } catch (error: any) {
     console.error("Error adding member:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to add member" },
+      { success: false, error: "Failed to add member" },
       { status: 500 }
     );
   }
@@ -140,7 +140,7 @@ export async function DELETE(
   } catch (error: any) {
     console.error("Error removing member:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to remove member" },
+      { success: false, error: "Failed to remove member" },
       { status: 500 }
     );
   }

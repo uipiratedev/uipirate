@@ -200,7 +200,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error("Insights API error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to generate insights" },
+      { success: false, error: "Failed to generate insights" },
       { status: 500 }
     );
   }

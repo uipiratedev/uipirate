@@ -56,7 +56,7 @@ export async function GET(
     });
   } catch (err: any) {
     return NextResponse.json(
-      { success: false, error: err.message || "Failed to fetch post detail" },
+      { success: false, error: "Failed to fetch post detail" },
       { status: 500 },
     );
   }

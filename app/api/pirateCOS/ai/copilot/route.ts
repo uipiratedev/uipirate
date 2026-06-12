@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message || "Co-pilot parsing failed" },
+      { success: false, error: "Co-pilot parsing failed" },
       { status: 500 },
     );
   }

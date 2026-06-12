@@ -180,7 +180,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Failed to fetch summary",
+        error: "Failed to fetch summary",
       },
       { status: 500 }
     );

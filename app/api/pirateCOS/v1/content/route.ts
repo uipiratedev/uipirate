@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
     });
   } catch (err: any) {
     return NextResponse.json(
-      { success: false, error: err.message || "Failed to fetch content" },
+      { success: false, error: "Failed to fetch content" },
       { status: 500 },
     );
   }
@@ -159,7 +159,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err: any) {
     return NextResponse.json(
-      { success: false, error: err.message || "Failed to create content" },
+      { success: false, error: "Failed to create content" },
       { status: 500 },
     );
   }

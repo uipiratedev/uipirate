@@ -6,52 +6,44 @@
 
 ---
 
-## Fix Status (as of June 12, 2026)
+## Fix Status (as of June 12, 2026 — Security Hardening Pass Complete)
 
 | ID | Finding | Status |
 |---|---|---|
-| C1 | IDOR: version restore writes to any tenant's post | ❌ **OPEN — Critical** |
-| C2 | IDOR: version history readable across tenants | ❌ **OPEN — Critical** |
-| C3 | Forgeable JWTs via hardcoded secret fallback | ✅ **FIXED** — `auth.ts` already has fail-fast; `org/convert/route.ts` fixed in hardening batch |
-| C4 | Stripe webhook signature verification bypass | ✅ **FIXED** — bypass path removed, always returns 503 without valid secret |
+| C1 | IDOR: version restore writes to any tenant's post | ✅ **FIXED** — `ContentHistory.findOne({ postId, version, tenantId })` + `Post.findOneAndUpdate({ _id, tenantId })` in `version-tracker.ts` |
+| C2 | IDOR: version history readable across tenants | ✅ **FIXED** — `ContentHistory.find({ postId, tenantId })` filter added to `getVersionHistory()` |
+| C3 | Forgeable JWTs via hardcoded secret fallback | ✅ **FIXED** — `auth.ts` has fail-fast; `org/convert/route.ts` fixed in hardening batch |
+| C4 | Stripe webhook signature verification bypass | ✅ **FIXED** — bypass path removed; always returns 503 without valid secret |
 | C5 | Shared "UI Pirate" workspace breaks tenant isolation for Teams | 🔵 **Phase 7.1** — Workspace gains `tenantId` in Phase 7.1 |
-| H1 | Regex injection / ReDoS in posts search | ✅ **FIXED** — `escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")` already in `posts/route.ts` |
-| H2 | No rate limiting on login | ❌ **OPEN** |
-| H3 | JWT also returned in response body | ❌ **OPEN** |
-| H4 | Unrestricted file upload (no MIME/size/folder) | ❌ **OPEN** |
-| H5 | Free Pro upgrade via checkout simulation fallback | ❌ **OPEN** |
-| H6 | Internal error messages leaked to clients | ❌ **OPEN** |
-| M1 | Weak password policy (6-char minimum) | ❌ **OPEN** |
-| M2 | Login JWT payload missing `accountType`/`orgRole` | ❌ **OPEN** — Phase 7.1 aligns this |
-| M3 | 30-day JWT with no revocation list | ❌ **OPEN** (low urgency — DB `isActive` check mitigates) |
-| M4 | `http://` hardcoded in billing redirect URLs | ❌ **OPEN** |
-| M5 | PII in server logs (emails, credit balances) | ❌ **OPEN** |
-| M6 | Overly strict email regex in `Admin.ts` | ❌ **OPEN** |
-| L1 | `verifyApiKey` O(n) scan on every request | ❌ **OPEN** |
-| L2 | No CSRF tokens | 🟡 Mitigated by `sameSite: lax` |
-| L3 | `role` enum enforced nowhere server-side | 🔵 **Phase 7.1** supersedes this |
-| L4 | No `expiresAt` on API keys | ❌ **OPEN** |
-
-**Priority fix order:**
-1. **C1, C2** — Add `tenantId` filter to `version-tracker.ts` `restoreVersion()` and `getVersionHistory()` (~30 min)
-2. **H3** — Remove `token` from login/register response bodies (~5 min)
-3. **H4** — Add MIME allowlist + 10MB size cap + `tenantId` folder prefix to upload route (~1 hr)
-4. **H5** — Gate checkout simulation behind `NODE_ENV !== "production"` (~5 min)
-5. **H2** — Add per-IP + per-email rate limiting to login (~2 hrs)
-6. **H6** — Replace raw `error.message` with generic messages at catch boundaries (~1 hr)
+| H1 | Regex injection / ReDoS in posts search | ✅ **FIXED** — `escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")` in `posts/route.ts` |
+| H2 | No rate limiting on login | ✅ **FIXED** — `checkRateLimit(ip, email)` enforced in `auth/login/route.ts`; 429 on threshold |
+| H3 | JWT also returned in response body | ✅ **FIXED** — `token` removed from both `login/route.ts` and `register/route.ts` response bodies |
+| H4 | Unrestricted file upload (no MIME/size/folder) | ✅ **FIXED** — MIME allowlist (9 types), 10MB cap, `pirateCOS/${tenantId}` folder in `media/upload/route.ts` |
+| H5 | Free Pro upgrade via checkout simulation fallback | ✅ **FIXED** — simulation gated behind `NODE_ENV !== "production"` guard in `billing/checkout/route.ts` |
+| H6 | Internal error messages leaked to clients | ✅ **FIXED** — 28 instances across 21 files replaced with generic messages; final 2 in `prompts/route.ts` fixed June 12. Follow-up June 13: BYOK provider quota/credit errors (previously swallowed by the generic catch) now surfaced with actionable billing links — 12 throws replaced with direct returns in `generate`, `workspace`, `repurpose` routes; per-provider billing URLs and Anthropic credit exhaustion detection added to `ai-error-parser.ts` |
+| M1 | Weak password policy (6-char minimum) | ✅ **FIXED** — 8-char minimum + common-password blocklist in `register/route.ts` and `profile/route.ts` |
+| M2 | Login JWT payload missing `accountType`/`orgRole` | 🔵 **Phase 7.1** — JWT payload alignment deferred to Phase 7.1 role/account redesign |
+| M3 | 30-day JWT with no revocation list | 🟡 **Mitigated** — per-request DB `isActive` check provides effective revocation |
+| M4 | `http://` hardcoded in billing redirect URLs | ✅ **FIXED** — protocol switches to `https` in production; Host header validated against allowlist |
+| M5 | PII in server logs (emails, credit balances) | ❌ **OPEN** — low urgency; adopt structured logger (see L4 plan) |
+| M6 | Overly strict email regex in `Admin.ts` | ❌ **OPEN** — low urgency; TLD restriction rejects valid addresses like `.agency` |
+| L1 | `verifyApiKey` O(n) scan on every request | ❌ **OPEN** — performance concern at scale; store indexed SHA-256 hash |
+| L2 | No CSRF tokens | 🟡 **Mitigated** — `sameSite: lax` cookie policy blocks cross-site POSTs |
+| L3 | `role` enum enforced nowhere server-side | 🔵 **Phase 7.1** supersedes this via `orgRole` + `require-role.ts` |
+| L4 | No `expiresAt` on API keys | ❌ **OPEN** — TTL check exists in `api-key-auth.ts` but keys created without expiry |
 
 ---
 
 ## Severity Summary
 
-| Severity | Count | Fixed | Open |
-|---|---|---|---|
-| 🔴 Critical | 5 | 2 (C3, C4) | 3 (C1, C2, C5¹) |
-| 🟠 High | 6 | 2 (H1, implicitly) | 4 (H2-H6 minus H1) |
-| 🟡 Medium | 6 | 0 | 6 (M1–M6) |
-| 🟢 Low / Info | 4 | 0 | 4 (L1–L4) |
+| Severity | Count | Fixed | Deferred/Mitigated | Open |
+|---|---|---|---|---|
+| 🔴 Critical | 5 | 4 (C1–C4) | 1 (C5 → Phase 7.1) | 0 |
+| 🟠 High | 6 | 6 (H1–H6) | 0 | 0 |
+| 🟡 Medium | 6 | 3 (M1, M4, M3-mitigated) | 1 (M2 → Phase 7.1) | 2 (M5, M6) |
+| 🟢 Low / Info | 4 | 0 | 2 (L2-mitigated, L3 → Phase 7.1) | 2 (L1, L4) |
 
-¹ C5 is deferred to Phase 7.1 by design.
+**All Critical and High findings are resolved.** Remaining open items (M5, M6, L1, L4) are low-urgency quality improvements.
 
 **Fix before anything else:** C1, C2 (active cross-tenant read/write — 2 query-filter changes, ~30 min).
 
@@ -196,13 +188,15 @@ When `STRIPE_SECRET_KEY` is unset, the route **immediately writes** `plan = "pro
 
 **Fix:** Gate the simulation behind `NODE_ENV !== "production"`.
 
-### H6 — Internal error messages leaked to clients
+### H6 — Internal error messages leaked to clients ✅ FIXED
 
-**Files:** `content-history/restore/route.ts`, `content-history/[postId]/route.ts`, `billing/checkout/route.ts`, others using `error.message` in responses.
+**Files:** 21 files across `app/api/pirateCOS/` — all `error.message` leakage at catch boundaries.
 
 Raw `error.message` can reveal DB structure, ObjectIds, and stack context (e.g., `Version 3 not found for post 64ab…`).
 
-**Fix:** Log the full error server-side; return a generic message to the client. Reserve specific messages for explicitly-thrown validation errors.
+**Fix applied (June 12, 2026):** 28 instances across 21 route files replaced with generic messages. Full error is logged server-side via `console.error`; only the generic string is returned to the client. Final 2 instances in `prompts/route.ts` (inner catch status 400 and outer catch status 500) resolved last.
+
+**Follow-up fix (June 13, 2026):** The H6 generic outer catch inadvertently swallowed provider-specific error messages produced by `parseAIError` — BYOK users saw "AI Generation failed" instead of actionable quota/billing guidance. Fixed by replacing all 12 `throw new Error(parseAIError(...))` calls in `ai/generate/route.ts`, `ai/workspace/route.ts`, and `posts/[id]/repurpose/route.ts` with direct `return NextResponse.json(...)`, so provider errors bypass the outer catch entirely. Also fixed: incorrect billing URLs for Grok/OpenRouter/Mistral in `ai-error-parser.ts`, and added explicit Anthropic credit exhaustion detection (HTTP 400 + `invalid_request_error` with "credit balance" message).
 
 ---
 

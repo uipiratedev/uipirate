@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Error deleting from Cloudinary:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to delete image" },
+      { success: false, error: "Failed to delete image" },
       { status: 500 }
     );
   }

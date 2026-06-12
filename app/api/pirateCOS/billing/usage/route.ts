@@ -77,7 +77,7 @@ export async function GET() {
     console.error("Usage route GET error:", err);
 
     return NextResponse.json(
-      { success: false, error: err.message || "Failed to query usage metrics" },
+      { success: false, error: "Failed to query usage metrics" },
       { status: 500 },
     );
   }
@@ -139,7 +139,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: err.message || "Failed to update BYOK configuration",
+        error: "Failed to update BYOK configuration",
       },
       { status: 500 },
     );

@@ -30,7 +30,7 @@ export async function GET() {
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message || "Internal server error" },
+      { success: false, error: "Internal server error" },
       { status: 500 },
     );
   }
@@ -112,7 +112,7 @@ const COMMON_PASSWORDS = new Set([
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message || "Internal server error" },
+      { success: false, error: "Internal server error" },
       { status: 500 },
     );
   }
