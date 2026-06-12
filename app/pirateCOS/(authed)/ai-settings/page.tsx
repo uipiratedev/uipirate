@@ -235,6 +235,7 @@ export default function AISettingsPage() {
   const [mistralSource, setMistralSource] = useState<KeySource>(null);
   const [anthropicSource, setAnthropicSource] = useState<KeySource>(null);
   const [grokSource, setGrokSource] = useState<KeySource>(null);
+  const [openrouterSource, setOpenrouterSource] = useState<KeySource>(null);
 
   // plan states
   const [plan, setPlan] = useState<string>("free");
@@ -247,12 +248,14 @@ export default function AISettingsPage() {
     mistral: boolean;
     anthropic: boolean;
     grok: boolean;
+    openrouter: boolean;
   }>({
     openai: false,
     gemini: false,
     mistral: false,
     anthropic: false,
     grok: false,
+    openrouter: false,
   });
   const [updatingBYOK, setUpdatingBYOK] = useState(false);
 
@@ -289,6 +292,7 @@ export default function AISettingsPage() {
           setMistralSource(d.mistralSource);
           setAnthropicSource(d.anthropicSource);
           setGrokSource(d.grokSource);
+          setOpenrouterSource(d.openrouterSource);
           const eng = (d.defaultEngine ?? "puter") as Engine;
           const mdl = d.defaultModel ?? "gpt-4o-mini";
 
@@ -362,6 +366,7 @@ export default function AISettingsPage() {
     if (provider === "mistral") body.mistralKey = key;
     if (provider === "anthropic") body.anthropicKey = key;
     if (provider === "grok") body.grokKey = key;
+    if (provider === "openrouter") body.openrouterKey = key;
     const res = await fetch("/api/pirateCOS/ai-config", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -381,6 +386,7 @@ export default function AISettingsPage() {
       setMistralSource(refreshed.mistralSource);
       setAnthropicSource(refreshed.anthropicSource);
       setGrokSource(refreshed.grokSource);
+      setOpenrouterSource(refreshed.openrouterSource);
     }
   };
 
@@ -634,6 +640,28 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("grok")}
               onManageKey={() => openKeyModal("grok")}
+            />
+
+            {/* OpenRouter */}
+            <ProviderKeyCard
+              badgeColor="violet"
+              description="Llama 3, Claude, Gemini via OpenRouter."
+              icon={
+                <img src="/assets/logos/ai/openrouter.svg" alt="OpenRouter" className="w-5 h-5 object-contain" />
+              }
+              source={openrouterSource}
+              sourceColors={{
+                bg: "bg-violet-50",
+                border: "border-violet-100",
+                dot: "bg-violet-400",
+                text: "text-violet-700",
+              }}
+              title="OpenRouter"
+              isPro={isPro}
+              byokEnabled={byokEnabled.openrouter}
+              updatingBYOK={updatingBYOK}
+              onToggleBYOK={() => handleToggleBYOK("openrouter")}
+              onManageKey={() => openKeyModal("openrouter")}
             />
           </div>
 

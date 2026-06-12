@@ -17,6 +17,7 @@ interface UsageData {
     mistral: boolean;
     anthropic: boolean;
     grok: boolean;
+    openrouter: boolean;
   };
   stripeCustomerId: string | null;
   stripeSubscriptionId: string | null;
@@ -28,6 +29,7 @@ interface UsageData {
     mistral: boolean;
     anthropic: boolean;
     grok: boolean;
+    openrouter: boolean;
   };
 }
 
@@ -49,6 +51,7 @@ export default function BillingSettingsPage() {
     mistralKey: "",
     anthropicKey: "",
     grokKey: "",
+    openrouterKey: "",
   });
   const [savingKeys, setSavingKeys] = useState(false);
 
@@ -156,7 +159,7 @@ export default function BillingSettingsPage() {
       }
 
       setSuccessMsg("Custom API keys safely encrypted and stored in database.");
-      setKeysForm({ openaiKey: "", geminiKey: "", mistralKey: "", anthropicKey: "", grokKey: "" });
+      setKeysForm({ openaiKey: "", geminiKey: "", mistralKey: "", anthropicKey: "", grokKey: "", openrouterKey: "" });
       await fetchUsage();
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to save API keys");
@@ -682,6 +685,25 @@ export default function BillingSettingsPage() {
                 }
               />
             </div>
+
+            <div>
+              <label className="text-[10px] font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">
+                OpenRouter API Key
+              </label>
+              <input
+                className="w-full text-xs font-geist bg-white rounded-lg px-3 py-2 border border-black/10 outline-none"
+                placeholder={
+                  data.hasKeys.openrouter
+                    ? "••••••••••••••••"
+                    : "Paste sk-or-... key"
+                }
+                type="password"
+                value={keysForm.openrouterKey}
+                onChange={(e) =>
+                  setKeysForm((p) => ({ ...p, openrouterKey: e.target.value }))
+                }
+              />
+            </div>
           </div>
 
           <div className="flex items-center justify-end pt-2">
@@ -693,7 +715,8 @@ export default function BillingSettingsPage() {
                   !keysForm.geminiKey &&
                   !keysForm.mistralKey &&
                   !keysForm.anthropicKey &&
-                  !keysForm.grokKey)
+                  !keysForm.grokKey &&
+                  !keysForm.openrouterKey)
               }
               style={{ background: "#FF5B04" }}
               type="submit"

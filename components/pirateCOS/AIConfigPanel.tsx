@@ -42,6 +42,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [mistralKey, setMistralKey] = useState("");
   const [anthropicKey, setAnthropicKey] = useState("");
   const [grokKey, setGrokKey] = useState("");
+  const [openrouterKey, setOpenrouterKey] = useState("");
   const [defaultEngine, setDefaultEngine] = useState<AIEngine>("puter");
   const [defaultModel, setDefaultModel] = useState("gpt-4o-mini");
   const [serverStatus, setServerStatus] = useState<{
@@ -50,6 +51,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     mistral: boolean;
     anthropic: boolean;
     grok: boolean;
+    openrouter: boolean;
   } | null>(null);
   const [puterUser, setPuterUser] = useState<{ username: string } | null>(null);
   const [puterBusy, setPuterBusy] = useState(false);
@@ -61,6 +63,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [showMKey, setShowMKey] = useState(false);
   const [showAKey, setShowAKey] = useState(false);
   const [showGrokKey, setShowGrokKey] = useState(false);
+  const [showORKey, setShowORKey] = useState(false);
   const {
     models: availableModels,
     source: modelSource,
@@ -76,6 +79,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     setMistralKey("");
     setAnthropicKey("");
     setGrokKey("");
+    setOpenrouterKey("");
     setDefaultEngine(cfg.defaultEngine || "puter");
     setDefaultModel(cfg.defaultModel || "gpt-4o-mini");
 
@@ -89,6 +93,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
             mistral: d.mistral,
             anthropic: d.anthropic,
             grok: d.grok,
+            openrouter: d.openrouter,
           });
           if (d.defaultEngine) setDefaultEngine(d.defaultEngine as any);
           if (d.defaultModel) setDefaultModel(d.defaultModel);
@@ -118,6 +123,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       if (mistralKey.trim()) body.mistralKey = mistralKey.trim();
       if (anthropicKey.trim()) body.anthropicKey = anthropicKey.trim();
       if (grokKey.trim()) body.grokKey = grokKey.trim();
+      if (openrouterKey.trim()) body.openrouterKey = openrouterKey.trim();
 
       const res = await fetch("/api/pirateCOS/ai-config", {
         method: "POST",
@@ -134,6 +140,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
       if (mistralKey.trim()) setMistralKey("");
       if (anthropicKey.trim()) setAnthropicKey("");
       if (grokKey.trim()) setGrokKey("");
+      if (openrouterKey.trim()) setOpenrouterKey("");
 
       // Update local storage defaults cache for fast loading
       localStorage.setItem(
@@ -153,6 +160,7 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           mistral: refreshed.mistral,
           anthropic: refreshed.anthropic,
           grok: refreshed.grok,
+          openrouter: refreshed.openrouter,
         });
       }
 
@@ -390,6 +398,28 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               value={grokKey}
               onChange={setGrokKey}
               onToggle={() => setShowGrokKey((v) => !v)}
+            />
+          </PanelSection>
+
+          {/* ── OpenRouter ── */}
+          <PanelSection label="OpenRouter">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-semibold font-geist text-gray-800">
+                OpenRouter
+              </span>
+              {serverStatus?.openrouter && <EnvBadge color="violet" />}
+            </div>
+            <KeyInput
+              focusColor="#7C3AED"
+              placeholder={
+                serverStatus?.openrouter
+                  ? "Saved in Database (encrypted)"
+                  : "sk-or-..."
+              }
+              show={showORKey}
+              value={openrouterKey}
+              onChange={setOpenrouterKey}
+              onToggle={() => setShowORKey((v) => !v)}
             />
           </PanelSection>
 

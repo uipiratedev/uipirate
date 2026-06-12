@@ -31,6 +31,7 @@ export interface IAdmin extends Document {
     mistral: boolean;
     anthropic: boolean;
     grok: boolean;
+    openrouter: boolean;
   };
   /** Trial tracking counters */
   trialStartedAt?: Date;
@@ -112,6 +113,7 @@ const AdminSchema: Schema = new Schema(
       mistral: { type: Boolean, default: false },
       anthropic: { type: Boolean, default: false },
       grok: { type: Boolean, default: false },
+      openrouter: { type: Boolean, default: false },
     },
     trialStartedAt: {
       type: Date,

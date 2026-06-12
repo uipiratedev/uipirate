@@ -1,4 +1,4 @@
-export type AIEngine = "openai" | "gemini" | "mistral" | "anthropic" | "puter" | "grok";
+export type AIEngine = "openai" | "gemini" | "mistral" | "anthropic" | "puter" | "grok" | "openrouter";
 export type AIKeyProvider = Exclude<AIEngine, "puter">;
 
 export interface AIProviderEntry {
@@ -134,6 +134,25 @@ export const AI_PROVIDERS: AIProviderEntry[] = [
       text: "text-gray-700",
     },
   },
+  {
+    id: "openrouter",
+    name: "OpenRouter",
+    shortName: "OpenRouter",
+    logo: "/assets/logos/ai/openrouter.svg",
+    color: "#7C3AED",
+    badgeColor: "violet",
+    requiresKey: true,
+    keyPlaceholder: "sk-or-...",
+    keyDescription: "Access Llama, Claude, Gemini and other models via OpenRouter.",
+    keyLink: "https://openrouter.ai/keys",
+    keyLinkLabel: "openrouter.ai/keys",
+    sourceColors: {
+      bg: "bg-violet-50",
+      border: "border-violet-100",
+      dot: "bg-violet-400",
+      text: "text-violet-700",
+    },
+  },
 ];
 
 export const AI_ENGINE_IDS: AIEngine[] = [
@@ -142,6 +161,7 @@ export const AI_ENGINE_IDS: AIEngine[] = [
   "anthropic",
   "mistral",
   "grok",
+  "openrouter",
   "puter",
 ];
 
@@ -172,6 +192,12 @@ export const AI_MODELS: AIModelEntry[] = [
   // Grok Models
   { id: "grok-2-1212", label: "Grok 2", description: "capable", provider: "grok", isDefault: true },
   { id: "grok-beta", label: "Grok Beta", provider: "grok" },
+
+  // OpenRouter Models
+  { id: "meta-llama/llama-3-8b-instruct:free", label: "Llama 3 8B (Free)", description: "fast", provider: "openrouter", isDefault: true },
+  { id: "google/gemini-flash-1.5", label: "Gemini 1.5 Flash", provider: "openrouter" },
+  { id: "anthropic/claude-3.5-sonnet", label: "Claude 3.5 Sonnet", provider: "openrouter" },
+  { id: "deepseek/deepseek-chat", label: "DeepSeek V3", provider: "openrouter" },
 
   // Puter Models
   { id: "gpt-4o-mini", label: "GPT-4o Mini", description: "fast", provider: "puter", isDefault: true },

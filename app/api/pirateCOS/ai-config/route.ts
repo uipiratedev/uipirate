@@ -30,11 +30,13 @@ export async function GET() {
   const mistralEnv = !!process.env.MISTRAL_API_KEY;
   const anthropicEnv = !!process.env.ANTHROPIC_API_KEY;
   const grokEnv = !!(process.env.XAI_API_KEY || process.env.GROK_API_KEY);
+  const openrouterEnv = !!process.env.OPENROUTER_API_KEY;
   const openaiDb = !!cfg?.openaiKeyEncrypted;
   const geminiDb = !!cfg?.geminiKeyEncrypted;
   const mistralDb = !!cfg?.mistralKeyEncrypted;
   const anthropicDb = !!cfg?.anthropicKeyEncrypted;
   const grokDb = !!cfg?.grokKeyEncrypted;
+  const openrouterDb = !!cfg?.openrouterKeyEncrypted;
 
   return NextResponse.json({
     success: true,
@@ -44,11 +46,13 @@ export async function GET() {
     mistral: mistralEnv || mistralDb,
     anthropic: anthropicEnv || anthropicDb,
     grok: grokEnv || grokDb,
+    openrouter: openrouterEnv || openrouterDb,
     openaiSource: openaiEnv ? "env" : openaiDb ? "db" : null,
     geminiSource: geminiEnv ? "env" : geminiDb ? "db" : null,
     mistralSource: mistralEnv ? "env" : mistralDb ? "db" : null,
     anthropicSource: anthropicEnv ? "env" : anthropicDb ? "db" : null,
     grokSource: grokEnv ? "env" : grokDb ? "db" : null,
+    openrouterSource: openrouterEnv ? "env" : openrouterDb ? "db" : null,
     defaultEngine: cfg?.defaultEngine ?? "puter",
     defaultModel: cfg?.defaultModel ?? "gpt-4o-mini",
   });
@@ -73,6 +77,7 @@ export async function POST(req: NextRequest) {
     mistralKey,
     anthropicKey,
     grokKey,
+    openrouterKey,
     defaultEngine,
     defaultModel,
   } = await req.json();
@@ -117,6 +122,11 @@ export async function POST(req: NextRequest) {
   if (typeof grokKey === "string") {
     cfg.grokKeyEncrypted = grokKey.trim()
       ? encrypt(grokKey.trim())
+      : undefined;
+  }
+  if (typeof openrouterKey === "string") {
+    cfg.openrouterKeyEncrypted = openrouterKey.trim()
+      ? encrypt(openrouterKey.trim())
       : undefined;
   }
   if (defaultEngine) cfg.defaultEngine = defaultEngine;
