@@ -28,7 +28,7 @@ export async function GET(
 
     const { postId } = params;
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get("limit") || "50");
+    const limit = Math.min(Math.max(parseInt(searchParams.get("limit") || "50"), 1), 100);
 
     // Get version history
     const history = await getVersionHistory(postId, user.tenantId.toString(), limit);

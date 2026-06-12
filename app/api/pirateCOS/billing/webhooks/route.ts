@@ -26,19 +26,11 @@ export async function POST(req: NextRequest) {
         STRIPE_WEBHOOK_SECRET,
       );
     } else {
-      const allowUnverified = process.env.ALLOW_UNVERIFIED_WEBHOOKS === "true";
-      if (process.env.NODE_ENV === "production" || !allowUnverified) {
-        console.error("❌ Webhook Signature Verification Failed. Webhook secret missing or unverified disabled.");
-        return NextResponse.json(
-          { success: false, error: "Signature verification required" },
-          { status: 503 }
-        );
-      }
-      // Sandbox fallback: parse directly for unverified sandbox emulation
-      console.warn(
-        "⚠️ Webhook Signature Verification Bypassed. STRIPE_WEBHOOK_SECRET is not set.",
+      console.error("❌ Webhook rejected: STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET is not configured.");
+      return NextResponse.json(
+        { success: false, error: "Webhook signature verification is required" },
+        { status: 503 }
       );
-      event = JSON.parse(bodyText) as any;
     }
   } catch (err: any) {
     console.error("Webhook signature verification failed:", err.message);

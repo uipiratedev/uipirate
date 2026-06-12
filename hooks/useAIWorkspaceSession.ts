@@ -343,10 +343,14 @@ export function useAIWorkspaceSession(
         timeoutsRef.current = [];
         setThinkingStatus("");
 
-        let responseData = data.output;
+        if (!data.output && !data.requiresClientPuter) {
+          throw new Error("AI response missing output field.");
+        }
+
+        let responseData: string = data.output || "";
         let finalEditIntent = data.editIntent;
         let finalSuggestedApplyMode = data.suggestedApplyMode;
-        let generationId = data.generationId || Math.random().toString(36).substring(7);
+        let generationId: string = data.generationId || Math.random().toString(36).substring(7);
 
         if (data.requiresClientPuter) {
           const { puter } = await import("@heyputer/puter.js");
@@ -398,23 +402,18 @@ export function useAIWorkspaceSession(
               role: "assistant",
               content: completedText,
               timestamp: new Date(),
-              associatedGenerationId: data.generationId,
+              associatedGenerationId: generationId,
               selectedTextContext: selectedText,
-              // Phase 4F: Add precision editing metadata
-              editIntent: data.editIntent,
-              suggestedApplyMode: data.suggestedApplyMode,
+              editIntent: finalEditIntent,
+              suggestedApplyMode: finalSuggestedApplyMode,
               changeSummary: summary || undefined,
             };
-
-            setMessages((prev) => {
-              const updated = prev.map((m) => (m.id === assistantMsgId ? finalAssistantMsg : m));
-              setGenerations((prevGens) => {
-                const updatedGens = [...prevGens, genRecord];
-                saveSessionToPost(updated, updatedGens);
-                return updatedGens;
-              });
-              return updated;
-            });
+            // Compute final state directly — avoids nested setState anti-pattern
+            const finalMsgs = [...updatedMessages, finalAssistantMsg];
+            const finalGens = [...generations, genRecord];
+            setMessages(finalMsgs);
+            setGenerations(finalGens);
+            saveSessionToPost(finalMsgs, finalGens);
             setLoading(false);
           }
         );
@@ -428,7 +427,7 @@ export function useAIWorkspaceSession(
         setLoading(false);
       }
     },
-    [messages, generations, postId, loading, saveSessionToPost, stopGeneration, startTypewriterStream]
+    [messages, generations, postId, loading, activeBrief, activeKeywords, saveSessionToPost, stopGeneration, startTypewriterStream]
   );
 
   // Trigger quick actions (improve, shorten, expand, etc.)
@@ -534,7 +533,7 @@ export function useAIWorkspaceSession(
         setLoading(false);
       }
     },
-    [messages, generations, postId, loading, saveSessionToPost]
+    [messages, generations, postId, loading, activeBrief, activeKeywords, saveSessionToPost]
   );
 
   // Decoupled Rewrite Action handler (does not affect messages/chat history)
@@ -637,7 +636,7 @@ export function useAIWorkspaceSession(
         setRewriteLoading(false);
       }
     },
-    [generations, messages, postId, rewriteLoading, saveSessionToPost, stopGeneration, startTypewriterStream]
+    [generations, messages, postId, rewriteLoading, activeBrief, activeKeywords, saveSessionToPost, stopGeneration, startTypewriterStream]
   );
 
   const clearRewriteOutput = useCallback(() => {
@@ -868,7 +867,11 @@ export function useAIWorkspaceSession(
           } else if (text.startsWith("```")) {
             text = text.replace(/^```/, "").replace(/```$/, "").trim();
           }
-          suggestions = JSON.parse(text);
+          try {
+            suggestions = JSON.parse(text);
+          } catch {
+            suggestions = [];
+          }
         }
 
         setDynamicSuggestions(suggestions);

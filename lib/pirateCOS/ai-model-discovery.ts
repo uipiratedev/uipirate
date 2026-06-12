@@ -438,6 +438,10 @@ export async function discoverAIModels({
   const now = Date.now();
   const cached = cache.get(cacheKey);
 
+  if (cached && cached.expiresAt <= now) {
+    cache.delete(cacheKey);
+  }
+
   if (!forceRefresh && cached && cached.expiresAt > now) {
     return cached.result;
   }

@@ -8,7 +8,11 @@ import Workspace from "@/models/pirateCOS/Workspace";
 import Team from "@/models/pirateCOS/Team";
 import { getCurrentUser } from "@/lib/pirateCOS/auth";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET environment variable is not configured");
+  return secret;
+}
 const JWT_EXPIRES_IN = "30d";
 
 export async function POST(request: NextRequest) {
@@ -150,7 +154,7 @@ export async function POST(request: NextRequest) {
         orgRole: "org-admin",
         avatar: admin.avatar || "",
       },
-      JWT_SECRET,
+      getJwtSecret(),
       { expiresIn: JWT_EXPIRES_IN },
     );
 

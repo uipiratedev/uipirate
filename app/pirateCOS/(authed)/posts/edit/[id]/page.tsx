@@ -52,6 +52,7 @@ import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomI
 import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
 import { compressImage } from "@/utils/imageCompressor";
 import { uploadImageToCloudinary, deleteImagesFromCloudinary, extractImageUrlsFromHtml } from "@/utils/mediaUploader";
+import DOMPurify from "dompurify";
 
 
 const isEditorContentEmpty = (editor: any): boolean => {
@@ -4008,7 +4009,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                     <div className="h-4 bg-gray-200 rounded-md w-5/6" />
                   </div>
                 ) : (
-                  <div dangerouslySetInnerHTML={{ __html: result }} />
+                  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(result) }} />
                 )}
               </div>
             </div>
