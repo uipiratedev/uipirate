@@ -83,13 +83,21 @@ export async function getCurrentUser(): Promise<User | null> {
       return null;
     }
 
+    // Org members inherit the plan from their org owner
+    let effectivePlan: User["plan"] = (admin as any).plan ?? "free";
+    const parentOrgId = (admin as any).parentOrgId;
+    if (parentOrgId) {
+      const orgOwner = await Admin.findById(parentOrgId).lean();
+      if (orgOwner) effectivePlan = (orgOwner as any).plan ?? "free";
+    }
+
     return {
       id: String(admin._id),
       name: (admin as any).name,
       email: (admin as any).email,
       role: (admin as any).role,
-      tenantId: String((admin as any).parentOrgId || admin._id), // each Admin is their own tenant unless org member
-      plan: (admin as any).plan ?? "free",
+      tenantId: String(parentOrgId || admin._id), // each Admin is their own tenant unless org member
+      plan: effectivePlan,
       accountType: (admin as any).accountType ?? "individual",
       orgRole: (admin as any).orgRole ?? "individual",
       avatar: (admin as any).avatar ?? "",

@@ -86,6 +86,16 @@ export async function POST(
       );
     }
 
+    // Link user to the organisation if not already linked
+    const assignedOrgRole = (role === "admin" ? "admin" : role === "viewer" ? "viewer" : "editor") as "admin" | "editor" | "viewer";
+    if (!memberExists.parentOrgId || memberExists.parentOrgId.toString() !== user.tenantId) {
+      await Admin.findByIdAndUpdate(memberExists._id, {
+        parentOrgId: user.tenantId,
+        accountType: "organization",
+        orgRole: assignedOrgRole,
+      });
+    }
+
     // Add member
     team.members.push({
       userId: email.trim(),
