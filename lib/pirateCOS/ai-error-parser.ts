@@ -16,6 +16,7 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
   let friendlyMessage = `${engineLabel} API error (${status})`;
 
   try {
+    console.error(`[parseAIError] Raw error text from ${engineLabel}:`, errText);
     const errJson = JSON.parse(errText);
 
     if (
@@ -24,8 +25,13 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
       engine === "grok" ||
       engine === "openrouter"
     ) {
-      const code = errJson?.error?.code || errJson?.error?.type || "";
-      const msg = errJson?.error?.message || "";
+      const code = errJson?.error?.code || errJson?.error?.type || errJson?.code || "";
+      let msg = "";
+      if (errJson?.error && typeof errJson.error === "string") {
+        msg = errJson.error;
+      } else {
+        msg = errJson?.error?.message || errJson?.message || errJson?.detail || "";
+      }
 
       if (code === "insufficient_quota" || msg.toLowerCase().includes("quota") || status === 402) {
         const billingUrl = engine === "mistral" ? "console.mistral.ai" : "platform.openai.com";
@@ -38,8 +44,8 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
         friendlyMessage = msg;
       }
     } else if (engine === "anthropic") {
-      const type = errJson?.error?.type || "";
-      const msg = errJson?.error?.message || "";
+      const type = errJson?.error?.type || errJson?.type || "";
+      const msg = errJson?.error?.message || errJson?.message || errJson?.detail || "";
 
       if (type === "authentication_error" || status === 401) {
         friendlyMessage = "Invalid Anthropic API key. Please update it in AI Config settings.";
@@ -51,8 +57,8 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
         friendlyMessage = msg;
       }
     } else if (engine === "gemini") {
-      const apiStatus = errJson?.error?.status || "";
-      const msg = errJson?.error?.message || "";
+      const apiStatus = errJson?.error?.status || errJson?.status || "";
+      const msg = errJson?.error?.message || errJson?.message || errJson?.detail || "";
 
       if (apiStatus === "RESOURCE_EXHAUSTED" || status === 429) {
         friendlyMessage = "Gemini quota exceeded or rate limited. Please try again shortly or switch to another model.";

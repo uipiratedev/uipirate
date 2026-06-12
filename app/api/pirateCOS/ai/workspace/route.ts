@@ -74,18 +74,24 @@ export async function POST(request: NextRequest) {
     const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
     const envAnthropic = process.env.ANTHROPIC_API_KEY;
+    const envGrok = process.env.XAI_API_KEY || process.env.GROK_API_KEY;
+    const envOpenrouter = process.env.OPENROUTER_API_KEY;
 
     const dbKeys = await getDecryptedKeys(user.tenantId);
     const openaiApiKey = envOpenai || dbKeys.openai;
     const geminiApiKey = envGemini || dbKeys.gemini;
     const mistralApiKey = envMistral || dbKeys.mistral;
     const anthropicApiKey = envAnthropic || dbKeys.anthropic;
+    const grokApiKey = envGrok || dbKeys.grok;
+    const openrouterApiKey = envOpenrouter || dbKeys.openrouter;
 
     const availableKeys = {
       openai: openaiApiKey,
       gemini: geminiApiKey,
       mistral: mistralApiKey,
       anthropic: anthropicApiKey,
+      grok: grokApiKey,
+      openrouter: openrouterApiKey,
     };
 
     const selectedEngine: AIEngine = resolveAIEngine({
@@ -164,18 +170,43 @@ Rules for output:
       let text = "";
       const selectedModel = model || DEFAULT_MODEL_BY_ENGINE[selectedEngine]; // Phase 4G-2: Hoist for logging
 
-      if (selectedEngine === "openai" || selectedEngine === "mistral") {
+      if (selectedEngine === "puter") {
+        return NextResponse.json({
+          success: true,
+          requiresClientPuter: true,
+          systemInstructions,
+        });
+      }
+
+      if (
+        selectedEngine === "openai" ||
+        selectedEngine === "mistral" ||
+        selectedEngine === "grok" ||
+        selectedEngine === "openrouter"
+      ) {
         const isMistral = selectedEngine === "mistral";
-        const apiUrl = isMistral
-          ? "https://api.mistral.ai/v1/chat/completions"
-          : "https://api.openai.com/v1/chat/completions";
+        const isGrok = selectedEngine === "grok";
+        const isOpenRouter = selectedEngine === "openrouter";
+        const apiUrl = isOpenRouter
+          ? "https://openrouter.ai/api/v1/chat/completions"
+          : isGrok
+            ? "https://api.x.ai/v1/chat/completions"
+            : isMistral
+              ? "https://api.mistral.ai/v1/chat/completions"
+              : "https://api.openai.com/v1/chat/completions";
+
+        const headers: Record<string, string> = {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        };
+        if (isOpenRouter) {
+          headers["HTTP-Referer"] = "http://localhost:3000";
+          headers["X-Title"] = "PirateCOS";
+        }
 
         const response = await fetch(apiUrl, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
-          },
+          headers,
           body: JSON.stringify({
             model: selectedModel,
             messages: [
@@ -342,11 +373,32 @@ Rules for output:
     // Trim history to last 8 messages for token control
     const trimmedHistory = sessionHistory.slice(-8);
 
-    if (selectedEngine === "openai" || selectedEngine === "mistral") {
+    if (selectedEngine === "puter") {
+      return NextResponse.json({
+        success: true,
+        requiresClientPuter: true,
+        systemInstructions,
+        editIntent,
+        suggestedApplyMode,
+      });
+    }
+
+    if (
+      selectedEngine === "openai" ||
+      selectedEngine === "mistral" ||
+      selectedEngine === "grok" ||
+      selectedEngine === "openrouter"
+    ) {
       const isMistral = selectedEngine === "mistral";
-      const apiUrl = isMistral
-        ? "https://api.mistral.ai/v1/chat/completions"
-        : "https://api.openai.com/v1/chat/completions";
+      const isGrok = selectedEngine === "grok";
+      const isOpenRouter = selectedEngine === "openrouter";
+      const apiUrl = isOpenRouter
+        ? "https://openrouter.ai/api/v1/chat/completions"
+        : isGrok
+          ? "https://api.x.ai/v1/chat/completions"
+          : isMistral
+            ? "https://api.mistral.ai/v1/chat/completions"
+            : "https://api.openai.com/v1/chat/completions";
 
       const messages = [
         { role: "system", content: systemInstructions },
@@ -361,12 +413,18 @@ Rules for output:
         messages.push({ role: "user", content: actionPrompt });
       }
 
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      };
+      if (isOpenRouter) {
+        headers["HTTP-Referer"] = "http://localhost:3000";
+        headers["X-Title"] = "PirateCOS";
+      }
+
       const response = await fetch(apiUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
+        headers,
         body: JSON.stringify({
           model: selectedModel,
           messages,

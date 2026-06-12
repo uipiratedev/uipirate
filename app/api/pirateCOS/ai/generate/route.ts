@@ -224,6 +224,14 @@ export async function POST(request: NextRequest) {
     let text = "";
     const selectedModel = model || DEFAULT_MODEL_BY_ENGINE[selectedEngine]; // Phase 4G-2: Hoist for logging
 
+    if (selectedEngine === "puter") {
+      return NextResponse.json({
+        success: true,
+        requiresClientPuter: true,
+        systemInstructions,
+      });
+    }
+
     if (selectedEngine === "openai" || selectedEngine === "mistral" || selectedEngine === "grok" || selectedEngine === "openrouter") {
       const isMistral = selectedEngine === "mistral";
       const isGrok = selectedEngine === "grok";

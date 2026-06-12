@@ -190,7 +190,7 @@ export const AI_MODELS: AIModelEntry[] = [
   { id: "claude-3-opus-latest", label: "Claude 3 Opus", provider: "anthropic" },
 
   // Grok Models
-  { id: "grok-2-1212", label: "Grok 2", description: "capable", provider: "grok", isDefault: true },
+  { id: "grok-2", label: "Grok 2", description: "capable", provider: "grok", isDefault: true },
   { id: "grok-beta", label: "Grok Beta", provider: "grok" },
 
   // OpenRouter Models

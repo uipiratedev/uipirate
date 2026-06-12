@@ -4749,26 +4749,67 @@ const BlogEditor = () => {
     }
   }, []);
 
+  const callAIGenerate = async (body: any) => {
+    const response = await fetch("/api/pirateCOS/ai/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      const errText = await response.text();
+      let errMsg = "Failed to complete AI request";
+      try {
+        const errJson = JSON.parse(errText);
+        errMsg = errJson.error || errMsg;
+      } catch {}
+      return { success: false, error: errMsg };
+    }
+    const data = await response.json();
+    if (data.success && data.requiresClientPuter) {
+      const { puter } = await import("@heyputer/puter.js");
+      const chatResponse = await puter.ai.chat(data.systemInstructions, { model: body.model });
+      let text = chatResponse.message?.content ? String(chatResponse.message.content) : String(chatResponse);
+      text = text.trim();
+      if (text.startsWith("```json")) {
+        text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+      } else if (text.startsWith("```")) {
+        text = text.replace(/^```/, "").replace(/```$/, "").trim();
+      }
+      if (body.action === "titles" || body.action === "tags" || body.action === "seo-analysis") {
+        try {
+          return { success: true, data: JSON.parse(text) };
+        } catch {
+          if (body.action === "titles" || body.action === "tags") {
+            const fallbackItems = text
+              .split(/[\n,;]+/)
+              .map((t) => t.replace(/^\d+\.\s*/, "").replace(/[\[\]"']/g, "").trim())
+              .filter((t) => t.length > 0)
+              .slice(0, 8);
+            return { success: true, data: fallbackItems };
+          }
+          return { success: false, error: "Puter AI failed to return a valid JSON response." };
+        }
+      }
+      return { success: true, data: text };
+    }
+    return data;
+  };
+
   const generateTitleSuggestions = async () => {
     setIsOptimizingTitle(true);
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "titles",
-          title,
-          content: titleInstructions.trim()
-            ? `${textContext}\n\nCustom Instructions:\n${titleInstructions.trim()}`
-            : textContext,
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const data = await callAIGenerate({
+        action: "titles",
+        title,
+        content: titleInstructions.trim()
+          ? `${textContext}\n\nCustom Instructions:\n${titleInstructions.trim()}`
+          : textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to generate titles.");
       setTitleSuggestions(data.data);
     } catch (err: any) {
@@ -4784,21 +4825,16 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textToSummarize = plainText.trim() || title || "Untitled Post";
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "excerpt",
-          title,
-          content: excerptInstructions.trim()
-            ? `${textToSummarize}\n\nCustom Instructions:\n${excerptInstructions.trim()}`
-            : textToSummarize,
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const data = await callAIGenerate({
+        action: "excerpt",
+        title,
+        content: excerptInstructions.trim()
+          ? `${textToSummarize}\n\nCustom Instructions:\n${excerptInstructions.trim()}`
+          : textToSummarize,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to generate excerpt.");
       setSuggestedExcerpt(data.data);
     } catch (err: any) {
@@ -4814,19 +4850,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "tags",
-          title,
-          content: textContext,
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const data = await callAIGenerate({
+        action: "tags",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to generate tags.");
       setSuggestedTags(data.data);
     } catch (err: any) {
@@ -4841,19 +4872,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "focusKeyword",
-          title,
-          content: textContext,
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const data = await callAIGenerate({
+        action: "focusKeyword",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to suggest focus keyword.");
       setSeoData((prev) => ({ ...prev, focusKeyword: data.data }));
     } catch (err: any) {
@@ -4869,19 +4895,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "metaTitle",
-          title,
-          content: textContext,
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const data = await callAIGenerate({
+        action: "metaTitle",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to suggest meta title.");
       setSuggestedMetaTitle(data.data);
     } catch (err: any) {
@@ -4897,19 +4918,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "metaDescription",
-          title,
-          content: textContext,
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const data = await callAIGenerate({
+        action: "metaDescription",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to suggest meta description.");
       setSuggestedMetaDescription(data.data);
     } catch (err: any) {
@@ -4938,21 +4954,16 @@ const BlogEditor = () => {
         .replace(/\s+/g, " ")
         .trim();
 
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: apiAction,
-          title,
-          content: plainTextContent.slice(0, 15000),
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const result = await callAIGenerate({
+        action: apiAction,
+        title,
+        content: plainTextContent.slice(0, 15000),
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const result = await response.json();
 
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         throw new Error(result.error || "Failed to complete AI request");
       }
 
