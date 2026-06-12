@@ -6,16 +6,54 @@
 
 ---
 
+## Fix Status (as of June 12, 2026)
+
+| ID | Finding | Status |
+|---|---|---|
+| C1 | IDOR: version restore writes to any tenant's post | ❌ **OPEN — Critical** |
+| C2 | IDOR: version history readable across tenants | ❌ **OPEN — Critical** |
+| C3 | Forgeable JWTs via hardcoded secret fallback | ✅ **FIXED** — `auth.ts` already has fail-fast; `org/convert/route.ts` fixed in hardening batch |
+| C4 | Stripe webhook signature verification bypass | ✅ **FIXED** — bypass path removed, always returns 503 without valid secret |
+| C5 | Shared "UI Pirate" workspace breaks tenant isolation for Teams | 🔵 **Phase 7.1** — Workspace gains `tenantId` in Phase 7.1 |
+| H1 | Regex injection / ReDoS in posts search | ✅ **FIXED** — `escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")` already in `posts/route.ts` |
+| H2 | No rate limiting on login | ❌ **OPEN** |
+| H3 | JWT also returned in response body | ❌ **OPEN** |
+| H4 | Unrestricted file upload (no MIME/size/folder) | ❌ **OPEN** |
+| H5 | Free Pro upgrade via checkout simulation fallback | ❌ **OPEN** |
+| H6 | Internal error messages leaked to clients | ❌ **OPEN** |
+| M1 | Weak password policy (6-char minimum) | ❌ **OPEN** |
+| M2 | Login JWT payload missing `accountType`/`orgRole` | ❌ **OPEN** — Phase 7.1 aligns this |
+| M3 | 30-day JWT with no revocation list | ❌ **OPEN** (low urgency — DB `isActive` check mitigates) |
+| M4 | `http://` hardcoded in billing redirect URLs | ❌ **OPEN** |
+| M5 | PII in server logs (emails, credit balances) | ❌ **OPEN** |
+| M6 | Overly strict email regex in `Admin.ts` | ❌ **OPEN** |
+| L1 | `verifyApiKey` O(n) scan on every request | ❌ **OPEN** |
+| L2 | No CSRF tokens | 🟡 Mitigated by `sameSite: lax` |
+| L3 | `role` enum enforced nowhere server-side | 🔵 **Phase 7.1** supersedes this |
+| L4 | No `expiresAt` on API keys | ❌ **OPEN** |
+
+**Priority fix order:**
+1. **C1, C2** — Add `tenantId` filter to `version-tracker.ts` `restoreVersion()` and `getVersionHistory()` (~30 min)
+2. **H3** — Remove `token` from login/register response bodies (~5 min)
+3. **H4** — Add MIME allowlist + 10MB size cap + `tenantId` folder prefix to upload route (~1 hr)
+4. **H5** — Gate checkout simulation behind `NODE_ENV !== "production"` (~5 min)
+5. **H2** — Add per-IP + per-email rate limiting to login (~2 hrs)
+6. **H6** — Replace raw `error.message` with generic messages at catch boundaries (~1 hr)
+
+---
+
 ## Severity Summary
 
-| Severity | Count | IDs |
-|---|---|---|
-| 🔴 Critical | 5 | C1–C5 |
-| 🟠 High | 6 | H1–H6 |
-| 🟡 Medium | 6 | M1–M6 |
-| 🟢 Low / Info | 4 | L1–L4 |
+| Severity | Count | Fixed | Open |
+|---|---|---|---|
+| 🔴 Critical | 5 | 2 (C3, C4) | 3 (C1, C2, C5¹) |
+| 🟠 High | 6 | 2 (H1, implicitly) | 4 (H2-H6 minus H1) |
+| 🟡 Medium | 6 | 0 | 6 (M1–M6) |
+| 🟢 Low / Info | 4 | 0 | 4 (L1–L4) |
 
-**Fix before anything else:** C1, C2, C3 (cross-tenant data access + token forgery). All are small, surgical fixes.
+¹ C5 is deferred to Phase 7.1 by design.
+
+**Fix before anything else:** C1, C2 (active cross-tenant read/write — 2 query-filter changes, ~30 min).
 
 ---
 
