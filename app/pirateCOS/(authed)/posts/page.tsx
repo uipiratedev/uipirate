@@ -25,11 +25,13 @@ interface Blog {
   totalViews?: number;
   botViews?: number;
   duplicateViews?: number;
-  postType?: "blog" | "tutorial" | "case-study" | "community-insight";
+  postType?: string;
   author: {
     name: string;
   };
 }
+
+import { POST_TYPE_CONFIGS } from "@/lib/pirateCOS/postTypeConfig";
 
 export default function AdminBlogsPage() {
   const isSubdomain =
@@ -44,15 +46,23 @@ export default function AdminBlogsPage() {
   const [filterStatus, setFilterStatus] = useState<
     "all" | "published" | "draft"
   >("all");
-  const [filterType, setFilterType] = useState<
-    "all" | "blog" | "tutorial" | "case-study" | "community-insight"
-  >("all");
+  const [filterType, setFilterType] = useState<string>("all");
+  const [filterTeam, setFilterTeam] = useState<string>("all");
+  const [teams, setTeams] = useState<Array<{ _id: string; name: string }>>([]);
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const limit = 10;
 
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
   const [typeDropdownOpen, setTypeDropdownOpen] = useState(false);
+  const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
 
   const statusRef = useRef<HTMLDivElement>(null);
   const typeRef = useRef<HTMLDivElement>(null);
+  const teamRef = useRef<HTMLDivElement>(null);
 
   useAuth(true); // Require authentication
 
@@ -67,6 +77,9 @@ export default function AdminBlogsPage() {
       if (typeRef.current && !typeRef.current.contains(event.target as Node)) {
         setTypeDropdownOpen(false);
       }
+      if (teamRef.current && !teamRef.current.contains(event.target as Node)) {
+        setTeamDropdownOpen(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -76,33 +89,72 @@ export default function AdminBlogsPage() {
     };
   }, []);
 
+  const fetchTeams = async () => {
+    try {
+      const response = await fetch("/api/pirateCOS/teams");
+      const data = await response.json();
+      if (data.success && data.data && data.data.teams) {
+        setTeams(data.data.teams);
+      }
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeams();
+  }, []);
+
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 350);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterStatus, filterType, filterTeam, debouncedSearch]);
+
   useEffect(() => {
     fetchBlogs();
-  }, [filterStatus, filterType]);
+  }, [currentPage, filterStatus, filterType, filterTeam, debouncedSearch]);
 
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      let url = "/api/pirateCOS/posts?limit=100";
-
-      if (filterStatus === "published") {
-        url += "&published=true";
-      } else if (filterStatus === "draft") {
-        url += "&published=false";
+      const params = new URLSearchParams();
+      params.append("page", currentPage.toString());
+      params.append("limit", limit.toString());
+      
+      if (filterStatus !== "all") {
+        params.append("status", filterStatus);
       }
-
       if (filterType !== "all") {
-        url += `&postType=${filterType}`;
+        params.append("postType", filterType);
+      }
+      if (filterTeam !== "all") {
+        params.append("teamId", filterTeam);
+      }
+      if (debouncedSearch.trim()) {
+        params.append("search", debouncedSearch.trim());
       }
 
-      const response = await fetch(url);
+      const response = await fetch(`/api/pirateCOS/posts?${params.toString()}`);
       const data = await response.json();
 
       if (data.success) {
-        setBlogs(data.data);
+        setBlogs(data.posts || data.data || []);
+        setTotalPages(data.totalPages || 1);
+        setTotalCount(data.totalCount || 0);
       }
     } catch (error) {
-      // Error fetching blogs
+      console.error("Error fetching posts:", error);
     } finally {
       setLoading(false);
     }
@@ -166,15 +218,7 @@ export default function AdminBlogsPage() {
     }
   };
 
-  const filteredBlogs = blogs.filter((blog) => {
-    const matchesSearch = blog.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesType =
-      filterType === "all" || (blog.postType || "blog") === filterType;
-
-    return matchesSearch && matchesType;
-  });
+  const filteredBlogs = blogs;
 
   const filterButtons: { label: string; value: typeof filterStatus }[] = [
     { label: "All", value: "all" },
@@ -243,7 +287,7 @@ export default function AdminBlogsPage() {
           </div>
 
           {/* Dropdowns Container */}
-          <div className="flex w-full lg:w-auto items-center gap-3">
+          <div className="flex flex-col sm:flex-row w-full lg:w-auto items-center gap-3">
             {/* Status Dropdown */}
             <div
               ref={statusRef}
@@ -255,6 +299,7 @@ export default function AdminBlogsPage() {
                 onClick={() => {
                   setStatusDropdownOpen(!statusDropdownOpen);
                   setTypeDropdownOpen(false);
+                  setTeamDropdownOpen(false);
                 }}
               >
                 <div className="flex items-center gap-1.5 overflow-hidden">
@@ -317,7 +362,7 @@ export default function AdminBlogsPage() {
             {/* Type Dropdown */}
             <div
               ref={typeRef}
-              className="relative w-full lg:w-56 flex-shrink-0"
+              className="relative w-full lg:w-48 flex-shrink-0"
             >
               <button
                 className="w-full flex items-center justify-between h-11 px-4 rounded-xl bg-black/5 hover:bg-black/[0.08] transition-all font-geist text-sm text-gray-700 font-medium focus:outline-none"
@@ -325,6 +370,7 @@ export default function AdminBlogsPage() {
                 onClick={() => {
                   setTypeDropdownOpen(!typeDropdownOpen);
                   setStatusDropdownOpen(false);
+                  setTeamDropdownOpen(false);
                 }}
               >
                 <div className="flex items-center gap-1.5 overflow-hidden">
@@ -332,16 +378,9 @@ export default function AdminBlogsPage() {
                     Type:
                   </span>
                   <span className="truncate">
-                    {[
-                      { label: "All Types", value: "all" },
-                      { label: "Blogs", value: "blog" },
-                      { label: "Tutorials", value: "tutorial" },
-                      { label: "Case Studies", value: "case-study" },
-                      {
-                        label: "Community Insights",
-                        value: "community-insight",
-                      },
-                    ].find((o) => o.value === filterType)?.label || "All Types"}
+                    {filterType === "all"
+                      ? "All Types"
+                      : POST_TYPE_CONFIGS.find((o) => o.value === filterType)?.label || "All Types"}
                   </span>
                 </div>
                 <svg
@@ -360,14 +399,25 @@ export default function AdminBlogsPage() {
               </button>
 
               {typeDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-full min-w-[220px] bg-white rounded-xl border border-black/5 shadow-lg py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  {[
-                    { label: "All Types", value: "all" },
-                    { label: "Blogs", value: "blog" },
-                    { label: "Tutorials", value: "tutorial" },
-                    { label: "Case Studies", value: "case-study" },
-                    { label: "Community Insights", value: "community-insight" },
-                  ].map(({ label, value }) => (
+                <div className="absolute right-0 top-full mt-2 w-full min-w-[200px] bg-white rounded-xl border border-black/5 shadow-lg py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150 max-h-60 overflow-y-auto">
+                  <button
+                    className={`w-full flex items-center justify-between px-4 py-2.5 text-left font-geist text-sm transition-colors ${
+                      filterType === "all"
+                        ? "text-[#FF5B04] bg-[#FF5B04]/[0.04] font-semibold"
+                        : "text-gray-600 hover:bg-black/[0.02]"
+                    }`}
+                    type="button"
+                    onClick={() => {
+                      setFilterType("all");
+                      setTypeDropdownOpen(false);
+                    }}
+                  >
+                    <span>All Types</span>
+                    {filterType === "all" && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                    )}
+                  </button>
+                  {POST_TYPE_CONFIGS.map(({ label, value }) => (
                     <button
                       key={value}
                       className={`w-full flex items-center justify-between px-4 py-2.5 text-left font-geist text-sm transition-colors ${
@@ -377,12 +427,113 @@ export default function AdminBlogsPage() {
                       }`}
                       type="button"
                       onClick={() => {
-                        setFilterType(value as any);
+                        setFilterType(value);
                         setTypeDropdownOpen(false);
                       }}
                     >
                       <span>{label}</span>
                       {filterType === value && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Team Dropdown */}
+            <div
+              ref={teamRef}
+              className="relative w-full lg:w-48 flex-shrink-0"
+            >
+              <button
+                className="w-full flex items-center justify-between h-11 px-4 rounded-xl bg-black/5 hover:bg-black/[0.08] transition-all font-geist text-sm text-gray-700 font-medium focus:outline-none"
+                type="button"
+                onClick={() => {
+                  setTeamDropdownOpen(!teamDropdownOpen);
+                  setStatusDropdownOpen(false);
+                  setTypeDropdownOpen(false);
+                }}
+              >
+                <div className="flex items-center gap-1.5 overflow-hidden">
+                  <span className="text-[10px] font-bold font-jetbrains-mono text-gray-400 uppercase tracking-wider flex-shrink-0">
+                    Team:
+                  </span>
+                  <span className="truncate">
+                    {filterTeam === "all"
+                      ? "All Teams"
+                      : filterTeam === "personal"
+                        ? "Personal"
+                        : teams.find((t) => t._id === filterTeam)?.name || "All Teams"}
+                  </span>
+                </div>
+                <svg
+                  className={`w-3.5 h-3.5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-1 ${teamDropdownOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M19 9l-7 7-7-7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              {teamDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-full min-w-[200px] bg-white rounded-xl border border-black/5 shadow-lg py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150 max-h-60 overflow-y-auto">
+                  <button
+                    className={`w-full flex items-center justify-between px-4 py-2.5 text-left font-geist text-sm transition-colors ${
+                      filterTeam === "all"
+                        ? "text-[#FF5B04] bg-[#FF5B04]/[0.04] font-semibold"
+                        : "text-gray-600 hover:bg-black/[0.02]"
+                    }`}
+                    type="button"
+                    onClick={() => {
+                      setFilterTeam("all");
+                      setTeamDropdownOpen(false);
+                    }}
+                  >
+                    <span>All Teams</span>
+                    {filterTeam === "all" && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                    )}
+                  </button>
+                  <button
+                    className={`w-full flex items-center justify-between px-4 py-2.5 text-left font-geist text-sm transition-colors ${
+                      filterTeam === "personal"
+                        ? "text-[#FF5B04] bg-[#FF5B04]/[0.04] font-semibold"
+                        : "text-gray-600 hover:bg-black/[0.02]"
+                    }`}
+                    type="button"
+                    onClick={() => {
+                      setFilterTeam("personal");
+                      setTeamDropdownOpen(false);
+                    }}
+                  >
+                    <span>Personal Posts Only</span>
+                    {filterTeam === "personal" && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                    )}
+                  </button>
+                  {teams.map((t) => (
+                    <button
+                      key={t._id}
+                      className={`w-full flex items-center justify-between px-4 py-2.5 text-left font-geist text-sm transition-colors ${
+                        filterTeam === t._id
+                          ? "text-[#FF5B04] bg-[#FF5B04]/[0.04] font-semibold"
+                          : "text-gray-600 hover:bg-black/[0.02]"
+                      }`}
+                      type="button"
+                      onClick={() => {
+                        setFilterTeam(t._id);
+                        setTeamDropdownOpen(false);
+                      }}
+                    >
+                      <span>{t.name}</span>
+                      {filterTeam === t._id && (
                         <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
                       )}
                     </button>
@@ -430,7 +581,8 @@ export default function AdminBlogsPage() {
             )}
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <>
+            <div className="overflow-x-auto">
             <table className="w-full table-auto">
               <thead>
                 <tr
@@ -499,6 +651,41 @@ export default function AdminBlogsPage() {
                               label: "Community Insight",
                               color: "#065F46",
                               bg: "#D1FAE5",
+                            },
+                            "corporate-post": {
+                              label: "Corporate / PR",
+                              color: "#1E3A8A",
+                              bg: "#DBEAF8",
+                            },
+                            "product-review": {
+                              label: "Product Review",
+                              color: "#B45309",
+                              bg: "#FEF3C7",
+                            },
+                            "product-launch": {
+                              label: "Product Launch",
+                              color: "#7C2D12",
+                              bg: "#FFEDD5",
+                            },
+                            listicle: {
+                              label: "Listicle",
+                              color: "#BE185D",
+                              bg: "#FCE7F3",
+                            },
+                            comparison: {
+                              label: "Comparison",
+                              color: "#4D7C0F",
+                              bg: "#ECFDF5",
+                            },
+                            newsletter: {
+                              label: "Newsletter",
+                              color: "#4338CA",
+                              bg: "#E0E7FF",
+                            },
+                            "social-post": {
+                              label: "Social Post",
+                              color: "#0D9488",
+                              bg: "#CCFBF1",
                             },
                           };
                           const t = typeMap[type];
@@ -619,6 +806,60 @@ export default function AdminBlogsPage() {
               </tbody>
             </table>
           </div>
+          
+          {/* Pagination Footer */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-6 py-4 border-t border-black/5 bg-[#FAFAF9] font-geist">
+              <div className="text-xs text-gray-500">
+                Showing <span className="font-semibold">{(currentPage - 1) * limit + 1}</span> to{" "}
+                <span className="font-semibold">
+                  {Math.min(currentPage * limit, totalCount)}
+                </span>{" "}
+                of <span className="font-semibold">{totalCount}</span> posts
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Button
+                  className="h-8 px-3 rounded-lg text-xs font-medium bg-black/5 hover:bg-black/10 text-gray-600 transition-colors focus:outline-none"
+                  size="sm"
+                  variant="flat"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                >
+                  Previous
+                </Button>
+                
+                {Array.from({ length: totalPages }).map((_, index) => {
+                  const pageNum = index + 1;
+                  const isCurrent = pageNum === currentPage;
+                  return (
+                    <button
+                      key={pageNum}
+                      className={`w-8 h-8 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center focus:outline-none ${
+                        isCurrent
+                          ? "text-white"
+                          : "text-gray-600 bg-black/5 hover:bg-black/10"
+                      }`}
+                      style={isCurrent ? { background: "#FF5B04" } : undefined}
+                      onClick={() => setCurrentPage(pageNum)}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+
+                <Button
+                  className="h-8 px-3 rounded-lg text-xs font-medium bg-black/5 hover:bg-black/10 text-gray-600 transition-colors focus:outline-none"
+                  size="sm"
+                  variant="flat"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
+          </>
         )}
       </div>
     </div>
