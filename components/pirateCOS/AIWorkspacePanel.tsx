@@ -51,6 +51,12 @@ interface AIWorkspacePanelProps {
   // SEO focus keyword sync
   seoFocusKeyword?: string;
   onSetFocusKeyword?: (kw: string) => void;
+
+  // Hoisted model selector settings
+  selectedEngine?: AIEngine;
+  selectedModel?: string;
+  onEngineChange?: (engine: AIEngine) => void;
+  onModelChange?: (model: string) => void;
 }
 
 const PANEL_DESCRIPTIONS: Record<string, string> = {
@@ -435,6 +441,10 @@ export default function AIWorkspacePanel({
   selectedTransformFormat = null,
   setSelectedTransformFormat,
   postTitle = "",
+  selectedEngine: propEngine,
+  selectedModel: propModel,
+  onEngineChange: propOnEngineChange,
+  onModelChange: propOnModelChange,
 }: AIWorkspacePanelProps) {
   const { user } = useAuth();
   const isSubdomain =
@@ -505,8 +515,13 @@ export default function AIWorkspacePanel({
 
   // View state & AI engine/model settings
   const [activeView, setActiveView] = useState<"chat" | "history" | "snippets">("chat");
-  const [selectedEngine, setSelectedEngine] = useState<AIEngine>("gemini");
-  const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash");
+  const [localEngine, setLocalEngine] = useState<AIEngine>("gemini");
+  const [localModel, setLocalModel] = useState("gemini-2.0-flash-exp");
+
+  const selectedEngine = propEngine ?? localEngine;
+  const selectedModel = propModel ?? localModel;
+  const setSelectedEngine = propOnEngineChange ?? setLocalEngine;
+  const setSelectedModel = propOnModelChange ?? setLocalModel;
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [helpTab, setHelpTab] = useState<string | null>(null);

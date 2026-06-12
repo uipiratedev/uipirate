@@ -5101,6 +5101,8 @@ const BlogEditPage = () => {
             ? `${textContext}\n\nCustom Instructions:\n${titleInstructions.trim()}`
             : textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -5129,6 +5131,8 @@ const BlogEditPage = () => {
             ? `${textToSummarize}\n\nCustom Instructions:\n${excerptInstructions.trim()}`
             : textToSummarize,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -5155,6 +5159,8 @@ const BlogEditPage = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -5180,6 +5186,8 @@ const BlogEditPage = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -5206,6 +5214,8 @@ const BlogEditPage = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -5232,6 +5242,8 @@ const BlogEditPage = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -6817,6 +6829,10 @@ const BlogEditPage = () => {
               onUpdateRepurposedOutputs={setRepurposedOutputs}
               selectedTransformFormat={selectedTransformFormat}
               setSelectedTransformFormat={setSelectedTransformFormat}
+              selectedEngine={seoEngine}
+              selectedModel={seoModel}
+              onEngineChange={setSeoEngine}
+              onModelChange={setSeoModel}
             />
           </>
         )}

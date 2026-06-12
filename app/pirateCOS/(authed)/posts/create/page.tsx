@@ -4764,6 +4764,8 @@ const BlogEditor = () => {
             ? `${textContext}\n\nCustom Instructions:\n${titleInstructions.trim()}`
             : textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -4792,6 +4794,8 @@ const BlogEditor = () => {
             ? `${textToSummarize}\n\nCustom Instructions:\n${excerptInstructions.trim()}`
             : textToSummarize,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -4818,6 +4822,8 @@ const BlogEditor = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -4843,6 +4849,8 @@ const BlogEditor = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -4869,6 +4877,8 @@ const BlogEditor = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -4895,6 +4905,8 @@ const BlogEditor = () => {
           title,
           content: textContext,
           postType,
+          engine: seoEngine,
+          model: seoModel,
         }),
       });
       const data = await response.json();
@@ -6908,6 +6920,10 @@ const BlogEditor = () => {
             onUpdateRepurposedOutputs={setRepurposedOutputs}
             selectedTransformFormat={selectedTransformFormat}
             setSelectedTransformFormat={setSelectedTransformFormat}
+            selectedEngine={seoEngine}
+            selectedModel={seoModel}
+            onEngineChange={setSeoEngine}
+            onModelChange={setSeoModel}
           />
         </>
       )}
