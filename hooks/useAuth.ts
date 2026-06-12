@@ -8,9 +8,12 @@ interface User {
   name: string;
   email: string;
   role: string;
-  /** The tenant boundary — equals the Admin._id string */
+  /** The tenant boundary — equals the Admin._id string or parentOrgId for members */
   tenantId: string;
   plan: "free" | "starter" | "pro" | "enterprise";
+  accountType: "individual" | "organization";
+  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
+  avatar?: string;
 }
 
 export function useAuth(requireAuth: boolean = false) {

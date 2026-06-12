@@ -16,6 +16,13 @@ export async function GET() {
     );
   }
 
+  if (user.orgRole !== "individual" && user.orgRole !== "org-admin") {
+    return NextResponse.json(
+      { success: false, error: "Forbidden" },
+      { status: 403 },
+    );
+  }
+
   await dbConnect();
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
@@ -96,6 +103,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       { success: false, error: "Unauthorized" },
       { status: 401 },
+    );
+  }
+
+  if (user.orgRole !== "individual" && user.orgRole !== "org-admin") {
+    return NextResponse.json(
+      { success: false, error: "Forbidden" },
+      { status: 403 },
     );
   }
 

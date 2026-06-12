@@ -106,11 +106,18 @@ function SidebarContent({
   const { logout, user } = useAuth();
 
   const isActive = (href: string) => {
-    if (href === getHref("/dashboard") || href === getHref("/posts")) {
+    if (href === getHref("/dashboard") || href === getHref("/posts") || href === getHref("/profile")) {
       return pathname === href;
     }
     return pathname.startsWith(href);
   };
+
+  const filteredNavItems = navItems.filter(({ label }) => {
+    if (label === "Teams") {
+      return user?.accountType === "organization";
+    }
+    return true;
+  });
 
   return (
     <div
@@ -179,7 +186,7 @@ function SidebarContent({
         >
           Menu
         </p>
-        {navItems.map(({ label, href, Icon }) => {
+        {filteredNavItems.map(({ label, href, Icon }) => {
           const active = isActive(href);
           return (
             <NavLink key={href} active={active} href={href} onClick={onClose}>
@@ -275,30 +282,87 @@ function SidebarContent({
         })()}
 
         {/* Plan badge / user info */}
-        {user && (
-          <div className="flex items-center gap-3 px-3 py-2 mt-1">
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium font-geist truncate" style={{ color: "rgba(255,255,255,0.55)" }}>
-                {user.name}
-              </p>
-              <p className="text-[9px] font-jetbrains-mono uppercase tracking-widest truncate" style={{ color: "rgba(255,255,255,0.25)" }}>
-                {user.email}
-              </p>
-            </div>
-            <span
-              className="flex-shrink-0 text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded uppercase tracking-wider"
-              style={
-                user.plan === "pro" || user.plan === "enterprise"
-                  ? { background: "rgba(255,91,4,0.2)", color: "#FF5B04" }
-                  : user.plan === "starter"
-                    ? { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }
-                    : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.35)" }
-              }
+        {user && (() => {
+          const isProfileActive = pathname === getHref("/profile");
+          return (
+            <Link
+              href={getHref("/profile")}
+              onClick={onClose}
+              className="flex items-center gap-3 px-3 py-2 mt-1 rounded-lg transition-all duration-150 cursor-pointer group text-left w-full"
+              style={{
+                background: isProfileActive ? "#FF5B04" : "transparent",
+              }}
+              onMouseEnter={(e) => {
+                if (!isProfileActive) {
+                  (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isProfileActive) {
+                  (e.currentTarget as HTMLElement).style.background = "transparent";
+                }
+              }}
             >
-              {PLAN_LABEL[user.plan] ?? "Free"}
-            </span>
-          </div>
-        )}
+              {/* User Avatar */}
+              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-white/10 flex items-center justify-center border border-white/10 font-bold text-[10px] text-white">
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span>
+                    {user.name
+                      ? user.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase()
+                          .slice(0, 2)
+                      : "?"}
+                  </span>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p 
+                  className="text-xs font-medium font-geist truncate" 
+                  style={{ color: isProfileActive ? "#fff" : "rgba(255,255,255,0.55)" }}
+                >
+                  {user.name}
+                </p>
+                <p 
+                  className="text-[9px] font-jetbrains-mono uppercase tracking-widest truncate" 
+                  style={{ color: isProfileActive ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.25)" }}
+                >
+                  {user.email}
+                </p>
+                <p 
+                  className="text-[9px] font-geist truncate mt-0.5" 
+                  style={{ color: isProfileActive ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.4)" }}
+                >
+                  {user.accountType === "organization"
+                    ? `Org · ${user.orgRole === "org-admin" ? "Owner" : user.orgRole}`
+                    : "Individual"}
+                </p>
+              </div>
+              <span
+                className="flex-shrink-0 text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded uppercase tracking-wider font-semibold"
+                style={
+                  isProfileActive
+                    ? { background: "rgba(255,255,255,0.2)", color: "#fff" }
+                    : user.plan === "pro" || user.plan === "enterprise"
+                      ? { background: "rgba(255,91,4,0.2)", color: "#FF5B04" }
+                      : user.plan === "starter"
+                        ? { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }
+                        : { background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.35)" }
+                }
+              >
+                {PLAN_LABEL[user.plan] ?? "Free"}
+              </span>
+            </Link>
+          );
+        })()}
 
         <Link
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"

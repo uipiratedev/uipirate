@@ -5,8 +5,15 @@ import { cookies } from "next/headers";
 import dbConnect from "@/lib/mongodb";
 import Admin from "@/models/pirateCOS/Admin";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+const JWT_SECRET = process.env.JWT_SECRET as string;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not set");
+}
 const JWT_EXPIRES_IN = "30d"; // 30 days
+
+const COMMON_PASSWORDS = new Set([
+  "password", "12345678", "password123", "piratecos", "qwertyui", "admin123", "welcome123", "123456789"
+]);
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,11 +29,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (password.length < 6) {
+    if (password.length < 8) {
       return NextResponse.json(
         {
           success: false,
-          message: "Password must be at least 6 characters long",
+          message: "Password must be at least 8 characters long",
+        },
+        { status: 400 },
+      );
+    }
+
+    if (COMMON_PASSWORDS.has(password.toLowerCase().trim())) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Password is too common. Please choose a more secure password.",
         },
         { status: 400 },
       );
@@ -74,6 +91,9 @@ export async function POST(request: NextRequest) {
         role: admin.role,
         tenantId: String(admin._id), // each Admin is their own tenant
         plan: admin.plan || "free",
+        accountType: admin.accountType || "individual",
+        orgRole: admin.orgRole || "individual",
+        avatar: admin.avatar || "",
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN },
@@ -99,8 +119,12 @@ export async function POST(request: NextRequest) {
         name: admin.name,
         email: admin.email,
         role: admin.role,
+        tenantId: String(admin._id),
+        plan: admin.plan || "free",
+        accountType: admin.accountType || "individual",
+        orgRole: admin.orgRole || "individual",
+        avatar: admin.avatar || "",
       },
-      token,
     });
   } catch (error: any) {
     console.error("Registration error:", error);
@@ -108,7 +132,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        message: error.message || "Internal server error during registration",
+        message: "Internal server error during registration",
       },
       { status: 500 },
     );

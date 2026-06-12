@@ -20,6 +20,13 @@ export async function GET() {
     );
   }
 
+  if (user.orgRole !== "individual" && user.orgRole !== "org-admin") {
+    return NextResponse.json(
+      { success: false, error: "Forbidden" },
+      { status: 403 },
+    );
+  }
+
   await dbConnect();
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
   const cfg = await AIConfig.findOne({ tenantId: tenantOid }).lean();
@@ -29,10 +36,14 @@ export async function GET() {
   const geminiEnv = !!process.env.GEMINI_API_KEY;
   const mistralEnv = !!process.env.MISTRAL_API_KEY;
   const anthropicEnv = !!process.env.ANTHROPIC_API_KEY;
+  const grokEnv = !!(process.env.XAI_API_KEY || process.env.GROK_API_KEY);
+  const openrouterEnv = !!process.env.OPENROUTER_API_KEY;
   const openaiDb = !!cfg?.openaiKeyEncrypted;
   const geminiDb = !!cfg?.geminiKeyEncrypted;
   const mistralDb = !!cfg?.mistralKeyEncrypted;
   const anthropicDb = !!cfg?.anthropicKeyEncrypted;
+  const grokDb = !!cfg?.grokKeyEncrypted;
+  const openrouterDb = !!cfg?.openrouterKeyEncrypted;
 
   return NextResponse.json({
     success: true,
@@ -41,10 +52,21 @@ export async function GET() {
     gemini: geminiEnv || geminiDb,
     mistral: mistralEnv || mistralDb,
     anthropic: anthropicEnv || anthropicDb,
+    grok: grokEnv || grokDb,
+    openrouter: openrouterEnv || openrouterDb,
     openaiSource: openaiEnv ? "env" : openaiDb ? "db" : null,
     geminiSource: geminiEnv ? "env" : geminiDb ? "db" : null,
     mistralSource: mistralEnv ? "env" : mistralDb ? "db" : null,
     anthropicSource: anthropicEnv ? "env" : anthropicDb ? "db" : null,
+    grokSource: grokEnv ? "env" : grokDb ? "db" : null,
+    openrouterSource: openrouterEnv ? "env" : openrouterDb ? "db" : null,
+    openaiEnabled: cfg ? (cfg.openaiEnabled ?? true) : true,
+    geminiEnabled: cfg ? (cfg.geminiEnabled ?? true) : true,
+    mistralEnabled: cfg ? (cfg.mistralEnabled ?? true) : true,
+    anthropicEnabled: cfg ? (cfg.anthropicEnabled ?? true) : true,
+    grokEnabled: cfg ? (cfg.grokEnabled ?? true) : true,
+    openrouterEnabled: cfg ? (cfg.openrouterEnabled ?? true) : true,
+    puterEnabled: cfg ? (cfg.puterEnabled ?? true) : true,
     defaultEngine: cfg?.defaultEngine ?? "puter",
     defaultModel: cfg?.defaultModel ?? "gpt-4o-mini",
   });
@@ -63,13 +85,29 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  if (user.orgRole !== "individual" && user.orgRole !== "org-admin") {
+    return NextResponse.json(
+      { success: false, error: "Forbidden" },
+      { status: 403 },
+    );
+  }
+
   const {
     openaiKey,
     geminiKey,
     mistralKey,
     anthropicKey,
+    grokKey,
+    openrouterKey,
     defaultEngine,
     defaultModel,
+    openaiEnabled,
+    geminiEnabled,
+    mistralEnabled,
+    anthropicEnabled,
+    grokEnabled,
+    openrouterEnabled,
+    puterEnabled,
   } = await req.json();
 
   if (!process.env.AI_ENCRYPTION_KEY) {
@@ -109,8 +147,26 @@ export async function POST(req: NextRequest) {
       ? encrypt(anthropicKey.trim())
       : undefined;
   }
+  if (typeof grokKey === "string") {
+    cfg.grokKeyEncrypted = grokKey.trim()
+      ? encrypt(grokKey.trim())
+      : undefined;
+  }
+  if (typeof openrouterKey === "string") {
+    cfg.openrouterKeyEncrypted = openrouterKey.trim()
+      ? encrypt(openrouterKey.trim())
+      : undefined;
+  }
   if (defaultEngine) cfg.defaultEngine = defaultEngine;
   if (defaultModel) cfg.defaultModel = defaultModel;
+
+  if (typeof openaiEnabled === "boolean") cfg.openaiEnabled = openaiEnabled;
+  if (typeof geminiEnabled === "boolean") cfg.geminiEnabled = geminiEnabled;
+  if (typeof mistralEnabled === "boolean") cfg.mistralEnabled = mistralEnabled;
+  if (typeof anthropicEnabled === "boolean") cfg.anthropicEnabled = anthropicEnabled;
+  if (typeof grokEnabled === "boolean") cfg.grokEnabled = grokEnabled;
+  if (typeof openrouterEnabled === "boolean") cfg.openrouterEnabled = openrouterEnabled;
+  if (typeof puterEnabled === "boolean") cfg.puterEnabled = puterEnabled;
 
   await cfg.save();
 

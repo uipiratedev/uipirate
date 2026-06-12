@@ -28,10 +28,10 @@ export async function GET(
 
     const { postId } = params;
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get("limit") || "50");
+    const limit = Math.min(Math.max(parseInt(searchParams.get("limit") || "50"), 1), 100);
 
     // Get version history
-    const history = await getVersionHistory(postId, limit);
+    const history = await getVersionHistory(postId, user.tenantId.toString(), limit);
 
     return NextResponse.json({
       success: true,
@@ -44,7 +44,7 @@ export async function GET(
   } catch (error: any) {
     console.error("Content History API error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to fetch content history" },
+      { success: false, error: "Failed to fetch content history" },
       { status: 500 }
     );
   }

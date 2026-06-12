@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ChatIdeaSuggestion } from "@/lib/pirateCOS/postTypeConfig";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 
 // Phase 4F: Parse change summary from AI response
 function parseChangeSummary(content: string): { summary: string | null; cleanContent: string } {
@@ -13,6 +14,46 @@ function parseChangeSummary(content: string): { summary: string | null; cleanCon
     };
   }
   return { summary: null, cleanContent: content };
+}
+
+// Extract content from Puter SDK chat response robustly
+function extractPuterContent(chatResponse: any): string {
+  if (!chatResponse) return "";
+  if (typeof chatResponse === "string") return chatResponse;
+
+  const message = chatResponse.message;
+  if (message) {
+    if (typeof message === "string") return message;
+    const content = message.content;
+    if (content) {
+      if (typeof content === "string") return content;
+      if (Array.isArray(content)) {
+        const textParts = content
+          .map((part) => {
+            if (typeof part === "string") return part;
+            if (part && typeof part === "object" && typeof part.text === "string") {
+              return part.text;
+            }
+            return "";
+          })
+          .filter(Boolean);
+        if (textParts.length > 0) return textParts.join("\n");
+      }
+      if (typeof content === "object" && typeof content.text === "string") {
+        return content.text;
+      }
+    }
+  }
+
+  if (typeof chatResponse.content === "string") return chatResponse.content;
+  if (typeof chatResponse.text === "string") return chatResponse.text;
+  if (typeof chatResponse.result === "string") return chatResponse.result;
+
+  try {
+    return JSON.stringify(chatResponse);
+  } catch {
+    return String(chatResponse);
+  }
 }
 
 export interface AIWorkspaceMessage {
@@ -302,13 +343,28 @@ export function useAIWorkspaceSession(
         timeoutsRef.current = [];
         setThinkingStatus("");
 
-        const responseData = data.output;
+        if (!data.output && !data.requiresClientPuter) {
+          throw new Error("AI response missing output field.");
+        }
+
+        let responseData: string = data.output || "";
+        let finalEditIntent = data.editIntent;
+        let finalSuggestedApplyMode = data.suggestedApplyMode;
+        let generationId: string = data.generationId || Math.random().toString(36).substring(7);
+
+        if (data.requiresClientPuter) {
+          const { puter } = await import("@heyputer/puter.js");
+          const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
+          responseData = extractPuterContent(chatResponse);
+          finalEditIntent = data.editIntent || "rewrite";
+          finalSuggestedApplyMode = data.suggestedApplyMode || "replace";
+        }
 
         // Phase 4F: Parse change summary from response
         const { summary, cleanContent } = parseChangeSummary(responseData);
 
         const genRecord: GenerationRecord = {
-          id: data.generationId,
+          id: generationId,
           prompt: content,
           output: cleanContent, // Store clean content without summary
           mode: "chat",
@@ -322,11 +378,11 @@ export function useAIWorkspaceSession(
           role: "assistant",
           content: "",
           timestamp: new Date(),
-          associatedGenerationId: data.generationId,
+          associatedGenerationId: generationId,
           selectedTextContext: selectedText,
           // Phase 4F: Add precision editing metadata
-          editIntent: data.editIntent,
-          suggestedApplyMode: data.suggestedApplyMode,
+          editIntent: finalEditIntent,
+          suggestedApplyMode: finalSuggestedApplyMode,
           changeSummary: summary || undefined,
         };
 
@@ -346,23 +402,18 @@ export function useAIWorkspaceSession(
               role: "assistant",
               content: completedText,
               timestamp: new Date(),
-              associatedGenerationId: data.generationId,
+              associatedGenerationId: generationId,
               selectedTextContext: selectedText,
-              // Phase 4F: Add precision editing metadata
-              editIntent: data.editIntent,
-              suggestedApplyMode: data.suggestedApplyMode,
+              editIntent: finalEditIntent,
+              suggestedApplyMode: finalSuggestedApplyMode,
               changeSummary: summary || undefined,
             };
-
-            setMessages((prev) => {
-              const updated = prev.map((m) => (m.id === assistantMsgId ? finalAssistantMsg : m));
-              setGenerations((prevGens) => {
-                const updatedGens = [...prevGens, genRecord];
-                saveSessionToPost(updated, updatedGens);
-                return updatedGens;
-              });
-              return updated;
-            });
+            // Compute final state directly — avoids nested setState anti-pattern
+            const finalMsgs = [...updatedMessages, finalAssistantMsg];
+            const finalGens = [...generations, genRecord];
+            setMessages(finalMsgs);
+            setGenerations(finalGens);
+            saveSessionToPost(finalMsgs, finalGens);
             setLoading(false);
           }
         );
@@ -372,11 +423,11 @@ export function useAIWorkspaceSession(
           console.log("Chat request aborted by user.");
           return;
         }
-        setError(err.message || "An error occurred.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred."));
         setLoading(false);
       }
     },
-    [messages, generations, postId, loading, saveSessionToPost, stopGeneration, startTypewriterStream]
+    [messages, generations, postId, loading, activeBrief, activeKeywords, saveSessionToPost, stopGeneration, startTypewriterStream]
   );
 
   // Trigger quick actions (improve, shorten, expand, etc.)
@@ -432,11 +483,24 @@ export function useAIWorkspaceSession(
           throw new Error(data.error || "Failed to trigger quick action.");
         }
 
+        let responseData = data.output;
+        let finalEditIntent = data.editIntent;
+        let finalSuggestedApplyMode = data.suggestedApplyMode;
+        let generationId = data.generationId || Math.random().toString(36).substring(7);
+
+        if (data.requiresClientPuter) {
+          const { puter } = await import("@heyputer/puter.js");
+          const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
+          responseData = extractPuterContent(chatResponse);
+          finalEditIntent = data.editIntent || "rewrite";
+          finalSuggestedApplyMode = data.suggestedApplyMode || "replace";
+        }
+
         // Phase 4F: Parse change summary from response
-        const { summary, cleanContent } = parseChangeSummary(data.output);
+        const { summary, cleanContent } = parseChangeSummary(responseData);
 
         const genRecord: GenerationRecord = {
-          id: data.generationId,
+          id: generationId,
           prompt: `Action: ${actionNames}`,
           output: cleanContent, // Store clean content without summary
           mode: Array.isArray(action) ? action[0] : action,
@@ -449,11 +513,11 @@ export function useAIWorkspaceSession(
           role: "assistant",
           content: cleanContent,
           timestamp: new Date(),
-          associatedGenerationId: data.generationId,
+          associatedGenerationId: generationId,
           selectedTextContext: selectedText,
           // Phase 4F: Add precision editing metadata
-          editIntent: data.editIntent,
-          suggestedApplyMode: data.suggestedApplyMode,
+          editIntent: finalEditIntent,
+          suggestedApplyMode: finalSuggestedApplyMode,
           changeSummary: summary || undefined,
         };
 
@@ -464,12 +528,12 @@ export function useAIWorkspaceSession(
         setGenerations(finalGenerations);
         saveSessionToPost(finalMessages, finalGenerations);
       } catch (err: any) {
-        setError(err.message || "An error occurred.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred."));
       } finally {
         setLoading(false);
       }
     },
-    [messages, generations, postId, loading, saveSessionToPost]
+    [messages, generations, postId, loading, activeBrief, activeKeywords, saveSessionToPost]
   );
 
   // Decoupled Rewrite Action handler (does not affect messages/chat history)
@@ -529,10 +593,17 @@ export function useAIWorkspaceSession(
         timeoutsRef.current = [];
         setThinkingStatus("");
 
-        const responseData = data.output;
+        let responseData = data.output;
+        let generationId = data.generationId || Math.random().toString(36).substring(7);
+
+        if (data.requiresClientPuter) {
+          const { puter } = await import("@heyputer/puter.js");
+          const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
+          responseData = extractPuterContent(chatResponse);
+        }
 
         const genRecord: GenerationRecord = {
-          id: data.generationId,
+          id: generationId,
           prompt: `Rewrite: ${Array.isArray(action) ? action.join(" + ") : action}`,
           output: responseData,
           mode: Array.isArray(action) ? action[0] : action,
@@ -561,11 +632,11 @@ export function useAIWorkspaceSession(
           console.log("Rewrite request aborted by user.");
           return;
         }
-        setRewriteError(err.message || "An error occurred during rewrite.");
+        setRewriteError(parseAIError(engine || "puter", 500, err.message || "An error occurred during rewrite."));
         setRewriteLoading(false);
       }
     },
-    [generations, messages, postId, rewriteLoading, saveSessionToPost, stopGeneration, startTypewriterStream]
+    [generations, messages, postId, rewriteLoading, activeBrief, activeKeywords, saveSessionToPost, stopGeneration, startTypewriterStream]
   );
 
   const clearRewriteOutput = useCallback(() => {
@@ -692,10 +763,19 @@ export function useAIWorkspaceSession(
           throw new Error(data.error || "Failed to trigger variant generation.");
         }
 
+        let responseData = data.output;
+        let generationId = data.generationId || Math.random().toString(36).substring(7);
+
+        if (data.requiresClientPuter) {
+          const { puter } = await import("@heyputer/puter.js");
+          const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
+          responseData = extractPuterContent(chatResponse);
+        }
+
         const genRecord: GenerationRecord = {
-          id: data.generationId,
+          id: generationId,
           prompt: `Variant of: ${record.prompt || record.mode}`,
-          output: data.output,
+          output: responseData,
           mode: record.mode || "chat",
           isAccepted: false,
           selectedTextContext: record.selectedTextContext,
@@ -704,9 +784,9 @@ export function useAIWorkspaceSession(
         const assistantMsg: AIWorkspaceMessage = {
           id: Math.random().toString(36).substring(7),
           role: "assistant",
-          content: data.output,
+          content: responseData,
           timestamp: new Date(),
-          associatedGenerationId: data.generationId,
+          associatedGenerationId: generationId,
           selectedTextContext: record.selectedTextContext,
         };
 
@@ -717,7 +797,7 @@ export function useAIWorkspaceSession(
         setGenerations(finalGenerations);
         saveSessionToPost(finalMessages, finalGenerations);
       } catch (err: any) {
-        setError(err.message || "An error occurred.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred."));
       } finally {
         setLoading(false);
       }
@@ -775,12 +855,31 @@ export function useAIWorkspaceSession(
           throw new Error(data.error || "Failed to load dynamic suggestions.");
         }
 
-        setDynamicSuggestions(data.suggestions || []);
+        let suggestions = data.suggestions || [];
+
+        if (data.requiresClientPuter) {
+          const { puter } = await import("@heyputer/puter.js");
+          const chatResponse = await puter.ai.chat(data.systemInstructions, { model });
+          let text = extractPuterContent(chatResponse);
+          text = text.trim();
+          if (text.startsWith("```json")) {
+            text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+          } else if (text.startsWith("```")) {
+            text = text.replace(/^```/, "").replace(/```$/, "").trim();
+          }
+          try {
+            suggestions = JSON.parse(text);
+          } catch {
+            suggestions = [];
+          }
+        }
+
+        setDynamicSuggestions(suggestions);
         setActiveBrief(brief);
         setActiveKeywords(keywords);
       } catch (err: any) {
         console.error("Failed to load dynamic suggestions:", err);
-        setError(err.message || "An error occurred while fetching suggestions.");
+        setError(parseAIError(engine || "puter", 500, err.message || "An error occurred while fetching suggestions."));
       } finally {
         setSuggestionsLoading(false);
       }
@@ -794,6 +893,10 @@ export function useAIWorkspaceSession(
     setActiveKeywords("");
   }, []);
 
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
+
   return {
     messages,
     generations,
@@ -801,6 +904,7 @@ export function useAIWorkspaceSession(
     uiPreferences,
     loading,
     error,
+    clearError,
     sendMessage,
     triggerQuickAction,
     applyGeneration,

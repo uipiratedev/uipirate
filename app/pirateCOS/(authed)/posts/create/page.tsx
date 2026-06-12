@@ -23,7 +23,7 @@ import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import Link from "@tiptap/extension-link";
 import { Button } from "@heroui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useSaveBlog } from "@/hooks/useSaveBlog";
@@ -35,8 +35,9 @@ import { SelectionHighlight } from "@/components/pirateCOS/SelectionHighlight";
 import { loadAIConfig } from "@/components/pirateCOS/AIConfigPanel";
 import { EngineModelSelector } from "@/components/pirateCOS/EngineModelSelector";
 import { AIEngine, getModelsForEngine, getDefaultModelForEngine as registryGetDefaultModel, isAIEngine } from "@/lib/pirateCOS/ai-registry";
-import RepurposingDrawer from "@/components/pirateCOS/RepurposingDrawer";
 import { useAICopilot } from "@/hooks/useAICopilot";
+import { useAIModels } from "@/hooks/useAIModels";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 import {
   ContentGoal,
   getPostTypeConfig,
@@ -53,6 +54,7 @@ import { PirateCOSEditorArea, ImageUrlModal, VideoEmbedModal, LinkModal, CustomI
 import { VideoEmbed } from "@/components/pirateCOS/editor/VideoEmbed";
 import { compressImage } from "@/utils/imageCompressor";
 import { uploadImageToCloudinary, deleteImagesFromCloudinary, extractImageUrlsFromHtml } from "@/utils/mediaUploader";
+import DOMPurify from "dompurify";
 
 
 const isEditorContentEmpty = (editor: any): boolean => {
@@ -2047,6 +2049,13 @@ const AIExcerptModal = ({
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
 
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
+
   // Sync result with initial excerpt if any
   useEffect(() => {
     if (isOpen) {
@@ -2502,6 +2511,13 @@ const AITitleModal = ({
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
+
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -3020,6 +3036,13 @@ const AITagsModal = ({
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
+
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
 
   // Sync state on open
   useEffect(() => {
@@ -3574,6 +3597,13 @@ const AICopilotModal = ({
   const [model, setModel] = useState<string>(
     () => loadAIConfig().defaultModel ?? "gpt-4o-mini",
   );
+
+  useEffect(() => {
+    const validModels = getModelsForEngine(engine);
+    if (!validModels.some((m) => m.id === model)) {
+      setModel(registryGetDefaultModel(engine));
+    }
+  }, [engine, model]);
 
   // Selection & Context states
   const [selectedText, setSelectedText] = useState("");
@@ -4203,7 +4233,7 @@ Write a comprehensive, fully detailed, and substantial piece of content. Expand 
                     <div className="h-4 bg-gray-200 rounded-md w-5/6" />
                   </div>
                 ) : (
-                  <div dangerouslySetInnerHTML={{ __html: result }} />
+                  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(result) }} />
                 )}
               </div>
             </div>
@@ -4345,6 +4375,8 @@ const PostPreviewPanel = ({
     () => injectHeadingIds(contentHtml),
     [contentHtml],
   );
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const tocContainerRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState("");
   const readTime = useMemo(
     () =>
@@ -4363,6 +4395,8 @@ const PostPreviewPanel = ({
 
   useEffect(() => {
     if (!headings.length) return;
+    const container = scrollRef.current;
+    if (!container) return;
     const handleScroll = () => {
       let current = headings[0].id;
 
@@ -4374,16 +4408,36 @@ const PostPreviewPanel = ({
       setActiveId(current);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // initialise on mount
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
   }, [headings]);
+
+  useEffect(() => {
+    if (!activeId || !tocContainerRef.current) return;
+    const activeLink = Array.from(tocContainerRef.current.querySelectorAll("a")).find(
+      (a) => a.getAttribute("href") === `#${activeId}`
+    ) as HTMLElement;
+    if (!activeLink) return;
+
+    const container = tocContainerRef.current;
+    const containerTop = container.scrollTop;
+    const containerBottom = containerTop + container.clientHeight;
+    const elemTop = activeLink.offsetTop;
+    const elemBottom = elemTop + activeLink.offsetHeight;
+
+    if (elemTop < containerTop) {
+      container.scrollTo({ top: elemTop - 12, behavior: "smooth" });
+    } else if (elemBottom > containerBottom) {
+      container.scrollTo({ top: elemBottom - container.clientHeight + 12, behavior: "smooth" });
+    }
+  }, [activeId]);
 
   const hasToc = headings.length >= 2;
 
   return (
-    <div className="flex-1 min-w-0 flex flex-col min-h-0 overflow-y-auto">
+    <div ref={scrollRef} className="flex-1 min-w-0 flex flex-col min-h-0 overflow-y-auto pr-4 lg:pr-6">
       {/* Preview toolbar */}
       <div className="flex items-center justify-between mb-3 px-1 flex-shrink-0">
         <div className="flex items-center gap-2">
@@ -4586,36 +4640,44 @@ const PostPreviewPanel = ({
             {/* Sticky TOC — pixel-identical to screens/blogsDetails/blogContents */}
             {hasToc && (
               <aside
-                className="flex-shrink-0 hidden xl:block"
+                className="flex-shrink-0 block"
                 style={{ width: 220 }}
               >
-                <div className="sticky top-24 bg-gray-50 border border-gray-100 rounded-3xl p-6">
+                <div
+                  ref={tocContainerRef}
+                  className="sticky top-3 bg-gray-50 border border-gray-100 rounded-3xl p-6 overflow-y-auto max-h-[calc(100vh-180px)] hide-scrollbar"
+                >
                   <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">
                     Contents
                   </p>
-                  <nav className="flex flex-col gap-2">
-                    {headings.map((h) => (
-                      <a
-                        key={h.id}
-                        className="text-sm transition-colors py-1 px-2 rounded-lg truncate"
-                        href={`#${h.id}`}
-                        style={{
-                          paddingLeft: h.level === 3 ? "1rem" : undefined,
-                          color: activeId === h.id ? "#FF5B04" : "#4b5563",
-                          fontWeight: activeId === h.id ? 600 : 400,
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          document.getElementById(h.id)?.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start",
-                          });
-                          setActiveId(h.id);
-                        }}
-                      >
-                        {h.text}
-                      </a>
-                    ))}
+                  <nav className="flex flex-col gap-0.5">
+                    {headings.map((h) => {
+                      const isActive = activeId === h.id;
+                      return (
+                        <a
+                          key={h.id}
+                          className="text-sm py-1.5 px-3 rounded-lg truncate transition-all duration-200"
+                          href={`#${h.id}`}
+                          style={{
+                            paddingLeft: h.level === 3 ? "1.5rem" : undefined,
+                            color: isActive ? "#FF5B04" : "#6b7280",
+                            fontWeight: isActive ? 600 : 400,
+                            background: isActive ? "rgba(255,91,4,0.08)" : "transparent",
+                            borderLeft: isActive ? "3px solid #FF5B04" : "3px solid transparent",
+                          }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            document.getElementById(h.id)?.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
+                            setActiveId(h.id);
+                          }}
+                        >
+                          {h.text}
+                        </a>
+                      );
+                    })}
                   </nav>
                 </div>
               </aside>
@@ -4668,7 +4730,6 @@ const BlogEditor = () => {
   // AI States
   const [showExcerptAIGuidelines, setShowExcerptAIGuidelines] = useState(false);
   const [activePreset, setActivePreset] = useState("");
-  const [isRepurposeDrawerOpen, setIsRepurposeDrawerOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   // Inline AI States & Helpers
@@ -4699,6 +4760,8 @@ const BlogEditor = () => {
   const [seoError, setSeoError] = useState("");
   const [seoSuccess, setSeoSuccess] = useState(false);
 
+  const { models: seoModels } = useAIModels(seoEngine);
+
   useEffect(() => {
     try {
       const config = loadAIConfig();
@@ -4719,24 +4782,118 @@ const BlogEditor = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (seoModels.length > 0 && !seoModels.some((m) => m.id === seoModel)) {
+      const defaultModel = seoModels.find((m) => m.isDefault)?.id || seoModels[0].id;
+      setSeoModel(defaultModel);
+    }
+  }, [seoEngine, seoModel, seoModels]);
+
+  const extractPuterContent = (chatResponse: any): string => {
+    if (!chatResponse) return "";
+    if (typeof chatResponse === "string") return chatResponse;
+
+    const message = chatResponse.message;
+    if (message) {
+      if (typeof message === "string") return message;
+      const content = message.content;
+      if (content) {
+        if (typeof content === "string") return content;
+        if (Array.isArray(content)) {
+          const textParts = content
+            .map((part) => {
+              if (typeof part === "string") return part;
+              if (part && typeof part === "object" && typeof part.text === "string") {
+                return part.text;
+              }
+              return "";
+            })
+            .filter(Boolean);
+          if (textParts.length > 0) return textParts.join("\n");
+        }
+        if (typeof content === "object" && typeof content.text === "string") {
+          return content.text;
+        }
+      }
+    }
+
+    if (typeof chatResponse.content === "string") return chatResponse.content;
+    if (typeof chatResponse.text === "string") return chatResponse.text;
+    if (typeof chatResponse.result === "string") return chatResponse.result;
+
+    try {
+      return JSON.stringify(chatResponse);
+    } catch {
+      return String(chatResponse);
+    }
+  };
+
+  const callAIGenerate = async (body: any) => {
+    const response = await fetch("/api/pirateCOS/ai/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) {
+      const errText = await response.text();
+      let errMsg = "Failed to complete AI request";
+      try {
+        const errJson = JSON.parse(errText);
+        errMsg = errJson.error || errMsg;
+      } catch {}
+      return { success: false, error: errMsg };
+    }
+    const data = await response.json();
+    if (data.success && data.requiresClientPuter) {
+      try {
+        const { puter } = await import("@heyputer/puter.js");
+        const chatResponse = await puter.ai.chat(data.systemInstructions, { model: body.model });
+        let text = extractPuterContent(chatResponse);
+        text = text.trim();
+        if (text.startsWith("```json")) {
+          text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+        } else if (text.startsWith("```")) {
+          text = text.replace(/^```/, "").replace(/```$/, "").trim();
+        }
+        if (body.action === "titles" || body.action === "tags" || body.action === "seo-analysis") {
+          try {
+            return { success: true, data: JSON.parse(text) };
+          } catch {
+            if (body.action === "titles" || body.action === "tags") {
+              const fallbackItems = text
+                .split(/[\n,;]+/)
+                .map((t) => t.replace(/^\d+\.\s*/, "").replace(/[\[\]"']/g, "").trim())
+                .filter((t) => t.length > 0)
+                .slice(0, 8);
+              return { success: true, data: fallbackItems };
+            }
+            return { success: false, error: "Puter AI failed to return a valid JSON response." };
+          }
+        }
+        return { success: true, data: text };
+      } catch (puterErr: any) {
+        console.error("Client-side Puter generation failed:", puterErr);
+        return { success: false, error: parseAIError("puter", 500, puterErr.message || String(puterErr)) };
+      }
+    }
+    return data;
+  };
+
   const generateTitleSuggestions = async () => {
     setIsOptimizingTitle(true);
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "titles",
-          title,
-          content: titleInstructions.trim()
-            ? `${textContext}\n\nCustom Instructions:\n${titleInstructions.trim()}`
-            : textContext,
-          postType,
-        }),
+      const data = await callAIGenerate({
+        action: "titles",
+        title,
+        content: titleInstructions.trim()
+          ? `${textContext}\n\nCustom Instructions:\n${titleInstructions.trim()}`
+          : textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to generate titles.");
       setTitleSuggestions(data.data);
     } catch (err: any) {
@@ -4752,19 +4909,16 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textToSummarize = plainText.trim() || title || "Untitled Post";
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "excerpt",
-          title,
-          content: excerptInstructions.trim()
-            ? `${textToSummarize}\n\nCustom Instructions:\n${excerptInstructions.trim()}`
-            : textToSummarize,
-          postType,
-        }),
+      const data = await callAIGenerate({
+        action: "excerpt",
+        title,
+        content: excerptInstructions.trim()
+          ? `${textToSummarize}\n\nCustom Instructions:\n${excerptInstructions.trim()}`
+          : textToSummarize,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to generate excerpt.");
       setSuggestedExcerpt(data.data);
     } catch (err: any) {
@@ -4780,17 +4934,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "tags",
-          title,
-          content: textContext,
-          postType,
-        }),
+      const data = await callAIGenerate({
+        action: "tags",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to generate tags.");
       setSuggestedTags(data.data);
     } catch (err: any) {
@@ -4805,17 +4956,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "focusKeyword",
-          title,
-          content: textContext,
-          postType,
-        }),
+      const data = await callAIGenerate({
+        action: "focusKeyword",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to suggest focus keyword.");
       setSeoData((prev) => ({ ...prev, focusKeyword: data.data }));
     } catch (err: any) {
@@ -4831,17 +4979,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "metaTitle",
-          title,
-          content: textContext,
-          postType,
-        }),
+      const data = await callAIGenerate({
+        action: "metaTitle",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to suggest meta title.");
       setSuggestedMetaTitle(data.data);
     } catch (err: any) {
@@ -4857,17 +5002,14 @@ const BlogEditor = () => {
     try {
       const plainText = editor ? editor.getText() : "";
       const textContext = plainText.trim().substring(0, 3000);
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "metaDescription",
-          title,
-          content: textContext,
-          postType,
-        }),
+      const data = await callAIGenerate({
+        action: "metaDescription",
+        title,
+        content: textContext,
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const data = await response.json();
       if (!data.success) throw new Error(data.error || "Failed to suggest meta description.");
       setSuggestedMetaDescription(data.data);
     } catch (err: any) {
@@ -4896,21 +5038,16 @@ const BlogEditor = () => {
         .replace(/\s+/g, " ")
         .trim();
 
-      const response = await fetch("/api/pirateCOS/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: apiAction,
-          title,
-          content: plainTextContent.slice(0, 15000),
-          postType,
-          engine: seoEngine,
-          model: seoModel,
-        }),
+      const result = await callAIGenerate({
+        action: apiAction,
+        title,
+        content: plainTextContent.slice(0, 15000),
+        postType,
+        engine: seoEngine,
+        model: seoModel,
       });
-      const result = await response.json();
 
-      if (!response.ok || !result.success) {
+      if (!result.success) {
         throw new Error(result.error || "Failed to complete AI request");
       }
 
@@ -5077,8 +5214,9 @@ const BlogEditor = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null
   >(null);
+  const [selectedTransformFormat, setSelectedTransformFormat] = useState<string | null>(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
@@ -6493,6 +6631,7 @@ const BlogEditor = () => {
       onUpdateSeo={setSeoData}
       onEnsureSaved={ensureSaved}
       onNavigateToSEO={() => setActiveSidebarTab("seo")}
+      onNavigateToTransform={(formatId) => { setSelectedTransformFormat(formatId); setActiveSidebarTab("transform"); }}
       onTriggerCopilotAI={(preset, prompt) => {
         if (preset) setActivePreset(preset);
         if (prompt) setCopilotInitialPrompt(prompt);
@@ -6861,7 +7000,6 @@ const BlogEditor = () => {
             contentGoal={contentGoal}
             editor={editor}
             onApplyToEditor={handleApplyToEditor}
-            onOpenRepurposingDrawer={() => setIsRepurposeDrawerOpen(true)}
             activeTab={activeSidebarTab}
             onTabChange={setActiveSidebarTab}
             renderContentTab={renderContentTab}
@@ -6872,6 +7010,15 @@ const BlogEditor = () => {
             onClearInitialPrompt={() => setCopilotInitialPrompt("")}
             seoFocusKeyword={seoData?.focusKeyword || ""}
             onSetFocusKeyword={(kw) => { setSeoData((prev) => ({ ...prev, focusKeyword: kw })); setIsDirty(true); }}
+            postTitle={title}
+            repurposedOutputs={repurposedOutputs}
+            onUpdateRepurposedOutputs={setRepurposedOutputs}
+            selectedTransformFormat={selectedTransformFormat}
+            setSelectedTransformFormat={setSelectedTransformFormat}
+            selectedEngine={seoEngine}
+            selectedModel={seoModel}
+            onEngineChange={setSeoEngine}
+            onModelChange={setSeoModel}
           />
         </>
       )}
@@ -6880,15 +7027,6 @@ const BlogEditor = () => {
       </div>
 
       {/* ── Modals ── */}
-      {/* RepurposingDrawer is intentionally hidden for social-post — repurposing
-          a social post into another social format is handled by AI Copilot instead */}
-      {postType !== "social-post" && (
-        <RepurposingDrawer
-          isOpen={isRepurposeDrawerOpen}
-          postId={savedBlogId || ""}
-          onClose={() => setIsRepurposeDrawerOpen(false)}
-        />
-      )}
       {showImageUrlModal && (
         <ImageUrlModal
           editor={editor}

@@ -11,6 +11,7 @@ import {
   resolveAIEngine,
   type AIEngine,
 } from "@/lib/pirateCOS/ai-provider";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
 import dbConnect from "@/lib/mongodb";
 import { getGoalConfig, getPostTypeConfig } from "@/lib/pirateCOS/postTypeConfig";
@@ -52,6 +53,8 @@ export async function POST(request: NextRequest) {
     const envGemini = process.env.GEMINI_API_KEY;
     const envMistral = process.env.MISTRAL_API_KEY;
     const envAnthropic = process.env.ANTHROPIC_API_KEY;
+    const envGrok = process.env.XAI_API_KEY || process.env.GROK_API_KEY;
+    const envOpenrouter = process.env.OPENROUTER_API_KEY;
 
     await dbConnect();
     const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
@@ -64,11 +67,15 @@ export async function POST(request: NextRequest) {
     const geminiApiKey = envGemini || dbKeys.gemini;
     const mistralApiKey = envMistral || dbKeys.mistral;
     const anthropicApiKey = envAnthropic || dbKeys.anthropic;
+    const grokApiKey = envGrok || dbKeys.grok;
+    const openrouterApiKey = envOpenrouter || dbKeys.openrouter;
     const availableKeys = {
       openai: openaiApiKey,
       gemini: geminiApiKey,
       mistral: mistralApiKey,
       anthropic: anthropicApiKey,
+      grok: grokApiKey,
+      openrouter: openrouterApiKey,
     };
 
     const selectedEngine: AIEngine = resolveAIEngine({
@@ -217,18 +224,38 @@ export async function POST(request: NextRequest) {
     let text = "";
     const selectedModel = model || DEFAULT_MODEL_BY_ENGINE[selectedEngine]; // Phase 4G-2: Hoist for logging
 
-    if (selectedEngine === "openai" || selectedEngine === "mistral") {
+    if (selectedEngine === "puter") {
+      return NextResponse.json({
+        success: true,
+        requiresClientPuter: true,
+        systemInstructions,
+      });
+    }
+
+    if (selectedEngine === "openai" || selectedEngine === "mistral" || selectedEngine === "grok" || selectedEngine === "openrouter") {
       const isMistral = selectedEngine === "mistral";
-      const apiUrl = isMistral
-        ? "https://api.mistral.ai/v1/chat/completions"
-        : "https://api.openai.com/v1/chat/completions";
+      const isGrok = selectedEngine === "grok";
+      const isOpenRouter = selectedEngine === "openrouter";
+      const apiUrl = isOpenRouter
+        ? "https://openrouter.ai/api/v1/chat/completions"
+        : isGrok
+          ? "https://api.x.ai/v1/chat/completions"
+          : isMistral
+            ? "https://api.mistral.ai/v1/chat/completions"
+            : "https://api.openai.com/v1/chat/completions";
+
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      };
+      if (isOpenRouter) {
+        headers["HTTP-Referer"] = "http://localhost:3000";
+        headers["X-Title"] = "PirateCOS";
+      }
 
       const response = await fetch(apiUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
+        headers,
         body: JSON.stringify({
           model: selectedModel,
           messages: [{ role: "user", content: systemInstructions }],
@@ -238,10 +265,7 @@ export async function POST(request: NextRequest) {
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(
-          `${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`,
-        );
+        throw new Error(parseAIError(selectedEngine, response.status, errText));
       }
 
       const data = await response.json();
@@ -265,8 +289,7 @@ export async function POST(request: NextRequest) {
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(`Claude API Error: ${errText}`);
+        throw new Error(parseAIError("anthropic", response.status, errText));
       }
 
       const data = await response.json();
@@ -304,8 +327,7 @@ export async function POST(request: NextRequest) {
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(`Gemini API Error: ${errText}`);
+        throw new Error(parseAIError("gemini", response.status, errText));
       }
 
       const data = await response.json();

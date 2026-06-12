@@ -1,4 +1,4 @@
-export type AIEngine = "openai" | "gemini" | "mistral" | "anthropic" | "puter";
+export type AIEngine = "openai" | "gemini" | "mistral" | "anthropic" | "puter" | "grok" | "openrouter";
 export type AIKeyProvider = Exclude<AIEngine, "puter">;
 
 export interface AIProviderEntry {
@@ -115,6 +115,44 @@ export const AI_PROVIDERS: AIProviderEntry[] = [
     badgeColor: "orange",
     requiresKey: false,
   },
+  {
+    id: "grok",
+    name: "xAI Grok",
+    shortName: "Grok",
+    logo: "/assets/logos/ai/xai-grok.svg",
+    color: "#000000",
+    badgeColor: "gray",
+    requiresKey: true,
+    keyPlaceholder: "xai-...",
+    keyDescription: "Used for Grok 2 and Grok Beta models.",
+    keyLink: "https://console.x.ai/",
+    keyLinkLabel: "console.x.ai",
+    sourceColors: {
+      bg: "bg-gray-50",
+      border: "border-gray-100",
+      dot: "bg-gray-400",
+      text: "text-gray-700",
+    },
+  },
+  {
+    id: "openrouter",
+    name: "OpenRouter",
+    shortName: "OpenRouter",
+    logo: "/assets/logos/ai/openrouter.svg",
+    color: "#7C3AED",
+    badgeColor: "violet",
+    requiresKey: true,
+    keyPlaceholder: "sk-or-...",
+    keyDescription: "Access Llama, Claude, Gemini and other models via OpenRouter.",
+    keyLink: "https://openrouter.ai/keys",
+    keyLinkLabel: "openrouter.ai/keys",
+    sourceColors: {
+      bg: "bg-violet-50",
+      border: "border-violet-100",
+      dot: "bg-violet-400",
+      text: "text-violet-700",
+    },
+  },
 ];
 
 export const AI_ENGINE_IDS: AIEngine[] = [
@@ -122,6 +160,8 @@ export const AI_ENGINE_IDS: AIEngine[] = [
   "gemini",
   "anthropic",
   "mistral",
+  "grok",
+  "openrouter",
   "puter",
 ];
 
@@ -149,19 +189,28 @@ export const AI_MODELS: AIModelEntry[] = [
   { id: "claude-3-5-haiku-latest", label: "Claude 3.5 Haiku", provider: "anthropic" },
   { id: "claude-3-opus-latest", label: "Claude 3 Opus", provider: "anthropic" },
 
+  // Grok Models
+  { id: "grok-2", label: "Grok 2", description: "capable", provider: "grok", isDefault: true },
+
+  // OpenRouter Models
+  { id: "meta-llama/llama-3-8b-instruct:free", label: "Llama 3 8B (Free)", description: "fast", provider: "openrouter", isDefault: true },
+  { id: "google/gemini-flash-1.5", label: "Gemini 1.5 Flash", provider: "openrouter" },
+  { id: "anthropic/claude-3.5-sonnet", label: "Claude 3.5 Sonnet", provider: "openrouter" },
+  { id: "deepseek/deepseek-chat", label: "DeepSeek V3", provider: "openrouter" },
+
   // Puter Models
   { id: "gpt-4o-mini", label: "GPT-4o Mini", description: "fast", provider: "puter", isDefault: true },
   { id: "gpt-4o", label: "GPT-4o", provider: "puter" },
-  { id: "claude-3-5-sonnet", label: "Claude 3.5 Sonnet", provider: "puter" },
-  { id: "claude-3-opus", label: "Claude 3 Opus", provider: "puter" },
-  { id: "gemini-1.5-flash", label: "Gemini 1.5 Flash", provider: "puter" },
-  { id: "gemini-1.5-pro", label: "Gemini 1.5 Pro", provider: "puter" },
-  { id: "deepseek-chat", label: "DeepSeek Chat", provider: "puter" },
-  { id: "grok-beta", label: "Grok Beta", provider: "puter" },
-  { id: "mistral-large", label: "Mistral Large", provider: "puter" },
-  { id: "gpt-5.5", label: "GPT-5.5", provider: "puter" },
-  { id: "gpt-5.4", label: "GPT-5.4", provider: "puter" },
-  { id: "gpt-5.4-mini", label: "GPT-5.4 Mini", provider: "puter" },
+  { id: "gpt-5", label: "GPT-5", provider: "puter" },
+  { id: "gpt-5-mini", label: "GPT-5 Mini", provider: "puter" },
+  { id: "claude-3-5-sonnet-20241022", label: "Claude 3.5 Sonnet", provider: "puter" },
+  { id: "claude-opus-4-8", label: "Claude Opus 4.8", provider: "puter" },
+  { id: "gemini-2.5-pro", label: "Gemini 2.5 Pro", provider: "puter" },
+  { id: "gemini-2.0-flash", label: "Gemini 2.0 Flash", provider: "puter" },
+  { id: "deepseek-v4-pro", label: "DeepSeek Chat", provider: "puter" },
+  { id: "grok-3-mini", label: "Grok 3 Mini", provider: "puter" },
+  { id: "grok-4-fast", label: "Grok 4 Fast", provider: "puter" },
+  { id: "mistral-large-2512", label: "Mistral Large 3", provider: "puter" },
 ];
 
 export function getProvider(id: AIEngine): AIProviderEntry | undefined {

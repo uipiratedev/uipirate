@@ -30,6 +30,8 @@ export interface IAdmin extends Document {
     gemini: boolean;
     mistral: boolean;
     anthropic: boolean;
+    grok: boolean;
+    openrouter: boolean;
   };
   /** Trial tracking counters */
   trialStartedAt?: Date;
@@ -37,6 +39,12 @@ export interface IAdmin extends Document {
   convertedFromFreeToPaidAt?: Date;
   /** Lifetime value aggregated from invoice payments */
   lifetimeValue: number;
+  accountType: "individual" | "organization";
+  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
+  parentOrgId: mongoose.Types.ObjectId | null;
+  seatCount: number;
+  seatLimit: number;
+  avatar?: string;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -56,14 +64,14 @@ const AdminSchema: Schema = new Schema(
       lowercase: true,
       trim: true,
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        /^\S+@\S+\.\S+$/,
         "Please provide a valid email",
       ],
     },
     password: {
       type: String,
       required: [true, "Please provide a password"],
-      minlength: [6, "Password must be at least 6 characters"],
+      minlength: [8, "Password must be at least 8 characters"],
       select: false, // Don't return password by default
     },
     role: {
@@ -110,6 +118,8 @@ const AdminSchema: Schema = new Schema(
       gemini: { type: Boolean, default: false },
       mistral: { type: Boolean, default: false },
       anthropic: { type: Boolean, default: false },
+      grok: { type: Boolean, default: false },
+      openrouter: { type: Boolean, default: false },
     },
     trialStartedAt: {
       type: Date,
@@ -126,6 +136,33 @@ const AdminSchema: Schema = new Schema(
     lifetimeValue: {
       type: Number,
       default: 0,
+    },
+    accountType: {
+      type: String,
+      enum: ["individual", "organization"],
+      default: "individual",
+    },
+    orgRole: {
+      type: String,
+      enum: ["individual", "org-admin", "admin", "editor", "viewer"],
+      default: "individual",
+    },
+    parentOrgId: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      default: null,
+    },
+    seatCount: {
+      type: Number,
+      default: 1,
+    },
+    seatLimit: {
+      type: Number,
+      default: 1,
+    },
+    avatar: {
+      type: String,
+      default: "",
     },
   },
   {

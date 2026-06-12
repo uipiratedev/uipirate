@@ -26,7 +26,7 @@
 > This document is grounded entirely in the current codebase structure.
 >
 
-> **Last codebase audit:** June 4, 2026 (Deep Analysis Complete)
+> **Last codebase audit:** June 12, 2026 (Deep Analysis & Security Hardening Complete)
 >
 > **Audit Scope:** All 13 hooks, 40+ pirateCOS components (including 4 modular panel sub-component files, 3 version history components, 5 shared editor components, 4 workspace sub-components), all 13 Mongoose schemas (including ContentHistory, Workspace, Team, AIGenerationLog, AnalyticsSnapshot, BillingEvent, WorkflowMemory), 13+ lib utilities, distribution adapters, transforms, version tracker, AI context builder, AI model discovery, and all API routes under `app/api/pirateCOS/*`.
 >
@@ -43,6 +43,8 @@
 > - ✅ Phase 5.4 (Team Management UI) — Complete
 > - ✅ Phase 5.5 (Shared Editor Component System) — Complete
 > - ✅ Phase 5.6 (Editor UX Refinements & AI Content Quality) — Complete
+> - ✅ Security Hardening & Vulnerability Mitigation (C1-C4, H1-H6, M1-M6) — Complete
+> - 🔜 **Next Up:** Phase 7.1 (Roles, Account Types & Access Control) — detailed plan in `PIRATECOS_ROLES_ACCOUNTS_ACCESS_PLAN.md`
 
 | Phase | Title | Status |
 |---|---|---|
@@ -70,11 +72,12 @@
 | **Phase 5** | PirateCOS: Advanced Analytics & Content Optimization | 🟡 **In Progress** (AI analytics complete, content analytics remaining) |
 | **Phase 6** | PirateCOS: Social Publishing & Newsletter Platforms | 🟡 **Partial** (LinkedIn ✅, newsletter platforms ⬜) |
 | **Phase 7** | PirateCOS: Team Collaboration & Enterprise Features | 🟡 **Partial** (Billing ✅, Teams ✅, approval workflows ⬜) |
+| **Phase 7.1** | PirateCOS: Roles, Account Types & Access Control (Individual/Organisation + RBAC) | 🔵 **Planned — Next Up** (`PIRATECOS_ROLES_ACCOUNTS_ACCESS_PLAN.md`) |
 | **Phase 8** | PirateCOS: Blog Theme Customization & Design System Matching | ⬜ Not started |
 
  ---
 
- ## 📊 Current Implementation State (June 4, 2026)
+ ## 📊 Current Implementation State (June 12, 2026)
 
  ### ✅ Production-Ready Features
 
@@ -161,6 +164,9 @@
  - `/api/pirateCOS/ai-models?engine=` — Live model discovery (falls back to static registry)
  - `/api/pirateCOS/ai-config` — AI provider config CRUD
  - `/api/pirateCOS/ai-config/preferences` — Workflow memory / style preferences (GET + PATCH)
+ - `/api/pirateCOS/profile` — User profile management (GET + PATCH, password change)
+ - `/api/pirateCOS/org/convert` — Account type conversion (individual → organisation, JWT re-issue)
+ - `/api/pirateCOS/org/details` — Organisation details: owner, workspace, members, brand brain, API keys
  - `/api/pirateCOS/brand-brain` — Brand voice management
  - `/api/pirateCOS/teams/*` — Team management (Phase 5.4)
  - `/api/pirateCOS/teams/[id]/members` — Member management (Phase 5.4)
@@ -237,18 +243,19 @@
    - `InsightsPanel.tsx` — Auto-learning recommendations
    - `TrendsChart.tsx` — Temporal performance charts
 
- **Pages (10 authenticated pages):**
+ **Pages (11 authenticated pages):**
  - `/pirateCOS/posts` — Posts listing with search, filter, and management actions
  - `/pirateCOS/posts/create` — 3-step content creation wizard + editor
  - `/pirateCOS/posts/edit/[id]` — Full editor with AI workspace
- - `/pirateCOS/dashboard` — Overview dashboard
+ - `/pirateCOS/dashboard` — Overview dashboard (stats, view breakdown, syndication log)
  - `/pirateCOS/teams` — Team list page (Phase 5.4)
  - `/pirateCOS/teams/[id]` — Team detail with tabs (Phase 5.4)
  - `/pirateCOS/ai-settings` — AI provider configuration
  - `/pirateCOS/analytics/ai` — AI performance analytics dashboard (Phase 4G-4)
- - `/pirateCOS/settings/integrations` — Distribution platform management
+ - `/pirateCOS/settings/integrations` — Distribution platform management + API key generation
  - `/pirateCOS/settings/billing` — Stripe billing & plan management
  - `/pirateCOS/brand-brain` — Brand voice configuration
+ - `/pirateCOS/profile` — User profile: avatar, password, account-type badge, Org conversion wizard (Phase 7.1-D)
 
  ### 🚧 Remaining Features (Next Steps)
 
@@ -277,6 +284,18 @@
  - ⬜ Auto-republish on edit
  - ⬜ Content templates
  - ⬜ Bulk distribution
+
+ **Phase 7.1 — Roles, Account Types & Access Control (Planned — Next Up):**
+ > Full specification: `PIRATECOS_ROLES_ACCOUNTS_ACCESS_PLAN.md`
+ - ⬜ Account types: `individual` | `organization` (single org, single workspace)
+ - ⬜ Org roles: `individual` | `org-admin` | `admin` | `editor` | `viewer` (non-nullable enum)
+ - ⬜ `Admin` model extension: `accountType`, `orgRole`, `parentOrgId` + JWT payload extension
+ - ⬜ Server-side permission guards (`lib/pirateCOS/require-role.ts`) on all privileged API routes
+ - ⬜ `/pirateCOS/profile` — personal profile page (password, avatar, account type, convert-to-org CTA)
+ - ⬜ `/pirateCOS/org` — organisation profile page (org identity, member invite/promote/remove)
+ - ⬜ Individual → Organisation conversion flow (`/api/pirateCOS/org/convert`)
+ - ⬜ Role-gated sidebar nav (Teams hidden for individuals; AI Settings/Billing gated to org-admin/admin)
+ - ⬜ Live data migration (`scripts/migrate-account-types.ts`): re-scope all tenant data to the UI Pirate organisation, `admin@uipirate.com` → org-admin, other users → admin
 
  **Phase 8 — Theme Customization:**
  - ⬜ Visual theme builder
@@ -490,9 +509,9 @@
 | Edit page adaptation | ✅ Complete & Verified |
 
  ---
- 
+
  **Phase 4C — Content Lifecycle & UX Magic (Complete)**
- 
+
  | Area | Status |
  |---|---|
  | One-Click Distribution Chains selector and strategy preset templates | ✅ Complete & Verified |
@@ -501,11 +520,11 @@
  | Persisted database storage mapping for repurposed outputs on the Post schema | ✅ Complete & Verified |
  | Adapter connection recovery & direct diagnostics troubleshoot overlay cards | ✅ Complete & Verified |
  | Wizard interface customization (specs grid, custom SVG icons, selections guard) | ✅ Complete & Verified |
- 
+
  ---
- 
+
  **Phase 4D — Dynamic Provider Registry System (Complete)**
- 
+
  | Area | Status |
  |---|---|
  | Centralized AI Provider Registry (`lib/pirateCOS/ai-registry.ts`) | ✅ Complete & Verified |
@@ -513,11 +532,11 @@
  | Decouple Mongoose `AIConfig` schema validation | ✅ Complete & Verified |
  | Refactor `AIConfigPanel.tsx` and `ai-settings/page.tsx` | ✅ Complete & Verified |
  | Refactor editor wizard/modals in `create/page.tsx` and `edit/[id]/page.tsx` | ✅ Complete & Verified |
- 
+
  ---
- 
+
  **Phase 4E — AI-Native Workspace Panel (Complete)**
- 
+
  | Area | Status |
  |---|---|
  | Extend `models/Post.ts` with `aiWorkspaceSession` schema | ✅ Complete & Verified |
@@ -2071,7 +2090,7 @@ export class CreditLimitError extends Error {
 }
 
 export async function deductCredits(
-  tenantId: string, 
+  tenantId: string,
   actionType: "blog" | "seo" | "enhance" | "publish"
 ): Promise<void> {
   const admin = await Admin.findById(tenantId);
@@ -2079,9 +2098,9 @@ export async function deductCredits(
 
   const isAIAction = ["blog", "seo", "enhance"].includes(actionType);
   const usesBYOK = isAIAction && (
-    admin.byokEnabled.openai || 
-    admin.byokEnabled.gemini || 
-    admin.byokEnabled.mistral || 
+    admin.byokEnabled.openai ||
+    admin.byokEnabled.gemini ||
+    admin.byokEnabled.mistral ||
     admin.byokEnabled.anthropic
   );
 
@@ -2104,7 +2123,7 @@ export async function deductCredits(
   await Admin.updateOne(
     { _id: tenantId },
     {
-      $inc: { 
+      $inc: {
         creditsRemaining: -cost,
         "usageThisMonth.aiRequests": isAIAction ? 1 : 0,
         "usageThisMonth.distributions": actionType === "publish" ? 1 : 0
@@ -3097,6 +3116,37 @@ Never use: "synergy", "disrupt"
 | **Content Calendar Heatmap** | Visual publishing frequency + optimal posting times | Starter+ | Aggregated `distributedAt` timestamps; ML-based "best time" recommendations |
 | **Competitor Content Tracker** | Monitor competitors' Medium/WordPress posts; get alerts | Pro+ | RSS feed monitoring + keyword matching |
 
+**Distribution Performance Dashboard Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Analytics Dashboard — Content Performance              │
+├─────────────────────────────────────────────────────────┤
+│  Period: [ Last 30 Days ▼ ]      Platform: [ All ▼ ]    │
+│                                                         │
+│  ┌─ Metric Highlights ────────────────────────────────┐ │
+│  │ Total Views   Total Clicks   Engagement   Share Rate│ │
+│  │ 125,480 ↗     12,450 ↗       8.4% ↗       3.2% ↗    │ │
+│  └────────────────────────────────────────────────────┘ │
+│                                                         │
+│  ┌─ Platform Breakdown ───────────────────────────────┐ │
+│  │ ● WordPress: [████████████████                    ]│ │
+│  │ ● LinkedIn:  [██████████                          ]│ │
+│  │ ● Medium:    [██████                              ]│ │
+│  │ ● Ghost:     [████                                ]│ │
+│  └────────────────────────────────────────────────────┘ │
+│                                                         │
+│  ┌─ Top-Performing Posts ─────────────────────────────┐ │
+│  │ 1. 10 Next.js Optimizations (WordPress)   - 45k views│ │
+│  │ 2. How We Scale to 1M Users (LinkedIn)   - 12k likes│ │
+│  └────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Interactive Graphs:** Dynamic charts showing daily aggregate metrics (views, clicks, claps) with tooltip hovering.
+- **Platform Filtering:** Toggle buttons to view analytics for specific platforms or across all syndicated networks.
+
 ### 5.2 SEO Optimization Engine
 
 | Feature | Implementation | Value |
@@ -3105,6 +3155,29 @@ Never use: "synergy", "disrupt"
 | **SERP preview** | Real-time Google snippet preview in SEO modal | Reduces guesswork; improves CTR |
 | **Keyword rank tracking** | Track focus keyword position in Google for distributed URLs | Proves ROI of distribution strategy |
 | **Schema.org markup generator** | Auto-inject Article/BlogPosting JSON-LD | Better rich snippets in search results |
+
+**AI SEO Score & Quality Panel Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ SEO & Readability Score                                 │
+├─────────────────────────────────────────────────────────┤
+│  Overall Health Score: [ 84 / 100 ]                     │
+│  [⬤ Circular Progress Ring representing SEO Score]      │
+│                                                         │
+│  Suggestions Checklist:                                 │
+│  [✓] Focus Keyword present in introductory paragraph   │
+│  [⚠️] Alt tag missing on 2 images                       │
+│  [❌] Sentence length exceeds optimal 20 words in H2     │
+│                                                         │
+│  AI Optimization Actions:                               │
+│  [⚡ Autofix Alt Tags ]  [⚡ Rewrite Long Sentences ]   │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Floating SEO Score Ring:** Color-coded circular bar (red/yellow/green) dynamically updating as the user types.
+- **Actionable Optimization Cards:** Expandable recommendation items with one-click AI code fixes.
 
 ### 5.3 Content Repurposing Tools
 
@@ -3164,6 +3237,33 @@ interface IAnalyticsSnapshot {
 **Goal:** Expand distribution reach to high-engagement modern platforms (LinkedIn, Substack, Beehiiv, ConvertKit) where audiences spend the most time in 2026+.
 
 ### 6.1 Platform Integrations
+
+#### **6.1.0 Multi-Channel Distribution Drawer Interface**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Publish & Distribute Content            [ Close Drawer ]│
+├─────────────────────────────────────────────────────────┤
+│  Select Distribution Channels:                          │
+│  [✓] WordPress  (https://techblog.com)  [Connected]      │
+│  [✓] LinkedIn   (Company Page)          [Connected]      │
+│  [✓] Substack   (Tech Newsletter)       [Connected]      │
+│  [ ] Beehiiv    (Weekly Digest)         [Disconnected]   │
+│                                                         │
+│  Distribution Preview & Scheduling:                     │
+│  ┌─ LinkedIn Post Hook Preview ───────────────────────┐ │
+│  │ 🚀 We are excited to announce our new open source    │ │
+│  │ registry design! Read the full deep-dive here...    │ │
+│  └────────────────────────────────────────────────────┘ │
+│                                                         │
+│  Scheduling: [● Publish Now ]  [ Scheduled for... ▼ ]   │
+│                                    [ Distribute Now ]   │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Channel Toggle Badges:** Visual checkboxes representing connected third-party integrations with real-time API authentication checks.
+- **Interactive Social Post Mockups:** Smartphone/desktop container layouts showing exactly how content renders on LinkedIn, Dev.to, and newsletters.
 
 #### **6.1.1 LinkedIn Articles & Posts**
 
@@ -3604,6 +3704,52 @@ export class LinkedInAdapter extends BaseAdapter {
 | **Admin** | All content + settings; cannot access billing |
 | **Editor** | Create/edit/distribute posts; cannot change integrations or AI keys |
 | **Viewer** | Read-only access to content and analytics |
+
+**Team Workspace & Invite Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Team Management — Workspace Brain                      │
+├─────────────────────────────────────────────────────────┤
+│  Team Members:                                          │
+│  Name               Email               Role            │
+│  1. Alex Crew       alex@uipirate.com   Owner           │
+│  2. Sarah Croft     sarah@uipirate.com  Editor [▼]      │
+│  3. Dev Devson      dev@uipirate.com    Viewer [▼]      │
+│                                                         │
+│  Invite Team Member:                                    │
+│  Email: [ enter email address ]    Role: [ Editor  ▼ ]  │
+│                                     [ Send Invitation ] │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Dynamic Role Dropdowns:** Change permissions instantly with inline select inputs.
+- **Invite Modal:** Multi-field validation confirming user status on invite submission.
+
+**Content Approval Queue Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Editorial Approval Queue                                │
+├─────────────────────────────────────────────────────────┤
+│  Pending Approvals:                                     │
+│  Post Title               Author       Target Channels  │
+│  ● NextJS SEO Playbook    Sarah Croft  LinkedIn, Sub.   │
+│                                                         │
+│  ┌─ Manager Actions ──────────────────────────────────┐ │
+│  │ [✓ Approve & Distribute ]    [❌ Request Revision ] │ │
+│  │ Revision Notes:                                    │ │
+│  │ ┌────────────────────────────────────────────────┐ │ │
+│  │ │ Please add the updated 2026 pricing CTA link    │ │ │
+│  │ └────────────────────────────────────────────────┘ │ │
+│  └────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Approval Queue Rails:** Separate sections in the dashboard separating drafts, posts pending review, and completed/published items.
+- **Revision Annotation Overlays:** Floating feedback windows allowing managers to highlight text and leave specific directives for editors.
 
 ### 7.2 Workflow Automation
 
@@ -4262,5 +4408,86 @@ Result: **Content doesn't feel like theirs.** Especially problematic for:
 
 **Estimated revenue contribution:** +$15k MRR by Month 6 (300 users × $50 ARPU from theming upgrades)
 
+
+---
+
+
+## Phase 7.1 — Roles, Account Types & Access Control
+
+> **Status:** 🟡 In Progress — Partially Shipped
+> **Full specification:** `PIRATECOS_ROLES_ACCOUNTS_ACCESS_PLAN.md` (canonical — this section is a summary only)
+> **Security findings:** `PIRATECOS_SECURITY_AUDIT.md` (June 12, 2026 — 5 critical, 6 high, 6 medium)
+
+### 7.1.1 Scope
+
+Transitions pirateCOS from a single-user tenant model (`tenantId = Admin._id`) to a two-tier account model:
+
+| Account Type | Description |
+|---|---|
+| `individual` | Everything available except Teams. Can convert to Organisation at any time. |
+| `organization` | One org, one workspace, one Brand Brain. Teams unlocked. Exactly one `org-admin`. |
+
+### 7.1.2 Role Hierarchy
+
+```
+Individual    → orgRole: "individual"
+Organisation  → org-admin > admin > editor > viewer
+```
+
+- Only the `org-admin` can: invite/remove members, change roles, edit org identity, manage AI settings & billing.
+- Multiple `admin`s allowed; they manage content, teams and distribution but not org membership.
+
+### 7.1.3 Deliverables — Shipped vs Remaining
+
+| Layer | Item | Status |
+|---|---|---|
+| **Model** | `Admin.accountType`, `Admin.orgRole`, `Admin.parentOrgId` fields | ✅ Shipped |
+| **Auth** | JWT carries `accountType` + `orgRole`; DB re-read on every request (`getCurrentUser`) | ✅ Shipped |
+| **Auth** | `lib/pirateCOS/require-role.ts` role-guard helper | ⬜ Not started |
+| **API** | `GET/PATCH /api/pirateCOS/profile` — profile management + password change | ✅ Shipped |
+| **API** | `POST /api/pirateCOS/org/convert` — individual → org conversion, JWT re-issue, team auto-create | ✅ Shipped |
+| **API** | `GET /api/pirateCOS/org/details` — org owner, workspace, members, brand brain, API keys | ✅ Shipped |
+| **API** | `/api/pirateCOS/org/members` — invite / remove / promote members | ⬜ Not started |
+| **API** | Role guards on all privileged routes (publish, AI config, billing, team CRUD) | ⬜ Not started |
+| **Pages** | `/pirateCOS/profile` — avatar, password, account type badge, org conversion wizard | ✅ Shipped |
+| **Pages** | Role-gated sidebar nav (Teams hidden for individual; Billing/AI hidden for editor/viewer) | ⬜ Not started |
+| **Migration** | `scripts/migrate-account-types.ts` — re-scope to UI Pirate org | ⬜ Not started |
+| **Security (C1)** | IDOR fix: `restoreVersion` + `getVersionHistory` tenant filter | ⬜ Must ship before 7.1 release |
+| **Security (C3)** | JWT secret fail-closed (remove hardcoded fallback) | ⬜ Must ship before 7.1 release |
+| **Security (C4/H5)** | Stripe webhook + checkout simulation prod-gate | ⬜ Must ship before 7.1 release |
+
+### 7.1.4 Sub-Phase Sequence
+
+| Sub-Phase | Title | Status |
+|---|---|---|
+| 7.1-A | Model & Auth Layer | ✅ Complete |
+| 7.1-B | Core Org API Routes | ✅ Complete (profile, convert, details) |
+| 7.1-C | API-Level Permission Guards + `require-role.ts` | 🔲 Next |
+| 7.1-D | Profile & Org Pages (frontend) | ✅ Complete (profile page shipped) |
+| 7.1-E | Existing Page Guards + Sidebar gating | 🔲 After 7.1-C |
+| 7.1-F (new) | Security hotfixes C1/C3/C4/H5 from `PIRATECOS_SECURITY_AUDIT.md` | 🔲 Before any 7.1 release |
+| 7.1-G (new) | Data migration script + production rollout | 🔲 Last |
+
+### 7.1.5 Why This Matters
+
+- **Security:** Role enforcement is still client-side only — any authenticated user can call delete/publish/billing routes. `require-role.ts` guards (7.1-C) close this before public launch.
+- **Product:** Unlocks the Organisation upsell path promised on the landing page. Conversion wizard is live (`/pirateCOS/profile`); org members invite API is the remaining blocker.
+- **Prerequisite:** For Phase 7 approval workflows and audit logs (both require trustworthy server-side roles).
+
+### 7.1.6 Security Audit Summary (June 12, 2026)
+
+Full report in `PIRATECOS_SECURITY_AUDIT.md`. Priority fix order:
+
+| # | ID | Finding | Action |
+|---|---|---|---|
+| 1 | C1 | IDOR: `restoreVersion` + `getVersionHistory` cross-tenant access | Add `tenantId` filter to both queries |
+| 2 | C2 | IDOR: version history readable across tenants | Same fix as C1 |
+| 3 | C3 | JWT forgeable via hardcoded fallback secret | Fail-closed: throw if `JWT_SECRET` missing |
+| 4 | C4 | Stripe webhook signature bypass in prod | Remove `else { JSON.parse() }` path |
+| 5 | H1 | Regex injection in posts search | Escape input before `new RegExp()` |
+| 6 | H2 | No login rate limiting | Add per-IP/email throttle |
+| 7 | H3 | JWT also returned in response body | Remove `token` from login/register JSON |
+| 8 | H4 | Unrestricted file uploads | MIME allowlist + 10MB cap + tenant folder |
+| 9 | H5 | Free Pro via checkout simulation fallback | Gate behind `NODE_ENV !== "production"` |
 
 ---

@@ -6,7 +6,10 @@ import dbConnect from "../mongodb";
 
 import Admin from "@/models/pirateCOS/Admin";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+const JWT_SECRET = process.env.JWT_SECRET as string;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not set");
+}
 
 interface JWTPayload {
   userId: string;
@@ -14,16 +17,22 @@ interface JWTPayload {
   role: string;
   tenantId: string;
   plan: "free" | "starter" | "pro" | "enterprise";
+  accountType: "individual" | "organization";
+  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
+  avatar?: string;
 }
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
   role: string;
-  /** The tenant boundary — equals the Admin._id string */
+  /** The tenant boundary — equals the Admin._id string, or parentOrgId for members */
   tenantId: string;
   plan: "free" | "starter" | "pro" | "enterprise";
+  accountType: "individual" | "organization";
+  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
+  avatar?: string;
 }
 
 /**
@@ -31,7 +40,7 @@ interface User {
  */
 async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+    const decoded = jwt.verify(token, JWT_SECRET) as unknown as JWTPayload;
 
     return decoded;
   } catch (error) {
@@ -79,8 +88,11 @@ export async function getCurrentUser(): Promise<User | null> {
       name: (admin as any).name,
       email: (admin as any).email,
       role: (admin as any).role,
-      tenantId: String(admin._id), // each Admin is their own tenant
+      tenantId: String((admin as any).parentOrgId || admin._id), // each Admin is their own tenant unless org member
       plan: (admin as any).plan ?? "free",
+      accountType: (admin as any).accountType ?? "individual",
+      orgRole: (admin as any).orgRole ?? "individual",
+      avatar: (admin as any).avatar ?? "",
     };
   } catch (error) {
     return null;

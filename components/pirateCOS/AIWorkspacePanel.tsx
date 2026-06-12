@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { Editor } from "@tiptap/react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEditorSelection } from "@/hooks/useEditorSelection";
@@ -17,6 +18,7 @@ import CosIcon from "./CosIcon";
 import UpgradePrompt from "./UpgradePrompt";
 import { HelpTutorialCarousel } from "./WorkspaceTutorialCarousel";
 import { ModelSelectorPill } from "./ModelSelectorPill";
+import TransformTab from "./TransformTab";
 
 interface AIWorkspacePanelProps {
   postId: string | null;
@@ -25,12 +27,12 @@ interface AIWorkspacePanelProps {
   editor: Editor | null;
   brandBrain?: any;
   onApplyToEditor: (text: string, mode: "replace" | "insert-below" | "insert-above") => void;
-  onOpenRepurposingDrawer: () => void;
+  onOpenRepurposingDrawer?: () => void;
   onInsertCTA?: (html: string) => void;
 
   // Unified Sidebar Props
-  activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null;
-  onTabChange: (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | null) => void;
+  activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null;
+  onTabChange: (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null) => void;
   renderContentTab: () => React.ReactNode;
   renderSEOTab?: () => React.ReactNode;
   renderHealthTab: () => React.ReactNode;
@@ -39,9 +41,22 @@ interface AIWorkspacePanelProps {
   initialPrompt?: string;
   onClearInitialPrompt?: () => void;
 
+  // Spinoff / Transform Props
+  postTitle?: string;
+  repurposedOutputs?: Record<string, string>;
+  onUpdateRepurposedOutputs?: (outputs: Record<string, string>) => void;
+  selectedTransformFormat?: string | null;
+  setSelectedTransformFormat?: (format: string | null) => void;
+
   // SEO focus keyword sync
   seoFocusKeyword?: string;
   onSetFocusKeyword?: (kw: string) => void;
+
+  // Hoisted model selector settings
+  selectedEngine?: AIEngine;
+  selectedModel?: string;
+  onEngineChange?: (engine: AIEngine) => void;
+  onModelChange?: (model: string) => void;
 }
 
 const PANEL_DESCRIPTIONS: Record<string, string> = {
@@ -52,6 +67,7 @@ const PANEL_DESCRIPTIONS: Record<string, string> = {
   health:   "Real-time scores for writing quality and readiness",
   distribute: "Publish to connected platforms and create spin-offs",
   version:  "View, compare, and restore previous versions of your post",
+  transform: "Repurpose your post into 8 distinct formats with high-fidelity previews",
 };
 
 
@@ -65,6 +81,7 @@ const HELP_TAB_ICONS: Record<string, string> = {
   health: "traffic",
   distribute: "bolt",
   version: "clock",
+  transform: "bolt",
 };
 
 const HELP_TAB_COLORS: Record<string, { bgClass: string; textClass: string; accentColor: string }> = {
@@ -77,6 +94,7 @@ const HELP_TAB_COLORS: Record<string, { bgClass: string; textClass: string; acce
   health: { bgClass: "bg-teal-50", textClass: "text-teal-600", accentColor: "#0d9488" },
   distribute: { bgClass: "bg-indigo-50", textClass: "text-indigo-600", accentColor: "#4f46e5" },
   version: { bgClass: "bg-gray-50", textClass: "text-gray-600", accentColor: "#6b7280" },
+  transform: { bgClass: "bg-violet-50", textClass: "text-violet-600", accentColor: "#7c3aed" },
 };
 
 
@@ -418,8 +436,22 @@ export default function AIWorkspacePanel({
   onClearInitialPrompt,
   seoFocusKeyword,
   onSetFocusKeyword,
+  repurposedOutputs = {},
+  onUpdateRepurposedOutputs,
+  selectedTransformFormat = null,
+  setSelectedTransformFormat,
+  postTitle = "",
+  selectedEngine: propEngine,
+  selectedModel: propModel,
+  onEngineChange: propOnEngineChange,
+  onModelChange: propOnModelChange,
 }: AIWorkspacePanelProps) {
   const { user } = useAuth();
+  const isSubdomain =
+    typeof window !== "undefined" &&
+    (window.location.hostname.startsWith("cos.") ||
+      window.location.hostname === "cos.uipirate.com");
+  const getHref = (path: string) => (isSubdomain ? path : `/pirateCOS${path}`);
   const isProUser = user ? ["pro", "enterprise", "starter"].includes(user.plan) : false;
 
   const { selectedText } = useEditorSelection(editor);
@@ -454,6 +486,7 @@ export default function AIWorkspacePanel({
     uiPreferences,
     loading,
     error,
+    clearError,
     sendMessage,
     triggerQuickAction,
     applyGeneration,
@@ -482,8 +515,13 @@ export default function AIWorkspacePanel({
 
   // View state & AI engine/model settings
   const [activeView, setActiveView] = useState<"chat" | "history" | "snippets">("chat");
-  const [selectedEngine, setSelectedEngine] = useState<AIEngine>("gemini");
-  const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash");
+  const [localEngine, setLocalEngine] = useState<AIEngine>("gemini");
+  const [localModel, setLocalModel] = useState("gemini-2.0-flash-exp");
+
+  const selectedEngine = propEngine ?? localEngine;
+  const selectedModel = propModel ?? localModel;
+  const setSelectedEngine = propOnEngineChange ?? setLocalEngine;
+  const setSelectedModel = propOnModelChange ?? setLocalModel;
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [helpTab, setHelpTab] = useState<string | null>(null);
@@ -575,7 +613,7 @@ export default function AIWorkspacePanel({
     }
   };
 
-  const handleTabClick = (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version") => {
+  const handleTabClick = (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform") => {
     if (activeTab === tab) {
       onTabChange(null);
     } else {
@@ -700,30 +738,36 @@ export default function AIWorkspacePanel({
                       </div>
                     )}
 
-                    {/* Transform Tab */}
+                    {/* Transform Tab — redirects to dedicated sidebar tab */}
                     {activeQuickTab === "transform" && showTransformAction && (
-                      <div className="space-y-3 animate-in fade-in duration-200">
-                        <div className="p-4 bg-gradient-to-br from-orange-50 to-amber-50/50 border border-orange-100/50 rounded-2xl space-y-3">
+                      <div className="space-y-4 animate-in fade-in duration-200">
+                        <div className="p-4 bg-orange-50/40 border border-orange-100/50 rounded-2xl space-y-3 shadow-sm">
                           <div className="flex items-start gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-[#FF5B04] flex items-center justify-center flex-shrink-0">
-                              <CosIcon name="bolt" size={16} className="text-white" />
+                            <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md shadow-orange-500/10" style={{ background: "#FF5B04" }}>
+                              <CosIcon name="bolt" size={16} className="text-white fill-white" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-sm font-bold text-gray-900 font-geist mb-1">
-                                Repurpose Content
-                              </h3>
-                              <p className="text-[11px] text-gray-600 leading-relaxed">
-                                Transform this post into different formats like LinkedIn posts, Twitter threads, newsletters, or email campaigns.
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <h3 className="text-sm font-bold text-gray-900 font-geist">
+                                  Transformation Hub
+                                </h3>
+                                <span className="text-[9px] font-extrabold text-[#FF5B04] bg-orange-50 border border-orange-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                                  New
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-gray-600 leading-relaxed mt-1">
+                                Repurpose your content into 8 formats — Twitter threads, newsletters, LinkedIn posts, and more — with rich previews right here in the sidebar.
                               </p>
                             </div>
                           </div>
                           <button
                             type="button"
-                            onClick={onOpenRepurposingDrawer}
-                            className="w-full px-4 py-3 rounded-xl bg-[#FF5B04] hover:bg-[#FF5B04]/90 text-white text-sm font-bold font-geist shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                            onClick={() => onTabChange("transform")}
+                            className="w-full px-4 py-3 rounded-xl text-white text-sm font-bold font-geist shadow-md hover:shadow-lg hover:opacity-90 transition-all flex items-center justify-center gap-2 group cursor-pointer"
+                            style={{ background: "#FF5B04" }}
                           >
-                            <CosIcon name="bolt" size={14} />
-                            Open Transform Tool
+                            <CosIcon name="bolt" size={14} className="text-white fill-white group-hover:scale-110 transition-transform" />
+                            Open Transformation Hub
                           </button>
                         </div>
                       </div>
@@ -787,12 +831,26 @@ export default function AIWorkspacePanel({
 
                   {/* Rewrite Error State */}
                   {rewriteError && (
-                    <div className="p-3.5 bg-red-50/50 border border-red-100 rounded-2xl space-y-2 text-red-600">
-                      <div className="flex items-center gap-1.5 text-xs font-bold font-geist text-red-600">
-                        <CosIcon name="warning" size={12} className="text-red-500 shrink-0" />
-                        <span>Rewrite Failed</span>
+                    <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-3 animate-in slide-in-from-top-1 duration-200 relative mb-4">
+                      <button
+                        onClick={clearRewriteOutput}
+                        className="absolute top-2 right-2.5 text-red-400 hover:text-red-600 text-xs font-bold bg-transparent border-none cursor-pointer"
+                        title="Dismiss error"
+                      >
+                        &times;
+                      </button>
+                      <div className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg fill="none" height="14" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                          <circle cx="12" cy="12" r="10" />
+                          <line x1="12" x2="12" y1="8" y2="12" />
+                          <line x1="12" x2="12.01" y1="16" y2="16" />
+                        </svg>
                       </div>
-                      <p className="text-[10px] leading-relaxed font-geist text-red-500">{rewriteError}</p>
+                      <div className="flex-1 min-w-0 pr-4">
+                        <p className="text-[11px] font-bold text-red-700 mb-0.5">Rewrite Failed</p>
+                        <p className="text-[10px] text-red-600 leading-relaxed">{rewriteError}</p>
+                        <p className="text-[10px] text-red-400 mt-1.5">Try switching to a different AI model using the selector above.</p>
+                      </div>
                     </div>
                   )}
 
@@ -995,6 +1053,8 @@ export default function AIWorkspacePanel({
                       activeKeywords={activeKeywords}
                       postType={postType}
                       contentGoal={contentGoal}
+                      error={error}
+                      onClearError={clearError}
                     />
                   )}
 
@@ -1104,6 +1164,7 @@ export default function AIWorkspacePanel({
                       {activeTab === "health" && "Content Health"}
                       {activeTab === "distribute" && "Distribute"}
                       {activeTab === "version" && "Version History"}
+                      {activeTab === "transform" && "Transform"}
                     </span>
                     <button
                       type="button"
@@ -1130,6 +1191,18 @@ export default function AIWorkspacePanel({
                   {activeTab === "health" && renderHealthTab()}
                   {activeTab === "distribute" && renderDistributeTab()}
                   {activeTab === "version" && renderVersionTab && renderVersionTab()}
+                  {activeTab === "transform" && (
+                    <TransformTab
+                      postId={postId}
+                      postTitle={postTitle}
+                      repurposedOutputs={repurposedOutputs}
+                      onUpdateRepurposedOutputs={onUpdateRepurposedOutputs}
+                      selectedFormat={selectedTransformFormat}
+                      setSelectedFormat={setSelectedTransformFormat || (() => {})}
+                      selectedEngine={selectedEngine}
+                      selectedModel={selectedModel}
+                    />
+                  )}
                 </div>
               </div>
             )}
@@ -1236,6 +1309,22 @@ export default function AIWorkspacePanel({
               <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
             </svg>
           </button>
+
+          {/* Transform Tab Button */}
+          {showTransformAction && (
+            <button
+              onClick={() => handleTabClick("transform")}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+                activeTab === "transform"
+                  ? "text-white shadow-md shadow-orange-500/10 scale-105"
+                  : "text-gray-400 hover:text-[#FF5B04] hover:bg-orange-50/50"
+              }`}
+              style={activeTab === "transform" ? { background: "#FF5B04" } : {}}
+              title="Transform / Spinoffs"
+            >
+              <CosIcon name="bolt" size={20} className={activeTab === "transform" ? "text-white" : "text-gray-400"} />
+            </button>
+          )}
 
           {/* Version History */}
           {renderVersionTab && (

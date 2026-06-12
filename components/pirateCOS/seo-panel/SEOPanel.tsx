@@ -172,9 +172,19 @@ export function SEOPanel({
   return (
     <div className="space-y-2">
       {seoError && (
-        <div className="px-3 py-2 bg-red-50 border border-red-100 rounded-xl flex gap-2 text-[11px] text-red-600 font-medium font-geist">
-          <CosIcon name="warning" size={12} className="text-red-500 shrink-0 mt-0.5" />
-          <p className="flex-1">{seoError}</p>
+        <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-3 animate-in slide-in-from-top-1 duration-200">
+          <div className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg fill="none" height="14" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" x2="12" y1="8" y2="12" />
+              <line x1="12" x2="12.01" y1="16" y2="16" />
+            </svg>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[11px] font-bold text-red-700 mb-0.5">SEO Analysis Failed</p>
+            <p className="text-[10px] text-red-600 leading-relaxed">{seoError}</p>
+            <p className="text-[10px] text-red-400 mt-1.5">Try switching to a different AI model using the selector above.</p>
+          </div>
         </div>
       )}
       <Accordion

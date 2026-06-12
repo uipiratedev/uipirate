@@ -39,8 +39,9 @@ export async function createSnapshot(
     };
   }
 ): Promise<IContentHistory> {
+  const tenantOid = new mongoose.Types.ObjectId(tenantId);
   // Get the latest version number for this post
-  const latestVersion = await ContentHistory.findOne({ postId })
+  const latestVersion = await ContentHistory.findOne({ postId, tenantId: tenantOid })
     .sort({ version: -1 })
     .select("version snapshot");
 
@@ -51,6 +52,7 @@ export async function createSnapshot(
     const existing = await ContentHistory.findOne({
       postId,
       version: latestVersion.version,
+      tenantId: tenantOid,
     });
     if (existing) {
       return existing;
@@ -71,7 +73,7 @@ export async function createSnapshot(
   // Create the new version
   const snapshot = await ContentHistory.create({
     postId: new mongoose.Types.ObjectId(postId),
-    tenantId: new mongoose.Types.ObjectId(tenantId),
+    tenantId: tenantOid,
     version: newVersion,
     snapshot: content,
     diff,
@@ -127,14 +129,17 @@ export function calculateDiff(oldContent: string, newContent: string): string {
  * Get version history for a post
  * 
  * @param postId - Post ID
+ * @param tenantId - Tenant ID
  * @param limit - Maximum number of versions to return (default: 50)
  * @returns Array of version documents
  */
 export async function getVersionHistory(
   postId: string,
+  tenantId: string,
   limit: number = 50
 ): Promise<any[]> {
-  return await ContentHistory.find({ postId })
+  const tenantOid = new mongoose.Types.ObjectId(tenantId);
+  return await ContentHistory.find({ postId, tenantId: tenantOid })
     .sort({ version: -1 })
     .limit(limit)
     .lean();
@@ -157,16 +162,18 @@ export async function restoreVersion(
   tenantId: string,
   restoredBy: string
 ): Promise<{ post: any; snapshot: IContentHistory }> {
+  const tenantOid = new mongoose.Types.ObjectId(tenantId);
+
   // Find the version to restore
-  const versionToRestore = await ContentHistory.findOne({ postId, version });
+  const versionToRestore = await ContentHistory.findOne({ postId, version, tenantId: tenantOid });
 
   if (!versionToRestore) {
     throw new Error(`Version ${version} not found for post ${postId}`);
   }
 
   // Update the post with the restored content
-  const post = await Post.findByIdAndUpdate(
-    postId,
+  const post = await Post.findOneAndUpdate(
+    { _id: postId, tenantId: tenantOid },
     { content: versionToRestore.snapshot },
     { new: true }
   );

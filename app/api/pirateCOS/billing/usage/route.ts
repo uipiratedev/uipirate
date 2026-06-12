@@ -35,10 +35,14 @@ export async function GET() {
     const geminiEnv = !!process.env.GEMINI_API_KEY;
     const mistralEnv = !!process.env.MISTRAL_API_KEY;
     const anthropicEnv = !!process.env.ANTHROPIC_API_KEY;
+    const grokEnv = !!(process.env.XAI_API_KEY || process.env.GROK_API_KEY);
+    const openrouterEnv = !!process.env.OPENROUTER_API_KEY;
     const openaiDb = !!cfg?.openaiKeyEncrypted;
     const geminiDb = !!cfg?.geminiKeyEncrypted;
     const mistralDb = !!cfg?.mistralKeyEncrypted;
     const anthropicDb = !!cfg?.anthropicKeyEncrypted;
+    const grokDb = !!cfg?.grokKeyEncrypted;
+    const openrouterDb = !!cfg?.openrouterKeyEncrypted;
 
     return NextResponse.json({
       success: true,
@@ -48,11 +52,13 @@ export async function GET() {
         aiRequests: 0,
         distributions: 0,
       },
-      byokEnabled: admin.byokEnabled || {
-        openai: false,
-        gemini: false,
-        mistral: false,
-        anthropic: false,
+      byokEnabled: {
+        openai: admin.byokEnabled?.openai || false,
+        gemini: admin.byokEnabled?.gemini || false,
+        mistral: admin.byokEnabled?.mistral || false,
+        anthropic: admin.byokEnabled?.anthropic || false,
+        grok: (admin.byokEnabled as any)?.grok || false,
+        openrouter: (admin.byokEnabled as any)?.openrouter || false,
       },
       stripeCustomerId: admin.stripeCustomerId || null,
       stripeSubscriptionId: (admin as any).stripeSubscriptionId || null,
@@ -63,6 +69,8 @@ export async function GET() {
         gemini: geminiEnv || geminiDb,
         mistral: mistralEnv || mistralDb,
         anthropic: anthropicEnv || anthropicDb,
+        grok: grokEnv || grokDb,
+        openrouter: openrouterEnv || openrouterDb,
       },
     });
   } catch (err: any) {
@@ -114,6 +122,10 @@ export async function POST(req: NextRequest) {
       admin.byokEnabled.mistral = byokEnabled.mistral;
     if (typeof byokEnabled.anthropic === "boolean")
       admin.byokEnabled.anthropic = byokEnabled.anthropic;
+    if (typeof byokEnabled.grok === "boolean")
+      (admin.byokEnabled as any).grok = byokEnabled.grok;
+    if (typeof byokEnabled.openrouter === "boolean")
+      (admin.byokEnabled as any).openrouter = byokEnabled.openrouter;
 
     await admin.save();
 

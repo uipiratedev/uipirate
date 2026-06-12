@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("Version Restore API error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to restore version" },
+      { success: false, error: "Failed to restore version" },
       { status: 500 }
     );
   }

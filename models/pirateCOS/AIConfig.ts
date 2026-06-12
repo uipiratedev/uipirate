@@ -12,10 +12,21 @@ export interface IAIConfig extends Document {
   mistralKeyEncrypted?: string;
   /** AES-256-GCM encrypted Anthropic API key (iv:tag:ciphertext) */
   anthropicKeyEncrypted?: string;
+  /** AES-256-GCM encrypted Grok API key (iv:tag:ciphertext) */
+  grokKeyEncrypted?: string;
+  /** AES-256-GCM encrypted OpenRouter API key (iv:tag:ciphertext) */
+  openrouterKeyEncrypted?: string;
   /** Which engine to pre-select in writing assistants */
   defaultEngine: AIEngine;
   /** Which model to pre-select in writing assistants */
   defaultModel: string;
+  openaiEnabled: boolean;
+  geminiEnabled: boolean;
+  mistralEnabled: boolean;
+  anthropicEnabled: boolean;
+  grokEnabled: boolean;
+  openrouterEnabled: boolean;
+  puterEnabled: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,6 +43,15 @@ const AIConfigSchema: Schema<IAIConfig> = new Schema(
     geminiKeyEncrypted: { type: String, default: null },
     mistralKeyEncrypted: { type: String, default: null },
     anthropicKeyEncrypted: { type: String, default: null },
+    grokKeyEncrypted: { type: String, default: null },
+    openrouterKeyEncrypted: { type: String, default: null },
+    openaiEnabled: { type: Boolean, default: true },
+    geminiEnabled: { type: Boolean, default: true },
+    mistralEnabled: { type: Boolean, default: true },
+    anthropicEnabled: { type: Boolean, default: true },
+    grokEnabled: { type: Boolean, default: true },
+    openrouterEnabled: { type: Boolean, default: true },
+    puterEnabled: { type: Boolean, default: true },
     defaultEngine: {
       type: String,
       enum: AI_ENGINE_IDS,
@@ -43,6 +63,10 @@ const AIConfigSchema: Schema<IAIConfig> = new Schema(
 );
 
 // One config document per tenant — query with findOne({ tenantId })
+if (process.env.NODE_ENV === "development") {
+  delete mongoose.models.AIConfig;
+}
+
 const AIConfig: Model<IAIConfig> =
   (mongoose.models.AIConfig as Model<IAIConfig>) ||
   mongoose.model<IAIConfig>("AIConfig", AIConfigSchema);

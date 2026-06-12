@@ -26,11 +26,11 @@ export async function POST(req: NextRequest) {
         STRIPE_WEBHOOK_SECRET,
       );
     } else {
-      // Sandbox fallback: parse directly for unverified sandbox emulation
-      console.warn(
-        "⚠️ Webhook Signature Verification Bypassed. STRIPE_WEBHOOK_SECRET is not set.",
+      console.error("❌ Webhook rejected: STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET is not configured.");
+      return NextResponse.json(
+        { success: false, error: "Webhook signature verification is required" },
+        { status: 503 }
       );
-      event = JSON.parse(bodyText) as any;
     }
   } catch (err: any) {
     console.error("Webhook signature verification failed:", err.message);
@@ -72,6 +72,7 @@ export async function POST(req: NextRequest) {
           admin.stripeSubscriptionId = subId;
           admin.subscriptionStatus = "active";
           admin.creditsRemaining += 500; // Provide Pro credit allowance
+          admin.seatLimit = 20; // Pro seat limit
 
           if (stripe && subId) {
             const sub = (await stripe.subscriptions.retrieve(subId)) as any;
@@ -96,7 +97,7 @@ export async function POST(req: NextRequest) {
           });
 
           console.log(
-            `🟢 Successfully activated Pro Subscription for tenant ${admin.email}`,
+            `🟢 Successfully activated Pro Subscription for tenant ${admin._id}`,
           );
         } else if (purchaseType === "topup") {
           // Dynamically calculate credits based on actual amount paid (200 credits per USD $1.00)
@@ -116,7 +117,7 @@ export async function POST(req: NextRequest) {
           });
 
           console.log(
-            `🔋 Successfully credited ${creditsGranted.toLocaleString()} top-up credits to tenant ${admin.email} (Paid: $${(centsPaid / 100).toFixed(2)})`,
+            `🔋 Successfully credited top-up credits to tenant ${admin._id}`,
           );
         }
         break;
@@ -138,6 +139,25 @@ export async function POST(req: NextRequest) {
 
         admin.subscriptionStatus = "active";
         admin.lifetimeValue += amountPaid;
+
+        // Reset monthly counters
+        admin.usageThisMonth = { aiRequests: 0, distributions: 0 };
+
+        // Refill credits by plan
+        const PLAN_CREDITS: Record<string, number> = {
+          free: 0,
+          starter: 200,
+          pro: 1000,
+          enterprise: -1,
+        };
+        const refill = PLAN_CREDITS[admin.plan || "free"] ?? 0;
+        if (refill > 0) {
+          const seatBonus = admin.plan === "pro" ? (admin.seatCount ?? 1) * 50 : 0;
+          admin.creditsRemaining = refill + seatBonus;
+        } else if (refill === -1) {
+          admin.creditsRemaining = 999999; // Represents unlimited
+        }
+
         await admin.save();
 
         await BillingEvent.create({
@@ -150,7 +170,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.log(
-          `✅ Invoice paid for ${admin.email}: $${amountPaid}. Total lifetime: $${admin.lifetimeValue}`,
+          `✅ Invoice paid for tenant ${admin._id}`,
         );
         break;
       }
@@ -176,7 +196,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.warn(
-          `⚠️ Payment failed for ${admin.email}. Status set to past_due.`,
+          `⚠️ Payment failed for tenant ${admin._id}. Status set to past_due.`,
         );
         break;
       }
@@ -191,6 +211,16 @@ export async function POST(req: NextRequest) {
 
         admin.subscriptionStatus = sub.status as any;
         admin.currentPeriodEnd = new Date(sub.current_period_end * 1000);
+
+        // Update seat limits on plan change
+        const SEAT_LIMITS: Record<string, number> = {
+          free: 1,
+          starter: 5,
+          pro: 20,
+          enterprise: -1,
+        };
+        admin.seatLimit = SEAT_LIMITS[admin.plan || "free"] ?? 1;
+
         await admin.save();
 
         await BillingEvent.create({
@@ -201,7 +231,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.log(
-          `🔄 Subscription updated for ${admin.email}. Status: ${sub.status}`,
+          `🔄 Subscription updated for tenant ${admin._id}. Status: ${sub.status}`,
         );
         break;
       }
@@ -217,6 +247,7 @@ export async function POST(req: NextRequest) {
         admin.plan = "free";
         admin.subscriptionStatus = "canceled";
         admin.stripeSubscriptionId = undefined;
+        admin.seatLimit = 1; // free plan limit
         await admin.save();
 
         await BillingEvent.create({
@@ -227,7 +258,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.log(
-          `🛑 Subscription canceled for ${admin.email}. Plan downgraded to Free.`,
+          `🛑 Subscription canceled for tenant ${admin._id}. Plan downgraded to Free.`,
         );
         break;
       }

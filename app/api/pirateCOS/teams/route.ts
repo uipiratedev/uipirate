@@ -17,16 +17,17 @@ export async function GET(req: NextRequest) {
 
     await dbConnect();
 
-    // Get or create shared "UI Pirate" workspace
-    let workspace = await Workspace.findOne({ name: "UI Pirate" });
+    // Get or create shared "UI Pirate" workspace scoped to tenant
+    let workspace = await Workspace.findOne({ tenantId: user.tenantId });
     if (!workspace) {
       // Auto-create UI Pirate organization workspace
       workspace = await Workspace.create({
         owner: user.email,
         name: "UI Pirate",
+        tenantId: user.tenantId,
         description: "Central workspace for UI Pirate organization",
       });
-      console.log(`✅ Auto-created UI Pirate workspace`);
+      console.log(`✅ Auto-created UI Pirate workspace for tenant ${user.tenantId}`);
     }
 
     // Get all teams for this workspace
@@ -69,16 +70,17 @@ export async function POST(req: NextRequest) {
 
     await dbConnect();
 
-    // Get or create shared "UI Pirate" workspace
-    let workspace = await Workspace.findOne({ name: "UI Pirate" });
+    // Get or create shared "UI Pirate" workspace scoped to tenant
+    let workspace = await Workspace.findOne({ tenantId: user.tenantId });
     if (!workspace) {
       // Auto-create UI Pirate organization workspace
       workspace = await Workspace.create({
         owner: user.email,
         name: "UI Pirate",
+        tenantId: user.tenantId,
         description: "Central workspace for UI Pirate organization",
       });
-      console.log(`✅ Auto-created UI Pirate workspace`);
+      console.log(`✅ Auto-created UI Pirate workspace for tenant ${user.tenantId}`);
     }
 
     const body = await req.json();

@@ -37,6 +37,13 @@ export async function GET(
       );
     }
 
+    if (workspace.tenantId?.toString() !== user.tenantId) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
     // Enrich members data with email field for UI compatibility
     const enrichedTeam = {
       ...team,

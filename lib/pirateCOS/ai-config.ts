@@ -9,6 +9,8 @@ export async function getDecryptedKeys(tenantId: string): Promise<{
   gemini?: string;
   mistral?: string;
   anthropic?: string;
+  grok?: string;
+  openrouter?: string;
   defaultEngine: string;
   defaultModel: string;
 }> {
@@ -24,6 +26,8 @@ export async function getDecryptedKeys(tenantId: string): Promise<{
   let gemini: string | undefined;
   let mistral: string | undefined;
   let anthropic: string | undefined;
+  let grok: string | undefined;
+  let openrouter: string | undefined;
 
   try {
     if (cfg.openaiKeyEncrypted) openai = decrypt(cfg.openaiKeyEncrypted);
@@ -38,12 +42,21 @@ export async function getDecryptedKeys(tenantId: string): Promise<{
     if (cfg.anthropicKeyEncrypted)
       anthropic = decrypt(cfg.anthropicKeyEncrypted);
   } catch {}
+  try {
+    if (cfg.grokKeyEncrypted) grok = decrypt(cfg.grokKeyEncrypted);
+  } catch {}
+  try {
+    if (cfg.openrouterKeyEncrypted)
+      openrouter = decrypt(cfg.openrouterKeyEncrypted);
+  } catch {}
 
   return {
     openai,
     gemini,
     mistral,
     anthropic,
+    grok,
+    openrouter,
     defaultEngine: cfg.defaultEngine ?? "puter",
     defaultModel: cfg.defaultModel ?? "gpt-4o-mini",
   };

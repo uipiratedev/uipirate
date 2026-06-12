@@ -179,6 +179,11 @@ export function isContentModel(id: string, engine: AIEngine): boolean {
     );
   }
 
+  if (engine === "grok") {
+    // Only allow grok models
+    return lowercaseId.includes("grok");
+  }
+
   return true;
 }
 
@@ -260,9 +265,19 @@ export function mergeWithFallback(
   const seen = new Set<string>();
   const merged: AIModelEntry[] = [];
 
-  for (const model of fallback) {
-    seen.add(model.id);
-    merged.push(model);
+  if (liveModelIds.length === 0) {
+    for (const model of fallback) {
+      seen.add(model.id);
+      merged.push(model);
+    }
+  } else {
+    const liveSet = new Set(liveModelIds);
+    for (const model of fallback) {
+      if (liveSet.has(model.id)) {
+        seen.add(model.id);
+        merged.push(model);
+      }
+    }
   }
 
   const liveEntries: AIModelEntry[] = [];
@@ -371,6 +386,38 @@ async function fetchAnthropicModels(apiKey: string): Promise<string[]> {
     : [];
 }
 
+async function fetchGrokModels(apiKey: string): Promise<string[]> {
+  const res = await fetch("https://api.x.ai/v1/models", {
+    headers: { Authorization: `Bearer ${apiKey}` },
+    cache: "no-store",
+  });
+
+  if (!res.ok) throw new Error(`Grok model fetch failed (${res.status})`);
+  const data = await res.json();
+
+  return Array.isArray(data?.data)
+    ? data.data
+        .map((model: any) => model?.id)
+        .filter((id: unknown): id is string => typeof id === "string")
+    : [];
+}
+
+async function fetchOpenRouterModels(apiKey: string): Promise<string[]> {
+  const res = await fetch("https://openrouter.ai/api/v1/models", {
+    headers: { Authorization: `Bearer ${apiKey}` },
+    cache: "no-store",
+  });
+
+  if (!res.ok) throw new Error(`OpenRouter model fetch failed (${res.status})`);
+  const data = await res.json();
+
+  return Array.isArray(data?.data)
+    ? data.data
+        .map((model: any) => model?.id)
+        .filter((id: unknown): id is string => typeof id === "string")
+    : [];
+}
+
 export async function discoverAIModels({
   engine,
   apiKey,
@@ -391,6 +438,10 @@ export async function discoverAIModels({
   const now = Date.now();
   const cached = cache.get(cacheKey);
 
+  if (cached && cached.expiresAt <= now) {
+    cache.delete(cacheKey);
+  }
+
   if (!forceRefresh && cached && cached.expiresAt > now) {
     return cached.result;
   }
@@ -403,7 +454,11 @@ export async function discoverAIModels({
           ? await fetchGeminiModels(apiKey)
           : engine === "mistral"
             ? await fetchMistralModels(apiKey)
-            : await fetchAnthropicModels(apiKey);
+            : engine === "grok"
+              ? await fetchGrokModels(apiKey)
+              : engine === "openrouter"
+                ? await fetchOpenRouterModels(apiKey)
+                : await fetchAnthropicModels(apiKey);
 
     const result: DiscoveryResult = {
       models: mergeWithFallback(engine, liveIds),

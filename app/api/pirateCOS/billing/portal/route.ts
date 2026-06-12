@@ -32,10 +32,19 @@ export async function POST(req: NextRequest) {
     }
 
     const host = req.headers.get("host") || "localhost:3000";
+    const allowedHosts = ["cos.uipirate.com", "uipirate.com"];
+    if (process.env.NODE_ENV === "production" && !allowedHosts.includes(host.split(":")[0])) {
+      return NextResponse.json(
+        { success: false, error: "Invalid Host header" },
+        { status: 400 }
+      );
+    }
+
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
     const isSubdomain = host.startsWith("cos.") || host === "cos.uipirate.com";
     const baseRedirect = isSubdomain
-      ? `http://${host}`
-      : `http://${host}/pirateCOS`;
+      ? `${protocol}://${host}`
+      : `${protocol}://${host}/pirateCOS`;
     const returnUrl = `${baseRedirect}/settings/billing`;
 
     // Developer simulation bypass
@@ -66,7 +75,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: err.message || "Failed to create portal session",
+        error: "Failed to create portal session",
       },
       { status: 500 },
     );
