@@ -53,6 +53,13 @@ export async function GET() {
     anthropicSource: anthropicEnv ? "env" : anthropicDb ? "db" : null,
     grokSource: grokEnv ? "env" : grokDb ? "db" : null,
     openrouterSource: openrouterEnv ? "env" : openrouterDb ? "db" : null,
+    openaiEnabled: cfg ? (cfg.openaiEnabled ?? true) : true,
+    geminiEnabled: cfg ? (cfg.geminiEnabled ?? true) : true,
+    mistralEnabled: cfg ? (cfg.mistralEnabled ?? true) : true,
+    anthropicEnabled: cfg ? (cfg.anthropicEnabled ?? true) : true,
+    grokEnabled: cfg ? (cfg.grokEnabled ?? true) : true,
+    openrouterEnabled: cfg ? (cfg.openrouterEnabled ?? true) : true,
+    puterEnabled: cfg ? (cfg.puterEnabled ?? true) : true,
     defaultEngine: cfg?.defaultEngine ?? "puter",
     defaultModel: cfg?.defaultModel ?? "gpt-4o-mini",
   });
@@ -80,6 +87,13 @@ export async function POST(req: NextRequest) {
     openrouterKey,
     defaultEngine,
     defaultModel,
+    openaiEnabled,
+    geminiEnabled,
+    mistralEnabled,
+    anthropicEnabled,
+    grokEnabled,
+    openrouterEnabled,
+    puterEnabled,
   } = await req.json();
 
   if (!process.env.AI_ENCRYPTION_KEY) {
@@ -131,6 +145,14 @@ export async function POST(req: NextRequest) {
   }
   if (defaultEngine) cfg.defaultEngine = defaultEngine;
   if (defaultModel) cfg.defaultModel = defaultModel;
+
+  if (typeof openaiEnabled === "boolean") cfg.openaiEnabled = openaiEnabled;
+  if (typeof geminiEnabled === "boolean") cfg.geminiEnabled = geminiEnabled;
+  if (typeof mistralEnabled === "boolean") cfg.mistralEnabled = mistralEnabled;
+  if (typeof anthropicEnabled === "boolean") cfg.anthropicEnabled = anthropicEnabled;
+  if (typeof grokEnabled === "boolean") cfg.grokEnabled = grokEnabled;
+  if (typeof openrouterEnabled === "boolean") cfg.openrouterEnabled = openrouterEnabled;
+  if (typeof puterEnabled === "boolean") cfg.puterEnabled = puterEnabled;
 
   await cfg.save();
 

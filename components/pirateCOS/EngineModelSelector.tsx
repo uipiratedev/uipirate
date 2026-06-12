@@ -22,9 +22,19 @@ export const EngineModelSelector: React.FC<Props> = ({
   onEngineChange,
   onModelChange,
 }) => {
-  const { models, source, isLoading } = useAIModels(selectedEngine);
+  const { models, source, isLoading, enabledProviders, enabledEngines } = useAIModels(selectedEngine);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Fall back to first enabled engine if current is disabled
+  useEffect(() => {
+    if (enabledEngines && enabledEngines[selectedEngine] === false) {
+      const fallbackEngine = enabledProviders[0]?.id;
+      if (fallbackEngine) {
+        onEngineChange(fallbackEngine);
+      }
+    }
+  }, [selectedEngine, enabledEngines, enabledProviders, onEngineChange]);
 
   // Auto-sync model to default when engine changes
   useEffect(() => {
@@ -69,7 +79,7 @@ export const EngineModelSelector: React.FC<Props> = ({
           </span>
         </div>
         <div className="flex bg-black/[0.04] dark:bg-white/[0.04] p-1 rounded-xl gap-1 border border-black/[0.02] dark:border-white/[0.02]">
-          {AI_PROVIDERS.map((provider) => (
+          {enabledProviders.map((provider) => (
             <button
               key={provider.id}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-geist transition-all flex items-center gap-1.5 cursor-pointer ${

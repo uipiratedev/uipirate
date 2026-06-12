@@ -10,6 +10,7 @@ import {
   AIEngine,
   AI_PROVIDERS,
   getDefaultModelForEngine,
+  getProvider,
 } from "@/lib/pirateCOS/ai-registry";
 
 export interface AIConfig {
@@ -45,6 +46,15 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [openrouterKey, setOpenrouterKey] = useState("");
   const [defaultEngine, setDefaultEngine] = useState<AIEngine>("puter");
   const [defaultModel, setDefaultModel] = useState("gpt-4o-mini");
+
+  const [openaiEnabled, setOpenaiEnabled] = useState(true);
+  const [geminiEnabled, setGeminiEnabled] = useState(true);
+  const [mistralEnabled, setMistralEnabled] = useState(true);
+  const [anthropicEnabled, setAnthropicEnabled] = useState(true);
+  const [grokEnabled, setGrokEnabled] = useState(true);
+  const [openrouterEnabled, setOpenrouterEnabled] = useState(true);
+  const [puterEnabled, setPuterEnabled] = useState(true);
+
   const [serverStatus, setServerStatus] = useState<{
     openai: boolean;
     gemini: boolean;
@@ -58,6 +68,33 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+
+  const [confirmModal, setConfirmModal] = useState<{
+    open: boolean;
+    provider: AIEngine | null;
+    nextState: boolean;
+  }>({ open: false, provider: null, nextState: false });
+
+  const onToggleClick = (provider: AIEngine, currentState: boolean) => {
+    setConfirmModal({
+      open: true,
+      provider,
+      nextState: !currentState,
+    });
+  };
+
+  const executeToggleLocal = (provider: AIEngine, nextVal: boolean) => {
+    if (provider === "openai") setOpenaiEnabled(nextVal);
+    if (provider === "gemini") setGeminiEnabled(nextVal);
+    if (provider === "mistral") setMistralEnabled(nextVal);
+    if (provider === "anthropic") setAnthropicEnabled(nextVal);
+    if (provider === "grok") setGrokEnabled(nextVal);
+    if (provider === "openrouter") setOpenrouterEnabled(nextVal);
+    if (provider === "puter") setPuterEnabled(nextVal);
+    
+    setConfirmModal({ open: false, provider: null, nextState: false });
+  };
+
   const [showOAKey, setShowOAKey] = useState(false);
   const [showGKey, setShowGKey] = useState(false);
   const [showMKey, setShowMKey] = useState(false);
@@ -69,6 +106,51 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     source: modelSource,
     isLoading: modelsLoading,
   } = useAIModels(defaultEngine);
+
+  // If the current defaultEngine becomes disabled, shift defaultEngine to the first enabled one
+  useEffect(() => {
+    const isCurrentEnabled =
+      defaultEngine === "openai" ? openaiEnabled :
+      defaultEngine === "gemini" ? geminiEnabled :
+      defaultEngine === "mistral" ? mistralEnabled :
+      defaultEngine === "anthropic" ? anthropicEnabled :
+      defaultEngine === "grok" ? grokEnabled :
+      defaultEngine === "openrouter" ? openrouterEnabled : puterEnabled;
+
+    if (!isCurrentEnabled) {
+      if (puterEnabled) {
+        setDefaultEngine("puter");
+        setDefaultModel(getDefaultModelForEngine("puter"));
+      } else if (openaiEnabled) {
+        setDefaultEngine("openai");
+        setDefaultModel(getDefaultModelForEngine("openai"));
+      } else if (geminiEnabled) {
+        setDefaultEngine("gemini");
+        setDefaultModel(getDefaultModelForEngine("gemini"));
+      } else if (anthropicEnabled) {
+        setDefaultEngine("anthropic");
+        setDefaultModel(getDefaultModelForEngine("anthropic"));
+      } else if (mistralEnabled) {
+        setDefaultEngine("mistral");
+        setDefaultModel(getDefaultModelForEngine("mistral"));
+      } else if (grokEnabled) {
+        setDefaultEngine("grok");
+        setDefaultModel(getDefaultModelForEngine("grok"));
+      } else if (openrouterEnabled) {
+        setDefaultEngine("openrouter");
+        setDefaultModel(getDefaultModelForEngine("openrouter"));
+      }
+    }
+  }, [
+    defaultEngine,
+    openaiEnabled,
+    geminiEnabled,
+    mistralEnabled,
+    anthropicEnabled,
+    grokEnabled,
+    openrouterEnabled,
+    puterEnabled,
+  ]);
 
   useEffect(() => {
     if (!open) return;
@@ -97,6 +179,13 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           });
           if (d.defaultEngine) setDefaultEngine(d.defaultEngine as any);
           if (d.defaultModel) setDefaultModel(d.defaultModel);
+          setOpenaiEnabled(d.openaiEnabled ?? true);
+          setGeminiEnabled(d.geminiEnabled ?? true);
+          setMistralEnabled(d.mistralEnabled ?? true);
+          setAnthropicEnabled(d.anthropicEnabled ?? true);
+          setGrokEnabled(d.grokEnabled ?? true);
+          setOpenrouterEnabled(d.openrouterEnabled ?? true);
+          setPuterEnabled(d.puterEnabled ?? true);
         }
       })
       .catch(() => {});
@@ -116,7 +205,17 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
     setSaving(true);
     setSaveError(null);
     try {
-      const body: Record<string, string> = { defaultEngine, defaultModel };
+      const body: Record<string, any> = {
+        defaultEngine,
+        defaultModel,
+        openaiEnabled,
+        geminiEnabled,
+        mistralEnabled,
+        anthropicEnabled,
+        grokEnabled,
+        openrouterEnabled,
+        puterEnabled,
+      };
 
       if (openaiKey.trim()) body.openaiKey = openaiKey.trim();
       if (geminiKey.trim()) body.geminiKey = geminiKey.trim();
@@ -162,6 +261,13 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           grok: refreshed.grok,
           openrouter: refreshed.openrouter,
         });
+        setOpenaiEnabled(refreshed.openaiEnabled ?? true);
+        setGeminiEnabled(refreshed.geminiEnabled ?? true);
+        setMistralEnabled(refreshed.mistralEnabled ?? true);
+        setAnthropicEnabled(refreshed.anthropicEnabled ?? true);
+        setGrokEnabled(refreshed.grokEnabled ?? true);
+        setOpenrouterEnabled(refreshed.openrouterEnabled ?? true);
+        setPuterEnabled(refreshed.puterEnabled ?? true);
       }
 
       setSaved(true);
@@ -285,6 +391,23 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
                 {puterBusy ? "Connecting…" : "Sign in to Puter"}
               </button>
             )}
+            {/* Toggle Switch */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+              <span className="text-[10px] font-semibold text-gray-500">Enabled</span>
+              <button
+                className={`w-8 h-4.5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                  puterEnabled ? "bg-green-500" : "bg-gray-200"
+                }`}
+                type="button"
+                onClick={() => onToggleClick("puter", puterEnabled)}
+              >
+                <span
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                    puterEnabled ? "translate-x-3.5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
           </PanelSection>
 
           {/* ── OpenAI ── */}
@@ -308,6 +431,23 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               onChange={setOpenaiKey}
               onToggle={() => setShowOAKey((v) => !v)}
             />
+            {/* Toggle Switch */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+              <span className="text-[10px] font-semibold text-gray-500">Enabled</span>
+              <button
+                className={`w-8 h-4.5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                  openaiEnabled ? "bg-green-500" : "bg-gray-200"
+                }`}
+                type="button"
+                onClick={() => onToggleClick("openai", openaiEnabled)}
+              >
+                <span
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                    openaiEnabled ? "translate-x-3.5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
           </PanelSection>
 
           {/* ── Gemini ── */}
@@ -331,6 +471,23 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               onChange={setGeminiKey}
               onToggle={() => setShowGKey((v) => !v)}
             />
+            {/* Toggle Switch */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+              <span className="text-[10px] font-semibold text-gray-500">Enabled</span>
+              <button
+                className={`w-8 h-4.5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                  geminiEnabled ? "bg-green-500" : "bg-gray-200"
+                }`}
+                type="button"
+                onClick={() => onToggleClick("gemini", geminiEnabled)}
+              >
+                <span
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                    geminiEnabled ? "translate-x-3.5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
           </PanelSection>
 
           {/* ── Mistral AI ── */}
@@ -354,6 +511,23 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               onChange={setMistralKey}
               onToggle={() => setShowMKey((v) => !v)}
             />
+            {/* Toggle Switch */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+              <span className="text-[10px] font-semibold text-gray-500">Enabled</span>
+              <button
+                className={`w-8 h-4.5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                  mistralEnabled ? "bg-green-500" : "bg-gray-200"
+                }`}
+                type="button"
+                onClick={() => onToggleClick("mistral", mistralEnabled)}
+              >
+                <span
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                    mistralEnabled ? "translate-x-3.5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
           </PanelSection>
 
           {/* ── Default Engine ── */}
@@ -377,6 +551,23 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               onChange={setAnthropicKey}
               onToggle={() => setShowAKey((v) => !v)}
             />
+            {/* Toggle Switch */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+              <span className="text-[10px] font-semibold text-gray-500">Enabled</span>
+              <button
+                className={`w-8 h-4.5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                  anthropicEnabled ? "bg-green-500" : "bg-gray-200"
+                }`}
+                type="button"
+                onClick={() => onToggleClick("anthropic", anthropicEnabled)}
+              >
+                <span
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                    anthropicEnabled ? "translate-x-3.5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
           </PanelSection>
 
           {/* ── xAI Grok ── */}
@@ -399,6 +590,23 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               onChange={setGrokKey}
               onToggle={() => setShowGrokKey((v) => !v)}
             />
+            {/* Toggle Switch */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+              <span className="text-[10px] font-semibold text-gray-500">Enabled</span>
+              <button
+                className={`w-8 h-4.5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                  grokEnabled ? "bg-green-500" : "bg-gray-200"
+                }`}
+                type="button"
+                onClick={() => onToggleClick("grok", grokEnabled)}
+              >
+                <span
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                    grokEnabled ? "translate-x-3.5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
           </PanelSection>
 
           {/* ── OpenRouter ── */}
@@ -421,11 +629,37 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
               onChange={setOpenrouterKey}
               onToggle={() => setShowORKey((v) => !v)}
             />
+            {/* Toggle Switch */}
+            <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+              <span className="text-[10px] font-semibold text-gray-500">Enabled</span>
+              <button
+                className={`w-8 h-4.5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                  openrouterEnabled ? "bg-green-500" : "bg-gray-200"
+                }`}
+                type="button"
+                onClick={() => onToggleClick("openrouter", openrouterEnabled)}
+              >
+                <span
+                  className={`w-3.5 h-3.5 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                    openrouterEnabled ? "translate-x-3.5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
           </PanelSection>
 
           <PanelSection label="Default Engine">
             <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
-              {AI_PROVIDERS.map((provider) => (
+              {AI_PROVIDERS.filter((provider) => {
+                if (provider.id === "openai") return openaiEnabled;
+                if (provider.id === "gemini") return geminiEnabled;
+                if (provider.id === "mistral") return mistralEnabled;
+                if (provider.id === "anthropic") return anthropicEnabled;
+                if (provider.id === "grok") return grokEnabled;
+                if (provider.id === "openrouter") return openrouterEnabled;
+                if (provider.id === "puter") return puterEnabled;
+                return true;
+              }).map((provider) => (
                 <button
                   key={provider.id}
                   className={`flex-grow flex-shrink-0 min-w-[64px] py-1.5 rounded-lg text-[11px] font-semibold font-geist transition-all ${defaultEngine === provider.id ? "bg-white text-gray-900 shadow-sm border border-black/5" : "text-gray-500 hover:text-gray-900"}`}
@@ -489,6 +723,13 @@ export const AIConfigPanel = ({ open, onClose }: Props) => {
           </button>
         </div>
       </div>
+      <ConfirmModal
+        open={confirmModal.open}
+        provider={confirmModal.provider}
+        nextState={confirmModal.nextState}
+        onClose={() => setConfirmModal({ open: false, provider: null, nextState: false })}
+        onConfirm={() => executeToggleLocal(confirmModal.provider!, confirmModal.nextState)}
+      />
     </>
   );
 };
@@ -567,3 +808,122 @@ const KeyInput = ({
     </button>
   </div>
 );
+
+interface ConfirmModalProps {
+  open: boolean;
+  provider: AIEngine | null;
+  nextState: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+function ConfirmModal({ open, provider, nextState, onClose, onConfirm }: ConfirmModalProps) {
+  if (!open || !provider) return null;
+  const info = getProvider(provider);
+  if (!info) return null;
+
+  const sourceColors = info.sourceColors || {
+    bg: "bg-orange-50",
+    border: "border-orange-100",
+    dot: "bg-orange-400",
+    text: "text-orange-700",
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl shadow-xl border border-black/5 w-full max-w-md mx-4 p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between mb-5">
+          <div>
+            <p
+              className="text-xs font-jetbrains-mono uppercase tracking-widest mb-0.5"
+              style={{ color: "#FF5B04" }}
+            >
+              AI Provider
+            </p>
+            <h2 className="text-lg font-bold font-geist text-gray-900">
+              {nextState ? `Enable ${info.name}?` : `Disable ${info.name}?`}
+            </h2>
+          </div>
+          <button
+            className="text-gray-400 hover:text-gray-700 transition-colors mt-1 flex items-center justify-center"
+            onClick={onClose}
+          >
+            <svg
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="16"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Provider identity strip */}
+        <div
+          className={`flex items-start gap-3 px-4 py-3 rounded-xl mb-5 ${sourceColors.bg} border ${sourceColors.border} items-center`}
+        >
+          {info.logo ? (
+            <img
+              src={info.logo}
+              alt={info.name}
+              className="w-5 h-5 object-contain flex-shrink-0"
+            />
+          ) : (
+            <span
+              className="text-xl leading-none flex-shrink-0"
+              style={{ color: info.color }}
+            >
+              ◆
+            </span>
+          )}
+          <div className="min-w-0">
+            <p
+              className={`text-xs font-bold font-geist mb-0.5 ${sourceColors.text}`}
+            >
+              {info.name}
+            </p>
+            <p className="text-xs font-geist text-gray-500 leading-relaxed">
+              {nextState ? "Provider will be enabled globally" : "Provider will be disabled globally"}
+            </p>
+          </div>
+        </div>
+
+        {/* Description/Info */}
+        <p className="text-xs font-geist text-gray-500 mb-5 leading-relaxed">
+          {nextState
+            ? `Enabling ${info.name} will make it available in your default engine and selectors after saving. Make sure a valid API key is configured.`
+            : `Disabling ${info.name} will hide it from active selections. If it is currently set as your default engine, it will fall back to another active provider after saving.`}
+        </p>
+
+        {/* Actions */}
+        <div className="flex gap-3">
+          <button
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold font-geist text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold font-geist text-white transition-all"
+            style={{ background: nextState ? "#16a34a" : "#FF5B04" }}
+            onClick={onConfirm}
+          >
+            {nextState ? "Enable Provider" : "Disable Provider"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

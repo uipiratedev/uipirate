@@ -6,6 +6,8 @@ import {
   AIEngine,
   AIModelEntry,
   getModelsForEngine,
+  AI_PROVIDERS,
+  AIProviderEntry,
 } from "@/lib/pirateCOS/ai-registry";
 import {
   isContentModel,
@@ -21,6 +23,39 @@ export function useAIModels(engine: AIEngine) {
   const [source, setSource] = useState<ModelSource>("fallback");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [enabledEngines, setEnabledEngines] = useState<Record<AIEngine, boolean>>({
+    openai: true,
+    gemini: true,
+    mistral: true,
+    anthropic: true,
+    grok: true,
+    openrouter: true,
+    puter: true,
+  });
+
+  useEffect(() => {
+    fetch("/api/pirateCOS/ai-config")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success) {
+          setEnabledEngines({
+            openai: d.openaiEnabled ?? true,
+            gemini: d.geminiEnabled ?? true,
+            mistral: d.mistralEnabled ?? true,
+            anthropic: d.anthropicEnabled ?? true,
+            grok: d.grokEnabled ?? true,
+            openrouter: d.openrouterEnabled ?? true,
+            puter: d.puterEnabled ?? true,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const enabledProviders = useMemo(() => {
+    return AI_PROVIDERS.filter((p) => enabledEngines[p.id] !== false);
+  }, [enabledEngines]);
 
   useEffect(() => {
     let cancelled = false;
@@ -93,5 +128,5 @@ export function useAIModels(engine: AIEngine) {
     };
   }, [engine, fallbackModels]);
 
-  return { models, source, isLoading, error };
+  return { models, source, isLoading, error, enabledProviders, enabledEngines };
 }

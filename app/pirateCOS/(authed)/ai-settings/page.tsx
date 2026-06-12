@@ -237,6 +237,14 @@ export default function AISettingsPage() {
   const [grokSource, setGrokSource] = useState<KeySource>(null);
   const [openrouterSource, setOpenrouterSource] = useState<KeySource>(null);
 
+  const [openaiEnabled, setOpenaiEnabled] = useState(true);
+  const [geminiEnabled, setGeminiEnabled] = useState(true);
+  const [mistralEnabled, setMistralEnabled] = useState(true);
+  const [anthropicEnabled, setAnthropicEnabled] = useState(true);
+  const [grokEnabled, setGrokEnabled] = useState(true);
+  const [openrouterEnabled, setOpenrouterEnabled] = useState(true);
+  const [puterEnabled, setPuterEnabled] = useState(true);
+
   // plan states
   const [plan, setPlan] = useState<string>("free");
   const isPro = plan === "pro" || plan === "enterprise";
@@ -277,8 +285,56 @@ export default function AISettingsPage() {
     provider: KeyProvider;
   }>({ open: false, provider: "openai" });
 
+  const [confirmModal, setConfirmModal] = useState<{
+    open: boolean;
+    provider: Engine | null;
+    nextState: boolean;
+  }>({ open: false, provider: null, nextState: false });
+
+  const onToggleClick = (provider: Engine, currentState: boolean) => {
+    setConfirmModal({
+      open: true,
+      provider,
+      nextState: !currentState,
+    });
+  };
+
   const isDefaultsDirty =
     defaultEngine !== initialEngine || defaultModel !== initialModel;
+
+  // Shift defaultEngine to the first enabled one if currently selected becomes disabled
+  useEffect(() => {
+    const isCurrentEnabled =
+      defaultEngine === "openai" ? openaiEnabled :
+      defaultEngine === "gemini" ? geminiEnabled :
+      defaultEngine === "mistral" ? mistralEnabled :
+      defaultEngine === "anthropic" ? anthropicEnabled :
+      defaultEngine === "grok" ? grokEnabled :
+      defaultEngine === "openrouter" ? openrouterEnabled : puterEnabled;
+
+    if (!isCurrentEnabled) {
+      let fallback: Engine = "puter";
+      if (puterEnabled) fallback = "puter";
+      else if (openaiEnabled) fallback = "openai";
+      else if (geminiEnabled) fallback = "gemini";
+      else if (anthropicEnabled) fallback = "anthropic";
+      else if (mistralEnabled) fallback = "mistral";
+      else if (grokEnabled) fallback = "grok";
+      else if (openrouterEnabled) fallback = "openrouter";
+
+      setDefaultEngine(fallback);
+      setDefaultModel(getDefaultModelForEngine(fallback));
+    }
+  }, [
+    defaultEngine,
+    openaiEnabled,
+    geminiEnabled,
+    mistralEnabled,
+    anthropicEnabled,
+    grokEnabled,
+    openrouterEnabled,
+    puterEnabled,
+  ]);
 
   useEffect(() => {
     // Fetch AI config
@@ -300,6 +356,14 @@ export default function AISettingsPage() {
           setInitialEngine(eng);
           setDefaultModel(mdl);
           setInitialModel(mdl);
+
+          setOpenaiEnabled(d.openaiEnabled ?? true);
+          setGeminiEnabled(d.geminiEnabled ?? true);
+          setMistralEnabled(d.mistralEnabled ?? true);
+          setAnthropicEnabled(d.anthropicEnabled ?? true);
+          setGrokEnabled(d.grokEnabled ?? true);
+          setOpenrouterEnabled(d.openrouterEnabled ?? true);
+          setPuterEnabled(d.puterEnabled ?? true);
         }
       })
       .catch(() => {});
@@ -326,6 +390,45 @@ export default function AISettingsPage() {
       })
       .catch(() => {});
   }, []);
+
+  const handleToggleEnabled = async (provider: Engine, nextVal: boolean) => {
+    const nextEnabled = {
+      openai: openaiEnabled,
+      gemini: geminiEnabled,
+      mistral: mistralEnabled,
+      anthropic: anthropicEnabled,
+      grok: grokEnabled,
+      openrouter: openrouterEnabled,
+      puter: puterEnabled,
+      [provider]: nextVal,
+    };
+
+    if (provider === "openai") setOpenaiEnabled(nextVal);
+    if (provider === "gemini") setGeminiEnabled(nextVal);
+    if (provider === "mistral") setMistralEnabled(nextVal);
+    if (provider === "anthropic") setAnthropicEnabled(nextVal);
+    if (provider === "grok") setGrokEnabled(nextVal);
+    if (provider === "openrouter") setOpenrouterEnabled(nextVal);
+    if (provider === "puter") setPuterEnabled(nextVal);
+
+    try {
+      await fetch("/api/pirateCOS/ai-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          openaiEnabled: nextEnabled.openai,
+          geminiEnabled: nextEnabled.gemini,
+          mistralEnabled: nextEnabled.mistral,
+          anthropicEnabled: nextEnabled.anthropic,
+          grokEnabled: nextEnabled.grok,
+          openrouterEnabled: nextEnabled.openrouter,
+          puterEnabled: nextEnabled.puter,
+        }),
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleToggleBYOK = async (provider: Engine) => {
     if (provider === "puter") return;
@@ -398,7 +501,17 @@ export default function AISettingsPage() {
       const res = await fetch("/api/pirateCOS/ai-config", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ defaultEngine, defaultModel }),
+        body: JSON.stringify({
+          defaultEngine,
+          defaultModel,
+          openaiEnabled,
+          geminiEnabled,
+          mistralEnabled,
+          anthropicEnabled,
+          grokEnabled,
+          openrouterEnabled,
+          puterEnabled,
+        }),
       });
       const data = await res.json();
 
@@ -460,6 +573,13 @@ export default function AISettingsPage() {
         provider={keyModal.provider}
         onClose={closeKeyModal}
         onSave={saveKey}
+      />
+      <ConfirmModal
+        open={confirmModal.open}
+        provider={confirmModal.provider}
+        nextState={confirmModal.nextState}
+        onClose={() => setConfirmModal({ open: false, provider: null, nextState: false })}
+        onConfirm={() => handleToggleEnabled(confirmModal.provider!, confirmModal.nextState)}
       />
 
       {/* ── Page header ── */}
@@ -532,6 +652,28 @@ export default function AISettingsPage() {
                   {puterBusy ? "Connecting…" : "Sign in to Puter"}
                 </button>
               )}
+              {/* Status Toggle */}
+              <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+                <div>
+                  <span className="text-[11px] font-bold text-gray-700 block">Status</span>
+                  <span className="text-[9px] text-gray-400 block leading-tight">
+                    Enable or disable this provider in writing assistants
+                  </span>
+                </div>
+                <button
+                  className={`w-9 h-5 rounded-full p-0.5 transition-colors relative flex items-center ${
+                    puterEnabled ? "bg-green-500" : "bg-gray-200"
+                  }`}
+                  type="button"
+                  onClick={() => onToggleClick("puter", puterEnabled)}
+                >
+                  <span
+                    className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+                      puterEnabled ? "translate-x-4" : "translate-x-0"
+                    }`}
+                  />
+                </button>
+              </div>
             </SettingCard>
 
             {/* OpenAI */}
@@ -554,6 +696,8 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("openai")}
               onManageKey={() => openKeyModal("openai")}
+              enabled={openaiEnabled}
+              onToggleEnabled={() => onToggleClick("openai", openaiEnabled)}
             />
 
             {/* Gemini */}
@@ -574,6 +718,8 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("gemini")}
               onManageKey={() => openKeyModal("gemini")}
+              enabled={geminiEnabled}
+              onToggleEnabled={() => onToggleClick("gemini", geminiEnabled)}
             />
 
             {/* Mistral */}
@@ -596,6 +742,8 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("mistral")}
               onManageKey={() => openKeyModal("mistral")}
+              enabled={mistralEnabled}
+              onToggleEnabled={() => onToggleClick("mistral", mistralEnabled)}
             />
 
             {/* Claude */}
@@ -618,6 +766,8 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("anthropic")}
               onManageKey={() => openKeyModal("anthropic")}
+              enabled={anthropicEnabled}
+              onToggleEnabled={() => onToggleClick("anthropic", anthropicEnabled)}
             />
 
             {/* Grok */}
@@ -640,6 +790,8 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("grok")}
               onManageKey={() => openKeyModal("grok")}
+              enabled={grokEnabled}
+              onToggleEnabled={() => onToggleClick("grok", grokEnabled)}
             />
 
             {/* OpenRouter */}
@@ -662,6 +814,8 @@ export default function AISettingsPage() {
               updatingBYOK={updatingBYOK}
               onToggleBYOK={() => handleToggleBYOK("openrouter")}
               onManageKey={() => openKeyModal("openrouter")}
+              enabled={openrouterEnabled}
+              onToggleEnabled={() => onToggleClick("openrouter", openrouterEnabled)}
             />
           </div>
 
@@ -777,7 +931,16 @@ export default function AISettingsPage() {
                     Default Engine
                   </p>
                   <div className="flex flex-wrap bg-black/[0.04] p-1 rounded-xl gap-1">
-                    {AI_PROVIDERS.map((provider) => (
+                    {AI_PROVIDERS.filter((provider) => {
+                      if (provider.id === "openai") return openaiEnabled;
+                      if (provider.id === "gemini") return geminiEnabled;
+                      if (provider.id === "mistral") return mistralEnabled;
+                      if (provider.id === "anthropic") return anthropicEnabled;
+                      if (provider.id === "grok") return grokEnabled;
+                      if (provider.id === "openrouter") return openrouterEnabled;
+                      if (provider.id === "puter") return puterEnabled;
+                      return true;
+                    }).map((provider) => (
                         <button
                           key={provider.id}
                           className={`flex-1 py-2 rounded-lg text-xs font-semibold font-geist transition-all flex items-center justify-center gap-1.5 ${
@@ -800,6 +963,7 @@ export default function AISettingsPage() {
                     ))}
                   </div>
                 </div>
+
                 {/* Model selector */}
                 <div>
                   <p className="text-xs font-jetbrains-mono uppercase tracking-widest text-gray-400 mb-3">
@@ -978,6 +1142,8 @@ interface ProviderKeyCardProps {
   updatingBYOK: boolean;
   onToggleBYOK: () => void;
   onManageKey: () => void;
+  enabled: boolean;
+  onToggleEnabled: () => void;
 }
 const ProviderKeyCard = ({
   icon,
@@ -991,6 +1157,8 @@ const ProviderKeyCard = ({
   updatingBYOK,
   onToggleBYOK,
   onManageKey,
+  enabled,
+  onToggleEnabled,
 }: ProviderKeyCardProps) => {
   const badge =
     source === "env" ? ".env ✓" : source === "db" ? "Saved" : undefined;
@@ -1057,6 +1225,29 @@ const ProviderKeyCard = ({
         </div>
       )}
 
+      {/* Status Toggle */}
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-black/[0.04]">
+        <div>
+          <span className="text-[11px] font-bold text-gray-700 block">Status</span>
+          <span className="text-[9px] text-gray-400 block leading-tight">
+            Enable or disable this provider in writing assistants
+          </span>
+        </div>
+        <button
+          className={`w-9 h-5 rounded-full p-0.5 transition-colors relative flex items-center ${
+            enabled ? "bg-green-500" : "bg-gray-200"
+          }`}
+          type="button"
+          onClick={onToggleEnabled}
+        >
+          <span
+            className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform duration-200 block ${
+              enabled ? "translate-x-4" : "translate-x-0"
+            }`}
+          />
+        </button>
+      </div>
+
       {/* Manage button */}
       <button
         className={`mt-3 w-full py-2 rounded-lg text-xs font-semibold font-geist border transition-colors flex items-center justify-center gap-1.5 ${
@@ -1085,3 +1276,123 @@ const ProviderKeyCard = ({
     </SettingCard>
   );
 };
+
+interface ConfirmModalProps {
+  open: boolean;
+  provider: Engine | null;
+  nextState: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+function ConfirmModal({ open, provider, nextState, onClose, onConfirm }: ConfirmModalProps) {
+  if (!open || !provider) return null;
+  const info = getProvider(provider);
+  if (!info) return null;
+
+  const sourceColors = info.sourceColors || {
+    bg: "bg-orange-50",
+    border: "border-orange-100",
+    dot: "bg-orange-400",
+    text: "text-orange-700",
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl shadow-xl border border-black/5 w-full max-w-md mx-4 p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between mb-5">
+          <div>
+            <p
+              className="text-xs font-jetbrains-mono uppercase tracking-widest mb-0.5"
+              style={{ color: "#FF5B04" }}
+            >
+              AI Provider
+            </p>
+            <h2 className="text-lg font-bold font-geist text-gray-900">
+              {nextState ? `Enable ${info.name}?` : `Disable ${info.name}?`}
+            </h2>
+          </div>
+          <button
+            className="text-gray-400 hover:text-gray-700 transition-colors mt-1 flex items-center justify-center"
+            onClick={onClose}
+          >
+            <svg
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+              width="16"
+            >
+              <line x1="18" x2="6" y1="6" y2="18" />
+              <line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Provider identity strip */}
+        <div
+          className={`flex items-start gap-3 px-4 py-3 rounded-xl mb-5 ${sourceColors.bg} border ${sourceColors.border} items-center`}
+        >
+          {info.logo ? (
+            <img
+              src={info.logo}
+              alt={info.name}
+              className="w-5 h-5 object-contain flex-shrink-0"
+            />
+          ) : (
+            <span
+              className="text-xl leading-none flex-shrink-0"
+              style={{ color: info.color }}
+            >
+              ◆
+            </span>
+          )}
+          <div className="min-w-0">
+            <p
+              className={`text-xs font-bold font-geist mb-0.5 ${sourceColors.text}`}
+            >
+              {info.name}
+            </p>
+            <p className="text-xs font-geist text-gray-500 leading-relaxed">
+              {nextState ? "Provider will be enabled globally" : "Provider will be disabled globally"}
+            </p>
+          </div>
+        </div>
+
+        {/* Description/Info */}
+        <p className="text-xs font-geist text-gray-500 mb-5 leading-relaxed">
+          {nextState
+            ? `Enabling ${info.name} will restore it in all selectors, writing assistants, and wizards across the platform. Make sure a valid key is configured to process requests successfully.`
+            : `Disabling ${info.name} will hide it from all selection lists. If it is currently your Default Engine, the default will shift to the first available active provider. Custom configuration settings are kept but won't be used.`}
+        </p>
+
+        {/* Actions */}
+        <div className="flex gap-3">
+          <button
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold font-geist text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button
+            className="flex-1 py-2.5 rounded-xl text-sm font-semibold font-geist text-white transition-all"
+            style={{ background: nextState ? "#16a34a" : "#FF5B04" }}
+            onClick={onConfirm}
+          >
+            {nextState ? "Enable Provider" : "Disable Provider"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+

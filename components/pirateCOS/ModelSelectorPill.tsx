@@ -21,7 +21,17 @@ export function ModelSelectorPill({
   const [dropdownPosition, setDropdownPosition] = useState<"top" | "bottom">("bottom");
   const [horizontalAlign, setHorizontalAlign] = useState<"left" | "right">("left");
   const containerRef = useRef<HTMLDivElement>(null);
-  const { models, isLoading } = useAIModels(selectedEngine);
+  const { models, isLoading, enabledProviders, enabledEngines } = useAIModels(selectedEngine);
+
+  // Fall back to first enabled engine if current is disabled
+  useEffect(() => {
+    if (enabledEngines && enabledEngines[selectedEngine] === false) {
+      const fallbackEngine = enabledProviders[0]?.id;
+      if (fallbackEngine) {
+        onEngineChange(fallbackEngine);
+      }
+    }
+  }, [selectedEngine, enabledEngines, enabledProviders, onEngineChange]);
 
   // Auto-detect position when opening
   useEffect(() => {
@@ -98,7 +108,7 @@ export function ModelSelectorPill({
           </div>
           {/* Engine tabs switcher */}
           <div className="flex bg-black/[0.03] p-0.5 rounded-lg gap-0.5 border border-black/[0.01]">
-            {AI_PROVIDERS.map((provider) => (
+            {enabledProviders.map((provider) => (
               <button
                 key={provider.id}
                 type="button"

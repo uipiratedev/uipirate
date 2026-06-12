@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 
+import dbConnect from "@/lib/mongodb";
+import AIConfig from "@/models/pirateCOS/AIConfig";
 import { discoverAIModels } from "@/lib/pirateCOS/ai-model-discovery";
 import { getDecryptedKeys } from "@/lib/pirateCOS/ai-config";
 import { isAIEngine, type AIEngine } from "@/lib/pirateCOS/ai-registry";
@@ -37,6 +40,25 @@ export async function GET(req: NextRequest) {
       { success: false, error: "Invalid AI engine" },
       { status: 400 },
     );
+  }
+
+  await dbConnect();
+  const cfg = await AIConfig.findOne({
+    tenantId: new mongoose.Types.ObjectId(user.tenantId),
+  }).lean();
+
+  const isEnabled = cfg
+    ? (cfg[`${engineParam}Enabled` as keyof typeof cfg] ?? true)
+    : true;
+
+  if (!isEnabled) {
+    return NextResponse.json({
+      success: true,
+      engine: engineParam,
+      models: [],
+      source: "fallback",
+      error: "This provider is disabled in AI settings",
+    });
   }
 
   const keys = await getDecryptedKeys(user.tenantId);
