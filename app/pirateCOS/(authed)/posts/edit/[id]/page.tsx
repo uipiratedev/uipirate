@@ -5037,6 +5037,8 @@ const BlogEditPage = () => {
   const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
   const [teamId, setTeamId] = useState<string>(""); // Phase 5.4+: Team assignment
   const [teams, setTeams] = useState<any[]>([]); // Phase 5.4+: Available teams
+  const [assignees, setAssignees] = useState<Array<{ email: string; name: string }>>([]);
+  const [postOwner, setPostOwner] = useState<{ email: string; name: string } | null>(null);
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -5059,7 +5061,7 @@ const BlogEditPage = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | "collab" | null
   >(null);
   const [selectedTransformFormat, setSelectedTransformFormat] = useState<string | null>(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
@@ -6047,6 +6049,8 @@ const BlogEditPage = () => {
         setPostType(postTypeVal);
         setContentGoal(blog.contentGoal || "traffic");
         setTeamId(blog.teamId || ""); // Phase 5.4+: Load team assignment
+        setAssignees(blog.assignees || []);
+        setPostOwner(blog.owner || null);
 
         // Auto-select recommended AI preset based on loaded postType if not already set
         const PRESET_DEFAULTS: Record<string, string> = {
@@ -6210,6 +6214,24 @@ const BlogEditPage = () => {
       setIsDeleting(false);
     }
   };
+
+  const handleAssign = useCallback(async (newAssignees: Array<{ email: string; name: string }>) => {
+    const postId = typeof params.id === "string" ? params.id : "";
+    if (!postId) return;
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${postId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assignees: newAssignees }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAssignees(data.data.assignees || newAssignees);
+      }
+    } catch {
+      // silent — collab save failure doesn't block editing
+    }
+  }, [params.id]);
 
   const handleSaveDraft = useCallback(() => {
     if (!title.trim()) {
@@ -6966,6 +6988,9 @@ const BlogEditPage = () => {
               selectedModel={seoModel}
               onEngineChange={setSeoEngine}
               onModelChange={setSeoModel}
+              assignees={assignees}
+              postOwner={postOwner ?? undefined}
+              onAssign={handleAssign}
             />
           </>
         )}

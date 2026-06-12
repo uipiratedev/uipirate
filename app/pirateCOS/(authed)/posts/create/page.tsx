@@ -5214,7 +5214,7 @@ const BlogEditor = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | "collab" | null
   >(null);
   const [selectedTransformFormat, setSelectedTransformFormat] = useState<string | null>(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");

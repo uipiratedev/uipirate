@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { headers } from "next/headers";
+import { unstable_noStore as noStore } from "next/cache";
 import { Button } from "@heroui/button";
+import mongoose from "mongoose";
 
 import { getCurrentUser } from "@/lib/pirateCOS/auth";
 import dbConnect from "@/lib/mongodb";
@@ -14,7 +16,10 @@ import {
   IconEdit,
 } from "@/components/pirateCOS/AdminIcons";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
+  noStore();
   const user = await getCurrentUser();
   const host = (await headers()).get("host") || "";
   const isSubdomain =
@@ -23,13 +28,26 @@ export default async function AdminDashboardPage() {
 
   await dbConnect();
 
+  // Base filter: always scope to the user's tenant
+  const baseFilter: any = {
+    tenantId: new mongoose.Types.ObjectId(user!.tenantId),
+  };
+
+  // Org members (not the org owner) only see posts they own or are assigned to
+  if (user!.id !== user!.tenantId) {
+    baseFilter.$or = [
+      { "owner.email": user!.email },
+      { "assignees.email": user!.email },
+    ];
+  }
+
   // Get post statistics
-  const totalBlogs = await Post.countDocuments();
-  const publishedBlogs = await Post.countDocuments({ published: true });
-  const draftBlogs = await Post.countDocuments({ published: false });
+  const totalBlogs = await Post.countDocuments(baseFilter);
+  const publishedBlogs = await Post.countDocuments({ ...baseFilter, published: true });
+  const draftBlogs = await Post.countDocuments({ ...baseFilter, published: false });
 
   // Get recent posts
-  const recentBlogs = await Post.find()
+  const recentBlogs = await Post.find(baseFilter)
     .sort({ createdAt: -1 })
     .limit(5)
     .select(
@@ -37,8 +55,9 @@ export default async function AdminDashboardPage() {
     )
     .lean();
 
-  // Aggregate all view counters across all blog posts
+  // Aggregate view counters across visible posts only
   const viewsResult = await Post.aggregate([
+    { $match: baseFilter },
     {
       $group: {
         _id: null,

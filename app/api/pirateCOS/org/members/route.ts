@@ -3,6 +3,7 @@ import dbConnect from "@/lib/mongodb";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { checkRole } from "@/lib/pirateCOS/require-role";
 import { audit } from "@/lib/pirateCOS/audit";
+import { notifyByEmail } from "@/lib/pirateCOS/notify";
 import Admin from "@/models/pirateCOS/Admin";
 
 // POST /api/pirateCOS/org/members — invite an existing user into the organisation
@@ -59,6 +60,13 @@ export async function POST(req: NextRequest) {
       targetId: member._id.toString(),
       targetType: "admin",
       meta: { email: email.trim().toLowerCase(), role: assignedRole },
+    });
+
+    await notifyByEmail(email.trim().toLowerCase(), {
+      type: "org_invite",
+      title: "You've been added to an organisation",
+      message: `${user.name || user.email} added you to their organisation as ${assignedRole}.`,
+      href: "/pirateCOS/profile",
     });
 
     return NextResponse.json({

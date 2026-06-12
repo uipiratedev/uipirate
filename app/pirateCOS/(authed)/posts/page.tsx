@@ -28,6 +28,7 @@ interface Blog {
   duplicateViews?: number;
   postType?: string;
   approvalStatus?: "draft" | "pending_review" | "approved" | "rejected";
+  assignees?: Array<{ email: string; name: string }>;
   author: {
     name: string;
   };
@@ -50,6 +51,7 @@ export default function AdminBlogsPage() {
   >("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterTeam, setFilterTeam] = useState<string>("all");
+  const [filterAssignedToMe, setFilterAssignedToMe] = useState(false);
   const [teams, setTeams] = useState<Array<{ _id: string; name: string }>>([]);
 
   // Pagination states
@@ -121,11 +123,11 @@ export default function AdminBlogsPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filterStatus, filterType, filterTeam, debouncedSearch]);
+  }, [filterStatus, filterType, filterTeam, filterAssignedToMe, debouncedSearch]);
 
   useEffect(() => {
     fetchBlogs();
-  }, [currentPage, filterStatus, filterType, filterTeam, debouncedSearch]);
+  }, [currentPage, filterStatus, filterType, filterTeam, filterAssignedToMe, debouncedSearch]);
 
   const fetchBlogs = async () => {
     try {
@@ -142,6 +144,9 @@ export default function AdminBlogsPage() {
       }
       if (filterTeam !== "all") {
         params.append("teamId", filterTeam);
+      }
+      if (filterAssignedToMe) {
+        params.append("assignedToMe", "true");
       }
       if (debouncedSearch.trim()) {
         params.append("search", debouncedSearch.trim());
@@ -584,6 +589,21 @@ export default function AdminBlogsPage() {
                 </div>
               )}
             </div>
+
+            {/* Assigned to Me toggle */}
+            <button
+              onClick={() => setFilterAssignedToMe((v) => !v)}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-sm font-semibold font-geist transition-all ${
+                filterAssignedToMe
+                  ? "bg-[#FF5B04] text-white border-[#FF5B04]"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-[#FF5B04]/40 hover:text-[#FF5B04]"
+              }`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Assigned to Me
+            </button>
           </div>
         </div>
       </div>
@@ -742,6 +762,15 @@ export default function AdminBlogsPage() {
                               </span>
                             ) : null;
                           })()}
+                          {(blog.assignees ?? []).length > 0 && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-medium font-geist px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-100">
+                              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              {blog.assignees![0].name || blog.assignees![0].email.split("@")[0]}
+                              {blog.assignees!.length > 1 && ` +${blog.assignees!.length - 1}`}
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">

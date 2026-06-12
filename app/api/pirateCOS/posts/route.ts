@@ -36,7 +36,8 @@ export async function GET(request: NextRequest) {
     const postType = searchParams.get("postType");
     const search = searchParams.get("search");
     const teamId = searchParams.get("teamId");
-    
+    const assignedToMe = searchParams.get("assignedToMe");
+
     const limit = Math.min(Math.max(parseInt(searchParams.get("limit") || "10", 10), 1), 100);
     const page = Math.max(parseInt(searchParams.get("page") || "1", 10), 1);
     const skip = (page - 1) * limit;
@@ -46,6 +47,16 @@ export async function GET(request: NextRequest) {
     };
 
     const andConditions: any[] = [];
+
+    // Org members (non-owners) only see posts they created or are assigned to
+    if (user.id !== user.tenantId) {
+      andConditions.push({
+        $or: [
+          { "owner.email": user.email },
+          { "assignees.email": user.email },
+        ],
+      });
+    }
 
     // Filter by status (published/draft)
     if (status === "published") {
@@ -82,6 +93,11 @@ export async function GET(request: NextRequest) {
           { excerpt: { $regex: searchRegex } },
         ],
       });
+    }
+
+    // Filter by assignee (current user is in assignees array)
+    if (assignedToMe === "true") {
+      andConditions.push({ "assignees.email": user.email });
     }
 
     // Filter by teamId
@@ -200,6 +216,8 @@ export async function POST(request: NextRequest) {
     const blog = await Post.create({
       tenantId: postTenantOid,
       teamId: teamId ? new mongoose.Types.ObjectId(teamId) : undefined, // Phase 5.4+
+      owner: { email: user.email || "", name: user.name || "" },
+      assignees: [{ email: user.email || "", name: user.name || "" }],
       title,
       slug,
       content,

@@ -6,7 +6,8 @@ import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 import { checkRole } from "@/lib/pirateCOS/require-role";
 import { audit } from "@/lib/pirateCOS/audit";
-import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
+import { createSnapshot } from "@/lib/pirateCOS/version-tracker";
+import { notifyByEmail } from "@/lib/pirateCOS/notify";
 import type { IContentHistory } from "@/models/pirateCOS/ContentHistory";
 
 interface PostUpdateData {
@@ -20,7 +21,8 @@ interface PostUpdateData {
   published?: boolean;
   postType?: string;
   contentGoal?: string;
-  teamId?: string; // Phase 5.4+: Team assignment
+  teamId?: string;
+  assignees?: Array<{ email: string; name: string }>;
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -84,6 +86,15 @@ export async function GET(
       );
     }
 
+    // Org members (non-owners) can only access posts they created or are assigned to
+    if (user.id !== user.tenantId) {
+      const ownerEmail = (blog as any).owner?.email;
+      const assigneeEmails: string[] = ((blog as any).assignees ?? []).map((a: any) => a.email);
+      if (ownerEmail !== user.email && !assigneeEmails.includes(user.email)) {
+        return NextResponse.json({ success: false, error: "Post not found" }, { status: 404 });
+      }
+    }
+
     return NextResponse.json({
       success: true,
       data: blog,
@@ -136,7 +147,8 @@ export async function PUT(
       seo,
       repurposedOutputs,
       aiWorkspaceSession,
-      teamId, // Phase 5.4+: Team assignment
+      teamId,
+      assignees,
       changeType: bodyChangeType, // Phase 4F.2
       commitMessage: bodyCommitMessage, // Phase 4F.2
       aiMetadata: bodyAiMetadata, // Phase 4F.2
@@ -203,7 +215,24 @@ export async function PUT(
     if (published !== undefined) blog.published = published;
     if (postType !== undefined) (blog as any).postType = postType;
     if (contentGoal !== undefined) (blog as any).contentGoal = contentGoal;
-    if (teamId !== undefined) (blog as any).teamId = teamId ? new mongoose.Types.ObjectId(teamId) : null; // Phase 5.4+
+    if (teamId !== undefined) (blog as any).teamId = teamId ? new mongoose.Types.ObjectId(teamId) : null;
+    if (assignees !== undefined) {
+      const prevEmails: string[] = ((blog as any).assignees ?? []).map((a: any) => a.email);
+      (blog as any).assignees = assignees;
+      blog.markModified("assignees");
+      // Notify only newly added members
+      for (const a of assignees) {
+        if (!prevEmails.includes(a.email)) {
+          notifyByEmail(a.email, {
+            type: "post_assigned",
+            title: "Post assigned to you",
+            message: `${user.name || user.email} added you as a collaborator on "${(blog as any).title}".`,
+            href: `/pirateCOS/posts/edit/${blog._id}`,
+            relatedId: String(blog._id),
+          });
+        }
+      }
+    }
 
     if (seo !== undefined) {
       blog.seo = {

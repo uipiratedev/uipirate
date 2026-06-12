@@ -31,8 +31,12 @@ interface AIWorkspacePanelProps {
   onInsertCTA?: (html: string) => void;
 
   // Unified Sidebar Props
-  activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null;
-  onTabChange: (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null) => void;
+  activeTab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | "collab" | null;
+  onTabChange: (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | "collab" | null) => void;
+  // Collaboration props
+  assignees?: Array<{ email: string; name: string }>;
+  postOwner?: { email: string; name: string };
+  onAssign?: (assignees: Array<{ email: string; name: string }>) => void;
   renderContentTab: () => React.ReactNode;
   renderSEOTab?: () => React.ReactNode;
   renderHealthTab: () => React.ReactNode;
@@ -68,6 +72,7 @@ const PANEL_DESCRIPTIONS: Record<string, string> = {
   distribute: "Publish to connected platforms and create spin-offs",
   version:  "View, compare, and restore previous versions of your post",
   transform: "Repurpose your post into 8 distinct formats with high-fidelity previews",
+  collab: "Assign this post to a team member and track ownership",
 };
 
 
@@ -445,6 +450,9 @@ export default function AIWorkspacePanel({
   selectedModel: propModel,
   onEngineChange: propOnEngineChange,
   onModelChange: propOnModelChange,
+  assignees,
+  postOwner,
+  onAssign,
 }: AIWorkspacePanelProps) {
   const { user } = useAuth();
   const isSubdomain =
@@ -466,6 +474,70 @@ export default function AIWorkspacePanel({
   const [ctaPickerOpen, setCtaPickerOpen] = useState(false);
   const ctaPickerRef = useRef<HTMLDivElement>(null);
   const [activeQuickTab, setActiveQuickTab] = useState<"edits" | "transform" | "cta">("edits");
+
+  // Collaboration tab state
+  const [collabMembers, setCollabMembers] = useState<Array<{ _id: string; name: string; email: string; orgRole: string }>>([]);
+  const [collabLoading, setCollabLoading] = useState(false);
+  const [collabAssigning, setCollabAssigning] = useState(false);
+  const [collabSearch, setCollabSearch] = useState("");
+
+  // collabSelected tracks non-owner collaborators only; owner access is always implicit
+  const [collabSelected, setCollabSelected] = useState<Set<string>>(
+    new Set((assignees ?? []).filter((a) => a.email !== postOwner?.email).map((a) => a.email))
+  );
+
+  useEffect(() => {
+    setCollabSelected(new Set((assignees ?? []).filter((a) => a.email !== postOwner?.email).map((a) => a.email)));
+  }, [assignees, postOwner]);
+
+  useEffect(() => {
+    if (activeTab !== "collab" || collabMembers.length > 0) return;
+    setCollabLoading(true);
+    fetch("/api/pirateCOS/org/details")
+      .then((r) => r.json())
+      .then((d) => { if (d.success) setCollabMembers(d.data.members || []); })
+      .catch(() => {})
+      .finally(() => setCollabLoading(false));
+  }, [activeTab]);
+
+  const toggleCollabMember = (email: string) => {
+    setCollabSelected((prev) => {
+      const next = new Set(prev);
+      next.has(email) ? next.delete(email) : next.add(email);
+      return next;
+    });
+  };
+
+  const handleCollabAssign = async () => {
+    if (!onAssign || !postId) return;
+    setCollabAssigning(true);
+    const selected = collabMembers
+      .filter((m) => collabSelected.has(m.email))
+      .map((m) => ({ email: m.email, name: m.name }));
+    // Always keep owner in assignees so they never lose access to their own post
+    const ownerAlreadyIn = postOwner && selected.some((a) => a.email === postOwner.email);
+    const finalAssignees =
+      postOwner && !ownerAlreadyIn
+        ? [{ email: postOwner.email, name: postOwner.name }, ...selected]
+        : selected;
+    await onAssign(finalAssignees);
+    setCollabAssigning(false);
+  };
+
+  // Filtered member list (excludes the owner — they're shown separately)
+  const filteredCollabMembers = collabMembers.filter((m) => {
+    if (postOwner && m.email === postOwner.email) return false;
+    if (!collabSearch.trim()) return true;
+    const q = collabSearch.toLowerCase();
+    return m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q);
+  });
+
+  const currentNonOwnerEmails = new Set(
+    (assignees ?? []).filter((a) => a.email !== postOwner?.email).map((a) => a.email)
+  );
+  const isDirty =
+    collabSelected.size !== currentNonOwnerEmails.size ||
+    Array.from(collabSelected).some((e) => !currentNonOwnerEmails.has(e));
 
 
   useEffect(() => {
@@ -613,7 +685,7 @@ export default function AIWorkspacePanel({
     }
   };
 
-  const handleTabClick = (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform") => {
+  const handleTabClick = (tab: "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | "collab") => {
     if (activeTab === tab) {
       onTabChange(null);
     } else {
@@ -1165,6 +1237,7 @@ export default function AIWorkspacePanel({
                       {activeTab === "distribute" && "Distribute"}
                       {activeTab === "version" && "Version History"}
                       {activeTab === "transform" && "Transform"}
+                      {activeTab === "collab" && "Collaboration"}
                     </span>
                     <button
                       type="button"
@@ -1202,6 +1275,134 @@ export default function AIWorkspacePanel({
                       selectedEngine={selectedEngine}
                       selectedModel={selectedModel}
                     />
+                  )}
+                  {activeTab === "collab" && (
+                    <div className="space-y-4">
+                      {/* Owner */}
+                      <div className="bg-amber-50 rounded-xl p-3.5 border border-amber-100">
+                        <p className="text-[10px] font-bold text-amber-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+                          </svg>
+                          Owner
+                        </p>
+                        {postOwner ? (
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-full bg-amber-200 text-amber-700 flex items-center justify-center text-[11px] font-bold flex-shrink-0">
+                              {(postOwner.name || postOwner.email).charAt(0).toUpperCase()}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs font-semibold text-gray-800 truncate">
+                                {postOwner.name || postOwner.email}
+                                {user?.email === postOwner.email && (
+                                  <span className="ml-1.5 text-[10px] font-normal text-amber-500">(you)</span>
+                                )}
+                              </p>
+                              <p className="text-[10px] text-gray-400 truncate">{postOwner.email}</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-xs text-gray-400">No owner set</p>
+                        )}
+                      </div>
+
+                      {/* Shared with */}
+                      {(() => {
+                        const collaborators = (assignees ?? []).filter((a) => a.email !== postOwner?.email);
+                        return collaborators.length > 0 ? (
+                          <div className="bg-gray-50 rounded-xl p-3.5 border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                              Shared with ({collaborators.length})
+                            </p>
+                            <div className="space-y-2">
+                              {collaborators.map((a) => (
+                                <div key={a.email} className="flex items-center gap-2">
+                                  <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+                                    {(a.name || a.email).charAt(0).toUpperCase()}
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <p className="text-xs font-semibold text-gray-800 truncate">{a.name || a.email}</p>
+                                    <p className="text-[10px] text-gray-400 truncate">{a.email}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : null;
+                      })()}
+
+                      {/* Add / remove collaborators */}
+                      <div>
+                        <p className="text-xs font-semibold text-gray-700 mb-2">Add collaborators</p>
+
+                        {/* Search input */}
+                        <div className="relative mb-2">
+                          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                          </svg>
+                          <input
+                            type="text"
+                            value={collabSearch}
+                            onChange={(e) => setCollabSearch(e.target.value)}
+                            placeholder="Search by name or email…"
+                            className="w-full pl-8 pr-3 py-2 text-xs rounded-xl border border-gray-200 bg-white focus:outline-none focus:border-[#FF5B04] focus:ring-1 focus:ring-[#FF5B04]/20 placeholder-gray-400"
+                          />
+                        </div>
+
+                        {collabLoading ? (
+                          <div className="flex items-center gap-2 text-xs text-gray-400 py-2">
+                            <div className="animate-spin rounded-full h-3.5 w-3.5 border-b-2 border-gray-300" />
+                            Loading members…
+                          </div>
+                        ) : collabMembers.length === 0 ? (
+                          <p className="text-xs text-gray-400 py-1">No org members found. Add members to your organisation first.</p>
+                        ) : filteredCollabMembers.length === 0 ? (
+                          <p className="text-xs text-gray-400 py-1">No members match &ldquo;{collabSearch}&rdquo;</p>
+                        ) : (
+                          <div className="space-y-1.5">
+                            {filteredCollabMembers.map((m) => {
+                              const checked = collabSelected.has(m.email);
+                              return (
+                                <button
+                                  key={m._id}
+                                  onClick={() => toggleCollabMember(m.email)}
+                                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all text-left ${
+                                    checked
+                                      ? "border-[#FF5B04] bg-orange-50"
+                                      : "border-gray-100 bg-white hover:border-gray-200 hover:bg-gray-50"
+                                  }`}
+                                >
+                                  <div className={`w-4 h-4 rounded flex items-center justify-center flex-shrink-0 border-2 transition-colors ${checked ? "bg-[#FF5B04] border-[#FF5B04]" : "border-gray-300"}`}>
+                                    {checked && (
+                                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                      </svg>
+                                    )}
+                                  </div>
+                                  <div className="w-7 h-7 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-[11px] font-bold flex-shrink-0">
+                                    {(m.name || m.email).charAt(0).toUpperCase()}
+                                  </div>
+                                  <div className="min-w-0">
+                                    <p className="text-xs font-semibold text-gray-800 truncate">{m.name || m.email}</p>
+                                    <p className="text-[10px] text-gray-400 truncate">{m.email}</p>
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+
+                        {collabMembers.length > 0 && (
+                          <button
+                            onClick={handleCollabAssign}
+                            disabled={collabAssigning || !isDirty}
+                            className="w-full mt-3 py-2 bg-[#FF5B04] text-white rounded-xl text-xs font-semibold hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+                          >
+                            {collabAssigning ? "Saving…" : `Save Collaborators (${collabSelected.size})`}
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -1342,6 +1543,21 @@ export default function AIWorkspacePanel({
               </svg>
             </button>
           )}
+
+          {/* Collaboration */}
+          <button
+            onClick={() => handleTabClick("collab")}
+            className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all cursor-pointer ${
+              activeTab === "collab"
+                ? "bg-[#FF5B04] text-white shadow-md shadow-orange-500/10 scale-105"
+                : "text-gray-400 hover:text-gray-700 hover:bg-black/5"
+            }`}
+            title="Collaboration"
+          >
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
 
           <div className="flex-1" />
 
