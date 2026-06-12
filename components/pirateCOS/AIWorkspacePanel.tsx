@@ -476,6 +476,7 @@ export default function AIWorkspacePanel({
     uiPreferences,
     loading,
     error,
+    clearError,
     sendMessage,
     triggerQuickAction,
     applyGeneration,
@@ -815,12 +816,26 @@ export default function AIWorkspacePanel({
 
                   {/* Rewrite Error State */}
                   {rewriteError && (
-                    <div className="p-3.5 bg-red-50/50 border border-red-100 rounded-2xl space-y-2 text-red-600">
-                      <div className="flex items-center gap-1.5 text-xs font-bold font-geist text-red-600">
-                        <CosIcon name="warning" size={12} className="text-red-500 shrink-0" />
-                        <span>Rewrite Failed</span>
+                    <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-3 animate-in slide-in-from-top-1 duration-200 relative mb-4">
+                      <button
+                        onClick={clearRewriteOutput}
+                        className="absolute top-2 right-2.5 text-red-400 hover:text-red-600 text-xs font-bold bg-transparent border-none cursor-pointer"
+                        title="Dismiss error"
+                      >
+                        &times;
+                      </button>
+                      <div className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg fill="none" height="14" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                          <circle cx="12" cy="12" r="10" />
+                          <line x1="12" x2="12" y1="8" y2="12" />
+                          <line x1="12" x2="12.01" y1="16" y2="16" />
+                        </svg>
                       </div>
-                      <p className="text-[10px] leading-relaxed font-geist text-red-500">{rewriteError}</p>
+                      <div className="flex-1 min-w-0 pr-4">
+                        <p className="text-[11px] font-bold text-red-700 mb-0.5">Rewrite Failed</p>
+                        <p className="text-[10px] text-red-600 leading-relaxed">{rewriteError}</p>
+                        <p className="text-[10px] text-red-400 mt-1.5">Try switching to a different AI model using the selector above.</p>
+                      </div>
                     </div>
                   )}
 
@@ -1023,6 +1038,8 @@ export default function AIWorkspacePanel({
                       activeKeywords={activeKeywords}
                       postType={postType}
                       contentGoal={contentGoal}
+                      error={error}
+                      onClearError={clearError}
                     />
                   )}
 
@@ -1143,7 +1160,7 @@ export default function AIWorkspacePanel({
                       ?
                     </button>
                   </div>
-                  {activeTab !== "version" && activeTab !== "transform" && (
+                  {activeTab !== "version" && (
                     <ModelSelectorPill
                       selectedEngine={selectedEngine}
                       selectedModel={selectedModel}
@@ -1167,6 +1184,8 @@ export default function AIWorkspacePanel({
                       onUpdateRepurposedOutputs={onUpdateRepurposedOutputs}
                       selectedFormat={selectedTransformFormat}
                       setSelectedFormat={setSelectedTransformFormat || (() => {})}
+                      selectedEngine={selectedEngine}
+                      selectedModel={selectedModel}
                     />
                   )}
                 </div>

@@ -12,6 +12,7 @@ import {
   resolveAIEngine,
   type AIEngine,
 } from "@/lib/pirateCOS/ai-provider";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 
 const FORMAT_PROMPTS: Record<string, string> = {
   "linkedin-thread": `Create an engaging 10-slide LinkedIn carousel thread based on this post. 
@@ -212,10 +213,7 @@ ${FORMAT_PROMPTS[format]}
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(
-          `${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`,
-        );
+        throw new Error(parseAIError(selectedEngine, response.status, errText));
       }
 
       const data = await response.json();
@@ -240,8 +238,7 @@ ${FORMAT_PROMPTS[format]}
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(`Claude API Error: ${errText}`);
+        throw new Error(parseAIError("anthropic", response.status, errText));
       }
 
       const data = await response.json();
@@ -274,8 +271,7 @@ ${FORMAT_PROMPTS[format]}
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(`Gemini API Error: ${errText}`);
+        throw new Error(parseAIError("gemini", response.status, errText));
       }
 
       const data = await response.json();

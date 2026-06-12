@@ -11,6 +11,7 @@ import {
   resolveAIEngine,
   type AIEngine,
 } from "@/lib/pirateCOS/ai-provider";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
 import dbConnect from "@/lib/mongodb";
 import { getGoalConfig, getPostTypeConfig } from "@/lib/pirateCOS/postTypeConfig";
@@ -256,10 +257,7 @@ export async function POST(request: NextRequest) {
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(
-          `${isOpenRouter ? "OpenRouter" : isGrok ? "Grok" : isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`,
-        );
+        throw new Error(parseAIError(selectedEngine, response.status, errText));
       }
 
       const data = await response.json();
@@ -283,8 +281,7 @@ export async function POST(request: NextRequest) {
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(`Claude API Error: ${errText}`);
+        throw new Error(parseAIError("anthropic", response.status, errText));
       }
 
       const data = await response.json();
@@ -322,8 +319,7 @@ export async function POST(request: NextRequest) {
 
       if (!response.ok) {
         const errText = await response.text();
-
-        throw new Error(`Gemini API Error: ${errText}`);
+        throw new Error(parseAIError("gemini", response.status, errText));
       }
 
       const data = await response.json();

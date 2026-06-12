@@ -794,6 +794,10 @@ export function useAIWorkspaceSession(
     setActiveKeywords("");
   }, []);
 
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
+
   return {
     messages,
     generations,
@@ -801,6 +805,7 @@ export function useAIWorkspaceSession(
     uiPreferences,
     loading,
     error,
+    clearError,
     sendMessage,
     triggerQuickAction,
     applyGeneration,

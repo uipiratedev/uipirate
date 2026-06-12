@@ -34,6 +34,8 @@ interface ConversationThreadProps {
   activeKeywords: string;
   postType: string;
   contentGoal: string;
+  error?: string | null;
+  onClearError?: () => void;
 }
 
 // Phase 5.2: Feedback state type
@@ -66,6 +68,8 @@ export default function ConversationThread({
   activeKeywords,
   postType,
   contentGoal,
+  error,
+  onClearError,
 }: ConversationThreadProps) {
   const [inputValue, setInputValue] = useState("");
   const [showBuilderForm, setShowBuilderForm] = useState(false);
@@ -457,6 +461,33 @@ export default function ConversationThread({
               </div>
             );
           })
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-3 animate-in slide-in-from-top-1 duration-200 relative max-w-[90%]">
+            {onClearError && (
+              <button
+                onClick={onClearError}
+                className="absolute top-2 right-2.5 text-red-400 hover:text-red-600 text-xs font-bold bg-transparent border-none cursor-pointer"
+                title="Dismiss error"
+              >
+                &times;
+              </button>
+            )}
+            <div className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg fill="none" height="14" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" x2="12" y1="8" y2="12" />
+                <line x1="12" x2="12.01" y1="16" y2="16" />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0 pr-4">
+              <p className="text-[11px] font-bold text-red-700 mb-0.5">Co-pilot Failed</p>
+              <p className="text-[10px] text-red-600 leading-relaxed">{error}</p>
+              <p className="text-[10px] text-red-400 mt-1.5">Try switching to a different AI model using the selector above.</p>
+            </div>
+          </div>
         )}
 
         {/* Loading Spinner */}

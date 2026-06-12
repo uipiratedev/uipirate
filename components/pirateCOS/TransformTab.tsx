@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CosIcon from "./CosIcon";
 import { REPURPOSE_FORMATS, renderFormatPreview } from "./RepurposingDrawer";
+import { AIEngine } from "@/lib/pirateCOS/ai-registry";
 
 interface TransformTabProps {
   postId: string | null;
@@ -9,6 +10,8 @@ interface TransformTabProps {
   onUpdateRepurposedOutputs?: (outputs: Record<string, string>) => void;
   selectedFormat: string | null;
   setSelectedFormat: (format: string | null) => void;
+  selectedEngine?: AIEngine;
+  selectedModel?: string;
 }
 
 export default function TransformTab({
@@ -18,6 +21,8 @@ export default function TransformTab({
   onUpdateRepurposedOutputs,
   selectedFormat,
   setSelectedFormat,
+  selectedEngine,
+  selectedModel,
 }: TransformTabProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +37,11 @@ export default function TransformTab({
       const res = await fetch(`/api/pirateCOS/posts/${postId}/repurpose`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ format: fmtId }),
+        body: JSON.stringify({
+          format: fmtId,
+          ...(selectedEngine && { engine: selectedEngine }),
+          ...(selectedModel && { model: selectedModel }),
+        }),
       });
       const data = await res.json();
       if (!data.success) {
@@ -160,8 +169,19 @@ export default function TransformTab({
               </div>
 
               {error && (
-                <div className="p-3 bg-red-50 border border-red-100 text-red-600 rounded-xl text-[10px] font-semibold">
-                  ✗ {error}
+                <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl flex gap-3 animate-in slide-in-from-top-1 duration-200">
+                  <div className="w-7 h-7 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg fill="none" height="14" stroke="#ef4444" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="14">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" x2="12" y1="8" y2="12" />
+                      <line x1="12" x2="12.01" y1="16" y2="16" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[11px] font-bold text-red-700 mb-0.5">Generation Failed</p>
+                    <p className="text-[10px] text-red-600 leading-relaxed">{error}</p>
+                    <p className="text-[10px] text-red-400 mt-1.5">Try switching to a different AI model using the selector above.</p>
+                  </div>
                 </div>
               )}
 

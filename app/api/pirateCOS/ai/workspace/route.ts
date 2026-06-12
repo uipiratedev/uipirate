@@ -11,6 +11,7 @@ import {
   resolveAIEngine,
   type AIEngine,
 } from "@/lib/pirateCOS/ai-provider";
+import { parseAIError } from "@/lib/pirateCOS/ai-error-parser";
 import BrandBrain from "@/models/pirateCOS/BrandBrain";
 import WorkflowMemory from "@/models/pirateCOS/WorkflowMemory";
 import Post from "@/models/Post";
@@ -187,7 +188,7 @@ Rules for output:
 
         if (!response.ok) {
           const errText = await response.text();
-          throw new Error(`${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`);
+          throw new Error(parseAIError(selectedEngine, response.status, errText));
         }
 
         const data = await response.json();
@@ -213,7 +214,7 @@ Rules for output:
 
         if (!response.ok) {
           const errText = await response.text();
-          throw new Error(`Claude API Error: ${errText}`);
+          throw new Error(parseAIError("anthropic", response.status, errText));
         }
 
         const data = await response.json();
@@ -245,7 +246,7 @@ Rules for output:
 
         if (!response.ok) {
           const errText = await response.text();
-          throw new Error(`Gemini API Error: ${errText}`);
+          throw new Error(parseAIError("gemini", response.status, errText));
         }
 
         const data = await response.json();
@@ -375,7 +376,7 @@ Rules for output:
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(`${isMistral ? "Mistral" : "OpenAI"} API Error: ${errText}`);
+        throw new Error(parseAIError(selectedEngine, response.status, errText));
       }
 
       const data = await response.json();
@@ -413,7 +414,7 @@ Rules for output:
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(`Claude API Error: ${errText}`);
+        throw new Error(parseAIError("anthropic", response.status, errText));
       }
 
       const data = await response.json();
@@ -459,7 +460,7 @@ Rules for output:
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(`Gemini API Error: ${errText}`);
+        throw new Error(parseAIError("gemini", response.status, errText));
       }
 
       const data = await response.json();
