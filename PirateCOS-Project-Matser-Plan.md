@@ -3097,6 +3097,37 @@ Never use: "synergy", "disrupt"
 | **Content Calendar Heatmap** | Visual publishing frequency + optimal posting times | Starter+ | Aggregated `distributedAt` timestamps; ML-based "best time" recommendations |
 | **Competitor Content Tracker** | Monitor competitors' Medium/WordPress posts; get alerts | Pro+ | RSS feed monitoring + keyword matching |
 
+**Distribution Performance Dashboard Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Analytics Dashboard — Content Performance              │
+├─────────────────────────────────────────────────────────┤
+│  Period: [ Last 30 Days ▼ ]      Platform: [ All ▼ ]    │
+│                                                         │
+│  ┌─ Metric Highlights ────────────────────────────────┐ │
+│  │ Total Views   Total Clicks   Engagement   Share Rate│ │
+│  │ 125,480 ↗     12,450 ↗       8.4% ↗       3.2% ↗    │ │
+│  └────────────────────────────────────────────────────┘ │
+│                                                         │
+│  ┌─ Platform Breakdown ───────────────────────────────┐ │
+│  │ ● WordPress: [████████████████                    ]│ │
+│  │ ● LinkedIn:  [██████████                          ]│ │
+│  │ ● Medium:    [██████                              ]│ │
+│  │ ● Ghost:     [████                                ]│ │
+│  └────────────────────────────────────────────────────┘ │
+│                                                         │
+│  ┌─ Top-Performing Posts ─────────────────────────────┐ │
+│  │ 1. 10 Next.js Optimizations (WordPress)   - 45k views│ │
+│  │ 2. How We Scale to 1M Users (LinkedIn)   - 12k likes│ │
+│  └────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Interactive Graphs:** Dynamic charts showing daily aggregate metrics (views, clicks, claps) with tooltip hovering.
+- **Platform Filtering:** Toggle buttons to view analytics for specific platforms or across all syndicated networks.
+
 ### 5.2 SEO Optimization Engine
 
 | Feature | Implementation | Value |
@@ -3105,6 +3136,29 @@ Never use: "synergy", "disrupt"
 | **SERP preview** | Real-time Google snippet preview in SEO modal | Reduces guesswork; improves CTR |
 | **Keyword rank tracking** | Track focus keyword position in Google for distributed URLs | Proves ROI of distribution strategy |
 | **Schema.org markup generator** | Auto-inject Article/BlogPosting JSON-LD | Better rich snippets in search results |
+
+**AI SEO Score & Quality Panel Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ SEO & Readability Score                                 │
+├─────────────────────────────────────────────────────────┤
+│  Overall Health Score: [ 84 / 100 ]                     │
+│  [⬤ Circular Progress Ring representing SEO Score]      │
+│                                                         │
+│  Suggestions Checklist:                                 │
+│  [✓] Focus Keyword present in introductory paragraph   │
+│  [⚠️] Alt tag missing on 2 images                       │
+│  [❌] Sentence length exceeds optimal 20 words in H2     │
+│                                                         │
+│  AI Optimization Actions:                               │
+│  [⚡ Autofix Alt Tags ]  [⚡ Rewrite Long Sentences ]   │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Floating SEO Score Ring:** Color-coded circular bar (red/yellow/green) dynamically updating as the user types.
+- **Actionable Optimization Cards:** Expandable recommendation items with one-click AI code fixes.
 
 ### 5.3 Content Repurposing Tools
 
@@ -3164,6 +3218,33 @@ interface IAnalyticsSnapshot {
 **Goal:** Expand distribution reach to high-engagement modern platforms (LinkedIn, Substack, Beehiiv, ConvertKit) where audiences spend the most time in 2026+.
 
 ### 6.1 Platform Integrations
+
+#### **6.1.0 Multi-Channel Distribution Drawer Interface**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Publish & Distribute Content            [ Close Drawer ]│
+├─────────────────────────────────────────────────────────┤
+│  Select Distribution Channels:                          │
+│  [✓] WordPress  (https://techblog.com)  [Connected]      │
+│  [✓] LinkedIn   (Company Page)          [Connected]      │
+│  [✓] Substack   (Tech Newsletter)       [Connected]      │
+│  [ ] Beehiiv    (Weekly Digest)         [Disconnected]   │
+│                                                         │
+│  Distribution Preview & Scheduling:                     │
+│  ┌─ LinkedIn Post Hook Preview ───────────────────────┐ │
+│  │ 🚀 We are excited to announce our new open source    │ │
+│  │ registry design! Read the full deep-dive here...    │ │
+│  └────────────────────────────────────────────────────┘ │
+│                                                         │
+│  Scheduling: [● Publish Now ]  [ Scheduled for... ▼ ]   │
+│                                    [ Distribute Now ]   │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Channel Toggle Badges:** Visual checkboxes representing connected third-party integrations with real-time API authentication checks.
+- **Interactive Social Post Mockups:** Smartphone/desktop container layouts showing exactly how content renders on LinkedIn, Dev.to, and newsletters.
 
 #### **6.1.1 LinkedIn Articles & Posts**
 
@@ -3604,6 +3685,52 @@ export class LinkedInAdapter extends BaseAdapter {
 | **Admin** | All content + settings; cannot access billing |
 | **Editor** | Create/edit/distribute posts; cannot change integrations or AI keys |
 | **Viewer** | Read-only access to content and analytics |
+
+**Team Workspace & Invite Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Team Management — Workspace Brain                      │
+├─────────────────────────────────────────────────────────┤
+│  Team Members:                                          │
+│  Name               Email               Role            │
+│  1. Alex Crew       alex@uipirate.com   Owner           │
+│  2. Sarah Croft     sarah@uipirate.com  Editor [▼]      │
+│  3. Dev Devson      dev@uipirate.com    Viewer [▼]      │
+│                                                         │
+│  Invite Team Member:                                    │
+│  Email: [ enter email address ]    Role: [ Editor  ▼ ]  │
+│                                     [ Send Invitation ] │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Dynamic Role Dropdowns:** Change permissions instantly with inline select inputs.
+- **Invite Modal:** Multi-field validation confirming user status on invite submission.
+
+**Content Approval Queue Interface:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Editorial Approval Queue                                │
+├─────────────────────────────────────────────────────────┤
+│  Pending Approvals:                                     │
+│  Post Title               Author       Target Channels  │
+│  ● NextJS SEO Playbook    Sarah Croft  LinkedIn, Sub.   │
+│                                                         │
+│  ┌─ Manager Actions ──────────────────────────────────┐ │
+│  │ [✓ Approve & Distribute ]    [❌ Request Revision ] │ │
+│  │ Revision Notes:                                    │ │
+│  │ ┌────────────────────────────────────────────────┐ │ │
+│  │ │ Please add the updated 2026 pricing CTA link    │ │ │
+│  │ └────────────────────────────────────────────────┘ │ │
+│  └────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+```
+
+**UI Features:**
+- **Approval Queue Rails:** Separate sections in the dashboard separating drafts, posts pending review, and completed/published items.
+- **Revision Annotation Overlays:** Floating feedback windows allowing managers to highlight text and leave specific directives for editors.
 
 ### 7.2 Workflow Automation
 

@@ -4635,6 +4635,8 @@ const PostPreviewPanel = ({
     () => injectHeadingIds(contentHtml),
     [contentHtml],
   );
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const tocContainerRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState("");
   const readTime = useMemo(
     () =>
@@ -4653,6 +4655,8 @@ const PostPreviewPanel = ({
 
   useEffect(() => {
     if (!headings.length) return;
+    const container = scrollRef.current;
+    if (!container) return;
     const handleScroll = () => {
       let current = headings[0].id;
 
@@ -4664,18 +4668,38 @@ const PostPreviewPanel = ({
       setActiveId(current);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // initialise on mount
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
   }, [headings]);
+
+  useEffect(() => {
+    if (!activeId || !tocContainerRef.current) return;
+    const activeLink = Array.from(tocContainerRef.current.querySelectorAll("a")).find(
+      (a) => a.getAttribute("href") === `#${activeId}`
+    ) as HTMLElement;
+    if (!activeLink) return;
+
+    const container = tocContainerRef.current;
+    const containerTop = container.scrollTop;
+    const containerBottom = containerTop + container.clientHeight;
+    const elemTop = activeLink.offsetTop;
+    const elemBottom = elemTop + activeLink.offsetHeight;
+
+    if (elemTop < containerTop) {
+      container.scrollTo({ top: elemTop - 12, behavior: "smooth" });
+    } else if (elemBottom > containerBottom) {
+      container.scrollTo({ top: elemBottom - container.clientHeight + 12, behavior: "smooth" });
+    }
+  }, [activeId]);
 
   const hasToc = headings.length >= 2;
 
   return (
-    <div className="flex-1 min-w-0">
+    <div ref={scrollRef} className="flex-1 min-w-0 flex flex-col min-h-0 overflow-y-auto pr-4 lg:pr-6">
       {/* Preview toolbar */}
-      <div className="flex items-center justify-between mb-3 px-1">
+      <div className="flex items-center justify-between mb-3 px-1 flex-shrink-0">
         <div className="flex items-center gap-2">
           <span
             className="flex items-center gap-1.5 text-[10px] font-semibold font-jetbrains-mono px-2.5 py-1 rounded-full uppercase tracking-wider"
@@ -4876,36 +4900,44 @@ const PostPreviewPanel = ({
             {/* Sticky TOC — pixel-identical to screens/blogsDetails/blogContents */}
             {hasToc && (
               <aside
-                className="flex-shrink-0 hidden xl:block"
+                className="flex-shrink-0 block"
                 style={{ width: 220 }}
               >
-                <div className="sticky top-24 bg-gray-50 border border-gray-100 rounded-3xl p-6">
+                <div
+                  ref={tocContainerRef}
+                  className="sticky top-3 bg-gray-50 border border-gray-100 rounded-3xl p-6 overflow-y-auto max-h-[calc(100vh-180px)] hide-scrollbar"
+                >
                   <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">
                     Contents
                   </p>
-                  <nav className="flex flex-col gap-2">
-                    {headings.map((h) => (
-                      <a
-                        key={h.id}
-                        className="text-sm transition-colors py-1 px-2 rounded-lg truncate"
-                        href={`#${h.id}`}
-                        style={{
-                          paddingLeft: h.level === 3 ? "1rem" : undefined,
-                          color: activeId === h.id ? "#FF5B04" : "#4b5563",
-                          fontWeight: activeId === h.id ? 600 : 400,
-                        }}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          document.getElementById(h.id)?.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start",
-                          });
-                          setActiveId(h.id);
-                        }}
-                      >
-                        {h.text}
-                      </a>
-                    ))}
+                  <nav className="flex flex-col gap-0.5">
+                    {headings.map((h) => {
+                      const isActive = activeId === h.id;
+                      return (
+                        <a
+                          key={h.id}
+                          className="text-sm py-1.5 px-3 rounded-lg truncate transition-all duration-200"
+                          href={`#${h.id}`}
+                          style={{
+                            paddingLeft: h.level === 3 ? "1.5rem" : undefined,
+                            color: isActive ? "#FF5B04" : "#6b7280",
+                            fontWeight: isActive ? 600 : 400,
+                            background: isActive ? "rgba(255,91,4,0.08)" : "transparent",
+                            borderLeft: isActive ? "3px solid #FF5B04" : "3px solid transparent",
+                          }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            document.getElementById(h.id)?.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
+                            setActiveId(h.id);
+                          }}
+                        >
+                          {h.text}
+                        </a>
+                      );
+                    })}
                   </nav>
                 </div>
               </aside>
