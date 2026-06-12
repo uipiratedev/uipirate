@@ -6,6 +6,7 @@ export interface IWorkspace extends Document {
   name: string;
   description?: string;
   brandBrain: mongoose.Types.ObjectId; // References BrandBrain
+  tenantId: mongoose.Types.ObjectId; // References Admin (the tenant)
   createdAt: Date;
   updatedAt: Date;
 }
@@ -29,6 +30,12 @@ const WorkspaceSchema: Schema<IWorkspace> = new Schema(
     brandBrain: {
       type: Schema.Types.ObjectId,
       ref: "BrandBrain",
+    },
+    tenantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      required: true,
+      index: true,
     },
   },
   {

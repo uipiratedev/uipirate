@@ -39,6 +39,10 @@ export interface IAdmin extends Document {
   convertedFromFreeToPaidAt?: Date;
   /** Lifetime value aggregated from invoice payments */
   lifetimeValue: number;
+  accountType: "individual" | "organization";
+  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
+  parentOrgId: mongoose.Types.ObjectId | null;
+  avatar?: string;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -130,6 +134,25 @@ const AdminSchema: Schema = new Schema(
     lifetimeValue: {
       type: Number,
       default: 0,
+    },
+    accountType: {
+      type: String,
+      enum: ["individual", "organization"],
+      default: "individual",
+    },
+    orgRole: {
+      type: String,
+      enum: ["individual", "org-admin", "admin", "editor", "viewer"],
+      default: "individual",
+    },
+    parentOrgId: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      default: null,
+    },
+    avatar: {
+      type: String,
+      default: "",
     },
   },
   {

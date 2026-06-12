@@ -74,6 +74,9 @@ export async function POST(request: NextRequest) {
         role: admin.role,
         tenantId: String(admin._id), // each Admin is their own tenant
         plan: admin.plan || "free",
+        accountType: admin.accountType || "individual",
+        orgRole: admin.orgRole || "individual",
+        avatar: admin.avatar || "",
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN },
@@ -99,6 +102,11 @@ export async function POST(request: NextRequest) {
         name: admin.name,
         email: admin.email,
         role: admin.role,
+        tenantId: String(admin._id),
+        plan: admin.plan || "free",
+        accountType: admin.accountType || "individual",
+        orgRole: admin.orgRole || "individual",
+        avatar: admin.avatar || "",
       },
       token,
     });

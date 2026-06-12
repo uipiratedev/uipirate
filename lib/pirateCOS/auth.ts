@@ -14,6 +14,9 @@ interface JWTPayload {
   role: string;
   tenantId: string;
   plan: "free" | "starter" | "pro" | "enterprise";
+  accountType: "individual" | "organization";
+  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
+  avatar?: string;
 }
 
 interface User {
@@ -21,9 +24,12 @@ interface User {
   name: string;
   email: string;
   role: string;
-  /** The tenant boundary — equals the Admin._id string */
+  /** The tenant boundary — equals the Admin._id string, or parentOrgId for members */
   tenantId: string;
   plan: "free" | "starter" | "pro" | "enterprise";
+  accountType: "individual" | "organization";
+  orgRole: "individual" | "org-admin" | "admin" | "editor" | "viewer";
+  avatar?: string;
 }
 
 /**
@@ -79,8 +85,11 @@ export async function getCurrentUser(): Promise<User | null> {
       name: (admin as any).name,
       email: (admin as any).email,
       role: (admin as any).role,
-      tenantId: String(admin._id), // each Admin is their own tenant
+      tenantId: String((admin as any).parentOrgId || admin._id), // each Admin is their own tenant unless org member
       plan: (admin as any).plan ?? "free",
+      accountType: (admin as any).accountType ?? "individual",
+      orgRole: (admin as any).orgRole ?? "individual",
+      avatar: (admin as any).avatar ?? "",
     };
   } catch (error) {
     return null;
