@@ -72,7 +72,8 @@ export async function GET(request: NextRequest) {
 
     // Filter by search query (text search across title and excerpt)
     if (search && search.trim()) {
-      const searchRegex = new RegExp(search.trim(), "i");
+      const escaped = search.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const searchRegex = new RegExp(escaped, "i");
       andConditions.push({
         $or: [
           { title: { $regex: searchRegex } },
@@ -123,13 +124,11 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch blogs";
-
+    console.error("GET /api/pirateCOS/posts error:", error);
     return NextResponse.json(
       {
         success: false,
-        error: errorMessage,
+        error: "Failed to fetch posts",
       },
       { status: 500 },
     );
@@ -247,13 +246,11 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to create blog";
-
+    console.error("POST /api/pirateCOS/posts error:", error);
     return NextResponse.json(
       {
         success: false,
-        error: errorMessage,
+        error: "Failed to create post",
       },
       { status: 500 },
     );

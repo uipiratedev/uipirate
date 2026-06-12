@@ -42,10 +42,19 @@ export async function POST(req: NextRequest) {
     }
 
     const host = req.headers.get("host") || "localhost:3000";
+    const allowedHosts = ["cos.uipirate.com", "uipirate.com"];
+    if (process.env.NODE_ENV === "production" && !allowedHosts.includes(host.split(":")[0])) {
+      return NextResponse.json(
+        { success: false, error: "Invalid Host header" },
+        { status: 400 }
+      );
+    }
+
+    const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
     const isSubdomain = host.startsWith("cos.") || host === "cos.uipirate.com";
     const baseRedirect = isSubdomain
-      ? `http://${host}`
-      : `http://${host}/pirateCOS`;
+      ? `${protocol}://${host}`
+      : `${protocol}://${host}/pirateCOS`;
 
     const finalSuccessUrl =
       successUrl || `${baseRedirect}/settings/billing?success=true`;
@@ -54,6 +63,14 @@ export async function POST(req: NextRequest) {
 
     // Developer-friendly Simulation Fallback if Stripe keys are not set
     if (!stripe) {
+      if (process.env.NODE_ENV === "production") {
+        console.error("❌ Stripe secret key is missing in production environment.");
+        return NextResponse.json(
+          { success: false, error: "Billing service temporarily unavailable" },
+          { status: 503 }
+        );
+      }
+
       console.warn(
         "⚠️ Stripe secret key is not set. Executing a sandbox simulated checkout flow...",
       );
@@ -155,7 +172,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: err.message || "Checkout session generation failed",
+        error: "Checkout session generation failed",
       },
       { status: 500 },
     );

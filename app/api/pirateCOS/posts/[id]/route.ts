@@ -87,13 +87,11 @@ export async function GET(
       data: blog,
     });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to fetch post";
-
+    console.error("GET /api/pirateCOS/posts/[id] error:", error);
     return NextResponse.json(
       {
         success: false,
-        error: errorMessage,
+        error: "Failed to fetch post",
       },
       { status: 500 },
     );
@@ -261,13 +259,11 @@ export async function PUT(
       data: blog,
     });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to update post";
-
+    console.error("PUT /api/pirateCOS/posts/[id] error:", error);
     return NextResponse.json(
       {
         success: false,
-        error: errorMessage,
+        error: "Failed to update post",
       },
       { status: 500 },
     );
@@ -311,13 +307,11 @@ export async function DELETE(
       data: blog,
     });
   } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "Failed to delete post";
-
+    console.error("DELETE /api/pirateCOS/posts/[id] error:", error);
     return NextResponse.json(
       {
         success: false,
-        error: errorMessage,
+        error: "Failed to delete post",
       },
       { status: 500 },
     );

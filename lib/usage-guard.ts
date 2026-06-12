@@ -99,6 +99,6 @@ export async function deductCredits(
   );
 
   console.log(
-    `Deducted ${cost} credits from tenant ${tenantId}. Action: ${actionType}. Balance remaining: ${(admin.creditsRemaining - cost).toFixed(1)}`,
+    `Deducted ${cost} credits from tenant ${tenantId}. Action: ${actionType}.`,
   );
 }

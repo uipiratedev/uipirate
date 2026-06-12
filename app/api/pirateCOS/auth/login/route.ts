@@ -4,8 +4,12 @@ import { cookies } from "next/headers";
 
 import dbConnect from "@/lib/mongodb";
 import Admin from "@/models/pirateCOS/Admin";
+import { checkRateLimit, resetRateLimit } from "@/lib/pirateCOS/rate-limiter";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+const JWT_SECRET = process.env.JWT_SECRET as string;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not set");
+}
 const JWT_EXPIRES_IN = "30d"; // 30 days
 
 export async function POST(request: NextRequest) {
@@ -19,6 +23,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, message: "Email and password are required" },
         { status: 400 },
+      );
+    }
+
+    // Rate Limiting
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "unknown-ip";
+    if (!checkRateLimit(ip, email)) {
+      return NextResponse.json(
+        { success: false, message: "Too many login attempts. Please try again in 15 minutes." },
+        { status: 429 }
       );
     }
 
@@ -49,6 +62,9 @@ export async function POST(request: NextRequest) {
         { status: 401 },
       );
     }
+
+    // Reset rate limit on success
+    resetRateLimit(ip, email);
 
     // Generate JWT token
     const token = jwt.sign(
@@ -92,9 +108,9 @@ export async function POST(request: NextRequest) {
         orgRole: (admin as any).orgRole ?? "individual",
         avatar: admin.avatar || "",
       },
-      token, // Also return token for client-side storage if needed
     });
   } catch (error) {
+    console.error("Login route error:", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
       { status: 500 },

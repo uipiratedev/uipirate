@@ -26,6 +26,14 @@ export async function POST(req: NextRequest) {
         STRIPE_WEBHOOK_SECRET,
       );
     } else {
+      const allowUnverified = process.env.ALLOW_UNVERIFIED_WEBHOOKS === "true";
+      if (process.env.NODE_ENV === "production" || !allowUnverified) {
+        console.error("❌ Webhook Signature Verification Failed. Webhook secret missing or unverified disabled.");
+        return NextResponse.json(
+          { success: false, error: "Signature verification required" },
+          { status: 503 }
+        );
+      }
       // Sandbox fallback: parse directly for unverified sandbox emulation
       console.warn(
         "⚠️ Webhook Signature Verification Bypassed. STRIPE_WEBHOOK_SECRET is not set.",
@@ -96,7 +104,7 @@ export async function POST(req: NextRequest) {
           });
 
           console.log(
-            `🟢 Successfully activated Pro Subscription for tenant ${admin.email}`,
+            `🟢 Successfully activated Pro Subscription for tenant ${admin._id}`,
           );
         } else if (purchaseType === "topup") {
           // Dynamically calculate credits based on actual amount paid (200 credits per USD $1.00)
@@ -116,7 +124,7 @@ export async function POST(req: NextRequest) {
           });
 
           console.log(
-            `🔋 Successfully credited ${creditsGranted.toLocaleString()} top-up credits to tenant ${admin.email} (Paid: $${(centsPaid / 100).toFixed(2)})`,
+            `🔋 Successfully credited top-up credits to tenant ${admin._id}`,
           );
         }
         break;
@@ -150,7 +158,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.log(
-          `✅ Invoice paid for ${admin.email}: $${amountPaid}. Total lifetime: $${admin.lifetimeValue}`,
+          `✅ Invoice paid for tenant ${admin._id}`,
         );
         break;
       }
@@ -176,7 +184,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.warn(
-          `⚠️ Payment failed for ${admin.email}. Status set to past_due.`,
+          `⚠️ Payment failed for tenant ${admin._id}. Status set to past_due.`,
         );
         break;
       }
@@ -201,7 +209,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.log(
-          `🔄 Subscription updated for ${admin.email}. Status: ${sub.status}`,
+          `🔄 Subscription updated for tenant ${admin._id}. Status: ${sub.status}`,
         );
         break;
       }
@@ -227,7 +235,7 @@ export async function POST(req: NextRequest) {
         });
 
         console.log(
-          `🛑 Subscription canceled for ${admin.email}. Plan downgraded to Free.`,
+          `🛑 Subscription canceled for tenant ${admin._id}. Plan downgraded to Free.`,
         );
         break;
       }

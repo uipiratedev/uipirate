@@ -29,6 +29,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate MIME type
+    const allowedMimeTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/svg+xml",
+      "video/mp4",
+      "video/mpeg",
+      "video/quicktime",
+      "video/webm"
+    ];
+    if (!allowedMimeTypes.includes(file.type)) {
+      return NextResponse.json(
+        { success: false, error: "Unsupported file type. Allowed formats: images (JPEG, PNG, GIF, WEBP, SVG) and videos (MP4, MPEG, MOV, WEBM)." },
+        { status: 400 }
+      );
+    }
+
+    // Validate size (10MB limit)
+    const MAX_SIZE = 10 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json(
+        { success: false, error: "File size exceeds limit of 10MB" },
+        { status: 400 }
+      );
+    }
+
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
@@ -36,7 +64,7 @@ export async function POST(req: NextRequest) {
     const uploadResult: any = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
-          folder: "pirateCOS",
+          folder: `pirateCOS/${user.tenantId}`,
         },
         (error, result) => {
           if (error) {
@@ -56,7 +84,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Error uploading to Cloudinary:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to upload image" },
+      { success: false, error: "Failed to upload file" },
       { status: 500 }
     );
   }

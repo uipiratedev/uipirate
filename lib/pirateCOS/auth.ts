@@ -6,7 +6,10 @@ import dbConnect from "../mongodb";
 
 import Admin from "@/models/pirateCOS/Admin";
 
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-this";
+const JWT_SECRET = process.env.JWT_SECRET as string;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not set");
+}
 
 interface JWTPayload {
   userId: string;
@@ -37,7 +40,7 @@ interface User {
  */
 async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+    const decoded = jwt.verify(token, JWT_SECRET) as unknown as JWTPayload;
 
     return decoded;
   } catch (error) {

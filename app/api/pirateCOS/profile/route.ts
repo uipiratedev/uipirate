@@ -69,6 +69,10 @@ export async function PUT(request: NextRequest) {
       admin.avatar = avatar;
     }
 
+const COMMON_PASSWORDS = new Set([
+  "password", "12345678", "password123", "piratecos", "qwertyui", "admin123", "welcome123", "123456789"
+]);
+
     // Update password if requested
     if (currentPassword && newPassword) {
       const isPasswordValid = await admin.comparePassword(currentPassword);
@@ -80,9 +84,16 @@ export async function PUT(request: NextRequest) {
         );
       }
 
-      if (newPassword.length < 6) {
+      if (newPassword.length < 8) {
         return NextResponse.json(
-          { success: false, error: "New password must be at least 6 characters" },
+          { success: false, error: "New password must be at least 8 characters" },
+          { status: 400 },
+        );
+      }
+
+      if (COMMON_PASSWORDS.has(newPassword.toLowerCase().trim())) {
+        return NextResponse.json(
+          { success: false, error: "New password is too common. Please choose a more secure password." },
           { status: 400 },
         );
       }
