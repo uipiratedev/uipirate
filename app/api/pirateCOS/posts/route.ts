@@ -118,7 +118,7 @@ export async function GET(request: NextRequest) {
       query.$and = andConditions;
     }
 
-    const blogs = await Post.find(query)
+    const posts = await Post.find(query)
       .sort({ createdAt: -1, publishedAt: -1 })
       .limit(limit)
       .skip(skip)
@@ -129,8 +129,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      posts: blogs,
-      data: blogs, // backward compatibility
+      posts,
+      data: posts, // backward compatibility
       totalCount: total,
       totalPages: Math.ceil(total / limit),
       currentPage: page,
@@ -204,16 +204,16 @@ export async function POST(request: NextRequest) {
 
     const postTenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
-    const existingBlog = await Post.findOne({
+    const existingPost = await Post.findOne({
       tenantId: postTenantOid,
       slug,
     }).lean();
 
-    if (existingBlog && !providedSlug) {
+    if (existingPost && !providedSlug) {
       slug = `${slug}-${Date.now()}`;
     }
 
-    const blog = await Post.create({
+    const post = await Post.create({
       tenantId: postTenantOid,
       teamId: teamId ? new mongoose.Types.ObjectId(teamId) : undefined, // Phase 5.4+
       owner: { email: user.email || "", name: user.name || "" },
@@ -235,9 +235,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    blog.calculateReadTime();
-    await blog.save();
-    await audit(user, "post.create", { targetId: blog._id.toString(), targetType: "post", meta: { title: blog.title } });
+    post.calculateReadTime();
+    await post.save();
+    await audit(user, "post.create", { targetId: post._id.toString(), targetType: "post", meta: { title: post.title } });
 
     // Phase 4F.2: Create initial version snapshot
     const initialChangeType: IContentHistory["changeType"] =
@@ -245,14 +245,14 @@ export async function POST(request: NextRequest) {
     const isAiInitial = initialChangeType.startsWith("ai-");
     try {
       await createSnapshot(
-        blog._id.toString(),
-        blog.content ?? "",
+        post._id.toString(),
+        post.content ?? "",
         user.tenantId.toString(),
         isAiInitial ? "ai" : user.id,
         initialChangeType,
         {
-          title: blog.title,
-          postType: blog.postType,
+          title: post.title,
+          postType: post.postType,
           commitMessage: bodyCommitMessage ?? "Initial post creation",
           aiMetadata: bodyAiMetadata,
         }
@@ -265,7 +265,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        data: blog,
+        data: post,
       },
       { status: 201 },
     );

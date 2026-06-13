@@ -37,13 +37,13 @@ export async function GET(
   const tenantOid = new mongoose.Types.ObjectId(auth.tenantId);
 
   try {
-    const blog = await Post.findOne({
+    const post = await Post.findOne({
       tenantId: tenantOid,
       slug: slug.toLowerCase().trim(),
       published: true,
     }).lean();
 
-    if (!blog) {
+    if (!post) {
       return NextResponse.json(
         { success: false, error: "Post not found or is not published." },
         { status: 404 },
@@ -52,7 +52,7 @@ export async function GET(
 
     return NextResponse.json({
       success: true,
-      data: blog,
+      data: post,
     });
   } catch (err: any) {
     return NextResponse.json(

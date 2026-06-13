@@ -34,12 +34,12 @@ import {
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 export interface DistributePanelProps {
-  blogId: string | null;
-  blogPublished: boolean;
-  blogContent: string;
-  blogExcerpt: string;
-  blogTags: string[];
-  blogSeo: any;
+  postId: string | null;
+  postPublished: boolean;
+  postContent: string;
+  postExcerpt: string;
+  postTags: string[];
+  postSeo: any;
   distributionRecords: DistributionRecord[];
   onEnsureSaved: () => Promise<string>;
   onUpdateRecords?: (records: DistributionRecord[]) => void;
@@ -49,9 +49,9 @@ export interface DistributePanelProps {
   onTriggerCopilotAI: (preset?: string, initialPrompt?: string) => void;
   postType: string;
   contentGoal: ContentGoal;
-  blogTitle: string;
+  postTitle: string;
   socialDestination?: "linkedin" | "x";
-  blogRepurposedOutputs?: Record<string, string>;
+  postRepurposedOutputs?: Record<string, string>;
   onUpdateRepurposedOutputs?: (outputs: Record<string, string>) => void;
   onUpdateExcerpt?: (excerpt: string) => void;
   onUpdateTags?: (tags: string[]) => void;
@@ -71,10 +71,10 @@ function AccordionTitle({ label, badge, badgeColor }: { label: string; badge?: s
 
 // ─── DistributePanel ──────────────────────────────────────────────────────────
 export function DistributePanel({
-  blogId, blogPublished, blogContent, blogExcerpt, blogTags, blogSeo,
+  postId, postPublished, postContent, postExcerpt, postTags, postSeo,
   distributionRecords = [], onEnsureSaved, onUpdateRecords, onNavigateToSEO,
   onTriggerExcerptAI, onTriggerTagsAI, onTriggerCopilotAI, postType, contentGoal,
-  blogTitle, socialDestination = "linkedin", blogRepurposedOutputs = {},
+  postTitle, socialDestination = "linkedin", postRepurposedOutputs = {},
   onUpdateRepurposedOutputs, onUpdateExcerpt, onUpdateTags, onUpdateSeo,
   onNavigateToTransform,
 }: DistributePanelProps) {
@@ -116,9 +116,9 @@ export function DistributePanel({
   useEffect(() => { fetchIntegrations(); }, [fetchIntegrations]);
 
   useEffect(() => {
-    const checks = runPreflight({ content: blogContent, excerpt: blogExcerpt, tags: blogTags, featuredImage: blogSeo?.ogImage || "", seo: blogSeo }, postType, activeSocialDest);
+    const checks = runPreflight({ content: postContent, excerpt: postExcerpt, tags: postTags, featuredImage: postSeo?.ogImage || "", seo: postSeo }, postType, activeSocialDest);
     setPreflight(checks);
-  }, [blogContent, blogExcerpt, blogTags, blogSeo, postType, activeSocialDest]);
+  }, [postContent, postExcerpt, postTags, postSeo, postType, activeSocialDest]);
 
   const hasPreflightErrors = useMemo(() => preflight.some((c) => !c.passed && c.severity === "error"), [preflight]);
 
@@ -126,22 +126,22 @@ export function DistributePanel({
     setAutofixing((prev) => ({ ...prev, [checkId]: true }));
     setDistributionError(null);
     try {
-      const cleanContent = blogContent.replace(/<[^>]*>/g, " ").trim().slice(0, 15000);
+      const cleanContent = postContent.replace(/<[^>]*>/g, " ").trim().slice(0, 15000);
       const actionMap: Record<string, string> = { excerpt: "excerpt", tags: "tags", focusKeyword: "focusKeyword", metaTitle: "metaTitle", metaDescription: "metaDescription" };
       const actionApi = actionMap[checkId];
       if (!actionApi) throw new Error("Invalid autofix action");
-      const response = await fetch("/api/pirateCOS/ai/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: actionApi, title: blogTitle, content: cleanContent, postType, contentGoal }) });
+      const response = await fetch("/api/pirateCOS/ai/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: actionApi, title: postTitle, content: cleanContent, postType, contentGoal }) });
       const result = await response.json();
       if (!response.ok || !result.success) throw new Error(result.error || "AI autofix failed");
       const data = result.data;
       let payloadToSave: any = {};
       if (checkId === "excerpt") { const v = typeof data === "string" ? data.trim() : ""; onUpdateExcerpt?.(v); payloadToSave = { excerpt: v }; }
       else if (checkId === "tags") { const v = Array.isArray(data) ? data : []; onUpdateTags?.(v); payloadToSave = { tags: v }; }
-      else if (checkId === "focusKeyword") { const v = typeof data === "string" ? data.trim() : ""; const next = { ...blogSeo, focusKeyword: v }; onUpdateSeo?.(next); payloadToSave = { seo: next }; }
-      else if (checkId === "metaTitle") { const v = typeof data === "string" ? data.trim() : ""; const next = { ...blogSeo, metaTitle: v }; onUpdateSeo?.(next); payloadToSave = { seo: next }; }
-      else if (checkId === "metaDescription") { const v = typeof data === "string" ? data.trim() : ""; const next = { ...blogSeo, metaDescription: v }; onUpdateSeo?.(next); payloadToSave = { seo: next }; }
-      if (blogId) {
-        const putRes = await fetch(`/api/pirateCOS/posts/${blogId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payloadToSave) });
+      else if (checkId === "focusKeyword") { const v = typeof data === "string" ? data.trim() : ""; const next = { ...postSeo, focusKeyword: v }; onUpdateSeo?.(next); payloadToSave = { seo: next }; }
+      else if (checkId === "metaTitle") { const v = typeof data === "string" ? data.trim() : ""; const next = { ...postSeo, metaTitle: v }; onUpdateSeo?.(next); payloadToSave = { seo: next }; }
+      else if (checkId === "metaDescription") { const v = typeof data === "string" ? data.trim() : ""; const next = { ...postSeo, metaDescription: v }; onUpdateSeo?.(next); payloadToSave = { seo: next }; }
+      if (postId) {
+        const putRes = await fetch(`/api/pirateCOS/posts/${postId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payloadToSave) });
         if (!putRes.ok) { const err = await putRes.json(); throw new Error(err.error || "Failed to save autofix"); }
       }
     } catch (err: any) { setDistributionError(err.message || "Failed to run autofix"); }
@@ -164,7 +164,7 @@ export function DistributePanel({
     try {
       const savedId = await onEnsureSaved();
       if (selectedPlatforms.length > 0) {
-        const res = await fetch("/api/pirateCOS/distribution/publish", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ blogId: savedId, platforms: selectedPlatforms }) });
+        const res = await fetch("/api/pirateCOS/distribution/publish", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ postId: savedId, platforms: selectedPlatforms }) });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Distribution publish failed");
         if (data.results) {
@@ -179,7 +179,7 @@ export function DistributePanel({
         }
       }
       if (selectedRepurposeFormats.length > 0 && savedId) {
-        const nextOutputs = { ...blogRepurposedOutputs };
+        const nextOutputs = { ...postRepurposedOutputs };
         const FORMAT_MAP: Record<string, string> = { linkedin_promo: "linkedin-thread", twitter_thread: "twitter-thread", newsletter_summary: "newsletter", quote_snippets: "cta-blocks" };
         for (let i = 0; i < selectedRepurposeFormats.length; i++) {
           const fId = selectedRepurposeFormats[i];
@@ -201,10 +201,10 @@ export function DistributePanel({
   };
 
   const handleVerify = async (platform: string) => {
-    if (!blogId) return;
+    if (!postId) return;
     setVerifyingPlatform(platform);
     try {
-      const res = await fetch("/api/pirateCOS/distribution/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ postId: blogId, platform }) });
+      const res = await fetch("/api/pirateCOS/distribution/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ postId: postId, platform }) });
       const data = await res.json();
       if (data.success && data.distributionRecords) {
         onUpdateRecords?.(data.distributionRecords);
@@ -215,10 +215,10 @@ export function DistributePanel({
   };
 
   const handleReset = async (platform: string) => {
-    if (!blogId || !confirm(`Reset distribution for ${PLATFORM_LABELS[platform] || platform}? This will allow re-publishing.`)) return;
+    if (!postId || !confirm(`Reset distribution for ${PLATFORM_LABELS[platform] || platform}? This will allow re-publishing.`)) return;
     setVerifyingPlatform(platform);
     try {
-      const res = await fetch("/api/pirateCOS/distribution/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ postId: blogId, platform, action: "reset" }) });
+      const res = await fetch("/api/pirateCOS/distribution/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ postId: postId, platform, action: "reset" }) });
       const data = await res.json();
       if (data.success && data.distributionRecords) { onUpdateRecords?.(data.distributionRecords); alert(`Distribution reset for ${PLATFORM_LABELS[platform] || platform}. You can now re-publish.`); }
     } catch (err) { console.error("Reset failed", err); }
@@ -230,7 +230,7 @@ export function DistributePanel({
     const { badge: psBadge, badgeColor: psColor } = getPresetsBadge(activeChain);
     const { badge: pfBadge, badgeColor: pfColor } = getPreflightBadge(preflight);
     const { badge: chBadge, badgeColor: chColor } = getChannelsBadge(selectedPlatforms);
-    const { badge: spBadge, badgeColor: spColor } = getSpinoffsBadge(selectedRepurposeFormats, blogRepurposedOutputs);
+    const { badge: spBadge, badgeColor: spColor } = getSpinoffsBadge(selectedRepurposeFormats, postRepurposedOutputs);
 
     const all: React.ReactElement[] = [
       <AccordionItem key="presets" title={<AccordionTitle label="Quick Presets" badge={psBadge} badgeColor={psColor} />}>
@@ -267,7 +267,7 @@ export function DistributePanel({
       all.push(
         <AccordionItem key="spinoffs" title={<AccordionTitle label="Create Spin-offs" badge={spBadge} badgeColor={spColor} />}>
           <SpinoffsContent
-            repurposedOutputs={blogRepurposedOutputs}
+            repurposedOutputs={postRepurposedOutputs}
             onNavigateToTransform={onNavigateToTransform}
           />
         </AccordionItem>
@@ -304,7 +304,7 @@ export function DistributePanel({
       />
       {repurposingProgress?.active && <RepurposingProgress progress={repurposingProgress} />}
       <RepurposedAssetsContent
-        outputs={blogRepurposedOutputs}
+        outputs={postRepurposedOutputs}
         showPreview={showRepurposePreview}
         copiedId={copiedFormatId}
         onTogglePreview={() => setShowRepurposePreview((p) => !p)}
@@ -313,7 +313,7 @@ export function DistributePanel({
       <DistributionHistory records={distributionRecords} verifyingPlatform={verifyingPlatform} onVerify={handleVerify} onReset={handleReset} />
       <DistributeCTA
         distributing={distributing}
-        blogPublished={blogPublished}
+        postPublished={postPublished}
         selectedPlatforms={selectedPlatforms}
         selectedFormats={selectedRepurposeFormats}
         hasPreflightErrors={hasPreflightErrors}

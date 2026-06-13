@@ -26,7 +26,7 @@ import { Button } from "@heroui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useSaveBlog } from "@/hooks/useSaveBlog";
+import { useSavePost } from "@/hooks/useSavePost";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
 import WorkspaceTutorialCarousel from "@/components/pirateCOS/WorkspaceTutorialCarousel";
@@ -5233,17 +5233,17 @@ const BlogEditor = () => {
   const reviewAfterSaveRef = useRef(false);
 
   const {
-    blogId: savedBlogId,
-    setBlogId: setSavedBlogId,
+    postId: savedPostId,
+    setPostId: setSavedPostId,
     isSaving,
     saveStatus,
     setSaveStatus,
     isDirty,
     setIsDirty,
-    saveBlog,
+    savePost,
     ensureSaved,
-  } = useSaveBlog({
-    initialBlogId: null,
+  } = useSavePost({
+    initialPostId: null,
     getEditorState: () => ({
       title,
       content: editor?.getHTML() || "",
@@ -5779,7 +5779,7 @@ const BlogEditor = () => {
     [isDirty, router],
   );
 
-  // saveBlog is managed by useSaveBlog hook
+  // savePost is managed by useSavePost hook
 
   const handleSaveDraft = useCallback(() => {
     if (!title.trim()) {
@@ -5821,8 +5821,8 @@ const BlogEditor = () => {
       return;
     }
     reviewAfterSaveRef.current = true;
-    saveBlog(false);
-  }, [title, editor, saveBlog]);
+    savePost(false);
+  }, [title, editor, savePost]);
 
   if (!mounted || !editor || authLoading) return null;
 
@@ -6637,18 +6637,18 @@ const BlogEditor = () => {
 
   const renderDistributeTab = () => (
     <DistributionPanel
-      blogContent={editor?.getHTML() || ""}
-      blogExcerpt={excerpt}
-      blogId={savedBlogId || null}
-      blogPublished={saveStatus === "Published"}
-      blogSeo={seoData}
-      blogTags={tags}
-      blogTitle={title}
+      postContent={editor?.getHTML() || ""}
+      postExcerpt={excerpt}
+      postId={savedPostId || null}
+      postPublished={saveStatus === "Published"}
+      postSeo={seoData}
+      postTags={tags}
+      postTitle={title}
       contentGoal={contentGoal}
       distributionRecords={distRecords}
       postType={postType}
       socialDestination={socialDestination}
-      blogRepurposedOutputs={repurposedOutputs}
+      postRepurposedOutputs={repurposedOutputs}
       onUpdateRepurposedOutputs={setRepurposedOutputs}
       onUpdateExcerpt={setExcerpt}
       onUpdateTags={setTags}
@@ -7035,7 +7035,7 @@ const BlogEditor = () => {
             />
           </PirateCOSEditorArea>
           <AIWorkspacePanel
-            postId={savedBlogId || null}
+            postId={savedPostId || null}
             postType={postType}
             contentGoal={contentGoal}
             editor={editor}
@@ -7104,11 +7104,11 @@ const BlogEditor = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(true)}
+        onConfirm={() => savePost(true)}
         onKeepEditing={() => {
           // After creating a post, redirect to its edit page so the user can keep editing
-          if (savedBlogId) {
-            router.push(getHref(`/posts/edit/${savedBlogId}`));
+          if (savedPostId) {
+            router.push(getHref(`/posts/edit/${savedPostId}`));
           } else {
             setShowPublishModal(false);
             setModalSuccess(null);
@@ -7128,11 +7128,11 @@ const BlogEditor = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(false)}
+        onConfirm={() => savePost(false)}
         onKeepEditing={() => {
           // After creating a draft, redirect to its edit page
-          if (savedBlogId) {
-            router.push(getHref(`/posts/edit/${savedBlogId}`));
+          if (savedPostId) {
+            router.push(getHref(`/posts/edit/${savedPostId}`));
           } else {
             setShowSaveModal(false);
             setModalSuccess(null);

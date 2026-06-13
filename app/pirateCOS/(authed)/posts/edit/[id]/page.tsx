@@ -25,7 +25,7 @@ import { Button } from "@heroui/button";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useSaveBlog } from "@/hooks/useSaveBlog";
+import { useSavePost } from "@/hooks/useSavePost";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
 import WorkspaceTutorialCarousel from "@/components/pirateCOS/WorkspaceTutorialCarousel";
@@ -5527,17 +5527,17 @@ const BlogEditPage = () => {
   };
 
   const {
-    blogId,
-    setBlogId,
+    postId,
+    setPostId,
     isSaving,
     saveStatus,
     setSaveStatus,
     isDirty,
     setIsDirty,
-    saveBlog,
+    savePost,
     ensureSaved,
-  } = useSaveBlog({
-    initialBlogId: (params.id as string) || null,
+  } = useSavePost({
+    initialPostId: (params.id as string) || null,
     getEditorState: () => ({
       title,
       content: editor?.getHTML() || "",
@@ -6038,7 +6038,7 @@ const BlogEditPage = () => {
       if (data.success) {
         const blog = data.data;
 
-        setBlogId(blog._id);
+        setPostId(blog._id);
         setTitle(blog.title);
         setExcerpt(blog.excerpt || "");
         setFeaturedImage(blog.featuredImage || "");
@@ -6173,12 +6173,12 @@ const BlogEditPage = () => {
     [isDirty, router],
   );
 
-  // saveBlog is managed by useSaveBlog hook
+  // savePost is managed by useSavePost hook
 
   // Dedicated unpublish flow (separate from Save Draft)
   const doUnpublish = async () => {
     try {
-      await saveBlog(false);
+      await savePost(false);
       setShowUnpublishModal(false);
     } catch (error: any) {
       setShowUnpublishModal(false);
@@ -6196,7 +6196,7 @@ const BlogEditPage = () => {
         );
         sessionUploadedUrlsRef.current = [];
       }
-      const response = await fetch(`/api/pirateCOS/posts/${blogId}`, {
+      const response = await fetch(`/api/pirateCOS/posts/${postId}`, {
         method: "DELETE",
       });
 
@@ -6245,7 +6245,7 @@ const BlogEditPage = () => {
       return;
     }
     setShowSaveModal(true);
-  }, [title, editor, blogId]);
+  }, [title, editor, postId]);
 
   const handleUnpublish = useCallback(() => {
     setShowUnpublishModal(true);
@@ -6263,15 +6263,15 @@ const BlogEditPage = () => {
       return;
     }
     setShowPublishModal(true);
-  }, [title, editor, blogId]);
+  }, [title, editor, postId]);
 
   const isEditorOnlyUser = !!editorUser && editorUser.accountType !== "individual" && editorUser.orgRole === "editor";
 
   const handleSubmitForReview = useCallback(async () => {
-    if (!blogId) return;
+    if (!postId) return;
     setIsSubmittingReview(true);
     try {
-      const res = await fetch(`/api/pirateCOS/posts/${blogId}/request-review`, { method: "POST" });
+      const res = await fetch(`/api/pirateCOS/posts/${postId}/request-review`, { method: "POST" });
       const data = await res.json();
       if (data.success) {
         setApprovalStatus("pending_review");
@@ -6283,7 +6283,7 @@ const BlogEditPage = () => {
     } finally {
       setIsSubmittingReview(false);
     }
-  }, [blogId]);
+  }, [postId]);
 
   if (!mounted || !editor || authLoading || loading) return null;
 
@@ -6408,7 +6408,7 @@ const BlogEditPage = () => {
   );
 
   const renderVersionTab = () => {
-    if (!blogId) {
+    if (!postId) {
       return (
         <div className="flex flex-col items-center justify-center h-full p-8 text-center">
           <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
@@ -6428,7 +6428,7 @@ const BlogEditPage = () => {
       <div className="h-full flex flex-col">
         <div className="flex-1 min-h-0 overflow-hidden">
           <VersionHistoryPanel
-            postId={blogId}
+            postId={postId}
             currentContent={editor?.getHTML() || ""}
             refreshKey={versionRefreshKey}
             onRestore={(version: number) => {
@@ -6443,18 +6443,18 @@ const BlogEditPage = () => {
 
   const renderDistributeTab = () => (
     <DistributionPanel
-      blogContent={editor?.getHTML() || ""}
-      blogExcerpt={excerpt}
-      blogId={blogId || null}
-      blogPublished={saveStatus === "Published"}
-      blogSeo={seoData}
-      blogTags={tags}
-      blogTitle={title}
+      postContent={editor?.getHTML() || ""}
+      postExcerpt={excerpt}
+      postId={postId || null}
+      postPublished={saveStatus === "Published"}
+      postSeo={seoData}
+      postTags={tags}
+      postTitle={title}
       contentGoal={contentGoal}
       distributionRecords={distRecords}
       postType={postType}
       socialDestination={socialDestination}
-      blogRepurposedOutputs={repurposedOutputs}
+      postRepurposedOutputs={repurposedOutputs}
       onUpdateRepurposedOutputs={setRepurposedOutputs}
       onUpdateExcerpt={setExcerpt}
       onUpdateTags={setTags}
@@ -7034,7 +7034,7 @@ const BlogEditPage = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(true)}
+        onConfirm={() => savePost(true)}
         onKeepEditing={() => {
           // On edit page, keep editing means just close the modal — no redirect needed
           setShowPublishModal(false);
@@ -7054,7 +7054,7 @@ const BlogEditPage = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(false)}
+        onConfirm={() => savePost(false)}
         onKeepEditing={() => {
           setShowSaveModal(false);
           setModalSuccess(null);

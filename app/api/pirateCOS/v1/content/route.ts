@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const total = await Post.countDocuments(query);
-    const blogs = await Post.find(query)
+    const posts = await Post.find(query)
       .sort({ publishedAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: blogs,
+      data: posts,
       pagination: {
         page,
         limit,
@@ -138,7 +138,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const blog = new Post({
+    const post = new Post({
       tenantId: tenantOid,
       title,
       content,
@@ -151,11 +151,11 @@ export async function POST(req: NextRequest) {
       published: false, // Default to draft for programmatic entry
     });
 
-    await blog.save();
+    await post.save();
 
     return NextResponse.json({
       success: true,
-      data: blog,
+      data: post,
     });
   } catch (err: any) {
     return NextResponse.json(

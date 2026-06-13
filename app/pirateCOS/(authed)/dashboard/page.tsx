@@ -42,12 +42,12 @@ export default async function AdminDashboardPage() {
   }
 
   // Get post statistics
-  const totalBlogs = await Post.countDocuments(baseFilter);
-  const publishedBlogs = await Post.countDocuments({ ...baseFilter, published: true });
-  const draftBlogs = await Post.countDocuments({ ...baseFilter, published: false });
+  const totalPosts = await Post.countDocuments(baseFilter);
+  const publishedPosts = await Post.countDocuments({ ...baseFilter, published: true });
+  const draftPosts = await Post.countDocuments({ ...baseFilter, published: false });
 
   // Get recent posts
-  const recentBlogs = await Post.find(baseFilter)
+  const recentPosts = await Post.find(baseFilter)
     .sort({ createdAt: -1 })
     .limit(5)
     .select(
@@ -77,21 +77,21 @@ export default async function AdminDashboardPage() {
   const stats = [
     {
       label: "Total Posts",
-      value: totalBlogs,
+      value: totalPosts,
       Icon: IconBlogs,
       color: "#151514",
       bg: "#F0EDE8",
     },
     {
       label: "Published",
-      value: publishedBlogs,
+      value: publishedPosts,
       Icon: IconCheck,
       color: "#16A34A",
       bg: "#DCFCE7",
     },
     {
       label: "Drafts",
-      value: draftBlogs,
+      value: draftPosts,
       Icon: IconDraft,
       color: "#FF5B04",
       bg: "#FFF0E8",
@@ -224,7 +224,7 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* Recent Blogs */}
+      {/* Recent Posts */}
       <div className="bg-white rounded-2xl p-6 shadow-card border border-black/5">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-sm font-semibold font-geist text-gray-900 uppercase tracking-wider">
@@ -239,7 +239,7 @@ export default async function AdminDashboardPage() {
           </Link>
         </div>
 
-        {recentBlogs.length === 0 ? (
+        {recentPosts.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-sm text-gray-400 font-geist mb-4">
               No posts yet. Write your first one.
@@ -255,30 +255,30 @@ export default async function AdminDashboardPage() {
           </div>
         ) : (
           <div className="divide-y divide-black/5">
-            {recentBlogs.map((blog: any) => (
+            {recentPosts.map((post: any) => (
               <div
-                key={blog._id.toString()}
+                key={post._id.toString()}
                 className="flex items-center justify-between py-3.5 group"
               >
                 <div className="flex-1 min-w-0">
                   <Link
                     className="text-sm font-medium font-geist text-gray-900 hover:text-[#FF5B04] transition-colors truncate block"
-                    href={`/blogs/${blog.slug}`}
+                    href={`/blogs/${post.slug}`}
                   >
-                    {blog.title}
+                    {post.title}
                   </Link>
                   <div className="flex items-center gap-3 mt-1">
                     <span
                       className={`text-[10px] font-jetbrains-mono font-medium px-2 py-0.5 rounded-full ${
-                        blog.published
+                        post.published
                           ? "bg-green-50 text-green-600"
                           : "bg-orange-50 text-[#FF5B04]"
                       }`}
                     >
-                      {blog.published ? "Published" : "Draft"}
+                      {post.published ? "Published" : "Draft"}
                     </span>
                     <span className="text-xs text-gray-400 font-geist">
-                      {new Date(blog.createdAt).toLocaleDateString()}
+                      {new Date(post.createdAt).toLocaleDateString()}
                     </span>
                     <span className="text-xs text-gray-400 font-geist flex items-center gap-1">
                       <IconEye
@@ -286,19 +286,19 @@ export default async function AdminDashboardPage() {
                         style={{ width: 12, height: 12 }}
                       />
                       {(
-                        (blog as any).totalViews ||
-                        (blog as any).views ||
+                        (post as any).totalViews ||
+                        (post as any).views ||
                         0
                       ).toLocaleString()}
-                      {(blog as any).views !== undefined && (
+                      {(post as any).views !== undefined && (
                         <span className="text-[9px] text-gray-300 ml-0.5">
-                          ({(blog as any).views || 0} unique)
+                          ({(post as any).views || 0} unique)
                         </span>
                       )}
                     </span>
                   </div>
                 </div>
-                <Link href={getHref(`/posts/edit/${blog._id}`)}>
+                <Link href={getHref(`/posts/edit/${post._id}`)}>
                   <Button
                     className="font-geist text-xs h-8 px-3 rounded-lg bg-black/5 text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity"
                     size="sm"

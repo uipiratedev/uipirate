@@ -24,11 +24,11 @@ export async function POST(req: NextRequest) {
   const denied = checkRole(user, ["org-admin", "admin", "editor"]);
   if (denied) return denied;
 
-  const { blogId, platforms, options } = await req.json();
+  const { postId, platforms, options } = await req.json();
 
-  if (!blogId || !mongoose.Types.ObjectId.isValid(blogId)) {
+  if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
     return NextResponse.json(
-      { success: false, error: "Invalid or missing blog ID" },
+      { success: false, error: "Invalid or missing post ID" },
       { status: 400 },
     );
   }
@@ -47,11 +47,11 @@ export async function POST(req: NextRequest) {
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
   // Scoped strictly to the tenant to guarantee tenant boundary
-  const post = await Post.findOne({ _id: blogId, tenantId: tenantOid });
+  const post = await Post.findOne({ _id: postId, tenantId: tenantOid });
 
   if (!post) {
     return NextResponse.json(
-      { success: false, error: "Blog post not found" },
+      { success: false, error: "Post not found" },
       { status: 404 },
     );
   }
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: "Please publish the blog locally before distributing.",
+        error: "Please publish the post locally before distributing.",
       },
       { status: 400 },
     );
@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
     tenantId: user.tenantId,
   });
 
-  // Upsert the results to the blog's distributionRecords
+  // Upsert the results to the post's distributionRecords
   if (!post.distributionRecords) {
     post.distributionRecords = [];
   }
@@ -169,7 +169,7 @@ export async function POST(req: NextRequest) {
   post.markModified("distributionRecords");
   await post.save();
   await audit(user, "post.publish", {
-    targetId: blogId,
+    targetId: postId,
     targetType: "post",
     meta: { platforms },
   });
