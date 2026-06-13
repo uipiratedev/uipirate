@@ -18,6 +18,8 @@ export type AuditAction =
   | "billing.portal"
   | "ai_config.update"
   | "org.convert"
+  | "org.member_invite"
+  | "org.member_remove"
   | "member.role_change";
 
 export interface IAuditLog extends Document {

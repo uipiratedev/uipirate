@@ -37,10 +37,14 @@ export async function GET(req: NextRequest) {
   if (actorEmail) query.actorEmail = actorEmail;
   if (targetId) query.targetId = targetId;
 
-  const [logs, total] = await Promise.all([
-    AuditLog.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
-    AuditLog.countDocuments(query),
-  ]);
+  const logsPromise = AuditLog.find(query)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean<Record<string, unknown>[]>();
+  const totalPromise = AuditLog.countDocuments(query);
+  const logs = await logsPromise;
+  const total = await totalPromise;
 
   return NextResponse.json({
     success: true,
