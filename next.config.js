@@ -39,10 +39,11 @@ const nextConfig = {
   // Production optimizations
   productionBrowserSourceMaps: false,
 
+  allowedDevOrigins: ["cos.localhost:3000", "localhost:3000"],
+
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ["@heroui/react", "framer-motion"],
-    allowedDevOrigins: ["cos.localhost:3000", "localhost:3000"],
   },
 
   // Generate sitemap and robots.txt
