@@ -15,7 +15,7 @@ import {
 } from "@/components/pirateCOS/AdminIcons";
 import CosIcon from "@/components/pirateCOS/CosIcon";
 
-interface Blog {
+interface Post {
   _id: string;
   title: string;
   slug: string;
@@ -27,6 +27,8 @@ interface Blog {
   botViews?: number;
   duplicateViews?: number;
   postType?: string;
+  approvalStatus?: "draft" | "pending_review" | "approved" | "rejected";
+  assignees?: Array<{ email: string; name: string }>;
   author: {
     name: string;
   };
@@ -34,14 +36,14 @@ interface Blog {
 
 import { POST_TYPE_CONFIGS } from "@/lib/pirateCOS/postTypeConfig";
 
-export default function AdminBlogsPage() {
+export default function AdminPostsPage() {
   const isSubdomain =
     typeof window !== "undefined" &&
     (window.location.hostname.startsWith("cos.") ||
       window.location.hostname === "cos.uipirate.com");
   const getHref = (path: string) => (isSubdomain ? path : `/pirateCOS${path}`);
 
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<
@@ -49,6 +51,7 @@ export default function AdminBlogsPage() {
   >("all");
   const [filterType, setFilterType] = useState<string>("all");
   const [filterTeam, setFilterTeam] = useState<string>("all");
+  const [filterAssignedToMe, setFilterAssignedToMe] = useState(false);
   const [teams, setTeams] = useState<Array<{ _id: string; name: string }>>([]);
 
   // Pagination states
@@ -65,7 +68,7 @@ export default function AdminBlogsPage() {
   const typeRef = useRef<HTMLDivElement>(null);
   const teamRef = useRef<HTMLDivElement>(null);
 
-  useAuth(true); // Require authentication
+  const { user } = useAuth(true);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -120,13 +123,13 @@ export default function AdminBlogsPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filterStatus, filterType, filterTeam, debouncedSearch]);
+  }, [filterStatus, filterType, filterTeam, filterAssignedToMe, debouncedSearch]);
 
   useEffect(() => {
-    fetchBlogs();
-  }, [currentPage, filterStatus, filterType, filterTeam, debouncedSearch]);
+    fetchPosts();
+  }, [currentPage, filterStatus, filterType, filterTeam, filterAssignedToMe, debouncedSearch]);
 
-  const fetchBlogs = async () => {
+  const fetchPosts = async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
@@ -142,6 +145,9 @@ export default function AdminBlogsPage() {
       if (filterTeam !== "all") {
         params.append("teamId", filterTeam);
       }
+      if (filterAssignedToMe) {
+        params.append("assignedToMe", "true");
+      }
       if (debouncedSearch.trim()) {
         params.append("search", debouncedSearch.trim());
       }
@@ -150,7 +156,7 @@ export default function AdminBlogsPage() {
       const data = await response.json();
 
       if (data.success) {
-        setBlogs(data.posts || data.data || []);
+        setPosts(data.posts || data.data || []);
         setTotalPages(data.totalPages || 1);
         setTotalCount(data.totalCount || 0);
       }
@@ -175,7 +181,7 @@ export default function AdminBlogsPage() {
 
       if (data.success) {
         alert("Post deleted successfully!");
-        fetchBlogs(); // Refresh the list
+        fetchPosts(); // Refresh the list
       } else {
         alert(data.error || "Failed to delete post");
       }
@@ -210,7 +216,7 @@ export default function AdminBlogsPage() {
         alert(
           `Post ${currentStatus ? "unpublished" : "published"} successfully!`,
         );
-        fetchBlogs(); // Refresh the list
+        fetchPosts(); // Refresh the list
       } else {
         alert(data.error || `Failed to ${action} post`);
       }
@@ -219,7 +225,54 @@ export default function AdminBlogsPage() {
     }
   };
 
-  const filteredBlogs = blogs;
+  const canDelete = !user || user.accountType === "individual" || ["org-admin", "admin"].includes(user.orgRole);
+  const canApprove = !user || user.accountType === "individual" || ["org-admin", "admin"].includes(user.orgRole);
+  const isEditorOnly = !!user && user.accountType !== "individual" && user.orgRole === "editor";
+
+  const handleRequestReview = async (id: string) => {
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${id}/request-review`, { method: "POST" });
+      const data = await res.json();
+      if (data.success) fetchPosts();
+      else alert(data.error || "Failed to submit for review");
+    } catch {
+      alert("Failed to submit for review");
+    }
+  };
+
+  const handleApprovePost = async (id: string) => {
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${id}/approve-review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const data = await res.json();
+      if (data.success) fetchPosts();
+      else alert(data.error || "Failed to approve post");
+    } catch {
+      alert("Failed to approve post");
+    }
+  };
+
+  const handleRejectPost = async (id: string, title: string) => {
+    const note = prompt(`Reason for rejecting "${title}"? (optional)`);
+    if (note === null) return;
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${id}/reject-review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ note }),
+      });
+      const data = await res.json();
+      if (data.success) fetchPosts();
+      else alert(data.error || "Failed to reject post");
+    } catch {
+      alert("Failed to reject post");
+    }
+  };
+
+  const filteredPosts = posts;
 
   const filterButtons: { label: string; value: typeof filterStatus }[] = [
     { label: "All", value: "all" },
@@ -536,17 +589,32 @@ export default function AdminBlogsPage() {
                 </div>
               )}
             </div>
+
+            {/* Assigned to Me toggle */}
+            <button
+              onClick={() => setFilterAssignedToMe((v) => !v)}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-sm font-semibold font-geist transition-all ${
+                filterAssignedToMe
+                  ? "bg-[#FF5B04] text-white border-[#FF5B04]"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-[#FF5B04]/40 hover:text-[#FF5B04]"
+              }`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Assigned to Me
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Blogs List */}
+      {/* Posts List */}
       <div className="bg-white rounded-2xl shadow-card border border-black/5 overflow-hidden">
         {loading ? (
           <div className="p-16 text-center">
             <p className="text-sm text-gray-400 font-geist">Loading posts…</p>
           </div>
-        ) : filteredBlogs.length === 0 ? (
+        ) : filteredPosts.length === 0 ? (
           <div className="p-16 text-center flex flex-col items-center gap-4">
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center"
@@ -604,25 +672,25 @@ export default function AdminBlogsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredBlogs.map((blog) => (
+                  {filteredPosts.map((post) => (
                     <tr
-                      key={blog._id}
+                      key={post._id}
                       className="group transition-colors hover:bg-black/[0.02]"
                       style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}
                     >
                       <td className="px-6 py-4">
                         <Link
                           className="text-sm font-medium font-geist text-gray-900 hover:text-[#FF5B04] transition-colors line-clamp-1"
-                          href={`/blogs/${blog.slug}`}
+                          href={`/blogs/${post.slug}`}
                         >
-                          {blog.title}
+                          {post.title}
                         </Link>
                         <div className="flex items-center gap-2 mt-1">
                           <span className="text-xs text-gray-400 font-geist">
-                            by {blog.author.name}
+                            by {post.author.name}
                           </span>
                           {(() => {
-                            const type = blog.postType || "blog";
+                            const type = post.postType || "blog";
                             const typeMap: Record<
                               string,
                               { label: string; color: string; bg: string }
@@ -694,17 +762,43 @@ export default function AdminBlogsPage() {
                               </span>
                             ) : null;
                           })()}
+                          {(post.assignees ?? []).length > 0 && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-medium font-geist px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 border border-purple-100">
+                              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="w-3 h-3">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              {post.assignees![0].name || post.assignees![0].email.split("@")[0]}
+                              {post.assignees!.length > 1 && ` +${post.assignees!.length - 1}`}
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex text-[10px] font-medium font-jetbrains-mono px-2.5 py-1 rounded-full ${blog.published
-                            ? "bg-green-50 text-green-600"
-                            : "bg-orange-50 text-[#FF5B04]"
-                            }`}
-                        >
-                          {blog.published ? "Published" : "Draft"}
-                        </span>
+                        <div className="flex flex-col gap-1">
+                          <span
+                            className={`inline-flex text-[10px] font-medium font-jetbrains-mono px-2.5 py-1 rounded-full ${post.published
+                              ? "bg-green-50 text-green-600"
+                              : "bg-orange-50 text-[#FF5B04]"
+                              }`}
+                          >
+                            {post.published ? "Published" : "Draft"}
+                          </span>
+                          {post.approvalStatus && post.approvalStatus !== "draft" && (
+                            <span className={`inline-flex text-[10px] font-medium font-jetbrains-mono px-2.5 py-1 rounded-full ${
+                              post.approvalStatus === "approved"
+                                ? "bg-blue-50 text-blue-600"
+                                : post.approvalStatus === "pending_review"
+                                  ? "bg-yellow-50 text-yellow-600"
+                                  : "bg-red-50 text-red-600"
+                            }`}>
+                              {post.approvalStatus === "approved"
+                                ? "Approved"
+                                : post.approvalStatus === "pending_review"
+                                  ? "In Review"
+                                  : "Rejected"}
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
                         <div className="flex flex-col gap-0.5">
@@ -713,8 +807,8 @@ export default function AdminBlogsPage() {
                               style={{ width: 13, height: 13, color: "#7C3AED" }}
                             />
                             {(
-                              blog.totalViews ||
-                              blog.views ||
+                              post.totalViews ||
+                              post.views ||
                               0
                             ).toLocaleString()}
                           </div>
@@ -723,31 +817,31 @@ export default function AdminBlogsPage() {
                               className="hover:text-purple-600 cursor-help font-semibold"
                               title="Unique visitors (deduplicated by IP over 24h)"
                             >
-                              {blog.views || 0} U
+                              {post.views || 0} U
                             </span>
                             <span className="text-gray-300">•</span>
                             <span
                               className="hover:text-blue-500 cursor-help font-semibold"
                               title="Repeat visits (same IP within 24h)"
                             >
-                              {blog.duplicateViews || 0} R
+                              {post.duplicateViews || 0} R
                             </span>
                             <span className="text-gray-300">•</span>
                             <span
                               className="hover:text-gray-600 cursor-help font-semibold"
                               title="Bot/crawler hits (search engines, indexers)"
                             >
-                              {blog.botViews || 0} B
+                              {post.botViews || 0} B
                             </span>
                           </div>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-xs font-geist text-gray-400 whitespace-nowrap">
-                        {new Date(blog.createdAt).toLocaleDateString()}
+                        {new Date(post.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
-                          <Link href={getHref(`/posts/edit/${blog._id}`)}>
+                          <Link href={getHref(`/posts/edit/${post._id}`)}>
                             <Button
                               className="font-geist text-xs h-8 px-3 rounded-lg bg-black/5 text-gray-600 gap-1.5"
                               size="sm"
@@ -756,7 +850,7 @@ export default function AdminBlogsPage() {
                               <IconEdit style={{ width: 13, height: 13 }} /> Edit
                             </Button>
                           </Link>
-                          <Link href={getHref(`/posts/edit/${blog._id}?tab=transform`)}>
+                          <Link href={getHref(`/posts/edit/${post._id}?tab=transform`)}>
                             <Button
                               className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
                               size="sm"
@@ -774,7 +868,7 @@ export default function AdminBlogsPage() {
                             className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5 font-medium transition-colors"
                             size="sm"
                             style={
-                              blog.published
+                              post.published
                                 ? {
                                   background: "rgba(249,115,22,0.08)",
                                   color: "#EA580C",
@@ -787,26 +881,61 @@ export default function AdminBlogsPage() {
                             variant="flat"
                             onClick={() =>
                               handleTogglePublish(
-                                blog._id,
-                                blog.published,
-                                blog.title,
+                                post._id,
+                                post.published,
+                                post.title,
                               )
                             }
                           >
-                            {blog.published ? "Unpublish" : "Publish"}
+                            {post.published ? "Unpublish" : "Publish"}
                           </Button>
-                          <Button
-                            className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
-                            size="sm"
-                            style={{
-                              background: "rgba(239,68,68,0.08)",
-                              color: "#DC2626",
-                            }}
-                            variant="flat"
-                            onClick={() => handleDelete(blog._id, blog.title)}
-                          >
-                            <IconTrash style={{ width: 13, height: 13 }} /> Delete
-                          </Button>
+                          {/* Submit for Review — editors only, unpublished posts not yet approved */}
+                          {isEditorOnly && !post.published && post.approvalStatus !== "pending_review" && post.approvalStatus !== "approved" && (
+                            <Button
+                              className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                              size="sm"
+                              style={{ background: "rgba(234,179,8,0.1)", color: "#A16207" }}
+                              variant="flat"
+                              onPress={() => handleRequestReview(post._id)}
+                            >
+                              Submit for Review
+                            </Button>
+                          )}
+                          {/* Approve / Reject — admins and org-admins */}
+                          {canApprove && post.approvalStatus === "pending_review" && (
+                            <>
+                              <Button
+                                className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                                size="sm"
+                                style={{ background: "rgba(37,99,235,0.08)", color: "#1D4ED8" }}
+                                variant="flat"
+                                onPress={() => handleApprovePost(post._id)}
+                              >
+                                Approve
+                              </Button>
+                              <Button
+                                className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                                size="sm"
+                                style={{ background: "rgba(239,68,68,0.08)", color: "#DC2626" }}
+                                variant="flat"
+                                onPress={() => handleRejectPost(post._id, post.title)}
+                              >
+                                Reject
+                              </Button>
+                            </>
+                          )}
+                          {/* Delete — org-admin and admin only */}
+                          {canDelete && (
+                            <Button
+                              className="font-geist text-xs h-8 px-3 rounded-lg gap-1.5"
+                              size="sm"
+                              style={{ background: "rgba(239,68,68,0.08)", color: "#DC2626" }}
+                              variant="flat"
+                              onPress={() => handleDelete(post._id, post.title)}
+                            >
+                              <IconTrash style={{ width: 13, height: 13 }} /> Delete
+                            </Button>
+                          )}
                         </div>
                       </td>
                     </tr>

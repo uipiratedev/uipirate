@@ -25,7 +25,7 @@ import { Button } from "@heroui/button";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useSaveBlog } from "@/hooks/useSaveBlog";
+import { useSavePost } from "@/hooks/useSavePost";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
 import WorkspaceTutorialCarousel from "@/components/pirateCOS/WorkspaceTutorialCarousel";
@@ -5037,6 +5037,8 @@ const BlogEditPage = () => {
   const [contentGoal, setContentGoal] = useState<ContentGoal>("traffic");
   const [teamId, setTeamId] = useState<string>(""); // Phase 5.4+: Team assignment
   const [teams, setTeams] = useState<any[]>([]); // Phase 5.4+: Available teams
+  const [assignees, setAssignees] = useState<Array<{ email: string; name: string }>>([]);
+  const [postOwner, setPostOwner] = useState<{ email: string; name: string } | null>(null);
   const [showImageUrlModal, setShowImageUrlModal] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showLinkModal, setShowLinkModal] = useState(false);
@@ -5059,13 +5061,15 @@ const BlogEditPage = () => {
   const [currentSlug, setCurrentSlug] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | "collab" | null
   >(null);
   const [selectedTransformFormat, setSelectedTransformFormat] = useState<string | null>(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
   const [copilotInitialPrompt, setCopilotInitialPrompt] = useState("");
   const [distRecords, setDistRecords] = useState<any[]>([]);
   const [repurposedOutputs, setRepurposedOutputs] = useState<Record<string, string>>({});
+  const [approvalStatus, setApprovalStatus] = useState<string>("draft");
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
 
 
@@ -5523,17 +5527,17 @@ const BlogEditPage = () => {
   };
 
   const {
-    blogId,
-    setBlogId,
+    postId,
+    setPostId,
     isSaving,
     saveStatus,
     setSaveStatus,
     isDirty,
     setIsDirty,
-    saveBlog,
+    savePost,
     ensureSaved,
-  } = useSaveBlog({
-    initialBlogId: (params.id as string) || null,
+  } = useSavePost({
+    initialPostId: (params.id as string) || null,
     getEditorState: () => ({
       title,
       content: editor?.getHTML() || "",
@@ -5586,7 +5590,7 @@ const BlogEditPage = () => {
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const sessionUploadedUrlsRef = useRef<string[]>([]);
 
-  const { isLoading: authLoading } = useAuth(true);
+  const { isLoading: authLoading, user: editorUser } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);
@@ -6034,7 +6038,7 @@ const BlogEditPage = () => {
       if (data.success) {
         const blog = data.data;
 
-        setBlogId(blog._id);
+        setPostId(blog._id);
         setTitle(blog.title);
         setExcerpt(blog.excerpt || "");
         setFeaturedImage(blog.featuredImage || "");
@@ -6045,6 +6049,8 @@ const BlogEditPage = () => {
         setPostType(postTypeVal);
         setContentGoal(blog.contentGoal || "traffic");
         setTeamId(blog.teamId || ""); // Phase 5.4+: Load team assignment
+        setAssignees(blog.assignees || []);
+        setPostOwner(blog.owner || null);
 
         // Auto-select recommended AI preset based on loaded postType if not already set
         const PRESET_DEFAULTS: Record<string, string> = {
@@ -6068,6 +6074,7 @@ const BlogEditPage = () => {
         setSaveStatus(blog.published ? "Published" : "Draft");
         setDistRecords(blog.distributionRecords || []);
         setRepurposedOutputs(blog.repurposedOutputs || {});
+        setApprovalStatus(blog.approvalStatus || "draft");
         if (editor) {
           // Disable dirty tracking while loading initial content
           isEditorReady.current = false;
@@ -6166,12 +6173,12 @@ const BlogEditPage = () => {
     [isDirty, router],
   );
 
-  // saveBlog is managed by useSaveBlog hook
+  // savePost is managed by useSavePost hook
 
   // Dedicated unpublish flow (separate from Save Draft)
   const doUnpublish = async () => {
     try {
-      await saveBlog(false);
+      await savePost(false);
       setShowUnpublishModal(false);
     } catch (error: any) {
       setShowUnpublishModal(false);
@@ -6189,7 +6196,7 @@ const BlogEditPage = () => {
         );
         sessionUploadedUrlsRef.current = [];
       }
-      const response = await fetch(`/api/pirateCOS/posts/${blogId}`, {
+      const response = await fetch(`/api/pirateCOS/posts/${postId}`, {
         method: "DELETE",
       });
 
@@ -6208,6 +6215,24 @@ const BlogEditPage = () => {
     }
   };
 
+  const handleAssign = useCallback(async (newAssignees: Array<{ email: string; name: string }>) => {
+    const postId = typeof params.id === "string" ? params.id : "";
+    if (!postId) return;
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${postId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assignees: newAssignees }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAssignees(data.data.assignees || newAssignees);
+      }
+    } catch {
+      // silent — collab save failure doesn't block editing
+    }
+  }, [params.id]);
+
   const handleSaveDraft = useCallback(() => {
     if (!title.trim()) {
       setValidationError("Please enter a title for your blog post.");
@@ -6220,7 +6245,7 @@ const BlogEditPage = () => {
       return;
     }
     setShowSaveModal(true);
-  }, [title, editor, blogId]);
+  }, [title, editor, postId]);
 
   const handleUnpublish = useCallback(() => {
     setShowUnpublishModal(true);
@@ -6238,7 +6263,27 @@ const BlogEditPage = () => {
       return;
     }
     setShowPublishModal(true);
-  }, [title, editor, blogId]);
+  }, [title, editor, postId]);
+
+  const isEditorOnlyUser = !!editorUser && editorUser.accountType !== "individual" && editorUser.orgRole === "editor";
+
+  const handleSubmitForReview = useCallback(async () => {
+    if (!postId) return;
+    setIsSubmittingReview(true);
+    try {
+      const res = await fetch(`/api/pirateCOS/posts/${postId}/request-review`, { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        setApprovalStatus("pending_review");
+      } else {
+        setValidationError(data.error || "Failed to submit for review");
+      }
+    } catch {
+      setValidationError("Failed to submit for review");
+    } finally {
+      setIsSubmittingReview(false);
+    }
+  }, [postId]);
 
   if (!mounted || !editor || authLoading || loading) return null;
 
@@ -6363,7 +6408,7 @@ const BlogEditPage = () => {
   );
 
   const renderVersionTab = () => {
-    if (!blogId) {
+    if (!postId) {
       return (
         <div className="flex flex-col items-center justify-center h-full p-8 text-center">
           <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
@@ -6383,7 +6428,7 @@ const BlogEditPage = () => {
       <div className="h-full flex flex-col">
         <div className="flex-1 min-h-0 overflow-hidden">
           <VersionHistoryPanel
-            postId={blogId}
+            postId={postId}
             currentContent={editor?.getHTML() || ""}
             refreshKey={versionRefreshKey}
             onRestore={(version: number) => {
@@ -6398,18 +6443,18 @@ const BlogEditPage = () => {
 
   const renderDistributeTab = () => (
     <DistributionPanel
-      blogContent={editor?.getHTML() || ""}
-      blogExcerpt={excerpt}
-      blogId={blogId || null}
-      blogPublished={saveStatus === "Published"}
-      blogSeo={seoData}
-      blogTags={tags}
-      blogTitle={title}
+      postContent={editor?.getHTML() || ""}
+      postExcerpt={excerpt}
+      postId={postId || null}
+      postPublished={saveStatus === "Published"}
+      postSeo={seoData}
+      postTags={tags}
+      postTitle={title}
       contentGoal={contentGoal}
       distributionRecords={distRecords}
       postType={postType}
       socialDestination={socialDestination}
-      blogRepurposedOutputs={repurposedOutputs}
+      postRepurposedOutputs={repurposedOutputs}
       onUpdateRepurposedOutputs={setRepurposedOutputs}
       onUpdateExcerpt={setExcerpt}
       onUpdateTags={setTags}
@@ -6650,18 +6695,33 @@ const BlogEditPage = () => {
                   <span className="hidden sm:inline">Save Draft</span>
                   <span className="sm:hidden">Save</span>
                 </Button>
-                <Button
-                  className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"
-                  disabled={isDisabled}
-                  isLoading={isSaving}
-                  style={{
-                    background: isDisabled ? "rgba(0,0,0,0.06)" : "#FF5B04",
-                    color: isDisabled ? "#a1a1aa" : "white"
-                  }}
-                  onClick={handlePublish}
-                >
-                  Publish
-                </Button>
+                {isEditorOnlyUser ? (
+                  <Button
+                    className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium disabled:cursor-not-allowed disabled:pointer-events-none"
+                    disabled={isDisabled || approvalStatus === "pending_review" || approvalStatus === "approved"}
+                    isLoading={isSubmittingReview}
+                    style={{
+                      background: (isDisabled || approvalStatus === "pending_review" || approvalStatus === "approved") ? "rgba(0,0,0,0.06)" : "rgba(234,179,8,0.15)",
+                      color: (isDisabled || approvalStatus === "pending_review" || approvalStatus === "approved") ? "#a1a1aa" : "#A16207"
+                    }}
+                    onClick={handleSubmitForReview}
+                  >
+                    {approvalStatus === "pending_review" ? "In Review" : approvalStatus === "approved" ? "Approved" : "Submit for Review"}
+                  </Button>
+                ) : (
+                  <Button
+                    className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"
+                    disabled={isDisabled}
+                    isLoading={isSaving}
+                    style={{
+                      background: isDisabled ? "rgba(0,0,0,0.06)" : "#FF5B04",
+                      color: isDisabled ? "#a1a1aa" : "white"
+                    }}
+                    onClick={handlePublish}
+                  >
+                    Publish
+                  </Button>
+                )}
               </>
             );
           })()}
@@ -6928,6 +6988,9 @@ const BlogEditPage = () => {
               selectedModel={seoModel}
               onEngineChange={setSeoEngine}
               onModelChange={setSeoModel}
+              assignees={assignees}
+              postOwner={postOwner ?? undefined}
+              onAssign={handleAssign}
             />
           </>
         )}
@@ -6971,7 +7034,7 @@ const BlogEditPage = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(true)}
+        onConfirm={() => savePost(true)}
         onKeepEditing={() => {
           // On edit page, keep editing means just close the modal — no redirect needed
           setShowPublishModal(false);
@@ -6991,7 +7054,7 @@ const BlogEditPage = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(false)}
+        onConfirm={() => savePost(false)}
         onKeepEditing={() => {
           setShowSaveModal(false);
           setModalSuccess(null);

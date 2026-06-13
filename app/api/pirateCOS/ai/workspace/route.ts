@@ -219,7 +219,10 @@ Rules for output:
 
         if (!response.ok) {
           const errText = await response.text();
-          throw new Error(parseAIError(selectedEngine, response.status, errText));
+          return NextResponse.json(
+            { success: false, error: parseAIError(selectedEngine, response.status, errText) },
+            { status: response.status >= 500 ? 502 : response.status }
+          );
         }
 
         const data = await response.json();
@@ -245,7 +248,10 @@ Rules for output:
 
         if (!response.ok) {
           const errText = await response.text();
-          throw new Error(parseAIError("anthropic", response.status, errText));
+          return NextResponse.json(
+            { success: false, error: parseAIError("anthropic", response.status, errText) },
+            { status: response.status >= 500 ? 502 : response.status }
+          );
         }
 
         const data = await response.json();
@@ -277,7 +283,10 @@ Rules for output:
 
         if (!response.ok) {
           const errText = await response.text();
-          throw new Error(parseAIError("gemini", response.status, errText));
+          return NextResponse.json(
+            { success: false, error: parseAIError("gemini", response.status, errText) },
+            { status: response.status >= 500 ? 502 : response.status }
+          );
         }
 
         const data = await response.json();
@@ -434,7 +443,10 @@ Rules for output:
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(parseAIError(selectedEngine, response.status, errText));
+        return NextResponse.json(
+          { success: false, error: parseAIError(selectedEngine, response.status, errText) },
+          { status: response.status >= 500 ? 502 : response.status }
+        );
       }
 
       const data = await response.json();
@@ -472,7 +484,10 @@ Rules for output:
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(parseAIError("anthropic", response.status, errText));
+        return NextResponse.json(
+          { success: false, error: parseAIError("anthropic", response.status, errText) },
+          { status: response.status >= 500 ? 502 : response.status }
+        );
       }
 
       const data = await response.json();
@@ -518,7 +533,10 @@ Rules for output:
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(parseAIError("gemini", response.status, errText));
+        return NextResponse.json(
+          { success: false, error: parseAIError("gemini", response.status, errText) },
+          { status: response.status >= 500 ? 502 : response.status }
+        );
       }
 
       const data = await response.json();
@@ -592,7 +610,7 @@ Rules for output:
   } catch (error: any) {
     console.error("AI Workspace API error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "AI Workspace execution failed" },
+      { success: false, error: "AI Workspace execution failed" },
       { status: 500 },
     );
   }

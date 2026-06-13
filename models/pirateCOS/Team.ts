@@ -2,6 +2,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 // Phase 5.4: Team model for collaborative workspaces
 export interface ITeam extends Document {
+  /** Direct tenant boundary — equal to the Admin._id that owns this team */
+  tenantId: mongoose.Types.ObjectId;
   name: string;
   description?: string;
   workspace: mongoose.Types.ObjectId; // References Workspace
@@ -17,6 +19,12 @@ export interface ITeam extends Document {
 
 const TeamSchema: Schema<ITeam> = new Schema(
   {
+    // Direct tenant boundary — populated on create; backfilled by migration for legacy docs
+    tenantId: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      index: true,
+    },
     name: {
       type: String,
       required: true,

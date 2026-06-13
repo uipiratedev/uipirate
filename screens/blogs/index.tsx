@@ -6,7 +6,13 @@ import FeaturedBlogs from "./featuredBlogs";
 import BlogsHero from "./hero";
 import BlogsNewsletter from "./newsletter";
 
-const Blogs = () => {
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
+interface BlogsProps {
+  initialBlogs: ReaderPost[];
+}
+
+const Blogs = ({ initialBlogs }: BlogsProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("general");
 
@@ -19,6 +25,7 @@ const Blogs = () => {
         onSearchChange={setSearchQuery}
       />
       <FeaturedBlogs
+        blogs={initialBlogs}
         searchQuery={searchQuery}
         selectedCategory={selectedCategory}
       />

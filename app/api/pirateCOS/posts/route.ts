@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
 import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
 import type { IContentHistory } from "@/models/pirateCOS/ContentHistory";
 
@@ -34,7 +36,8 @@ export async function GET(request: NextRequest) {
     const postType = searchParams.get("postType");
     const search = searchParams.get("search");
     const teamId = searchParams.get("teamId");
-    
+    const assignedToMe = searchParams.get("assignedToMe");
+
     const limit = Math.min(Math.max(parseInt(searchParams.get("limit") || "10", 10), 1), 100);
     const page = Math.max(parseInt(searchParams.get("page") || "1", 10), 1);
     const skip = (page - 1) * limit;
@@ -44,6 +47,16 @@ export async function GET(request: NextRequest) {
     };
 
     const andConditions: any[] = [];
+
+    // Org members (non-owners) only see posts they created or are assigned to
+    if (user.id !== user.tenantId) {
+      andConditions.push({
+        $or: [
+          { "owner.email": user.email },
+          { "assignees.email": user.email },
+        ],
+      });
+    }
 
     // Filter by status (published/draft)
     if (status === "published") {
@@ -82,6 +95,11 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // Filter by assignee (current user is in assignees array)
+    if (assignedToMe === "true") {
+      andConditions.push({ "assignees.email": user.email });
+    }
+
     // Filter by teamId
     if (teamId && teamId !== "all") {
       if (teamId === "personal") {
@@ -100,7 +118,7 @@ export async function GET(request: NextRequest) {
       query.$and = andConditions;
     }
 
-    const blogs = await Post.find(query)
+    const posts = await Post.find(query)
       .sort({ createdAt: -1, publishedAt: -1 })
       .limit(limit)
       .skip(skip)
@@ -111,8 +129,8 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      posts: blogs,
-      data: blogs, // backward compatibility
+      posts,
+      data: posts, // backward compatibility
       totalCount: total,
       totalPages: Math.ceil(total / limit),
       currentPage: page,
@@ -146,6 +164,9 @@ export async function POST(request: NextRequest) {
         { status: 401 },
       );
     }
+
+    const denied = checkRole(user, ["org-admin", "admin", "editor"]);
+    if (denied) return denied;
 
     await dbConnect();
 
@@ -183,18 +204,20 @@ export async function POST(request: NextRequest) {
 
     const postTenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
-    const existingBlog = await Post.findOne({
+    const existingPost = await Post.findOne({
       tenantId: postTenantOid,
       slug,
     }).lean();
 
-    if (existingBlog && !providedSlug) {
+    if (existingPost && !providedSlug) {
       slug = `${slug}-${Date.now()}`;
     }
 
-    const blog = await Post.create({
+    const post = await Post.create({
       tenantId: postTenantOid,
       teamId: teamId ? new mongoose.Types.ObjectId(teamId) : undefined, // Phase 5.4+
+      owner: { email: user.email || "", name: user.name || "" },
+      assignees: [{ email: user.email || "", name: user.name || "" }],
       title,
       slug,
       content,
@@ -212,8 +235,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    blog.calculateReadTime();
-    await blog.save();
+    post.calculateReadTime();
+    await post.save();
+    await audit(user, "post.create", { targetId: post._id.toString(), targetType: "post", meta: { title: post.title } });
 
     // Phase 4F.2: Create initial version snapshot
     const initialChangeType: IContentHistory["changeType"] =
@@ -221,14 +245,14 @@ export async function POST(request: NextRequest) {
     const isAiInitial = initialChangeType.startsWith("ai-");
     try {
       await createSnapshot(
-        blog._id.toString(),
-        blog.content ?? "",
+        post._id.toString(),
+        post.content ?? "",
         user.tenantId.toString(),
         isAiInitial ? "ai" : user.id,
         initialChangeType,
         {
-          title: blog.title,
-          postType: blog.postType,
+          title: post.title,
+          postType: post.postType,
           commitMessage: bodyCommitMessage ?? "Initial post creation",
           aiMetadata: bodyAiMetadata,
         }
@@ -241,7 +265,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        data: blog,
+        data: post,
       },
       { status: 201 },
     );

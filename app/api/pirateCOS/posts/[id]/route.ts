@@ -4,7 +4,10 @@ import mongoose from "mongoose";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import { createSnapshot } from "@/lib/pirateCOS/version-tracker"; // Phase 4F.2
+import { checkRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
+import { createSnapshot } from "@/lib/pirateCOS/version-tracker";
+import { notifyByEmail } from "@/lib/pirateCOS/notify";
 import type { IContentHistory } from "@/models/pirateCOS/ContentHistory";
 
 interface PostUpdateData {
@@ -18,7 +21,8 @@ interface PostUpdateData {
   published?: boolean;
   postType?: string;
   contentGoal?: string;
-  teamId?: string; // Phase 5.4+: Team assignment
+  teamId?: string;
+  assignees?: Array<{ email: string; name: string }>;
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -62,29 +66,38 @@ export async function GET(
     const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
     // Try to find by ID first, then by slug, scoped strictly to tenant
-    let blog = await Post.findOne({ _id: id, tenantId: tenantOid }).catch(
+    let post = await Post.findOne({ _id: id, tenantId: tenantOid }).catch(
       () => null,
     );
 
-    if (!blog) {
+    if (!post) {
       const escapedId = id.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
 
-      blog = await Post.findOne({
+      post = await Post.findOne({
         tenantId: tenantOid,
         slug: { $regex: new RegExp(`^${escapedId}$`, "i") },
       });
     }
 
-    if (!blog) {
+    if (!post) {
       return NextResponse.json(
         { success: false, error: "Post not found" },
         { status: 404 },
       );
     }
 
+    // Org members (non-owners) can only access posts they created or are assigned to
+    if (user.id !== user.tenantId) {
+      const ownerEmail = (post as any).owner?.email;
+      const assigneeEmails: string[] = ((post as any).assignees ?? []).map((a: any) => a.email);
+      if (ownerEmail !== user.email && !assigneeEmails.includes(user.email)) {
+        return NextResponse.json({ success: false, error: "Post not found" }, { status: 404 });
+      }
+    }
+
     return NextResponse.json({
       success: true,
-      data: blog,
+      data: post,
     });
   } catch (error) {
     console.error("GET /api/pirateCOS/posts/[id] error:", error);
@@ -113,6 +126,9 @@ export async function PUT(
       );
     }
 
+    const denied = checkRole(user, ["org-admin", "admin", "editor"]);
+    if (denied) return denied;
+
     await dbConnect();
 
     const { id } = params;
@@ -131,7 +147,8 @@ export async function PUT(
       seo,
       repurposedOutputs,
       aiWorkspaceSession,
-      teamId, // Phase 5.4+: Team assignment
+      teamId,
+      assignees,
       changeType: bodyChangeType, // Phase 4F.2
       commitMessage: bodyCommitMessage, // Phase 4F.2
       aiMetadata: bodyAiMetadata, // Phase 4F.2
@@ -139,9 +156,9 @@ export async function PUT(
 
 
     const putTenantOid = new mongoose.Types.ObjectId(user.tenantId);
-    const blog = await Post.findOne({ _id: id, tenantId: putTenantOid });
+    const post = await Post.findOne({ _id: id, tenantId: putTenantOid });
 
-    if (!blog) {
+    if (!post) {
       return NextResponse.json(
         { success: false, error: "Post not found" },
         { status: 404 },
@@ -150,84 +167,101 @@ export async function PUT(
 
     // Update fields
     if (title !== undefined) {
-      blog.title = title;
+      post.title = title;
       if (customSlug === undefined) {
         const newSlug = title
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/(^-|-$)/g, "");
 
-        const existingBlog = await Post.findOne({
+        const existingPost = await Post.findOne({
           tenantId: putTenantOid,
           slug: newSlug,
           _id: { $ne: id },
         }).lean();
 
-        if (!existingBlog) {
-          blog.slug = newSlug;
+        if (!existingPost) {
+          post.slug = newSlug;
         }
       }
     }
 
-    if (customSlug !== undefined && customSlug !== blog.slug) {
-      const existingBlog = await Post.findOne({
+    if (customSlug !== undefined && customSlug !== post.slug) {
+      const existingPost = await Post.findOne({
         tenantId: putTenantOid,
         slug: customSlug,
         _id: { $ne: id },
       }).lean();
 
-      if (existingBlog) {
+      if (existingPost) {
         return NextResponse.json(
           { success: false, error: "Slug already exists" },
           { status: 400 },
         );
       }
-      blog.slug = customSlug;
+      post.slug = customSlug;
     }
 
     // Phase 4F.2: Capture the previous content BEFORE mutation so we can
     // detect a real change after save (and avoid the no-op snapshot bug
-    // where blog.content has already been overwritten).
-    const previousContent = blog.content ?? "";
+    // where post.content has already been overwritten).
+    const previousContent = post.content ?? "";
 
-    if (content !== undefined) blog.content = content;
-    if (excerpt !== undefined) blog.excerpt = excerpt;
-    if (featuredImage !== undefined) blog.featuredImage = featuredImage;
-    if (bannerImage !== undefined) blog.bannerImage = bannerImage;
-    if (tags !== undefined) blog.tags = tags;
-    if (published !== undefined) blog.published = published;
-    if (postType !== undefined) (blog as any).postType = postType;
-    if (contentGoal !== undefined) (blog as any).contentGoal = contentGoal;
-    if (teamId !== undefined) (blog as any).teamId = teamId ? new mongoose.Types.ObjectId(teamId) : null; // Phase 5.4+
+    if (content !== undefined) post.content = content;
+    if (excerpt !== undefined) post.excerpt = excerpt;
+    if (featuredImage !== undefined) post.featuredImage = featuredImage;
+    if (bannerImage !== undefined) post.bannerImage = bannerImage;
+    if (tags !== undefined) post.tags = tags;
+    if (published !== undefined) post.published = published;
+    if (postType !== undefined) (post as any).postType = postType;
+    if (contentGoal !== undefined) (post as any).contentGoal = contentGoal;
+    if (teamId !== undefined) (post as any).teamId = teamId ? new mongoose.Types.ObjectId(teamId) : null;
+    if (assignees !== undefined) {
+      const prevEmails: string[] = ((post as any).assignees ?? []).map((a: any) => a.email);
+      (post as any).assignees = assignees;
+      post.markModified("assignees");
+      // Notify only newly added members
+      for (const a of assignees) {
+        if (!prevEmails.includes(a.email)) {
+          notifyByEmail(a.email, {
+            type: "post_assigned",
+            title: "Post assigned to you",
+            message: `${user.name || user.email} added you as a collaborator on "${(post as any).title}".`,
+            href: `/pirateCOS/posts/edit/${post._id}`,
+            relatedId: String(post._id),
+          });
+        }
+      }
+    }
 
     if (seo !== undefined) {
-      blog.seo = {
-        ...blog.seo,
+      post.seo = {
+        ...post.seo,
         ...seo,
       };
-      blog.markModified("seo");
+      post.markModified("seo");
     }
 
     if (repurposedOutputs !== undefined) {
-      blog.repurposedOutputs = repurposedOutputs;
-      blog.markModified("repurposedOutputs");
+      post.repurposedOutputs = repurposedOutputs;
+      post.markModified("repurposedOutputs");
     }
 
     if (aiWorkspaceSession !== undefined) {
-      blog.aiWorkspaceSession = aiWorkspaceSession;
-      blog.markModified("aiWorkspaceSession");
+      post.aiWorkspaceSession = aiWorkspaceSession;
+      post.markModified("aiWorkspaceSession");
     }
 
 
     if (content !== undefined) {
-      blog.calculateReadTime();
+      post.calculateReadTime();
     }
 
-    await blog.save();
+    await post.save();
 
     // Phase 4F.2: Create version snapshot only when content actually changed.
     // Compare against the pre-mutation `previousContent` (the old buggy check
-    // compared against `blog.content`, which had already been reassigned).
+    // compared against `post.content`, which had already been reassigned).
     if (content !== undefined && content !== previousContent) {
       const updateChangeType: IContentHistory["changeType"] =
         bodyChangeType ?? "manual";
@@ -235,13 +269,13 @@ export async function PUT(
       try {
         await createSnapshot(
           id,
-          blog.content,
+          post.content,
           user.tenantId.toString(),
           isAiUpdate ? "ai" : user.id,
           updateChangeType,
           {
-            title: blog.title,
-            postType: blog.postType,
+            title: post.title,
+            postType: post.postType,
             commitMessage:
               bodyCommitMessage ??
               (isAiUpdate ? "AI content update" : "Manual content update"),
@@ -256,7 +290,7 @@ export async function PUT(
 
     return NextResponse.json({
       success: true,
-      data: blog,
+      data: post,
     });
   } catch (error) {
     console.error("PUT /api/pirateCOS/posts/[id] error:", error);
@@ -285,34 +319,31 @@ export async function DELETE(
       );
     }
 
-    const { requireOrgRole } = await import("@/lib/pirateCOS/require-role");
-    if (user.orgRole !== "individual" && !requireOrgRole(user, ["org-admin", "admin"])) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden" },
-        { status: 403 },
-      );
-    }
+    const deleteDenied = checkRole(user, ["org-admin", "admin"]);
+    if (deleteDenied) return deleteDenied;
 
     await dbConnect();
 
     const { id } = params;
     const deleteTenantOid = new mongoose.Types.ObjectId(user.tenantId);
-    const blog = await Post.findOneAndDelete({
+    const post = await Post.findOneAndDelete({
       _id: id,
       tenantId: deleteTenantOid,
     });
 
-    if (!blog) {
+    if (!post) {
       return NextResponse.json(
         { success: false, error: "Post not found" },
         { status: 404 },
       );
     }
 
+    await audit(user, "post.delete", { targetId: id, targetType: "post", meta: { title: (post as any).title } });
+
     return NextResponse.json({
       success: true,
       message: "Post deleted successfully",
-      data: blog,
+      data: post,
     });
   } catch (error) {
     console.error("DELETE /api/pirateCOS/posts/[id] error:", error);

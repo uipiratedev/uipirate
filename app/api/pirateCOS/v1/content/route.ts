@@ -1,166 +1,99 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import mongoose from "mongoose";
 
-import { verifyApiKey } from "@/lib/pirateCOS/api-key-auth";
 import dbConnect from "@/lib/mongodb";
+import { rateLimitHeaders } from "@/lib/pirateCOS/api-rate-limiter";
+import { handleOptions } from "@/lib/pirateCOS/public/cors";
+import { guard } from "@/lib/pirateCOS/public/guard";
+import { apiError, apiSuccess } from "@/lib/pirateCOS/public/response";
+import { pickFields, serializePost } from "@/lib/pirateCOS/public/serialize-post";
 import Post from "@/models/Post";
 
+const SORT_MAP: Record<string, Record<string, 1 | -1>> = {
+  publishedAt: { publishedAt: 1 },
+  "-publishedAt": { publishedAt: -1 },
+  updatedAt: { updatedAt: 1 },
+  "-updatedAt": { updatedAt: -1 },
+};
+
+export function OPTIONS() {
+  return handleOptions();
+}
+
 export async function GET(req: NextRequest) {
-  const auth = await verifyApiKey(req);
+  const guarded = await guard(req);
 
-  if (!auth) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized. Invalid or missing API key." },
-      { status: 401 },
-    );
-  }
-
-  if (!auth.scopes.includes("read")) {
-    return NextResponse.json(
-      { success: false, error: "Forbidden. Read permission is required." },
-      { status: 403 },
-    );
-  }
+  if (guarded instanceof Response) return guarded;
+  const { auth, rate } = guarded;
 
   const { searchParams } = new URL(req.url);
   const page = Math.max(parseInt(searchParams.get("page") || "1", 10), 1);
-  const limit = Math.min(Math.max(parseInt(searchParams.get("limit") || "10", 10), 1), 100);
+  const limit = Math.min(
+    Math.max(parseInt(searchParams.get("limit") || "10", 10), 1),
+    100,
+  );
   const tag = searchParams.get("tag");
   const postType = searchParams.get("postType");
+  const updatedSince = searchParams.get("updatedSince");
+  const fields = searchParams.get("fields");
+  const sort = SORT_MAP[searchParams.get("sort") || "-publishedAt"] || {
+    publishedAt: -1,
+  };
 
   const skip = (page - 1) * limit;
 
   await dbConnect();
   const tenantOid = new mongoose.Types.ObjectId(auth.tenantId);
 
-  // Filter criteria: tenant isolated + published locally
+  // Tenant-isolated + published only. tenantId comes from the verified key,
+  // never from the request.
   const query: Record<string, any> = {
     tenantId: tenantOid,
     published: true,
   };
 
-  if (tag) {
-    query.tags = tag;
-  }
-  if (postType) {
-    query.postType = postType;
+  if (tag) query.tags = tag;
+  if (postType) query.postType = postType;
+  if (updatedSince) {
+    const since = new Date(updatedSince);
+
+    if (!isNaN(since.getTime())) {
+      query.updatedAt = { $gt: since };
+    }
   }
 
   try {
     const total = await Post.countDocuments(query);
-    const blogs = await Post.find(query)
-      .sort({ publishedAt: -1 })
+    const posts = await Post.find(query)
+      .sort(sort)
       .skip(skip)
       .limit(limit)
       .lean();
 
-    return NextResponse.json({
-      success: true,
-      data: blogs,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
+    // Default list responses exclude the heavy `content` field; callers opt in
+    // with `fields=content` (or any explicit field set).
+    const effectiveFields = fields ?? "id,slug,title,excerpt,featuredImage,bannerImage,tags,postType,author,readTime,views,seo,publishedAt,updatedAt";
+
+    const data = (posts as any[]).map((p) =>
+      pickFields(serializePost(p), effectiveFields),
+    );
+
+    return apiSuccess(
+      {
+        data,
+        pagination: {
+          page,
+          limit,
+          total,
+          pages: Math.ceil(total / limit),
+        },
       },
-    });
-  } catch (err: any) {
-    return NextResponse.json(
-      { success: false, error: err.message || "Failed to fetch content" },
-      { status: 500 },
+      {
+        ...rateLimitHeaders(rate),
+        "Cache-Control": "public, max-age=60, stale-while-revalidate=300",
+      },
     );
-  }
-}
-
-export async function POST(req: NextRequest) {
-  const auth = await verifyApiKey(req);
-
-  if (!auth) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized. Invalid or missing API key." },
-      { status: 401 },
-    );
-  }
-
-  if (!auth.scopes.includes("write")) {
-    return NextResponse.json(
-      { success: false, error: "Forbidden. Write permission is required." },
-      { status: 403 },
-    );
-  }
-
-  try {
-    const {
-      title,
-      content,
-      excerpt,
-      featuredImage,
-      tags,
-      postType,
-      slug,
-      seo,
-    } = await req.json();
-
-    if (!title || !content) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Missing required fields: title and content are required.",
-        },
-        { status: 400 },
-      );
-    }
-
-    await dbConnect();
-    const tenantOid = new mongoose.Types.ObjectId(auth.tenantId);
-
-    // Auto-generate slug if not provided
-    const resolvedSlug =
-      slug ||
-      title
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9-]/g, "");
-
-    // Uniqueness validation per tenant
-    const existing = await Post.findOne({
-      tenantId: tenantOid,
-      slug: resolvedSlug,
-    });
-
-    if (existing) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: `Slug "${resolvedSlug}" already exists for this tenant.`,
-        },
-        { status: 400 },
-      );
-    }
-
-    const blog = new Post({
-      tenantId: tenantOid,
-      title,
-      content,
-      excerpt,
-      featuredImage,
-      tags: tags || [],
-      postType: postType || "blog",
-      slug: resolvedSlug,
-      seo: seo || {},
-      published: false, // Default to draft for programmatic entry
-    });
-
-    await blog.save();
-
-    return NextResponse.json({
-      success: true,
-      data: blog,
-    });
-  } catch (err: any) {
-    return NextResponse.json(
-      { success: false, error: err.message || "Failed to create content" },
-      { status: 500 },
-    );
+  } catch (err) {
+    return apiError("internal_error", "Failed to fetch content.");
   }
 }

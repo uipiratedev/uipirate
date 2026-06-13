@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
 import { encrypt } from "@/lib/pirateCOS/encrypt";
 import dbConnect from "@/lib/mongodb";
 import AIConfig from "@/models/pirateCOS/AIConfig";
@@ -20,12 +22,8 @@ export async function GET() {
     );
   }
 
-  if (user.orgRole !== "individual" && user.orgRole !== "org-admin") {
-    return NextResponse.json(
-      { success: false, error: "Forbidden" },
-      { status: 403 },
-    );
-  }
+  const denied = checkRole(user, ["org-admin", "admin", "editor"]);
+  if (denied) return denied;
 
   await dbConnect();
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
@@ -85,12 +83,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (user.orgRole !== "individual" && user.orgRole !== "org-admin") {
-    return NextResponse.json(
-      { success: false, error: "Forbidden" },
-      { status: 403 },
-    );
-  }
+  const denied = checkRole(user, ["org-admin", "admin"]);
+  if (denied) return denied;
 
   const {
     openaiKey,
@@ -169,6 +163,7 @@ export async function POST(req: NextRequest) {
   if (typeof puterEnabled === "boolean") cfg.puterEnabled = puterEnabled;
 
   await cfg.save();
+  await audit(user, "ai_config.update", { meta: { defaultEngine, defaultModel } });
 
   return NextResponse.json({ success: true });
 }

@@ -520,7 +520,7 @@ export function PostPublishActions({ records, postType, onTriggerCopilotAI }: Po
 // ─── Distribute CTA ───────────────────────────────────────────────────────────
 interface DistributeCTAProps {
   distributing: boolean;
-  blogPublished: boolean;
+  postPublished: boolean;
   selectedPlatforms: string[];
   selectedFormats: string[];
   hasPreflightErrors: boolean;
@@ -528,13 +528,13 @@ interface DistributeCTAProps {
   distributionError: string | null;
   onDistribute: () => void;
 }
-export function DistributeCTA({ distributing, blogPublished, selectedPlatforms, selectedFormats, hasPreflightErrors, repurposingActive, distributionError, onDistribute }: DistributeCTAProps) {
+export function DistributeCTA({ distributing, postPublished, selectedPlatforms, selectedFormats, hasPreflightErrors, repurposingActive, distributionError, onDistribute }: DistributeCTAProps) {
   return (
     <div className="pt-2">
-      {!blogPublished && (
+      {!postPublished && (
         <p className="text-[10px] text-amber-600 bg-amber-50 border border-amber-100 p-2.5 rounded-xl mb-3 leading-relaxed flex items-start gap-1.5 font-geist">
           <CosIcon name="warning" size={12} className="text-amber-500 shrink-0 mt-0.5" />
-          <span>Please publish the blog locally (via the "Publish" button at the top right) to enable multi-channel distribution.</span>
+          <span>Please publish the post locally (via the "Publish" button at the top right) to enable multi-channel distribution.</span>
         </p>
       )}
       {distributionError && (
@@ -543,7 +543,7 @@ export function DistributeCTA({ distributing, blogPublished, selectedPlatforms, 
       <button
         type="button"
         style={{ background: "#FF5B04" }}
-        disabled={distributing || !blogPublished || (selectedPlatforms.length === 0 && selectedFormats.length === 0) || hasPreflightErrors}
+        disabled={distributing || !postPublished || (selectedPlatforms.length === 0 && selectedFormats.length === 0) || hasPreflightErrors}
         onClick={onDistribute}
         className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white h-10 px-6 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed"
       >

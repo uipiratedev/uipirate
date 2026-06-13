@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import {
   IconDashboard,
@@ -105,6 +105,45 @@ function SidebarContent({
   const pathname = usePathname();
   const { logout, user } = useAuth();
 
+  // Notifications
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  const fetchNotifications = async () => {
+    try {
+      const res = await fetch("/api/pirateCOS/notifications");
+      const data = await res.json();
+      if (data.success) {
+        setNotifications(data.notifications || []);
+        setUnreadCount(data.unreadCount ?? 0);
+      }
+    } catch {}
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 30_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const markAllRead = async () => {
+    await fetch("/api/pirateCOS/notifications", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({}) });
+    setUnreadCount(0);
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  };
+
   const isActive = (href: string) => {
     if (href === getHref("/dashboard") || href === getHref("/posts") || href === getHref("/profile")) {
       return pathname === href;
@@ -197,6 +236,71 @@ function SidebarContent({
         })}
       </nav>
 
+      {/* Notification bell + panel */}
+      <div ref={notifRef} className="relative px-3 pb-2">
+        <button
+          onClick={() => { setNotifOpen((o) => !o); if (!notifOpen) fetchNotifications(); }}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
+          style={{ color: "rgba(255,255,255,0.5)" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.5)"; }}
+        >
+          <div className="relative flex-shrink-0">
+            <svg fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" viewBox="0 0 24 24" width="16">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            {unreadCount > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#FF5B04] rounded-full text-white text-[9px] font-bold flex items-center justify-center leading-none">
+                {unreadCount > 9 ? "9+" : unreadCount}
+              </span>
+            )}
+          </div>
+          <span className="text-sm font-medium font-geist">Notifications</span>
+          {unreadCount > 0 && (
+            <span className="ml-auto text-[9px] font-jetbrains-mono px-1.5 py-0.5 rounded" style={{ background: "rgba(255,91,4,0.2)", color: "#FF5B04" }}>
+              {unreadCount}
+            </span>
+          )}
+        </button>
+
+        {notifOpen && (
+          <div className="absolute left-full bottom-0 ml-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+              <span className="text-sm font-bold text-gray-900">Notifications</span>
+              {unreadCount > 0 && (
+                <button onClick={markAllRead} className="text-xs text-[#FF5B04] font-semibold hover:underline">
+                  Mark all read
+                </button>
+              )}
+            </div>
+            <div className="max-h-80 overflow-y-auto divide-y divide-gray-50">
+              {notifications.length === 0 ? (
+                <div className="px-4 py-8 text-center text-xs text-gray-400">No notifications yet</div>
+              ) : (
+                notifications.map((n: any) => (
+                  <div
+                    key={n._id}
+                    className={`px-4 py-3 flex gap-3 items-start hover:bg-gray-50 transition-colors cursor-pointer ${!n.read ? "bg-orange-50/50" : ""}`}
+                    onClick={() => {
+                      if (n.href) window.location.href = n.href;
+                      if (!n.read) fetch("/api/pirateCOS/notifications", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids: [n._id] }) });
+                    }}
+                  >
+                    <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${!n.read ? "bg-[#FF5B04]" : "bg-gray-200"}`} />
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold text-gray-800">{n.title}</p>
+                      <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{n.message}</p>
+                      <p className="text-[10px] text-gray-400 mt-1">{new Date(n.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Footer actions */}
       <div
         className="px-3 py-4 space-y-0.5 flex-shrink-0"
@@ -262,8 +366,8 @@ function SidebarContent({
           );
         })()}
 
-        {/* Billing & Usage */}
-        {(() => {
+        {/* Billing & Usage — org-admin only */}
+        {(user?.accountType === "individual" || user?.orgRole === "org-admin") && (() => {
           const active = pathname === getHref("/settings/billing");
           return (
             <NavLink active={active} href={getHref("/settings/billing")} onClick={onClose}>
@@ -277,6 +381,23 @@ function SidebarContent({
                   $
                 </span>
               )}
+            </NavLink>
+          );
+        })()}
+
+        {/* Audit Log — org-admin only */}
+        {(user?.accountType === "individual" || user?.orgRole === "org-admin") && (() => {
+          const active = pathname === getHref("/settings/audit-log");
+          return (
+            <NavLink active={active} href={getHref("/settings/audit-log")} onClick={onClose}>
+              <svg className="flex-shrink-0" fill="none" height="16" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" viewBox="0 0 24 24" width="16">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" x2="8" y1="13" y2="13" />
+                <line x1="16" x2="8" y1="17" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+              <span className="text-sm font-medium font-geist">Audit Log</span>
             </NavLink>
           );
         })()}

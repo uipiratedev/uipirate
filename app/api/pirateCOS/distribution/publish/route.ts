@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
 import { dispatch } from "@/lib/pirateCOS/distribution";
 import dbConnect from "@/lib/mongodb";
 import Post from "@/models/Post";
@@ -19,19 +21,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { requireOrgRole } = await import("@/lib/pirateCOS/require-role");
-  if (user.orgRole !== "individual" && !requireOrgRole(user, ["org-admin", "admin"])) {
-    return NextResponse.json(
-      { success: false, error: "Forbidden" },
-      { status: 403 },
-    );
-  }
+  const denied = checkRole(user, ["org-admin", "admin", "editor"]);
+  if (denied) return denied;
 
-  const { blogId, platforms, options } = await req.json();
+  const { postId, platforms, options } = await req.json();
 
-  if (!blogId || !mongoose.Types.ObjectId.isValid(blogId)) {
+  if (!postId || !mongoose.Types.ObjectId.isValid(postId)) {
     return NextResponse.json(
-      { success: false, error: "Invalid or missing blog ID" },
+      { success: false, error: "Invalid or missing post ID" },
       { status: 400 },
     );
   }
@@ -50,11 +47,11 @@ export async function POST(req: NextRequest) {
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
   // Scoped strictly to the tenant to guarantee tenant boundary
-  const post = await Post.findOne({ _id: blogId, tenantId: tenantOid });
+  const post = await Post.findOne({ _id: postId, tenantId: tenantOid });
 
   if (!post) {
     return NextResponse.json(
-      { success: false, error: "Blog post not found" },
+      { success: false, error: "Post not found" },
       { status: 404 },
     );
   }
@@ -63,9 +60,30 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: "Please publish the blog locally before distributing.",
+        error: "Please publish the post locally before distributing.",
       },
       { status: 400 },
+    );
+  }
+
+  // Editors may only distribute posts that have been approved by an admin.
+  // Org-admins and admins can bypass the approval gate (they self-approve).
+  const isPrivileged =
+    user.accountType === "individual" ||
+    user.orgRole === "org-admin" ||
+    user.orgRole === "admin";
+
+  if (!isPrivileged && post.approvalStatus !== "approved") {
+    return NextResponse.json(
+      {
+        success: false,
+        error:
+          post.approvalStatus === "pending_review"
+            ? "This post is awaiting admin approval before it can be distributed."
+            : "This post must be approved by an admin before distribution. Submit it for review first.",
+        approvalStatus: post.approvalStatus ?? "draft",
+      },
+      { status: 403 },
     );
   }
 
@@ -87,7 +105,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Run credit deductions per channel
-  for (const platform of platforms) {
+  for (const _platform of platforms) {
     try {
       await deductCredits(user.tenantId, "publish");
     } catch (guardErr: any) {
@@ -114,7 +132,7 @@ export async function POST(req: NextRequest) {
     tenantId: user.tenantId,
   });
 
-  // Upsert the results to the blog's distributionRecords
+  // Upsert the results to the post's distributionRecords
   if (!post.distributionRecords) {
     post.distributionRecords = [];
   }
@@ -150,6 +168,11 @@ export async function POST(req: NextRequest) {
   // Use markModified for arrays in Mongoose if needed
   post.markModified("distributionRecords");
   await post.save();
+  await audit(user, "post.publish", {
+    targetId: postId,
+    targetType: "post",
+    meta: { platforms },
+  });
 
   return NextResponse.json({
     success: true,

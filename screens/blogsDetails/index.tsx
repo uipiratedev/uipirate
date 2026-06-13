@@ -2,6 +2,8 @@ import BlogsDetailsHero from "./hero";
 import BlogContents from "./blogContents";
 import SuggestedReads from "./suggestedReads";
 
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
 interface PostSEO {
   metaTitle?: string;
   metaDescription?: string;
@@ -37,9 +39,10 @@ interface BlogData {
 
 interface BlogsDetailsProps {
   blog: BlogData;
+  suggested: ReaderPost[];
 }
 
-const BlogsDetails = ({ blog }: BlogsDetailsProps) => {
+const BlogsDetails = ({ blog, suggested }: BlogsDetailsProps) => {
   const tag = blog.tags?.[0] ?? "Blog";
   const banner = blog.bannerImage || blog.featuredImage || "";
 
@@ -47,7 +50,7 @@ const BlogsDetails = ({ blog }: BlogsDetailsProps) => {
     <div>
       <BlogsDetailsHero imageUrl={banner} tag={tag} title={blog.title} />
       <BlogContents blog={blog} />
-      <SuggestedReads />
+      <SuggestedReads posts={suggested} />
     </div>
   );
 };

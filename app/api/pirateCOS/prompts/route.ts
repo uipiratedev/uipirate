@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
         });
       } catch (error: any) {
         return NextResponse.json(
-          { success: false, error: error.message },
+          { success: false, error: "Invalid prompt key or version" },
           { status: 400 }
         );
       }
@@ -134,7 +134,7 @@ export async function GET(request: NextRequest) {
   } catch (error: any) {
     console.error("Prompts API error:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to fetch prompts" },
+      { success: false, error: "Failed to fetch prompts" },
       { status: 500 }
     );
   }

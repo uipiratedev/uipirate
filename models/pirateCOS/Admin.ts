@@ -197,8 +197,17 @@ AdminSchema.methods.comparePassword = async function (
   }
 };
 
-// Prevent model recompilation in development
+// If a cached model exists but still points at the old "admins" collection,
+// clear it so the re-registration below uses "users".
+if (
+  mongoose.models.Admin &&
+  (mongoose.models.Admin as any).collection?.name !== "users"
+) {
+  delete (mongoose.models as any).Admin;
+}
+
 const Admin: Model<IAdmin> =
-  mongoose.models.Admin || mongoose.model<IAdmin>("Admin", AdminSchema);
+  (mongoose.models.Admin as Model<IAdmin>) ||
+  mongoose.model<IAdmin>("Admin", AdminSchema, "users");
 
 export default Admin;

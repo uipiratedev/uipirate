@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Failed to fetch brand brain profile",
+        error: "Failed to fetch brand brain profile",
       },
       { status: 500 },
     );
@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Failed to save brand brain profile",
+        error: "Failed to save brand brain profile",
       },
       { status: 500 },
     );

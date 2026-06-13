@@ -43,9 +43,13 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
         msg = errJson?.error?.message || errJson?.message || errJson?.detail || "";
       }
 
-      if (code === "insufficient_quota" || msg.toLowerCase().includes("quota") || status === 402) {
-        const billingUrl = engine === "mistral" ? "console.mistral.ai" : "platform.openai.com";
-        friendlyMessage = `Your ${engineLabel} account has exceeded its quota. Please check your billing at ${billingUrl}.`;
+      if (code === "insufficient_quota" || msg.toLowerCase().includes("quota") || msg.toLowerCase().includes("credit") || status === 402) {
+        const billingUrl =
+          engine === "mistral" ? "console.mistral.ai/billing" :
+          engine === "openrouter" ? "openrouter.ai/credits" :
+          engine === "grok" ? "console.x.ai" :
+          "platform.openai.com/usage";
+        friendlyMessage = `Your ${engineLabel} account has run out of credits. Please top up at ${billingUrl}.`;
       } else if (code === "rate_limit_exceeded" || status === 429) {
         friendlyMessage = `${engineLabel} rate limit reached. Please wait a moment and try again.`;
       } else if (code === "invalid_api_key" || status === 401) {
@@ -63,6 +67,8 @@ export function parseAIError(engine: AIEngine | string, status: number, errText:
         friendlyMessage = "Claude rate limit reached. Please wait a moment and try again.";
       } else if (type === "overloaded_error") {
         friendlyMessage = "Claude is overloaded right now. Please try again in a moment.";
+      } else if (msg.toLowerCase().includes("credit balance") || msg.toLowerCase().includes("too low") || msg.toLowerCase().includes("insufficient")) {
+        friendlyMessage = "Your Anthropic account has run out of credits. Please top up at console.anthropic.com/settings/billing.";
       } else if (msg) {
         friendlyMessage = msg;
       }

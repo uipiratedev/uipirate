@@ -1,47 +1,18 @@
-"use client";
-
-import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
 const DEFAULT_BANNER = "/assets/blog-banner-default.svg";
 
-interface Blog {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt?: string;
-  featuredImage?: string;
-  bannerImage?: string;
-  tags?: string[];
-  createdAt: string;
-  readTime?: number;
-  views?: number;
-  totalViews?: number;
+interface SuggestedReadsProps {
+  posts: ReaderPost[];
 }
 
-const SuggestedReads = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+const SuggestedReads = ({ posts }: SuggestedReadsProps) => {
+  const blogs = posts;
 
-  const fetchSuggestedBlogs = useCallback(async () => {
-    try {
-      const response = await fetch("/api/posts?published=true&limit=3");
-      const data = await response.json();
-
-      if (data.success) setBlogs(data.data);
-    } catch {
-      // silent
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchSuggestedBlogs();
-  }, [fetchSuggestedBlogs]);
-
-  if (!loading && blogs.length === 0) return null;
+  if (blogs.length === 0) return null;
 
   return (
     <section className="container mx-auto xl:px-32 2xl:px-40 max-xl:px-8 max-md:px-4 pt-8 pb-20">
@@ -60,33 +31,17 @@ const SuggestedReads = () => {
 
       {/* Cards */}
       <div className="grid md:grid-cols-3 gap-6">
-        {loading
-          ? [...Array(3)].map((_, i) => (
-              <div
-                key={i}
-                className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse"
-              >
-                <div className="h-[180px] bg-[#F1F5F9]" />
-                <div className="px-5 py-4 space-y-3">
-                  <div className="h-5 bg-[#F1F5F9] rounded w-[85%]" />
-                  <div className="h-4 bg-[#F8FAFC] rounded w-[60%]" />
-                </div>
-              </div>
-            ))
-          : blogs.map((blog) => {
-              const image =
-                blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;
-              const tag = blog.tags?.[0];
-              const date = new Date(blog.createdAt).toLocaleDateString(
-                "en-US",
-                {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                },
-              );
+        {blogs.map((blog) => {
+          const image =
+            blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;
+          const tag = blog.tags?.[0];
+          const date = new Date(blog.createdAt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          });
 
-              return (
+          return (
                 <Link
                   key={blog._id}
                   className="group block"

@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: err.message || "Failed to verify distribution link",
+        error: "Failed to verify distribution link",
       },
       { status: 500 },
     );

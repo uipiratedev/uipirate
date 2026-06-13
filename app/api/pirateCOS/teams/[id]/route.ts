@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
 import Team from "@/models/pirateCOS/Team";
 import Workspace from "@/models/pirateCOS/Workspace";
 
@@ -60,7 +61,7 @@ export async function GET(
   } catch (error: any) {
     console.error("Error fetching team:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to fetch team" },
+      { success: false, error: "Failed to fetch team" },
       { status: 500 }
     );
   }
@@ -80,6 +81,9 @@ export async function PATCH(
       );
     }
 
+    const patchDenied = checkRole(user, ["org-admin", "admin"]);
+    if (patchDenied) return patchDenied;
+
     await dbConnect();
 
     const team = await Team.findById(params.id);
@@ -90,9 +94,9 @@ export async function PATCH(
       );
     }
 
-    // Check if user has admin access
+    // Verify team belongs to this tenant
     const workspace = await Workspace.findById(team.workspace);
-    if (!workspace || workspace.owner !== user.email) {
+    if (!workspace || workspace.tenantId?.toString() !== user.tenantId) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 403 }
@@ -117,7 +121,7 @@ export async function PATCH(
   } catch (error: any) {
     console.error("Error updating team:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to update team" },
+      { success: false, error: "Failed to update team" },
       { status: 500 }
     );
   }
@@ -137,6 +141,9 @@ export async function DELETE(
       );
     }
 
+    const deleteDenied = checkRole(user, ["org-admin"]);
+    if (deleteDenied) return deleteDenied;
+
     await dbConnect();
 
     const team = await Team.findById(params.id);
@@ -147,9 +154,9 @@ export async function DELETE(
       );
     }
 
-    // Check if user has admin access
-    const workspace = await Workspace.findById(team.workspace);
-    if (!workspace || workspace.owner !== user.email) {
+    // Verify team belongs to this tenant
+    const delWorkspace = await Workspace.findById(team.workspace);
+    if (!delWorkspace || delWorkspace.tenantId?.toString() !== user.tenantId) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 403 }
@@ -165,7 +172,7 @@ export async function DELETE(
   } catch (error: any) {
     console.error("Error deleting team:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to delete team" },
+      { success: false, error: "Failed to delete team" },
       { status: 500 }
     );
   }

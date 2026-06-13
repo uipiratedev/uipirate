@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
 import dbConnect from "@/lib/mongodb";
 import Admin from "@/models/pirateCOS/Admin";
 
@@ -20,6 +22,9 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
+
+    const denied = checkRole(user, ["org-admin"]);
+    if (denied) return denied;
 
     const body = await req.json();
     const { type, successUrl, cancelUrl } = body;
@@ -93,6 +98,8 @@ export async function POST(req: NextRequest) {
         successUrl ||
         `${baseRedirect}/settings/billing?success=simulated-${type}`;
 
+      await audit(user, "billing.checkout", { meta: { type, simulated: true } });
+
       return NextResponse.json({
         success: true,
         url: simulatedUrl,
@@ -161,6 +168,8 @@ export async function POST(req: NextRequest) {
         },
       });
     }
+
+    await audit(user, "billing.checkout", { meta: { type } });
 
     return NextResponse.json({
       success: true,

@@ -5,6 +5,10 @@ export interface IPost extends Document {
   tenantId: mongoose.Types.ObjectId;
   /** Optional: References the Team._id if this post is assigned to a team (Phase 5.4+) */
   teamId?: mongoose.Types.ObjectId;
+  /** The post creator — always has access and is shown as owner in the collab panel */
+  owner?: { email: string; name: string };
+  /** Members assigned to collaborate on this post */
+  assignees?: Array<{ email: string; name: string }>;
   title: string;
   slug: string;
   content: string; // HTML content from TipTap editor
@@ -69,6 +73,13 @@ export interface IPost extends Document {
     }>;
     lastActiveAt: Date;
   };
+  // Approval workflow (enterprise)
+  approvalStatus?: "draft" | "pending_review" | "approved" | "rejected";
+  approvalRequestedBy?: string;   // actor email
+  approvalRequestedAt?: Date;
+  approvalReviewedBy?: string;    // actor email
+  approvalReviewedAt?: Date;
+  approvalNote?: string;          // reviewer note / rejection reason
   calculateReadTime(): void;
 }
 
@@ -85,7 +96,15 @@ const PostSchema: Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Team",
       index: true,
-      // Phase 5.4+: Optional team assignment
+    },
+    owner: {
+      email: { type: String, default: "" },
+      name: { type: String, default: "" },
+    },
+    assignees: {
+      type: [{ email: { type: String, required: true }, name: { type: String, default: "" } }],
+      default: [],
+      index: true,
     },
     title: {
       type: String,
@@ -207,6 +226,18 @@ const PostSchema: Schema = new Schema(
       of: String,
       default: {},
     },
+    // Approval workflow (enterprise)
+    approvalStatus: {
+      type: String,
+      enum: ["draft", "pending_review", "approved", "rejected"],
+      default: "draft",
+      index: true,
+    },
+    approvalRequestedBy: { type: String },
+    approvalRequestedAt: { type: Date },
+    approvalReviewedBy: { type: String },
+    approvalReviewedAt: { type: Date },
+    approvalNote: { type: String },
     aiWorkspaceSession: {
       messages: [
         {
@@ -239,6 +270,7 @@ const PostSchema: Schema = new Schema(
 
 // Create indexes for better query performance
 PostSchema.index({ tenantId: 1, published: 1, publishedAt: -1 });
+PostSchema.index({ "owner.email": 1 });
 // Slug must be unique within a tenant, not globally
 PostSchema.index({ tenantId: 1, slug: 1 }, { unique: true });
 PostSchema.index({ tags: 1 });

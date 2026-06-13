@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
+import { checkRole } from "@/lib/pirateCOS/require-role";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "dvk9ttiym",
@@ -13,13 +14,13 @@ function getPublicIdFromUrl(url: string): string | null {
   if (!url || !url.includes("/image/upload/")) return null;
   const parts = url.split("/image/upload/");
   if (parts.length < 2) return null;
-  
+
   const pathParts = parts[1].split("/");
   // If the first part starts with 'v' and is followed by digits, it's the version prefix, so skip it
   if (pathParts.length > 0 && /^v\d+$/.test(pathParts[0])) {
     pathParts.shift();
   }
-  
+
   const joined = pathParts.join("/");
   const lastDotIndex = joined.lastIndexOf(".");
   const publicId = lastDotIndex === -1 ? joined : joined.substring(0, lastDotIndex);
@@ -35,6 +36,9 @@ export async function POST(req: NextRequest) {
         { status: 401 }
       );
     }
+
+    const denied = checkRole(user, ["org-admin", "admin"]);
+    if (denied) return denied;
 
     const { urls } = await req.json();
     if (!urls || !Array.isArray(urls)) {
@@ -67,7 +71,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Error deleting from Cloudinary:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to delete image" },
+      { success: false, error: "Failed to delete image" },
       { status: 500 }
     );
   }

@@ -1,6 +1,10 @@
 import { Metadata } from "next";
 
 import Blogs from "@/screens/blogs";
+import { listPosts } from "@/lib/pirateCOS/public-client";
+
+// ISR: revalidate the blog index every 60s (matches the v1 API Cache-Control).
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title:
@@ -31,7 +35,9 @@ export const metadata: Metadata = {
   },
 };
 
-const BlogsPage = () => {
+const BlogsPage = async () => {
+  const initialBlogs = await listPosts({ limit: 50 });
+
   return (
     <div>
       {/* Blog Index JSON-LD for rich snippets */}
@@ -56,7 +62,7 @@ const BlogsPage = () => {
         }}
         type="application/ld+json"
       />
-      <Blogs />
+      <Blogs initialBlogs={initialBlogs} />
     </div>
   );
 };

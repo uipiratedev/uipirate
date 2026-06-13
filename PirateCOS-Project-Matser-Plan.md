@@ -91,14 +91,16 @@
  - ✅ SEO optimization tools and keyword tracking
 
  **AI Intelligence Layer:**
- - ✅ 5 AI providers: OpenAI (GPT-4o, GPT-5.x), Anthropic (Claude 3.5), Google (Gemini 2.0), Mistral, Puter
+ - ✅ 7 AI providers: OpenAI (GPT-4o, GPT-5.x), Anthropic (Claude 3.5/4.x), Google (Gemini 2.0), Mistral, xAI Grok, OpenRouter, Puter (free)
+ - ✅ Live model discovery from all 6 key provider APIs (6-hour TTL cache, dedup by version/tier)
+ - ✅ Provider-specific error parsing (all 7 providers — quota, rate limit, auth, overload)
  - ✅ Centralized AI context builder (95%+ consistency across providers)
  - ✅ Brand Brain with workspace + team hierarchy
  - ✅ Precision editing with surgical vs. transform intent classification
  - ✅ User focus priority (#3 in context assembly before Brand Brain)
  - ✅ Real-time AI co-pilot with chat, quick actions, generation history
  - ✅ Dynamic suggestion system (AI-authored prompt cards)
- - ✅ HTML normalization for consistent output
+ - ✅ HTML normalization for consistent output (7-step pipeline)
 
  **Version Control & Collaboration:**
  - ✅ Git-style version history (automatic snapshots, diffs, restore)
@@ -156,33 +158,39 @@
  - `lib/pirateCOS/auth.ts` — Session authentication & tenant verification
  - `lib/pirateCOS/encrypt.ts` — AES-256-GCM encryption for API keys
 
- **API Routes (35+ endpoints):**
- - `/api/pirateCOS/posts/*` — Content CRUD operations
+ **API Routes (41+ endpoints):**
+ - `/api/pirateCOS/posts`, `/api/pirateCOS/posts/[id]` — Content CRUD (GET, POST, PUT, DELETE)
+ - `/api/pirateCOS/posts/[id]/repurpose` — Multi-format content transformation
  - `/api/pirateCOS/ai/workspace` — AI chat & quick actions
  - `/api/pirateCOS/ai/generate` — Content generation
  - `/api/pirateCOS/ai/copilot` — Background real-time co-pilot scanner
  - `/api/pirateCOS/ai-models?engine=` — Live model discovery (falls back to static registry)
  - `/api/pirateCOS/ai-config` — AI provider config CRUD
  - `/api/pirateCOS/ai-config/preferences` — Workflow memory / style preferences (GET + PATCH)
- - `/api/pirateCOS/profile` — User profile management (GET + PATCH, password change)
+ - `/api/pirateCOS/profile` — User profile management (GET + PUT, avatar, password change)
  - `/api/pirateCOS/org/convert` — Account type conversion (individual → organisation, JWT re-issue)
  - `/api/pirateCOS/org/details` — Organisation details: owner, workspace, members, brand brain, API keys
  - `/api/pirateCOS/brand-brain` — Brand voice management
  - `/api/pirateCOS/teams/*` — Team management (Phase 5.4)
  - `/api/pirateCOS/teams/[id]/members` — Member management (Phase 5.4)
- - `/api/pirateCOS/posts/[id]/versions` — Version history (Phase 4F.2)
- - `/api/pirateCOS/content-history/*` — Version snapshots & restore (Phase 4F.2)
+ - `/api/pirateCOS/content-history/[postId]` — Version snapshot listing (Phase 4F.2)
+ - `/api/pirateCOS/content-history/restore` — One-click version restore (Phase 4F.2)
+ - `/api/pirateCOS/ai-generation-log` — Generation log listing (Phase 4G-1)
  - `/api/pirateCOS/ai-generation-log/feedback` — RLHF feedback (Phase 4G-1)
  - `/api/pirateCOS/analytics/summary` — High-level AI stats (Phase 4G-4)
  - `/api/pirateCOS/analytics/ai-performance` — Provider/action comparison (Phase 4G-4)
  - `/api/pirateCOS/analytics/insights` — Auto-learning recommendations (Phase 4G-4)
- - `/api/pirateCOS/prompts` — Prompt registry read endpoint (Phase 4G-3)
+ - `/api/pirateCOS/prompts` — Prompt registry read + write (Phase 4G-3)
  - `/api/pirateCOS/integrations/*` — Distribution platform management
- - `/api/pirateCOS/integrations/keys` — Public API key generation & listing
+ - `/api/pirateCOS/integrations/keys`, `/api/pirateCOS/integrations/keys/[id]` — Public API key lifecycle
+ - `/api/pirateCOS/media/upload` — Cloudinary upload (tenant-scoped)
+ - `/api/pirateCOS/media/delete` — Cloudinary media removal
  - `/api/pirateCOS/distribution/publish` — Multi-channel publishing
  - `/api/pirateCOS/distribution/verify` — Distribution verification & deletion
  - `/api/pirateCOS/billing/*` — Stripe checkout, portal, webhooks, usage
- - `/api/pirateCOS/v1/content` — Public content API (API-key authenticated)
+ - `/api/pirateCOS/v1/content` — Public content API (API-key authenticated, GET + POST)
+ - `/api/pirateCOS/v1/content/[slug]` — Public API — single post by slug
+ - `/api/oauth/linkedin/*` — LinkedIn OAuth authorize + callback
 
  **Hooks (9 custom hooks):**
  - `useSaveBlog.ts` — Auto-save, publish, dirty state management
@@ -202,8 +210,9 @@
  - `QuickActions.tsx` — Context-aware AI actions
  - `workspace/ContextDisplay.tsx` — Focus keyword strip & context display inside workspace
  - `VersionHistoryPanel.tsx` — Inline version timeline (Phase 5.3)
- - `VersionHistoryModal.tsx` — Full-screen version viewer (Phase 5.3)
+ - `VersionHistoryModal.tsx` — Full-screen version viewer with diff (Phase 5.3)
  - `VersionHistoryButton.tsx` — Version control trigger (Phase 5.3)
+ - `VersionCompareOverlay.tsx` — Side-by-side diff comparison view (Phase 5.3)
  - `WorkspaceTutorialCarousel.tsx` — Help system with tutorials
  - `RepurposingDrawer.tsx` — Multi-format content transformation
  - `EngineModelSelector.tsx` — Full AI provider + model selector (Phase 4D)
@@ -243,19 +252,21 @@
    - `InsightsPanel.tsx` — Auto-learning recommendations
    - `TrendsChart.tsx` — Temporal performance charts
 
- **Pages (11 authenticated pages):**
+ **Pages (13 authenticated pages + landing/auth):**
  - `/pirateCOS/posts` — Posts listing with search, filter, and management actions
  - `/pirateCOS/posts/create` — 3-step content creation wizard + editor
- - `/pirateCOS/posts/edit/[id]` — Full editor with AI workspace
+ - `/pirateCOS/posts/edit/[id]` — Full editor with AI workspace + version history
  - `/pirateCOS/dashboard` — Overview dashboard (stats, view breakdown, syndication log)
  - `/pirateCOS/teams` — Team list page (Phase 5.4)
- - `/pirateCOS/teams/[id]` — Team detail with tabs (Phase 5.4)
- - `/pirateCOS/ai-settings` — AI provider configuration
+ - `/pirateCOS/teams/[id]` — Team detail with settings, brand voice, members tabs (Phase 5.4)
+ - `/pirateCOS/ai-settings` — AI provider configuration (7 providers, BYOK toggles)
  - `/pirateCOS/analytics/ai` — AI performance analytics dashboard (Phase 4G-4)
  - `/pirateCOS/settings/integrations` — Distribution platform management + API key generation
  - `/pirateCOS/settings/billing` — Stripe billing & plan management
- - `/pirateCOS/brand-brain` — Brand voice configuration
+ - `/pirateCOS/brand-brain` — Brand voice & workspace hierarchy configuration
  - `/pirateCOS/profile` — User profile: avatar, password, account-type badge, Org conversion wizard (Phase 7.1-D)
+ - `/pirateCOS/` — Marketing landing page
+ - `/pirateCOS/login`, `/pirateCOS/register` — Authentication pages
 
  ### 🚧 Remaining Features (Next Steps)
 
@@ -304,23 +315,50 @@
  - ⬜ Code block syntax highlighting themes
  - ⬜ Platform-specific style overrides
 
+ ### 🔧 Code Quality & Technical Debt Backlog
+
+ **June 12, 2026 deep analysis** found and fixed 14 issues. The following remain outstanding, in priority order.
+
+ **🔴 High Priority:**
+ - ⬜ **[H1] Duplicated create/edit page code** — `posts/create/page.tsx` and `posts/edit/[id]/page.tsx` are 7,100+ lines each and ~95% identical. Extract shared modals to `components/pirateCOS/modals/` and shared logic to `hooks/usePostEditor.ts`. Every bug currently requires fixes in two places.
+ - ⬜ **[H2] Excessive `any` types** — `hooks/useAIWorkspaceSession.ts`, `lib/pirateCOS/ai-context-builder.ts`, and several API routes use untyped `any`. Define `AIWorkspaceResponse`, `BrandBrain`, `WorkflowMemory` interfaces in `lib/pirateCOS/types/`.
+ - ⬜ **[H3] No Zod/schema validation on API route bodies** — all POST/PUT routes parse raw `req.json()` with no validation. Also: `teams/[id]/members` accepts any string as email (no format check). Add Zod schemas in `lib/pirateCOS/schemas/` + email regex guard.
+
+ **🟡 Medium Priority:**
+ - ⬜ **[M1] In-memory message history unbounded** — `useAIWorkspaceSession.ts` persists only the last 20 messages but keeps all messages in React state. Cap in-memory at ~50; add "Load older messages" UI.
+ - ⬜ **[M2] 6 near-identical provider fetch functions** — `lib/pirateCOS/ai-model-discovery.ts` has `fetchOpenAIModels`, `fetchGeminiModels`, etc. Refactor to a single config-driven `fetchModels(engine, apiKey)` factory.
+ - ⬜ **[M3] Inconsistent error response shape** — routes return `{ error }`, `{ message }`, or `{ error: { code, message } }` with no standard. Create `lib/pirateCOS/api-response.ts` with `apiError()` / `apiOk()` helpers.
+ - ⬜ **[M4] Missing MongoDB compound indexes** — queries on `tenantId + published`, `tenantId + createdAt`, `tenantId + postType` have no compound indexes. Add to Post, Integration, and Team schemas.
+ - ⬜ **[M5] No startup env-var validation** — critical vars (`JWT_SECRET`, `AI_ENCRYPTION_KEY`, `MONGODB_URI`, `STRIPE_*`, `CLOUDINARY_*`) fail lazily at first request. Create `lib/validateEnv.ts` + call from `instrumentation.ts`.
+ - ⬜ **[M6] Accessibility gaps in `ModelSelectorPill`** — no `aria-label` on icon buttons, no keyboard navigation (Enter/Escape/Arrow), no focus return on close.
+ - ⬜ **[M7] Static `AI_MODELS` list in `ai-registry.ts`** — hardcoded model catalogue goes stale as providers release new models. Merge with live `ai-model-discovery.ts` results at runtime; use static as fallback.
+
+ **🟢 Low Priority:**
+ - ⬜ **[L1] Magic numbers in `useAIWorkspaceSession.ts`** — `12` (interval ms), `70` (typewriter ticks), `20` (persist trim), `8` (context trim) are inline. Extract to named constants.
+ - ⬜ **[L2] Inconsistent org-role enforcement** — some routes check role on DELETE but not GET/PUT. Enforce a consistent per-route RBAC matrix via `lib/pirateCOS/require-role.ts`.
+ - ⬜ **[L3] Credit deduction not atomic with AI call** — Pro/Enterprise credits are deducted before confirming AI success. Deduct only after successful response, or implement reserve → commit.
+ - ⬜ **[L4] No structured logging** — all errors use `console.error` with no request IDs or tenant context. Adopt `pino` with per-request correlation IDs via `AsyncLocalStorage`.
+
  ### 📈 System Metrics
 
  **Codebase Scale:**
- - 10 Mongoose models
- - 30+ API routes
- - 30+ React components (including shared editor module)
+ - 13 Mongoose schemas (`Post`, `Admin`, `AIConfig`, `BrandBrain`, `Workspace`, `Team`, `ContentHistory`, `AIGenerationLog`, `AnalyticsSnapshot`, `BillingEvent`, `WorkflowMemory`, `Integration`, `ApiKey`)
+ - 41+ API routes across 20 route groups
+ - 40+ React components (5 modularized panel directories, 5 shared editor components, analytics module, version-history module, workspace sub-components)
  - 9 custom hooks
- - 8 library utilities
- - 7 distribution adapters
- - 1 shared editor component module (5 files, zero duplication between Create/Edit pages)
+ - 13+ library utilities (`lib/pirateCOS/*` — including `ai-error-parser.ts`, `rate-limiter.ts`, `require-role.ts`, distribution sub-system)
+ - 7 distribution adapters (WordPress, Medium, Ghost, Buffer, LinkedIn + 2 transforms)
+ - 1 shared editor component module (5 files, ~1,400 lines de-duplicated from Create/Edit pages)
 
  **AI Capabilities:**
- - 5 provider integrations (OpenAI, Anthropic, Google, Mistral, Puter)
- - 95%+ cross-provider consistency
+ - 7 provider integrations (OpenAI, Anthropic, Google Gemini, Mistral, xAI Grok, OpenRouter, Puter)
+ - Live model discovery from 6 provider APIs (6-hour TTL cache, version-aware deduplication)
+ - Provider-specific error parsing for all 7 providers
+ - 95%+ cross-provider consistency via centralized context builder
  - 11 content types
  - 6 strategic content goals
  - Surgical edit precision (no regeneration drift)
+ - BYOK support for all 6 keyed providers
 
  **Collaboration & Versioning:**
  - Unlimited version history per post
@@ -328,6 +366,39 @@
  - Team-based collaboration with RBAC
  - Workspace → Team → User hierarchy
  - One-click version restoration
+
+ ---
+
+ **Security Hardening & Vulnerability Mitigation — Delivery Summary (June 12–13, 2026) — ALL CRITICAL & HIGH RESOLVED**
+
+ > Full analysis and fix status: `PIRATECOS_SECURITY_AUDIT.md`. Zero open Critical or High findings.
+
+ | Area | Severity | Status |
+ |------|----------|--------|
+ | C1 — IDOR: `restoreVersion()` + `getVersionHistory()` had no `tenantId` filter — cross-tenant read/write possible | 🔴 Critical | ✅ Fixed (confirmed in `version-tracker.ts`) |
+ | C2 — IDOR: version history readable across tenants via `ContentHistory.find({ postId })` | 🔴 Critical | ✅ Fixed (tenantId filter confirmed) |
+ | C3 — JWT forgeable via hardcoded fallback `"your-secret-key-change-this"` in `org/convert/route.ts` | 🔴 Critical | ✅ Fixed — fail-fast `if (!JWT_SECRET) throw` |
+ | C4 — Stripe webhook `ALLOW_UNVERIFIED_WEBHOOKS` bypass path — unverified events processed in prod | 🔴 Critical | ✅ Fixed — bypass path removed entirely; returns 503 without valid secret |
+ | H1 — ReDoS regex injection in posts search — raw user input passed to `new RegExp()` | 🟠 High | ✅ Fixed — `search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")` |
+ | H2 — No rate limiting on login endpoint — online brute force practical | 🟠 High | ✅ Fixed — `checkRateLimit(ip, email)` enforced; 429 on threshold |
+ | H3 — JWT returned in response body (login + register) — invites localStorage storage | 🟠 High | ✅ Fixed — `token` removed from both response bodies |
+ | H4 — Unrestricted file upload: no MIME allowlist, no size cap, no tenant folder | 🟠 High | ✅ Fixed — 9-type MIME allowlist, 10MB cap, `pirateCOS/${tenantId}` folder |
+ | H5 — Free Pro upgrade via checkout simulation fallback when `STRIPE_SECRET_KEY` unset | 🟠 High | ✅ Fixed — gated behind `NODE_ENV !== "production"` |
+ | H6 — Raw `error.message` leaked to clients at catch boundaries (28 instances / 21 files) | 🟠 High | ✅ Fixed — all replaced with generic strings; full error logged server-side |
+ | H6 follow-up — H6 generic catch swallowed BYOK provider quota/credit errors (June 13) | 🟠 High Bug | ✅ Fixed — `ai-error-parser.ts` billing URLs corrected per provider; Anthropic credit exhaustion branch added; all 12 `throw new Error(parseAIError(...))` in `generate`, `workspace`, `repurpose` routes replaced with direct `return NextResponse.json(...)` bypassing generic catch |
+ | M1 — Weak password policy: 6-character minimum, no common-password check | 🟡 Medium | ✅ Fixed — 8-char minimum + common-password blocklist in register + profile routes |
+ | M4 — `http://` hardcoded in billing redirect URLs — downgrades to plaintext in prod | 🟡 Medium | ✅ Fixed — `https` in production; Host header validated against allowlist |
+ | Hardcoded Cloudinary credentials in `media/upload/route.ts` — throws if env vars missing | 🔴 Critical | ✅ Fixed |
+ | Cross-tenant data access in `teams/[id]` GET — `workspace.tenantId !== user.tenantId` check added | 🔴 Critical | ✅ Fixed |
+ | Nested `setState` inside `setMessages` callback in `useAIWorkspaceSession.ts` (state corruption) | Critical Bug | ✅ Fixed |
+ | `setInterval` ref overwritten without `clearInterval` — interval accumulation leak | High Bug | ✅ Fixed |
+ | XSS via `dangerouslySetInnerHTML` on AI-generated HTML — `DOMPurify.sanitize()` added to create & edit pages | High | ✅ Fixed |
+ | Race condition — no `AbortController` per AI request; `stopGeneration()` now aborts in-flight requests | High Bug | ✅ Fixed |
+ | Stale closures in `useCallback` deps — `activeBrief`/`activeKeywords` missing from `sendMessage`, `triggerQuickAction`, `runRewriteAction` | High Bug | ✅ Fixed |
+ | Unhandled `JSON.parse` in `loadDynamicSuggestions` — wrapped in try/catch with `[]` fallback | Medium Bug | ✅ Fixed |
+ | No guard on `data.output` field — explicit throw added if field missing | Medium Bug | ✅ Fixed |
+ | Model discovery cache never evicted expired entries — `cache.delete()` on stale access added | Medium | ✅ Fixed |
+ | Pagination `limit` param had no upper bound (DoS via `?limit=999999`) — clamped to 1–100 on 3 routes | Medium | ✅ Fixed |
 
  ---
 
@@ -4416,7 +4487,7 @@ Result: **Content doesn't feel like theirs.** Especially problematic for:
 
 > **Status:** 🟡 In Progress — Partially Shipped
 > **Full specification:** `PIRATECOS_ROLES_ACCOUNTS_ACCESS_PLAN.md` (canonical — this section is a summary only)
-> **Security findings:** `PIRATECOS_SECURITY_AUDIT.md` (June 12, 2026 — 5 critical, 6 high, 6 medium)
+> **Security findings:** `PIRATECOS_SECURITY_AUDIT.md` (June 12, 2026 — all Critical C1–C4 and High H1–H6 resolved; C5/M2/L3 deferred to Phase 7.1)
 
 ### 7.1.1 Scope
 
@@ -4452,9 +4523,10 @@ Organisation  → org-admin > admin > editor > viewer
 | **Pages** | `/pirateCOS/profile` — avatar, password, account type badge, org conversion wizard | ✅ Shipped |
 | **Pages** | Role-gated sidebar nav (Teams hidden for individual; Billing/AI hidden for editor/viewer) | ⬜ Not started |
 | **Migration** | `scripts/migrate-account-types.ts` — re-scope to UI Pirate org | ⬜ Not started |
-| **Security (C1)** | IDOR fix: `restoreVersion` + `getVersionHistory` tenant filter | ⬜ Must ship before 7.1 release |
-| **Security (C3)** | JWT secret fail-closed (remove hardcoded fallback) | ⬜ Must ship before 7.1 release |
-| **Security (C4/H5)** | Stripe webhook + checkout simulation prod-gate | ⬜ Must ship before 7.1 release |
+| **Security (C1/C2)** | IDOR fix: `restoreVersion` + `getVersionHistory` tenant filter | ✅ Fixed — confirmed in `version-tracker.ts` |
+| **Security (C3)** | JWT secret fail-closed (remove hardcoded fallback) | ✅ Fixed — fail-fast in `auth.ts` + `org/convert/route.ts` |
+| **Security (C4/H5)** | Stripe webhook + checkout simulation prod-gate | ✅ Fixed — bypass removed; simulation gated behind `NODE_ENV` |
+| **Security (H2–H6/M1/M4)** | Rate limiting, JWT body removal, upload validation, error leakage, password policy, HTTPS URLs | ✅ Fixed — see `PIRATECOS_SECURITY_AUDIT.md` |
 
 ### 7.1.4 Sub-Phase Sequence
 
@@ -4465,7 +4537,7 @@ Organisation  → org-admin > admin > editor > viewer
 | 7.1-C | API-Level Permission Guards + `require-role.ts` | 🔲 Next |
 | 7.1-D | Profile & Org Pages (frontend) | ✅ Complete (profile page shipped) |
 | 7.1-E | Existing Page Guards + Sidebar gating | 🔲 After 7.1-C |
-| 7.1-F (new) | Security hotfixes C1/C3/C4/H5 from `PIRATECOS_SECURITY_AUDIT.md` | 🔲 Before any 7.1 release |
+| 7.1-F (new) | Security hotfixes C1–C4, H1–H6, M1, M4 from `PIRATECOS_SECURITY_AUDIT.md` | ✅ Complete — all Critical + High resolved |
 | 7.1-G (new) | Data migration script + production rollout | 🔲 Last |
 
 ### 7.1.5 Why This Matters
@@ -4474,20 +4546,23 @@ Organisation  → org-admin > admin > editor > viewer
 - **Product:** Unlocks the Organisation upsell path promised on the landing page. Conversion wizard is live (`/pirateCOS/profile`); org members invite API is the remaining blocker.
 - **Prerequisite:** For Phase 7 approval workflows and audit logs (both require trustworthy server-side roles).
 
-### 7.1.6 Security Audit Summary (June 12, 2026)
+### 7.1.6 Security Audit Summary (June 12, 2026) — COMPLETE
 
-Full report in `PIRATECOS_SECURITY_AUDIT.md`. Priority fix order:
+Full report in `PIRATECOS_SECURITY_AUDIT.md`. **All Critical and High findings resolved.**
 
-| # | ID | Finding | Action |
+| # | ID | Finding | Status |
 |---|---|---|---|
-| 1 | C1 | IDOR: `restoreVersion` + `getVersionHistory` cross-tenant access | Add `tenantId` filter to both queries |
-| 2 | C2 | IDOR: version history readable across tenants | Same fix as C1 |
-| 3 | C3 | JWT forgeable via hardcoded fallback secret | Fail-closed: throw if `JWT_SECRET` missing |
-| 4 | C4 | Stripe webhook signature bypass in prod | Remove `else { JSON.parse() }` path |
-| 5 | H1 | Regex injection in posts search | Escape input before `new RegExp()` |
-| 6 | H2 | No login rate limiting | Add per-IP/email throttle |
-| 7 | H3 | JWT also returned in response body | Remove `token` from login/register JSON |
-| 8 | H4 | Unrestricted file uploads | MIME allowlist + 10MB cap + tenant folder |
-| 9 | H5 | Free Pro via checkout simulation fallback | Gate behind `NODE_ENV !== "production"` |
+| 1 | C1 | IDOR: `restoreVersion` + `getVersionHistory` cross-tenant access | ✅ Fixed — `tenantId` filter confirmed in `version-tracker.ts` |
+| 2 | C2 | IDOR: version history readable across tenants | ✅ Fixed — same `tenantId` filter |
+| 3 | C3 | JWT forgeable via hardcoded fallback secret | ✅ Fixed — fail-fast `if (!JWT_SECRET) throw` |
+| 4 | C4 | Stripe webhook signature bypass in prod | ✅ Fixed — bypass path removed |
+| 5 | H1 | Regex injection in posts search | ✅ Fixed — escaped before `new RegExp()` |
+| 6 | H2 | No login rate limiting | ✅ Fixed — `checkRateLimit(ip, email)`; 429 on threshold |
+| 7 | H3 | JWT also returned in response body | ✅ Fixed — `token` removed from both response bodies |
+| 8 | H4 | Unrestricted file uploads | ✅ Fixed — MIME allowlist, 10MB cap, tenant folder |
+| 9 | H5 | Free Pro via checkout simulation fallback | ✅ Fixed — gated behind `NODE_ENV !== "production"` |
+| 10 | H6 | Raw `error.message` leaked to clients | ✅ Fixed — 28 instances / 21 files replaced with generic strings |
+| 11 | C5 | Shared workspace breaks tenant isolation for Teams | 🔵 Phase 7.1 — Workspace gains `tenantId` |
+| 12 | M2 | Login JWT payload missing `accountType`/`orgRole` | 🔵 Phase 7.1 — JWT payload extended with role redesign |
 
 ---

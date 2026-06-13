@@ -3,8 +3,11 @@ import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 import BlogsDetails from "@/screens/blogsDetails";
-import dbConnect from "@/lib/mongodb";
-import Post from "@/models/Post";
+import {
+  getPostBySlug,
+  listPostSlugs,
+  listPosts,
+} from "@/lib/pirateCOS/public-client";
 import { trackView } from "@/lib/trackView";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
 
@@ -12,17 +15,15 @@ interface Props {
   params: { slug: string };
 }
 
+// ISR: revalidate published detail pages every 60s.
+export const revalidate = 60;
+
 // Generate dynamic metadata for search engines and social sharing (SEO)
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
 
   try {
-    await dbConnect();
-    const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
-    const blog = await Post.findOne({
-      slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
-      published: true,
-    }).lean();
+    const blog = await getPostBySlug(slug.toLowerCase());
 
     if (!blog) {
       return {
@@ -116,14 +117,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 // Pre-render dynamic paths at build time (SSG optimization)
 export async function generateStaticParams() {
-  try {
-    await dbConnect();
-    const blogs = await Post.find({ published: true }, { slug: 1 }).lean();
+  const slugs = await listPostSlugs();
 
-    return blogs.map((blog: any) => ({ slug: blog.slug }));
-  } catch (error) {
-    return [];
-  }
+  return slugs.map((slug) => ({ slug }));
 }
 
 export const dynamicParams = true;
@@ -135,14 +131,8 @@ const BlogsDetailsPage = async ({ params }: Props) => {
     redirect(`/blogs/${slug.toLowerCase()}`);
   }
 
-  await dbConnect();
-
-  // Fetch blog by slug
-  const escapedSlug = slug.replace(/[/\-\\^$*+?.()|[\]{}]/g, "\\$&");
-  const blog = await Post.findOne({
-    slug: { $regex: new RegExp(`^${escapedSlug}$`, "i") },
-    published: true,
-  }).lean();
+  // Fetch blog by slug through the tenant-scoped v1 API
+  const blog = await getPostBySlug(slug);
 
   if (!blog) {
     notFound();
@@ -153,14 +143,12 @@ const BlogsDetailsPage = async ({ params }: Props) => {
 
   trackView(slug, headers(), !!user).catch(() => {});
 
-  // Convert MongoDB document to plain object
-  const blogData = {
-    ...blog,
-    _id: blog._id.toString(),
-    createdAt: blog.createdAt.toISOString(),
-    updatedAt: blog.updatedAt.toISOString(),
-    publishedAt: blog.publishedAt?.toISOString() || null,
-  };
+  const blogData = blog;
+
+  // Suggested reads via the tenant-scoped v1 API; exclude the current post.
+  const suggested = (await listPosts({ limit: 4 }))
+    .filter((p) => p._id !== blog._id)
+    .slice(0, 3);
 
   return (
     <div>
@@ -189,16 +177,15 @@ const BlogsDetailsPage = async ({ params }: Props) => {
                 url: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
               },
             },
-            datePublished:
-              blog.publishedAt?.toISOString() || blog.createdAt.toISOString(),
-            dateModified: blog.updatedAt.toISOString(),
+            datePublished: blog.publishedAt || blog.createdAt,
+            dateModified: blog.updatedAt,
             url: `https://uipirate.com/blogs/${slug}`,
             mainEntityOfPage: `https://uipirate.com/blogs/${slug}`,
           }),
         }}
         type="application/ld+json"
       />
-      <BlogsDetails blog={blogData} />
+      <BlogsDetails blog={blogData} suggested={suggested} />
     </div>
   );
 };

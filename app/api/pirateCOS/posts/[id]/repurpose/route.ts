@@ -213,7 +213,10 @@ ${FORMAT_PROMPTS[format]}
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(parseAIError(selectedEngine, response.status, errText));
+        return NextResponse.json(
+          { success: false, error: parseAIError(selectedEngine, response.status, errText) },
+          { status: response.status >= 500 ? 502 : response.status }
+        );
       }
 
       const data = await response.json();
@@ -238,7 +241,10 @@ ${FORMAT_PROMPTS[format]}
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(parseAIError("anthropic", response.status, errText));
+        return NextResponse.json(
+          { success: false, error: parseAIError("anthropic", response.status, errText) },
+          { status: response.status >= 500 ? 502 : response.status }
+        );
       }
 
       const data = await response.json();
@@ -271,7 +277,10 @@ ${FORMAT_PROMPTS[format]}
 
       if (!response.ok) {
         const errText = await response.text();
-        throw new Error(parseAIError("gemini", response.status, errText));
+        return NextResponse.json(
+          { success: false, error: parseAIError("gemini", response.status, errText) },
+          { status: response.status >= 500 ? 502 : response.status }
+        );
       }
 
       const data = await response.json();
@@ -305,7 +314,7 @@ ${FORMAT_PROMPTS[format]}
     });
   } catch (error: any) {
     return NextResponse.json(
-      { success: false, error: error.message || "Transformation failed" },
+      { success: false, error: "Transformation failed" },
       { status: 500 },
     );
   }

@@ -26,7 +26,7 @@ import { Button } from "@heroui/button";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
-import { useSaveBlog } from "@/hooks/useSaveBlog";
+import { useSavePost } from "@/hooks/useSavePost";
 import DistributionPanel from "@/components/pirateCOS/DistributionPanel";
 import AIWorkspacePanel from "@/components/pirateCOS/AIWorkspacePanel";
 import WorkspaceTutorialCarousel from "@/components/pirateCOS/WorkspaceTutorialCarousel";
@@ -5214,7 +5214,7 @@ const BlogEditor = () => {
   const [isSlugManual, setIsSlugManual] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeSidebarTab, setActiveSidebarTab] = useState<
-    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | null
+    "ai" | "rewrite" | "content" | "seo" | "health" | "distribute" | "version" | "transform" | "collab" | null
   >(null);
   const [selectedTransformFormat, setSelectedTransformFormat] = useState<string | null>(null);
   const [socialDestination, setSocialDestination] = useState<SocialDestination>("linkedin");
@@ -5230,18 +5230,20 @@ const BlogEditor = () => {
   const [isExcerptExpanded, setIsExcerptExpanded] = useState(true);
   const [isTagsExpanded, setIsTagsExpanded] = useState(true);
 
+  const reviewAfterSaveRef = useRef(false);
+
   const {
-    blogId: savedBlogId,
-    setBlogId: setSavedBlogId,
+    postId: savedPostId,
+    setPostId: setSavedPostId,
     isSaving,
     saveStatus,
     setSaveStatus,
     isDirty,
     setIsDirty,
-    saveBlog,
+    savePost,
     ensureSaved,
-  } = useSaveBlog({
-    initialBlogId: null,
+  } = useSavePost({
+    initialPostId: null,
     getEditorState: () => ({
       title,
       content: editor?.getHTML() || "",
@@ -5276,9 +5278,16 @@ const BlogEditor = () => {
         (url) => activeUrls.includes(url)
       );
 
+      if (reviewAfterSaveRef.current && id) {
+        reviewAfterSaveRef.current = false;
+        fetch(`/api/pirateCOS/posts/${id}/request-review`, { method: "POST" }).catch(() => {});
+        router.push(getHref("/posts"));
+        return;
+      }
       setModalSuccess(published ? "publish" : "draft");
     },
     onSaveError: (err) => {
+      reviewAfterSaveRef.current = false;
       setShowPublishModal(false);
       setShowSaveModal(false);
       setValidationError(err.message || "Failed to save blog");
@@ -5290,7 +5299,7 @@ const BlogEditor = () => {
   const inlineImageUploadRef = useRef<HTMLInputElement>(null);
   const sessionUploadedUrlsRef = useRef<string[]>([]);
   const router = useRouter();
-  const { isLoading: authLoading } = useAuth(true);
+  const { isLoading: authLoading, user: editorUser } = useAuth(true);
 
   useEffect(() => {
     setMounted(true);
@@ -5770,7 +5779,7 @@ const BlogEditor = () => {
     [isDirty, router],
   );
 
-  // saveBlog is managed by useSaveBlog hook
+  // savePost is managed by useSavePost hook
 
   const handleSaveDraft = useCallback(() => {
     if (!title.trim()) {
@@ -5799,6 +5808,21 @@ const BlogEditor = () => {
     }
     setShowPublishModal(true);
   }, [title, editor]);
+
+  const isEditorOnlyUser = !!editorUser && editorUser.accountType !== "individual" && editorUser.orgRole === "editor";
+
+  const handleSubmitForReview = useCallback(() => {
+    if (!title.trim()) {
+      setValidationError("Please enter a title for your blog post.");
+      return;
+    }
+    if (isEditorContentEmpty(editor)) {
+      setValidationError("Please add some content to your blog post.");
+      return;
+    }
+    reviewAfterSaveRef.current = true;
+    savePost(false);
+  }, [title, editor, savePost]);
 
   if (!mounted || !editor || authLoading) return null;
 
@@ -6613,18 +6637,18 @@ const BlogEditor = () => {
 
   const renderDistributeTab = () => (
     <DistributionPanel
-      blogContent={editor?.getHTML() || ""}
-      blogExcerpt={excerpt}
-      blogId={savedBlogId || null}
-      blogPublished={saveStatus === "Published"}
-      blogSeo={seoData}
-      blogTags={tags}
-      blogTitle={title}
+      postContent={editor?.getHTML() || ""}
+      postExcerpt={excerpt}
+      postId={savedPostId || null}
+      postPublished={saveStatus === "Published"}
+      postSeo={seoData}
+      postTags={tags}
+      postTitle={title}
       contentGoal={contentGoal}
       distributionRecords={distRecords}
       postType={postType}
       socialDestination={socialDestination}
-      blogRepurposedOutputs={repurposedOutputs}
+      postRepurposedOutputs={repurposedOutputs}
       onUpdateRepurposedOutputs={setRepurposedOutputs}
       onUpdateExcerpt={setExcerpt}
       onUpdateTags={setTags}
@@ -6779,6 +6803,22 @@ const BlogEditor = () => {
           </Button>
           {(() => {
             const isDisabled = isSaving || !title.trim() || !editor || editor.isEmpty;
+            if (isEditorOnlyUser) {
+              return (
+                <Button
+                  className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium disabled:cursor-not-allowed disabled:pointer-events-none"
+                  disabled={isDisabled}
+                  isLoading={isSaving}
+                  style={{
+                    background: isDisabled ? "rgba(0,0,0,0.06)" : "rgba(234,179,8,0.15)",
+                    color: isDisabled ? "#a1a1aa" : "#A16207"
+                  }}
+                  onClick={handleSubmitForReview}
+                >
+                  Submit for Review
+                </Button>
+              );
+            }
             return (
               <Button
                 className="font-geist text-xs lg:text-sm h-8 lg:h-9 px-3 lg:px-4 rounded-xl font-medium text-white disabled:cursor-not-allowed disabled:pointer-events-none"
@@ -6995,7 +7035,7 @@ const BlogEditor = () => {
             />
           </PirateCOSEditorArea>
           <AIWorkspacePanel
-            postId={savedBlogId || null}
+            postId={savedPostId || null}
             postType={postType}
             contentGoal={contentGoal}
             editor={editor}
@@ -7064,11 +7104,11 @@ const BlogEditor = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(true)}
+        onConfirm={() => savePost(true)}
         onKeepEditing={() => {
           // After creating a post, redirect to its edit page so the user can keep editing
-          if (savedBlogId) {
-            router.push(getHref(`/posts/edit/${savedBlogId}`));
+          if (savedPostId) {
+            router.push(getHref(`/posts/edit/${savedPostId}`));
           } else {
             setShowPublishModal(false);
             setModalSuccess(null);
@@ -7088,11 +7128,11 @@ const BlogEditor = () => {
             setModalSuccess(null);
           }
         }}
-        onConfirm={() => saveBlog(false)}
+        onConfirm={() => savePost(false)}
         onKeepEditing={() => {
           // After creating a draft, redirect to its edit page
-          if (savedBlogId) {
-            router.push(getHref(`/posts/edit/${savedBlogId}`));
+          if (savedPostId) {
+            router.push(getHref(`/posts/edit/${savedPostId}`));
           } else {
             setShowSaveModal(false);
             setModalSuccess(null);

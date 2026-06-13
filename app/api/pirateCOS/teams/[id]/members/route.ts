@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import { verifyAuth } from "@/lib/pirateCOS/auth";
-import Team from "@/models/pirateCOS/Team";
-import Admin from "@/models/pirateCOS/Admin";
 import { requireOrgRole } from "@/lib/pirateCOS/require-role";
+import { audit } from "@/lib/pirateCOS/audit";
+import Team from "@/models/pirateCOS/Team";
+import Workspace from "@/models/pirateCOS/Workspace";
+import Admin from "@/models/pirateCOS/Admin";
+
+/** Verify a team belongs to the requesting user's tenant.
+ *  Fast path: direct tenantId field (populated for new/migrated teams).
+ *  Fallback: transitive check via workspace (for legacy documents). */
+async function assertTeamTenant(team: any, userTenantId: string): Promise<boolean> {
+  if (team.tenantId) {
+    return team.tenantId.toString() === userTenantId;
+  }
+  const workspace = await Workspace.findById(team.workspace).lean();
+  return !!workspace && workspace.tenantId?.toString() === userTenantId;
+}
 
 // POST /api/pirateCOS/teams/[id]/members - Add a member to team
 export async function POST(
@@ -46,6 +59,13 @@ export async function POST(
       );
     }
 
+    if (!(await assertTeamTenant(team, user.tenantId))) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden" },
+        { status: 403 }
+      );
+    }
+
     // Check if user exists in the system
     const memberExists = await Admin.findOne({ email: email.trim() });
     if (!memberExists) {
@@ -66,6 +86,16 @@ export async function POST(
       );
     }
 
+    // Link user to the organisation if not already linked
+    const assignedOrgRole = (role === "admin" ? "admin" : role === "viewer" ? "viewer" : "editor") as "admin" | "editor" | "viewer";
+    if (!memberExists.parentOrgId || memberExists.parentOrgId.toString() !== user.tenantId) {
+      await Admin.findByIdAndUpdate(memberExists._id, {
+        parentOrgId: user.tenantId,
+        accountType: "organization",
+        orgRole: assignedOrgRole,
+      });
+    }
+
     // Add member
     team.members.push({
       userId: email.trim(),
@@ -73,6 +103,11 @@ export async function POST(
     });
 
     await team.save();
+    await audit(user, "team.member_add", {
+      targetId: params.id,
+      targetType: "team",
+      meta: { email: email.trim(), role: role || "editor" },
+    });
 
     return NextResponse.json({
       success: true,
@@ -81,7 +116,7 @@ export async function POST(
   } catch (error: any) {
     console.error("Error adding member:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to add member" },
+      { success: false, error: "Failed to add member" },
       { status: 500 }
     );
   }
@@ -128,10 +163,22 @@ export async function DELETE(
       );
     }
 
+    if (!(await assertTeamTenant(team, user.tenantId))) {
+      return NextResponse.json(
+        { success: false, error: "Forbidden" },
+        { status: 403 }
+      );
+    }
+
     // Remove member
     team.members = team.members.filter((m: any) => m.userId !== userId);
 
     await team.save();
+    await audit(user, "team.member_remove", {
+      targetId: params.id,
+      targetType: "team",
+      meta: { userId },
+    });
 
     return NextResponse.json({
       success: true,
@@ -140,7 +187,7 @@ export async function DELETE(
   } catch (error: any) {
     console.error("Error removing member:", error);
     return NextResponse.json(
-      { success: false, error: error.message || "Failed to remove member" },
+      { success: false, error: "Failed to remove member" },
       { status: 500 }
     );
   }

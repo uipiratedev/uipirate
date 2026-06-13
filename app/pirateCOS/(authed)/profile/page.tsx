@@ -45,6 +45,56 @@ export default function ProfilePage() {
   const [orgLoading, setOrgLoading] = useState(false);
   const [orgDetailsError, setOrgDetailsError] = useState<string | null>(null);
 
+  // Invite Member Modal State
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [inviteRole, setInviteRole] = useState<"admin" | "editor" | "viewer">("editor");
+  const [inviting, setInviting] = useState(false);
+  const [inviteError, setInviteError] = useState<string | null>(null);
+  const [removingMemberId, setRemovingMemberId] = useState<string | null>(null);
+
+  const handleInviteMember = async () => {
+    if (!inviteEmail.trim()) return;
+    setInviting(true);
+    setInviteError(null);
+    try {
+      const res = await fetch("/api/pirateCOS/org/members", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: inviteEmail.trim(), role: inviteRole }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      setShowInviteModal(false);
+      setInviteEmail("");
+      setInviteRole("editor");
+      fetchOrgDetails();
+    } catch (err: any) {
+      setInviteError(err.message || "Failed to invite member");
+    } finally {
+      setInviting(false);
+    }
+  };
+
+  const handleRemoveOrgMember = async (memberId: string) => {
+    if (!confirm("Remove this member from the organisation?")) return;
+    setRemovingMemberId(memberId);
+    try {
+      const res = await fetch("/api/pirateCOS/org/members", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memberId }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      fetchOrgDetails();
+    } catch (err: any) {
+      alert(err.message || "Failed to remove member");
+    } finally {
+      setRemovingMemberId(null);
+    }
+  };
+
   const fetchOrgDetails = async () => {
     setOrgLoading(true);
     setOrgDetailsError(null);
@@ -274,6 +324,7 @@ export default function ProfilePage() {
   };
 
   return (
+    <>
     <div className="space-y-8 px-8 py-4 font-geist text-gray-700">
       {/* Page Header */}
       <div className="pt-2">
@@ -649,14 +700,24 @@ export default function ProfilePage() {
                         <h3 className="text-sm font-bold text-gray-900">Organisation Members</h3>
                         <p className="text-[10px] text-gray-400 mt-0.5">Manage editors, administrators, and guest accounts.</p>
                       </div>
-                      <a
-                        href="/pirateCOS/teams"
-                        className="px-3.5 py-1.5 rounded-lg border border-[#FF5B04]/20 hover:border-[#FF5B04]/50 bg-orange-50/20 hover:bg-orange-50/50 text-xs font-bold text-[#FF5B04] transition-all"
-                      >
-                        Manage Teams
-                      </a>
+                      <div className="flex items-center gap-2">
+                        {user.orgRole === "org-admin" && (
+                          <button
+                            onClick={() => { setInviteError(null); setShowInviteModal(true); }}
+                            className="px-3.5 py-1.5 rounded-lg bg-[#FF5B04] text-white text-xs font-bold hover:opacity-90 transition-opacity"
+                          >
+                            + Invite Member
+                          </button>
+                        )}
+                        <a
+                          href="/pirateCOS/teams"
+                          className="px-3.5 py-1.5 rounded-lg border border-[#FF5B04]/20 hover:border-[#FF5B04]/50 bg-orange-50/20 hover:bg-orange-50/50 text-xs font-bold text-[#FF5B04] transition-all"
+                        >
+                          Manage Teams
+                        </a>
+                      </div>
                     </div>
-                    
+
                     <div className="overflow-hidden border border-gray-100 rounded-xl bg-gray-50/50">
                       <table className="w-full text-left border-collapse">
                         <thead>
@@ -665,6 +726,7 @@ export default function ProfilePage() {
                             <th className="px-4 py-3">Role</th>
                             <th className="px-4 py-3">Status</th>
                             <th className="px-4 py-3">Joined Date</th>
+                            {user.orgRole === "org-admin" && <th className="px-4 py-3" />}
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 text-xs">
@@ -716,6 +778,19 @@ export default function ProfilePage() {
                               <td className="px-4 py-3 text-gray-400 font-mono text-[10px]">
                                 {new Date(member.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                               </td>
+                              {user.orgRole === "org-admin" && (
+                                <td className="px-4 py-3 text-right">
+                                  {member.orgRole !== "org-admin" && (
+                                    <button
+                                      onClick={() => handleRemoveOrgMember(member._id)}
+                                      disabled={removingMemberId === member._id}
+                                      className="text-[10px] font-semibold text-red-500 hover:text-red-700 disabled:opacity-40 transition-colors"
+                                    >
+                                      {removingMemberId === member._id ? "Removing…" : "Remove"}
+                                    </button>
+                                  )}
+                                </td>
+                              )}
                             </tr>
                           ))}
                         </tbody>
@@ -1038,5 +1113,76 @@ export default function ProfilePage() {
 
       </div>
     </div>
+
+    {/* Invite Member Modal */}
+    {showInviteModal && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+        onClick={(e) => { if (e.target === e.currentTarget) setShowInviteModal(false); }}
+      >
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Invite Organisation Member</h3>
+              <p className="text-xs text-gray-400 mt-0.5">They must already have a PirateCOS account.</p>
+            </div>
+            <button onClick={() => setShowInviteModal(false)} className="text-gray-400 hover:text-gray-600">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5">Email Address</label>
+              <input
+                type="email"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") handleInviteMember(); }}
+                placeholder="user@example.com"
+                autoFocus
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#FF5B04]/20 focus:border-[#FF5B04]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5">Role</label>
+              <select
+                value={inviteRole}
+                onChange={(e) => setInviteRole(e.target.value as "admin" | "editor" | "viewer")}
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#FF5B04]/20 focus:border-[#FF5B04]"
+              >
+                <option value="viewer">Viewer — read-only access</option>
+                <option value="editor">Editor — create & edit content</option>
+                <option value="admin">Admin — full access except billing</option>
+              </select>
+            </div>
+
+            {inviteError && (
+              <p className="text-xs text-red-500 font-medium">{inviteError}</p>
+            )}
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setShowInviteModal(false)}
+                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleInviteMember}
+                disabled={inviting || !inviteEmail.trim()}
+                className="flex-1 px-4 py-2.5 bg-[#FF5B04] text-white rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {inviting ? "Inviting…" : "Add to Organisation"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

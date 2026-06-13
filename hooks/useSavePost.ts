@@ -13,32 +13,32 @@ export interface EditorSaveState {
   seo?: any;
 }
 
-interface UseSaveBlogProps {
-  initialBlogId?: string | null;
+interface UseSavePostProps {
+  initialPostId?: string | null;
   getEditorState: () => EditorSaveState;
   onSaveSuccess?: (id: string, published: boolean) => void;
   onSaveError?: (error: any) => void;
 }
 
-export function useSaveBlog({
-  initialBlogId = null,
+export function useSavePost({
+  initialPostId = null,
   getEditorState,
   onSaveSuccess,
   onSaveError,
-}: UseSaveBlogProps) {
-  const [blogId, setBlogId] = useState<string | null>(initialBlogId);
+}: UseSavePostProps) {
+  const [postId, setPostId] = useState<string | null>(initialPostId);
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<
     "Draft" | "Saving…" | "Publishing…" | "Saved" | "Published" | "Error"
   >("Draft");
   const [isDirty, setIsDirty] = useState(false);
 
-  // Sync initialBlogId if it changes (e.g. edit page mounts after data fetch)
+  // Sync initialPostId if it changes (e.g. edit page mounts after data fetch)
   useEffect(() => {
-    if (initialBlogId) {
-      setBlogId(initialBlogId);
+    if (initialPostId) {
+      setPostId(initialPostId);
     }
-  }, [initialBlogId]);
+  }, [initialPostId]);
 
   const isDirtyRef = useRef(false);
 
@@ -46,7 +46,7 @@ export function useSaveBlog({
     isDirtyRef.current = isDirty;
   }, [isDirty]);
 
-  const saveBlog = useCallback(
+  const savePost = useCallback(
     async (
       published: boolean,
       customSeo?: any,
@@ -57,7 +57,7 @@ export function useSaveBlog({
 
       try {
         const editorState = getEditorState();
-        const isNew = !blogId;
+        const isNew = !postId;
 
         // Merge custom SEO or slug overrides if provided (for SEO editor integration)
         const payload = {
@@ -70,7 +70,7 @@ export function useSaveBlog({
 
         const url = isNew
           ? "/api/pirateCOS/posts"
-          : `/api/pirateCOS/posts/${blogId}`;
+          : `/api/pirateCOS/posts/${postId}`;
         const method = isNew ? "POST" : "PUT";
 
         const res = await fetch(url, {
@@ -99,12 +99,12 @@ export function useSaveBlog({
               "Payload too large: The post content (possibly containing large base64 images) exceeds the server's size limit. Please compress your images or use image URLs."
             );
           }
-          throw new Error(data?.error || parseError || "Failed to save blog post");
+          throw new Error(data?.error || parseError || "Failed to save post");
         }
 
         const persistedId = data.data?._id ?? data._id ?? "";
 
-        setBlogId(persistedId);
+        setPostId(persistedId);
         setSaveStatus(published ? "Published" : "Saved");
         setIsDirty(false);
 
@@ -123,29 +123,29 @@ export function useSaveBlog({
         setIsSaving(false);
       }
     },
-    [blogId, getEditorState, onSaveSuccess, onSaveError],
+    [postId, getEditorState, onSaveSuccess, onSaveError],
   );
 
   const ensureSaved = useCallback(async (): Promise<string> => {
-    // If we have a saved blog ID and the editor state has no unsaved changes, return it
-    if (blogId && !isDirtyRef.current) {
-      return blogId;
+    // If we have a saved post ID and the editor state has no unsaved changes, return it
+    if (postId && !isDirtyRef.current) {
+      return postId;
     }
     // Otherwise, save preserving the current published status to ensure it's in the DB
     const currentlyPublished = saveStatus === "Published";
 
-    return await saveBlog(currentlyPublished);
-  }, [blogId, saveBlog, saveStatus]);
+    return await savePost(currentlyPublished);
+  }, [postId, savePost, saveStatus]);
 
   return {
-    blogId,
-    setBlogId,
+    postId,
+    setPostId,
     isSaving,
     saveStatus,
     setSaveStatus,
     isDirty,
     setIsDirty,
-    saveBlog,
+    savePost,
     ensureSaved,
   };
 }

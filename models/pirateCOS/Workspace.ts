@@ -34,7 +34,6 @@ const WorkspaceSchema: Schema<IWorkspace> = new Schema(
     tenantId: {
       type: Schema.Types.ObjectId,
       ref: "Admin",
-      required: true,
       index: true,
     },
   },
