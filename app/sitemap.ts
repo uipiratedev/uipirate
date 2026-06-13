@@ -70,36 +70,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   if (!isBuild) {
     try {
-      // Use internal API or direct DB query if available
-      const mongodbUri = process.env.MONGODB_URI;
+      const { listPosts } = await import("@/lib/pirateCOS/public-client");
+      const blogs = await listPosts({ limit: 100 });
 
-      if (mongodbUri) {
-        const { default: mongoose } = await import("mongoose");
-
-        // Connect if not already connected
-        if (mongoose.connection.readyState !== 1) {
-          await mongoose.connect(mongodbUri);
-        }
-
-        // Use the Post model
-        const { default: Post } = await import("@/models/Post");
-        const blogs = await Post.find(
-          { published: true },
-          { slug: 1, updatedAt: 1 },
-        ).lean();
-
-        blogEntries = blogs.map((blog: any) => ({
-          url: `${BASE_URL}/${blog.slug}`,
-          lastModified: blog.updatedAt
-            ? new Date(blog.updatedAt).toISOString()
-            : now,
-          changeFrequency: "weekly" as const,
-          priority: 0.7,
-        }));
-      }
+      blogEntries = blogs.map((blog: any) => ({
+        url: `${BASE_URL}/${blog.slug}`,
+        lastModified: blog.updatedAt
+          ? new Date(blog.updatedAt).toISOString()
+          : now,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }));
     } catch (error) {
-      // Silently handle DB errors — sitemap still works with static entries
-      console.warn("Sitemap: Could not fetch blog posts from database:", error);
+      // Silently handle API errors — sitemap still works with static entries
+      console.warn("Sitemap: Could not fetch blog posts from API:", error);
     }
   }
 
