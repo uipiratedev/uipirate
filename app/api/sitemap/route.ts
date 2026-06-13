@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 
-import dbConnect from "@/lib/mongodb";
-import Post from "@/models/Post";
 import caseStudies from "@/data/case-studies.json";
+import { listPosts } from "@/lib/pirateCOS/public-client";
 
 export const dynamic = "force-dynamic";
 
@@ -164,7 +163,7 @@ export async function GET() {
     changefreq: "weekly",
   }));
 
-  // Fetch published blogs from MongoDB
+  // Fetch published blogs using public client API
   let blogPages: {
     url: string;
     priority: string;
@@ -173,11 +172,7 @@ export async function GET() {
   }[] = [];
 
   try {
-    await dbConnect();
-    const blogs = await Post.find(
-      { published: true },
-      { slug: 1, updatedAt: 1 },
-    ).lean();
+    const blogs = await listPosts({ limit: 100 });
 
     blogPages = blogs.map((blog: any) => ({
       url: `/${blog.slug}`,
