@@ -1,55 +1,24 @@
 "use client";
 
-import { useState, useEffect, useCallback, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
 const DEFAULT_BANNER = "/assets/blog-banner-default.svg";
 
-interface Blog {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  featuredImage?: string;
-  bannerImage?: string;
-  tags: string[];
-  createdAt: string;
-  views: number;
-  totalViews?: number;
-  readTime: number;
-}
-
 interface FeaturedBlogsProps {
+  blogs: ReaderPost[];
   searchQuery?: string;
   selectedCategory?: string;
 }
 
 const FeaturedBlogs = memo(function FeaturedBlogs({
+  blogs,
   searchQuery = "",
   selectedCategory = "All",
 }: FeaturedBlogsProps) {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchBlogs = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("/api/posts?published=true&limit=50");
-      const data = await response.json();
-
-      if (data.success) setBlogs(data.data);
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchBlogs();
-  }, [fetchBlogs]);
-
   const filteredBlogs = useMemo(() => {
     let result = blogs;
 
@@ -95,22 +64,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
       </div>
 
       {/* Blog Cards Grid */}
-      {loading ? (
-        <div className="grid md:grid-cols-3 gap-6">
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] animate-pulse"
-            >
-              <div className="h-[180px] bg-[#F1F5F9]" />
-              <div className="px-5 py-4 space-y-3">
-                <div className="h-5 bg-[#F1F5F9] rounded w-[85%]" />
-                <div className="h-4 bg-[#F8FAFC] rounded w-[60%]" />
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : filteredBlogs.length === 0 ? (
+      {filteredBlogs.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-gray-400 text-lg">No articles found.</p>
         </div>

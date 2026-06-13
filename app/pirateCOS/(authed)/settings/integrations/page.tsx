@@ -20,11 +20,15 @@ interface ApiKeyMeta {
   id: string;
   name: string;
   keyPrefix: string;
-  scopes: ("read" | "write")[];
+  scopes: "read"[];
   lastUsedAt?: string | null;
+  expiresAt?: string | null;
   createdAt: string;
   isActive: boolean;
 }
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_APP_URL || "https://cos.uipirate.com";
 
 const PLATFORM_LABELS: Record<string, string> = {
   wordpress: "WordPress",
@@ -115,8 +119,9 @@ export default function IntegrationsSettingsPage() {
     bufferProfileIds: "",
   });
 
-  const [newKeyForm, setNewKeyForm] = useState({ name: "", scopeWrite: false });
+  const [newKeyForm, setNewKeyForm] = useState({ name: "", expiresInDays: 0 });
   const [savingKey, setSavingKey] = useState(false);
+  const [rotatingKeyId, setRotatingKeyId] = useState<string | null>(null);
   const [savingCredentials, setSavingCredentials] = useState(false);
   const [errorText, setErrorText] = useState<string | null>(null);
 
@@ -302,17 +307,13 @@ export default function IntegrationsSettingsPage() {
     setSavingKey(true);
     setErrorText(null);
 
-    const scopes = ["read"];
-
-    if (newKeyForm.scopeWrite) scopes.push("write");
-
     try {
       const res = await fetch("/api/pirateCOS/integrations/keys", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: newKeyForm.name,
-          scopes,
+          expiresInDays: newKeyForm.expiresInDays,
         }),
       });
 
@@ -324,11 +325,42 @@ export default function IntegrationsSettingsPage() {
 
       setRawKeyReturned(data.key);
       await fetchData();
-      setNewKeyForm({ name: "", scopeWrite: false });
+      setNewKeyForm({ name: "", expiresInDays: 0 });
     } catch (err: any) {
       setErrorText(err.message || "Unknown error creating API key");
     } finally {
       setSavingKey(false);
+    }
+  };
+
+  const handleRotateKey = async (keyId: string) => {
+    if (
+      !confirm(
+        "Rotate this key? A new secret is issued and shown once. The current key stops working immediately — update any consumers.",
+      )
+    )
+      return;
+
+    setRotatingKeyId(keyId);
+    try {
+      const res = await fetch(`/api/pirateCOS/integrations/keys/${keyId}`, {
+        method: "POST",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to rotate API Key");
+      }
+
+      setErrorText(null);
+      setRawKeyReturned(data.key);
+      setNewKeyModal(true);
+      await fetchData();
+    } catch (err: any) {
+      alert(err.message || "Unknown error rotating API key");
+    } finally {
+      setRotatingKeyId(null);
     }
   };
 
@@ -593,8 +625,16 @@ export default function IntegrationsSettingsPage() {
               Programmatic API Keys
             </h3>
             <p className="text-xs text-gray-400 mt-0.5 leading-snug">
-              Access keys to query published content from CI pipelines or Zapier
-              automations.
+              Read-only keys to query published content from CI pipelines, static
+              builds, or Zapier automations.{" "}
+              <a
+                className="text-[#FF5B04] font-semibold hover:underline"
+                href="/pirateCOS/developers"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Developer docs →
+              </a>
             </p>
           </div>
           <button
@@ -658,6 +698,33 @@ export default function IntegrationsSettingsPage() {
                         : "Never"}
                     </span>
                   </div>
+
+                  <div>
+                    <span className="text-[10px] text-gray-400 uppercase tracking-widest block font-jetbrains-mono">
+                      Expires
+                    </span>
+                    <span
+                      className={`font-medium ${
+                        key.expiresAt &&
+                        new Date(key.expiresAt) < new Date()
+                          ? "text-red-500"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {key.expiresAt
+                        ? new Date(key.expiresAt).toLocaleDateString()
+                        : "Never"}
+                    </span>
+                  </div>
+
+                  <button
+                    className="text-xs font-bold text-gray-500 hover:text-gray-800 px-2 py-1 rounded hover:bg-black/[0.04] disabled:opacity-50"
+                    disabled={rotatingKeyId === key.id}
+                    type="button"
+                    onClick={() => handleRotateKey(key.id)}
+                  >
+                    {rotatingKeyId === key.id ? "Rotating..." : "Rotate"}
+                  </button>
 
                   <button
                     className="text-xs font-bold text-red-500 hover:text-red-700 px-2 py-1 rounded hover:bg-red-50"
@@ -1030,6 +1097,38 @@ export default function IntegrationsSettingsPage() {
                   </button>
                 </div>
 
+                {/* USE YOUR KEY — ready-to-run cURL quickstart */}
+                <div className="text-left space-y-2">
+                  <p className="text-[10px] font-jetbrains-mono uppercase tracking-wider text-gray-400">
+                    Use your key
+                  </p>
+                  <div className="relative">
+                    <pre className="text-[10px] font-jetbrains-mono bg-gray-900 text-gray-100 rounded-xl px-4 py-3 pr-16 overflow-x-auto leading-relaxed">
+                      {`curl ${API_BASE_URL}/api/pirateCOS/v1/content \\\n  -H "Authorization: Bearer ${rawKeyReturned}"`}
+                    </pre>
+                    <button
+                      className="absolute right-2 top-2 bg-white/10 text-white text-[10px] font-semibold px-2.5 py-1.5 rounded-lg hover:bg-white/20"
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(
+                          `curl ${API_BASE_URL}/api/pirateCOS/v1/content -H "Authorization: Bearer ${rawKeyReturned}"`,
+                        );
+                        alert("Copied cURL to clipboard!");
+                      }}
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <a
+                    className="inline-block text-[11px] font-semibold text-[#FF5B04] hover:underline"
+                    href="/pirateCOS/developers"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Read the developer docs →
+                  </a>
+                </div>
+
                 <button
                   className="w-full py-2.5 rounded-xl text-sm font-semibold text-white text-center hover:opacity-90"
                   style={{ background: "#FF5B04" }}
@@ -1095,9 +1194,9 @@ export default function IntegrationsSettingsPage() {
 
                   <div>
                     <label className="text-[10px] font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1.5">
-                      Permissions Scopes
+                      Access Scope
                     </label>
-                    <div className="space-y-2 text-xs">
+                    <div className="text-xs">
                       <label className="flex items-center gap-2 text-gray-500 cursor-not-allowed">
                         <input
                           checked
@@ -1106,26 +1205,37 @@ export default function IntegrationsSettingsPage() {
                           type="checkbox"
                         />
                         <span>
-                          read (Required) · Read published blog list & detail
+                          read · Read published content (list, detail, tags,
+                          feed)
                         </span>
                       </label>
-                      <label className="flex items-center gap-2 text-gray-700 cursor-pointer">
-                        <input
-                          checked={newKeyForm.scopeWrite}
-                          className="rounded text-[#FF5B04] focus:ring-[#FF5B04]/30"
-                          type="checkbox"
-                          onChange={(e) =>
-                            setNewKeyForm((p) => ({
-                              ...p,
-                              scopeWrite: e.target.checked,
-                            }))
-                          }
-                        />
-                        <span>
-                          write · Create new blog drafts programmatically
-                        </span>
-                      </label>
+                      <p className="text-[10px] text-gray-400 mt-1.5 leading-relaxed pl-6">
+                        All keys are read-only. Content is authored, published,
+                        and deleted exclusively inside PirateCOS — there is no
+                        write API.
+                      </p>
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-jetbrains-mono uppercase tracking-wider text-gray-400 block mb-1">
+                      Expires In
+                    </label>
+                    <select
+                      className="w-full text-sm font-geist bg-gray-50 rounded-lg px-3 py-2.5 border border-black/10 outline-none"
+                      value={newKeyForm.expiresInDays}
+                      onChange={(e) =>
+                        setNewKeyForm((p) => ({
+                          ...p,
+                          expiresInDays: Number(e.target.value),
+                        }))
+                      }
+                    >
+                      <option value={0}>Never</option>
+                      <option value={30}>30 days</option>
+                      <option value={90}>90 days</option>
+                      <option value={365}>365 days</option>
+                    </select>
                   </div>
                 </div>
 

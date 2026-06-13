@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { name, scopes } = await req.json();
+  const { name, expiresInDays } = await req.json();
 
   if (!name?.trim()) {
     return NextResponse.json(
@@ -65,25 +65,36 @@ export async function POST(req: NextRequest) {
   await dbConnect();
   const tenantOid = new mongoose.Types.ObjectId(user.tenantId);
 
-  // Generate cryptographically secure token
-  const randomToken = randomBytes(20).toString("hex");
-  const rawKey = `uip_live_${randomToken}`;
+  // Token format `uip_<keyId>_<secret>`: keyId is a non-secret, indexed lookup
+  // id; secret is the high-entropy part. verifyApiKey finds the row by keyId in
+  // one indexed query, then timing-safe compares the full token's hash.
+  const keyId = randomBytes(6).toString("hex"); // 12 chars
+  const secret = randomBytes(20).toString("hex");
+  const rawKey = `uip_${keyId}_${secret}`;
 
-  // Prefix shown in UI: "uip_live_abcdef12" (prefix of token + label)
-  const keyPrefix = `uip_live_${randomToken.substring(0, 8)}...`;
+  // Prefix shown in UI: "uip_<keyId>..."
+  const keyPrefix = `uip_${keyId}...`;
 
-  // Compute SHA-256 hash of the full raw key
+  // Compute SHA-256 hash of the full raw key, then AES-256-GCM encrypt it.
   const sha256Hash = createHash("sha256").update(rawKey).digest("hex");
-
-  // AES-256-GCM encrypt this hash
   const keyHashEncrypted = encrypt(sha256Hash);
+
+  // Optional expiry. All keys are read-only; there is no write scope.
+  let expiresAt: Date | null = null;
+  const days = Number(expiresInDays);
+
+  if (Number.isFinite(days) && days > 0) {
+    expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+  }
 
   const newKey = new ApiKey({
     tenantId: tenantOid,
     name: name.trim(),
+    keyId,
     keyHashEncrypted,
     keyPrefix,
-    scopes: Array.isArray(scopes) ? scopes : ["read"],
+    scopes: ["read"],
+    expiresAt,
     isActive: true,
   });
 
@@ -98,6 +109,7 @@ export async function POST(req: NextRequest) {
       name: newKey.name,
       keyPrefix: newKey.keyPrefix,
       scopes: newKey.scopes,
+      expiresAt: newKey.expiresAt,
       createdAt: newKey.createdAt,
     },
   });

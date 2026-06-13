@@ -17,15 +17,15 @@ export function OPTIONS() {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ slug: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { slug } = await params;
+  const { id } = await params;
   const guarded = await guard(req);
 
   if (guarded instanceof Response) return guarded;
   const { auth, rate } = guarded;
 
-  if (!slug) {
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) {
     return apiError("not_found", "Post not found or is not published.");
   }
 
@@ -34,8 +34,8 @@ export async function GET(
 
   try {
     const post = await Post.findOne({
+      _id: new mongoose.Types.ObjectId(id),
       tenantId: tenantOid,
-      slug: slug.toLowerCase().trim(),
       published: true,
     }).lean();
 
@@ -45,7 +45,6 @@ export async function GET(
 
     const data = serializePost(post);
 
-    // ETag = hash of id + updatedAt. Lets live-render callers revalidate cheaply.
     const etag = `"${createHash("sha256")
       .update(`${data.id}:${data.updatedAt}`)
       .digest("hex")

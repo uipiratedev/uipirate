@@ -216,14 +216,14 @@ Static sites and automations need to react to changes without polling. Nothing i
 ## 10. Security checklist
 
 - [ ] 🟠 **`/blogs` reader + `/api/posts` have no tenant filter** — intentionally left in place. Will be updated in **Phase 2** to call the v1 API using a server-side API key. Until then these routes are an isolation risk but are being addressed in the planned sequence.
-- [ ] 🔴 Public serializer whitelist (no PII / internal fields on v1 API) — §3.1, with regression test. **NOT DONE — data leaking now.**
-- [ ] 🔴 Remove POST handler from `v1/content/route.ts` — write surface must not exist. **NOT DONE.**
-- [ ] 🔴 Remove `"write"` scope from `ApiKey` schema, POST route, and UI. **NOT DONE.**
-- [ ] 🔴 Rate limiting active on all v1 read endpoints (per key). **NOT DONE.**
-- [ ] 🔴 `keyId` fast-lookup: auth O(n) full-table scan eliminated. **NOT DONE.**
+- [x] ✅ Public serializer whitelist (no PII / internal fields on v1 API) — §3.1, with regression test. **DONE.**
+- [x] ✅ Remove POST handler from `v1/content/route.ts` — write surface must not exist. **DONE.**
+- [x] ✅ Remove `"write"` scope from `ApiKey` schema, POST route, and UI. **DONE.**
+- [x] ✅ Rate limiting active on all v1 read endpoints (per key). **DONE (in-memory; see §6 caveat).**
+- [x] ✅ `keyId` fast-lookup: auth O(n) full-table scan eliminated for new keys (legacy keys fall back). **DONE.**
 - [x] ✅ v1 API tenant isolation correct — query uses `{ tenantId: tenantOid, published: true }` where `tenantOid` is from the verified API key. Key for Tenant A cannot see Tenant B's posts.
 - [x] ✅ Timing-safe key comparison — `timingSafeEqual` used in `verifyApiKey`.
-- [ ] 🟠 CORS (`Access-Control-Allow-Origin: *`) on all v1 read endpoints. **NOT DONE.**
+- [x] ✅ CORS (`Access-Control-Allow-Origin: *`) on all v1 read endpoints. **DONE.**
 - [ ] 🟡 Webhook payloads HMAC-signed; secret shown once. **NOT DONE (webhooks not built).**
 - [ ] 🟡 Re-run `PIRATECOS_SECURITY_AUDIT.md` items against the new v1 surface.
 
@@ -255,55 +255,60 @@ Current test coverage for the v1 API surface: **zero**. One test exists for `ai-
 
 ## 13. Phased rollout
 
-### Phase 1 — Build the secure v1 API + developer docs 🔴 NOT STARTED
+### Phase 1 — Build the secure v1 API + developer docs ✅ COMPLETE
 
 The public readers (`/blogs`, `/[slug]`) and legacy `/api/posts` are left as-is during this phase. Phase 1 focuses entirely on making the v1 API production-ready and documented.
 
-**1A — Make v1 API safe (blocker)**
-- Delete POST handler from `app/api/pirateCOS/v1/content/route.ts` (no write surface)
-- Remove `"write"` scope from `ApiKey` schema, key creation API, and UI
-- `lib/pirateCOS/public/serialize-post.ts` + `PublicPost` interface (whitelist safe fields only)
-- Wire serializer into both v1 GET handlers (list + detail)
-- Standardised error model `{ code, message }` across all v1 routes (§5.5)
-- Unit test: assert `tenantId` / `owner.email` / `aiWorkspaceSession` / `approval*` absent
+**1A — Make v1 API safe (blocker)** ✅
+- [x] Deleted POST handler from `app/api/pirateCOS/v1/content/route.ts` (no write surface)
+- [x] Removed `"write"` scope from `ApiKey` schema, key creation API, and UI
+- [x] `lib/pirateCOS/public/serialize-post.ts` + `PublicPost` interface (whitelist safe fields only)
+- [x] Wired serializer into both v1 GET handlers (list + detail)
+- [x] Standardised error model `{ code, message }` via `lib/pirateCOS/public/response.ts` across all v1 routes (§5.5)
+- [x] Unit test (`__tests__/lib/pirateCOS/serialize-post.test.ts`): asserts `tenantId` / `owner.email` / `aiWorkspaceSession` / `approval*` absent
 
-**1B — Scale & protect v1 API**
-- `keyId` field on `ApiKey` + fast-lookup in `verifyApiKey` — replace O(n) full-scan (§3.2)
-- Per-key rate limiting on all `/v1/*` routes + `X-RateLimit-*` headers (§6)
-- `lib/pirateCOS/public/cors.ts` + `Access-Control-Allow-Origin: *` on all v1 routes (§5.4)
-- `Cache-Control` + ETag / `304` on detail endpoint (§5.3)
+**1B — Scale & protect v1 API** ✅
+- [x] `keyId` field on `ApiKey` + fast-lookup in `verifyApiKey` — indexed `findOne`, legacy keys fall back to scan (§3.2)
+- [x] Per-key rate limiting (`lib/pirateCOS/api-rate-limiter.ts`) on all `/v1/*` routes + `X-RateLimit-*` headers (§6)
+- [x] `lib/pirateCOS/public/cors.ts` + `Access-Control-Allow-Origin: *` + `OPTIONS` on all v1 routes (§5.4)
+- [x] `Cache-Control` + ETag / `304` on detail + id endpoints (§5.3)
 
-**1C — Complete read surface**
-- GET `/v1/content/id/[id]` — stable id-based permalink
-- `updatedSince`, `fields`, `sort` query params; default list excludes `content` field
-- GET `/v1/tags` — distinct tags + counts
-- GET `/v1/me` — key info + rate-limit echo
+**1C — Complete read surface** ✅
+- [x] GET `/v1/content/id/[id]` — stable id-based permalink
+- [x] `updatedSince`, `fields`, `sort` query params; default list excludes `content` field
+- [x] GET `/v1/tags` — distinct tags + counts
+- [x] GET `/v1/me` — key info + rate-limit echo
 
-**1D — Developer docs page**
-- In-app developer docs page (`/pirateCOS/developers`): auth quickstart, endpoint reference, rate limits, error codes, cURL + JS + Next.js ISR examples
-- "Use your key" cURL quickstart panel shown after key creation in integrations settings
-- Key expiry selector, label copy update, rotation UI (§9)
+**1D — Developer docs page** ✅
+- [x] In-app developer docs page (`/pirateCOS/developers`): auth quickstart, endpoint reference, rate limits, error codes, cURL + JS + Node + Python + Next.js ISR + Astro examples
+- [x] "Use your key" cURL quickstart panel shown after key creation in integrations settings
+- [x] Key expiry selector (30/90/365/never), label copy update, rotation UI (§9)
+
+> Note: the per-key rate limiter is in-memory (single-instance correct only). Swap to a shared store (Upstash/Mongo TTL) before multi-instance production — see §6 and the comment in `api-rate-limiter.ts`. OpenAPI spec, JSON feed/sitemap, embed widget, and webhooks remain deferred (Phase 2 / optional Phase E).
 
 ---
 
-### Phase 2 — Update internal readers to use the v1 API 🟡 NOT STARTED _(requires Phase 1 complete)_
+### Phase 2 — Update internal readers to use the v1 API 🟢 2A + 2B COMPLETE · 2C deferred
 
 Once the v1 API is safe, rate-limited, and documented, migrate the existing public readers away from direct DB queries and the legacy `/api/posts` route.
 
-**2A — Migrate readers to v1 API**
-- `app/blogs/page.tsx` + `screens/blogs/featuredBlogs/index.tsx` — replace `fetch('/api/posts')` with v1 API call using a **server-side env-var read key**
-- `app/blogs/[slug]/page.tsx` — replace direct `Post.findOne` with `fetch('/api/pirateCOS/v1/content/{slug}')`
-- `app/[slug]/page.tsx` — same migration as above for the root catch-all reader
-- `screens/blogsDetails/suggestedReads/index.tsx` — replace `fetch('/api/posts')` with v1 API call
-- The server-side key is stored in env vars, never shipped to the browser
+**2A — Migrate readers to v1 API** ✅
+- [x] New server-side client `lib/pirateCOS/public-client.ts` (`listPosts`, `getPostBySlug`, `listPostSlugs`) reading `PIRATECOS_API_KEY` / `PIRATECOS_API_BASE_URL`; tolerant adapter maps the v1 shape to the readers' legacy `ReaderPost` shape (works against both old and serialized API responses during rollout).
+- [x] `app/blogs/page.tsx` server-fetches the list and passes `initialBlogs` → `screens/blogs/index.tsx` → `screens/blogs/featuredBlogs/index.tsx` (now presentational; no client `fetch`).
+- [x] `app/blogs/[slug]/page.tsx` — metadata, `generateStaticParams`, and page body use the v1 client instead of `Post.findOne`/`Post.find`.
+- [x] `app/[slug]/page.tsx` — same migration for the root catch-all reader.
+- [x] `screens/blogsDetails/suggestedReads/index.tsx` — now presentational; suggested posts are server-fetched in the page and passed via `BlogsDetails`.
+- [x] The read key is server-side only (no `NEXT_PUBLIC_` prefix); added to `.env` (gitignored) and documented in `.env.example`.
 
-**2B — Retire legacy routes**
-- Delete `app/api/posts/route.ts` and `app/api/posts/[id]/route.ts` once no reader calls them
+**2B — Retire legacy routes** ✅
+- [x] Deleted `app/api/posts/route.ts` and `app/api/posts/[id]/route.ts` — confirmed no remaining callers.
 
-**2C — Webhooks**
+**2C — Webhooks** ❌ DEFERRED (not part of the website migration)
 - `models/pirateCOS/Webhook.ts` + `lib/pirateCOS/webhooks/deliver.ts`
 - Trigger on publish/unpublish inside app post routes (not via public API)
 - `/api/pirateCOS/integrations/webhooks` management API + UI card (§7)
+
+> **Deploy ordering:** Phase 1 (the serializer + tenant-scoped v1 API) must be live on `cos.uipirate.com` before/with this change. The reader adapter tolerates the pre-Phase-1 raw-doc shape, but only the deployed Phase-1 API actually enforces tenant isolation — until it ships, the public site still shows whatever the API returns.
 
 ---
 

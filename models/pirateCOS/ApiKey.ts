@@ -3,9 +3,16 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface IApiKey extends Document {
   tenantId: mongoose.Types.ObjectId;
   name: string;
+  /**
+   * Non-secret, indexed lookup id embedded in the token (`uip_<keyId>_<secret>`).
+   * Lets verifyApiKey find the candidate key in one indexed query instead of
+   * scanning the whole collection. Sparse: legacy keys (uip_live_…) have none.
+   */
+  keyId?: string;
   keyHashEncrypted: string; // SHA-256 hash, AES-256 encrypted
-  keyPrefix: string; // Prefix shown in UI (e.g. uip_live_abcdef12)
-  scopes: ("read" | "write")[];
+  keyPrefix: string; // Prefix shown in UI (e.g. uip_a1b2c3d4e5f6...)
+  /** Read-only only — the public API has no write surface. */
+  scopes: "read"[];
   lastUsedAt?: Date;
   expiresAt?: Date;
   isActive: boolean;
@@ -26,6 +33,12 @@ const ApiKeySchema: Schema<IApiKey> = new Schema(
       required: true,
       trim: true,
     },
+    keyId: {
+      type: String,
+      index: true,
+      sparse: true,
+      unique: true,
+    },
     keyHashEncrypted: {
       type: String,
       required: true,
@@ -36,7 +49,7 @@ const ApiKeySchema: Schema<IApiKey> = new Schema(
     },
     scopes: {
       type: [String],
-      enum: ["read", "write"],
+      enum: ["read"],
       default: ["read"],
     },
     lastUsedAt: {
