@@ -76,7 +76,7 @@ SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applic
 
 - Website: https://uipirate.com
 - Case Studies & Portfolio: https://uipirate.com/case-studies
-- Services: https://uipirate.com/services
+- Services: https://uipirate.com/services/SaaS-Web-&-Mobile-Apps
 - Pricing: https://uipirate.com/pricing
 - Blog: https://uipirate.com/blogs
 - FAQs: https://uipirate.com/faqs

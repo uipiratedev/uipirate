@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 /**
  * /privacy-policy redirects to /privacy (the canonical page).
@@ -6,5 +6,5 @@ import { redirect } from "next/navigation";
  * Google was seeing two pages with the same content and flagging one as a duplicate.
  */
 export default function PrivacyPolicyRedirect() {
-  redirect("/privacy");
+  permanentRedirect("/privacy");
 }
