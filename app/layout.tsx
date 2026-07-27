@@ -288,7 +288,6 @@ export default async function RootLayout({
               "@context": "https://schema.org",
               "@type": "SiteNavigationElement",
               name: [
-                "Services",
                 "Case Studies & Portfolio",
                 "About",
                 "Pricing",
@@ -297,7 +296,6 @@ export default async function RootLayout({
                 "FAQs",
               ],
               url: [
-                "https://uipirate.com/services",
                 "https://uipirate.com/case-studies",
                 "https://uipirate.com/about",
                 "https://uipirate.com/pricing",

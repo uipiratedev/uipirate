@@ -46,16 +46,6 @@ const nextConfig = {
     optimizePackageImports: ["@heroui/react", "framer-motion"],
   },
 
-  // Generate sitemap and robots.txt
-  async rewrites() {
-    return [
-      {
-        source: "/sitemap.xml",
-        destination: "/api/sitemap",
-      },
-    ];
-  },
-
   // Add security headers, and only add long-term static caching in production
   async headers() {
     const headers = [
