@@ -8,10 +8,9 @@ import { listPosts } from "@/lib/pirateCOS/public-client";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title:
-    "Case Studies & Portfolio | 50+ Product Design & Development Projects",
+  title: "Case Studies & Portfolio | 50+ Shipped Products",
   description:
-    "Explore 50+ shipped products and deep-dive case studies — SaaS platforms, enterprise dashboards, AI applications, fintech, and design systems. Built with Angular, React & Next.js for clients like Xperiti, Ipsos, RevUp AI, and Bird.",
+    "Explore 50+ shipped products and deep-dive case studies — SaaS platforms, enterprise dashboards, AI apps, fintech, and design systems.",
   keywords:
     "UI/UX case studies, product design portfolio, SaaS design case study, enterprise design portfolio, Angular development projects, fintech UX design, AI app design case study, design agency portfolio, shipped products",
   openGraph: {
