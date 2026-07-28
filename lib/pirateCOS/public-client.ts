@@ -33,6 +33,13 @@ export interface ReaderPost {
   readTime?: number;
   views?: number;
   totalViews?: number;
+  // Case-study-only structured fields (postType: "case-study")
+  client?: string;
+  clientLogo?: string;
+  region?: string;
+  technologies?: string[];
+  metrics?: Array<{ label: string; value: string }>;
+  externalUrl?: string;
   seo?: {
     metaTitle?: string;
     metaDescription?: string;
@@ -70,6 +77,12 @@ function toReaderPost(p: any): ReaderPost {
     readTime: p.readTime,
     views: p.views,
     totalViews: p.totalViews,
+    client: p.client,
+    clientLogo: p.clientLogo,
+    region: p.region,
+    technologies: Array.isArray(p.technologies) ? p.technologies : undefined,
+    metrics: Array.isArray(p.metrics) ? p.metrics : undefined,
+    externalUrl: p.externalUrl,
     seo: p.seo,
     createdAt: p.createdAt ?? p.publishedAt ?? p.updatedAt ?? new Date(0).toISOString(),
     publishedAt: p.publishedAt ?? p.createdAt ?? null,
@@ -124,7 +137,7 @@ async function apiGet(
 // field set keeps the list payload small (and under Next's 2MB fetch-cache
 // limit) once the Phase-1 API — which honors `fields` — is deployed.
 const LIST_FIELDS =
-  "id,slug,title,excerpt,featuredImage,bannerImage,tags,postType,author,readTime,views,publishedAt,updatedAt";
+  "id,slug,title,excerpt,featuredImage,bannerImage,tags,postType,author,readTime,views,publishedAt,updatedAt,client,clientLogo,region,technologies,metrics,externalUrl";
 
 /** List published posts for the reader. Returns [] on any failure. */
 export async function listPosts(opts?: {
