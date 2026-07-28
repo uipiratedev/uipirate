@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import PrivacyPolicyScreen from "@/screens/privacyPolicy";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | UI Pirate",
+  title: "Privacy Policy",
   description:
     "Read UI Pirate's Privacy Policy to understand how we collect, use, and protect your personal information. We are committed to your privacy and data security.",
   keywords:

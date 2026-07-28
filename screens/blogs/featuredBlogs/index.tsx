@@ -84,7 +84,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
               <Link
                 key={blog._id}
                 className="group block"
-                href={`/blogs/${blog.slug}`}
+                href={`/${blog.slug}`}
               >
                 <div className="flex flex-col rounded-[20px] overflow-hidden bg-white border border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.05)] transition-shadow duration-300 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)]">
                   {/* Thumbnail */}
