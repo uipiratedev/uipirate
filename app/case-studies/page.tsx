@@ -1,6 +1,11 @@
 import { Metadata } from "next";
 
 import CaseStudies from "@/screens/caseStudies";
+import { listPosts } from "@/lib/pirateCOS/public-client";
+
+// ISR: revalidate every 60s so newly published CMS case studies show up
+// without a full rebuild (matches /blogs).
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title:
@@ -31,8 +36,13 @@ export const metadata: Metadata = {
   },
 };
 
-const CaseStudiesPage = () => {
-  return <CaseStudies />;
+const CaseStudiesPage = async () => {
+  const cmsCaseStudies = await listPosts({
+    postType: "case-study",
+    limit: 100,
+  });
+
+  return <CaseStudies cmsCaseStudies={cmsCaseStudies} />;
 };
 
 export default CaseStudiesPage;
