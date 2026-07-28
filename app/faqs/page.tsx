@@ -4,7 +4,7 @@ import Faqs from "@/screens/faqs";
 import FaqData from "@/data/faqs.json";
 
 export const metadata: Metadata = {
-  title: "FAQs | Product Design & Development Questions Answered | UI Pirate",
+  title: "FAQs | Product Design & Development Questions Answered",
   description:
     "Frequently asked questions about UI Pirate's product design & development services, pricing, process, timelines, Angular/React development, and working with our team. Get answers before you book a call.",
   keywords:

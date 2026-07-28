@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import TermsAndConditionsScreen from "@/screens/termsAndConditions";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | UI Pirate",
+  title: "Terms and Conditions",
   description:
     "Read UI Pirate's Terms and Conditions. Understand your rights and responsibilities when using our website and engaging with our design and development services.",
   keywords:

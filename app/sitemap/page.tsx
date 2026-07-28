@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import Sitemap from "@/screens/sitemap";
 
 export const metadata: Metadata = {
-  title: "Site Map | UI Pirate — All Pages & Services",
+  title: "Site Map | All Pages & Services",
   description:
     "Complete sitemap of UI Pirate — product design & development agency. Browse all pages: UX/UI Design, SaaS & AI Development, Landing Pages, Graphic Design, Motion Graphics, UX Audits, 3D Animation, Pricing, Portfolio & more.",
   keywords:

@@ -7,8 +7,7 @@ import { listPosts } from "@/lib/pirateCOS/public-client";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title:
-    "Design Blog | UI/UX Insights, SaaS Design Tips & Case Studies | UI Pirate",
+  title: "Design Blog | UI/UX Insights, SaaS Design Tips & Case Studies",
   description:
     "Expert insights on UI/UX design, SaaS product design, design systems, and AI application design. Case studies, tutorials, and best practices from our Fortune 500 design work.",
   keywords:

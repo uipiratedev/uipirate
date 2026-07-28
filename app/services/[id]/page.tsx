@@ -27,7 +27,7 @@ const SERVICE_META: Record<
 > = {
   "saas-web-mobile-apps": {
     title:
-      "SaaS & Mobile App Design & Development | Idea to Product | Angular, React | UI Pirate",
+      "SaaS & Mobile App Design & Development | Idea to Product | Angular, React",
     description:
       "Turn your SaaS or mobile app idea into a shipped product. We handle product thinking, competitive analysis, information architecture, UX/UI design & frontend development in Angular and React. From a few lines of vision to a fully built product.",
     keywords:
@@ -35,7 +35,7 @@ const SERVICE_META: Record<
   },
   "landing-pages-business-websites": {
     title:
-      "Landing Page & Website Design & Development | Angular, React & Webflow | UI Pirate",
+      "Landing Page & Website Design & Development | Angular, React & Webflow",
     description:
       "High-converting landing pages and business websites that turn visitors into customers. We think through your product positioning, competitive landscape, and user journey — then design + develop in Angular, React, Next.js, Framer, or Webflow.",
     keywords:
@@ -43,7 +43,7 @@ const SERVICE_META: Record<
   },
   "design-system-component-library": {
     title:
-      "Design Systems & Component Libraries | Scalable UI Kits | UI Pirate",
+      "Design Systems & Component Libraries | Scalable UI Kits",
     description:
       "Custom design systems with design tokens, branded UI kits, and documented dev-ready components for Angular, React, and other frameworks. Built for enterprise teams that need consistency at scale.",
     keywords:
@@ -51,7 +51,7 @@ const SERVICE_META: Record<
   },
   "graphic-design": {
     title:
-      "Graphic Design Services | Brand Identity & Marketing Visuals | UI Pirate",
+      "Graphic Design Services | Brand Identity & Marketing Visuals",
     description:
       "Professional graphic design for brand identity, infographics, newsletters, social media, and marketing materials. Consistent brand visuals across all channels.",
     keywords:
@@ -59,7 +59,7 @@ const SERVICE_META: Record<
   },
   "motion-graphics-video-editing": {
     title:
-      "Motion Graphics & Video Editing | Animations & Explainer Videos | UI Pirate",
+      "Motion Graphics & Video Editing | Animations & Explainer Videos",
     description:
       "Professional motion graphics, 2D/3D animations, social media reels, explainer videos, and product demos. Sound design, color grading, and captions included.",
     keywords:
@@ -67,14 +67,14 @@ const SERVICE_META: Record<
   },
   "ux-audits-consultation": {
     title:
-      "UX Audit & Consultation | Improve Your Product's Usability | UI Pirate",
+      "UX Audit & Consultation | Improve Your Product's Usability",
     description:
       "Expert UX audits with heuristic analysis, usability testing, and actionable recommendations. Identify friction points and improve conversion rates in your SaaS product.",
     keywords:
       "UX audit service, usability testing, UX consultation, SaaS UX review, heuristic analysis, product usability audit",
   },
   "3d-animation-rendering": {
-    title: "3D Animation & Rendering | Product Visualization | UI Pirate",
+    title: "3D Animation & Rendering | Product Visualization",
     description:
       "Professional 3D animation, product rendering, and architectural visualization. High-quality 3D assets for marketing, product demos, and brand storytelling.",
     keywords:
@@ -89,7 +89,7 @@ export async function generateMetadata({
   const normalizedSlug = normalize(urlSlug);
 
   const meta = SERVICE_META[normalizedSlug] || {
-    title: `${urlSlug.replace(/-/g, " ")} | UI Pirate Design Services`,
+    title: `${urlSlug.replace(/-/g, " ")} | Design Services`,
     description: `Professional ${urlSlug.replace(/-/g, " ").toLowerCase()} services by UI Pirate. Enterprise-grade design trusted by Fortune 500 companies.`,
     keywords: `${urlSlug.replace(/-/g, " ").toLowerCase()}, UI Pirate, design services`,
   };

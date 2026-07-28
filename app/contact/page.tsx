@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import ContactPageClient from "./ContactPageClient";
 
 export const metadata: Metadata = {
-  title: "Contact UI Pirate | Book a Free Design Consultation",
+  title: "Contact | Book a Free Design Consultation",
   description:
     "Book a free 15-minute design consultation with UI Pirate. Discuss your SaaS, mobile app, or enterprise design project. Serving clients in USA, UK, Singapore, India & Australia. Typical response time: 2 hours.",
   keywords:

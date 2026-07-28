@@ -28,7 +28,7 @@ export async function generateMetadata({
   const url = `https://uipirate.com/case-studies/${study.slug}`;
 
   return {
-    title: `${study.title} | Case Study | UI Pirate`,
+    title: `${study.title} | Case Study`,
     description: study.excerpt,
     alternates: { canonical: url },
     openGraph: {

@@ -4,7 +4,7 @@ import CaseStudies from "@/screens/caseStudies";
 
 export const metadata: Metadata = {
   title:
-    "Case Studies & Portfolio | 50+ Product Design & Development Projects | UI Pirate",
+    "Case Studies & Portfolio | 50+ Product Design & Development Projects",
   description:
     "Explore 50+ shipped products and deep-dive case studies — SaaS platforms, enterprise dashboards, AI applications, fintech, and design systems. Built with Angular, React & Next.js for clients like Xperiti, Ipsos, RevUp AI, and Bird.",
   keywords:
