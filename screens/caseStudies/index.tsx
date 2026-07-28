@@ -332,12 +332,6 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
               filteredStudies.map((study, index) => {
                 const primaryMetric =
                   study.metrics?.[0]?.value || study.industry;
-                const isExternal = !!study.externalUrl;
-                const href = study.externalUrl || `/case-studies/${study.slug}`;
-                const LinkComponent = isExternal ? "a" : Link;
-                const linkProps = isExternal
-                  ? { href, target: "_blank", rel: "noopener noreferrer" }
-                  : { href };
 
                 return (
                   <motion.div
@@ -350,9 +344,9 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                       ease: [0.25, 0.1, 0.25, 1],
                     }}
                   >
-                    <LinkComponent
-                      {...linkProps}
+                    <Link
                       className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
+                      href={`/case-studies/${study.slug}`}
                     >
                       {/* Blurred background image - more visible */}
                       <div className="absolute inset-0">
@@ -418,21 +412,35 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                             />
                             <div className="flex items-center gap-1.5 text-sm max-md:text-xs font-bold text-[#FF5B04]">
                               <span className="hidden md:inline">
-                                {isExternal
-                                  ? "View project"
-                                  : "Read case study"}
+                                Read case study
                               </span>
-                              <span className="md:hidden">
-                                {isExternal ? "Visit" : "Read"}
-                              </span>
+                              <span className="md:hidden">Read</span>
                               <span className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
-                                {isExternal ? "↗" : "→"}
+                                →
                               </span>
                             </div>
+
+                            {study.externalUrl && (
+                              <button
+                                className="flex items-center gap-1 text-xs max-md:text-[11px] font-semibold text-gray-600 hover:text-[#FF5B04] transition-colors"
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  window.open(
+                                    study.externalUrl,
+                                    "_blank",
+                                    "noopener,noreferrer",
+                                  );
+                                }}
+                              >
+                                Visit site ↗
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
-                    </LinkComponent>
+                    </Link>
                   </motion.div>
                 );
               })
