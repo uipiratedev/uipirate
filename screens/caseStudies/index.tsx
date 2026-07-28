@@ -44,19 +44,24 @@ interface CaseStudyCard {
   externalUrl?: string;
 }
 
-// CMS-authored case studies (postType "case-study") don't have the
-// structured fields (metrics, region, category) the static JSON entries do —
-// fall back to tags/title so they render as cards alongside the curated ones.
+// CMS-authored case studies (postType "case-study") carry their own client,
+// clientLogo, region, technologies, metrics and externalUrl fields from the
+// API. There's no "industry" or "category" field on the CMS side, so those
+// still fall back to the post's tags/title.
 function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
   return {
     slug: post.slug,
     title: post.title,
     excerpt: post.excerpt || "",
-    client: post.title.split(" — ")[0],
+    client: post.client || post.title.split(" — ")[0],
+    clientLogo: post.clientLogo,
     industry: post.tags?.[0] || "Case Study",
-    technologies: post.tags,
+    region: post.region,
+    technologies: post.technologies || post.tags,
+    metrics: post.metrics,
     heroImage:
       post.featuredImage || post.bannerImage || DEFAULT_CASE_STUDY_IMAGE,
+    externalUrl: post.externalUrl,
   };
 }
 
