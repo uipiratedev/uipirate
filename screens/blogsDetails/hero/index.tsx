@@ -56,7 +56,7 @@ const BlogsDetailsHero = memo<BlogHeroProps>(function BlogsDetailsHero({
 
           {/* Title */}
           <h1
-            className="text-white font-[700] leading-[1.15] tracking-[-0.5px] max-w-2xl
+            className="text-white font-[700] leading-[1.15] tracking-[-0.5px] w-full
           text-[22px] md:text-[28px] lg:text-[32px] xl:text-[40px]"
           >
             {title}
