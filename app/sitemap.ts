@@ -52,6 +52,30 @@ const SERVICE_SLUGS = [
   "3D-Animation-&-Rendering",
 ];
 
+// Fetches every post across all pages instead of capping at one page's worth
+// — the sitemap should list all blogs/case studies, not just the first N.
+// Capped at 20 pages as a safety net in case the API ever ignores `page` and
+// keeps returning the same batch (would otherwise loop forever).
+async function fetchAllPosts(
+  listPosts: (opts: {
+    page: number;
+    limit: number;
+  }) => Promise<Array<{ [key: string]: any }>>,
+) {
+  const pageSize = 100;
+  const maxPages = 20;
+  let all: Array<{ [key: string]: any }> = [];
+
+  for (let page = 1; page <= maxPages; page++) {
+    const batch = await listPosts({ page, limit: pageSize });
+
+    all = all.concat(batch);
+    if (batch.length < pageSize) break;
+  }
+
+  return all;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
@@ -81,7 +105,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!isBuild) {
     try {
       const { listPosts } = await import("@/lib/pirateCOS/public-client");
-      const posts = await listPosts({ limit: 100 });
+      const posts = await fetchAllPosts(listPosts);
 
       blogEntries = posts
         .filter((post: any) => post.postType !== "case-study")
