@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -13,7 +15,7 @@ import GlassBadge from "@/components/GlassBadge";
 import OurWorksHero from "@/screens/ourWorks/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
 import LandingTestimonials from "@/screens/landing/testimonials";
-import caseStudies from "@/data/case-studies.json";
+import staticCaseStudies from "@/data/case-studies.json";
 
 const categories = [
   "All",
@@ -25,9 +27,51 @@ const categories = [
   "Landing Page",
 ];
 
-const CaseStudies = () => {
+const DEFAULT_CASE_STUDY_IMAGE = "/assets/blog-banner-default.svg";
+
+interface CaseStudyCard {
+  slug: string;
+  title: string;
+  excerpt: string;
+  client: string;
+  category?: string;
+  industry?: string;
+  region?: string;
+  technologies?: string[];
+  metrics?: { label: string; value: string }[];
+  heroImage: string;
+  clientLogo?: string;
+  externalUrl?: string;
+}
+
+// CMS-authored case studies (postType "case-study") don't have the
+// structured fields (metrics, region, category) the static JSON entries do —
+// fall back to tags/title so they render as cards alongside the curated ones.
+function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt || "",
+    client: post.title.split(" — ")[0],
+    industry: post.tags?.[0] || "Case Study",
+    technologies: post.tags,
+    heroImage:
+      post.featuredImage || post.bannerImage || DEFAULT_CASE_STUDY_IMAGE,
+  };
+}
+
+interface CaseStudiesProps {
+  cmsCaseStudies?: ReaderPost[];
+}
+
+const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const caseStudies: CaseStudyCard[] = useMemo(
+    () => [...staticCaseStudies, ...cmsCaseStudies.map(normalizeCmsCaseStudy)],
+    [cmsCaseStudies],
+  );
 
   const filteredStudies = caseStudies
     .filter(
@@ -321,7 +365,8 @@ const CaseStudies = () => {
                         <div className="flex items-center justify-between mb-6 max-md:mb-4">
                           <div className="px-3 py-1.5 bg-white/90 backdrop-blur-xl border border-gray-200/70 rounded-full shadow-sm">
                             <p className="text-[10px] max-md:text-[9px] font-jetbrains-mono uppercase tracking-[0.12em] text-gray-800 font-medium">
-                              {study.industry} · {study.region}
+                              {study.industry}
+                              {study.region ? ` · ${study.region}` : ""}
                             </p>
                           </div>
                           <div className="px-3 py-1.5 bg-[#FF5B04] backdrop-blur-xl rounded-full shadow-md">
