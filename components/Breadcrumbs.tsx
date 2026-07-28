@@ -45,16 +45,20 @@ export default function Breadcrumbs() {
   const pathname = usePathname();
 
   const breadcrumbs = useMemo(() => {
-    // Don't render breadcrumbs on homepage, admin pages, or individual blog/case-study detail pages
+    const segments = pathname.split("/").filter(Boolean);
+
+    // Don't render breadcrumbs on homepage, admin pages, individual blog/case-study
+    // detail pages, or root-level blog post slugs (e.g. /some-post-title) — blog
+    // posts live at the URL root, so an unrecognized single segment is one of those.
     if (
       pathname === "/" ||
       pathname.startsWith("/admin") ||
       /^\/blogs\/[^/]+/.test(pathname) ||
-      /^\/case-studies\/[^/]+/.test(pathname)
+      /^\/case-studies\/[^/]+/.test(pathname) ||
+      (segments.length === 1 && !SEGMENT_LABELS[segments[0]])
     )
       return [];
 
-    const segments = pathname.split("/").filter(Boolean);
     const items: BreadcrumbItem[] = [
       { label: "Home", href: "/", isCurrentPage: false },
     ];
