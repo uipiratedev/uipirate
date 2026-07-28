@@ -231,10 +231,17 @@ export default function LeadCaptureForm({
 
       {/* Project Type — Updated List */}
       <div className="flex flex-col gap-3">
-        <label className="text-sm font-medium text-gray-700 font-jakarta">
+        <span
+          className="text-sm font-medium text-gray-700 font-jakarta"
+          id="project-type-label"
+        >
           What are you building?
-        </label>
-        <div className="flex flex-wrap gap-2">
+        </span>
+        <div
+          aria-labelledby="project-type-label"
+          className="flex flex-wrap gap-2"
+          role="group"
+        >
           {PROJECT_TYPES.map((type) => {
             const isSelected = form.projectType === type;
 
@@ -259,10 +266,17 @@ export default function LeadCaptureForm({
 
       {/* Requirement — Updated Style */}
       <div className="flex flex-col gap-3">
-        <label className="text-sm font-medium text-gray-700 font-jakarta">
+        <span
+          className="text-sm font-medium text-gray-700 font-jakarta"
+          id="requirement-label"
+        >
           What is your requirement?
-        </label>
-        <div className="flex flex-wrap gap-2">
+        </span>
+        <div
+          aria-labelledby="requirement-label"
+          className="flex flex-wrap gap-2"
+          role="group"
+        >
           {REQUIREMENTS.map((req) => {
             const isSelected = form.requirement === req;
 

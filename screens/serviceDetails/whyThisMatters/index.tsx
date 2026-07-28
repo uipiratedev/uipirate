@@ -31,12 +31,21 @@ const WhyThisMatters = ({ data }: { data: any }) => {
               return (
                 <div
                   key={item.number}
+                  aria-pressed={isActive}
                   className={`group cursor-pointer w-full rounded-3xl border transition-all duration-300 flex flex-col ${
                     isActive
                       ? "bg-[#F0F0F0] border-white/8 "
                       : "bg-white border-transparent hover:bg-white/50"
                   }`}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setActiveIndex(idx)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActiveIndex(idx);
+                    }
+                  }}
                 >
                   {/* Header */}
                   <div className="flex items-center gap-4 bg-white rounded-full border border-black/10 p-2">
