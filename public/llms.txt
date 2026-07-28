@@ -76,7 +76,26 @@ SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applic
 
 - Website: https://uipirate.com
 - Case Studies & Portfolio: https://uipirate.com/case-studies
-- Services: https://uipirate.com/services/SaaS-Web-&-Mobile-Apps
+  - Xperiti — Enterprise Research Platform: https://uipirate.com/case-studies/xperiti
+  - Legaltech AI SaaS — APAC's Largest Law Firm: https://uipirate.com/case-studies/legaltech-ai-saas
+  - ION — Order Fulfilment SaaS Platform: https://uipirate.com/case-studies/ion
+  - ArthAlpha — AI Trading Platform: https://uipirate.com/case-studies/arthalpha
+  - Rings & I — Custom Ring Design Studio: https://uipirate.com/case-studies/rings-and-i
+  - FrytX — Business Operations Platform: https://uipirate.com/case-studies/frytx
+  - Test Dynamiz — Automated Testing SaaS: https://uipirate.com/case-studies/test-dynamiz
+  - SimpleO — AI Legal Management System: https://uipirate.com/case-studies/simpleo
+  - StayPe — Rental Property Management: https://uipirate.com/case-studies/staype
+  - Infinity AquaSol — Water Treatment Solutions: https://uipirate.com/case-studies/infinity-aquasol
+  - Cloud Shift — Cloud Migration Platform: https://uipirate.com/case-studies/cloud-shift
+  - StayRealtor — Property Management App: https://uipirate.com/case-studies/stayrealtor
+  - OLSO — Peer-to-Peer Sharing Platform: https://uipirate.com/case-studies/olso
+- SaaS Web & Mobile App Design & Development: https://uipirate.com/services/SaaS-Web-&-Mobile-Apps
+- Landing Pages & Business Websites: https://uipirate.com/services/Landing-Pages-&-Business-Websites
+- Design Systems & Component Libraries: https://uipirate.com/services/Design-System-&-Component-Library
+- Graphic Design: https://uipirate.com/services/Graphic-Design
+- Motion Graphics & Video Editing: https://uipirate.com/services/Motion-Graphics-&-Video-Editing
+- UX Audits & Consultation: https://uipirate.com/services/UX-Audits-&-Consultation
+- 3D Animation & Rendering: https://uipirate.com/services/3D-Animation-&-Rendering
 - Pricing: https://uipirate.com/pricing
 - Blog: https://uipirate.com/blogs
 - FAQs: https://uipirate.com/faqs
