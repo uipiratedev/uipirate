@@ -12,6 +12,11 @@ import caseStudies from "@/data/case-studies.json";
  * - No manual maintenance required
  */
 
+// Without this, Next statically freezes the sitemap at build time — the
+// blog-fetch below would only ever run during `next build` (where isBuild
+// is true and gets skipped), so blog posts would never actually appear.
+export const revalidate = 3600;
+
 const BASE_URL = "https://uipirate.com";
 
 // Static pages with their priorities and change frequencies
