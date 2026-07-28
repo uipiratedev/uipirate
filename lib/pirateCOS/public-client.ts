@@ -113,8 +113,12 @@ async function apiGet(
   try {
     const res = await fetch(url.toString(), {
       headers: { Authorization: `Bearer ${API_KEY}` },
-      // ISR: cache reader fetches for 60s, matching the API's Cache-Control.
-      next: { revalidate: 60 },
+      // Next's fetch data cache hard-caps entries at 2MB. The API doesn't
+      // actually trim to the requested `fields` yet, so list responses can
+      // include full post `content` and blow past that limit. Skip the data
+      // cache here — each route's own `export const revalidate` still governs
+      // how often the page itself gets refreshed.
+      cache: "no-store",
     });
 
     if (!res.ok) {

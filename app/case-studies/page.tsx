@@ -39,7 +39,7 @@ export const metadata: Metadata = {
 const CaseStudiesPage = async () => {
   const cmsCaseStudies = await listPosts({
     postType: "case-study",
-    limit: 100,
+    limit: 50,
   });
 
   return <CaseStudies cmsCaseStudies={cmsCaseStudies} />;
