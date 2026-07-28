@@ -132,14 +132,22 @@ export default async function DynamicBlogPage({ params }: Props) {
     redirect(`/${slug.toLowerCase()}`);
   }
 
+  // Fetch blog by slug through the tenant-scoped v1 API
+  const blog = await getPostBySlug(slug);
+
+  if (!blog) {
+    notFound();
+  }
+
+  // Case studies are authored here with postType "case-study" but belong
+  // under /case-studies, not the blog template — send them to their real home.
+  // (Kept outside the try/catch below: redirect()/notFound() work by throwing,
+  // and that catch block would otherwise swallow the redirect as a 404.)
+  if ((blog as any).postType === "case-study") {
+    redirect(`/case-studies/${slug}`);
+  }
+
   try {
-    // Fetch blog by slug through the tenant-scoped v1 API
-    const blog = await getPostBySlug(slug);
-
-    if (!blog) {
-      notFound();
-    }
-
     // Track this view: deduplicates by IP+slug with 24h TTL, filters bots, skips admins
     const user = await verifyAuth();
 

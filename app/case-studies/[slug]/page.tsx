@@ -3,6 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import caseStudies from "@/data/case-studies.json";
+import { getPostBySlug } from "@/lib/pirateCOS/public-client";
+import BlogsDetailsHero from "@/screens/blogsDetails/hero";
+import BlogContents from "@/screens/blogsDetails/blogContents";
 
 interface PageProps {
   params: { slug: string };
@@ -16,37 +19,110 @@ export function generateStaticParams() {
   return caseStudies.map((s) => ({ slug: s.slug }));
 }
 
+// Case studies can also be authored in the CMS (postType "case-study"); those
+// aren't in the static caseStudies.json, so any slug not found there falls
+// through to the CMS before 404ing.
+async function getCmsCaseStudy(slug: string) {
+  const post = await getPostBySlug(slug);
+
+  if (!post || post.postType !== "case-study") return null;
+
+  return post;
+}
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const study = getStudy(params.slug);
 
-  if (!study) {
+  if (study) {
+    const url = `https://uipirate.com/case-studies/${study.slug}`;
+
+    return {
+      title: `${study.title} | Case Study`,
+      description: study.excerpt,
+      alternates: { canonical: url },
+      openGraph: {
+        title: study.title,
+        description: study.excerpt,
+        url,
+        type: "article",
+        images: study.heroImage
+          ? [{ url: study.heroImage, alt: study.title }]
+          : undefined,
+      },
+    };
+  }
+
+  const cmsStudy = await getCmsCaseStudy(params.slug);
+
+  if (!cmsStudy) {
     return { title: "Case Study Not Found | UI Pirate" };
   }
 
-  const url = `https://uipirate.com/case-studies/${study.slug}`;
+  const url = `https://uipirate.com/case-studies/${cmsStudy.slug}`;
+  const description =
+    cmsStudy.seo?.metaDescription || cmsStudy.excerpt || undefined;
 
   return {
-    title: `${study.title} | Case Study`,
-    description: study.excerpt,
-    alternates: { canonical: url },
+    title: cmsStudy.seo?.metaTitle || `${cmsStudy.title} | Case Study`,
+    description,
+    alternates: { canonical: cmsStudy.seo?.canonicalUrl || url },
     openGraph: {
-      title: study.title,
-      description: study.excerpt,
+      title: cmsStudy.seo?.ogTitle || cmsStudy.title,
+      description,
       url,
       type: "article",
-      images: study.heroImage
-        ? [{ url: study.heroImage, alt: study.title }]
+      images: cmsStudy.featuredImage
+        ? [{ url: cmsStudy.featuredImage, alt: cmsStudy.title }]
         : undefined,
     },
+    robots: cmsStudy.seo?.noIndex ? { index: false, follow: false } : undefined,
   };
 }
 
-export default function CaseStudyDetailPage({ params }: PageProps) {
+export default async function CaseStudyDetailPage({ params }: PageProps) {
   const study = getStudy(params.slug);
 
-  if (!study) notFound();
+  if (!study) {
+    const cmsStudy = await getCmsCaseStudy(params.slug);
+
+    if (!cmsStudy) notFound();
+
+    return (
+      <div>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: cmsStudy.title,
+              description: cmsStudy.excerpt,
+              image: cmsStudy.featuredImage || undefined,
+              author: {
+                "@type": "Organization",
+                name: "UI Pirate by Vishal Anand",
+                url: "https://uipirate.com",
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "UI Pirate by Vishal Anand",
+                url: "https://uipirate.com",
+              },
+              url: `https://uipirate.com/case-studies/${cmsStudy.slug}`,
+            }),
+          }}
+          type="application/ld+json"
+        />
+        <BlogsDetailsHero
+          imageUrl={cmsStudy.bannerImage || cmsStudy.featuredImage}
+          tag="Case Study"
+          title={cmsStudy.title}
+        />
+        <BlogContents blog={cmsStudy} />
+      </div>
+    );
+  }
 
   const caseStudySchema = {
     "@context": "https://schema.org",
