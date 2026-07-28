@@ -35,7 +35,10 @@ export const metadata: Metadata = {
 };
 
 const BlogsPage = async () => {
-  const initialBlogs = await listPosts({ limit: 50 });
+  const posts = await listPosts({ limit: 50 });
+  // Case studies are authored in the CMS with postType "case-study" but live
+  // under /case-studies, not /blogs — keep the two listings segregated.
+  const initialBlogs = posts.filter((post) => post.postType !== "case-study");
 
   return (
     <div>

@@ -70,22 +70,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // 3. Blog posts from database (fetched at request time, skipped during build to avoid worker hangs)
+  // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
+  // route their sitemap entries there instead of listing them as blog posts.
   let blogEntries: MetadataRoute.Sitemap = [];
+  let cmsCaseStudyEntries: MetadataRoute.Sitemap = [];
   const isBuild = process.env.NEXT_PHASE === "phase-production-build";
 
   if (!isBuild) {
     try {
       const { listPosts } = await import("@/lib/pirateCOS/public-client");
-      const blogs = await listPosts({ limit: 100 });
+      const posts = await listPosts({ limit: 100 });
 
-      blogEntries = blogs.map((blog: any) => ({
-        url: `${BASE_URL}/${blog.slug}`,
-        lastModified: blog.updatedAt
-          ? new Date(blog.updatedAt).toISOString()
-          : now,
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      }));
+      blogEntries = posts
+        .filter((post: any) => post.postType !== "case-study")
+        .map((blog: any) => ({
+          url: `${BASE_URL}/${blog.slug}`,
+          lastModified: blog.updatedAt
+            ? new Date(blog.updatedAt).toISOString()
+            : now,
+          changeFrequency: "weekly" as const,
+          priority: 0.7,
+        }));
+
+      cmsCaseStudyEntries = posts
+        .filter((post: any) => post.postType === "case-study")
+        .map((study: any) => ({
+          url: `${BASE_URL}/case-studies/${study.slug}`,
+          lastModified: study.updatedAt
+            ? new Date(study.updatedAt).toISOString()
+            : now,
+          changeFrequency: "monthly" as const,
+          priority: 0.8,
+        }));
     } catch (error) {
       // Silently handle API errors — sitemap still works with static entries
       console.warn("Sitemap: Could not fetch blog posts from API:", error);
@@ -103,6 +119,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries,
     ...serviceEntries,
     ...caseStudyEntries,
+    ...cmsCaseStudyEntries,
     ...blogEntries,
   ];
 }
