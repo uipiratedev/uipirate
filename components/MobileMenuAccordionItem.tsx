@@ -37,27 +37,19 @@ export const MobileMenuAccordionItem = ({
   const hasDropdown =
     item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
 
-  const handleRowClick = (e: React.MouseEvent) => {
-    if (hasDropdown) {
-      e.preventDefault();
-      onToggle(index);
-    } else {
-      setIsMenuOpen(false);
-    }
-  };
-
   return (
     <div className="flex flex-col border-b border-gray-100 last:border-none">
-      <div
-        className="flex items-center justify-between py-4 cursor-pointer"
-        onClick={handleRowClick}
-      >
+      <div className="flex items-center justify-between py-4">
         <NextLink
           className="text-lg text-foreground font-semibold flex-1"
           href={hasDropdown ? "#" : item.href}
           onClick={(e) => {
-            if (hasDropdown) e.preventDefault();
-            else setIsMenuOpen(false);
+            if (hasDropdown) {
+              e.preventDefault();
+              onToggle(index);
+            } else {
+              setIsMenuOpen(false);
+            }
           }}
         >
           {item.label}

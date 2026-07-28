@@ -572,7 +572,10 @@ const ProjectEstimate = ({
 
                     <div className="space-y-4 mb-6">
                       <div>
-                        <label className="text-sm font-medium mb-2 block font-jakarta text-gray-700">
+                        <label
+                          className="text-sm font-medium mb-2 block font-jakarta text-gray-700"
+                          htmlFor="project-estimate-name"
+                        >
                           What is your name?*
                         </label>
                         <Input
@@ -583,6 +586,7 @@ const ProjectEstimate = ({
                               "border-2 border-gray-200 hover:border-gray-300 dark:bg-white",
                           }}
                           errorMessage={nameError}
+                          id="project-estimate-name"
                           isInvalid={!!nameError}
                           name="name"
                           placeholder="Write here"
@@ -597,7 +601,10 @@ const ProjectEstimate = ({
                       </div>
 
                       <div>
-                        <label className="text-sm font-medium mb-2 block font-jakarta">
+                        <label
+                          className="text-sm font-medium mb-2 block font-jakarta"
+                          htmlFor="project-estimate-email"
+                        >
                           What is your email id?*
                         </label>
                         <Input
@@ -608,6 +615,7 @@ const ProjectEstimate = ({
                               "border-2 border-gray-200 hover:border-gray-300",
                           }}
                           errorMessage={emailError}
+                          id="project-estimate-email"
                           isInvalid={!!emailError}
                           name="email"
                           placeholder="Write here"
@@ -623,7 +631,10 @@ const ProjectEstimate = ({
                       </div>
 
                       <div>
-                        <label className="text-sm font-medium mb-2 block font-jakarta">
+                        <label
+                          className="text-sm font-medium mb-2 block font-jakarta"
+                          htmlFor="project-estimate-phone"
+                        >
                           What is your contact number?*
                         </label>
                         <div className="phone-wrapper-custom">
@@ -635,6 +646,7 @@ const ProjectEstimate = ({
                             enableSearch={true}
                             inputClass="!w-full !font-jakarta !text-base focus:!ring-0 focus:!border-gray-300"
                             inputProps={{
+                              id: "project-estimate-phone",
                               name: "phone",
                               required: true,
                               autoFocus: false,

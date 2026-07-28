@@ -177,16 +177,22 @@ const LetsTalkButton = ({
     );
   }
 
-  return (
-    <div
-      className={`${fullWidth ? "w-full" : "w-fit"} z-10 ${className} ${isDisabled ? "pointer-events-none opacity-50" : ""}`}
-    >
-      <a
-        className="w-full"
-        href={isDisabled ? "#" : href}
-        rel="noreferrer"
-        target={isDisabled ? "_self" : finalTarget}
+  // Disabled state has no valid destination — render the button alone,
+  // without an <a> wrapper (an href="#" would stay focusable/clickable
+  // even though the inner Button looks disabled).
+  if (isDisabled) {
+    return (
+      <div
+        className={`${fullWidth ? "w-full" : "w-fit"} z-10 ${className} pointer-events-none opacity-50`}
       >
+        {buttonContent}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${fullWidth ? "w-full" : "w-fit"} z-10 ${className}`}>
+      <a className="w-full" href={href} rel="noreferrer" target={finalTarget}>
         {buttonContent}
       </a>
     </div>
