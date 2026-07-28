@@ -1,12 +1,27 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
+import { memo, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import type { ReaderPost } from "@/lib/pirateCOS/public-client";
-
 const DEFAULT_BANNER = "/assets/blog-banner-default.svg";
+
+// Matches the CMS `postType` enum (models/Post.ts), minus "case-study" —
+// those are excluded from /blogs entirely and live under /case-studies.
+const POST_TYPE_LABELS: Record<string, string> = {
+  blog: "Blog",
+  tutorial: "Tutorial",
+  "community-insight": "Community Insight",
+  "product-review": "Product Review",
+  "product-launch": "Product Launch",
+  listicle: "Listicle",
+  comparison: "Comparison",
+  newsletter: "Newsletter",
+  "social-post": "Social Post",
+  "corporate-post": "Corporate Post",
+};
 
 interface FeaturedBlogsProps {
   blogs: ReaderPost[];
@@ -19,9 +34,36 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
   searchQuery = "",
   selectedCategory = "All",
 }: FeaturedBlogsProps) {
+  const [selectedPostType, setSelectedPostType] = useState("All");
+
+  // Only show tabs for post types that actually have published posts.
+  const postTypeTabs = useMemo(() => {
+    const counts = new Map<string, number>();
+
+    blogs.forEach((b) => {
+      const type = b.postType || "blog";
+
+      counts.set(type, (counts.get(type) || 0) + 1);
+    });
+
+    return [
+      { type: "All", label: "All", count: blogs.length },
+      ...Array.from(counts.entries()).map(([type, count]) => ({
+        type,
+        label: POST_TYPE_LABELS[type] || type,
+        count,
+      })),
+    ];
+  }, [blogs]);
+
   const filteredBlogs = useMemo(() => {
     let result = blogs;
 
+    if (selectedPostType !== "All") {
+      result = result.filter(
+        (b) => (b.postType || "blog") === selectedPostType,
+      );
+    }
     if (
       selectedCategory &&
       selectedCategory !== "All" &&
@@ -41,7 +83,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
     }
 
     return result;
-  }, [blogs, selectedCategory, searchQuery]);
+  }, [blogs, selectedPostType, selectedCategory, searchQuery]);
 
   return (
     <div className="pt-16 max-md:pt-10 pb-20 container mx-auto px-32 lg:px-20 max-md:px-4">
@@ -62,6 +104,34 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
           </span>
         )}
       </div>
+
+      {/* Post type filter — CMS postType categories (blog, tutorial, listicle, etc.) */}
+      {postTypeTabs.length > 2 && (
+        <div className="flex flex-wrap items-center gap-2 mb-8 max-md:mb-6">
+          {postTypeTabs.map(({ type, label, count }) => (
+            <button
+              key={type}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                selectedPostType === type
+                  ? "bg-[#FF5B04] text-white shadow-md"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-[#FF5B04]/50 hover:text-[#FF5B04]"
+              }`}
+              onClick={() => setSelectedPostType(type)}
+            >
+              {label}
+              <span
+                className={`text-xs px-1.5 py-0.5 rounded-full ${
+                  selectedPostType === type
+                    ? "bg-white/20 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Blog Cards Grid */}
       {filteredBlogs.length === 0 ? (
