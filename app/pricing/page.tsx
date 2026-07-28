@@ -3,10 +3,9 @@ import { Metadata } from "next";
 import Pricing from "@/screens/pricing";
 
 export const metadata: Metadata = {
-  title:
-    "UI/UX Design Pricing 2026 | $2000/mo Unlimited Requests | Save 60% vs Agencies",
+  title: "UI/UX Design Pricing | $2000/mo Unlimited",
   description:
-    "UI/UX design from $2000/mo — unlimited requests, 48hr turnaround. Or try our $350 5-day pilot. Save 60% vs US agencies. No contracts, pause anytime. 100% satisfaction guarantee. Used by Ipsos, Pivot Bits, Sarge.",
+    "UI/UX design from $2000/mo — unlimited requests, 48hr turnaround. Save 60% vs US agencies. No contracts, pause anytime.",
   keywords:
     "UI UX design pricing 2026, design subscription cost, unlimited design requests, SaaS design pricing, design agency monthly cost, hire UI designer cost, design retainer pricing, $2000 design subscription, cheap UI design agency, affordable UX design, design agency vs freelancer cost",
   openGraph: {

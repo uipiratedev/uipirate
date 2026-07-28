@@ -96,6 +96,7 @@ export default async function RootLayout({
 }) {
   const requestHeaders = await headers();
   const isCos = requestHeaders.get("x-is-cos") === "true";
+  const canonicalUrl = `https://uipirate.com${requestHeaders.get("x-pathname") || "/"}`;
 
   if (isCos) {
     return (
@@ -312,17 +313,14 @@ export default async function RootLayout({
         <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
         <link href="/llms.txt" rel="alternate" type="text/plain" />
 
-        {/* Hreflang for international targeting */}
-        <link href="https://uipirate.com/" hrefLang="en-us" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-gb" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-sg" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-in" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-au" rel="alternate" />
-        <link
-          href="https://uipirate.com/"
-          hrefLang="x-default"
-          rel="alternate"
-        />
+        {/* Hreflang for international targeting — self-referential per page,
+            since every locale variant serves the same URL/content. */}
+        <link href={canonicalUrl} hrefLang="en-us" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-gb" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-sg" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-in" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-au" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="x-default" rel="alternate" />
 
         {/* Social Media and Business Profile Links for SEO */}
         <link
