@@ -419,24 +419,6 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                                 →
                               </span>
                             </div>
-
-                            {study.externalUrl && (
-                              <button
-                                className="flex items-center gap-1 text-xs max-md:text-[11px] font-semibold text-gray-600 hover:text-[#FF5B04] transition-colors"
-                                type="button"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  window.open(
-                                    study.externalUrl,
-                                    "_blank",
-                                    "noopener,noreferrer",
-                                  );
-                                }}
-                              >
-                                Visit site ↗
-                              </button>
-                            )}
                           </div>
                         </div>
                       </div>
