@@ -15,7 +15,9 @@ import caseStudies from "@/data/case-studies.json";
 // Without this, Next statically freezes the sitemap at build time — the
 // blog-fetch below would only ever run during `next build` (where isBuild
 // is true and gets skipped), so blog posts would never actually appear.
-export const revalidate = 3600;
+// Kept short (10 min, not 1 hr) so new posts/case studies show up in the
+// sitemap without a long stale window.
+export const revalidate = 600;
 
 const BASE_URL = "https://uipirate.com";
 
@@ -50,6 +52,30 @@ const SERVICE_SLUGS = [
   "3D-Animation-&-Rendering",
 ];
 
+// Fetches every post across all pages instead of capping at one page's worth
+// — the sitemap should list all blogs/case studies, not just the first N.
+// Capped at 20 pages as a safety net in case the API ever ignores `page` and
+// keeps returning the same batch (would otherwise loop forever).
+async function fetchAllPosts(
+  listPosts: (opts: {
+    page: number;
+    limit: number;
+  }) => Promise<Array<{ [key: string]: any }>>,
+) {
+  const pageSize = 100;
+  const maxPages = 20;
+  let all: Array<{ [key: string]: any }> = [];
+
+  for (let page = 1; page <= maxPages; page++) {
+    const batch = await listPosts({ page, limit: pageSize });
+
+    all = all.concat(batch);
+    if (batch.length < pageSize) break;
+  }
+
+  return all;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
@@ -79,7 +105,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!isBuild) {
     try {
       const { listPosts } = await import("@/lib/pirateCOS/public-client");
-      const posts = await listPosts({ limit: 100 });
+      const posts = await fetchAllPosts(listPosts);
 
       blogEntries = posts
         .filter((post: any) => post.postType !== "case-study")
