@@ -12,9 +12,8 @@ import caseStudies from "@/data/case-studies.json";
  * - No manual maintenance required
  */
 
-// Without this, Next statically freezes the sitemap at build time — the
-// blog-fetch below would only ever run during `next build` (where isBuild
-// is true and gets skipped), so blog posts would never actually appear.
+// Without this, Next statically freezes the sitemap at build time and never
+// re-runs the blog-fetch below, so new posts would never actually appear.
 // Kept short (10 min, not 1 hr) so new posts/case studies show up in the
 // sitemap without a long stale window.
 export const revalidate = 600;
@@ -95,43 +94,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  // 3. Blog posts from database (fetched at request time, skipped during build to avoid worker hangs)
+  // 3. Blog posts from database.
   // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
   // route their sitemap entries there instead of listing them as blog posts.
+  // (Previously skipped this fetch during `next build` via a NEXT_PHASE check,
+  // meant to avoid a build-time hang — but that guard also silently skipped it
+  // in production, since ISR regeneration never got past it. The try/catch
+  // below already protects against a genuinely slow/failing API, so the fetch
+  // now always runs.)
   let blogEntries: MetadataRoute.Sitemap = [];
   let cmsCaseStudyEntries: MetadataRoute.Sitemap = [];
-  const isBuild = process.env.NEXT_PHASE === "phase-production-build";
 
-  if (!isBuild) {
-    try {
-      const { listPosts } = await import("@/lib/pirateCOS/public-client");
-      const posts = await fetchAllPosts(listPosts);
+  try {
+    const { listPosts } = await import("@/lib/pirateCOS/public-client");
+    const posts = await fetchAllPosts(listPosts);
 
-      blogEntries = posts
-        .filter((post: any) => post.postType !== "case-study")
-        .map((blog: any) => ({
-          url: `${BASE_URL}/${blog.slug}`,
-          lastModified: blog.updatedAt
-            ? new Date(blog.updatedAt).toISOString()
-            : now,
-          changeFrequency: "weekly" as const,
-          priority: 0.7,
-        }));
+    blogEntries = posts
+      .filter((post: any) => post.postType !== "case-study")
+      .map((blog: any) => ({
+        url: `${BASE_URL}/${blog.slug}`,
+        lastModified: blog.updatedAt
+          ? new Date(blog.updatedAt).toISOString()
+          : now,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }));
 
-      cmsCaseStudyEntries = posts
-        .filter((post: any) => post.postType === "case-study")
-        .map((study: any) => ({
-          url: `${BASE_URL}/case-studies/${study.slug}`,
-          lastModified: study.updatedAt
-            ? new Date(study.updatedAt).toISOString()
-            : now,
-          changeFrequency: "monthly" as const,
-          priority: 0.8,
-        }));
-    } catch (error) {
-      // Silently handle API errors — sitemap still works with static entries
-      console.warn("Sitemap: Could not fetch blog posts from API:", error);
-    }
+    cmsCaseStudyEntries = posts
+      .filter((post: any) => post.postType === "case-study")
+      .map((study: any) => ({
+        url: `${BASE_URL}/case-studies/${study.slug}`,
+        lastModified: study.updatedAt
+          ? new Date(study.updatedAt).toISOString()
+          : now,
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      }));
+  } catch (error) {
+    // Silently handle API errors — sitemap still works with static entries
+    console.warn("Sitemap: Could not fetch blog posts from API:", error);
   }
 
   const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({
