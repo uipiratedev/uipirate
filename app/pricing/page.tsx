@@ -35,6 +35,8 @@ const pricingSchema = {
   name: "UI Pirate Design Services",
   description:
     "Professional UI/UX design and development services for SaaS, mobile apps, and enterprise products.",
+  image:
+    "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
   brand: {
     "@type": "Brand",
     name: "UI Pirate",
