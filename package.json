@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
-    "create-admin": "tsx scripts/create-admin.ts"
+    "create-admin": "tsx scripts/create-admin.ts",
+    "validate-seo": "tsx scripts/validate-structured-data.ts"
   },
   "dependencies": {
     "@heroui/button": "2.2.27",
