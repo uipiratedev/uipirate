@@ -28,17 +28,20 @@ export const metadata: Metadata = {
   },
 };
 
-// Pricing page JSON-LD schema for rich results
+// Pricing page JSON-LD schema for rich results.
+// Typed as "Service" (not "Product") — we sell a design service with custom
+// per-client terms, not shippable goods, so Google's Merchant Listings
+// checks (shippingDetails, hasMerchantReturnPolicy) don't apply here.
 const pricingSchema = {
   "@context": "https://schema.org",
-  "@type": "Product",
+  "@type": "Service",
   name: "UI Pirate Design Services",
   description:
     "Professional UI/UX design and development services for SaaS, mobile apps, and enterprise products.",
   image:
     "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
-  brand: {
-    "@type": "Brand",
+  provider: {
+    "@type": "Organization",
     name: "UI Pirate",
   },
   offers: [
