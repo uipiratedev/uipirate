@@ -298,7 +298,7 @@ const BlogContents = ({ blog }: BlogContentsProps) => {
             style={{ width: 220 }}
           >
             <div className="sticky top-24 bg-gray-50 border border-gray-100 rounded-3xl p-6">
-              <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">
+              <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-4">
                 Contents
               </p>
               <nav className="flex flex-col gap-2">

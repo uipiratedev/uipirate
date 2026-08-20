@@ -100,7 +100,7 @@ export default function ContactPageClient() {
               <p className="text-2xl max-md:text-xl font-black font-jetbrains-mono text-gray-900">
                 {stat.value}
               </p>
-              <p className="text-xs text-gray-400 mt-0.5 uppercase tracking-wide">
+              <p className="text-xs text-gray-500 mt-0.5 uppercase tracking-wide">
                 {stat.label}
               </p>
             </div>
@@ -217,7 +217,7 @@ export default function ContactPageClient() {
               </div>
 
               <div className="mt-auto">
-                <p className="text-gray-400 max-md:text-sm text-base mb-4 flex items-center gap-2">
+                <p className="text-gray-500 max-md:text-sm text-base mb-4 flex items-center gap-2">
                   <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                   Typical response time: under 2 hours
                 </p>
@@ -288,7 +288,7 @@ export default function ContactPageClient() {
         <section className="bg-[#F9FAFB] py-16 max-md:py-10 mt-8">
           <div className="container mx-auto px-8 max-md:px-4">
             <motion.p
-              className="text-center text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-gray-400 mb-10"
+              className="text-center text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-gray-500 mb-10"
               initial="hidden"
               variants={fadeUp}
               viewport={{ once: true }}
@@ -346,7 +346,7 @@ export default function ContactPageClient() {
                         <p className="text-sm font-semibold text-gray-900">
                           {t.name}
                         </p>
-                        <p className="text-xs text-gray-400">{t.occupation}</p>
+                        <p className="text-xs text-gray-500">{t.occupation}</p>
                       </div>
                       {t.logo && (
                         <img
@@ -389,7 +389,7 @@ export default function ContactPageClient() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400">
+                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-500">
                     Registered Office
                   </h4>
                   <p className="text-sm font-bold text-gray-900">
@@ -405,7 +405,7 @@ export default function ContactPageClient() {
               </p>
 
               <div className="border-t border-gray-100 pt-4 mt-2">
-                <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400 mb-1">
+                <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-500 mb-1">
                   Customer Support Address
                 </h4>
                 <p className="text-sm text-gray-600 leading-relaxed font-medium">
@@ -437,7 +437,7 @@ export default function ContactPageClient() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400">
+                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-500">
                     Direct Support
                   </h4>
                   <p className="text-sm font-bold text-gray-900">
@@ -452,7 +452,7 @@ export default function ContactPageClient() {
                   href="tel:+919708636151"
                 >
                   <span>+91 97086 36151</span>
-                  <span className="text-xs font-normal text-gray-400 group-hover:translate-x-1 transition-transform">
+                  <span className="text-xs font-normal text-gray-500 group-hover:translate-x-1 transition-transform">
                     →
                   </span>
                 </a>
@@ -461,7 +461,7 @@ export default function ContactPageClient() {
                   href="mailto:vishal@uipirate.com"
                 >
                   <span>vishal@uipirate.com</span>
-                  <span className="text-xs font-normal text-gray-400 group-hover:translate-x-1 transition-transform">
+                  <span className="text-xs font-normal text-gray-500 group-hover:translate-x-1 transition-transform">
                     →
                   </span>
                 </a>
@@ -487,7 +487,7 @@ export default function ContactPageClient() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-400">
+                  <h4 className="text-[10px] font-jetbrains-mono uppercase tracking-[0.1em] text-gray-500">
                     Working Hours
                   </h4>
                   <p className="text-sm font-bold text-gray-900">
@@ -501,7 +501,7 @@ export default function ContactPageClient() {
                 <p className="text-gray-900 font-bold">
                   09:00 AM – 10:00 PM IST
                 </p>
-                <p className="text-xs text-gray-400 mt-2">
+                <p className="text-xs text-gray-500 mt-2">
                   Serving clients in USA · UK · Singapore · India · Australia
                 </p>
               </div>

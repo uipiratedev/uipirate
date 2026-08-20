@@ -162,6 +162,8 @@ export default function LeadCaptureForm({
           isRequired
           autoComplete="name"
           classNames={inputClassNames}
+          errorMessage="Name is required"
+          isInvalid={status === "error" && !form.name}
           label="Your Name"
           labelPlacement="outside"
           name="name"
@@ -173,6 +175,8 @@ export default function LeadCaptureForm({
           isRequired
           autoComplete="email"
           classNames={inputClassNames}
+          errorMessage="Work email is required"
+          isInvalid={status === "error" && !form.email}
           label="Work Email"
           labelPlacement="outside"
           name="email"
@@ -327,16 +331,18 @@ export default function LeadCaptureForm({
         </p>
       )}
 
-      {/* Submit */}
+      {/* Submit — hover uses a darkened brand orange (#CC4903, not #FF5B04)
+          because white text on the lighter shade fails WCAG AA (~3.1:1) at
+          this size/weight; the darker shade clears 4.5:1. */}
       <Button
-        className="w-full h-[56px] rounded-xl bg-gray-900 text-white text-base font-bold tracking-wide hover:bg-[#FF5B04] transition-all duration-300 mt-2"
+        className="w-full h-[56px] rounded-xl bg-gray-900 text-white text-base font-bold tracking-wide hover:bg-[#CC4903] transition-all duration-300 mt-2"
         isLoading={status === "loading"}
         type="submit"
       >
         {status === "loading" ? "Sending..." : "Send Message →"}
       </Button>
 
-      <p className="text-xs text-gray-400 text-center font-jakarta">
+      <p className="text-xs text-gray-500 text-center font-jakarta">
         No spam. We respond within 2 hours during business hours.
       </p>
     </form>

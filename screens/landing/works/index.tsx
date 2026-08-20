@@ -12,7 +12,7 @@ const LandingWork = () => {
           <div className="flex flex-row items-center justify-center mb-6 pt-3">
             <GlassBadge variant="gradient">works</GlassBadge>
           </div>
-          <p className="heading-center">Recent Works</p>
+          <h2 className="heading-center">Recent Works</h2>
         </div>
       </div>
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-48 max-md:pt-0 autoShowBottom">

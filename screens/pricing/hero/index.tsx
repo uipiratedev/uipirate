@@ -88,7 +88,7 @@ const PricingHero = () => {
               <p className="text-2xl max-md:text-lg font-black font-jetbrains-mono text-gray-900">
                 {stat.value}
               </p>
-              <p className="text-xs text-gray-400 mt-0.5 uppercase tracking-wide">
+              <p className="text-xs text-gray-500 mt-0.5 uppercase tracking-wide">
                 {stat.label}
               </p>
             </div>

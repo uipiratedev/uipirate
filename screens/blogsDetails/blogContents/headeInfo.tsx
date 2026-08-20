@@ -63,7 +63,7 @@ const HeaderInfo = memo<{ blog: BlogData }>(function HeaderInfo({ blog }) {
             <p className="text-sm font-bold text-[#111] uppercase tracking-wide">
               {blog.author.name}
             </p>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-500">
               {(blog.totalViews || blog.views || 0).toLocaleString()} views ·{" "}
               {blog.readTime || 5} min read
             </p>
@@ -72,7 +72,7 @@ const HeaderInfo = memo<{ blog: BlogData }>(function HeaderInfo({ blog }) {
 
         {/* Meta + Share */}
         <div className="flex items-center gap-4 max-md:w-full max-md:justify-between">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest whitespace-nowrap">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest whitespace-nowrap">
             {blog.readTime || 5} min read &nbsp;|&nbsp; {timeAgo}
           </p>
           <button

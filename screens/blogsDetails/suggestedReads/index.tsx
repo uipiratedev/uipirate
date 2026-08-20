@@ -79,7 +79,7 @@ const SuggestedReads = ({ posts }: SuggestedReadsProps) => {
                           {blog.excerpt}
                         </p>
                       )}
-                      <div className="flex items-center gap-2 text-[11px] text-gray-400 font-medium">
+                      <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
                         <span>{date}</span>
                         <span>·</span>
                         <span>{blog.readTime || 5} min read</span>

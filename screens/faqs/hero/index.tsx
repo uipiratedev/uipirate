@@ -134,7 +134,7 @@ const FaqsHero = ({
             <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:flex-1 md:border-none md:shadow-none md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
               <input
                 aria-label="Search frequently asked questions"
-                className="flex-1 bg-transparent focus:outline-none text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
+                className="flex-1 bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B04] rounded-md text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
                 id="faq-search"
                 placeholder="Search by topic, problem, or keyword…"
                 type="search"

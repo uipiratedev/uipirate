@@ -67,7 +67,7 @@ const LetsTalkButton = ({
 
   // Determine text color
   const getTextColor = () => {
-    if (isDisabled) return "text-gray-400";
+    if (isDisabled) return "text-gray-500";
     if (isLight) return "text-black";
 
     return "text-white"; // Both dark and color use white text

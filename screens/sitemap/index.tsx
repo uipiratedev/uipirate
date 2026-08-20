@@ -246,7 +246,7 @@ const Sitemap = () => {
                     </span>
                     {item.label}
                   </span>
-                  <span className="text-gray-400 text-xs">{item.desc}</span>
+                  <span className="text-gray-500 text-xs">{item.desc}</span>
                 </Link>
               ))}
             </div>
@@ -258,7 +258,7 @@ const Sitemap = () => {
           <h3 className="text-2xl max-md:text-xl font-bold mb-3 text-white">
             Need Help Finding Something?
           </h3>
-          <p className="text-gray-400 mb-8 max-w-xl mx-auto text-sm">
+          <p className="text-gray-500 mb-8 max-w-xl mx-auto text-sm">
             Can&apos;t find what you&apos;re looking for? Reach out directly —
             we respond within 2 hours.
           </p>

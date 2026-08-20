@@ -214,7 +214,7 @@ const TermsAndConditionsScreen = () => {
             </p>
 
             <p
-              className="mt-4 text-gray-400 text-sm font-mono"
+              className="mt-4 text-gray-500 text-sm font-mono"
               style={{
                 animation: "fade-in 0.8s ease-out forwards",
                 animationDelay: "0.4s",
@@ -232,7 +232,7 @@ const TermsAndConditionsScreen = () => {
             {/* Sticky TOC */}
             <aside className="hidden lg:block">
               <div className="sticky top-32 bg-gray-50 border border-gray-100 rounded-3xl p-6">
-                <p className="text-xs font-mono uppercase tracking-widest text-gray-400 mb-4">
+                <p className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-4">
                   Contents
                 </p>
                 <nav className="flex flex-col gap-2">

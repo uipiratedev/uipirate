@@ -188,7 +188,7 @@ export default async function CaseStudyDetailPage({ params }: PageProps) {
               key={m.label}
               className="bg-white border border-gray-200 rounded-xl p-5"
             >
-              <p className="text-xs text-gray-400 uppercase tracking-wide">
+              <p className="text-xs text-gray-500 uppercase tracking-wide">
                 {m.label}
               </p>
               <p className="text-lg font-semibold text-gray-900 mt-1">
