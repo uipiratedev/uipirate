@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardBody,
@@ -22,6 +23,10 @@ import "react-phone-input-2/lib/style.css";
 interface ProjectEstimateProps {
   cardVariants?: any;
   className?: string;
+  /** Navigate here on completion instead of showing the inline success step
+   * (e.g. "/contact/success") — used where the caller needs a real URL for
+   * Google Ads page-load conversion tracking. */
+  redirectOnSuccess?: string;
 }
 
 // Country codes will be handled by react-phone-input-2 package
@@ -70,7 +75,9 @@ const priorities = [
 const ProjectEstimate = ({
   cardVariants,
   className = "",
+  redirectOnSuccess,
 }: ProjectEstimateProps) => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0); // 0 = initial, 1-3 = steps
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [modalPlacement, setModalPlacement] = useState<
@@ -362,6 +369,12 @@ const ProjectEstimate = ({
 
     // Using the provided wa.link and appending the text parameter
     window.open(`https://wa.link/i35lma?text=${message}`, "_blank");
+
+    if (redirectOnSuccess) {
+      router.push(redirectOnSuccess);
+
+      return;
+    }
 
     // Switch to success step (Step 5)
     setCurrentStep(5);

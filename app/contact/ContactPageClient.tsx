@@ -239,7 +239,10 @@ export default function ContactPageClient() {
             initial="hidden"
             variants={fadeUp}
           >
-            <ProjectEstimate className="h-full w-full" />
+            <ProjectEstimate
+              className="h-full w-full"
+              redirectOnSuccess="/contact/success"
+            />
           </motion.div>
         </div>
       </section>
