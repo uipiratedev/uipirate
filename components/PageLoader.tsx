@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useState, ReactNode, memo } from "react";
+import {
+  useEffect,
+  useState,
+  useContext,
+  createContext,
+  ReactNode,
+  memo,
+} from "react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
@@ -8,6 +15,15 @@ import Loader from "@/components/loader";
 
 interface PageLoaderProps {
   children: ReactNode;
+}
+
+// Lets content below PageLoader (e.g. hero entrance animations) know once the
+// loading overlay has actually finished, instead of animating in immediately
+// on mount while still hidden behind it.
+const PageRevealedContext = createContext(false);
+
+export function usePageRevealed() {
+  return useContext(PageRevealedContext);
 }
 
 /**
@@ -39,10 +55,14 @@ const PageLoader = memo(function PageLoader({ children }: PageLoaderProps) {
       return;
     }
 
-    sessionStorage.setItem("hasLoaded", "true");
-
+    // Note: `hasLoaded` is written only once the timer actually completes,
+    // not eagerly here. In dev, React can invoke this effect twice in quick
+    // succession (mount -> cleanup -> mount); writing the flag up-front made
+    // the second invocation see "already loaded" and cut the animation short
+    // after ~500ms instead of the intended duration.
     const timer = setTimeout(
       () => {
+        sessionStorage.setItem("hasLoaded", "true");
         setLoading(false);
       },
       isAdmin ? 800 : 1500,
@@ -83,7 +103,9 @@ const PageLoader = memo(function PageLoader({ children }: PageLoaderProps) {
           "pointer-events-none": showLoader && isAdmin,
         })}
       >
-        {children}
+        <PageRevealedContext.Provider value={!loading}>
+          {children}
+        </PageRevealedContext.Provider>
       </div>
     </>
   );
