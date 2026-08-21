@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardBody,
@@ -22,6 +23,10 @@ import "react-phone-input-2/lib/style.css";
 interface ProjectEstimateProps {
   cardVariants?: any;
   className?: string;
+  /** Navigate here on completion instead of showing the inline success step
+   * (e.g. "/contact/success") — used where the caller needs a real URL for
+   * Google Ads page-load conversion tracking. */
+  redirectOnSuccess?: string;
 }
 
 // Country codes will be handled by react-phone-input-2 package
@@ -70,7 +75,9 @@ const priorities = [
 const ProjectEstimate = ({
   cardVariants,
   className = "",
+  redirectOnSuccess,
 }: ProjectEstimateProps) => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0); // 0 = initial, 1-3 = steps
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [modalPlacement, setModalPlacement] = useState<
@@ -363,6 +370,12 @@ const ProjectEstimate = ({
     // Using the provided wa.link and appending the text parameter
     window.open(`https://wa.link/i35lma?text=${message}`, "_blank");
 
+    if (redirectOnSuccess) {
+      router.push(redirectOnSuccess);
+
+      return;
+    }
+
     // Switch to success step (Step 5)
     setCurrentStep(5);
   };
@@ -472,7 +485,7 @@ const ProjectEstimate = ({
 
                 {/* Footer */}
                 <div className="mt-auto">
-                  <p className="text-gray-400 max-md:text-sm text-base mb-4 italic">
+                  <p className="text-gray-500 max-md:text-sm text-base mb-4 italic">
                     Clarity before commitment
                   </p>
 
@@ -708,7 +721,7 @@ const ProjectEstimate = ({
                         </p>
                         <Button
                           isIconOnly
-                          className="text-gray-400"
+                          className="text-gray-500"
                           radius="full"
                           size="sm"
                           variant="light"
@@ -818,7 +831,7 @@ const ProjectEstimate = ({
                         </div>
                         <Button
                           isIconOnly
-                          className="text-gray-400"
+                          className="text-gray-500"
                           radius="full"
                           size="sm"
                           variant="light"
@@ -852,7 +865,7 @@ const ProjectEstimate = ({
                         return (
                           <div className="grid grid-cols-2 gap-4 mb-8">
                             <div className="p-5 border border-gray-100 bg-[#F9FAFB] rounded-[24px] transition-all hover:border-gray-200">
-                              <p className="text-[10px] uppercase font-bold tracking-[0.1em] text-gray-400 mb-3">
+                              <p className="text-[10px] uppercase font-bold tracking-[0.1em] text-gray-500 mb-3">
                                 Estimated Budget Range
                               </p>
                               <div className="flex items-baseline gap-1">
@@ -862,7 +875,7 @@ const ProjectEstimate = ({
                               </div>
                             </div>
                             <div className="p-5 border border-gray-100 bg-[#F9FAFB] rounded-[24px] transition-all hover:border-gray-200">
-                              <p className="text-[10px] uppercase font-bold tracking-[0.1em] text-gray-400 mb-3">
+                              <p className="text-[10px] uppercase font-bold tracking-[0.1em] text-gray-500 mb-3">
                                 Estimated Timeline
                               </p>
                               <div className="flex items-baseline gap-1">
@@ -912,7 +925,7 @@ const ProjectEstimate = ({
                                       {priority.name}
                                     </div>
                                     <div
-                                      className={`text-xs ${isSelected ? "text-gray-400" : "text-gray-500"}`}
+                                      className={`text-xs ${isSelected ? "text-gray-500" : "text-gray-500"}`}
                                     >
                                       {priority.description}
                                     </div>
@@ -941,7 +954,7 @@ const ProjectEstimate = ({
 
                   <div className="pt-6 border-t border-gray-100 flex items-center gap-3 bg-white mt-auto">
                     <Button
-                      className="flex-1 font-bold h-[56px] text-gray-400 hover:text-black transition-colors"
+                      className="flex-1 font-bold h-[56px] text-gray-500 hover:text-black transition-colors"
                       radius="full"
                       variant="light"
                       onPress={handleReset}
@@ -978,7 +991,7 @@ const ProjectEstimate = ({
                         </p>
                         <Button
                           isIconOnly
-                          className="text-gray-400"
+                          className="text-gray-500"
                           radius="full"
                           size="sm"
                           variant="light"
@@ -1067,7 +1080,7 @@ const ProjectEstimate = ({
 
                   <div className="pt-6 border-t border-gray-100 flex items-center gap-3 bg-white mt-auto">
                     <Button
-                      className="flex-1 font-bold h-[56px] text-gray-400 hover:text-black transition-colors"
+                      className="flex-1 font-bold h-[56px] text-gray-500 hover:text-black transition-colors"
                       radius="full"
                       variant="light"
                       onPress={() => setCurrentStep(3)}

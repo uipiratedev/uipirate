@@ -133,7 +133,7 @@ const PricingPerfectFor = () => {
               <span className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-base flex-shrink-0">
                 {item.icon}
               </span>
-              <span className="text-gray-400 text-sm">{item.text}</span>
+              <span className="text-gray-500 text-sm">{item.text}</span>
             </motion.div>
           ))}
         </div>

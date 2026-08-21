@@ -8,6 +8,10 @@ import { useEffect, useCallback } from "react";
  */
 export default function SmoothScroll() {
   const initSmoothScroll = useCallback(async () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
     try {
       const Lenis = (await import("lenis")).default;
       const lenis = new Lenis({

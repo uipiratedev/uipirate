@@ -30,7 +30,7 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
           <h3 className="text-2xl max-md:text-xl font-bold text-white mb-2 leading-snug">
             {headingText}
           </h3>
-          <p className="text-gray-400 text-sm leading-relaxed max-w-md">
+          <p className="text-gray-500 text-sm leading-relaxed max-w-md">
             UI Pirate is a product design & development agency trusted by 50+
             SaaS founders and enterprise teams across the US, UK & beyond. Tell
             us what you need.

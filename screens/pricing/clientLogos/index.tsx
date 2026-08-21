@@ -33,7 +33,7 @@ const PricingClientLogos = () => {
       viewport={{ once: true }}
       whileInView={{ opacity: 1, y: 0 }}
     >
-      <p className="text-center text-sm text-gray-400 uppercase tracking-wider mb-6 font-medium">
+      <p className="text-center text-sm text-gray-500 uppercase tracking-wider mb-6 font-medium">
         Trusted by teams at
       </p>
 

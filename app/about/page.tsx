@@ -455,7 +455,7 @@ export default function AboutPage() {
                   <h3 className="text-white font-semibold text-lg mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-gray-500 text-sm leading-relaxed">
                     {item.desc}
                   </p>
                 </motion.div>
@@ -528,7 +528,7 @@ export default function AboutPage() {
             <h2 className="text-3xl max-md:text-2xl font-bold tracking-tight text-white mb-3">
               Our Approach
             </h2>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-gray-500 max-w-xl mx-auto">
               Simple: you share your vision. We do the rest.
             </p>
           </div>
@@ -674,7 +674,7 @@ export default function AboutPage() {
                 Ready to Turn Your Idea Into a{" "}
                 <span className="text-brand-orange">Product</span>?
               </h2>
-              <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+              <p className="text-gray-500 mb-8 max-w-xl mx-auto">
                 Book a free 15-minute call. Tell us your vision — we'll show you
                 how we can bring it to life.
               </p>
@@ -695,7 +695,7 @@ export default function AboutPage() {
               </div>
 
               {/* Trust indicators */}
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-gray-400 text-sm">
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-gray-500 text-sm">
                 <span className="flex items-center gap-2">
                   <CheckIcon /> No commitment required
                 </span>

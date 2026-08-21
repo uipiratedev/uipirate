@@ -157,9 +157,9 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
             <div className="mb-6 flex flex-row items-center justify-center">
               <GlassBadge variant="gradient">case studies</GlassBadge>
             </div>
-            <p className="heading-center">
+            <h2 className="heading-center">
               Product design & development in practice
-            </p>
+            </h2>
             <p className="text-gray-500 text-center max-w-2xl mx-auto mt-4 mb-10">
               Deep dives into how we turn ideas into shipped products — from
               product thinking and IA to UX/UI and Angular/React development.
@@ -177,7 +177,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <svg
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -191,7 +191,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
               </svg>
               {searchQuery && (
                 <button
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-600 transition-colors"
                   onClick={() => setSearchQuery("")}
                 >
                   <svg
@@ -302,7 +302,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                       ? "No matching projects found"
                       : "No projects in this category yet"}
                   </p>
-                  <p className="text-gray-400 text-sm mb-6">
+                  <p className="text-gray-500 text-sm mb-6">
                     {searchQuery
                       ? `Try adjusting your search term or filters`
                       : `Check out other categories or view all projects`}
@@ -316,8 +316,11 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                         Clear search
                       </button>
                     )}
+                    {/* #CC4903 (darkened brand orange) instead of #FF5B04:
+                        white text on the lighter shade fails WCAG AA at this
+                        size/weight (~3.1:1); the darker shade clears 4.5:1. */}
                     <button
-                      className="px-6 py-3 bg-[#FF5B04] text-white rounded-full hover:bg-[#FF5B04]/90 transition-colors duration-300 font-semibold text-sm shadow-md hover:shadow-lg"
+                      className="px-6 py-3 bg-[#CC4903] text-white rounded-full hover:bg-[#CC4903]/90 transition-colors duration-300 font-semibold text-sm shadow-md hover:shadow-lg"
                       onClick={() => {
                         setActiveCategory("All");
                         setSearchQuery("");
@@ -348,12 +351,18 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                       className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
                       href={`/case-studies/${study.slug}`}
                     >
-                      {/* Blurred background image - more visible */}
+                      {/* Blurred background image - more visible.
+                          Not next/image: heroImage is SVG (needs
+                          dangerouslyAllowSVG) and CMS-sourced ones may come
+                          from domains outside next.config's image allowlist.
+                          loading="lazy" still defers every off-screen card. */}
                       <div className="absolute inset-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           alt={`${study.client} background`}
                           className="w-full h-full object-cover blur-sm scale-110 opacity-60"
+                          decoding="async"
+                          loading="lazy"
                           src={study.heroImage}
                         />
                       </div>
@@ -439,7 +448,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
             <h2 className="text-4xl max-md:text-2xl font-bold text-white mb-4">
               Let&apos;s Build Something Like This For You
             </h2>
-            <p className="text-gray-400 font-medium text-base max-md:text-sm max-w-2xl mx-auto mb-8 max-md:mb-6">
+            <p className="text-gray-500 font-medium text-base max-md:text-sm max-w-2xl mx-auto mb-8 max-md:mb-6">
               From idea to shipped product — product thinking, IA, UX/UI, and
               Angular/React frontend carried end-to-end. Typical response under
               2 hours.
@@ -482,7 +491,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
               <div className="mb-6 flex flex-row items-center justify-center">
                 <GlassBadge variant="gradient">pricing</GlassBadge>
               </div>
-              <p className="heading-center">Pricing That Makes Sense</p>
+              <h2 className="heading-center">Pricing That Makes Sense</h2>
             </div>
             <div className="autoShowBottom mt-6 max-md:mt-4 max-w-2xl mx-auto">
               <ProjectEstimate className="min-h-[600px]" />

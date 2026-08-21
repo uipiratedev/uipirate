@@ -99,7 +99,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
               : "All Articles"}
         </h2>
         {filteredBlogs.length > 0 && (
-          <span className="text-sm text-gray-400 font-medium">
+          <span className="text-sm text-gray-500 font-medium">
             {filteredBlogs.length} post{filteredBlogs.length !== 1 ? "s" : ""}
           </span>
         )}
@@ -136,7 +136,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
       {/* Blog Cards Grid */}
       {filteredBlogs.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-gray-400 text-lg">No articles found.</p>
+          <p className="text-gray-500 text-lg">No articles found.</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
@@ -189,7 +189,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
                         {blog.excerpt}
                       </p>
                     )}
-                    <div className="flex items-center gap-2 text-[11px] text-gray-400 font-medium">
+                    <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium">
                       <span>{date}</span>
                       <span>·</span>
                       <span>{blog.readTime || 5} min read</span>

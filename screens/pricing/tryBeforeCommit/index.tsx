@@ -44,7 +44,7 @@ const TryBeforeCommit = () => {
             5-Day <span className="text-brand-orange">Pilot Project</span>
           </h2>
 
-          <p className="text-gray-400 text-center max-w-2xl mx-auto mb-8 max-md:text-sm">
+          <p className="text-gray-500 text-center max-w-2xl mx-auto mb-8 max-md:text-sm">
             Test our work before committing. See real results in 5 days — your
             fee is
             <span className="text-white font-semibold">
@@ -65,7 +65,7 @@ const TryBeforeCommit = () => {
                   Low-Risk, High-Value
                 </h4>
               </div>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-500 text-sm">
                 Your pilot fee is deducted from the final invoice when you
                 continue with a full project.
               </p>
@@ -78,7 +78,7 @@ const TryBeforeCommit = () => {
                 </div>
                 <h4 className="text-white font-semibold">Real Deliverables</h4>
               </div>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-500 text-sm">
                 Walk away with a working mini-build or polished design — ready
                 to scale.
               </p>
@@ -97,7 +97,7 @@ const TryBeforeCommit = () => {
                     {option.type}
                   </span>
                   <span className="text-2xl font-bold text-white font-jetbrains-mono">
-                    <span className="text-base text-gray-400">$</span>
+                    <span className="text-base text-gray-500">$</span>
                     {option.price}
                   </span>
                 </div>

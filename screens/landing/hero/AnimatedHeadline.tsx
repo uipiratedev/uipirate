@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 
+import { usePageRevealed } from "@/components/PageLoader";
+
 // Word reveal animation variant
 const wordRevealVariant = {
   hidden: { opacity: 0, y: 15 },
@@ -17,6 +19,11 @@ const wordRevealVariant = {
 };
 
 const AnimatedHeadline = () => {
+  // Content mounts immediately (SEO) but stays hidden behind the loading
+  // overlay for ~1.5s — animate in only once the overlay has actually
+  // faded, so the word reveal is visible instead of finishing off-screen.
+  const revealed = usePageRevealed();
+
   // Split headline into words with specific animations
   const words = [
     { text: "Designing", delay: 0.05 },
@@ -45,7 +52,7 @@ const AnimatedHeadline = () => {
         <span key={index}>
           {word.newLine && <br className="max-md:block hidden" />}
           <motion.span
-            animate="visible"
+            animate={revealed ? "visible" : "hidden"}
             className="inline-block"
             custom={word.delay}
             initial="hidden"
@@ -62,7 +69,7 @@ const AnimatedHeadline = () => {
             {index === 1 && <br className="max-md:block hidden" />}
             {index === 2 && <br className="max-md:block hidden" />}
             <motion.span
-              animate="visible"
+              animate={revealed ? "visible" : "hidden"}
               className={`inline-block ${word.extraClass || ""} ${
                 word.isConvert
                   ? "py-1 px-2 rounded bg-gradient-to-r from-orange-400/30 to-orange-400/30 bg-[length:100%_100%]"

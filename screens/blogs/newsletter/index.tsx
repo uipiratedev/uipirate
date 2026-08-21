@@ -57,7 +57,7 @@ const BlogsNewsletter = () => {
         <form className="max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
           <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-1.5 shadow-[0_10px_25px_rgba(15,23,42,0.05)]">
             <input
-              className="flex-1 bg-transparent px-1 py-1 text-sm outline-none placeholder:text-slate-400"
+              className="flex-1 bg-transparent px-1 py-1 text-sm outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B04] rounded-md placeholder:text-slate-400"
               placeholder="Email ID"
               type="email"
             />
