@@ -504,13 +504,13 @@ export default function AIBotCheckerClient() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <AnimatePresence>
-        {selectedBot && (
+        {selectedBot ? (
           <BotDetailDrawer
             bot={selectedBot}
             domain={result?.domain ?? ""}
             onClose={() => setSelectedBot(null)}
           />
-        )}
+        ) : null}
       </AnimatePresence>
 
       {/* Hero Section */}

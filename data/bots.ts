@@ -1,5 +1,17 @@
 export type BotCategory = "ai-training" | "ai-search" | "search-engine" | "seo-tool" | "social";
 
+export interface BotInfo {
+  id: string;
+  name: string;
+  company: string;
+  userAgent: string;
+  description: string;
+  color: string;
+  category: BotCategory;
+  categoryLabel: string;
+  weight: number;
+}
+
 export interface BotDetailedInfo {
   id: string;
   name: string;
@@ -19,6 +31,218 @@ export interface BotDetailedInfo {
   purpose: string;
   faqs: Array<{ question: string; answer: string }>;
 }
+
+export const AI_BOTS: BotInfo[] = [
+  {
+    id: "gptbot",
+    name: "GPTBot",
+    company: "OpenAI",
+    userAgent: "GPTBot",
+    description: "Crawls web pages to train ChatGPT, GPT-4o, and OpenAI foundation models.",
+    color: "#10A37F",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 5,
+  },
+  {
+    id: "claudebot",
+    name: "ClaudeBot",
+    company: "Anthropic",
+    userAgent: "ClaudeBot",
+    description: "Indexes web content to train Claude 3.5 Sonnet, Opus, and Haiku models.",
+    color: "#CC785C",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 5,
+  },
+  {
+    id: "anthropic-ai",
+    name: "anthropic-ai",
+    company: "Anthropic",
+    userAgent: "anthropic-ai",
+    description: "Legacy Anthropic training crawler for AI model data collection.",
+    color: "#CC785C",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 4,
+  },
+  {
+    id: "google-extended",
+    name: "Google-Extended",
+    company: "Google",
+    userAgent: "Google-Extended",
+    description: "Controls training data collection for Gemini, Vertex AI, and Google Search generative AI.",
+    color: "#4285F4",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 5,
+  },
+  {
+    id: "meta-externalagent",
+    name: "Meta-ExternalAgent",
+    company: "Meta AI",
+    userAgent: "meta-externalagent",
+    description: "Collects training datasets for Meta Llama open-source models and Meta AI.",
+    color: "#0866FF",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 4,
+  },
+  {
+    id: "applebot-extended",
+    name: "Applebot-Extended",
+    company: "Apple",
+    userAgent: "Applebot-Extended",
+    description: "Trains Apple Intelligence foundation models for Siri and iOS features.",
+    color: "#555555",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 4,
+  },
+  {
+    id: "bytespider",
+    name: "Bytespider",
+    company: "ByteDance (TikTok)",
+    userAgent: "Bytespider",
+    description: "ByteDance AI crawler collecting data for Doubao and TikTok AI algorithms.",
+    color: "#EE1D52",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 4,
+  },
+  {
+    id: "ccbot",
+    name: "CCBot",
+    company: "Common Crawl",
+    userAgent: "CCBot",
+    description: "Massive open web crawl repository that feeds training sets for 80%+ of open LLMs.",
+    color: "#7C3AED",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 4,
+  },
+  {
+    id: "amazonbot",
+    name: "Amazonbot",
+    company: "Amazon",
+    userAgent: "Amazonbot",
+    description: "Crawls web pages for Amazon Bedrock AI, Titan LLMs, and Alexa intelligence.",
+    color: "#FF9900",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 4,
+  },
+  {
+    id: "cohere-ai",
+    name: "cohere-ai",
+    company: "Cohere",
+    userAgent: "cohere-ai",
+    description: "Collects data for Cohere enterprise Command R+ and embedding models.",
+    color: "#39594D",
+    category: "ai-training",
+    categoryLabel: "AI Training",
+    weight: 3,
+  },
+  {
+    id: "chatgpt-user",
+    name: "ChatGPT-User",
+    company: "OpenAI",
+    userAgent: "ChatGPT-User",
+    description: "Executes real-time live browsing when a ChatGPT user asks for fresh web info.",
+    color: "#10A37F",
+    category: "ai-search",
+    categoryLabel: "AI Search",
+    weight: 5,
+  },
+  {
+    id: "perplexitybot",
+    name: "PerplexityBot",
+    company: "Perplexity AI",
+    userAgent: "PerplexityBot",
+    description: "Retrieves live web content to cite sources directly in Perplexity conversational search.",
+    color: "#20808D",
+    category: "ai-search",
+    categoryLabel: "AI Search",
+    weight: 5,
+  },
+  {
+    id: "oai-searchbot",
+    name: "OAI-SearchBot",
+    company: "OpenAI",
+    userAgent: "OAI-SearchBot",
+    description: "Dedicated OpenAI search crawler designed to surface websites directly in ChatGPT Search.",
+    color: "#10A37F",
+    category: "ai-search",
+    categoryLabel: "AI Search",
+    weight: 5,
+  },
+  {
+    id: "googlebot",
+    name: "Googlebot",
+    company: "Google",
+    userAgent: "Googlebot",
+    description: "Main Google search crawler. Powers Google Search, Discover, and AI Overviews.",
+    color: "#4285F4",
+    category: "search-engine",
+    categoryLabel: "Search Engine",
+    weight: 5,
+  },
+  {
+    id: "bingbot",
+    name: "Bingbot",
+    company: "Microsoft",
+    userAgent: "bingbot",
+    description: "Powers Microsoft Bing and Microsoft Copilot live web answers.",
+    color: "#008373",
+    category: "search-engine",
+    categoryLabel: "Search Engine",
+    weight: 4,
+  },
+  {
+    id: "ahrefsbot",
+    name: "AhrefsBot",
+    company: "Ahrefs",
+    userAgent: "AhrefsBot",
+    description: "Crawls the web to build SEO backlinks and competitor intelligence databases.",
+    color: "#0058EA",
+    category: "seo-tool",
+    categoryLabel: "SEO Tool",
+    weight: 2,
+  },
+  {
+    id: "semrushbot",
+    name: "SemrushBot",
+    company: "Semrush",
+    userAgent: "SemrushBot",
+    description: "Gathers keyword and link data for Semrush SEO analytics.",
+    color: "#FF642D",
+    category: "seo-tool",
+    categoryLabel: "SEO Tool",
+    weight: 2,
+  },
+  {
+    id: "twitterbot",
+    name: "Twitterbot",
+    company: "X (Twitter)",
+    userAgent: "Twitterbot",
+    description: "Generates rich link preview cards when URLs are shared on X.",
+    color: "#1DA1F2",
+    category: "social",
+    categoryLabel: "Social Preview",
+    weight: 2,
+  },
+  {
+    id: "facebookexternalhit",
+    name: "facebookexternalhit",
+    company: "Meta",
+    userAgent: "facebookexternalhit",
+    description: "Fetches OpenGraph title, image, and description cards for Facebook & Instagram shares.",
+    color: "#0866FF",
+    category: "social",
+    categoryLabel: "Social Preview",
+    weight: 2,
+  },
+];
 
 export const DETAILED_BOTS: BotDetailedInfo[] = [
   {
