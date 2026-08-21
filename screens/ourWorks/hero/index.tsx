@@ -2,6 +2,7 @@
 
 import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
+
 import GlassSurface from "@/components/GlassSurface";
 import testimonials from "@/data/testimonials.json";
 import Avatar from "@/components/Avatar";
@@ -38,7 +39,6 @@ const StarRating = ({
 };
 
 const OurWorksHero = () => {
-
   return (
     <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
       {/* Subtle Grid Background Pattern */}
@@ -108,21 +108,18 @@ const OurWorksHero = () => {
             PORTFOLIO & CASE STUDIES
           </p>
         </GlassSurface>
-
         {/* Headline */}
         <div className="relative z-10 w-full">
-          <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600] max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative reveal-text-anim">
-            Real <span className="text-[#FF5B04]"> Projects.</span>{" "}
-            Real<span className="text-[#FF5B04]"> Results.</span>
+          <h1 className="hero-header">
+            Real <span className="text-[#FF5B04]"> Projects.</span> Real
+            <span className="text-[#FF5B04]"> Results.</span>
           </h1>
         </div>
-
         {/* Subheading */}
-        <p className="reveal-text-anim-1 max-w-[820px] 2xl:max-w-[1000px] text-center text-lg 2xl:text-xl max-md:text-sm mt-4 md:my-4 2xl:px-3 px-4 leading-[25.2px] 2xl:leading-[32px] text-[#11181C]">
-          See how we’ve helped startups, SaaS teams, and global brands turn ideas
-          into fully functional digital products.
+        <p className="sub-header text-[#11181C]">
+          See how we’ve helped startups, SaaS teams, and global brands turn
+          ideas into fully functional digital products.
         </p>
-
         {/* ✅ Reveal Animation for Card Section */}
         <motion.div
           className="relative flex justify-center items-center my-8 max-md:hidden z-10"
@@ -210,7 +207,6 @@ const OurWorksHero = () => {
             </div>
           ))}
         </motion.div>
-
         {/* Stats Section */}
         <div className="flex flex-wrap justify-between w-full items-center gap-10 text-center py-10 z-10 relative mt-6">
           {[
@@ -237,7 +233,6 @@ const OurWorksHero = () => {
           ))}
         </div>
       </div>
-      
     </div>
   );
 };

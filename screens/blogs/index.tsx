@@ -1,23 +1,34 @@
 "use client";
 
 import { useState } from "react";
+
 import FeaturedBlogs from "./featuredBlogs";
 import BlogsHero from "./hero";
 import BlogsNewsletter from "./newsletter";
 
-const Blogs = () => {
+import type { ReaderPost } from "@/lib/pirateCOS/public-client";
+
+interface BlogsProps {
+  initialBlogs: ReaderPost[];
+}
+
+const Blogs = ({ initialBlogs }: BlogsProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("general");
 
   return (
     <div>
-      <BlogsHero 
-        searchQuery={searchQuery} 
-        onSearchChange={setSearchQuery}
+      <BlogsHero
+        searchQuery={searchQuery}
         selectedCategory={selectedCategory}
         onCategoryChange={setSelectedCategory}
+        onSearchChange={setSearchQuery}
       />
-      <FeaturedBlogs />
+      <FeaturedBlogs
+        blogs={initialBlogs}
+        searchQuery={searchQuery}
+        selectedCategory={selectedCategory}
+      />
       <BlogsNewsletter />
     </div>
   );

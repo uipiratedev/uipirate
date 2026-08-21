@@ -48,35 +48,32 @@ export default function TestimonialCards() {
 
   return (
     <section className="w-full pt-6 max-md:pt-4 container mx-auto px-32 lg:px-20 max-md:px-4">
-      <div className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] max-md:h-[500px] overflow-hidden"}`}>
+      <div
+        className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] max-md:h-[500px] overflow-hidden"}`}
+      >
         {/* Gradient Mask for collapsed state */}
         {!isExpanded && (
           <div className="absolute bottom-0 left-0 w-full h-[500px] bg-gradient-to-t from-white via-white/50 to-transparent z-20 pointer-events-none" />
         )}
 
-        <motion.div 
+        <motion.div
+          animate={isExpanded ? { y: 0 } : {}}
           className="flex flex-col md:flex-row gap-4 md:gap-4"
           initial={{ y: 0 }}
-          animate={isExpanded ? { y: 0 } : {}}
         >
           {[col1, col2, col3].map((col, i) => (
-            <div 
-              key={i} 
-              className="flex flex-col gap-4 flex-1"
-            >
+            <div key={i} className="flex flex-col gap-4 flex-1">
               {col.map((item, idx) => (
                 <motion.div
                   key={idx}
+                  className="h-full"
                   custom={idx + i * 3}
                   initial="hidden"
                   variants={cardVariants}
                   viewport={{ once: true, amount: 0.3 }}
                   whileInView="visible"
-                  className="h-full"
                 >
-                  <Card
-                    className="rounded-[24px] h-full transition-all duration-500 max-md:w-full shadow-none border-1 border-black/10 overflow-hidden group/card"
-                  >
+                  <Card className="rounded-[24px] h-full transition-all duration-500 max-md:w-full shadow-none border-1 border-black/10 overflow-hidden group/card">
                     <CardBody className="p-5 h-full">
                       <div className="w-full h-full  bg-white   transition-all duration-500 shadow-sm flex flex-col">
                         <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
@@ -125,10 +122,7 @@ export default function TestimonialCards() {
       {/* See More Button */}
       {!isExpanded && (
         <div className="flex justify-center mt-8 max-md:mt-0 relative z-30 pb-1">
-          <LetsTalkButton 
-            variant="light" 
-            onClick={() => setIsExpanded(true)}
-          >
+          <LetsTalkButton variant="light" onClick={() => setIsExpanded(true)}>
             See More Testimonials
           </LetsTalkButton>
         </div>

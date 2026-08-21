@@ -1,84 +1,201 @@
 // app/[slug]/page.tsx
+// This route handles dynamic blog post pages at uipirate.com/[slug]
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { headers } from "next/headers";
+
+import BlogsDetails from "@/screens/blogsDetails";
+import {
+  getPostBySlug,
+  listPostSlugs,
+  listPosts,
+} from "@/lib/pirateCOS/public-client";
+import { trackView } from "@/lib/trackView";
+import { verifyAuth } from "@/lib/pirateCOS/auth";
 
 interface Props {
   params: { slug: string };
 }
+
+// ISR: revalidate published detail pages every 60s.
+export const revalidate = 60;
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
 
   try {
-    const response = await fetch(`https://api.example.com/page-seo/${slug}`, {
-      // Cache the request (optional)
-      cache: "no-store", // or 'force-cache' for caching
-    });
+    const blog = await getPostBySlug(slug.toLowerCase());
 
-    if (!response.ok) {
-      // If the data isn't found, trigger 404
-      notFound();
+    if (!blog) {
+      return {
+        title: "Blog Post Not Found",
+        description: "The requested blog post could not be found.",
+      };
     }
 
-    const data = await response.json();
+    const seo = (blog as any).seo;
+
+    // Use seo.metaTitle as the page title, fallback to the blog title
+    const title = seo?.metaTitle?.trim()
+      ? seo.metaTitle.trim()
+      : `${(blog as any).title} | Blog`;
+
+    // Use seo.metaDescription as the description, fallback to the blog excerpt/description
+    const description =
+      seo?.metaDescription?.trim() ||
+      (blog as any).excerpt ||
+      (blog as any).description ||
+      `Read ${(blog as any).title} on UI Pirate's design blog.`;
+
+    // Map keywords: seo.keywords array joined, fallback to blog.tags array joined
+    const keywords =
+      seo?.keywords && Array.isArray(seo.keywords) && seo.keywords.length > 0
+        ? seo.keywords.join(", ")
+        : (blog as any).tags?.join(", ") ||
+          "UI/UX, design tips, SaaS design, UI Pirate";
+
+    // Configure OG and Twitter card images: seo.ogImage fallback to featuredImage or bannerImage
+    const imageUrl =
+      seo?.ogImage?.trim() ||
+      (blog as any).featuredImage ||
+      (blog as any).bannerImage ||
+      "";
+
+    // OG fields with custom title/description support (preferring SEO first, falling back to what it was currently using)
+    const ogTitle =
+      seo?.ogTitle?.trim() || seo?.metaTitle?.trim() || (blog as any).title;
+    const ogDescription =
+      seo?.ogDescription?.trim() ||
+      seo?.metaDescription?.trim() ||
+      (blog as any).excerpt ||
+      (blog as any).description ||
+      `Read ${(blog as any).title} on UI Pirate's design blog.`;
+
+    const twitterCard = seo?.twitterCard || "summary_large_image";
 
     return {
-      title: data.title || "Default Title",
-      description: data.description || "Default Description",
+      title,
+      description,
+      keywords,
       openGraph: {
-        title: data.title,
-        description: data.description,
-        url: `https://example.com/${slug}`,
-        siteName: "Example Site",
-        images: [
-          {
-            url: data.image || "https://example.com/default-image.jpg",
-            width: 800,
-            height: 600,
-            alt: data.title,
-          },
-        ],
+        title: ogTitle,
+        description: ogDescription,
+        url: `https://uipirate.com/${slug}`,
+        siteName: "UI Pirate by Vishal Anand",
+        images: imageUrl
+          ? [
+              {
+                url: imageUrl,
+                width: 1200,
+                height: 630,
+                alt: ogTitle,
+              },
+            ]
+          : [],
         locale: "en_US",
-        type: "website",
+        type: "article",
       },
+      twitter: {
+        card: twitterCard,
+        title: ogTitle,
+        description: ogDescription,
+        images: imageUrl ? [imageUrl] : [],
+      },
+      alternates: {
+        canonical: seo?.canonicalUrl?.trim() || `https://uipirate.com/${slug}`,
+      },
+      robots: seo?.noIndex ? { index: false, follow: false } : undefined,
     };
   } catch (error) {
-    notFound(); // Redirect to 404 if there's an error
+    return {
+      title: "Blog",
+      description: "UI/UX design insights, case studies, and tutorials.",
+    };
   }
 }
 
-// Generate static params for dynamic routing
+// Generate static params for known blog posts at build time
 export async function generateStaticParams() {
-  try {
-    const response = await fetch("https://api.example.com/page-paths", {
-      cache: "no-store",
-      // Add timeout to prevent hanging
-      signal: AbortSignal.timeout(5000),
-    });
+  const slugs = await listPostSlugs();
 
-    if (!response.ok) {
-      return []; // Return an empty array if fetch fails
-    }
-
-    const paths = await response.json();
-
-    return paths.map((slug: string) => ({ slug }));
-  } catch (error) {
-    // Handle network errors gracefully during build
-    // Return empty array - pages will be generated on-demand with dynamicParams: true
-    return [];
-  }
+  return slugs.map((slug) => ({ slug }));
 }
 
-// Allow dynamic params to be generated on-demand if not in staticParams
+// Allow dynamic params to be generated on-demand
 export const dynamicParams = true;
 
-export default function DynamicPage({ params }: Props) {
-  return (
-    <main>
-      <h1>Dynamic Page Content</h1>
-      <p>Content for route: {params.slug}</p>
-    </main>
-  );
+export default async function DynamicBlogPage({ params }: Props) {
+  const { slug } = params;
+
+  if (slug !== slug.toLowerCase()) {
+    redirect(`/${slug.toLowerCase()}`);
+  }
+
+  // Fetch blog by slug through the tenant-scoped v1 API
+  const blog = await getPostBySlug(slug);
+
+  if (!blog) {
+    notFound();
+  }
+
+  // Case studies are authored here with postType "case-study" but belong
+  // under /case-studies, not the blog template — send them to their real home.
+  // (Kept outside the try/catch below: redirect()/notFound() work by throwing,
+  // and that catch block would otherwise swallow the redirect as a 404.)
+  if ((blog as any).postType === "case-study") {
+    redirect(`/case-studies/${slug}`);
+  }
+
+  try {
+    // Track this view: deduplicates by IP+slug with 24h TTL, filters bots, skips admins
+    const user = await verifyAuth();
+
+    trackView(slug, headers(), !!user).catch(() => {});
+
+    const blogData = blog;
+
+    // Suggested reads via the tenant-scoped v1 API; exclude the current post.
+    const suggested = (await listPosts({ limit: 4 }))
+      .filter((p) => p._id !== blog._id)
+      .slice(0, 3);
+
+    return (
+      <div>
+        {/* Blog post JSON-LD for rich results */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: (blog as any).title,
+              description: (blog as any).excerpt || (blog as any).description,
+              image: (blog as any).featuredImage || undefined,
+              author: {
+                "@type": "Person",
+                name: "Vishal Anand",
+                url: "https://uipirate.com/about",
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "UI Pirate",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
+                },
+              },
+              datePublished: blog.publishedAt || blog.createdAt,
+              dateModified: blog.updatedAt,
+              url: `https://uipirate.com/${slug}`,
+              mainEntityOfPage: `https://uipirate.com/${slug}`,
+            }),
+          }}
+          type="application/ld+json"
+        />
+        <BlogsDetails blog={blogData} suggested={suggested} />
+      </div>
+    );
+  } catch (error) {
+    notFound();
+  }
 }

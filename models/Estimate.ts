@@ -67,10 +67,11 @@ const EstimateSchema: Schema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Estimate: Model<IEstimate> =
-  mongoose.models.Estimate || mongoose.model<IEstimate>("Estimate", EstimateSchema);
+  mongoose.models.Estimate ||
+  mongoose.model<IEstimate>("Estimate", EstimateSchema);
 
 export default Estimate;

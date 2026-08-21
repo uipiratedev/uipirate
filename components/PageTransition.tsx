@@ -1,19 +1,23 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, memo } from "react";
 import { usePathname } from "next/navigation";
 
-const BAR_COUNT = 12;
-const STAGGER = 0.08; // seconds between each pair of bars
+// Reduced bar count for better performance (fewer GPU layers)
+const BAR_COUNT = 6;
+const STAGGER = 0.04; // Faster stagger for snappier feel
 
 /**
- * PageTransition — Bars cover screen on link click, stay until route changes,
- * then flip away to reveal the new page.
+ * PageTransition — Optimized bars cover screen on link click, stay until route changes,
+ * then slide away to reveal the new page.
  *
- * Also adds `data-transitioning="true"` to <body> so page animations
- * (hero, etc.) can wait until the transition finishes.
+ * Performance optimizations:
+ * - Reduced bar count from 12 to 6
+ * - Uses translateX instead of rotateY (avoids 3D transforms)
+ * - Shorter animation duration (600ms vs 1200ms)
+ * - Memoized component to prevent unnecessary re-renders
  */
-export default function PageTransition() {
+const PageTransition = memo(function PageTransition() {
   const pathname = usePathname();
   const [phase, setPhase] = useState<"idle" | "cover" | "reveal">("idle");
   const prevPathname = useRef(pathname);
@@ -33,8 +37,9 @@ export default function PageTransition() {
     if (phase === "cover" && pathname !== prevPathname.current) {
       prevPathname.current = pathname;
 
-      // Small delay so new page DOM is in place behind bars
-      const t = setTimeout(() => setPhase("reveal"), 150);
+      // Reduced delay for snappier transition (100ms vs 150ms)
+      const t = setTimeout(() => setPhase("reveal"), 100);
+
       return () => clearTimeout(t);
     }
 
@@ -46,19 +51,21 @@ export default function PageTransition() {
   // --- When reveal starts, go idle after the animation finishes ---
   useEffect(() => {
     if (phase === "reveal") {
-      const duration = 1200 + BAR_COUNT * STAGGER * 1000 + 200; // animation + stagger + buffer
+      // Shorter total duration: 600ms animation + stagger + small buffer
+      const duration = 600 + BAR_COUNT * STAGGER * 1000 + 100;
       const t = setTimeout(() => setPhase("idle"), duration);
+
       return () => clearTimeout(t);
     }
   }, [phase]);
 
-  // --- Safety: if route never changes (slow load), force reveal after 5s ---
+  // --- Safety: if route never changes (slow load), force reveal after 3s (reduced from 5s) ---
   useEffect(() => {
     if (phase === "cover") {
       safetyRef.current = setTimeout(() => {
-        prevPathname.current = pathname; // sync up
+        prevPathname.current = pathname;
         setPhase("reveal");
-      }, 5000);
+      }, 3000);
 
       return () => {
         if (safetyRef.current) clearTimeout(safetyRef.current);
@@ -70,11 +77,14 @@ export default function PageTransition() {
   const handleLinkClick = useCallback(
     (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest("a");
+
       if (!anchor) return;
 
       const href = anchor.getAttribute("href");
+
       if (!href) return;
 
+      // Skip external links, hash links, same page, etc.
       if (
         href.startsWith("http") ||
         href.startsWith("mailto:") ||
@@ -82,8 +92,29 @@ export default function PageTransition() {
         href.startsWith("#") ||
         anchor.getAttribute("target") === "_blank" ||
         href === pathname
-      ) return;
+      )
+        return;
 
+      // Skip if it's an admin/dashboard route
+      const isCosSubdomain =
+        typeof window !== "undefined" &&
+        (window.location.hostname.startsWith("cos.") ||
+          window.location.hostname === "cos.uipirate.com");
+
+      if (
+        href.startsWith("/pirateCOS") ||
+        href.startsWith("/admin") ||
+        (isCosSubdomain &&
+          (href.startsWith("/dashboard") ||
+            href.startsWith("/posts") ||
+            href.startsWith("/ai-settings") ||
+            href.startsWith("/brand-brain") ||
+            href.startsWith("/settings") ||
+            href === "/"))
+      )
+        return;
+
+      // Skip if modifier keys are pressed
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
       if (phase !== "idle") return;
 
@@ -94,23 +125,29 @@ export default function PageTransition() {
 
   useEffect(() => {
     document.addEventListener("click", handleLinkClick, true);
+
     return () => document.removeEventListener("click", handleLinkClick, true);
   }, [handleLinkClick]);
 
-  // --- Render ---
+  // --- Render nothing when idle (unmount completely for performance) ---
   if (phase === "idle") return null;
 
   return (
-    <div className="page-transition-wrapper">
+    <div aria-hidden="true" className="page-transition-wrapper">
       <div className="page-transition-container">
         {Array.from({ length: BAR_COUNT }).map((_, i) => (
           <div
             key={i}
             className={`page-transition-bar ${phase}`}
-            style={{ animationDelay: `${Math.floor(i / 2) * STAGGER}s` }}
+            style={{
+              // Use CSS custom property for stagger to avoid inline style recalculation
+              ["--stagger-delay" as string]: `${i * STAGGER}s`,
+            }}
           />
         ))}
       </div>
     </div>
   );
-}
+});
+
+export default PageTransition;

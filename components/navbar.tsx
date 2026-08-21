@@ -7,31 +7,33 @@ import {
   NavbarMenuToggle,
   NavbarBrand,
   NavbarItem,
-  NavbarMenuItem,
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
 import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import GlassSurface from "./GlassSurface";
 import { NavbarDropdown } from "./NavbarDropdown";
 import { MobileMenuAccordionItem } from "./MobileMenuAccordionItem";
 
 import { siteConfig } from "@/config/site";
-
 import { useIsMobile } from "@/hooks";
 
 export const Navbar = () => {
   const isMobile = useIsMobile();
   const [isDarkSection, setIsDarkSection] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(null);
+  const [openAccordionIndex, setOpenAccordionIndex] = useState<number | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [showBanner, setShowBanner] = useState(true);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
+  const [isScrollHidden, setIsScrollHidden] = useState(false);
   const [announcement, setAnnouncement] = useState(""); // For screen reader announcements
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 800);
@@ -76,6 +78,7 @@ export const Navbar = () => {
   // Hide navbar when footer is visible
   useEffect(() => {
     const footer = document.getElementById("site-footer");
+
     if (!footer) return;
 
     const observer = new IntersectionObserver(
@@ -88,6 +91,27 @@ export const Navbar = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Hide navbar on scroll-down, reveal on scroll-up
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+
+      if (y < 80) {
+        setIsScrollHidden(false);
+      } else if (y > lastScrollY.current + 6) {
+        setIsScrollHidden(true);
+      } else if (y < lastScrollY.current - 4) {
+        setIsScrollHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   // Scroll Lock for mobile menu — position:fixed is the only reliable method for iOS Safari
   useEffect(() => {
     const body = document.body;
@@ -95,6 +119,7 @@ export const Navbar = () => {
     if (isMenuOpen) {
       // Save current scroll position
       const scrollY = window.scrollY;
+
       // Lock body in place so it can't scroll behind the overlay
       body.style.position = "fixed";
       body.style.top = `-${scrollY}px`;
@@ -104,6 +129,7 @@ export const Navbar = () => {
     } else {
       // Read back saved scroll so we can restore after unlocking
       const savedScrollY = body.style.top;
+
       body.style.position = "";
       body.style.top = "";
       body.style.left = "";
@@ -118,6 +144,7 @@ export const Navbar = () => {
     return () => {
       // Safety cleanup
       const savedScrollY = body.style.top;
+
       body.style.position = "";
       body.style.top = "";
       body.style.left = "";
@@ -136,7 +163,11 @@ export const Navbar = () => {
         className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
         style={{
           opacity: isFooterVisible ? 0 : 1,
-          transform: isFooterVisible ? "translateY(-16px)" : "translateY(0)",
+          transform: isScrollHidden
+            ? "translateY(-120%)"
+            : isFooterVisible
+              ? "translateY(-16px)"
+              : "translateY(0)",
           pointerEvents: isFooterVisible ? "none" : undefined,
         }}
       >
@@ -163,7 +194,9 @@ export const Navbar = () => {
               redOffset={1}
               saturation={2}
               style={{
-                border: isMobile ? "none" : "1px solid rgba(255, 255, 255, 0.2)",
+                border: isMobile
+                  ? "none"
+                  : "1px solid rgba(255, 255, 255, 0.2)",
                 overflow: "visible",
                 borderRadius: isMobile ? "0px" : "16px",
               }}
@@ -222,7 +255,7 @@ export const Navbar = () => {
                             !isDarkSection,
                         })}
                       >
-                        UI Pirates
+                        UI Pirate
                       </p>
                     </NextLink>
                   </NavbarBrand>
@@ -234,12 +267,15 @@ export const Navbar = () => {
                   justify="center"
                   style={{ position: "static" }}
                 >
-                  <ul className="hidden lg:flex gap-0 justify-start ml-0 overflow-visible !static" style={{ position: "static" }}>
+                  <ul
+                    className="hidden lg:flex gap-0 justify-start ml-0 overflow-visible !static"
+                    style={{ position: "static" }}
+                  >
                     {siteConfig.navItems.map((item) => (
                       <NavbarItem
                         key={item.href}
                         className={clsx(
-                          "px-2 rounded-[0.65rem] max-md:rounded-none pb-[4px] transition-all duration-200 !static",
+                          "px-1 rounded-[0.65rem] max-md:rounded-none transition-all duration-200 !static",
                         )}
                         style={{ position: "static" }}
                       >
@@ -254,7 +290,10 @@ export const Navbar = () => {
                           <NextLink
                             className={clsx(
                               linkStyles({ color: "foreground" }),
-                              "data-[active=true]:text-primary data-[active=true]:font-medium text-sm font-[500] cursor-pointer transition-all duration-200 hover:font-[600]",
+                              "relative px-3 py-2 text-sm font-medium cursor-pointer transition-all duration-300",
+                              "hover:text-brand-orange",
+                              "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[2px] after:bg-brand-orange after:transition-all after:duration-300",
+                              "hover:after:w-full",
                             )}
                             href={item.href}
                           >
@@ -304,20 +343,22 @@ export const Navbar = () => {
         <div
           className="fixed left-0 right-0 top-[52px] bottom-0 z-[100000000] bg-white overflow-y-auto pointer-events-auto"
           style={{
-            touchAction: 'pan-y',
-            WebkitOverflowScrolling: 'touch',
-            overscrollBehavior: 'contain',
+            touchAction: "pan-y",
+            WebkitOverflowScrolling: "touch",
+            overscrollBehavior: "contain",
           }}
         >
           <div className="pt-4 pb-44 flex flex-col gap-0 px-4">
             {siteConfig.navItems.map((item, index) => (
               <MobileMenuAccordionItem
                 key={`${item.href}-${index}`}
-                item={item}
                 index={index}
                 isOpen={openAccordionIndex === index}
-                onToggle={(i) => setOpenAccordionIndex(openAccordionIndex === i ? null : i)}
+                item={item}
                 setIsMenuOpen={setIsMenuOpen}
+                onToggle={(i) =>
+                  setOpenAccordionIndex(openAccordionIndex === i ? null : i)
+                }
               />
             ))}
           </div>

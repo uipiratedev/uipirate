@@ -8,6 +8,8 @@ interface DropdownItem {
   category: string;
   icon?: string;
   href?: string;
+  isLargeCard?: boolean;
+  bgImage?: string;
 }
 
 interface NavItem {
@@ -32,29 +34,22 @@ export const MobileMenuAccordionItem = ({
   onToggle,
   setIsMenuOpen,
 }: MobileMenuAccordionItemProps) => {
-  const hasDropdown = item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
-
-  const handleRowClick = (e: React.MouseEvent) => {
-    if (hasDropdown) {
-      e.preventDefault();
-      onToggle(index);
-    } else {
-      setIsMenuOpen(false);
-    }
-  };
+  const hasDropdown =
+    item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
 
   return (
     <div className="flex flex-col border-b border-gray-100 last:border-none">
-      <div
-        className="flex items-center justify-between py-4 cursor-pointer"
-        onClick={handleRowClick}
-      >
+      <div className="flex items-center justify-between py-4">
         <NextLink
           className="text-lg text-foreground font-semibold flex-1"
           href={hasDropdown ? "#" : item.href}
           onClick={(e) => {
-            if (hasDropdown) e.preventDefault();
-            else setIsMenuOpen(false);
+            if (hasDropdown) {
+              e.preventDefault();
+              onToggle(index);
+            } else {
+              setIsMenuOpen(false);
+            }
           }}
         >
           {item.label}
@@ -62,8 +57,8 @@ export const MobileMenuAccordionItem = ({
 
         {hasDropdown && (
           <button
-            type="button"
             className="p-1"
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               onToggle(index);
@@ -92,11 +87,11 @@ export const MobileMenuAccordionItem = ({
       <AnimatePresence mode="wait">
         {isOpen && hasDropdown && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
             className="overflow-hidden"
+            exit={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
           >
             <div className="flex flex-col gap-3 pb-4 pl-4">
               {item.dropdownItems!.map((dropdownItem, idx) => (

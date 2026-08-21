@@ -2,34 +2,49 @@ import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import { headers } from "next/headers";
 
-import { fontSans, fontJakarta, fontGeist, fontGeistMono, fontJetBrainsMono } from "@/config/fonts";
+import { Providers } from "./providers";
+
+import {
+  fontSans,
+  fontJakarta,
+  fontGeist,
+  fontGeistMono,
+  fontJetBrainsMono,
+} from "@/config/fonts";
 import CookieConsent from "@/components/CookieConsent";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
+import { ConditionalFooter } from "@/components/ConditionalFooter";
 import PageLoader from "@/components/PageLoader";
 import PageTransition from "@/components/PageTransition";
-import { Footer } from "@/components/footer";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title:
-    "UI Pirate | Enterprise UI/UX Design & Development | USA, UK, Singapore, India, Australia",
+  metadataBase: new URL("https://uipirate.com"),
+  title: {
+    default: "UI Pirate | Product Design & Dev — Idea to Shipped Product",
+    template: "%s | UI Pirate",
+  },
   description:
-    "Leading UI/UX design agency serving enterprise clients globally. Specializing in UI development, graphic design, motion graphics, design systems, AI/SaaS apps, and mobile applications. Trusted by Fortune 500 companies across USA, UK, Singapore, India, and Australia.",
+    "Product design & development agency. We turn SaaS and AI product ideas into shipped products. Expert in UX/UI, Angular & React. Serving USA, UK, Singapore.",
   keywords:
-    "enterprise UI design, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise clients USA UK Singapore India Australia, Fortune 500 design, startup design agency, Vishal Anand, UI Pirate",
+    "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, simplify complex products, Angular development, React development, Vishal Anand",
   openGraph: {
-    title: "UI Pirate | Global Enterprise UI/UX Design & Development Agency",
+    title: "UI Pirate | Product Design — From Idea to Shipped Product",
     description:
-      "Transform your business with world-class UI/UX design and development. Serving enterprise clients across USA, UK, Singapore, India & Australia. Specializing in AI/SaaS apps, mobile design, and design systems.",
+      "Not just designs — we help you think, plan, and build your product. Product thinking, competitive analysis & conversion-focused design for complex products.",
     url: "https://uipirate.com",
-    siteName: "UI Pirate by Vishal Anand",
+    siteName: "UI Pirate",
     images: [
       {
-        url: "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+        url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
         width: 1200,
         height: 630,
-        alt: "UI Pirate - Global Enterprise Design Agency",
+        alt: "UI Pirate - Product Design Agency — From Idea to Shipped Product",
       },
     ],
     locale: "en_US",
@@ -37,11 +52,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI Pirate | Enterprise Design Agency - Global Services",
+    title: "UI Pirate | Product Design — Idea to Shipped Product",
     description:
-      "World-class UI/UX design & development for enterprise clients. AI/SaaS apps, mobile design, motion graphics. Serving USA, UK, Singapore, India, Australia.",
+      "Product thinking, competitive analysis & conversion-focused design. We simplify complex products. 50+ shipped.",
     images: [
-      "https://res.cloudinary.com/dkziil6io/image/upload/v1742919377/ui-pirate-website_amh6qb.png",
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
     ],
     site: "@UI_Pirate",
     creator: "@UI_Pirate",
@@ -50,11 +65,20 @@ export const metadata: Metadata = {
     canonical: "https://uipirate.com",
   },
   icons: {
-    icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg", // Path for the favicon.ico file
-    apple:
-      "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg", // For Apple devices, if available
-    shortcut:
-      "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg", // For older browsers
+    icon: "/favicon.ico?v=2",
+    apple: "/favicon.ico?v=2",
+    shortcut: "/favicon.ico?v=2",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -65,11 +89,41 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const requestHeaders = await headers();
+  const isCos = requestHeaders.get("x-is-cos") === "true";
+  const canonicalUrl = `https://uipirate.com${requestHeaders.get("x-pathname") || "/"}`;
+
+  if (isCos) {
+    return (
+      <html suppressHydrationWarning lang="en">
+        <head>
+          <meta content="width=device-width, initial-scale=1" name="viewport" />
+          <link href="/favicon.ico?v=2" rel="icon" />
+          <title>PirateCOS | UI Pirate</title>
+        </head>
+        <body
+          className={clsx(
+            "min-h-screen font-sans antialiased bg-[#F7F7F6]",
+            fontSans.variable,
+            fontJakarta.variable,
+            fontGeist.variable,
+            fontGeistMono.variable,
+            fontJetBrainsMono.variable,
+          )}
+        >
+          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+            <main className="min-h-screen">{children}</main>
+          </Providers>
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -90,10 +144,6 @@ export default function RootLayout({
           name="subject"
         />
         <meta content="Business, Design, Technology" name="classification" />
-        <meta
-          content="UI design, UX design, UI development, graphic design, motion graphics, design systems, AI SaaS app design, mobile app design, enterprise design, USA UK Singapore India Australia, enterprise clients, startup design, tech company design, Vishal Anand, UI Pirate"
-          name="keywords"
-        />
         <meta content="US, GB, SG, IN, AU" name="geo.region" />
         <meta
           content="United States, United Kingdom, Singapore, India, Australia"
@@ -104,25 +154,173 @@ export default function RootLayout({
           name="target-audience"
         />
 
-        {/* AI Data Reference */}
-        <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
-        <link
-          href="/enterprise-schema.json"
-          rel="alternate"
+        {/* Structured Data — Inline JSON-LD (Google ignores linked JSON-LD files) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfessionalService",
+              "@id": "https://uipirate.com/#organization",
+              name: "UI Pirate by Vishal Anand",
+              alternateName: ["UI Pirate", "uipirate", "uipirates"],
+              url: "https://uipirate.com",
+              logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1731044026/newfavicon_ibmap0.svg",
+              image:
+                "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
+              description:
+                "Product design and frontend development agency that turns ideas into shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
+              foundingDate: "2015",
+              founder: {
+                "@type": "Person",
+                name: "Vishal Anand",
+                jobTitle: "Founder & Lead UI/UX Designer",
+                url: "https://www.linkedin.com/in/vishal-a-51bb49110",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+919708636151",
+                email: "vishal@uipirate.com",
+                contactType: "customer service",
+                areaServed: ["US", "GB", "SG", "IN", "AU"],
+                availableLanguage: "English",
+              },
+              address: { "@type": "PostalAddress", addressCountry: "IN" },
+              serviceArea: [
+                { "@type": "Country", name: "United States" },
+                { "@type": "Country", name: "United Kingdom" },
+                { "@type": "Country", name: "Singapore" },
+                { "@type": "Country", name: "India" },
+                { "@type": "Country", name: "Australia" },
+              ],
+              hasOfferCatalog: {
+                "@type": "OfferCatalog",
+                name: "Enterprise Design Services",
+                itemListElement: [
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "SaaS Web & Mobile App Design & Development",
+                      description:
+                        "UI/UX design and frontend development in Angular, React, and Next.js for SaaS platforms, AI tools, dashboards, and mobile-first products",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Landing Pages & Business Websites",
+                      description:
+                        "High-converting landing pages and corporate websites built with Angular, React, Framer, and Webflow for startups and enterprises",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Design Systems & Component Libraries",
+                      description:
+                        "Scalable design systems with custom tokens, UI kits, and documented Angular/React components for enterprise teams",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Graphic Design",
+                      description:
+                        "Brand identity, infographics, newsletters, and marketing visuals",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "Motion Graphics & Video Editing",
+                      description:
+                        "2D/3D animations, social media content, and product explainer videos",
+                    },
+                  },
+                  {
+                    "@type": "Offer",
+                    itemOffered: {
+                      "@type": "Service",
+                      name: "UX Audits & Consultation",
+                      description:
+                        "Heuristic analysis, usability testing, and strategic UX recommendations",
+                    },
+                  },
+                ],
+              },
+              sameAs: [
+                "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
+                "https://www.linkedin.com/in/vishal-a-51bb49110",
+                "https://www.behance.net/vishalanand-UI-UX",
+                "https://www.behance.net/UI-Pirate",
+                "https://dribbble.com/vishalanandUIUX",
+                "https://www.upwork.com/agencies/1837026757439552424/",
+                "https://clutch.co/profile/ui-pirate-vishal-anand",
+                "https://x.com/UI_Pirate",
+                "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
+              ],
+            }),
+          }}
+          type="application/ld+json"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "@id": "https://uipirate.com/#website",
+              url: "https://uipirate.com",
+              name: "UI Pirate",
+              description:
+                "Enterprise UI/UX design agency for SaaS & tech companies. Modern, scalable design trusted by Fortune 500.",
+              publisher: { "@id": "https://uipirate.com/#organization" },
+              inLanguage: "en-US",
+            }),
+          }}
+          type="application/ld+json"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SiteNavigationElement",
+              name: [
+                "Case Studies & Portfolio",
+                "About",
+                "Pricing",
+                "Blog",
+                "Contact",
+                "FAQs",
+              ],
+              url: [
+                "https://uipirate.com/case-studies",
+                "https://uipirate.com/about",
+                "https://uipirate.com/pricing",
+                "https://uipirate.com/blogs",
+                "https://uipirate.com/contact",
+                "https://uipirate.com/faqs",
+              ],
+            }),
+          }}
           type="application/ld+json"
         />
 
-        {/* Hreflang for international targeting */}
-        <link href="https://uipirate.com/" hrefLang="en-us" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-gb" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-sg" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-in" rel="alternate" />
-        <link href="https://uipirate.com/" hrefLang="en-au" rel="alternate" />
-        <link
-          href="https://uipirate.com/"
-          hrefLang="x-default"
-          rel="alternate"
-        />
+        {/* AI Data Reference (kept for AI crawlers that do follow links) */}
+        <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
+        <link href="/llms.txt" rel="alternate" type="text/plain" />
+
+        {/* Hreflang for international targeting — self-referential per page,
+            since every locale variant serves the same URL/content. */}
+        <link href={canonicalUrl} hrefLang="en-us" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-gb" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-sg" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-in" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="en-au" rel="alternate" />
+        <link href={canonicalUrl} hrefLang="x-default" rel="alternate" />
 
         {/* Social Media and Business Profile Links for SEO */}
         <link
@@ -153,23 +351,31 @@ export default function RootLayout({
           fontJetBrainsMono.variable,
         )}
       >
-        {/* Skip Link for Keyboard Navigation */}
-        <a className="skip-link sr-only focus:not-sr-only" href="#main-content">
-          Skip to main content
-        </a>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+          {/* Skip Link for Keyboard Navigation */}
+          <a
+            className="skip-link sr-only focus:not-sr-only"
+            href="#main-content"
+          >
+            Skip to main content
+          </a>
 
-        <div className="relative flex flex-col min-h-screen">
-          <PageTransition />
-          <PageLoader>
-            <ConditionalNavbar />
-            <main className="flex-1 min-h-screen pt-24 max-md:pt-16" id="main-content">
-              {children}
-            </main>
-            <Footer />
-          </PageLoader>
-          <SpeedInsights />
-          <CookieConsent />
-        </div>
+          <div className="relative flex flex-col min-h-screen">
+            <PageTransition />
+            <PageLoader>
+              <ConditionalNavbar />
+              <Breadcrumbs />
+              <main className="flex-1 min-h-screen" id="main-content">
+                {children}
+              </main>
+              <ConditionalFooter />
+            </PageLoader>
+            <SpeedInsights />
+            <Analytics />
+            <CookieConsent />
+            <StickyMobileCTA />
+          </div>
+        </Providers>
 
         {/* Google Analytics with Consent Mode - Lazy loaded for better performance */}
         <Script

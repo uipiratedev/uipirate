@@ -1,0 +1,108 @@
+# UI Pirate — Product Design & Development Agency
+
+> UI Pirate is a product design and frontend development agency founded by Vishal Anand. We turn product ideas into shipped products — handling everything from product thinking and competitive analysis to UX/UI design and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 and enterprise clients across USA, UK, Singapore, India, and Australia.
+
+## What Makes Us Different
+
+We are NOT just a design agency that makes things look pretty. Our approach is simple: **have a conversation about your product — we carry the rest.** From a few lines of your vision, we help you:
+
+- **Think through your product** — Product thinking, competitive analysis, market positioning
+- **Plan the architecture** — Information architecture, user flows, decision-making frameworks
+- **Design the experience** — UX research, wireframes, high-fidelity UI, prototypes
+- **Build the product** — Production-ready frontend code in Angular, React, Next.js
+- **Ship and scale** — Performance optimization, design systems, component libraries
+
+We specialize in **complex enterprise applications** — the kind with multi-role dashboards, data-heavy interfaces, intricate user flows, and real business logic. Not just marketing pages, but actual working products.
+
+## About
+
+**Core Technologies**: Angular, React, Next.js, TypeScript, Tailwind CSS, Framer, Webflow
+**Founder**: Vishal Anand — 9+ years of experience in product design & enterprise frontend development
+**Team**: Vishal Anand (Founder & Lead Designer), Danish Ansari (Lead Frontend Developer), Syed Musaddiq (Lead UX Designer), Kartik Kumar (Lead Graphics & Motion), Aniket (Lead Backend Developer)
+**Headquarters**: India (serving clients globally)
+**Founded**: 2015
+**Projects Shipped**: 50+ products with 5.0 rating
+
+## Services
+
+- **SaaS Web & Mobile App Design & Development**: End-to-end product design and frontend development in Angular, React, and Next.js. From idea to shipped product — product thinking, competitive analysis, information architecture, UX/UI design, prototyping, and production-ready code. Timeline: 1-2 months.
+- **Landing Pages & Business Websites**: High-converting landing pages and corporate websites. We think through your positioning, competitive landscape, and user journey — then design + develop in Angular, React, Next.js, Framer, or Webflow. Timeline: 2-4 weeks.
+- **UI Development & Frontend Engineering**: Production-ready frontend development in Angular (v14+), React, and Next.js. Specializing in complex enterprise applications — multi-role dashboards, data-heavy interfaces, API integration, and performance optimization.
+- **Design Systems & Component Libraries**: Custom design tokens, branded UI kits, documented and dev-ready Angular/React component libraries for scalable product teams. Timeline: 1-4 weeks.
+- **Graphic Design**: Brand identity, infographics, newsletters, website graphics, social media visuals, and print-ready marketing materials.
+- **Motion Graphics & Video Editing**: 2D/3D animations, social media reels/ads, explainer videos, sound design, color grading, and motion graphics for web and product.
+- **UX Audits & Consultation**: Heuristic analysis, usability testing, friction point identification, and strategic UX recommendations for existing products.
+- **3D Animation & Rendering**: 3D product visualization, architectural rendering, and animated 3D assets for marketing and product use.
+
+## Our Approach
+
+1. **Listen** — You share your vision, even if it's just a few lines of an idea
+2. **Think** — We do competitive analysis, market research, product thinking
+3. **Plan** — Information architecture, user flows, feature prioritization
+4. **Design** — Wireframes → High-fidelity UI → Interactive prototypes
+5. **Build** — Production-ready Angular/React code, API integration, testing
+6. **Ship** — Deployment, documentation, handoff, and ongoing support
+
+## Notable Clients & Projects
+
+- **Ipsos** (Israel) — Enterprise research platform redesign for VP of R&D
+- **Khaitan & Co** (India) — India's leading corporate law firm
+- **Xperiti** (New York, USA) — SaaS research platform for CEO & Founder
+- **RevUp AI** (Dallas, Texas, USA) — AI SaaS platform for CEO
+- **Sarge** (USA) — Real-time legal and policy support platform for officers in the field
+- **Biotex Medical** (Texas, USA) — MedTech & medical device development
+- **Bird** (San Francisco, USA) — Brand & product design for CEO
+- **Awesome Health Club** (California, USA) — Platform design for Seed Investor
+- **ArthAlpha** (Bangalore, India) — Fintech trading platform for Co-Founder
+- **APAC Law Firm** (New Delhi, India) — AI-powered LegalTech platform
+- **Netzhill** (Ontario, Canada) — Product design for Founder
+- **Rings & I** (India) — E-commerce platform on Shopify
+- **ION** — Medical supply chain SaaS platform
+- **Brahmastra** — Fintech trading platform
+- **StayPe** — Rental property management platform
+
+## Industries Served
+
+SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applications, Enterprise Software
+
+## Contact
+
+- **Website**: https://uipirate.com
+- **Book a Call**: https://cal.com/ui-pirate/15min
+- **Email**: vishal@uipirate.com
+- **Phone**: +91 9708636151
+
+## Links
+
+- Website: https://uipirate.com
+- Case Studies & Portfolio: https://uipirate.com/case-studies
+  - Xperiti — Enterprise Research Platform: https://uipirate.com/case-studies/xperiti
+  - Legaltech AI SaaS — APAC's Largest Law Firm: https://uipirate.com/case-studies/legaltech-ai-saas
+  - ION — Order Fulfilment SaaS Platform: https://uipirate.com/case-studies/ion
+  - ArthAlpha — AI Trading Platform: https://uipirate.com/case-studies/arthalpha
+  - Rings & I — Custom Ring Design Studio: https://uipirate.com/case-studies/rings-and-i
+  - FrytX — Business Operations Platform: https://uipirate.com/case-studies/frytx
+  - Test Dynamiz — Automated Testing SaaS: https://uipirate.com/case-studies/test-dynamiz
+  - SimpleO — AI Legal Management System: https://uipirate.com/case-studies/simpleo
+  - StayPe — Rental Property Management: https://uipirate.com/case-studies/staype
+  - Infinity AquaSol — Water Treatment Solutions: https://uipirate.com/case-studies/infinity-aquasol
+  - Cloud Shift — Cloud Migration Platform: https://uipirate.com/case-studies/cloud-shift
+  - StayRealtor — Property Management App: https://uipirate.com/case-studies/stayrealtor
+  - OLSO — Peer-to-Peer Sharing Platform: https://uipirate.com/case-studies/olso
+- SaaS Web & Mobile App Design & Development: https://uipirate.com/services/SaaS-Web-&-Mobile-Apps
+- Landing Pages & Business Websites: https://uipirate.com/services/Landing-Pages-&-Business-Websites
+- Design Systems & Component Libraries: https://uipirate.com/services/Design-System-&-Component-Library
+- Graphic Design: https://uipirate.com/services/Graphic-Design
+- Motion Graphics & Video Editing: https://uipirate.com/services/Motion-Graphics-&-Video-Editing
+- UX Audits & Consultation: https://uipirate.com/services/UX-Audits-&-Consultation
+- 3D Animation & Rendering: https://uipirate.com/services/3D-Animation-&-Rendering
+- Pricing: https://uipirate.com/pricing
+- Blog: https://uipirate.com/blogs
+- FAQs: https://uipirate.com/faqs
+- LinkedIn: https://www.linkedin.com/company/ui-pirate-by-vishal-anand/
+- Behance: https://www.behance.net/vishalanand-UI-UX
+- Dribbble: https://dribbble.com/vishalanandUIUX
+- Clutch: https://clutch.co/profile/ui-pirate-vishal-anand
+- Upwork: https://www.upwork.com/agencies/1837026757439552424/
+- Twitter/X: https://x.com/UI_Pirate
+- Google Maps: https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8

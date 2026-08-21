@@ -1,7 +1,6 @@
 "use client";
 
 import LandingWork from "../landing/works";
-import TryBeforeCommit from "../pricing/tryBeforeCommit";
 
 import ServiceDetailsHero from "./hero";
 import StreamlinedProcess from "./streamlinedProcess";
@@ -11,21 +10,21 @@ import WhyThisMatters from "./whyThisMatters";
 import WhatYouGetAnimations from "./whatYouGetAnimations";
 
 import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 const ServiceDetails = ({ data }: any) => {
   if (!data) return <div>danis...</div>;
 
   return (
     <PageWrapper showFloatingButton={false}>
-            <div className="space-y-20 max-md:space-y-16">
+      <div className="space-y-20 max-md:space-y-16">
         {data.hero && <ServiceDetailsHero data={data.hero} />}
 
         {data.whatYouGet && (
-          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <div className="container mx-auto">
             <WhatYouGetAnimations data={data.whatYouGet} />
           </div>
         )}
-
 
         {data.whyThisMatters && (
           <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
@@ -33,7 +32,9 @@ const ServiceDetails = ({ data }: any) => {
           </div>
         )}
 
-        {data.streamlinedProcess && <StreamlinedProcess data={data.streamlinedProcess} />}
+        {data.streamlinedProcess && (
+          <StreamlinedProcess data={data.streamlinedProcess} />
+        )}
 
         <div className="container mx-auto">
           <LandingWork />
@@ -46,10 +47,13 @@ const ServiceDetails = ({ data }: any) => {
         )}
 
         {data.recommendedNextSteps && (
-          <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pb-16">
+          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
             <RecommendedNextSteps data={data.recommendedNextSteps} />
           </div>
         )}
+
+        {/* Final CTA for service page */}
+        <GlobalCTA />
       </div>
     </PageWrapper>
   );

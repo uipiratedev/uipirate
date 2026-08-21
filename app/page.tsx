@@ -1,60 +1,51 @@
-"use client";
-
-import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
 
 import Loader from "@/components/loader";
 
-// Dynamically import Landing with no SSR to avoid hydration issues
+// SSR-enabled dynamic import — Google can now crawl the full page content
 const Landing = dynamic(() => import("@/screens/landing"), {
-  ssr: false,
   loading: () => <Loader />,
 });
 
-const LOADER_DURATION = 600;
+// Client-only smooth scroll — doesn't block server rendering
+const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
+  ssr: false,
+});
+
+// Page-specific metadata (overrides layout defaults for the homepage)
+export const metadata: Metadata = {
+  title:
+    "UI Pirate | Product Design & Development Agency — From Idea to Shipped Product",
+  description:
+    "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. We simplify complexity and design for conversion. 50+ products shipped.",
+  keywords:
+    "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS product design, AI app design, enterprise UX design, conversion-focused design, simplify complex products, dashboard design, mobile app UI, web app UX, Vishal Anand",
+  alternates: {
+    canonical: "https://uipirate.com",
+  },
+  openGraph: {
+    title: "UI Pirate | Product Design Agency — From Idea to Shipped Product",
+    description:
+      "Not just designs — we help you think, plan, and build your product. Product thinking, competitive analysis, information architecture & conversion-focused design for complex products.",
+    url: "https://uipirate.com",
+    siteName: "UI Pirate",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UI Pirate | Product Design — Idea to Shipped Product",
+    description:
+      "Product thinking, competitive analysis & conversion-focused design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
+  },
+};
 
 export default function Home() {
-  const [showContent, setShowContent] = useState(false);
-
-  const initSmoothScroll = useCallback(async () => {
-    try {
-      // Initialize global Lenis for smooth scrolling across entire site
-      const Lenis = (await import("lenis")).default;
-      const lenis = new Lenis({
-        duration: 1.0,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 2,
-        infinite: false,
-        wheelMultiplier: 1,
-        lerp: 0.15,
-        syncTouch: true,
-        syncTouchLerp: 0.1,
-      });
-
-	      const raf = (time: number) => {
-	        lenis.raf(time);
-	        requestAnimationFrame(raf);
-	      };
-	      requestAnimationFrame(raf);
-
-      // Store lenis instance globally for ScrollStack and other components to use
-      (window as any).__lenis = lenis;
-    } catch (error) {
-      console.error("Failed to initialize Lenis:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    initSmoothScroll();
-
-    // Show loader for 600ms
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, LOADER_DURATION);
-
-    return () => clearTimeout(timer);
-  }, [initSmoothScroll]);
-
-  return <><Landing /></>;
+  return (
+    <>
+      <SmoothScroll />
+      <Landing />
+    </>
+  );
 }

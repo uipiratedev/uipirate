@@ -1,9 +1,6 @@
 "use client";
 
 import { memo } from "react";
-import FloatingLetsTalkButton from "./FloatingLetsTalkButton";
-
-
 
 interface PageWrapperProps {
   children: React.ReactNode;

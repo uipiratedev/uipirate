@@ -1,34 +1,41 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 import { Navbar } from "@/components/navbar";
 
-const HIDDEN_NAVBAR_PATHS = [
-  "/pro-pirate",
-  "/blogs/create",
-  "/blogs/edit/[id]",
-  "/admin/dashboard",
-  "/admin/dashboard/blogs",
-  "/admin/login",
-] as const;
+const HIDDEN_NAVBAR_PATHS = ["/pro-pirate"] as const;
 
 export const ConditionalNavbar = memo(function ConditionalNavbar() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
 
-  const shouldHideNavbar = useMemo(
-    () => HIDDEN_NAVBAR_PATHS.includes(pathname as typeof HIDDEN_NAVBAR_PATHS[number]),
-    [pathname]
-  );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  if (shouldHideNavbar) {
-    return null;
-  }
+  const shouldHideNavbar = useMemo(() => {
+    const baseHide =
+      pathname.startsWith("/pirateCOS") ||
+      pathname.startsWith("/admin") ||
+      HIDDEN_NAVBAR_PATHS.includes(
+        pathname as (typeof HIDDEN_NAVBAR_PATHS)[number],
+      );
 
-  return (
-    <div className="sticky top-0 z-[999999999] main-navbar">
-      <Navbar />
-    </div>
-  );
+    if (!mounted) {
+      return baseHide;
+    }
+
+    const isSubdomain =
+      typeof window !== "undefined" &&
+      (window.location.hostname.startsWith("cos.") ||
+        window.location.hostname === "cos.uipirate.com");
+
+    return isSubdomain || baseHide;
+  }, [pathname, mounted]);
+
+  if (shouldHideNavbar) return null;
+
+  return <Navbar />;
 });

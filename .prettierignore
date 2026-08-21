@@ -1,0 +1,4 @@
+# Prettier ignore
+# globals.css uses Tailwind @apply with hover:/focus: variants — Prettier
+# incorrectly adds a space after the colon which breaks Tailwind's parser.
+styles/globals.css

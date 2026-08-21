@@ -49,67 +49,9 @@ const GRADIENTS: Gradient[] = [
 ];
 
 /**
- * Get a random gradient from the collection
- * @returns {Gradient} A random gradient object
- */
-export const getRandomGradient = (): Gradient => {
-  const randomIndex = Math.floor(Math.random() * GRADIENTS.length);
-
-  return GRADIENTS[randomIndex];
-};
-
-/**
- * Get a specific gradient by ID (1-based index)
- * @param {number} id - The gradient ID (1-7)
- * @returns {Gradient | null} The gradient object or null if not found
- */
-export const getGradientById = (id: number): Gradient | null => {
-  const gradient = GRADIENTS.find((g) => g.id === id);
-
-  return gradient || null;
-};
-
-/**
- * Get a gradient by ID or return a random one if ID is not provided or invalid
- * @param {number | undefined} id - Optional gradient ID (1-7)
- * @returns {Gradient} A gradient object
- */
-export const getGradient = (id?: number): Gradient => {
-  if (id !== undefined && id !== null) {
-    const gradient = getGradientById(id);
-
-    if (gradient) {
-      return gradient;
-    }
-  }
-
-  return getRandomGradient();
-};
-
-/**
  * Get all available gradients
  * @returns {Gradient[]} Array of all gradients
  */
 export const getAllGradients = (): Gradient[] => {
   return [...GRADIENTS];
-};
-
-/**
- * Get the gradient value (CSS string) by ID or random
- * @param {number | undefined} id - Optional gradient ID (1-7)
- * @returns {string} The gradient CSS value
- */
-export const getGradientValue = (id?: number): string => {
-  return getGradient(id).value;
-};
-
-/**
- * Get multiple random gradients (without duplicates)
- * @param {number} count - Number of gradients to return
- * @returns {Gradient[]} Array of random gradients
- */
-export const getRandomGradients = (count: number): Gradient[] => {
-  const shuffled = [...GRADIENTS].sort(() => Math.random() - 0.5);
-
-  return shuffled.slice(0, Math.min(count, GRADIENTS.length));
 };

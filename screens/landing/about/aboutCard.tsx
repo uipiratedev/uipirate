@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+
 import { useIsMobile } from "@/hooks";
 
 const data = [
@@ -76,17 +77,13 @@ const AboutCardItem = ({
   const x = useTransform(
     scrollYProgress,
     [0, 1],
-    [isEven ? "-30%" : "30%", "0%"]
+    [isEven ? "-30%" : "30%", "0%"],
   );
-  const rotate = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [isEven ? -15 : 15, 0]
-  );
+  const rotate = useTransform(scrollYProgress, [0, 1], [isEven ? -15 : 15, 0]);
   const opacity = useTransform(
     scrollYProgress,
     [0, 1],
-    [isMobile ? 0 : 0.2, 1]
+    [isMobile ? 0 : 0.2, 1],
   );
 
   return (
@@ -103,8 +100,8 @@ const AboutCardItem = ({
         color: isHovered ? item.textHover : "#000",
         transition: "background-color 0.6s ease, color 0.6s ease",
       }}
-      onHoverStart={onHoverStart}
       onHoverEnd={onHoverEnd}
+      onHoverStart={onHoverStart}
     >
       <div className="flex flex-col justify-between h-full">
         <div>
@@ -112,12 +109,12 @@ const AboutCardItem = ({
             {item.heading.split("").map((letter, i) => (
               <motion.span
                 key={`${index}-${i}`}
+                animate={isHovered ? { y: [0, -10, 0] } : { y: 0 }}
                 className="inline-block"
+                initial={{ y: 0 }}
                 style={{
                   color: isHovered ? item.textHover : "#FF5B04",
                 }}
-                initial={{ y: 0 }}
-                animate={isHovered ? { y: [0, -10, 0] } : { y: 0 }}
                 transition={{
                   delay: i * 0.03,
                   duration: 0.4,
@@ -134,7 +131,7 @@ const AboutCardItem = ({
             {item.subtitle1}
             <br />
             {item.subtitle2}
-            <br/>
+            <br />
             {item.subtitle3 && item.subtitle3}
           </p>
           {item.img && (
@@ -160,12 +157,12 @@ const AboutCardAnimation = () => {
         {data.map((item, index) => (
           <AboutCardItem
             key={index}
-            item={item}
-            index={index}
             hoveredIndex={hoveredIndex}
-            onHoverStart={() => setHoveredIndex(index)}
-            onHoverEnd={() => setHoveredIndex(null)}
+            index={index}
             isMobile={isMobile}
+            item={item}
+            onHoverEnd={() => setHoveredIndex(null)}
+            onHoverStart={() => setHoveredIndex(index)}
           />
         ))}
       </div>

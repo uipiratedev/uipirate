@@ -39,19 +39,11 @@ const nextConfig = {
   // Production optimizations
   productionBrowserSourceMaps: false,
 
+  allowedDevOrigins: ["cos.localhost:3000", "localhost:3000"],
+
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ["@heroui/react", "framer-motion"],
-  },
-
-  // Generate sitemap and robots.txt
-  async rewrites() {
-    return [
-      {
-        source: "/sitemap.xml",
-        destination: "/api/sitemap",
-      },
-    ];
   },
 
   // Add security headers, and only add long-term static caching in production

@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@heroui/button";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+
 import { useIsMobile } from "@/hooks";
 import LetsTalkButton from "@/components/LetsTalkButton";
 
@@ -23,7 +23,7 @@ const data = [
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
     url: "https://arthalpha.in/",
   },
-    {
+  {
     heading: "AI LegalTech Saas",
     heading1: "APAC’s largest law firm",
     subtitle:
@@ -66,28 +66,32 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
   const imageScrollProgress = useSpring(imageScrollProgressRaw, {
     stiffness: 800,
     damping: 50,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
   const contentScrollProgress = useSpring(contentScrollProgressRaw, {
     stiffness: 800,
     damping: 50,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   // Image transforms: x and rotation
   const imageX = useTransform(
     imageScrollProgress,
     [0, 1],
-    [isEven ? (isMobile ? "-10%" : "-25%") : (isMobile ? "10%" : "25%"), "0%"]
+    [isEven ? (isMobile ? "-10%" : "-25%") : isMobile ? "10%" : "25%", "0%"],
   );
   const imageRotate = useTransform(
     imageScrollProgress,
     [0, 1],
-    [isEven ? (isMobile ? -5 : -12) : (isMobile ? 5 : 12), 0]
+    [isEven ? (isMobile ? -5 : -12) : isMobile ? 5 : 12, 0],
   );
 
   // Content transform: y position - much smaller on mobile for faster visibility
-  const contentY = useTransform(contentScrollProgress, [0, 1], [isMobile ? 20 : 60, 0]);
+  const contentY = useTransform(
+    contentScrollProgress,
+    [0, 1],
+    [isMobile ? 20 : 60, 0],
+  );
 
   return (
     <div
@@ -124,12 +128,14 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
               {item.subtitle}
             </p>
           </div>
-          <div className={`mt-8 max-md:mt-5 flex ${isEven ? "justify-end" : "justify-start"} max-md:justify-center`}>
+          <div
+            className={`mt-8 max-md:mt-5 flex ${isEven ? "justify-end" : "justify-start"} max-md:justify-center`}
+          >
             <LetsTalkButton
-              variant="light"
               children="View Project"
               href={item.url}
               target="_blank"
+              variant="light"
             />
           </div>
         </div>
@@ -151,7 +157,7 @@ const RecentWorkCard = () => {
   return (
     <div className="">
       {data.map((item, index) => (
-        <WorkCardItem key={index} item={item} index={index} />
+        <WorkCardItem key={index} index={index} item={item} />
       ))}
     </div>
   );

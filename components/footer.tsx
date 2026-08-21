@@ -6,21 +6,22 @@ import { useState } from "react";
 
 import { JoinButtonIcon } from "./JoinButtonIcon";
 import ProPirateFooterSection from "./proPirate";
+import LeadCaptureModal from "./LeadCaptureModal";
+
 import { useClickSound } from "@/hooks/useClickSound";
 
 const footerSocialLinks = [
-
   {
     name: "LinkedIn",
     url: "https://www.linkedin.com/company/ui-pirate-by-vishal-anand/",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/in_ucqlrn.svg",
   },
-    {
+  {
     name: "twitter",
     url: "https://twitter.com/ui_pirate",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/x_n6sgau.svg",
   },
-   {
+  {
     name: "Dribbble",
     url: "https://dribbble.com/vishalanandUIUX",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/redit_v3rdpt.svg",
@@ -35,7 +36,7 @@ const footerSocialLinks = [
     url: "https://www.behance.net/vishalanand-UI-UX",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280706/be_k40rwo.svg",
   },
- 
+
   {
     name: "Clutch",
     url: "https://clutch.co/profile/ui-pirate-vishal-anand",
@@ -52,17 +53,20 @@ const footerSocialLinks = [
 export const Footer: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const playClickSound = useClickSound();
 
   const handleClick = () => {
     playClickSound();
     setIsActive(!isActive);
+    setIsModalOpen(true);
   };
 
   return (
-    <footer id="site-footer" className="relative w-full bg-black/95 pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture ">
-      
-      
+    <footer
+      className="relative w-full bg-black/95 pt-24 max-md:pt-12 overflow-hidden noise-texture noise-texture "
+      id="site-footer"
+    >
       {/* Top Light Effect */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-white via-white/90 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[40vh] bg-white/5 blur-[80px] -translate-y-1/2" />
@@ -78,37 +82,23 @@ export const Footer: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
         >
           {/* Heading */}
-          <h2
-            className="footer-heading"
-          >
-            If you scrolled this far, 
+          <h2 className="footer-heading">If you scrolled this far,</h2>
+          <h2 className="footer-heading">
+            It’s time to{" "}
+            <span className="text-orange-500">Build Something Together</span>
           </h2>
-           <h2
-            className="footer-heading"
-          >
-           
-It’s time to <span className="text-orange-500">Build Something Together</span>
-          </h2>
-        
 
-          {/* JOIN WAITLIST Button with 3D Effect */}
-          {/* JOIN WAITLIST Button with Targeted Scaling & Reflection */}
+          {/* "Lets Venture" button — opens lead capture modal */}
           <div className="flex justify-center">
-            <Link
-            href="https://docs.google.com/forms/d/e/1FAIpQLSd5jCqm79CUcwSaaQ6yPckhFoChN8Aq_m1LWlS_0_BO5iFrkg/viewform"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
             <motion.div
               className="flex flex-col items-center mb-16 max-md:mb-0 mt-6 relative group cursor-pointer w-fit"
+              style={{ perspective: "1000px" }}
               onClick={handleClick}
+              onMouseDown={() => setIsPressed(true)}
               onMouseLeave={() => setIsPressed(false)}
               onMouseUp={() => setIsPressed(false)}
               onTouchEnd={() => setIsPressed(false)}
               onTouchStart={() => setIsPressed(true)}
-              style={{ perspective: "1000px" }}
-              // whileTap={{ scale: 0.99 }}
-              onMouseDown={() => setIsPressed(true)}
             >
               <div className="block relative mt-6">
                 {/* Reflection Sweep Effect (Floating Layer) */}
@@ -127,8 +117,13 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
                 </div>
               </div>
             </motion.div>
-            </Link>
           </div>
+
+          {/* Lead Capture Modal */}
+          <LeadCaptureModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
 
           {/* Background Text - SAAS WEB APP Marquee - Positioned Behind Button */}
           <div
@@ -178,55 +173,157 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-16 text-left pt-12 max-md:pt-10">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-12 text-left pt-12 max-md:pt-10">
             {/* Branding/Tagline Section */}
-            <div className="lg:col-span-5 max-md:col-span-2 flex flex-col gap-8">
-              <p className="text-[18px] md:text-[24px] font-bold text-white leading-[1.3] max-w-sm"
-                
-                 >
-                Premium <span className="text-orange-500  ">UI/UX Design & Development</span> for SaaS & AI Products.
+            <div className="lg:col-span-3 max-md:col-span-2 flex flex-col gap-8">
+              <p className="text-[18px] md:text-[24px] font-bold text-white leading-[1.3] max-w-sm">
+                Premium{" "}
+                <span className="text-orange-500  ">
+                  UI/UX Design & Development
+                </span>{" "}
+                for SaaS & AI Products.
               </p>
-              
-          
             </div>
 
             {/* Quick Links Column */}
             <div className="lg:col-span-2">
-              <h4 className="link-heading">
-                Quick Links
-              </h4>
+              <h4 className="link-heading">Quick Links</h4>
               <ul className="flex flex-col gap-1">
-                <li><Link href="/" className="footer-text">Home</Link></li>
-                <li><Link href="/services" className="footer-text">Services</Link></li>
-                <li><Link href="/works" className="footer-text">Works</Link></li>
-                <li><Link href="/pricing" className="footer-text">Pricing</Link></li>
+                <li>
+                  <Link className="footer-text" href="/">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/case-studies">
+                    Works
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/pricing">
+                    Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/about">
+                    About
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Services Column */}
+            <div className="lg:col-span-3">
+              <h4 className="link-heading">Services</h4>
+              <ul className="flex flex-col gap-1">
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="/services/SaaS-Web-&-Mobile-Apps"
+                  >
+                    UX/UI Design
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="/services/SaaS-Web-&-Mobile-Apps"
+                  >
+                    SaaS & AI Development
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="/services/Landing-Pages-&-Business-Websites"
+                  >
+                    Landing Pages
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/services/Graphic-Design">
+                    Graphic Design
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="/services/Motion-Graphics-&-Video-Editing"
+                  >
+                    Motion Graphics
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="/services/UX-Audits-&-Consultation"
+                  >
+                    UX Audits
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="/services/3D-Animation-&-Rendering"
+                  >
+                    3D Assets & Animation
+                  </Link>
+                </li>
               </ul>
             </div>
 
             {/* Resources Column */}
             <div className="lg:col-span-2">
-              <h4 className="link-heading">
-                Resources
-              </h4>
+              <h4 className="link-heading">Resources</h4>
               <ul className="flex flex-col gap-1">
-                <li><Link href="/blogs" className="footer-text">Blogs</Link></li>
+                <li>
+                  <Link className="footer-text" href="/blogs">
+                    Blogs
+                  </Link>
+                </li>
                 {/* <li><Link href="/case-studies" className="footer-text">Case Studies</Link></li> */}
-                <li><Link href="/community" className="footer-text">Community Insights</Link></li>
-                <li><Link href="/apps4sale" className="footer-text">Apps 4 Sale</Link></li>
-                <li><Link href="/mini-saas-apps" className="footer-text">Mini SaaS Apps</Link></li>
-                <li><Link href="/faqs" className="footer-text">FAQ’s</Link></li>
+                <li>
+                  <Link className="footer-text" href="/community">
+                    Community Insights
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/apps4sale">
+                    Apps 4 Sale
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/mini-saas-apps">
+                    Mini SaaS Apps
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/faqs">
+                    FAQ’s
+                  </Link>
+                </li>
               </ul>
             </div>
 
             {/* Policies Column */}
-            <div className="lg:col-span-3">
-              <h4 className="link-heading">
-                Policies & Legal
-              </h4>
+            <div className="lg:col-span-2">
+              <h4 className="link-heading">Policies & Legal</h4>
               <ul className="flex flex-col gap-1">
-                <li><Link href="/privacy" className="footer-text">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="footer-text">Terms and Conditions</Link></li>
-                <li><Link href="/sitemap" className="footer-text">Site Map</Link></li>
+                <li>
+                  <Link className="footer-text" href="/privacy">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/terms">
+                    Terms and Conditions
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/sitemap">
+                    Site Map
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -236,26 +333,25 @@ It’s time to <span className="text-orange-500">Build Something Together</span>
             <p className="text-[13px] text-white/30 font-medium">
               Copyright©2023 UI Pirate. All Rights Reserved.
             </p>
-              {/* Social Links Sub-section */}
-              <div className="flex items-center gap-4 mt-2">
-                {footerSocialLinks.map((link) => (
-                  <Link
-                key={link.name}
-                isExternal
-                className="group relative transition-all duration-300"
-                href={link.url}
-              >
-                <div className=" flex items-center p-3 max-md:p-2 justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
-                  <img
-                    alt={link.name}
-                    className="w-4 h-4 max-md:w-5 max-md:h-5 brightness-100 group-hover:invert transition-all duration-300"
-                  
-                    src={link.icon}
-                  />
-                </div>
-              </Link>
-                ))}
-              </div>
+            {/* Social Links Sub-section */}
+            <div className="flex items-center gap-4 mt-2">
+              {footerSocialLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  isExternal
+                  className="group relative transition-all duration-300"
+                  href={link.url}
+                >
+                  <div className=" flex items-center p-3 max-md:p-2 justify-center rounded-lg bg-white/5 border border-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                    <img
+                      alt={link.name}
+                      className="w-4 h-4 max-md:w-5 max-md:h-5 brightness-100 group-hover:invert transition-all duration-300"
+                      src={link.icon}
+                    />
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>

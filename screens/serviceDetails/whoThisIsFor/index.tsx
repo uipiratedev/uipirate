@@ -17,9 +17,7 @@ const WhoThisIsFor = ({ data }: any) => {
         <div className="flex items-center justify-center mb-6">
           <GlassBadge variant="gradient">{data.badge}</GlassBadge>
         </div>
-        <h2 className="heading-center">
-          {data.heading}
-        </h2>
+        <h2 className="heading-center">{data.heading}</h2>
       </div>
 
       {/* Cards */}
@@ -37,9 +35,9 @@ const WhoThisIsFor = ({ data }: any) => {
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,#ffffff,transparent_55%)] opacity-60" />
               <img
-                src={item.image}
                 alt={item.heading}
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 max-w-[200px] h-auto"
+                src={item.image}
               />
             </div>
 
@@ -51,7 +49,6 @@ const WhoThisIsFor = ({ data }: any) => {
               <p className="mt-2 text-sm md:text-base leading-relaxed">
                 {item.description}
               </p>
-
             </div>
           </div>
         ))}

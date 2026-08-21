@@ -1,12 +1,47 @@
-import CaseStudies from "@/screens/caseStudies";
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "Case Studies | Coming Soon",
-  description: "Explore our successful projects and design deep dives. Coming soon to UiPirate.",
+import CaseStudies from "@/screens/caseStudies";
+import { listPosts } from "@/lib/pirateCOS/public-client";
+
+// ISR: revalidate every 60s so newly published CMS case studies show up
+// without a full rebuild (matches /blogs).
+export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Case Studies & Portfolio | 50+ Shipped Products",
+  description:
+    "Explore 50+ shipped products and deep-dive case studies — SaaS platforms, enterprise dashboards, AI apps, fintech, and design systems.",
+  keywords:
+    "UI/UX case studies, product design portfolio, SaaS design case study, enterprise design portfolio, Angular development projects, fintech UX design, AI app design case study, design agency portfolio, shipped products",
+  openGraph: {
+    title: "Case Studies & Portfolio | 50+ Shipped Products | UI Pirate",
+    description:
+      "From SaaS platforms to fintech dashboards — 50+ products we designed and developed for enterprise clients globally, with detailed case studies on product thinking, IA, UX/UI and Angular/React development.",
+    url: "https://uipirate.com/case-studies",
+    siteName: "UI Pirate by Vishal Anand",
+    images: [
+      {
+        url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
+        width: 1200,
+        height: 630,
+        alt: "UI Pirate — Case Studies & Portfolio",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://uipirate.com/case-studies",
+  },
 };
 
-const CaseStudiesPage = () => {
-  return <CaseStudies />;
+const CaseStudiesPage = async () => {
+  const cmsCaseStudies = await listPosts({
+    postType: "case-study",
+    limit: 50,
+  });
+
+  return <CaseStudies cmsCaseStudies={cmsCaseStudies} />;
 };
 
 export default CaseStudiesPage;
