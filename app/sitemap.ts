@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 
 import caseStudies from "@/data/case-studies.json";
+import apps4saleProducts from "@/data/apps4sale.json";
 
 /**
  * Dynamic sitemap generation for Next.js App Router.
@@ -35,9 +36,11 @@ const STATIC_PAGES: {
   { path: "/blogs", priority: 0.85, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
   { path: "/faqs", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools/ai-bot-checker", priority: 0.85, changeFrequency: "monthly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
   { path: "/sitemap", priority: 0.3, changeFrequency: "monthly" },
+  { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
 ];
 
 // Service detail pages (from sericesDetailsList.json slugs)
@@ -142,11 +145,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
+    (product) => ({
+      url: `${BASE_URL}/apps4sale/${product.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }),
+  );
+
   return [
     ...staticEntries,
     ...serviceEntries,
     ...caseStudyEntries,
     ...cmsCaseStudyEntries,
     ...blogEntries,
+    ...apps4saleEntries,
   ];
 }

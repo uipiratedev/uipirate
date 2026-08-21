@@ -1,0 +1,93 @@
+[
+  {
+    "slug": "ai-voice-support-system",
+    "title": "AI Voice Support System",
+    "subtitle": "Real-time voice AI for customer conversations",
+    "description": "A ready-to-deploy voice-based AI system that handles customer queries, routes conversations intelligently, and provides instant responses using advanced natural language processing.",
+    "category": "AI Systems",
+    "useCase": "Customer Support",
+    "integration": "API / Full Setup",
+    "whereItFits": "Ideal for SaaS platforms, marketplaces, or services that need scalable, always-on customer support without growing support teams.",
+    "whatYouGet": [
+      { "title": "COMPLETE UI/UX FOR THE SYSTEM", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg" },
+      { "title": "BACKEND LOGIC AND WORKFLOWS", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg" },
+      { "title": "AI INTEGRATION SETUP", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" },
+      { "title": "API OR EMBED-READY MODULE", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" },
+      { "title": "DEPLOYMENT GUIDANCE", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" }
+    ],
+    "capabilities": [
+      "Real-time voice interaction",
+      "Context-aware responses",
+      "Multi-language support",
+      "Integration with existing systems",
+      "Scalable architecture"
+    ],
+    "howItWorks": [
+      { "title": "Plug in", "description": "Connect the module to your product" },
+      { "title": "Configure", "description": "Set up workflows and routing" },
+      { "title": "Connect AI", "description": "Link your preferred AI services" },
+      { "title": "Go live", "description": "Deploy and start handling queries" }
+    ]
+  },
+  {
+    "slug": "smart-onboarding-engine",
+    "title": "Smart Onboarding Engine",
+    "subtitle": "Dynamic, personalized onboarding flows for every user",
+    "description": "A ready-to-deploy onboarding engine that adapts each flow to the user's role, goals, and behavior — replacing static walkthroughs with a system that actually gets people to activation.",
+    "category": "Customer Experience",
+    "useCase": "User Onboarding",
+    "integration": "API / Full Setup",
+    "whereItFits": "Ideal for SaaS products with multiple user roles or complex first-run setup, where a generic onboarding tour leaves too many users stuck before activation.",
+    "whatYouGet": [
+      { "title": "COMPLETE UI/UX FOR THE SYSTEM", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg" },
+      { "title": "BACKEND LOGIC AND WORKFLOWS", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg" },
+      { "title": "FLOW BUILDER & TARGETING RULES", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" },
+      { "title": "API OR EMBED-READY MODULE", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" },
+      { "title": "DEPLOYMENT GUIDANCE", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" }
+    ],
+    "capabilities": [
+      "Role-based flow branching",
+      "Progress tracking & resumption",
+      "Behavioral triggers",
+      "Integration with existing systems",
+      "Scalable architecture"
+    ],
+    "howItWorks": [
+      { "title": "Plug in", "description": "Connect the module to your product" },
+      { "title": "Configure", "description": "Define roles, goals, and flow branches" },
+      { "title": "Set triggers", "description": "Wire up behavioral and time-based rules" },
+      { "title": "Go live", "description": "Deploy and start onboarding users" }
+    ]
+  },
+  {
+    "slug": "piratecos",
+    "title": "PirateCOS",
+    "subtitle": "A multi-tenant content platform for blogs, case studies, and AI-assisted publishing",
+    "description": "A full content operating system for agencies and product teams — write and manage blog posts, tutorials, and case studies from one place, with an AI workspace for drafting and repurposing content, built-in SEO fields, view analytics with bot filtering, and an approval workflow for teams.",
+    "category": "Internal Tools",
+    "useCase": "Content Management & Publishing",
+    "integration": "API / Full Setup",
+    "whereItFits": "Ideal for agencies, SaaS companies, and content-heavy sites that need a real multi-tenant CMS — with team collaboration and AI-assisted drafting built in — without the overhead of wiring up a headless CMS from scratch.",
+    "whatYouGet": [
+      { "title": "MULTI-TENANT CMS ADMIN PANEL", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg" },
+      { "title": "TENANT-SCOPED PUBLIC READ API", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg" },
+      { "title": "AI WORKSPACE FOR DRAFTING & REPURPOSING", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" },
+      { "title": "BUILT-IN SEO FIELDS & SCHEMA", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" },
+      { "title": "DEPLOYMENT GUIDANCE", "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg" }
+    ],
+    "capabilities": [
+      "Multi-tenant content isolation",
+      "Post types: blog, tutorial, case study, and more",
+      "AI-assisted drafting & repurposing",
+      "View analytics with bot & duplicate filtering",
+      "Team assignments & approval workflow",
+      "Per-post SEO metadata and canonical control"
+    ],
+    "howItWorks": [
+      { "title": "Provision a tenant", "description": "Get your own isolated content space" },
+      { "title": "Write & organize", "description": "Draft posts by type, tag, and team" },
+      { "title": "Assist with AI", "description": "Draft, edit, and repurpose with the AI workspace" },
+      { "title": "Publish via API", "description": "Pull published content into your site" }
+    ]
+  }
+]

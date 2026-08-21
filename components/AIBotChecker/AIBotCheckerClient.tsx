@@ -1,0 +1,693 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+interface BotResult {
+  id: string;
+  name: string;
+  company: string;
+  userAgent: string;
+  description: string;
+  color: string;
+  icon: string;
+  status: "allowed" | "blocked" | "partial" | "unknown";
+  allowedPaths: string[];
+  disallowedPaths: string[];
+  crawlDelay?: number;
+  matchedAgent: string | null;
+}
+
+interface CheckResult {
+  domain: string;
+  robotsUrl: string;
+  robotsFound: boolean;
+  rawRobotsTxt: string | null;
+  fetchError: string | null;
+  xRobotsTag: string | null;
+  sitemaps: string[];
+  bots: BotResult[];
+  summary: {
+    total: number;
+    blocked: number;
+    allowed: number;
+    partial: number;
+  };
+}
+
+// ─── Status badge ─────────────────────────────────────────────────────────────
+function StatusBadge({ status }: { status: BotResult["status"] }) {
+  const config = {
+    allowed: {
+      label: "Allowed",
+      bg: "bg-emerald-500/15",
+      text: "text-emerald-400",
+      border: "border-emerald-500/30",
+      dot: "bg-emerald-400",
+    },
+    blocked: {
+      label: "Blocked",
+      bg: "bg-red-500/15",
+      text: "text-red-400",
+      border: "border-red-500/30",
+      dot: "bg-red-400",
+    },
+    partial: {
+      label: "Partial",
+      bg: "bg-amber-500/15",
+      text: "text-amber-400",
+      border: "border-amber-500/30",
+      dot: "bg-amber-400",
+    },
+    unknown: {
+      label: "Unknown",
+      bg: "bg-zinc-500/15",
+      text: "text-zinc-400",
+      border: "border-zinc-500/30",
+      dot: "bg-zinc-400",
+    },
+  }[status];
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${config.bg} ${config.text} ${config.border}`}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full ${config.dot} animate-pulse`} />
+      {config.label}
+    </span>
+  );
+}
+
+// ─── Bot card ─────────────────────────────────────────────────────────────────
+function BotCard({ bot, index }: { bot: BotResult; index: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const hasPaths = bot.allowedPaths.length > 0 || bot.disallowedPaths.length > 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.03, duration: 0.35 }}
+      className={`group relative rounded-xl border transition-all duration-200 overflow-hidden
+        ${bot.status === "blocked" ? "border-red-500/20 hover:border-red-500/40" : ""}
+        ${bot.status === "allowed" ? "border-emerald-500/20 hover:border-emerald-500/40" : ""}
+        ${bot.status === "partial" ? "border-amber-500/20 hover:border-amber-500/40" : ""}
+        ${bot.status === "unknown" ? "border-zinc-700/40 hover:border-zinc-600/60" : ""}
+        bg-[#111113]
+      `}
+    >
+      {/* Subtle left accent */}
+      <div
+        className={`absolute left-0 top-0 bottom-0 w-0.5 transition-opacity duration-200 opacity-60 group-hover:opacity-100
+          ${bot.status === "blocked" ? "bg-red-500" : ""}
+          ${bot.status === "allowed" ? "bg-emerald-500" : ""}
+          ${bot.status === "partial" ? "bg-amber-500" : ""}
+          ${bot.status === "unknown" ? "bg-zinc-500" : ""}
+        `}
+      />
+
+      <div className="pl-4 pr-4 py-3.5 flex items-center gap-3">
+        {/* Icon */}
+        <div
+          className="w-9 h-9 rounded-lg flex items-center justify-center text-lg flex-shrink-0 font-medium"
+          style={{ backgroundColor: `${bot.color}20`, border: `1px solid ${bot.color}30` }}
+        >
+          {bot.icon}
+        </div>
+
+        {/* Info */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-semibold text-white text-sm">{bot.name}</span>
+            {bot.crawlDelay && (
+              <span className="text-xs text-zinc-500 bg-zinc-800 px-1.5 py-0.5 rounded">
+                delay: {bot.crawlDelay}s
+              </span>
+            )}
+          </div>
+          <div className="text-xs text-zinc-500 mt-0.5 truncate">
+            {bot.company} · {bot.description}
+          </div>
+        </div>
+
+        {/* Status + expand */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <StatusBadge status={bot.status} />
+          {hasPaths && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="text-zinc-600 hover:text-zinc-300 transition-colors p-1 rounded"
+              aria-label="Toggle path details"
+            >
+              <svg
+                className={`w-3.5 h-3.5 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Expanded paths */}
+      <AnimatePresence>
+        {expanded && hasPaths && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-3 pt-1 border-t border-zinc-800/50 space-y-2">
+              {bot.disallowedPaths.length > 0 && (
+                <div>
+                  <div className="text-xs font-medium text-red-400 mb-1">Disallowed paths</div>
+                  <div className="space-y-0.5">
+                    {bot.disallowedPaths.map((p, i) => (
+                      <div key={i} className="font-mono text-xs text-zinc-400 bg-red-500/5 border border-red-500/10 rounded px-2 py-0.5">
+                        {p}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {bot.allowedPaths.length > 0 && (
+                <div>
+                  <div className="text-xs font-medium text-emerald-400 mb-1">Allowed paths</div>
+                  <div className="space-y-0.5">
+                    {bot.allowedPaths.map((p, i) => (
+                      <div key={i} className="font-mono text-xs text-zinc-400 bg-emerald-500/5 border border-emerald-500/10 rounded px-2 py-0.5">
+                        {p}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {bot.matchedAgent && (
+                <div className="text-xs text-zinc-600 mt-1">
+                  Matched rule: <span className="font-mono text-zinc-500">{bot.matchedAgent}</span>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// ─── Skeleton loader ──────────────────────────────────────────────────────────
+function SkeletonCard() {
+  return (
+    <div className="rounded-xl border border-zinc-800 bg-[#111113] p-3.5 animate-pulse flex items-center gap-3">
+      <div className="w-9 h-9 rounded-lg bg-zinc-800 flex-shrink-0" />
+      <div className="flex-1 space-y-2">
+        <div className="h-3 bg-zinc-800 rounded w-24" />
+        <div className="h-2.5 bg-zinc-800/60 rounded w-40" />
+      </div>
+      <div className="h-5 w-16 bg-zinc-800 rounded-full flex-shrink-0" />
+    </div>
+  );
+}
+
+// ─── Robots.txt viewer ────────────────────────────────────────────────────────
+function RobotsTxtViewer({ content }: { content: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const copy = () => {
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="relative rounded-xl border border-zinc-800 bg-[#0D0D0F] overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-800">
+        <div className="flex items-center gap-2">
+          <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
+          <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
+          <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
+          <span className="ml-2 text-xs text-zinc-500 font-mono">robots.txt</span>
+        </div>
+        <button
+          onClick={copy}
+          className="text-xs text-zinc-500 hover:text-white transition-colors flex items-center gap-1.5"
+        >
+          {copied ? (
+            <>
+              <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="text-emerald-400">Copied!</span>
+            </>
+          ) : (
+            <>
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              Copy
+            </>
+          )}
+        </button>
+      </div>
+      <pre className="p-4 text-xs text-zinc-400 font-mono overflow-x-auto max-h-72 leading-relaxed whitespace-pre-wrap break-words">
+        {content.split("\n").map((line, i) => {
+          const trimmed = line.trim();
+          let className = "text-zinc-400";
+          if (trimmed.startsWith("#")) className = "text-zinc-600";
+          else if (trimmed.toLowerCase().startsWith("user-agent:")) className = "text-blue-400";
+          else if (trimmed.toLowerCase().startsWith("disallow:")) className = "text-red-400";
+          else if (trimmed.toLowerCase().startsWith("allow:")) className = "text-emerald-400";
+          else if (trimmed.toLowerCase().startsWith("sitemap:")) className = "text-amber-400";
+          else if (trimmed.toLowerCase().startsWith("crawl-delay:")) className = "text-purple-400";
+          return (
+            <span key={i} className={className}>
+              {line}
+              {"\n"}
+            </span>
+          );
+        })}
+      </pre>
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+export default function AIBotCheckerClient() {
+  const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<CheckResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<"all" | "blocked" | "allowed" | "partial">("all");
+  const [showRaw, setShowRaw] = useState(false);
+  const [shareTooltip, setShareTooltip] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-check if url param present
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const presetUrl = params.get("url");
+    if (presetUrl) {
+      setUrl(presetUrl);
+      handleCheck(presetUrl);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleCheck = async (overrideUrl?: string) => {
+    const target = overrideUrl ?? url;
+    if (!target.trim()) {
+      inputRef.current?.focus();
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    setFilter("all");
+
+    try {
+      const res = await fetch(
+        `/api/check-ai-bots?url=${encodeURIComponent(target.trim())}`
+      );
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Something went wrong");
+      } else {
+        setResult(data);
+        setTimeout(() => {
+          resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    } catch {
+      setError("Network error — please try again");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleShare = () => {
+    const shareUrl = `${window.location.origin}/tools/ai-bot-checker?url=${encodeURIComponent(url)}`;
+    navigator.clipboard.writeText(shareUrl);
+    setShareTooltip(true);
+    setTimeout(() => setShareTooltip(false), 2000);
+  };
+
+  const filteredBots = result?.bots.filter((b) =>
+    filter === "all" ? true : b.status === filter
+  ) ?? [];
+
+  const filterCounts = result
+    ? {
+        all: result.bots.length,
+        blocked: result.summary.blocked,
+        allowed: result.summary.allowed,
+        partial: result.summary.partial,
+      }
+    : null;
+
+  return (
+    <div className="min-h-screen bg-[#0A0A0B] text-white">
+      {/* Ambient glow */}
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255,91,4,0.08) 0%, transparent 70%)",
+        }}
+      />
+
+      <div className="relative z-10 max-w-3xl mx-auto px-4 pt-20 pb-32">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-[#FF5B04]/10 border border-[#FF5B04]/20 rounded-full px-4 py-1.5 mb-6">
+            <span className="text-[#FF5B04] text-xs font-semibold tracking-wider uppercase">Free Tool</span>
+            <span className="w-1 h-1 rounded-full bg-[#FF5B04]/50" />
+            <span className="text-zinc-400 text-xs">No sign up required</span>
+          </div>
+
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            <span className="text-white">AI Bot</span>{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #FF5B04 0%, #FF7B34 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Crawler Check
+            </span>
+          </h1>
+          <p className="text-zinc-400 text-lg max-w-xl mx-auto leading-relaxed">
+            Paste any website URL to instantly see which AI bots can crawl it —
+            GPTBot, ClaudeBot, Gemini, Perplexity & 12 more.
+          </p>
+        </motion.div>
+
+        {/* URL Input */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.5 }}
+          className="mb-10"
+        >
+          <div className="relative flex gap-2">
+            <div className="relative flex-1">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
+                </svg>
+              </div>
+              <input
+                ref={inputRef}
+                id="url-input"
+                type="text"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleCheck()}
+                placeholder="nytimes.com or https://example.com"
+                className="w-full bg-[#111113] border border-zinc-800 hover:border-zinc-700 focus:border-[#FF5B04]/60 focus:ring-2 focus:ring-[#FF5B04]/10 rounded-xl pl-10 pr-4 py-4 text-white placeholder:text-zinc-600 transition-all duration-200 outline-none text-sm"
+              />
+            </div>
+            <motion.button
+              id="check-btn"
+              onClick={() => handleCheck()}
+              disabled={loading}
+              whileTap={{ scale: 0.97 }}
+              className="px-6 py-4 rounded-xl font-semibold text-sm text-white disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 flex-shrink-0"
+              style={{
+                background: loading
+                  ? "rgba(255,91,4,0.4)"
+                  : "linear-gradient(135deg, #FF5B04 0%, #E54F00 100%)",
+                boxShadow: loading ? "none" : "0 4px 20px rgba(255,91,4,0.3)",
+              }}
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Checking…
+                </span>
+              ) : (
+                "Check Site"
+              )}
+            </motion.button>
+          </div>
+
+          {/* Example sites */}
+          <div className="flex items-center gap-2 mt-3 flex-wrap">
+            <span className="text-xs text-zinc-600">Try:</span>
+            {["nytimes.com", "openai.com", "github.com", "reddit.com"].map((site) => (
+              <button
+                key={site}
+                onClick={() => {
+                  setUrl(site);
+                  handleCheck(site);
+                }}
+                className="text-xs text-zinc-500 hover:text-[#FF5B04] transition-colors underline underline-offset-2 decoration-zinc-700 hover:decoration-[#FF5B04]/50"
+              >
+                {site}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Error */}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className="mb-6 p-4 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400 text-sm flex items-start gap-3"
+            >
+              <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {error}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Loading skeletons */}
+        {loading && (
+          <div className="space-y-2.5">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        )}
+
+        {/* Results */}
+        <AnimatePresence>
+          {result && !loading && (
+            <motion.div
+              ref={resultsRef}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+            >
+              {/* Summary banner */}
+              <div className="mb-6 rounded-2xl border border-zinc-800 bg-[#111113] p-5">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-zinc-400 text-sm">Results for</span>
+                      <span className="font-mono text-sm font-semibold text-white bg-zinc-800 px-2 py-0.5 rounded">
+                        {result.domain}
+                      </span>
+                    </div>
+                    {result.fetchError && (
+                      <div className="text-xs text-amber-400 mt-1 flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {result.fetchError}
+                      </div>
+                    )}
+                  </div>
+                  {/* Share */}
+                  <div className="relative">
+                    <button
+                      id="share-btn"
+                      onClick={handleShare}
+                      className="flex items-center gap-2 text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-lg px-3 py-2 transition-all duration-200"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                      </svg>
+                      Share results
+                    </button>
+                    {shareTooltip && (
+                      <div className="absolute -top-8 right-0 bg-zinc-800 text-zinc-200 text-xs px-2.5 py-1 rounded-lg whitespace-nowrap">
+                        Link copied!
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Stats row */}
+                <div className="grid grid-cols-3 gap-3 mt-4">
+                  <div className="text-center p-3 rounded-xl bg-red-500/5 border border-red-500/10">
+                    <div className="text-2xl font-bold text-red-400">{result.summary.blocked}</div>
+                    <div className="text-xs text-zinc-500 mt-0.5">Blocked</div>
+                  </div>
+                  <div className="text-center p-3 rounded-xl bg-amber-500/5 border border-amber-500/10">
+                    <div className="text-2xl font-bold text-amber-400">{result.summary.partial}</div>
+                    <div className="text-xs text-zinc-500 mt-0.5">Partial</div>
+                  </div>
+                  <div className="text-center p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/10">
+                    <div className="text-2xl font-bold text-emerald-400">{result.summary.allowed}</div>
+                    <div className="text-xs text-zinc-500 mt-0.5">Allowed</div>
+                  </div>
+                </div>
+
+                {/* X-Robots-Tag */}
+                {result.xRobotsTag && (
+                  <div className="mt-3 p-3 rounded-lg bg-purple-500/5 border border-purple-500/10 flex items-start gap-2">
+                    <svg className="w-3.5 h-3.5 mt-0.5 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z" />
+                    </svg>
+                    <div>
+                      <span className="text-xs font-medium text-purple-400">X-Robots-Tag header: </span>
+                      <span className="font-mono text-xs text-zinc-400">{result.xRobotsTag}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Sitemaps */}
+                {result.sitemaps.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {result.sitemaps.map((sm, i) => (
+                      <a
+                        key={i}
+                        href={sm}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white bg-zinc-800/60 border border-zinc-700 hover:border-zinc-500 rounded-lg px-2.5 py-1 transition-all duration-200"
+                      >
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                        </svg>
+                        Sitemap
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Filter tabs */}
+              <div className="flex gap-2 mb-4 flex-wrap">
+                {(["all", "blocked", "allowed", "partial"] as const).map((f) => {
+                  const count = filterCounts?.[f] ?? 0;
+                  const active = filter === f;
+                  const colors = {
+                    all: active ? "border-zinc-400 text-white" : "border-zinc-800 text-zinc-500",
+                    blocked: active ? "border-red-500/60 text-red-400 bg-red-500/5" : "border-zinc-800 text-zinc-500",
+                    allowed: active ? "border-emerald-500/60 text-emerald-400 bg-emerald-500/5" : "border-zinc-800 text-zinc-500",
+                    partial: active ? "border-amber-500/60 text-amber-400 bg-amber-500/5" : "border-zinc-800 text-zinc-500",
+                  }[f];
+
+                  return (
+                    <button
+                      key={f}
+                      onClick={() => setFilter(f)}
+                      className={`px-3.5 py-1.5 rounded-lg border text-xs font-medium transition-all duration-200 capitalize ${colors}`}
+                    >
+                      {f} <span className="ml-1 opacity-70">({count})</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Bot cards */}
+              <div className="space-y-2">
+                {filteredBots.length === 0 ? (
+                  <div className="text-center py-10 text-zinc-500 text-sm">
+                    No bots match this filter
+                  </div>
+                ) : (
+                  filteredBots.map((bot, i) => (
+                    <BotCard key={bot.id} bot={bot} index={i} />
+                  ))
+                )}
+              </div>
+
+              {/* Raw robots.txt */}
+              {result.rawRobotsTxt && (
+                <div className="mt-6">
+                  <button
+                    id="raw-robots-toggle"
+                    onClick={() => setShowRaw(!showRaw)}
+                    className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors mb-3 group"
+                  >
+                    <svg
+                      className={`w-4 h-4 transition-transform duration-200 ${showRaw ? "rotate-90" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                    Raw robots.txt
+                    <span className="text-xs text-zinc-600 group-hover:text-zinc-500">
+                      ({result.rawRobotsTxt.split("\n").length} lines)
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {showRaw && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <RobotsTxtViewer content={result.rawRobotsTxt} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )}
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-8 p-5 rounded-2xl border border-[#FF5B04]/15 bg-gradient-to-br from-[#FF5B04]/5 to-transparent text-center"
+              >
+                <div className="text-sm font-semibold text-white mb-1">Want real-time AI bot monitoring for your site?</div>
+                <div className="text-xs text-zinc-400 mb-3">
+                  We build AI-ready products at UI Pirate — from design to shipped.
+                </div>
+                <a
+                  id="cta-contact"
+                  href="/contact"
+                  className="inline-flex items-center gap-2 text-xs font-semibold text-[#FF5B04] hover:text-[#FF7B34] transition-colors"
+                >
+                  Talk to us →
+                </a>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
