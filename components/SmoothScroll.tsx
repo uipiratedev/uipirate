@@ -18,12 +18,13 @@ export default function SmoothScroll() {
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 1.2,
         infinite: false,
         wheelMultiplier: 1,
         lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.08,
+        // syncTouch (JS-driven fake touch momentum) removed: it's a known
+        // mobile-jank source and fights the native scroll position that
+        // CSS `animation-timeline: view()` reveals rely on. Touch devices
+        // now use native momentum scroll; Lenis only smooths wheel input.
       });
 
       const raf = (time: number) => {

@@ -32,7 +32,6 @@ interface ScrollStackProps {
   stackPosition?: string;
   scaleEndPosition?: string;
   baseScale?: number;
-  scaleDuration?: number;
   rotationAmount?: number;
   blurAmount?: number;
   useWindowScroll?: boolean;
@@ -48,10 +47,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   stackPosition = "20%",
   scaleEndPosition = "10%",
   baseScale = 0.85,
-  // Used for the sticky-mode (window scroll) transition timing.
-  // Keep this short so the scale/stack feels like it happens at the *stick* moment,
-  // not as a slow animation that plays while the user is still scrolling.
-  scaleDuration = 0.15,
   rotationAmount = 0,
   blurAmount = 0,
   useWindowScroll = false,
@@ -66,6 +61,13 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
   const isUpdatingRef = useRef(false);
   // Store original card positions (before sticky positioning affects getBoundingClientRect)
   const originalCardPositionsRef = useRef<number[]>([]);
+  // will-change is applied only while actively scrolling, and cleared after
+  // scroll settles — a permanent will-change keeps a GPU layer resident for
+  // cards long after they've stopped animating.
+  const isScrollActiveRef = useRef(false);
+  const willChangeIdleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
 
   const calculateProgress = useCallback(
     (scrollTop: number, start: number, end: number) => {
@@ -123,6 +125,23 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     if (!cardsRef.current.length || isUpdatingRef.current) return;
 
     isUpdatingRef.current = true;
+
+    if (!isScrollActiveRef.current) {
+      isScrollActiveRef.current = true;
+      cardsRef.current.forEach((card) => {
+        if (card) card.style.willChange = "transform, filter";
+      });
+    }
+
+    if (willChangeIdleTimeoutRef.current) {
+      clearTimeout(willChangeIdleTimeoutRef.current);
+    }
+    willChangeIdleTimeoutRef.current = setTimeout(() => {
+      isScrollActiveRef.current = false;
+      cardsRef.current.forEach((card) => {
+        if (card) card.style.willChange = "auto";
+      });
+    }, 200);
 
     const { scrollTop, containerHeight } = getScrollData();
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
@@ -402,11 +421,15 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
         card.style.top = `${stackPositionPx}px`;
         // Higher index = higher z-index so later cards appear on top
         card.style.zIndex = `${i + 1}`;
-        // Smooth the discrete stack/scale changes without tying them to scroll distance
-        card.style.transition = `transform ${scaleDuration}s cubic-bezier(0.22, 1, 0.36, 1), filter ${scaleDuration}s ease`;
+        // No CSS transition here: updateCardTransforms already writes a new
+        // transform/filter on every rAF tick during scroll (including the
+        // continuous "past end" release phase). A CSS transition on top of
+        // that made every write restart a 0.15s animation toward the *next*
+        // write before the previous one finished, and made the pin/unpin
+        // boundary flicker when scroll position hovered near the threshold
+        // — the JS-computed value is now applied directly, no lag to fight.
       }
 
-      card.style.willChange = "transform, filter";
       card.style.transformOrigin = "top center";
       card.style.backfaceVisibility = "hidden";
       card.style.transform = "translateZ(0)";
@@ -431,6 +454,9 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (willChangeIdleTimeoutRef.current) {
+        clearTimeout(willChangeIdleTimeoutRef.current);
       }
       if (lenisRef.current) {
         // Only destroy if it's not the global instance
@@ -458,7 +484,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     stackPosition,
     scaleEndPosition,
     baseScale,
-    scaleDuration,
     rotationAmount,
     blurAmount,
     useWindowScroll,
