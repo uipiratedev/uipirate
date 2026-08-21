@@ -8,11 +8,6 @@ const Landing = dynamic(() => import("@/screens/landing"), {
   loading: () => <Loader />,
 });
 
-// Client-only smooth scroll — doesn't block server rendering
-const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
-  ssr: false,
-});
-
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
   title:
@@ -42,10 +37,5 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return (
-    <>
-      <SmoothScroll />
-      <Landing />
-    </>
-  );
+  return <Landing />;
 }
