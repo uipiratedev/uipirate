@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { AI_BOTS, BotInfo, BotCategory } from "@/app/api/check-ai-bots/route";
+import { AI_BOTS, BotInfo, BotCategory } from "@/data/bots";
 
 export default function BotDirectoryClient() {
   const [activeCategory, setActiveCategory] = useState<"all" | BotCategory>("all");
