@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 import LetsTalkButton from "@/components/LetsTalkButton";
 import GlassBadge from "@/components/GlassBadge";
+import products from "@/data/apps4sale.json";
 
 interface IconProps {
   size?: number;
@@ -117,54 +119,6 @@ const Share2 = ({ size = 24, className = "" }: IconProps) => (
   </svg>
 );
 
-// Mock data based on the screenshot
-const mockProduct = {
-  title: "AI Voice Support System",
-  subtitle: "Real-time voice AI for customer conversations",
-  category: "AI System",
-  useCase: "Customer Support",
-  integration: "API / Full Setup",
-  description:
-    "A ready-to-deploy voice-based AI system that handles customer queries, routes conversations intelligently, and provides instant responses using advanced natural language processing.",
-  whereItFits:
-    "Ideal for SaaS platforms, marketplaces, or services that need scalable, always-on customer support without growing support teams.",
-  whatYouGet: [
-    {
-      title: "COMPLETE UI/UX FOR THE SYSTEM",
-      icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-    },
-    {
-      title: "BACKEND LOGIC AND WORKFLOWS",
-      icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1730799888/Code_qedbxu.svg",
-    },
-    {
-      title: "AI INTEGRATION SETUP",
-      icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg",
-    },
-    {
-      title: "API OR EMBED-READY MODULE",
-      icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg",
-    },
-    {
-      title: "DEPLOYMENT GUIDANCE",
-      icon: "https://res.cloudinary.com/damm9iwho/image/upload/v1730799889/AppWindow_m5lr3w.svg",
-    },
-  ],
-  capabilities: [
-    "Real-time voice interaction",
-    "Context-aware responses",
-    "Multi-language support",
-    "Integration with existing systems",
-    "Scalable architecture",
-  ],
-  howItWorks: [
-    { title: "Plug in", description: "Connect the module to your product" },
-    { title: "Configure", description: "Set up workflows and routing" },
-    { title: "Connect AI", description: "Link your preferred AI services" },
-    { title: "Go live", description: "Deploy and start handling queries" },
-  ],
-};
-
 const BracketIcon = () => (
   <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm border border-zinc-100 mb-6">
     <svg
@@ -186,6 +140,12 @@ const BracketIcon = () => (
 );
 
 const Apps4SaleDetails = ({ slug }: { slug: string }) => {
+  const product = products.find((p) => p.slug === slug);
+
+  if (!product) notFound();
+
+  const otherProducts = products.filter((p) => p.slug !== slug).slice(0, 3);
+
   return (
     <div className="min-h-screen  pt-20 pb-20 overflow-hidden container  mx-auto px-32 lg:px-20 max-md:px-4 ">
       <div className="">
@@ -208,7 +168,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
             className="text-[40px] md:text-[64px] font-bold tracking-tight text-zinc-900 mb-4"
             initial={{ opacity: 0, y: 20 }}
           >
-            {mockProduct.title}
+            {product.title}
           </motion.h1>
           <motion.p
             animate={{ opacity: 1, y: 0 }}
@@ -216,7 +176,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
             initial={{ opacity: 0, y: 20 }}
             transition={{ delay: 0.1 }}
           >
-            {mockProduct.subtitle}
+            {product.subtitle}
           </motion.p>
 
           <motion.div
@@ -229,24 +189,20 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
               <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-2">
                 Category
               </p>
-              <p className="text-zinc-700 font-semibold">
-                {mockProduct.category}
-              </p>
+              <p className="text-zinc-700 font-semibold">{product.category}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-2">
                 Use Case
               </p>
-              <p className="text-zinc-700 font-semibold">
-                {mockProduct.useCase}
-              </p>
+              <p className="text-zinc-700 font-semibold">{product.useCase}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold mb-2">
                 Integration
               </p>
               <p className="text-zinc-700 font-semibold">
-                {mockProduct.integration}
+                {product.integration}
               </p>
             </div>
           </motion.div>
@@ -291,7 +247,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
               What this system does
             </h3>
             <p className="text-zinc-500 leading-relaxed text-sm md:text-lg text-center md:text-left">
-              {mockProduct.description}
+              {product.description}
             </p>
           </motion.div>
 
@@ -312,7 +268,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
               Where this fits
             </h3>
             <p className="text-zinc-500 leading-relaxed text-sm md:text-lg">
-              {mockProduct.whereItFits}
+              {product.whereItFits}
             </p>
           </motion.div>
         </div>
@@ -322,7 +278,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
           <h2 className="heading-center mb-6">What you get</h2>
           <div className="bg-[#18181B] p-4 md:p-6 rounded-[32px] md:rounded-[48px] shadow-2xl overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              {mockProduct.whatYouGet.slice(0, 3).map((item, idx) => (
+              {product.whatYouGet.slice(0, 3).map((item, idx) => (
                 <div
                   key={idx}
                   className="bg-[#27272A] p-6 md:p-8 rounded-[12px] md:rounded-[16px] flex flex-col items-center justify-center text-center group hover:bg-[#3F3F46] transition-colors cursor-default"
@@ -341,7 +297,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
               ))}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {mockProduct.whatYouGet.slice(3, 5).map((item, idx) => (
+              {product.whatYouGet.slice(3, 5).map((item, idx) => (
                 <div
                   key={idx}
                   className="bg-[#27272A] p-6 md:p-8 rounded-[12px] md:rounded-[16px] flex flex-col items-center justify-center text-center group hover:bg-[#3F3F46] transition-colors cursor-default"
@@ -366,7 +322,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
         <div className="mb-20 md:mb-32">
           <h2 className="heading-center mb-6">Key capabilities</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap justify-center gap-4 md:gap-6">
-            {mockProduct.capabilities.map((capability, idx) => (
+            {product.capabilities.map((capability, idx) => (
               <motion.div
                 key={idx}
                 className="bg-white p-6 md:p-8 rounded-[32px] border border-[#F3F4F6] shadow-sm flex flex-col items-center justify-center text-center w-full lg:w-[220px]"
@@ -393,7 +349,7 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
             {/* Step Connection Line (Desktop) */}
             <div className="hidden md:block absolute top-[28px] left-[10%] right-[10%] h-[1px] bg-zinc-200" />
 
-            {mockProduct.howItWorks.map((step, idx) => (
+            {product.howItWorks.map((step, idx) => (
               <div
                 key={idx}
                 className="relative z-10 flex flex-col items-center text-center flex-1 w-full max-sm:mb-12"
@@ -471,10 +427,11 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
           <h2 className="heading-center mb-6 mt-5">Check Out Other Tools</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 text-left px-4 md:px-0">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="group p-8 md:p-10 hover:shadow-xl hover:shadow-[#FF5B04]/5 transition-all duration-500 cursor-pointer"
+            {otherProducts.map((other) => (
+              <Link
+                key={other.slug}
+                className="group block p-8 md:p-10 hover:shadow-xl hover:shadow-[#FF5B04]/5 transition-all duration-500 cursor-pointer"
+                href={`/apps4sale/${other.slug}`}
                 style={{
                   borderRadius: "40px",
                   boxShadow: "0px 3px 6px 0px rgba(255, 255, 255, 0.35) inset",
@@ -501,18 +458,12 @@ const Apps4SaleDetails = ({ slug }: { slug: string }) => {
                   </svg>
                 </div>
                 <h3 className="text-lg md:text-2xl font-bold mb-4 text-zinc-900 group-hover:text-[#FF5B04] transition-colors">
-                  {i === 1
-                    ? "AI Voice Support System"
-                    : i === 2
-                      ? "Smart Onboarding Engine"
-                      : "Sales Catalyst"}
+                  {other.title}
                 </h3>
                 <p className="text-zinc-500 leading-relaxed text-sm md:text-base">
-                  {i === 2
-                    ? "Guide users with dynamic, personalized onboarding flows."
-                    : "Handle customer queries with real-time voice AI or scale your sales automation."}
+                  {other.description}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
