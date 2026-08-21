@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 interface BatchSiteResult {
   url: string;
@@ -21,49 +22,54 @@ interface BatchSiteResult {
 
 export default function BatchCheckerClient() {
   const [urlsInput, setUrlsInput] = useState(
-    "nytimes.com\nopenai.com\ngithub.com\nuipirate.com"
+    "nytimes.com\nopenai.com\nanthropic.com\ngithub.com\napple.com"
   );
   const [isScanning, setIsScanning] = useState(false);
   const [results, setResults] = useState<BatchSiteResult[]>([]);
 
-  const handleScan = async () => {
+  const handleBatchScan = async () => {
     const urls = urlsInput
       .split("\n")
       .map((u) => u.trim())
-      .filter(Boolean)
-      .slice(0, 10); // max 10 URLs
+      .filter((u) => u.length > 0)
+      .slice(0, 10);
 
     if (urls.length === 0) return;
 
     setIsScanning(true);
+    const initial: BatchSiteResult[] = urls.map((u) => {
+      let domain = u.replace(/^https?:\/\//i, "").replace(/\/.*$/, "").toLowerCase();
+      return {
+        url: u,
+        domain,
+        score: 0,
+        grade: "-",
+        statusText: "Pending...",
+        blockedCount: 0,
+        allowedCount: 0,
+        robotsFound: false,
+        llmsTxtFound: false,
+        waf: null,
+        loading: true,
+        error: null,
+      };
+    });
+    setResults(initial);
 
-    // Initial placeholder states
-    const initialList: BatchSiteResult[] = urls.map((u) => ({
-      url: u,
-      domain: u.replace(/^https?:\/\//, "").split("/")[0],
-      score: 0,
-      grade: "—",
-      statusText: "Scanning...",
-      blockedCount: 0,
-      allowedCount: 0,
-      robotsFound: false,
-      llmsTxtFound: false,
-      waf: null,
-      loading: true,
-      error: null,
-    }));
-    setResults(initialList);
-
-    // Run scans concurrently
+    // Run scans concurrently with a limit
     await Promise.all(
-      initialList.map(async (item, idx) => {
+      initial.map(async (item, idx) => {
         try {
-          const res = await fetch(`/api/check-ai-bots?url=${encodeURIComponent(item.url)}`);
+          const res = await fetch("/api/check-bot", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: item.url }),
+          });
           const data = await res.json();
-          if (!res.ok) {
+          if (!res.ok || data.error) {
             setResults((prev) => {
               const copy = [...prev];
-              copy[idx] = { ...copy[idx], loading: false, error: data.error || "Failed to reach" };
+              copy[idx] = { ...copy[idx], loading: false, error: data.error || "Failed" };
               return copy;
             });
           } else {
@@ -71,12 +77,11 @@ export default function BatchCheckerClient() {
               const copy = [...prev];
               copy[idx] = {
                 ...copy[idx],
-                domain: data.domain,
-                score: data.score.overallScore,
-                grade: data.score.grade,
-                statusText: data.score.statusText,
-                blockedCount: data.summary.blocked,
-                allowedCount: data.summary.allowed,
+                score: data.summary.score,
+                grade: data.summary.grade,
+                statusText: data.summary.statusText,
+                blockedCount: data.summary.blockedCount,
+                allowedCount: data.summary.allowedCount,
                 robotsFound: data.robotsFound,
                 llmsTxtFound: data.llmsTxtFound,
                 waf: data.wafInfo.detected ? data.wafInfo.provider : null,
@@ -100,33 +105,43 @@ export default function BatchCheckerClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-16">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Batch GEO Audit
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">Multi-URL Comparison</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">BATCH GEO &amp; MULTI-DOMAIN AUDIT</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
-            Batch AI <span className="text-[#FF5B04]">Crawler & Score</span> Checker
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
+            Batch AI <span className="text-[#FF5B04]">Crawler &amp; Score</span> Checker
           </h1>
-          <p className="sub-header">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Audit multiple competitor websites or client domains at once. Compare GEO Visibility Scores, robots.txt status, and blocked crawlers side-by-side.
           </p>
         </motion.div>
 
         {/* Input box */}
-        <div className="max-w-2xl mx-auto mb-10 bg-white border border-gray-200 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="w-full max-w-3xl mx-auto mb-12 bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
           <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider font-jakarta">
             Enter URLs to audit (One per line, up to 10)
           </label>
@@ -138,7 +153,7 @@ export default function BatchCheckerClient() {
             className="w-full p-4 rounded-xl border border-gray-200 text-xs font-mono text-gray-800 outline-none focus:border-[#FF5B04]"
           />
           <button
-            onClick={handleScan}
+            onClick={handleBatchScan}
             disabled={isScanning}
             className="w-full py-3 rounded-xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-sm font-semibold transition-colors disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-[#FF5B04]/15"
           >

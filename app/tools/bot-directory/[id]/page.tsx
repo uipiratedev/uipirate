@@ -35,6 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+import GlassBadge from "@/components/GlassBadge";
+
 export default async function BotDetailPage({ params }: Props) {
   const { id } = await params;
   const bot = getBotById(id);
@@ -84,20 +86,33 @@ export default async function BotDetailPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Hero Card */}
-        <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm mb-8">
+        <div className="bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-3xl p-6 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.04)] mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <div className="flex items-center gap-3 mb-2 flex-wrap">
-                <span className="text-[11px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-gray-100 text-gray-700">
-                  {bot.categoryLabel}
-                </span>
+              <div className="flex items-center gap-3 mb-3 flex-wrap">
+                <GlassBadge variant="gradient">{bot.categoryLabel}</GlassBadge>
                 <span
                   className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${
                     bot.safetyRating === "Safe & Legitimate"
@@ -112,7 +127,7 @@ export default async function BotDetailPage({ params }: Props) {
                 </span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 font-jakarta tracking-tight mt-2">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-[800] text-gray-900 font-jakarta tracking-tight mt-2">
                 {bot.name}
               </h1>
               <p className="text-sm text-gray-600 max-w-2xl mt-3 leading-relaxed">
@@ -123,8 +138,8 @@ export default async function BotDetailPage({ params }: Props) {
             {/* Quick Audit CTA Button */}
             <div className="flex-shrink-0">
               <Link
-                href={`/tools/ai-bot-checker`}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all shadow-md shadow-[#FF5B04]/15"
+                href={`/tools/ai/ai-bot-checker`}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all shadow-md shadow-[#FF5B04]/20"
               >
                 <span>Audit Your Site for {bot.name}</span>
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

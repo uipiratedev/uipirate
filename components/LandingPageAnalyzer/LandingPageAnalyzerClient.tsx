@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 interface ConversionMetric {
   name: string;
@@ -89,32 +90,42 @@ export default function LandingPageAnalyzerClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10 max-w-3xl mx-auto"
+          className="text-center mb-10 w-full max-w-5xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Conversion Rate Optimizer
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">For B2B & Landing Pages</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">CONVERSION RATE OPTIMIZER</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
-            Landing Page UX & <span className="text-[#FF5B04]">Conversion</span> Analyzer
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+            Landing Page UX &amp; <span className="text-[#FF5B04]">Conversion</span> Analyzer
           </h1>
-          <p className="sub-header">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Audit your landing page headline, CTA visibility, social proof density, and cognitive friction to simulate 0–100 conversion probability.
           </p>
 
-          {/* Integrated Capability Badges (Merged Modules) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
+          {/* Integrated Capability Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
             {[
               "0–100 Conversion Probability Score",
               "Website UX & Hierarchy Audit",
@@ -124,7 +135,7 @@ export default function LandingPageAnalyzerClient() {
             ].map((badge, idx) => (
               <span
                 key={idx}
-                className="text-[11px] font-mono px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 shadow-2xs flex items-center gap-1.5"
+                className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-gray-200/80 text-gray-700 shadow-2xs flex items-center gap-1.5"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
                 {badge}
@@ -132,34 +143,43 @@ export default function LandingPageAnalyzerClient() {
             ))}
           </div>
 
-          {/* Development Notice */}
-          <div className="mt-6 inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-2xl px-4 py-2 text-xs text-amber-900">
-            <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <span>
-              <strong>Deep CRO Engine in Active Development</strong> — Currently running v1 heuristic preview. To get custom high-converting page wireframes,{" "}
-              <Link href="/contact" className="text-[#FF5B04] underline font-bold hover:text-[#E54F00]">
-                request a full manual teardown →
-              </Link>
-            </span>
+          {/* Engine Status & Consultation Callout */}
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+            >
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                V1 Engine
+              </span>
+              <span className="text-gray-600 font-medium">
+                Running automated heuristics. Want bespoke high-converting page wireframes?
+              </span>
+              <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
+                <span>Request teardown</span>
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
           </div>
         </motion.div>
 
         {/* Input Box */}
-        <div className="max-w-2xl mx-auto mb-12">
-          <form onSubmit={analyzeLandingPage} className="flex gap-2 bg-white border border-gray-200 rounded-2xl p-2 shadow-sm focus-within:border-[#FF5B04]/40 focus-within:shadow-md transition-all">
+        <div className="w-full max-w-3xl mx-auto mb-12">
+          <form onSubmit={analyzeLandingPage} className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="yoursite.com or yoursite.com/landing-page"
-              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta"
+              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta placeholder:text-gray-400"
             />
             <button
               type="submit"
               disabled={loading || !url.trim()}
-              className="px-6 py-3 rounded-xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/15"
+              className="px-6 py-3 rounded-full bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/20"
             >
               {loading ? (
                 <>
@@ -203,7 +223,7 @@ export default function LandingPageAnalyzerClient() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-5xl mx-auto space-y-8"
+            className="w-full space-y-8"
           >
             {/* Score Card */}
             <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
@@ -271,12 +291,12 @@ export default function LandingPageAnalyzerClient() {
         )}
 
         {/* Detailed Landing Page Content / Educational Guide */}
-        <section className="max-w-5xl mx-auto mt-20 pt-12 border-t border-gray-200">
+        <section className="w-full mt-20 pt-12 border-t border-gray-200">
           <div className="text-center mb-12">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
               High-Velocity Principles
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
               The 4 Pillars of High-Converting B2B Landing Pages
             </h2>
             <p className="text-xs text-gray-500 max-w-2xl mx-auto mt-2 leading-relaxed">
@@ -285,23 +305,23 @@ export default function LandingPageAnalyzerClient() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">5-Second Clarity Test</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">5-Second Clarity Test</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Can a visitor understand who the product is for and what problem it solves in under 5 seconds without scrolling?
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Visual Product Proof</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Visual Product Proof</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Replace generic abstract illustrations with crisp UI screenshots, interactive playgrounds, and animated product tours.
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Objection Pre-emption</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Objection Pre-emption</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Address security, pricing transparency, migration time, and integration compatibility before asking for a commitment.
               </p>
@@ -310,7 +330,7 @@ export default function LandingPageAnalyzerClient() {
         </section>
 
         {/* Suggested Tools */}
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full">
           <SuggestedTools currentToolId="landing-page-analyzer" />
         </div>
       </div>

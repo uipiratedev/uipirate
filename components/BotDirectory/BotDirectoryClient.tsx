@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { AI_BOTS, BotInfo, BotCategory } from "@/data/bots";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 export default function BotDirectoryClient() {
   const [activeCategory, setActiveCategory] = useState<"all" | BotCategory>("all");
@@ -24,40 +25,50 @@ export default function BotDirectoryClient() {
   }, [activeCategory, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-16">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Crawler Database
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">26+ Verified User-Agents</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">AI BOT &amp; USER-AGENT REGISTRY</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
-            AI Crawler & Bot <span className="text-[#FF5B04]">Directory</span>
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
+            AI Crawler &amp; Bot <span className="text-[#FF5B04]">Directory</span>
           </h1>
-          <p className="sub-header">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Searchable encyclopedia of AI crawlers, LLM training bots, search engines, and scrapers. Look up exact User-Agents, operators, and behaviors.
           </p>
         </motion.div>
 
         {/* Search & Filter Bar */}
-        <div className="max-w-4xl mx-auto mb-8 space-y-4">
+        <div className="w-full max-w-4xl mx-auto mb-8 space-y-4">
           <div className="relative">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by crawler name, company, or User-Agent token (e.g. OpenAI, Google, GPTBot)..."
-              className="w-full px-4 py-3.5 pl-11 rounded-2xl border border-gray-200 bg-white text-sm text-gray-900 outline-none focus:border-[#FF5B04] shadow-sm font-jakarta"
+              className="w-full px-5 py-3.5 pl-12 rounded-full border border-gray-200 bg-white/95 backdrop-blur-md text-sm text-gray-900 outline-none focus:border-[#FF5B04] shadow-[0_4px_20px_rgba(0,0,0,0.04)] font-jakarta placeholder:text-gray-400"
             />
             <svg
               className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
@@ -97,7 +108,7 @@ export default function BotDirectoryClient() {
         </div>
 
         {/* Directory Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
           {filteredBots.map((bot, i) => (
             <motion.div
               key={bot.id}

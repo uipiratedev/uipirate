@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 
+export type ToolCategory = "saas-product" | "website-conversion" | "ai-geo" | "design-system";
+
 export interface SuggestedToolItem {
   id: string;
   href: string;
   title: string;
-  category: "saas-product" | "website-conversion" | "ai-geo" | "design-system";
+  category: ToolCategory;
   categoryLabel: string;
   description: string;
   ctaLabel: string;
@@ -581,27 +583,27 @@ export default function SuggestedTools({ currentToolId, category }: SuggestedToo
       {/* Row 1: Related in Same Category */}
       {sameCategoryTools.length > 0 && (
         <div>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-[#FF5B04]" />
+          <div className="flex items-center gap-2 mb-5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FF5B04]" />
             <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
               Related in {sameCategoryTools[0].categoryLabel}
             </h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {sameCategoryTools.map((tool) => (
               <Link
                 key={tool.id}
                 href={tool.href}
-                className="group bg-white border border-gray-200 hover:border-[#FF5B04]/40 hover:shadow-lg rounded-2xl p-5 flex flex-col justify-between transition-all"
+                className="group bg-white border border-[#E5E7EB] hover:border-[#FF5B04]/50 rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] flex flex-col justify-between transition-all duration-300"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="w-9 h-9 rounded-xl bg-[#FF5B04]/8 text-[#FF5B04] group-hover:bg-[#FF5B04]/15 flex items-center justify-center transition-colors">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-2xl bg-[#FF5B04]/8 text-[#FF5B04] group-hover:bg-[#FF5B04] group-hover:text-white flex items-center justify-center transition-all duration-300 [&>svg]:w-5 [&>svg]:h-5">
                       {tool.icon}
                     </div>
                     {tool.badge && (
                       <span
-                        className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border ${
+                        className={`text-[9px] font-mono font-bold uppercase px-2.5 py-0.5 rounded-full border ${
                           tool.badge === "Popular"
                             ? "text-[#FF5B04] bg-[#FF5B04]/8 border-[#FF5B04]/30"
                             : tool.badge === "Preview Available"
@@ -615,15 +617,15 @@ export default function SuggestedTools({ currentToolId, category }: SuggestedToo
                       </span>
                     )}
                   </div>
-                  <h4 className="text-sm font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-1">
+                  <h4 className="text-base font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-1.5 leading-snug">
                     {tool.title}
                   </h4>
                   <p className="text-xs text-gray-500 leading-relaxed">{tool.description}</p>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between">
                   <span className="text-[10px] text-gray-400 font-mono">{tool.categoryLabel}</span>
-                  <span className="text-xs font-bold text-[#FF5B04] group-hover:translate-x-0.5 transition-transform">
+                  <span className="text-xs font-bold text-[#FF5B04] group-hover:translate-x-1 transition-transform">
                     {tool.ctaLabel} →
                   </span>
                 </div>
@@ -636,27 +638,27 @@ export default function SuggestedTools({ currentToolId, category }: SuggestedToo
       {/* Row 2: Recommended from Other Categories */}
       {otherCategoryTools.length > 0 && (
         <div>
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="flex items-center gap-2 mb-5">
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
             <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
               Recommended from Other Categories
             </h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {otherCategoryTools.map((tool) => (
               <Link
                 key={tool.id}
                 href={tool.href}
-                className="group bg-white border border-gray-200 hover:border-[#FF5B04]/40 hover:shadow-lg rounded-2xl p-5 flex flex-col justify-between transition-all"
+                className="group bg-white border border-[#E5E7EB] hover:border-blue-400 rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] flex flex-col justify-between transition-all duration-300"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-[#FF5B04]/10 group-hover:text-[#FF5B04] flex items-center justify-center transition-colors">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center transition-all duration-300 [&>svg]:w-5 [&>svg]:h-5">
                       {tool.icon}
                     </div>
                     {tool.badge && (
                       <span
-                        className={`text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded-full border ${
+                        className={`text-[9px] font-mono font-bold uppercase px-2.5 py-0.5 rounded-full border ${
                           tool.badge === "Popular"
                             ? "text-[#FF5B04] bg-[#FF5B04]/8 border-[#FF5B04]/30"
                             : tool.badge === "Preview Available"
@@ -670,15 +672,15 @@ export default function SuggestedTools({ currentToolId, category }: SuggestedToo
                       </span>
                     )}
                   </div>
-                  <h4 className="text-sm font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-1">
+                  <h4 className="text-base font-bold text-gray-900 group-hover:text-blue-700 transition-colors font-jakarta mb-1.5 leading-snug">
                     {tool.title}
                   </h4>
                   <p className="text-xs text-gray-500 leading-relaxed">{tool.description}</p>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
+                <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between">
                   <span className="text-[10px] text-gray-400 font-mono">{tool.categoryLabel}</span>
-                  <span className="text-xs font-bold text-[#FF5B04] group-hover:translate-x-0.5 transition-transform">
+                  <span className="text-xs font-bold text-blue-700 group-hover:translate-x-1 transition-transform">
                     {tool.ctaLabel} →
                   </span>
                 </div>

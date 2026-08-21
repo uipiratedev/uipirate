@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 interface UxPillar {
   name: string;
@@ -123,58 +124,96 @@ export default function SaasUxAuditClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10 max-w-3xl mx-auto"
+          className="text-center mb-10 max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Product UX Analyzer
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">For SaaS & Web Apps</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">PRODUCT UX &amp; FRICTION AUDIT</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
-            SaaS Product <span className="text-[#FF5B04]">UX & Friction</span> Audit
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+            SaaS Product <span className="text-[#FF5B04]">UX &amp; Friction</span> Audit
           </h1>
-          <p className="sub-header">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Audit your SaaS app, dashboard, or portal. Get an instant 0–100 Product Experience Score across onboarding, navigation, and cognitive friction.
           </p>
 
-          {/* Development Notice */}
-          <div className="mt-6 inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-2xl px-4 py-2 text-xs text-amber-900">
-            <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <span>
-              <strong>Deep Scan Engine in Active Development</strong> — Currently running v1 heuristic preview. For a comprehensive multi-screen audit,{" "}
-              <Link href="/contact" className="text-[#FF5B04] underline font-bold hover:text-[#E54F00]">
-                request a full manual audit →
-              </Link>
-            </span>
+          {/* Integrated Capability Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+            {[
+              "Onboarding & Time-to-Value (TTV)",
+              "Information Architecture & Menus",
+              "Cognitive Load & Friction Scan",
+              "Mobile Responsive Dashboard",
+              "Design System Consistency",
+            ].map((badge, idx) => (
+              <span
+                key={idx}
+                className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-gray-200/80 text-gray-700 shadow-2xs flex items-center gap-1.5"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                {badge}
+              </span>
+            ))}
+          </div>
+
+          {/* Engine Status & Consultation Callout */}
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+            >
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                V1 Engine
+              </span>
+              <span className="text-gray-600 font-medium">
+                Running automated heuristics. Need an in-depth multi-screen SaaS UX audit?
+              </span>
+              <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
+                <span>Book senior audit</span>
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
           </div>
         </motion.div>
 
         {/* Input Box */}
-        <div className="max-w-2xl mx-auto mb-12">
-          <form onSubmit={runAudit} className="flex gap-2 bg-white border border-gray-200 rounded-2xl p-2 shadow-sm focus-within:border-[#FF5B04]/40 focus-within:shadow-md transition-all">
+        <div className="w-full max-w-3xl mx-auto mb-12">
+          <form onSubmit={runAudit} className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="app.yourproduct.com or yourproduct.com"
-              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta"
+              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta placeholder:text-gray-400"
             />
             <button
               type="submit"
               disabled={loading || !url.trim()}
-              className="px-6 py-3 rounded-xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/15"
+              className="px-6 py-3 rounded-full bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/20"
             >
               {loading ? (
                 <>
@@ -182,7 +221,7 @@ export default function SaasUxAuditClient() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  Analyzing UX…
+                  <span>Analyzing UX…</span>
                 </>
               ) : (
                 <>
@@ -218,7 +257,7 @@ export default function SaasUxAuditClient() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-5xl mx-auto space-y-8"
+            className="w-full space-y-8"
           >
             {/* Score Overview Card */}
             <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
@@ -337,12 +376,12 @@ export default function SaasUxAuditClient() {
         )}
 
         {/* Detailed Landing Page Content / Educational Guide */}
-        <section className="max-w-5xl mx-auto mt-20 pt-12 border-t border-gray-200">
+        <section className="w-full mt-20 pt-12 border-t border-gray-200">
           <div className="text-center mb-12">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
               Methodology & Guide
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
               How UI Pirate Audits SaaS & Web Applications
             </h2>
             <p className="text-xs text-gray-500 max-w-2xl mx-auto mt-2 leading-relaxed">
@@ -351,23 +390,23 @@ export default function SaasUxAuditClient() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Time-to-Value & Activation</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Time-to-Value & Activation</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 We measure how many minutes and form fields stand between signup completion and the user’s first "Aha!" moment.
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Information Architecture</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Information Architecture</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Organizing sidebars and multi-tenant permissions by job-to-be-done rather than back-end database schemas.
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Conversion & Retention</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Conversion & Retention</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Elevating high-impact features, standardizing interactive components, and reducing upgrade paywall friction.
               </p>
@@ -376,7 +415,7 @@ export default function SaasUxAuditClient() {
         </section>
 
         {/* Suggested Tools */}
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full">
           <SuggestedTools currentToolId="saas-ux-audit" />
         </div>
       </div>

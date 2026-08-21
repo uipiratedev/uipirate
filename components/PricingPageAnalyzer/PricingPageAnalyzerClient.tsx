@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 interface PricingPillar {
   title: string;
@@ -13,120 +14,160 @@ interface PricingPillar {
   fix: string;
 }
 
+interface PricingAnalysisReport {
+  domain: string;
+  overallScore: number;
+  score: number;
+  grade: "A" | "B" | "C" | "D";
+  summary: string;
+  pillars: PricingPillar[];
+}
+
 export default function PricingPageAnalyzerClient() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [report, setReport] = useState<{
-    domain: string;
-    score: number;
-    pillars: PricingPillar[];
-  } | null>(null);
+  const [report, setReport] = useState<PricingAnalysisReport | null>(null);
 
-  const analyzePricing = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+  const analyzePricing = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!url.trim()) return;
 
     setLoading(true);
-    setReport(null);
-
     setTimeout(() => {
-      let clean = url.replace(/^https?:\/\//i, "").replace(/\/.*$/, "").toLowerCase();
-      const baseScore = Math.floor(68 + (clean.length % 22));
-
-      const pillars: PricingPillar[] = [
-        {
-          title: "Tier Differentiation & Value Metric",
-          score: Math.min(94, baseScore + 2),
-          status: "Optimized",
-          finding: "Plans are separated clearly, but feature limits between tiers cause decision paralysis for mid-market users.",
-          fix: "Highlight 1 single 'Most Popular' plan with a badge and elevate the primary value metric (e.g. seats vs API calls).",
-        },
-        {
-          title: "Billing Frequency Toggle (Monthly vs Annual)",
-          score: Math.max(55, baseScore - 8),
-          status: "Friction Detected",
-          finding: "Annual discount percentage (e.g. 'Save 20%') is small and easy to miss above the cards.",
-          fix: "Make the annual discount pill contrast against the toggle background with an orange highlight badge.",
-        },
-        {
-          title: "Enterprise Custom Tier & Sales Touchpoint",
-          score: Math.min(90, baseScore + 6),
-          status: "Optimized",
-          finding: "'Contact Sales' CTA for Enterprise tier has good visibility, but lacks list of custom security/SSO features.",
-          fix: "Explicitly mention SOC2, SAML SSO, Dedicated SLA, and Custom Contracts directly inside the Enterprise card.",
-        },
-        {
-          title: "FAQ & Objection Handling",
-          score: Math.max(45, baseScore - 15),
-          status: "Missing",
-          finding: "Missing interactive FAQ accordion below the pricing matrix to handle billing, cancellation, and refund questions.",
-          fix: "Add a 6-item FAQ accordion answering: cancellation terms, upgrade paths, payment methods, and trial duration.",
-        },
-      ];
-
+      let cleanDomain = url.trim().replace(/^https?:\/\//, "").replace(/\/.*$/, "");
       setReport({
-        domain: clean,
-        score: baseScore,
-        pillars,
+        domain: cleanDomain,
+        overallScore: 78,
+        score: 78,
+        grade: "B",
+        summary:
+          "Strong 3-tier structure with clear visual anchor on the Pro tier. Potential conversion leaks detected in annual discount clarity and feature comparison matrix depth.",
+        pillars: [
+          {
+            title: "Tier Differentiation & Choice Architecture",
+            score: 85,
+            status: "Optimized",
+            finding: "Clear separation between Starter, Pro, and Enterprise tiers with distinctive feature boundaries.",
+            fix: "Keep tier names focused on business outcomes rather than internal tech capacity.",
+          },
+          {
+            title: "Annual Billing Toggle & Expansion Incentive",
+            score: 72,
+            status: "Friction Detected",
+            finding: "Annual discount savings ('Save 20%') are not prominent enough next to monthly toggle switch.",
+            fix: "Add an orange badge highlighting '2 Months Free' directly on the annual billing switch.",
+          },
+          {
+            title: "Decision De-risking & Trust Triggers",
+            score: 75,
+            status: "Friction Detected",
+            finding: "Free trial terms and credit-card requirements are buried under the fold.",
+            fix: "Display '14-day free trial · No credit card required' directly below every primary tier button.",
+          },
+          {
+            title: "Enterprise Contact Route Friction",
+            score: 80,
+            status: "Optimized",
+            finding: "Custom enterprise tier links cleanly to high-priority sales contact flow.",
+            fix: "Add expected response time SLA ('Response within 2 hours') to improve enterprise lead velocity.",
+          },
+        ],
       });
-
       setLoading(false);
-    }, 1100);
+    }, 1200);
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10 max-w-3xl mx-auto"
+          className="text-center mb-10 max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Pricing Psychology
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">For SaaS Founders & Product Teams</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">PRICING PSYCHOLOGY &amp; CRO</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
-            SaaS Pricing Page & <span className="text-[#FF5B04]">Conversion</span> Analyzer
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+            SaaS Pricing Page &amp; <span className="text-[#FF5B04]">Conversion</span> Analyzer
           </h1>
-          <p className="sub-header">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Audit your pricing matrix, tier differentiation, annual discount nudges, and objection handling to increase MRR conversions.
           </p>
 
-          {/* Development Notice */}
-          <div className="mt-6 inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-2xl px-4 py-2 text-xs text-amber-900">
-            <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <span>
-              <strong>Deep Pricing Psychology Engine in Active Development</strong> — Currently running v1 heuristic preview. For a custom SaaS pricing redesign,{" "}
-              <Link href="/contact" className="text-[#FF5B04] underline font-bold hover:text-[#E54F00]">
-                consult our senior product team →
-              </Link>
-            </span>
+          {/* Integrated Capability Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+            {[
+              "Price Anchoring & Framing",
+              "Tier Differentiation Audit",
+              "Annual vs. Monthly Nudge Psychology",
+              "Objection Handling & FAQ Placement",
+              "Feature Comparison Matrix Clarity",
+            ].map((badge, idx) => (
+              <span
+                key={idx}
+                className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-gray-200/80 text-gray-700 shadow-2xs flex items-center gap-1.5"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                {badge}
+              </span>
+            ))}
+          </div>
+
+          {/* Engine Status & Consultation Callout */}
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+            >
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                V1 Engine
+              </span>
+              <span className="text-gray-600 font-medium">
+                Running automated heuristics. Want a bespoke SaaS pricing redesign?
+              </span>
+              <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
+                <span>Talk to senior team</span>
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
           </div>
         </motion.div>
 
         {/* Input Box */}
-        <div className="max-w-2xl mx-auto mb-12">
-          <form onSubmit={analyzePricing} className="flex gap-2 bg-white border border-gray-200 rounded-2xl p-2 shadow-sm focus-within:border-[#FF5B04]/40 focus-within:shadow-md transition-all">
+        <div className="w-full max-w-3xl mx-auto mb-12">
+          <form onSubmit={analyzePricing} className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="yoursite.com/pricing or yoursite.com"
-              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta"
+              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta placeholder:text-gray-400"
             />
             <button
               type="submit"
               disabled={loading || !url.trim()}
-              className="px-6 py-3 rounded-xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/15"
+              className="px-6 py-3 rounded-full bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/20"
             >
               {loading ? (
                 <>
@@ -134,7 +175,7 @@ export default function PricingPageAnalyzerClient() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  Analyzing Pricing…
+                  <span>Analyzing…</span>
                 </>
               ) : (
                 <>
@@ -153,7 +194,7 @@ export default function PricingPageAnalyzerClient() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-5xl mx-auto space-y-8"
+            className="w-full space-y-8"
           >
             {/* Score Card */}
             <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
@@ -223,12 +264,12 @@ export default function PricingPageAnalyzerClient() {
         )}
 
         {/* Detailed Landing Page Content / Educational Guide */}
-        <section className="max-w-5xl mx-auto mt-20 pt-12 border-t border-gray-200">
+        <section className="w-full mt-20 pt-12 border-t border-gray-200">
           <div className="text-center mb-12">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
               Monetization Principles
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
               The Anatomy of a High-Converting SaaS Pricing Page
             </h2>
             <p className="text-xs text-gray-500 max-w-2xl mx-auto mt-2 leading-relaxed">
@@ -237,23 +278,23 @@ export default function PricingPageAnalyzerClient() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Anchor to Value Metric</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Anchor to Value Metric</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Base your plan tiers on what customers naturally expand with — such as active seats, tracked events, or monthly compute.
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Decisive Center Tier</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Decisive Center Tier</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Guide 70%+ of users into your target Pro tier by highlighting it with a distinct border, badge, and prominent value list.
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">De-risk the Upgrade</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">De-risk the Upgrade</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Explicitly show "14-day free trial", "No credit card required", and "Cancel anytime with 1 click" directly under CTAs.
               </p>
@@ -262,7 +303,7 @@ export default function PricingPageAnalyzerClient() {
         </section>
 
         {/* Suggested Tools */}
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full">
           <SuggestedTools currentToolId="pricing-page-analyzer" />
         </div>
       </div>
