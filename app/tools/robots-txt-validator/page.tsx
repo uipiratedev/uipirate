@@ -18,6 +18,35 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "robots.txt Validator & Linter",
+  "url": "https://uipirate.com/tools/robots-txt-validator",
+  "description":
+    "Test, parse, and validate your robots.txt syntax against standard RFC 9309 and AI bot crawling specifications.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "UI Pirate",
+    "url": "https://uipirate.com",
+  },
+};
+
 export default function RobotsTxtValidatorPage() {
-  return <RobotsTxtValidatorClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <RobotsTxtValidatorClient />
+    </>
+  );
 }
