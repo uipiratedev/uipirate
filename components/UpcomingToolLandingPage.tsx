@@ -87,7 +87,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
       )}
       <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Header Hero */}
-        <div className="max-w-4xl mx-auto text-center mb-14">
+        <div className="w-full max-w-5xl mx-auto text-center mb-14">
           {/* Tool Icon & Badge */}
           <div className="flex flex-col items-center justify-center gap-3 mb-6">
             {toolEntry?.icon && (
@@ -100,29 +100,29 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
             </div>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
             {spec.title}
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto mb-10 font-normal leading-relaxed">
             {spec.subtitle}
           </p>
 
-          {/* Development Alert & Service Link */}
-          <div className="p-6 sm:p-7 rounded-[28px] bg-white/90 backdrop-blur-md border border-amber-200/80 text-left max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-[0_8px_30px_rgba(245,158,11,0.08)]">
+          {/* Teardown Consultation Card */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-white/95 backdrop-blur-md border border-[#E5E7EB] text-left w-full max-w-3xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold text-amber-900 font-jakarta mb-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                <span>Automated Engine Under Active Development</span>
+              <div className="flex items-center gap-2 text-xs font-bold text-gray-900 font-jakarta mb-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#FF5B04]" />
+                <span>Need a full diagnostic teardown today?</span>
               </div>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Our design engineering team is training and calibrating this diagnostic engine. In the meantime, you can request a comprehensive manual teardown.
+              <p className="text-xs text-gray-500 leading-relaxed max-w-md">
+                Our product design engineers provide tailored manual audits with high-converting Figma wireframes and technical recommendations.
               </p>
             </div>
             <Link
               href="/contact"
-              className="px-5 py-3 rounded-2xl bg-gray-900 hover:bg-[#FF5B04] text-white text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 shadow-md"
+              className="px-6 py-3 rounded-full bg-gray-900 hover:bg-[#FF5B04] text-white text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 shadow-md shadow-gray-900/10 cursor-pointer"
             >
-              Book Manual Teardown →
+              Book Manual Audit →
             </Link>
           </div>
         </div>

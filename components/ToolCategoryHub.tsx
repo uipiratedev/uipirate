@@ -182,16 +182,16 @@ export default function ToolCategoryHub({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center max-w-4xl mx-auto mb-14"
+          className="text-center w-full max-w-5xl mx-auto mb-14"
         >
           <div className="mb-6 flex flex-row items-center justify-center">
             <GlassBadge variant="gradient">{badgeText}</GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
             {title}
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto font-normal leading-relaxed">
             {subtitle}
           </p>
         </motion.div>

@@ -52,16 +52,16 @@ export default function BotDirectoryClient() {
             <GlassBadge variant="gradient">AI BOT &amp; USER-AGENT REGISTRY</GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-4xl mx-auto">
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
             AI Crawler &amp; Bot <span className="text-[#FF5B04]">Directory</span>
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Searchable encyclopedia of AI crawlers, LLM training bots, search engines, and scrapers. Look up exact User-Agents, operators, and behaviors.
           </p>
         </motion.div>
 
         {/* Search & Filter Bar */}
-        <div className="max-w-4xl mx-auto mb-8 space-y-4">
+        <div className="w-full max-w-4xl mx-auto mb-8 space-y-4">
           <div className="relative">
             <input
               type="text"
@@ -108,7 +108,7 @@ export default function BotDirectoryClient() {
         </div>
 
         {/* Directory Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
           {filteredBots.map((bot, i) => (
             <motion.div
               key={bot.id}

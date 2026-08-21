@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import SuggestedTools from "@/components/SuggestedTools";
 import GlassBadge from "@/components/GlassBadge";
@@ -142,16 +143,57 @@ export default function SchemaGeneratorClient() {
             <GlassBadge variant="gradient">JSON-LD &amp; GEO SCHEMA BUILDER</GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-4xl mx-auto">
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
             AI &amp; GEO <span className="text-[#FF5B04]">Schema.org</span> Generator
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Generate clean JSON-LD structured data. Feed Google Knowledge Graph, ChatGPT, and AI models semantic entity context.
           </p>
+
+          {/* Integrated Capability Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+            {[
+              "Organization & Brand Entity",
+              "FAQPage AI Citation Boost",
+              "SoftwareApplication Schema",
+              "Service & Pricing Schema",
+              "Google Rich Snippet Validator",
+            ].map((badge, idx) => (
+              <span
+                key={idx}
+                className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-gray-200/80 text-gray-700 shadow-2xs flex items-center gap-1.5"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                {badge}
+              </span>
+            ))}
+          </div>
+
+          {/* Engine Status & Consultation Callout */}
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+            >
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                GEO &amp; SEO
+              </span>
+              <span className="text-gray-600 font-medium">
+                Need enterprise entity graphs &amp; programmatic schema architecture?
+              </span>
+              <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
+                <span>Consult SEO architects</span>
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
+          </div>
         </motion.div>
 
         {/* Builder Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
           {/* Controls Column */}
           <div className="lg:col-span-6 space-y-6">
             {/* Schema Type Selector */}

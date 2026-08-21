@@ -132,16 +132,16 @@ export default function BatchCheckerClient() {
             <GlassBadge variant="gradient">BATCH GEO &amp; MULTI-DOMAIN AUDIT</GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-4xl mx-auto">
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
             Batch AI <span className="text-[#FF5B04]">Crawler &amp; Score</span> Checker
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Audit multiple competitor websites or client domains at once. Compare GEO Visibility Scores, robots.txt status, and blocked crawlers side-by-side.
           </p>
         </motion.div>
 
         {/* Input box */}
-        <div className="max-w-2xl mx-auto mb-10 bg-white border border-gray-200 rounded-3xl p-6 shadow-sm space-y-4">
+        <div className="w-full max-w-3xl mx-auto mb-12 bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-4">
           <label className="block text-xs font-bold text-gray-900 uppercase tracking-wider font-jakarta">
             Enter URLs to audit (One per line, up to 10)
           </label>

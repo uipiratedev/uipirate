@@ -545,10 +545,10 @@ export default function AIBotCheckerClient() {
               <GlassBadge variant="gradient">AI BOT &amp; GEO VISIBILITY</GlassBadge>
             </div>
 
-            <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-4xl mx-auto">
+            <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
               AI Crawler &amp; <span className="text-[#FF5B04]">GEO Readiness</span> Checker
             </h1>
-            <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
               Audit your site across 26+ AI bots, search engines, and social crawlers. Check robots.txt, llms.txt, WAF firewalls, and generative engine visibility.
             </p>
 
@@ -578,7 +578,7 @@ export default function AIBotCheckerClient() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.45 }}
-            className="max-w-2xl mx-auto mb-4"
+            className="w-full max-w-3xl mx-auto mb-4"
           >
             <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
               <div className="relative flex-1 flex items-center">

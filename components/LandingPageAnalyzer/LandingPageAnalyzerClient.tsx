@@ -111,16 +111,16 @@ export default function LandingPageAnalyzerClient() {
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10 max-w-4xl mx-auto"
+          className="text-center mb-10 w-full max-w-5xl mx-auto"
         >
           <div className="mb-6 flex flex-row items-center justify-center">
             <GlassBadge variant="gradient">CONVERSION RATE OPTIMIZER</GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
-            Landing Page UX & <span className="text-[#FF5B04]">Conversion</span> Analyzer
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+            Landing Page UX &amp; <span className="text-[#FF5B04]">Conversion</span> Analyzer
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Audit your landing page headline, CTA visibility, social proof density, and cognitive friction to simulate 0–100 conversion probability.
           </p>
 
@@ -143,22 +143,31 @@ export default function LandingPageAnalyzerClient() {
             ))}
           </div>
 
-          {/* Development Notice */}
-          <div className="mt-7 inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-2xl px-5 py-2.5 text-xs text-amber-900 shadow-2xs">
-            <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <span>
-              <strong>Deep CRO Engine in Active Development</strong> — Currently running v1 heuristic preview. To get custom high-converting page wireframes,{" "}
-              <Link href="/contact" className="text-[#FF5B04] underline font-bold hover:text-[#E54F00]">
-                request a full manual teardown →
-              </Link>
-            </span>
+          {/* Engine Status & Consultation Callout */}
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2.5 bg-white/95 backdrop-blur-md border border-[#E5E7EB] hover:border-[#FF5B04]/40 rounded-full px-5 py-2 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(255,91,4,0.08)] transition-all duration-300 text-xs"
+            >
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] font-mono text-[10px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                V1 Engine
+              </span>
+              <span className="text-gray-600 font-medium">
+                Running automated heuristics. Want bespoke high-converting page wireframes?
+              </span>
+              <span className="text-gray-900 font-bold group-hover:text-[#FF5B04] inline-flex items-center gap-0.5 transition-colors">
+                <span>Request teardown</span>
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
           </div>
         </motion.div>
 
         {/* Input Box */}
-        <div className="max-w-2xl mx-auto mb-12">
+        <div className="w-full max-w-3xl mx-auto mb-12">
           <form onSubmit={analyzeLandingPage} className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
             <input
               type="text"
@@ -214,7 +223,7 @@ export default function LandingPageAnalyzerClient() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-5xl mx-auto space-y-8"
+            className="w-full space-y-8"
           >
             {/* Score Card */}
             <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">

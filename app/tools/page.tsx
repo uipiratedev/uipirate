@@ -54,7 +54,7 @@ export default function ToolsHubPage() {
       <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
 
       {/* Hero */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 relative z-10">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}

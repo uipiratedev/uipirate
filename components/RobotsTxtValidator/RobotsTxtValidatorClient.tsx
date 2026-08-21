@@ -203,22 +203,22 @@ Sitemap: https://example.com/sitemap.xml
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-12 w-full"
         >
           <div className="mb-6 flex flex-row items-center justify-center">
-            <GlassBadge variant="gradient">FREE LINTER & SYNTAX AUDIT</GlassBadge>
+            <GlassBadge variant="gradient">FREE LINTER &amp; SYNTAX AUDIT</GlassBadge>
           </div>
 
-          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-4xl mx-auto">
-            robots.txt <span className="text-[#FF5B04]">Validator & Linter</span>
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
+            robots.txt <span className="text-[#FF5B04]">Validator &amp; Linter</span>
           </h1>
-          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
             Test and validate any robots.txt syntax. Catch blocking errors, unknown directives, and AI engine accessibility issues in real time.
           </p>
         </motion.div>
 
         {/* URL Fetch bar */}
-        <div className="max-w-xl mx-auto mb-10">
+        <div className="w-full max-w-3xl mx-auto mb-12">
           <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
             <svg className="w-4 h-4 text-gray-400 ml-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
@@ -233,7 +233,7 @@ Sitemap: https://example.com/sitemap.xml
             <button
               onClick={handleFetch}
               disabled={fetching}
-              className="px-5 py-2.5 rounded-full bg-gray-900 hover:bg-[#FF5B04] text-white text-xs font-bold disabled:opacity-50 transition-all shadow-sm flex-shrink-0"
+              className="px-6 py-2.5 rounded-full bg-gray-900 hover:bg-[#FF5B04] text-white text-xs font-bold disabled:opacity-50 transition-all shadow-sm flex-shrink-0 cursor-pointer"
             >
               {fetching ? "Fetching…" : "Fetch URL"}
             </button>
@@ -242,7 +242,7 @@ Sitemap: https://example.com/sitemap.xml
         </div>
 
         {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
           {/* Editor Column */}
           <div className="lg:col-span-7 space-y-4">
             <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
