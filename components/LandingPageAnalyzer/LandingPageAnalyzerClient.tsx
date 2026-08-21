@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 interface ConversionMetric {
   name: string;
@@ -89,32 +90,42 @@ export default function LandingPageAnalyzerClient() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-20">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10 max-w-3xl mx-auto"
+          className="text-center mb-10 max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Conversion Rate Optimizer
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">For B2B & Landing Pages</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">CONVERSION RATE OPTIMIZER</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
             Landing Page UX & <span className="text-[#FF5B04]">Conversion</span> Analyzer
           </h1>
-          <p className="sub-header">
+          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
             Audit your landing page headline, CTA visibility, social proof density, and cognitive friction to simulate 0–100 conversion probability.
           </p>
 
-          {/* Integrated Capability Badges (Merged Modules) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
+          {/* Integrated Capability Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
             {[
               "0–100 Conversion Probability Score",
               "Website UX & Hierarchy Audit",
@@ -124,7 +135,7 @@ export default function LandingPageAnalyzerClient() {
             ].map((badge, idx) => (
               <span
                 key={idx}
-                className="text-[11px] font-mono px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 shadow-2xs flex items-center gap-1.5"
+                className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-gray-200/80 text-gray-700 shadow-2xs flex items-center gap-1.5"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
                 {badge}
@@ -133,7 +144,7 @@ export default function LandingPageAnalyzerClient() {
           </div>
 
           {/* Development Notice */}
-          <div className="mt-6 inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-2xl px-4 py-2 text-xs text-amber-900">
+          <div className="mt-7 inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-2xl px-5 py-2.5 text-xs text-amber-900 shadow-2xs">
             <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
@@ -148,18 +159,18 @@ export default function LandingPageAnalyzerClient() {
 
         {/* Input Box */}
         <div className="max-w-2xl mx-auto mb-12">
-          <form onSubmit={analyzeLandingPage} className="flex gap-2 bg-white border border-gray-200 rounded-2xl p-2 shadow-sm focus-within:border-[#FF5B04]/40 focus-within:shadow-md transition-all">
+          <form onSubmit={analyzeLandingPage} className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="yoursite.com or yoursite.com/landing-page"
-              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta"
+              className="flex-1 px-4 py-3 text-sm text-gray-900 outline-none bg-transparent font-jakarta placeholder:text-gray-400"
             />
             <button
               type="submit"
               disabled={loading || !url.trim()}
-              className="px-6 py-3 rounded-xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/15"
+              className="px-6 py-3 rounded-full bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all disabled:opacity-60 flex items-center gap-2 flex-shrink-0 cursor-pointer shadow-md shadow-[#FF5B04]/20"
             >
               {loading ? (
                 <>

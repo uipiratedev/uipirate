@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 interface ValidationIssue {
   type: "error" | "warning" | "success" | "info";
@@ -181,50 +182,63 @@ Sitemap: https://example.com/sitemap.xml
   }, [robotsInput]);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-16">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Free Linter
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">Syntax & AI Validation</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">FREE LINTER & SYNTAX AUDIT</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-4xl mx-auto">
             robots.txt <span className="text-[#FF5B04]">Validator & Linter</span>
           </h1>
-          <p className="sub-header">
-            Test and validate any robots.txt syntax. Catch blocking errors, unknown directives, and AI engine accessibility issues.
+          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+            Test and validate any robots.txt syntax. Catch blocking errors, unknown directives, and AI engine accessibility issues in real time.
           </p>
         </motion.div>
 
         {/* URL Fetch bar */}
-        <div className="max-w-xl mx-auto mb-8">
-          <div className="flex gap-2 bg-white border border-gray-200 rounded-2xl p-1.5 shadow-sm">
+        <div className="max-w-xl mx-auto mb-10">
+          <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
+            <svg className="w-4 h-4 text-gray-400 ml-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
             <input
               type="text"
               value={testUrl}
               onChange={(e) => setTestUrl(e.target.value)}
-              placeholder="Or fetch from domain (e.g. nytimes.com)"
-              className="flex-1 px-3.5 py-2 text-xs bg-transparent outline-none text-gray-900 font-jakarta"
+              placeholder="Or fetch directly from domain (e.g. nytimes.com)"
+              className="flex-1 px-3 py-2 text-xs bg-transparent outline-none text-gray-900 font-jakarta placeholder:text-gray-400"
             />
             <button
               onClick={handleFetch}
               disabled={fetching}
-              className="px-4 py-2 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-semibold disabled:opacity-50 transition-colors"
+              className="px-5 py-2.5 rounded-full bg-gray-900 hover:bg-[#FF5B04] text-white text-xs font-bold disabled:opacity-50 transition-all shadow-sm flex-shrink-0"
             >
               {fetching ? "Fetching…" : "Fetch URL"}
             </button>
           </div>
-          {fetchMsg && <p className="text-xs text-center text-gray-500 mt-2">{fetchMsg}</p>}
+          {fetchMsg && <p className="text-xs text-center text-gray-500 mt-2 font-mono">{fetchMsg}</p>}
         </div>
 
         {/* Main Grid */}

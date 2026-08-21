@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SuggestedTools from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export type BotCategory = "ai-training" | "ai-search" | "search-engine" | "seo-tool" | "social";
@@ -517,100 +518,111 @@ export default function AIBotCheckerClient() {
       </AnimatePresenceAny>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-10">
-        <motion.div
-          initial={{ opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="text-center mb-10"
-        >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              AI Search & Visibility Hub
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">Test 26+ Crawlers & GEO Score</span>
-          </div>
+      <div className="relative overflow-hidden">
+        {/* Background Grid & Ambient Glow */}
+        <div
+          className="absolute inset-0 pointer-events-none -top-10"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+            maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          }}
+        />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
 
-          <h1 className="heading-hero text-gray-900 mb-4">
-            AI Crawler & <span className="text-[#FF5B04]">GEO Readiness</span> Checker
-          </h1>
-          <p className="sub-header">
-            Audit your site across 26+ AI bots, search engines, and social crawlers. Check robots.txt, llms.txt, WAF firewalls, and generative engine visibility.
-          </p>
-
-          {/* Integrated Capability Badges (Merged Modules) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
-            {[
-              "ChatGPT Search & OAI-SearchBot",
-              "Google Gemini & Google-Extended",
-              "Perplexity & ClaudeBot Citations",
-              "Full 26+ AI Crawler Audit",
-              "Cloudflare & Firewall WAF Detection",
-              "llms.txt Discoverability",
-            ].map((badge, idx) => (
-              <span
-                key={idx}
-                className="text-[11px] font-mono px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 shadow-2xs flex items-center gap-1.5"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-                {badge}
-              </span>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* URL Input */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.45 }}
-          className="max-w-2xl mx-auto mb-4"
-        >
-          <div className="flex gap-2 bg-white border border-gray-200 rounded-2xl p-2 shadow-sm focus-within:border-[#FF5B04]/40 focus-within:shadow-md transition-all duration-200">
-            <div className="relative flex-1">
-              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10" strokeWidth="1.8" />
-                  <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" strokeWidth="1.8" />
-                </svg>
-              </div>
-              <input
-                ref={inputRef}
-                id="url-input"
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleCheck()}
-                placeholder="example.com or https://yoursite.com"
-                className="w-full bg-transparent pl-10 pr-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none text-sm font-jakarta"
-              />
+        <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-12 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="text-center mb-10"
+          >
+            <div className="mb-6 flex flex-row items-center justify-center">
+              <GlassBadge variant="gradient">AI BOT &amp; GEO VISIBILITY</GlassBadge>
             </div>
-            <button
-              id="check-btn"
-              onClick={() => handleCheck()}
-              disabled={loading}
-              className="px-6 py-2.5 rounded-xl font-semibold text-sm text-white bg-[#FF5B04] hover:bg-[#E54F00] disabled:opacity-60 transition-colors duration-200 flex items-center gap-2 flex-shrink-0 cursor-pointer"
-            >
-              {loading ? (
-                <>
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Auditing…
-                </>
-              ) : (
-                "Audit Site"
-              )}
-            </button>
-          </div>
 
-          {/* Quick Examples */}
-          <div className="flex items-center gap-2 mt-3 justify-center flex-wrap">
-            <span className="text-xs text-gray-400">Popular audits:</span>
-            {["nytimes.com", "openai.com", "uipirate.com", "github.com"].map((s) => (
+            <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-4xl mx-auto">
+              AI Crawler &amp; <span className="text-[#FF5B04]">GEO Readiness</span> Checker
+            </h1>
+            <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto text-center font-normal leading-relaxed">
+              Audit your site across 26+ AI bots, search engines, and social crawlers. Check robots.txt, llms.txt, WAF firewalls, and generative engine visibility.
+            </p>
+
+            {/* Integrated Capability Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+              {[
+                "ChatGPT Search & OAI-SearchBot",
+                "Google Gemini & Google-Extended",
+                "Perplexity & ClaudeBot Citations",
+                "Full 26+ AI Crawler Audit",
+                "Cloudflare & Firewall WAF Detection",
+                "llms.txt Discoverability",
+              ].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[11px] font-mono px-3.5 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-gray-200/80 text-gray-700 shadow-2xs flex items-center gap-1.5"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* URL Input */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.45 }}
+            className="max-w-2xl mx-auto mb-4"
+          >
+            <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.06)] focus-within:border-[#FF5B04]/60 transition-all">
+              <div className="relative flex-1 flex items-center">
+                <div className="pl-3.5 pr-2 text-gray-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" strokeWidth="1.8" />
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" strokeWidth="1.8" />
+                  </svg>
+                </div>
+                <input
+                  ref={inputRef}
+                  id="url-input"
+                  type="text"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleCheck()}
+                  placeholder="example.com or https://yoursite.com"
+                  className="w-full bg-transparent pr-4 py-3 text-gray-900 placeholder:text-gray-400 outline-none text-sm font-jakarta"
+                />
+              </div>
+              <button
+                id="check-btn"
+                onClick={() => handleCheck()}
+                disabled={loading}
+                className="px-6 py-3 rounded-full font-bold text-xs text-white bg-[#FF5B04] hover:bg-[#E54F00] disabled:opacity-60 transition-all shadow-md shadow-[#FF5B04]/20 flex items-center gap-2 flex-shrink-0 cursor-pointer"
+              >
+                {loading ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Auditing…
+                  </>
+                ) : (
+                  "Audit Site →"
+                )}
+              </button>
+            </div>
+
+            {/* Quick Examples */}
+            <div className="flex items-center gap-2 mt-4 justify-center flex-wrap">
+              <span className="text-xs text-gray-400">Popular audits:</span>
+              {["nytimes.com", "openai.com", "uipirate.com", "github.com"].map((s) => (
               <button
                 key={s}
                 onClick={() => {
@@ -625,6 +637,7 @@ export default function AIBotCheckerClient() {
           </div>
         </motion.div>
       </div>
+    </div>
 
       {/* Error state */}
       {error && (

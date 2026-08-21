@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import SuggestedTools, { ALL_TOOLS_REGISTRY } from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 export interface UpcomingToolSpec {
   id: string;
@@ -25,14 +26,19 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": spec.title,
-    "url": `https://uipirate.com${toolEntry?.href || `/tools/${spec.category}/${spec.id}`}`,
     "description": spec.subtitle,
+    "url": `https://uipirate.com/tools/${spec.category}/${spec.id}`,
     "applicationCategory": "DesignApplication",
     "operatingSystem": "All",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD",
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
     },
   };
 
@@ -53,7 +59,22 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
       : null;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
@@ -64,45 +85,42 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-20">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Header Hero */}
-        <div className="max-w-4xl mx-auto text-center mb-12">
+        <div className="max-w-4xl mx-auto text-center mb-14">
           {/* Tool Icon & Badge */}
           <div className="flex flex-col items-center justify-center gap-3 mb-6">
             {toolEntry?.icon && (
-              <div className="w-14 h-14 rounded-2xl bg-[#FF5B04]/10 text-[#FF5B04] flex items-center justify-center shadow-xs border border-[#FF5B04]/20 [&>svg]:w-7 [&>svg]:h-7">
+              <div className="w-16 h-16 rounded-3xl bg-white text-[#FF5B04] flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-[#E5E7EB] [&>svg]:w-8 [&>svg]:h-8 mb-2">
                 {toolEntry.icon}
               </div>
             )}
-            <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-full px-4 py-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-              <span className="text-amber-800 text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-                {spec.badgeText}
-              </span>
-              <span className="w-px h-3 bg-amber-200" />
-              <span className="text-amber-700 text-xs font-mono">{spec.categoryLabel}</span>
+            <div className="mb-2 flex flex-row items-center justify-center">
+              <GlassBadge variant="gradient">{spec.badgeText}</GlassBadge>
             </div>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">{spec.title}</h1>
-          <p className="sub-header max-w-2xl mx-auto mb-8">{spec.subtitle}</p>
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+            {spec.title}
+          </h1>
+          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
+            {spec.subtitle}
+          </p>
 
           {/* Development Alert & Service Link */}
-          <div className="p-6 rounded-[28px] bg-amber-50/70 border border-amber-200 text-left max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-6 sm:p-7 rounded-[28px] bg-white/90 backdrop-blur-md border border-amber-200/80 text-left max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 shadow-[0_8px_30px_rgba(245,158,11,0.08)]">
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold text-amber-900 font-jakarta mb-1">
-                <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-900 font-jakarta mb-1.5">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                 <span>Automated Engine Under Active Development</span>
               </div>
-              <p className="text-xs text-amber-800 leading-relaxed">
-                Our design engineering team is training and calibrating this multi-screen diagnostic engine. In the meantime, you can request a comprehensive manual teardown.
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Our design engineering team is training and calibrating this diagnostic engine. In the meantime, you can request a comprehensive manual teardown.
               </p>
             </div>
             <Link
               href="/contact"
-              className="px-4 py-2.5 rounded-xl bg-amber-900 hover:bg-black text-white text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 shadow-xs"
+              className="px-5 py-3 rounded-2xl bg-gray-900 hover:bg-[#FF5B04] text-white text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 shadow-md"
             >
               Book Manual Teardown →
             </Link>

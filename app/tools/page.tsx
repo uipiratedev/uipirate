@@ -5,6 +5,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
 
+import GlassBadge from "@/components/GlassBadge";
+
 export default function ToolsHubPage() {
   const [activeCategory, setActiveCategory] = useState<ToolCategory | "all">("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,35 +37,45 @@ export default function ToolsHubPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
       {/* Hero */}
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-14"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-xs rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              UI Pirate Tools Ecosystem
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">Free for Founders & Builders</span>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">TOOLS & DIAGNOSTICS</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">
-            Free tools for <span className="text-[#FF5B04]">SaaS, AI & product teams</span>
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[72px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5 max-w-5xl mx-auto">
+            Free tools for <span className="text-[#FF5B04]">SaaS, AI &amp; Product Teams</span>
           </h1>
-          <p className="sub-header max-w-2xl mx-auto">
-            Audit, analyze and improve your product UX, conversion architecture, and AI visibility — instant, free, and built by design engineers.
+          <p className="text-base sm:text-lg text-gray-500 max-w-3xl mx-auto text-center font-normal leading-relaxed">
+            Audit, score, and optimize your product UX, conversion architecture, and AI bot visibility — 100% free and built by senior design engineers.
           </p>
         </motion.div>
 
         {/* Filter Controls & Search */}
         <div className="w-full mb-12 space-y-4">
-          <div className="relative max-w-2xl mx-auto">
+          <div className="relative max-w-3xl mx-auto">
             <input
               type="text"
               value={searchQuery}

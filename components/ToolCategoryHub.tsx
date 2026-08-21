@@ -1,11 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ALL_TOOLS_REGISTRY } from "@/components/SuggestedTools";
+import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
+import GlassBadge from "@/components/GlassBadge";
 
 export interface CategoryHubProps {
-  categoryId: "website-conversion" | "saas-product" | "design-system" | "ai-geo";
+  categoryId: ToolCategory;
   badgeText: string;
   title: string;
   subtitle: string;
@@ -15,7 +17,16 @@ export interface CategoryHubProps {
   methodology: { step: string; title: string; desc: string }[];
 }
 
-export const CATEGORY_METADATA = {
+export const CATEGORY_METADATA: Record<
+  ToolCategory,
+  {
+    path: string;
+    name: string;
+    shortName: string;
+    description: string;
+    icon: React.ReactNode;
+  }
+> = {
   "ai-geo": {
     path: "/tools/ai",
     name: "AI & GEO Visibility Tools",
@@ -79,33 +90,48 @@ export const CATEGORY_METADATA = {
 
 export default function ToolCategoryHub({
   categoryId,
-  badgeText,
   title,
   subtitle,
+  badgeText,
   agencyService,
   agencyDescription,
-  faqs,
   methodology,
+  faqs,
 }: CategoryHubProps) {
-  // Get all tools in this category
-  const categoryTools = ALL_TOOLS_REGISTRY.filter((t) => t.category === categoryId);
+  const categoryTools = useMemo(
+    () => ALL_TOOLS_REGISTRY.filter((t) => t.category === categoryId),
+    [categoryId]
+  );
 
-  // Other categories for cross-navigation
-  const otherCategories = Object.entries(CATEGORY_METADATA).filter(([id]) => id !== categoryId);
-  const currentCategoryMeta = CATEGORY_METADATA[categoryId];
+  const otherCategories = useMemo(
+    () =>
+      Object.entries(CATEGORY_METADATA).filter(
+        ([id]) => id !== categoryId
+      ) as [ToolCategory, (typeof CATEGORY_METADATA)[ToolCategory]][],
+    [categoryId]
+  );
 
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": title,
-    "url": `https://uipirate.com${currentCategoryMeta.path}`,
+    "name": `${title} | UI Pirate Tools`,
     "description": subtitle,
-    "hasPart": categoryTools.map((tool) => ({
-      "@type": "WebApplication",
-      "name": tool.title,
-      "url": `https://uipirate.com${tool.href}`,
-      "description": tool.description,
-    })),
+    "url": `https://uipirate.com${CATEGORY_METADATA[categoryId].path}`,
+    "publisher": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": categoryTools.map((tool, idx) => ({
+        "@type": "ListItem",
+        "position": idx + 1,
+        "name": tool.title,
+        "description": tool.description,
+        "url": `https://uipirate.com${tool.href}`,
+      })),
+    },
   };
 
   const faqSchema =
@@ -125,7 +151,22 @@ export default function ToolCategoryHub({
       : null;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA]">
+    <div className="min-h-screen bg-[#FAFAFA] relative overflow-hidden">
+      {/* Background Grid & Ambient Glow */}
+      <div
+        className="absolute inset-0 pointer-events-none -top-10"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at 50% 25%, black 40%, transparent 80%)",
+        }}
+      />
+      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[700px] h-[340px] bg-[#FF5B04]/10 blur-[140px] rounded-full pointer-events-none -z-10" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
@@ -136,26 +177,23 @@ export default function ToolCategoryHub({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-20">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
         {/* Category Hero */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-4xl mx-auto mb-14"
         >
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-xs rounded-full px-4 py-1.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
-            <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              {badgeText}
-            </span>
-            <span className="w-px h-3 bg-gray-200" />
-            <Link href="/tools" className="text-gray-400 text-xs hover:text-gray-900 transition-colors">
-              UI Pirate Tools Hub
-            </Link>
+          <div className="mb-6 flex flex-row items-center justify-center">
+            <GlassBadge variant="gradient">{badgeText}</GlassBadge>
           </div>
 
-          <h1 className="heading-hero text-gray-900 mb-4">{title}</h1>
-          <p className="sub-header max-w-2xl mx-auto">{subtitle}</p>
+          <h1 className="text-[38px] sm:text-[50px] md:text-[62px] lg:text-[70px] text-center font-[800] tracking-[-1.5px] leading-[1.08] text-gray-900 mb-5">
+            {title}
+          </h1>
+          <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto font-normal leading-relaxed">
+            {subtitle}
+          </p>
         </motion.div>
 
         {/* Tools Grid */}
