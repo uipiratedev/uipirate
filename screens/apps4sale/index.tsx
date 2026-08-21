@@ -7,6 +7,7 @@ import Link from "next/link";
 
 import { SearchIcon } from "@/components/icons";
 import GlassSurface from "@/components/GlassSurface";
+import products from "@/data/apps4sale.json";
 
 const categories = [
   "All",
@@ -15,21 +16,6 @@ const categories = [
   "Customer Experience",
   "Internal Tools",
   "Growth & Analytics",
-];
-
-const products = [
-  {
-    title: "AI Voice Support System",
-    description: "Handle customer queries with real-time voice AI.",
-    category: "AI Systems",
-    slug: "ai-voice-support-system",
-  },
-  {
-    title: "Smart Onboarding Engine",
-    description: "Guide users with dynamic, personalized onboarding flows.",
-    category: "Customer Experience",
-    slug: "smart-onboarding-engine",
-  },
 ];
 
 const ProductIcon = () => (
