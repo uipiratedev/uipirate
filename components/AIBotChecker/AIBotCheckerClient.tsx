@@ -607,7 +607,9 @@ export default function AIBotCheckerClient() {
       {error && (
         <div className="container mx-auto px-4 max-w-2xl mb-8">
           <div className="p-4 rounded-xl border border-red-200 bg-red-50 text-red-700 text-sm flex items-center gap-3">
-            <span className="text-base font-bold">⚠️</span>
+            <svg className="w-5 h-5 flex-shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
             <span>{error}</span>
           </div>
         </div>
@@ -640,7 +642,13 @@ export default function AIBotCheckerClient() {
                 <div className="w-full md:w-72 space-y-3 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-gray-100 md:pl-8">
                   <div>
                     <div className="flex justify-between text-xs font-semibold mb-1">
-                      <span className="text-gray-600">🤖 Bot Access (60%)</span>
+                      <span className="text-gray-600 flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" strokeWidth="2" />
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" strokeWidth="2" />
+                        </svg>
+                        Bot Access (60%)
+                      </span>
                       <span className="text-gray-900 font-mono">{result.score.pillars.botAccessScore}%</span>
                     </div>
                     <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -653,7 +661,12 @@ export default function AIBotCheckerClient() {
 
                   <div>
                     <div className="flex justify-between text-xs font-semibold mb-1">
-                      <span className="text-gray-600">📄 AI Files (25%)</span>
+                      <span className="text-gray-600 flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        AI Files (25%)
+                      </span>
                       <span className="text-gray-900 font-mono">{result.score.pillars.aiInfrastructureScore}%</span>
                     </div>
                     <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -666,7 +679,13 @@ export default function AIBotCheckerClient() {
 
                   <div>
                     <div className="flex justify-between text-xs font-semibold mb-1">
-                      <span className="text-gray-600">⚙️ Tech Signals (15%)</span>
+                      <span className="text-gray-600 flex items-center gap-1.5">
+                        <svg className="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <circle cx="12" cy="12" r="3" strokeWidth="2" />
+                        </svg>
+                        Tech Signals (15%)
+                      </span>
                       <span className="text-gray-900 font-mono">{result.score.pillars.technicalSignalsScore}%</span>
                     </div>
                     <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -761,7 +780,9 @@ export default function AIBotCheckerClient() {
             {/* WAF Warning Alert if Detected */}
             {result.wafInfo.detected && result.wafInfo.description && (
               <div className="p-4 rounded-2xl border border-blue-100 bg-blue-50/50 flex items-start gap-3">
-                <span className="text-base mt-0.5">🛡️</span>
+                <svg className="w-5 h-5 flex-shrink-0 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
                 <div className="text-xs text-blue-900 leading-relaxed">
                   <span className="font-bold">{result.wafInfo.provider} Detected: </span>
                   {result.wafInfo.description}

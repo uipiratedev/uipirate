@@ -287,7 +287,10 @@ Sitemap: https://example.com/sitemap.xml
 
                 {analysis.issues.length === 0 ? (
                   <div className="p-4 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-medium flex items-center gap-2">
-                    <span>✓</span> Perfect! No syntax errors or major AI blocking rules detected.
+                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Perfect! No syntax errors or major AI blocking rules detected.
                   </div>
                 ) : (
                   <div className="space-y-2.5 max-h-96 overflow-y-auto pr-1">
@@ -303,11 +306,25 @@ Sitemap: https://example.com/sitemap.xml
                         }`}
                       >
                         <div className="flex items-center gap-2 font-bold mb-0.5">
-                          <span>{issue.type === "error" ? "✕" : issue.type === "warning" ? "⚠️" : "ℹ"}</span>
+                          {issue.type === "error" ? (
+                            <svg className="w-3.5 h-3.5 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          ) : issue.type === "warning" ? (
+                            <svg className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                          ) : (
+                            <svg className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <circle cx="12" cy="12" r="10" strokeWidth="2" />
+                              <line x1="12" y1="16" x2="12" y2="12" strokeWidth="2" strokeLinecap="round" />
+                              <line x1="12" y1="8" x2="12.01" y2="8" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                          )}
                           <span>{issue.title}</span>
                           {issue.line && <span className="font-mono opacity-60 font-normal">Line {issue.line}</span>}
                         </div>
-                        <p className="text-gray-600 pl-4">{issue.message}</p>
+                        <p className="text-gray-600 pl-5">{issue.message}</p>
                       </div>
                     ))}
                   </div>

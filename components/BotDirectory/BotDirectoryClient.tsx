@@ -103,32 +103,40 @@ export default function BotDirectoryClient() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.02 }}
-              className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between hover:border-[#FF5B04]/40 hover:shadow-md transition-all"
             >
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-50 text-gray-600 border border-gray-100">
-                    {bot.categoryLabel}
-                  </span>
-                  <span className="text-xs text-gray-400 font-medium">{bot.company}</span>
+              <a
+                href={`/tools/bot-directory/${bot.id}`}
+                className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between h-full hover:border-[#FF5B04]/40 hover:shadow-md transition-all group block"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-50 text-gray-600 border border-gray-100">
+                      {bot.categoryLabel}
+                    </span>
+                    <span className="text-xs text-gray-400 font-medium">{bot.company}</span>
+                  </div>
+
+                  <h3 className="text-base font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-1">
+                    {bot.name}
+                  </h3>
+                  <p className="text-xs text-gray-500 leading-relaxed mb-4">{bot.description}</p>
                 </div>
 
-                <h3 className="text-base font-bold text-gray-900 font-jakarta mb-1">{bot.name}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed mb-4">{bot.description}</p>
-              </div>
-
-              <div className="pt-3 border-t border-gray-100 space-y-1.5">
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-gray-400">User-Agent</span>
-                  <code className="font-mono bg-gray-50 px-2 py-0.5 rounded border border-gray-100 text-gray-800 text-[11px]">
-                    {bot.userAgent}
-                  </code>
+                <div className="pt-3 border-t border-gray-100 space-y-2">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-gray-400">User-Agent</span>
+                    <code className="font-mono bg-gray-50 px-2 py-0.5 rounded border border-gray-100 text-gray-800 text-[11px]">
+                      {bot.userAgent}
+                    </code>
+                  </div>
+                  <div className="flex justify-between items-center text-xs pt-1 text-[#FF5B04] font-semibold">
+                    <span>View Rules & Documentation</span>
+                    <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center text-xs">
-                  <span className="text-gray-400">Respects robots.txt</span>
-                  <span className="text-emerald-600 font-semibold text-[11px]">✓ Yes</span>
-                </div>
-              </div>
+              </a>
             </motion.div>
           ))}
         </div>
