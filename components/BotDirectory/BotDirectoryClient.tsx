@@ -142,8 +142,70 @@ export default function BotDirectoryClient() {
           ))}
         </div>
 
+        {/* Detailed Landing Page Content / Educational Guide */}
+        <section className="mt-24 pt-14 border-t border-gray-200 max-w-5xl mx-auto space-y-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+              Web Crawler Intelligence
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+              Understanding the 4 Classes of Modern Web Bots
+            </h2>
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+              Not all crawlers are the same. A modern search strategy treats foundation model training bots, conversational citation agents, and traditional search engines differently.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">AI Training Bots</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Bots like <code className="font-mono text-gray-800">GPTBot</code>, <code className="font-mono text-gray-800">ClaudeBot</code>, and <code className="font-mono text-gray-800">CCBot</code> scrape massive datasets to train next-gen weights. Blocking them preserves IP without hurting search ranking.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Live AI Search Bots</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Crawlers like <code className="font-mono text-gray-800">OAI-SearchBot</code> and <code className="font-mono text-gray-800">PerplexityBot</code> fetch real-time web pages to answer live user queries with direct clickable source links.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">SEO & Social Previews</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Bots like <code className="font-mono text-gray-800">facebookexternalhit</code>, <code className="font-mono text-gray-800">Twitterbot</code>, and <code className="font-mono text-gray-800">AhrefsBot</code> power rich share cards and technical backlink monitoring.
+              </p>
+            </div>
+          </div>
+
+          {/* FAQs */}
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+            <h3 className="text-xl font-bold text-gray-900 font-jakarta mb-6">
+              Frequently Asked Questions about AI Crawlers
+            </h3>
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">How can I verify if a bot is legitimate?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Perform a reverse DNS lookup on the visiting IP address. For instance, authentic Googlebot visits resolve to <code className="font-mono text-gray-800">*.googlebot.com</code> and OpenAI visits resolve to <code className="font-mono text-gray-800">*.openai.com</code>.
+                </p>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">Does blocking AI training bots reduce Google rankings?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  No. Blocking training crawlers like GPTBot or Applebot-Extended has zero impact on traditional Google or Bing organic search visibility.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Suggested Tools */}
-        <SuggestedTools currentToolId="bot-directory" />
+        <SuggestedTools currentToolId="bot-directory" category="ai-geo" />
       </div>
     </div>
   );

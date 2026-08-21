@@ -165,10 +165,70 @@ module.exports = {
           </div>
         </div>
 
+        {/* Detailed Landing Page Content / Educational Guide */}
+        <section className="mt-24 pt-14 border-t border-gray-200 max-w-5xl mx-auto space-y-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+              Design System Engineering
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+              The Building Blocks of Production Design Systems
+            </h2>
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+              Design tokens bridge the gap between Figma design systems and front-end engineering, maintaining visual consistency across large SaaS applications.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">8-Point Spacing Grid</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Standardizing margins, paddings, and component heights on an 8pt scale eliminates visual guesswork and ensures pixel-perfect layout alignment.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Tailwind Config Tokens</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Exporting semantic color variables (<code className="font-mono text-gray-800">brand-500</code>, <code className="font-mono text-gray-800">surface-card</code>) enables instant light/dark theme switching with zero runtime CSS overhead.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Typography Ramps</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Consistent typographic scale ratios (Minor Third vs Perfect Fourth) keep dashboard headers and table data cleanly proportioned.
+              </p>
+            </div>
+          </div>
+
+          {/* FAQs */}
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+            <h3 className="text-xl font-bold text-gray-900 font-jakarta mb-6">
+              Frequently Asked Questions about Design Tokens
+            </h3>
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">What are design tokens?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Design tokens are the atomic visual design values (colors, typography, spacing, border radii) stored as platform-agnostic variables that both Figma and code consume.
+                </p>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">How do I integrate this with Tailwind CSS?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Copy the generated configuration object directly into the <code className="font-mono text-gray-800">theme.extend</code> block of your <code className="font-mono text-gray-800">tailwind.config.js</code> or <code className="font-mono text-gray-800">tailwind.config.ts</code> file.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Suggested Tools */}
-        <div className="max-w-5xl mx-auto">
-          <SuggestedTools currentToolId="design-tokens" />
-        </div>
+        <SuggestedTools currentToolId="design-tokens" category="design-system" />
       </div>
     </div>
   );

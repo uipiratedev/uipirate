@@ -360,8 +360,70 @@ export default function SchemaGeneratorClient() {
           </div>
         </div>
 
+        {/* Detailed Landing Page Content / Educational Guide */}
+        <section className="mt-24 pt-14 border-t border-gray-200 max-w-5xl mx-auto space-y-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+              Structured Knowledge Graph
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+              Why Schema.org JSON-LD is Vital for AI Engine Visibility
+            </h2>
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+              LLMs rely on structured Schema.org markup to extract unambiguous entity relationships, brand identity, verified pricing, and direct answers for ChatGPT Search, Gemini, and Google Overviews.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Entity Disambiguation</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Organization schema explicitly ties your brand name, founders, official social links, and legal entity together for AI knowledge graphs.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Direct AI Citations</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                FAQPage and SoftwareApplication schemas provide structured answers that AI answer engines extract directly to quote as verified source snippets.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Google Rich Snippets</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Valid JSON-LD qualifies your domain for Google SERP enhancements, including star ratings, pricing snippets, and expandable question carousels.
+              </p>
+            </div>
+          </div>
+
+          {/* FAQs */}
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+            <h3 className="text-xl font-bold text-gray-900 font-jakarta mb-6">
+              Frequently Asked Questions about Schema.org JSON-LD
+            </h3>
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">Where do I paste the generated JSON-LD?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Paste the generated <code className="font-mono text-gray-800">&lt;script type=&quot;application/ld+json&quot;&gt;</code> block inside your page's <code className="font-mono text-gray-800">&lt;head&gt;</code> or root Next.js layout component.
+                </p>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">Can I include multiple schema types on a single page?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Yes. You can either combine them inside an <code className="font-mono text-gray-800">@graph: [...]</code> array or add multiple separate <code className="font-mono text-gray-800">&lt;script type=&quot;application/ld+json&quot;&gt;</code> tags.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Suggested Tools */}
-        <SuggestedTools currentToolId="schema-generator" />
+        <SuggestedTools currentToolId="schema-generator" category="ai-geo" />
       </div>
     </div>
   );
