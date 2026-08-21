@@ -101,7 +101,7 @@ export default function BatchCheckerClient() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-16">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-16">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}

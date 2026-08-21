@@ -517,7 +517,7 @@ export default function AIBotCheckerClient() {
       </AnimatePresenceAny>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-10">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-10">
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -639,7 +639,7 @@ export default function AIBotCheckerClient() {
       )}
 
       {/* Main Results Container */}
-      <div ref={resultsRef} className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pb-24">
+      <div ref={resultsRef} className="container mx-auto px-32 lg:px-20 max-md:px-4 pb-24">
         {result && (
           <div className="space-y-8 max-w-5xl mx-auto">
             {/* 1. GEO & AI Visibility Score Card */}
@@ -1053,7 +1053,7 @@ export default function AIBotCheckerClient() {
         )}
 
         {/* Detailed Landing Page Content / Educational Guide */}
-        <section className="mt-24 pt-14 border-t border-gray-200 max-w-5xl mx-auto space-y-16">
+        <section className="mt-24 pt-14 border-t border-gray-200 w-full space-y-16">
           <div className="text-center max-w-3xl mx-auto">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
               Generative Engine Optimization (GEO)
@@ -1068,31 +1068,31 @@ export default function AIBotCheckerClient() {
 
           {/* 3 Core GEO Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <div className="w-10 h-10 rounded-xl bg-[#FF5B04]/10 text-[#FF5B04] flex items-center justify-center font-bold font-mono text-sm mb-4">
                 01
               </div>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Live Search vs AI Training</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Live Search vs AI Training</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Smart publishers distinguish between training crawlers (GPTBot, ClaudeBot) and real-time live citation bots (OAI-SearchBot, PerplexityBot) so they earn citations without giving away raw training data.
               </p>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold font-mono text-sm mb-4">
                 02
               </div>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Cloudflare & WAF Firewalls</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Cloudflare & WAF Firewalls</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Many websites accidentally block AI search engines because default WAF rules flag automated User-Agents as malicious scraping bots, causing silent 403 Forbidden errors.
               </p>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold font-mono text-sm mb-4">
                 03
               </div>
-              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Structured llms.txt Context</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Structured llms.txt Context</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Providing standard <code className="font-mono bg-gray-100 px-1 py-0.5 rounded text-gray-800">/llms.txt</code> files gives LLMs curated, high-density markdown context about your products, pricing, and documentation.
               </p>
@@ -1100,25 +1100,25 @@ export default function AIBotCheckerClient() {
           </div>
 
           {/* FAQ Section */}
-          <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
-            <h3 className="text-xl font-bold text-gray-900 font-jakarta mb-6">
+          <div className="bg-white border border-[#E5E7EB] rounded-[32px] p-8 sm:p-12 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
+            <h3 className="text-2xl font-bold text-gray-900 font-jakarta mb-6">
               Frequently Asked Questions about AI Bots & GEO
             </h3>
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">What is a GEO Visibility Score?</h4>
+              <div className="p-5 rounded-2xl bg-gray-50/80 border border-gray-100">
+                <h4 className="text-sm font-bold text-gray-900 mb-1.5 font-jakarta">What is a GEO Visibility Score?</h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
                   A 0–100 weighted metric assessing whether AI search engines and LLM agents can crawl, index, and cite your website without firewall blocks, robots.txt bans, or missing context.
                 </p>
               </div>
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">Should I block GPTBot or allow it?</h4>
+              <div className="p-5 rounded-2xl bg-gray-50/80 border border-gray-100">
+                <h4 className="text-sm font-bold text-gray-900 mb-1.5 font-jakarta">Should I block GPTBot or allow it?</h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
                   If you want your website cited as an authoritative source in ChatGPT Search and answers, you should allow <code className="font-mono text-gray-800">OAI-SearchBot</code> and <code className="font-mono text-gray-800">ChatGPT-User</code>. If you do not want your content used for general foundation model training, you can disallow <code className="font-mono text-gray-800">GPTBot</code>.
                 </p>
               </div>
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <h4 className="text-xs font-bold text-gray-900 mb-1">Does robots.txt affect ChatGPT citations?</h4>
+              <div className="p-5 rounded-2xl bg-gray-50/80 border border-gray-100">
+                <h4 className="text-sm font-bold text-gray-900 mb-1.5 font-jakarta">Does robots.txt affect ChatGPT citations?</h4>
                 <p className="text-xs text-gray-600 leading-relaxed">
                   Yes. OpenAI, Anthropic, and Perplexity strictly respect standard robots.txt directives. Disallowing their search user-agents prevents them from rendering your live links in conversational answers.
                 </p>
@@ -1128,7 +1128,7 @@ export default function AIBotCheckerClient() {
         </section>
 
         {/* Suggested Tools (Dual-Category Grouping) */}
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full">
           <SuggestedTools currentToolId="ai-bot-checker" category="ai-geo" />
         </div>
       </div>

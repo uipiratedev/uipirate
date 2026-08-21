@@ -3,19 +3,17 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ALL_TOOLS_REGISTRY, SuggestedToolItem } from "@/components/SuggestedTools";
+import { ALL_TOOLS_REGISTRY, ToolCategory } from "@/components/SuggestedTools";
 
-export type ToolCategory = "all" | "website-conversion" | "saas-product" | "design-system" | "ai-geo";
-
-export default function ToolsPage() {
-  const [activeCategory, setActiveCategory] = useState<ToolCategory>("all");
+export default function ToolsHubPage() {
+  const [activeCategory, setActiveCategory] = useState<ToolCategory | "all">("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTools = useMemo(() => {
     return ALL_TOOLS_REGISTRY.filter((tool) => {
       const matchesCat = activeCategory === "all" || tool.category === activeCategory;
       const matchesSearch =
-        !searchQuery.trim() ||
+        searchQuery.trim() === "" ||
         tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase());
@@ -39,14 +37,14 @@ export default function ToolsPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       {/* Hero */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-12">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-20">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
+          <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-xs rounded-full px-4 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
             <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
               UI Pirate Tools Ecosystem
@@ -64,14 +62,14 @@ export default function ToolsPage() {
         </motion.div>
 
         {/* Filter Controls & Search */}
-        <div className="max-w-5xl mx-auto mb-12 space-y-4">
-          <div className="relative">
+        <div className="w-full mb-12 space-y-4">
+          <div className="relative max-w-2xl mx-auto">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search across all tools (e.g. AI bot, SaaS UX, Pricing, Onboarding, Typography, Breakpoints, robots.txt)..."
-              className="w-full px-4 py-3.5 pl-11 rounded-2xl border border-gray-200 bg-white text-sm text-gray-900 outline-none focus:border-[#FF5B04] shadow-sm font-jakarta"
+              className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-xs font-jakarta text-gray-900"
             />
             <svg
               className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
@@ -80,12 +78,20 @@ export default function ToolsPage() {
               viewBox="0 0 24 24"
             >
               <circle cx="11" cy="11" r="8" strokeWidth="2" />
-              <path d="m21 21-4.35-4.35" strokeWidth="2" />
+              <path d="M21 21l-4.35-4.35" strokeWidth="2" strokeLinecap="round" />
             </svg>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-mono"
+              >
+                Clear
+              </button>
+            )}
           </div>
 
           {/* Category Tabs */}
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
             {[
               { id: "all", label: "All Tools", count: ALL_TOOLS_REGISTRY.length },
               {
@@ -118,21 +124,19 @@ export default function ToolsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveCategory(tab.id as ToolCategory)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                     active
-                      ? "bg-gray-900 text-white shadow-xs"
-                      : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                      ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/20"
+                      : "bg-white border border-gray-200 text-gray-700 hover:border-[#FF5B04]/50 hover:text-[#FF5B04]"
                   }`}
                 >
                   <span>{tab.label}</span>
                   {tab.badge && (
                     <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded font-mono ${
+                      className={`text-[9px] px-1.5 py-0.5 rounded-full font-mono ${
                         active
                           ? "bg-white/20 text-white"
-                          : tab.badge.includes("Live")
-                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                          : "bg-blue-50 text-blue-700 border border-blue-200"
+                          : "bg-gray-100 text-gray-600"
                       }`}
                     >
                       {tab.badge}
@@ -145,15 +149,15 @@ export default function ToolsPage() {
         </div>
 
         {/* 4 Category Pillar Hubs (Hierarchical Category Navigation) */}
-        <div className="max-w-5xl mx-auto mb-16">
-          <div className="flex items-center justify-between mb-4">
+        <div className="w-full mb-16">
+          <div className="flex items-center justify-between mb-5">
             <h2 className="text-xs font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
               Explore Tools by Agency Pillar
             </h2>
             <span className="text-[11px] text-gray-400 font-mono">4 Core Verticals</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 title: "AI & GEO Visibility",
@@ -191,21 +195,21 @@ export default function ToolsPage() {
               <Link
                 key={idx}
                 href={cat.path}
-                className="group bg-white border border-gray-200 hover:border-[#FF5B04]/50 hover:shadow-md rounded-2xl p-5 flex flex-col justify-between transition-all"
+                className="group bg-white border border-[#E5E7EB] hover:border-[#FF5B04]/50 rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] flex flex-col justify-between transition-all duration-300"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2.5">
+                  <div className="flex items-center justify-between mb-3">
                     <span className="text-[10px] font-bold font-mono text-gray-400">{cat.count}</span>
                     <span className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${cat.badgeColor}`}>
                       {cat.badge}
                     </span>
                   </div>
-                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-1.5">
+                  <h3 className="text-base font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-2">
                     {cat.title}
                   </h3>
                   <p className="text-xs text-gray-500 leading-relaxed">{cat.desc}</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5B04]">
+                <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5B04]">
                   <span>Explore Pillar</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </div>
@@ -216,7 +220,7 @@ export default function ToolsPage() {
 
         {/* Section 1: Live Operational Tools Suite */}
         {liveTools.length > 0 && (
-          <div className="max-w-5xl mx-auto mb-16">
+          <div className="w-full mb-16">
             <div className="flex items-center gap-2 mb-6">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
@@ -224,13 +228,13 @@ export default function ToolsPage() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {liveTools.map((tool) => (
                 <Link key={tool.id} href={tool.href} className="h-full block">
-                  <div className="group relative bg-white border border-gray-200 hover:border-[#FF5B04]/40 hover:shadow-lg rounded-2xl p-6 h-full flex flex-col justify-between transition-all duration-200 cursor-pointer">
+                  <div className="group relative bg-white border border-[#E5E7EB] hover:border-[#FF5B04]/50 rounded-[24px] p-7 h-full flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer">
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <div className="w-11 h-11 rounded-xl bg-[#FF5B04]/8 text-[#FF5B04] group-hover:bg-[#FF5B04]/15 flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+                        <div className="w-12 h-12 rounded-2xl bg-[#FF5B04]/8 text-[#FF5B04] group-hover:bg-[#FF5B04] group-hover:text-white flex items-center justify-center flex-shrink-0 transition-all duration-300 [&>svg]:w-6 [&>svg]:h-6">
                           {tool.icon}
                         </div>
                         <span
@@ -244,7 +248,7 @@ export default function ToolsPage() {
                         </span>
                       </div>
 
-                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-2 leading-snug">
+                      <h3 className="text-base font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-2 leading-snug">
                         {tool.title}
                       </h3>
                       <p className="text-xs text-gray-500 leading-relaxed">
@@ -267,7 +271,7 @@ export default function ToolsPage() {
 
         {/* Section 2: Interactive Previews (In Active Development) */}
         {previewTools.length > 0 && (
-          <div className="max-w-5xl mx-auto mt-12 mb-16 pt-10 border-t border-gray-200">
+          <div className="w-full mt-12 mb-16 pt-10 border-t border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
@@ -275,18 +279,18 @@ export default function ToolsPage() {
                   Interactive Preview Engines ({previewTools.length})
                 </h2>
               </div>
-              <span className="text-xs text-amber-800 bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-full font-medium">
+              <span className="text-xs text-amber-800 bg-amber-50 border border-amber-200/80 px-3 py-1 rounded-full font-medium">
                 ⚡ Active Development · Test Preview Engines Below
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {previewTools.map((tool) => (
                 <Link key={tool.id} href={tool.href} className="h-full block">
-                  <div className="group relative bg-white border border-gray-200 hover:border-amber-400 hover:shadow-lg rounded-2xl p-6 h-full flex flex-col justify-between transition-all duration-200 cursor-pointer">
+                  <div className="group relative bg-white border border-[#E5E7EB] hover:border-amber-400 rounded-[24px] p-7 h-full flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer">
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 group-hover:bg-amber-100 flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+                        <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center flex-shrink-0 transition-all duration-300 [&>svg]:w-6 [&>svg]:h-6">
                           {tool.icon}
                         </div>
                         <span className="text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border text-amber-700 bg-amber-50 border-amber-200">
@@ -294,7 +298,7 @@ export default function ToolsPage() {
                         </span>
                       </div>
 
-                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-amber-700 transition-colors font-jakarta mb-2 leading-snug">
+                      <h3 className="text-base font-bold text-gray-900 group-hover:text-amber-700 transition-colors font-jakarta mb-2 leading-snug">
                         {tool.title}
                       </h3>
                       <p className="text-xs text-gray-500 leading-relaxed">
@@ -317,7 +321,7 @@ export default function ToolsPage() {
 
         {/* Section 3: Upcoming Tools (Dedicated Landing Pages & Blueprints) */}
         {upcomingTools.length > 0 && (
-          <div className="max-w-5xl mx-auto mt-12 mb-16 pt-10 border-t border-gray-200">
+          <div className="w-full mt-12 mb-16 pt-10 border-t border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
@@ -325,18 +329,18 @@ export default function ToolsPage() {
                   Upcoming Tools & Diagnostic Roadmaps ({upcomingTools.length})
                 </h2>
               </div>
-              <span className="text-xs text-blue-800 bg-blue-50 border border-blue-200/80 px-2.5 py-1 rounded-full font-medium">
+              <span className="text-xs text-blue-800 bg-blue-50 border border-blue-200/80 px-3 py-1 rounded-full font-medium">
                 📋 Detailed Specs & Landing Pages Live
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingTools.map((tool) => (
                 <Link key={tool.id} href={tool.href} className="h-full block">
-                  <div className="group relative bg-white border border-gray-200 hover:border-blue-400 hover:shadow-lg rounded-2xl p-6 h-full flex flex-col justify-between transition-all duration-200 cursor-pointer">
+                  <div className="group relative bg-white border border-[#E5E7EB] hover:border-blue-400 rounded-[24px] p-7 h-full flex flex-col justify-between shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-pointer">
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-100 flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+                        <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white flex items-center justify-center flex-shrink-0 transition-all duration-300 [&>svg]:w-6 [&>svg]:h-6">
                           {tool.icon}
                         </div>
                         <span className="text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border text-blue-700 bg-blue-50 border-blue-200">
@@ -344,7 +348,7 @@ export default function ToolsPage() {
                         </span>
                       </div>
 
-                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-blue-700 transition-colors font-jakarta mb-2 leading-snug">
+                      <h3 className="text-base font-bold text-gray-900 group-hover:text-blue-700 transition-colors font-jakarta mb-2 leading-snug">
                         {tool.title}
                       </h3>
                       <p className="text-xs text-gray-500 leading-relaxed">
@@ -366,24 +370,24 @@ export default function ToolsPage() {
         )}
 
         {/* Agency Bridge Banner */}
-        <div className="max-w-5xl mx-auto mt-16 bg-white border border-gray-200 rounded-3xl p-8 sm:p-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="max-w-xl">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-2.5 py-1 rounded-full border border-[#FF5B04]/20">
+        <div className="w-full mt-16 bg-white border border-[#E5E7EB] rounded-[32px] p-8 sm:p-12 shadow-[0_2px_16px_rgba(0,0,0,0.05)] flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="max-w-2xl">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
               Need a Custom Product Audit?
             </span>
-            <h3 className="text-2xl font-bold text-gray-900 font-jakarta mt-3">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
               Turn audit findings into a high-converting product.
             </h3>
-            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-              UI Pirate is a product design & engineering agency specializing in complex SaaS platforms, AI interfaces, and high-velocity landing pages.
+            <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+              UI Pirate is a product design & full-stack development agency specializing in complex SaaS platforms, AI interfaces, and high-velocity landing pages.
             </p>
           </div>
           <Link
             href="/contact"
-            className="px-6 py-3.5 rounded-2xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all shadow-md flex-shrink-0 flex items-center gap-2"
+            className="px-7 py-4 rounded-2xl bg-gray-900 hover:bg-[#FF5B04] text-white text-sm font-bold transition-all shadow-md flex-shrink-0 flex items-center gap-2"
           >
             <span>Book a 1-on-1 UX Consultation</span>
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </Link>

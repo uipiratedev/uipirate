@@ -64,13 +64,13 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-20">
         {/* Header Hero */}
         <div className="max-w-4xl mx-auto text-center mb-12">
           {/* Tool Icon & Badge */}
           <div className="flex flex-col items-center justify-center gap-3 mb-6">
             {toolEntry?.icon && (
-              <div className="w-14 h-14 rounded-2xl bg-[#FF5B04]/10 text-[#FF5B04] flex items-center justify-center shadow-sm border border-[#FF5B04]/20 [&>svg]:w-7 [&>svg]:h-7">
+              <div className="w-14 h-14 rounded-2xl bg-[#FF5B04]/10 text-[#FF5B04] flex items-center justify-center shadow-xs border border-[#FF5B04]/20 [&>svg]:w-7 [&>svg]:h-7">
                 {toolEntry.icon}
               </div>
             )}
@@ -88,7 +88,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
           <p className="sub-header max-w-2xl mx-auto mb-8">{spec.subtitle}</p>
 
           {/* Development Alert & Service Link */}
-          <div className="p-6 rounded-3xl bg-amber-50/70 border border-amber-200 text-left max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-6 rounded-[28px] bg-amber-50/70 border border-amber-200 text-left max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 text-xs font-bold text-amber-900 font-jakarta mb-1">
                 <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -102,7 +102,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
             </div>
             <Link
               href="/contact"
-              className="px-4 py-2.5 rounded-xl bg-amber-900 hover:bg-black text-white text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 shadow-sm"
+              className="px-4 py-2.5 rounded-xl bg-amber-900 hover:bg-black text-white text-xs font-bold whitespace-nowrap transition-all flex-shrink-0 shadow-xs"
             >
               Book Manual Teardown →
             </Link>
@@ -110,12 +110,12 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
         </div>
 
         {/* Blueprint: What this Tool Will Analyze */}
-        <div className="max-w-5xl mx-auto mb-20">
+        <div className="w-full mb-20">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
               Diagnostic Blueprint
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-1">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
               What This Tool Will Analyze & Score
             </h2>
             <p className="text-xs text-gray-500 mt-2">
@@ -123,11 +123,11 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {spec.keyMetrics.map((metric, idx) => (
               <div
                 key={idx}
-                className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between hover:border-[#FF5B04]/30 hover:shadow-md transition-all"
+                className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] flex flex-col justify-between hover:border-[#FF5B04]/40 transition-all duration-300"
               >
                 <div>
                   <div className="w-10 h-10 rounded-2xl bg-[#FF5B04]/8 text-[#FF5B04] flex items-center justify-center font-mono font-bold text-sm mb-4">
@@ -136,7 +136,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
                   <h3 className="text-base font-bold text-gray-900 font-jakarta mb-2">{metric.name}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed">{metric.desc}</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-mono text-gray-400">
+                <div className="mt-5 pt-3.5 border-t border-gray-100 flex items-center justify-between text-[11px] font-mono text-gray-400">
                   <span>Audit Parameter</span>
                   <span className="text-emerald-600 font-semibold">0–100 Weighted</span>
                 </div>
@@ -146,19 +146,19 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
         </div>
 
         {/* How it Works / Workflow */}
-        <div className="max-w-5xl mx-auto mb-20 bg-white border border-gray-200 rounded-3xl p-8 sm:p-12 shadow-sm">
+        <div className="w-full mb-20 bg-white border border-[#E5E7EB] rounded-[32px] p-8 sm:p-12 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
           <div className="max-w-2xl mb-8">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
               Evaluation Methodology
             </span>
-            <h2 className="text-2xl font-bold text-gray-900 font-jakarta mt-1">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
               How the Diagnostic Engine Works
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {spec.howItWorks.map((step, idx) => (
-              <div key={idx} className="p-5 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col justify-between">
+              <div key={idx} className="p-6 rounded-2xl bg-gray-50/80 border border-gray-100 flex flex-col justify-between">
                 <div>
                   <span className="text-xs font-mono font-bold text-[#FF5B04] block mb-2">{step.step}</span>
                   <h3 className="text-sm font-bold text-gray-900 font-jakarta mb-2">{step.title}</h3>
@@ -170,7 +170,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
         </div>
 
         {/* Agency Bridge Consultation Box */}
-        <div className="max-w-5xl mx-auto mb-20 bg-gradient-to-br from-gray-900 to-black text-white rounded-3xl p-8 sm:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="w-full mb-20 bg-gradient-to-br from-gray-900 to-black text-white rounded-[32px] p-8 sm:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-xl">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-white/10 px-3 py-1 rounded-full border border-white/10">
               Agency Service: {spec.agencyService}
@@ -184,7 +184,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
           </div>
           <Link
             href="/contact"
-            className="px-6 py-4 rounded-2xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all shadow-lg shadow-[#FF5B04]/30 whitespace-nowrap flex-shrink-0"
+            className="px-7 py-4 rounded-2xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-sm font-bold transition-all shadow-lg shadow-[#FF5B04]/30 whitespace-nowrap flex-shrink-0"
           >
             Get Expert Help →
           </Link>
@@ -192,20 +192,20 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
 
         {/* FAQs */}
         {spec.faqs && spec.faqs.length > 0 && (
-          <div className="max-w-5xl mx-auto mb-20 bg-white border border-gray-200 rounded-3xl p-8 sm:p-12 shadow-sm">
-            <div className="mb-8">
-              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+          <div className="w-full mb-20">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
                 Technical Questions
               </span>
-              <h2 className="text-2xl font-bold text-gray-900 font-jakarta mt-1">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
                 Frequently Asked Questions
               </h2>
             </div>
 
-            <div className="space-y-4">
+            <div className="max-w-3xl mx-auto space-y-4">
               {spec.faqs.map((faq, idx) => (
-                <div key={idx} className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
-                  <h3 className="text-xs font-bold text-gray-900 mb-1.5 font-jakarta">{faq.q}</h3>
+                <div key={idx} className="bg-white border border-[#E5E7EB] rounded-2xl p-6 shadow-2xs">
+                  <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">{faq.q}</h3>
                   <p className="text-xs text-gray-600 leading-relaxed">{faq.a}</p>
                 </div>
               ))}
@@ -214,7 +214,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
         )}
 
         {/* Suggested Tools */}
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full">
           <SuggestedTools currentToolId={spec.id} category={spec.category} />
         </div>
       </div>

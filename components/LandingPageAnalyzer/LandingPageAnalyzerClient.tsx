@@ -90,7 +90,7 @@ export default function LandingPageAnalyzerClient() {
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
+      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-28 pb-20">
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
@@ -271,12 +271,12 @@ export default function LandingPageAnalyzerClient() {
         )}
 
         {/* Detailed Landing Page Content / Educational Guide */}
-        <section className="max-w-5xl mx-auto mt-20 pt-12 border-t border-gray-200">
+        <section className="w-full mt-20 pt-12 border-t border-gray-200">
           <div className="text-center mb-12">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-3 py-1 rounded-full border border-[#FF5B04]/20">
               High-Velocity Principles
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-3">
               The 4 Pillars of High-Converting B2B Landing Pages
             </h2>
             <p className="text-xs text-gray-500 max-w-2xl mx-auto mt-2 leading-relaxed">
@@ -285,23 +285,23 @@ export default function LandingPageAnalyzerClient() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">5-Second Clarity Test</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">5-Second Clarity Test</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Can a visitor understand who the product is for and what problem it solves in under 5 seconds without scrolling?
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Visual Product Proof</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Visual Product Proof</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Replace generic abstract illustrations with crisp UI screenshots, interactive playgrounds, and animated product tours.
               </p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white border border-[#E5E7EB] rounded-[24px] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
               <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
-              <h3 className="text-sm font-bold text-gray-900 mb-2">Objection Pre-emption</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-2 font-jakarta">Objection Pre-emption</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
                 Address security, pricing transparency, migration time, and integration compatibility before asking for a commitment.
               </p>
@@ -310,7 +310,7 @@ export default function LandingPageAnalyzerClient() {
         </section>
 
         {/* Suggested Tools */}
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full">
           <SuggestedTools currentToolId="landing-page-analyzer" />
         </div>
       </div>
