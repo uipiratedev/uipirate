@@ -36,6 +36,7 @@ const STATIC_PAGES: {
   { path: "/blogs", priority: 0.85, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
   { path: "/faqs", priority: 0.8, changeFrequency: "monthly" },
+  { path: "/tools/ai-bot-checker", priority: 0.85, changeFrequency: "monthly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
   { path: "/sitemap", priority: 0.3, changeFrequency: "monthly" },
