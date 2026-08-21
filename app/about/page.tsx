@@ -158,14 +158,14 @@ export default function AboutPage() {
             "@type": "AboutPage",
             name: "About UI Pirate",
             description:
-              "Product design and frontend development agency that turns ideas into shipped products.",
+              "Full-service SaaS & AI product design and development agency that turns ideas into fully functional shipped products.",
             url: "https://uipirate.com/about",
             mainEntity: {
               "@type": "Organization",
               "@id": "https://uipirate.com/#organization",
               name: "UI Pirate by Vishal Anand",
               description:
-                "Product design and frontend development agency specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise Angular/React applications.",
+                "Full-service product design and development agency specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python.",
               foundingDate: "2015",
               numberOfEmployees: "9",
               founder: {
@@ -173,7 +173,7 @@ export default function AboutPage() {
                 name: "Vishal Anand",
                 jobTitle: "Founder & Lead Designer",
                 description:
-                  "Product designer and frontend developer with 9+ years of experience turning product ideas into shipped products.",
+                  "Product designer and software engineer with 9+ years of experience turning product ideas into shipped products.",
               },
               employee: [
                 {

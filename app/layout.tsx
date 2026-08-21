@@ -26,17 +26,17 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 export const metadata: Metadata = {
   metadataBase: new URL("https://uipirate.com"),
   title: {
-    default: "UI Pirate | SaaS & AI Product Design Agency",
+    default: "UI Pirate | SaaS & AI Product Design & Development Agency",
     template: "%s | UI Pirate",
   },
   description:
-    "Product design & dev agency. We turn SaaS and AI ideas into shipped products. UX/UI, Angular & React. USA, UK, Singapore.",
+    "Product design & full-stack development agency. We turn SaaS and AI ideas into fully functional shipped products. UX/UI, Angular, React & Next.js. USA, UK, Singapore.",
   keywords:
-    "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, simplify complex products, Angular development, React development, Vishal Anand",
+    "uipirate, uipirates, UI Pirate, product design agency, product development agency, SaaS development agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, Angular development, React development, Next.js development, full stack agency, Vishal Anand",
   openGraph: {
-    title: "UI Pirate | Product Design — From Idea to Shipped Product",
+    title: "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
     description:
-      "Not just designs — we help you think, plan, and build your product. Product thinking, competitive analysis & conversion-focused design for complex products.",
+      "Not just designs — we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
     url: "https://uipirate.com",
     siteName: "UI Pirate",
     images: [
@@ -168,7 +168,7 @@ export default async function RootLayout({
               image:
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
-                "Product design and frontend development agency that turns ideas into shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
+                "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
               foundingDate: "2015",
               founder: {
                 "@type": "Person",
