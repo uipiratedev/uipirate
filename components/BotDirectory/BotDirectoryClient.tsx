@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { AI_BOTS, BotInfo, BotCategory } from "@/data/bots";
+import SuggestedTools from "@/components/SuggestedTools";
 
 export default function BotDirectoryClient() {
   const [activeCategory, setActiveCategory] = useState<"all" | BotCategory>("all");
@@ -140,6 +141,9 @@ export default function BotDirectoryClient() {
             </motion.div>
           ))}
         </div>
+
+        {/* Suggested Tools */}
+        <SuggestedTools currentToolId="bot-directory" />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { DETAILED_BOTS, getBotById } from "@/data/bots";
+import SuggestedTools from "@/components/SuggestedTools";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -64,29 +65,6 @@ export default async function BotDetailPage({ params }: Props) {
         },
         "url": `https://uipirate.com/tools/bot-directory/${bot.id}`,
       },
-      {
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Tools",
-            "item": "https://uipirate.com/tools",
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Bot Directory",
-            "item": "https://uipirate.com/tools/bot-directory",
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": bot.name,
-            "item": `https://uipirate.com/tools/bot-directory/${bot.id}`,
-          },
-        ],
-      },
       ...(bot.faqs.length > 0
         ? [
             {
@@ -112,19 +90,6 @@ export default async function BotDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-medium">
-          <Link href="/tools" className="hover:text-gray-900 transition-colors">
-            Tools
-          </Link>
-          <span>/</span>
-          <Link href="/tools/bot-directory" className="hover:text-gray-900 transition-colors">
-            Bot Directory
-          </Link>
-          <span>/</span>
-          <span className="text-gray-900 font-semibold">{bot.name}</span>
-        </nav>
-
         {/* Hero Card */}
         <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -319,6 +284,9 @@ export default async function BotDetailPage({ params }: Props) {
             )}
           </div>
         </div>
+
+        {/* Suggested Tools Section */}
+        <SuggestedTools currentToolId="bot-directory" />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import SuggestedTools from "@/components/SuggestedTools";
 
 interface BatchSiteResult {
   url: string;
@@ -256,6 +257,9 @@ export default function BatchCheckerClient() {
             </div>
           </div>
         )}
+
+        {/* Suggested Tools */}
+        <SuggestedTools currentToolId="batch-checker" />
       </div>
     </div>
   );

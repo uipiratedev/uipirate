@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import SuggestedTools from "@/components/SuggestedTools";
 
 type SchemaType = "organization" | "faq" | "software" | "service";
 
@@ -358,6 +359,9 @@ export default function SchemaGeneratorClient() {
             </div>
           </div>
         </div>
+
+        {/* Suggested Tools */}
+        <SuggestedTools currentToolId="schema-generator" />
       </div>
     </div>
   );

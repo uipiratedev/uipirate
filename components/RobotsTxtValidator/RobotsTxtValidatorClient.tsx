@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import SuggestedTools from "@/components/SuggestedTools";
 
 interface ValidationIssue {
   type: "error" | "warning" | "success" | "info";
@@ -333,6 +334,9 @@ Sitemap: https://example.com/sitemap.xml
             </div>
           </div>
         </div>
+
+        {/* Suggested Tools */}
+        <SuggestedTools currentToolId="robots-txt-validator" />
       </div>
     </div>
   );
