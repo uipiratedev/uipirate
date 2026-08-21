@@ -18,6 +18,35 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Batch AI Crawler & GEO Score Checker",
+  "url": "https://uipirate.com/tools/batch-checker",
+  "description":
+    "Audit up to 10 competitor or client domains simultaneously for AI crawler permissions and GEO scores.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "UI Pirate",
+    "url": "https://uipirate.com",
+  },
+};
+
 export default function BatchCheckerPage() {
-  return <BatchCheckerClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BatchCheckerClient />
+    </>
+  );
 }

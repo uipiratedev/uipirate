@@ -18,6 +18,35 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free AI & GEO Schema Markup Generator",
+  "url": "https://uipirate.com/tools/schema-generator",
+  "description":
+    "Generate JSON-LD structured data for Organization, FAQPage, WebApplication, and Services to enhance AI search rankings and citations.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "All",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+  },
+  "provider": {
+    "@type": "Organization",
+    "name": "UI Pirate",
+    "url": "https://uipirate.com",
+  },
+};
+
 export default function SchemaGeneratorPage() {
-  return <SchemaGeneratorClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <SchemaGeneratorClient />
+    </>
+  );
 }

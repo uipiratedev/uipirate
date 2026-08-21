@@ -18,6 +18,28 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "AI Crawler & Bot Directory",
+  "url": "https://uipirate.com/tools/bot-directory",
+  "description":
+    "Complete searchable database of 26+ AI crawlers, LLM training bots, search engines, and scrapers. Look up exact User-Agents, operators, and behavior.",
+  "provider": {
+    "@type": "Organization",
+    "name": "UI Pirate",
+    "url": "https://uipirate.com",
+  },
+};
+
 export default function BotDirectoryPage() {
-  return <BotDirectoryClient />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BotDirectoryClient />
+    </>
+  );
 }

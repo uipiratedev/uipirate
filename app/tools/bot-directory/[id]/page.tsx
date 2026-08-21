@@ -49,8 +49,68 @@ export default async function BotDetailPage({ params }: Props) {
     (b) => b.id !== bot.id && (b.category === bot.category || b.company === bot.company)
   ).slice(0, 3);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": bot.name,
+        "applicationCategory": bot.categoryLabel,
+        "description": bot.description,
+        "operatingSystem": "Web Server / HTTP",
+        "provider": {
+          "@type": "Organization",
+          "name": bot.company,
+        },
+        "url": `https://uipirate.com/tools/bot-directory/${bot.id}`,
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Tools",
+            "item": "https://uipirate.com/tools",
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Bot Directory",
+            "item": "https://uipirate.com/tools/bot-directory",
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": bot.name,
+            "item": `https://uipirate.com/tools/bot-directory/${bot.id}`,
+          },
+        ],
+      },
+      ...(bot.faqs.length > 0
+        ? [
+            {
+              "@type": "FAQPage",
+              "mainEntity": bot.faqs.map((faq) => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": faq.answer,
+                },
+              })),
+            },
+          ]
+        : []),
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6 font-medium">
