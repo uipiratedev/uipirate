@@ -501,17 +501,19 @@ export default function AIBotCheckerClient() {
     });
   }, [result, activeCategory, statusFilter, searchQuery]);
 
+  const AnimatePresenceAny = AnimatePresence as any;
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
-      <AnimatePresence>
-        {selectedBot && (
+      <AnimatePresenceAny>
+        {selectedBot ? (
           <BotDetailDrawer
             bot={selectedBot}
             domain={result?.domain ?? ""}
             onClose={() => setSelectedBot(null)}
           />
-        )}
-      </AnimatePresence>
+        ) : null}
+      </AnimatePresenceAny>
 
       {/* Hero Section */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-10">
