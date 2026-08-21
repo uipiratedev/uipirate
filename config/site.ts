@@ -61,6 +61,10 @@ export const siteConfig = {
       href: "/pricing",
     },
     {
+      label: "Tools",
+      href: "/tools",
+    },
+    {
       label: "About",
       href: "/about",
     },
@@ -101,6 +105,14 @@ export const siteConfig = {
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/community_ovswiv.svg",
         },
+        {
+          category: "Free Tools",
+          icon: "🛠️",
+          href: "/tools",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
+        },
       ],
     },
 
@@ -133,6 +145,7 @@ export const siteConfig = {
         { label: "Blog", href: "/blogs" },
         { label: "Case Studies", href: "/case-studies" },
         { label: "FAQs", href: "/faqs" },
+        { label: "Free Tools", href: "/tools" },
       ],
     },
     {
