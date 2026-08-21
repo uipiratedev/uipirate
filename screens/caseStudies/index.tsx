@@ -351,12 +351,18 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                       className="group block relative rounded-3xl overflow-hidden shadow-lg border border-gray-200/60 hover:shadow-2xl hover:border-gray-300 transition-all duration-500 bg-white"
                       href={`/case-studies/${study.slug}`}
                     >
-                      {/* Blurred background image - more visible */}
+                      {/* Blurred background image - more visible.
+                          Not next/image: heroImage is SVG (needs
+                          dangerouslyAllowSVG) and CMS-sourced ones may come
+                          from domains outside next.config's image allowlist.
+                          loading="lazy" still defers every off-screen card. */}
                       <div className="absolute inset-0">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           alt={`${study.client} background`}
                           className="w-full h-full object-cover blur-sm scale-110 opacity-60"
+                          decoding="async"
+                          loading="lazy"
                           src={study.heroImage}
                         />
                       </div>
