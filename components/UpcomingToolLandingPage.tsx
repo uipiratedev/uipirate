@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import SuggestedTools from "@/components/SuggestedTools";
+import SuggestedTools, { ALL_TOOLS_REGISTRY } from "@/components/SuggestedTools";
 
 export interface UpcomingToolSpec {
   id: string;
@@ -19,18 +19,69 @@ export interface UpcomingToolSpec {
 }
 
 export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSpec }) {
+  const toolEntry = ALL_TOOLS_REGISTRY.find((t) => t.id === spec.id);
+
+  const webAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": spec.title,
+    "url": `https://uipirate.com${toolEntry?.href || `/tools/${spec.category}/${spec.id}`}`,
+    "description": spec.subtitle,
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+    },
+  };
+
+  const faqSchema =
+    spec.faqs && spec.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": spec.faqs.map((f) => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": f.a,
+            },
+          })),
+        }
+      : null;
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
         {/* Header Hero */}
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span className="text-amber-800 text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              {spec.badgeText}
-            </span>
-            <span className="w-px h-3 bg-amber-200" />
-            <span className="text-amber-700 text-xs font-mono">{spec.categoryLabel}</span>
+          {/* Tool Icon & Badge */}
+          <div className="flex flex-col items-center justify-center gap-3 mb-6">
+            {toolEntry?.icon && (
+              <div className="w-14 h-14 rounded-2xl bg-[#FF5B04]/10 text-[#FF5B04] flex items-center justify-center shadow-sm border border-[#FF5B04]/20 [&>svg]:w-7 [&>svg]:h-7">
+                {toolEntry.icon}
+              </div>
+            )}
+            <div className="inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-full px-4 py-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              <span className="text-amber-800 text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
+                {spec.badgeText}
+              </span>
+              <span className="w-px h-3 bg-amber-200" />
+              <span className="text-amber-700 text-xs font-mono">{spec.categoryLabel}</span>
+            </div>
           </div>
 
           <h1 className="heading-hero text-gray-900 mb-4">{spec.title}</h1>
@@ -40,8 +91,8 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
           <div className="p-6 rounded-3xl bg-amber-50/70 border border-amber-200 text-left max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 text-xs font-bold text-amber-900 font-jakarta mb-1">
-                <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                <svg className="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <span>Automated Engine Under Active Development</span>
               </div>
@@ -76,7 +127,7 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
             {spec.keyMetrics.map((metric, idx) => (
               <div
                 key={idx}
-                className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between"
+                className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between hover:border-[#FF5B04]/30 hover:shadow-md transition-all"
               >
                 <div>
                   <div className="w-10 h-10 rounded-2xl bg-[#FF5B04]/8 text-[#FF5B04] flex items-center justify-center font-mono font-bold text-sm mb-4">
@@ -98,10 +149,10 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
         <div className="max-w-5xl mx-auto mb-20 bg-white border border-gray-200 rounded-3xl p-8 sm:p-12 shadow-sm">
           <div className="max-w-2xl mb-8">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
-              Workflow Breakdown
+              Evaluation Methodology
             </span>
             <h2 className="text-2xl font-bold text-gray-900 font-jakarta mt-1">
-              How the Diagnostic Pipeline Works
+              How the Diagnostic Engine Works
             </h2>
           </div>
 
@@ -118,47 +169,49 @@ export default function UpcomingToolLandingPage({ spec }: { spec: UpcomingToolSp
           </div>
         </div>
 
-        {/* Agency Service Bridge Banner */}
+        {/* Agency Bridge Consultation Box */}
         <div className="max-w-5xl mx-auto mb-20 bg-gradient-to-br from-gray-900 to-black text-white rounded-3xl p-8 sm:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="max-w-xl">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-white/10 px-3 py-1 rounded-full border border-white/10">
-              Need Immediate Design & Engineering?
+              Agency Service: {spec.agencyService}
             </span>
             <h3 className="text-2xl sm:text-3xl font-bold font-jakarta mt-4">
-              Get an expert teardown directly from UI Pirate.
+              Need these optimizations implemented now?
             </h3>
             <p className="text-xs text-gray-300 mt-2 leading-relaxed">
-              Don&apos;t wait for automated tools. Our senior product designers and frontend architects conduct live, line-by-line UX audits and rebuild high-converting interfaces in Figma and code.
+              Don't wait for automated tools. UI Pirate's senior product designers and engineers can audit, redesign, and ship your interface directly in Figma and Next.js.
             </p>
           </div>
           <Link
             href="/contact"
             className="px-6 py-4 rounded-2xl bg-[#FF5B04] hover:bg-[#E54F00] text-white text-xs font-bold transition-all shadow-lg shadow-[#FF5B04]/30 whitespace-nowrap flex-shrink-0"
           >
-            Schedule a Design Review →
+            Get Expert Help →
           </Link>
         </div>
 
         {/* FAQs */}
-        <div className="max-w-5xl mx-auto mb-20 bg-white border border-gray-200 rounded-3xl p-8 sm:p-12 shadow-sm">
-          <div className="mb-8">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
-              FAQ & Insights
-            </span>
-            <h2 className="text-2xl font-bold text-gray-900 font-jakarta mt-1">
-              Frequently Asked Questions
-            </h2>
-          </div>
+        {spec.faqs && spec.faqs.length > 0 && (
+          <div className="max-w-5xl mx-auto mb-20 bg-white border border-gray-200 rounded-3xl p-8 sm:p-12 shadow-sm">
+            <div className="mb-8">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+                Technical Questions
+              </span>
+              <h2 className="text-2xl font-bold text-gray-900 font-jakarta mt-1">
+                Frequently Asked Questions
+              </h2>
+            </div>
 
-          <div className="space-y-4">
-            {spec.faqs.map((faq, idx) => (
-              <div key={idx} className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
-                <h3 className="text-xs font-bold text-gray-900 mb-1.5 font-jakarta">{faq.q}</h3>
-                <p className="text-xs text-gray-600 leading-relaxed">{faq.a}</p>
-              </div>
-            ))}
+            <div className="space-y-4">
+              {spec.faqs.map((faq, idx) => (
+                <div key={idx} className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                  <h3 className="text-xs font-bold text-gray-900 mb-1.5 font-jakarta">{faq.q}</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Suggested Tools */}
         <div className="max-w-5xl mx-auto">

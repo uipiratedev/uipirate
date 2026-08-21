@@ -3,475 +3,38 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ALL_TOOLS_REGISTRY, SuggestedToolItem } from "@/components/SuggestedTools";
 
 export type ToolCategory = "all" | "website-conversion" | "saas-product" | "design-system" | "ai-geo";
-
-interface ToolItem {
-  id: string;
-  href: string;
-  status: "live" | "preview" | "upcoming";
-  badge: "Live" | "Popular" | "Preview Available" | "Coming Soon";
-  category: ToolCategory;
-  categoryLabel: string;
-  title: string;
-  description: string;
-  ctaLabel: string;
-  agencyHook: string;
-  tags: string[];
-  icon: React.ReactNode;
-}
-
-const tools: ToolItem[] = [
-  // ─────────────────────────────────────────────────────────────
-  // 1. LIVE: AI & GEO Visibility Toolkit (7 Live Tools)
-  // ─────────────────────────────────────────────────────────────
-  {
-    id: "ai-bot-checker",
-    href: "/tools/ai/ai-bot-checker",
-    status: "live",
-    badge: "Popular",
-    category: "ai-geo",
-    categoryLabel: "AI & GEO Visibility",
-    title: "AI Crawler & GEO Readiness Hub",
-    description:
-      "Paste any website URL and get an instant 0–100 GEO Visibility Score across 26+ AI bots (GPTBot, ClaudeBot, Perplexity) and Cloudflare WAF.",
-    ctaLabel: "Scan Your Website Now",
-    agencyHook: "Mapped to AI Product & GEO Strategy",
-    tags: ["GEO Score", "AI crawlers", "Firewall WAF", "ChatGPT Citations"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="3" y="11" width="18" height="11" rx="2" />
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        <line x1="8" y1="16" x2="8.01" y2="16" />
-        <line x1="16" y1="16" x2="16.01" y2="16" />
-      </svg>
-    ),
-  },
-  {
-    id: "llms-txt-generator",
-    href: "/tools/ai/llms-txt-generator",
-    status: "live",
-    badge: "Live",
-    category: "ai-geo",
-    categoryLabel: "AI & GEO Visibility",
-    title: "llms.txt & Knowledge Generator",
-    description:
-      "Generate standard llms.txt and deep llms-full.txt files. Provide structured company knowledge directly to AI crawlers and LLM search agents.",
-    ctaLabel: "Generate llms.txt File",
-    agencyHook: "Mapped to AI Infrastructure",
-    tags: ["llms.txt", "AI context", "GEO Standard"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-      </svg>
-    ),
-  },
-  {
-    id: "robots-txt-generator",
-    href: "/tools/ai/robots-txt-generator",
-    status: "live",
-    badge: "Live",
-    category: "ai-geo",
-    categoryLabel: "AI & GEO Visibility",
-    title: "AI robots.txt Generator",
-    description:
-      "Build a custom robots.txt file for your site. Choose which AI bots, search engines, and scrapers to allow or block with 1-click strategy presets.",
-    ctaLabel: "Build Custom robots.txt",
-    agencyHook: "Mapped to Search Architecture",
-    tags: ["robots.txt", "AI crawlers", "Generator"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
-      </svg>
-    ),
-  },
-  {
-    id: "robots-txt-validator",
-    href: "/tools/ai/robots-txt-validator",
-    status: "live",
-    badge: "Live",
-    category: "ai-geo",
-    categoryLabel: "AI & GEO Visibility",
-    title: "robots.txt Validator & Linter",
-    description:
-      "Test and validate any robots.txt syntax against RFC 9309. Catch blocking errors, unknown directives, and accidental AI crawler bans.",
-    ctaLabel: "Validate robots.txt Syntax",
-    agencyHook: "Mapped to Technical Audit",
-    tags: ["Linter", "Syntax", "Validator"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <path d="M9 12l2 2 4-4" />
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-  },
-  {
-    id: "batch-checker",
-    href: "/tools/ai/batch-checker",
-    status: "live",
-    badge: "Live",
-    category: "ai-geo",
-    categoryLabel: "AI & GEO Visibility",
-    title: "Batch AI Crawler & GEO Score Auditor",
-    description:
-      "Audit up to 10 competitor or client domains simultaneously. Compare GEO scores and crawler permissions side-by-side.",
-    ctaLabel: "Audit 10 Competitors",
-    agencyHook: "Mapped to Competitor Intelligence",
-    tags: ["Batch Audit", "Competitor Comparison", "GEO"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-        <line x1="8" y1="21" x2="16" y2="21" />
-        <line x1="12" y1="17" x2="12" y2="21" />
-      </svg>
-    ),
-  },
-  {
-    id: "schema-generator",
-    href: "/tools/ai/schema-generator",
-    status: "live",
-    badge: "Live",
-    category: "ai-geo",
-    categoryLabel: "AI & GEO Visibility",
-    title: "AI & GEO Schema Markup Generator",
-    description:
-      "Create JSON-LD structured data for Organization, FAQPage, WebApp, and Services to boost ChatGPT, Gemini, and Google visibility.",
-    ctaLabel: "Generate JSON-LD Markup",
-    agencyHook: "Mapped to Structured Data",
-    tags: ["JSON-LD", "Schema.org", "FAQ Schema"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <polygon points="12 2 2 7 12 12 22 7 12 2" />
-        <polyline points="2 17 12 22 22 17" />
-        <polyline points="2 12 12 17 22 12" />
-      </svg>
-    ),
-  },
-  {
-    id: "bot-directory",
-    href: "/tools/ai/bot-directory",
-    status: "live",
-    badge: "Live",
-    category: "ai-geo",
-    categoryLabel: "AI & GEO Visibility",
-    title: "AI Crawler & Bot Directory",
-    description:
-      "Searchable database of 26+ AI crawlers, search engines, and scrapers. Lookup exact User-Agents, operators, and reverse DNS hosts.",
-    ctaLabel: "Search Bot Database",
-    agencyHook: "Mapped to Crawler Research",
-    tags: ["Directory", "User-Agents", "AI Database"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>
-    ),
-  },
-
-  // ─────────────────────────────────────────────────────────────
-  // 2. WEBSITE & CONVERSION TOOLS (Nested under /tools/website/*)
-  // ─────────────────────────────────────────────────────────────
-  {
-    id: "landing-page-analyzer",
-    href: "/tools/website/landing-page-analyzer",
-    status: "preview",
-    badge: "Preview Available",
-    category: "website-conversion",
-    categoryLabel: "Website & Conversion",
-    title: "Landing Page UX & Conversion Analyzer",
-    description:
-      "Inspect any landing page URL. Score your above-the-fold value proposition, CTA visibility, social proof trust signals, and cognitive friction.",
-    ctaLabel: "Try Interactive Preview",
-    agencyHook: "Mapped to Landing Pages & Websites",
-    tags: ["Landing Page", "Conversion Rate", "CTA Clarity", "Trust Signals"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-      </svg>
-    ),
-  },
-  {
-    id: "website-ux-audit",
-    href: "/tools/website/website-ux-audit",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "website-conversion",
-    categoryLabel: "Website & Conversion",
-    title: "Website UX & Friction Audit",
-    description:
-      "Full website visual hierarchy, CTA clarity, mobile UX, accessibility, and content structure friction scoring engine.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to Landing Pages & CRO",
-    tags: ["Website Audit", "UX Score", "Friction", "Mobile UX"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="2" y="3" width="20" height="14" rx="2" />
-        <line x1="8" y1="21" x2="16" y2="21" />
-        <line x1="12" y1="17" x2="12" y2="21" />
-      </svg>
-    ),
-  },
-  {
-    id: "cta-analyzer",
-    href: "/tools/website/cta-analyzer",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "website-conversion",
-    categoryLabel: "Website & Conversion",
-    title: "CTA & Conversion Button Analyzer",
-    description:
-      "Audit button contrast, action verbs, viewport prominence, eye-tracking attention, and microcopy risk reducers.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to Conversion Optimization",
-    tags: ["CTA Audit", "Button UX", "Conversion"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="3" y="8" width="18" height="8" rx="4" />
-        <path d="M12 8v8" />
-      </svg>
-    ),
-  },
-  {
-    id: "website-readability-checker",
-    href: "/tools/website/website-readability-checker",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "website-conversion",
-    categoryLabel: "Website & Conversion",
-    title: "Website Readability & Clarity Checker",
-    description:
-      "Analyze copy reading grade, jargon density, and cognitive load to ensure your value proposition converts.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to Copywriting & Messaging",
-    tags: ["Readability", "Flesch-Kincaid", "Copy Clarity"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-      </svg>
-    ),
-  },
-  {
-    id: "homepage-seo-checker",
-    href: "/tools/website/homepage-seo-checker",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "website-conversion",
-    categoryLabel: "Website & Conversion",
-    title: "Homepage SEO & Conversion Checker",
-    description:
-      "Audit heading hierarchy, OpenGraph social card previews, speed signals, and top-of-funnel conversion flow.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to SEO & Technical Architecture",
-    tags: ["Homepage SEO", "Social Cards", "Funnel"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="2" y1="12" x2="22" y2="12" />
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-      </svg>
-    ),
-  },
-
-  // ─────────────────────────────────────────────────────────────
-  // 3. SAAS & PRODUCT DESIGN TOOLS (Nested under /tools/saas/*)
-  // ─────────────────────────────────────────────────────────────
-  {
-    id: "saas-ux-audit",
-    href: "/tools/saas/saas-ux-audit",
-    status: "preview",
-    badge: "Preview Available",
-    category: "saas-product",
-    categoryLabel: "SaaS & Product Design",
-    title: "SaaS Product UX & Friction Audit",
-    description:
-      "Audit your SaaS web app or dashboard URL. Get a 0–100 Product Experience Score across onboarding, IA, navigation depth, and CTA clarity.",
-    ctaLabel: "Try Interactive Preview",
-    agencyHook: "Mapped to SaaS & AI Product Design",
-    tags: ["Product UX", "SaaS Audit", "Onboarding", "Friction"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-        <line x1="8" y1="21" x2="16" y2="21" />
-        <line x1="12" y1="17" x2="12" y2="21" />
-        <path d="M7 8h4M7 11h2" strokeWidth="1.8" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    id: "pricing-page-analyzer",
-    href: "/tools/saas/pricing-page-analyzer",
-    status: "preview",
-    badge: "Preview Available",
-    category: "saas-product",
-    categoryLabel: "SaaS & Product Design",
-    title: "SaaS Pricing Page & Conversion Analyzer",
-    description:
-      "Analyze your SaaS pricing table. Audit tier differentiation, annual discount nudges, feature comparisons, and pricing psychology friction.",
-    ctaLabel: "Try Interactive Preview",
-    agencyHook: "Mapped to SaaS Conversion Strategy",
-    tags: ["Pricing UX", "SaaS Revenue", "Tier Hierarchy"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="2" y="4" width="20" height="16" rx="2" />
-        <line x1="2" y1="10" x2="22" y2="10" />
-        <line x1="12" y1="10" x2="12" y2="20" />
-        <path d="M7 15h.01M17 15h.01" strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    id: "dashboard-analyzer",
-    href: "/tools/saas/dashboard-analyzer",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "saas-product",
-    categoryLabel: "SaaS & Product Design",
-    title: "Enterprise Dashboard UX Analyzer",
-    description:
-      "Audit complex SaaS dashboards for information density, KPI prominence, table usability, filtering, and empty states.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to Enterprise Products",
-    tags: ["Dashboard UX", "Information Density", "Tables"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M3 9h18M9 21V9" />
-      </svg>
-    ),
-  },
-  {
-    id: "saas-onboarding-analyzer",
-    href: "/tools/saas/saas-onboarding-analyzer",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "saas-product",
-    categoryLabel: "SaaS & Product Design",
-    title: "SaaS Onboarding & Activation Analyzer",
-    description:
-      "Measure signup friction, time-to-first-value (TTV), progressive disclosure, and user activation milestones.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to User Activation & Retention",
-    tags: ["Onboarding", "Activation", "Time-to-Value"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <polyline points="9 11 12 14 22 4" />
-        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-      </svg>
-    ),
-  },
-
-  // ─────────────────────────────────────────────────────────────
-  // 4. DESIGN SYSTEMS & CODE (Nested under /tools/design/*)
-  // ─────────────────────────────────────────────────────────────
-  {
-    id: "design-tokens",
-    href: "/tools/design/design-tokens",
-    status: "preview",
-    badge: "Preview Available",
-    category: "design-system",
-    categoryLabel: "Design Systems & Code",
-    title: "SaaS Design Token & Theme Generator",
-    description:
-      "Generate clean, production-ready design tokens, 8pt spacing scales, typography ramps, and Tailwind CSS config objects in seconds.",
-    ctaLabel: "Try Interactive Preview",
-    agencyHook: "Mapped to Design Systems & Tokens",
-    tags: ["Design Tokens", "Tailwind CSS", "Design Systems", "8pt Grid"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a7 7 0 0 0 0 14 7 7 0 0 0 0-14z" />
-      </svg>
-    ),
-  },
-  {
-    id: "contrast-checker",
-    href: "/tools/design/contrast-checker",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "design-system",
-    categoryLabel: "Design Systems & Code",
-    title: "WCAG Color Contrast & APCA Checker",
-    description:
-      "Check color combinations against WCAG 2.1 AA/AAA ratios and modern APCA perceptual lightness algorithms.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to Accessibility & Compliance",
-    tags: ["Accessibility", "WCAG", "Contrast Ratio"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 18a6 6 0 0 0 0-12v12z" />
-      </svg>
-    ),
-  },
-  {
-    id: "8pt-grid-calculator",
-    href: "/tools/design/8pt-grid-calculator",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "design-system",
-    categoryLabel: "Design Systems & Code",
-    title: "8pt Grid & Figma Spacing Calculator",
-    description:
-      "Calculate 8pt/4pt spatial scales, component height tokens, and Figma variable token JSON exports.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to UI Layout Architecture",
-    tags: ["8pt Grid", "Figma Spacing", "Layout System"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="3" y="3" width="7" height="7" />
-        <rect x="14" y="3" width="7" height="7" />
-        <rect x="14" y="14" width="7" height="7" />
-        <rect x="3" y="14" width="7" height="7" />
-      </svg>
-    ),
-  },
-  {
-    id: "typography-scale-generator",
-    href: "/tools/design/typography-scale-generator",
-    status: "upcoming",
-    badge: "Coming Soon",
-    category: "design-system",
-    categoryLabel: "Design Systems & Code",
-    title: "Modular Typography Scale Generator",
-    description:
-      "Generate mathematical typographic ramps, line-height ratios, and CSS clamp() fluid type rules.",
-    ctaLabel: "View Roadmap & Specs",
-    agencyHook: "Mapped to Design Systems & Type",
-    tags: ["Typography", "Type Scale", "Fluid clamp()"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <polyline points="4 7 4 4 20 4 20 7" />
-        <line x1="9" y1="20" x2="15" y2="20" />
-        <line x1="12" y1="4" x2="12" y2="20" />
-      </svg>
-    ),
-  },
-];
 
 export default function ToolsPage() {
   const [activeCategory, setActiveCategory] = useState<ToolCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredTools = useMemo(() => {
-    return tools.filter((tool) => {
+    return ALL_TOOLS_REGISTRY.filter((tool) => {
       const matchesCat = activeCategory === "all" || tool.category === activeCategory;
       const matchesSearch =
         !searchQuery.trim() ||
         tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+        tool.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCat && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
 
-  const liveTools = useMemo(() => filteredTools.filter((t) => t.status === "live"), [filteredTools]);
-  const previewTools = useMemo(() => filteredTools.filter((t) => t.status === "preview"), [filteredTools]);
-  const upcomingTools = useMemo(() => filteredTools.filter((t) => t.status === "upcoming"), [filteredTools]);
+  const liveTools = useMemo(
+    () => filteredTools.filter((t) => t.badge === "Live" || t.badge === "Popular"),
+    [filteredTools]
+  );
+  const previewTools = useMemo(
+    () => filteredTools.filter((t) => t.badge === "Preview Available"),
+    [filteredTools]
+  );
+  const upcomingTools = useMemo(
+    () => filteredTools.filter((t) => t.badge === "Coming Soon" || (!t.badge && t.badge !== "Live")),
+    [filteredTools]
+  );
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
@@ -507,7 +70,7 @@ export default function ToolsPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search across all 16 tools, categories, or tags (e.g. AI bot, SaaS UX, Pricing, Onboarding, Typography, robots.txt)..."
+              placeholder="Search across all tools (e.g. AI bot, SaaS UX, Pricing, Onboarding, Typography, Breakpoints, robots.txt)..."
               className="w-full px-4 py-3.5 pl-11 rounded-2xl border border-gray-200 bg-white text-sm text-gray-900 outline-none focus:border-[#FF5B04] shadow-sm font-jakarta"
             />
             <svg
@@ -524,11 +87,31 @@ export default function ToolsPage() {
           {/* Category Tabs */}
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
             {[
-              { id: "all", label: "All Tools", count: tools.length },
-              { id: "ai-geo", label: "AI & GEO Visibility", badge: "7 Live", count: tools.filter((t) => t.category === "ai-geo").length },
-              { id: "website-conversion", label: "Website & Conversion", badge: "5 Tools", count: tools.filter((t) => t.category === "website-conversion").length },
-              { id: "saas-product", label: "SaaS & Product UX", badge: "4 Tools", count: tools.filter((t) => t.category === "saas-product").length },
-              { id: "design-system", label: "Design Systems & Code", badge: "4 Tools", count: tools.filter((t) => t.category === "design-system").length },
+              { id: "all", label: "All Tools", count: ALL_TOOLS_REGISTRY.length },
+              {
+                id: "ai-geo",
+                label: "AI & GEO Visibility",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length,
+              },
+              {
+                id: "website-conversion",
+                label: "Website & Conversion",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length,
+              },
+              {
+                id: "saas-product",
+                label: "SaaS & Product UX",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length,
+              },
+              {
+                id: "design-system",
+                label: "Design Systems & Code",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length,
+              },
             ].map((tab) => {
               const active = activeCategory === tab.id;
               return (
@@ -575,23 +158,23 @@ export default function ToolsPage() {
               {
                 title: "AI & GEO Visibility",
                 path: "/tools/ai",
-                count: "7 Live Tools",
-                badge: "Live Suite",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length} Tools`,
+                badge: "Check · Generate · Research",
                 badgeColor: "text-emerald-700 bg-emerald-50 border-emerald-200",
-                desc: "Audit AI crawlers, generate llms.txt & optimize for ChatGPT & Perplexity.",
+                desc: "Audit AI crawlers, generate llms.txt & optimize for ChatGPT, Perplexity & Gemini.",
               },
               {
                 title: "Website & Conversion",
                 path: "/tools/website",
-                count: "5 Diagnostic Tools",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length} Tools`,
                 badge: "Commercial CRO",
                 badgeColor: "text-blue-700 bg-blue-50 border-blue-200",
-                desc: "Score above-the-fold clarity, CTA contrast & copy readability.",
+                desc: "Score above-the-fold clarity, CTA contrast, copy readability & friction.",
               },
               {
                 title: "SaaS & Product UX",
                 path: "/tools/saas",
-                count: "4 Deep Engines",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length} Tools`,
                 badge: "Core Expertise",
                 badgeColor: "text-purple-700 bg-purple-50 border-purple-200",
                 desc: "Audit dashboard density, onboarding drop-offs & pricing psychology.",
@@ -599,10 +182,10 @@ export default function ToolsPage() {
               {
                 title: "Design Systems & Code",
                 path: "/tools/design",
-                count: "4 Spatial Tools",
-                badge: "Foundations",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length} Tools`,
+                badge: "Foundations & Code",
                 badgeColor: "text-amber-700 bg-amber-50 border-amber-200",
-                desc: "Generate Tailwind tokens, 8pt spacing scales & WCAG contrast ratios.",
+                desc: "Generate Tailwind tokens, 8pt spacing scales, shadows, radii & WCAG contrast.",
               },
             ].map((cat, idx) => (
               <Link
@@ -669,24 +252,11 @@ export default function ToolsPage() {
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
-                      <div className="flex flex-wrap gap-1">
-                        {tool.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[10px] text-gray-400 bg-gray-50 border border-gray-100 rounded-md px-2 py-0.5 font-mono"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-[11px] text-emerald-700 font-medium font-mono">100% Free · Live</span>
-                        <span className="flex items-center gap-1 text-xs font-bold text-[#FF5B04] group-hover:gap-1.5 transition-all">
-                          {tool.ctaLabel} →
-                        </span>
-                      </div>
+                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-[#FF5B04] group-hover:gap-1.5 transition-all">
+                        {tool.ctaLabel} →
+                      </span>
                     </div>
                   </div>
                 </Link>
@@ -732,24 +302,11 @@ export default function ToolsPage() {
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
-                      <div className="flex flex-wrap gap-1">
-                        {tool.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[10px] text-gray-400 bg-gray-50 border border-gray-100 rounded-md px-2 py-0.5 font-mono"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-[11px] text-amber-700 font-medium font-mono">v1 Preview Active</span>
-                        <span className="flex items-center gap-1 text-xs font-bold text-amber-700 group-hover:gap-1.5 transition-all">
-                          {tool.ctaLabel} →
-                        </span>
-                      </div>
+                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-amber-700 group-hover:gap-1.5 transition-all">
+                        {tool.ctaLabel} →
+                      </span>
                     </div>
                   </div>
                 </Link>
@@ -783,7 +340,7 @@ export default function ToolsPage() {
                           {tool.icon}
                         </div>
                         <span className="text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border text-blue-700 bg-blue-50 border-blue-200">
-                          {tool.badge}
+                          {tool.badge || "Coming Soon"}
                         </span>
                       </div>
 
@@ -795,24 +352,11 @@ export default function ToolsPage() {
                       </p>
                     </div>
 
-                    <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
-                      <div className="flex flex-wrap gap-1">
-                        {tool.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[10px] text-gray-400 bg-gray-50 border border-gray-100 rounded-md px-2 py-0.5 font-mono"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-[11px] text-blue-700 font-medium font-mono">In Calibration</span>
-                        <span className="flex items-center gap-1 text-xs font-bold text-blue-700 group-hover:gap-1.5 transition-all">
-                          {tool.ctaLabel} →
-                        </span>
-                      </div>
+                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-blue-700 group-hover:gap-1.5 transition-all">
+                        {tool.ctaLabel} →
+                      </span>
                     </div>
                   </div>
                 </Link>

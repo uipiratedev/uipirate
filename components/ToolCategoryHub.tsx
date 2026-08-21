@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ALL_TOOLS_REGISTRY, SuggestedToolItem } from "@/components/SuggestedTools";
+import { ALL_TOOLS_REGISTRY } from "@/components/SuggestedTools";
 
 export interface CategoryHubProps {
   categoryId: "website-conversion" | "saas-product" | "design-system" | "ai-geo";
@@ -16,29 +16,64 @@ export interface CategoryHubProps {
 }
 
 export const CATEGORY_METADATA = {
+  "ai-geo": {
+    path: "/tools/ai",
+    name: "AI & GEO Visibility Tools",
+    shortName: "AI & GEO Visibility",
+    description: "Inspect AI crawler accessibility, build llms.txt knowledge graphs, and optimize for ChatGPT & Perplexity.",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
+        <path d="M9 12h.01" />
+        <path d="M15 12h.01" />
+        <path d="M9 16a6 6 0 0 0 6 0" />
+        <path d="M12 2v2" />
+      </svg>
+    ),
+  },
   "website-conversion": {
     path: "/tools/website",
     name: "Website & Conversion Tools",
     shortName: "Website & Conversion",
     description: "Audit visual hierarchy, CTA clarity, copy readability, and conversion friction.",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="1" />
+        <path d="M12 7a5 5 0 1 0 5 5" />
+        <path d="M13 3.055a9 9 0 1 0 7.941 7.945" />
+        <path d="M15 6v3h3" />
+        <path d="M15 9l6-6" />
+      </svg>
+    ),
   },
   "saas-product": {
     path: "/tools/saas",
     name: "SaaS & Product Design Tools",
     shortName: "SaaS & Product UX",
     description: "Score onboarding friction, dashboard complexity, information architecture, and pricing psychology.",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="12" rx="2" />
+        <path d="M7 20h10" />
+        <path d="M9 16v4" />
+        <path d="M15 16v4" />
+        <path d="M8 12l3-3l2 2l3-3" />
+      </svg>
+    ),
   },
   "design-system": {
     path: "/tools/design",
     name: "Design Systems & Code Tools",
     shortName: "Design Systems & Code",
     description: "Generate Tailwind design tokens, 8pt spacing scales, typography ramps, and WCAG contrast checks.",
-  },
-  "ai-geo": {
-    path: "/tools/ai",
-    name: "AI & GEO Visibility Tools",
-    shortName: "AI & GEO Visibility",
-    description: "Inspect AI crawler accessibility, build llms.txt knowledge graphs, and optimize for ChatGPT & Perplexity.",
+    icon: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 21a9 9 0 0 1 0-18c4.97 0 9 3.582 9 8c0 1.06-.474 2.078-1.318 2.828c-.844.75-1.989 1.172-3.182 1.172h-2.5a2 2 0 0 0-1 3.732v.268a2 2 0 0 1-1 2z" />
+        <circle cx="7.5" cy="10.5" r="1" />
+        <circle cx="12" cy="7.5" r="1" />
+        <circle cx="16.5" cy="10.5" r="1" />
+      </svg>
+    ),
   },
 };
 
@@ -57,9 +92,50 @@ export default function ToolCategoryHub({
 
   // Other categories for cross-navigation
   const otherCategories = Object.entries(CATEGORY_METADATA).filter(([id]) => id !== categoryId);
+  const currentCategoryMeta = CATEGORY_METADATA[categoryId];
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": title,
+    "url": `https://uipirate.com${currentCategoryMeta.path}`,
+    "description": subtitle,
+    "hasPart": categoryTools.map((tool) => ({
+      "@type": "WebApplication",
+      "name": tool.title,
+      "url": `https://uipirate.com${tool.href}`,
+      "description": tool.description,
+    })),
+  };
+
+  const faqSchema =
+    faqs && faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqs.map((f) => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": f.a,
+            },
+          })),
+        }
+      : null;
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-20">
         {/* Category Hero */}
         <motion.div
@@ -229,6 +305,9 @@ export default function ToolCategoryHub({
                 className="group bg-white border border-gray-200 hover:border-[#FF5B04]/40 hover:shadow-md rounded-2xl p-5 flex flex-col justify-between transition-all"
               >
                 <div>
+                  <div className="w-9 h-9 rounded-xl bg-[#FF5B04]/8 text-[#FF5B04] flex items-center justify-center mb-3 group-hover:bg-[#FF5B04]/15 transition-colors">
+                    {cat.icon}
+                  </div>
                   <h4 className="text-sm font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-1">
                     {cat.name}
                   </h4>

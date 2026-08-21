@@ -110,8 +110,27 @@ export default function LandingPageAnalyzerClient() {
             Landing Page UX & <span className="text-[#FF5B04]">Conversion</span> Analyzer
           </h1>
           <p className="sub-header">
-            Audit your landing page headline, CTA visibility, social proof density, and cognitive friction to increase conversion rates.
+            Audit your landing page headline, CTA visibility, social proof density, and cognitive friction to simulate 0–100 conversion probability.
           </p>
+
+          {/* Integrated Capability Badges (Merged Modules) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
+            {[
+              "0–100 Conversion Probability Score",
+              "Website UX & Hierarchy Audit",
+              "CTA Contrast & Attention Gravity",
+              "Social Proof & Trust Density",
+              "Mobile Conversion Friction",
+            ].map((badge, idx) => (
+              <span
+                key={idx}
+                className="text-[11px] font-mono px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 shadow-2xs flex items-center gap-1.5"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                {badge}
+              </span>
+            ))}
+          </div>
 
           {/* Development Notice */}
           <div className="mt-6 inline-flex items-center gap-2 bg-amber-50 border border-amber-200/80 rounded-2xl px-4 py-2 text-xs text-amber-900">

@@ -539,6 +539,26 @@ export default function AIBotCheckerClient() {
           <p className="sub-header">
             Audit your site across 26+ AI bots, search engines, and social crawlers. Check robots.txt, llms.txt, WAF firewalls, and generative engine visibility.
           </p>
+
+          {/* Integrated Capability Badges (Merged Modules) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-5">
+            {[
+              "ChatGPT Search & OAI-SearchBot",
+              "Google Gemini & Google-Extended",
+              "Perplexity & ClaudeBot Citations",
+              "Full 26+ AI Crawler Audit",
+              "Cloudflare & Firewall WAF Detection",
+              "llms.txt Discoverability",
+            ].map((badge, idx) => (
+              <span
+                key={idx}
+                className="text-[11px] font-mono px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 shadow-2xs flex items-center gap-1.5"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
+                {badge}
+              </span>
+            ))}
+          </div>
         </motion.div>
 
         {/* URL Input */}
