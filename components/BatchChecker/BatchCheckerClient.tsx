@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import SuggestedTools from "@/components/SuggestedTools";
 
 interface BatchSiteResult {
   url: string;
@@ -256,6 +257,71 @@ export default function BatchCheckerClient() {
             </div>
           </div>
         )}
+
+        {/* Detailed Landing Page Content / Educational Guide */}
+        <section className="mt-24 pt-14 border-t border-gray-200 max-w-5xl mx-auto space-y-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+              Multi-Domain Intelligence
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+              Why Batch Competitor Auditing Matters for GEO
+            </h2>
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+              Compare your website’s AI search visibility and firewall posture directly against up to 10 competitors or client portfolio domains in a single multi-threaded scan.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Side-by-Side Scoring</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Benchmark your 0–100 GEO score against industry leaders. Discover if competitors are allowing AI citations while your firewall blocks them.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">llms.txt Adoption Tracking</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Quickly audit which competitor domains have published standard <code className="font-mono text-gray-800">/llms.txt</code> files to feed LLM knowledge graphs.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">WAF Firewall Detection</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Identify whether Cloudflare, AWS CloudFront, or custom bot management firewalls are challenging AI crawlers with CAPTCHA barriers.
+              </p>
+            </div>
+          </div>
+
+          {/* FAQs */}
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+            <h3 className="text-xl font-bold text-gray-900 font-jakarta mb-6">
+              Frequently Asked Questions about Batch AI Auditing
+            </h3>
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">How many domains can I audit at once?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  You can paste up to 10 URLs or domains simultaneously (one per line). All domains are queried in parallel.
+                </p>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">What does the GEO Grade mean?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Grades (A through F) evaluate bot accessibility. Sites with Grade A allow AI search citation bots, have valid robots.txt, provide llms.txt, and have zero WAF blocking.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Suggested Tools */}
+        <SuggestedTools currentToolId="batch-checker" category="ai-geo" />
       </div>
     </div>
   );

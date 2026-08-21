@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import SuggestedTools from "@/components/SuggestedTools";
 
 interface BotOption {
   id: string;
@@ -546,6 +547,73 @@ export default function RobotsTxtGeneratorClient() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Detailed Landing Page Content / Educational Guide */}
+        <section className="mt-24 pt-14 border-t border-gray-200 max-w-5xl mx-auto space-y-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04]">
+              robots.txt Architecture
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 font-jakarta mt-2">
+              How to Properly Configure robots.txt for AI Search
+            </h2>
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+              Standard robots.txt directives follow RFC 9309. Understanding how AI crawlers interpret wildcard fallback rules prevents accidental search exclusion.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">01</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Order of Specificity</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Specific bot rules (e.g. <code className="font-mono text-gray-800">User-agent: GPTBot</code>) take priority over the global wildcard <code className="font-mono text-gray-800">User-agent: *</code>.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">02</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Explicit Allow Overrides</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Always pair disallow blocks with explicit allows for public documentation and sitemaps so AI citation agents can verify your domain authority.
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
+              <span className="text-2xl font-bold font-mono text-[#FF5B04] mb-3 block">03</span>
+              <h3 className="text-sm font-bold text-gray-900 mb-2 font-jakarta">Sitemap Declaration</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Declare absolute URLs for all XML sitemaps at the very bottom of your robots.txt to ensure complete multi-engine crawl coverage.
+              </p>
+            </div>
+          </div>
+
+          {/* FAQs */}
+          <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+            <h3 className="text-xl font-bold text-gray-900 font-jakarta mb-6">
+              Frequently Asked Questions about robots.txt
+            </h3>
+            <div className="space-y-4">
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">Where should I place robots.txt?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  robots.txt must live in the root directory of your website (e.g. <code className="font-mono text-gray-800">https://yourdomain.com/robots.txt</code>). For Next.js projects, place it in <code className="font-mono text-gray-800">/public/robots.txt</code> or use <code className="font-mono text-gray-800">app/robots.ts</code>.
+                </p>
+              </div>
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
+                <h4 className="text-xs font-bold text-gray-900 mb-1">Can I block AI training without hurting Google SEO?</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Yes. By targeting named user-agents (<code className="font-mono text-gray-800">GPTBot</code>, <code className="font-mono text-gray-800">ClaudeBot</code>, <code className="font-mono text-gray-800">CCBot</code>) and leaving <code className="font-mono text-gray-800">Googlebot</code> and <code className="font-mono text-gray-800">Bingbot</code> allowed, your Google rankings remain 100% unaffected.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Suggested Tools (Dual-Category Grouping) */}
+        <div className="max-w-5xl mx-auto">
+          <SuggestedTools currentToolId="robots-txt-generator" category="ai-geo" />
         </div>
       </div>
     </div>

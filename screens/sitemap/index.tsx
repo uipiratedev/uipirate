@@ -57,6 +57,22 @@ const Sitemap = () => {
       { label: "Apps 4 Sale", href: "/apps4sale" },
       { label: "Mini SaaS Apps", href: "/mini-saas-apps" },
     ],
+    tools: [
+      { label: "Tools Main Hub", href: "/tools", desc: "16+ Free Tools Suite" },
+      { label: "AI & GEO Tools Hub", href: "/tools/ai", desc: "AI Crawlers & llms.txt" },
+      { label: "Website & CRO Tools Hub", href: "/tools/website", desc: "Landing Pages & Readability" },
+      { label: "SaaS & Product UX Hub", href: "/tools/saas", desc: "Dashboards & Onboarding" },
+      { label: "Design Systems Hub", href: "/tools/design", desc: "Tokens & 8pt Grid" },
+      { label: "AI Bot & GEO Checker", href: "/tools/ai/ai-bot-checker", desc: "Test 26+ AI bots" },
+      { label: "llms.txt Generator", href: "/tools/ai/llms-txt-generator", desc: "Standard AI markdown" },
+      { label: "robots.txt Generator", href: "/tools/ai/robots-txt-generator", desc: "Allow/block AI crawlers" },
+      { label: "robots.txt Validator", href: "/tools/ai/robots-txt-validator", desc: "RFC 9309 linter" },
+      { label: "Landing Page Analyzer", href: "/tools/website/landing-page-analyzer", desc: "Above-the-fold CRO" },
+      { label: "SaaS UX & Friction Audit", href: "/tools/saas/saas-ux-audit", desc: "Product usability score" },
+      { label: "SaaS Pricing Analyzer", href: "/tools/saas/pricing-page-analyzer", desc: "Pricing table psychology" },
+      { label: "Design Token Generator", href: "/tools/design/design-tokens", desc: "Tailwind & 8pt scales" },
+      { label: "Bot Directory", href: "/tools/ai/bot-directory", desc: "26+ AI agent database" },
+    ],
     legal: [
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms and Conditions", href: "/terms" },
@@ -223,6 +239,38 @@ const Sitemap = () => {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Tools & AI Ecosystem — spans full width */}
+          <div className="md:col-span-2 lg:col-span-3 bg-white rounded-3xl p-8 max-md:p-6 border border-gray-100 shadow-sm hover:border-brand-orange/20 hover:shadow-md transition-all">
+            <div className="flex items-center justify-between mb-5 flex-wrap gap-2">
+              <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <span className="w-7 h-7 rounded-lg bg-brand-orange/10 flex items-center justify-center text-sm">
+                  ⚡
+                </span>
+                Free Tools &amp; AI Diagnostic Suites
+              </h2>
+              <Link href="/tools" className="text-xs font-bold text-brand-orange hover:underline">
+                Explore All 16 Tools →
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {sitemapData.tools.map((item, index) => (
+                <Link
+                  key={index}
+                  className="group flex flex-col gap-1 p-4 rounded-xl border border-gray-100 hover:border-brand-orange/30 hover:bg-orange-50/50 transition-all"
+                  href={item.href}
+                >
+                  <span className="text-gray-900 font-semibold text-sm group-hover:text-brand-orange transition-colors flex items-center gap-1">
+                    <span className="text-brand-orange/40 group-hover:translate-x-1 transition-transform">
+                      →
+                    </span>
+                    {item.label}
+                  </span>
+                  <span className="text-gray-500 text-xs">{item.desc}</span>
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Services — spans full width */}

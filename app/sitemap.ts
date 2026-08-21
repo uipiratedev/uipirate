@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 
 import caseStudies from "@/data/case-studies.json";
 import apps4saleProducts from "@/data/apps4sale.json";
+import { DETAILED_BOTS } from "@/data/bots";
 
 /**
  * Dynamic sitemap generation for Next.js App Router.
@@ -35,31 +36,56 @@ const STATIC_PAGES: {
   { path: "/pricing", priority: 0.9, changeFrequency: "weekly" },
   { path: "/blogs", priority: 0.85, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
-  { path: "/faqs", priority: 0.8, changeFrequency: "monthly" },
-  { path: "/tools", priority: 0.85, changeFrequency: "weekly" as const },
-  { path: "/tools/ai-bot-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/robots-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/llms-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/robots-txt-validator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/batch-checker", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/schema-generator", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/gptbot", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/chatgpt-user", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/claudebot", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/google-extended", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/perplexitybot", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/meta-externalagent", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/applebot-extended", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/bytespider", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/ccbot", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/amazonbot", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/googlebot", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/tools/bot-directory/bingbot", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/faqs", priority: 0.85, changeFrequency: "monthly" },
+  { path: "/sitemap", priority: 0.5, changeFrequency: "monthly" },
+  { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
-  { path: "/sitemap", priority: 0.3, changeFrequency: "monthly" },
-  { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
+
+  // ── Main Tools Hub
+  { path: "/tools", priority: 0.95, changeFrequency: "weekly" as const },
+
+  // ── 4 Category Pillar Hubs (Hierarchical SEO structure)
+  { path: "/tools/saas", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/tools/website", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/tools/design", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/tools/ai", priority: 0.9, changeFrequency: "weekly" as const },
+
+  // ── 1. SaaS & Product UX (Core Agency Expertise)
+  { path: "/tools/saas/saas-ux-audit", priority: 0.9, changeFrequency: "monthly" as const },
+  { path: "/tools/saas/pricing-page-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/saas/dashboard-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/saas/saas-onboarding-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
+
+  // ── 2. Website & Conversion Tools (Commercial CRO)
+  { path: "/tools/website/landing-page-analyzer", priority: 0.9, changeFrequency: "monthly" as const },
+  { path: "/tools/website/saas-website-audit", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/website/cta-analyzer", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/website/website-readability-checker", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/website/homepage-seo-checker", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/website/website-performance-score", priority: 0.85, changeFrequency: "monthly" as const },
+
+  // ── 3. Design Systems & Code
+  { path: "/tools/design/design-tokens", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/color-palette-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/contrast-checker", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/figma-spacing-calculator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/css-shadow-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/border-radius-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/typography-scale-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/css-to-tailwind-converter", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/svg-optimizer", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/design/breakpoint-generator", priority: 0.85, changeFrequency: "monthly" as const },
+
+  // ── 4. AI & GEO Visibility Toolkit
+  { path: "/tools/ai/ai-bot-checker", priority: 0.9, changeFrequency: "monthly" as const },
+  { path: "/tools/ai/llms-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/ai/robots-txt-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/ai/robots-txt-validator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/ai/schema-generator", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/ai/batch-checker", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/ai/geo-competitor-checker", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/ai/bot-directory", priority: 0.85, changeFrequency: "monthly" as const },
 ];
 
 // Service detail pages (from sericesDetailsList.json slugs)
@@ -108,7 +134,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: page.priority,
   }));
 
-  // 2. Service detail pages
+  // 2. AI Bot Dossier pages from DETAILED_BOTS registry
+  const botEntries: MetadataRoute.Sitemap = DETAILED_BOTS.map((bot) => ({
+    url: `${BASE_URL}/tools/ai/bot-directory/${bot.id}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  // 3. Service detail pages
   const serviceEntries: MetadataRoute.Sitemap = SERVICE_SLUGS.map((slug) => ({
     url: `${BASE_URL}/services/${encodeURIComponent(slug)}`,
     lastModified: now,
@@ -116,7 +150,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  // 3. Blog posts from database.
+  // 4. Case studies from data
+  const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({
+    url: `${BASE_URL}/case-studies/${study.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  // 5. Apps4sale products
+  const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
+    (product) => ({
+      url: `${BASE_URL}/apps4sale/${product.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }),
+  );
+
+  // 6. Blog posts and CMS case studies from API
   // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
   // route their sitemap entries there instead of listing them as blog posts.
   // (Previously skipped this fetch during `next build` via a NEXT_PHASE check,
@@ -157,28 +209,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.warn("Sitemap: Could not fetch blog posts from API:", error);
   }
 
-  const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({
-    url: `${BASE_URL}/case-studies/${study.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
-
-  const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
-    (product) => ({
-      url: `${BASE_URL}/apps4sale/${product.slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }),
-  );
-
-  return [
+  // Combine and deduplicate URLs by exact 'url' property
+  const allEntries = [
     ...staticEntries,
+    ...botEntries,
     ...serviceEntries,
     ...caseStudyEntries,
     ...cmsCaseStudyEntries,
     ...blogEntries,
     ...apps4saleEntries,
   ];
+
+  const seenUrls = new Set<string>();
+  const uniqueEntries: MetadataRoute.Sitemap = [];
+
+  for (const entry of allEntries) {
+    if (!seenUrls.has(entry.url)) {
+      seenUrls.add(entry.url);
+      uniqueEntries.push(entry);
+    }
+  }
+
+  return uniqueEntries;
 }

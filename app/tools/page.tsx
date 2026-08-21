@@ -1,266 +1,390 @@
-import type { Metadata } from "next";
+"use client";
+
+import { useState, useMemo } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { ALL_TOOLS_REGISTRY, SuggestedToolItem } from "@/components/SuggestedTools";
 
-export const metadata: Metadata = {
-  title: "Free Tools for Developers & Founders",
-  description:
-    "Free, no-sign-up tools built by UI Pirate. Check AI bot access, analyse robots.txt, and more — all free, all instant.",
-  alternates: { canonical: "https://uipirate.com/tools" },
-};
-
-const tools = [
-  {
-    id: "ai-bot-checker",
-    href: "/tools/ai-bot-checker",
-    badge: "Live",
-    title: "AI Crawler & GEO Readiness Hub",
-    description:
-      "Paste any website URL and get an instant 0–100 GEO Visibility Score across 26+ AI bots, search engines, and firewalls.",
-    tags: ["GEO Score", "AI crawlers", "Firewall WAF"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="3" y="11" width="18" height="11" rx="2" />
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        <line x1="8" y1="16" x2="8.01" y2="16" />
-        <line x1="16" y1="16" x2="16.01" y2="16" />
-      </svg>
-    ),
-  },
-  {
-    id: "robots-txt-generator",
-    href: "/tools/robots-txt-generator",
-    badge: "Live",
-    title: "AI robots.txt Generator",
-    description:
-      "Build a custom robots.txt file for your site. Choose which AI bots, search engines, and crawlers to allow or block with 1 click.",
-    tags: ["robots.txt", "AI crawlers", "generator"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
-      </svg>
-    ),
-  },
-  {
-    id: "llms-txt-generator",
-    href: "/tools/llms-txt-generator",
-    badge: "Live",
-    title: "llms.txt & Context Generator",
-    description:
-      "Generate standard llms.txt and deep llms-full.txt files. Provide structured company knowledge directly to AI crawlers.",
-    tags: ["llms.txt", "AI context", "GEO"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-      </svg>
-    ),
-  },
-  {
-    id: "robots-txt-validator",
-    href: "/tools/robots-txt-validator",
-    badge: "Live",
-    title: "robots.txt Validator & Linter",
-    description:
-      "Test and validate any robots.txt syntax. Catch blocking errors, unknown directives, and accidental AI crawler blocks.",
-    tags: ["Linter", "Syntax", "Validator"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <path d="M9 12l2 2 4-4" />
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-  },
-  {
-    id: "batch-checker",
-    href: "/tools/batch-checker",
-    badge: "Live",
-    title: "Batch AI Crawler & Score Checker",
-    description:
-      "Audit up to 10 competitor or client domains simultaneously. Compare GEO scores and crawler permissions side-by-side.",
-    tags: ["Batch Audit", "Competitor Comparison", "GEO"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-        <line x1="8" y1="21" x2="16" y2="21" />
-        <line x1="12" y1="17" x2="12" y2="21" />
-      </svg>
-    ),
-  },
-  {
-    id: "schema-generator",
-    href: "/tools/schema-generator",
-    badge: "Live",
-    title: "AI & GEO Schema Markup Generator",
-    description:
-      "Create JSON-LD structured data for Organization, FAQPage, WebApp, and Services to boost ChatGPT & Gemini visibility.",
-    tags: ["JSON-LD", "Schema.org", "FAQ Schema"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <polygon points="12 2 2 7 12 12 22 7 12 2" />
-        <polyline points="2 17 12 22 22 17" />
-        <polyline points="2 12 12 17 22 12" />
-      </svg>
-    ),
-  },
-  {
-    id: "bot-directory",
-    href: "/tools/bot-directory",
-    badge: "Live",
-    title: "AI Crawler & Bot Directory",
-    description:
-      "Searchable database of 26+ AI crawlers, search engines, and scrapers. Lookup exact User-Agents, operators, and behaviors.",
-    tags: ["Directory", "User-Agents", "AI Database"],
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.8">
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>
-    ),
-  },
-];
+export type ToolCategory = "all" | "website-conversion" | "saas-product" | "design-system" | "ai-geo";
 
 export default function ToolsPage() {
+  const [activeCategory, setActiveCategory] = useState<ToolCategory>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredTools = useMemo(() => {
+    return ALL_TOOLS_REGISTRY.filter((tool) => {
+      const matchesCat = activeCategory === "all" || tool.category === activeCategory;
+      const matchesSearch =
+        !searchQuery.trim() ||
+        tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCat && matchesSearch;
+    });
+  }, [activeCategory, searchQuery]);
+
+  const liveTools = useMemo(
+    () => filteredTools.filter((t) => t.badge === "Live" || t.badge === "Popular"),
+    [filteredTools]
+  );
+  const previewTools = useMemo(
+    () => filteredTools.filter((t) => t.badge === "Preview Available"),
+    [filteredTools]
+  );
+  const upcomingTools = useMemo(
+    () => filteredTools.filter((t) => t.badge === "Coming Soon" || (!t.badge && t.badge !== "Live")),
+    [filteredTools]
+  );
+
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       {/* Hero */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 pt-28 pb-12">
-        <div className="text-center mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-1.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF5B04]" />
             <span className="text-[#FF5B04] text-xs font-semibold font-jetbrains-mono uppercase tracking-wider">
-              Free Tools
+              UI Pirate Tools Ecosystem
             </span>
             <span className="w-px h-3 bg-gray-200" />
-            <span className="text-gray-400 text-xs">No sign-up required</span>
+            <span className="text-gray-400 text-xs">Free for Founders & Builders</span>
           </div>
 
           <h1 className="heading-hero text-gray-900 mb-4">
-            Tools for <span className="text-[#FF5B04]">builders</span>
+            Free tools for <span className="text-[#FF5B04]">SaaS, AI & product teams</span>
           </h1>
-          <p className="sub-header">
-            Free, instant tools built by UI Pirate to help founders, developers
-            and marketers ship smarter products.
+          <p className="sub-header max-w-2xl mx-auto">
+            Audit, analyze and improve your product UX, conversion architecture, and AI visibility — instant, free, and built by design engineers.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Tool cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
-          {tools.map((tool) => {
-            const isLive = tool.href !== null;
-
-            const cardContent = (
-              <div
-                className={`group relative bg-white border rounded-2xl p-6 h-full flex flex-col transition-all duration-200
-                  ${
-                    isLive
-                      ? "border-gray-200 hover:border-[#FF5B04]/40 hover:shadow-lg cursor-pointer"
-                      : "border-gray-100 opacity-60 cursor-default"
-                  }
-                `}
-              >
-                {/* Badge */}
-                <div className="flex items-center justify-between mb-4">
-                  <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-200
-                      ${isLive ? "bg-[#FF5B04]/8 text-[#FF5B04] group-hover:bg-[#FF5B04]/15" : "bg-gray-100 text-gray-400"}
-                    `}
-                  >
-                    {tool.icon}
-                  </div>
-                  <span
-                    className={`text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-1 rounded-full border
-                      ${
-                        tool.badge === "Live"
-                          ? "text-emerald-700 bg-emerald-50 border-emerald-200"
-                          : "text-gray-400 bg-gray-100 border-gray-200"
-                      }
-                    `}
-                  >
-                    {tool.badge}
-                  </span>
-                </div>
-
-                {/* Text */}
-                <h2 className="text-[15px] font-semibold text-gray-900 font-jakarta mb-2 leading-snug">
-                  {tool.title}
-                </h2>
-                <p className="text-sm text-gray-500 leading-relaxed flex-1">
-                  {tool.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mt-4">
-                  {tool.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] text-gray-400 bg-gray-50 border border-gray-100 rounded-md px-2 py-0.5 font-mono"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* CTA row */}
-                {isLive && (
-                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-xs text-gray-400">Free · No sign-up</span>
-                    <span className="flex items-center gap-1 text-xs font-semibold text-[#FF5B04] group-hover:gap-2 transition-all duration-200">
-                      Open tool
-                      <svg
-                        className="w-3.5 h-3.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                      </svg>
-                    </span>
-                  </div>
-                )}
-              </div>
-            );
-
-            return isLive ? (
-              <Link key={tool.id} href={tool.href!} className="h-full">
-                {cardContent}
-              </Link>
-            ) : (
-              <div key={tool.id} className="h-full">
-                {cardContent}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <p className="text-sm text-gray-400 mb-3">
-            Got a tool idea? We&apos;d love to build it.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#FF5B04] hover:text-[#E54F00] transition-colors"
-          >
-            Suggest a tool
+        {/* Filter Controls & Search */}
+        <div className="max-w-5xl mx-auto mb-12 space-y-4">
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search across all tools (e.g. AI bot, SaaS UX, Pricing, Onboarding, Typography, Breakpoints, robots.txt)..."
+              className="w-full px-4 py-3.5 pl-11 rounded-2xl border border-gray-200 bg-white text-sm text-gray-900 outline-none focus:border-[#FF5B04] shadow-sm font-jakarta"
+            />
             <svg
-              className="w-3.5 h-3.5"
+              className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
             >
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
+              <circle cx="11" cy="11" r="8" strokeWidth="2" />
+              <path d="m21 21-4.35-4.35" strokeWidth="2" />
+            </svg>
+          </div>
+
+          {/* Category Tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+            {[
+              { id: "all", label: "All Tools", count: ALL_TOOLS_REGISTRY.length },
+              {
+                id: "ai-geo",
+                label: "AI & GEO Visibility",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length,
+              },
+              {
+                id: "website-conversion",
+                label: "Website & Conversion",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length,
+              },
+              {
+                id: "saas-product",
+                label: "SaaS & Product UX",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length,
+              },
+              {
+                id: "design-system",
+                label: "Design Systems & Code",
+                badge: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length} Tools`,
+                count: ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length,
+              },
+            ].map((tab) => {
+              const active = activeCategory === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCategory(tab.id as ToolCategory)}
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                    active
+                      ? "bg-gray-900 text-white shadow-xs"
+                      : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  {tab.badge && (
+                    <span
+                      className={`text-[9px] px-1.5 py-0.5 rounded font-mono ${
+                        active
+                          ? "bg-white/20 text-white"
+                          : tab.badge.includes("Live")
+                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          : "bg-blue-50 text-blue-700 border border-blue-200"
+                      }`}
+                    >
+                      {tab.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 4 Category Pillar Hubs (Hierarchical Category Navigation) */}
+        <div className="max-w-5xl mx-auto mb-16">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xs font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
+              Explore Tools by Agency Pillar
+            </h2>
+            <span className="text-[11px] text-gray-400 font-mono">4 Core Verticals</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                title: "AI & GEO Visibility",
+                path: "/tools/ai",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "ai-geo").length} Tools`,
+                badge: "Check · Generate · Research",
+                badgeColor: "text-emerald-700 bg-emerald-50 border-emerald-200",
+                desc: "Audit AI crawlers, generate llms.txt & optimize for ChatGPT, Perplexity & Gemini.",
+              },
+              {
+                title: "Website & Conversion",
+                path: "/tools/website",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "website-conversion").length} Tools`,
+                badge: "Commercial CRO",
+                badgeColor: "text-blue-700 bg-blue-50 border-blue-200",
+                desc: "Score above-the-fold clarity, CTA contrast, copy readability & friction.",
+              },
+              {
+                title: "SaaS & Product UX",
+                path: "/tools/saas",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "saas-product").length} Tools`,
+                badge: "Core Expertise",
+                badgeColor: "text-purple-700 bg-purple-50 border-purple-200",
+                desc: "Audit dashboard density, onboarding drop-offs & pricing psychology.",
+              },
+              {
+                title: "Design Systems & Code",
+                path: "/tools/design",
+                count: `${ALL_TOOLS_REGISTRY.filter((t) => t.category === "design-system").length} Tools`,
+                badge: "Foundations & Code",
+                badgeColor: "text-amber-700 bg-amber-50 border-amber-200",
+                desc: "Generate Tailwind tokens, 8pt spacing scales, shadows, radii & WCAG contrast.",
+              },
+            ].map((cat, idx) => (
+              <Link
+                key={idx}
+                href={cat.path}
+                className="group bg-white border border-gray-200 hover:border-[#FF5B04]/50 hover:shadow-md rounded-2xl p-5 flex flex-col justify-between transition-all"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2.5">
+                    <span className="text-[10px] font-bold font-mono text-gray-400">{cat.count}</span>
+                    <span className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${cat.badgeColor}`}>
+                      {cat.badge}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-1.5">
+                    {cat.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">{cat.desc}</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5B04]">
+                  <span>Explore Pillar</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Section 1: Live Operational Tools Suite */}
+        {liveTools.length > 0 && (
+          <div className="max-w-5xl mx-auto mb-16">
+            <div className="flex items-center gap-2 mb-6">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
+                Live & Operational Tools ({liveTools.length})
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {liveTools.map((tool) => (
+                <Link key={tool.id} href={tool.href} className="h-full block">
+                  <div className="group relative bg-white border border-gray-200 hover:border-[#FF5B04]/40 hover:shadow-lg rounded-2xl p-6 h-full flex flex-col justify-between transition-all duration-200 cursor-pointer">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-[#FF5B04]/8 text-[#FF5B04] group-hover:bg-[#FF5B04]/15 flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+                          {tool.icon}
+                        </div>
+                        <span
+                          className={`text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
+                            tool.badge === "Popular"
+                              ? "text-[#FF5B04] bg-[#FF5B04]/8 border-[#FF5B04]/30"
+                              : "text-emerald-700 bg-emerald-50 border-emerald-200"
+                          }`}
+                        >
+                          {tool.badge}
+                        </span>
+                      </div>
+
+                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta mb-2 leading-snug">
+                        {tool.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        {tool.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-[#FF5B04] group-hover:gap-1.5 transition-all">
+                        {tool.ctaLabel} →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Section 2: Interactive Previews (In Active Development) */}
+        {previewTools.length > 0 && (
+          <div className="max-w-5xl mx-auto mt-12 mb-16 pt-10 border-t border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
+                  Interactive Preview Engines ({previewTools.length})
+                </h2>
+              </div>
+              <span className="text-xs text-amber-800 bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-full font-medium">
+                ⚡ Active Development · Test Preview Engines Below
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {previewTools.map((tool) => (
+                <Link key={tool.id} href={tool.href} className="h-full block">
+                  <div className="group relative bg-white border border-gray-200 hover:border-amber-400 hover:shadow-lg rounded-2xl p-6 h-full flex flex-col justify-between transition-all duration-200 cursor-pointer">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 group-hover:bg-amber-100 flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+                          {tool.icon}
+                        </div>
+                        <span className="text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border text-amber-700 bg-amber-50 border-amber-200">
+                          {tool.badge}
+                        </span>
+                      </div>
+
+                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-amber-700 transition-colors font-jakarta mb-2 leading-snug">
+                        {tool.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        {tool.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-amber-700 group-hover:gap-1.5 transition-all">
+                        {tool.ctaLabel} →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Section 3: Upcoming Tools (Dedicated Landing Pages & Blueprints) */}
+        {upcomingTools.length > 0 && (
+          <div className="max-w-5xl mx-auto mt-12 mb-16 pt-10 border-t border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wider font-jetbrains-mono">
+                  Upcoming Tools & Diagnostic Roadmaps ({upcomingTools.length})
+                </h2>
+              </div>
+              <span className="text-xs text-blue-800 bg-blue-50 border border-blue-200/80 px-2.5 py-1 rounded-full font-medium">
+                📋 Detailed Specs & Landing Pages Live
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {upcomingTools.map((tool) => (
+                <Link key={tool.id} href={tool.href} className="h-full block">
+                  <div className="group relative bg-white border border-gray-200 hover:border-blue-400 hover:shadow-lg rounded-2xl p-6 h-full flex flex-col justify-between transition-all duration-200 cursor-pointer">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-100 flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+                          {tool.icon}
+                        </div>
+                        <span className="text-[10px] font-semibold font-jetbrains-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border text-blue-700 bg-blue-50 border-blue-200">
+                          {tool.badge || "Coming Soon"}
+                        </span>
+                      </div>
+
+                      <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-blue-700 transition-colors font-jakarta mb-2 leading-snug">
+                        {tool.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        {tool.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[11px] text-gray-400 font-mono">{tool.categoryLabel}</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-blue-700 group-hover:gap-1.5 transition-all">
+                        {tool.ctaLabel} →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Agency Bridge Banner */}
+        <div className="max-w-5xl mx-auto mt-16 bg-white border border-gray-200 rounded-3xl p-8 sm:p-10 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-xl">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/8 px-2.5 py-1 rounded-full border border-[#FF5B04]/20">
+              Need a Custom Product Audit?
+            </span>
+            <h3 className="text-2xl font-bold text-gray-900 font-jakarta mt-3">
+              Turn audit findings into a high-converting product.
+            </h3>
+            <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+              UI Pirate is a product design & engineering agency specializing in complex SaaS platforms, AI interfaces, and high-velocity landing pages.
+            </p>
+          </div>
+          <Link
+            href="/contact"
+            className="px-6 py-3.5 rounded-2xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all shadow-md flex-shrink-0 flex items-center gap-2"
+          >
+            <span>Book a 1-on-1 UX Consultation</span>
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </Link>
         </div>
