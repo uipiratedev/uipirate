@@ -15,19 +15,18 @@ const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
 
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
-  title:
-    "UI Pirate | Product Design & Development Agency — From Idea to Shipped Product",
+  title: "UI Pirate — Designing AI-Driven SaaS Products That Convert",
   description:
-    "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. We simplify complexity and design for conversion. 50+ products shipped.",
+    "We design and ship AI-driven SaaS products that convert, scale, and ship faster. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
   keywords:
-    "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS product design, AI app design, enterprise UX design, conversion-focused design, simplify complex products, dashboard design, mobile app UI, web app UX, Vishal Anand",
+    "uipirate, uipirates, UI Pirate, AI-driven SaaS product design, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS product design, AI app design, enterprise UX design, conversion-focused design, simplify complex products, dashboard design, mobile app UI, web app UX, Vishal Anand",
   alternates: {
     canonical: "https://uipirate.com",
   },
   openGraph: {
-    title: "UI Pirate | Product Design Agency — From Idea to Shipped Product",
+    title: "UI Pirate — Designing AI-Driven SaaS Products That Convert",
     description:
-      "Not just designs — we help you think, plan, and build your product. Product thinking, competitive analysis, information architecture & conversion-focused design for complex products.",
+      "We design and ship AI-driven SaaS products that convert, scale, and ship faster — product thinking, competitive analysis, information architecture & conversion-focused design for complex products.",
     url: "https://uipirate.com",
     siteName: "UI Pirate",
     locale: "en_US",
@@ -35,7 +34,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI Pirate | Product Design — Idea to Shipped Product",
+    title: "UI Pirate — AI-Driven SaaS Products That Convert",
     description:
       "Product thinking, competitive analysis & conversion-focused design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
   },

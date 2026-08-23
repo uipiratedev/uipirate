@@ -483,7 +483,7 @@ export default function AIBotCheckerClient() {
 
   const handleShare = () => {
     if (!result) return;
-    const shareUrl = `${window.location.origin}/tools/ai-bot-checker?url=${encodeURIComponent(result.domain)}`;
+    const shareUrl = `${window.location.origin}/tools/ai/ai-bot-checker?url=${encodeURIComponent(result.domain)}`;
     navigator.clipboard.writeText(shareUrl);
     setShareCopied(true);
     setTimeout(() => setShareCopied(false), 2000);
