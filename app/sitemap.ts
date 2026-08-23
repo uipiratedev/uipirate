@@ -64,6 +64,7 @@ const STATIC_PAGES: {
   { path: "/tools/website/website-readability-checker", priority: 0.85, changeFrequency: "monthly" as const },
   { path: "/tools/website/homepage-seo-checker", priority: 0.85, changeFrequency: "monthly" as const },
   { path: "/tools/website/website-performance-score", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/tools/website/ux-audit", priority: 0.85, changeFrequency: "monthly" as const },
 
   // ── 3. Design Systems & Code
   { path: "/tools/design/design-tokens", priority: 0.85, changeFrequency: "monthly" as const },

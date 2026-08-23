@@ -26,7 +26,9 @@ export default function SchemaGeneratorClient() {
 
   // Software fields
   const [appName, setAppName] = useState("Pirate AI");
-  const [appUrl, setAppUrl] = useState("https://uipirate.com/tools/ai-bot-checker");
+  const [appUrl, setAppUrl] = useState(
+    "https://uipirate.com/tools/ai/ai-bot-checker",
+  );
   const [appCategory, setAppCategory] = useState("SEOApplication");
   const [appPrice, setAppPrice] = useState("0");
 

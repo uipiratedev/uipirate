@@ -15,6 +15,7 @@ export interface CategoryHubProps {
   agencyDescription: string;
   faqs: { q: string; a: string }[];
   methodology: { step: string; title: string; desc: string }[];
+  introParagraphs?: string[];
 }
 
 export const CATEGORY_METADATA: Record<
@@ -97,6 +98,7 @@ export default function ToolCategoryHub({
   agencyDescription,
   methodology,
   faqs,
+  introParagraphs,
 }: CategoryHubProps) {
   const categoryTools = useMemo(
     () => ALL_TOOLS_REGISTRY.filter((t) => t.category === categoryId),
@@ -195,6 +197,17 @@ export default function ToolCategoryHub({
             {subtitle}
           </p>
         </motion.div>
+
+        {/* Intro Copy */}
+        {introParagraphs && introParagraphs.length > 0 && (
+          <div className="w-full max-w-3xl mx-auto mb-16 space-y-4">
+            {introParagraphs.map((para, idx) => (
+              <p key={idx} className="text-sm text-gray-600 leading-relaxed">
+                {para}
+              </p>
+            ))}
+          </div>
+        )}
 
         {/* Tools Grid */}
         <div className="w-full mb-20">

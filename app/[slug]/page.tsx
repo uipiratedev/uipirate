@@ -1,7 +1,7 @@
 // app/[slug]/page.tsx
 // This route handles dynamic blog post pages at uipirate.com/[slug]
 import { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { headers } from "next/headers";
 
 import BlogsDetails from "@/screens/blogsDetails";
@@ -129,7 +129,7 @@ export default async function DynamicBlogPage({ params }: Props) {
   const { slug } = params;
 
   if (slug !== slug.toLowerCase()) {
-    redirect(`/${slug.toLowerCase()}`);
+    permanentRedirect(`/${slug.toLowerCase()}`);
   }
 
   // Fetch blog by slug through the tenant-scoped v1 API
@@ -141,10 +141,12 @@ export default async function DynamicBlogPage({ params }: Props) {
 
   // Case studies are authored here with postType "case-study" but belong
   // under /case-studies, not the blog template — send them to their real home.
+  // Permanent (308) so Google consolidates ranking signals into the
+  // canonical /case-studies URL instead of indexing both.
   // (Kept outside the try/catch below: redirect()/notFound() work by throwing,
   // and that catch block would otherwise swallow the redirect as a 404.)
   if ((blog as any).postType === "case-study") {
-    redirect(`/case-studies/${slug}`);
+    permanentRedirect(`/case-studies/${slug}`);
   }
 
   try {
