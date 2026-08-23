@@ -19,6 +19,10 @@ export default function SaasToolsHubPage() {
       subtitle="Audit complex web app workflows, onboarding drop-offs, dashboard information density, and pricing psychology to maximize activation and retention."
       agencyService="SaaS & AI Product Design"
       agencyDescription="We architect multi-role dashboards, AI agent workflows, design systems, and complex enterprise web apps in React, Next.js, and Angular."
+      introParagraphs={[
+        "SaaS products fail for reasons a marketing site never has to think about: a confusing first-run flow that never gets to the \"aha\" moment, a dashboard so dense with data that power users can't find the one number they check every day, or a pricing table that undersells the tier you actually want people to buy. These are UX problems, but they show up as churn, not bounce rate — which is why they're so easy to miss until the metrics are already bad.",
+        "The tools below are built from the same framework we use on paid SaaS UX audits: activation friction, information architecture under real data density, and monetization psychology in the pricing and packaging layer. Run them against a live product or a set of screenshots to get a scored diagnostic and specific fixes, not generic SaaS-design platitudes.",
+      ]}
       methodology={[
         {
           step: "01. First-Run Activation",
