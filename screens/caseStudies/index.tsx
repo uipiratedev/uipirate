@@ -44,23 +44,36 @@ interface CaseStudyCard {
   externalUrl?: string;
 }
 
+// Some CMS posts have featuredImage/bannerImage stored as raw base64 data
+// URIs instead of hosted URLs (a CMS-side data issue, not fixable here).
+// Inlining one of those blows up this listing page's HTML — the same
+// multi-hundred-KB string gets embedded per card as the <img src>, again in
+// the JSON-LD `image` field below, and again in Next's RSC hydration
+// payload. Reject them here rather than let it slip into the page.
+function isDataUri(url?: string) {
+  return !!url && url.startsWith("data:");
+}
+
 // CMS-authored case studies (postType "case-study") carry their own client,
 // clientLogo, region, technologies, metrics and externalUrl fields from the
 // API. There's no "industry" or "category" field on the CMS side, so those
 // still fall back to the post's tags/title.
 function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
+  const rawHeroImage = post.featuredImage || post.bannerImage;
+
   return {
     slug: post.slug,
     title: post.title,
     excerpt: post.excerpt || "",
     client: post.client || post.title.split(" — ")[0],
-    clientLogo: post.clientLogo,
+    clientLogo: isDataUri(post.clientLogo) ? undefined : post.clientLogo,
     industry: post.tags?.[0] || "Case Study",
     region: post.region,
     technologies: post.technologies || post.tags,
     metrics: post.metrics,
-    heroImage:
-      post.featuredImage || post.bannerImage || DEFAULT_CASE_STUDY_IMAGE,
+    heroImage: isDataUri(rawHeroImage)
+      ? DEFAULT_CASE_STUDY_IMAGE
+      : rawHeroImage || DEFAULT_CASE_STUDY_IMAGE,
     externalUrl: post.externalUrl,
   };
 }
