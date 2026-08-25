@@ -23,10 +23,18 @@ export const revalidate = 60;
 // Generate metadata for SEO
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
+  const blog = await getPostBySlug(slug.toLowerCase());
+
+  // Case studies live at /case-studies/[slug]; keep metadata consistent with
+  // the page-level redirect below instead of emitting a canonical that
+  // points back at this now-redirected URL. Kept outside the try/catch:
+  // permanentRedirect() works by throwing, and that catch would otherwise
+  // swallow it and fall through to the generic "Blog" metadata.
+  if ((blog as any)?.postType === "case-study") {
+    permanentRedirect(`/case-studies/${slug}`);
+  }
 
   try {
-    const blog = await getPostBySlug(slug.toLowerCase());
-
     if (!blog) {
       return {
         title: "Blog Post Not Found",
