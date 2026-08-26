@@ -1,4 +1,4 @@
-# Landing Page Content Audit — UI Pirate
+# Landing Page Content Audit - UI Pirate
 **Page:** `/` (Homepage)  
 **Files in scope:** `app/page.tsx` · `screens/landing/`  
 **Focus:** Copy, messaging, positioning, and SEO content only  
@@ -13,19 +13,19 @@ Before flagging individual issues, here is the cross-source principle set that g
 
 ### What the research consistently says
 
-**Apple Human Interface Guidelines** — Every piece of text should earn its place. Words that do not help the reader take the next step are noise. Use "you" and "your" to speak directly to the person; avoid "the user" or third-person distance. Consistency in labels and language reduces cognitive load.
+**Apple Human Interface Guidelines** - Every piece of text should earn its place. Words that do not help the reader take the next step are noise. Use "you" and "your" to speak directly to the person; avoid "the user" or third-person distance. Consistency in labels and language reduces cognitive load.
 
-**Google Material UX Writing** — Clarity is a concrete goal, not an aesthetic preference. Good writing means a reader can identify the exact action to take without re-reading. Tone is not a personality layer added on top — it emerges naturally from a clear understanding of what the reader needs at that specific moment.
+**Google Material UX Writing** - Clarity is a concrete goal, not an aesthetic preference. Good writing means a reader can identify the exact action to take without re-reading. Tone is not a personality layer added on top - it emerges naturally from a clear understanding of what the reader needs at that specific moment.
 
-**Nielsen Norman Group (NN/g)** — 79% of users scan, they do not read. B2B buyers skim the first screen to determine if this page addresses their specific operational problem. If the connection is not immediate, they leave. Point-first writing (benefit in sentence one) consistently outperforms build-up writing (feature descriptions that arrive at the benefit at the end).
+**Nielsen Norman Group (NN/g)** - 79% of users scan, they do not read. B2B buyers skim the first screen to determine if this page addresses their specific operational problem. If the connection is not immediate, they leave. Point-first writing (benefit in sentence one) consistently outperforms build-up writing (feature descriptions that arrive at the benefit at the end).
 
-**Copyhackers / Jobs-to-be-Done** — Clients do not hire agencies for services. They hire them to make progress on a specific problem. Describing deliverables (wireframes, dashboards, Angular components) is less persuasive than describing the situation the client is in and the progress they will make.
+**Copyhackers / Jobs-to-be-Done** - Clients do not hire agencies for services. They hire them to make progress on a specific problem. Describing deliverables (wireframes, dashboards, Angular components) is less persuasive than describing the situation the client is in and the progress they will make.
 
-**Enterprise B2B Buyer Behavior** — B2B deals involve 6–10 stakeholders. A junior employee typically vets agencies first and builds a shortlist before presenting to the decision-maker. Your copy must work for both the researcher and the executive. The researcher needs clarity and specificity; the executive needs confidence in the ROI and risk profile.
+**Enterprise B2B Buyer Behavior** - B2B deals involve 6–10 stakeholders. A junior employee typically vets agencies first and builds a shortlist before presenting to the decision-maker. Your copy must work for both the researcher and the executive. The researcher needs clarity and specificity; the executive needs confidence in the ROI and risk profile.
 
-**On "human-sounding" copy** — The difference between AI-generated agency copy and professional copy is not formality level. It is specificity, rhythm, and authentic proof. AI defaults to: "seamless," "innovative," "world-class," "end-to-end solutions." Professional copy names the specific pain, uses plain verbs, varies sentence length deliberately, and lets real data do the heavy lifting.
+**On "human-sounding" copy** - The difference between AI-generated agency copy and professional copy is not formality level. It is specificity, rhythm, and authentic proof. AI defaults to: "seamless," "innovative," "world-class," "end-to-end solutions." Professional copy names the specific pain, uses plain verbs, varies sentence length deliberately, and lets real data do the heavy lifting.
 
-**Reddit / community consensus** — Agency sites fail most often when they: (1) describe themselves instead of the client's problem, (2) hide pricing, (3) over-design at the cost of clarity, (4) show inconsistent identity signals, and (5) position themselves as generalists when buyers are looking for specialists.
+**Reddit / community consensus** - Agency sites fail most often when they: (1) describe themselves instead of the client's problem, (2) hide pricing, (3) over-design at the cost of clarity, (4) show inconsistent identity signals, and (5) position themselves as generalists when buyers are looking for specialists.
 
 ---
 
@@ -69,10 +69,10 @@ EMPOWERING 40+ Business ACROSS 6 COUNTRIES
 
 | Problem | Why it matters |
 |---|---|
-| "Business" is singular — should be "Businesses" | Grammar error visible to every visitor |
+| "Business" is singular - should be "Businesses" | Grammar error visible to every visitor |
 | "40+ businesses" conflicts with "50+ projects" on the stats cards | Visitors notice inconsistent numbers; it signals either an error or a marketing exaggeration |
 | Mixed capitalization in one sentence | Looks unpolished; Apple HIG and Google both recommend consistent case treatment within a string |
-| "EMPOWERING" is a buzzword — vague and overused | Material UX Writing specifically flags words like "empower" as filler that reduces clarity |
+| "EMPOWERING" is a buzzword - vague and overused | Material UX Writing specifically flags words like "empower" as filler that reduces clarity |
 
 **What the research says:** Trust badges work when they are specific and verifiable. A concrete number tied to a concrete result is credible. A vague claim is noise.
 
@@ -97,28 +97,21 @@ Designing AI-Driven SaaS Products That Convert, Scale & Ship Faster
 |---|---|
 | Leads with what the agency does, not what the client gets | Every conversion copywriting framework (JTBD, Outcome-First, Pain-Flip) agrees: lead with the buyer's outcome, not your action |
 | "AI-Driven" is ambiguous | Does this mean you build products that use AI? Or you use AI to design? First-time visitors will not know. Ambiguous positioning drives bounce |
-| "Convert, Scale & Ship Faster" — these three different promises dilute each other | NN/g research: a single, clear promise outperforms a list of three. Each additional claim reduces memorability |
+| "Convert, Scale & Ship Faster" - these three different promises dilute each other | NN/g research: a single, clear promise outperforms a list of three. Each additional claim reduces memorability |
 | Primary SEO keyword "product design and development agency" is absent | The H1 is the single most important on-page SEO element. Your target keyword should appear naturally in it |
 | Competitors use similar phrasing | If your H1 could belong on a competitor's site, it is not differentiating you |
 
 **What the research says:** The most effective B2B hero headlines do one of three things: (1) name the audience and their transformation, (2) identify the pain and flip it to the solution, or (3) state a specific, quantified outcome. They do not describe the service being performed.
 
-**Strategic direction — what UI Pirate's headline should communicate:**
+**Strategic direction - what UI Pirate's headline should communicate:**
 - You design and build (not just design)
 - You work with SaaS founders and product teams
 - You deliver a shipped product, not a Figma file
 - You handle the full journey: thinking → design → development
 
-**Suggested directions (not final copy — choose what matches your voice):**
+**Suggested fix:**
 ```
-Option A — Audience + Transformation:
-"A Design & Development Agency for SaaS Teams That Need to Ship"
-
-Option B — Problem first:
-"Product Design and Development, Without the Freelancer Chaos"
-
-Option C — Specific + credible:
-"We Design and Build SaaS Products. You Get a Shipped Product, Not a Slide Deck."
+A Design & Development Agency for SaaS Teams That Need to Ship
 ```
 
 > **Note on tone:** None of these are AI-sounding. They use short words, active verbs, and a specific claim. Avoid words like "world-class," "cutting-edge," "innovative," "empower," "revolutionize," "seamless," or "leverage." These are the default vocabulary of filler copy and immediately signal that no one specific wrote this.
@@ -130,7 +123,7 @@ Option C — Specific + credible:
 **Current:**
 ```
 We help fast-growing SaaS and enterprise teams build world-class dashboards, 
-onboarding flows, and AI-powered product experiences—from MVP to complete 
+onboarding flows, and AI-powered product experiences-from MVP to complete 
 enterprise applications.
 ```
 
@@ -139,31 +132,24 @@ enterprise applications.
 | Problem | Why it matters |
 |---|---|
 | Lists what you produce (dashboards, onboarding flows), not the problem you solve | Copyhackers JTBD: clients hire you for the progress, not the deliverable |
-| "World-class" — vague superlative | Stripe, Linear, and Basecamp never describe their own work as "world-class" — they show it |
-| "From MVP to complete enterprise applications" — too broad | Reddit community feedback: agencies that target everyone convert no one. This sounds like a freelancer taking any project |
-| "AI-powered product experiences" — jargon | A COO at a mid-size SaaS company reads this and does not know if this applies to them |
+| "World-class" - vague superlative | Stripe, Linear, and Basecamp never describe their own work as "world-class" - they show it |
+| "From MVP to complete enterprise applications" - too broad | Reddit community feedback: agencies that target everyone convert no one. This sounds like a freelancer taking any project |
+| "AI-powered product experiences" - jargon | A COO at a mid-size SaaS company reads this and does not know if this applies to them |
 
-**What the research says (NN/g + Copyhackers):** The sub-headline should expand on the headline's promise. One or two sentences. It should speak to the buyer's specific situation — the "before" state — and offer clarity on what working with you looks like.
+**What the research says (NN/g + Copyhackers):** The sub-headline should expand on the headline's promise. One or two sentences. It should speak to the buyer's specific situation - the "before" state - and offer clarity on what working with you looks like.
 
-**Suggested direction:**
+**Suggested fix:**
 ```
 You have a product to build. You need someone who can think through it, 
-design it, and ship it — not hand you a Figma file and walk away. 
+design it, and ship it - not hand you a Figma file and walk away. 
 That's what we do.
-```
-
-Or, if you want to be more specific about the types of clients:
-```
-SaaS founders, product managers, and enterprise teams hire us when they 
-need a partner who handles the full product journey — from first wireframe 
-to deployed, working software.
 ```
 
 ---
 
 #### 1d. Primary CTA
 
-**Current:** `Tell Us Your Idea — Free Consultation`
+**Current:** `Tell Us Your Idea - Free Consultation`
 
 **Assessment:** ✅ Keep this. It is specific, action-oriented, and removes the friction of "contact." The word "Free" eliminates the financial hesitation. This follows the best-practice CTA formula exactly.
 
@@ -177,12 +163,12 @@ to deployed, working software.
 
 | Problem | Why it matters |
 |---|---|
-| Missing apostrophe — "Lets" should be "Let's" | Grammar error. Small, but cumulative with other errors it signals carelessness |
-| "Whatsapp" — wrong capitalization. It's "WhatsApp" | Brand proper nouns should be spelled correctly, especially for a design agency |
+| Missing apostrophe - "Lets" should be "Let's" | Grammar error. Small, but cumulative with other errors it signals carelessness |
+| "Whatsapp" - wrong capitalization. It's "WhatsApp" | Brand proper nouns should be spelled correctly, especially for a design agency |
 | WhatsApp as a primary hero CTA signals "offshore freelancer" to US clients | B2B buyer research: US professionals use email, LinkedIn, and scheduled calls. WhatsApp is associated with informal or offshore communication in professional US B2B contexts |
 | Two competing primary CTAs cause decision paralysis | CRO research: a single primary CTA outperforms two side-by-side options. When both look equally important, many visitors click neither |
 
-**What the research says:** WhatsApp can be a useful conversion tool — but not in the hero section of an agency targeting enterprise US clients. It should be a supplementary option, offered lower on the page or in the footer, positioned as "prefer a quick message?" not as a primary pathway.
+**What the research says:** WhatsApp can be a useful conversion tool - but not in the hero section of an agency targeting enterprise US clients. It should be a supplementary option, offered lower on the page or in the footer, positioned as "prefer a quick message?" not as a primary pathway.
 
 **Suggested fix:**
 - Remove WhatsApp from the hero section entirely
@@ -191,7 +177,7 @@ to deployed, working software.
 
 ---
 
-### 2. MARQUEE — CLIENT LOGOS
+### 2. MARQUEE - CLIENT LOGOS
 **File:** `screens/landing/marquee/index.tsx`
 
 Client logo sections function as borrowed authority. They tell the visitor: "organizations like yours have already made this decision and trusted us." The effectiveness depends entirely on how specific and verifiable the claim is.
@@ -212,7 +198,7 @@ Building the Future of SaaS and AI
 |---|---|
 | Describes the clients' mission ("building the future"), not the trust relationship | Confusing reading path: "trusted by teams building the future" is hard to parse quickly |
 | No quantity signal | NN/g: "trusted by companies" is less credible than "trusted by 40+ companies." Numbers convert vague claims into verifiable ones |
-| "The future of SaaS and AI" — aspirational but meaningless | Every agency uses future-of-X language. It differentiates nothing |
+| "The future of SaaS and AI" - aspirational but meaningless | Every agency uses future-of-X language. It differentiates nothing |
 
 **Suggested rewrite:**
 ```
@@ -230,7 +216,7 @@ alt: "Partner company logo"   // ← never updated from placeholder
 link: ""                      // ← no URL
 ```
 - A logo with "Partner company logo" as alt text looks unfinished. Fix or remove.
-- An empty `link` means clicking does nothing — breaks the interaction expectation set by the other logos.
+- An empty `link` means clicking does nothing - breaks the interaction expectation set by the other logos.
 
 ---
 
@@ -238,7 +224,7 @@ link: ""                      // ← no URL
 
 **Issue:** No text appears under the logos on the page.
 - Logos for ArthAlpha, Sarge, Awesome Health Club, and Rings & I are not globally recognizable. A US-based VP reading the page has no idea what these companies are or how significant they are as clients.
-- This is also an SEO and accessibility gap — screen readers and crawlers read the alt text, but a visual label would increase contextual clarity.
+- This is also an SEO and accessibility gap - screen readers and crawlers read the alt text, but a visual label would increase contextual clarity.
 
 **Suggested fix:** Add a small company name in text below each logo card. Even 8–10px text makes the logo grid significantly more informative.
 
@@ -259,7 +245,7 @@ You launch them.
 
 **Assessment:** ✅ This works. Short, punchy, and confident. The "you launch them" line puts the client in an active role. Keep it.
 
-**One caveat:** The `h2` containing this copy does not include any service-related keywords, which is a minor SEO miss. The section badge reads "Design & Development" which is good — but consider if the section could benefit from a keyword-containing secondary label somewhere nearby.
+**One caveat:** The `h2` containing this copy does not include any service-related keywords, which is a minor SEO miss. The section badge reads "Design & Development" which is good - but consider if the section could benefit from a keyword-containing secondary label somewhere nearby.
 
 ---
 
@@ -269,9 +255,9 @@ You launch them.
 
 **What's wrong:**
 - "One-stop shop" is one of the most overused phrases in agency marketing. It communicates nothing specific about UI Pirate.
-- "All your essentials" is vague — essentials of what?
+- "All your essentials" is vague - essentials of what?
 
-**What the research says (differentiation studies):** Effective positioning language names the category you compete in and then names what makes you different within it. "One-stop shop" does neither — it's a generalist claim in a market where specialists win.
+**What the research says (differentiation studies):** Effective positioning language names the category you compete in and then names what makes you different within it. "One-stop shop" does neither - it's a generalist claim in a market where specialists win.
 
 **Suggested alternatives:**
 ```
@@ -279,20 +265,20 @@ You launch them.
 ```
 or
 ```
-"Everything your product needs — from first wireframe to working software"
+"Everything your product needs - from first wireframe to working software"
 ```
 
 ---
 
-#### 3c. Service list — errors
+#### 3c. Service list - errors
 
 **Current list:**
 ```
 UX/UI DESIGN
-Saas & AI Development         ← ❌ "Saas" — SaaS is an acronym, always capitalized this way
+Saas & AI Development         ← ❌ "Saas" - SaaS is an acronym, always capitalized this way
 LANDING PAGES & BUSINESS WEBSITES
 GRAPHIC DESIGN
-MOTION GRAPHIC                ← ❌ "MOTION GRAPHICS" — missing the plural s
+MOTION GRAPHIC                ← ❌ "MOTION GRAPHICS" - missing the plural s
 UX AUDITS & CONSULTATION
 3D ASSETS & ANIMATION
 ```
@@ -310,7 +296,7 @@ Both of these are visible on the page to any visitor with industry knowledge, an
 
 **What the research says (NN/g progressive disclosure):** Not all services are self-explanatory. "UX Audits & Consultation" and "3D Assets & Animation" in particular are broad. A potential client doesn't know if these apply to them.
 
-A single sentence per service — added as a tooltip, a small sub-label, or an expanded card on click — dramatically improves engagement and pre-qualification. This does not need to be on the landing page; even a link to the `/services` page with a brief label would help.
+A single sentence per service - added as a tooltip, a small sub-label, or an expanded card on click - dramatically improves engagement and pre-qualification. This does not need to be on the landing page; even a link to the `/services` page with a brief label would help.
 
 ---
 
@@ -324,12 +310,12 @@ Need Something Custom?
 
 **Issue:** "Let's Talk" is a placeholder CTA. Talk about what? For how long? What happens next?
 
-**What the research says (B2B CTA strategy):** Low-friction CTAs in B2B should describe both the action and the next step — what the prospect will experience immediately after clicking. "Let's Talk" provides neither.
+**What the research says (B2B CTA strategy):** Low-friction CTAs in B2B should describe both the action and the next step - what the prospect will experience immediately after clicking. "Let's Talk" provides neither.
 
 **Suggested fix:**
 ```
 Need Something Custom?
-[Tell Us What You Need — Free Consultation]
+[Tell Us What You Need - Free Consultation]
 ```
 
 ---
@@ -354,10 +340,10 @@ premium, and scales without design debt.
 |---|---|
 | "products that ships faster" | Subject-verb disagreement. "Products" is plural; the verb must be "ship" not "ships." This is a grammar error rendered at large size in an animated, high-attention section |
 | "design debt" | Designer jargon. A VP of Product or a non-technical SaaS founder will not know what this means. Apple HIG principle: avoid specialized jargon unless essential |
-| "Studio" — identity inconsistency | The hero uses "agency" positioning. Page title says "Agency." JSON-LD schema says "ProfessionalService." "Studio" implies a smaller, more creative/boutique operation. Enterprise clients use these labels as proxies for scale and process maturity |
-| "global" — vague | India + 5 other countries is international, not necessarily "global" in the way a Fortune 500 client interprets it |
+| "Studio" - identity inconsistency | The hero uses "agency" positioning. Page title says "Agency." JSON-LD schema says "ProfessionalService." "Studio" implies a smaller, more creative/boutique operation. Enterprise clients use these labels as proxies for scale and process maturity |
+| "global" - vague | India + 5 other countries is international, not necessarily "global" in the way a Fortune 500 client interprets it |
 
-**What the research says (identity consistency):** Enterprise buyers evaluate agencies partly through language. If you call yourself a "studio" in one section and an "agency" in another, it reads as a brand that has not decided who it is — which translates to: *"Can they handle a project at our scale and complexity?"*
+**What the research says (identity consistency):** Enterprise buyers evaluate agencies partly through language. If you call yourself a "studio" in one section and an "agency" in another, it reads as a brand that has not decided who it is - which translates to: *"Can they handle a project at our scale and complexity?"*
 
 **Suggested rewrite:**
 ```
@@ -372,7 +358,7 @@ Shorter. No jargon. No grammar error. Consistent with "agency" positioning.
 ### 5. STATS / ABOUT CARDS
 **File:** `screens/landing/about/aboutCard.tsx`
 
-These four cards are strong social proof assets — but the copy under each stat works against the numbers instead of supporting them.
+These four cards are strong social proof assets - but the copy under each stat works against the numbers instead of supporting them.
 
 ---
 
@@ -415,7 +401,7 @@ If this refers to revenue, say so. If it refers to funding rounds, say so. Speci
 
 **Sub-label:** `Built for scale, speed, and seamless handoff to developers`
 
-**Issue:** This sub-label describes product quality — completely unrelated to geographic reach. The stat is "6 locations" and the copy should tell the visitor where those locations are.
+**Issue:** This sub-label describes product quality - completely unrelated to geographic reach. The stat is "6 locations" and the copy should tell the visitor where those locations are.
 
 **Suggested fix:**
 ```
@@ -458,7 +444,7 @@ What Working With UI Pirate Costs
 
 **Suggested fix:**
 ```
-Your dedicated design and development team — without the full-time headcount
+Your dedicated design and development team - without the full-time headcount
 ```
 
 ---
@@ -485,21 +471,21 @@ execution quality before committing to a full engagement.
 
 **Current:** `Only accepting 2 new clients this month`
 
-**What the research says (trust and authenticity):** Scarcity is one of the most powerful conversion levers — but only when it is real and visibly changes over time. Static scarcity copy that never updates destroys trust faster than no scarcity at all. A returning visitor who sees the same "only 2 spots left" message three months in a row will discount everything else on the page.
+**What the research says (trust and authenticity):** Scarcity is one of the most powerful conversion levers - but only when it is real and visibly changes over time. Static scarcity copy that never updates destroys trust faster than no scarcity at all. A returning visitor who sees the same "only 2 spots left" message three months in a row will discount everything else on the page.
 
 **Options:**
-1. Connect it to real availability — update the number manually each month, or link to a calendar that shows actual open slots
+1. Connect it to real availability - update the number manually each month, or link to a calendar that shows actual open slots
 2. Replace with a claim that is always true: `"We keep our client load small. Every project gets our full attention."`
 
 ---
 
-#### 6e. Custom Quote — target audience
+#### 6e. Custom Quote - target audience
 
 **Current:** `For complex products, enterprise needs & startups`
 
 **Issue:** Enterprise and startups are at opposite ends of budget, process, expectations, and deal cycles. Combining them in one phrase sends a diffuse signal. A senior enterprise buyer seeing "& startups" may read this as a boutique that takes any project it can get.
 
-**Suggested fix — choose your actual sweet spot:**
+**Suggested fix - choose your actual sweet spot:**
 - If enterprise is the target: `"For complex products and organizations that need a dedicated product partner"`
 - If growth-stage startups: `"For funded startups and growing SaaS teams ready to build at scale"`
 
@@ -521,7 +507,7 @@ companies like yours.
 ```
 We've done this for companies like Xperiti, RevUp AI, and Khaitan & Co. 
 If the first milestone doesn't meet the agreed standard, we'll refund 
-your deposit — no questions asked.
+your deposit - no questions asked.
 ```
 
 ---
@@ -540,7 +526,7 @@ Testimonials are the single most credible type of social proof on an agency webs
 **Why this matters:**
 - Fast-scrolling visitors who land mid-section have no immediate context for what they are reading
 - Search engines use heading hierarchy to understand page content; a testimonials section with no heading is invisible to crawlers
-- NN/g: sections without clear headings fail the "scan test" — visitors skip them without knowing what they missed
+- NN/g: sections without clear headings fail the "scan test" - visitors skip them without knowing what they missed
 
 **Suggested fix:** Add above the cards:
 ```
@@ -584,13 +570,13 @@ This looks broken. It is. Fix the source data in `data/testimonials.json`.
 
 #### 7d. Testimonial that weakens positioning
 
-**Kyle Drucker — "Youtuber - BBallExplained"**
+**Kyle Drucker - "Youtuber - BBallExplained"**
 
-**Issue:** You are targeting SaaS founders, enterprise product teams, and senior technical decision-makers. A testimonial from a YouTube content creator sends a signal about who your typical client is — and that signal is inconsistent with the enterprise positioning everywhere else on the page.
+**Issue:** You are targeting SaaS founders, enterprise product teams, and senior technical decision-makers. A testimonial from a YouTube content creator sends a signal about who your typical client is - and that signal is inconsistent with the enterprise positioning everywhere else on the page.
 
 **What the research says (persona-matched testimonials):** The most effective testimonials mirror the visitor reading them. A VP of Product should see a testimonial from another VP of Product. A SaaS founder should see one from another SaaS founder. Every testimonial that doesn't match the target persona dilutes the social proof for everyone who does.
 
-**Suggested action:** Move this testimonial to a non-landing page context (Clutch profile, blog, or a secondary portfolio page). It is not wrong to have done work for a YouTuber — it just shouldn't be on a page targeting enterprise software companies.
+**Suggested action:** Move this testimonial to a non-landing page context (Clutch profile, blog, or a secondary portfolio page). It is not wrong to have done work for a YouTuber - it just shouldn't be on a page targeting enterprise software companies.
 
 ---
 
@@ -598,9 +584,9 @@ This looks broken. It is. Fix the source data in `data/testimonials.json`.
 
 Three testimonials that currently appear in the grid are very short and generic:
 
-- *"Vishal is great to work with and will ensure you're happy with his work. I enjoyed working with him."* — Kaivan Dave
-- *"Seamless process, on-point designs every time."* — Teri McRobbson
-- *"Great to work with, professional, responsive, and handled exactly what I needed."* — Kyle Drucker
+- *"Vishal is great to work with and will ensure you're happy with his work. I enjoyed working with him."* - Kaivan Dave
+- *"Seamless process, on-point designs every time."* - Teri McRobbson
+- *"Great to work with, professional, responsive, and handled exactly what I needed."* - Kyle Drucker
 
 **What the research says (P-S-O framework):** The most credible B2B testimonials follow a Problem → Solution → Outcome structure. They describe what the client was struggling with before, what changed, and ideally include a measurable result. Generic praise ("great to work with") is used by every competitor. It proves likability, not capability.
 
@@ -611,7 +597,7 @@ Three testimonials that currently appear in the grid are very short and generic:
 ### 8. FAQs
 **File:** `screens/landing/faqs/accordion.tsx`
 
-The FAQ section is one of the most underused conversion assets on agency websites. Research from B2B buyer psychology shows that FAQs which address buyer anxieties — rather than operational logistics — are directly responsible for reducing drop-off at the decision stage.
+The FAQ section is one of the most underused conversion assets on agency websites. Research from B2B buyer psychology shows that FAQs which address buyer anxieties - rather than operational logistics - are directly responsible for reducing drop-off at the decision stage.
 
 ---
 
@@ -630,7 +616,7 @@ The FAQ section is one of the most underused conversion assets on agency website
 - *"How do I know they are not just another freelancer calling themselves an agency?"*
 - *"What happens if the work is not what I expected?"*
 
-None of these — the actual objections standing between the visitor and a signed contract — are answered by the current FAQ set.
+None of these - the actual objections standing between the visitor and a signed contract - are answered by the current FAQ set.
 
 **What the research says (Cushion-Clarify-Convert framework):** High-converting B2B FAQs follow three steps for each answer: validate the concern, reframe it around your value, and link to a conversion action. Your current FAQs describe processes but don't convert objections.
 
@@ -639,9 +625,9 @@ None of these — the actual objections standing between the visitor and a signe
 | # | Question | Blocker it removes |
 |---|---|---|
 | 1 | What types of companies do you work with? | *"Is this agency right for my company size and industry?"* |
-| 2 | You're based in India — how does the communication and time zone work? | *"Offshore agencies are hard to work with"* — the biggest US buyer concern, left completely unaddressed today |
+| 2 | You're based in India - how does the communication and time zone work? | *"Offshore agencies are hard to work with"* - the biggest US buyer concern, left completely unaddressed today |
 | 3 | What makes UI Pirate different from other design agencies? | *"Why wouldn't I just hire from Toptal, Clutch, or find a local agency?"* |
-| 4 | What does the process look like after I reach out? | *"I don't know what happens next — contacting them feels like a commitment"* |
+| 4 | What does the process look like after I reach out? | *"I don't know what happens next - contacting them feels like a commitment"* |
 
 ---
 
@@ -654,9 +640,9 @@ None of these — the actual objections standing between the visitor and a signe
 📍 Getting in Touch: ...
 ```
 
-**Issue:** Emojis in body copy are common on consumer apps and personal blogs. For a B2B professional service company targeting enterprise software teams, they undermine the professional register. Apple HIG and Google Material both recommend using visual elements purposefully — an emoji as a section label in a FAQ is decorative, not purposeful.
+**Issue:** Emojis in body copy are common on consumer apps and personal blogs. For a B2B professional service company targeting enterprise software teams, they undermine the professional register. Apple HIG and Google Material both recommend using visual elements purposefully - an emoji as a section label in a FAQ is decorative, not purposeful.
 
-**Suggested fix — replace with bold labels:**
+**Suggested fix - replace with bold labels:**
 ```
 **For example:** ...
 **In practice:** ...
@@ -689,11 +675,11 @@ Ordered by the combination of visibility, severity, and impact on trust.
 
 | # | Section | Issue | Code location | Priority |
 |---|---------|--------|---------------|----------|
-| 1 | Testimonials | JSON data errors — occupation/company fields mixed up for 3 clients | `data/testimonials.json` | 🔴 Fix now |
-| 2 | Who We Are | "products that ships faster" — grammar error in large animated text | `whoWeAre/index.tsx` | 🔴 Fix now |
-| 3 | Hero CTA | "Lets Talk via Whatsapp" — missing apostrophe + wrong capitalization | `hero/index.tsx` | 🔴 Fix now |
+| 1 | Testimonials | JSON data errors - occupation/company fields mixed up for 3 clients | `data/testimonials.json` | 🔴 Fix now |
+| 2 | Who We Are | "products that ships faster" - grammar error in large animated text | `whoWeAre/index.tsx` | 🔴 Fix now |
+| 3 | Hero CTA | "Lets Talk via Whatsapp" - missing apostrophe + wrong capitalization | `hero/index.tsx` | 🔴 Fix now |
 | 4 | Services | "Saas" → "SaaS" · "MOTION GRAPHIC" → "MOTION GRAPHICS" | `servicesSection.tsx` | 🔴 Fix now |
-| 5 | Pricing | "shows you see our execution" — broken/missing word | `pricing/index.tsx` | 🔴 Fix now |
+| 5 | Pricing | "shows you see our execution" - broken/missing word | `pricing/index.tsx` | 🔴 Fix now |
 | 6 | Hero | Replace WhatsApp CTA with "Book a 15-Min Call" | `hero/index.tsx` | 🟠 Soon |
 | 7 | Hero | Rewrite H1 to lead with client outcome + include primary keyword | `hero/AnimatedHeadline.tsx` | 🟠 Soon |
 | 8 | Hero | Rewrite sub-headline: address the pain, not the deliverables | `hero/index.tsx` | 🟠 Soon |
@@ -703,24 +689,24 @@ Ordered by the combination of visibility, severity, and impact on trust.
 | 12 | FAQs | Remove WhatsApp from "How do we get started?" answer | `faqs/accordion.tsx` | 🟠 Soon |
 | 13 | Testimonials | Add section heading above cards ("What Clients Say") | `testimonials/testimonialCards.tsx` | 🟠 Soon |
 | 14 | Testimonials | Add star ratings to each card | `testimonials/testimonialCards.tsx` | 🟠 Soon |
-| 15 | Pricing | Fix scarcity message — make real or replace with always-true alternative | `pricing/index.tsx` | 🟠 Soon |
-| 16 | Pricing | Fix Custom Quote audience: "enterprise needs & startups" — pick one | `pricing/index.tsx` | 🟠 Soon |
+| 15 | Pricing | Fix scarcity message - make real or replace with always-true alternative | `pricing/index.tsx` | 🟠 Soon |
+| 16 | Pricing | Fix Custom Quote audience: "enterprise needs & startups" - pick one | `pricing/index.tsx` | 🟠 Soon |
 | 17 | Stats | Fix each card's sub-label to match its own stat | `about/aboutCard.tsx` | 🟡 Consider |
-| 18 | Stats | Clarify "$150M+ Made by clients" — specify what "made" means | `about/aboutCard.tsx` | 🟡 Consider |
+| 18 | Stats | Clarify "$150M+ Made by clients" - specify what "made" means | `about/aboutCard.tsx` | 🟡 Consider |
 | 19 | Who We Are | Replace "Studio" with "agency" for identity consistency | `whoWeAre/index.tsx` | 🟡 Consider |
 | 20 | Services | Add 1–2 sentence descriptions per service | `servicesSection.tsx` | 🟡 Consider |
 | 21 | Services | Replace "One-stop shop" with specific positioning line | `servicesSection.tsx` | 🟡 Consider |
-| 22 | Marquee | Rewrite section heading — add quantity + geography | `marquee/index.tsx` | 🟡 Consider |
+| 22 | Marquee | Rewrite section heading - add quantity + geography | `marquee/index.tsx` | 🟡 Consider |
 | 23 | Marquee | Fix placeholder logo entry (no name, no link) | `marquee/index.tsx` | 🟡 Consider |
 | 24 | Testimonials | Remove/reposition Kyle Drucker (Youtuber) testimonial | `data/testimonials.json` | 🟡 Consider |
 | 25 | Testimonials | Request expanded P-S-O format testimonials from 3 generic reviewers | `data/testimonials.json` | 🟡 Consider |
 | 26 | Pricing | Replace generic "Pricing That Makes Sense" heading | `pricing/index.tsx` | 🟡 Consider |
-| 27 | Satisfaction | Drop "companies like yours" — name actual clients instead | `pricing/index.tsx` | 🟡 Consider |
+| 27 | Satisfaction | Drop "companies like yours" - name actual clients instead | `pricing/index.tsx` | 🟡 Consider |
 
 **Priority key:**
-- 🔴 **Fix now** — Errors or broken data actively damaging trust and credibility with every visitor
-- 🟠 **Soon** — Conversion and positioning improvements with direct impact on lead quality
-- 🟡 **Consider** — Strategic polish and copy quality improvements
+- 🔴 **Fix now** - Errors or broken data actively damaging trust and credibility with every visitor
+- 🟠 **Soon** - Conversion and positioning improvements with direct impact on lead quality
+- 🟡 **Consider** - Strategic polish and copy quality improvements
 
 ---
 
@@ -734,7 +720,7 @@ The test for every sentence on this page is:
 
 > *Would a SaaS founder in the US, evaluating three agencies this week, read this and feel like we understand their situation better than the other two?*
 
-If the answer is no — rewrite it.
+If the answer is no - rewrite it.
 
 ---
 
@@ -754,7 +740,7 @@ Based on research from high-performing agency and SaaS sites (Linear, Stripe, Ba
 
 Words to remove from the entire site: *world-class, seamless, innovative, empower, revolutionize, leverage, synergy, cutting-edge, next-generation, holistic, transformative, robust, scalable solutions, end-to-end.*
 
-Not because they are wrong — because they appear on every competitor's site. If your competitor could publish your headline without changing a word, it is not a differentiator.
+Not because they are wrong - because they appear on every competitor's site. If your competitor could publish your headline without changing a word, it is not a differentiator.
 
 ---
 
