@@ -5,7 +5,7 @@ import Sitemap from "@/screens/sitemap";
 export const metadata: Metadata = {
   title: "Site Map | All Pages & Services",
   description:
-    "Complete sitemap of UI Pirate — product design & development agency. Browse all pages: UX/UI Design, SaaS & AI Development, Landing Pages, Graphic Design, Motion Graphics, UX Audits, 3D Animation, Pricing, Portfolio & more.",
+    "Complete sitemap of UI Pirate — product design & development agency. Browse all pages: UX/UI Design, SaaS & AI Development, Landing Pages, Design Systems, UX Audits, Pricing, Portfolio & more.",
   keywords:
     "uipirate sitemap, UI Pirate pages, product design agency services, UX UI design services list, SaaS design agency pages, site navigation, all services UI Pirate",
   alternates: {
@@ -102,44 +102,20 @@ const jsonLd = {
         {
           "@type": "ListItem",
           position: 8,
-          url: "https://uipirate.com/services/Graphic-Design",
-          name: "Graphic Design",
-        },
-        {
-          "@type": "ListItem",
-          position: 9,
-          url: "https://uipirate.com/services/Motion-Graphics-&-Video-Editing",
-          name: "Motion Graphics & Video Editing",
-        },
-        {
-          "@type": "ListItem",
-          position: 10,
           url: "https://uipirate.com/services/UX-Audits-&-Consultation",
           name: "UX Audits & Consultation",
         },
         {
           "@type": "ListItem",
-          position: 11,
-          url: "https://uipirate.com/services/3D-Animation-&-Rendering",
-          name: "3D Animation & Rendering",
-        },
-        {
-          "@type": "ListItem",
-          position: 12,
+          position: 9,
           url: "https://uipirate.com/blogs",
           name: "Blogs & Tutorials",
         },
         {
           "@type": "ListItem",
-          position: 13,
+          position: 10,
           url: "https://uipirate.com/faqs",
           name: "FAQs",
-        },
-        {
-          "@type": "ListItem",
-          position: 14,
-          url: "https://uipirate.com/community",
-          name: "Community Insights",
         },
       ],
     },

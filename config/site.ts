@@ -35,24 +35,9 @@ export const siteConfig = {
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670796/landing_skjuro.svg",
         },
         {
-          category: "Graphic Design",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/graphic_s0cmgk.svg",
-          href: "/services/Graphic-Design",
-        },
-        {
-          category: "Motion Graphic",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/motion_dqrdcl.svg",
-          href: "/services/Motion-Graphics-&-Video-Editing",
-        },
-        {
           category: "UX Audits & Consultation",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
           href: "/services/UX-Audits-&-Consultation",
-        },
-        {
-          category: "3D Assets & Animation",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/3d_wtkihl.svg",
-          href: "/services/3D-Animation-&-Rendering",
         },
       ],
     },
@@ -96,14 +81,6 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670805/faq_gn5mmv.svg",
-        },
-        {
-          category: "Community Insights",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612675/file_1_fvzqpk.svg",
-          href: "/community",
-          isLargeCard: true,
-          bgImage:
-            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/community_ovswiv.svg",
         },
         {
           category: "Free Tools",

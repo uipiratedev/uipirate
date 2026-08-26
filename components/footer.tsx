@@ -241,32 +241,11 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="footer-text" href="/services/Graphic-Design">
-                    Graphic Design
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="footer-text"
-                    href="/services/Motion-Graphics-&-Video-Editing"
-                  >
-                    Motion Graphics
-                  </Link>
-                </li>
-                <li>
                   <Link
                     className="footer-text"
                     href="/services/UX-Audits-&-Consultation"
                   >
                     UX Audits
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="footer-text"
-                    href="/services/3D-Animation-&-Rendering"
-                  >
-                    3D Assets & Animation
                   </Link>
                 </li>
               </ul>
@@ -282,11 +261,6 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 {/* <li><Link href="/case-studies" className="footer-text">Case Studies</Link></li> */}
-                <li>
-                  <Link className="footer-text" href="/community">
-                    Community Insights
-                  </Link>
-                </li>
                 <li>
                   <Link className="footer-text" href="/apps4sale">
                     Apps 4 Sale

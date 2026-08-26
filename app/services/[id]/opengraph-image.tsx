@@ -35,33 +35,12 @@ const SERVICE_OG: Record<string, ServiceMeta> = {
     description:
       "Custom design tokens, branded UI kits, and dev-ready component libraries for Angular, React & beyond.",
   },
-  "graphic-design": {
-    badge: "Graphic Design",
-    title: "Brand Identity &",
-    titleHighlight: "Marketing Visuals",
-    description:
-      "Infographics, newsletters, social media assets, and marketing materials — consistent brand across all channels.",
-  },
-  "motion-graphics-video-editing": {
-    badge: "Motion Graphics",
-    title: "Motion Graphics &",
-    titleHighlight: "Explainer Videos",
-    description:
-      "2D/3D animations, product demos, social reels. Sound design, color grading & captions included.",
-  },
   "ux-audits-consultation": {
     badge: "UX Audits",
     title: "UX Audit —",
     titleHighlight: "Find & Fix Friction",
     description:
       "Heuristic analysis, usability testing & actionable recommendations. Improve conversion rates in your SaaS product.",
-  },
-  "3d-animation-rendering": {
-    badge: "3D Assets & Animation",
-    title: "3D Animation &",
-    titleHighlight: "Product Rendering",
-    description:
-      "High-quality 3D assets, product visualization, and architectural rendering for marketing and brand storytelling.",
   },
 };
 

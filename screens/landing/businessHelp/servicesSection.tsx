@@ -68,20 +68,8 @@ const ServicesSection = () => {
       title: "LANDING PAGES & BUSINESS WEBSITES",
     },
     {
-      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/graphic_s0cmgk.svg",
-      title: "GRAPHIC DESIGN",
-    },
-    {
-      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/motion_dqrdcl.svg",
-      title: "MOTION GRAPHIC",
-    },
-    {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
       title: "UX AUDITS & CONSULTATION",
-    },
-    {
-      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/3d_wtkihl.svg",
-      title: "3D ASSETS & ANIMATION",
     },
   ];
 

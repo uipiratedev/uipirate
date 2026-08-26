@@ -20,10 +20,8 @@ const BlogsHero = ({
   const tabs = [
     "general",
     "SaaS Web & Mobile Apps",
-    "Motion Graphics & Video Editing",
     "Services",
     "UX Audits & Consultation",
-    "Graphic Design",
     "Landing Pages & Business Websites",
   ];
 

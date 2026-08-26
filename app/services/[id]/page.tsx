@@ -49,22 +49,6 @@ const SERVICE_META: Record<
     keywords:
       "design system agency, Angular component library, component library, design tokens, UI kit, scalable design system, enterprise design system, Angular design system, React component library, Figma component library",
   },
-  "graphic-design": {
-    title:
-      "Graphic Design Services | Brand Identity & Marketing Visuals",
-    description:
-      "Professional graphic design for brand identity, infographics, newsletters, social media, and marketing materials. Consistent brand visuals across all channels.",
-    keywords:
-      "graphic design agency, brand identity design, infographic design, marketing design, social media graphics, brand assets",
-  },
-  "motion-graphics-video-editing": {
-    title:
-      "Motion Graphics & Video Editing | Animations & Explainer Videos",
-    description:
-      "Professional motion graphics, 2D/3D animations, social media reels, explainer videos, and product demos. Sound design, color grading, and captions included.",
-    keywords:
-      "motion graphics agency, video editing, explainer videos, product animation, social media video, 2D 3D animation",
-  },
   "ux-audits-consultation": {
     title:
       "UX Audit & Consultation | Improve Your Product's Usability",
@@ -72,13 +56,6 @@ const SERVICE_META: Record<
       "Expert UX audits with heuristic analysis, usability testing, and actionable recommendations. Identify friction points and improve conversion rates in your SaaS product.",
     keywords:
       "UX audit service, usability testing, UX consultation, SaaS UX review, heuristic analysis, product usability audit",
-  },
-  "3d-animation-rendering": {
-    title: "3D Animation & Rendering | Product Visualization",
-    description:
-      "Professional 3D animation, product rendering, and architectural visualization. High-quality 3D assets for marketing, product demos, and brand storytelling.",
-    keywords:
-      "3D animation agency, product rendering, 3D visualization, architectural rendering, 3D product animation",
   },
 };
 

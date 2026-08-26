@@ -94,10 +94,7 @@ const SERVICE_SLUGS = [
   "SaaS-Web-&-Mobile-Apps",
   "Landing-Pages-&-Business-Websites",
   "Design-System-&-Component-Library",
-  "Graphic-Design",
-  "Motion-Graphics-&-Video-Editing",
   "UX-Audits-&-Consultation",
-  "3D-Animation-&-Rendering",
 ];
 
 // Fetches every post across all pages instead of capping at one page's worth

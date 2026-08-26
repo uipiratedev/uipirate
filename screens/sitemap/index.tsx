@@ -30,30 +30,14 @@ const Sitemap = () => {
         desc: "Conversion-focused marketing pages",
       },
       {
-        label: "Graphic Design",
-        href: "/services/Graphic-Design",
-        desc: "Brand visuals & illustrations",
-      },
-      {
-        label: "Motion Graphics & Video Editing",
-        href: "/services/Motion-Graphics-&-Video-Editing",
-        desc: "Animation, reels & video",
-      },
-      {
         label: "UX Audits & Consultation",
         href: "/services/UX-Audits-&-Consultation",
         desc: "Heuristic evaluation & UX strategy",
-      },
-      {
-        label: "3D Animation & Rendering",
-        href: "/services/3D-Animation-&-Rendering",
-        desc: "3D assets, animation & renders",
       },
     ],
     resources: [
       { label: "Blogs & Tutorials", href: "/blogs" },
       { label: "FAQs", href: "/faqs" },
-      { label: "Community Insights", href: "/community" },
       { label: "Apps 4 Sale", href: "/apps4sale" },
       { label: "Mini SaaS Apps", href: "/mini-saas-apps" },
     ],
