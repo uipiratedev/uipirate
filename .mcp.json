@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "figma": {
+      "type": "sse",
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "titan": {
+      "type": "http",
+      "url": "https://api.titan.email/mcp"
+    }
+  }
+}
