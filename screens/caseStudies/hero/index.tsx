@@ -38,7 +38,7 @@ const StarRating = ({
   );
 };
 
-const OurWorksHero = () => {
+const CaseStudiesHero = () => {
   return (
     <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
       {/* Subtle Grid Background Pattern */}
@@ -237,4 +237,4 @@ const OurWorksHero = () => {
   );
 };
 
-export default OurWorksHero;
+export default CaseStudiesHero;

@@ -12,7 +12,7 @@ import CaseStudiesFAQ from "./CaseStudiesFAQ";
 import PageWrapper from "@/components/PageWrapper";
 import ProjectEstimate from "@/components/ProjectEstimate";
 import GlassBadge from "@/components/GlassBadge";
-import OurWorksHero from "@/screens/ourWorks/hero";
+import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
 import LandingTestimonials from "@/screens/landing/testimonials";
 import staticCaseStudies from "@/data/case-studies.json";
@@ -158,7 +158,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
       <div className="mb-12">
         {/* Hero — portfolio + case studies positioning */}
         <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <OurWorksHero />
+          <CaseStudiesHero />
         </div>
 
         {/* Client Logos Marquee */}

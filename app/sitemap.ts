@@ -30,7 +30,6 @@ const STATIC_PAGES: {
 }[] = [
   { path: "/", priority: 1.0, changeFrequency: "daily" },
   // /services hub page was removed in favor of direct links to each service (see SERVICE_SLUGS below).
-  // /ourWorks merged into /case-studies (permanent redirect); single canonical entry below.
   { path: "/case-studies", priority: 0.95, changeFrequency: "weekly" },
   { path: "/about", priority: 0.9, changeFrequency: "monthly" },
   { path: "/pricing", priority: 0.9, changeFrequency: "weekly" },
