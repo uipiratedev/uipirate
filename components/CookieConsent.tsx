@@ -202,7 +202,7 @@ const CookieConsent = () => {
                   Microsoft Clarity).{" "}
                   <a
                     className="text-blue-600 hover:underline font-medium"
-                    href="/privacy-policy"
+                    href="/privacy"
                   >
                     Learn more in our Privacy Policy
                   </a>

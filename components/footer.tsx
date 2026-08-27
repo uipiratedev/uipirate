@@ -209,6 +209,14 @@ export const Footer: React.FC = () => {
                     About
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="https://propirates.com"
+                  >
+                    ProPirates
+                  </Link>
+                </li>
               </ul>
             </div>
 

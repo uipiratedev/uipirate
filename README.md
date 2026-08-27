@@ -223,7 +223,6 @@ uipirate/
 │   ├── faqs/                # FAQs page
 │   ├── ourTeam/             # Team page
 │   ├── pricing/             # Pricing page
-│   ├── privacy-policy/      # Privacy policy
 │   ├── resources/           # Resources section
 │   ├── services/            # Services pages
 │   ├── layout.tsx           # Root layout with metadata

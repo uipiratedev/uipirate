@@ -14,7 +14,6 @@ const SEGMENT_LABELS: Record<string, string> = {
   contact: "Contact",
   about: "About",
   privacy: "Privacy Policy",
-  "privacy-policy": "Privacy Policy",
   terms: "Terms & Conditions",
   resources: "Resources",
   "mini-saas-apps": "Mini SaaS Apps",

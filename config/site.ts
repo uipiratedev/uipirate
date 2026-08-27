@@ -42,12 +42,12 @@ export const siteConfig = {
       ],
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+      label: "Works",
+      href: "/case-studies",
     },
     {
-      label: "Tools",
-      href: "/tools",
+      label: "Pricing",
+      href: "/pricing",
     },
     {
       label: "About",
@@ -91,15 +91,6 @@ export const siteConfig = {
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
         },
       ],
-    },
-
-    {
-      label: "ProPirates",
-      href: "https://propirates.com",
-    },
-    {
-      label: "Apps4Sale",
-      href: "/apps4sale",
     },
   ],
   navMenuItems: [
