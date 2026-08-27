@@ -75,9 +75,9 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 
 ## 9. Apps4Sale / Mini SaaS Apps / SaaS Apps
 
-- [ ] `/apps4sale` — still in primary nav (audit: move to footer-only or separate domain)
-- [ ] `/mini-saas-apps` — intent still unclear; not merged into `/case-studies` or `/apps4sale`
-- [ ] `/saas-apps` — now appears to be `/saas-apps/ai-calling`; still needs review for duplicate content vs. other app pages
+- [x] `/apps4sale` — already footer-only (removed from primary nav during nav simplification, section 5). Real marketplace with 3 actual product listings (AI Voice Support System, Smart Onboarding Engine, PirateCOS) in `data/apps4sale.json` — no further action needed.
+- [x] `/mini-saas-apps` — was a zero-content "Coming Soon" stub (identical template to the old Community Insights placeholder). Deleted the page/screen and its footer, breadcrumb, and HTML-sitemap references — same treatment as Community Insights.
+- [x] `/saas-apps/ai-calling` — deleted entirely per explicit instruction (route, screen, and its breadcrumb segment labels). No `/saas-apps` hub ever existed, and nothing else in the codebase linked to it, so removal was clean — no dangling references.
 
 ## 10. Resources Hub `/resources`
 

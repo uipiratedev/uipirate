@@ -39,7 +39,6 @@ const Sitemap = () => {
       { label: "Blogs & Tutorials", href: "/blogs" },
       { label: "FAQs", href: "/faqs" },
       { label: "Apps 4 Sale", href: "/apps4sale" },
-      { label: "Mini SaaS Apps", href: "/mini-saas-apps" },
     ],
     tools: [
       { label: "Tools Main Hub", href: "/tools", desc: "16+ Free Tools Suite" },

@@ -275,11 +275,6 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="footer-text" href="/mini-saas-apps">
-                    Mini SaaS Apps
-                  </Link>
-                </li>
-                <li>
                   <Link className="footer-text" href="/faqs">
                     FAQ’s
                   </Link>

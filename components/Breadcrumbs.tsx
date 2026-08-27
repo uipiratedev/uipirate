@@ -16,10 +16,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   privacy: "Privacy Policy",
   terms: "Terms & Conditions",
   resources: "Resources",
-  "mini-saas-apps": "Mini SaaS Apps",
   apps4sale: "Apps for Sale",
-  "saas-apps": "SaaS Apps",
-  "ai-calling": "AI Calling",
 };
 
 // Service detail page slug labels
