@@ -11,6 +11,7 @@ import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { SlideGrowButton } from "@/components/SlideGrowButton";
 import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
+import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 
 interface ButtonCatalogItem {
   id: string;
@@ -24,6 +25,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "elevated-underglow",
+    name: "Elevated Underglow 3D Button",
+    badge: "Figma Master",
+    badgeColor: "#0077FF",
+    figmaNode: "Nodes 55:37 & 55:40",
+    description:
+      "Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.",
+    href: "/buttons/elevated-underglow-cta",
+    features: ["13px Spring lift", "Electric blue 3D underlayer", "STANDERD & HOVER states", "Phone call icon"],
+  },
   {
     id: "led-matrix-chevron",
     name: "LED Dot Matrix Chevron Button",
@@ -229,6 +241,18 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "elevated-underglow" && (
+                  <div className="scale-90 sm:scale-100 py-2">
+                    <ElevatedUnderglowCTA
+                      label="Book A Call"
+                      icon="phone"
+                      theme="figma"
+                      size="md"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
                 {btn.id === "led-matrix-chevron" && (
                   <div className="scale-85 sm:scale-95">
                     <LedMatrixChevronButton
