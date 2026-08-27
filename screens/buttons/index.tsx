@@ -8,6 +8,7 @@ import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
+import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 
 interface ButtonCatalogItem {
   id: string;
@@ -21,6 +22,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "vintage-leather",
+    name: "Vintage Leather & Brass Button",
+    badge: "Figma Master",
+    badgeColor: "#B4986C",
+    figmaNode: "Node 14:304",
+    description:
+      "Luxury embossed heritage leather & brass button with 6px bottom tactile bevel lip, recessed enclosure tray, and filigree scrollwork corner flourishes.",
+    href: "/buttons/vintage-leather-cta",
+    features: ["3D Tactile bevel lip", "Filigree corner ornaments", "Recessed enclosure tray", "5 Luxury themes"],
+  },
   {
     id: "neumorphic-glow",
     name: "Neumorphic Glow CTA",
@@ -193,6 +205,16 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "vintage-leather" && (
+                  <div className="scale-90 sm:scale-95">
+                    <VintageLeatherCTA
+                      theme="heritage"
+                      size="md"
+                      label="Shop ties"
+                    />
+                  </div>
+                )}
+
                 {btn.id === "neumorphic-glow" && (
                   <div className="flex items-center gap-4 scale-90 sm:scale-95">
                     <NeumorphicGlowCTA
