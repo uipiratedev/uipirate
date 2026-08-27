@@ -9,6 +9,7 @@ const Sitemap = () => {
     main: [
       { label: "Home", href: "/" },
       { label: "About Us", href: "/about" },
+      { label: "Our Process", href: "/process" },
       { label: "Case Studies & Portfolio", href: "/case-studies" },
       { label: "Pricing", href: "/pricing" },
       { label: "Contact", href: "/contact" },

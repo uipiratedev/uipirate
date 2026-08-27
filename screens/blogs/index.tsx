@@ -14,21 +14,11 @@ interface BlogsProps {
 
 const Blogs = ({ initialBlogs }: BlogsProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("general");
 
   return (
     <div>
-      <BlogsHero
-        searchQuery={searchQuery}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-        onSearchChange={setSearchQuery}
-      />
-      <FeaturedBlogs
-        blogs={initialBlogs}
-        searchQuery={searchQuery}
-        selectedCategory={selectedCategory}
-      />
+      <BlogsHero searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <FeaturedBlogs blogs={initialBlogs} searchQuery={searchQuery} />
       <BlogsNewsletter />
     </div>
   );

@@ -102,24 +102,31 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 - [x] Verified with a full `next build`: `/case-studies/[slug]` now statically generates 11 real case studies pulled live from the CMS (previously these weren't pre-generated at all — the old code only statically built the 13 hardcoded JSON slugs and left CMS case studies to render on-demand).
 - **Confirmed:** blogs/articles were already 100% CMS-driven (`app/blogs`, `app/[slug]` via `lib/pirateCOS/public-client.ts`) — no hardcoded `data/blog*.json` or similar exists. Case studies were the only remaining hardcoded content source; nothing hardcoded remains for case studies, blogs, or articles anywhere in the codebase.
 
-## 11. Other Missing Items (Not Started)
+## 11. Other Missing Items
 
-- [ ] Homepage: target-audience callout near hero
-- [ ] Homepage: featured case study with a result metric (not just gallery)
-- [ ] Homepage: "Process in 3 steps" timeline strip
-- [ ] Homepage: Clutch/G2/Upwork rating badge near CTA
-- [ ] About: founder story / origin paragraph
-- [ ] About: Clutch profile link or embedded rating widget
-- [ ] About: "Who we work best with" callout
-- [ ] About: trim industries list from 8 to 4–5 core industries
-- [ ] About: fix stat inconsistency ("40+ businesses" vs "50+ products")
-- [ ] Pricing: direct Calendly/Stripe booking link on page
-- [ ] Pricing: testimonial from a retainer-model client
-- [ ] Pricing: "what's included" deliverables checklist per tier
-- [ ] Blogs: author bio with credibility signals
-- [ ] Blogs: category filter (Design, Development, SaaS, AI)
-- [ ] `/process` page
-- [ ] Location-based SEO pages (e.g. `/product-design-agency-new-york`)
+Split into structure-only items (built now, using real/existing site data — nothing invented) and content items (still held back — need real facts/decisions from the user).
+
+**Built (structure-only, real data):**
+
+- [x] Homepage: target-audience callout near hero — reused the existing `PricingPerfectFor` component ("Is This Right For You?") from `/pricing`, inserted right after the hero/marquee on `/` (`screens/landing/index.tsx`). Same real content, no new copy invented.
+- [x] Homepage: featured case study with a result metric — new `screens/landing/featuredCaseStudy/index.tsx`, fed by a server-side fetch in `app/page.tsx` (`getFeaturedCaseStudy()`) that picks the first live CMS case study with both a real `metrics` entry and a real (non-base64) hero image. Renders nothing if none qualify — never fabricates a metric.
+- [x] Homepage: "Process in 3 steps" timeline strip — new `screens/landing/miniProcess/index.tsx`, grouping the same real 6-step process (extracted to `data/process.ts`, shared with `/about` and the new `/process` page) into 3 pairs. Links to `/process` for the full version.
+- [x] Homepage: Clutch rating badge near CTA — added a real link (`https://clutch.co/profile/ui-pirate-vishal-anand`, the same URL already used in the footer) with the real Clutch icon, next to the hero CTA (`screens/landing/hero/index.tsx`). Copy says "Reviewed on Clutch" rather than asserting an unverified specific rating number.
+- [x] About: Clutch profile link — added the same real Clutch URL near the "Trusted by Teams Worldwide" section (`app/about/page.tsx`).
+- [x] About: "Who we work best with" callout — reused `PricingPerfectFor` directly on `/about` (same component as the homepage callout above) instead of writing new copy.
+- [x] Pricing: direct booking link — the "Start Your Pilot Project" button (`screens/pricing/tryBeforeCommit/index.tsx`) previously had no `href`, so `LetsTalkButton` defaulted to opening WhatsApp. Pointed it at the real existing booking link (`https://cal.com/ui-pirate/15min`, already used on About/Hero) so it books directly instead of starting a chat.
+- [x] `/process` page — new dedicated page (`app/process/page.tsx` + `layout.tsx`) with the full 6-step process, sharing its data with `/about` via `data/process.ts` so the two pages can't drift apart. Linked from About's process section, Footer Quick Links, the HTML sitemap, and `app/sitemap.ts`.
+- [x] Blogs: category filter — found the exact same bug class as the `/case-studies` category tabs: `BlogsHero`'s dropdown used a fixed list (`"SaaS Web & Mobile Apps"`, `"Services"`, etc. — stale service-slug names, one already deleted this session) that matched **zero** of the 16 live blog posts' real tags, so selecting anything but the default silently showed 0 results. Removed the broken dropdown and replaced it with a dynamic tag-pill filter in `FeaturedBlogs` built from each post's actual tags, ranked by real usage count (same pattern as the working `postTypeTabs` in the same file).
+
+**Still held back (need real facts/decisions from the user before touching):**
+
+- [ ] About: founder story / origin paragraph — needs the actual story from Vishal; won't fabricate one.
+- [ ] About: trim industries list from 8 to 4–5 — a positioning/business decision on which real industries to keep, not a structural fix.
+- [ ] About: fix stat inconsistency ("40+ businesses" vs "50+ products") — needs the correct number confirmed.
+- [ ] Pricing: testimonial from a retainer-model client — checked `data/testimonials.json`; no existing testimonial references a retainer/monthly engagement, so there's nothing real to surface yet.
+- [ ] Pricing: "what's included" deliverables checklist per tier — needs the actual deliverables list per tier from the user.
+- [ ] Blogs: author bio with credibility signals — `ReaderPost`/the CMS has no bio/photo/title field for authors, only `name`/`email`; needs a CMS schema addition, not a frontend fix.
+- [ ] Location-based SEO pages (e.g. `/product-design-agency-new-york`) — needs a city list and real local-relevance content strategy, not just page scaffolding.
 
 ---
 
@@ -138,4 +145,4 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 | Apps4Sale / Mini SaaS Apps / SaaS Apps scope decisions | ✅ Done (Apps4Sale kept footer-only; Mini SaaS Apps + AI Calling deleted as stubs/orphans) |
 | Resources hub consolidation | ✅ Done (deleted the unlinked `/resources` redirect stub; dropdown alone covers it) |
 | Dead code sweep (post-removal) | ✅ Done (12 unused SVG components + 1 stale comment removed, verified via full build) |
-| Missing content sections (homepage, about, pricing, blogs, /process, location pages) | ❌ Not started |
+| Missing content sections (homepage, about, pricing, blogs, /process, location pages) | ⚠️ Partial — 8 structure-only items done with real existing data (see section 11); 7 content items held back pending real facts/decisions from user (founder story, correct stat, industries trim, retainer testimonial, tier deliverables, author bios, location pages) |

@@ -31,6 +31,7 @@ const STATIC_PAGES: {
   // /services hub page was removed in favor of direct links to each service (see SERVICE_SLUGS below).
   { path: "/case-studies", priority: 0.95, changeFrequency: "weekly" },
   { path: "/about", priority: 0.9, changeFrequency: "monthly" },
+  { path: "/process", priority: 0.8, changeFrequency: "monthly" },
   { path: "/pricing", priority: 0.9, changeFrequency: "weekly" },
   { path: "/blogs", priority: 0.85, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },

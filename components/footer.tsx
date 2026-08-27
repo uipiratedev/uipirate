@@ -210,6 +210,11 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link className="footer-text" href="/process">
+                    Our Process
+                  </Link>
+                </li>
+                <li>
                   <Link
                     className="footer-text"
                     href="https://propirates.com"
