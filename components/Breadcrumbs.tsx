@@ -14,25 +14,18 @@ const SEGMENT_LABELS: Record<string, string> = {
   contact: "Contact",
   about: "About",
   privacy: "Privacy Policy",
-  "privacy-policy": "Privacy Policy",
   terms: "Terms & Conditions",
-  community: "Community",
   resources: "Resources",
-  "mini-saas-apps": "Mini SaaS Apps",
   apps4sale: "Apps for Sale",
-  "saas-apps": "SaaS Apps",
-  "ai-calling": "AI Calling",
 };
 
 // Service detail page slug labels
 const SERVICE_LABELS: Record<string, string> = {
-  "SaaS-Web-&-Mobile-Apps": "SaaS Web & Mobile Apps",
+  "UX-UI-Design": "UX/UI Design",
+  "SaaS-&-AI-Development": "SaaS & AI Development",
   "Landing-Pages-&-Business-Websites": "Landing Pages & Business Websites",
   "Design-System-&-Component-Library": "Design System & Component Library",
-  "Graphic-Design": "Graphic Design",
-  "Motion-Graphics-&-Video-Editing": "Motion Graphics & Video Editing",
   "UX-Audits-&-Consultation": "UX Audits & Consultation",
-  "3D-Animation-&-Rendering": "3D Animation & Rendering",
 };
 
 interface BreadcrumbItem {

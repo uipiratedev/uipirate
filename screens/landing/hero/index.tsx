@@ -356,6 +356,19 @@ const LandingHero = () => {
                 </p>
               </div>
             </Link>
+            <a
+              className="flex items-center gap-2 mt-1 text-xs font-semibold text-gray-600 hover:text-black transition-colors"
+              href="https://www.upwork.com/freelancers/~010b0f5459bfcf5ed8/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <img
+                alt="Upwork"
+                className="w-4 h-4"
+                src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280706/up_a4rhmj.svg"
+              />
+              Reviewed on Upwork
+            </a>
             <div className="w-[100%] z-10">
               <a
                 className="w-full"

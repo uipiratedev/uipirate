@@ -105,19 +105,6 @@ const data = [
   },
 
   {
-    heading: "What deliverables should I expect for motion graphics?",
-
-    title1:
-      "Our motion graphics services bring static visuals to life with seamless animations.",
-    list: [
-      "•	Storyboard & Concepts: You’ll receive initial concepts to align on the visual style.",
-      "•	Animation Files: Final deliverables in video format, optimized for web or app usage.",
-      "	•	Revisions: Includes up to three revisions to refine and finalize the animations.",
-    ],
-    title2:
-      "📍 Typical Uses: Great for explainer videos, app onboarding, or social media promos.",
-  },
-  {
     heading: "Can you help us set up a Design System and Component Library?",
 
     title1:
@@ -141,18 +128,6 @@ const data = [
     ],
     title2:
       "📍 Deliverables: A detailed report, consultation call, and an improvement roadmap, focusing on ease of use and user satisfaction.",
-  },
-  {
-    heading: "What’s included in a 3D Animation & Rendering project?",
-
-    title1: "We handle every step, from concept to final render.",
-    list: [
-      "↳ Concept & Storyboard: A detailed plan and visuals for your 3D scenes or animations.",
-      "↳ 3D Modeling & Texturing: Creation of realistic assets, lighting, and texture to bring your vision to life.",
-      "↳ Rendering & Revisions: High-quality final renders delivered in your preferred formats.",
-    ],
-    title2:
-      "📍 Usage: Perfect for product demos, promotional videos, and immersive web content.",
   },
   {
     heading: "Do you work with existing designs or wireframes?",

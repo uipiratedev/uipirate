@@ -227,24 +227,6 @@ export default async function RootLayout({
                     "@type": "Offer",
                     itemOffered: {
                       "@type": "Service",
-                      name: "Graphic Design",
-                      description:
-                        "Brand identity, infographics, newsletters, and marketing visuals",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    itemOffered: {
-                      "@type": "Service",
-                      name: "Motion Graphics & Video Editing",
-                      description:
-                        "2D/3D animations, social media content, and product explainer videos",
-                    },
-                  },
-                  {
-                    "@type": "Offer",
-                    itemOffered: {
-                      "@type": "Service",
                       name: "UX Audits & Consultation",
                       description:
                         "Heuristic analysis, usability testing, and strategic UX recommendations",
@@ -433,8 +415,6 @@ export default async function RootLayout({
               <li><a href="/services/SaaS-Web-&amp;-Mobile-Apps">SaaS Web &amp; Mobile App Design &amp; Development</a></li>
               <li><a href="/services/Landing-Pages-&amp;-Business-Websites">Landing Pages &amp; Business Websites</a></li>
               <li><a href="/services/Design-System-&amp;-Component-Library">Design Systems &amp; Component Libraries</a></li>
-              <li><a href="/services/Graphic-Design">Graphic Design</a></li>
-              <li><a href="/services/Motion-Graphics-&amp;-Video-Editing">Motion Graphics &amp; Video Editing</a></li>
               <li><a href="/services/UX-Audits-&amp;-Consultation">UX Audits &amp; Consultation</a></li>
             </ul>
             <h2>Navigation</h2>

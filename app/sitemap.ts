@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 
-import caseStudies from "@/data/case-studies.json";
 import apps4saleProducts from "@/data/apps4sale.json";
 import { DETAILED_BOTS } from "@/data/bots";
 
@@ -30,9 +29,9 @@ const STATIC_PAGES: {
 }[] = [
   { path: "/", priority: 1.0, changeFrequency: "daily" },
   // /services hub page was removed in favor of direct links to each service (see SERVICE_SLUGS below).
-  // /ourWorks merged into /case-studies (permanent redirect); single canonical entry below.
   { path: "/case-studies", priority: 0.95, changeFrequency: "weekly" },
   { path: "/about", priority: 0.9, changeFrequency: "monthly" },
+  { path: "/process", priority: 0.8, changeFrequency: "monthly" },
   { path: "/pricing", priority: 0.9, changeFrequency: "weekly" },
   { path: "/blogs", priority: 0.85, changeFrequency: "weekly" },
   { path: "/contact", priority: 0.85, changeFrequency: "monthly" },
@@ -91,13 +90,11 @@ const STATIC_PAGES: {
 
 // Service detail pages (from sericesDetailsList.json slugs)
 const SERVICE_SLUGS = [
-  "SaaS-Web-&-Mobile-Apps",
+  "UX-UI-Design",
+  "SaaS-&-AI-Development",
   "Landing-Pages-&-Business-Websites",
   "Design-System-&-Component-Library",
-  "Graphic-Design",
-  "Motion-Graphics-&-Video-Editing",
   "UX-Audits-&-Consultation",
-  "3D-Animation-&-Rendering",
 ];
 
 // Fetches every post across all pages instead of capping at one page's worth
@@ -151,15 +148,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  // 4. Case studies from data
-  const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({
-    url: `${BASE_URL}/case-studies/${study.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
-
-  // 5. Apps4sale products
+  // 4. Apps4sale products
   const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
     (product) => ({
       url: `${BASE_URL}/apps4sale/${product.slug}`,
@@ -169,7 +158,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  // 6. Blog posts and CMS case studies from API
+  // 5. Blog posts and CMS case studies from API
   // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
   // route their sitemap entries there instead of listing them as blog posts.
   // (Previously skipped this fetch during `next build` via a NEXT_PHASE check,
@@ -215,7 +204,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries,
     ...botEntries,
     ...serviceEntries,
-    ...caseStudyEntries,
     ...cmsCaseStudyEntries,
     ...blogEntries,
     ...apps4saleEntries,

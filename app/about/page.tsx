@@ -8,56 +8,19 @@ import GlassSurface from "@/components/GlassSurface";
 import GlassBadge from "@/components/GlassBadge";
 import { CheckIcon } from "@/components/icons";
 import TheTeam from "@/screens/landing/theTeam";
+import PricingPerfectFor from "@/screens/pricing/perfectFor";
 import {
   HERO_BADGE_PRESET,
   HERO_BADGE_CLASSNAME,
   HERO_BADGE_ANIMATION_STYLE,
 } from "@/config/glassSurfacePresets";
+import { PROCESS_STEPS } from "@/data/process";
 
 const stats = [
   { number: "9+", label: "Years of Experience" },
   { number: "50+", label: "Products Shipped" },
   { number: "5.0", label: "Client Rating" },
   { number: "6", label: "Countries Served" },
-];
-
-const process = [
-  {
-    step: "01",
-    title: "Listen",
-    description:
-      "You share your product vision — even if it's just a few lines of an idea. We listen deeply to understand your goals, users, and constraints.",
-  },
-  {
-    step: "02",
-    title: "Think",
-    description:
-      "We do competitive analysis, market research, and product thinking. We study what exists, find gaps, and define what will make your product stand out.",
-  },
-  {
-    step: "03",
-    title: "Plan",
-    description:
-      "Information architecture, user flows, feature prioritization, and product roadmap. We structure your product so it's intuitive from day one.",
-  },
-  {
-    step: "04",
-    title: "Design",
-    description:
-      "Wireframes → High-fidelity UI → Interactive prototypes. Every pixel is deliberate, every interaction is designed to drive user engagement.",
-  },
-  {
-    step: "05",
-    title: "Build",
-    description:
-      "Production-ready frontend code in Angular, React, or Next.js. Component-based architecture, API integration, responsive layouts, and performance optimization.",
-  },
-  {
-    step: "06",
-    title: "Ship & Scale",
-    description:
-      "Deployment, documentation, design system handoff, and ongoing support. We stay with you as your product grows and evolves.",
-  },
 ];
 
 const technologies = [
@@ -534,7 +497,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4">
-            {process.map((step, i) => (
+            {PROCESS_STEPS.map((step, i) => (
               <motion.div
                 key={step.step}
                 className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
@@ -554,6 +517,15 @@ export default function AboutPage() {
                 </p>
               </motion.div>
             ))}
+          </div>
+
+          <div className="flex justify-center mt-10 relative z-10">
+            <Link
+              className="text-brand-orange font-semibold text-sm hover:underline"
+              href="/process"
+            >
+              See our full process in detail →
+            </Link>
           </div>
         </div>
       </section>
@@ -620,6 +592,13 @@ export default function AboutPage() {
           <p className="text-gray-500 mt-2">
             60% of our clients are US-based startups and enterprises
           </p>
+          <Link
+            className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-brand-orange hover:underline"
+            href="https://clutch.co/profile/ui-pirate-vishal-anand"
+            target="_blank"
+          >
+            See our reviews on Clutch →
+          </Link>
         </div>
 
         <div className="grid grid-cols-5 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4">
@@ -660,6 +639,11 @@ export default function AboutPage() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Who We Work Best With - reuses the exact same fit-check content from /pricing */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
+        <PricingPerfectFor />
       </section>
 
       {/* CTA Section - Dark Card */}

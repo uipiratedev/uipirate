@@ -22,10 +22,7 @@ const termsSections = [
       "SaaS Web & Mobile App Design",
       "Landing Pages & Corporate Websites",
       "Design Systems & Component Libraries",
-      "Graphic Design & Brand Identity",
-      "Motion Graphics & Video Editing",
       "UX Audits & Consultation",
-      "3D Animation & Rendering",
     ],
   },
   {

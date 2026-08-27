@@ -636,7 +636,6 @@ screens/
 ├── blogsDetails/       # Blog detail components
 ├── faqs/               # FAQ components
 ├── ourTeam/            # Team page components
-├── ourWorks/           # Portfolio components
 ├── pricing/            # Pricing components
 ├── service/            # Service page components
 └── serviceDetails/     # Service detail components

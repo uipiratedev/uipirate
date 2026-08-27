@@ -12,20 +12,9 @@ import CaseStudiesFAQ from "./CaseStudiesFAQ";
 import PageWrapper from "@/components/PageWrapper";
 import ProjectEstimate from "@/components/ProjectEstimate";
 import GlassBadge from "@/components/GlassBadge";
-import OurWorksHero from "@/screens/ourWorks/hero";
+import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
 import LandingTestimonials from "@/screens/landing/testimonials";
-import staticCaseStudies from "@/data/case-studies.json";
-
-const categories = [
-  "All",
-  "Enterprise SaaS",
-  "AI SaaS",
-  "SaaS Product",
-  "Mobile App",
-  "E-commerce Website",
-  "Landing Page",
-];
 
 const DEFAULT_CASE_STUDY_IMAGE = "/assets/blog-banner-default.svg";
 
@@ -34,7 +23,6 @@ interface CaseStudyCard {
   title: string;
   excerpt: string;
   client: string;
-  category?: string;
   industry?: string;
   region?: string;
   technologies?: string[];
@@ -42,6 +30,15 @@ interface CaseStudyCard {
   heroImage: string;
   clientLogo?: string;
   externalUrl?: string;
+  publishedAt: string | null;
+}
+
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+function isNewCaseStudy(publishedAt: string | null) {
+  if (!publishedAt) return false;
+
+  return Date.now() - new Date(publishedAt).getTime() <= THIRTY_DAYS_MS;
 }
 
 // Some CMS posts have featuredImage/bannerImage stored as raw base64 data
@@ -56,8 +53,8 @@ function isDataUri(url?: string) {
 
 // CMS-authored case studies (postType "case-study") carry their own client,
 // clientLogo, region, technologies, metrics and externalUrl fields from the
-// API. There's no "industry" or "category" field on the CMS side, so those
-// still fall back to the post's tags/title.
+// API. There's no "industry" field on the CMS side, so it falls back to the
+// post's first tag/title.
 function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
   const rawHeroImage = post.featuredImage || post.bannerImage;
 
@@ -75,6 +72,7 @@ function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
       ? DEFAULT_CASE_STUDY_IMAGE
       : rawHeroImage || DEFAULT_CASE_STUDY_IMAGE,
     externalUrl: post.externalUrl,
+    publishedAt: post.publishedAt,
   };
 }
 
@@ -83,39 +81,33 @@ interface CaseStudiesProps {
 }
 
 const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
-  const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const caseStudies: CaseStudyCard[] = useMemo(
-    () => [...staticCaseStudies, ...cmsCaseStudies.map(normalizeCmsCaseStudy)],
+    () => cmsCaseStudies.map(normalizeCmsCaseStudy),
     [cmsCaseStudies],
   );
 
-  const filteredStudies = caseStudies
-    .filter(
-      (study) => activeCategory === "All" || study.category === activeCategory,
-    )
-    .filter((study) => {
-      if (searchQuery === "") return true;
+  const filteredStudies = caseStudies.filter((study) => {
+    if (searchQuery === "") return true;
 
-      const query = searchQuery.toLowerCase().trim();
+    const query = searchQuery.toLowerCase().trim();
 
-      // Search in multiple fields
-      const searchableText = [
-        study.client,
-        study.title,
-        study.excerpt,
-        study.category,
-        study.industry,
-        study.region,
-        ...(study.technologies || []),
-        ...(study.metrics?.map((m) => m.value) || []),
-      ]
-        .join(" ")
-        .toLowerCase();
+    // Search in multiple fields
+    const searchableText = [
+      study.client,
+      study.title,
+      study.excerpt,
+      study.industry,
+      study.region,
+      ...(study.technologies || []),
+      ...(study.metrics?.map((m) => m.value) || []),
+    ]
+      .join(" ")
+      .toLowerCase();
 
-      return searchableText.includes(query);
-    });
+    return searchableText.includes(query);
+  });
 
   // JSON-LD Schema for Portfolio/Case Studies
   const portfolioSchema = {
@@ -142,7 +134,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
         name: "UI Pirate",
       },
       keywords: study.technologies?.join(", "),
-      about: study.category,
+      about: study.industry,
       ...(study.externalUrl && { url: study.externalUrl }),
     })),
   };
@@ -158,13 +150,13 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
       <div className="mb-12">
         {/* Hero — portfolio + case studies positioning */}
         <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <OurWorksHero />
+          <CaseStudiesHero />
         </div>
 
         {/* Client Logos Marquee */}
         <ClientLogosMarquee />
 
-        {/* Featured deep-dive case studies (from data/case-studies.json) */}
+        {/* Featured deep-dive case studies (from the CMS) */}
         <section className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-12 max-md:pt-6">
           <div className="autoShow">
             <div className="mb-6 flex flex-row items-center justify-center">
@@ -184,7 +176,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
             <div className="relative">
               <input
                 className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-sm"
-                placeholder="Search by client, industry, technology, category..."
+                placeholder="Search by client, industry, or technology..."
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -225,42 +217,8 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
             </div>
           </div>
 
-          {/* Category Filter Tabs */}
-          <div className="autoShow flex flex-wrap items-center justify-center gap-3 mb-6 max-md:mb-4">
-            {categories.map((category) => {
-              const count =
-                category === "All"
-                  ? caseStudies.length
-                  : caseStudies.filter((study) => study.category === category)
-                      .length;
-
-              return (
-                <button
-                  key={category}
-                  className={`px-4 py-2 rounded-full text-sm font-jetbrains-mono font-medium transition-all duration-300 flex items-center gap-2 ${
-                    activeCategory === category
-                      ? "bg-[#FF5B04] text-white shadow-md"
-                      : "bg-white/90 text-gray-700 border border-gray-200/70 hover:border-[#FF5B04]/50 hover:text-[#FF5B04]"
-                  }`}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                  <span
-                    className={`text-xs px-1.5 py-0.5 rounded-full ${
-                      activeCategory === category
-                        ? "bg-white/20 text-white"
-                        : "bg-gray-100 text-gray-600"
-                    }`}
-                  >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
           {/* Results Count */}
-          {(searchQuery || activeCategory !== "All") && (
+          {searchQuery && (
             <div className="flex items-center justify-between mb-6 max-md:mb-4 text-sm">
               <p className="text-gray-600 font-medium">
                 Showing{" "}
@@ -279,17 +237,12 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                   </span>
                 )}
               </p>
-              {searchQuery && (
-                <button
-                  className="text-[#FF5B04] hover:text-[#e04e00] font-medium text-sm transition-colors underline"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setActiveCategory("All");
-                  }}
-                >
-                  Clear all filters
-                </button>
-              )}
+              <button
+                className="text-[#FF5B04] hover:text-[#e04e00] font-medium text-sm transition-colors underline"
+                onClick={() => setSearchQuery("")}
+              >
+                Clear search
+              </button>
             </div>
           )}
 
@@ -313,41 +266,30 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                   <p className="text-gray-500 text-lg max-md:text-base mb-2 font-semibold">
                     {searchQuery
                       ? "No matching projects found"
-                      : "No projects in this category yet"}
+                      : "No case studies published yet"}
                   </p>
                   <p className="text-gray-500 text-sm mb-6">
                     {searchQuery
-                      ? `Try adjusting your search term or filters`
-                      : `Check out other categories or view all projects`}
+                      ? "Try adjusting your search term"
+                      : "Check back soon"}
                   </p>
-                  <div className="flex gap-3 justify-center">
-                    {searchQuery && (
+                  {searchQuery && (
+                    <div className="flex gap-3 justify-center">
                       <button
                         className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 rounded-full hover:border-[#FF5B04] hover:text-[#FF5B04] transition-all duration-300 font-semibold text-sm"
                         onClick={() => setSearchQuery("")}
                       >
                         Clear search
                       </button>
-                    )}
-                    {/* #CC4903 (darkened brand orange) instead of #FF5B04:
-                        white text on the lighter shade fails WCAG AA at this
-                        size/weight (~3.1:1); the darker shade clears 4.5:1. */}
-                    <button
-                      className="px-6 py-3 bg-[#CC4903] text-white rounded-full hover:bg-[#CC4903]/90 transition-colors duration-300 font-semibold text-sm shadow-md hover:shadow-lg"
-                      onClick={() => {
-                        setActiveCategory("All");
-                        setSearchQuery("");
-                      }}
-                    >
-                      View all projects
-                    </button>
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
               filteredStudies.map((study, index) => {
                 const primaryMetric =
                   study.metrics?.[0]?.value || study.industry;
+                const isNew = isNewCaseStudy(study.publishedAt);
 
                 return (
                   <motion.div
@@ -379,6 +321,14 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                           src={study.heroImage}
                         />
                       </div>
+
+                      {isNew && (
+                        <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-emerald-500 text-white rounded-full shadow-md">
+                          <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] font-bold">
+                            New
+                          </p>
+                        </div>
+                      )}
 
                       {/* Glass overlay with content */}
                       <div className="relative z-10 bg-gradient-to-br from-white/80 to-white/70 backdrop-blur-sm p-8 max-md:p-6 h-full">

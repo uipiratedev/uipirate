@@ -2,6 +2,8 @@ import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
 import Loader from "@/components/loader";
+import { listPosts } from "@/lib/pirateCOS/public-client";
+import type { FeaturedCaseStudyData } from "@/screens/landing/featuredCaseStudy";
 
 // SSR-enabled dynamic import — Google can now crawl the full page content
 const Landing = dynamic(() => import("@/screens/landing"), {
@@ -40,11 +42,42 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export const revalidate = 60;
+
+function isDataUri(url?: string) {
+  return !!url && url.startsWith("data:");
+}
+
+async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
+  const posts = await listPosts({ postType: "case-study", limit: 20 });
+  const candidate = posts.find((p) => {
+    const heroImage = p.featuredImage || p.bannerImage;
+
+    return p.metrics && p.metrics.length > 0 && heroImage && !isDataUri(heroImage);
+  });
+
+  if (!candidate || !candidate.metrics?.[0]) return null;
+
+  const heroImage = candidate.featuredImage || candidate.bannerImage || "";
+
+  return {
+    slug: candidate.slug,
+    client: candidate.client || candidate.title,
+    title: candidate.title,
+    excerpt: candidate.excerpt,
+    heroImage,
+    metricLabel: candidate.metrics[0].label,
+    metricValue: candidate.metrics[0].value,
+  };
+}
+
+export default async function Home() {
+  const featuredCaseStudy = await getFeaturedCaseStudy();
+
   return (
     <>
       <SmoothScroll />
-      <Landing />
+      <Landing featuredCaseStudy={featuredCaseStudy} />
     </>
   );
 }

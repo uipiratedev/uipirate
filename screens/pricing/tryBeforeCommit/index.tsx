@@ -108,7 +108,11 @@ const TryBeforeCommit = () => {
 
           {/* CTA */}
           <div className="flex flex-col items-center gap-4">
-            <LetsTalkButton className="px-8" variant="color">
+            <LetsTalkButton
+              className="px-8"
+              href="https://cal.com/ui-pirate/15min"
+              variant="color"
+            >
               Start Your Pilot Project
             </LetsTalkButton>
             <p className="text-gray-500 text-sm flex items-center gap-2">
