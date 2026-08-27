@@ -150,13 +150,31 @@ export default function Example() {
           >
             {/* Ambient Background Canvas Gradient (Figma Node 14:304 exact) */}
             {theme !== "obsidian" && (
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background:
-                    "linear-gradient(178.39deg, rgb(230, 224, 212) 23.424%, rgb(128, 124, 118) 160.49%)",
-                }}
-              />
+              <>
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "linear-gradient(178.39deg, rgb(230, 224, 212) 23.424%, rgb(128, 124, 118) 160.49%)",
+                  }}
+                />
+                {/* Random Small Square Pixel Canvas Noise (Figma Node 14:304 exact) */}
+                <svg
+                  className="absolute inset-0 size-full pointer-events-none opacity-[0.08] mix-blend-multiply"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <defs>
+                    <pattern id="canvasSquareNoise" width="32" height="32" patternUnits="userSpaceOnUse">
+                      <rect x="4" y="5" width="2" height="2" fill="#4A3B2C" opacity="0.8" />
+                      <rect x="15" y="11" width="2" height="2" fill="#4A3B2C" opacity="0.6" />
+                      <rect x="26" y="4" width="2" height="2" fill="#4A3B2C" opacity="0.9" />
+                      <rect x="20" y="22" width="2" height="2" fill="#4A3B2C" opacity="0.7" />
+                      <rect x="8" y="26" width="2" height="2" fill="#4A3B2C" opacity="0.8" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#canvasSquareNoise)" />
+                </svg>
+              </>
             )}
 
             {/* The Live Interactive Button */}
