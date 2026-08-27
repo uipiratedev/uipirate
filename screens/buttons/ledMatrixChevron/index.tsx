@@ -14,7 +14,7 @@ export default function LedMatrixChevronScreen() {
   const [theme, setTheme] = useState<LedMatrixTheme>("monochrome");
   const [size, setSize] = useState<LedMatrixSize>("md");
   const [stateMode, setStateMode] = useState<LedMatrixStateMode>("interactive");
-  const [interactionMode, setInteractionMode] = useState<LedMatrixInteractionMode>("both");
+  const [interactionMode, setInteractionMode] = useState<LedMatrixInteractionMode>("hover");
   const [label, setLabel] = useState("See Plans");
   const [enableMovingLoop, setEnableMovingLoop] = useState(true);
   const [stepSpeedMs, setStepSpeedMs] = useState(110);
