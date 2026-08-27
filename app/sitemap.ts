@@ -38,6 +38,7 @@ const STATIC_PAGES: {
   { path: "/faqs", priority: 0.85, changeFrequency: "monthly" },
   { path: "/sitemap", priority: 0.5, changeFrequency: "monthly" },
   { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
+  { path: "/buttons", priority: 0.85, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
 
