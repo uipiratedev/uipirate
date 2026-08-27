@@ -12,6 +12,7 @@ import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { SlideGrowButton } from "@/components/SlideGrowButton";
 import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
+import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 
 interface ButtonCatalogItem {
   id: string;
@@ -25,6 +26,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "isometric-revive",
+    name: "Isometric 3D Revive Button",
+    badge: "Figma Master",
+    badgeColor: "#FFB020",
+    figmaNode: "Nodes 115:5957 & 115:6002",
+    description:
+      "Authentic 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and blinding optical neon underglow.",
+    href: "/buttons/isometric-revive-button",
+    features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "STANDERD & HOVER states"],
+  },
   {
     id: "elevated-underglow",
     name: "Elevated Underglow 3D Button",
@@ -241,6 +253,18 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "isometric-revive" && (
+                  <div className="scale-75 sm:scale-85 py-1">
+                    <IsometricReviveButton
+                      label="Revive Now"
+                      theme="figma"
+                      size="sm"
+                      stateMode="interactive"
+                      showGrid={false}
+                    />
+                  </div>
+                )}
+
                 {btn.id === "elevated-underglow" && (
                   <div className="scale-90 sm:scale-100 py-2">
                     <ElevatedUnderglowCTA
