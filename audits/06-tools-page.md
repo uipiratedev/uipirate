@@ -8,9 +8,43 @@
 - Sub-hub pages `/tools/ai`, `/tools/website`, `/tools/saas`, `/tools/design` (referenced, not deep-audited here)
 
 **Focus:** Copy, messaging, positioning, structural decisions, internal linking, and SEO
-**Research basis:** Same frameworks as prior audits — Apple HIG, NN/g, Google UX Writing, Copyhackers JTBD, E-E-A-T, CRO research, plus programmatic-SEO / free-tool lead-gen playbooks (Ahrefs, HubSpot, Zapier free-tool hsubs) and GEO (generative engine optimization) guidance
+**Research basis:** Apple HIG, Google Material UX Writing, Nielsen Norman Group, Copyhackers JTBD, E-E-A-T + thin-content / doorway-page guidance, CRO research, programmatic-SEO / free-tool lead-gen playbooks (Ahrefs, HubSpot, Zapier free-tool hubs), and GEO (generative engine optimization) guidance (full principle set in the Research Foundation section below)
 **Last audited:** 2026-08-27
 **Note:** This page is new — there is no v1. This is the first audit. It covers the **hub page only**, not the individual tools inside it (those get their own audit later).
+
+---
+
+## Research Foundation
+
+Every recommendation in this document is grounded in the same cross-source principle set used for the landing, pricing, and about page audits, plus sources specific to free-tool lead-gen hubs and generative-engine optimization. Nothing below is opinion — each finding traces back to one or more of these.
+
+### What the research consistently says
+
+**Apple Human Interface Guidelines** — Every word should earn its place and labels must be consistent. "Engine" used three ways on one page (preview engines, the tools, roadmaps), plus "diagnostics", "operational", "verticals", is decoration, not communication. Say "tools".
+
+**Google Material UX Writing** — Plain language over insider framing. A visitor searching "check my landing page" does not call it "conversion architecture" or organize their problem by the agency's "core verticals". Write for the visitor's vocabulary, not the org chart.
+
+**Nielsen Norman Group (NN/g)** — Scanners decide fast whether a page delivers. A tool hub is judged on: can I tell what's here, is it actually usable, and can I get value without friction. The most important content (working tools) must be near the top, not the fifth section down.
+
+**Copyhackers / Jobs-to-be-Done** — Visitors come to a free tool to make progress on a problem (leaky onboarding, invisible to AI search, failing contrast). Organize and label by the job, not by the agency's service pillars. The bridge-to-agency CTA should connect to the job the visitor just did, not assume an audit they couldn't run.
+
+**E-E-A-T + thin-content / doorway-page guidance** — Google's quality framework plus its guidance on thin and doorway pages: 17 near-empty "Coming Soon" pages, each indexable and in the sitemap at priority ~0.85, is a low-quality-cluster signal that can drag down the pages that are genuinely useful. Pages should have real value before they're submitted for indexing. Claims ("built by senior design engineers", "100% free", any usage number) must be accurate and, ideally, verifiable.
+
+**Programmatic-SEO / free-tool lead-gen playbooks (Ahrefs, HubSpot, Zapier free-tool hubs)** — A tool hub that converts: leads with working tools, shows traction/social proof, answers "is it really free / do I need an account / what happens to my data" in a short FAQ, and is interlinked with the money pages (service and pricing pages link to the relevant tool; each tool links back to the matching service).
+
+**GEO (Generative Engine Optimization)** — To be cited by ChatGPT, Perplexity, and Gemini, a page needs explicit, itemized, machine-readable structure: clean metadata, `ItemList` / `WebApplication` / `FAQPage` JSON-LD, and unambiguous named entities. A client-rendered hub with no `metadata` export and no structured data is close to invisible to the exact engines half of these tools are about.
+
+### How this audit applies the foundation
+
+| Principle | Where it drives a finding in this document |
+|---|---|
+| Apple HIG — consistent labels | "engines / diagnostics / operational / verticals" jargon (§6, §7, §5) |
+| Material — visitor's vocabulary | "conversion architecture", "Explore Tools by Agency Pillar" (§1c, §4) |
+| NN/g — most valuable content first | Live tools are the 5th section down (§5, §3) |
+| Copyhackers / JTBD | Organize by problem not "agency pillar"; bridge banner assumes an audit (§4, §8) |
+| E-E-A-T / thin content | 17 "Coming Soon" pages in the grid + sitemap (§2, §7, S3); "senior design engineers" positioning (§1c) |
+| Free-tool lead-gen playbooks | Missing social proof, FAQ, and cross-links (M1, M2, M4) |
+| GEO | No `metadata` export (S1), no JSON-LD (S2) |
 
 ---
 

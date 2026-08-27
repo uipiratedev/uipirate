@@ -7,6 +7,40 @@
 
 ---
 
+## Research Foundation
+
+Every recommendation in this document is grounded in the same cross-source principle set used for the landing page and pricing page audits, with specific additions for About page psychology. Nothing below is opinion — each finding traces back to one or more of these.
+
+### What the research consistently says
+
+**Apple Human Interface Guidelines** — Every word on an About page should earn its place. The page has a different job than the homepage: the homepage earns attention; the About page earns trust. Clarity, consistency, and specificity are the tools of trust. Vague claims about passion or culture read as filler. Specific claims about clients, outcomes, and process read as credentials. Modifiers that add no information ("we listen deeply") should be removed.
+
+**Google Material UX Writing** — An About page visitor is asking a concrete question: *"Is this the right agency for me?"* They are not looking for a mission statement. They are vetting. Every section should either qualify the team's credibility, describe the working relationship, or remove a risk objection. Sections that do none of these are wasted real estate.
+
+**Nielsen Norman Group (NN/g)** — About pages are the second most visited page on agency and service websites, right after the homepage. Visitors arrive after scanning the homepage or seeing portfolio work — they are already partially interested. The About page converts that interest into intent. NN/g research shows that the most effective About pages include: (1) a named founder/team with real photos, (2) a specific origin story, (3) a clear articulation of who the agency is *for*, and (4) proof in the form of named clients or verifiable outcomes.
+
+**Copyhackers / Jobs-to-be-Done** — A buyer reading an About page is not asking "what is this agency's story?" They are asking "will this agency understand my problem?" The most effective About page copy maps directly to the buyer's situation, not the agency's history. Describing your process from the *buyer's perspective* ("you share your idea, we handle the rest") converts more than describing it from the agency's perspective ("we do research, analysis, and strategy").
+
+**E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)** — Google's quality rater guidelines specifically call out About pages as a primary surface for establishing E-E-A-T signals. For a professional service site, this means: named individuals (not just "our team"), verifiable credentials or client names, a physical or operational presence signal, and accurate, consistent claims across the page. Every number, stat, and claim on this page should be consistent with what appears elsewhere on the site.
+
+**B2B Agency Buyer Behavior** — A key finding from B2B buyer research (Gartner, Forrester): the About page is frequently used by the *second decision-maker* in the chain — not the person who found the agency, but the senior stakeholder who is vetting the shortlist. This person is looking for legitimacy signals: how long have they existed, who have they worked with, are they a real team or a one-person freelance operation dressed as an agency? Every section should answer one of these questions.
+
+**Agency differentiation studies** — Effective positioning names the category you compete in and then names what makes you different within it. Opening with what you are *not* ("Not just a design agency") is a weak frame — it creates uncertainty instead of clarity.
+
+### How this audit applies the foundation
+
+| Principle | Where it drives a finding in this document |
+|---|---|
+| Apple HIG — modifiers / jargon | "pixel-perfect execution"; empty intensifiers |
+| Material — vetting questions | Sections that neither qualify credibility, describe the relationship, nor remove risk |
+| NN/g — founder story, named team, "who it's for", proof | Missing founder bio; team-size inconsistency; client grid with outcomes |
+| Copyhackers / JTBD | Process framed from the agency's side, not "you share your vision, we handle the rest" |
+| E-E-A-T | Unsourced "5.0 Client Rating"; schema lists 9 employees vs 7 shown vs 6 named; name spelled two ways; "Lead Graphics & Motion" title vs trimmed services |
+| B2B buyer behavior | Legitimacy signals for the second decision-maker — years, clients, real team |
+| Differentiation studies | Sub-headline opens with "Not just a design agency" (negation-first) |
+
+---
+
 ## What Changed Since v1
 
 The About page was significantly rebuilt. The previous version was primarily a single-column text page. The current version is a full multi-section page with:

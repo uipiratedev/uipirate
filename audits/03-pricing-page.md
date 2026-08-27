@@ -7,6 +7,43 @@
 
 ---
 
+## Research Foundation
+
+Every recommendation in this document is grounded in the same cross-source principle set used for the landing page audit, with additional sources specific to pricing psychology. Nothing below is opinion — each finding traces back to one or more of these.
+
+### What the research consistently says
+
+**Apple Human Interface Guidelines** — Clarity is the goal. A pricing page visitor has one job: understand what they get, for how much, and what happens next. Every word that doesn't serve that job is friction. Clarity beats cleverness on every pricing page without exception. Any label that requires interpretation ("5/7 Communication") should be rewritten.
+
+**Google Material UX Writing** — Concrete, plain language converts. Pricing copy that uses abstract claims ("endless possibilities," "high-value") instead of specific deliverables and guarantees fails the clarity test. The visitor needs to be able to make a decision — help them, don't excite them.
+
+**Nielsen Norman Group (NN/g)** — Pricing pages are research pages. Visitors arrive having already seen your service offering; they are now in evaluation mode. They are asking: Is this worth it? Can I trust this? What happens if it doesn't work? Every section should address one of these three questions. Sections that don't are wasted real estate.
+
+**Copyhackers / Jobs-to-be-Done** — Buyers don't pay for plans. They pay for outcomes. The strongest pricing page copy names the specific situation the buyer is in right now (overwhelmed, understaffed, under deadline) and shows how each plan resolves it. Feature lists alone don't convert — situation-to-outcome copy does.
+
+**Predictably Irrational (Dan Ariely) — Pricing Psychology** — The most powerful pricing page structure uses anchoring and decoy effects. Showing a high-cost option first makes the middle option feel reasonable. A comparison table that makes your price look low next to established alternatives activates the "that's a deal" cognitive response. Price without context is just a number. Price next to a more expensive competitor is a bargain.
+
+**Cialdini's Influence — Social Proof, Scarcity, and Reciprocity** — On pricing pages specifically: (1) social proof closest to the price reduces hesitation at the decision moment, (2) scarcity is the single most effective CTA accelerator but only when it is visibly real and changes, (3) a risk-reversal guarantee near the CTA is the most direct way to eliminate the last objection before a conversion.
+
+**B2B Agency Pricing Research** — The biggest conversion killers on agency pricing pages: (a) no direct booking path — forcing a contact form as the only next step adds friction and loses warm leads; (b) vague feature lists — "unlimited requests" without context sounds too good and triggers skepticism; (c) no indication of what a typical engagement looks like — buyers fear the unknown more than the price.
+
+**E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)** — Google's quality-rater framework: schema data (e.g. `reviewCount`, `AggregateRating`) and on-page ratings must be verifiable by a crawler reading the page. Numbers that can't be substantiated should be sourced or removed.
+
+### How this audit applies the foundation
+
+| Principle | Where it drives a finding in this document |
+|---|---|
+| Apple HIG — labels that require decoding | "5/7 Communication", cryptic plan descriptors |
+| Material — plain language | Abstract benefit claims over concrete deliverables |
+| NN/g — "is it worth it / can I trust it / what if it fails" | Every section judged against these three questions |
+| Copyhackers / JTBD | Plan intros describe who buys, not the pain driving the purchase |
+| Ariely — anchoring / decoy | Order of plans; presence/absence of a comparison anchor |
+| Cialdini — social proof, real scarcity, guarantee | Static "2 spots left" copy; guarantee placement; proof near price |
+| B2B agency pricing | WhatsApp/contact-form-only path instead of a calendar booking |
+| E-E-A-T | Unsourced "5.0★ rating"; JSON-LD `reviewCount: 50` not verifiable on page |
+
+---
+
 ## What Changed Since v1
 
 Between the first audit and this one, the pricing page was significantly rebuilt. Here is what changed:

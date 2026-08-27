@@ -9,9 +9,43 @@
 - `screens/serviceDetails/whatYouGetAnimations/index.tsx` (heading → animation coupling)
 
 **Focus:** Copy, messaging, positioning, structural decisions, internal linking, and SEO
-**Research basis:** Same frameworks as prior audits — Apple HIG, NN/g, Google UX Writing, Copyhackers JTBD, E-E-A-T, CRO / service-page conversion research, agency differentiation studies
+**Research basis:** Apple HIG, Google Material UX Writing, Nielsen Norman Group, Copyhackers JTBD, E-E-A-T guidelines, CRO / service-page conversion research, agency differentiation & specialist-positioning studies (full principle set in the Research Foundation section below)
 **Last audited:** 2026-08-27
 **Note:** These pages are new — there is no v1 to compare against. This is the first audit.
+
+---
+
+## Research Foundation
+
+Every recommendation in this document is grounded in the same cross-source principle set used for the landing, pricing, and about page audits, adapted for service / offering pages. Nothing below is opinion — each finding traces back to one or more of these.
+
+### What the research consistently says
+
+**Apple Human Interface Guidelines** — Every word should earn its place, and labels must be consistent. A service page that calls the same offering three different names ("UX/UI Design" / "UX/UI & Front End Development" / "SaaS Web & Mobile Apps") forces the reader to work out whether these are one thing or three. Avoid jargon that a non-designer buyer (VP Product, founder, CTO) can't parse.
+
+**Google Material UX Writing** — Clarity is a concrete goal. Descriptions should read as sentences a buyer can act on, not comma-lists of capitalized nouns ("Product strategy, Product thinking, Competitive analysis"). The reader should finish each card knowing exactly what they'd get and when they'd need it.
+
+**Nielsen Norman Group (NN/g)** — Service-page visitors arrive with a task in mind and scan for a match. They need, fast: what this service is, whether it fits their situation, what the process looks like, proof it has worked, and the next step. Progressive disclosure matters — broad offerings ("UX Audits & Consultation") need a one-line "is this you?" qualifier or the visitor can't tell if it applies.
+
+**Copyhackers / Jobs-to-be-Done** — Buyers hire a service to make progress on a problem, not to receive deliverables. "Why most SaaS products break" (problem-first) outperforms "what you get: wireframes, UI, code" (deliverable-first). The strongest service copy names the buyer's current pain and the outcome, then lists deliverables as support.
+
+**E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)** — Claims and proof must be verifiable. Generic portfolio galleries repeated on every service page are weak proof; a service-specific case study with a result metric and a matching testimonial is strong proof. JSON-LD `Service` data should carry a clean name and description, not a raw all-caps badge string.
+
+**CRO / service-page conversion research** — High-performing service pages carry a scope signal near the top (typical timeline, engagement model, price band), a single clear primary CTA repeated down the page, and a natural "what's next" cross-sell. Broken internal links and dead-end CTAs ("Service not found", 404s from "recommended next step") are among the fastest trust killers.
+
+**Agency differentiation / specialist positioning studies** — Buyers choose specialists. A service should name its category and its edge within it, and its audience list should be narrow enough to signal focus. "We'll build any website for SaaS teams, cafés, and personal portfolios" reads as generalist.
+
+### How this audit applies the foundation
+
+| Principle | Where it drives a finding in this document |
+|---|---|
+| Apple HIG — consistent naming | X1 (one service, three names + dead slugs), X5 (design vs front-end-dev boundary) |
+| Material — sentences not noun-lists | "Idea to MVP" description; "What All Will you get in return" |
+| NN/g — scan for fit, progressive disclosure | UX Audits `whoThisIsFor` (2 lowercase cards); missing "is this you?" qualifiers |
+| Copyhackers / JTBD | `WhyThisMatters` (problem-first) praised; deliverable-first headings flagged |
+| E-E-A-T | Generic `LandingWork` gallery on every page (X7); JSON-LD `name` = raw badge (X9) |
+| CRO — scope signal, one CTA, working links | X1/X2 broken links, X8 no timeline/price, identical hardcoded hero CTAs |
+| Specialist positioning | Landing Pages `whoThisIsFor` spans SaaS → café → portfolio |
 
 ---
 

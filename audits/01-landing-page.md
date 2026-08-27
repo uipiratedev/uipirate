@@ -7,6 +7,46 @@
 
 ---
 
+## Research Foundation
+
+Before flagging individual issues, here is the cross-source principle set that grounds every recommendation in this document. Nothing below is opinion — each finding traces back to one or more of these.
+
+### What the research consistently says
+
+**Apple Human Interface Guidelines** — Every piece of text should earn its place. Words that do not help the reader take the next step are noise. Use "you" and "your" to speak directly to the person; avoid "the user" or third-person distance. Consistency in labels and language reduces cognitive load. Avoid specialized jargon unless it is essential to the reader's task.
+
+**Google Material UX Writing** — Clarity is a concrete goal, not an aesthetic preference. Good writing means a reader can identify the exact action to take without re-reading. Tone is not a personality layer added on top — it emerges naturally from a clear understanding of what the reader needs at that specific moment.
+
+**Nielsen Norman Group (NN/g)** — 79% of users scan, they do not read. B2B buyers skim the first screen to determine if this page addresses their specific operational problem. If the connection is not immediate, they leave. Point-first writing (benefit in sentence one) consistently outperforms build-up writing (feature descriptions that arrive at the benefit at the end).
+
+**Copyhackers / Jobs-to-be-Done** — Clients do not hire agencies for services. They hire them to make progress on a specific problem. Describing deliverables (wireframes, dashboards, Angular components) is less persuasive than describing the situation the client is in and the progress they will make.
+
+**Enterprise B2B Buyer Behavior** — B2B deals involve 6–10 stakeholders. A junior employee typically vets agencies first and builds a shortlist before presenting to the decision-maker. Your copy must work for both the researcher and the executive. The researcher needs clarity and specificity; the executive needs confidence in the ROI and risk profile.
+
+**On "human-sounding" copy** — The difference between AI-generated agency copy and professional copy is not formality level. It is specificity, rhythm, and authentic proof. AI defaults to: "seamless," "innovative," "world-class," "end-to-end solutions." Professional copy names the specific pain, uses plain verbs, varies sentence length deliberately, and lets real data do the heavy lifting.
+
+**E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness)** — Google's quality-rater framework: every claim, number, and rating must be verifiable by a reader (or crawler) on the page. Unsourced superlatives and self-reported metrics undercut trust with both search engines and enterprise buyers.
+
+**CRO research** — A single primary CTA outperforms two or more of equal visual weight; competing CTAs cause decision paralysis and many visitors click neither. Scarcity accelerates conversion only when it is demonstrably real and visibly changes over time.
+
+**Reddit / community consensus** — Agency sites fail most often when they: (1) describe themselves instead of the client's problem, (2) hide pricing, (3) over-design at the cost of clarity, (4) show inconsistent identity signals ("studio" vs "agency"), and (5) position themselves as generalists when buyers are looking for specialists.
+
+### How this audit applies the foundation
+
+| Principle | Where it drives a finding in this document |
+|---|---|
+| Apple HIG — jargon / consistency | "design debt", "studio" vs "agency", mixed capitalization in the H1 |
+| Material — clarity of next action | "Let's Talk" CTA, vague service labels |
+| NN/g — scan-first, point-first, information scent | Hero 5-second test, "Is This Right For You?" placed before proof |
+| Copyhackers / JTBD — problem over deliverable | Sub-headline lists what the agency produces; "PerfectFor" describes buyers, not their pain |
+| B2B buyer behavior | Copy must serve both researcher and executive; proof density |
+| Human-sounding copy | "Convert, Scale & Ship Faster" triad; filler adjectives |
+| E-E-A-T | Unsourced "5.0 rating", "50+ products" claims, JSON-LD `reviewCount` |
+| CRO | Two competing hero CTAs; WhatsApp in hero; static scarcity copy |
+| Specialist positioning | "one-stop shop" / generalist framing |
+
+---
+
 ## What Changed Since v1
 
 This is the second audit of the landing page. Between the first audit and this one, significant structural changes were made based on the target audience audit (`02-target-audience-audit.md`). Here is what changed:
