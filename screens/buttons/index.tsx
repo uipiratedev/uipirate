@@ -9,6 +9,7 @@ import SmashTactileButton from "@/components/SmashTactileButton";
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
+import { SlideGrowButton } from "@/components/SlideGrowButton";
 
 interface ButtonCatalogItem {
   id: string;
@@ -22,6 +23,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "slide-grow",
+    name: "Swipe to Grow / Slide Button",
+    badge: "Figma Master",
+    badgeColor: "#468AFF",
+    figmaNode: "Nodes 17:1222 & 17:1240",
+    description:
+      "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
+    href: "/buttons/slide-grow-button",
+    features: ["Draggable knob physics", "Neon channel beam fill", "Masked text reveal", "STANDERD & SLID states"],
+  },
   {
     id: "vintage-leather",
     name: "Vintage Leather & Brass Button",
@@ -205,6 +217,16 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "slide-grow" && (
+                  <div className="scale-85 sm:scale-90">
+                    <SlideGrowButton
+                      theme="silver"
+                      size="md"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
                 {btn.id === "vintage-leather" && (
                   <div className="scale-90 sm:scale-95">
                     <VintageLeatherCTA
