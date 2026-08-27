@@ -21,6 +21,17 @@ interface ButtonCatalogItem {
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
   {
+    id: "arc-corner-toggle",
+    name: "Arc Corner Slider Toggle",
+    badge: "Figma Master",
+    badgeColor: "#ED45BE",
+    figmaNode: "Nodes 75:5084 & 75:5131",
+    description:
+      "Interactive corner arc slider toggle with STANDERD (light) and CLICK (dark) states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing magenta laser beam.",
+    href: "/buttons/arc-corner-toggle",
+    features: ["90° Corner arc track", "Sunburst dial loader", "STANDERD & CLICK states", "Laser beam flare"],
+  },
+  {
     id: "smash-button",
     name: "Tactile 'Smash' Button",
     badge: "Figma Master",
