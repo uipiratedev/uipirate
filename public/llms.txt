@@ -86,7 +86,7 @@ SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applic
   - Cloud Shift — Cloud Migration Platform: https://uipirate.com/case-studies/cloud-shift
   - StayRealtor — Property Management App: https://uipirate.com/case-studies/stayrealtor
   - OLSO — Peer-to-Peer Sharing Platform: https://uipirate.com/case-studies/olso
-- SaaS Web & Mobile App Design & Development: https://uipirate.com/services/SaaS-Web-&-Mobile-Apps
+- UX/UI Design (SaaS, AI & Mobile Apps): https://uipirate.com/services/UX-UI-Design
 - Landing Pages & Business Websites: https://uipirate.com/services/Landing-Pages-&-Business-Websites
 - Design Systems & Component Libraries: https://uipirate.com/services/Design-System-&-Component-Library
 - UX Audits & Consultation: https://uipirate.com/services/UX-Audits-&-Consultation

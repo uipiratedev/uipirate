@@ -25,13 +25,21 @@ const SERVICE_META: Record<
   string,
   { title: string; description: string; keywords: string }
 > = {
-  "saas-web-mobile-apps": {
+  "ux-ui-design": {
     title:
-      "SaaS & Mobile App Design & Development | Idea to Product | Angular, React",
+      "SaaS & Mobile App UX/UI Design | Idea to Product | Angular, React",
     description:
-      "Turn your SaaS or mobile app idea into a shipped product. We handle product thinking, competitive analysis, information architecture, UX/UI design & frontend development in Angular and React. From a few lines of vision to a fully built product.",
+      "Turn your SaaS or mobile app idea into a shipped product. We handle product thinking, competitive analysis, information architecture, and UX/UI design — from a few lines of vision to dev-ready, high-fidelity screens.",
     keywords:
-      "SaaS product design, idea to product, product thinking, Angular SaaS development, mobile app design and development, competitive analysis, information architecture, complex enterprise application, MVP to product, startup product agency USA",
+      "SaaS product design, idea to product, product thinking, UX/UI design, mobile app design, competitive analysis, information architecture, complex enterprise application, MVP to product, startup product agency USA",
+  },
+  "saas-ai-development": {
+    title:
+      "SaaS & AI Development | Full-Stack Engineering | Angular, React, Node.js",
+    description:
+      "Full-stack development for SaaS platforms and AI-powered products. Backend architecture, database design, AI/LLM integration, APIs, and production deployment in Angular, React, Next.js, and Node.js.",
+    keywords:
+      "SaaS development, AI development, full-stack engineering, AI integration, LLM integration, backend architecture, API development, Angular development, React development, Node.js development, startup engineering agency USA",
   },
   "landing-pages-business-websites": {
     title:

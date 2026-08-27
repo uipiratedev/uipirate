@@ -14,12 +14,19 @@ interface ServiceMeta {
 }
 
 const SERVICE_OG: Record<string, ServiceMeta> = {
-  "saas-web-mobile-apps": {
-    badge: "SaaS & AI Development",
+  "ux-ui-design": {
+    badge: "UX/UI Design",
     title: "From Vision to",
     titleHighlight: "Shipped SaaS Product",
     description:
-      "Product thinking, competitive analysis, IA, UX/UI design & React/Angular development. We take your idea and ship it.",
+      "Product thinking, competitive analysis, IA, and UX/UI design for SaaS & mobile apps. We take your idea and design it right.",
+  },
+  "saas-ai-development": {
+    badge: "SaaS & AI Development",
+    title: "Full-Stack Engineering",
+    titleHighlight: "for SaaS & AI Products",
+    description:
+      "Backend architecture, APIs, database design, and AI/LLM integration in Angular, React, Next.js & Node.js. We build what the interface runs on.",
   },
   "landing-pages-business-websites": {
     badge: "Landing Pages & Websites",

@@ -60,7 +60,8 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 
 ## 7. Service Page Fixes
 
-- [ ] Fix **SaaS & AI Development** sharing the same URL/slug as **UX/UI Design** — both still point to `/services/SaaS-Web-&-Mobile-Apps` in `config/site.ts`. Needs its own dedicated slug/page.
+- [x] Fix **SaaS & AI Development** sharing the same URL/slug as **UX/UI Design** — added a new dedicated entry (`data/sericesDetailsList.json` slug `SaaS-&-AI-Development`) with its own hero, process, and content focused on full-stack/AI engineering (distinct from the UX/UI Design entry's design-focused content). Updated all references: nav (`config/site.ts`), footer, HTML sitemap screen, XML sitemap (`app/sitemap.ts`), sitemap JSON-LD (`app/sitemap/page.tsx`), SEO meta (`app/services/[id]/page.tsx`), OG image map (`opengraph-image.tsx`), and breadcrumbs.
+- [x] Renamed the old `SaaS-Web-&-Mobile-Apps` slug to `UX-UI-Design` to match what that page actually is now that SaaS & AI Development is split out. Updated every reference (nav, footer, both sitemaps, breadcrumbs, SEO meta, OG image, `case-studies.json` `relatedServices`, `llms.txt`). No redirect from the old URL — per explicit instruction, it now 404s.
 - [ ] Add pricing/budget range per service page
 - [ ] Add service-specific testimonials (not generic quotes)
 - [ ] Add "Related case study" links from service pages

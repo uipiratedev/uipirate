@@ -22,7 +22,7 @@
       "quote": "UI Pirate helped us think through the product, not just the pixels — from IA to shipped Angular UI.",
       "author": "Xperiti Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"],
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"],
     "externalUrl": "https://www.xperiti.com/"
   },
   {
@@ -48,7 +48,7 @@
       "quote": "A transformative platform that brings AI capabilities to legal professionals.",
       "author": "Legal Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+    "relatedServices": ["UX-UI-Design", "UX-Audits-&-Consultation"]
   },
   {
     "slug": "ion",
@@ -73,7 +73,7 @@
       "quote": "The platform transformed our supply chain operations with seamless order management.",
       "author": "ION Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"]
   },
   {
     "slug": "arthalpha",
@@ -98,7 +98,7 @@
       "quote": "ArthAlpha delivers the tools and insights we need for successful trading.",
       "author": "Trading Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"],
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"],
     "externalUrl": "https://www.arthalpha.in/"
   },
   {
@@ -124,7 +124,7 @@
       "quote": "Our online presence now matches the quality of our craftsmanship.",
       "author": "Rings & I Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+    "relatedServices": ["UX-UI-Design", "UX-Audits-&-Consultation"]
   },
   {
     "slug": "frytx",
@@ -149,7 +149,7 @@
       "quote": "FrytX unified our business operations and improved our efficiency significantly.",
       "author": "FrytX Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"]
   },
   {
     "slug": "test-dynamiz",
@@ -174,7 +174,7 @@
       "quote": "Test Dynamiz streamlined our testing process and improved our release quality.",
       "author": "Test Dynamiz Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"]
   },
   {
     "slug": "simpleo",
@@ -199,7 +199,7 @@
       "quote": "SimpleO made our legal operations simpler and more efficient.",
       "author": "SimpleO Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+    "relatedServices": ["UX-UI-Design", "UX-Audits-&-Consultation"]
   },
   {
     "slug": "staype",
@@ -224,7 +224,7 @@
       "quote": "StayPe transformed how we manage our rental properties.",
       "author": "StayPe Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"]
   },
   {
     "slug": "infinity-aquasol",
@@ -249,7 +249,7 @@
       "quote": "Our website now reflects the innovation in our water treatment solutions.",
       "author": "Infinity AquaSol Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+    "relatedServices": ["UX-UI-Design", "UX-Audits-&-Consultation"]
   },
   {
     "slug": "cloud-shift",
@@ -274,7 +274,7 @@
       "quote": "Cloud Shift made our cloud migration seamless and stress-free.",
       "author": "Cloud Shift Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"]
   },
   {
     "slug": "stayrealtor",
@@ -299,7 +299,7 @@
       "quote": "StayRealtor streamlined our property management and improved tenant satisfaction.",
       "author": "StayRealtor Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "Design-System-&-Component-Library"]
+    "relatedServices": ["UX-UI-Design", "Design-System-&-Component-Library"]
   },
   {
     "slug": "olso",
@@ -324,6 +324,6 @@
       "quote": "OLSO brought our community together through sharing and sustainability.",
       "author": "OLSO Team"
     },
-    "relatedServices": ["SaaS-Web-&-Mobile-Apps", "UX-Audits-&-Consultation"]
+    "relatedServices": ["UX-UI-Design", "UX-Audits-&-Consultation"]
   }
 ]

@@ -1,6 +1,6 @@
 ﻿[
   {
-    "slug": "SaaS-Web-&-Mobile-Apps",
+    "slug": "UX-UI-Design",
     "data": {
       "hero": {
         "badge": "SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT",
@@ -246,14 +246,270 @@
     },
     "otherServices": [
       {
+        "title": "SaaS & AI Development",
+        "slug": "saas-ai-development"
+      },
+      {
         "title": "UX Audits & Consultation",
         "slug": "ux-audits-consultation"
       }
     ]
-  
+
     }
   }
 },
+  {
+    "slug": "SaaS-&-AI-Development",
+    "data": {
+      "hero": {
+        "badge": "SAAS & AI FULL-STACK ENGINEERING",
+        "heading": [
+          [
+            { "text": "Build the ", "highlight": false },
+            { "text": "engine", "highlight": true },
+            { "text": "behind your", "highlight": false }
+          ],
+          [
+            { "text": "SaaS or AI product.", "highlight": false }
+          ]
+        ],
+        "description": "Full-stack development for SaaS platforms and AI-powered products — architecture, APIs, database design, AI/LLM integration, and production deployment. We build what the interface runs on."
+      },
+      "whatYouGet": {
+        "badge": "WHAT YOU GET",
+        "heading": "Everything You Need to Ship a Working SaaS or AI Product",
+        "card": [
+          {
+            "heading": "Full-Stack Architecture",
+            "description": "Scalable backend & database architecture built to handle real growth",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622278/ui_f5z5ar.svg"
+          },
+          {
+            "heading": "AI & LLM Integration",
+            "description": "Model integration, prompt pipelines, and AI features wired into your product",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622270/front_dxjszm.svg"
+          },
+          {
+            "heading": "API & Third-Party Integrations",
+            "description": "REST/GraphQL APIs, payments, auth, and integrations with the tools you rely on",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622257/ux_wfeudq.svg"
+          },
+          {
+            "heading": "Cloud Deployment & Scaling",
+            "description": "Production deployment, CI/CD, monitoring, and infrastructure that scales with usage",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760622283/mobile_ior7xh.svg"
+          }
+        ]
+      },
+      "whyThisMatters": {
+        "heading": "Why Most SaaS & AI Builds Stall",
+        "heading2": "(And How We Fix It)",
+        "badge": "WHY THIS MATTERS",
+        "card": [
+          {
+            "heading": "Fragile Foundations",
+            "description": "Why does adding one feature break three others?",
+            "QuickWins": [
+              "Because the architecture wasn't built to extend. We design data models and services that absorb change instead of fighting it."
+            ]
+          },
+          {
+            "heading": "AI That Doesn't Ship",
+            "description": "Why do AI features stay stuck in a demo?",
+            "QuickWins": [
+              "Because integrating a model into a real product is a different problem than a prototype.",
+              "We handle the pipeline, cost, latency, and edge cases that production requires."
+            ]
+          },
+          {
+            "heading": "Integration Debt",
+            "description": "Why does every new integration take weeks?",
+            "QuickWins": [
+              "Because APIs were bolted on instead of planned for.",
+              "We design integration points up front so new tools plug in cleanly."
+            ]
+          },
+          {
+            "heading": "Scaling Surprises",
+            "description": "Why does the product slow down as users grow?",
+            "QuickWins": [
+              "Because performance wasn't tested until it broke.",
+              "We build and load-test for the scale you're growing into, not just the demo."
+            ]
+          },
+          {
+            "heading": "Handoff Gaps",
+            "description": "Why is it hard to hand this off to another developer?",
+            "QuickWins": [
+              "Because there's no documentation or clean structure.",
+              "We ship documented, readable code your team can actually maintain."
+            ]
+          }
+        ]
+      },
+      "whoThisIsFor": {
+        "heading": "Does it sound like you?",
+        "badge": "Who This Is For",
+        "card": [
+          {
+            "heading": "SaaS Founders",
+            "description": "Have a product vision and need real engineering to turn it into a working, scalable platform.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg"
+          },
+          {
+            "heading": "Teams Adding AI Features",
+            "description": "Want to integrate AI/LLM capabilities into an existing product without rebuilding from scratch.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg"
+          },
+          {
+            "heading": "Agencies Needing Backend Help",
+            "description": "Have the design covered and need a reliable engineering partner for the backend and infrastructure.",
+            "image": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/dev_c55mr1.svg"
+          }
+        ]
+      },
+      "streamlinedProcess": {
+        "heading": "Complete SaaS & AI Development Workflow",
+        "badge": "Streamlined Process",
+        "workflow": [
+          {
+            "badge": "Architecture Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/mynaui_rocket-solid_c0sqef.svg",
+                "heading": "Discovery & Technical Scoping",
+                "description": "We map your product requirements, data model, and integration needs before writing any code.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893381/healthicons_integrated-data-and-research-24px_zmac7n.svg",
+                "heading": "System & Database Architecture",
+                "description": "We design the backend architecture, database schema, and API contracts your product will run on.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_design_b1bsya.svg",
+                "heading": "AI/LLM Pipeline Design",
+                "description": "For AI features, we design the model integration, prompt pipeline, and fallback handling up front.",
+                "gradientId": 3
+              }
+            ]
+          },
+          {
+            "badge": "Engineering Workflow",
+            "card": [
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_list-plus-fill_ew0eup.svg",
+                "heading": "Environment & Infra Setup",
+                "description": "We configure repositories, cloud environments, and CI/CD pipelines for your tech stack.",
+                "gradientId": 1
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/ph_code-fill_zwpw2j.svg",
+                "heading": "Full-Stack Development",
+                "description": "Backend services, database, APIs, and AI integrations built and tested for production use.",
+                "gradientId": 2
+              },
+              {
+                "icon": "https://res.cloudinary.com/damm9iwho/image/upload/v1761893380/mdi_responsive_hljl28.svg",
+                "heading": "Testing, Launch & Handoff",
+                "description": "Load testing, deployment, documentation, and a clean handoff for long-term maintainability.",
+                "gradientId": 3
+              }
+            ]
+          }
+        ]
+      },
+      "youWillGet": {
+        "heading": "What You Will Get",
+        "badge": "What we provide",
+        "description": "We build the full-stack architecture, APIs, and AI integrations that power SaaS and AI products — from database design to production deployment.",
+        "leftBadges": [
+          {
+            "icon": "🧠",
+            "text": "AI/LLM Integration",
+            "color": "#8EF1F1E5",
+            "rotation": 8
+          },
+          {
+            "icon": "🧱",
+            "text": "Scalable Backend Architecture",
+            "color": "#BAFFBCE5",
+            "rotation": 6
+          },
+          {
+            "icon": "🔌",
+            "text": "REST/GraphQL APIs",
+            "color": "#FDE2D3E5",
+            "rotation": 0
+          },
+          {
+            "icon": "💬",
+            "text": "Collaboration via Teams & Slack",
+            "color": "#E8E8FFE5",
+            "rotation": -6
+          },
+          {
+            "icon": "☁️",
+            "text": "Cloud Deployment & CI/CD",
+            "color": "#A5FEDCE5",
+            "rotation": -8
+          }
+        ],
+        "rightBadges": [
+          {
+            "icon": "🗄️",
+            "text": "Database Design",
+            "color": "#ECE2FFE5",
+            "rotation": -10
+          },
+          {
+            "icon": "🔁",
+            "text": "Third-Party Integrations",
+            "color": "#D9ECC7E5",
+            "rotation": -6
+          },
+          {
+            "icon": "📊",
+            "text": "Analytics & Monitoring",
+            "color": "#FFDBDBE5",
+            "rotation": 0
+          },
+          {
+            "icon": "🔐",
+            "text": "Auth & Payments",
+            "color": "#FCD6F0E5",
+            "rotation": 6
+          },
+          {
+            "icon": "📄",
+            "text": "Documented, Handoff-Ready Code",
+            "color": "#FDE6ACE5",
+            "rotation": 10
+          }
+        ],
+        "mockup": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753847870/Ai_APp_mockup_y0mt4j.svg"
+      },
+      "recommendedNextSteps": {
+        "badge": "RECOMMENDED NEXT STEPS",
+        "heading": "What Most Clients Require Next",
+        "featuredService": {
+          "title": "UX/UI Design",
+          "tagline": "Design the interface your product deserves",
+          "description": "Great engineering needs a great interface to sit behind.",
+          "description2": "We design intuitive, premium user interfaces for SaaS and AI products — from wireframes to dev-ready UI.",
+          "buttonText": "Explore",
+          "slug": "ux-ui-design"
+        },
+        "otherServices": [
+          {
+            "title": "UX Audits & Consultation",
+            "slug": "ux-audits-consultation"
+          }
+        ]
+      }
+    }
+  },
   {
     "slug": "Landing-Pages-&-Business-Websites",
     "data": {

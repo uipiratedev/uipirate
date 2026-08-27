@@ -227,7 +227,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     className="footer-text"
-                    href="/services/SaaS-Web-&-Mobile-Apps"
+                    href="/services/UX-UI-Design"
                   >
                     UX/UI Design
                   </Link>
@@ -235,7 +235,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     className="footer-text"
-                    href="/services/SaaS-Web-&-Mobile-Apps"
+                    href="/services/SaaS-&-AI-Development"
                   >
                     SaaS & AI Development
                   </Link>

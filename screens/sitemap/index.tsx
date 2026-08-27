@@ -16,12 +16,12 @@ const Sitemap = () => {
     services: [
       {
         label: "UX/UI Design",
-        href: "/services/SaaS-Web-&-Mobile-Apps",
+        href: "/services/UX-UI-Design",
         desc: "SaaS, AI & mobile app design",
       },
       {
         label: "SaaS & AI Development",
-        href: "/services/SaaS-Web-&-Mobile-Apps",
+        href: "/services/SaaS-&-AI-Development",
         desc: "Angular, React & Next.js frontend",
       },
       {

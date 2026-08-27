@@ -24,7 +24,8 @@ const SEGMENT_LABELS: Record<string, string> = {
 
 // Service detail page slug labels
 const SERVICE_LABELS: Record<string, string> = {
-  "SaaS-Web-&-Mobile-Apps": "SaaS Web & Mobile Apps",
+  "UX-UI-Design": "UX/UI Design",
+  "SaaS-&-AI-Development": "SaaS & AI Development",
   "Landing-Pages-&-Business-Websites": "Landing Pages & Business Websites",
   "Design-System-&-Component-Library": "Design System & Component Library",
   "UX-Audits-&-Consultation": "UX Audits & Consultation",

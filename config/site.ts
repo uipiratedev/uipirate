@@ -12,7 +12,7 @@ export const siteConfig = {
         {
           category: "UX/UI Design",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
-          href: "/services/SaaS-Web-&-Mobile-Apps",
+          href: "/services/UX-UI-Design",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
@@ -20,7 +20,7 @@ export const siteConfig = {
         {
           category: "Saas & AI Development",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
-          href: "/services/SaaS-Web-&-Mobile-Apps",
+          href: "/services/SaaS-&-AI-Development",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",

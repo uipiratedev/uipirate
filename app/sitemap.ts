@@ -90,7 +90,8 @@ const STATIC_PAGES: {
 
 // Service detail pages (from sericesDetailsList.json slugs)
 const SERVICE_SLUGS = [
-  "SaaS-Web-&-Mobile-Apps",
+  "UX-UI-Design",
+  "SaaS-&-AI-Development",
   "Landing-Pages-&-Business-Websites",
   "Design-System-&-Component-Library",
   "UX-Audits-&-Consultation",
