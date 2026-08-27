@@ -1,7 +1,7 @@
 # Target Audience Audit — Action Checklist
 **Source:** `audits/02-target-audience-audit.md`
 **Purpose:** Track execution of the audit's recommendations — structure and presence only
-**Last updated:** 2026-08-27
+**Last updated:** 2026-08-28
 
 Legend: `[x]` done · `[~]` partially done / needs verification · `[ ]` not started
 
@@ -39,8 +39,7 @@ Legend: `[x]` done · `[~]` partially done / needs verification · `[ ]` not sta
 
 ## 4. Duplicate Legal Pages
 
-- [x] `/privacy-policy` → 301 redirects to `/privacy` (already implemented, `permanentRedirect`)
-- [x] `/terms-of-service` → 301 redirects to `/terms` (already implemented, `permanentRedirect`)
+- [x] `/privacy-policy` and `/terms-of-service` deleted entirely — per explicit instruction ("i dont need redirect"), not redirected. Fixed the one live link that still pointed to `/privacy-policy` (`components/CookieConsent.tsx` → now `/privacy`) and removed dead breadcrumb/README references.
 - [x] Sitemap (`app/sitemap.ts`) only lists the canonical `/privacy` and `/terms`
 
 ## 5. Navigation Simplification
@@ -81,7 +80,25 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 
 ## 10. Resources Hub `/resources`
 
-- [ ] Still a standalone page (`app/resources/page.tsx`) separate from the Resources dropdown — audit asked to either build it out properly or remove it in favor of the dropdown alone. Not yet decided/actioned.
+- [x] Removed the standalone `/resources` stub entirely (`app/resources/page.tsx`, which only did `redirect("/blogs")`). Nothing in the site links to it — the navbar's Resources dropdown (`config/site.ts`) already points straight at `/blogs`, `/case-studies`, `/faqs`, `/tools` — and it wasn't in `app/sitemap.ts`. Deleted outright with no redirect, consistent with this project's no-redirect policy for deprecated pages, rather than keeping the old permanent-redirect stub.
+
+## 12. Dead Code Cleanup (post-removal sweep)
+
+- [x] Verified with a full production build (`npm run build`) — route manifest directly confirms none of the removed routes exist and the 5 correct service pages generate. Repo-wide grep sweep for every removed term found only accepted exceptions (a real employee's "Graphic Designer" job title in `app/about/page.tsx` and `screens/landing/theTeam/index.tsx`).
+- [x] Removed 12 fully unused SVG components from `components/visuals/index.tsx` (`VisualAssets`, `VisualAnimations`, `VisualModeling`, `VisualIntegration`, `VisualUI`, `VisualLottie`, `VisualWeb`, `VisualDev`, `VisualBrand`, `VisualWebsiteProduct`, `VisualInfo`, `VisualMulti`) — leftover "What You Get" card visuals from the three deleted service categories, never referenced by the current `VISUAL_MAPPING` in `whatYouGetAnimations/index.tsx`. File shrank from 1981 to 968 lines.
+- [x] Fixed the stale `{/* Left: Motion Graphic feature card */}` comment in `screens/serviceDetails/recommendedNextSteps/index.tsx` → `{/* Left: Featured service card */}` (component is fully data-driven, not hardcoded).
+- [x] Confirmed clean with both `tsc --noEmit` and a full `next build` after the dead-code removal.
+
+## 13. Remove Hardcoded Case Studies (no hardcoded case studies/blogs/articles at all)
+
+- [x] Archived all 13 hardcoded case studies from `data/case-studies.json` to `data/case-studies-archive.md` (full content preserved as source material if any need re-authoring in the CMS) before deleting the JSON.
+- [x] Deleted `data/case-studies.json`.
+- [x] `screens/caseStudies/index.tsx` — removed the `staticCaseStudies` import/merge; the case studies listing is now sourced 100% from the CMS (`cmsCaseStudies` via `listPosts({ postType: "case-study" })`).
+- [x] `app/case-studies/[slug]/page.tsx` — rewritten to be CMS-only: removed the JSON import, `getStudy()`, the hardcoded metadata branch, and the entire hardcoded problem/approach/solution/results/metrics/testimonial render branch. `generateStaticParams` now calls `listPostSlugs({ postType: "case-study" })` against the live CMS instead of mapping static JSON slugs.
+- [x] `lib/pirateCOS/public-client.ts` — added an optional `postType` filter to `listPostSlugs()` so the case-studies route only statically generates actual case-study posts (backward-compatible; `/[slug]`'s existing unfiltered call is unaffected).
+- [x] `app/sitemap.ts` — removed the `case-studies.json` import and the static `caseStudyEntries` block; case study URLs in the sitemap now come exclusively from the existing CMS-driven `cmsCaseStudyEntries`.
+- [x] Verified with a full `next build`: `/case-studies/[slug]` now statically generates 11 real case studies pulled live from the CMS (previously these weren't pre-generated at all — the old code only statically built the 13 hardcoded JSON slugs and left CMS case studies to render on-demand).
+- **Confirmed:** blogs/articles were already 100% CMS-driven (`app/blogs`, `app/[slug]` via `lib/pirateCOS/public-client.ts`) — no hardcoded `data/blog*.json` or similar exists. Case studies were the only remaining hardcoded content source; nothing hardcoded remains for case studies, blogs, or articles anywhere in the codebase.
 
 ## 11. Other Missing Items (Not Started)
 
@@ -111,11 +128,12 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 | Graphic Design / Motion Graphics / 3D Animation removal | ✅ Done |
 | Community Insights removal | ✅ Done |
 | `/ourWorks` removal | ✅ Done (deleted, not redirected — per updated instruction) |
-| Legal page duplicates (privacy/terms) | ✅ Already resolved |
+| Legal page duplicates (privacy/terms) | ✅ Done (deleted, not redirected — per updated instruction) |
 | Contact page | ✅ Already exists |
-| Nav simplification (Tools, ProPirates, Apps4Sale, Works) | ❌ Not started |
-| SaaS & AI Development duplicate-URL bug | ❌ Not started |
+| Nav simplification (Tools, ProPirates, Apps4Sale, Works) | ✅ Done |
+| SaaS & AI Development duplicate-URL bug | ✅ Done (own slug + renamed old slug to `UX-UI-Design`) |
 | Case study depth/filtering | ⚠️ Partial (volume is there, structure/metadata not verified) |
-| Apps4Sale / Mini SaaS Apps / SaaS Apps scope decisions | ❌ Not started |
-| Resources hub consolidation | ❌ Not started |
+| Apps4Sale / Mini SaaS Apps / SaaS Apps scope decisions | ✅ Done (Apps4Sale kept footer-only; Mini SaaS Apps + AI Calling deleted as stubs/orphans) |
+| Resources hub consolidation | ✅ Done (deleted the unlinked `/resources` redirect stub; dropdown alone covers it) |
+| Dead code sweep (post-removal) | ✅ Done (12 unused SVG components + 1 stale comment removed, verified via full build) |
 | Missing content sections (homepage, about, pricing, blogs, /process, location pages) | ❌ Not started |

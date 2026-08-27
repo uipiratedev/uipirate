@@ -15,7 +15,6 @@ import GlassBadge from "@/components/GlassBadge";
 import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
 import LandingTestimonials from "@/screens/landing/testimonials";
-import staticCaseStudies from "@/data/case-studies.json";
 
 const categories = [
   "All",
@@ -87,7 +86,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const caseStudies: CaseStudyCard[] = useMemo(
-    () => [...staticCaseStudies, ...cmsCaseStudies.map(normalizeCmsCaseStudy)],
+    () => cmsCaseStudies.map(normalizeCmsCaseStudy),
     [cmsCaseStudies],
   );
 
@@ -164,7 +163,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
         {/* Client Logos Marquee */}
         <ClientLogosMarquee />
 
-        {/* Featured deep-dive case studies (from data/case-studies.json) */}
+        {/* Featured deep-dive case studies (from the CMS) */}
         <section className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-12 max-md:pt-6">
           <div className="autoShow">
             <div className="mb-6 flex flex-row items-center justify-center">

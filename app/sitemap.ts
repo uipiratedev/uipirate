@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 
-import caseStudies from "@/data/case-studies.json";
 import apps4saleProducts from "@/data/apps4sale.json";
 import { DETAILED_BOTS } from "@/data/bots";
 
@@ -148,15 +147,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  // 4. Case studies from data
-  const caseStudyEntries: MetadataRoute.Sitemap = caseStudies.map((study) => ({
-    url: `${BASE_URL}/case-studies/${study.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  }));
-
-  // 5. Apps4sale products
+  // 4. Apps4sale products
   const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
     (product) => ({
       url: `${BASE_URL}/apps4sale/${product.slug}`,
@@ -166,7 +157,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  // 6. Blog posts and CMS case studies from API
+  // 5. Blog posts and CMS case studies from API
   // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
   // route their sitemap entries there instead of listing them as blog posts.
   // (Previously skipped this fetch during `next build` via a NEXT_PHASE check,
@@ -212,7 +203,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries,
     ...botEntries,
     ...serviceEntries,
-    ...caseStudyEntries,
     ...cmsCaseStudyEntries,
     ...blogEntries,
     ...apps4saleEntries,

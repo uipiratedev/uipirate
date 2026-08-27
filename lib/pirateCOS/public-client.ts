@@ -173,8 +173,14 @@ export async function getPostBySlug(
 }
 
 /** Slugs for static generation. Best-effort; returns [] if unavailable. */
-export async function listPostSlugs(): Promise<string[]> {
-  const json = await apiGet("/content", { limit: 100, fields: "slug" });
+export async function listPostSlugs(opts?: {
+  postType?: string;
+}): Promise<string[]> {
+  const json = await apiGet("/content", {
+    limit: 100,
+    fields: "slug",
+    postType: opts?.postType,
+  });
 
   if (!json?.success || !Array.isArray(json.data)) return [];
 
