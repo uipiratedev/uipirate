@@ -72,6 +72,7 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 - [ ] Filter by industry/service type on `/case-studies` index — not implemented. CMS tags are freeform per-post text (e.g. "Travel Tech", "Conversational UI", "fintech ux") with no controlled vocabulary, so a real filter would need either a dedicated `category`/`industry` field added to the CMS schema, or tag normalization on the CMS side — not something fixable from this codebase alone.
 - [x] Each card shows client name (✓ `study.client`) and industry + result metric (✓ top chips) — confirmed via `screens/caseStudies/index.tsx`. "Service used" is not shown explicitly (only tech-stack pills); CMS has no `relatedServices`-style field for case studies.
 - [ ] Dedicated case study confirmed for each major named client — checked live CMS clients: **Sarge** ✓ (`designing-sarge-law-enforcement-software`), **Khaitan & Co** — likely `ai-knowledge-management-platform-redesign` (client listed as "Asia's largest law firms", possibly anonymized, not explicitly named), **Biotex** and **RevUp AI** — no matching case study found among the 11 live posts.
+- [x] Added a "New" chip on `/case-studies` cards for any case study with a CMS `publishedAt` within the last 30 days (`screens/caseStudies/index.tsx`, `isNewCaseStudy()`). Listing order itself is unchanged — still whatever order the CMS API returns (no client-side sort-by-latest, per explicit instruction).
 
 ## 9. Apps4Sale / Mini SaaS Apps / SaaS Apps
 
