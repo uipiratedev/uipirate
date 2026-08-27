@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import TactilePillButton, { TactileButtonVariant } from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
+import SmashTactileButton from "@/components/SmashTactileButton";
 import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
 import { AnimatedButton } from "@/components/AnimatedButton";
@@ -27,6 +28,20 @@ interface UIComponentItem {
 }
 
 const UI_COMPONENTS: UIComponentItem[] = [
+  {
+    id: "smash-tactile-button",
+    name: "Tactile 'Smash' Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Figma 17:1480",
+    badgeVariant: "gradient",
+    description:
+      "Neo-brutalist tech button with outer enclosure frame, cushion cooling tray, obsidian core slab, and glowing neon reactor underglow. Direct implementation of Figma Node 17:1480.",
+    detailUrl: "/buttons/smash-tactile-button",
+    figmaRef: "Node 17:1480",
+    features: ["Tech enclosure frame", "Cushion cooling tray", "Obsidian core slab", "Reactor underglow"],
+    codeSnippet: `<SmashTactileButton\n  label="Smash the button"\n  variant="figma"\n  size="md"\n  onClick={() => console.log("Smashed!")}\n/>`,
+  },
   {
     id: "scaling-capsule-button",
     name: "Scaling Capsule Tactile Button",
@@ -438,6 +453,16 @@ export default function UIComponentsScreen() {
 
               {/* Live Interactive Preview Stage */}
               <div className="bg-[#0B0B0D] rounded-2xl p-6 border border-white/5 flex items-center justify-center min-h-[160px] relative overflow-hidden">
+                {item.id === "smash-tactile-button" && (
+                  <div className="scale-85 sm:scale-90">
+                    <SmashTactileButton
+                      label="Smash the button"
+                      variant="figma"
+                      size="sm"
+                    />
+                  </div>
+                )}
+
                 {item.id === "scaling-capsule-button" && (
                   <div className="scale-95 sm:scale-100">
                     <ScalingCapsuleButton

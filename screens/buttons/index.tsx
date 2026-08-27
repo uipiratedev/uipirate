@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
+import SmashTactileButton from "@/components/SmashTactileButton";
 import { AnimatedButton } from "@/components/AnimatedButton";
 
 interface ButtonCatalogItem {
@@ -19,6 +20,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "smash-button",
+    name: "Tactile 'Smash' Button",
+    badge: "Figma Master",
+    badgeColor: "#C084FC",
+    figmaNode: "Node 17:1480",
+    description:
+      "Cyberpunk neo-brutalist tactile button with outer tech enclosure frame, porcelain cushion cooling tray, deep midnight obsidian slab, and glowing neon reactor underglow bloom.",
+    href: "/buttons/smash-tactile-button",
+    features: ["Tech enclosure frame", "Cushion cooling tray", "Obsidian core slab", "Reactor underglow"],
+  },
   {
     id: "tactile-pill",
     name: "Tactile 3D Pill Button",
@@ -158,6 +170,16 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "smash-button" && (
+                  <div className="scale-90 sm:scale-95">
+                    <SmashTactileButton
+                      label="Smash the button"
+                      variant="figma"
+                      size="sm"
+                    />
+                  </div>
+                )}
+
                 {btn.id === "tactile-pill" && (
                   <div className="scale-110">
                     <TactilePillButton

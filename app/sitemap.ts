@@ -43,6 +43,7 @@ const STATIC_PAGES: {
   { path: "/buttons", priority: 0.9, changeFrequency: "weekly" },
   { path: "/buttons/tactile-pill-button", priority: 0.85, changeFrequency: "weekly" },
   { path: "/buttons/scaling-capsule-button", priority: 0.85, changeFrequency: "weekly" },
+  { path: "/buttons/smash-tactile-button", priority: 0.85, changeFrequency: "weekly" },
   { path: "/buttons/animated-slide-button", priority: 0.8, changeFrequency: "weekly" },
   { path: "/buttons/magnetic-pulse-cta", priority: 0.8, changeFrequency: "weekly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
