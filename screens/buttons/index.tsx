@@ -7,6 +7,7 @@ import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
 import { AnimatedButton } from "@/components/AnimatedButton";
+import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 
 interface ButtonCatalogItem {
   id: string;
@@ -20,6 +21,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "neumorphic-glow",
+    name: "Neumorphic Glow CTA",
+    badge: "Figma Master",
+    badgeColor: "#10B981",
+    figmaNode: "Nodes 14:642 & 14:669",
+    description:
+      "Authentic claymorphic and neumorphic elevated CTA button pair with glowing neon green badge depth, multi-tier elevation drop shadows, and plus-lighter bloom.",
+    href: "/buttons/neumorphic-glow-cta",
+    features: ["Pill & Squircle variants", "Neon green glow badge", "Multi-tier clay shadows", "Plus-lighter bloom"],
+  },
   {
     id: "arc-corner-toggle",
     name: "Arc Corner Slider Toggle",
@@ -181,6 +193,15 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "neumorphic-glow" && (
+                  <div className="flex items-center gap-4 scale-90 sm:scale-95">
+                    <NeumorphicGlowCTA
+                      variant="pill"
+                      label="Learn more"
+                    />
+                  </div>
+                )}
+
                 {btn.id === "smash-button" && (
                   <div className="scale-90 sm:scale-95">
                     <SmashTactileButton
