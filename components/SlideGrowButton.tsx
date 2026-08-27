@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
-export type SlideGrowTheme = "silver" | "dark" | "cyberpunk" | "emerald" | "orange";
+export type SlideGrowTheme = "uipirate" | "pirate" | "silver" | "dark" | "cyberpunk" | "emerald" | "orange";
 export type SlideGrowStateMode = "interactive" | "standerd" | "slid";
 export type SlideGrowInteractionMode = "both" | "drag" | "click" | "hover";
 export type SlideGrowSize = "sm" | "md" | "lg";
@@ -123,6 +123,38 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
 
   // Themes configurations
   const themeStyles = {
+    uipirate: {
+      chassisBg: "linear-gradient(180deg, #7C2D12 0%, #431407 100%)",
+      chassisBorder: "rgba(255, 91, 4, 0.5)",
+      trackBg: "rgba(0, 0, 0, 0.45)",
+      startTextColor: "#FFF3EC",
+      activeTextColor: "#FF5B04",
+      activeTextGlow: "0px 0px 8px rgba(255, 91, 4, 0.9)",
+      beamBg: "#7C2D12",
+      beamShadow: "0px 0px 12px 0px #FF5B04, 0px 4px 44px 0px rgba(255,91,4,0.5), inset 0px 0px 10px 0px #FF5B04",
+      knobGradient: "radial-gradient(50% 50% at 50% 50%, #FF5B04 0%, #C2410C 100%)",
+      knobBorder: "#FFA114",
+      knobShadow:
+        "0px 91px 76px rgba(255,91,4,0.4), 0px 38px 32px rgba(255,91,4,0.3), 0px 20px 17px rgba(255,91,4,0.2)",
+      chassisDropShadow:
+        "0px 80px 40px rgba(45,15,5,0.7), 0px 35px 20px rgba(45,15,5,0.5), 0px 10px 10px rgba(0,0,0,0.3)",
+    },
+    pirate: {
+      chassisBg: "linear-gradient(180deg, #7C2D12 0%, #431407 100%)",
+      chassisBorder: "rgba(255, 91, 4, 0.5)",
+      trackBg: "rgba(0, 0, 0, 0.45)",
+      startTextColor: "#FFF3EC",
+      activeTextColor: "#FF5B04",
+      activeTextGlow: "0px 0px 8px rgba(255, 91, 4, 0.9)",
+      beamBg: "#7C2D12",
+      beamShadow: "0px 0px 12px 0px #FF5B04, 0px 4px 44px 0px rgba(255,91,4,0.5), inset 0px 0px 10px 0px #FF5B04",
+      knobGradient: "radial-gradient(50% 50% at 50% 50%, #FF5B04 0%, #C2410C 100%)",
+      knobBorder: "#FFA114",
+      knobShadow:
+        "0px 91px 76px rgba(255,91,4,0.4), 0px 38px 32px rgba(255,91,4,0.3), 0px 20px 17px rgba(255,91,4,0.2)",
+      chassisDropShadow:
+        "0px 80px 40px rgba(45,15,5,0.7), 0px 35px 20px rgba(45,15,5,0.5), 0px 10px 10px rgba(0,0,0,0.3)",
+    },
     silver: {
       chassisBg: "linear-gradient(180deg, rgba(200, 200, 200, 0.85) 0%, rgba(130, 130, 130, 0.85) 100%)",
       chassisBorder: "rgba(255, 255, 255, 0.45)",

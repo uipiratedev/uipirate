@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-export type LedMatrixTheme = "monochrome" | "emerald" | "cyan" | "amber" | "crimson";
+export type LedMatrixTheme = "uipirate" | "pirate" | "monochrome" | "emerald" | "cyan" | "amber" | "crimson";
 export type LedMatrixStateMode = "interactive" | "standerd" | "hover";
 export type LedMatrixInteractionMode = "hover" | "click" | "both";
 export type LedMatrixSize = "sm" | "md" | "lg";
@@ -131,6 +131,36 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
 
   // Theme palettes & lighting configurations (1:1 Exact Figma Nodes 19:6101 & 19:6495)
   const themeStyles = {
+    uipirate: {
+      ledColor: "#FF5B04",
+      ledDimColor: "rgba(255, 91, 4, 0.12)",
+      ledGlow: "#FF7A00",
+      screenBg: "linear-gradient(180deg, #3A1808 0%, #250E04 60%, #160702 100%)",
+      screenInnerBevel:
+        "inset 0px 1px 1px 0px rgba(255, 122, 0, 0.45), inset 0px -1px 1px 0px rgba(0, 0, 0, 0.8)",
+      slabBg: "linear-gradient(180deg, #2D1408 0%, #1A0B04 50%, #0D0502 100%)",
+      textColor: "#FFF3EC",
+      chassisBorder: "rgba(255, 91, 4, 0.85)",
+      enclosureBg: "#080200",
+      ambientGlow: "rgba(255, 91, 4, 0.3)",
+      dropShadow:
+        "0px 20px 40px rgba(45,15,5,0.6), 0px 8px 16px rgba(45,15,5,0.4), inset 0px 0px 2px 4px rgba(255,91,4,0.15)",
+    },
+    pirate: {
+      ledColor: "#FF5B04",
+      ledDimColor: "rgba(255, 91, 4, 0.12)",
+      ledGlow: "#FF7A00",
+      screenBg: "linear-gradient(180deg, #3A1808 0%, #250E04 60%, #160702 100%)",
+      screenInnerBevel:
+        "inset 0px 1px 1px 0px rgba(255, 122, 0, 0.45), inset 0px -1px 1px 0px rgba(0, 0, 0, 0.8)",
+      slabBg: "linear-gradient(180deg, #2D1408 0%, #1A0B04 50%, #0D0502 100%)",
+      textColor: "#FFF3EC",
+      chassisBorder: "rgba(255, 91, 4, 0.85)",
+      enclosureBg: "#080200",
+      ambientGlow: "rgba(255, 91, 4, 0.3)",
+      dropShadow:
+        "0px 20px 40px rgba(45,15,5,0.6), 0px 8px 16px rgba(45,15,5,0.4), inset 0px 0px 2px 4px rgba(255,91,4,0.15)",
+    },
     monochrome: {
       ledColor: "#FFFFFF",
       ledDimColor: "rgba(255, 255, 255, 0.08)", // Subtle dim dark square

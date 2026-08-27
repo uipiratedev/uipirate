@@ -23,6 +23,13 @@ export default function SlideGrowScreen() {
 
   const THEMES: { id: SlideGrowTheme; name: string; badge: string; color: string; desc: string }[] = [
     {
+      id: "uipirate",
+      name: "UI Pirate",
+      badge: "Brand Edition",
+      color: "#FF5B04",
+      desc: "Electric neon UI Pirate orange glow with deep obsidian ember chassis",
+    },
+    {
       id: "silver",
       name: "Brushed Silver (Figma)",
       badge: "Figma 1:1",

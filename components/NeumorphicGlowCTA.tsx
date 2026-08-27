@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type NeumorphicGlowShape = "pill" | "squircle";
-export type NeumorphicGlowTheme = "default" | "dark" | "orange" | "cyberpunk" | "minimal";
+export type NeumorphicGlowTheme = "uipirate" | "pirate" | "default" | "dark" | "orange" | "cyberpunk" | "minimal";
 export type NeumorphicGlowSize = "sm" | "md" | "lg";
 export type NeumorphicNeonPreset =
+  | "uipirate"
+  | "pirate"
   | "emerald"
   | "cyan"
   | "magenta"
@@ -21,6 +23,20 @@ export const NEON_PRESETS: Record<
   NeumorphicNeonPreset,
   { name: string; badgeBg: string; arrowColor: string; glowColor: string; innerShadow: string }
 > = {
+  uipirate: {
+    name: "UI Pirate",
+    badgeBg: "#FFEDD5",
+    arrowColor: "#FF5B04",
+    glowColor: "rgba(255, 91, 4, 0.6)",
+    innerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.4)",
+  },
+  pirate: {
+    name: "UI Pirate",
+    badgeBg: "#FFEDD5",
+    arrowColor: "#FF5B04",
+    glowColor: "rgba(255, 91, 4, 0.6)",
+    innerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.4)",
+  },
   emerald: {
     name: "Neon Emerald (Figma)",
     badgeBg: "#CBF0CD",
@@ -138,6 +154,34 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
 
   // Theme configuration definitions
   const themeConfig = {
+    uipirate: {
+      pillBg: "linear-gradient(172.34deg, rgb(55, 25, 10) 5.985%, rgb(35, 15, 5) 94.894%)",
+      squircleBg: "#2E1206",
+      textColor: "#FFF3EC",
+      textShadow: "0px 1px 2px rgba(0, 0, 0, 0.8)",
+      badgeBg: "#FFEDD5",
+      arrowColor: "#FF5B04",
+      glowColor: "rgba(255, 91, 4, 0.6)",
+      badgeInnerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.4)",
+      pillInsetShadow:
+        "inset 2px 2px 4px 0px rgba(255,161,20,0.15), inset 4px 4px 14px 0px rgba(255,91,4,0.3), inset -4px -4px 4px 0px rgba(0,0,0,0.4)",
+      pillDropShadow: "0 20px 40px rgba(45,15,5,0.7), 0 8px 16px rgba(45,15,5,0.4)",
+      squircleShadow: "0 20px 40px rgba(45,15,5,0.7), 0 0 60px rgba(255,91,4,0.25)",
+    },
+    pirate: {
+      pillBg: "linear-gradient(172.34deg, rgb(55, 25, 10) 5.985%, rgb(35, 15, 5) 94.894%)",
+      squircleBg: "#2E1206",
+      textColor: "#FFF3EC",
+      textShadow: "0px 1px 2px rgba(0, 0, 0, 0.8)",
+      badgeBg: "#FFEDD5",
+      arrowColor: "#FF5B04",
+      glowColor: "rgba(255, 91, 4, 0.6)",
+      badgeInnerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.4)",
+      pillInsetShadow:
+        "inset 2px 2px 4px 0px rgba(255,161,20,0.15), inset 4px 4px 14px 0px rgba(255,91,4,0.3), inset -4px -4px 4px 0px rgba(0,0,0,0.4)",
+      pillDropShadow: "0 20px 40px rgba(45,15,5,0.7), 0 8px 16px rgba(45,15,5,0.4)",
+      squircleShadow: "0 20px 40px rgba(45,15,5,0.7), 0 0 60px rgba(255,91,4,0.25)",
+    },
     default: {
       pillBg: "linear-gradient(172.34deg, rgb(225, 225, 225) 5.985%, rgb(215, 215, 215) 94.894%)",
       squircleBg: "#E1E1E1",

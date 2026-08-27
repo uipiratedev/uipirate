@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-export type VintageLeatherTheme = "heritage" | "obsidian" | "emerald" | "ruby" | "silver";
+export type VintageLeatherTheme = "uipirate" | "pirate" | "heritage" | "obsidian" | "emerald" | "ruby" | "silver";
 export type VintageLeatherSize = "sm" | "md" | "lg";
 
 export interface VintageLeatherCTAProps {
@@ -155,6 +155,30 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
 
   // Theme palettes and lighting
   const themeStyles = {
+    uipirate: {
+      trayBg: "rgba(255, 91, 4, 0.2)",
+      capGradient: "linear-gradient(180deg, #D95304 0%, #B83C00 100%)",
+      lipColor: "#7A2600",
+      textColor: "#FFE0B2",
+      textShadow: "0px -1.5px 0px rgba(0, 0, 0, 0.5)",
+      topHighlight: "rgba(255, 161, 20, 0.65)",
+      flourishColor: "rgba(100, 30, 0, 0.65)",
+      grainColor: "#8C3200",
+      dropShadow:
+        "0px 54px 50px 0px rgba(60,20,5,0.4), 0px 29.7px 31.9px 0px rgba(60,20,5,0.3), 0px 9.6px 8.7px 0px rgba(60,20,5,0.2)",
+    },
+    pirate: {
+      trayBg: "rgba(255, 91, 4, 0.2)",
+      capGradient: "linear-gradient(180deg, #D95304 0%, #B83C00 100%)",
+      lipColor: "#7A2600",
+      textColor: "#FFE0B2",
+      textShadow: "0px -1.5px 0px rgba(0, 0, 0, 0.5)",
+      topHighlight: "rgba(255, 161, 20, 0.65)",
+      flourishColor: "rgba(100, 30, 0, 0.65)",
+      grainColor: "#8C3200",
+      dropShadow:
+        "0px 54px 50px 0px rgba(60,20,5,0.4), 0px 29.7px 31.9px 0px rgba(60,20,5,0.3), 0px 9.6px 8.7px 0px rgba(60,20,5,0.2)",
+    },
     heritage: {
       trayBg: "rgba(113, 83, 49, 0.2)",
       capGradient: "linear-gradient(180deg, #B5996D 0%, #967952 100%)",

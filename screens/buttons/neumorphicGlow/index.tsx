@@ -23,6 +23,13 @@ export default function NeumorphicGlowScreen() {
 
   const THEMES: { id: NeumorphicGlowTheme; name: string; badge: string; color: string; desc: string }[] = [
     {
+      id: "uipirate",
+      name: "UI Pirate",
+      badge: "Brand Edition",
+      color: "#FF5B04",
+      desc: "Deep obsidian ember body with high-voltage UI Pirate neon orange glow",
+    },
+    {
       id: "default",
       name: "Clay Light (Figma)",
       badge: "Figma 1:1",

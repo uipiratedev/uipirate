@@ -23,6 +23,13 @@ export default function LedMatrixChevronScreen() {
 
   const THEMES: { id: LedMatrixTheme; name: string; badge: string; color: string; desc: string }[] = [
     {
+      id: "uipirate",
+      name: "UI Pirate",
+      badge: "Brand Edition",
+      color: "#FF5B04",
+      desc: "Electric neon UI Pirate orange phosphor LED dot matrix with dark obsidian embers",
+    },
+    {
       id: "monochrome",
       name: "Monochrome Matrix (Figma)",
       badge: "Figma 1:1",

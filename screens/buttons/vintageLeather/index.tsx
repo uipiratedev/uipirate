@@ -19,6 +19,13 @@ export default function VintageLeatherScreen() {
 
   const THEMES: { id: VintageLeatherTheme; name: string; badge: string; color: string; desc: string }[] = [
     {
+      id: "uipirate",
+      name: "UI Pirate",
+      badge: "Brand Edition",
+      color: "#FF5B04",
+      desc: "Weathered UI Pirate burnt orange saddle leather with deep ember burnishing",
+    },
+    {
       id: "heritage",
       name: "Brass & Saddle (Figma)",
       badge: "Figma 1:1",
