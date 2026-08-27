@@ -30,6 +30,15 @@ interface CaseStudyCard {
   heroImage: string;
   clientLogo?: string;
   externalUrl?: string;
+  publishedAt: string | null;
+}
+
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+function isNewCaseStudy(publishedAt: string | null) {
+  if (!publishedAt) return false;
+
+  return Date.now() - new Date(publishedAt).getTime() <= THIRTY_DAYS_MS;
 }
 
 // Some CMS posts have featuredImage/bannerImage stored as raw base64 data
@@ -63,6 +72,7 @@ function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
       ? DEFAULT_CASE_STUDY_IMAGE
       : rawHeroImage || DEFAULT_CASE_STUDY_IMAGE,
     externalUrl: post.externalUrl,
+    publishedAt: post.publishedAt,
   };
 }
 
@@ -279,6 +289,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
               filteredStudies.map((study, index) => {
                 const primaryMetric =
                   study.metrics?.[0]?.value || study.industry;
+                const isNew = isNewCaseStudy(study.publishedAt);
 
                 return (
                   <motion.div
@@ -310,6 +321,14 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                           src={study.heroImage}
                         />
                       </div>
+
+                      {isNew && (
+                        <div className="absolute top-4 left-4 z-20 px-3 py-1 bg-emerald-500 text-white rounded-full shadow-md">
+                          <p className="text-[10px] font-jetbrains-mono uppercase tracking-[0.12em] font-bold">
+                            New
+                          </p>
+                        </div>
+                      )}
 
                       {/* Glass overlay with content */}
                       <div className="relative z-10 bg-gradient-to-br from-white/80 to-white/70 backdrop-blur-sm p-8 max-md:p-6 h-full">
