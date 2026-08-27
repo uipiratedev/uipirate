@@ -280,6 +280,11 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link className="footer-text" href="/ui-components">
+                    UI Components
+                  </Link>
+                </li>
+                <li>
                   <Link className="footer-text" href="/buttons">
                     3D Tactile Buttons
                   </Link>

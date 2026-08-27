@@ -91,6 +91,14 @@ export const siteConfig = {
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
         },
         {
+          category: "UI Components",
+          icon: "🧩",
+          href: "/ui-components",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
+        },
+        {
           category: "3D Tactile Buttons",
           icon: "🔘",
           href: "/buttons",
@@ -119,6 +127,7 @@ export const siteConfig = {
         { label: "Case Studies", href: "/case-studies" },
         { label: "FAQs", href: "/faqs" },
         { label: "Free Tools", href: "/tools" },
+        { label: "UI Components", href: "/ui-components" },
         { label: "3D Buttons", href: "/buttons" },
       ],
     },
