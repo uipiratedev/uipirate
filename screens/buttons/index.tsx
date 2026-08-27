@@ -10,6 +10,7 @@ import { AnimatedButton } from "@/components/AnimatedButton";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { SlideGrowButton } from "@/components/SlideGrowButton";
+import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
 
 interface ButtonCatalogItem {
   id: string;
@@ -23,6 +24,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "led-matrix-chevron",
+    name: "LED Dot Matrix Chevron Button",
+    badge: "Figma Master",
+    badgeColor: "#10B981",
+    figmaNode: "Nodes 19:6101 & 19:6495",
+    description:
+      "Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.",
+    href: "/buttons/led-matrix-chevron",
+    features: ["Expandable LED screen", "7x7 Dot matrix chevrons", "Cascading marquee wave", "Carbon squircle chassis"],
+  },
   {
     id: "slide-grow",
     name: "Swipe to Grow / Slide Button",
@@ -217,6 +229,16 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "led-matrix-chevron" && (
+                  <div className="scale-85 sm:scale-95">
+                    <LedMatrixChevronButton
+                      theme="monochrome"
+                      size="md"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
                 {btn.id === "slide-grow" && (
                   <div className="scale-85 sm:scale-90">
                     <SlideGrowButton
