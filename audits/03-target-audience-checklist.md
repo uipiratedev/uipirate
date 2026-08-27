@@ -67,10 +67,11 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 
 ## 8. Case Studies Depth
 
-- [~] 13 case study entries exist in `data/case-studies.json` (exceeds the audit's "5+" target numerically), but per memory several are still drafts (frytx, infinity-aquasol, designing-testdynamiz, designing-brahmastra) with indexing intentionally held — verify each has full problem → process → solution → result content before treating this as done.
-- [ ] Filter by industry/service type on `/case-studies` index
-- [ ] Each card shows client name, industry, service used, result metric
-- [ ] Dedicated case study confirmed for each major named client (Sarge, Biotex, RevUp AI, Khaitan & Co)
+- [x] 11 real case studies now live in the CMS (exceeds the audit's "5+" target), fully replacing the old hardcoded JSON (see section 13). Verified directly against the live PirateCOS API: `frytx` and `infinity-aquasol` are correctly absent (not yet published — still on hold per user, [[draft-case-studies-hold-indexing]] memory), while `designing-testdynamiz` and `designing-brahmastra...` are confirmed finished and live (`noIndex: false`) — user confirmed 2026-08-27 these two are done, not drafts anymore.
+- [x] Found and fixed a real bug while checking this: the `/case-studies` category filter tabs (`screens/caseStudies/index.tsx`) referenced a `category` field the CMS doesn't have at all — every tab except "All" silently showed 0 results for all 11 case studies. Removed the non-functional filter UI (tabs, `activeCategory` state, `category` field) rather than fake it with keyword-guessed categories, which would just be a form of hardcoding. Search (by client/industry/technology) remains as the discovery mechanism.
+- [ ] Filter by industry/service type on `/case-studies` index — not implemented. CMS tags are freeform per-post text (e.g. "Travel Tech", "Conversational UI", "fintech ux") with no controlled vocabulary, so a real filter would need either a dedicated `category`/`industry` field added to the CMS schema, or tag normalization on the CMS side — not something fixable from this codebase alone.
+- [x] Each card shows client name (✓ `study.client`) and industry + result metric (✓ top chips) — confirmed via `screens/caseStudies/index.tsx`. "Service used" is not shown explicitly (only tech-stack pills); CMS has no `relatedServices`-style field for case studies.
+- [ ] Dedicated case study confirmed for each major named client — checked live CMS clients: **Sarge** ✓ (`designing-sarge-law-enforcement-software`), **Khaitan & Co** — likely `ai-knowledge-management-platform-redesign` (client listed as "Asia's largest law firms", possibly anonymized, not explicitly named), **Biotex** and **RevUp AI** — no matching case study found among the 11 live posts.
 
 ## 9. Apps4Sale / Mini SaaS Apps / SaaS Apps
 
@@ -132,7 +133,7 @@ Target navbar per audit: `Services ▾ | Works | Pricing | About | Resources ▾
 | Contact page | ✅ Already exists |
 | Nav simplification (Tools, ProPirates, Apps4Sale, Works) | ✅ Done |
 | SaaS & AI Development duplicate-URL bug | ✅ Done (own slug + renamed old slug to `UX-UI-Design`) |
-| Case study depth/filtering | ⚠️ Partial (volume is there, structure/metadata not verified) |
+| Case study depth/filtering | ⚠️ Partial — verified structure/metadata & fixed a broken filter bug; industry filter and 2 of 4 named-client case studies (Biotex, RevUp AI) still missing, needs CMS-side work |
 | Apps4Sale / Mini SaaS Apps / SaaS Apps scope decisions | ✅ Done (Apps4Sale kept footer-only; Mini SaaS Apps + AI Calling deleted as stubs/orphans) |
 | Resources hub consolidation | ✅ Done (deleted the unlinked `/resources` redirect stub; dropdown alone covers it) |
 | Dead code sweep (post-removal) | ✅ Done (12 unused SVG components + 1 stale comment removed, verified via full build) |

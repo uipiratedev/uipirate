@@ -16,16 +16,6 @@ import CaseStudiesHero from "@/screens/caseStudies/hero";
 import WhyChooseUs from "@/screens/landing/whyChoosUs";
 import LandingTestimonials from "@/screens/landing/testimonials";
 
-const categories = [
-  "All",
-  "Enterprise SaaS",
-  "AI SaaS",
-  "SaaS Product",
-  "Mobile App",
-  "E-commerce Website",
-  "Landing Page",
-];
-
 const DEFAULT_CASE_STUDY_IMAGE = "/assets/blog-banner-default.svg";
 
 interface CaseStudyCard {
@@ -33,7 +23,6 @@ interface CaseStudyCard {
   title: string;
   excerpt: string;
   client: string;
-  category?: string;
   industry?: string;
   region?: string;
   technologies?: string[];
@@ -55,8 +44,8 @@ function isDataUri(url?: string) {
 
 // CMS-authored case studies (postType "case-study") carry their own client,
 // clientLogo, region, technologies, metrics and externalUrl fields from the
-// API. There's no "industry" or "category" field on the CMS side, so those
-// still fall back to the post's tags/title.
+// API. There's no "industry" field on the CMS side, so it falls back to the
+// post's first tag/title.
 function normalizeCmsCaseStudy(post: ReaderPost): CaseStudyCard {
   const rawHeroImage = post.featuredImage || post.bannerImage;
 
@@ -82,7 +71,6 @@ interface CaseStudiesProps {
 }
 
 const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
-  const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const caseStudies: CaseStudyCard[] = useMemo(
@@ -90,31 +78,26 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
     [cmsCaseStudies],
   );
 
-  const filteredStudies = caseStudies
-    .filter(
-      (study) => activeCategory === "All" || study.category === activeCategory,
-    )
-    .filter((study) => {
-      if (searchQuery === "") return true;
+  const filteredStudies = caseStudies.filter((study) => {
+    if (searchQuery === "") return true;
 
-      const query = searchQuery.toLowerCase().trim();
+    const query = searchQuery.toLowerCase().trim();
 
-      // Search in multiple fields
-      const searchableText = [
-        study.client,
-        study.title,
-        study.excerpt,
-        study.category,
-        study.industry,
-        study.region,
-        ...(study.technologies || []),
-        ...(study.metrics?.map((m) => m.value) || []),
-      ]
-        .join(" ")
-        .toLowerCase();
+    // Search in multiple fields
+    const searchableText = [
+      study.client,
+      study.title,
+      study.excerpt,
+      study.industry,
+      study.region,
+      ...(study.technologies || []),
+      ...(study.metrics?.map((m) => m.value) || []),
+    ]
+      .join(" ")
+      .toLowerCase();
 
-      return searchableText.includes(query);
-    });
+    return searchableText.includes(query);
+  });
 
   // JSON-LD Schema for Portfolio/Case Studies
   const portfolioSchema = {
@@ -141,7 +124,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
         name: "UI Pirate",
       },
       keywords: study.technologies?.join(", "),
-      about: study.category,
+      about: study.industry,
       ...(study.externalUrl && { url: study.externalUrl }),
     })),
   };
@@ -183,7 +166,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
             <div className="relative">
               <input
                 className="w-full px-5 py-3.5 pl-12 rounded-full border-2 border-gray-200 focus:border-[#FF5B04] focus:outline-none transition-colors duration-300 text-sm bg-white shadow-sm"
-                placeholder="Search by client, industry, technology, category..."
+                placeholder="Search by client, industry, or technology..."
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -224,42 +207,8 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
             </div>
           </div>
 
-          {/* Category Filter Tabs */}
-          <div className="autoShow flex flex-wrap items-center justify-center gap-3 mb-6 max-md:mb-4">
-            {categories.map((category) => {
-              const count =
-                category === "All"
-                  ? caseStudies.length
-                  : caseStudies.filter((study) => study.category === category)
-                      .length;
-
-              return (
-                <button
-                  key={category}
-                  className={`px-4 py-2 rounded-full text-sm font-jetbrains-mono font-medium transition-all duration-300 flex items-center gap-2 ${
-                    activeCategory === category
-                      ? "bg-[#FF5B04] text-white shadow-md"
-                      : "bg-white/90 text-gray-700 border border-gray-200/70 hover:border-[#FF5B04]/50 hover:text-[#FF5B04]"
-                  }`}
-                  onClick={() => setActiveCategory(category)}
-                >
-                  {category}
-                  <span
-                    className={`text-xs px-1.5 py-0.5 rounded-full ${
-                      activeCategory === category
-                        ? "bg-white/20 text-white"
-                        : "bg-gray-100 text-gray-600"
-                    }`}
-                  >
-                    {count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
           {/* Results Count */}
-          {(searchQuery || activeCategory !== "All") && (
+          {searchQuery && (
             <div className="flex items-center justify-between mb-6 max-md:mb-4 text-sm">
               <p className="text-gray-600 font-medium">
                 Showing{" "}
@@ -278,17 +227,12 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                   </span>
                 )}
               </p>
-              {searchQuery && (
-                <button
-                  className="text-[#FF5B04] hover:text-[#e04e00] font-medium text-sm transition-colors underline"
-                  onClick={() => {
-                    setSearchQuery("");
-                    setActiveCategory("All");
-                  }}
-                >
-                  Clear all filters
-                </button>
-              )}
+              <button
+                className="text-[#FF5B04] hover:text-[#e04e00] font-medium text-sm transition-colors underline"
+                onClick={() => setSearchQuery("")}
+              >
+                Clear search
+              </button>
             </div>
           )}
 
@@ -312,35 +256,23 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
                   <p className="text-gray-500 text-lg max-md:text-base mb-2 font-semibold">
                     {searchQuery
                       ? "No matching projects found"
-                      : "No projects in this category yet"}
+                      : "No case studies published yet"}
                   </p>
                   <p className="text-gray-500 text-sm mb-6">
                     {searchQuery
-                      ? `Try adjusting your search term or filters`
-                      : `Check out other categories or view all projects`}
+                      ? "Try adjusting your search term"
+                      : "Check back soon"}
                   </p>
-                  <div className="flex gap-3 justify-center">
-                    {searchQuery && (
+                  {searchQuery && (
+                    <div className="flex gap-3 justify-center">
                       <button
                         className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 rounded-full hover:border-[#FF5B04] hover:text-[#FF5B04] transition-all duration-300 font-semibold text-sm"
                         onClick={() => setSearchQuery("")}
                       >
                         Clear search
                       </button>
-                    )}
-                    {/* #CC4903 (darkened brand orange) instead of #FF5B04:
-                        white text on the lighter shade fails WCAG AA at this
-                        size/weight (~3.1:1); the darker shade clears 4.5:1. */}
-                    <button
-                      className="px-6 py-3 bg-[#CC4903] text-white rounded-full hover:bg-[#CC4903]/90 transition-colors duration-300 font-semibold text-sm shadow-md hover:shadow-lg"
-                      onClick={() => {
-                        setActiveCategory("All");
-                        setSearchQuery("");
-                      }}
-                    >
-                      View all projects
-                    </button>
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
