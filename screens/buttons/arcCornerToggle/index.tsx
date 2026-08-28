@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function ArcCornerToggleScreen() {
   const [active, setActive] = useState(false);
@@ -137,25 +139,26 @@ export default function Example() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF4081] animate-pulse" />
-            <span>Radial Centerline Offset Path</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#FF5B04]">React + Framer Motion</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#FF4081] animate-pulse" />
+              <span>Radial Centerline Offset Path</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#FF5B04]">React + Framer Motion</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Arc Corner Slider <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-amber-300">Curved Toggle</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Arc Corner Slider <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-amber-300">Curved Toggle</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Curved quadrant arc corner toggle button engineered with true 185.6px radial arc offset-path tracking, day/night gradient themes, and physical spring damping.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Curved quadrant arc corner toggle button engineered with true 185.6px radial arc offset-path tracking, day/night gradient themes, and physical spring damping.
+            </p>
+          </header>
 
         {/* Main Interactive Stage */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -337,7 +340,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="arc corner toggles or micro-interaction controls" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

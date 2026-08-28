@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AnimatedButton } from "@/components/AnimatedButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function AnimatedSlideButtonScreen() {
   const [primaryText, setPrimaryText] = useState("Explore Services");
@@ -106,25 +108,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>Interactive Micro-Interaction</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">Slide-Up Text Roll</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
+              <span>Interactive Micro-Interaction</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#00E5BE]">Slide-Up Text Roll</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Animated <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Slide-Up Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Animated <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Slide-Up Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            High-converting dual-text roll CTA button. Hovering replaces the primary label with a secondary action message through smooth vertical translation with overflow clipping.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              High-converting dual-text roll CTA button. Hovering replaces the primary label with a secondary action message through smooth vertical translation with overflow clipping.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -319,7 +322,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="animated roll buttons or high-converting micro-interactions" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

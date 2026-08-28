@@ -19,6 +19,8 @@ import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export type ComponentCategory = "all" | "buttons" | "badges" | "surfaces" | "controls";
 
@@ -360,305 +362,310 @@ export default function UIComponentsScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Ambient Lighting Gradients */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-[#FF5B04]/12 rounded-full blur-[160px]" />
-        <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/10 rounded-full blur-[140px]" />
-        <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-600/10 rounded-full blur-[160px]" />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10 space-y-20">
-        {/* Top Hero Section */}
-        <div className="text-center space-y-6 max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>UI Pirate Component Ecosystem</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">Production-Ready React &amp; Tailwind</span>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
-            Design System &amp;{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] via-orange-400 to-[#00E5BE]">
-              Component Library
-            </span>
-          </h1>
-
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Browse our categorized collection of handcrafted React, Tailwind CSS, and Framer Motion components. Engineered with 3D tactile physics, glassmorphism, and pixel precision.
-          </p>
-
-          {/* Quick Metrics Bar */}
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 pt-4">
-            <div className="flex items-center gap-2.5">
-              <span className="text-2xl sm:text-3xl font-extrabold text-white font-jakarta">13+</span>
-              <span className="text-xs text-gray-400 font-mono text-left leading-tight">
-                Buttons &amp;<br />CTAs
-              </span>
-            </div>
-            <div className="h-8 w-px bg-white/10" />
-            <div className="flex items-center gap-2.5">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#00E5BE] font-jakarta">100%</span>
-              <span className="text-xs text-gray-400 font-mono text-left leading-tight">
-                Copy-Paste<br />Source Code
-              </span>
-            </div>
-            <div className="h-8 w-px bg-white/10" />
-            <div className="flex items-center gap-2.5">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#FF5B04] font-jakarta">0</span>
-              <span className="text-xs text-gray-400 font-mono text-left leading-tight">
-                Design<br />Compromises
-              </span>
-            </div>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        {/* Ambient Lighting Gradients */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-[#FF5B04]/12 rounded-full blur-[160px]" />
+          <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/10 rounded-full blur-[140px]" />
+          <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-600/10 rounded-full blur-[160px]" />
         </div>
 
-        {/* ─────────────────────────────────────────────────────────────
-            CATEGORY OVERVIEW GRID (Primary Hub Navigation)
-           ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-jakarta">
-                Explore Component Categories
-              </h2>
-              <p className="text-sm text-gray-400 mt-1">
-                Select a category to view specialized live studios, props tables, and drop-in code.
-              </p>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-20">
+          {/* Top Hero Section */}
+          <div className="text-center space-y-6 max-w-4xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
+              <span>UI Pirate Component Ecosystem</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#00E5BE]">Production-Ready React &amp; Tailwind</span>
             </div>
-            <Link
-              href="/buttons"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-xs font-semibold text-orange-400 transition-colors self-start sm:self-auto"
-            >
-              <span>View All 13 Buttons</span>
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
+              Design System &amp;{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] via-orange-400 to-[#00E5BE]">
+                Component Library
+              </span>
+            </h1>
+
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+              Browse our categorized collection of handcrafted React, Tailwind CSS, and Framer Motion components. Engineered with 3D tactile physics, glassmorphism, and pixel precision.
+            </p>
+
+            {/* Quick Metrics Bar */}
+            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 pt-4">
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl sm:text-3xl font-extrabold text-white font-jakarta">13+</span>
+                <span className="text-xs text-gray-400 font-mono text-left leading-tight">
+                  Buttons &amp;<br />CTAs
+                </span>
+              </div>
+              <div className="h-8 w-px bg-white/10" />
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl sm:text-3xl font-extrabold text-[#00E5BE] font-jakarta">100%</span>
+                <span className="text-xs text-gray-400 font-mono text-left leading-tight">
+                  Copy-Paste<br />Source Code
+                </span>
+              </div>
+              <div className="h-8 w-px bg-white/10" />
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl sm:text-3xl font-extrabold text-[#FF5B04] font-jakarta">0</span>
+                <span className="text-xs text-gray-400 font-mono text-left leading-tight">
+                  Design<br />Compromises
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {CATEGORY_CARDS.map((cat) => (
-              <div
-                key={cat.id}
-                className="group relative flex flex-col justify-between p-8 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden"
+          {/* ─────────────────────────────────────────────────────────────
+              CATEGORY OVERVIEW GRID (Primary Hub Navigation)
+             ───────────────────────────────────────────────────────────── */}
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-jakarta">
+                  Explore Component Categories
+                </h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Select a category to view specialized live studios, props tables, and drop-in code.
+                </p>
+              </div>
+              <Link
+                href="/buttons"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-xs font-semibold text-orange-400 transition-colors self-start sm:self-auto"
               >
-                {/* Background ambient accent */}
-                <div
-                  className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[90px] opacity-20 pointer-events-none transition-opacity duration-300 group-hover:opacity-40"
-                  style={{ backgroundColor: cat.badgeColor }}
-                />
+                <span>View All 13 Buttons</span>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </Link>
+            </div>
 
-                <div className="space-y-6 relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider"
-                        style={{
-                          color: cat.badgeColor,
-                          backgroundColor: `${cat.badgeColor}15`,
-                          borderColor: `${cat.badgeColor}35`,
-                        }}
-                      >
-                        {cat.badge}
-                      </span>
-                      <span className="text-xs font-mono text-gray-400">• {cat.count}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {CATEGORY_CARDS.map((cat) => (
+                <div
+                  key={cat.id}
+                  className="group relative flex flex-col justify-between p-8 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden"
+                >
+                  {/* Background ambient accent */}
+                  <div
+                    className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[90px] opacity-20 pointer-events-none transition-opacity duration-300 group-hover:opacity-40"
+                    style={{ backgroundColor: cat.badgeColor }}
+                  />
+
+                  <div className="space-y-6 relative z-10">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider"
+                          style={{
+                            color: cat.badgeColor,
+                            backgroundColor: `${cat.badgeColor}15`,
+                            borderColor: `${cat.badgeColor}35`,
+                          }}
+                        >
+                          {cat.badge}
+                        </span>
+                        <span className="text-xs font-mono text-gray-400">• {cat.count}</span>
+                      </div>
+
+                      <span className="text-xs font-mono text-gray-500">Production Ready</span>
                     </div>
 
-                    <span className="text-xs font-mono text-gray-500">Production Ready</span>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white group-hover:text-white transition-colors font-jakarta">
+                        {cat.title}
+                      </h3>
+                      <p className="text-sm text-gray-400 mt-2 leading-relaxed">
+                        {cat.description}
+                      </p>
+                    </div>
+
+                    {/* Live Visual Feature Showcase */}
+                    <div className="p-6 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center min-h-[130px] overflow-hidden">
+                      {cat.featuredPreview}
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {cat.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/5"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <div>
-                    <h3 className="text-2xl font-bold text-white group-hover:text-white transition-colors font-jakarta">
-                      {cat.title}
-                    </h3>
-                    <p className="text-sm text-gray-400 mt-2 leading-relaxed">
-                      {cat.description}
-                    </p>
-                  </div>
+                  <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between relative z-10">
+                    <Link
+                      href={cat.href}
+                      className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:text-[#FF5B04] transition-colors"
+                    >
+                      <span>Explore {cat.title}</span>
+                      <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </Link>
 
-                  {/* Live Visual Feature Showcase */}
-                  <div className="p-6 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center min-h-[130px] overflow-hidden">
-                    {cat.featuredPreview}
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {cat.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/5"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    <span className="text-xs font-mono text-gray-500">React + Tailwind</span>
                   </div>
                 </div>
-
-                <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between relative z-10">
-                  <Link
-                    href={cat.href}
-                    className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:text-[#FF5B04] transition-colors"
-                  >
-                    <span>Explore {cat.title}</span>
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </Link>
-
-                  <span className="text-xs font-mono text-gray-500">React + Tailwind</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            QUICK INSTALLATION & SETUP GUIDE
-           ───────────────────────────────────────────────────────────── */}
-        <div className="bg-[#121216] border border-white/10 rounded-3xl p-8 space-y-6 shadow-2xl">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-bold text-white font-jakarta">Peer Dependencies &amp; Setup</h2>
-              <p className="text-xs sm:text-sm text-gray-400 mt-1">
-                Install peer dependencies to run any component in your Next.js or React application:
-              </p>
-            </div>
-
-            <button
-              onClick={handleCopyInstall}
-              className="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors cursor-pointer self-start md:self-auto"
-            >
-              {copiedInstall ? "✓ Command Copied!" : "Copy Install Command"}
-            </button>
-          </div>
-
-          <div className="bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400 overflow-x-auto">
-            <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            LIVE COMPONENT BROWSER & CODE VIEWER
-           ───────────────────────────────────────────────────────────── */}
-        <div id="browser" className="space-y-8 scroll-mt-28">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white font-jakarta">
-                Component Catalog
-              </h2>
-              <p className="text-sm text-gray-400 mt-1">
-                Explore every individual component, inspect props, and copy drop-in snippets.
-              </p>
-            </div>
-
-            {/* Category Filter Tabs */}
-            <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-mono">
-              {[
-                { id: "all", label: "All Items" },
-                { id: "buttons", label: "Buttons & CTAs" },
-                { id: "controls", label: "Controls" },
-                { id: "badges", label: "Badges" },
-                { id: "surfaces", label: "Surfaces" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setSelectedCategory(tab.id as ComponentCategory)}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
-                    selectedCategory === tab.id
-                      ? "bg-[#FF5B04] text-white font-bold shadow-md shadow-[#FF5B04]/30"
-                      : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  {tab.label}
-                </button>
               ))}
             </div>
           </div>
 
-          {/* Search Bar */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search components by name, feature, or keyword (e.g. 'isometric', 'matrix', 'glass')..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#121216] border border-white/10 rounded-2xl px-5 py-3.5 pl-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5B04] transition-colors shadow-xl"
-            />
-            <svg
-              className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          {/* Component Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredComponents.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col justify-between p-6 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl space-y-5"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/10">
-                      {item.categoryLabel}
-                    </span>
-                    {item.badge && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] border border-[#FF5B04]/20">
-                        {item.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-white font-jakarta">{item.name}</h3>
-                    <p className="text-xs text-gray-400 mt-1.5 leading-relaxed line-clamp-2">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  <ul className="space-y-1 text-xs text-gray-300">
-                    {item.features.slice(0, 3).map((f) => (
-                      <li key={f} className="flex items-center gap-2">
-                        <span className="text-[#00E5BE] text-xs">✓</span>
-                        <span className="text-gray-300 font-sans">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="pt-4 border-t border-white/5 flex items-center justify-between gap-2">
-                  {item.detailUrl ? (
-                    <Link
-                      href={item.detailUrl}
-                      className="text-xs font-bold text-[#FF5B04] hover:text-orange-300 transition-colors flex items-center gap-1"
-                    >
-                      <span>Studio &amp; Code</span>
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </Link>
-                  ) : (
-                    <span className="text-xs text-gray-500 font-mono">React Component</span>
-                  )}
-
-                  <button
-                    onClick={() => handleCopyCode(item.id, item.codeSnippet)}
-                    className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-gray-300 hover:text-white transition-colors cursor-pointer"
-                  >
-                    {copiedId === item.id ? "✓ Copied" : "Copy Snippet"}
-                  </button>
-                </div>
+          {/* ─────────────────────────────────────────────────────────────
+              QUICK INSTALLATION & SETUP GUIDE
+             ───────────────────────────────────────────────────────────── */}
+          <div className="bg-[#121216] border border-white/10 rounded-3xl p-8 space-y-6 shadow-2xl">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl font-bold text-white font-jakarta">Peer Dependencies &amp; Setup</h2>
+                <p className="text-xs sm:text-sm text-gray-400 mt-1">
+                  Install peer dependencies to run any component in your Next.js or React application:
+                </p>
               </div>
-            ))}
+
+              <button
+                onClick={handleCopyInstall}
+                className="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors cursor-pointer self-start md:self-auto"
+              >
+                {copiedInstall ? "✓ Command Copied!" : "Copy Install Command"}
+              </button>
+            </div>
+
+            <div className="bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400 overflow-x-auto">
+              <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
+            </div>
           </div>
+
+          {/* ─────────────────────────────────────────────────────────────
+              LIVE COMPONENT BROWSER & CODE VIEWER
+             ───────────────────────────────────────────────────────────── */}
+          <div id="browser" className="space-y-8 scroll-mt-28">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white font-jakarta">
+                  Component Catalog
+                </h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Explore every individual component, inspect props, and copy drop-in snippets.
+                </p>
+              </div>
+
+              {/* Category Filter Tabs */}
+              <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-mono">
+                {[
+                  { id: "all", label: "All Items" },
+                  { id: "buttons", label: "Buttons & CTAs" },
+                  { id: "controls", label: "Controls" },
+                  { id: "badges", label: "Badges" },
+                  { id: "surfaces", label: "Surfaces" },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setSelectedCategory(tab.id as ComponentCategory)}
+                    className={`px-3 py-1.5 rounded-xl transition-all ${
+                      selectedCategory === tab.id
+                        ? "bg-[#FF5B04] text-white font-bold shadow-md shadow-[#FF5B04]/30"
+                        : "text-gray-400 hover:text-white"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Search Bar */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search components by name, feature, or keyword (e.g. 'isometric', 'matrix', 'glass')..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-[#121216] border border-white/10 rounded-2xl px-5 py-3.5 pl-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5B04] transition-colors shadow-xl"
+              />
+              <svg
+                className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+
+            {/* Component Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredComponents.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col justify-between p-6 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl space-y-5"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/10">
+                        {item.categoryLabel}
+                      </span>
+                      {item.badge && (
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] border border-[#FF5B04]/20">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-white font-jakarta">{item.name}</h3>
+                      <p className="text-xs text-gray-400 mt-1.5 leading-relaxed line-clamp-2">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <ul className="space-y-1 text-xs text-gray-300">
+                      {item.features.slice(0, 3).map((f) => (
+                        <li key={f} className="flex items-center gap-2">
+                          <span className="text-[#00E5BE] text-xs">✓</span>
+                          <span className="text-gray-300 font-sans">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="pt-4 border-t border-white/5 flex items-center justify-between gap-2">
+                    {item.detailUrl ? (
+                      <Link
+                        href={item.detailUrl}
+                        className="text-xs font-bold text-[#FF5B04] hover:text-orange-300 transition-colors flex items-center gap-1"
+                      >
+                        <span>Studio &amp; Code</span>
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    ) : (
+                      <span className="text-xs text-gray-500 font-mono">React Component</span>
+                    )}
+
+                    <button
+                      onClick={() => handleCopyCode(item.id, item.codeSnippet)}
+                      className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-gray-300 hover:text-white transition-colors cursor-pointer"
+                    >
+                      {copiedId === item.id ? "✓ Copied" : "Copy Snippet"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Website Global CTA */}
+          <GlobalCTA topic="custom UI components or design systems" />
         </div>
       </div>
-    </div>
+    </PageWrapper>
   );
 }

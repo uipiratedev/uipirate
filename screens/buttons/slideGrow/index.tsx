@@ -9,6 +9,8 @@ import {
   SlideGrowInteractionMode,
   SlideGrowSize,
 } from "@/components/SlideGrowButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function SlideGrowScreen() {
   const [theme, setTheme] = useState<SlideGrowTheme>("silver");
@@ -161,25 +163,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#07080B] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-blue-500/30 selection:text-blue-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span>Interactive Slide Action</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-blue-400">Swipe to Unlock</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07080B] text-white pt-6 pb-20 selection:bg-blue-500/30 selection:text-blue-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span>Interactive Slide Action</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-blue-400">Swipe to Unlock</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Slide to Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Tactile Slider</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Slide to Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Tactile Slider</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Smooth gesture swipe-to-grow slider button featuring dynamic laser channel reveal, spring damping, and physical knob transformation.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Smooth gesture swipe-to-grow slider button featuring dynamic laser channel reveal, spring damping, and physical knob transformation.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
@@ -400,7 +403,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="gesture swipe sliders or interactive web controls" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

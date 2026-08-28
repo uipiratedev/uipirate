@@ -5,6 +5,8 @@ import Link from "next/link";
 import SmashTactileButton, {
   SmashButtonVariant,
 } from "@/components/SmashTactileButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function SmashTactileButtonScreen() {
   const [label, setLabel] = useState("Smash the button");
@@ -114,25 +116,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-purple-500 selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-medium text-purple-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
-            <span>5-Tier Tactile Compression</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-purple-400">React + Framer Motion</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-purple-500 selection:text-white pt-6 pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-medium text-purple-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
+              <span>5-Tier Tactile Compression</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-purple-400">React + Framer Motion</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Smash Tactile <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-200 to-purple-500">Haptic Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Smash Tactile <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-200 to-purple-500">Haptic Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Multi-tier tactile compression button featuring porcelain cushion trays, dot-matrix arrays, internal optical flare beam, and deep haptic depression.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Multi-tier tactile compression button featuring porcelain cushion trays, dot-matrix arrays, internal optical flare beam, and deep haptic depression.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -333,7 +336,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="tactile smash buttons or haptic micro-interactions" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

@@ -10,6 +10,8 @@ import {
   ElevatedUnderglowIconType,
   UNDERGLOW_THEMES,
 } from "@/components/ElevatedUnderglowCTA";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function ElevatedUnderglowScreen() {
   const [theme, setTheme] = useState<ElevatedUnderglowTheme>("figma");
@@ -215,24 +217,25 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#07090E] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-blue-500/30 selection:text-blue-200">
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-600/10 rounded-full blur-[140px]" />
-      </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07090E] text-white pt-6 pb-20 selection:bg-blue-500/30 selection:text-blue-200">
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-600/10 rounded-full blur-[140px]" />
+        </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 space-y-12">
-        {/* Header section */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span>Interactive 3D Spring Button</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-blue-400">React + Framer Motion</span>
-          </div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <div className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span>Interactive 3D Spring Button</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-blue-400">React + Framer Motion</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Elevated Underglow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">3D CTA Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Elevated Underglow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">3D CTA Button</span>
+            </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
             Multi-tier 3D CTA button featuring 13px spring elevation, dynamic base underglow flare, and specular reflection bottom insets.
@@ -506,7 +509,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="elevated 3D underglow buttons or interactive UI controls" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

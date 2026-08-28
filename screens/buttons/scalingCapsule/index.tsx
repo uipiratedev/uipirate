@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import ScalingCapsuleButton, {
   ScalingCapsuleVariant,
 } from "@/components/ScalingCapsuleButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function ScalingCapsuleButtonScreen() {
   const [label, setLabel] = useState("Scaling Workshop");
@@ -307,27 +309,28 @@ export default function HeroSection() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      {/* Background ambient lighting */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#FF5B04]/10 rounded-full blur-[140px]" />
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-[#00E5BE]/10 rounded-full blur-[120px]" />
-        <div className="absolute top-2/3 right-1/4 w-[500px] h-[400px] bg-purple-600/10 rounded-full blur-[140px]" />
-      </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        {/* Background ambient lighting */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#FF5B04]/10 rounded-full blur-[140px]" />
+          <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-[#00E5BE]/10 rounded-full blur-[120px]" />
+          <div className="absolute top-2/3 right-1/4 w-[500px] h-[400px] bg-purple-600/10 rounded-full blur-[140px]" />
+        </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 space-y-12">
-        {/* Header section */}
-        <div className="text-center space-y-5 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>Frosted Capsule CTA</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">React + Multi-Shadow</span>
-          </div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <div className="text-center space-y-5 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
+              <span>Frosted Capsule CTA</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#00E5BE]">React + Multi-Shadow</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
-            Scaling Capsule <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Tactile Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
+              Scaling Capsule <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Tactile Button</span>
+            </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
             Interactive capsule button engineered with a frosted translucent glass cavity tray, multi-tier elevation drop shadows, specular bevel insets, and an embedded circular apex emblem badge.
@@ -729,7 +732,11 @@ export default function HeroSection() {
             ))}
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="tactile capsule buttons or design systems" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

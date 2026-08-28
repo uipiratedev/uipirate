@@ -7,6 +7,8 @@ import {
   VintageLeatherTheme,
   VintageLeatherSize,
 } from "@/components/VintageLeatherCTA";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function VintageLeatherScreen() {
   const [theme, setTheme] = useState<VintageLeatherTheme>("heritage");
@@ -131,25 +133,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#070709] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-amber-500/30 selection:text-amber-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span>Artisanal Skeuomorphic Leather</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-amber-400">Heritage Brass & Saddle</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#070709] text-white pt-6 pb-20 selection:bg-amber-500/30 selection:text-amber-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              <span>Artisanal Skeuomorphic Leather</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-amber-400">Heritage Brass &amp; Saddle</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Vintage Leather <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500">Heritage CTA Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Vintage Leather <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500">Heritage CTA Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Crafted skeuomorphic button featuring authentic saddle leather grain noise, engraved vector scrollwork flourishes, and rich brass bevel highlights.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Crafted skeuomorphic button featuring authentic saddle leather grain noise, engraved vector scrollwork flourishes, and rich brass bevel highlights.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -353,7 +356,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="skeuomorphic leather CTA buttons or luxury web design" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

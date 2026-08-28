@@ -14,6 +14,13 @@ import {
   ANGLE_TRANSFORMS,
 } from "@/components/IsometricReviveButton";
 
+
+
+
+
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
+
 export default function IsometricReviveScreen() {
   const [theme, setTheme] = useState<IsometricReviveTheme>("figma");
   const [angle, setAngle] = useState<IsometricReviveAngle>("iso-left");
@@ -147,283 +154,283 @@ export default function Example() {
 />`;
 
   return (
-    <main className="min-h-screen bg-[#0C0D12] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-orange-500/30 selection:text-orange-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-xs font-medium text-orange-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <span>Isometric 3D Projection</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-orange-400">React + Framer Motion</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0C0D12] text-white pt-6 pb-20 selection:bg-orange-500/30 selection:text-orange-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-xs font-medium text-orange-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+              <span>Isometric 3D Projection</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-orange-400">React + Framer Motion</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Isometric Revive <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">3D Tactile Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Isometric Revive <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">3D Tactile Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Multi-angle 3D button engineered with a true 30° axonometric projection matrix, multi-tier extruded facets, and glowing core indicators.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Multi-angle 3D button engineered with a true 30° axonometric projection matrix, multi-tier extruded facets, and glowing core indicators.
+            </p>
+          </header>
 
-        {/* Interactive Studio Stage */}
-        <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[420px] relative overflow-hidden bg-gradient-to-b from-[#141720] to-[#0D0F14]">
-            {showGrid && (
-              <div
-                className="absolute inset-0 opacity-15 pointer-events-none"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)",
-                  backgroundSize: "24px 24px",
-                }}
-              />
-            )}
+          {/* Interactive Studio Stage */}
+          <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[420px] relative overflow-hidden bg-gradient-to-b from-[#141720] to-[#0D0F14]">
+              {showGrid && (
+                <div
+                  className="absolute inset-0 opacity-15 pointer-events-none"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)",
+                    backgroundSize: "24px 24px",
+                  }}
+                />
+              )}
 
-            <div className="relative z-10 flex flex-col items-center gap-6">
-              <IsometricReviveButton
-                label={labelText}
-                theme={theme}
-                angle={angle}
-                intensity={intensity}
-                size={size}
-                stateMode={stateMode}
-                showGrid={showGrid}
-                onClick={() => setClickCount((c) => c + 1)}
-              />
+              <div className="relative z-10 flex flex-col items-center gap-6">
+                <IsometricReviveButton
+                  label={labelText}
+                  theme={theme}
+                  angle={angle}
+                  intensity={intensity}
+                  size={size}
+                  stateMode={stateMode}
+                  showGrid={showGrid}
+                  onClick={() => setClickCount((c) => c + 1)}
+                />
 
-              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-                <span>Interactions:</span>
-                <span className="text-white font-semibold">{clickCount}</span>
+                <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+                  <span>Interactions:</span>
+                  <span className="text-white font-semibold">{clickCount}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Controls Bar */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-6 border-t border-white/10 bg-white/[0.01] text-xs">
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
+                <select
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value as IsometricReviveTheme)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                >
+                  {(Object.keys(ISOMETRIC_REVIVE_THEMES) as IsometricReviveTheme[]).map((k) => (
+                    <option key={k} value={k} className="bg-[#12141A]">
+                      {ISOMETRIC_REVIVE_THEMES[k].name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Angle</label>
+                <select
+                  value={angle}
+                  onChange={(e) => setAngle(e.target.value as IsometricReviveAngle)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                >
+                  {(Object.keys(ANGLE_TRANSFORMS) as IsometricReviveAngle[]).map((a) => (
+                    <option key={a} value={a} className="bg-[#12141A]">
+                      {ANGLE_TRANSFORMS[a]?.label || a}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
+                <input
+                  type="text"
+                  value={labelText}
+                  onChange={(e) => setLabelText(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+                <div className="flex gap-1">
+                  {(["sm", "md", "lg"] as IsometricReviveSize[]).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setSize(s)}
+                      className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${size === s ? "bg-orange-500 text-black font-bold" : "bg-white/5 text-gray-400"
+                        }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Controls Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-6 border-t border-white/10 bg-white/[0.01] text-xs">
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as IsometricReviveTheme)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                {(Object.keys(ISOMETRIC_REVIVE_THEMES) as IsometricReviveTheme[]).map((k) => (
-                  <option key={k} value={k} className="bg-[#12141A]">
-                    {ISOMETRIC_REVIVE_THEMES[k].name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Angle</label>
-              <select
-                value={angle}
-                onChange={(e) => setAngle(e.target.value as IsometricReviveAngle)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                {(Object.keys(ANGLE_TRANSFORMS) as IsometricReviveAngle[]).map((a) => (
-                  <option key={a} value={a} className="bg-[#12141A]">
-                    {ANGLE_TRANSFORMS[a]?.label || a}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-              <div className="flex gap-1">
-                {(["sm", "md", "lg"] as IsometricReviveSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
-                      size === s ? "bg-orange-500 text-black font-bold" : "bg-white/5 text-gray-400"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
-          <div className="bg-[#12141A] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Install the required dependencies for Framer Motion spring physics and Tailwind utility classes:
-            </p>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+            <div className="bg-[#12141A] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Install the required dependencies for Framer Motion spring physics and Tailwind utility classes:
+              </p>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
-              <span>npm install framer-motion clsx</span>
-              <button
-                onClick={handleCopyInstall}
-                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
-              >
-                {copiedInstall ? "Copied Command!" : "Copy Command"}
-              </button>
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+                <span>npm install framer-motion clsx</span>
+                <button
+                  onClick={handleCopyInstall}
+                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
+                >
+                  {copiedInstall ? "Copied Command!" : "Copy Command"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             CODE EXPORTER TABS
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
-            <button
-              onClick={() =>
-                handleCopy(
-                  activeCodeTab === "component"
-                    ? componentSourceCode
-                    : activeCodeTab === "usage"
-                    ? usageCode
-                    : activeCodeTab === "css"
-                    ? cssOnlyCode
-                    : framerCode,
-                  activeCodeTab
-                )
-              }
-              className="text-xs font-mono text-orange-400 hover:text-orange-300 transition-colors"
-            >
-              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
-            </button>
-          </div>
-
-          <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-white font-mono">
-                  {activeCodeTab === "component"
-                    ? "IsometricReviveButton.tsx"
-                    : activeCodeTab === "usage"
-                    ? "Usage.tsx"
-                    : activeCodeTab === "css"
-                    ? "Tokens.css"
-                    : "Physics.ts"}
-                </span>
-                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
-              </div>
-
-              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
-                <button
-                  onClick={() => setActiveCodeTab("component")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "component" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Component.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("usage")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "usage" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Usage.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("css")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "css" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Tokens.css
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("framer")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "framer" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Physics.ts
-                </button>
-              </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
+              <button
+                onClick={() =>
+                  handleCopy(
+                    activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : activeCodeTab === "css"
+                          ? cssOnlyCode
+                          : framerCode,
+                    activeCodeTab
+                  )
+                }
+                className="text-xs font-mono text-orange-400 hover:text-orange-300 transition-colors"
+              >
+                {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
+              </button>
             </div>
 
-            <div className="p-6 bg-[#090A0D] overflow-x-auto max-h-[550px]">
-              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
-                <code>
-                  {activeCodeTab === "component"
-                    ? componentSourceCode
-                    : activeCodeTab === "usage"
-                    ? usageCode
-                    : activeCodeTab === "css"
-                    ? cssOnlyCode
-                    : framerCode}
-                </code>
-              </pre>
+            <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-white font-mono">
+                    {activeCodeTab === "component"
+                      ? "IsometricReviveButton.tsx"
+                      : activeCodeTab === "usage"
+                        ? "Usage.tsx"
+                        : activeCodeTab === "css"
+                          ? "Tokens.css"
+                          : "Physics.ts"}
+                  </span>
+                  <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+                </div>
+
+                <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                  <button
+                    onClick={() => setActiveCodeTab("component")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "component" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                      }`}
+                  >
+                    Component.tsx
+                  </button>
+                  <button
+                    onClick={() => setActiveCodeTab("usage")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "usage" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                      }`}
+                  >
+                    Usage.tsx
+                  </button>
+                  <button
+                    onClick={() => setActiveCodeTab("css")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "css" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                      }`}
+                  >
+                    Tokens.css
+                  </button>
+                  <button
+                    onClick={() => setActiveCodeTab("framer")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "framer" ? "bg-orange-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                      }`}
+                  >
+                    Physics.ts
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 bg-[#090A0D] overflow-x-auto max-h-[550px]">
+                <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                  <code>
+                    {activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : activeCodeTab === "css"
+                          ? cssOnlyCode
+                          : framerCode}
+                  </code>
+                </pre>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             PROPS & API REFERENCE TABLE
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
-          <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
-                    <th className="py-3.5 px-6 font-semibold">Prop</th>
-                    <th className="py-3.5 px-6 font-semibold">Type</th>
-                    <th className="py-3.5 px-6 font-semibold">Default</th>
-                    <th className="py-3.5 px-6 font-semibold">Description</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
-                  <tr>
-                    <td className="py-3 px-6 text-orange-400 font-semibold">label</td>
-                    <td className="py-3 px-6 text-blue-300">string</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;Revive Now&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the isometric face</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-orange-400 font-semibold">theme</td>
-                    <td className="py-3 px-6 text-blue-300">IsometricReviveTheme</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;figma&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Color scheme preset (Obsidian, Amber, Cyan, etc.)</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-orange-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-orange-400 font-semibold">onClick</td>
-                    <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
-                    <td className="py-3 px-6 text-gray-400">undefined</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Click callback event handler</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+            <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs sm:text-sm">
+                  <thead>
+                    <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
+                      <th className="py-3.5 px-6 font-semibold">Prop</th>
+                      <th className="py-3.5 px-6 font-semibold">Type</th>
+                      <th className="py-3.5 px-6 font-semibold">Default</th>
+                      <th className="py-3.5 px-6 font-semibold">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
+                    <tr>
+                      <td className="py-3 px-6 text-orange-400 font-semibold">label</td>
+                      <td className="py-3 px-6 text-blue-300">string</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;Revive Now&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the isometric face</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-orange-400 font-semibold">theme</td>
+                      <td className="py-3 px-6 text-blue-300">IsometricReviveTheme</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;figma&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Color scheme preset (Obsidian, Amber, Cyan, etc.)</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-orange-400 font-semibold">size</td>
+                      <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-orange-400 font-semibold">onClick</td>
+                      <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
+                      <td className="py-3 px-6 text-gray-400">undefined</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Click callback event handler</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
+
+          {/* Website Global CTA */}
+          <GlobalCTA topic="isometric 3D buttons or custom web animations" />
         </div>
       </div>
-    </main>
+    </PageWrapper>
   );
 }

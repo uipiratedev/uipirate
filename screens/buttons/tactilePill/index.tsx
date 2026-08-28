@@ -7,6 +7,8 @@ import TactilePillButton, {
   TactileButtonVariant,
   TactileButtonState,
 } from "@/components/TactilePillButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 const COLOR_PRESETS = [
   { label: "Figma Aqua", value: "#54EAD8", name: "Aqua" },
@@ -141,25 +143,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#00E5BE] animate-pulse" />
-            <span>Interactive 3D Spring Tilt</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#FF5B04]">Exposed Cavity Slot</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#00E5BE] animate-pulse" />
+              <span>Interactive 3D Spring Tilt</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#FF5B04]">Exposed Cavity Slot</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Tactile Pill <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Popped-Up Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Tactile Pill <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Popped-Up Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Skeuomorphic tactile pill button featuring mechanical spring tilt, recessed cavity slot reveal, and glowing radiant LED status beacon.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Skeuomorphic tactile pill button featuring mechanical spring tilt, recessed cavity slot reveal, and glowing radiant LED status beacon.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -372,7 +375,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="3D tactile spring buttons or component libraries" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

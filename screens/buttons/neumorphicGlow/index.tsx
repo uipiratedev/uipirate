@@ -10,6 +10,8 @@ import {
   NeumorphicNeonPreset,
   NEON_PRESETS,
 } from "@/components/NeumorphicGlowCTA";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function NeumorphicGlowScreen() {
   const [variant, setVariant] = useState<NeumorphicGlowShape>("pill");
@@ -170,25 +172,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#07080B] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-emerald-500/30 selection:text-emerald-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Neumorphic Clay + Neon Glow</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-emerald-400">Tactile Micro-Interactions</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07080B] text-white pt-6 pb-20 selection:bg-emerald-500/30 selection:text-emerald-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Neumorphic Clay + Neon Glow</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-emerald-400">Tactile Micro-Interactions</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Neumorphic Glow <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile CTA Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Neumorphic Glow <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile CTA Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Multi-tier soft neumorphic clay button featuring dual convex lighting shadows, glowing neon arrow badge, and spring depth feedback.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Multi-tier soft neumorphic clay button featuring dual convex lighting shadows, glowing neon arrow badge, and spring depth feedback.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
@@ -415,7 +418,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="neumorphic buttons or modern clay UI components" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

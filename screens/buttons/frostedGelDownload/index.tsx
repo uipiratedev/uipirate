@@ -10,6 +10,8 @@ import {
   FrostedGelStateMode,
   FROSTED_GEL_THEMES,
 } from "@/components/FrostedGelDownloadButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function FrostedGelDownloadScreen() {
   const [theme, setTheme] = useState<FrostedGelTheme>("figma-blue");
@@ -217,25 +219,26 @@ export default function Example() {
 </motion.div>`;
 
   return (
-    <div className="min-h-screen bg-[#07080A] text-white font-sans selection:bg-blue-600/30 selection:text-blue-200">
-      <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
-        {/* Header Section */}
-        <header className="space-y-4">
-          <div className="flex items-center gap-3">
-            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-mono uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">
-              Glassmorphic CTA
-            </span>
-            <span className="text-xs text-white/40 font-mono">
-              React + Tailwind + Framer Motion
-            </span>
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Frosted Gel Dual-Pill Download Button
-          </h1>
-          <p className="text-base text-white/60 max-w-3xl leading-relaxed">
-            Dual-pill split CTA button featuring an elevated ceramic primary action, frosted glass cloud download tile, optical refraction rings, and volumetric blue underglow flare.
-          </p>
-        </header>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07080A] text-white font-sans selection:bg-blue-600/30 selection:text-blue-200 pt-6 pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header Section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-3 justify-center">
+              <span className="px-2.5 py-0.5 rounded-md text-[11px] font-mono uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                Glassmorphic CTA
+              </span>
+              <span className="text-xs text-white/40 font-mono">
+                React + Tailwind + Framer Motion
+              </span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Frosted Gel Dual-Pill Download Button
+            </h1>
+            <p className="text-base sm:text-lg text-white/60 max-w-3xl mx-auto leading-relaxed">
+              Dual-pill split CTA button featuring an elevated ceramic primary action, frosted glass cloud download tile, optical refraction rings, and volumetric blue underglow flare.
+            </p>
+          </header>
 
         {/* 2. Interactive Studio Stage */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -568,7 +571,11 @@ export default function Example() {
             </div>
           </div>
         </div>
-      </main>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="frosted glass CTA buttons or component libraries" />
+      </div>
     </div>
+  </PageWrapper>
   );
 }

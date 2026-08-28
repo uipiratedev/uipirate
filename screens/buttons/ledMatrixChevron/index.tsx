@@ -9,6 +9,8 @@ import {
   LedMatrixInteractionMode,
   LedMatrixSize,
 } from "@/components/LedMatrixChevronButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function LedMatrixChevronScreen() {
   const [theme, setTheme] = useState<LedMatrixTheme>("monochrome");
@@ -138,25 +140,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#070709] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-emerald-500/30 selection:text-emerald-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Cyberpunk LED Hardware</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-emerald-400">Expandable Dot Matrix</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#070709] text-white pt-6 pb-20 selection:bg-emerald-500/30 selection:text-emerald-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Cyberpunk LED Hardware</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-emerald-400">Expandable Dot Matrix</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            LED Matrix Chevron <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              LED Matrix Chevron <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Expandable phosphor LED dot-matrix chevron button featuring physical grid illumination, animated marquee shift loop, and specular bevel framing.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Expandable phosphor LED dot-matrix chevron button featuring physical grid illumination, animated marquee shift loop, and specular bevel framing.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -356,7 +359,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="LED dot-matrix buttons or custom hardware UI controls" />
       </div>
     </div>
+  </PageWrapper>
   );
 }
