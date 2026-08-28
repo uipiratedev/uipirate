@@ -140,30 +140,6 @@ export default function Example() {
   return (
     <div className="min-h-screen bg-[#070709] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-emerald-500/30 selection:text-emerald-200">
       <div className="max-w-7xl mx-auto space-y-12">
-        {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between gap-4 pt-2">
-          <Link
-            href="/buttons"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-300 transition-colors group"
-          >
-            <svg className="w-4 h-4 text-gray-400 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span>All Buttons</span>
-          </Link>
-          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-gray-500">
-            <Link href="/ui-components" className="text-gray-400 hover:text-white transition-colors">
-              UI Components
-            </Link>
-            <span>/</span>
-            <Link href="/buttons" className="text-gray-400 hover:text-white transition-colors">
-              Buttons
-            </Link>
-            <span>/</span>
-            <span className="text-emerald-400">LED Matrix Chevron</span>
-          </div>
-        </div>
-
         {/* Header section */}
         <header className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">

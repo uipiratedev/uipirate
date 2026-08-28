@@ -29,5 +29,27 @@ export const metadata: Metadata = {
 };
 
 export default function UIComponentsPage() {
-  return <UIComponentsScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "UI Components Library & Design System",
+    "description":
+      "Handcrafted React, Tailwind, and Framer Motion UI components engineered with Figma Dev Mode pixel accuracy, 3D tactile physics, and rich micro-interactions.",
+    "url": "https://uipirate.com/ui-components",
+    "publisher": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <UIComponentsScreen />
+    </>
+  );
 }

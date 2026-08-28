@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import TactilePillButton, { TactileButtonVariant } from "@/components/TactilePillButton";
+import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
 import GlassBadge from "@/components/GlassBadge";
@@ -18,8 +18,21 @@ import { SlideGrowButton } from "@/components/SlideGrowButton";
 import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
 
-export type ComponentCategory = "all" | "buttons" | "badges" | "surfaces" | "layout";
+export type ComponentCategory = "all" | "buttons" | "badges" | "surfaces" | "controls";
+
+interface CategoryOverviewCard {
+  id: ComponentCategory;
+  title: string;
+  count: string;
+  badge: string;
+  badgeColor: string;
+  description: string;
+  tags: string[];
+  href: string;
+  featuredPreview: React.ReactNode;
+}
 
 interface UIComponentItem {
   id: string;
@@ -46,7 +59,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Dual-pill neumorphic split button with elevated ceramic pill, frosted glass gel download tile, optical refraction rings, and volumetric blue underglow flare.",
     detailUrl: "/buttons/frosted-gel-download-button",
     features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "Interactive hover lift"],
-    codeSnippet: `<FrostedGelDownloadButton\n  label="Download now"\n  theme="figma-blue"\n  size="md"\n  stateMode="interactive"\n/>`,
+    codeSnippet: `<FrostedGelDownloadButton\n  label="Download now"\n  theme="figma-blue"\n  size="md"\n/>`,
   },
   {
     id: "isometric-revive-button",
@@ -59,7 +72,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Authentic 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and blinding optical neon underglow.",
     detailUrl: "/buttons/isometric-revive-button",
     features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "Dynamic spring physics"],
-    codeSnippet: `<IsometricReviveButton\n  label="Revive Now"\n  theme="figma"\n  size="sm"\n  stateMode="interactive"\n/>`,
+    codeSnippet: `<IsometricReviveButton\n  label="Revive Now"\n  theme="figma"\n  size="sm"\n/>`,
   },
   {
     id: "elevated-underglow-cta",
@@ -72,7 +85,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.",
     detailUrl: "/buttons/elevated-underglow-cta",
     features: ["13px Spring lift", "Electric blue 3D underlayer", "Interactive states", "Phone call icon"],
-    codeSnippet: `<ElevatedUnderglowCTA\n  label="Book A Call"\n  icon="phone"\n  theme="figma"\n  size="md"\n  stateMode="interactive"\n/>`,
+    codeSnippet: `<ElevatedUnderglowCTA\n  label="Book A Call"\n  icon="phone"\n  theme="figma"\n  size="md"\n/>`,
   },
   {
     id: "led-matrix-chevron",
@@ -85,20 +98,20 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.",
     detailUrl: "/buttons/led-matrix-chevron",
     features: ["Expandable LED screen", "7x7 Dot matrix chevrons", "Cascading marquee wave", "Carbon squircle chassis"],
-    codeSnippet: `<LedMatrixChevronButton\n  theme="monochrome"\n  size="md"\n  stateMode="interactive"\n/>`,
+    codeSnippet: `<LedMatrixChevronButton\n  theme="monochrome"\n  size="md"\n/>`,
   },
   {
     id: "slide-grow-button",
     name: "Swipe to Grow / Slide Button",
-    category: "buttons",
-    categoryLabel: "Buttons & CTAs",
+    category: "controls",
+    categoryLabel: "Interactive Controls",
     badge: "Capsule Slider",
     badgeVariant: "gradient",
     description:
       "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
     detailUrl: "/buttons/slide-grow-button",
     features: ["Draggable knob physics", "Neon channel beam fill", "Masked text reveal", "Smooth slider snap"],
-    codeSnippet: `<SlideGrowButton\n  theme="silver"\n  size="md"\n  stateMode="interactive"\n/>`,
+    codeSnippet: `<SlideGrowButton\n  theme="silver"\n  size="md"\n/>`,
   },
   {
     id: "vintage-leather-cta",
@@ -129,8 +142,8 @@ const UI_COMPONENTS: UIComponentItem[] = [
   {
     id: "arc-corner-toggle",
     name: "Arc Corner Slider Toggle",
-    category: "buttons",
-    categoryLabel: "Buttons & CTAs",
+    category: "controls",
+    categoryLabel: "Interactive Controls",
     badge: "Arc Slider Switch",
     badgeVariant: "gradient",
     description:
@@ -150,7 +163,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Neo-brutalist tech button with outer enclosure frame, cushion cooling tray, obsidian core slab, and glowing neon reactor underglow.",
     detailUrl: "/buttons/smash-tactile-button",
     features: ["Tech enclosure frame", "Cushion cooling tray", "Obsidian core slab", "Reactor underglow"],
-    codeSnippet: `<SmashTactileButton\n  label="Smash the button"\n  variant="figma"\n  size="md"\n  onClick={() => console.log("Smashed!")}\n/>`,
+    codeSnippet: `<SmashTactileButton\n  label="Smash the button"\n  variant="figma"\n  size="md"\n/>`,
   },
   {
     id: "scaling-capsule-button",
@@ -163,7 +176,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Recessed capsule button featuring a frosted translucent glass tray, obsidian cap with multi-tiered elevation drop shadows, and circular apex emblem badge.",
     detailUrl: "/buttons/scaling-capsule-button",
     features: ["Frosted outer glass tray", "Multi-tier shadow stack", "26px Black circle", "Ladder-rung icon"],
-    codeSnippet: `<ScalingCapsuleButton\n  label="Scaling Workshop"\n  variant="dark"\n  size="md"\n  onClick={() => console.log("Clicked!")}\n/>`,
+    codeSnippet: `<ScalingCapsuleButton\n  label="Scaling Workshop"\n  variant="dark"\n  size="md"\n/>`,
   },
   {
     id: "tactile-pill-button",
@@ -176,7 +189,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Hyper-realistic 3D tactile button with recessed cavity slot, spring tilt physics, specular bevels, and glowing status beacon.",
     detailUrl: "/buttons/tactile-pill-button",
     features: ["Recessed tray depth", "Spring lift & tilt", "Radiant status glow", "5 Theme variants"],
-    codeSnippet: `<TactilePillButton\n  label="Get Started"\n  dotColor="#54EAD8"\n  variant="default"\n  onClick={() => console.log("Clicked!")}\n/>`,
+    codeSnippet: `<TactilePillButton\n  label="Get Started"\n  dotColor="#54EAD8"\n  variant="default"\n/>`,
   },
   {
     id: "animated-slide-button",
@@ -189,7 +202,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "Interactive dual-label CTA button with smooth vertical translate animations on hover. Designed for conversion cards and primary service actions.",
     detailUrl: "/buttons/animated-slide-button",
     features: ["Dual text roll-up", "Smooth ease transition", "Primary & secondary styles", "Auto-contained overflow"],
-    codeSnippet: `<AnimatedButton\n  primaryText="Explore Services"\n  hoverText="See More →"\n  variant="primary"\n  onClick={() => {}}\n/>`,
+    codeSnippet: `<AnimatedButton\n  primaryText="Explore Services"\n  hoverText="See More →"\n  variant="primary"\n/>`,
   },
   {
     id: "glass-badge",
@@ -238,7 +251,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
       "High-energy glowing action button with ambient radiant pulse effect, click audio trigger hook, and 3D depth press feedback.",
     detailUrl: "/buttons/magnetic-pulse-cta",
     features: ["Ambient ring pulse", "Sound effects integration", "Tactile spring scale", "Lead modal trigger"],
-    codeSnippet: `<button className="relative px-6 py-3 rounded-full bg-[#FF5B04] text-white font-bold shadow-[0_0_25px_rgba(255,91,4,0.5)] hover:scale-105 transition-transform">\n  Let's Venture\n</button>`,
+    codeSnippet: `<MagneticPulseCTA\n  label="Let's Venture"\n  pulseColor="#FF5B04"\n/>`,
   },
 ];
 
@@ -246,11 +259,87 @@ export default function UIComponentsScreen() {
   const [selectedCategory, setSelectedCategory] = useState<ComponentCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [copiedInstall, setCopiedInstall] = useState(false);
 
-  // Featured button sandbox state
-  const [heroVariant, setHeroVariant] = useState<TactileButtonVariant>("default");
-  const [heroLabel, setHeroLabel] = useState("Get Started");
-  const [heroDotColor, setHeroDotColor] = useState("#54EAD8");
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx lucide-react tailwind-merge");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const CATEGORY_CARDS: CategoryOverviewCard[] = [
+    {
+      id: "buttons",
+      title: "Buttons & CTAs",
+      count: "13 Components",
+      badge: "Master Collection",
+      badgeColor: "#FF5B04",
+      description:
+        "High-conversion buttons engineered with 3D tactile elevation, optical underglow flares, skeuomorphic leather, and phosphor LED matrices.",
+      tags: ["3D Tactile Lift", "Glassmorphism", "LED Dot Matrix", "Skeuomorphic", "Isometric 30°"],
+      href: "/buttons",
+      featuredPreview: (
+        <div className="scale-90 transform-gpu py-2 flex items-center justify-center">
+          <ElevatedUnderglowCTA label="Book A Call" theme="figma" size="sm" />
+        </div>
+      ),
+    },
+    {
+      id: "controls",
+      title: "Interactive Controls & Sliders",
+      count: "3 Components",
+      badge: "Micro-Interactions",
+      badgeColor: "#00E5BE",
+      description:
+        "Gesture-driven interactive toggles, 90° radial arc corner switches, swipe-to-unlock capsule sliders, and tactile smash buttons.",
+      tags: ["Radial Offset Path", "Gesture Drag", "Swipe to Unlock", "Spring Snapping"],
+      href: "/buttons/slide-grow-button",
+      featuredPreview: (
+        <div className="scale-85 transform-gpu py-2 flex items-center justify-center">
+          <SlideGrowButton theme="silver" size="sm" />
+        </div>
+      ),
+    },
+    {
+      id: "badges",
+      title: "Badges, Status & Beacons",
+      count: "3 Components",
+      badge: "Design Tokens",
+      badgeColor: "#8B5CF6",
+      description:
+        "Multi-layer glassmorphic header badges, deterministic hash-gradient avatars, and pulsing radiant beacon indicators.",
+      tags: ["Backdrop Blur", "Hash Gradient", "Specular Border", "Live Beacon"],
+      href: "#browser",
+      featuredPreview: (
+        <div className="flex flex-col items-center gap-3 py-2">
+          <GlassBadge variant="gradient" size="md">
+            PROPRIETARY COMPONENT
+          </GlassBadge>
+          <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Active Status Beacon</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "surfaces",
+      title: "Surfaces & Glass Containers",
+      count: "2 Components",
+      badge: "Atmospheric Depth",
+      badgeColor: "#3B82F6",
+      description:
+        "Frosted glassmorphism container cards with hardware-accelerated Gaussian blur, specular highlight sheens, and noise overlays.",
+      tags: ["Gaussian Blur", "Specular Sheen", "Hardware Accel", "Adaptive Contrast"],
+      href: "#browser",
+      featuredPreview: (
+        <div className="w-full max-w-[220px] p-4 rounded-2xl bg-white/[0.04] border border-white/10 shadow-xl backdrop-blur-md text-center">
+          <div className="text-[11px] font-mono text-cyan-300 uppercase tracking-wider">Glass Surface</div>
+          <div className="text-xs text-gray-400 mt-1 font-sans">Specular Sheen &amp; Blur</div>
+        </div>
+      ),
+    },
+  ];
 
   const filteredComponents = useMemo(() => {
     return UI_COMPONENTS.filter((item) => {
@@ -279,536 +368,294 @@ export default function UIComponentsScreen() {
         <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-600/10 rounded-full blur-[160px]" />
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 space-y-16">
-        {/* Top Breadcrumb & Badge */}
-        <div className="text-center space-y-4 max-w-3xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10 space-y-20">
+        {/* Top Hero Section */}
+        <div className="text-center space-y-6 max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>UI Pirate Component System</span>
+            <span>UI Pirate Component Ecosystem</span>
             <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">Interactive Component Library</span>
+            <span className="text-[#00E5BE]">Production-Ready React &amp; Tailwind</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
-            Handcrafted <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] via-orange-400 to-[#00E5BE]">UI Components</span>
+            Design System &amp;{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] via-orange-400 to-[#00E5BE]">
+              Component Library
+            </span>
           </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Production-ready React, Tailwind, and Framer Motion components engineered with pixel precision, 3D tactile physics, and rich micro-interactions.
+            Browse our categorized collection of handcrafted React, Tailwind CSS, and Framer Motion components. Engineered with 3D tactile physics, glassmorphism, and pixel precision.
           </p>
 
           {/* Quick Metrics Bar */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs font-mono text-gray-300">
-              <span className="text-[#FF5B04] font-bold">100%</span> Copy-Ready Code
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 pt-4">
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl sm:text-3xl font-extrabold text-white font-jakarta">13+</span>
+              <span className="text-xs text-gray-400 font-mono text-left leading-tight">
+                Buttons &amp;<br />CTAs
+              </span>
             </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs font-mono text-gray-300">
-              <span className="text-[#00E5BE] font-bold">Spring</span> Physics
+            <div className="h-8 w-px bg-white/10" />
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#00E5BE] font-jakarta">100%</span>
+              <span className="text-xs text-gray-400 font-mono text-left leading-tight">
+                Copy-Paste<br />Source Code
+              </span>
             </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs font-mono text-gray-300">
-              <span className="text-purple-400 font-bold">Next.js &amp; Tailwind</span> Ready
-            </div>
-          </div>
-        </div>
-
-        {/* HERO SPOTLIGHT: Tactile 3D Pill Button */}
-        <div className="relative rounded-3xl bg-gradient-to-b from-[#18181D] to-[#121215] border border-white/15 p-6 sm:p-10 shadow-2xl overflow-hidden group">
-          {/* Subtle glow border effect */}
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#FF5B04]/15 rounded-full blur-[100px] pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#00E5BE]/10 rounded-full blur-[100px] pointer-events-none" />
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-            {/* Left Info & Actions */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <span className="px-3 py-1 rounded-full bg-[#FF5B04]/20 border border-[#FF5B04]/30 text-[#FF5B04] text-xs font-bold uppercase tracking-wider">
-                  Featured 3D Component
-                </span>
-                <span className="px-3 py-1 rounded-full bg-[#00E5BE]/15 border border-[#00E5BE]/30 text-[#00E5BE] text-xs font-mono">
-                  Interactive 3D Stage
-                </span>
-              </div>
-
-              <div>
-                <h2 className="text-3xl sm:text-4xl font-bold text-white font-jakarta">
-                  Tactile 3D Pill Button
-                </h2>
-                <p className="text-gray-400 text-sm sm:text-base mt-2 leading-relaxed">
-                  Interactive tactile button featuring a recessed tray slot, spring tilt physics, and glowing status beacon. Hover over the stage to trigger the spring tilt physics, and click to open the dedicated detail page.
-                </p>
-              </div>
-
-              {/* Feature Highlights */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                {[
-                  { label: "Cavity Tray", val: "Inset Shadows" },
-                  { label: "Spring Tilt", val: "-9.23° Angle" },
-                  { label: "Status Dot", val: "Radiant Glow" },
-                  { label: "Variants", val: "5 Colorways" },
-                ].map((stat, i) => (
-                  <div key={i} className="p-3 rounded-xl bg-white/[0.03] border border-white/5">
-                    <p className="text-[11px] text-gray-400 font-mono">{stat.label}</p>
-                    <p className="text-xs font-semibold text-white mt-0.5">{stat.val}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Theme variant switcher */}
-              <div className="space-y-2 pt-2">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider font-mono">
-                  Preview Theme:
-                </p>
-                <div className="flex flex-wrap items-center gap-2">
-                  {(
-                    [
-                      { id: "default", name: "Clean Light", dot: "#54EAD8" },
-                      { id: "dark", name: "Obsidian Dark", dot: "#10B981" },
-                      { id: "orange", name: "Brand Orange", dot: "#FFFFFF" },
-                      { id: "cyberpunk", name: "Cyberpunk", dot: "#00E5BE" },
-                      { id: "minimal", name: "Clean White", dot: "#8B5CF6" },
-                    ] as const
-                  ).map((v) => (
-                    <button
-                      key={v.id}
-                      onClick={() => {
-                        setHeroVariant(v.id);
-                        setHeroDotColor(v.dot);
-                      }}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                        heroVariant === v.id
-                          ? "bg-white text-black font-bold shadow-lg shadow-white/10"
-                          : "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border border-white/5"
-                      }`}
-                    >
-                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: v.dot }} />
-                      {v.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Primary Call to Action */}
-              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-white/10">
-                <Link
-                  href="/buttons/tactile-pill-button"
-                  className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-gradient-to-r from-[#FF5B04] to-[#FF7A00] text-white font-bold text-sm shadow-[0_0_25px_rgba(255,91,4,0.4)] hover:shadow-[0_0_35px_rgba(255,91,4,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all"
-                >
-                  <span>Open Component Studio</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </Link>
-
-                <button
-                  onClick={() =>
-                    handleCopyCode(
-                      "hero-btn",
-                      `<TactilePillButton label="${heroLabel}" dotColor="${heroDotColor}" variant="${heroVariant}" />`
-                    )
-                  }
-                  className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-gray-300 transition-colors"
-                >
-                  {copiedId === "hero-btn" ? (
-                    <>
-                      <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      <span className="text-emerald-300 font-semibold">Snippet Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                      <span>Copy React Code</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-
-            {/* Right Live Stage */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center">
-              <div
-                className={`w-full h-[280px] sm:h-[320px] rounded-2xl flex flex-col items-center justify-center relative border border-white/10 transition-colors duration-500 shadow-inner ${
-                  heroVariant === "default" || heroVariant === "minimal"
-                    ? "bg-[#EEEEEE]"
-                    : heroVariant === "dark"
-                    ? "bg-[#121214]"
-                    : heroVariant === "cyberpunk"
-                    ? "bg-[#060911]"
-                    : "bg-[#1E0D05]"
-                }`}
-              >
-                <div className="scale-125 sm:scale-135">
-                  <TactilePillButton
-                    label={heroLabel}
-                    dotColor={heroDotColor}
-                    variant={heroVariant}
-                    size="md"
-                    tiltAngle={-9.23}
-                  />
-                </div>
-
-                <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
-                  <span
-                    className={`text-[11px] font-mono ${
-                      heroVariant === "default" || heroVariant === "minimal"
-                        ? "text-gray-600"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    Hover to tilt • Click button below for detail page
-                  </span>
-                </div>
-              </div>
+            <div className="h-8 w-px bg-white/10" />
+            <div className="flex items-center gap-2.5">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#FF5B04] font-jakarta">0</span>
+              <span className="text-xs text-gray-400 font-mono text-left leading-tight">
+                Design<br />Compromises
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Filter Controls & Search */}
+        {/* ─────────────────────────────────────────────────────────────
+            CATEGORY OVERVIEW GRID (Primary Hub Navigation)
+           ───────────────────────────────────────────────────────────── */}
         <div className="space-y-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Category tabs */}
-            <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-white/[0.03] border border-white/10 overflow-x-auto max-w-full">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-jakarta">
+                Explore Component Categories
+              </h2>
+              <p className="text-sm text-gray-400 mt-1">
+                Select a category to view specialized live studios, props tables, and drop-in code.
+              </p>
+            </div>
+            <Link
+              href="/buttons"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-xs font-semibold text-orange-400 transition-colors self-start sm:self-auto"
+            >
+              <span>View All 13 Buttons</span>
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {CATEGORY_CARDS.map((cat) => (
+              <div
+                key={cat.id}
+                className="group relative flex flex-col justify-between p-8 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden"
+              >
+                {/* Background ambient accent */}
+                <div
+                  className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[90px] opacity-20 pointer-events-none transition-opacity duration-300 group-hover:opacity-40"
+                  style={{ backgroundColor: cat.badgeColor }}
+                />
+
+                <div className="space-y-6 relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider"
+                        style={{
+                          color: cat.badgeColor,
+                          backgroundColor: `${cat.badgeColor}15`,
+                          borderColor: `${cat.badgeColor}35`,
+                        }}
+                      >
+                        {cat.badge}
+                      </span>
+                      <span className="text-xs font-mono text-gray-400">• {cat.count}</span>
+                    </div>
+
+                    <span className="text-xs font-mono text-gray-500">Production Ready</span>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-bold text-white group-hover:text-white transition-colors font-jakarta">
+                      {cat.title}
+                    </h3>
+                    <p className="text-sm text-gray-400 mt-2 leading-relaxed">
+                      {cat.description}
+                    </p>
+                  </div>
+
+                  {/* Live Visual Feature Showcase */}
+                  <div className="p-6 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center min-h-[130px] overflow-hidden">
+                    {cat.featuredPreview}
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {cat.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/5"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between relative z-10">
+                  <Link
+                    href={cat.href}
+                    className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:text-[#FF5B04] transition-colors"
+                  >
+                    <span>Explore {cat.title}</span>
+                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </Link>
+
+                  <span className="text-xs font-mono text-gray-500">React + Tailwind</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            QUICK INSTALLATION & SETUP GUIDE
+           ───────────────────────────────────────────────────────────── */}
+        <div className="bg-[#121216] border border-white/10 rounded-3xl p-8 space-y-6 shadow-2xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-white font-jakarta">Peer Dependencies &amp; Setup</h2>
+              <p className="text-xs sm:text-sm text-gray-400 mt-1">
+                Install peer dependencies to run any component in your Next.js or React application:
+              </p>
+            </div>
+
+            <button
+              onClick={handleCopyInstall}
+              className="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors cursor-pointer self-start md:self-auto"
+            >
+              {copiedInstall ? "✓ Command Copied!" : "Copy Install Command"}
+            </button>
+          </div>
+
+          <div className="bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400 overflow-x-auto">
+            <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            LIVE COMPONENT BROWSER & CODE VIEWER
+           ───────────────────────────────────────────────────────────── */}
+        <div id="browser" className="space-y-8 scroll-mt-28">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white font-jakarta">
+                Component Catalog
+              </h2>
+              <p className="text-sm text-gray-400 mt-1">
+                Explore every individual component, inspect props, and copy drop-in snippets.
+              </p>
+            </div>
+
+            {/* Category Filter Tabs */}
+            <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-mono">
               {[
-                { id: "all", label: "All Components" },
+                { id: "all", label: "All Items" },
                 { id: "buttons", label: "Buttons & CTAs" },
-                { id: "badges", label: "Badges & Chips" },
-                { id: "surfaces", label: "Surfaces & Glass" },
+                { id: "controls", label: "Controls" },
+                { id: "badges", label: "Badges" },
+                { id: "surfaces", label: "Surfaces" },
               ].map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setSelectedCategory(tab.id as ComponentCategory)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+                  className={`px-3 py-1.5 rounded-xl transition-all ${
                     selectedCategory === tab.id
-                      ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/30"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                      ? "bg-[#FF5B04] text-white font-bold shadow-md shadow-[#FF5B04]/30"
+                      : "text-gray-400 hover:text-white"
                   }`}
                 >
                   {tab.label}
                 </button>
               ))}
             </div>
-
-            {/* Search Input */}
-            <div className="relative w-full md:w-80">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search UI components..."
-                className="w-full px-4 py-2.5 pl-10 rounded-2xl bg-white/[0.04] border border-white/10 text-white text-xs focus:outline-none focus:border-[#FF5B04] transition-colors placeholder:text-gray-500 font-mono"
-              />
-              <svg
-                className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="11" cy="11" r="8" strokeWidth="2" />
-                <path d="M21 21l-4.35-4.35" strokeWidth="2" strokeLinecap="round" />
-              </svg>
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white text-xs font-mono"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
           </div>
-        </div>
 
-        {/* Components Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredComponents.map((item) => (
-            <div
-              key={item.id}
-              className="bg-[#141417] border border-white/10 hover:border-white/20 rounded-3xl p-6 flex flex-col justify-between gap-6 transition-all duration-300 hover:shadow-xl hover:shadow-black/50 group"
+          {/* Search Bar */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search components by name, feature, or keyword (e.g. 'isometric', 'matrix', 'glass')..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#121216] border border-white/10 rounded-2xl px-5 py-3.5 pl-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5B04] transition-colors shadow-xl"
+            />
+            <svg
+              className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              {/* Card Header */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-mono text-gray-400 uppercase tracking-wider">
-                    {item.categoryLabel}
-                  </span>
-                  {item.badge && (
-                    <span
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-medium ${
-                        item.badgeVariant === "cyan"
-                          ? "bg-[#00E5BE]/10 text-[#00E5BE] border border-[#00E5BE]/20"
-                          : item.badgeVariant === "gradient"
-                          ? "bg-[#FF5B04]/10 text-[#FF5B04] border border-[#FF5B04]/20"
-                          : "bg-white/10 text-gray-300 border border-white/10"
-                      }`}
-                    >
-                      {item.badge}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+
+          {/* Component Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredComponents.map((item) => (
+              <div
+                key={item.id}
+                className="flex flex-col justify-between p-6 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl space-y-5"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/10">
+                      {item.categoryLabel}
                     </span>
-                  )}
+                    {item.badge && (
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] border border-[#FF5B04]/20">
+                        {item.badge}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-bold text-white font-jakarta">{item.name}</h3>
+                    <p className="text-xs text-gray-400 mt-1.5 leading-relaxed line-clamp-2">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <ul className="space-y-1 text-xs text-gray-300">
+                    {item.features.slice(0, 3).map((f) => (
+                      <li key={f} className="flex items-center gap-2">
+                        <span className="text-[#00E5BE] text-xs">✓</span>
+                        <span className="text-gray-300 font-sans">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-[#FF5B04] transition-colors font-jakarta">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs text-gray-400 mt-1.5 line-clamp-3 leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Live Interactive Preview Stage */}
-              <div className="bg-[#0B0B0D] rounded-2xl p-6 border border-white/5 flex items-center justify-center min-h-[160px] relative overflow-hidden">
-                {item.id === "frosted-gel-download-button" && (
-                  <div className="scale-75 sm:scale-80">
-                    <FrostedGelDownloadButton
-                      label="Download"
-                      theme="figma-blue"
-                      size="sm"
-                      stateMode="interactive"
-                    />
-                  </div>
-                )}
-
-                {item.id === "isometric-revive-button" && (
-                  <div className="scale-70 sm:scale-75">
-                    <IsometricReviveButton
-                      label="Revive Now"
-                      theme="figma"
-                      size="sm"
-                      stateMode="interactive"
-                      showGrid={false}
-                    />
-                  </div>
-                )}
-
-                {item.id === "elevated-underglow-cta" && (
-                  <div className="scale-75 sm:scale-85">
-                    <ElevatedUnderglowCTA
-                      label="Book Call"
-                      icon="phone"
-                      theme="figma"
-                      size="sm"
-                      stateMode="interactive"
-                    />
-                  </div>
-                )}
-
-                {item.id === "led-matrix-chevron" && (
-                  <div className="scale-75 sm:scale-85">
-                    <LedMatrixChevronButton
-                      theme="monochrome"
-                      size="md"
-                      stateMode="interactive"
-                    />
-                  </div>
-                )}
-
-                {item.id === "slide-grow-button" && (
-                  <div className="scale-75 sm:scale-80">
-                    <SlideGrowButton
-                      theme="silver"
-                      size="md"
-                      stateMode="interactive"
-                    />
-                  </div>
-                )}
-
-                {item.id === "vintage-leather-cta" && (
-                  <div className="scale-75 sm:scale-85">
-                    <VintageLeatherCTA
-                      theme="heritage"
-                      size="md"
-                      label="Shop ties"
-                    />
-                  </div>
-                )}
-
-                {item.id === "neumorphic-glow-cta" && (
-                  <div className="scale-80 sm:scale-90">
-                    <NeumorphicGlowCTA
-                      variant="pill"
-                      label="Learn more"
-                    />
-                  </div>
-                )}
-
-                {item.id === "arc-corner-toggle" && (
-                  <div className="scale-65 sm:scale-75">
-                    <ArcCornerToggle scale={0.7} />
-                  </div>
-                )}
-
-                {item.id === "smash-tactile-button" && (
-                  <div className="scale-80 sm:scale-85">
-                    <SmashTactileButton
-                      label="Smash"
-                      variant="figma"
-                      size="sm"
-                    />
-                  </div>
-                )}
-
-                {item.id === "scaling-capsule-button" && (
-                  <div className="scale-85 sm:scale-90">
-                    <ScalingCapsuleButton
-                      label="Workshop"
-                      variant="dark"
-                      size="sm"
-                    />
-                  </div>
-                )}
-
-                {item.id === "tactile-pill-button" && (
-                  <div className="scale-95 sm:scale-100">
-                    <TactilePillButton
-                      label="Get Started"
-                      dotColor="#54EAD8"
-                      variant="default"
-                      size="sm"
-                      tiltAngle={-9.23}
-                    />
-                  </div>
-                )}
-
-                {item.id === "animated-slide-button" && (
-                  <div className="w-full max-w-[200px]">
-                    <AnimatedButton
-                      primaryText="Hover Me"
-                      hoverText="Slide Effect →"
-                      variant="primary"
-                      className="!mt-0 !py-2.5 !px-4 !rounded-xl !bg-[#FF5B04] !text-white text-xs font-semibold"
-                    />
-                  </div>
-                )}
-
-                {item.id === "glass-badge" && (
-                  <div className="flex flex-col items-center gap-2">
-                    <GlassBadge variant="gradient" size="sm">
-                      DESIGN SYSTEM
-                    </GlassBadge>
-                    <GlassBadge variant="cyan" size="sm">
-                      INTERACTIVE UI
-                    </GlassBadge>
-                  </div>
-                )}
-
-                {item.id === "glass-surface" && (
-                  <div className="w-full">
-                    <GlassSurface
-                      width="100%"
-                      height={90}
-                      borderRadius={16}
-                      blur={15}
-                      className="p-3 flex items-center justify-between border border-white/10"
+                <div className="pt-4 border-t border-white/5 flex items-center justify-between gap-2">
+                  {item.detailUrl ? (
+                    <Link
+                      href={item.detailUrl}
+                      className="text-xs font-bold text-[#FF5B04] hover:text-orange-300 transition-colors flex items-center gap-1"
                     >
-                      <span className="text-xs font-medium text-white">Glassmorphism Card</span>
-                      <span className="w-2 h-2 rounded-full bg-[#00E5BE] shadow-[0_0_8px_#00E5BE]" />
-                    </GlassSurface>
-                  </div>
-                )}
-
-                {item.id === "hash-gradient-avatar" && (
-                  <div className="flex items-center -space-x-3">
-                    <Avatar name="Alex Rivera" size={44} />
-                    <Avatar name="Sarah Connor" size={44} />
-                    <Avatar name="David Kim" size={44} />
-                    <div className="w-11 h-11 rounded-full bg-black/80 border border-white/20 flex items-center justify-center text-xs font-mono text-gray-300">
-                      +12
-                    </div>
-                  </div>
-                )}
-
-                {item.id === "pulse-cta-button" && (
-                  <div className="relative">
-                    <div className="absolute inset-0 rounded-full bg-[#FF5B04]/40 blur-md animate-pulse" />
-                    <button className="relative px-5 py-2.5 rounded-full bg-[#FF5B04] text-white text-xs font-bold shadow-lg shadow-[#FF5B04]/40 hover:scale-105 transition-transform">
-                      Pulse Action ⚡
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* Feature Pills */}
-              <div className="flex flex-wrap gap-1.5">
-                {item.features.map((feat, i) => (
-                  <span
-                    key={i}
-                    className="px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/5 text-[11px] font-mono text-gray-400"
-                  >
-                    ✓ {feat}
-                  </span>
-                ))}
-              </div>
-
-              {/* Card Footer Actions */}
-              <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
-                {item.detailUrl ? (
-                  <Link
-                    href={item.detailUrl}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-[#FF5B04] text-white text-xs font-bold transition-all"
-                  >
-                    <span>Open Component Studio</span>
-                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                ) : (
-                  <span className="text-[11px] font-mono text-gray-500">
-                    Ready to copy
-                  </span>
-                )}
-
-                <button
-                  onClick={() => handleCopyCode(item.id, item.codeSnippet)}
-                  title="Copy Component Code"
-                  className="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-gray-300 transition-colors flex items-center gap-1.5"
-                >
-                  {copiedId === item.id ? (
-                    <>
-                      <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      <span>Studio &amp; Code</span>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
-                      <span className="text-emerald-400">Copied</span>
-                    </>
+                    </Link>
                   ) : (
-                    <>
-                      <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                      <span>Code</span>
-                    </>
+                    <span className="text-xs text-gray-500 font-mono">React Component</span>
                   )}
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
 
-        {/* Bottom CTA Banner */}
-        <div className="rounded-3xl bg-gradient-to-r from-[#18181D] via-[#1F1410] to-[#18181D] border border-white/10 p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
-          <div className="absolute top-0 right-1/4 w-72 h-72 bg-[#FF5B04]/10 rounded-full blur-[100px] pointer-events-none" />
-          <h2 className="text-2xl sm:text-3xl font-bold text-white font-jakarta">
-            Need a custom tactile component for your design system?
-          </h2>
-          <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
-            We turn complex Figma prototypes, 3D interactions, and micro-animations into production-grade React components.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link
-              href="/contact"
-              className="px-6 py-3 rounded-xl bg-[#FF5B04] text-white font-bold text-sm shadow-lg shadow-[#FF5B04]/30 hover:bg-[#FF7A00] transition-colors"
-            >
-              Get in Touch
-            </Link>
-            <Link
-              href="/buttons"
-              className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold text-sm transition-colors"
-            >
-              Explore Tactile Buttons →
-            </Link>
+                  <button
+                    onClick={() => handleCopyCode(item.id, item.codeSnippet)}
+                    className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-gray-300 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {copiedId === item.id ? "✓ Copied" : "Copy Snippet"}
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

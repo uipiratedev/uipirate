@@ -218,32 +218,6 @@ export default function Example() {
 
   return (
     <div className="min-h-screen bg-[#07080A] text-white font-sans selection:bg-blue-600/30 selection:text-blue-200">
-      {/* Top Bar Navigation */}
-      <nav className="border-b border-white/10 px-6 py-4 bg-black/40 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm">
-            <Link
-              href="/buttons"
-              className="text-white/60 hover:text-white transition-colors flex items-center gap-1.5"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m15 18-6-6 6-6" />
-              </svg>
-              Buttons Gallery
-            </Link>
-            <span className="text-white/20">/</span>
-            <span className="text-blue-400 font-medium">Frosted Gel Download Button</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Production Ready
-            </span>
-          </div>
-        </div>
-      </nav>
-
       <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
         {/* Header Section */}
         <header className="space-y-4">

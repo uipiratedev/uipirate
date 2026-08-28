@@ -17,6 +17,8 @@ const SEGMENT_LABELS: Record<string, string> = {
   terms: "Terms & Conditions",
   resources: "Resources",
   apps4sale: "Apps for Sale",
+  "ui-components": "UI Components",
+  buttons: "Buttons",
 };
 
 // Service detail page slug labels
@@ -47,6 +49,8 @@ export default function Breadcrumbs() {
       pathname === "/" ||
       pathname.startsWith("/admin") ||
       pathname.startsWith("/tools") ||
+      pathname.startsWith("/ui-components") ||
+      pathname.startsWith("/buttons") ||
       /^\/blogs\/[^/]+/.test(pathname) ||
       /^\/case-studies\/[^/]+/.test(pathname) ||
       (segments.length === 1 && !SEGMENT_LABELS[segments[0]])
@@ -111,21 +115,21 @@ export default function Breadcrumbs() {
         aria-label="Breadcrumb"
         className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-24 max-md:pt-20 pb-0"
       >
-        <ol className="flex flex-wrap items-center gap-1 text-sm text-gray-500">
+        <ol className="flex flex-wrap items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
           {breadcrumbs.map((item, index) => (
             <li key={item.href} className="flex items-center gap-1">
               {index > 0 && (
-                <span aria-hidden="true" className="text-gray-300 mx-1">
+                <span aria-hidden="true" className="text-gray-400/60 dark:text-gray-600 mx-1">
                   /
                 </span>
               )}
               {item.isCurrentPage ? (
-                <span aria-current="page" className="text-gray-900 font-medium">
+                <span aria-current="page" className="text-gray-900 dark:text-white font-medium">
                   {item.label}
                 </span>
               ) : (
                 <Link
-                  className="hover:text-[#FF5B04] transition-colors"
+                  className="hover:text-[#FF5B04] dark:hover:text-[#FF5B04] transition-colors"
                   href={item.href}
                 >
                   {item.label}
