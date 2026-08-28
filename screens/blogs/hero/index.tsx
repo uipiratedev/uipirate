@@ -1,39 +1,13 @@
 "use client";
 
-import { Select, SelectItem } from "@heroui/react";
-
 import GlassSurface from "@/components/GlassSurface";
 
 interface BlogsHeroProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
 }
 
-const BlogsHero = ({
-  searchQuery,
-  onSearchChange,
-  selectedCategory,
-  onCategoryChange,
-}: BlogsHeroProps) => {
-  const tabs = [
-    "general",
-    "SaaS Web & Mobile Apps",
-    "Motion Graphics & Video Editing",
-    "Services",
-    "UX Audits & Consultation",
-    "Graphic Design",
-    "Landing Pages & Business Websites",
-  ];
-
-  // Simple display name helper
-  const getDisplayName = (name: string) => {
-    if (name === "general") return "GENERAL";
-
-    return name.toUpperCase();
-  };
-
+const BlogsHero = ({ searchQuery, onSearchChange }: BlogsHeroProps) => {
   return (
     <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
       {/* Subtle Grid Background Pattern */}
@@ -132,59 +106,17 @@ const BlogsHero = ({
             Search blog topics
           </label>
 
-          {/* On mobile: stacked. On desktop: single pill row */}
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-0 md:rounded-full md:border md:border-slate-200 md:bg-white/80 md:px-5 md:py-3.5 md:shadow-[0_4px_20px_rgba(0,0,0,0.05)] md:backdrop-blur-md md:focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:focus-within:bg-white/95 md:transition-all md:duration-300">
-            {/* Search Input — full pill on mobile */}
-            <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:flex-1 md:border-none md:shadow-none md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
-              <input
-                aria-label="Search blog topics"
-                className="flex-1 bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B04] rounded-md text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
-                id="blog-search"
-                placeholder="Search by topic, problem, or keyword..."
-                type="search"
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-              />
-            </div>
-
-            {/* Category Selector — full width pill on mobile, inline on desktop */}
-            <div className="md:pl-3 md:ml-1 md:border-l md:border-slate-200 flex-shrink-0">
-              <Select
-                disallowEmptySelection
-                aria-label="Select category"
-                classNames={{
-                  base: "w-full md:min-w-[150px]",
-                  trigger:
-                    "bg-[#FF5B04] hover:bg-[#ff6b1e] text-white rounded-full h-10 px-4 border-none shadow-sm data-[hover=true]:bg-[#ff7a33] transition-colors w-full",
-                  value:
-                    "text-[10px] md:text-xs font-semibold tracking-[0.1em] uppercase group-data-[has-value=true]:text-white",
-                  popoverContent: "rounded-xl",
-                  listbox: "p-0",
-                  selectorIcon: "text-white",
-                }}
-                renderValue={() => (
-                  <div className="flex items-center gap-2">
-                    <span className="text-white whitespace-nowrap">
-                      {getDisplayName(selectedCategory)}
-                    </span>
-                  </div>
-                )}
-                selectedKeys={[selectedCategory]}
-                onSelectionChange={(keys) => {
-                  const selected = Array.from(keys)[0] as string;
-
-                  if (selected) {
-                    onCategoryChange(selected);
-                  }
-                }}
-              >
-                {tabs.map((tab) => (
-                  <SelectItem key={tab} textValue={tab}>
-                    {tab}
-                  </SelectItem>
-                ))}
-              </Select>
-            </div>
+          {/* Single pill row, full width on mobile */}
+          <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white/80 px-4 py-3.5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] backdrop-blur-md md:focus-within:shadow-[0_8px_30px_rgba(0,0,0,0.08)] md:focus-within:bg-white/95 md:transition-all md:duration-300">
+            <input
+              aria-label="Search blog topics"
+              className="flex-1 bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5B04] rounded-md text-slate-800 placeholder:text-slate-400 text-sm md:text-base font-medium"
+              id="blog-search"
+              placeholder="Search by topic, problem, or keyword..."
+              type="search"
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
           </div>
         </div>
       </div>

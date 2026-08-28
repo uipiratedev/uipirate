@@ -26,24 +26,22 @@ const AnimatedHeadline = () => {
 
   // Split headline into words with specific animations
   const words = [
-    { text: "Designing", delay: 0.05 },
-    { text: "AI-Driven", delay: 0.1 },
-    { text: "SaaS", delay: 0.15 },
-    { text: "Products", delay: 0.2, newLine: true },
-    { text: "That", delay: 0.25 },
+    { text: "A", delay: 0.05 },
+    { text: "Design", delay: 0.1 },
+    { text: "&", delay: 0.15 },
+    { text: "Development", delay: 0.2 },
+    { text: "Agency", delay: 0.25, newLine: true },
+    { text: "for", delay: 0.3 },
+
   ];
 
   const highlightWords = [
-    {
-      text: "Convert,",
-      delay: 0.3,
-      isConvert: true,
-      extraClass: "max-md:mt-1 md:mt-4",
-    },
-    { text: "Scale", delay: 0.4 },
-    { text: "&", delay: 0.5 },
+    { text: "SaaS", delay: 0.35, extraClass: "max-md:mt-1 md:mt-4" },
+    { text: "Teams", delay: 0.4, newLine: true },
+    { text: "That", delay: 0.45, },
+    { text: "Need", delay: 0.5 },
+    { text: "to", delay: 0.55 },
     { text: "Ship", delay: 0.6, isOrange: true },
-    { text: "Faster", delay: 0.7, isOrange: true },
   ];
 
   return (
@@ -70,11 +68,10 @@ const AnimatedHeadline = () => {
             {index === 2 && <br className="max-md:block hidden" />}
             <motion.span
               animate={revealed ? "visible" : "hidden"}
-              className={`inline-block ${word.extraClass || ""} ${
-                word.isConvert
-                  ? "py-1 px-2 rounded bg-gradient-to-r from-orange-400/30 to-orange-400/30 bg-[length:100%_100%]"
-                  : ""
-              }`}
+              className={`inline-block ${word.extraClass || ""} ${(word as any).isOrange
+                ? "py-1 px-2 rounded bg-gradient-to-r from-orange-400/30 to-orange-400/30 bg-[length:100%_100%]"
+                : ""
+                }`}
               custom={word.delay}
               initial="hidden"
               variants={wordRevealVariant}

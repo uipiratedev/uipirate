@@ -58,21 +58,9 @@ and performance optimization.
 Custom design tokens, branded UI kits, documented and dev-ready Angular/React component libraries
 for scalable product teams. Timeline: 1-4 weeks.
 
-### 5. Graphic Design
-Brand identity, infographics, newsletters, website graphics, social media visuals, and
-print-ready marketing materials.
-
-### 6. Motion Graphics & Video Editing
-2D/3D animations, social media reels and ads, explainer videos, sound design, color grading,
-and motion graphics for web and product.
-
-### 7. UX Audits & Consultation
+### 5. UX Audits & Consultation
 Heuristic analysis, usability testing, friction point identification, and strategic UX
 recommendations for existing products.
-
-### 8. 3D Animation & Rendering
-3D product visualization, architectural rendering, and animated 3D assets for marketing and
-product use.
 
 ---
 

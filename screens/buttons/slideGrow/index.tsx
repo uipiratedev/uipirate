@@ -1,0 +1,413 @@
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import {
+  SlideGrowButton,
+  SlideGrowTheme,
+  SlideGrowStateMode,
+  SlideGrowInteractionMode,
+  SlideGrowSize,
+} from "@/components/SlideGrowButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
+
+export default function SlideGrowScreen() {
+  const [theme, setTheme] = useState<SlideGrowTheme>("silver");
+  const [size, setSize] = useState<SlideGrowSize>("md");
+  const [stateMode, setStateMode] = useState<SlideGrowStateMode>("interactive");
+  const [interactionMode, setInteractionMode] = useState<SlideGrowInteractionMode>("both");
+  const [startLabel, setStartLabel] = useState("Get Started");
+  const [activeLabel, setActiveLabel] = useState("Lets Grow!");
+  const [completeCount, setCompleteCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = `"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+
+export type SlideGrowTheme = "silver" | "uipirate" | "dark" | "cyberpunk" | "emerald";
+export type SlideGrowSize = "sm" | "md" | "lg";
+
+export interface SlideGrowButtonProps {
+  startLabel?: string;
+  activeLabel?: string;
+  theme?: SlideGrowTheme;
+  size?: SlideGrowSize;
+  onComplete?: () => void;
+  className?: string;
+}
+
+export function SlideGrowButton({
+  startLabel = "Get Started",
+  activeLabel = "Lets Grow!",
+  theme = "silver",
+  size = "md",
+  onComplete,
+  className = "",
+}: SlideGrowButtonProps) {
+  const [isSlid, setIsSlid] = useState(false);
+
+  const themeConfig = {
+    silver: {
+      bg: "bg-[#E6E8ED]",
+      border: "border-white/80",
+      channel: "bg-[#0077FF]",
+      text: "text-[#333333]",
+      slidText: "text-white",
+    },
+    uipirate: {
+      bg: "bg-[#1C1815]",
+      border: "border-orange-500/30",
+      channel: "bg-[#FF5B04]",
+      text: "text-[#F5F5F5]",
+      slidText: "text-white",
+    },
+  }[theme as "silver" | "uipirate"] || {
+    bg: "bg-[#E6E8ED]",
+    border: "border-white/80",
+    channel: "bg-[#0077FF]",
+    text: "text-[#333333]",
+    slidText: "text-white",
+  };
+
+  return (
+    <div
+      className={\`relative inline-flex items-center select-none p-2 rounded-full \${themeConfig.bg} \${themeConfig.border} border shadow-xl \${className}\`}
+    >
+      <div className="relative w-[230px] h-[52px] flex items-center justify-between px-6 rounded-full overflow-hidden">
+        {/* Animated Slide Channel */}
+        <motion.div
+          animate={{ width: isSlid ? "100%" : "0%" }}
+          transition={{ type: "spring", stiffness: 350, damping: 28 }}
+          className={\`absolute left-0 top-0 bottom-0 \${themeConfig.channel} rounded-full\`}
+        />
+
+        {/* Text */}
+        <span
+          className={\`relative z-10 font-bold text-sm transition-colors duration-200 \${
+            isSlid ? themeConfig.slidText : themeConfig.text
+          }\`}
+        >
+          {isSlid ? activeLabel : startLabel}
+        </span>
+
+        {/* Drag / Click Slider Knob */}
+        <motion.button
+          type="button"
+          onClick={() => {
+            setIsSlid((s) => !s);
+            if (!isSlid && onComplete) onComplete();
+          }}
+          animate={{ x: isSlid ? 0 : 0 }}
+          className="relative z-10 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer focus:outline-none"
+        >
+          <svg
+            className={\`w-4 h-4 text-neutral-800 transition-transform duration-300 \${
+              isSlid ? "rotate-180" : ""
+            }\`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+          </svg>
+        </motion.button>
+      </div>
+    </div>
+  );
+}`;
+
+  const usageCode = `import { SlideGrowButton } from "@/components/SlideGrowButton";
+
+export default function Example() {
+  return (
+    <SlideGrowButton
+      startLabel="${startLabel}"
+      activeLabel="${activeLabel}"
+      theme="${theme}"
+      size="${size}"
+      onComplete={() => console.log("Slide unlocked!")}
+    />
+  );
+}`;
+
+  const cssOnlyCode = `/* Slide Grow Design System Tokens */
+.slide-grow-chassis {
+  width: 247px;
+  height: 76px;
+  border-radius: 48px;
+  background: linear-gradient(180deg, #F0F2F5 0%, #D8DCE3 100%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.slide-grow-channel {
+  background: #0077FF;
+  border-radius: 24px;
+}`;
+
+  return (
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07080B] text-white pt-6 pb-20 selection:bg-blue-500/30 selection:text-blue-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span>Interactive Slide Action</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-blue-400">Swipe to Unlock</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Slide to Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Tactile Slider</span>
+            </h1>
+
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Smooth gesture swipe-to-grow slider button featuring dynamic laser channel reveal, spring damping, and physical knob transformation.
+            </p>
+          </header>
+
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#13151D] to-[#0A0C10]">
+            <div className="relative z-10 flex flex-col items-center gap-6">
+              <SlideGrowButton
+                startLabel={startLabel}
+                activeLabel={activeLabel}
+                theme={theme}
+                size={size}
+                stateMode={stateMode}
+                interactionMode={interactionMode}
+                onComplete={() => setCompleteCount((c) => c + 1)}
+              />
+
+              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                <span>Completions:</span>
+                <span className="text-white font-semibold">{completeCount}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Controls Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-6 border-t border-neutral-800 bg-neutral-900/40 text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
+              <select
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as SlideGrowTheme)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="silver" className="bg-neutral-900">Brushed Silver (Figma 1:1)</option>
+                <option value="uipirate" className="bg-neutral-900">UI Pirate Orange</option>
+                <option value="dark" className="bg-neutral-900">Obsidian Slate</option>
+                <option value="cyberpunk" className="bg-neutral-900">Cyberpunk Violet</option>
+                <option value="emerald" className="bg-neutral-900">Emerald</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Resting Label</label>
+              <input
+                type="text"
+                value={startLabel}
+                onChange={(e) => setStartLabel(e.target.value)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Active Label</label>
+              <input
+                type="text"
+                value={activeLabel}
+                onChange={(e) => setActiveLabel(e.target.value)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+              <div className="flex gap-1">
+                {(["sm", "md", "lg"] as SlideGrowSize[]).map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setSize(s)}
+                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
+                      size === s ? "bg-blue-600 text-white font-bold" : "bg-neutral-800 text-gray-400"
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            QUICK INSTALLATION & DEPENDENCIES SECTION
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+          <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl p-6 sm:p-8 space-y-6">
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Install required peer dependencies for Framer Motion spring dragging:
+            </p>
+
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-neutral-800 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+              <span>npm install framer-motion clsx</span>
+              <button
+                onClick={handleCopyInstall}
+                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
+              >
+                {copiedInstall ? "Copied Command!" : "Copy Command"}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            CODE EXPORTER TABS
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
+            <button
+              onClick={() =>
+                handleCopy(
+                  activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode,
+                  activeCodeTab
+                )
+              }
+              className="text-xs font-mono text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
+            </button>
+          </div>
+
+          <div className="bg-neutral-900/90 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-neutral-800 bg-white/[0.02]">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white font-mono">
+                  {activeCodeTab === "component" ? "SlideGrowButton.tsx" : activeCodeTab === "usage" ? "Usage.tsx" : "Tokens.css"}
+                </span>
+                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+              </div>
+
+              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                <button
+                  onClick={() => setActiveCodeTab("component")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "component" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Component.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("usage")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "usage" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Usage.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("css")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "css" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Tokens.css
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 bg-[#08080C] overflow-x-auto max-h-[550px]">
+              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                <code>
+                  {activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode}
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            PROPS & API REFERENCE TABLE
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+          <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-neutral-800 bg-white/[0.02] text-gray-400 font-mono">
+                    <th className="py-3.5 px-6 font-semibold">Prop</th>
+                    <th className="py-3.5 px-6 font-semibold">Type</th>
+                    <th className="py-3.5 px-6 font-semibold">Default</th>
+                    <th className="py-3.5 px-6 font-semibold">Description</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-800 text-gray-300 font-mono text-xs">
+                  <tr>
+                    <td className="py-3 px-6 text-blue-400 font-semibold">startLabel</td>
+                    <td className="py-3 px-6 text-blue-300">string</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;Get Started&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Initial label displayed in resting state</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-blue-400 font-semibold">activeLabel</td>
+                    <td className="py-3 px-6 text-blue-300">string</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;Lets Grow!&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Active label revealed when slider completes</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-blue-400 font-semibold">theme</td>
+                    <td className="py-3 px-6 text-blue-300">SlideGrowTheme</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;silver&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Color scheme theme preset</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-blue-400 font-semibold">onComplete</td>
+                    <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
+                    <td className="py-3 px-6 text-gray-400">undefined</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Callback fired when slider is pulled to completion</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="gesture swipe sliders or interactive web controls" />
+      </div>
+    </div>
+  </PageWrapper>
+  );
+}

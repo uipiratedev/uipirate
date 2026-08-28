@@ -16,26 +16,11 @@ const VISUAL_MAPPING: Record<string, any> = {
   "Design & Frontend Development": Visuals.VisualFrontend,
   "SEO Performance & AI-Readable Websites": Visuals.VisualSEO,
   "Fully Responsive Experience": Visuals.VisualResponsive,
-  // Graphic
-  "Brand & Marketing Visuals": Visuals.VisualBrand,
-  "Website & Product Assets": Visuals.VisualWebsiteProduct,
-  "Infographics & Newsletters": Visuals.VisualInfo,
-  "Multi-Format Graphics": Visuals.VisualMulti,
-  // Motion
-  "Product UI Animations & Ads": Visuals.VisualUI,
-  "Lottie & JSON Animations": Visuals.VisualLottie,
-  "Website Motion & Interactions": Visuals.VisualWeb,
-  "Developer-Ready Files": Visuals.VisualDev,
   // Audit
   "Heuristic UX Audit Report": Visuals.VisualAudit,
   "Drop-Off & Friction Insights": Visuals.VisualFriction,
   "Flow & Interaction Review": Visuals.VisualFlow,
   "Walkthrough Video": Visuals.VisualVideo,
-  // 3D
-  "Custom 3D Assets": Visuals.VisualAssets,
-  "Web-Ready 3D Animations": Visuals.VisualAnimations,
-  "3D Modeling & Animations": Visuals.VisualModeling,
-  "Website & Product Integration": Visuals.VisualIntegration,
 };
 
 const WhatYouGetCard = ({ heading, description, image, img }: any) => {

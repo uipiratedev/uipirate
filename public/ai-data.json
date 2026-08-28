@@ -94,7 +94,7 @@
       "provider": {
         "@id": "https://uipirate.com/#organization"
       },
-      "description": "Full-service product design and frontend development services — from idea to shipped product. Includes product thinking, competitive analysis, information architecture, UX/UI design, Angular development, React development, complex enterprise application design, design systems, SaaS applications, mobile apps, graphic design, motion graphics, and frontend engineering",
+      "description": "Full-service product design and frontend development services — from idea to shipped product. Includes product thinking, competitive analysis, information architecture, UX/UI design, Angular development, React development, complex enterprise application design, design systems, SaaS applications, mobile apps, and frontend engineering",
       "serviceType": [
         "UI Design",
         "UX Design",
@@ -103,8 +103,6 @@
         "Next.js Development",
         "UI Development",
         "Frontend Engineering",
-        "Graphic Design",
-        "Motion Graphics",
         "SaaS Design",
         "Mobile App Design",
         "Enterprise Software Design",

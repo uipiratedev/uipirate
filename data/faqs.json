@@ -8,7 +8,6 @@
         "✅ UI Development (React, Framer, Webflow)",
         "✅ Landing Pages & E-commerce",
         "✅ Design Systems & Component Libraries",
-        "✅ Motion Graphics, 3D Animation & Brand Design",
         "✅ UX Audits & Product Consultation"
       ],
       "title2": "Whether you need design-only, dev-only, or full product delivery — we support end-to-end execution."
@@ -62,17 +61,6 @@
         "🎯 Tokens (colors, spacing, typography)",
         "📦 Reusable components",
         "🤮 Consistent scale across web & mobile"
-      ],
-      "title2": ""
-    },
-    {
-      "heading": "🎥️ Do you work on motion design, 3D assets, or video editing?",
-      "title1": "Yes — we create visuals for product marketing & UI:",
-      "list": [
-        "🚀 App walkthroughs",
-        "🎥 Promo videos",
-        "📦 3D product visuals",
-        "🎬 Onboarding animations"
       ],
       "title2": ""
     },
@@ -169,60 +157,6 @@
       "title2": ""
     }
   ],
-  "3D Animation & Rendering": [
-    {
-      "heading": "🖊️ What files do I need to provide?",
-      "title1": "You can share any available resources to get started:",
-      "list": [
-        "🖌️ Sketches or concepts",
-        "📸 Product photos",
-        "🖥️ References or mockups",
-        "🔗 Blender or 3D source files"
-      ],
-      "title2": "We’ll guide you if you’re unsure what’s needed."
-    },
-    {
-      "heading": "🎥 Can you do animations for websites or product tours?",
-      "title1": "Yes! We deliver both web and app-friendly motion assets:",
-      "list": [
-        "🔄 Interactive 3D tours",
-        "📈 Product demos",
-        "🎥 Feature animations"
-      ],
-      "title2": "Web-ready and responsive across devices."
-    },
-    {
-      "heading": "🔖 What formats will I receive?",
-      "title1": "All deliverables come optimized for quality and performance:",
-      "list": [
-        "📹 MP4 (HD/4K)",
-        "🔐 WebM or GIF",
-        "🖼️ PNG/JPEG stills",
-        "🔖 Source files (optional)"
-      ],
-      "title2": "Ready for web, presentations, and marketing."
-    },
-    {
-      "heading": "📢 Is this suitable for crowdfunding or product launches?",
-      "title1": "Absolutely — these visuals boost engagement instantly:",
-      "list": [
-        "🚀 Product showcases",
-        "📲 Launch campaigns",
-        "🎉 Marketing content"
-      ],
-      "title2": "Communicate your product’s value visually and powerfully."
-    },
-    {
-      "heading": "🧐 What if I don’t know the animation style I want?",
-      "title1": "No worries — we help you choose what fits best:",
-      "list": [
-        "🔍 Reference-based guidance",
-        "💌 Example style boards",
-        "👤 Collaborative exploration"
-      ],
-      "title2": "You don’t need to be a 3D expert — we’ve got you covered."
-    }
-  ],
   "UX Audits & Consultation": [
     {
       "heading": "🧠 Do I need a live product for this?",
@@ -283,130 +217,6 @@
         "📄 Includes full UX report + recommendations"
       ],
       "title2": "We keep delivery quick and insights highly actionable."
-    }
-  ],
-  "Motion Graphics & Video Editing": [
-    {
-      "heading": "🎞️ What if I don’t have footage?",
-      "title1": "No worries — we can create complete videos using stock visuals or animations.",
-      "list": [
-        "🎬 Use of premium stock footage or animations",
-        "📦 Custom motion graphics to fill content gaps",
-        "🎨 Visual style matched to your brand"
-      ],
-      "title2": "Just share your vision — we’ll handle the rest."
-    },
-    {
-      "heading": "🎥 Do you work with YouTubers or influencers?",
-      "title1": "Yes — we regularly collaborate with creators and influencers.",
-      "list": [
-        "📺 YouTube intros & outros",
-        "🎬 Channel trailers & reels",
-        "✨ Branded edits for social platforms"
-      ],
-      "title2": "Perfect for content creators looking for professional polish."
-    },
-    {
-      "heading": "⏱️ What’s the usual video length?",
-      "title1": "We tailor video duration to your goals and platform needs.",
-      "list": [
-        "📹 Most videos: 60–90 seconds",
-        "🎞️ Short reels or stories available",
-        "📢 Custom durations for campaigns"
-      ],
-      "title2": "We’ll plan the perfect length for impact and engagement."
-    },
-    {
-      "heading": "🎧 Can you add music, sound effects, or subtitles?",
-      "title1": "Absolutely — we handle all audio and localization elements.",
-      "list": [
-        "🎵 Background music & sound design",
-        "💬 Captions & subtitles",
-        "🌍 Multi-language or localized versions"
-      ],
-      "title2": "We make sure your content connects across audiences."
-    },
-    {
-      "heading": "📦 What formats will I receive?",
-      "title1": "All final files are export-ready for web or social media.",
-      "list": [
-        "🎞️ MP4 or WebM exports",
-        "📱 Optional square, vertical & wide ratios",
-        "💾 Optimized file sizes for different platforms"
-      ],
-      "title2": "Every delivery is optimized for quality and flexibility."
-    },
-    {
-      "heading": "🧩 Will I get the source file?",
-      "title1": "Yes — we can include project source files if you need future edits.",
-      "list": [
-        "🎬 After Effects or Premiere Pro files",
-        "📁 Organized project folder structure",
-        "🔄 Ready for internal or agency use"
-      ],
-      "title2": "Just let us know if you’d like editable source files included."
-    }
-  ],
-  "Graphic Design": [
-    {
-      "heading": "🖨️ What formats will I receive?",
-      "title1": "We deliver print-ready and digital design files suitable for all uses.",
-      "list": [
-        "📄 Print-ready PDFs",
-        "🎨 Layered source files (AI / PSD / Figma)",
-        "📏 Custom sizes or specs on request"
-      ],
-      "title2": "You’ll get everything you need for print or digital deployment."
-    },
-    {
-      "heading": "🏭 Do you handle printing too?",
-      "title1": "We don’t print directly, but we’ll ensure your files are ready for any printer or press.",
-      "list": [
-        "🖋️ CMYK and bleed setup included",
-        "📦 Fully exportable production files",
-        "🧾 Printer-ready specifications"
-      ],
-      "title2": "You can send our files directly to your preferred print partner."
-    },
-    {
-      "heading": "🎯 Can you match my brand guidelines?",
-      "title1": "Absolutely — we design within your brand framework for perfect alignment.",
-      "list": [
-        "🎨 Follows brand colors, fonts & tone",
-        "📘 Consistent with your visual identity",
-        "🔍 Pre-design review for brand accuracy"
-      ],
-      "title2": "Your visuals will stay 100% on-brand from the first draft."
-    },
-    {
-      "heading": "🔁 How many revisions are included?",
-      "title1": "We typically offer 2–3 feedback rounds depending on project size.",
-      "list": [
-        "✏️ Multiple refinement cycles",
-        "🗓️ Clear review checkpoints",
-        "📈 Final approval before delivery"
-      ],
-      "title2": "We make sure you’re completely satisfied before sign-off."
-    },
-    {
-      "heading": "📱 What if I need both print and social versions of a design?",
-      "title1": "We can adapt your visuals for any format or platform.",
-      "list": [
-        "📄 Print layouts",
-        "📱 Social media adaptations",
-        "💬 Consistent look across mediums"
-      ],
-      "title2": "Just mention this in your brief — we’ll handle the rest."
-    },
-    {
-      "heading": "🌍 Is this service available globally?",
-      "title1": "Yes — we work with international clients seamlessly through async communication.",
-      "list": [
-        "🌐 Time-zone flexible workflows",
-        "📦 Online delivery & feedback",
-        "🧭 Experience across 6+ countries"
-      ],
-      "title2": "We make global collaboration smooth and efficient."
     }
   ],
   "Landing Pages & Business Websites": [
@@ -480,7 +290,6 @@
         "⚛️ UI Development (React, Framer, Webflow)",
         "🌐 Landing Pages & E-commerce",
         "🧩 Design Systems & Component Libraries",
-        "🎞️ Motion Graphics, 3D Animation, and Brand Design",
         "🔍 UX Audits & Product Consultation"
       ],
       "title2": "Whether you need design-only, dev-only, or both — we support end-to-end product execution."
@@ -501,8 +310,7 @@
       "list": [
         "🗓️ Landing Pages: 2–4 weeks",
         "📱 SaaS Apps: 1–2 months",
-        "📘 Design Systems: 2–3 months",
-        "🎥 Motion/3D: 1–4 weeks"
+        "📘 Design Systems: 2–3 months"
       ],
       "title2": "We provide clear schedules and milestone-based delivery for each service."
     },
@@ -536,16 +344,6 @@
         "📱 Consistency across web, mobile, and future features"
       ],
       "title2": "Your product stays unified and consistent as it grows."
-    },
-    {
-      "heading": "🎬 Do you work on motion design, 3D assets, or video editing?",
-      "title1": "Yes! We bring brands to life with motion and 3D visuals.",
-      "list": [
-        "🎞️ App animations and onboarding flows",
-        "📺 Promo videos and SaaS walkthroughs",
-        "🧊 3D product renders and visual branding"
-      ],
-      "title2": "Our motion and 3D services enhance storytelling and engagement."
     },
     {
       "heading": "🔄 Do you offer support after the project ends?",

@@ -227,7 +227,7 @@ const LandingHero = () => {
 
               {/* Text */}
               <p className="badge-text relative z-10 max-md:text-[12px] ml-2 pl-2 max-md:pl-0 max-md:ml-0 max-md:text-center">
-                EMPOWERING 40+ Business ACROSS 6 COUNTRIES
+                50+ Products Shipped Across 6 Countries
               </p>
             </div>
           </GlassSurface>
@@ -236,9 +236,9 @@ const LandingHero = () => {
             <AnimatedHeadline />
           </div>
           <p className="sub-header">
-            We help fast-growing SaaS and enterprise teams build world-class
-            dashboards, onboarding flows, and AI-powered product
-            experiences—from MVP to complete enterprise applications.
+            You have a product to build. You need someone who can think through it, 
+            design it, and ship it - not hand you a Figma file and walk away. 
+            That's what we do.
           </p>
           <div
             className=" max-xl:my-6 xl:my-8 max-md:my-6 flex items-center flex-col max-md:px-2 button-spring-animate relative gap-3"
@@ -356,10 +356,23 @@ const LandingHero = () => {
                 </p>
               </div>
             </Link>
+            <a
+              className="flex items-center gap-2 mt-1 text-xs font-semibold text-gray-600 hover:text-black transition-colors"
+              href="https://www.upwork.com/freelancers/~010b0f5459bfcf5ed8/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <img
+                alt="Upwork"
+                className="w-4 h-4"
+                src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280706/up_a4rhmj.svg"
+              />
+              Reviewed on Upwork
+            </a>
             <div className="w-[100%] z-10">
               <a
                 className="w-full"
-                href="https://wa.link/i35lma"
+                href="https://cal.com/ui-pirate/15min"
                 rel="noreferrer"
                 target="_blank"
               >
@@ -378,13 +391,22 @@ const LandingHero = () => {
                   variant="bordered"
                 >
                   <div className="flex flex-row items-center gap-3">
-                    <img
-                      alt="WhatsApp Logo"
-                      className="w-[30px] h-[30px] max-md:w-[20px] max-md:h-[20px]"
-                      src="https://res.cloudinary.com/damm9iwho/image/upload/v1729511358/whatsapp_zssebt.svg"
-                    />
+                    <svg
+                      className="w-[24px] h-[24px] max-md:w-[20px] max-md:h-[20px] text-black"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
                     <p className="text-base font-semibold max-md:text-sm max-md:font-regular">
-                      Lets Talk via Whatsapp
+                      Book a 15-Min Call →
                     </p>
                   </div>
                 </Button>

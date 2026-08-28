@@ -8,8 +8,13 @@ import LandingMarquee from "./marquee";
 import Pricing from "./pricing";
 import TheTeam from "./theTeam";
 import LandingWhoWeAre from "./whoWeAre";
+import FeaturedCaseStudy, {
+  type FeaturedCaseStudyData,
+} from "./featuredCaseStudy";
+import MiniProcess from "./miniProcess";
 
 import PageWrapper from "@/components/PageWrapper";
+import PricingPerfectFor from "@/screens/pricing/perfectFor";
 
 // Dynamically import below-the-fold components for better initial load performance
 const LandingAppScreen = dynamic(() => import("./appScreen"), {
@@ -52,12 +57,18 @@ const TopThree = dynamic(() => import("./top3/topThree"), {
   loading: () => <div className="min-h-[400px]" />,
 });
 
-const Landing = memo(function Landing() {
+interface LandingProps {
+  featuredCaseStudy?: FeaturedCaseStudyData | null;
+}
+
+const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
   return (
     <PageWrapper showFloatingButton={false}>
       <div className="space-y-20 max-md:space-y-16">
         <LandingHero />
         <LandingMarquee />
+
+        <PricingPerfectFor />
 
         <div className="pt-20 max-md:pt-16">
           <MiniService />
@@ -69,7 +80,11 @@ const Landing = memo(function Landing() {
           <LandingAppScreen />
         </div> */}
 
+        <MiniProcess />
+
         <LandingBehanceFramor />
+
+        <FeaturedCaseStudy study={featuredCaseStudy ?? null} />
 
         <LandingWhoWeAre />
 

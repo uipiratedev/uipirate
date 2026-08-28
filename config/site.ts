@@ -12,7 +12,7 @@ export const siteConfig = {
         {
           category: "UX/UI Design",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
-          href: "/services/SaaS-Web-&-Mobile-Apps",
+          href: "/services/UX-UI-Design",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
@@ -20,7 +20,7 @@ export const siteConfig = {
         {
           category: "Saas & AI Development",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
-          href: "/services/SaaS-Web-&-Mobile-Apps",
+          href: "/services/SaaS-&-AI-Development",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
@@ -35,34 +35,19 @@ export const siteConfig = {
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670796/landing_skjuro.svg",
         },
         {
-          category: "Graphic Design",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/graphic_s0cmgk.svg",
-          href: "/services/Graphic-Design",
-        },
-        {
-          category: "Motion Graphic",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/motion_dqrdcl.svg",
-          href: "/services/Motion-Graphics-&-Video-Editing",
-        },
-        {
           category: "UX Audits & Consultation",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
           href: "/services/UX-Audits-&-Consultation",
         },
-        {
-          category: "3D Assets & Animation",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/3d_wtkihl.svg",
-          href: "/services/3D-Animation-&-Rendering",
-        },
       ],
+    },
+    {
+      label: "Works",
+      href: "/case-studies",
     },
     {
       label: "Pricing",
       href: "/pricing",
-    },
-    {
-      label: "Tools",
-      href: "/tools",
     },
     {
       label: "About",
@@ -98,14 +83,6 @@ export const siteConfig = {
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670805/faq_gn5mmv.svg",
         },
         {
-          category: "Community Insights",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612675/file_1_fvzqpk.svg",
-          href: "/community",
-          isLargeCard: true,
-          bgImage:
-            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/community_ovswiv.svg",
-        },
-        {
           category: "Free Tools",
           icon: "🛠️",
           href: "/tools",
@@ -113,16 +90,20 @@ export const siteConfig = {
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
         },
+        {
+          category: "UI Components",
+          icon: "🧩",
+          href: "/ui-components",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
+        },
+        {
+          category: "3D Tactile Buttons",
+          icon: "🔘",
+          href: "/buttons",
+        },
       ],
-    },
-
-    {
-      label: "ProPirates",
-      href: "https://propirates.com",
-    },
-    {
-      label: "Apps4Sale",
-      href: "/apps4sale",
     },
   ],
   navMenuItems: [
@@ -146,6 +127,8 @@ export const siteConfig = {
         { label: "Case Studies", href: "/case-studies" },
         { label: "FAQs", href: "/faqs" },
         { label: "Free Tools", href: "/tools" },
+        { label: "UI Components", href: "/ui-components" },
+        { label: "3D Buttons", href: "/buttons" },
       ],
     },
     {

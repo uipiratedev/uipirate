@@ -39,11 +39,8 @@ const projectTypes = [
   "Landing Page",
   "Business Website",
   "Portfolio / Personal Site",
-  "Graphic Design",
   "Branding & Visual Identity",
-  "Motion Graphics",
   "Infographics & Presentation",
-  "3D Assets",
   "UX Audit & Consultation",
 ];
 
