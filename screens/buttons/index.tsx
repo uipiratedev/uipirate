@@ -13,6 +13,7 @@ import { SlideGrowButton } from "@/components/SlideGrowButton";
 import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { IsometricReviveButton } from "@/components/IsometricReviveButton";
+import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
 
 interface ButtonCatalogItem {
   id: string;
@@ -26,6 +27,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "frosted-gel-download",
+    name: "Frosted Gel Download Button",
+    badge: "Figma Master",
+    badgeColor: "#2626FF",
+    figmaNode: "Nodes 4604:126 & 4604:152",
+    description:
+      "Dual-pill neumorphic split button with elevated ceramic pill, frosted glass cloud download tile, internal optical refraction rings, and volumetric blue underglow flare.",
+    href: "/buttons/frosted-gel-download-button",
+    features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "STANDERD & HOVER states"],
+  },
   {
     id: "isometric-revive",
     name: "Isometric 3D Revive Button",
