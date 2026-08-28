@@ -14,6 +14,7 @@ import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
+import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 
 interface ButtonCatalogItem {
   id: string;
@@ -265,6 +266,17 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "frosted-gel-download" && (
+                  <div className="scale-85 sm:scale-95 py-2">
+                    <FrostedGelDownloadButton
+                      label="Download now"
+                      theme="figma-blue"
+                      size="md"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
                 {btn.id === "isometric-revive" && (
                   <div className="scale-75 sm:scale-85 py-1">
                     <IsometricReviveButton
@@ -325,6 +337,12 @@ export default function ButtonHubScreen() {
                       variant="pill"
                       label="Learn more"
                     />
+                  </div>
+                )}
+
+                {btn.id === "arc-corner-toggle" && (
+                  <div className="scale-75 sm:scale-85 py-1">
+                    <ArcCornerToggle scale={0.75} />
                   </div>
                 )}
 
