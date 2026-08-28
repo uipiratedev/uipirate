@@ -21,7 +21,7 @@ interface ButtonCatalogItem {
   name: string;
   badge: string;
   badgeColor: string;
-  figmaNode?: string;
+  tech: string;
   description: string;
   href: string;
   features: string[];
@@ -31,42 +31,42 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
   {
     id: "frosted-gel-download",
     name: "Frosted Gel Download Button",
-    badge: "Figma Master",
+    badge: "Glassmorphism",
     badgeColor: "#2626FF",
-    figmaNode: "Nodes 4604:126 & 4604:152",
+    tech: "React • Framer • Tailwind",
     description:
       "Dual-pill neumorphic split button with elevated ceramic pill, frosted glass cloud download tile, internal optical refraction rings, and volumetric blue underglow flare.",
     href: "/buttons/frosted-gel-download-button",
-    features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "STANDERD & HOVER states"],
+    features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "Interactive hover lift"],
   },
   {
     id: "isometric-revive",
     name: "Isometric 3D Revive Button",
-    badge: "Figma Master",
+    badge: "Isometric 3D",
     badgeColor: "#FFB020",
-    figmaNode: "Nodes 115:5957 & 115:6002",
+    tech: "Framer 3D • Tailwind",
     description:
       "Authentic 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and blinding optical neon underglow.",
     href: "/buttons/isometric-revive-button",
-    features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "STANDERD & HOVER states"],
+    features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "Dynamic spring physics"],
   },
   {
     id: "elevated-underglow",
     name: "Elevated Underglow 3D Button",
-    badge: "Figma Master",
+    badge: "3D Tactile Lift",
     badgeColor: "#0077FF",
-    figmaNode: "Nodes 55:37 & 55:40",
+    tech: "React • Framer Motion",
     description:
       "Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.",
     href: "/buttons/elevated-underglow-cta",
-    features: ["13px Spring lift", "Electric blue 3D underlayer", "STANDERD & HOVER states", "Phone call icon"],
+    features: ["13px Spring lift", "Electric blue 3D underlayer", "Interactive states", "Phone call icon"],
   },
   {
     id: "led-matrix-chevron",
     name: "LED Dot Matrix Chevron Button",
-    badge: "Figma Master",
+    badge: "Cyberpunk Matrix",
     badgeColor: "#10B981",
-    figmaNode: "Nodes 19:6101 & 19:6495",
+    tech: "React • Tailwind • CSS Grid",
     description:
       "Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.",
     href: "/buttons/led-matrix-chevron",
@@ -75,20 +75,20 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
   {
     id: "slide-grow",
     name: "Swipe to Grow / Slide Button",
-    badge: "Figma Master",
+    badge: "Capsule Slider",
     badgeColor: "#468AFF",
-    figmaNode: "Nodes 17:1222 & 17:1240",
+    tech: "Framer Drag • Tailwind",
     description:
       "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
     href: "/buttons/slide-grow-button",
-    features: ["Draggable knob physics", "Neon channel beam fill", "Masked text reveal", "STANDERD & SLID states"],
+    features: ["Draggable knob physics", "Neon channel beam fill", "Masked text reveal", "Smooth slider snap"],
   },
   {
     id: "vintage-leather",
     name: "Vintage Leather & Brass Button",
-    badge: "Figma Master",
+    badge: "Heritage Leather",
     badgeColor: "#B4986C",
-    figmaNode: "Node 14:304",
+    tech: "Tailwind • SVG Noise",
     description:
       "Luxury embossed heritage leather & brass button with 6px bottom tactile bevel lip, recessed enclosure tray, and filigree scrollwork corner flourishes.",
     href: "/buttons/vintage-leather-cta",
@@ -97,9 +97,9 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
   {
     id: "neumorphic-glow",
     name: "Neumorphic Glow CTA",
-    badge: "Figma Master",
+    badge: "Neumorphic / Clay",
     badgeColor: "#10B981",
-    figmaNode: "Nodes 14:642 & 14:669",
+    tech: "Tailwind • Shadow Stacks",
     description:
       "Authentic claymorphic and neumorphic elevated CTA button pair with glowing neon green badge depth, multi-tier elevation drop shadows, and plus-lighter bloom.",
     href: "/buttons/neumorphic-glow-cta",
@@ -108,20 +108,20 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
   {
     id: "arc-corner-toggle",
     name: "Arc Corner Slider Toggle",
-    badge: "Figma Master",
+    badge: "Arc Slider Switch",
     badgeColor: "#ED45BE",
-    figmaNode: "Nodes 75:5084 & 75:5131",
+    tech: "React • SVG Arc Track",
     description:
-      "Interactive corner arc slider toggle with STANDERD (light) and CLICK (dark) states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing magenta laser beam.",
+      "Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing magenta laser beam.",
     href: "/buttons/arc-corner-toggle",
-    features: ["90° Corner arc track", "Sunburst dial loader", "STANDERD & CLICK states", "Laser beam flare"],
+    features: ["90° Corner arc track", "Sunburst dial loader", "Light & Dark dual mode", "Laser beam flare"],
   },
   {
     id: "smash-button",
     name: "Tactile 'Smash' Button",
-    badge: "Figma Master",
+    badge: "Neo-Brutalist",
     badgeColor: "#C084FC",
-    figmaNode: "Node 17:1480",
+    tech: "React • Tailwind",
     description:
       "Cyberpunk neo-brutalist tactile button with outer tech enclosure frame, porcelain cushion cooling tray, deep midnight obsidian slab, and glowing neon reactor underglow bloom.",
     href: "/buttons/smash-tactile-button",
@@ -130,9 +130,9 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
   {
     id: "tactile-pill",
     name: "Tactile 3D Pill Button",
-    badge: "Figma Master",
+    badge: "3D Tactile Spring",
     badgeColor: "#54EAD8",
-    figmaNode: "Nodes 75:1201 & 75:1206",
+    tech: "Framer Motion • CSS",
     description:
       "Interactive 3D tactile button featuring spring tilt physics (-9.23° rotation), recessed cavity slot depth shadows, specular bevels, and glowing status beacon.",
     href: "/buttons/tactile-pill-button",
@@ -141,19 +141,20 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
   {
     id: "scaling-capsule",
     name: "Scaling Capsule Tactile Button",
-    badge: "Figma Master",
+    badge: "Frosted Capsule",
     badgeColor: "#FF5B04",
-    figmaNode: "Node 118:6091",
+    tech: "Tailwind • Multi-Shadow",
     description:
-      "Pixel-perfect capsule button with frosted translucent halo cavity tray, multi-tier elevation drop shadows, specular bevel insets, and 26px black circle with ladder-rung apex emblem.",
+      "Pixel-perfect capsule button with frosted translucent glass cavity tray, multi-tier elevation drop shadows, specular bevel insets, and 26px black circle with ladder-rung apex emblem.",
     href: "/buttons/scaling-capsule-button",
-    features: ["Frosted halo tray", "Multi-tier shadow stack", "26px Black circle", "Ladder-rung icon"],
+    features: ["Frosted glass tray", "Multi-tier shadow stack", "26px Black circle", "Ladder-rung icon"],
   },
   {
     id: "animated-slide",
     name: "Animated Slide-Up Button",
-    badge: "Interactive",
+    badge: "Micro-Interaction",
     badgeColor: "#8B5CF6",
+    tech: "Pure CSS / Tailwind",
     description:
       "Dual-text roll CTA button that smoothly translates labels vertically on hover with overflow clipping. Optimized for high-conversion service cards.",
     href: "/buttons/animated-slide-button",
@@ -164,10 +165,11 @@ const BUTTON_CATALOG: ButtonCatalogItem[] = [
     name: "Magnetic Pulsing CTA",
     badge: "Audio + Haptic",
     badgeColor: "#FF5B04",
+    tech: "React • Web Audio",
     description:
-      "High-energy lead capture CTA button featuring pulsing ambient halo bloom, click sound trigger, and dynamic 3D depth press feedback.",
+      "High-energy lead capture CTA button featuring pulsing ambient radiant bloom, click sound trigger, and dynamic 3D depth press feedback.",
     href: "/buttons/magnetic-pulse-cta",
-    features: ["Ambient bloom pulse", "Sound effects", "Spring depth press", "Lead modal trigger"],
+    features: ["Ambient radiant pulse", "Sound effects", "Spring depth press", "Lead modal trigger"],
   },
 ];
 
@@ -213,9 +215,9 @@ export default function ButtonHubScreen() {
         <div className="text-center space-y-5 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>Master Button Collection</span>
+            <span>Interactive Button Library</span>
             <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">4 Dedicated Button Studios</span>
+            <span className="text-[#00E5BE]">13 Dedicated Component Studios</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
@@ -223,7 +225,7 @@ export default function ButtonHubScreen() {
           </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Each button component below features its own dedicated interactive studio page with full customization sandbox, Figma Dev Mode breakdown, and copy-ready Next.js code.
+            Each button component below features its own interactive studio page with full customization sandboxes, props reference, design tokens, and copy-ready React & Tailwind code.
           </p>
         </div>
 
@@ -247,11 +249,9 @@ export default function ButtonHubScreen() {
                   >
                     {btn.badge}
                   </span>
-                  {btn.figmaNode && (
-                    <span className="text-[11px] font-mono text-gray-500">
-                      {btn.figmaNode}
-                    </span>
-                  )}
+                  <span className="text-[11px] font-mono text-gray-400 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/5">
+                    {btn.tech}
+                  </span>
                 </div>
 
                 <div>

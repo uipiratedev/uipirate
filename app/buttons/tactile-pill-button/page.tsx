@@ -10,13 +10,13 @@ const TactilePillButtonScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Tactile 3D Pill Button — Figma Dev Mode Implementation | UI Pirate",
+  title: "Tactile 3D Pill Button — Interactive Spring Tilt Component | UI Pirate",
   description:
-    "Interactive 3D tactile pill button component implemented from Figma Master Button Collection (nodes 75:1201 and 75:1206). Features spring tilt physics, recessed slot shadows, and glowing indicators.",
+    "Interactive 3D tactile pill button featuring recessed cavity slot shadows, specular bevels, spring tilt physics, and glowing status beacon.",
   keywords:
-    "tactile buttons, 3D button, figma to code, figma buttons, recessed button, neumorphism button, ui pirate, framer motion button, react tailwind button",
+    "tactile buttons, 3D button, recessed button, neumorphic button, ui pirate, framer motion button, react tailwind button",
   openGraph: {
-    title: "Tactile 3D Pill Button — Figma Implementation | UI Pirate",
+    title: "Tactile 3D Pill Button — Interactive Spring Tilt Component | UI Pirate",
     description:
       "Interactive 3D tactile button component with spring tilt physics, recessed slot shadows, and glowing indicators.",
     url: "https://uipirate.com/buttons/tactile-pill-button",

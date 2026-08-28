@@ -10,15 +10,15 @@ const ButtonShowcaseScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Master Tactile 3D Buttons — Figma Dev Mode Implementation | UI Pirate",
+  title: "Interactive 3D & Tactile Button Library | UI Pirate",
   description:
-    "Interactive 3D tactile button component implemented from Figma Master Button Collection (nodes 75:1201 and 75:1206). Features spring tilt physics, realistic recessed tray shadows, specular bevels, and status dot glows.",
+    "Production-ready React, Tailwind CSS, and Framer Motion interactive button collection with live customization sandboxes, copy-paste code, and theme presets.",
   keywords:
-    "tactile buttons, 3D button, figma to code, figma buttons, recessed button, neumorphism button, ui pirate, framer motion button, react tailwind button",
+    "ui components, react buttons, tactile buttons, 3d button, glassmorphism button, isometric button, neumorphic button, ui pirate, framer motion button, tailwind button",
   openGraph: {
-    title: "Master Tactile 3D Buttons — Figma Implementation | UI Pirate",
+    title: "Interactive 3D & Tactile Button Library | UI Pirate",
     description:
-      "Interactive 3D tactile button component with spring tilt physics, recessed slot shadows, and glowing indicators.",
+      "Production-ready React, Tailwind CSS, and Framer Motion interactive button collection with live customization sandboxes and copy-ready code.",
     url: "https://uipirate.com/buttons",
     siteName: "UI Pirate",
     type: "website",

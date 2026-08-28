@@ -110,9 +110,9 @@ export default function Example() {
         <div className="text-center space-y-5 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
-            <span>Figma Dev Mode Master Collection</span>
+            <span>Neo-Brutalist Tactile CTA</span>
             <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">Node 17:1480</span>
+            <span className="text-[#00E5BE]">React + Tailwind</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
@@ -120,24 +120,8 @@ export default function Example() {
           </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Pixel-perfect implementation of Figma Node 17:1480. Features an outer tech enclosure frame with micro circuit notches, a cushion porcelain tray with cooling arrays, a midnight obsidian slab, and a glowing neon reactor underglow.
+            Interactive neo-brutalist tactile button engineered with an outer tech enclosure frame, porcelain cooling tray, midnight obsidian slab, and glowing neon reactor underglow bloom.
           </p>
-
-          {/* Figma Reference Link */}
-          <div className="flex justify-center pt-2">
-            <a
-              href="https://www.figma.com/design/N0Thti7tlzePyLvZChPMd2/Master-Button-collection--Community-?node-id=17-1480&m=dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-300 transition-colors"
-            >
-              <svg className="w-4 h-4 text-purple-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 2a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4V2H8zm8 0h-4v8h4a4 4 0 0 0 0-8zM8 10a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4v-8H8zm8 0h-4v8h4a4 4 0 0 0 0-8zm-8 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4v-4H8z" />
-              </svg>
-              <span>Inspect Figma Node 17:1480 (Dev Mode)</span>
-              <span className="text-gray-500">↗</span>
-            </a>
-          </div>
         </div>
 
         {/* Live Interactive Studio */}

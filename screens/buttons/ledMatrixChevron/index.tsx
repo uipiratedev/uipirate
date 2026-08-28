@@ -89,9 +89,9 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Nodes 19:6101 & 19:6495 Design Tokens */
+  const cssOnlyCode = `/* LED Dot Matrix Chevron Button Design Tokens */
 
-/* 1. Recessed Enclosure Tray (19:6440) */
+/* 1. Recessed Enclosure Tray */
 .enclosure-tray {
   background: #000000;
   border-radius: 16px;
@@ -101,7 +101,7 @@ export default function Example() {
     inset 0px 0px 2px 0px rgba(0, 0, 0, 0.08);
 }
 
-/* 2. Tactile Carbon-Fiber Slab (19:6441) */
+/* 2. Tactile Carbon-Fiber Slab */
 .carbon-slab {
   width: 224px;
   height: 59px;
@@ -117,7 +117,7 @@ export default function Example() {
     inset 0px 0px 1px 2px black;
 }
 
-/* 3. Expandable LED Dot Matrix Screen (19:6442 / 19:6562) */
+/* 3. Expandable LED Dot Matrix Screen */
 .led-matrix-screen {
   background: #8C8C8C;
   border-radius: 5px;
@@ -125,14 +125,16 @@ export default function Example() {
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 4. 7x7 LED Pixel Dot (19:6444) */
+/* 4. 7x7 LED Pixel Dot */
 .led-pixel {
   width: 3px;
   height: 3px;
   border-radius: 0.6px;
   background-color: #FFFFFF;
   box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.6);
-}`;
+}
+
+// Interactive chevron wave controller`;
 
   return (
     <div className="min-h-screen bg-[#0E1117] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8">
@@ -145,7 +147,7 @@ export default function Example() {
           <span>/</span>
           <span className="text-emerald-400 font-medium">LED Dot Matrix Chevron</span>
           <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 rounded-full">
-            Figma 19:6101 & 19:6495
+            React + CSS Grid
           </span>
         </div>
 
@@ -158,7 +160,7 @@ export default function Example() {
             </span>
           </h1>
           <p className="text-neutral-400 text-base max-w-2xl">
-            Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click to reveal 5 cascading animated pixel chevrons.
+            Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.
           </p>
         </div>
 
@@ -232,7 +234,7 @@ export default function Example() {
                         : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
                     }`}
                   >
-                    {mode === "standerd" ? "Rest (19:6101)" : mode === "hover" ? "Full (19:6495)" : "Interactive"}
+                    {mode === "standerd" ? "Resting" : mode === "hover" ? "Expanded" : "Interactive"}
                   </button>
                 ))}
               </div>
@@ -354,19 +356,19 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            FIGMA MASTER COMPARISON GALLERY (19:6101 vs 19:6495)
+            STATE COMPARISON GALLERY
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Figma Master States Side-by-Side</h2>
+          <h2 className="text-2xl font-bold text-white">Component States Side-by-Side</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* STANDERD State 19:6101 */}
+            {/* Resting State */}
             <div className="flex flex-col items-center justify-between p-8 rounded-3xl bg-[#101012] border border-white/10 shadow-xl min-h-[260px]">
               <div className="flex items-center justify-between w-full">
                 <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-400">
-                  Node 19:6101 (STANDERD)
+                  Resting State
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white border border-white/10">
-                  Rest State
+                  Default
                 </span>
               </div>
               <div className="py-8 scale-95">
@@ -377,14 +379,14 @@ export default function Example() {
               </p>
             </div>
 
-            {/* HOVER / EXPANDED State 19:6495 */}
+            {/* Expanded State */}
             <div className="flex flex-col items-center justify-between p-8 rounded-3xl bg-[#101012] border border-white/10 shadow-xl min-h-[260px]">
               <div className="flex items-center justify-between w-full">
                 <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-400">
-                  Node 19:6495 (HOVER / EXPANDED)
+                  Expanded State
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  Expanded State
+                  Active
                 </span>
               </div>
               <div className="py-8 scale-95">

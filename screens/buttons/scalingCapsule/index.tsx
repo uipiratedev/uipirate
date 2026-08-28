@@ -34,8 +34,8 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Exact Node 118:6091 CSS Specs */
-.capsule-halo-tray {
+  const cssOnlyCode = `/* Scaling Capsule Glass Enclosure Tokens */
+.capsule-glass-tray {
   padding: 6px;
   border-radius: 50px;
   background: rgba(209, 213, 236, 0.14);
@@ -121,9 +121,9 @@ export default function Example() {
         <div className="text-center space-y-5 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>Figma Dev Mode Master Collection</span>
+            <span>Frosted Capsule CTA</span>
             <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">Node 118:6091</span>
+            <span className="text-[#00E5BE]">React + Multi-Shadow</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
@@ -131,24 +131,8 @@ export default function Example() {
           </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Pixel-perfect implementation of Figma Node 118:6091. Engineered with a frosted translucent halo cavity tray, multi-tier elevation drop shadows, specular bevel insets, and an embedded 26px circular black badge with ladder-rung apex emblem.
+            Interactive capsule button engineered with a frosted translucent glass cavity tray, multi-tier elevation drop shadows, specular bevel insets, and an embedded circular apex emblem badge.
           </p>
-
-          {/* Figma Reference Link */}
-          <div className="flex justify-center pt-2">
-            <a
-              href="https://www.figma.com/design/N0Thti7tlzePyLvZChPMd2/Master-Button-collection--Community-?node-id=118-6091&m=dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-300 transition-colors"
-            >
-              <svg className="w-4 h-4 text-[#FF5B04]" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 2a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4V2H8zm8 0h-4v8h4a4 4 0 0 0 0-8zM8 10a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4v-8H8zm8 0h-4v8h4a4 4 0 0 0 0-8zm-8 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4v-4H8z" />
-              </svg>
-              <span>Inspect Figma Node 118:6091 (Dev Mode)</span>
-              <span className="text-gray-500">↗</span>
-            </a>
-          </div>
         </div>
 
         {/* Live Interactive Studio / Sandbox */}

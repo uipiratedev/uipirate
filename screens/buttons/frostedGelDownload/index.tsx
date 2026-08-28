@@ -47,7 +47,7 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Nodes 4604:126 (STANDERD) & 4604:152 (HOVER) Design System */
+  const cssOnlyCode = `/* Frosted Gel Download Button Design Tokens */
 
 /* 1. Ceramic Elevated Pill */
 .ceramic-pill {
@@ -113,15 +113,10 @@ export default function Example() {
           </div>
 
           <div className="flex items-center gap-3">
-            <a
-              href="https://www.figma.com/design/N0Thti7tlzePyLvZChPMd2/Master-Button-collection--Community-?node-id=4604-126&m=dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-emerald-400 transition-all"
-            >
+            <span className="hidden sm:flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/10 text-emerald-400">
               <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-              Figma 4604:126 & 4604:152 (1:1)
-            </a>
+              React + Tailwind + Framer Motion
+            </span>
           </div>
         </div>
       </header>
@@ -133,7 +128,7 @@ export default function Example() {
           <div>
             <div className="flex items-center gap-3 mb-2">
               <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono tracking-wider bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase">
-                Figma 1:1 Precision Spec
+                Production Ready
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono tracking-wider bg-purple-500/10 text-purple-400 border border-purple-500/20 uppercase">
                 Dual-Pill Neumorphic Gel
@@ -143,7 +138,7 @@ export default function Example() {
               Frosted Gel & Ceramic Download Button
             </h1>
             <p className="text-sm text-[#9CA3AF] mt-2 max-w-2xl">
-              Accurate 1:1 implementation of Figma Nodes <strong>4604:126</strong> (STANDERD) & <strong>4604:152</strong> (HOVER). Features multi-layered frosted glass refraction rings, volumetric underglow flare, and elevated ceramic pill surface.
+              High-performance split button component with multi-layered frosted glass refraction rings, volumetric underglow flare, and elevated ceramic pill surface.
             </p>
           </div>
 
@@ -274,7 +269,7 @@ export default function Example() {
                         : "text-white/50 hover:text-white"
                     }`}
                   >
-                    {mode === "standerd" ? "4604:126" : mode === "hover" ? "4604:152" : mode}
+                    {mode === "standerd" ? "Standard" : mode === "hover" ? "Hover" : "Interactive"}
                   </button>
                 ))}
               </div>
@@ -351,12 +346,12 @@ export default function Example() {
           </div>
         </div>
 
-        {/* 4. Figma 1:1 Spec Comparison & Design Tokens */}
+        {/* 4. State Architecture & Design Tokens */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-4">
             <h3 className="text-base font-bold text-white flex items-center gap-2">
               <span className="size-2 rounded-full bg-blue-500" />
-              Figma Node 4604:126 (STANDERD)
+              Standard Resting State Architecture
             </h3>
             <ul className="text-xs text-white/70 space-y-2 font-mono leading-relaxed">
               <li>• <strong>Pill Surface:</strong> Resting at <code>y: 0px</code> with crisp <code>#002AFE</code> bottom bevel</li>
@@ -369,7 +364,7 @@ export default function Example() {
           <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-4">
             <h3 className="text-base font-bold text-white flex items-center gap-2">
               <span className="size-2 rounded-full bg-cyan-400" />
-              Figma Node 4604:152 (HOVER)
+              Hover Illumination State Architecture
             </h3>
             <ul className="text-xs text-white/70 space-y-2 font-mono leading-relaxed">
               <li>• <strong>Spring Hover Travel:</strong> Tactile lift with <code>-4px</code> hover elevation</li>

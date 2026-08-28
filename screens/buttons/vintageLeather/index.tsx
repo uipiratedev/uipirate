@@ -82,7 +82,7 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Node 14:304 - Vintage Heritage Button */
+  const cssOnlyCode = `/* Vintage Heritage Button Design Tokens */
 
 /* Outer Recessed Enclosure Tray */
 .vintage-tray {
@@ -126,7 +126,7 @@ export default function Example() {
           <span>/</span>
           <span className="text-amber-400 font-medium">Vintage Leather CTA</span>
           <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20 rounded-full">
-            Figma 14:304
+            React + SVG Filter
           </span>
         </div>
 
@@ -135,11 +135,11 @@ export default function Example() {
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white flex items-center gap-3">
             Vintage Leather & Brass Heritage Button
             <span className="text-sm px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-normal">
-              1:1 Figma Match
+              Luxury Embossed
             </span>
           </h1>
           <p className="text-neutral-400 text-base max-w-2xl">
-            Luxury Victorian & leather goods embossed tactile button with 6px bottom bevel lip, recessed enclosure tray, and filigree scrollwork corner ornaments.
+            Luxury embossed heritage leather & brass button with 6px bottom tactile bevel lip, recessed enclosure tray, and filigree scrollwork corner flourishes.
           </p>
         </div>
 
@@ -155,7 +155,7 @@ export default function Example() {
                 : "border-white/20"
             }`}
           >
-            {/* Ambient Background Canvas Gradient (Figma Node 14:304 exact) */}
+            {/* Ambient Background Canvas Gradient */}
             {theme !== "obsidian" && (
               <>
                 <div
@@ -165,7 +165,7 @@ export default function Example() {
                       "linear-gradient(178.39deg, rgb(230, 224, 212) 23.424%, rgb(128, 124, 118) 160.49%)",
                   }}
                 />
-                {/* Random Small Square Pixel Canvas Noise (Figma Node 14:304 exact) */}
+                {/* Random Small Square Pixel Canvas Noise */}
                 <svg
                   className="absolute inset-0 size-full pointer-events-none opacity-[0.08] mix-blend-multiply"
                   xmlns="http://www.w3.org/2000/svg"

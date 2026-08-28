@@ -28,15 +28,15 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Nodes 75:5084 & 75:5131 Design Tokens */
+  const cssOnlyCode = `/* Arc Corner Slider Toggle Design Tokens */
 
-/* Light Mode Frame (75:5084) */
+/* Light Mode Frame */
 .arc-toggle-card-light {
   background: linear-gradient(149.54deg, rgb(240, 240, 240) 16.26%, rgb(163, 163, 161) 183.63%);
   border-radius: 40px;
 }
 
-/* Dark Mode Frame (75:5131) */
+/* Dark Mode Frame */
 .arc-toggle-card-dark {
   background: linear-gradient(149.54deg, rgb(68, 81, 109) 16.26%, rgb(22, 27, 37) 183.63%);
   border-radius: 40px;
@@ -99,13 +99,13 @@ export default function Example() {
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-300 text-xs font-mono uppercase tracking-wider">
             <span className="w-2 h-2 rounded-full bg-[#ED45BE] animate-pulse" />
-            Figma Nodes 75:5084 & 75:5131
+            Interactive Arc Slider
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-pink-300 font-sans">
             Arc Corner Slider Toggle
           </h1>
           <p className="text-base sm:text-lg text-gray-400 leading-relaxed font-sans">
-            1:1 Pixel-accurate implementation of <strong className="text-white">STANDERD (Node 75:5084)</strong> and <strong className="text-white">CLICK (Node 75:5131)</strong> with mathematical SVG offset-path travel.
+            Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing laser flare.
           </p>
         </div>
 
@@ -132,7 +132,7 @@ export default function Example() {
                     : "bg-amber-500/20 text-amber-300 border-amber-500/30"
                 }`}
               >
-                {active ? "CLICK — Dark (75:5131)" : "STANDERD — Light (75:5084)"}
+                {active ? "Active — Dark Mode" : "Resting — Light Mode"}
               </span>
             </div>
 
@@ -163,7 +163,7 @@ export default function Example() {
               <svg className="w-3.5 h-3.5 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              Click or drag the capsule knob to smoothly transition between STANDERD and CLICK
+              Click or drag the capsule knob to smoothly transition between Light and Dark mode
             </p>
           </div>
 
@@ -196,8 +196,8 @@ export default function Example() {
                         : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10"
                     }`}
                   >
-                    <span className="font-bold">STANDERD</span>
-                    <span className="text-[10px] text-gray-400">Light / 75:5084</span>
+                    <span className="font-bold">Light Mode</span>
+                    <span className="text-[10px] text-gray-400">Day / Resting</span>
                   </button>
 
                   <button
@@ -208,12 +208,12 @@ export default function Example() {
                     }}
                     className={`px-3 py-3 rounded-xl text-xs font-medium border transition-all flex flex-col items-center gap-1 ${
                       active
-                        ? "bg-pink-500/20 border-pink-500/40 text-pink-200 shadow-lg shadow-pink-500/10"
+                        ? "bg-pink-500/20 border-pink-500/40 text-pink-300 shadow-lg"
                         : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10"
                     }`}
                   >
-                    <span className="font-bold">CLICK</span>
-                    <span className="text-[10px] text-pink-300/70">Dark / 75:5131</span>
+                    <span className="font-bold">Dark Mode</span>
+                    <span className="text-[10px] text-gray-400">Night / Active</span>
                   </button>
                 </div>
               </div>
@@ -341,22 +341,22 @@ export default function Example() {
           </div>
         </div>
 
-        {/* Side-by-Side Dual Variant Visual Gallery (Matching Figma Frame 1000003154 & 1000003155) */}
+        {/* Side-by-Side Dual Variant Visual Gallery */}
         <div className="space-y-6 pt-8">
           <div className="flex items-center gap-4">
             <h2 className="text-2xl font-bold text-white font-sans">
-              Direct Comparison
+              State Comparison
             </h2>
             <span className="text-xs font-mono px-3 py-1 rounded-full bg-white/10 text-gray-400 font-normal">
-              Figma 75:5084 vs 75:5131
+              Day Mode vs Night Mode
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* STANDERD (75:5084) */}
+            {/* Light Mode */}
             <div className="bg-black/30 border border-white/10 rounded-3xl p-6 flex flex-col items-center gap-3 overflow-hidden">
               <span className="text-xs font-mono text-gray-400 uppercase tracking-wider self-start">
-                Frame 1000003154 — STANDERD (75:5084)
+                Light Mode — Resting State
               </span>
               <div className="w-full flex items-center justify-center overflow-hidden rounded-2xl">
                 <ArcCornerToggle
@@ -369,10 +369,10 @@ export default function Example() {
               </div>
             </div>
 
-            {/* CLICK (75:5131) */}
+            {/* Dark Mode */}
             <div className="bg-black/30 border border-white/10 rounded-3xl p-6 flex flex-col items-center gap-3 overflow-hidden">
               <span className="text-xs font-mono text-pink-300 uppercase tracking-wider self-start">
-                Frame 1000003155 — CLICK (75:5131)
+                Dark Mode — Active State
               </span>
               <div className="w-full flex items-center justify-center overflow-hidden rounded-2xl">
                 <ArcCornerToggle

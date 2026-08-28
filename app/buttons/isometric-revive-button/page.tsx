@@ -10,15 +10,15 @@ const IsometricReviveScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Isometric 3D Revive Button — Figma Nodes 115:5957 & 115:6002 | UI Pirate",
+  title: "Isometric 3D Revive Button — Interactive React & Framer Motion Component | UI Pirate",
   description:
-    "Interactive 30° isometric 3D extruded button from Figma Master Button Collection (nodes 115:5957 STANDERD & 115:6002 HOVER). Features multi-faceted solid extrusion, glowing amber chevron, and brilliant white optical neon underglow.",
+    "Interactive 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and brilliant white optical neon underglow.",
   keywords:
-    "isometric 3d button, figma button 115:5957, figma button 115:6002, revive now button, isometric button react, framer motion isometric, underglow neon button, ui pirate",
+    "isometric 3d button, revive now button, isometric button react, framer motion isometric, underglow neon button, ui pirate",
   openGraph: {
-    title: "Isometric 3D Revive Button — Figma Nodes 115:5957 & 115:6002 | UI Pirate",
+    title: "Isometric 3D Revive Button — Interactive React & Framer Motion Component | UI Pirate",
     description:
-      "Interactive 30° isometric 3D button from Figma Master Button Collection with multi-layer solid extrusion, amber chevron, and neon underglow.",
+      "Interactive 30° isometric 3D button with multi-layer solid extrusion, amber chevron, and neon underglow.",
     url: "https://uipirate.com/buttons/isometric-revive-button",
     siteName: "UI Pirate",
     type: "website",

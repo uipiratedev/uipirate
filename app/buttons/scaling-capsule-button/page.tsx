@@ -10,15 +10,15 @@ const ScalingCapsuleButtonScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Scaling Capsule Tactile Button — Figma Node 118:6091 | UI Pirate",
+  title: "Scaling Capsule Tactile Button — Interactive React Component | UI Pirate",
   description:
-    "Pixel-perfect implementation of Figma Node 118:6091. Features frosted translucent halo cavity tray, multi-tier elevation drop shadows, specular bevel insets, and 26px black circle badge.",
+    "Interactive capsule button featuring a frosted translucent glass cavity tray, multi-tier elevation drop shadows, specular bevel insets, and circular apex emblem badge.",
   keywords:
-    "scaling capsule button, figma button 118:6091, tactile button, ui pirate, figma to react, figma dev mode, tailwind tactile button",
+    "scaling capsule button, tactile button, ui pirate, react tailwind button, multi shadow capsule",
   openGraph: {
-    title: "Scaling Capsule Tactile Button — Figma Node 118:6091 | UI Pirate",
+    title: "Scaling Capsule Tactile Button — Interactive React Component | UI Pirate",
     description:
-      "Pixel-perfect implementation of Figma Node 118:6091 tactile capsule button with frosted halo tray and multi-tier shadow stack.",
+      "Interactive tactile capsule button with frosted glass tray and multi-tier shadow stack.",
     url: "https://uipirate.com/buttons/scaling-capsule-button",
     siteName: "UI Pirate",
     type: "website",

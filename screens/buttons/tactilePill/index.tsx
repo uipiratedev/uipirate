@@ -140,9 +140,9 @@ export default function Example() {
         <div className="text-center space-y-5 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-[#00E5BE] animate-pulse" />
-            <span>Figma Dev Mode Master Collection</span>
+            <span>3D Tactile Spring CTA</span>
             <span className="text-gray-500">•</span>
-            <span className="text-[#FF5B04]">Nodes 75:1201 &amp; 75:1206</span>
+            <span className="text-[#FF5B04]">React + Framer Motion</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
@@ -150,37 +150,8 @@ export default function Example() {
           </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            High-fidelity implementation of the recessed slot &amp; spring-tilt button from Figma.
-            Engineered with realistic 3D bevel lighting, multi-layered depth shadows, and smooth spring physics.
+            Interactive 3D tactile button featuring a recessed cavity slot, specular bevel lighting, realistic depth shadows, and smooth spring tilt physics.
           </p>
-
-          {/* Figma Reference Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <a
-              href="https://www.figma.com/design/MiGFMZakEXgpziqxTcVT6Y/Master-Button-collection--Community-?node-id=75-1201&m=dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-300 transition-colors"
-            >
-              <svg className="w-4 h-4 text-purple-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 2a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4V2H8zm8 0h-4v8h4a4 4 0 0 0 0-8zM8 10a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4v-8H8zm8 0h-4v8h4a4 4 0 0 0 0-8zm-8 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4v-4H8z" />
-              </svg>
-              <span>Figma Node 75:1201 (Resting)</span>
-              <span className="text-gray-500">↗</span>
-            </a>
-            <a
-              href="https://www.figma.com/design/MiGFMZakEXgpziqxTcVT6Y/Master-Button-collection--Community-?node-id=75-1206&m=dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-300 transition-colors"
-            >
-              <svg className="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 2a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4V2H8zm8 0h-4v8h4a4 4 0 0 0 0-8zM8 10a4 4 0 0 0-4 4 4 4 0 0 0 4 4h4v-8H8zm8 0h-4v8h4a4 4 0 0 0 0-8zm-8 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4v-4H8z" />
-              </svg>
-              <span>Figma Node 75:1206 (Tilted)</span>
-              <span className="text-gray-500">↗</span>
-            </a>
-          </div>
         </div>
 
         {/* Live Interactive Studio / Sandbox */}

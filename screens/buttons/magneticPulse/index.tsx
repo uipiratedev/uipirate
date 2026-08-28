@@ -89,7 +89,7 @@ export default function Example() {
           </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            High-converting signature action CTA button featuring radiant ambient halo bloom, click sound integration, and energetic press physics.
+            High-converting signature action CTA button featuring radiant ambient glow bloom, click sound integration, and energetic press physics.
           </p>
         </div>
 
@@ -114,7 +114,7 @@ export default function Example() {
 
           <div className="relative min-h-[360px] flex flex-col items-center justify-center p-8 bg-[#0D0D10]">
             <div className="relative group cursor-pointer" onClick={handleClick}>
-              {/* Outer pulsing halo bloom */}
+              {/* Outer pulsing radiant glow */}
               <div
                 className="absolute inset-0 rounded-full blur-2xl opacity-70 group-hover:opacity-100 group-hover:scale-125 transition-all duration-500 animate-pulse pointer-events-none"
                 style={{ backgroundColor: pulseColor }}

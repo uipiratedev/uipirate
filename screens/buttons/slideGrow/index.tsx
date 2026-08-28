@@ -88,7 +88,7 @@ export default function Example() {
   );
 };`;
 
-  const cssOnlyCode = `/* Figma Nodes 17:1222 & 17:1240 Design Tokens */
+  const cssOnlyCode = `/* Capsule Slider Button Design Tokens */
 
 /* 1. Metallic Capsule Chassis */
 .slide-chassis {
@@ -113,7 +113,7 @@ export default function Example() {
   box-shadow: inset 0px 2px 4px rgba(0,0,0,0.35);
 }
 
-/* 3. Glowing Neon Beam Fill (17:1240) */
+/* 3. Glowing Neon Beam Fill */
 .neon-beam-channel {
   background: #FFFFFF;
   box-shadow:
@@ -122,7 +122,7 @@ export default function Example() {
     inset 0px 0px 10px 0px #95BEFF;
 }
 
-/* 4. Glowing Electric Blue Knob (17:1235) */
+/* 4. Glowing Electric Blue Knob */
 .glowing-knob {
   width: 48px;
   height: 48px;
@@ -146,7 +146,7 @@ export default function Example() {
           <span>/</span>
           <span className="text-blue-400 font-medium">Swipe to Grow Slider</span>
           <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-blue-500/10 text-blue-300 border border-blue-500/20 rounded-full">
-            Figma 17:1222 & 17:1240
+            React + Framer Drag
           </span>
         </div>
 
@@ -279,7 +279,7 @@ export default function Example() {
                         : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
                     }`}
                   >
-                    {mode === "standerd" ? "Rest (17:1222)" : mode === "slid" ? "Slid (17:1240)" : "Interactive"}
+                    {mode === "standerd" ? "Resting" : mode === "slid" ? "Unlocked" : "Interactive"}
                   </button>
                 ))}
               </div>
@@ -366,19 +366,19 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            FIGMA STATE COMPARISON GALLERY (17:1222 vs 17:1240)
+            STATE COMPARISON GALLERY
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Figma Master States Side-by-Side</h2>
+          <h2 className="text-2xl font-bold text-white">Component States Side-by-Side</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* STANDERD State 17:1222 */}
+            {/* Resting State */}
             <div className="flex flex-col items-center justify-between p-8 rounded-3xl bg-[rgba(230,230,230,0.95)] border border-white/20 shadow-xl min-h-[260px]">
               <div className="flex items-center justify-between w-full">
                 <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-800">
-                  Node 17:1222 (STANDERD)
+                  Resting State
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/10 text-neutral-700 border border-black/5">
-                  Rest State
+                  Default
                 </span>
               </div>
               <div className="py-8 scale-95">
@@ -389,11 +389,11 @@ export default function Example() {
               </p>
             </div>
 
-            {/* HOVER / SLID State 17:1240 */}
+            {/* Unlocked / Slid State */}
             <div className="flex flex-col items-center justify-between p-8 rounded-3xl bg-[rgba(230,230,230,0.95)] border border-white/20 shadow-xl min-h-[260px]">
               <div className="flex items-center justify-between w-full">
                 <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-800">
-                  Node 17:1240 (HOVER / SLID)
+                  Unlocked State
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-800 border border-blue-500/30">
                   Completed State

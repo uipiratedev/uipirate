@@ -10,6 +10,14 @@ import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
 import { AnimatedButton } from "@/components/AnimatedButton";
 import Avatar from "@/components/Avatar";
+import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
+import { IsometricReviveButton } from "@/components/IsometricReviveButton";
+import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
+import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
+import { SlideGrowButton } from "@/components/SlideGrowButton";
+import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
+import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
+import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 
 export type ComponentCategory = "all" | "buttons" | "badges" | "surfaces" | "layout";
 
@@ -22,23 +30,125 @@ interface UIComponentItem {
   badgeVariant?: "gradient" | "cyan" | "solid";
   description: string;
   detailUrl?: string;
-  figmaRef?: string;
   features: string[];
   codeSnippet: string;
 }
 
 const UI_COMPONENTS: UIComponentItem[] = [
   {
+    id: "frosted-gel-download-button",
+    name: "Frosted Gel Download Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Glassmorphism",
+    badgeVariant: "cyan",
+    description:
+      "Dual-pill neumorphic split button with elevated ceramic pill, frosted glass gel download tile, optical refraction rings, and volumetric blue underglow flare.",
+    detailUrl: "/buttons/frosted-gel-download-button",
+    features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "Interactive hover lift"],
+    codeSnippet: `<FrostedGelDownloadButton\n  label="Download now"\n  theme="figma-blue"\n  size="md"\n  stateMode="interactive"\n/>`,
+  },
+  {
+    id: "isometric-revive-button",
+    name: "Isometric 3D Revive Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Isometric 3D",
+    badgeVariant: "gradient",
+    description:
+      "Authentic 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and blinding optical neon underglow.",
+    detailUrl: "/buttons/isometric-revive-button",
+    features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "Dynamic spring physics"],
+    codeSnippet: `<IsometricReviveButton\n  label="Revive Now"\n  theme="figma"\n  size="sm"\n  stateMode="interactive"\n/>`,
+  },
+  {
+    id: "elevated-underglow-cta",
+    name: "Elevated Underglow 3D Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Tactile Elevation",
+    badgeVariant: "cyan",
+    description:
+      "Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.",
+    detailUrl: "/buttons/elevated-underglow-cta",
+    features: ["13px Spring lift", "Electric blue 3D underlayer", "Interactive states", "Phone call icon"],
+    codeSnippet: `<ElevatedUnderglowCTA\n  label="Book A Call"\n  icon="phone"\n  theme="figma"\n  size="md"\n  stateMode="interactive"\n/>`,
+  },
+  {
+    id: "led-matrix-chevron",
+    name: "LED Dot Matrix Chevron Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Cyberpunk Matrix",
+    badgeVariant: "cyan",
+    description:
+      "Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.",
+    detailUrl: "/buttons/led-matrix-chevron",
+    features: ["Expandable LED screen", "7x7 Dot matrix chevrons", "Cascading marquee wave", "Carbon squircle chassis"],
+    codeSnippet: `<LedMatrixChevronButton\n  theme="monochrome"\n  size="md"\n  stateMode="interactive"\n/>`,
+  },
+  {
+    id: "slide-grow-button",
+    name: "Swipe to Grow / Slide Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Capsule Slider",
+    badgeVariant: "gradient",
+    description:
+      "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
+    detailUrl: "/buttons/slide-grow-button",
+    features: ["Draggable knob physics", "Neon channel beam fill", "Masked text reveal", "Smooth slider snap"],
+    codeSnippet: `<SlideGrowButton\n  theme="silver"\n  size="md"\n  stateMode="interactive"\n/>`,
+  },
+  {
+    id: "vintage-leather-cta",
+    name: "Vintage Leather & Brass Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Heritage Leather",
+    badgeVariant: "solid",
+    description:
+      "Luxury embossed heritage leather & brass button with 6px bottom tactile bevel lip, recessed enclosure tray, and filigree scrollwork corner flourishes.",
+    detailUrl: "/buttons/vintage-leather-cta",
+    features: ["3D Tactile bevel lip", "Filigree corner ornaments", "Recessed enclosure tray", "5 Luxury themes"],
+    codeSnippet: `<VintageLeatherCTA\n  theme="heritage"\n  size="md"\n  label="Shop ties"\n/>`,
+  },
+  {
+    id: "neumorphic-glow-cta",
+    name: "Neumorphic Glow CTA",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Clay / Neumorphic",
+    badgeVariant: "cyan",
+    description:
+      "Authentic claymorphic and neumorphic elevated CTA button pair with glowing neon green badge depth, multi-tier elevation drop shadows, and plus-lighter bloom.",
+    detailUrl: "/buttons/neumorphic-glow-cta",
+    features: ["Pill & Squircle variants", "Neon green glow badge", "Multi-tier clay shadows", "Plus-lighter bloom"],
+    codeSnippet: `<NeumorphicGlowCTA\n  variant="pill"\n  label="Learn more"\n/>`,
+  },
+  {
+    id: "arc-corner-toggle",
+    name: "Arc Corner Slider Toggle",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Arc Slider Switch",
+    badgeVariant: "gradient",
+    description:
+      "Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing magenta laser beam.",
+    detailUrl: "/buttons/arc-corner-toggle",
+    features: ["90° Corner arc track", "Sunburst dial loader", "Light & Dark dual mode", "Laser beam flare"],
+    codeSnippet: `<ArcCornerToggle\n  scale={0.88}\n/>`,
+  },
+  {
     id: "smash-tactile-button",
     name: "Tactile 'Smash' Button",
     category: "buttons",
     categoryLabel: "Buttons & CTAs",
-    badge: "Figma 17:1480",
+    badge: "Neo-Brutalist",
     badgeVariant: "gradient",
     description:
-      "Neo-brutalist tech button with outer enclosure frame, cushion cooling tray, obsidian core slab, and glowing neon reactor underglow. Direct implementation of Figma Node 17:1480.",
+      "Neo-brutalist tech button with outer enclosure frame, cushion cooling tray, obsidian core slab, and glowing neon reactor underglow.",
     detailUrl: "/buttons/smash-tactile-button",
-    figmaRef: "Node 17:1480",
     features: ["Tech enclosure frame", "Cushion cooling tray", "Obsidian core slab", "Reactor underglow"],
     codeSnippet: `<SmashTactileButton\n  label="Smash the button"\n  variant="figma"\n  size="md"\n  onClick={() => console.log("Smashed!")}\n/>`,
   },
@@ -47,13 +157,12 @@ const UI_COMPONENTS: UIComponentItem[] = [
     name: "Scaling Capsule Tactile Button",
     category: "buttons",
     categoryLabel: "Buttons & CTAs",
-    badge: "Figma 118:6091",
+    badge: "Frosted Capsule",
     badgeVariant: "cyan",
     description:
-      "Recessed capsule button featuring a frosted translucent halo tray, obsidian cap with multi-tiered elevation drop shadows, and circular apex emblem badge. Direct 1:1 implementation from Figma Node 118:6091.",
+      "Recessed capsule button featuring a frosted translucent glass tray, obsidian cap with multi-tiered elevation drop shadows, and circular apex emblem badge.",
     detailUrl: "/buttons/scaling-capsule-button",
-    figmaRef: "Node 118:6091",
-    features: ["Frosted outer halo", "Multi-tier shadow stack", "26px Black circle", "Ladder-rung icon"],
+    features: ["Frosted outer glass tray", "Multi-tier shadow stack", "26px Black circle", "Ladder-rung icon"],
     codeSnippet: `<ScalingCapsuleButton\n  label="Scaling Workshop"\n  variant="dark"\n  size="md"\n  onClick={() => console.log("Clicked!")}\n/>`,
   },
   {
@@ -61,12 +170,11 @@ const UI_COMPONENTS: UIComponentItem[] = [
     name: "Tactile 3D Pill Button",
     category: "buttons",
     categoryLabel: "Buttons & CTAs",
-    badge: "Figma Dev Mode",
+    badge: "3D Tactile Spring",
     badgeVariant: "cyan",
     description:
-      "Hyper-realistic 3D tactile button with recessed cavity slot, spring tilt physics, specular bevels, and glowing status beacon. Directly implemented from Figma Master Button collection nodes 75:1201 & 75:1206.",
+      "Hyper-realistic 3D tactile button with recessed cavity slot, spring tilt physics, specular bevels, and glowing status beacon.",
     detailUrl: "/buttons/tactile-pill-button",
-    figmaRef: "Nodes 75:1201 & 75:1206",
     features: ["Recessed tray depth", "Spring lift & tilt", "Radiant status glow", "5 Theme variants"],
     codeSnippet: `<TactilePillButton\n  label="Get Started"\n  dotColor="#54EAD8"\n  variant="default"\n  onClick={() => console.log("Clicked!")}\n/>`,
   },
@@ -127,7 +235,7 @@ const UI_COMPONENTS: UIComponentItem[] = [
     badge: "Audio + Haptic",
     badgeVariant: "gradient",
     description:
-      "High-energy glowing action button with ambient halo pulse effect, click audio trigger hook, and 3D depth press feedback.",
+      "High-energy glowing action button with ambient radiant pulse effect, click audio trigger hook, and 3D depth press feedback.",
     detailUrl: "/buttons/magnetic-pulse-cta",
     features: ["Ambient ring pulse", "Sound effects integration", "Tactile spring scale", "Lead modal trigger"],
     codeSnippet: `<button className="relative px-6 py-3 rounded-full bg-[#FF5B04] text-white font-bold shadow-[0_0_25px_rgba(255,91,4,0.5)] hover:scale-105 transition-transform">\n  Let's Venture\n</button>`,
@@ -178,7 +286,7 @@ export default function UIComponentsScreen() {
             <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
             <span>UI Pirate Component System</span>
             <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">Figma Dev Mode &amp; React Code</span>
+            <span className="text-[#00E5BE]">Interactive Component Library</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
@@ -192,7 +300,7 @@ export default function UIComponentsScreen() {
           {/* Quick Metrics Bar */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
             <div className="px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs font-mono text-gray-300">
-              <span className="text-[#FF5B04] font-bold">100%</span> Figma Parity
+              <span className="text-[#FF5B04] font-bold">100%</span> Copy-Ready Code
             </div>
             <div className="px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs font-mono text-gray-300">
               <span className="text-[#00E5BE] font-bold">Spring</span> Physics
@@ -214,10 +322,10 @@ export default function UIComponentsScreen() {
             <div className="lg:col-span-7 space-y-6">
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="px-3 py-1 rounded-full bg-[#FF5B04]/20 border border-[#FF5B04]/30 text-[#FF5B04] text-xs font-bold uppercase tracking-wider">
-                  Featured Master Component
+                  Featured 3D Component
                 </span>
                 <span className="px-3 py-1 rounded-full bg-[#00E5BE]/15 border border-[#00E5BE]/30 text-[#00E5BE] text-xs font-mono">
-                  Figma Nodes 75:1201 &amp; 75:1206
+                  Interactive 3D Stage
                 </span>
               </div>
 
@@ -253,7 +361,7 @@ export default function UIComponentsScreen() {
                 <div className="flex flex-wrap items-center gap-2">
                   {(
                     [
-                      { id: "default", name: "Figma Light", dot: "#54EAD8" },
+                      { id: "default", name: "Clean Light", dot: "#54EAD8" },
                       { id: "dark", name: "Obsidian Dark", dot: "#10B981" },
                       { id: "orange", name: "Brand Orange", dot: "#FFFFFF" },
                       { id: "cyberpunk", name: "Cyberpunk", dot: "#00E5BE" },
@@ -282,10 +390,10 @@ export default function UIComponentsScreen() {
               {/* Primary Call to Action */}
               <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-white/10">
                 <Link
-                  href="/buttons"
+                  href="/buttons/tactile-pill-button"
                   className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-gradient-to-r from-[#FF5B04] to-[#FF7A00] text-white font-bold text-sm shadow-[0_0_25px_rgba(255,91,4,0.4)] hover:shadow-[0_0_35px_rgba(255,91,4,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
-                  <span>Open Button Detail Page &amp; Studio</span>
+                  <span>Open Component Studio</span>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
@@ -453,10 +561,90 @@ export default function UIComponentsScreen() {
 
               {/* Live Interactive Preview Stage */}
               <div className="bg-[#0B0B0D] rounded-2xl p-6 border border-white/5 flex items-center justify-center min-h-[160px] relative overflow-hidden">
+                {item.id === "frosted-gel-download-button" && (
+                  <div className="scale-75 sm:scale-80">
+                    <FrostedGelDownloadButton
+                      label="Download"
+                      theme="figma-blue"
+                      size="sm"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
+                {item.id === "isometric-revive-button" && (
+                  <div className="scale-70 sm:scale-75">
+                    <IsometricReviveButton
+                      label="Revive Now"
+                      theme="figma"
+                      size="sm"
+                      stateMode="interactive"
+                      showGrid={false}
+                    />
+                  </div>
+                )}
+
+                {item.id === "elevated-underglow-cta" && (
+                  <div className="scale-75 sm:scale-85">
+                    <ElevatedUnderglowCTA
+                      label="Book Call"
+                      icon="phone"
+                      theme="figma"
+                      size="sm"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
+                {item.id === "led-matrix-chevron" && (
+                  <div className="scale-75 sm:scale-85">
+                    <LedMatrixChevronButton
+                      theme="monochrome"
+                      size="md"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
+                {item.id === "slide-grow-button" && (
+                  <div className="scale-75 sm:scale-80">
+                    <SlideGrowButton
+                      theme="silver"
+                      size="md"
+                      stateMode="interactive"
+                    />
+                  </div>
+                )}
+
+                {item.id === "vintage-leather-cta" && (
+                  <div className="scale-75 sm:scale-85">
+                    <VintageLeatherCTA
+                      theme="heritage"
+                      size="md"
+                      label="Shop ties"
+                    />
+                  </div>
+                )}
+
+                {item.id === "neumorphic-glow-cta" && (
+                  <div className="scale-80 sm:scale-90">
+                    <NeumorphicGlowCTA
+                      variant="pill"
+                      label="Learn more"
+                    />
+                  </div>
+                )}
+
+                {item.id === "arc-corner-toggle" && (
+                  <div className="scale-65 sm:scale-75">
+                    <ArcCornerToggle scale={0.7} />
+                  </div>
+                )}
+
                 {item.id === "smash-tactile-button" && (
-                  <div className="scale-85 sm:scale-90">
+                  <div className="scale-80 sm:scale-85">
                     <SmashTactileButton
-                      label="Smash the button"
+                      label="Smash"
                       variant="figma"
                       size="sm"
                     />
@@ -464,9 +652,9 @@ export default function UIComponentsScreen() {
                 )}
 
                 {item.id === "scaling-capsule-button" && (
-                  <div className="scale-95 sm:scale-100">
+                  <div className="scale-85 sm:scale-90">
                     <ScalingCapsuleButton
-                      label="Scaling Workshop"
+                      label="Workshop"
                       variant="dark"
                       size="sm"
                     />
@@ -474,7 +662,7 @@ export default function UIComponentsScreen() {
                 )}
 
                 {item.id === "tactile-pill-button" && (
-                  <div className="scale-105">
+                  <div className="scale-95 sm:scale-100">
                     <TactilePillButton
                       label="Get Started"
                       dotColor="#54EAD8"
@@ -486,7 +674,7 @@ export default function UIComponentsScreen() {
                 )}
 
                 {item.id === "animated-slide-button" && (
-                  <div className="w-full max-w-[220px]">
+                  <div className="w-full max-w-[200px]">
                     <AnimatedButton
                       primaryText="Hover Me"
                       hoverText="Slide Effect →"
@@ -502,7 +690,7 @@ export default function UIComponentsScreen() {
                       DESIGN SYSTEM
                     </GlassBadge>
                     <GlassBadge variant="cyan" size="sm">
-                      FIGMA DEV MODE
+                      INTERACTIVE UI
                     </GlassBadge>
                   </div>
                 )}
@@ -562,7 +750,7 @@ export default function UIComponentsScreen() {
                     href={item.detailUrl}
                     className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-[#FF5B04] text-white text-xs font-bold transition-all"
                   >
-                    <span>Open Detail Page</span>
+                    <span>Open Component Studio</span>
                     <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>

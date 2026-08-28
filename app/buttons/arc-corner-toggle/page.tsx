@@ -10,15 +10,15 @@ const ArcCornerToggleScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Arc Corner Toggle — Figma Nodes 75:5084 & 75:5131 | UI Pirate",
+  title: "Arc Corner Slider Toggle — Interactive React & Tailwind Component | UI Pirate",
   description:
-    "Interactive tactile Corner Arc Slider Toggle component implemented from Figma Master Button Collection (nodes 75:5084 & 75:5131). Features STANDERD light state and CLICK dark state with tactile corner slider track and sunburst dial.",
+    "Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing laser beam.",
   keywords:
-    "arc corner toggle, figma 75:5084, figma 75:5131, tactile slider button, corner arc switch, figma to code, react tailwind, ui pirate",
+    "arc corner toggle, tactile slider button, corner arc switch, react component, tailwind toggle, interactive ui, ui pirate",
   openGraph: {
-    title: "Arc Corner Toggle — Figma Nodes 75:5084 & 75:5131 | UI Pirate",
+    title: "Arc Corner Slider Toggle — Interactive React & Tailwind Component | UI Pirate",
     description:
-      "Interactive tactile Corner Arc Slider Toggle component with STANDERD and CLICK states, frosted glass capsule knob, and sunburst dial.",
+      "Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, and sunburst dial.",
     url: "https://uipirate.com/buttons/arc-corner-toggle",
     siteName: "UI Pirate",
     type: "website",

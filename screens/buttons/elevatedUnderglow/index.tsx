@@ -43,9 +43,9 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Nodes 55:37 & 55:40 Design Tokens */
+  const cssOnlyCode = `/* Elevated Underglow 3D Button Design Tokens */
 
-/* 1. STANDERD Resting State (Node 55:37) */
+/* 1. Resting State */
 .elevated-cta-resting {
   position: relative;
   width: 184px;
@@ -66,7 +66,7 @@ export default function Example() {
     0px 3px 8px 0px rgba(0, 0, 0, 0.1);
 }
 
-/* 2. HOVER Elevated State (Node 55:40) */
+/* 2. Elevated State */
 /* Top Cap lifts up by 13px */
 .elevated-cta-hover-cap {
   transform: translateY(-13px);
@@ -108,7 +108,7 @@ export default function Example() {
           <span>/</span>
           <span className="text-[#0077FF] font-medium">Elevated Underglow 3D CTA</span>
           <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-blue-500/10 text-blue-300 border border-blue-500/20 rounded-full">
-            Figma Nodes 55:37 & 55:40
+            React + Tailwind
           </span>
         </div>
 
@@ -116,7 +116,7 @@ export default function Example() {
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-400">
             <span className="size-2 rounded-full bg-[#0077FF] animate-pulse" />
-            <span>Master Button Collection</span>
+            <span>Interactive Button Studio</span>
             <span className="text-neutral-600">•</span>
             <span>3D Tactile Extrusion</span>
           </div>
@@ -125,7 +125,7 @@ export default function Example() {
             Elevated Underglow <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0077FF] via-blue-400 to-cyan-300">3D Tactile CTA</span>
           </h1>
           <p className="text-neutral-400 text-base sm:text-lg max-w-3xl leading-relaxed">
-            Pixel-accurate implementation of Figma Master Button Collection nodes 55:37 (STANDERD) & 55:40 (HOVER). Features 13px spring lift elevation, glowing volumetric electric blue underlayer chassis, and bottom reflection rim.
+            Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.
           </p>
         </div>
 
@@ -213,8 +213,8 @@ export default function Example() {
                 {(
                   [
                     { id: "interactive", label: "Interactive" },
-                    { id: "standerd", label: "STANDERD (55:37)" },
-                    { id: "hover", label: "HOVER (55:40)" },
+                    { id: "standerd", label: "Resting" },
+                    { id: "hover", label: "Elevated" },
                   ] as const
                 ).map((m) => (
                   <button
@@ -285,7 +285,7 @@ export default function Example() {
                         : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
                     }`}
                   >
-                    {s === "md" ? "md (1:1 figma)" : s}
+                    {s}
                   </button>
                 ))}
               </div>
@@ -299,7 +299,7 @@ export default function Example() {
               <div className="grid grid-cols-3 gap-2">
                 {(
                   [
-                    { id: "phone", label: "📞 Phone (Figma)" },
+                    { id: "phone", label: "📞 Phone" },
                     { id: "calendar", label: "📅 Calendar" },
                     { id: "arrow", label: "→ Arrow" },
                     { id: "sparkle", label: "✨ Sparkle" },
@@ -340,27 +340,27 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            FIGMA MASTER 1:1 STATE COMPARISON
+            STATE COMPARISON GALLERY
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-6">
           <div className="space-y-1">
             <h2 className="text-2xl font-bold text-white">
-              Figma Master State Comparison
+              Component State Comparison
             </h2>
             <p className="text-neutral-400 text-sm">
-              Side-by-side reproduction of Figma Frames 55:37 and 55:40 on authentic `#E8E8E8` light studio background.
+              Side-by-side demonstration of resting and 13px elevated states on authentic `#E8E8E8` light studio background.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* 1. STANDERD State (Node 55:37) */}
+            {/* 1. Resting State */}
             <div className="bg-[#E8E8E8] rounded-3xl border border-neutral-300 p-8 sm:p-12 flex flex-col items-center justify-between min-h-[320px] shadow-lg relative overflow-hidden">
               <div className="w-full flex items-center justify-between border-b border-neutral-300/80 pb-4">
                 <span className="font-extrabold tracking-wider text-sm text-[#353535] font-jakarta">
-                  STANDERD
+                  Resting State
                 </span>
                 <span className="text-xs font-mono px-2 py-0.5 rounded bg-black/5 text-neutral-700 font-medium">
-                  Node 55:37
+                  Default
                 </span>
               </div>
 
@@ -379,15 +379,15 @@ export default function Example() {
               </div>
             </div>
 
-            {/* 2. HOVER State (Node 55:40) */}
+            {/* 2. Elevated State */}
             <div className="bg-[#E8E8E8] rounded-3xl border border-neutral-300 p-8 sm:p-12 flex flex-col items-center justify-between min-h-[320px] shadow-lg relative overflow-hidden">
               <div className="w-full flex items-center justify-between border-b border-neutral-300/80 pb-4">
                 <span className="font-extrabold tracking-wider text-sm text-[#0077FF] font-jakarta flex items-center gap-2">
-                  <span>HOVER</span>
+                  <span>Elevated (Hover)</span>
                   <span className="size-2 rounded-full bg-[#0077FF] animate-ping" />
                 </span>
                 <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-700 font-medium">
-                  Node 55:40
+                  Active
                 </span>
               </div>
 

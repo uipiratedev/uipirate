@@ -12,13 +12,13 @@ const MagneticPulseButtonScreen = dynamic(
 export const metadata: Metadata = {
   title: "Magnetic Pulsing Action CTA Button | UI Pirate",
   description:
-    "High-energy lead capture CTA button featuring radiant ambient halo bloom, click sound trigger, and dynamic 3D depth press feedback.",
+    "High-energy lead capture CTA button featuring radiant ambient glow bloom, click sound trigger, and dynamic 3D depth press feedback.",
   keywords:
     "magnetic cta button, pulsing button, audio button, glowing button, lead cta, ui pirate, framer motion cta",
   openGraph: {
     title: "Magnetic Pulsing Action CTA Button | UI Pirate",
     description:
-      "High-energy lead capture CTA button with pulsing ambient halo bloom and audio trigger.",
+      "High-energy lead capture CTA button with pulsing ambient radiant bloom and audio trigger.",
     url: "https://uipirate.com/buttons/magnetic-pulse-cta",
     siteName: "UI Pirate",
     type: "website",

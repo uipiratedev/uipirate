@@ -10,13 +10,13 @@ const VintageLeatherScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Vintage Leather & Brass Heritage Button — Figma Node 14:304 | UI Pirate",
+  title: "Vintage Leather & Brass Heritage Button — Luxury Tactile Component | UI Pirate",
   description:
-    "Luxury Victorian & leather goods embossed tactile button with 3D bottom bevel lip, recessed enclosure tray, and filigree scrollwork corner ornaments from Figma Master Button Collection (node 14:304).",
+    "Luxury Victorian & leather goods embossed tactile button with 3D bottom bevel lip, recessed enclosure tray, and filigree scrollwork corner ornaments.",
   keywords:
-    "vintage leather button, figma 14:304, brass heritage button, luxury embossed cta, tactile bevel button, victorian filigree, ui pirate",
+    "vintage leather button, brass heritage button, luxury embossed cta, tactile bevel button, victorian filigree, react tailwind, ui pirate",
   openGraph: {
-    title: "Vintage Leather & Brass Heritage Button — Figma Node 14:304 | UI Pirate",
+    title: "Vintage Leather & Brass Heritage Button — Luxury Tactile Component | UI Pirate",
     description:
       "Luxury Victorian & leather goods embossed tactile button with 3D bottom bevel lip and filigree scrollwork corner ornaments.",
     url: "https://uipirate.com/buttons/vintage-leather-cta",

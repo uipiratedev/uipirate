@@ -10,13 +10,13 @@ const NeumorphicGlowScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Neumorphic Glow CTA — Figma Nodes 14:642 & 14:669 | UI Pirate",
+  title: "Neumorphic Glow CTA — Claymorphic React & Tailwind Component | UI Pirate",
   description:
-    "Interactive Claymorphic & Neumorphic elevated CTA button components with glowing neon green badge depth and crystalline plus-lighter bloom from Figma Master Button Collection (nodes 14:642 & 14:669).",
+    "Interactive Claymorphic & Neumorphic elevated CTA button components with glowing neon green badge depth and crystalline plus-lighter bloom.",
   keywords:
-    "neumorphic glow cta, figma 14:642, figma 14:669, claymorphic button, neon green glow badge, tactile elevated cta, ui pirate",
+    "neumorphic glow cta, claymorphic button, neon green glow badge, tactile elevated cta, react tailwind, ui pirate",
   openGraph: {
-    title: "Neumorphic Glow CTA — Figma Nodes 14:642 & 14:669 | UI Pirate",
+    title: "Neumorphic Glow CTA — Claymorphic React & Tailwind Component | UI Pirate",
     description:
       "Interactive Claymorphic & Neumorphic elevated CTA button components with glowing neon green badge depth and crystalline plus-lighter bloom.",
     url: "https://uipirate.com/buttons/neumorphic-glow-cta",

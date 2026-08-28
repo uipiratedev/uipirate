@@ -52,12 +52,10 @@ export const ApexEmblemIcon: React.FC<{ className?: string }> = ({
 /**
  * ScalingCapsuleButton
  *
- * 1:1 Pixel-Accurate Implementation of Figma Master Button Collection (Node 118:6091).
- * Hierarchy:
- * 1. Frame 280 (118:6173) - Outer pill cavity halo (223x61px) with p-[6px], rounded-[50px]
- * 2. Frame 11 (118:6174) - Inner button cap (211x49px) with rounded-[24px], bg-[#343434]
- * 3. Frame 2095586266 (118:6176) - 45px circle with bg-gradient-to-b from-[#1b1b1b] to-[#343434]
- * 4. Ellipse 1 (118:6177) - 26px x 26px centered black rounded shape containing the icon (no hover tilt)
+ * 1. Outer pill cavity glass tray (223x61px) with p-[6px], rounded-[50px]
+ * 2. Inner button cap (211x49px) with rounded-[24px], bg-[#343434]
+ * 3. 45px circle with bg-gradient-to-b from-[#1b1b1b] to-[#343434]
+ * 4. 26px x 26px centered black rounded shape containing the icon (no hover tilt)
  * 5. Specular Bevel overlay covering the entire button cap
  */
 export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({

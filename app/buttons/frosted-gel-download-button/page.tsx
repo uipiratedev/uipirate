@@ -2,12 +2,12 @@ import { Metadata } from "next";
 import FrostedGelDownloadScreen from "@/screens/buttons/frostedGelDownload";
 
 export const metadata: Metadata = {
-  title: "Frosted Gel Download Button — Figma Nodes 4604:126 & 4604:152 | UI Pirate",
+  title: "Frosted Gel Download Button — Interactive React & Tailwind Component | UI Pirate",
   description:
-    "Figma 1:1 dual-pill split button with elevated ceramic pill, frosted glass gel download tile, multi-layered refraction rings, and volumetric blue underglow flare.",
+    "Dual-pill split CTA button with elevated ceramic pill, frosted glass gel download tile, optical refraction rings, and volumetric blue underglow flare.",
   keywords: [
     "Frosted Glass Button",
-    "Figma Button",
+    "Glassmorphic Button",
     "Neumorphic Button",
     "Dual Pill Button",
     "Download Button",

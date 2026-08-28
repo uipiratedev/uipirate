@@ -10,15 +10,15 @@ const ElevatedUnderglowScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "Elevated Underglow 3D Button — Figma Nodes 55:37 & 55:40 | UI Pirate",
+  title: "Elevated Underglow 3D Button — Interactive React & Tailwind Component | UI Pirate",
   description:
-    "Interactive 3D tactile elevated button from Figma Master Button Collection (nodes 55:37 & 55:40). Features 13px spring lift physics, glowing electric blue 3D extrusion, and bottom reflection rim.",
+    "Interactive 3D tactile elevated button featuring 13px spring lift physics, glowing electric blue 3D sub-chassis, and bottom reflection rim.",
   keywords:
-    "elevated 3d button, figma button 55:37, figma button 55:40, underglow button, tactile pill button, book a call button, react tailwind button, framer motion elevation, ui pirate",
+    "elevated 3d button, underglow button, tactile pill button, book a call button, react tailwind button, framer motion elevation, ui pirate",
   openGraph: {
-    title: "Elevated Underglow 3D Button — Figma Nodes 55:37 & 55:40 | UI Pirate",
+    title: "Elevated Underglow 3D Button — Interactive React & Tailwind Component | UI Pirate",
     description:
-      "Interactive 3D tactile elevated button from Figma Master Button Collection with glowing electric blue 3D base extrusion and spring lift elevation.",
+      "Interactive 3D tactile elevated button featuring glowing electric blue 3D base extrusion and spring lift elevation.",
     url: "https://uipirate.com/buttons/elevated-underglow-cta",
     siteName: "UI Pirate",
     type: "website",

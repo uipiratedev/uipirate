@@ -52,7 +52,7 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Nodes 115:5957 & 115:6002 Isometric Design System */
+  const cssOnlyCode = `/* 30° Isometric 3D Button Design System */
 
 /* 1. Isometric Projection Matrix */
 .isometric-stage {
@@ -60,7 +60,7 @@ export default function Example() {
   transform-origin: center center;
 }
 
-/* 2. STANDERD State (Node 115:5957) */
+/* 2. Resting State */
 .isometric-btn-standerd {
   transform: translateY(-28px);
   background: #0D1015;
@@ -68,7 +68,7 @@ export default function Example() {
   color: rgba(255, 255, 255, 0.35);
 }
 
-/* 3. HOVER State with Underglow (Node 115:6002) */
+/* 3. Hover State with Underglow */
 .isometric-btn-hover {
   transform: translateY(0px);
   color: #FFFFFF;
@@ -136,7 +136,7 @@ export default function Example() {
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Figma 1:1 Verified
+              Production Ready
             </span>
           </div>
         </div>
@@ -147,10 +147,10 @@ export default function Example() {
         <header className="space-y-4">
           <div className="flex items-center gap-3">
             <span className="px-2.5 py-0.5 rounded-md text-[11px] font-mono uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
-              Master Button Collection
+              Isometric 3D
             </span>
             <span className="text-xs text-white/40 font-mono">
-              Nodes 115:5957 (STANDERD) & 115:6002 (HOVER)
+              Framer Motion 3D Physics
             </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
@@ -242,7 +242,7 @@ export default function Example() {
                             : "text-white/60 hover:text-white"
                         }`}
                       >
-                        {mode === "standerd" ? "115:5957" : mode === "hover" ? "115:6002" : "Interactive"}
+                        {mode === "standerd" ? "Resting" : mode === "hover" ? "Hover" : "Interactive"}
                       </button>
                     ))}
                   </div>

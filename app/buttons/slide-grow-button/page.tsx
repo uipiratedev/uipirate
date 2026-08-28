@@ -7,13 +7,13 @@ const SlideGrowScreen = dynamic(() => import("@/screens/buttons/slideGrow"), {
 });
 
 export const metadata: Metadata = {
-  title: "Swipe to Grow / Slide to Unlock Slider Button — Figma 17:1222 & 17:1240 | UI Pirate",
+  title: "Swipe to Grow / Slide to Unlock Slider Button — Interactive React Component | UI Pirate",
   description:
-    "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal from Figma Master Button Collection (nodes 17:1222 & 17:1240).",
+    "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
   keywords:
-    "slide to unlock button, swipe to grow, figma 17:1222, figma 17:1240, neon slider button, metallic capsule toggle, framer motion drag, ui pirate",
+    "slide to unlock button, swipe to grow, neon slider button, metallic capsule toggle, framer motion drag, ui pirate",
   openGraph: {
-    title: "Swipe to Grow / Slide to Unlock Slider Button — Figma 17:1222 & 17:1240 | UI Pirate",
+    title: "Swipe to Grow / Slide to Unlock Slider Button — Interactive React Component | UI Pirate",
     description:
       "Interactive metallic capsule slider button with draggable glowing electric blue knob and illuminated neon channel fill.",
     url: "https://uipirate.com/buttons/slide-grow-button",

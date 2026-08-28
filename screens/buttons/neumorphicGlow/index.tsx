@@ -86,9 +86,9 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Nodes 14:642 & 14:669 Design Tokens */
+  const cssOnlyCode = `/* Claymorphic & Neumorphic Button Design Tokens */
 
-/* 1. Pill Variant (14:642 - Learn more) */
+/* 1. Pill Variant (Learn more) */
 .neumorphic-pill-btn {
   padding: 20px 40px 20px 20px;
   border-radius: 40px;
@@ -103,7 +103,7 @@ export default function Example() {
     inset -10px -10px 14px -6px rgba(0,0,0,0.15);
 }
 
-/* Glowing Neon Badge (14:723) */
+/* Glowing Neon Badge */
 .neon-badge-pill {
   padding: 13px;
   border-radius: 45.5px;
@@ -115,7 +115,7 @@ export default function Example() {
     inset 2.6px 5.2px 6.5px 0px rgba(51,217,37,0.35);
 }
 
-/* 2. Squircle Variant (14:669 - Get more info) */
+/* 2. Squircle Variant (Get more info) */
 .neumorphic-squircle-btn {
   padding: 8px 8px 8px 18px;
   border-radius: 10px;
@@ -139,7 +139,7 @@ export default function Example() {
           <span>/</span>
           <span className="text-emerald-400 font-medium">Neumorphic Glow CTA</span>
           <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 rounded-full">
-            Figma 14:642 & 14:669
+            React + Shadow Stacks
           </span>
         </div>
 
@@ -152,7 +152,7 @@ export default function Example() {
             </span>
           </h1>
           <p className="text-neutral-400 text-base max-w-2xl">
-            Authentic multi-tier claymorphic and neumorphic elevated buttons from Figma Master Button Collection with glowing neon badge depth and customizable arrow glow presets.
+            Authentic multi-tier claymorphic and neumorphic elevated buttons with glowing neon badge depth and customizable arrow glow presets.
           </p>
         </div>
 
