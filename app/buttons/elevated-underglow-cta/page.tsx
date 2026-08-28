@@ -29,5 +29,29 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ElevatedUnderglowScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Elevated Underglow 3D Button",
+    "programmingLanguage": "TypeScript / React",
+    "runtimePlatform": "Next.js / Tailwind CSS / Framer Motion",
+    "codeSampleType": "full snippet",
+    "description":
+      "Interactive 3D tactile elevated button featuring 13px spring lift physics, glowing electric blue 3D sub-chassis, and bottom reflection rim.",
+    "author": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ElevatedUnderglowScreen />
+    </>
+  );
 }

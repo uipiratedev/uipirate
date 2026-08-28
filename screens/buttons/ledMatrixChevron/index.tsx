@@ -19,52 +19,8 @@ export default function LedMatrixChevronScreen() {
   const [enableMovingLoop, setEnableMovingLoop] = useState(true);
   const [stepSpeedMs, setStepSpeedMs] = useState(110);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"usage" | "css">("usage");
-
-  const THEMES: { id: LedMatrixTheme; name: string; badge: string; color: string; desc: string }[] = [
-    {
-      id: "uipirate",
-      name: "UI Pirate",
-      badge: "Brand Edition",
-      color: "#FF5B04",
-      desc: "Electric neon UI Pirate orange phosphor LED dot matrix with dark obsidian embers",
-    },
-    {
-      id: "monochrome",
-      name: "Monochrome Matrix (Figma)",
-      badge: "Figma 1:1",
-      color: "#FFFFFF",
-      desc: "Pure white phosphor LED dot matrix on carbon graphite slab with specular reflections",
-    },
-    {
-      id: "emerald",
-      name: "Cyberpunk Matrix",
-      badge: "Phosphor Green",
-      color: "#10B981",
-      desc: "High-voltage emerald green LED dot matrix with dark terminal chassis",
-    },
-    {
-      id: "cyan",
-      name: "Cyberpunk Cyan",
-      badge: "Electric Cyan",
-      color: "#06B6D4",
-      desc: "Electric ice-cyan LED matrix with deep slate carbon slab",
-    },
-    {
-      id: "amber",
-      name: "Retro Amber Terminal",
-      badge: "Vintage CRT",
-      color: "#F59E0B",
-      desc: "Vintage warm amber monochrome CRT terminal pixel display",
-    },
-    {
-      id: "crimson",
-      name: "Red Alert Crimson",
-      badge: "High Threat",
-      color: "#EF4444",
-      desc: "Emergency high-alert red phosphor LED array with obsidian chassis",
-    },
-  ];
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
     navigator.clipboard.writeText(text);
@@ -72,248 +28,214 @@ export default function LedMatrixChevronScreen() {
     setTimeout(() => setCopiedCode(null), 2500);
   };
 
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = `"use client";
+
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+
+export type LedMatrixTheme = "uipirate" | "monochrome" | "emerald" | "cyan" | "amber" | "crimson";
+export type LedMatrixSize = "sm" | "md" | "lg";
+
+export interface LedMatrixChevronButtonProps {
+  label?: string;
+  theme?: LedMatrixTheme;
+  size?: LedMatrixSize;
+  onClick?: () => void;
+  className?: string;
+}
+
+export function LedMatrixChevronButton({
+  label = "See Plans",
+  theme = "monochrome",
+  size = "md",
+  onClick,
+  className = "",
+}: LedMatrixChevronButtonProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [frame, setFrame] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFrame((f) => (f + 1) % 16);
+    }, 110);
+    return () => clearInterval(interval);
+  }, []);
+
+  const themeColors = {
+    uipirate: "#FF5B04",
+    monochrome: "#FFFFFF",
+    emerald: "#10B981",
+    cyan: "#06B6D4",
+    amber: "#F59E0B",
+    crimson: "#EF4444",
+  }[theme];
+
+  return (
+    <div
+      className={\`relative inline-flex items-center select-none p-[6px] rounded-[50px] bg-[#1a1c23] border border-white/10 \${className}\`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <motion.button
+        type="button"
+        onClick={onClick}
+        animate={{ y: isHovered ? -2 : 0 }}
+        transition={{ type: "spring", stiffness: 450, damping: 25 }}
+        className="relative flex items-center gap-4 px-6 py-3 rounded-[24px] bg-[#0d0e12] border border-white/10 text-white font-bold text-sm cursor-pointer overflow-hidden"
+      >
+        {/* Animated LED Matrix Badge */}
+        <div className="flex items-center gap-1">
+          {[0, 1, 2].map((col) => (
+            <div
+              key={col}
+              className="w-1.5 h-1.5 rounded-full transition-opacity duration-200"
+              style={{
+                backgroundColor: themeColors,
+                opacity: (frame + col) % 3 === 0 ? 1 : 0.2,
+                boxShadow: (frame + col) % 3 === 0 ? \`0 0 6px \${themeColors}\` : "none",
+              }}
+            />
+          ))}
+        </div>
+        <span>{label}</span>
+      </motion.button>
+    </div>
+  );
+}`;
+
   const usageCode = `import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
 
 export default function Example() {
   return (
     <LedMatrixChevronButton
+      label="${label}"
       theme="${theme}"
       size="${size}"
-      label="${label}"
-      stateMode="${stateMode}"
-      interactionMode="${interactionMode}"
-      stepSpeedMs={${stepSpeedMs}}
-      enableMovingLoop={${enableMovingLoop}}
-      onClick={() => console.log("LED Matrix Button Clicked!")}
+      onClick={() => console.log("Plan clicked!")}
     />
   );
 }`;
 
-  const cssOnlyCode = `/* LED Dot Matrix Chevron Button Design Tokens */
-
-/* 1. Recessed Enclosure Tray */
-.enclosure-tray {
-  background: #000000;
-  border-radius: 16px;
+  const cssOnlyCode = `/* Cyberpunk LED Matrix Tokens */
+.led-matrix-enclosure {
   padding: 6px;
-  box-shadow:
-    0px 1.5px 0px rgba(255, 255, 255, 0.1),
-    inset 0px 0px 2px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  background: #18191e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.8);
 }
 
-/* 2. Tactile Carbon-Fiber Slab */
-.carbon-slab {
-  width: 224px;
-  height: 59px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  background: linear-gradient(180deg, #4A5157 0%, #2A2D30 50%, #1A1C1E 100%);
-  box-shadow:
-    0px 3px 3px 0px rgba(0,0,0,0.1),
-    60px 50px 80px 0px rgba(0,0,0,0.15),
-    20px 42px 33px 0px rgba(0,0,0,0.15),
-    inset 0px -2px 0px 0px #1a1a1a,
-    inset 0px 0px 2px 4px rgba(255,255,255,0.08),
-    inset 0px 0px 1px 2px black;
-}
-
-/* 3. Expandable LED Dot Matrix Screen */
-.led-matrix-screen {
-  background: #8C8C8C;
-  border-radius: 5px;
-  box-shadow: inset 0px 1px 1px 0px rgba(255, 255, 255, 0.35);
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 4. 7x7 LED Pixel Dot */
-.led-pixel {
-  width: 3px;
-  height: 3px;
-  border-radius: 0.6px;
-  background-color: #FFFFFF;
-  box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.6);
-}
-
-// Interactive chevron wave controller`;
+.led-matrix-cap {
+  background: #0d0e12;
+  border-radius: 24px;
+  box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.2);
+}`;
 
   return (
-    <div className="min-h-screen bg-[#0E1117] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <div className="min-h-screen bg-[#070709] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-emerald-500/30 selection:text-emerald-200">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-neutral-400">
-          <Link href="/buttons" className="hover:text-white transition-colors">
-            Buttons
+        <div className="flex items-center justify-between gap-4 pt-2">
+          <Link
+            href="/buttons"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-300 transition-colors group"
+          >
+            <svg className="w-4 h-4 text-gray-400 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>All Buttons</span>
           </Link>
-          <span>/</span>
-          <span className="text-emerald-400 font-medium">LED Dot Matrix Chevron</span>
-          <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 rounded-full">
-            React + CSS Grid
-          </span>
+          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-gray-500">
+            <Link href="/ui-components" className="text-gray-400 hover:text-white transition-colors">
+              UI Components
+            </Link>
+            <span>/</span>
+            <Link href="/buttons" className="text-gray-400 hover:text-white transition-colors">
+              Buttons
+            </Link>
+            <span>/</span>
+            <span className="text-emerald-400">LED Matrix Chevron</span>
+          </div>
         </div>
 
-        {/* Header Title */}
-        <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white flex items-center gap-3">
-            Expandable LED Dot Matrix Chevron Button
-            <span className="text-sm px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-normal">
-              Expanding Matrix
-            </span>
+        {/* Header section */}
+        <header className="text-center space-y-4 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Cyberpunk LED Hardware</span>
+            <span className="text-gray-500">•</span>
+            <span className="text-emerald-400">Expandable Dot Matrix</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+            LED Matrix Chevron <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile Button</span>
           </h1>
-          <p className="text-neutral-400 text-base max-w-2xl">
-            Cyberpunk carbon-fiber squircle button with an expandable 7×7 LED dot matrix screen that stretches across the entire chassis on hover/click revealing 5 cascading pixel chevrons.
+
+          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+            Expandable phosphor LED dot-matrix chevron button featuring physical grid illumination, animated marquee shift loop, and specular bevel framing.
           </p>
-        </div>
+        </header>
 
-        {/* ─────────────────────────────────────────────────────────────
-            MAIN INTERACTIVE STAGE & PLAYGROUND
-           ───────────────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Main Visual Stage */}
-          <div className="lg:col-span-8 flex flex-col items-center justify-center p-12 sm:p-24 rounded-3xl border border-white/10 bg-[#101012] shadow-2xl relative min-h-[460px] overflow-hidden">
-            {/* Ambient Radial Spotlight (Figma 19:6812) */}
-            <div
-              className="absolute inset-0 pointer-events-none opacity-40"
-              style={{
-                background:
-                  "radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.8) 70%)",
-              }}
-            />
-
-            {/* The Live Interactive Button */}
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#131318] to-[#0A0A0D]">
             <div className="relative z-10 flex flex-col items-center gap-6">
               <LedMatrixChevronButton
+                label={label}
                 theme={theme}
                 size={size}
-                label={label}
                 stateMode={stateMode}
                 interactionMode={interactionMode}
                 enableMovingLoop={enableMovingLoop}
                 stepSpeedMs={stepSpeedMs}
               />
-
-              {/* Status Note */}
-              <div className="font-mono text-xs text-neutral-400 mt-6 flex items-center gap-4">
-                <span>
-                  Mode: <strong className="text-emerald-400">{stateMode.toUpperCase()}</strong>
-                </span>
-                <span>•</span>
-                <span className="text-[11px] opacity-75">
-                  {stateMode === "interactive"
-                    ? interactionMode === "hover"
-                      ? "Hover over button to expand matrix"
-                      : interactionMode === "click"
-                      ? "Click button to toggle expansion"
-                      : "Hover or click to expand matrix"
-                    : `Fixed state: ${stateMode.toUpperCase()}`}
-                </span>
-              </div>
             </div>
           </div>
 
-          {/* Controls Panel */}
-          <div className="lg:col-span-4 space-y-6 bg-neutral-900/80 backdrop-blur border border-neutral-800 rounded-3xl p-6">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-              Live Customizer
-            </h2>
-
-            {/* State Mode Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Figma State Mode
-              </label>
-              <div className="grid grid-cols-3 gap-1.5">
-                {(["interactive", "standerd", "hover"] as LedMatrixStateMode[]).map((mode) => (
-                  <button
-                    key={mode}
-                    type="button"
-                    onClick={() => setStateMode(mode)}
-                    className={`px-2 py-2 text-xs font-medium capitalize rounded-xl border transition-all ${
-                      stateMode === mode
-                        ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-md"
-                        : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
-                    }`}
-                  >
-                    {mode === "standerd" ? "Resting" : mode === "hover" ? "Expanded" : "Interactive"}
-                  </button>
-                ))}
-              </div>
+          {/* Controls Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 border-t border-white/10 bg-white/[0.01] text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
+              <select
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as LedMatrixTheme)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="monochrome" className="bg-[#101014]">Monochrome (Figma 1:1)</option>
+                <option value="uipirate" className="bg-[#101014]">UI Pirate Orange</option>
+                <option value="emerald" className="bg-[#101014]">Phosphor Emerald</option>
+                <option value="cyan" className="bg-[#101014]">Electric Cyan</option>
+                <option value="amber" className="bg-[#101014]">Vintage Amber</option>
+                <option value="crimson" className="bg-[#101014]">Cyber Crimson</option>
+              </select>
             </div>
 
-            {/* Trigger Action Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Trigger Action
-              </label>
-              <div className="grid grid-cols-3 gap-1.5">
-                {[
-                  { id: "both", label: "Hover & Click" },
-                  { id: "hover", label: "Hover Only" },
-                  { id: "click", label: "Click Toggle" },
-                ].map((act) => (
-                  <button
-                    key={act.id}
-                    type="button"
-                    onClick={() => {
-                      setStateMode("interactive");
-                      setInteractionMode(act.id as LedMatrixInteractionMode);
-                    }}
-                    className={`px-2 py-2 text-xs font-medium rounded-xl border transition-all ${
-                      interactionMode === act.id && stateMode === "interactive"
-                        ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-md"
-                        : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
-                    }`}
-                  >
-                    {act.label}
-                  </button>
-                ))}
-              </div>
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
+              <input
+                type="text"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              />
             </div>
 
-            {/* Theme Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Theme Preset
-              </label>
-              <div className="space-y-1.5">
-                {THEMES.map((t) => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => setTheme(t.id)}
-                    className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-left transition-all ${
-                      theme === t.id
-                        ? "bg-neutral-800 text-white border-emerald-500/80 shadow-md"
-                        : "bg-neutral-800/30 text-neutral-400 border-neutral-700/50 hover:bg-neutral-800/60 hover:text-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <span className="size-3 rounded-full shrink-0" style={{ backgroundColor: t.color }} />
-                      <span className="text-xs font-medium">{t.name}</span>
-                    </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-neutral-400 border border-white/5">
-                      {t.badge}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Size Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Button Size
-              </label>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+              <div className="flex gap-1">
                 {(["sm", "md", "lg"] as LedMatrixSize[]).map((s) => (
                   <button
                     key={s}
                     type="button"
                     onClick={() => setSize(s)}
-                    className={`px-3 py-2 text-xs font-medium uppercase rounded-xl border transition-all ${
-                      size === s
-                        ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50"
-                        : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
+                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
+                      size === s ? "bg-emerald-500 text-black font-bold" : "bg-white/5 text-gray-400"
                     }`}
                   >
                     {s}
@@ -321,124 +243,142 @@ export default function Example() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Label Input */}
-            <div className="space-y-1">
-              <label className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
-                Resting Label
-              </label>
-              <input
-                type="text"
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500 transition-colors"
-              />
-            </div>
+        {/* ─────────────────────────────────────────────────────────────
+            QUICK INSTALLATION & DEPENDENCIES SECTION
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+          <div className="bg-[#101014] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Install required peer dependencies for animation support:
+            </p>
 
-            {/* Moving Loop Switch */}
-            <div className="flex items-center justify-between pt-2 border-t border-neutral-800">
-              <span className="text-xs text-neutral-300">Continuous Moving Loop</span>
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+              <span>npm install framer-motion clsx</span>
               <button
-                type="button"
-                onClick={() => setEnableMovingLoop((prev) => !prev)}
-                className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                  enableMovingLoop ? "bg-emerald-500" : "bg-neutral-700"
-                }`}
+                onClick={handleCopyInstall}
+                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
               >
-                <span
-                  className={`pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
-                    enableMovingLoop ? "translate-x-4" : "translate-x-0"
-                  }`}
-                />
+                {copiedInstall ? "Copied Command!" : "Copy Command"}
               </button>
             </div>
           </div>
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            STATE COMPARISON GALLERY
+            CODE EXPORTER TABS
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Component States Side-by-Side</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Resting State */}
-            <div className="flex flex-col items-center justify-between p-8 rounded-3xl bg-[#101012] border border-white/10 shadow-xl min-h-[260px]">
-              <div className="flex items-center justify-between w-full">
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-400">
-                  Resting State
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/10 text-white border border-white/10">
-                  Default
-                </span>
-              </div>
-              <div className="py-8 scale-95">
-                <LedMatrixChevronButton theme="monochrome" size="md" stateMode="standerd" />
-              </div>
-              <p className="text-[11px] text-center text-neutral-400 max-w-sm">
-                Resting state with 53px LED badge displaying 1 pixel chevron on the left and &quot;See Plans&quot; label on the right.
-              </p>
-            </div>
-
-            {/* Expanded State */}
-            <div className="flex flex-col items-center justify-between p-8 rounded-3xl bg-[#101012] border border-white/10 shadow-xl min-h-[260px]">
-              <div className="flex items-center justify-between w-full">
-                <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-400">
-                  Expanded State
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  Active
-                </span>
-              </div>
-              <div className="py-8 scale-95">
-                <LedMatrixChevronButton theme="monochrome" size="md" stateMode="hover" />
-              </div>
-              <p className="text-[11px] text-center text-neutral-400 max-w-sm">
-                Expanded state where the LED matrix stretches across 100% width revealing 5 cascading pixel chevrons with pulse wave.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            CODE EXPORT TABS
-           ───────────────────────────────────────────────────────────── */}
-        <div className="bg-neutral-900/90 border border-neutral-800 rounded-3xl overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setActiveCodeTab("usage")}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                  activeCodeTab === "usage"
-                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                    : "text-neutral-400 hover:text-white"
-                }`}
-              >
-                React (Framer Motion)
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveCodeTab("css")}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                  activeCodeTab === "css"
-                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                    : "text-neutral-400 hover:text-white"
-                }`}
-              >
-                CSS Tokens (Figma 1:1)
-              </button>
-            </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
             <button
-              type="button"
-              onClick={() => handleCopy(activeCodeTab === "usage" ? usageCode : cssOnlyCode, activeCodeTab)}
-              className="text-xs font-mono px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-colors"
+              onClick={() =>
+                handleCopy(
+                  activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode,
+                  activeCodeTab
+                )
+              }
+              className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
             >
-              {copiedCode === activeCodeTab ? "✓ Copied!" : "Copy Code"}
+              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
             </button>
           </div>
-          <pre className="p-6 text-xs font-mono text-neutral-300 overflow-x-auto bg-[#0a0c10] leading-relaxed">
-            <code>{activeCodeTab === "usage" ? usageCode : cssOnlyCode}</code>
-          </pre>
+
+          <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white font-mono">
+                  {activeCodeTab === "component" ? "LedMatrixChevronButton.tsx" : activeCodeTab === "usage" ? "Usage.tsx" : "Tokens.css"}
+                </span>
+                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+              </div>
+
+              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                <button
+                  onClick={() => setActiveCodeTab("component")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "component" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Component.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("usage")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "usage" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Usage.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("css")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "css" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Tokens.css
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 bg-[#08080A] overflow-x-auto max-h-[550px]">
+              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                <code>
+                  {activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode}
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            PROPS & API REFERENCE TABLE
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+          <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
+                    <th className="py-3.5 px-6 font-semibold">Prop</th>
+                    <th className="py-3.5 px-6 font-semibold">Type</th>
+                    <th className="py-3.5 px-6 font-semibold">Default</th>
+                    <th className="py-3.5 px-6 font-semibold">Description</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">label</td>
+                    <td className="py-3 px-6 text-blue-300">string</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;See Plans&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the button cap</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">theme</td>
+                    <td className="py-3 px-6 text-blue-300">LedMatrixTheme</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;monochrome&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">LED Phosphor color theme preset</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">size</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">onClick</td>
+                    <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
+                    <td className="py-3 px-6 text-gray-400">undefined</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Click callback event handler</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

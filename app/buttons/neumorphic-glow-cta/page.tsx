@@ -29,5 +29,29 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <NeumorphicGlowScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Neumorphic Glow CTA Button",
+    "programmingLanguage": "TypeScript / React",
+    "runtimePlatform": "Next.js / Tailwind CSS / Framer Motion",
+    "codeSampleType": "full snippet",
+    "description":
+      "Interactive Claymorphic & Neumorphic elevated CTA button components with glowing neon green badge depth and crystalline plus-lighter bloom.",
+    "author": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <NeumorphicGlowScreen />
+    </>
+  );
 }

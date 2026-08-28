@@ -12,13 +12,79 @@ export default function SmashTactileButtonScreen() {
   const [size, setSize] = useState<"sm" | "md" | "lg" | "hero">("md");
   const [smashCount, setSmashCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"usage" | "css">("usage");
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
     navigator.clipboard.writeText(text);
     setCopiedCode(tabName);
     setTimeout(() => setCopiedCode(null), 2500);
   };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = `"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+
+export type SmashButtonVariant = "figma" | "dark" | "orange" | "cyberpunk";
+
+export interface SmashTactileButtonProps {
+  label?: string;
+  variant?: SmashButtonVariant;
+  size?: "sm" | "md" | "lg" | "hero";
+  onClick?: () => void;
+  className?: string;
+  disabled?: boolean;
+}
+
+export function SmashTactileButton({
+  label = "Smash the button",
+  variant = "figma",
+  size = "md",
+  onClick,
+  className = "",
+  disabled = false,
+}: SmashTactileButtonProps) {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      className={\`relative inline-block select-none p-3 rounded-[30px] bg-white/65 border border-[#CEC9F1] shadow-2xl \${className}\`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsPressed(false);
+      }}
+    >
+      <div className="relative p-2 rounded-[24px] bg-[#F3F3FE] shadow-[inset_0_1px_0_white,inset_0_-3px_0_#DFDEFB]">
+        <motion.button
+          type="button"
+          disabled={disabled}
+          onClick={onClick}
+          onMouseDown={() => setIsPressed(true)}
+          onMouseUp={() => setIsPressed(false)}
+          animate={{
+            y: isPressed ? 3 : isHovered ? -2 : 0,
+            scale: isPressed ? 0.98 : 1,
+          }}
+          transition={{ type: "spring", stiffness: 500, damping: 22 }}
+          className="relative px-10 py-4 rounded-[20px] bg-gradient-to-br from-[#1C182F] via-[#161326] to-[#0E0C18] text-white font-bold text-sm tracking-wide cursor-pointer focus:outline-none shadow-xl"
+        >
+          <span>{label}</span>
+        </motion.button>
+      </div>
+    </div>
+  );
+}
+
+export default SmashTactileButton;`;
 
   const usageCode = `import { SmashTactileButton } from "@/components/SmashTactileButton";
 
@@ -33,62 +99,30 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Exact Node 17:1480 Specs */
+  const cssOnlyCode = `/* 5-Tier Tactile Compression Architecture */
 .smash-deck-frame {
   border: 1px solid #CEC9F1;
   border-radius: 30px;
   background: rgba(255, 255, 255, 0.65);
-  box-shadow: 
-    0px 2.8px 2.2px rgba(26, 0, 108, 0.02),
-    0px 3px 3px rgba(0, 0, 0, 0.04),
-    0px 42px 33px rgba(26, 0, 108, 0.05),
-    0px 100px 80px rgba(26, 0, 108, 0.05);
+  box-shadow: 0px 42px 33px rgba(26, 0, 108, 0.05);
 }
 
 .smash-porcelain-tray {
   background: #F3F3FE;
   border-radius: 24px;
-  box-shadow:
-    inset 0px 1px 0px 0px #FFFFFF,
-    inset 0px -3px 0px 0px #DFDEFB,
-    0px 100px 80px rgba(26, 0, 108, 0.05);
-}
-
-.smash-core-slab {
-  background: linear-gradient(135deg, #1C182F 0%, #161326 50%, #0E0C18 100%);
-  border-radius: 20px;
-  color: #FFFFFF;
-  box-shadow:
-    inset 0px 1.5px 1px 0px rgba(255, 255, 255, 0.25),
-    inset 0px -3px 2px 0px rgba(0, 0, 0, 0.8);
-}
-
-.smash-reactor-underglow {
-  background: radial-gradient(circle, #D946EF 0%, #8B5CF6 70%, transparent 100%);
-  filter: blur(24px);
+  box-shadow: inset 0px 1px 0px 0px #FFFFFF, inset 0px -3px 0px 0px #DFDEFB;
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      {/* Ambient lighting */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[750px] h-[500px] bg-purple-600/15 rounded-full blur-[160px]" />
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-[#FF5B04]/10 rounded-full blur-[120px]" />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10 space-y-12">
+    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-purple-500 selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between gap-4 pt-2">
           <Link
             href="/buttons"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-300 transition-colors group"
           >
-            <svg
-              className="w-4 h-4 text-gray-400 group-hover:-translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4 text-gray-400 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span>All Buttons</span>
@@ -107,150 +141,78 @@ export default function Example() {
         </div>
 
         {/* Header section */}
-        <div className="text-center space-y-5 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
-            <span>Neo-Brutalist Tactile CTA</span>
+        <header className="text-center space-y-4 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-medium text-purple-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
+            <span>5-Tier Tactile Compression</span>
             <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">React + Tailwind</span>
+            <span className="text-purple-400">React + Framer Motion</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
-            Tactile <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-200">&ldquo;Smash&rdquo; Button</span>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+            Smash Tactile <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-violet-200 to-purple-500">Haptic Button</span>
           </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Interactive neo-brutalist tactile button engineered with an outer tech enclosure frame, porcelain cooling tray, midnight obsidian slab, and glowing neon reactor underglow bloom.
+            Multi-tier tactile compression button featuring porcelain cushion trays, dot-matrix arrays, internal optical flare beam, and deep haptic depression.
           </p>
-        </div>
+        </header>
 
-        {/* Live Interactive Studio */}
-        <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-green-500/80 inline-block" />
-              </div>
-              <span className="text-sm font-semibold text-gray-300 font-mono">
-                Interactive Smash Studio
-              </span>
-            </div>
-
-            <button
-              onClick={() =>
-                handleCopy(
-                  activeCodeTab === "usage" ? usageCode : cssOnlyCode,
-                  activeCodeTab
-                )
-              }
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors"
-            >
-              {copiedCode === activeCodeTab ? (
-                <>
-                  <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>Copied!</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-3.5 h-3.5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                  <span>Copy Code</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Interactive Stage */}
-          <div
-            className={`relative min-h-[460px] flex flex-col items-center justify-center p-8 transition-colors duration-500 overflow-x-auto ${
-              variant === "figma"
-                ? "bg-[#E2E4F6]"
-                : variant === "dark"
-                ? "bg-[#0E0E12]"
-                : variant === "orange"
-                ? "bg-[#180A04]"
-                : "bg-[#050912]"
-            }`}
-            style={
-              variant === "figma"
-                ? {
-                    backgroundColor: "#E2E4F6",
-                    backgroundImage:
-                      "repeating-linear-gradient(45deg, rgba(206, 201, 241, 0.5) 0px, rgba(206, 201, 241, 0.5) 1px, transparent 1px, transparent 8px)",
-                  }
-                : undefined
-            }
-          >
-            <div className="relative z-10 transition-transform">
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#181524] to-[#0D0B14]">
+            <div className="relative z-10 flex flex-col items-center gap-6">
               <SmashTactileButton
                 label={label}
                 variant={variant}
                 size={size}
-                onClick={() => setSmashCount((prev) => prev + 1)}
+                onClick={() => setSmashCount((c) => c + 1)}
               />
-            </div>
 
-            <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none">
-              <p
-                className={`text-xs font-mono ${
-                  variant === "figma" ? "text-gray-700 font-semibold" : "text-gray-400"
-                }`}
-              >
-                Hover to activate underglow reactor &bull; Click/Smash for haptic compression
-                {smashCount > 0 && ` &bull; Smashed ${smashCount} time${smashCount > 1 ? "s" : ""}`}
-              </p>
+              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                <span>Interactions:</span>
+                <span className="text-white font-semibold">{smashCount}</span>
+              </div>
             </div>
           </div>
 
-          {/* Controls */}
-          <div className="p-6 sm:p-8 bg-[#121215] border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Button Label
-              </label>
+          {/* Controls Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 border-t border-white/10 bg-white/[0.01] text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
+              <select
+                value={variant}
+                onChange={(e) => setVariant(e.target.value as SmashButtonVariant)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="figma" className="bg-[#151518]">Figma Master (1:1)</option>
+                <option value="dark" className="bg-[#151518]">Dark Cyan</option>
+                <option value="orange" className="bg-[#151518]">UI Pirate Orange</option>
+                <option value="cyberpunk" className="bg-[#151518]">Cyberpunk Pink</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Button Label</label>
               <input
                 type="text"
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-400 transition-colors"
-                placeholder="Button text..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Theme Variant
-              </label>
-              <select
-                value={variant}
-                onChange={(e) => setVariant(e.target.value as SmashButtonVariant)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-purple-400 transition-colors"
-              >
-                <option value="figma" className="bg-[#18181B] text-white">Figma Master (Node 17:1480)</option>
-                <option value="dark" className="bg-[#18181B] text-white">Dark Cyan Reactor</option>
-                <option value="orange" className="bg-[#18181B] text-white">Brand Orange Bloom</option>
-                <option value="cyberpunk" className="bg-[#18181B] text-white">Cyberpunk Hot Pink</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                Size Scale
-              </label>
-              <div className="flex gap-2">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+              <div className="flex gap-1">
                 {(["sm", "md", "lg", "hero"] as const).map((s) => (
                   <button
                     key={s}
+                    type="button"
                     onClick={() => setSize(s)}
-                    className={`flex-1 py-2.5 rounded-xl uppercase font-mono text-xs transition-all ${
-                      size === s
-                        ? "bg-purple-600 text-white font-bold shadow-md shadow-purple-600/30"
-                        : "bg-black/50 border border-white/10 text-gray-400 hover:text-white"
+                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
+                      size === s ? "bg-purple-600 text-white font-bold" : "bg-white/5 text-gray-400"
                     }`}
                   >
                     {s}
@@ -261,42 +223,138 @@ export default function Example() {
           </div>
         </div>
 
-        {/* Code Exporter */}
-        <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden">
-          <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-white font-mono">Code Export</span>
-              <span className="text-xs text-gray-500 font-mono">&bull; Ready for React &amp; Tailwind</span>
-            </div>
+        {/* ─────────────────────────────────────────────────────────────
+            QUICK INSTALLATION & DEPENDENCIES SECTION
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+          <div className="bg-[#151518] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Install required peer dependencies:
+            </p>
 
-            <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+              <span>npm install framer-motion clsx</span>
               <button
-                onClick={() => setActiveCodeTab("usage")}
-                className={`px-3 py-1 rounded-lg transition-colors ${
-                  activeCodeTab === "usage"
-                    ? "bg-purple-600 text-white font-medium"
-                    : "text-gray-400 hover:text-white"
-                }`}
+                onClick={handleCopyInstall}
+                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
               >
-                Usage Example
-              </button>
-              <button
-                onClick={() => setActiveCodeTab("css")}
-                className={`px-3 py-1 rounded-lg transition-colors ${
-                  activeCodeTab === "css"
-                    ? "bg-purple-600 text-white font-medium"
-                    : "text-gray-400 hover:text-white"
-                }`}
-              >
-                Pure CSS Specs
+                {copiedInstall ? "Copied Command!" : "Copy Command"}
               </button>
             </div>
           </div>
+        </div>
 
-          <div className="p-6 bg-[#0B0B0D] overflow-x-auto">
-            <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
-              <code>{activeCodeTab === "usage" ? usageCode : cssOnlyCode}</code>
-            </pre>
+        {/* ─────────────────────────────────────────────────────────────
+            CODE EXPORTER TABS
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
+            <button
+              onClick={() =>
+                handleCopy(
+                  activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode,
+                  activeCodeTab
+                )
+              }
+              className="text-xs font-mono text-purple-400 hover:text-purple-300 transition-colors"
+            >
+              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
+            </button>
+          </div>
+
+          <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white font-mono">
+                  {activeCodeTab === "component" ? "SmashTactileButton.tsx" : activeCodeTab === "usage" ? "Usage.tsx" : "Tokens.css"}
+                </span>
+                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+              </div>
+
+              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                <button
+                  onClick={() => setActiveCodeTab("component")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "component" ? "bg-purple-600 text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Component.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("usage")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "usage" ? "bg-purple-600 text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Usage.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("css")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "css" ? "bg-purple-600 text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Tokens.css
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 bg-[#0B0B0D] overflow-x-auto max-h-[550px]">
+              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                <code>
+                  {activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode}
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            PROPS & API REFERENCE TABLE
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+          <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
+                    <th className="py-3.5 px-6 font-semibold">Prop</th>
+                    <th className="py-3.5 px-6 font-semibold">Type</th>
+                    <th className="py-3.5 px-6 font-semibold">Default</th>
+                    <th className="py-3.5 px-6 font-semibold">Description</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
+                  <tr>
+                    <td className="py-3 px-6 text-purple-400 font-semibold">label</td>
+                    <td className="py-3 px-6 text-blue-300">string</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;Smash the button&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the central core cap</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-purple-400 font-semibold">variant</td>
+                    <td className="py-3 px-6 text-blue-300">SmashButtonVariant</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;figma&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Color scheme theme preset</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-purple-400 font-semibold">size</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;hero&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-purple-400 font-semibold">onClick</td>
+                    <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
+                    <td className="py-3 px-6 text-gray-400">undefined</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Click callback event handler</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

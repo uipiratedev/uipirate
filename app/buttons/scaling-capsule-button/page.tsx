@@ -29,5 +29,29 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ScalingCapsuleButtonScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Scaling Capsule Tactile Button",
+    "programmingLanguage": "TypeScript / React",
+    "runtimePlatform": "Next.js / Tailwind CSS / Framer Motion",
+    "codeSampleType": "full snippet",
+    "description":
+      "Interactive tactile capsule button with frosted glass tray and multi-tier shadow stack. Production-ready React component with Framer Motion spring physics.",
+    "author": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ScalingCapsuleButtonScreen />
+    </>
+  );
 }

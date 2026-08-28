@@ -29,5 +29,29 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <AnimatedSlideButtonScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Animated Slide-Up Button",
+    "programmingLanguage": "TypeScript / React",
+    "runtimePlatform": "Next.js / Tailwind CSS",
+    "codeSampleType": "full snippet",
+    "description":
+      "Interactive dual-text roll CTA button that smoothly translates labels vertically on hover with zero layout shift.",
+    "author": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <AnimatedSlideButtonScreen />
+    </>
+  );
 }

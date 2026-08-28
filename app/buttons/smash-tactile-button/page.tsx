@@ -29,5 +29,29 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <SmashTactileButtonScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Smash Tactile Button",
+    "programmingLanguage": "TypeScript / React",
+    "runtimePlatform": "Next.js / Tailwind CSS / Framer Motion",
+    "codeSampleType": "full snippet",
+    "description":
+      "Interactive tactile neo-brutalist button featuring an outer tech enclosure frame, porcelain cooling tray, midnight obsidian slab, and neon reactor underglow bloom.",
+    "author": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <SmashTactileButtonScreen />
+    </>
+  );
 }

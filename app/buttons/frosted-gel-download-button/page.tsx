@@ -18,5 +18,29 @@ export const metadata: Metadata = {
 };
 
 export default function FrostedGelDownloadPage() {
-  return <FrostedGelDownloadScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Frosted Gel Dual-Pill Download Button",
+    "programmingLanguage": "TypeScript / React",
+    "runtimePlatform": "Next.js / Tailwind CSS / Framer Motion",
+    "codeSampleType": "full snippet",
+    "description":
+      "Dual-pill split CTA button with elevated ceramic pill, frosted glass gel download tile, optical refraction rings, and volumetric blue underglow flare.",
+    "author": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <FrostedGelDownloadScreen />
+    </>
+  );
 }

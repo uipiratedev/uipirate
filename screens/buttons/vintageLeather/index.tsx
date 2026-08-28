@@ -15,52 +15,8 @@ export default function VintageLeatherScreen() {
   const [labelText, setLabelText] = useState("Shop ties");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"usage" | "css">("usage");
-
-  const THEMES: { id: VintageLeatherTheme; name: string; badge: string; color: string; desc: string }[] = [
-    {
-      id: "uipirate",
-      name: "UI Pirate",
-      badge: "Brand Edition",
-      color: "#FF5B04",
-      desc: "Weathered UI Pirate burnt orange saddle leather with deep ember burnishing",
-    },
-    {
-      id: "heritage",
-      name: "Brass & Saddle (Figma)",
-      badge: "Figma 1:1",
-      color: "#B4986C",
-      desc: "Warm brass and rich saddle leather gradient with dark mahogany bottom lip",
-    },
-    {
-      id: "obsidian",
-      name: "Obsidian Gold",
-      badge: "Luxury Dark",
-      color: "#D4AF37",
-      desc: "Midnight charcoal graphite with etched 24k gold typography",
-    },
-    {
-      id: "emerald",
-      name: "British Racing Green",
-      badge: "Gentleman Edition",
-      color: "#10B981",
-      desc: "Deep bespoke racing emerald with polished brass highlights",
-    },
-    {
-      id: "ruby",
-      name: "Burgundy Wine",
-      badge: "Royal Crimson",
-      color: "#F43F5E",
-      desc: "Regal burgundy leather with warm bronze accents",
-    },
-    {
-      id: "silver",
-      name: "Brushed Titanium",
-      badge: "Modern Luxury",
-      color: "#A1A1AA",
-      desc: "Sleek industrial titanium platinum with dark engraved letters",
-    },
-  ];
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
     navigator.clipboard.writeText(text);
@@ -68,194 +24,215 @@ export default function VintageLeatherScreen() {
     setTimeout(() => setCopiedCode(null), 2500);
   };
 
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = `"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+
+export type VintageLeatherTheme = "heritage" | "uipirate" | "obsidian" | "emerald" | "ruby" | "silver";
+export type VintageLeatherSize = "sm" | "md" | "lg";
+
+export interface VintageLeatherCTAProps {
+  label?: string;
+  theme?: VintageLeatherTheme;
+  size?: VintageLeatherSize;
+  showOrnaments?: boolean;
+  onClick?: () => void;
+  className?: string;
+}
+
+export function VintageLeatherCTA({
+  label = "Shop ties",
+  theme = "heritage",
+  size = "md",
+  showOrnaments = true,
+  onClick,
+  className = "",
+}: VintageLeatherCTAProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+
+  const themeConfig = {
+    heritage: {
+      bg: "bg-gradient-to-b from-[#B4986C] via-[#94774B] to-[#715428]",
+      border: "border-[#C9B086]/60",
+      text: "text-[#3D260D]",
+      shadow: "shadow-[0_8px_16px_rgba(113,84,40,0.3),inset_0_2px_0_rgba(255,255,255,0.4)]",
+    },
+    uipirate: {
+      bg: "bg-gradient-to-b from-[#FF5B04] via-[#D94500] to-[#A33000]",
+      border: "border-orange-400/60",
+      text: "text-white",
+      shadow: "shadow-[0_8px_16px_rgba(255,91,4,0.35),inset_0_2px_0_rgba(255,255,255,0.4)]",
+    },
+    obsidian: {
+      bg: "bg-gradient-to-b from-[#2A2D35] via-[#1A1C22] to-[#0E1014]",
+      border: "border-white/20",
+      text: "text-[#E6C687]",
+      shadow: "shadow-[0_8px_16px_rgba(0,0,0,0.6),inset_0_2px_0_rgba(255,255,255,0.2)]",
+    },
+  }[theme as "heritage" | "uipirate" | "obsidian"] || {
+    bg: "bg-gradient-to-b from-[#B4986C] via-[#94774B] to-[#715428]",
+    border: "border-[#C9B086]/60",
+    text: "text-[#3D260D]",
+    shadow: "shadow-[0_8px_16px_rgba(113,84,40,0.3),inset_0_2px_0_rgba(255,255,255,0.4)]",
+  };
+
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsPressed(false);
+      }}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      animate={{
+        y: isPressed ? 2 : isHovered ? -3 : 0,
+        scale: isPressed ? 0.98 : 1,
+      }}
+      transition={{ type: "spring", stiffness: 450, damping: 25 }}
+      className={\`relative px-8 py-3.5 rounded-[18px] \${themeConfig.bg} \${themeConfig.border} border \${themeConfig.shadow} \${themeConfig.text} font-serif font-bold text-sm tracking-wide cursor-pointer focus:outline-none select-none \${className}\`}
+    >
+      <span className="relative z-10 uppercase tracking-widest">{label}</span>
+    </motion.button>
+  );
+}`;
+
   const usageCode = `import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 
 export default function Example() {
   return (
     <VintageLeatherCTA
+      label="${labelText}"
       theme="${theme}"
       size="${size}"
       showOrnaments={${showOrnaments}}
-      label="${labelText}"
-      onClick={() => console.log("Clicked Vintage Heritage CTA")}
+      onClick={() => console.log("Shop clicked!")}
     />
   );
 }`;
 
-  const cssOnlyCode = `/* Vintage Heritage Button Design Tokens */
-
-/* Outer Recessed Enclosure Tray */
-.vintage-tray {
-  padding: 6px 8px 8px 8px;
-  background-color: rgba(113, 83, 49, 0.2);
-  border-radius: 1px;
-  box-shadow: inset 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
-}
-
-/* 3D Embossed Leather / Brass Slab */
-.vintage-slab {
-  padding: 12px 54px 18px 54px;
-  border-radius: 2px;
-  background: linear-gradient(180deg, #B4986C 0%, #957851 100%);
-  box-shadow:
-    0px 54px 50px 0px rgba(55,42,12,0.33),
-    0px 29.7px 31.9px 0px rgba(55,42,12,0.23),
-    0px 19.7px 21.9px 0px rgba(55,42,12,0.23),
-    0px 9.6px 8.7px 0px rgba(55,42,12,0.18),
-    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.5),
-    inset 0px -6px 0px 0px #715331; /* 3D tactile bottom bevel */
-}
-
-/* Etched Letterpress Typography */
-.vintage-text {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.6px;
-  color: #E2DCD0;
-  text-shadow: 0px -1.5px 0px rgba(0, 0, 0, 0.35);
+  const cssOnlyCode = `/* Vintage Saddle Leather Design System Tokens */
+.vintage-leather-cap {
+  background: linear-gradient(180deg, #B4986C 0%, #94774B 50%, #715428 100%);
+  border: 1px solid rgba(201, 176, 134, 0.6);
+  box-shadow: 0px 8px 16px rgba(113, 84, 40, 0.3),
+              inset 0px 2px 0px rgba(255, 255, 255, 0.4),
+              inset 0px -4px 0px rgba(0, 0, 0, 0.3);
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E1117] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <div className="min-h-screen bg-[#070709] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-amber-500/30 selection:text-amber-200">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-neutral-400">
-          <Link href="/buttons" className="hover:text-white transition-colors">
-            Buttons
-          </Link>
-          <span>/</span>
-          <span className="text-amber-400 font-medium">Vintage Leather CTA</span>
-          <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20 rounded-full">
-            React + SVG Filter
-          </span>
-        </div>
-
-        {/* Header Title */}
-        <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white flex items-center gap-3">
-            Vintage Leather & Brass Heritage Button
-            <span className="text-sm px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-normal">
-              Luxury Embossed
-            </span>
-          </h1>
-          <p className="text-neutral-400 text-base max-w-2xl">
-            Luxury embossed heritage leather & brass button with 6px bottom tactile bevel lip, recessed enclosure tray, and filigree scrollwork corner flourishes.
-          </p>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            MAIN INTERACTIVE STAGE & PLAYGROUND
-           ───────────────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Main Visual Stage (Node 14:304 Frame Background) */}
-          <div
-            className={`lg:col-span-8 flex flex-col items-center justify-center p-12 sm:p-24 rounded-3xl border shadow-2xl relative min-h-[460px] overflow-hidden transition-colors duration-500 ${
-              theme === "obsidian"
-                ? "bg-[#101216] border-white/10"
-                : "border-white/20"
-            }`}
+        <div className="flex items-center justify-between gap-4 pt-2">
+          <Link
+            href="/buttons"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-300 transition-colors group"
           >
-            {/* Ambient Background Canvas Gradient */}
-            {theme !== "obsidian" && (
-              <>
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background:
-                      "linear-gradient(178.39deg, rgb(230, 224, 212) 23.424%, rgb(128, 124, 118) 160.49%)",
-                  }}
-                />
-                {/* Random Small Square Pixel Canvas Noise */}
-                <svg
-                  className="absolute inset-0 size-full pointer-events-none opacity-[0.08] mix-blend-multiply"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <defs>
-                    <pattern id="canvasSquareNoise" width="32" height="32" patternUnits="userSpaceOnUse">
-                      <rect x="4" y="5" width="2" height="2" fill="#4A3B2C" opacity="0.8" />
-                      <rect x="15" y="11" width="2" height="2" fill="#4A3B2C" opacity="0.6" />
-                      <rect x="26" y="4" width="2" height="2" fill="#4A3B2C" opacity="0.9" />
-                      <rect x="20" y="22" width="2" height="2" fill="#4A3B2C" opacity="0.7" />
-                      <rect x="8" y="26" width="2" height="2" fill="#4A3B2C" opacity="0.8" />
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#canvasSquareNoise)" />
-                </svg>
-              </>
-            )}
+            <svg className="w-4 h-4 text-gray-400 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>All Buttons</span>
+          </Link>
+          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-gray-500">
+            <Link href="/ui-components" className="text-gray-400 hover:text-white transition-colors">
+              UI Components
+            </Link>
+            <span>/</span>
+            <Link href="/buttons" className="text-gray-400 hover:text-white transition-colors">
+              Buttons
+            </Link>
+            <span>/</span>
+            <span className="text-amber-400">Vintage Leather CTA</span>
+          </div>
+        </div>
 
-            {/* The Live Interactive Button */}
+        {/* Header section */}
+        <header className="text-center space-y-4 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+            <span>Artisanal Skeuomorphic Leather</span>
+            <span className="text-gray-500">•</span>
+            <span className="text-amber-400">Heritage Brass & Saddle</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+            Vintage Leather <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500">Heritage CTA Button</span>
+          </h1>
+
+          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+            Crafted skeuomorphic button featuring authentic saddle leather grain noise, engraved vector scrollwork flourishes, and rich brass bevel highlights.
+          </p>
+        </header>
+
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#181512] to-[#0E0C0A]">
             <div className="relative z-10 flex flex-col items-center gap-6">
               <VintageLeatherCTA
+                label={labelText}
                 theme={theme}
                 size={size}
                 showOrnaments={showOrnaments}
-                label={labelText}
                 onClick={() => setClickCount((c) => c + 1)}
               />
 
-              {/* Click Counter Feedback */}
-              <div
-                className={`font-mono text-xs mt-6 transition-colors ${
-                  theme === "obsidian" ? "text-neutral-400" : "text-neutral-700"
-                }`}
-              >
-                Press Count: <span className="text-amber-600 font-bold">{clickCount}</span>
+              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                <span>Interactions:</span>
+                <span className="text-white font-semibold">{clickCount}</span>
               </div>
             </div>
           </div>
 
-          {/* Controls Panel */}
-          <div className="lg:col-span-4 space-y-6 bg-neutral-900/80 backdrop-blur border border-neutral-800 rounded-3xl p-6">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
-              Live Customizer
-            </h2>
-
-            {/* Theme Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Luxury Theme Preset
-              </label>
-              <div className="space-y-1.5">
-                {THEMES.map((t) => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => setTheme(t.id)}
-                    className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-left transition-all ${
-                      theme === t.id
-                        ? "bg-neutral-800 text-white border-amber-500/80 shadow-md"
-                        : "bg-neutral-800/30 text-neutral-400 border-neutral-700/50 hover:bg-neutral-800/60 hover:text-white"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <span className="size-3 rounded-full shrink-0" style={{ backgroundColor: t.color }} />
-                      <span className="text-xs font-medium">{t.name}</span>
-                    </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-neutral-400 border border-white/5">
-                      {t.badge}
-                    </span>
-                  </button>
-                ))}
-              </div>
+          {/* Controls Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 border-t border-white/10 bg-white/[0.01] text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
+              <select
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as VintageLeatherTheme)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="heritage" className="bg-[#101014]">Brass & Saddle (Figma 1:1)</option>
+                <option value="uipirate" className="bg-[#101014]">UI Pirate Burnt Orange</option>
+                <option value="obsidian" className="bg-[#101014]">Obsidian Gold</option>
+                <option value="emerald" className="bg-[#101014]">British Racing Green</option>
+                <option value="ruby" className="bg-[#101014]">Burgundy Wine</option>
+                <option value="silver" className="bg-[#101014]">Brushed Titanium</option>
+              </select>
             </div>
 
-            {/* Size Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Button Size
-              </label>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
+              <input
+                type="text"
+                value={labelText}
+                onChange={(e) => setLabelText(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+              <div className="flex gap-1">
                 {(["sm", "md", "lg"] as VintageLeatherSize[]).map((s) => (
                   <button
                     key={s}
                     type="button"
                     onClick={() => setSize(s)}
-                    className={`px-3 py-2 text-xs font-medium uppercase rounded-xl border transition-all ${
-                      size === s
-                        ? "bg-amber-500/20 text-amber-300 border-amber-500/50"
-                        : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
+                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
+                      size === s ? "bg-amber-500 text-black font-bold" : "bg-white/5 text-gray-400"
                     }`}
                   >
                     {s}
@@ -263,125 +240,142 @@ export default function Example() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Corner Ornaments Toggle */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-neutral-800/50 border border-neutral-700/60">
-              <span className="text-xs font-medium text-neutral-300">Corner Filigree Ornaments</span>
+        {/* ─────────────────────────────────────────────────────────────
+            QUICK INSTALLATION & DEPENDENCIES SECTION
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+          <div className="bg-[#101014] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Install required peer dependencies:
+            </p>
+
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+              <span>npm install framer-motion clsx</span>
               <button
-                type="button"
-                onClick={() => setShowOrnaments(!showOrnaments)}
-                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                  showOrnaments ? "bg-amber-500" : "bg-neutral-700"
-                }`}
+                onClick={handleCopyInstall}
+                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
               >
-                <span
-                  className={`inline-block size-3.5 transform rounded-full bg-white transition-transform ${
-                    showOrnaments ? "translate-x-4" : "translate-x-1"
-                  }`}
-                />
+                {copiedInstall ? "Copied Command!" : "Copy Command"}
               </button>
-            </div>
-
-            {/* Label Input */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Button Label
-              </label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors"
-                placeholder="Enter button text..."
-              />
             </div>
           </div>
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            ALL 5 THEMES SHOWCASE GALLERY
+            CODE EXPORTER TABS
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Luxury Theme Palette</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {THEMES.map((t) => (
-              <div
-                key={t.id}
-                className={`flex flex-col items-center justify-between p-8 rounded-3xl border shadow-xl min-h-[220px] transition-all duration-300 hover:scale-[1.02] ${
-                  t.id === "obsidian"
-                    ? "bg-[#101216] border-white/10"
-                    : "bg-gradient-to-b from-[#E6E0D4] to-[#B8B4AC] border-white/20"
-                }`}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span
-                    className={`font-mono text-xs font-bold uppercase tracking-wider ${
-                      t.id === "obsidian" ? "text-neutral-400" : "text-neutral-800"
-                    }`}
-                  >
-                    {t.name}
-                  </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/10 text-neutral-700 border border-black/5">
-                    {t.badge}
-                  </span>
-                </div>
-
-                <div className="py-6">
-                  <VintageLeatherCTA theme={t.id} size="md" showOrnaments={showOrnaments} label={labelText} />
-                </div>
-
-                <p
-                  className={`text-[11px] text-center max-w-xs ${
-                    t.id === "obsidian" ? "text-neutral-400" : "text-neutral-700"
-                  }`}
-                >
-                  {t.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            CODE EXPORT TABS
-           ───────────────────────────────────────────────────────────── */}
-        <div className="bg-neutral-900/90 border border-neutral-800 rounded-3xl overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setActiveCodeTab("usage")}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                  activeCodeTab === "usage"
-                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                    : "text-neutral-400 hover:text-white"
-                }`}
-              >
-                React (Framer Motion)
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveCodeTab("css")}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                  activeCodeTab === "css"
-                    ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                    : "text-neutral-400 hover:text-white"
-                }`}
-              >
-                CSS Tokens (Figma 1:1)
-              </button>
-            </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
             <button
-              type="button"
-              onClick={() => handleCopy(activeCodeTab === "usage" ? usageCode : cssOnlyCode, activeCodeTab)}
-              className="text-xs font-mono px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-colors"
+              onClick={() =>
+                handleCopy(
+                  activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode,
+                  activeCodeTab
+                )
+              }
+              className="text-xs font-mono text-amber-400 hover:text-amber-300 transition-colors"
             >
-              {copiedCode === activeCodeTab ? "✓ Copied!" : "Copy Code"}
+              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
             </button>
           </div>
-          <pre className="p-6 text-xs font-mono text-neutral-300 overflow-x-auto bg-[#0a0c10] leading-relaxed">
-            <code>{activeCodeTab === "usage" ? usageCode : cssOnlyCode}</code>
-          </pre>
+
+          <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white font-mono">
+                  {activeCodeTab === "component" ? "VintageLeatherCTA.tsx" : activeCodeTab === "usage" ? "Usage.tsx" : "Tokens.css"}
+                </span>
+                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+              </div>
+
+              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                <button
+                  onClick={() => setActiveCodeTab("component")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "component" ? "bg-amber-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Component.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("usage")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "usage" ? "bg-amber-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Usage.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("css")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "css" ? "bg-amber-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Tokens.css
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 bg-[#080706] overflow-x-auto max-h-[550px]">
+              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                <code>
+                  {activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode}
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            PROPS & API REFERENCE TABLE
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+          <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
+                    <th className="py-3.5 px-6 font-semibold">Prop</th>
+                    <th className="py-3.5 px-6 font-semibold">Type</th>
+                    <th className="py-3.5 px-6 font-semibold">Default</th>
+                    <th className="py-3.5 px-6 font-semibold">Description</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
+                  <tr>
+                    <td className="py-3 px-6 text-amber-400 font-semibold">label</td>
+                    <td className="py-3 px-6 text-blue-300">string</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;Shop ties&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the leather cap</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-amber-400 font-semibold">theme</td>
+                    <td className="py-3 px-6 text-blue-300">VintageLeatherTheme</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;heritage&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Luxury leather theme preset</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-amber-400 font-semibold">size</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-amber-400 font-semibold">showOrnaments</td>
+                    <td className="py-3 px-6 text-blue-300">boolean</td>
+                    <td className="py-3 px-6 text-gray-400">true</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Renders decorative flourish scrollwork</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

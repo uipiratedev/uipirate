@@ -29,5 +29,27 @@ export const metadata: Metadata = {
 };
 
 export default function ButtonsPage() {
-  return <ButtonShowcaseScreen />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Interactive 3D & Tactile Button Library",
+    "description":
+      "Production-ready React, Tailwind CSS, and Framer Motion interactive button collection with live customization sandboxes, copy-paste code, and theme presets.",
+    "url": "https://uipirate.com/buttons",
+    "publisher": {
+      "@type": "Organization",
+      "name": "UI Pirate",
+      "url": "https://uipirate.com",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ButtonShowcaseScreen />
+    </>
+  );
 }

@@ -19,52 +19,8 @@ export default function NeumorphicGlowScreen() {
   const [labelText, setLabelText] = useState("Learn more");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"usage" | "css">("usage");
-
-  const THEMES: { id: NeumorphicGlowTheme; name: string; badge: string; color: string; desc: string }[] = [
-    {
-      id: "uipirate",
-      name: "UI Pirate",
-      badge: "Brand Edition",
-      color: "#FF5B04",
-      desc: "Deep obsidian ember body with high-voltage UI Pirate neon orange glow",
-    },
-    {
-      id: "default",
-      name: "Clay Light (Figma)",
-      badge: "Figma 1:1",
-      color: "#49C33E",
-      desc: "Original Figma master style with warm grey clay & neon green glow badge",
-    },
-    {
-      id: "dark",
-      name: "Obsidian Slate",
-      badge: "Dark Mode",
-      color: "#06B6D4",
-      desc: "Deep carbon graphite pill with electric cyan neon badge",
-    },
-    {
-      id: "orange",
-      name: "Pirate Orange",
-      badge: "High Energy",
-      color: "#FF5B04",
-      desc: "Vibrant UI Pirate signature orange with warm gold glow",
-    },
-    {
-      id: "cyberpunk",
-      name: "Cyberpunk Violet",
-      badge: "Neon Glow",
-      color: "#C084FC",
-      desc: "Midnight purple obsidian with intense ultraviolet glow",
-    },
-    {
-      id: "minimal",
-      name: "Frost Minimal",
-      badge: "Clean Light",
-      color: "#18181B",
-      desc: "Pure porcelain white with subtle titanium monochrome arrow",
-    },
-  ];
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
     navigator.clipboard.writeText(text);
@@ -72,254 +28,267 @@ export default function NeumorphicGlowScreen() {
     setTimeout(() => setCopiedCode(null), 2500);
   };
 
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = `"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+
+export type NeumorphicGlowShape = "pill" | "squircle";
+export type NeumorphicGlowTheme = "default" | "dark" | "uipirate" | "orange" | "cyberpunk";
+export type NeumorphicGlowSize = "sm" | "md" | "lg";
+
+export interface NeumorphicGlowCTAProps {
+  label?: string;
+  shape?: NeumorphicGlowShape;
+  theme?: NeumorphicGlowTheme;
+  size?: NeumorphicGlowSize;
+  onClick?: () => void;
+  className?: string;
+}
+
+export function NeumorphicGlowCTA({
+  label = "Learn more",
+  shape = "pill",
+  theme = "default",
+  size = "md",
+  onClick,
+  className = "",
+}: NeumorphicGlowCTAProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+
+  const themeConfig = {
+    default: {
+      bg: "bg-[#E6E8ED]",
+      border: "border-white/80",
+      text: "text-[#3D4450]",
+      badgeBg: "bg-[#CBF0CD]",
+      arrowColor: "#49C33E",
+      badgeGlow: "rgba(73, 195, 62, 0.4)",
+    },
+    uipirate: {
+      bg: "bg-[#181614]",
+      border: "border-orange-500/20",
+      text: "text-[#FAF5F0]",
+      badgeBg: "bg-[#FFEDD5]",
+      arrowColor: "#FF5B04",
+      badgeGlow: "rgba(255, 91, 4, 0.5)",
+    },
+    dark: {
+      bg: "bg-[#16181F]",
+      border: "border-cyan-500/20",
+      text: "text-[#E0F2FE]",
+      badgeBg: "bg-[#C7F5F8]",
+      arrowColor: "#06B6D4",
+      badgeGlow: "rgba(6, 182, 212, 0.4)",
+    },
+  }[theme as "default" | "uipirate" | "dark"] || {
+    bg: "bg-[#E6E8ED]",
+    border: "border-white/80",
+    text: "text-[#3D4450]",
+    badgeBg: "bg-[#CBF0CD]",
+    arrowColor: "#49C33E",
+    badgeGlow: "rgba(73, 195, 62, 0.4)",
+  };
+
+  const rounded = shape === "pill" ? "rounded-full" : "rounded-2xl";
+
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsPressed(false);
+      }}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      animate={{
+        y: isPressed ? 2 : isHovered ? -3 : 0,
+        scale: isPressed ? 0.98 : 1,
+      }}
+      transition={{ type: "spring", stiffness: 450, damping: 25 }}
+      className={\`relative flex items-center justify-between gap-4 px-6 py-3.5 \${rounded} \${themeConfig.bg} \${themeConfig.border} border shadow-lg \${themeConfig.text} font-bold text-sm cursor-pointer select-none focus:outline-none \${className}\`}
+    >
+      <span>{label}</span>
+
+      {/* Radiant Glowing Neon Arrow Knob */}
+      <div
+        className={\`relative w-8 h-8 rounded-full \${themeConfig.badgeBg} flex items-center justify-center\`}
+        style={{
+          boxShadow: \`0 0 12px \${themeConfig.badgeGlow}\`,
+        }}
+      >
+        <svg
+          className="w-4 h-4 transition-transform duration-300"
+          style={{ color: themeConfig.arrowColor }}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+    </motion.button>
+  );
+}`;
+
   const usageCode = `import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 
 export default function Example() {
   return (
     <NeumorphicGlowCTA
-      variant="${variant}"
-      theme="${theme}"
-      size="${size}"${neonPreset !== "auto" ? `\n      neonPreset="${neonPreset}"` : ""}
       label="${labelText}"
-      onClick={() => console.log("Clicked Neumorphic CTA")}
+      shape="${variant}"
+      theme="${theme}"
+      size="${size}"
+      onClick={() => console.log("Learn more clicked!")}
     />
   );
 }`;
 
-  const cssOnlyCode = `/* Claymorphic & Neumorphic Button Design Tokens */
-
-/* 1. Pill Variant (Learn more) */
-.neumorphic-pill-btn {
-  padding: 20px 40px 20px 20px;
-  border-radius: 40px;
-  background-image: linear-gradient(172.34deg, rgb(225, 225, 225) 5.985%, rgb(215, 215, 215) 94.894%);
-  box-shadow:
-    2px 4px 4px 0px rgba(0,0,0,0.1),
-    85px 85px 85px 0px rgba(0,0,0,0.09),
-    35.5px 35.5px 35.5px 0px rgba(0,0,0,0.06),
-    inset 2px 2px 4px 0px rgba(255,255,255,0.15),
-    inset 4px 4px 14px 0px rgba(255,255,255,0.75),
-    inset -4px -4px 4px 0px rgba(0,0,0,0.08),
-    inset -10px -10px 14px -6px rgba(0,0,0,0.15);
+  const cssOnlyCode = `/* Soft Neumorphic Glow Design System Tokens */
+.neumorphic-pill {
+  background: #E6E8ED;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    8px 8px 16px rgba(166, 171, 189, 0.5),
+    -8px -8px 16px rgba(255, 255, 255, 0.9);
 }
 
-/* Glowing Neon Badge */
-.neon-badge-pill {
-  padding: 13px;
-  border-radius: 45.5px;
-  background-color: #CBF0CD;
-  box-shadow:
-    0px 0px 26px 0px rgba(90,255,75,0.3),
-    0px 1.3px 1.3px 0px rgba(255,255,255,0.85),
-    0px -1.3px 1.3px 0px rgba(0,0,0,0.1),
-    inset 2.6px 5.2px 6.5px 0px rgba(51,217,37,0.35);
-}
-
-/* 2. Squircle Variant (Get more info) */
-.neumorphic-squircle-btn {
-  padding: 8px 8px 8px 18px;
-  border-radius: 10px;
-  background-color: #E1E1E1;
-  box-shadow:
-    -6px -6px 6px 3px rgba(255,255,255,0.4),
-    6px -6px 6px 3px rgba(205,205,205,0.4),
-    -6px 6px 6px 3px rgba(205,205,205,0.4),
-    6px 6px 6px 3px rgba(0,0,0,0.15),
-    0px 0px 60px 30px #e1e1e1;
+.neon-knob-badge {
+  background: #CBF0CD;
+  box-shadow: 0px 0px 12px rgba(73, 195, 62, 0.4);
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E1117] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto space-y-12">
+    <div className="min-h-screen bg-[#07080B] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-emerald-500/30 selection:text-emerald-200">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-neutral-400">
-          <Link href="/buttons" className="hover:text-white transition-colors">
-            Buttons
-          </Link>
-          <span>/</span>
-          <span className="text-emerald-400 font-medium">Neumorphic Glow CTA</span>
-          <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 rounded-full">
-            React + Shadow Stacks
-          </span>
-        </div>
-
-        {/* Header Title */}
-        <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white flex items-center gap-3">
-            Claymorphic & Neumorphic Glow CTA
-            <span className="text-sm px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-normal">
-              Neon Customizer
-            </span>
-          </h1>
-          <p className="text-neutral-400 text-base max-w-2xl">
-            Authentic multi-tier claymorphic and neumorphic elevated buttons with glowing neon badge depth and customizable arrow glow presets.
-          </p>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            MAIN INTERACTIVE STAGE & PLAYGROUND
-           ───────────────────────────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Main Visual Stage */}
-          <div
-            className={`lg:col-span-7 flex flex-col items-center justify-center p-12 sm:p-20 rounded-3xl border shadow-2xl relative min-h-[460px] overflow-hidden transition-colors duration-500 ${
-              theme === "dark" || theme === "cyberpunk"
-                ? "bg-[#12141A] border-white/10"
-                : "bg-[rgba(238,238,238,0.94)] border-white/20"
-            }`}
+        <div className="flex items-center justify-between gap-4 pt-2">
+          <Link
+            href="/buttons"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-300 transition-colors group"
           >
-            {/* Ambient Background Pattern */}
-            <div className="absolute inset-0 bg-[radial-gradient(#88888812_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+            <svg className="w-4 h-4 text-gray-400 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>All Buttons</span>
+          </Link>
+          <div className="hidden sm:flex items-center gap-2 text-xs font-mono text-gray-500">
+            <Link href="/ui-components" className="text-gray-400 hover:text-white transition-colors">
+              UI Components
+            </Link>
+            <span>/</span>
+            <Link href="/buttons" className="text-gray-400 hover:text-white transition-colors">
+              Buttons
+            </Link>
+            <span>/</span>
+            <span className="text-emerald-400">Neumorphic Glow</span>
+          </div>
+        </div>
 
-            {/* The Live Interactive Button */}
+        {/* Header section */}
+        <header className="text-center space-y-4 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Neumorphic Clay + Neon Glow</span>
+            <span className="text-gray-500">•</span>
+            <span className="text-emerald-400">Tactile Micro-Interactions</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+            Neumorphic Glow <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile CTA Button</span>
+          </h1>
+
+          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+            Multi-tier soft neumorphic clay button featuring dual convex lighting shadows, glowing neon arrow badge, and spring depth feedback.
+          </p>
+        </header>
+
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#13151D] to-[#0A0C10]">
             <div className="relative z-10 flex flex-col items-center gap-6">
               <NeumorphicGlowCTA
+                label={labelText}
                 variant={variant}
                 theme={theme}
                 size={size}
                 neonPreset={neonPreset === "auto" ? undefined : neonPreset}
-                label={labelText}
                 onClick={() => setClickCount((c) => c + 1)}
               />
 
-              {/* Click Counter Feedback */}
-              <div
-                className={`font-mono text-xs mt-4 transition-colors ${
-                  theme === "dark" || theme === "cyberpunk" ? "text-neutral-400" : "text-neutral-500"
-                }`}
-              >
-                Clicks: <span className="text-emerald-500 font-bold">{clickCount}</span>
+              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Interactions:</span>
+                <span className="text-white font-semibold">{clickCount}</span>
               </div>
             </div>
           </div>
 
-          {/* Controls Panel */}
-          <div className="lg:col-span-5 space-y-6 bg-neutral-900/80 backdrop-blur border border-neutral-800 rounded-3xl p-6">
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-              Live Customizer
-            </h2>
-
-            {/* Shape Variant Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Shape Structure
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setVariant("pill");
-                    setLabelText("Learn more");
-                  }}
-                  className={`px-3 py-2 text-xs font-medium rounded-xl border transition-all ${
-                    variant === "pill"
-                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-lg shadow-emerald-500/10"
-                      : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
-                  }`}
-                >
-                  Pill (14:642)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setVariant("squircle");
-                    setLabelText("Get more info");
-                  }}
-                  className={`px-3 py-2 text-xs font-medium rounded-xl border transition-all ${
-                    variant === "squircle"
-                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-lg shadow-emerald-500/10"
-                      : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
-                  }`}
-                >
-                  Squircle (14:669)
-                </button>
-              </div>
-            </div>
-
-            {/* Neon Arrow Circle & Glow Color Preset Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider flex items-center justify-between">
-                <span>Neon Arrow Circle & Glow</span>
-                <span className="text-[11px] text-emerald-400 font-mono">
-                  {neonPreset === "auto" ? "Theme Match" : NEON_PRESETS[neonPreset].name}
-                </span>
-              </label>
-              <div className="grid grid-cols-3 sm:grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setNeonPreset("auto")}
-                  className={`flex items-center justify-center p-2 rounded-xl border text-xs font-medium transition-all ${
-                    neonPreset === "auto"
-                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/80 shadow-md"
-                      : "bg-neutral-800/40 text-neutral-400 border-neutral-700/60 hover:text-white"
-                  }`}
-                >
-                  Auto (Theme)
-                </button>
-                {(Object.keys(NEON_PRESETS) as NeumorphicNeonPreset[]).map((key) => (
+          {/* Controls Bar */}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-6 border-t border-neutral-800 bg-neutral-900/40 text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Shape</label>
+              <div className="flex gap-1">
+                {(["pill", "squircle"] as NeumorphicGlowShape[]).map((shp) => (
                   <button
-                    key={key}
+                    key={shp}
                     type="button"
-                    onClick={() => setNeonPreset(key)}
-                    className={`flex items-center gap-2 p-2 rounded-xl border text-xs font-medium transition-all ${
-                      neonPreset === key
-                        ? "bg-neutral-800 text-white border-emerald-500/80 shadow-md"
-                        : "bg-neutral-800/40 text-neutral-400 border-neutral-700/60 hover:text-white"
+                    onClick={() => setVariant(shp)}
+                    className={`flex-1 py-2 rounded-xl capitalize font-mono transition-all ${
+                      variant === shp ? "bg-emerald-500 text-black font-bold" : "bg-neutral-800 text-gray-400"
                     }`}
                   >
-                    <span
-                      className="size-3 rounded-full shrink-0 shadow-[0_0_8px_currentColor]"
-                      style={{
-                        backgroundColor: NEON_PRESETS[key].arrowColor,
-                        color: NEON_PRESETS[key].arrowColor,
-                      }}
-                    />
-                    <span className="truncate">{NEON_PRESETS[key].name.split(" ")[0]}</span>
+                    {shp}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Theme Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Body Theme Preset
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {THEMES.map((t) => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => setTheme(t.id)}
-                    className={`flex items-center gap-2 p-2.5 rounded-xl border text-left transition-all ${
-                      theme === t.id
-                        ? "bg-neutral-800 text-white border-emerald-500/80 shadow-md"
-                        : "bg-neutral-800/30 text-neutral-400 border-neutral-700/50 hover:bg-neutral-800/60 hover:text-white"
-                    }`}
-                  >
-                    <span className="size-2.5 rounded-full shrink-0" style={{ backgroundColor: t.color }} />
-                    <span className="text-xs font-medium truncate">{t.name.split(" ")[0]}</span>
-                  </button>
-                ))}
-              </div>
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
+              <select
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as NeumorphicGlowTheme)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="default" className="bg-neutral-900">Clay Light (Figma 1:1)</option>
+                <option value="uipirate" className="bg-neutral-900">UI Pirate Orange</option>
+                <option value="dark" className="bg-neutral-900">Obsidian Slate</option>
+                <option value="cyberpunk" className="bg-neutral-900">Cyberpunk Violet</option>
+              </select>
             </div>
 
-            {/* Size Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Button Size
-              </label>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Button Label</label>
+              <input
+                type="text"
+                value={labelText}
+                onChange={(e) => setLabelText(e.target.value)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+              <div className="flex gap-1">
                 {(["sm", "md", "lg"] as NeumorphicGlowSize[]).map((s) => (
                   <button
                     key={s}
                     type="button"
                     onClick={() => setSize(s)}
-                    className={`px-3 py-2 text-xs font-medium uppercase rounded-xl border transition-all ${
-                      size === s
-                        ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/50"
-                        : "bg-neutral-800/60 text-neutral-400 border-neutral-700 hover:text-white"
+                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
+                      size === s ? "bg-emerald-500 text-black font-bold" : "bg-neutral-800 text-gray-400"
                     }`}
                   >
                     {s}
@@ -327,101 +296,148 @@ export default function Example() {
                 ))}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Label Input */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">
-                Button Label
-              </label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition-colors"
-                placeholder="Enter button text..."
-              />
+        {/* ─────────────────────────────────────────────────────────────
+            QUICK INSTALLATION & DEPENDENCIES SECTION
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+          <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl p-6 sm:p-8 space-y-6">
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Install required peer dependencies for Framer Motion spring physics:
+            </p>
+
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-neutral-800 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+              <span>npm install framer-motion clsx</span>
+              <button
+                onClick={handleCopyInstall}
+                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
+              >
+                {copiedInstall ? "Copied Command!" : "Copy Command"}
+              </button>
             </div>
           </div>
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            ALL NEON GLOW PRESETS GALLERY
+            CODE EXPORTER TABS
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-white">Neon Arrow Circle Color Palette</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(Object.keys(NEON_PRESETS) as NeumorphicNeonPreset[]).map((key) => (
-              <div
-                key={key}
-                className="flex flex-col items-center justify-between p-6 rounded-3xl bg-[rgba(238,238,238,0.94)] border border-white/20 shadow-xl min-h-[190px] transition-all duration-300 hover:scale-[1.02]"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-600">
-                    {NEON_PRESETS[key].name}
-                  </span>
-                  <span
-                    className="size-3 rounded-full shadow-[0_0_8px_currentColor]"
-                    style={{
-                      backgroundColor: NEON_PRESETS[key].arrowColor,
-                      color: NEON_PRESETS[key].arrowColor,
-                    }}
-                  />
-                </div>
-
-                <div className="py-4">
-                  <NeumorphicGlowCTA
-                    variant={variant}
-                    theme={theme}
-                    size="md"
-                    neonPreset={key}
-                    label={labelText}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            CODE EXPORT TABS
-           ───────────────────────────────────────────────────────────── */}
-        <div className="bg-neutral-900/90 border border-neutral-800 rounded-3xl overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-800">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setActiveCodeTab("usage")}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                  activeCodeTab === "usage"
-                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                    : "text-neutral-400 hover:text-white"
-                }`}
-              >
-                React (Framer Motion)
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveCodeTab("css")}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                  activeCodeTab === "css"
-                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
-                    : "text-neutral-400 hover:text-white"
-                }`}
-              >
-                CSS Tokens (Figma 1:1)
-              </button>
-            </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
             <button
-              type="button"
-              onClick={() => handleCopy(activeCodeTab === "usage" ? usageCode : cssOnlyCode, activeCodeTab)}
-              className="text-xs font-mono px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 hover:text-white transition-colors"
+              onClick={() =>
+                handleCopy(
+                  activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode,
+                  activeCodeTab
+                )
+              }
+              className="text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
             >
-              {copiedCode === activeCodeTab ? "✓ Copied!" : "Copy Code"}
+              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
             </button>
           </div>
-          <pre className="p-6 text-xs font-mono text-neutral-300 overflow-x-auto bg-[#0a0c10] leading-relaxed">
-            <code>{activeCodeTab === "usage" ? usageCode : cssOnlyCode}</code>
-          </pre>
+
+          <div className="bg-neutral-900/90 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-neutral-800 bg-white/[0.02]">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-white font-mono">
+                  {activeCodeTab === "component" ? "NeumorphicGlowCTA.tsx" : activeCodeTab === "usage" ? "Usage.tsx" : "Tokens.css"}
+                </span>
+                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+              </div>
+
+              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                <button
+                  onClick={() => setActiveCodeTab("component")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "component" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Component.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("usage")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "usage" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Usage.tsx
+                </button>
+                <button
+                  onClick={() => setActiveCodeTab("css")}
+                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+                    activeCodeTab === "css" ? "bg-emerald-500 text-black font-bold" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  Tokens.css
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6 bg-[#08080C] overflow-x-auto max-h-[550px]">
+              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                <code>
+                  {activeCodeTab === "component" ? componentSourceCode : activeCodeTab === "usage" ? usageCode : cssOnlyCode}
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            PROPS & API REFERENCE TABLE
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+          <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-neutral-800 bg-white/[0.02] text-gray-400 font-mono">
+                    <th className="py-3.5 px-6 font-semibold">Prop</th>
+                    <th className="py-3.5 px-6 font-semibold">Type</th>
+                    <th className="py-3.5 px-6 font-semibold">Default</th>
+                    <th className="py-3.5 px-6 font-semibold">Description</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-800 text-gray-300 font-mono text-xs">
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">label</td>
+                    <td className="py-3 px-6 text-blue-300">string</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;Learn more&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the button cap</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">shape</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;pill&quot; | &quot;squircle&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;pill&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Physical rounded contour geometry</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">theme</td>
+                    <td className="py-3 px-6 text-blue-300">NeumorphicGlowTheme</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;default&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Color scheme theme preset</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">size</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-emerald-400 font-semibold">onClick</td>
+                    <td className="py-3 px-6 text-blue-300">() =&gt; void</td>
+                    <td className="py-3 px-6 text-gray-400">undefined</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Click callback event handler</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
