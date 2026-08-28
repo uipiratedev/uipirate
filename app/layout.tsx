@@ -27,17 +27,17 @@ import SmoothScroll from "@/components/SmoothScroll";
 export const metadata: Metadata = {
   metadataBase: new URL("https://uipirate.com"),
   title: {
-    default: "UI Pirate | Product Design & Dev — Idea to Shipped Product",
+    default: "UI Pirate | SaaS & AI Product Design & Development Agency",
     template: "%s | UI Pirate",
   },
   description:
-    "Product design & development agency. We turn SaaS and AI product ideas into shipped products. Expert in UX/UI, Angular & React. Serving USA, UK, Singapore.",
+    "Product design & full-stack development agency. We turn SaaS and AI ideas into fully functional shipped products. UX/UI, Angular, React & Next.js. USA, UK, Singapore.",
   keywords:
-    "uipirate, uipirates, UI Pirate, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, simplify complex products, Angular development, React development, Vishal Anand",
+    "uipirate, uipirates, UI Pirate, product design agency, product development agency, SaaS development agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS design, AI app design, dashboard UX, mobile app UI, enterprise UX design, conversion focused design, Angular development, React development, Next.js development, full stack agency, Vishal Anand",
   openGraph: {
-    title: "UI Pirate | Product Design — From Idea to Shipped Product",
+    title: "UI Pirate | SaaS & AI Product Design & Full-Stack Development Agency",
     description:
-      "Not just designs — we help you think, plan, and build your product. Product thinking, competitive analysis & conversion-focused design for complex products.",
+      "Not just designs — we help you think, plan, design, build, and ship complete products. Product thinking, UX/UI, and full-stack software development in Angular, React, and Next.js.",
     url: "https://uipirate.com",
     siteName: "UI Pirate",
     images: [
@@ -169,7 +169,7 @@ export default async function RootLayout({
               image:
                 "https://res.cloudinary.com/dvk9ttiym/image/upload/v1779397879/Screenshot_2026-05-22_023842_sebbvi.png",
               description:
-                "Product design and frontend development agency that turns ideas into shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and complex enterprise frontend development in Angular, React, and Next.js. Serving Fortune 500 companies across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
+                "Full-service product design and development agency that turns ideas into fully functional shipped products. Specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python. Serving Fortune 500 companies and high-growth startups across USA, UK, Singapore, India, and Australia. Have a conversation about your product — we carry the rest.",
               foundingDate: "2015",
               founder: {
                 "@type": "Person",
@@ -296,6 +296,7 @@ export default async function RootLayout({
                 "Blog",
                 "Contact",
                 "FAQs",
+                "Free Tools",
               ],
               url: [
                 "https://uipirate.com/case-studies",
@@ -304,6 +305,76 @@ export default async function RootLayout({
                 "https://uipirate.com/blogs",
                 "https://uipirate.com/contact",
                 "https://uipirate.com/faqs",
+                "https://uipirate.com/tools",
+              ],
+            }),
+          }}
+          type="application/ld+json"
+        />
+
+        {/* FAQ Schema — boosts AI search visibility */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "What types of companies does UI Pirate work with?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "UI Pirate works with SaaS startups, tech companies, and enterprise clients across USA, UK, Singapore, India, and Australia. Clients range from seed-stage startups to Fortune 500 companies in fintech, healthtech, legaltech, e-commerce, and AI.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How long does a typical project take at UI Pirate?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Landing pages and business websites typically take 2-4 weeks. SaaS and complex web applications take 1-2 months. Monthly retainers are also available for ongoing design and development support.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Does UI Pirate do design only, or development too?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "UI Pirate provides end-to-end services — from product strategy and UX design to full frontend development in Angular, React, and Next.js. Designs can also be handed off to your existing development team.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What makes UI Pirate different from other design agencies?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "UI Pirate combines product thinking with design and development — helping clients think through their product, plan its architecture, design the experience, and build it. We have shipped 50+ products with a 5.0 rating and specialize in complex enterprise applications.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How do I get started with UI Pirate?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Book a free 15-minute call at https://cal.com/ui-pirate/15min or email vishal@uipirate.com. You can also submit a project estimate at https://uipirate.com/contact.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "What is UI Pirate's pricing?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "UI Pirate offers pay-per-project, monthly retainers, and a 5-Day Pilot option to try the team risk-free. Landing pages start from $1,500 and SaaS products from $5,000. See detailed pricing at https://uipirate.com/pricing.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Does UI Pirate work with international clients?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. UI Pirate serves clients primarily in USA, UK, Singapore, India, and Australia, but works globally. All collaboration is remote-first using Figma, Notion, Slack, and video calls.",
+                  },
+                },
               ],
             }),
           }}
@@ -313,6 +384,7 @@ export default async function RootLayout({
         {/* AI Data Reference (kept for AI crawlers that do follow links) */}
         <link href="/ai-data.json" rel="alternate" type="application/ld+json" />
         <link href="/llms.txt" rel="alternate" type="text/plain" />
+        <link href="/llms-full.txt" rel="alternate" type="text/plain" title="Full AI Context" />
 
         {/* Hreflang for international targeting — self-referential per page,
             since every locale variant serves the same URL/content. */}
@@ -352,6 +424,34 @@ export default async function RootLayout({
           fontJetBrainsMono.variable,
         )}
       >
+        {/* noscript fallback — ensures AI crawlers that don't execute JS see real content */}
+        <noscript>
+          <div style={{ padding: "2rem", fontFamily: "sans-serif", maxWidth: "900px", margin: "0 auto" }}>
+            <h1>UI Pirate | SaaS &amp; AI Product Design Agency</h1>
+            <p>Product design &amp; development agency. We turn SaaS and AI ideas into shipped products. UX/UI design, Angular &amp; React development. Serving clients in USA, UK, Singapore, India, and Australia.</p>
+            <h2>Services</h2>
+            <ul>
+              <li><a href="/services/SaaS-Web-&amp;-Mobile-Apps">SaaS Web &amp; Mobile App Design &amp; Development</a></li>
+              <li><a href="/services/Landing-Pages-&amp;-Business-Websites">Landing Pages &amp; Business Websites</a></li>
+              <li><a href="/services/Design-System-&amp;-Component-Library">Design Systems &amp; Component Libraries</a></li>
+              <li><a href="/services/Graphic-Design">Graphic Design</a></li>
+              <li><a href="/services/Motion-Graphics-&amp;-Video-Editing">Motion Graphics &amp; Video Editing</a></li>
+              <li><a href="/services/UX-Audits-&amp;-Consultation">UX Audits &amp; Consultation</a></li>
+            </ul>
+            <h2>Navigation</h2>
+            <ul>
+              <li><a href="/case-studies">Case Studies &amp; Portfolio</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/blogs">Blog</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/faqs">FAQs</a></li>
+              <li><a href="/tools">Free Tools</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+            <p>Founded by Vishal Anand. 50+ products shipped. 5.0 rating. <a href="/contact">Contact us</a></p>
+          </div>
+        </noscript>
+
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           {/* Skip Link for Keyboard Navigation */}
           <a
@@ -365,8 +465,10 @@ export default async function RootLayout({
             <SmoothScroll />
             <PageTransition />
             <PageLoader>
-              <ConditionalNavbar />
-              <Breadcrumbs />
+              <header>
+                <ConditionalNavbar />
+                <Breadcrumbs />
+              </header>
               <main className="flex-1 min-h-screen" id="main-content">
                 {children}
               </main>

@@ -53,6 +53,7 @@ export default function Breadcrumbs() {
     if (
       pathname === "/" ||
       pathname.startsWith("/admin") ||
+      pathname.startsWith("/tools") ||
       /^\/blogs\/[^/]+/.test(pathname) ||
       /^\/case-studies\/[^/]+/.test(pathname) ||
       (segments.length === 1 && !SEGMENT_LABELS[segments[0]])

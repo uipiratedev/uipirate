@@ -95,7 +95,6 @@ const nextConfig = {
     return headers;
   },
 
-
   // Webpack configuration
   webpack: (config, { isServer }) => {
     // In dev, tell Watchpack to ignore Windows system paging/dump files
