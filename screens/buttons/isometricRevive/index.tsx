@@ -6,13 +6,18 @@ import { motion } from "framer-motion";
 import {
   IsometricReviveButton,
   IsometricReviveTheme,
+  IsometricReviveAngle,
+  IsometricGlowIntensity,
   IsometricReviveStateMode,
   IsometricReviveSize,
   ISOMETRIC_REVIVE_THEMES,
+  ANGLE_TRANSFORMS,
 } from "@/components/IsometricReviveButton";
 
 export default function IsometricReviveScreen() {
   const [theme, setTheme] = useState<IsometricReviveTheme>("figma");
+  const [angle, setAngle] = useState<IsometricReviveAngle>("iso-left");
+  const [intensity, setIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [size, setSize] = useState<IsometricReviveSize>("md");
   const [stateMode, setStateMode] = useState<IsometricReviveStateMode>("interactive");
   const [labelText, setLabelText] = useState("Revive Now");
@@ -20,7 +25,7 @@ export default function IsometricReviveScreen() {
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"usage" | "css" | "framer">("usage");
-  const [stageThemeDark, setStageThemeDark] = useState(true);
+  const [stageBg, setStageBg] = useState<"dark" | "charcoal" | "light">("dark");
 
   const handleCopy = (text: string, tabName: string) => {
     navigator.clipboard.writeText(text);
@@ -36,6 +41,8 @@ export default function Example() {
       <IsometricReviveButton
         label="${labelText}"
         theme="${theme}"
+        angle="${angle}"
+        intensity="${intensity}"
         size="${size}"
         stateMode="${stateMode}"
         showGrid={${showGrid}}
@@ -45,9 +52,9 @@ export default function Example() {
   );
 }`;
 
-  const cssOnlyCode = `/* Figma Nodes 115:5957 & 115:6002 Design Tokens */
+  const cssOnlyCode = `/* Figma Nodes 115:5957 & 115:6002 Isometric Design System */
 
-/* 1. Isometric Canvas Projection Matrix */
+/* 1. Isometric Projection Matrix */
 .isometric-stage {
   transform: rotate(30deg) skewX(-30deg) scaleY(0.866025);
   transform-origin: center center;
@@ -58,138 +65,126 @@ export default function Example() {
   transform: translateY(-28px);
   background: #0D1015;
   border: 0.5px solid rgba(255, 255, 255, 0.2);
-  box-shadow:
-    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.25),
-    inset 0px 7px 15px 4px #000000,
-    inset 0px 0px 0px 5px #000000;
   color: rgba(255, 255, 255, 0.35);
-  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.25);
 }
 
 /* 3. HOVER State with Underglow (Node 115:6002) */
 .isometric-btn-hover {
-  transform: translateY(-2px);
+  transform: translateY(0px);
   color: #FFFFFF;
-  text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8), 0px 0px 22px rgba(255, 255, 255, 0.4);
+  text-shadow: 0px 0px 8px rgba(255, 255, 255, 0.7);
 }
 
-.isometric-underglow-active {
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 28%, rgba(255,255,255,0.2) 55%, transparent 75%);
-  filter: blur(22px);
-  mix-blend-mode: screen;
-}
-
-/* 4. Amber Chevron Accent */
-.isometric-chevron {
-  color: #FFA000;
-  filter: drop-shadow(0px 0px 6px rgba(255, 160, 0, 0.8));
+.isometric-underglow-bed {
+  background: #FFFFFF;
+  filter: blur(18px);
+  opacity: 0.95;
 }`;
 
   const framerCode = `// Spring physics for authentic 3D button depression
 <motion.div
   animate={{
-    y: isHovered ? -2 : -28,
+    top: isHovered ? 216 : 186,
   }}
   transition={{
     type: "spring",
-    stiffness: 420,
-    damping: 26,
-    mass: 0.8,
+    stiffness: 450,
+    damping: 28,
+    mass: 0.75,
   }}
-  style={{
-    transform: "rotate(30deg) skewX(-30deg) scaleY(0.866)",
-  }}
+  className="absolute left-[180.88px] w-[225.168px] h-[138.728px]"
 >
-  {/* Top Face and 3D Extrusion */}
+  <button style={{ transform: "rotate(30deg) skewX(-30deg) scaleY(0.866025)" }}>
+    {/* 3D Button Face */}
+  </button>
 </motion.div>`;
 
-  return (
-    <div className="min-h-screen bg-[#0E1015] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-amber-500 selection:text-black">
-      {/* Ambient background bloom */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-amber-500/5 rounded-full blur-[160px]" />
-        <div className="absolute top-1/3 left-1/4 w-[450px] h-[450px] bg-blue-500/5 rounded-full blur-[140px]" />
-      </div>
+  const bgStyles = {
+    dark: "bg-[#1B1C20] text-white",
+    charcoal: "bg-[#111317] text-white",
+    light: "bg-[#E5E7EB] text-gray-900",
+  };
 
-      <div className="max-w-6xl mx-auto space-y-12 relative z-10">
-        {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-sm text-neutral-400">
-            <Link href="/buttons" className="hover:text-white transition-colors">
-              Buttons
+  return (
+    <main className="min-h-screen bg-[#0A0B0E] text-white font-sans selection:bg-orange-500/30 selection:text-orange-200">
+      {/* Top Breadcrumb Navigation */}
+      <nav className="border-b border-white/10 px-6 py-4 bg-black/40 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3 text-sm">
+            <Link
+              href="/buttons"
+              className="text-white/60 hover:text-white transition-colors flex items-center gap-1.5"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+              Button Gallery
             </Link>
-            <span>/</span>
-            <span className="text-amber-400 font-medium">Isometric 3D Revive Button</span>
-            <span className="ml-2 px-2 py-0.5 text-xs font-mono bg-amber-500/10 text-amber-300 border border-amber-500/20 rounded-full">
-              Figma Nodes 115:5957 & 115:6002
+            <span className="text-white/20">/</span>
+            <span className="text-orange-400 font-medium">
+              Isometric 3D Revive CTA
             </span>
           </div>
 
-          <Link
-            href="/buttons"
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-300 transition-colors"
-          >
-            ← All Buttons
-          </Link>
-        </div>
-
-        {/* Header Title */}
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-400">
-            <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
-            <span>Master Button Collection</span>
-            <span className="text-neutral-600">•</span>
-            <span>Isometric 30° Projection</span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Figma 1:1 Verified
+            </span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-neutral-200 to-neutral-500 bg-clip-text text-transparent">
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-6 py-10 space-y-12">
+        {/* Header Title Section */}
+        <header className="space-y-4">
+          <div className="flex items-center gap-3">
+            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-mono uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
+              Master Button Collection
+            </span>
+            <span className="text-xs text-white/40 font-mono">
+              Nodes 115:5957 (STANDERD) & 115:6002 (HOVER)
+            </span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
             Isometric 3D Revive Button
           </h1>
-          <p className="text-base sm:text-lg text-neutral-400 max-w-3xl">
-            Direct 1:1 implementation from the Figma Master Button Collection (nodes{" "}
-            <code className="text-amber-300 font-mono text-sm bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/20">
-              115:5957 (STANDERD)
-            </code>{" "}
-            and{" "}
-            <code className="text-amber-300 font-mono text-sm bg-amber-950/40 px-1.5 py-0.5 rounded border border-amber-500/20">
-              115:6002 (HOVER)
-            </code>
-            ). Features an authentic 30° affine isometric projection, multi-layer solid bevel extrusion, glass tray base, and blinding underglow optical diffusion on interaction.
+          <p className="text-base text-white/60 max-w-3xl leading-relaxed">
+            3D isometric button architecture engineered with true 30° projection geometry, multi-layer extrusion bevels, tactile spring physics, and customizable color themes, rotation angles, and lighting highlights.
           </p>
-        </div>
+        </header>
 
         {/* ================================================================= */}
-        {/* Interactive Playground Stage                                      */}
+        {/* Interactive Studio Stage                                          */}
         {/* ================================================================= */}
-        <div className="rounded-2xl border border-neutral-800/80 bg-neutral-950/70 backdrop-blur-xl overflow-hidden shadow-2xl">
-          {/* Stage Top Bar */}
-          <div className="px-6 py-4 border-b border-neutral-800/80 flex flex-wrap items-center justify-between gap-4 bg-neutral-900/40">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-300">
-                <span className="size-2 rounded-full bg-emerald-400 animate-ping" />
-                Live Interactive Stage
-              </span>
-              <span className="text-neutral-700">|</span>
-              <span className="text-xs text-neutral-400">
-                Interactions:{" "}
-                <span className="font-mono text-amber-400 font-semibold">{clickCount}</span>
-              </span>
-            </div>
-
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-white/90 flex items-center gap-2">
+              <span className="size-2 rounded-full bg-orange-500" />
+              Interactive 3D Studio Stage
+            </h2>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => setStageThemeDark(!stageThemeDark)}
-                className="px-2.5 py-1 text-xs rounded-md bg-neutral-800/80 hover:bg-neutral-700 text-neutral-300 transition-colors border border-neutral-700/50"
+                onClick={() => setStageBg(stageBg === "dark" ? "charcoal" : stageBg === "charcoal" ? "light" : "dark")}
+                className="text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 transition-colors"
               >
-                Stage: {stageThemeDark ? "Obsidian Dark (#1B1C20)" : "Deep Slate"}
+                Stage: {stageBg.toUpperCase()}
               </button>
               <button
                 type="button"
                 onClick={() => setShowGrid(!showGrid)}
-                className={`px-2.5 py-1 text-xs rounded-md transition-colors border ${
+                className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
                   showGrid
-                    ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
-                    : "bg-neutral-800/80 text-neutral-400 border-neutral-700/50"
+                    ? "bg-orange-500/20 border-orange-500/40 text-orange-300"
+                    : "bg-white/5 border-white/10 text-white/50"
                 }`}
               >
                 Isometric Grid: {showGrid ? "ON" : "OFF"}
@@ -197,282 +192,303 @@ export default function Example() {
             </div>
           </div>
 
-          {/* Playground Canvas */}
           <div
-            className={`relative min-h-[440px] flex items-center justify-center p-8 transition-colors duration-500 overflow-hidden ${
-              stageThemeDark ? "bg-[#1B1C20]" : "bg-[#12141A]"
-            }`}
+            className={`relative rounded-3xl border border-white/10 overflow-hidden min-h-[640px] flex flex-col items-center justify-center transition-colors duration-500 ${bgStyles[stageBg]}`}
           >
-            <IsometricReviveButton
-              label={labelText}
-              theme={theme}
-              size={size}
-              stateMode={stateMode}
-              showGrid={showGrid}
-              onClick={() => setClickCount((c) => c + 1)}
-            />
-          </div>
+            {/* Top Stage Badges */}
+            <div className="absolute top-4 left-6 flex items-center gap-4 text-xs font-mono text-white/40">
+              <div className="flex items-center gap-1.5">
+                <span className="size-2 rounded-full bg-emerald-400 animate-ping" />
+                <span>Live Interactive Stage</span>
+              </div>
+              <span className="text-white/20">|</span>
+              <div>
+                Interactions:{" "}
+                <span className="text-orange-400 font-bold">{clickCount}</span>
+              </div>
+            </div>
 
-          {/* Controls Bar */}
-          <div className="p-6 border-t border-neutral-800/80 bg-neutral-900/30 space-y-6">
-            {/* Control Grids */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Mode Selector */}
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
-                  State Mode
-                </label>
-                <div className="grid grid-cols-3 gap-1.5 p-1 bg-neutral-900 rounded-lg border border-neutral-800">
-                  {(["interactive", "standerd", "hover"] as IsometricReviveStateMode[]).map((m) => (
-                    <button
-                      key={m}
-                      type="button"
-                      onClick={() => setStateMode(m)}
-                      className={`px-2 py-1.5 text-xs rounded font-medium transition-all ${
-                        stateMode === m
-                          ? "bg-amber-500 text-black font-bold shadow"
-                          : "text-neutral-400 hover:text-white"
-                      }`}
-                    >
-                      {m === "interactive"
-                        ? "Interactive"
-                        : m === "standerd"
-                        ? "115:5957"
-                        : "115:6002"}
-                    </button>
-                  ))}
+            {/* The 3D Button Component */}
+            <div className="py-10 flex items-center justify-center">
+              <IsometricReviveButton
+                label={labelText}
+                theme={theme}
+                angle={angle}
+                intensity={intensity}
+                size={size}
+                stateMode={stateMode}
+                showGrid={showGrid}
+                onClick={() => setClickCount((c) => c + 1)}
+              />
+            </div>
+
+            {/* Bottom Controls Bar */}
+            <div className="w-full bg-black/60 backdrop-blur-md border-t border-white/10 p-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {/* 1. State Mode */}
+                <div className="space-y-2">
+                  <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider">
+                    State Mode
+                  </label>
+                  <div className="flex gap-1.5 p-1 bg-white/5 rounded-xl border border-white/10">
+                    {(["interactive", "standerd", "hover"] as const).map((mode) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => setStateMode(mode)}
+                        className={`flex-1 py-1.5 text-xs font-medium rounded-lg capitalize transition-all ${
+                          stateMode === mode
+                            ? "bg-orange-500 text-black font-semibold shadow-md"
+                            : "text-white/60 hover:text-white"
+                        }`}
+                      >
+                        {mode === "standerd" ? "115:5957" : mode === "hover" ? "115:6002" : "Interactive"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. Rotation Angle */}
+                <div className="space-y-2">
+                  <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider">
+                    Perspective Angle
+                  </label>
+                  <select
+                    value={angle}
+                    onChange={(e) => setAngle(e.target.value as IsometricReviveAngle)}
+                    className="w-full py-2 px-3 text-xs bg-white/5 rounded-xl border border-white/10 text-white/90 focus:outline-none focus:border-orange-500"
+                  >
+                    {Object.entries(ANGLE_TRANSFORMS).map(([key, val]) => (
+                      <option key={key} value={key} className="bg-[#1B1C20] text-white">
+                        {val.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* 3. Color & Lighting Theme */}
+                <div className="space-y-2">
+                  <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider">
+                    Color & Light Preset
+                  </label>
+                  <select
+                    value={theme}
+                    onChange={(e) => setTheme(e.target.value as IsometricReviveTheme)}
+                    className="w-full py-2 px-3 text-xs bg-white/5 rounded-xl border border-white/10 text-white/90 focus:outline-none focus:border-orange-500"
+                  >
+                    {Object.entries(ISOMETRIC_REVIVE_THEMES).map(([key, val]) => (
+                      <option key={key} value={key} className="bg-[#1B1C20] text-white">
+                        {val.name} ({val.badge})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* 4. Glow Intensity & Sizing */}
+                <div className="space-y-2">
+                  <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider">
+                    Glow Intensity
+                  </label>
+                  <div className="flex gap-1.5 p-1 bg-white/5 rounded-xl border border-white/10">
+                    {(["subtle", "vibrant", "hyper"] as const).map((lvl) => (
+                      <button
+                        key={lvl}
+                        type="button"
+                        onClick={() => setIntensity(lvl)}
+                        className={`flex-1 py-1.5 text-xs font-medium rounded-lg capitalize transition-all ${
+                          intensity === lvl
+                            ? "bg-white/20 text-white font-semibold border border-white/30"
+                            : "text-white/50 hover:text-white"
+                        }`}
+                      >
+                        {lvl}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Size Selector */}
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
-                  Scale Size
-                </label>
-                <div className="grid grid-cols-3 gap-1.5 p-1 bg-neutral-900 rounded-lg border border-neutral-800">
-                  {(["sm", "md", "lg"] as IsometricReviveSize[]).map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => setSize(s)}
-                      className={`px-2 py-1.5 text-xs rounded font-medium transition-all uppercase ${
-                        size === s
-                          ? "bg-neutral-700 text-white font-bold"
-                          : "text-neutral-400 hover:text-white"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
+              {/* Secondary Controls: Label & Sizing */}
+              <div className="mt-4 pt-4 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs text-white/50 font-mono">Label:</span>
+                  <input
+                    type="text"
+                    value={labelText}
+                    onChange={(e) => setLabelText(e.target.value)}
+                    className="py-1 px-3 text-xs bg-white/5 rounded-lg border border-white/10 text-white focus:outline-none focus:border-orange-500"
+                    placeholder="Revive Now"
+                  />
                 </div>
-              </div>
 
-              {/* Label Text Input */}
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
-                  Label Text
-                </label>
-                <input
-                  type="text"
-                  value={labelText}
-                  onChange={(e) => setLabelText(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs rounded-lg bg-neutral-900 border border-neutral-800 text-white focus:outline-none focus:border-amber-500 font-medium"
-                />
-              </div>
-
-              {/* Theme Selector */}
-              <div className="space-y-2">
-                <label className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
-                  Color Preset
-                </label>
-                <select
-                  value={theme}
-                  onChange={(e) => setTheme(e.target.value as IsometricReviveTheme)}
-                  className="w-full px-3 py-1.5 text-xs rounded-lg bg-neutral-900 border border-neutral-800 text-white focus:outline-none focus:border-amber-500 font-medium"
-                >
-                  {Object.entries(ISOMETRIC_REVIVE_THEMES).map(([key, cfg]) => (
-                    <option key={key} value={key}>
-                      {cfg.name}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-white/50 font-mono">Scale:</span>
+                  <div className="flex gap-1 bg-white/5 p-1 rounded-lg border border-white/10">
+                    {(["sm", "md", "lg"] as const).map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        onClick={() => setSize(s)}
+                        className={`px-3 py-1 text-xs font-mono uppercase rounded-md transition-all ${
+                          size === s
+                            ? "bg-orange-500/30 text-orange-300 font-bold border border-orange-500/40"
+                            : "text-white/50 hover:text-white"
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* ================================================================= */}
-        {/* Side-by-Side 1:1 Figma Design Comparison                         */}
+        {/* Color Presets Showcase Grid                                       */}
         {/* ================================================================= */}
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-3">
-              <span>Figma Reference States</span>
-              <span className="text-xs font-mono font-normal px-2.5 py-1 rounded bg-neutral-800 text-neutral-400 border border-neutral-700">
-                1:1 Pixel Accuracy
-              </span>
+        <section className="space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-white tracking-tight">
+              Color & Lighting Showcase
             </h2>
+            <p className="text-sm text-white/60">
+              Interactive 3D variations with tailored neon underglows, chassis finishes, and specular highlights.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* 1. STANDERD Card (115:5957) */}
-            <div className="rounded-xl border border-neutral-800 bg-neutral-950/60 p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-neutral-400">
-                    Figma Node 115:5957
-                  </span>
-                  <h3 className="text-lg font-bold text-white">STANDERD (Idle / Resting)</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {(
+              [
+                { t: "figma", title: "Figma Master Obsidian (1:1)", desc: "Deep onyx with pure white optical underglow and amber accent." },
+                { t: "amber", title: "Cyber Amber Core", desc: "Warm high-visibility amber flare with bronze bevel reflections." },
+                { t: "cyan", title: "Obsidian Cyan Pulse", desc: "Cyberpunk electric blue neon underglow on midnight chassis." },
+                { t: "emerald", title: "Matrix Bio Emerald", desc: "Vibrant matrix emerald radiance with forest bevels." },
+                { t: "violet", title: "Neon Ultraviolet", desc: "Deep synthwave purple underglow with violet highlights." },
+                { t: "pearl-light", title: "Frosted Pearl Light", desc: "Clean ceramic white body with sky blue underglow." },
+              ] as const
+            ).map((item) => (
+              <div
+                key={item.t}
+                onClick={() => setTheme(item.t as IsometricReviveTheme)}
+                className={`group cursor-pointer rounded-2xl border p-6 bg-white/[0.02] hover:bg-white/[0.04] transition-all relative overflow-hidden flex flex-col items-center ${
+                  theme === item.t ? "border-orange-500/60 ring-1 ring-orange-500/30" : "border-white/10"
+                }`}
+              >
+                <div className="h-[280px] w-full flex items-center justify-center">
+                  <IsometricReviveButton
+                    label="Revive Now"
+                    theme={item.t as IsometricReviveTheme}
+                    angle={angle}
+                    size="sm"
+                    showGrid={false}
+                  />
                 </div>
-                <span className="px-2 py-0.5 text-xs font-mono rounded bg-neutral-800 text-neutral-300 border border-neutral-700">
-                  y: -28px (High)
-                </span>
-              </div>
-
-              <div className="bg-[#1B1C20] rounded-lg p-4 flex items-center justify-center overflow-hidden min-h-[300px]">
-                <IsometricReviveButton
-                  label="Revive Now"
-                  theme="figma"
-                  size="sm"
-                  stateMode="standerd"
-                  showGrid={true}
-                />
-              </div>
-
-              <div className="text-xs text-neutral-400 space-y-1">
-                <p>• Button floats 28px elevated above the glass base tray</p>
-                <p>• Typography muted at 35% opacity with subtle specular rim</p>
-                <p>• Ambient clay drop shadow cast onto glass underlay</p>
-                <p>• Dark obsidian solid extrusion side walls (#1C2029)</p>
-              </div>
-            </div>
-
-            {/* 2. HOVER Card (115:6002) */}
-            <div className="rounded-xl border border-amber-500/30 bg-neutral-950/60 p-6 space-y-4 shadow-[0_0_30px_rgba(255,160,0,0.05)]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-widest text-amber-400">
-                    Figma Node 115:6002
-                  </span>
-                  <h3 className="text-lg font-bold text-white">HOVER (Depressed & Illuminated)</h3>
+                <div className="w-full text-left pt-4 border-t border-white/5 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-white group-hover:text-orange-400 transition-colors">
+                      {item.title}
+                    </h3>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-white/60">
+                      {ISOMETRIC_REVIVE_THEMES[item.t as IsometricReviveTheme].badge}
+                    </span>
+                  </div>
+                  <p className="text-xs text-white/50 leading-relaxed">{item.desc}</p>
                 </div>
-                <span className="px-2 py-0.5 text-xs font-mono rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                  y: -2px + Glow
-                </span>
               </div>
-
-              <div className="bg-[#1B1C20] rounded-lg p-4 flex items-center justify-center overflow-hidden min-h-[300px]">
-                <IsometricReviveButton
-                  label="Revive Now"
-                  theme="figma"
-                  size="sm"
-                  stateMode="hover"
-                  showGrid={true}
-                />
-              </div>
-
-              <div className="text-xs text-neutral-400 space-y-1">
-                <p>• Button smoothly compresses down by 26px towards base</p>
-                <p>• Blinding white 22px blurred neon underglow floods the glass tray</p>
-                <p>• Typography lights up to full 100% bright white with bloom</p>
-                <p>• Amber chevron emits vibrant glow flare and drop shadow</p>
-              </div>
-            </div>
+            ))}
           </div>
-        </div>
+        </section>
 
         {/* ================================================================= */}
-        {/* Technical Architecture & Specs                                    */}
+        {/* Code & Integration Section                                        */}
         {/* ================================================================= */}
-        <div className="rounded-xl border border-neutral-800 bg-neutral-950/50 p-6 space-y-6">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <span>Engineering Architecture</span>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">
-              Geometry & Optics
-            </span>
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-neutral-300">
-            <div className="p-4 rounded-lg bg-neutral-900/60 border border-neutral-800 space-y-2">
-              <div className="font-semibold text-amber-400 text-sm">1. True 30° Isometric Projection</div>
-              <p className="text-neutral-400">
-                Implemented using the affine matrix projection:
-                <code className="block mt-1 p-1 bg-black/50 rounded font-mono text-neutral-300">
-                  rotate(30deg) skewX(-30deg) scaleY(0.866)
-                </code>
-                Preserves exact vector corner radiuses and 30° isometric isometric grid axes without 3D perspective distortion.
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-white tracking-tight">
+                Code & Implementation
+              </h2>
+              <p className="text-xs text-white/50">
+                Plug-and-play React component with Tailwind CSS & Framer Motion.
               </p>
             </div>
-
-            <div className="p-4 rounded-lg bg-neutral-900/60 border border-neutral-800 space-y-2">
-              <div className="font-semibold text-blue-400 text-sm">2. Multi-Faceted Solid 3D Extrusion</div>
-              <p className="text-neutral-400">
-                Front and lateral side walls dynamically adjust their extrusion depth as the button elevates or depresses, featuring continuous specular bevel lighting and bottom shading.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-lg bg-neutral-900/60 border border-neutral-800 space-y-2">
-              <div className="font-semibold text-emerald-400 text-sm">3. Multi-Tier Optical Underglow</div>
-              <p className="text-neutral-400">
-                Dual-layer radial neon diffusion with <code className="text-emerald-300">mix-blend-mode: screen</code> and <code className="text-emerald-300">plus-lighter</code> simulates high-intensity light reflection hitting the frosted glass sub-tray.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* ================================================================= */}
-        {/* Code Snippets & Export                                            */}
-        {/* ================================================================= */}
-        <div className="rounded-xl border border-neutral-800 bg-neutral-950 overflow-hidden shadow-2xl">
-          <div className="px-6 py-3 border-b border-neutral-800 flex items-center justify-between bg-neutral-900/60">
-            <div className="flex items-center gap-2">
-              {(["usage", "css", "framer"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  type="button"
-                  onClick={() => setActiveCodeTab(tab)}
-                  className={`px-3 py-1.5 text-xs font-mono rounded-md transition-colors ${
-                    activeCodeTab === tab
-                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                      : "text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  {tab === "usage"
-                    ? "React / Next.js"
-                    : tab === "css"
-                    ? "Design Tokens (CSS)"
-                    : "Framer Motion Physics"}
-                </button>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              onClick={() =>
-                handleCopy(
+            <div className="flex gap-2 p-1 bg-white/5 rounded-xl border border-white/10">
+              <button
+                type="button"
+                onClick={() => setActiveCodeTab("usage")}
+                className={`px-3 py-1 text-xs font-mono rounded-lg transition-colors ${
                   activeCodeTab === "usage"
-                    ? usageCode
-                    : activeCodeTab === "css"
-                    ? cssOnlyCode
-                    : framerCode,
-                  activeCodeTab
-                )
-              }
-              className="px-3 py-1 text-xs font-medium rounded-md bg-neutral-800 hover:bg-neutral-700 text-neutral-200 transition-colors border border-neutral-700"
-            >
-              {copiedCode === activeCodeTab ? "✓ Copied!" : "Copy Snippet"}
-            </button>
+                    ? "bg-orange-500 text-black font-bold"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                Usage.tsx
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveCodeTab("css")}
+                className={`px-3 py-1 text-xs font-mono rounded-lg transition-colors ${
+                  activeCodeTab === "css"
+                    ? "bg-orange-500 text-black font-bold"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                Tokens.css
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveCodeTab("framer")}
+                className={`px-3 py-1 text-xs font-mono rounded-lg transition-colors ${
+                  activeCodeTab === "framer"
+                    ? "bg-orange-500 text-black font-bold"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                Physics.ts
+              </button>
+            </div>
           </div>
 
-          <pre className="p-6 text-xs font-mono text-neutral-300 overflow-x-auto bg-[#0a0c10] leading-relaxed">
-            {activeCodeTab === "usage"
-              ? usageCode
-              : activeCodeTab === "css"
-              ? cssOnlyCode
-              : framerCode}
-          </pre>
-        </div>
+          <div className="relative rounded-2xl border border-white/10 bg-[#0D0E12] overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-black/30">
+              <span className="text-xs font-mono text-white/50">
+                {activeCodeTab === "usage"
+                  ? "components/Example.tsx"
+                  : activeCodeTab === "css"
+                  ? "styles/isometric.css"
+                  : "motion/springs.ts"}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  handleCopy(
+                    activeCodeTab === "usage"
+                      ? usageCode
+                      : activeCodeTab === "css"
+                      ? cssOnlyCode
+                      : framerCode,
+                    activeCodeTab
+                  )
+                }
+                className="text-xs px-3 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white transition-colors"
+              >
+                {copiedCode === activeCodeTab ? "✓ Copied!" : "Copy Code"}
+              </button>
+            </div>
+            <pre className="p-6 text-xs font-mono text-white/80 overflow-x-auto leading-relaxed">
+              <code>
+                {activeCodeTab === "usage"
+                  ? usageCode
+                  : activeCodeTab === "css"
+                  ? cssOnlyCode
+                  : framerCode}
+              </code>
+            </pre>
+          </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
