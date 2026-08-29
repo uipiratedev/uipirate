@@ -14,7 +14,7 @@ export default function SmoothScroll() {
     if (
       typeof window === "undefined" ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      pathname.startsWith("/componentlab")
+      pathname.startsWith("/componentlab/")
     ) {
       if ((window as any).__lenis) {
         (window as any).__lenis.destroy();
