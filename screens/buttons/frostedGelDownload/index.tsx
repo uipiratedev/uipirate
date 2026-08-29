@@ -398,6 +398,123 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#2626FF] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover &amp; click each variant to experience frosted gel optical effects
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Figma Blue */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Figma Electric Blue</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;figma-blue&quot;</span>
+                </div>
+                <div className="my-3 scale-90 sm:scale-95">
+                  <FrostedGelDownloadButton
+                    label="Download Package"
+                    theme="figma-blue"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma ceramic pill with volumetric blue flare</span>
+              </div>
+
+              {/* Cyber Violet */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyber Violet</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;cyber-violet&quot;</span>
+                </div>
+                <div className="my-3 scale-90 sm:scale-95">
+                  <FrostedGelDownloadButton
+                    label="Install Assets"
+                    theme="cyber-violet"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet refraction glow with tinted frosted gel</span>
+              </div>
+
+              {/* Emerald Matrix */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Emerald Matrix</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald-matrix&quot;</span>
+                </div>
+                <div className="my-3 scale-90 sm:scale-95">
+                  <FrostedGelDownloadButton
+                    label="Fetch Source"
+                    theme="emerald-matrix"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Cyberpunk reactor green glow with translucent glass tile</span>
+              </div>
+
+              {/* Magma Orange */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Magma Orange</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;magma-orange&quot;</span>
+                </div>
+                <div className="my-3 scale-90 sm:scale-95">
+                  <FrostedGelDownloadButton
+                    label="Get Bundle"
+                    theme="magma-orange"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">UI Pirate signature brand magma orange illumination</span>
+              </div>
+
+              {/* Dark Obsidian */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Dark Obsidian</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark-obsidian&quot;</span>
+                </div>
+                <div className="my-3 scale-90 sm:scale-95">
+                  <FrostedGelDownloadButton
+                    label="Download Code"
+                    theme="dark-obsidian"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight pill with smoked dark glass cloud tile</span>
+              </div>
+
+              {/* Titanium Gold */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Titanium Gold</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;titanium-gold&quot;</span>
+                </div>
+                <div className="my-3 scale-90 sm:scale-95">
+                  <FrostedGelDownloadButton
+                    label="Export Pro"
+                    theme="titanium-gold"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Luxury warm gold underglow with champagne ceramic pill</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
             INSTALLATION & SETUP
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-4">

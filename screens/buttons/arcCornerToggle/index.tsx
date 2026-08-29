@@ -213,6 +213,75 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & STYLES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#ED45BE] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Click any toggle to test distinct interactive states &amp; speeds
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Light Mode Standard */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Light Mode (OFF)</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">themeMode=&quot;light&quot;</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle
+                    scale={0.82}
+                    duration={0.65}
+                    themeMode="light"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Clay light surface with matte dark track contour</span>
+              </div>
+
+              {/* Dark Mode Active */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Dark Mode (ON)</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">themeMode=&quot;dark&quot;</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle
+                    scale={0.82}
+                    duration={0.65}
+                    isActive={true}
+                    themeMode="dark"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Obsidian chassis with glowing magenta laser flare</span>
+              </div>
+
+              {/* Snappy Spring */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">⚡ Snappy Response</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">duration=0.35s</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle
+                    scale={0.82}
+                    duration={0.35}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">High-velocity snap transition for instant tactile feel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-4">

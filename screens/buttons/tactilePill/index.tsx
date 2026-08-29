@@ -236,6 +236,130 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#54EAD8] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover &amp; click buttons to trigger -9.23° spring tilt &amp; slot depth cavity depression
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Figma Master Default */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Figma Cyan Beacon</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">variant=&quot;default&quot;</span>
+                </div>
+                <div className="my-3">
+                  <TactilePillButton
+                    variant="default"
+                    dotColor="#54EAD8"
+                    label="Get Started"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with turquoise indicator dot</span>
+              </div>
+
+              {/* UI Pirate Magma */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Magma</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">variant=&quot;orange&quot;</span>
+                </div>
+                <div className="my-3">
+                  <TactilePillButton
+                    variant="orange"
+                    dotColor="#FF5B04"
+                    label="Join Waitlist"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange pill cap with glowing amber beacon</span>
+              </div>
+
+              {/* Dark Obsidian */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Dark Obsidian</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">variant=&quot;dark&quot;</span>
+                </div>
+                <div className="my-3">
+                  <TactilePillButton
+                    variant="dark"
+                    dotColor="#A78BFA"
+                    label="Explore Tech"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight pill with violet status indicator</span>
+              </div>
+
+              {/* Cyberpunk Matrix */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyberpunk Matrix</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">variant=&quot;cyberpunk&quot;</span>
+                </div>
+                <div className="my-3">
+                  <TactilePillButton
+                    variant="cyberpunk"
+                    dotColor="#10B981"
+                    label="Deploy Matrix"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Neon reactor green beacon with tactile recessed tray</span>
+              </div>
+
+              {/* Minimal Clean */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Minimal Clean</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">variant=&quot;minimal&quot;</span>
+                </div>
+                <div className="my-3">
+                  <TactilePillButton
+                    variant="minimal"
+                    dotColor="#3B82F6"
+                    label="Learn More"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Crisp clean tactile pill with sapphire status beacon</span>
+              </div>
+
+              {/* Tilted State Preview */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Tilted State Preview</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-pink-400">stateMode=&quot;tilted&quot;</span>
+                </div>
+                <div className="my-3">
+                  <TactilePillButton
+                    variant="default"
+                    dotColor="#EC4899"
+                    label="Active Tilt"
+                    stateMode="tilted"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Fixed mechanical spring tilt position (-9.23° angle)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-4">

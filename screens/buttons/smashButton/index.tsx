@@ -203,6 +203,91 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#C084FC] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover &amp; click to trigger neo-brutalist mechanical smash depression
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Figma Master Neo-Brutalist */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Figma Neo-Brutalist</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-300">variant=&quot;figma&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SmashTactileButton
+                    variant="figma"
+                    label="Smash the button"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with porcelain enclosure tray &amp; dot matrix</span>
+              </div>
+
+              {/* UI Pirate Magma */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Magma</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">variant=&quot;orange&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SmashTactileButton
+                    variant="orange"
+                    label="Smash the button"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange reactor glow with dark obsidian core</span>
+              </div>
+
+              {/* Dark Obsidian Core */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Dark Obsidian Core</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">variant=&quot;dark&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SmashTactileButton
+                    variant="dark"
+                    label="Smash the button"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight enclosure with crisp white chamfer bevels</span>
+              </div>
+
+              {/* Cyberpunk Violet */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyberpunk Violet</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">variant=&quot;cyberpunk&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SmashTactileButton
+                    variant="cyberpunk"
+                    label="Smash the button"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">High-voltage ultraviolet illumination with matrix array</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-4">

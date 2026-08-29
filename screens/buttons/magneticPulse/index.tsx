@@ -190,6 +190,123 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#FF5B04] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover over buttons to trigger radial magnetic bloom expansion
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* UI Pirate Orange */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Magma</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">#FF5B04</span>
+                </div>
+                <div className="my-3">
+                  <MagneticPulseCTA
+                    pulseColor="#FF5B04"
+                    label="Let's Venture"
+                    onClick={handleClick}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange radiant magnetic pulse</span>
+              </div>
+
+              {/* Electric Cyan */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Electric Cyan</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">#06B6D4</span>
+                </div>
+                <div className="my-3">
+                  <MagneticPulseCTA
+                    pulseColor="#06B6D4"
+                    label="Explore Cloud"
+                    onClick={handleClick}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Vibrant neon cyan magnetic beacon glow</span>
+              </div>
+
+              {/* Cyber Violet */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyber Violet</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">#8B5CF6</span>
+                </div>
+                <div className="my-3">
+                  <MagneticPulseCTA
+                    pulseColor="#8B5CF6"
+                    label="Join Community"
+                    onClick={handleClick}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet radiant flare with pulsing beacon</span>
+              </div>
+
+              {/* Emerald Matrix */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Emerald Pulse</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">#10B981</span>
+                </div>
+                <div className="my-3">
+                  <MagneticPulseCTA
+                    pulseColor="#10B981"
+                    label="Deploy Now"
+                    onClick={handleClick}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Reactor green pulsing energy beacon</span>
+              </div>
+
+              {/* Rose Flare */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Rose Flare</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-rose-400">#F43F5E</span>
+                </div>
+                <div className="my-3">
+                  <MagneticPulseCTA
+                    pulseColor="#F43F5E"
+                    label="Launch Project"
+                    onClick={handleClick}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">High-impact ruby rose radiant CTA beacon</span>
+              </div>
+
+              {/* Amber Solar */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Amber Solar</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">#F59E0B</span>
+                </div>
+                <div className="my-3">
+                  <MagneticPulseCTA
+                    pulseColor="#F59E0B"
+                    label="Get Access"
+                    onClick={handleClick}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Golden solar energy beacon with continuous ping</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-4">

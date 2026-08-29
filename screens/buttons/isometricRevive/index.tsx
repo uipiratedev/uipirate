@@ -271,6 +271,123 @@ export default function Example() {
           </div>
 
           {/* ─────────────────────────────────────────────────────────────
+              ALL VARIANTS & THEMES PREVIEW CARD
+             ───────────────────────────────────────────────────────────── */}
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#FFB020] mb-1.5">
+                  <span>PRESETS &amp; VARIATIONS</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+              </div>
+              <p className="text-xs text-gray-400 font-mono">
+                Click or hover over buttons to test 30° isometric matrix spring depression
+              </p>
+            </div>
+
+            <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Figma Master Obsidian */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Figma Master Obsidian</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;figma&quot;</span>
+                  </div>
+                  <div className="my-4 scale-90">
+                    <IsometricReviveButton
+                      theme="figma"
+                      label="Revive"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma extruded obsidian bevels with amber flare</span>
+                </div>
+
+                {/* Amber Solar Flare */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Amber Solar Flare</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;amber&quot;</span>
+                  </div>
+                  <div className="my-4 scale-90">
+                    <IsometricReviveButton
+                      theme="amber"
+                      label="Ignite"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Warm golden amber underglow with dual bevel highlights</span>
+                </div>
+
+                {/* Electric Cyan */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Electric Cyan</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">theme=&quot;cyan&quot;</span>
+                  </div>
+                  <div className="my-4 scale-90">
+                    <IsometricReviveButton
+                      theme="cyan"
+                      label="Deploy"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Laser cyan neon underlayer with high-contrast text</span>
+                </div>
+
+                {/* Cyber Violet */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Cyber Violet</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;violet&quot;</span>
+                  </div>
+                  <div className="my-4 scale-90">
+                    <IsometricReviveButton
+                      theme="violet"
+                      label="Upgrade"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet neon underglow with cybernetic extrusion</span>
+                </div>
+
+                {/* UI Pirate Magma */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">UI Pirate Magma</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;uipirate&quot;</span>
+                  </div>
+                  <div className="my-4 scale-90">
+                    <IsometricReviveButton
+                      theme="uipirate"
+                      label="Launch"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Signature brand magma orange 3D isometric bevel slab</span>
+                </div>
+
+                {/* Gold Luxury */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Gold Luxury</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-yellow-400">theme=&quot;gold-luxury&quot;</span>
+                  </div>
+                  <div className="my-4 scale-90">
+                    <IsometricReviveButton
+                      theme="gold-luxury"
+                      label="Unlock"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Prestige champagne gold walls with golden beacon flare</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
           <div className="space-y-4">
