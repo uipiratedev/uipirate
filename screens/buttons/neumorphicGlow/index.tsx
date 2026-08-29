@@ -279,6 +279,129 @@ export default function Example() {
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#10B981] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover over buttons to trigger specular clay elevation &amp; neon badge bloom
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Figma Neon Emerald Pill */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Emerald Pill</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">neonPreset=&quot;emerald&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="pill"
+                    neonPreset="emerald"
+                    label="Get Started"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with glowing emerald arrow badge</span>
+              </div>
+
+              {/* UI Pirate Magma Squircle */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Squircle</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">neonPreset=&quot;uipirate&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="squircle"
+                    neonPreset="uipirate"
+                    label="Explore Tools"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange neumorphic clay squircle</span>
+              </div>
+
+              {/* Electric Cyan Pill */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Electric Cyan Pill</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">neonPreset=&quot;cyan&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="pill"
+                    neonPreset="cyan"
+                    label="Live Preview"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Cyan optical underglow badge with specular bevel lip</span>
+              </div>
+
+              {/* Neon Magenta Squircle */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Magenta Squircle</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-pink-400">neonPreset=&quot;magenta&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="squircle"
+                    neonPreset="magenta"
+                    label="Upgrade Pro"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Vivid magenta bloom badge with clay squircle chassis</span>
+              </div>
+
+              {/* Cyber Amber Pill */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyber Amber Pill</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">neonPreset=&quot;amber&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="pill"
+                    neonPreset="amber"
+                    label="View Matrix"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Warm golden amber indicator badge depth glow</span>
+              </div>
+
+              {/* Neon Violet Squircle */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Violet Squircle</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">neonPreset=&quot;violet&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="squircle"
+                    neonPreset="violet"
+                    label="Deploy Code"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet neon arrow badge with 3D drop shadows</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
             QUICK INSTALLATION & DEPENDENCIES SECTION
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-4">
