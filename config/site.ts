@@ -91,9 +91,9 @@ export const siteConfig = {
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
         },
         {
-          category: "UI Components",
+          category: "Component Lab",
           icon: "🧩",
-          href: "/ui-components",
+          href: "/componentlab",
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
@@ -127,7 +127,7 @@ export const siteConfig = {
         { label: "Case Studies", href: "/case-studies" },
         { label: "FAQs", href: "/faqs" },
         { label: "Free Tools", href: "/tools" },
-        { label: "UI Components", href: "/ui-components" },
+        { label: "Component Lab", href: "/componentlab" },
         { label: "3D Buttons", href: "/buttons" },
       ],
     },

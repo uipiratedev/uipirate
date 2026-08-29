@@ -10,32 +10,32 @@ const UIComponentsScreen = dynamic(
 );
 
 export const metadata: Metadata = {
-  title: "UI Components Library & Design System | UI Pirate",
+  title: "Component Lab & Design System | UI Pirate",
   description:
     "Handcrafted React, Tailwind, and Framer Motion UI components engineered with Figma Dev Mode pixel accuracy, 3D tactile physics, and rich micro-interactions.",
   keywords:
-    "ui components, react components, tactile buttons, 3d button, glassmorphism, figma to code, figma components, design system, tailwind ui, framer motion components",
+    "component lab, ui components, react components, tactile buttons, 3d button, glassmorphism, figma to code, figma components, design system, tailwind ui, framer motion components",
   openGraph: {
-    title: "UI Components Library & Design System | UI Pirate",
+    title: "Component Lab & Design System | UI Pirate",
     description:
       "Handcrafted React, Tailwind, and Framer Motion UI components engineered with Figma Dev Mode pixel accuracy, 3D tactile physics, and rich micro-interactions.",
-    url: "https://uipirate.com/ui-components",
+    url: "https://uipirate.com/componentlab",
     siteName: "UI Pirate",
     type: "website",
   },
   alternates: {
-    canonical: "https://uipirate.com/ui-components",
+    canonical: "https://uipirate.com/componentlab",
   },
 };
 
-export default function UIComponentsPage() {
+export default function ComponentLabPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "UI Components Library & Design System",
+    "name": "Component Lab & Design System",
     "description":
       "Handcrafted React, Tailwind, and Framer Motion UI components engineered with Figma Dev Mode pixel accuracy, 3D tactile physics, and rich micro-interactions.",
-    "url": "https://uipirate.com/ui-components",
+    "url": "https://uipirate.com/componentlab",
     "publisher": {
       "@type": "Organization",
       "name": "UI Pirate",

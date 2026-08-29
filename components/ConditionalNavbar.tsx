@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { Navbar } from "@/components/navbar";
 
-const HIDDEN_NAVBAR_PATHS = ["/pro-pirate"] as const;
+const HIDDEN_NAVBAR_PATHS = ["/pro-pirate", "/componentlab"] as const;
 
 export const ConditionalNavbar = memo(function ConditionalNavbar() {
   const pathname = usePathname();
@@ -19,6 +19,7 @@ export const ConditionalNavbar = memo(function ConditionalNavbar() {
     const baseHide =
       pathname.startsWith("/pirateCOS") ||
       pathname.startsWith("/admin") ||
+      pathname.startsWith("/componentlab") ||
       HIDDEN_NAVBAR_PATHS.includes(
         pathname as (typeof HIDDEN_NAVBAR_PATHS)[number],
       );

@@ -69,10 +69,5 @@ async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
 export default async function Home() {
   const featuredCaseStudy = await getFeaturedCaseStudy();
 
-  return (
-    <>
-      <SmoothScroll />
-      <Landing featuredCaseStudy={featuredCaseStudy} />
-    </>
-  );
+  return <Landing featuredCaseStudy={featuredCaseStudy} />;
 }

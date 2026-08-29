@@ -17,7 +17,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   terms: "Terms & Conditions",
   resources: "Resources",
   apps4sale: "Apps for Sale",
-  "ui-components": "UI Components",
+  componentlab: "Component Lab",
   buttons: "Buttons",
 };
 
@@ -49,7 +49,7 @@ export default function Breadcrumbs() {
       pathname === "/" ||
       pathname.startsWith("/admin") ||
       pathname.startsWith("/tools") ||
-      pathname.startsWith("/ui-components") ||
+      pathname.startsWith("/componentlab") ||
       pathname.startsWith("/buttons") ||
       /^\/blogs\/[^/]+/.test(pathname) ||
       /^\/case-studies\/[^/]+/.test(pathname) ||
