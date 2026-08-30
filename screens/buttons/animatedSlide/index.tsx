@@ -110,7 +110,7 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
           {/* Header section */}
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
@@ -207,7 +207,7 @@ export default function Example() {
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Primary Dark */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400">
                   <span className="text-white font-semibold">Primary Dark</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">variant=&quot;primary&quot;</span>
@@ -225,7 +225,7 @@ export default function Example() {
               </div>
 
               {/* Secondary Light */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400">
                   <span className="text-white font-semibold">Secondary Light</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">variant=&quot;secondary&quot;</span>
@@ -243,7 +243,7 @@ export default function Example() {
               </div>
 
               {/* Action Conversion */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400">
                   <span className="text-white font-semibold">Conversion Roll</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">Custom Labels</span>
@@ -261,7 +261,7 @@ export default function Example() {
               </div>
 
               {/* Documentation / Link */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[200px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400">
                   <span className="text-white font-semibold">Outline Documentation</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">variant=&quot;secondary&quot;</span>
