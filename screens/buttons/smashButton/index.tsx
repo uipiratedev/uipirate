@@ -118,7 +118,7 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-purple-500 selection:text-white pt-6 pb-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
           {/* Header section */}
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-medium text-purple-300 backdrop-blur-md">
@@ -221,12 +221,12 @@ export default function Example() {
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Figma Master Neo-Brutalist */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Figma Neo-Brutalist</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-300">variant=&quot;figma&quot;</span>
                 </div>
-                <div className="my-3 scale-90">
+                <div className="my-3 scale-[0.68]">
                   <SmashTactileButton
                     variant="figma"
                     label="Smash the button"
@@ -237,12 +237,12 @@ export default function Example() {
               </div>
 
               {/* UI Pirate Magma */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">UI Pirate Magma</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">variant=&quot;orange&quot;</span>
                 </div>
-                <div className="my-3 scale-90">
+                <div className="my-3 scale-[0.68]">
                   <SmashTactileButton
                     variant="orange"
                     label="Smash the button"
@@ -253,12 +253,12 @@ export default function Example() {
               </div>
 
               {/* Dark Obsidian Core */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Dark Obsidian Core</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">variant=&quot;dark&quot;</span>
                 </div>
-                <div className="my-3 scale-90">
+                <div className="my-3 scale-[0.68]">
                   <SmashTactileButton
                     variant="dark"
                     label="Smash the button"
@@ -269,12 +269,12 @@ export default function Example() {
               </div>
 
               {/* Cyberpunk Violet */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Cyberpunk Violet</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">variant=&quot;cyberpunk&quot;</span>
                 </div>
-                <div className="my-3 scale-90">
+                <div className="my-3 scale-[0.68]">
                   <SmashTactileButton
                     variant="cyberpunk"
                     label="Smash the button"

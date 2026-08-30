@@ -24,6 +24,7 @@ import {
   ComponentDetail,
   PresetVariant,
 } from "./dashboardComponents";
+import { getComponentLabScreen } from "./componentScreens";
 
 export { ALL_DASHBOARD_COMPONENTS };
 export type { ComponentCategory, PropRow, ComponentDetail, PresetVariant };
@@ -109,6 +110,9 @@ export default function UIComponentDashboard({
   const [clickCount, setClickCount] = useState<number>(0);
   const [lastAction, setLastAction] = useState<string | null>(null);
 
+  // "On this page" entries auto-derived from the embedded studio screen's <h2> headings
+  const [screenToc, setScreenToc] = useState<{ id: string; label: string }[]>([]);
+
   useEffect(() => {
     if (initialComponentId) {
       setSelectedComponentId(initialComponentId);
@@ -119,6 +123,11 @@ export default function UIComponentDashboard({
     () => ALL_DASHBOARD_COMPONENTS.find((c) => c.id === selectedComponentId) ?? ALL_DASHBOARD_COMPONENTS[0],
     [selectedComponentId]
   );
+
+  // The exact same studio screen rendered at /buttons/<slug>, when one exists.
+  // When present it fully replaces the bespoke playground/variants/code sections
+  // so the Component Lab detail page is 1:1 with the standalone button page.
+  const EmbeddedScreen = getComponentLabScreen(selectedComponent.id);
 
   // Sync playground initial state when selected component changes
   useEffect(() => {
@@ -251,6 +260,35 @@ export default function Example() {
     />
   );
 }`;
+      case "neumorphic-glow-cta": {
+        const themeMap: Record<string, { variant: string; theme: string; neonPreset?: string }> = {
+          "emerald-pill": { variant: "pill", theme: "default", neonPreset: "emerald" },
+          "squircle-emerald": { variant: "squircle", theme: "default", neonPreset: "emerald" },
+          "uipirate": { variant: "pill", theme: "uipirate", neonPreset: "uipirate" },
+          "squircle-uipirate": { variant: "squircle", theme: "uipirate", neonPreset: "uipirate" },
+          "cyan-pill": { variant: "pill", theme: "dark", neonPreset: "cyan" },
+          "magenta-squircle": { variant: "squircle", theme: "cyberpunk", neonPreset: "magenta" },
+          "amber-pill": { variant: "pill", theme: "dark", neonPreset: "amber" },
+          "violet-squircle": { variant: "squircle", theme: "dark", neonPreset: "violet" },
+          "pill": { variant: "pill", theme: "default", neonPreset: "emerald" },
+          "squircle": { variant: "squircle", theme: "default", neonPreset: "emerald" },
+        };
+        const cfg = themeMap[customTheme] || { variant: "pill", theme: "default", neonPreset: "emerald" };
+        return `import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
+
+export default function Example() {
+  return (
+    <NeumorphicGlowCTA
+      label="${customLabel}"
+      variant="${cfg.variant}"
+      theme="${cfg.theme}"
+      neonPreset="${cfg.neonPreset}"
+      size="${customSize}"
+      onClick={() => console.log("Neumorphic Glow Clicked")}
+    />
+  );
+}`;
+      }
       case "smash-tactile-button":
         return `import SmashTactileButton from "@/components/SmashTactileButton";
 
@@ -325,6 +363,41 @@ export default function Example() {
     centerScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  // Build the right-hand "On this page" rail from the embedded studio screen.
+  // The button screens ship no anchor ids, so we tag their <h2> headings once
+  // they mount and mirror them into the TOC — works for every button with no
+  // per-screen edits.
+  useEffect(() => {
+    if (!EmbeddedScreen) {
+      setScreenToc([]);
+      return;
+    }
+    setScreenToc([]);
+    let timer = 0;
+    let attempts = 0;
+    const scan = () => {
+      const root = centerScrollRef.current;
+      const heads = root ? (Array.from(root.querySelectorAll("h2")) as HTMLElement[]) : [];
+      if (heads.length === 0 && attempts < 40) {
+        attempts += 1;
+        timer = window.setTimeout(scan, 100);
+        return;
+      }
+      setScreenToc(
+        heads.map((h, i) => {
+          const label = (h.textContent || `Section ${i + 1}`).replace(/\s+/g, " ").trim();
+          const id =
+            "lab-" + (label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || `section-${i}`);
+          h.id = id;
+          h.style.scrollMarginTop = "24px";
+          return { id, label };
+        })
+      );
+    };
+    timer = window.setTimeout(scan, 150);
+    return () => window.clearTimeout(timer);
+  }, [EmbeddedScreen, selectedComponent.id]);
+
   const isLightPage = pageTheme === "light";
 
   // ── Render Dynamic Component in Playground ────────────────────────────
@@ -351,11 +424,19 @@ export default function Example() {
       case "tactile-pill-button": {
         const validTactileVariants = ["default","dark","orange","cyberpunk","minimal"];
         const tactileVariant = safeTheme(customTheme, validTactileVariants, "default");
+        const tactileDotColorMap: Record<string, string> = {
+          default: "#54EAD8",
+          orange: "#FF5B04",
+          dark: "#A78BFA",
+          cyberpunk: "#10B981",
+          minimal: "#3B82F6",
+        };
         return (
           <div className="py-8 flex items-center justify-center">
             <TactilePillButton
               label={customLabel || "Get Started"}
               variant={tactileVariant as any}
+              dotColor={tactileDotColorMap[tactileVariant] || "#54EAD8"}
               size={customSize}
               onClick={() => handleTriggerAction("Tactile Pill Clicked")}
             />
@@ -433,13 +514,27 @@ export default function Example() {
         );
       }
       case "neumorphic-glow-cta": {
-        const validNeumorphicVariants = ["pill","squircle"];
-        const neumorphicVariant = safeTheme(customTheme, validNeumorphicVariants, "pill");
+        const themeMap: Record<string, { variant: "pill" | "squircle"; theme: any; neonPreset?: any }> = {
+          "emerald-pill": { variant: "pill", theme: "default", neonPreset: "emerald" },
+          "squircle-emerald": { variant: "squircle", theme: "default", neonPreset: "emerald" },
+          "uipirate": { variant: "pill", theme: "uipirate", neonPreset: "uipirate" },
+          "squircle-uipirate": { variant: "squircle", theme: "uipirate", neonPreset: "uipirate" },
+          "cyan-pill": { variant: "pill", theme: "dark", neonPreset: "cyan" },
+          "magenta-squircle": { variant: "squircle", theme: "cyberpunk", neonPreset: "magenta" },
+          "amber-pill": { variant: "pill", theme: "dark", neonPreset: "amber" },
+          "violet-squircle": { variant: "squircle", theme: "dark", neonPreset: "violet" },
+          "pill": { variant: "pill", theme: "default", neonPreset: "emerald" },
+          "squircle": { variant: "squircle", theme: "default", neonPreset: "emerald" },
+        };
+        const cfg = themeMap[customTheme] || { variant: "pill" as const, theme: "default", neonPreset: "emerald" };
         return (
           <div className="py-8 flex items-center justify-center">
             <NeumorphicGlowCTA
-              label={customLabel || "Learn more"}
-              variant={neumorphicVariant as any}
+              label={customLabel || (cfg.variant === "pill" ? "Learn more" : "Get more info")}
+              variant={cfg.variant}
+              theme={cfg.theme}
+              neonPreset={cfg.neonPreset}
+              size={customSize}
               onClick={() => handleTriggerAction("Neumorphic Glow Clicked")}
             />
           </div>
@@ -516,6 +611,65 @@ export default function Example() {
         return canvasTheme === "light" ? selectedComponent.previewLight : selectedComponent.previewDark;
     }
   };
+
+  // ── Shared shell chrome (used by both the embedded-screen and fallback views) ──
+  const breadcrumbNav = (
+    <nav
+      className={`flex items-center gap-2 text-xs font-mono ${
+        isLightPage ? "text-gray-400" : "text-gray-500"
+      }`}
+    >
+      <Link href="/componentlab" className={`transition-colors ${isLightPage ? "hover:text-gray-800" : "hover:text-gray-300"}`}>
+        Component Lab
+      </Link>
+      <span>/</span>
+      <span className={isLightPage ? "text-gray-600" : "text-gray-400"}>{selectedComponent.categoryLabel}</span>
+      <span>/</span>
+      <span className="text-[#FF5B04] font-semibold">{selectedComponent.name}</span>
+    </nav>
+  );
+
+  const componentPagerNav = (
+    <div className={`pt-8 border-t grid grid-cols-1 sm:grid-cols-2 gap-4 ${isLightPage ? "border-gray-200" : "border-white/10"}`}>
+      {prevComponent ? (
+        <button
+          onClick={() => handleSelectComponent(prevComponent.id)}
+          className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${
+            isLightPage
+              ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
+              : "bg-[#121216] border-white/10 hover:border-white/20"
+          }`}
+        >
+          <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
+            ← Previous Component
+          </div>
+          <div className={`text-sm font-bold mt-1 font-jakarta ${isLightPage ? "text-gray-900" : "text-white"}`}>
+            {prevComponent.name}
+          </div>
+        </button>
+      ) : (
+        <div />
+      )}
+
+      {nextComponent && (
+        <button
+          onClick={() => handleSelectComponent(nextComponent.id)}
+          className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${
+            isLightPage
+              ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
+              : "bg-[#121216] border-white/10 hover:border-white/20"
+          }`}
+        >
+          <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
+            Next Component →
+          </div>
+          <div className={`text-sm font-bold mt-1 font-jakarta ${isLightPage ? "text-gray-900" : "text-white"}`}>
+            {nextComponent.name}
+          </div>
+        </button>
+      )}
+    </div>
+  );
 
   return (
     <PageWrapper showFloatingButton={false}>
@@ -797,24 +951,28 @@ export default function Example() {
           <main
             ref={centerScrollRef}
             data-lenis-prevent="true"
-            className="flex-1 h-[calc(100vh-3.5rem)] overflow-y-auto min-w-0 min-h-0 p-6 sm:p-10 lg:p-12 space-y-12 scroll-smooth overscroll-contain scrollbar-thin"
+            className={`flex-1 h-[calc(100vh-3.5rem)] overflow-y-auto min-w-0 min-h-0 scroll-smooth overscroll-contain scrollbar-thin ${
+              EmbeddedScreen ? "" : "p-6 sm:p-10 lg:p-12 space-y-12"
+            }`}
           >
+            {EmbeddedScreen ? (
+              /* ── Embedded studio: identical to /buttons/<slug> ─────────── */
+              <div className={`min-h-full ${isLightPage ? "bg-[#F8F9FA]" : "bg-[#0A0A0C]"}`}>
+                <div className="px-6 sm:px-10 lg:px-12 pt-6">
+                  <div className="max-w-5xl mx-auto">{breadcrumbNav}</div>
+                </div>
+
+                <EmbeddedScreen key={selectedComponent.id} />
+
+                <div className="px-6 sm:px-10 lg:px-12 pb-16 pt-4">
+                  <div className="max-w-5xl mx-auto">{componentPagerNav}</div>
+                </div>
+              </div>
+            ) : (
             <div className="max-w-4xl mx-auto space-y-12 pb-16">
-              
+
               {/* Breadcrumb Navigation */}
-              <nav
-                className={`flex items-center gap-2 text-xs font-mono ${
-                  isLightPage ? "text-gray-400" : "text-gray-500"
-                }`}
-              >
-                <Link href="/componentlab" className={`transition-colors ${isLightPage ? "hover:text-gray-800" : "hover:text-gray-300"}`}>
-                  Component Lab
-                </Link>
-                <span>/</span>
-                <span className={isLightPage ? "text-gray-600" : "text-gray-400"}>{selectedComponent.categoryLabel}</span>
-                <span>/</span>
-                <span className="text-[#FF5B04] font-semibold">{selectedComponent.name}</span>
-              </nav>
+              {breadcrumbNav}
 
               {/* Header: Title & Badges */}
               <div className="space-y-3">
@@ -1110,7 +1268,7 @@ export default function Example() {
                       isLightPage ? "bg-white border-gray-200" : "bg-[#121216] border-white/10"
                     }`}
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {selectedComponent.variantsList.map((variant) => (
                         <div
                           key={variant.title}
@@ -1333,50 +1491,43 @@ export default function Example() {
               )}
 
               {/* ── 7. Next & Previous Component Navigation ────────────── */}
-              <div className={`pt-8 border-t grid grid-cols-1 sm:grid-cols-2 gap-4 ${isLightPage ? "border-gray-200" : "border-white/10"}`}>
-                {prevComponent ? (
-                  <button
-                    onClick={() => handleSelectComponent(prevComponent.id)}
-                    className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${
-                      isLightPage
-                        ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
-                        : "bg-[#121216] border-white/10 hover:border-white/20"
-                    }`}
-                  >
-                    <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
-                      ← Previous Component
-                    </div>
-                    <div className={`text-sm font-bold mt-1 font-jakarta ${isLightPage ? "text-gray-900" : "text-white"}`}>
-                      {prevComponent.name}
-                    </div>
-                  </button>
-                ) : (
-                  <div />
-                )}
-
-                {nextComponent && (
-                  <button
-                    onClick={() => handleSelectComponent(nextComponent.id)}
-                    className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${
-                      isLightPage
-                        ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
-                        : "bg-[#121216] border-white/10 hover:border-white/20"
-                    }`}
-                  >
-                    <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
-                      Next Component →
-                    </div>
-                    <div className={`text-sm font-bold mt-1 font-jakarta ${isLightPage ? "text-gray-900" : "text-white"}`}>
-                      {nextComponent.name}
-                    </div>
-                  </button>
-                )}
-              </div>
+              {componentPagerNav}
 
             </div>
+            )}
           </main>
 
           {/* ── Right Table of Contents (Sticky On This Page) ──────────────── */}
+          {EmbeddedScreen ? (
+            screenToc.length > 0 && (
+              <aside
+                data-lenis-prevent="true"
+                className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${
+                  isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
+                }`}
+              >
+                <div className={`text-[11px] font-bold uppercase tracking-wider ${isLightPage ? "text-gray-700" : "text-gray-400"}`}>
+                  On this page
+                </div>
+                <ul className={`space-y-2.5 ${isLightPage ? "text-gray-600" : "text-gray-500"}`}>
+                  {screenToc.map((s) => (
+                    <li key={s.id}>
+                      <a
+                        href={`#${s.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }}
+                        className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
+                      >
+                        • {s.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            )
+          ) : (
           <aside
             data-lenis-prevent="true"
             className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${
@@ -1451,6 +1602,7 @@ export default function Example() {
               </li>
             </ul>
           </aside>
+          )}
 
         </div>
       </div>

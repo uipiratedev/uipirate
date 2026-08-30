@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimatedButton } from "@/components/AnimatedButton";
 import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
@@ -211,11 +212,11 @@ export default function Example() {
     hasThemeControl: true,
     defaultTheme: "default",
     availableThemes: [
-      { value: "default", label: "Default Teal", color: "#00E5BE" },
-      { value: "dark", label: "Dark Knight", color: "#3B82F6" },
+      { value: "default", label: "Figma Cyan", color: "#54EAD8" },
       { value: "orange", label: "Magma Orange", color: "#FF5B04" },
-      { value: "cyberpunk", label: "Cyberpunk Neon", color: "#EC4899" },
-      { value: "minimal", label: "Minimal Frost", color: "#E2E8F0" },
+      { value: "dark", label: "Dark Obsidian", color: "#A78BFA" },
+      { value: "cyberpunk", label: "Cyberpunk Matrix", color: "#10B981" },
+      { value: "minimal", label: "Minimal Clean", color: "#3B82F6" },
     ],
     features: [
       "Recessed cavity slot with 3D depth shadows",
@@ -266,36 +267,52 @@ export default function Example() {
     ],
     variantsList: [
       {
-        title: "Default Teal Glow",
+        title: "Figma Cyan Beacon",
         themeValue: "default",
         themeProp: 'variant="default"',
-        badgeColor: "#00E5BE",
-        description: "Teal beacon dot with dark ceramic pill and specular reflection.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="default" label="Get Started" size={sz} />,
+        badgeColor: "#54EAD8",
+        description: "1:1 Figma Master design with turquoise indicator dot.",
+        renderPreview: (sz = "sm") => <TactilePillButton variant="default" dotColor="#54EAD8" label="Get Started" size={sz} />,
       },
       {
-        title: "Dark Knight Obsidian",
-        themeValue: "dark",
-        themeProp: 'variant="dark"',
-        badgeColor: "#3B82F6",
-        description: "Monochrome obsidian capsule with electric blue glow beacon.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="dark" label="Explore Dark" size={sz} />,
-      },
-      {
-        title: "Magma Orange Flare",
+        title: "UI Pirate Magma",
         themeValue: "orange",
         themeProp: 'variant="orange"',
         badgeColor: "#FF5B04",
-        description: "Signature brand magma orange bevel with high-energy beacon.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="orange" label="Venture Now" size={sz} />,
+        description: "Signature magma orange pill cap with glowing amber beacon.",
+        renderPreview: (sz = "sm") => <TactilePillButton variant="orange" dotColor="#FF5B04" label="Join Waitlist" size={sz} />,
       },
       {
-        title: "Cyberpunk Neon",
+        title: "Dark Obsidian",
+        themeValue: "dark",
+        themeProp: 'variant="dark"',
+        badgeColor: "#A78BFA",
+        description: "Stealth midnight pill with violet status indicator.",
+        renderPreview: (sz = "sm") => <TactilePillButton variant="dark" dotColor="#A78BFA" label="Explore Tech" size={sz} />,
+      },
+      {
+        title: "Cyberpunk Matrix",
         themeValue: "cyberpunk",
         themeProp: 'variant="cyberpunk"',
+        badgeColor: "#10B981",
+        description: "Neon reactor green beacon with tactile recessed tray.",
+        renderPreview: (sz = "sm") => <TactilePillButton variant="cyberpunk" dotColor="#10B981" label="Deploy Matrix" size={sz} />,
+      },
+      {
+        title: "Minimal Clean",
+        themeValue: "minimal",
+        themeProp: 'variant="minimal"',
+        badgeColor: "#3B82F6",
+        description: "Crisp clean tactile pill with sapphire status beacon.",
+        renderPreview: (sz = "sm") => <TactilePillButton variant="minimal" dotColor="#3B82F6" label="Learn More" size={sz} />,
+      },
+      {
+        title: "Tilted State Preview",
+        themeValue: "default",
+        themeProp: 'stateMode="tilted"',
         badgeColor: "#EC4899",
-        description: "Vibrant pink & cyan neo-cyberpunk lighting and spring physics.",
-        renderPreview: (sz = "sm") => <TactilePillButton variant="cyberpunk" label="Overdrive" size={sz} />,
+        description: "Fixed mechanical spring tilt position (-9.23° angle).",
+        renderPreview: (sz = "sm") => <TactilePillButton variant="default" dotColor="#EC4899" label="Active Tilt" stateMode="tilted" size={sz} />,
       },
     ],
   },
@@ -372,36 +389,52 @@ export default function Example() {
     ],
     variantsList: [
       {
-        title: "Figma Blue Flare",
+        title: "Figma Electric Blue",
         themeValue: "figma-blue",
         themeProp: 'theme="figma-blue"',
         badgeColor: "#38BDF8",
-        description: "Signature electric blue volumetric gel cloud with optic refraction.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="figma-blue" label="Download" size={sz} />,
+        description: "1:1 Figma ceramic pill with volumetric blue flare.",
+        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="figma-blue" label="Download Package" size={sz} />,
       },
       {
         title: "Cyber Violet",
         themeValue: "cyber-violet",
         themeProp: 'theme="cyber-violet"',
         badgeColor: "#A855F7",
-        description: "Ultraviolet neon gel tile with translucent optical refraction.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="cyber-violet" label="Save Asset" size={sz} />,
+        description: "Ultraviolet refraction glow with tinted frosted gel.",
+        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="cyber-violet" label="Install Assets" size={sz} />,
       },
       {
-        title: "Bio Emerald",
+        title: "Emerald Matrix",
         themeValue: "emerald-matrix",
         themeProp: 'theme="emerald-matrix"',
         badgeColor: "#10B981",
-        description: "Vibrant emerald green glass tile with translucent glow rim.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="emerald-matrix" label="Fetch File" size={sz} />,
+        description: "Cyberpunk reactor green glow with translucent glass tile.",
+        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="emerald-matrix" label="Fetch Source" size={sz} />,
       },
       {
-        title: "Sunset Magma",
+        title: "Magma Orange",
         themeValue: "magma-orange",
         themeProp: 'theme="magma-orange"',
         badgeColor: "#FF5B04",
-        description: "Warm magma flame orange gel tile with photon underglow halo.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="magma-orange" label="Export" size={sz} />,
+        description: "UI Pirate signature brand magma orange illumination.",
+        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="magma-orange" label="Get Bundle" size={sz} />,
+      },
+      {
+        title: "Dark Obsidian",
+        themeValue: "dark-obsidian",
+        themeProp: 'theme="dark-obsidian"',
+        badgeColor: "#64748B",
+        description: "Stealth midnight pill with smoked dark glass cloud tile.",
+        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="dark-obsidian" label="Download Code" size={sz} />,
+      },
+      {
+        title: "Titanium Gold",
+        themeValue: "titanium-gold",
+        themeProp: 'theme="titanium-gold"',
+        badgeColor: "#EAB308",
+        description: "Luxury warm gold underglow with champagne ceramic pill.",
+        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="titanium-gold" label="Export Pro" size={sz} />,
       },
     ],
   },
@@ -421,9 +454,12 @@ export default function Example() {
     hasThemeControl: true,
     defaultTheme: "figma",
     availableThemes: [
-      { value: "figma", label: "Figma Cyan", color: "#38BDF8" },
-      { value: "emerald", label: "Emerald Shield", color: "#10B981" },
-      { value: "amber", label: "Amber Gold", color: "#F59E0B" },
+      { value: "figma", label: "Figma Electric Blue", color: "#38BDF8" },
+      { value: "uipirate", label: "UI Pirate Magma", color: "#FF5B04" },
+      { value: "emerald", label: "Neon Emerald", color: "#10B981" },
+      { value: "violet", label: "Cyber Violet", color: "#A855F7" },
+      { value: "crimson", label: "Crimson Ember", color: "#EF4444" },
+      { value: "dark", label: "Dark Obsidian", color: "#64748B" },
     ],
     features: [
       "13px dynamic vertical spring elevation on hover",
@@ -468,34 +504,58 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Book A Call"', description: "Text displayed on the elevated button face." },
-      { name: "icon", type: '"phone" | "calendar" | "arrow"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
-      { name: "theme", type: '"figma" | "emerald" | "amber"', defaultValue: '"figma"', description: "Color theme for the underglow beam and reflection rim." },
+      { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
+      { name: "theme", type: '"figma" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"', defaultValue: '"figma"', description: "Color theme for the underglow beam and reflection rim." },
       { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Size dimensions of the pill." },
     ],
     variantsList: [
       {
-        title: "Figma Cyan Underglow",
+        title: "Figma Electric Blue",
         themeValue: "figma",
         themeProp: 'theme="figma"',
         badgeColor: "#38BDF8",
-        description: "13px vertical spring lift with blue glowing extruded sub-chassis.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="figma" label="Book A Call" size={sz} />,
+        description: "1:1 Figma Master design with blue extruded sub-chassis.",
+        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="figma" label="Book A Call" icon="phone" size={sz} />,
       },
       {
-        title: "Emerald Shield",
+        title: "UI Pirate Magma",
+        themeValue: "uipirate",
+        themeProp: 'theme="uipirate"',
+        badgeColor: "#FF5B04",
+        description: "Vibrant signature brand magma orange glow.",
+        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="uipirate" label="Get Started" icon="sparkle" size={sz} />,
+      },
+      {
+        title: "Neon Emerald",
         themeValue: "emerald",
         themeProp: 'theme="emerald"',
         badgeColor: "#10B981",
-        description: "Glowing green underglow flare with specular white chassis.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="emerald" label="Schedule" size={sz} />,
+        description: "High-tech reactor matrix green elevation chassis.",
+        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="emerald" label="Deploy Code" icon="arrow" size={sz} />,
       },
       {
-        title: "Amber Gold Flare",
-        themeValue: "amber",
-        themeProp: 'theme="amber"',
-        badgeColor: "#F59E0B",
-        description: "Warm golden glow rim with spring tactile depression.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="amber" label="Connect" size={sz} />,
+        title: "Cyber Violet",
+        themeValue: "violet",
+        themeProp: 'theme="violet"',
+        badgeColor: "#A855F7",
+        description: "Sleek neon ultraviolet sub-chassis underglow.",
+        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="violet" label="Upgrade Pro" icon="sparkle" size={sz} />,
+      },
+      {
+        title: "Crimson Ember",
+        themeValue: "crimson",
+        themeProp: 'theme="crimson"',
+        badgeColor: "#EF4444",
+        description: "Punchy ruby red extruded sub-surface illumination.",
+        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="crimson" label="Schedule Demo" icon="calendar" size={sz} />,
+      },
+      {
+        title: "Dark Obsidian",
+        themeValue: "dark",
+        themeProp: 'theme="dark"',
+        badgeColor: "#64748B",
+        description: "Monochrome stealth obsidian cap with pure white glow.",
+        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="dark" label="Contact Us" icon="mail" size={sz} />,
       },
     ],
   },
@@ -562,9 +622,59 @@ export default function Example() {
   --matrix-bg: #0d0d11;
 }`,
     props: [
-      { name: "theme", type: '"monochrome" | "emerald" | "amber" | "cyber-cyan"', defaultValue: '"monochrome"', description: "Phosphor color for the LED dot grid." },
+      { name: "theme", type: '"monochrome" | "uipirate" | "emerald" | "cyan" | "amber" | "crimson"', defaultValue: '"monochrome"', description: "Phosphor color for the LED dot grid." },
       { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Controls pixel scale and chassis padding." },
       { name: "onTrigger", type: "() => void", defaultValue: "undefined", description: "Fired when the chevron sequence reaches climax." },
+    ],
+    variantsList: [
+      {
+        title: "Monochrome Figma",
+        themeValue: "monochrome",
+        themeProp: 'theme="monochrome"',
+        badgeColor: "#F8FAFC",
+        description: "1:1 Figma Master design with white LED grid pixels.",
+        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="monochrome" label="See Plans" size={sz} />,
+      },
+      {
+        title: "UI Pirate Magma",
+        themeValue: "uipirate",
+        themeProp: 'theme="uipirate"',
+        badgeColor: "#FF5B04",
+        description: "Signature magma orange LED illumination wave.",
+        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="uipirate" label="Get Started" size={sz} />,
+      },
+      {
+        title: "Neon Emerald",
+        themeValue: "emerald",
+        themeProp: 'theme="emerald"',
+        badgeColor: "#10B981",
+        description: "Cyberpunk reactor green LED matrix screen.",
+        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="emerald" label="Deploy App" size={sz} />,
+      },
+      {
+        title: "Electric Cyan",
+        themeValue: "cyan",
+        themeProp: 'theme="cyan"',
+        badgeColor: "#06B6D4",
+        description: "Laser cyan glowing pixel chevrons.",
+        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="cyan" label="Explore Tech" size={sz} />,
+      },
+      {
+        title: "Amber Solar",
+        themeValue: "amber",
+        themeProp: 'theme="amber"',
+        badgeColor: "#F59E0B",
+        description: "Warm golden amber retro terminal LED display.",
+        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="amber" label="View Matrix" size={sz} />,
+      },
+      {
+        title: "Crimson Laser",
+        themeValue: "crimson",
+        themeProp: 'theme="crimson"',
+        badgeColor: "#EF4444",
+        description: "High-intensity ruby red cascading chevron pulse.",
+        renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="crimson" label="Execute" size={sz} />,
+      },
     ],
   },
   {
@@ -650,15 +760,18 @@ export default function Example() {
     hasThemeControl: true,
     defaultTheme: "heritage",
     availableThemes: [
-      { value: "heritage", label: "Heritage Tan", color: "#D97706" },
-      { value: "noir", label: "Noir Leather", color: "#334155" },
-      { value: "oxblood", label: "Oxblood Crimson", color: "#991B1B" },
+      { value: "heritage", label: "Heritage Brass", color: "#D97706" },
+      { value: "uipirate", label: "UI Pirate Bronze", color: "#FF5B04" },
+      { value: "obsidian", label: "Obsidian Platinum", color: "#64748B" },
+      { value: "emerald", label: "Emerald Imperial", color: "#10B981" },
+      { value: "ruby", label: "Ruby Royalty", color: "#BE123C" },
+      { value: "silver", label: "Silver Armour", color: "#CBD5E1" },
     ],
     features: [
       "Embossed heritage leather texture with brass lip",
       "Filigree scrollwork corner ornaments",
       "Recessed enclosure tray with tactile 3D bevel",
-      "5 Luxury artisanal themes",
+      "6 Luxury artisanal themes",
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
@@ -686,8 +799,58 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Shop ties"', description: "Artisanal CTA label." },
-      { name: "theme", type: '"heritage" | "noir" | "oxblood"', defaultValue: '"heritage"', description: "Leather color palette." },
+      { name: "theme", type: '"heritage" | "uipirate" | "obsidian" | "emerald" | "ruby" | "silver"', defaultValue: '"heritage"', description: "Leather color palette." },
       { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Size dimensions." },
+    ],
+    variantsList: [
+      {
+        title: "Heritage Brass",
+        themeValue: "heritage",
+        themeProp: 'theme="heritage"',
+        badgeColor: "#D97706",
+        description: "1:1 Figma Master design with embossed cowhide leather & brass lip.",
+        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="heritage" label="Contact Sales" size={sz} />,
+      },
+      {
+        title: "UI Pirate Bronze",
+        themeValue: "uipirate",
+        themeProp: 'theme="uipirate"',
+        badgeColor: "#FF5B04",
+        description: "Signature magma orange leather with filigree corner ornaments.",
+        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="uipirate" label="Explore Ship" size={sz} />,
+      },
+      {
+        title: "Obsidian Platinum",
+        themeValue: "obsidian",
+        themeProp: 'theme="obsidian"',
+        badgeColor: "#64748B",
+        description: "Stealth midnight black leather with platinum bevel edging.",
+        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="obsidian" label="Schedule Call" size={sz} />,
+      },
+      {
+        title: "Emerald Imperial",
+        themeValue: "emerald",
+        themeProp: 'theme="emerald"',
+        badgeColor: "#10B981",
+        description: "Royal jade leather with golden scrollwork corner flourishes.",
+        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="emerald" label="Claim Throne" size={sz} />,
+      },
+      {
+        title: "Ruby Royalty",
+        themeValue: "ruby",
+        themeProp: 'theme="ruby"',
+        badgeColor: "#BE123C",
+        description: "Deep burgundy wine leather with gilded golden tactile bevel.",
+        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="ruby" label="Join Order" size={sz} />,
+      },
+      {
+        title: "Silver Armour",
+        themeValue: "silver",
+        themeProp: 'theme="silver"',
+        badgeColor: "#CBD5E1",
+        description: "Medieval steel & silver chassis with filigree corner ornaments.",
+        renderPreview: (sz = "sm") => <VintageLeatherCTA theme="silver" label="View Armoury" size={sz} />,
+      },
     ],
   },
   {
@@ -702,45 +865,135 @@ export default function Example() {
     detailUrl: "/componentlab/neumorphic-glow-cta",
     defaultLabel: "Learn more",
     hasLabelControl: true,
-    hasSizeControl: false,
+    hasSizeControl: true,
     hasThemeControl: true,
-    defaultTheme: "pill",
+    defaultTheme: "emerald-pill",
     availableThemes: [
-      { value: "pill", label: "Pill Shape", color: "#10B981" },
-      { value: "squircle", label: "Squircle Shape", color: "#06B6D4" },
+      { value: "emerald-pill", label: "Figma Emerald Pill", color: "#10B981" },
+      { value: "squircle-emerald", label: "Figma Emerald Squircle", color: "#10B981" },
+      { value: "uipirate", label: "UI Pirate Magma (Pill)", color: "#FF5B04" },
+      { value: "squircle-uipirate", label: "UI Pirate Squircle", color: "#FF5B04" },
+      { value: "cyan-pill", label: "Electric Cyan (Pill)", color: "#06B6D4" },
+      { value: "magenta-squircle", label: "Neon Magenta Squircle", color: "#EC4899" },
+      { value: "amber-pill", label: "Cyber Amber (Pill)", color: "#F59E0B" },
+      { value: "violet-squircle", label: "Neon Violet Squircle", color: "#8B5CF6" },
     ],
     features: [
-      "Claymorphic elevated drop shadow stacks",
-      "Glowing neon green depth indicator",
-      "Pill and squircle layout variants",
-      "Plus-lighter bloom reflection filter",
+      "Authentic claymorphic multi-tier drop shadow stacks",
+      "Radiant glowing neon arrow indicator badge depth",
+      "Pill (Figma Node 14:642) & Squircle (Node 14:669) geometry",
+      "Interactive 60fps spring press micro-interactions",
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <NeumorphicGlowCTA variant="pill" label="Learn more" />
+        <NeumorphicGlowCTA variant="pill" theme="default" neonPreset="emerald" label="Learn more" />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <NeumorphicGlowCTA variant="pill" label="Learn more" />
+        <NeumorphicGlowCTA variant="pill" theme="default" neonPreset="emerald" label="Learn more" />
       </div>
     ),
     jsxCode: `import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 
 export default function Example() {
-  return <NeumorphicGlowCTA variant="pill" label="Learn more" />;
+  return (
+    <NeumorphicGlowCTA
+      label="Learn more"
+      variant="pill"
+      theme="default"
+      neonPreset="emerald"
+      size="md"
+      onClick={() => console.log("Clicked")}
+    />
+  );
 }`,
-    htmlCode: `<div class="p-1 rounded-full bg-[#18181D] shadow-[-6px_-6px_12px_rgba(255,255,255,0.05),6px_6px_12px_rgba(0,0,0,0.8)]">
-  <button class="px-8 py-3 rounded-full bg-[#1F1F24] text-white font-medium text-xs">Learn more</button>
+    htmlCode: `<!-- Figma Node 14:642 / 14:669 Neumorphic Clay CTA -->
+<div class="relative inline-flex items-center justify-between gap-4 px-6 py-3.5 rounded-full bg-[#E6E8ED] border border-white/80 text-[#3D4450] font-bold text-sm shadow-[8px_8px_16px_rgba(166,171,189,0.5),-8px_-8px_16px_rgba(255,255,255,0.9)] cursor-pointer select-none">
+  <span>Learn more</span>
+  <div class="relative w-8 h-8 rounded-full bg-[#CBF0CD] flex items-center justify-center shadow-[0_0_12px_rgba(73,195,62,0.4)]">
+    <svg class="w-4 h-4 text-[#49C33E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+    </svg>
+  </div>
 </div>`,
-    cssCode: `/* Neumorphic Tokens */
+    cssCode: `/* Soft Neumorphic Glow Design System Tokens */
 :root {
-  --neumorphic-shadow: -8px -8px 16px rgba(255, 255, 255, 0.04), 8px 8px 16px rgba(0, 0, 0, 0.7);
-  --clay-bloom: rgba(16, 185, 129, 0.3);
+  --neumorphic-pill-bg: #E6E8ED;
+  --neumorphic-pill-shadow: 8px 8px 16px rgba(166, 171, 189, 0.5), -8px -8px 16px rgba(255, 255, 255, 0.9);
+  --neon-badge-bg: #CBF0CD;
+  --neon-badge-glow: 0px 0px 12px rgba(73, 195, 62, 0.4);
+  --neon-badge-inner: inset 2.6px 5.2px 6.5px 0px rgba(51, 217, 37, 0.35);
 }`,
     props: [
-      { name: "variant", type: '"pill" | "squircle"', defaultValue: '"pill"', description: "Shape outline variant." },
-      { name: "label", type: "string", defaultValue: '"Learn more"', description: "Button text." },
+      { name: "label", type: "string", defaultValue: '"Learn more"', description: "Primary button call-to-action text displayed on the cap." },
+      { name: "variant", type: '"pill" | "squircle"', defaultValue: '"pill"', description: "Physical rounded contour geometry (Node 14:642 vs 14:669)." },
+      { name: "theme", type: '"default" | "uipirate" | "dark" | "orange" | "cyberpunk" | "minimal"', defaultValue: '"default"', description: "Color palette and clay surface lighting theme preset." },
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Controls button padding, font scale, and indicator dimensions." },
+      { name: "neonPreset", type: '"emerald" | "uipirate" | "cyan" | "magenta" | "amber" | "violet" | "crimson"', defaultValue: '"emerald"', description: "Neon glow preset for glowing indicator arrow circle." },
+      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Interactive click callback event handler." },
+    ],
+    variantsList: [
+      {
+        title: "Figma Emerald Pill",
+        themeValue: "emerald-pill",
+        themeProp: 'variant="pill" neonPreset="emerald"',
+        badgeColor: "#10B981",
+        description: "1:1 Figma Master design with glowing emerald arrow badge and clay drop shadows.",
+        renderPreview: (sz = "sm") => (
+          <NeumorphicGlowCTA variant="pill" neonPreset="emerald" theme="default" label="Get Started" size={sz} />
+        ),
+      },
+      {
+        title: "UI Pirate Squircle",
+        themeValue: "squircle-uipirate",
+        themeProp: 'variant="squircle" neonPreset="uipirate"',
+        badgeColor: "#FF5B04",
+        description: "Signature brand magma orange neumorphic clay squircle with neon glow badge.",
+        renderPreview: (sz = "sm") => (
+          <NeumorphicGlowCTA variant="squircle" neonPreset="uipirate" theme="uipirate" label="Explore Tools" size={sz} />
+        ),
+      },
+      {
+        title: "Electric Cyan Pill",
+        themeValue: "cyan-pill",
+        themeProp: 'variant="pill" neonPreset="cyan"',
+        badgeColor: "#06B6D4",
+        description: "Cyan optical underglow badge with specular bevel lip and obsidian chassis.",
+        renderPreview: (sz = "sm") => (
+          <NeumorphicGlowCTA variant="pill" neonPreset="cyan" theme="dark" label="Live Preview" size={sz} />
+        ),
+      },
+      {
+        title: "Neon Magenta Squircle",
+        themeValue: "magenta-squircle",
+        themeProp: 'variant="squircle" neonPreset="magenta"',
+        badgeColor: "#EC4899",
+        description: "Vivid magenta bloom badge with dark cyberpunk clay squircle chassis.",
+        renderPreview: (sz = "sm") => (
+          <NeumorphicGlowCTA variant="squircle" neonPreset="magenta" theme="cyberpunk" label="Upgrade Pro" size={sz} />
+        ),
+      },
+      {
+        title: "Cyber Amber Pill",
+        themeValue: "amber-pill",
+        themeProp: 'variant="pill" neonPreset="amber"',
+        badgeColor: "#F59E0B",
+        description: "Warm golden amber indicator badge depth glow with dark slate body.",
+        renderPreview: (sz = "sm") => (
+          <NeumorphicGlowCTA variant="pill" neonPreset="amber" theme="dark" label="View Matrix" size={sz} />
+        ),
+      },
+      {
+        title: "Neon Violet Squircle",
+        themeValue: "violet-squircle",
+        themeProp: 'variant="squircle" neonPreset="violet"',
+        badgeColor: "#8B5CF6",
+        description: "Ultraviolet neon arrow badge with 3D drop shadows and squircle frame.",
+        renderPreview: (sz = "sm") => (
+          <NeumorphicGlowCTA variant="squircle" neonPreset="violet" theme="dark" label="Deploy Code" size={sz} />
+        ),
+      },
     ],
   },
   {
@@ -759,9 +1012,10 @@ export default function Example() {
     hasThemeControl: true,
     defaultTheme: "figma",
     availableThemes: [
-      { value: "figma", label: "Figma Brutal", color: "#EC4899" },
-      { value: "cyber", label: "Cyber Yellow", color: "#EAB308" },
-      { value: "dark", label: "Tactical Dark", color: "#64748B" },
+      { value: "figma", label: "Figma Neo-Brutalist", color: "#EC4899" },
+      { value: "orange", label: "UI Pirate Magma", color: "#FF5B04" },
+      { value: "dark", label: "Dark Obsidian Core", color: "#64748B" },
+      { value: "cyberpunk", label: "Cyberpunk Violet", color: "#A855F7" },
     ],
     features: [
       "Industrial outer enclosure frame",
@@ -794,7 +1048,41 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Smash the button"', description: "Button text." },
-      { name: "variant", type: '"figma" | "cyber" | "dark"', defaultValue: '"figma"', description: "Industrial theme variant." },
+      { name: "variant", type: '"figma" | "orange" | "dark" | "cyberpunk"', defaultValue: '"figma"', description: "Industrial theme variant." },
+    ],
+    variantsList: [
+      {
+        title: "Figma Neo-Brutalist",
+        themeValue: "figma",
+        themeProp: 'variant="figma"',
+        badgeColor: "#EC4899",
+        description: "1:1 Figma Master design with porcelain enclosure tray & dot matrix.",
+        renderPreview: (sz = "sm") => <SmashTactileButton variant="figma" label="Smash the button" size={sz} />,
+      },
+      {
+        title: "UI Pirate Magma",
+        themeValue: "orange",
+        themeProp: 'variant="orange"',
+        badgeColor: "#FF5B04",
+        description: "Signature magma orange reactor glow with dark obsidian core.",
+        renderPreview: (sz = "sm") => <SmashTactileButton variant="orange" label="Smash the button" size={sz} />,
+      },
+      {
+        title: "Dark Obsidian Core",
+        themeValue: "dark",
+        themeProp: 'variant="dark"',
+        badgeColor: "#64748B",
+        description: "Stealth midnight enclosure with crisp white chamfer bevels.",
+        renderPreview: (sz = "sm") => <SmashTactileButton variant="dark" label="Smash the button" size={sz} />,
+      },
+      {
+        title: "Cyberpunk Violet",
+        themeValue: "cyberpunk",
+        themeProp: 'variant="cyberpunk"',
+        badgeColor: "#A855F7",
+        description: "High-voltage ultraviolet illumination with matrix array.",
+        renderPreview: (sz = "sm") => <SmashTactileButton variant="cyberpunk" label="Smash the button" size={sz} />,
+      },
     ],
   },
   {
@@ -813,8 +1101,10 @@ export default function Example() {
     hasThemeControl: true,
     defaultTheme: "dark",
     availableThemes: [
-      { value: "dark", label: "Dark Obsidian", color: "#38BDF8" },
-      { value: "light", label: "Light Frosted", color: "#E2E8F0" },
+      { value: "dark", label: "Figma Dark Obsidian", color: "#38BDF8" },
+      { value: "orange", label: "UI Pirate Magma", color: "#FF5B04" },
+      { value: "light", label: "Titanium Light", color: "#E2E8F0" },
+      { value: "cyberpunk", label: "Cyberpunk Neon", color: "#A855F7" },
     ],
     features: [
       "Frosted outer glass tray",
@@ -847,7 +1137,41 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Scaling Workshop"', description: "Text label." },
-      { name: "variant", type: '"dark" | "light"', defaultValue: '"dark"', description: "Appearance style." },
+      { name: "variant", type: '"dark" | "orange" | "light" | "cyberpunk"', defaultValue: '"dark"', description: "Appearance style." },
+    ],
+    variantsList: [
+      {
+        title: "Figma Dark Obsidian",
+        themeValue: "dark",
+        themeProp: 'variant="dark"',
+        badgeColor: "#38BDF8",
+        description: "1:1 Figma Master design with frosted translucent cavity tray.",
+        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="dark" label="Scaling Workshop" size={sz} />,
+      },
+      {
+        title: "UI Pirate Magma",
+        themeValue: "orange",
+        themeProp: 'variant="orange"',
+        badgeColor: "#FF5B04",
+        description: "Signature magma orange glowing capsule with apex emblem.",
+        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="orange" label="Start Building" size={sz} />,
+      },
+      {
+        title: "Titanium Light",
+        themeValue: "light",
+        themeProp: 'variant="light"',
+        badgeColor: "#E2E8F0",
+        description: "Clean ceramic light pill with high-contrast ladder apex.",
+        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="light" label="Join Waitlist" size={sz} />,
+      },
+      {
+        title: "Cyberpunk Neon",
+        themeValue: "cyberpunk",
+        themeProp: 'variant="cyberpunk"',
+        badgeColor: "#A855F7",
+        description: "Ultraviolet neon tray with cybernetic specular insets.",
+        renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="cyberpunk" label="Deploy Matrix" size={sz} />,
+      },
     ],
   },
   {
@@ -907,6 +1231,67 @@ export default function Example() {
     props: [
       { name: "label", type: "string", defaultValue: '"Let\'s Venture"', description: "Button text." },
       { name: "pulseColor", type: "string", defaultValue: '"#FF5B04"', description: "Color for the pulsing flare." },
+    ],
+  },
+  {
+    id: "animated-slide-button",
+    name: "Animated Slide-Up Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Micro-Interaction",
+    badgeColor: "#8B5CF6",
+    description:
+      "Dual-text roll CTA button that smoothly translates labels vertically on hover with overflow clipping. Optimized for high-conversion service cards.",
+    detailUrl: "/componentlab/animated-slide-button",
+    defaultLabel: "Explore Services",
+    hasLabelControl: true,
+    hasSizeControl: false,
+    hasThemeControl: true,
+    defaultTheme: "primary",
+    availableThemes: [
+      { value: "primary", label: "Primary", color: "#8B5CF6" },
+      { value: "secondary", label: "Secondary", color: "#64748B" },
+    ],
+    features: [
+      "Dual text vertical roll on hover",
+      "Smooth translateY with overflow clip",
+      "Primary & secondary styles",
+      "Zero layout shift",
+    ],
+    previewLight: (
+      <div className="py-8 flex items-center justify-center w-full max-w-[240px] mx-auto">
+        <AnimatedButton primaryText="Explore Services" hoverText="See More →" variant="primary" className="!mt-0" />
+      </div>
+    ),
+    previewDark: (
+      <div className="py-8 flex items-center justify-center w-full max-w-[240px] mx-auto">
+        <AnimatedButton primaryText="Explore Services" hoverText="See More →" variant="primary" className="!mt-0" />
+      </div>
+    ),
+    jsxCode: `import { AnimatedButton } from "@/components/AnimatedButton";
+
+export default function Example() {
+  return (
+    <AnimatedButton
+      primaryText="Explore Services"
+      hoverText="See More →"
+      variant="primary"
+    />
+  );
+}`,
+    htmlCode: `<button class="relative overflow-hidden px-6 py-3 rounded-full bg-[#8B5CF6] text-white font-bold text-sm">
+  <span class="block transition-transform duration-300 group-hover:-translate-y-full">Explore Services</span>
+  <span class="absolute inset-0 flex items-center justify-center translate-y-full transition-transform duration-300 group-hover:translate-y-0">See More →</span>
+</button>`,
+    cssCode: `/* Animated Slide-Up Tokens */
+:root {
+  --slide-roll-duration: 300ms;
+  --slide-roll-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}`,
+    props: [
+      { name: "primaryText", type: "string", defaultValue: "—", description: "Label shown in the resting state." },
+      { name: "hoverText", type: "string", defaultValue: '"See More"', description: "Label rolled in on hover." },
+      { name: "variant", type: '"primary" | "secondary"', defaultValue: '"primary"', description: "Colour style of the pill." },
     ],
   },
   {

@@ -174,7 +174,7 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div className="relative overflow-hidden min-h-screen bg-[#07080B] text-white pt-6 pb-20 selection:bg-emerald-500/30 selection:text-emerald-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
           {/* Header section */}
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
@@ -295,9 +295,9 @@ export default function Example() {
           </div>
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Figma Neon Emerald Pill */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Neon Emerald Pill</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">neonPreset=&quot;emerald&quot;</span>
@@ -314,7 +314,7 @@ export default function Example() {
               </div>
 
               {/* UI Pirate Magma Squircle */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">UI Pirate Squircle</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">neonPreset=&quot;uipirate&quot;</span>
@@ -331,7 +331,7 @@ export default function Example() {
               </div>
 
               {/* Electric Cyan Pill */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Electric Cyan Pill</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">neonPreset=&quot;cyan&quot;</span>
@@ -348,7 +348,7 @@ export default function Example() {
               </div>
 
               {/* Neon Magenta Squircle */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Neon Magenta Squircle</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-pink-400">neonPreset=&quot;magenta&quot;</span>
@@ -365,7 +365,7 @@ export default function Example() {
               </div>
 
               {/* Cyber Amber Pill */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Cyber Amber Pill</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">neonPreset=&quot;amber&quot;</span>
@@ -382,7 +382,7 @@ export default function Example() {
               </div>
 
               {/* Neon Violet Squircle */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Neon Violet Squircle</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">neonPreset=&quot;violet&quot;</span>

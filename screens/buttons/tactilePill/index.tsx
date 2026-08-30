@@ -145,7 +145,7 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
           {/* Header section */}
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
@@ -252,9 +252,9 @@ export default function Example() {
           </div>
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Figma Master Default */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Figma Cyan Beacon</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">variant=&quot;default&quot;</span>
@@ -271,7 +271,7 @@ export default function Example() {
               </div>
 
               {/* UI Pirate Magma */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">UI Pirate Magma</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">variant=&quot;orange&quot;</span>
@@ -288,7 +288,7 @@ export default function Example() {
               </div>
 
               {/* Dark Obsidian */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Dark Obsidian</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">variant=&quot;dark&quot;</span>
@@ -305,7 +305,7 @@ export default function Example() {
               </div>
 
               {/* Cyberpunk Matrix */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Cyberpunk Matrix</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">variant=&quot;cyberpunk&quot;</span>
@@ -322,7 +322,7 @@ export default function Example() {
               </div>
 
               {/* Minimal Clean */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Minimal Clean</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">variant=&quot;minimal&quot;</span>
@@ -339,7 +339,7 @@ export default function Example() {
               </div>
 
               {/* Tilted State Preview */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Tilted State Preview</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-pink-400">stateMode=&quot;tilted&quot;</span>

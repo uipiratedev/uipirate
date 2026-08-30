@@ -221,7 +221,7 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div className="relative overflow-hidden min-h-screen bg-[#07080A] text-white font-sans selection:bg-blue-600/30 selection:text-blue-200 pt-6 pb-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
           {/* Header Section */}
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
             <div className="inline-flex items-center gap-3 justify-center">
@@ -241,10 +241,10 @@ export default function Example() {
           </header>
 
         {/* 2. Interactive Studio Stage */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="flex flex-col gap-8 items-stretch">
           {/* Main Visual Stage */}
-          <div className="lg:col-span-8 space-y-4">
-            <div className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0F1116] min-h-[460px] flex flex-col items-center justify-center p-8">
+          <div className="space-y-4">
+            <div className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0F1116] min-h-[380px] flex flex-col items-center justify-center p-8">
               {/* Grid Canvas Texture */}
               {stageBg === "diagonal-grid" && (
                 <div
@@ -313,11 +313,12 @@ export default function Example() {
           </div>
 
           {/* Controls Sidebar */}
-          <div className="lg:col-span-4 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
               Customizer
             </h2>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
             {/* State Mode Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
@@ -394,6 +395,7 @@ export default function Example() {
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
               />
             </div>
+            </div>
           </div>
         </div>
 
@@ -414,14 +416,14 @@ export default function Example() {
           </div>
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Figma Blue */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Figma Electric Blue</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;figma-blue&quot;</span>
                 </div>
-                <div className="my-3 scale-90 sm:scale-95">
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
                   <FrostedGelDownloadButton
                     label="Download Package"
                     theme="figma-blue"
@@ -432,12 +434,12 @@ export default function Example() {
               </div>
 
               {/* Cyber Violet */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Cyber Violet</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;cyber-violet&quot;</span>
                 </div>
-                <div className="my-3 scale-90 sm:scale-95">
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
                   <FrostedGelDownloadButton
                     label="Install Assets"
                     theme="cyber-violet"
@@ -448,12 +450,12 @@ export default function Example() {
               </div>
 
               {/* Emerald Matrix */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Emerald Matrix</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald-matrix&quot;</span>
                 </div>
-                <div className="my-3 scale-90 sm:scale-95">
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
                   <FrostedGelDownloadButton
                     label="Fetch Source"
                     theme="emerald-matrix"
@@ -464,12 +466,12 @@ export default function Example() {
               </div>
 
               {/* Magma Orange */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Magma Orange</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;magma-orange&quot;</span>
                 </div>
-                <div className="my-3 scale-90 sm:scale-95">
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
                   <FrostedGelDownloadButton
                     label="Get Bundle"
                     theme="magma-orange"
@@ -480,12 +482,12 @@ export default function Example() {
               </div>
 
               {/* Dark Obsidian */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Dark Obsidian</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark-obsidian&quot;</span>
                 </div>
-                <div className="my-3 scale-90 sm:scale-95">
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
                   <FrostedGelDownloadButton
                     label="Download Code"
                     theme="dark-obsidian"
@@ -496,12 +498,12 @@ export default function Example() {
               </div>
 
               {/* Titanium Gold */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Titanium Gold</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;titanium-gold&quot;</span>
                 </div>
-                <div className="my-3 scale-90 sm:scale-95">
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
                   <FrostedGelDownloadButton
                     label="Export Pro"
                     theme="titanium-gold"

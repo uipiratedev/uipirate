@@ -165,7 +165,7 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div className="relative overflow-hidden min-h-screen bg-[#07080B] text-white pt-6 pb-20 selection:bg-blue-500/30 selection:text-blue-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
           {/* Header section */}
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
@@ -280,9 +280,9 @@ export default function Example() {
           </div>
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Figma Metallic Silver */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Figma Silver</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;silver&quot;</span>
@@ -299,7 +299,7 @@ export default function Example() {
               </div>
 
               {/* UI Pirate Orange */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">UI Pirate Magma</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;uipirate&quot;</span>
@@ -316,7 +316,7 @@ export default function Example() {
               </div>
 
               {/* Dark Obsidian Matrix */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Dark Obsidian</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark&quot;</span>
@@ -333,7 +333,7 @@ export default function Example() {
               </div>
 
               {/* Cyberpunk Violet */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Cyberpunk Violet</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;cyberpunk&quot;</span>
@@ -350,7 +350,7 @@ export default function Example() {
               </div>
 
               {/* Neon Emerald */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Neon Emerald</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald&quot;</span>
@@ -367,7 +367,7 @@ export default function Example() {
               </div>
 
               {/* Magma Flare */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all hover:border-white/15">
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Magma Flare</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;orange&quot;</span>
