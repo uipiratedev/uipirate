@@ -53,7 +53,7 @@ export type ElevatedUnderglowTheme =
   | "amber"
   | "dark";
 
-export type ElevatedUnderglowSize = "sm" | "md" | "lg";
+export type ElevatedUnderglowSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type ElevatedUnderglowIconType = "phone" | "calendar" | "arrow" | "sparkle" | "mail" | "none";
 
 export interface ElevatedUnderglowCTAProps {
@@ -326,7 +326,7 @@ export default function Example() {
                 Scale Size
               </label>
               <div className="flex gap-1">
-                {(["sm", "md", "lg"] as ElevatedUnderglowSize[]).map((s) => (
+                {(["xs", "sm", "md", "lg", "xl"] as ElevatedUnderglowSize[]).map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -617,7 +617,7 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
                   </tr>

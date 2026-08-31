@@ -24,7 +24,7 @@ export default function TactilePillButtonScreen() {
   const [dotColor, setDotColor] = useState("#54EAD8");
   const [stateMode, setStateMode] = useState<TactileButtonState>("interactive");
   const [variant, setVariant] = useState<TactileButtonVariant>("default");
-  const [size, setSize] = useState<"sm" | "md" | "lg">("md");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [tiltAngle, setTiltAngle] = useState(-9.23);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -55,7 +55,7 @@ export interface TactilePillButtonProps {
   label?: string;
   dotColor?: string;
   variant?: TactileButtonVariant;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   tiltAngle?: number;
   onClick?: () => void;
   className?: string;
@@ -218,7 +218,7 @@ export default function Example() {
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
               <div className="flex gap-1">
-                {(["sm", "md", "lg"] as const).map((s) => (
+                {(["xs", "sm", "md", "lg", "xl"] as const).map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -484,7 +484,7 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-orange-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
                   </tr>

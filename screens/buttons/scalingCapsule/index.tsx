@@ -12,7 +12,7 @@ import GlobalCTA from "@/components/GlobalCTA";
 export default function ScalingCapsuleButtonScreen() {
   const [label, setLabel] = useState("Scaling Workshop");
   const [variant, setVariant] = useState<ScalingCapsuleVariant>("dark");
-  const [size, setSize] = useState<"sm" | "md" | "lg">("md");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -40,7 +40,7 @@ export type ScalingCapsuleVariant = "dark" | "orange" | "light" | "cyberpunk";
 export interface ScalingCapsuleButtonProps {
   label?: string;
   variant?: ScalingCapsuleVariant;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   icon?: React.ReactNode;
   onClick?: () => void;
   className?: string;
@@ -461,7 +461,7 @@ export default function HeroSection() {
                 Scale Size
               </label>
               <div className="grid grid-cols-3 gap-2">
-                {(["sm", "md", "lg"] as const).map((s) => (
+                {(["xs", "sm", "md", "lg", "xl"] as const).map((s) => (
                   <button
                     key={s}
                     onClick={() => setSize(s)}
@@ -726,7 +726,7 @@ export default function HeroSection() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-orange-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Physical scaling size scale</td>
                   </tr>

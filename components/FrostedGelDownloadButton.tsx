@@ -12,7 +12,64 @@ export type FrostedGelTheme =
   | "titanium-gold";
 
 export type FrostedGelStateMode = "interactive" | "standerd" | "hover";
-export type FrostedGelSize = "sm" | "md" | "lg";
+export type FrostedGelSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type FrostedGelIcon =
+  | "cloud-download"
+  | "download"
+  | "arrow-down"
+  | "upload"
+  | "folder"
+  | "package"
+  | "save";
+
+/** Stroke-path sets for the gel tile icon (24x24 viewBox, currentColor stroke). */
+const FROSTED_GEL_ICON_PATHS: Record<FrostedGelIcon, React.ReactNode> = {
+  "cloud-download": (
+    <>
+      <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+      <path d="M12 12v9" />
+      <path d="m8 17 4 4 4-4" />
+    </>
+  ),
+  download: (
+    <>
+      <path d="M12 3v12" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M5 21h14" />
+    </>
+  ),
+  "arrow-down": (
+    <>
+      <path d="M12 5v14" />
+      <path d="m5 12 7 7 7-7" />
+    </>
+  ),
+  upload: (
+    <>
+      <path d="M12 21V9" />
+      <path d="m7 14 5-5 5 5" />
+      <path d="M5 3h14" />
+    </>
+  ),
+  folder: (
+    <path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+  ),
+  package: (
+    <>
+      <path d="m7.5 4.27 9 5.15" />
+      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+      <path d="m3.3 7 8.7 5 8.7-5" />
+      <path d="M12 22V12" />
+    </>
+  ),
+  save: (
+    <>
+      <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+      <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+      <path d="M7 3v4a1 1 0 0 0 1 1h7" />
+    </>
+  ),
+};
 
 export interface FrostedGelThemeConfig {
   name: string;
@@ -145,6 +202,8 @@ export interface FrostedGelDownloadButtonProps {
   theme?: FrostedGelTheme;
   /** Scale sizing */
   size?: FrostedGelSize;
+  /** Icon shown inside the frosted gel tile */
+  icon?: FrostedGelIcon;
   /** Display background decorative technical trace cables */
   showCables?: boolean;
   /** Unified click handler */
@@ -164,6 +223,7 @@ export function FrostedGelDownloadButton({
   stateMode = "interactive",
   theme = "figma-blue",
   size = "md",
+  icon = "cloud-download",
   showCables = true,
   onClick,
   onDownloadClick,
@@ -177,9 +237,11 @@ export function FrostedGelDownloadButton({
   const t = FROSTED_GEL_THEMES[theme] || FROSTED_GEL_THEMES["figma-blue"];
 
   const sizeScales = {
+    xs: 0.64,
     sm: 0.8,
     md: 1,
     lg: 1.2,
+    xl: 1.44,
   };
   const scaleFactor = sizeScales[size] || 1;
 
@@ -190,18 +252,11 @@ export function FrostedGelDownloadButton({
 
   return (
     <div
-      className={`relative select-none flex items-center justify-center ${className}`}
-      style={{
-        width: `${560 * scaleFactor}px`,
-        height: `${240 * scaleFactor}px`,
-      }}
+      className={`relative select-none inline-flex items-center justify-center ${className}`}
+      style={{ zoom: scaleFactor } as React.CSSProperties}
     >
-      <div
-        className="relative w-[560px] h-[240px] flex items-center justify-center flex-none transition-transform duration-300"
-        style={{
-          transform: `scale(${scaleFactor})`,
-        }}
-      >
+      <div className="relative min-w-[560px] h-[240px] flex items-center justify-center flex-none">
+
         {/* ================================================================= */}
         {/* 1. Background Technical Trace Cable Lines (Figma 4604:153-156)    */}
         {/* ================================================================= */}
@@ -330,7 +385,7 @@ export function FrostedGelDownloadButton({
                 damping: 24,
                 mass: 0.6,
               }}
-              className="relative cursor-pointer outline-none border-[1.65px] border-solid flex items-center justify-center w-[254px] h-[74px] rounded-[16.5px] px-[32px] py-[23px] overflow-hidden"
+              className="relative cursor-pointer outline-none border-[1.65px] border-solid flex items-center justify-center min-w-[254px] h-[74px] rounded-[16.5px] px-[32px] py-[23px] overflow-hidden"
               style={{
                 borderColor: t.pillBorder,
                 backgroundColor: t.pillBg,
@@ -422,7 +477,7 @@ export function FrostedGelDownloadButton({
                 }}
               />
 
-              {/* Cloud Download SVG Icon (Figma 4604:180) */}
+              {/* Gel Tile Icon (Figma 4604:180) — configurable via `icon` prop */}
               <div className="relative z-10 flex items-center justify-center">
                 <svg
                   width="30"
@@ -441,9 +496,7 @@ export function FrostedGelDownloadButton({
                     transform: isPressed ? "translateY(2px)" : "none",
                   }}
                 >
-                  <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-                  <path d="M12 12v9" />
-                  <path d="m8 17 4 4 4-4" />
+                  {FROSTED_GEL_ICON_PATHS[icon] ?? FROSTED_GEL_ICON_PATHS["cloud-download"]}
                 </svg>
               </div>
             </motion.button>

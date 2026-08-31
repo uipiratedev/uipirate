@@ -16,7 +16,7 @@ export interface TactilePillButtonProps {
   /** Visual theme variant */
   variant?: TactileButtonVariant;
   /** Size scale */
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Optional onClick handler */
   onClick?: () => void;
   /** Additional CSS class names */
@@ -39,6 +39,16 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
   const [isPressed, setIsPressed] = useState(false);
 
   // Scaled dimensions matching exact Figma 182x50px cap & 176x45px slot
+  // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
+  const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
+  const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
+  const __wrapSize = (node: React.ReactElement): React.ReactElement =>
+    __extraSizeScale === 1 ? node : (
+      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+        {node}
+      </span>
+    );
+
   const sizeConfig = {
     sm: {
       wrapperW: 152,
@@ -79,7 +89,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
       liftY: -18,
       liftX: -5,
     },
-  }[size];
+  }[__baseSize];
 
   // Theme-aware styles with calibrated dot rims and shadows
   const themeStyles = {
@@ -177,13 +187,10 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
 
   const dotSize = sizeConfig.dotRadius * 2;
 
-  return (
+  return __wrapSize(
     <div
       className={`relative inline-flex items-center justify-center select-none ${className}`}
-      style={{
-        width: sizeConfig.wrapperW,
-        height: sizeConfig.wrapperH,
-      }}
+      style={{ minHeight: sizeConfig.wrapperH }}
       onMouseEnter={() => {
         if (stateMode === "interactive") setIsHovered(true);
       }}
@@ -194,17 +201,18 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
         }
       }}
     >
-      {/* 1. Recessed Slot / Tray (Frame 257 - 75:1202 & 75:1207) */}
+      {/* 1. Recessed Slot / Tray (Frame 257 - 75:1202 & 75:1207) — tracks the cap width */}
       <motion.div
         animate={{
           opacity: isTilted ? 1 : 0,
         }}
         transition={{ duration: 0.2 }}
-        className={`absolute pointer-events-none ${sizeConfig.slotW} ${sizeConfig.slotH} ${sizeConfig.radius} ${themeStyles.slotBg} ${themeStyles.slotShadow}`}
+        className={`absolute pointer-events-none ${sizeConfig.radius} ${themeStyles.slotBg} ${themeStyles.slotShadow}`}
         style={{
+          top: 3,
           bottom: 2,
-          left: "50%",
-          transform: "translateX(-50%)",
+          left: 3,
+          right: 3,
         }}
         aria-hidden="true"
       />

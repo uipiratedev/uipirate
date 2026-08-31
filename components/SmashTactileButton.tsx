@@ -11,7 +11,7 @@ export interface SmashTactileButtonProps {
   /** Visual variant (default: "figma" matching Figma Node 17:1480) */
   variant?: SmashButtonVariant;
   /** Size scale (default: "md") */
-  size?: "sm" | "md" | "lg" | "hero";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
   /** Optional click handler */
   onClick?: () => void;
   /** Additional CSS class names */
@@ -81,6 +81,16 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   const [isPressed, setIsPressed] = useState(false);
 
   // Scaled dimensions with uniform, perfectly even padding where Layer 3.5 evenly contains Layer 4
+  // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
+  const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
+  const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
+  const __wrapSize = (node: React.ReactElement): React.ReactElement =>
+    __extraSizeScale === 1 ? node : (
+      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+        {node}
+      </span>
+    );
+
   const sizeConfig = {
     sm: {
       deckW: 460,
@@ -142,7 +152,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       flareOffset: -24,
       liftY: -8,
     },
-  }[size];
+  }[__baseSize];
 
   // Derived cradle dimensions: core dimensions + 2 * even cradle padding
   const cradleW = sizeConfig.coreW + sizeConfig.cradlePad * 2;
@@ -219,7 +229,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   const W = sizeConfig.coreW;
   const H = sizeConfig.coreH;
 
-  return (
+  return __wrapSize(
     <div className={`relative inline-flex items-center justify-center select-none ${className}`}>
       {/* ─────────────────────────────────────────────────────────────
           LAYER 2: 100% Transparent Crystal Glass Deck (Frame 280 - 17:1481)

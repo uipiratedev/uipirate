@@ -8,14 +8,26 @@ import {
   FrostedGelTheme,
   FrostedGelSize,
   FrostedGelStateMode,
+  FrostedGelIcon,
   FROSTED_GEL_THEMES,
 } from "@/components/FrostedGelDownloadButton";
+
+const FROSTED_GEL_ICON_OPTIONS: { value: FrostedGelIcon; label: string }[] = [
+  { value: "cloud-download", label: "Cloud Download" },
+  { value: "download", label: "Download" },
+  { value: "arrow-down", label: "Arrow Down" },
+  { value: "upload", label: "Upload" },
+  { value: "folder", label: "Folder" },
+  { value: "package", label: "Package" },
+  { value: "save", label: "Save" },
+];
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
 export default function FrostedGelDownloadScreen() {
   const [theme, setTheme] = useState<FrostedGelTheme>("figma-blue");
   const [size, setSize] = useState<FrostedGelSize>("md");
+  const [icon, setIcon] = useState<FrostedGelIcon>("cloud-download");
   const [stateMode, setStateMode] = useState<FrostedGelStateMode>("interactive");
   const [labelText, setLabelText] = useState("Download now");
   const [showCables, setShowCables] = useState(true);
@@ -23,7 +35,7 @@ export default function FrostedGelDownloadScreen() {
   const [lastAction, setLastAction] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css" | "framer">("component");
-  const [stageBg, setStageBg] = useState<"light" | "diagonal-grid" | "dark">("diagonal-grid");
+  const [stageBg, setStageBg] = useState<"light" | "diagonal-grid" | "dark">("light");
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
@@ -52,7 +64,7 @@ export type FrostedGelTheme =
   | "titanium-gold";
 
 export type FrostedGelStateMode = "interactive" | "standerd" | "hover";
-export type FrostedGelSize = "sm" | "md" | "lg";
+export type FrostedGelSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface FrostedGelButtonProps {
   label?: string;
@@ -153,10 +165,11 @@ export default function Example() {
         label="${labelText}"
         theme="${theme}"
         size="${size}"
+        icon="${icon}"
         stateMode="${stateMode}"
         showCables={${showCables}}
         onDownloadClick={() => console.log("Download clicked!")}
-        onIconClick={() => console.log("Cloud icon clicked!")}
+        onIconClick={() => console.log("Icon clicked!")}
       />
     </div>
   );
@@ -244,7 +257,13 @@ export default function Example() {
         <div className="flex flex-col gap-8 items-stretch">
           {/* Main Visual Stage */}
           <div className="space-y-4">
-            <div className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0F1116] min-h-[380px] flex flex-col items-center justify-center p-8">
+            <div
+              className={`relative rounded-3xl border overflow-hidden shadow-2xl min-h-[380px] flex flex-col items-center justify-center p-8 transition-colors duration-300 ${
+                stageBg === "light"
+                  ? "bg-gradient-to-b from-white to-[#E7ECF1] border-black/10"
+                  : "bg-[#0F1116] border-white/10"
+              }`}
+            >
               {/* Grid Canvas Texture */}
               {stageBg === "diagonal-grid" && (
                 <div
@@ -263,6 +282,7 @@ export default function Example() {
                   label={labelText}
                   theme={theme}
                   size={size}
+                  icon={icon}
                   stateMode={stateMode}
                   showCables={showCables}
                   onDownloadClick={() => {
@@ -276,35 +296,48 @@ export default function Example() {
                 />
               </div>
 
-              {/* Stage Background Switcher */}
-              <div className="absolute bottom-4 left-6 flex items-center gap-2 text-xs text-white/50 font-mono">
-                <span>Canvas:</span>
-                <button
-                  type="button"
-                  onClick={() => setStageBg("diagonal-grid")}
-                  className={`px-2 py-1 rounded ${
-                    stageBg === "diagonal-grid"
-                      ? "bg-white/20 text-white font-bold"
-                      : "hover:text-white"
-                  }`}
-                >
-                  Grid
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setStageBg("dark")}
-                  className={`px-2 py-1 rounded ${
-                    stageBg === "dark"
-                      ? "bg-white/20 text-white font-bold"
-                      : "hover:text-white"
-                  }`}
-                >
-                  Dark
-                </button>
+              {/* Canvas Mode Switcher — independent of the page Light/Dark theme */}
+              <div
+                className={`absolute bottom-4 left-6 flex items-center gap-1.5 text-xs font-mono ${
+                  stageBg === "light" ? "text-gray-500" : "text-white/50"
+                }`}
+              >
+                <span className="mr-0.5">Canvas:</span>
+                {(
+                  [
+                    { value: "light", label: "Light" },
+                    { value: "diagonal-grid", label: "Grid" },
+                    { value: "dark", label: "Dark" },
+                  ] as const
+                ).map((mode) => {
+                  const active = stageBg === mode.value;
+                  return (
+                    <button
+                      key={mode.value}
+                      type="button"
+                      onClick={() => setStageBg(mode.value)}
+                      className={`px-2 py-1 rounded transition-colors ${
+                        active
+                          ? stageBg === "light"
+                            ? "bg-black/10 text-gray-900 font-bold"
+                            : "bg-white/20 text-white font-bold"
+                          : stageBg === "light"
+                          ? "hover:text-gray-900"
+                          : "hover:text-white"
+                      }`}
+                    >
+                      {mode.label}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Status readout */}
-              <div className="absolute bottom-4 right-6 text-xs text-white/40 font-mono">
+              <div
+                className={`absolute bottom-4 right-6 text-xs font-mono ${
+                  stageBg === "light" ? "text-gray-400" : "text-white/40"
+                }`}
+              >
                 {clickCount > 0
                   ? `Triggered: ${lastAction} (${clickCount}x)`
                   : "Hover or click pill / cloud icon"}
@@ -318,7 +351,7 @@ export default function Example() {
               Customizer
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
             {/* State Mode Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
@@ -360,13 +393,31 @@ export default function Example() {
               </select>
             </div>
 
+            {/* Gel Tile Icon Selector */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                Tile Icon
+              </label>
+              <select
+                value={icon}
+                onChange={(e) => setIcon(e.target.value as FrostedGelIcon)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+              >
+                {FROSTED_GEL_ICON_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value} className="bg-[#10131A] text-white">
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Size Scale Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                 Scale Size
               </label>
               <div className="flex items-center gap-2">
-                {(["sm", "md", "lg"] as FrostedGelSize[]).map((s) => (
+                {(["xs", "sm", "md", "lg", "xl"] as FrostedGelSize[]).map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -669,9 +720,15 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Physical scaling multiplier</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-blue-400 font-semibold">icon</td>
+                    <td className="py-3 px-6 text-blue-300">FrostedGelIcon</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;cloud-download&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Icon rendered in the frosted gel tile (cloud-download, download, arrow-down, upload, folder, package, save)</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-blue-400 font-semibold">onDownloadClick</td>

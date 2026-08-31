@@ -42,7 +42,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export type LedMatrixTheme = "uipirate" | "monochrome" | "emerald" | "cyan" | "amber" | "crimson";
-export type LedMatrixSize = "sm" | "md" | "lg";
+export type LedMatrixSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface LedMatrixChevronButtonProps {
   label?: string;
@@ -208,7 +208,7 @@ export default function Example() {
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
               <div className="flex gap-1">
-                {(["sm", "md", "lg"] as LedMatrixSize[]).map((s) => (
+                {(["xs", "sm", "md", "lg", "xl"] as LedMatrixSize[]).map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -461,7 +461,7 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-emerald-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
                   </tr>

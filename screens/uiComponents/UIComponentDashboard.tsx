@@ -29,6 +29,49 @@ import { getComponentLabScreen } from "./componentScreens";
 export { ALL_DASHBOARD_COMPONENTS };
 export type { ComponentCategory, PropRow, ComponentDetail, PresetVariant };
 
+/**
+ * Scoped light-theme layer for the embedded studio screens.
+ *
+ * The button studios are authored dark-only with ~30 hard-coded hex surfaces.
+ * Rather than restyle every element in 13 files, this remaps those exact dark
+ * chrome surfaces + the shared white/gray text and border utilities to light
+ * values — but ONLY inside `.lab-embed-light` (added by the dashboard when the
+ * page theme is Light and a screen is embedded). It never affects the lab shell
+ * or the standalone /buttons pages.
+ *
+ * Backgrounds are matched by EXACT hex so accent colours (#10B981, #0077FF,
+ * #06B6D4, #FF5B04 …) inside the live button previews keep their real values.
+ */
+const LAB_LIGHT_PAGE_HEXES = [
+  "#07080A", "#07080B", "#07080C", "#07090E", "#070709", "#080706", "#08080A",
+  "#08080C", "#090A0D", "#0a0c10", "#0c0d12", "#0C0D12", "#0d0e12",
+  "#0D0D10", "#0E0E10",
+];
+const LAB_LIGHT_PANEL_HEXES = [
+  "#0B0B0D", "#0D1015", "#0F1116", "#101012", "#101014", "#10131A",
+  "#121214", "#121215", "#12141A", "#141417", "#151518", "#16181F",
+  "#181614", "#1a1c23", "#1B1C20", "#1C1815",
+];
+const hexRule = (hexes: string[], color: string) =>
+  `${hexes.map((h) => `.lab-embed-light [class*="bg-[${h}]" i]`).join(",\n")} {\n  background-color: ${color} !important;\n  background-image: none !important;\n}`;
+const LAB_EMBED_LIGHT_CSS = `
+${hexRule(LAB_LIGHT_PAGE_HEXES, "#f1f3f5")}
+${hexRule(LAB_LIGHT_PANEL_HEXES, "#ffffff")}
+.lab-embed-light [class*="bg-black/"] { background-color: rgba(15, 23, 42, 0.05) !important; }
+.lab-embed-light [class*="bg-white/0"],
+.lab-embed-light [class*="bg-white/5"],
+.lab-embed-light [class*="bg-white/10"] { background-color: rgba(15, 23, 42, 0.04) !important; }
+.lab-embed-light .text-white,
+.lab-embed-light [class*="text-gray-1"],
+.lab-embed-light [class*="text-gray-2"],
+.lab-embed-light [class*="text-gray-3"] { color: #1f2933 !important; }
+.lab-embed-light [class*="text-gray-4"],
+.lab-embed-light [class*="text-gray-5"],
+.lab-embed-light [class*="text-white/"] { color: #5b6673 !important; }
+.lab-embed-light [class*="border-white/"] { border-color: rgba(15, 23, 42, 0.12) !important; }
+.lab-embed-light [class*="divide-white/"] > :not([hidden]) ~ :not([hidden]) { border-color: rgba(15, 23, 42, 0.1) !important; }
+`;
+
 // Icons
 const SunIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -104,7 +147,7 @@ export default function UIComponentDashboard({
 
   // ── Playground Dynamic State ──────────────────────────────────────────
   const [customLabel, setCustomLabel] = useState<string>("");
-  const [customSize, setCustomSize] = useState<"sm" | "md" | "lg">("md");
+  const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
   const [showGrid, setShowGrid] = useState<boolean>(true);
   const [clickCount, setClickCount] = useState<number>(0);
@@ -957,7 +1000,8 @@ export default function Example() {
           >
             {EmbeddedScreen ? (
               /* ── Embedded studio: identical to /buttons/<slug> ─────────── */
-              <div className={`min-h-full ${isLightPage ? "bg-[#F8F9FA]" : "bg-[#0A0A0C]"}`}>
+              <div className={`min-h-full ${isLightPage ? "lab-embed-light bg-[#F4F5F7]" : "bg-[#0A0A0C]"}`}>
+                {isLightPage && <style dangerouslySetInnerHTML={{ __html: LAB_EMBED_LIGHT_CSS }} />}
                 <div className="px-6 sm:px-10 lg:px-12 pt-6">
                   <div className="max-w-5xl mx-auto">{breadcrumbNav}</div>
                 </div>
@@ -1190,7 +1234,7 @@ export default function Example() {
                             Size Scale:
                           </label>
                           <div className="flex items-center gap-1">
-                            {(["sm", "md", "lg"] as const).map((s) => (
+                            {(["xs", "sm", "md", "lg", "xl"] as const).map((s) => (
                               <button
                                 key={s}
                                 onClick={() => setCustomSize(s)}

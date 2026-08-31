@@ -126,7 +126,7 @@ export default function Example() {
     props: [
       { name: "label", type: "string", defaultValue: '"Revive Now"', description: "Text rendered on the isometric faceplate." },
       { name: "theme", type: '"figma" | "amber" | "cyan" | "violet" | "uipirate" | "gold-luxury" | "emerald" | "crimson"', defaultValue: '"figma"', description: "Color theme for the isometric bevel extrusion." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Controls scale matrix factor." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls scale matrix factor." },
       { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Action callback on 3D button press." },
     ],
     variantsList: [
@@ -384,7 +384,7 @@ export default function Example() {
     props: [
       { name: "label", type: "string", defaultValue: '"Download now"', description: "Text label displayed inside the elevated ceramic pill." },
       { name: "theme", type: '"figma-blue" | "cyber-violet" | "emerald-matrix" | "magma-orange" | "dark-obsidian" | "titanium-gold"', defaultValue: '"figma-blue"', description: "Color palette theme for the frosted gel tile and underglow." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Controls dimensions and padding scale." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls dimensions and padding scale." },
       { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Triggered on clicking the gel download button." },
     ],
     variantsList: [
@@ -506,7 +506,7 @@ export default function Example() {
       { name: "label", type: "string", defaultValue: '"Book A Call"', description: "Text displayed on the elevated button face." },
       { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
       { name: "theme", type: '"figma" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"', defaultValue: '"figma"', description: "Color theme for the underglow beam and reflection rim." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Size dimensions of the pill." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions of the pill." },
     ],
     variantsList: [
       {
@@ -623,7 +623,7 @@ export default function Example() {
 }`,
     props: [
       { name: "theme", type: '"monochrome" | "uipirate" | "emerald" | "cyan" | "amber" | "crimson"', defaultValue: '"monochrome"', description: "Phosphor color for the LED dot grid." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Controls pixel scale and chassis padding." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls pixel scale and chassis padding." },
       { name: "onTrigger", type: "() => void", defaultValue: "undefined", description: "Fired when the chevron sequence reaches climax." },
     ],
     variantsList: [
@@ -740,7 +740,7 @@ export default function Example() {
 }`,
     props: [
       { name: "theme", type: '"silver" | "dark" | "obsidian"', defaultValue: '"silver"', description: "Metallic finish for the capsule track." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Width and height scaling dimensions." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Width and height scaling dimensions." },
       { name: "onComplete", type: "() => void", defaultValue: "undefined", description: "Called when swipe reaches 100% threshold." },
     ],
   },
@@ -800,7 +800,7 @@ export default function Example() {
     props: [
       { name: "label", type: "string", defaultValue: '"Shop ties"', description: "Artisanal CTA label." },
       { name: "theme", type: '"heritage" | "uipirate" | "obsidian" | "emerald" | "ruby" | "silver"', defaultValue: '"heritage"', description: "Leather color palette." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Size dimensions." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions." },
     ],
     variantsList: [
       {
@@ -929,7 +929,7 @@ export default function Example() {
       { name: "label", type: "string", defaultValue: '"Learn more"', description: "Primary button call-to-action text displayed on the cap." },
       { name: "variant", type: '"pill" | "squircle"', defaultValue: '"pill"', description: "Physical rounded contour geometry (Node 14:642 vs 14:669)." },
       { name: "theme", type: '"default" | "uipirate" | "dark" | "orange" | "cyberpunk" | "minimal"', defaultValue: '"default"', description: "Color palette and clay surface lighting theme preset." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Controls button padding, font scale, and indicator dimensions." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls button padding, font scale, and indicator dimensions." },
       { name: "neonPreset", type: '"emerald" | "uipirate" | "cyan" | "magenta" | "amber" | "violet" | "crimson"', defaultValue: '"emerald"', description: "Neon glow preset for glowing indicator arrow circle." },
       { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Interactive click callback event handler." },
     ],
@@ -1396,7 +1396,7 @@ export default function Example() {
 }`,
     props: [
       { name: "variant", type: '"gradient" | "cyan" | "solid"', defaultValue: '"gradient"', description: "Visual style variant." },
-      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Padding scale." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Padding scale." },
     ],
   },
   {

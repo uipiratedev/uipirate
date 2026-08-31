@@ -14,7 +14,7 @@ export type ElevatedUnderglowTheme =
   | "dark";
 
 export type ElevatedUnderglowStateMode = "interactive" | "standerd" | "hover";
-export type ElevatedUnderglowSize = "sm" | "md" | "lg";
+export type ElevatedUnderglowSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type ElevatedUnderglowIconType =
   | "phone"
   | "calendar"
@@ -323,6 +323,16 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
     stateMode === "hover" ? true : stateMode === "standerd" ? false : isHovered;
 
   // Scaled dimensions matching exact Figma 184x56px pill chassis
+  // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
+  const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
+  const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
+  const __wrapSize = (node: React.ReactElement): React.ReactElement =>
+    __extraSizeScale === 1 ? node : (
+      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+        {node}
+      </span>
+    );
+
   const sizeConfig = {
     sm: {
       width: 154,
@@ -354,7 +364,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
       iconSize: "size-[18px]",
       liftOffset: liftAmount * 1.2,
     },
-  }[size];
+  }[__baseSize];
 
   // Resting shadow stack (1:1 from Figma 55:9)
   const restingShadowStack = `0px 2px 0px 0px ${t.capRim}, 0px 87px 24px 0px rgba(0,0,0,0), 0px 55px 22px 0px rgba(0,0,0,0.01), 0px 31px 19px 0px rgba(0,0,0,0.05), 0px 14px 14px 0px rgba(0,0,0,0.09), 0px 3px 8px 0px rgba(0,0,0,0.1)`;
@@ -384,7 +394,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
     }
   };
 
-  return (
+  return __wrapSize(
     <div
       className={`relative inline-flex items-center justify-center select-none ${className}`}
       style={{
