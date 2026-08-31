@@ -73,7 +73,7 @@ const Apps4Sale = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white pt-6 pb-20 px-4 md:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-white hero-page-container px-4 md:px-8">
       {/* Grid Background */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.05]"

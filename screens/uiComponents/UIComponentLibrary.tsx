@@ -19,8 +19,16 @@ import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
+import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
+import { GlossyGelButton } from "@/components/GlossyGelButton";
+import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
+import {
+  HERO_BADGE_PRESET,
+  HERO_BADGE_CLASSNAME,
+  HERO_BADGE_ANIMATION_STYLE,
+} from "@/config/glassSurfacePresets";
 
 export type ComponentCategory = "all" | "buttons" | "badges" | "surfaces" | "controls";
 
@@ -88,6 +96,45 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     detailUrl: "/componentlab/elevated-underglow-cta",
     features: ["13px Spring lift", "Electric blue 3D underlayer", "Interactive states", "Phone call icon"],
     codeSnippet: `<ElevatedUnderglowCTA\n  label="Book A Call"\n  icon="phone"\n  theme="figma"\n  size="md"\n/>`,
+  },
+  {
+    id: "tactile-neumorphic-switch",
+    name: "Tactile Neumorphic Dual-Dome Switch",
+    category: "controls",
+    categoryLabel: "Controls & Toggles",
+    badge: "1:1 Figma",
+    badgeVariant: "gradient",
+    description:
+      "Photorealistic 3D neumorphic toggle switch directly from Figma nodes 1:7 & 1:8. Features outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
+    detailUrl: "/componentlab/tactile-neumorphic-switch",
+    features: ["1:1 Figma master fidelity", "Dual-dome tactile thumb", "Illuminated emerald trench", "Outer recessed bevel cavity"],
+    codeSnippet: `<TactileNeumorphicSwitch\n  theme="figma-emerald"\n  size="md"\n  defaultChecked={true}\n/>`,
+  },
+  {
+    id: "glossy-gel-button",
+    name: "Glossy Gel Glass Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Liquid Glass",
+    badgeVariant: "cyan",
+    description:
+      "High-gloss skeuomorphic gel glass CTA button directly from Figma node 2:2. Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
+    detailUrl: "/componentlab/glossy-gel-button",
+    features: ["1:1 Figma fidelity", "4-layer optical drop & inner shadow", "Curved blurred top specular capsule", "Interactive spring depression"],
+    codeSnippet: `<GlossyGelButton\n  theme="emerald-gel"\n  size="md"\n>\n  Get Started\n</GlossyGelButton>`,
+  },
+  {
+    id: "tactile-neumorphic-toggle",
+    name: "Tactile Neumorphic Pill Toggle",
+    category: "controls",
+    categoryLabel: "Controls & Toggles",
+    badge: "1:1 Figma",
+    badgeVariant: "solid",
+    description:
+      "Ultra-tactile debossed neumorphic pill switch directly from Figma nodes 1:7 & 1:8. Features 5-layer inset shadow groove, metallic sliding thumb with specular bevels, and etched status glyphs.",
+    detailUrl: "/componentlab/tactile-neumorphic-toggle",
+    features: ["1:1 Figma fidelity", "5-layer optical inset groove", "Brushed metallic knob", "Spring motion physics"],
+    codeSnippet: `<TactileNeumorphicToggle\n  theme="figma-silver"\n  size="md"\n  defaultChecked={true}\n/>`,
   },
   {
     id: "led-matrix-chevron",
@@ -233,20 +280,7 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     codeSnippet: `<GlassSurface\n  width="100%"\n  height="auto"\n  borderRadius={24}\n  blur={20}\n  className="p-6"\n>\n  {children}\n</GlassSurface>`,
   },
   {
-    id: "hash-gradient-avatar",
-    name: "Hash Dynamic Gradient Avatar",
-    category: "badges",
-    categoryLabel: "Badges & Indicators",
-    badge: "Algorithmic",
-    badgeVariant: "cyan",
-    description:
-      "Deterministic gradient avatar component that computes consistent, harmonious vibrant palettes based on username strings with fallback typography.",
-    detailUrl: "/componentlab/tactile-pill-button",
-    features: ["Deterministic hash color", "Image + fallback initial", "Customizable size scale", "Subtle border ring"],
-    codeSnippet: `<Avatar\n  name="Vishal Anand"\n  size={48}\n/>`,
-  },
-  {
-    id: "pulse-cta-button",
+    id: "magnetic-pulse-cta",
     name: "Magnetic Pulsing CTA",
     category: "buttons",
     categoryLabel: "Buttons & CTAs",
@@ -280,8 +314,8 @@ export default function UIComponentLibrary() {
       badge: "Master Collection",
       badgeColor: "#FF5B04",
       description:
-        "High-conversion buttons engineered with 3D tactile elevation, optical underglow flares, skeuomorphic leather, and phosphor LED matrices.",
-      tags: ["3D Tactile Lift", "Glassmorphism", "LED Dot Matrix", "Skeuomorphic", "Isometric 30°"],
+        "High-conversion buttons engineered with 3D tactile elevation, optical underglow flares, skeuomorphic leather, liquid gel glass, and phosphor LED matrices.",
+      tags: ["3D Tactile Lift", "Liquid Gel Glass", "LED Dot Matrix", "Skeuomorphic", "Isometric 30°"],
       href: "/componentlab/tactile-pill-button",
       featuredPreview: (
         <div className="scale-90 transform-gpu py-2 flex items-center justify-center">
@@ -291,24 +325,24 @@ export default function UIComponentLibrary() {
     },
     {
       id: "controls",
-      title: "Interactive Controls & Sliders",
-      count: "3 Components",
-      badge: "Micro-Interactions",
-      badgeColor: "#00E5BE",
+      title: "Interactive Controls & Toggles",
+      count: "4 Components",
+      badge: "1:1 Figma Toggles",
+      badgeColor: "#00B894",
       description:
-        "Gesture-driven interactive toggles, 90° radial arc corner switches, swipe-to-unlock capsule sliders, and tactile smash buttons.",
-      tags: ["Radial Offset Path", "Gesture Drag", "Swipe to Unlock", "Spring Snapping"],
-      href: "/componentlab/slide-grow-button",
+        "Photorealistic 3D neumorphic switches, 90° radial arc corner toggles, swipe-to-unlock capsule sliders, and tactile smash buttons.",
+      tags: ["Dual-Dome 3D", "5-Layer Inset Groove", "Gesture Drag", "Spring Snapping"],
+      href: "/componentlab/tactile-neumorphic-switch",
       featuredPreview: (
-        <div className="scale-85 transform-gpu py-2 flex items-center justify-center">
-          <SlideGrowButton theme="silver" size="sm" />
+        <div className="scale-90 transform-gpu py-2 flex items-center justify-center">
+          <TactileNeumorphicSwitch theme="figma-emerald" size="sm" defaultChecked={true} />
         </div>
       ),
     },
     {
       id: "badges",
       title: "Badges, Status & Beacons",
-      count: "3 Components",
+      count: "2 Components",
       badge: "Design Tokens",
       badgeColor: "#8B5CF6",
       description:
@@ -320,8 +354,8 @@ export default function UIComponentLibrary() {
           <GlassBadge variant="gradient" size="md">
             PROPRIETARY COMPONENT
           </GlassBadge>
-          <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Active Status Beacon</span>
           </div>
         </div>
@@ -330,7 +364,7 @@ export default function UIComponentLibrary() {
     {
       id: "surfaces",
       title: "Surfaces & Glass Containers",
-      count: "2 Components",
+      count: "1 Component",
       badge: "Atmospheric Depth",
       badgeColor: "#3B82F6",
       description:
@@ -338,9 +372,9 @@ export default function UIComponentLibrary() {
       tags: ["Gaussian Blur", "Specular Sheen", "Hardware Accel", "Adaptive Contrast"],
       href: "/componentlab/glass-surface",
       featuredPreview: (
-        <div className="w-full max-w-[220px] p-4 rounded-2xl bg-white/[0.04] border border-white/10 shadow-xl backdrop-blur-md text-center">
-          <div className="text-[11px] font-mono text-cyan-300 uppercase tracking-wider">Glass Surface</div>
-          <div className="text-xs text-gray-400 mt-1 font-sans">Specular Sheen &amp; Blur</div>
+        <div className="w-full max-w-[220px] p-4 rounded-2xl bg-white/80 border border-gray-200/90 shadow-md backdrop-blur-md text-center">
+          <div className="text-[11px] font-mono text-blue-600 font-bold uppercase tracking-wider">Glass Surface</div>
+          <div className="text-xs text-gray-500 mt-1 font-sans">Specular Sheen &amp; Blur</div>
         </div>
       ),
     },
@@ -366,56 +400,86 @@ export default function UIComponentLibrary() {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="relative overflow-hidden min-h-screen bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 sm:pt-32 pb-20">
-        {/* Ambient Lighting Gradients */}
+      <div className="relative min-h-screen bg-[#FAFAFA] text-gray-900 selection:bg-[#FF5B04] selection:text-white hero-page-container">
+        {/* Subtle Grid Background Pattern (matching Landing Page) */}
+        <div
+          className="absolute pointer-events-none inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+          }}
+        />
+
+        {/* Layered gentle mist & ambient gradient lighting */}
+        <div
+          className="absolute pointer-events-none inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(to top, rgba(250, 250, 250, 1), transparent 15%),
+              linear-gradient(to bottom, rgba(250, 250, 250, 0.7) 0%, transparent 30%)
+            `,
+          }}
+        />
+
+        {/* Ambient Warm Flares */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-[#FF5B04]/12 rounded-full blur-[160px]" />
-          <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/10 rounded-full blur-[140px]" />
-          <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-600/10 rounded-full blur-[160px]" />
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[550px] bg-[#FF5B04]/6 rounded-full blur-[160px]" />
+          <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/6 rounded-full blur-[140px]" />
+          <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-500/5 rounded-full blur-[160px]" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-20">
           {/* Top Hero Section */}
-          <div className="text-center space-y-6 max-w-4xl mx-auto pt-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-              <span>UI Pirate Component Ecosystem</span>
-              <span className="text-gray-500">•</span>
-              <span className="text-[#00E5BE]">Production-Ready React &amp; Tailwind</span>
+          <div className="flex flex-col items-center justify-center text-center space-y-3 max-w-4xl mx-auto pt-6">
+            <GlassSurface
+              {...HERO_BADGE_PRESET}
+              className={HERO_BADGE_CLASSNAME}
+              style={HERO_BADGE_ANIMATION_STYLE}
+            >
+              <div className="badge-text relative z-10 max-md:text-xs uppercase font-semibold tracking-wider">
+                COMPONENT ECOSYSTEM
+              </div>
+            </GlassSurface>
+
+            <div className="relative z-10 w-full">
+              <h1 className="hero-header">
+                <span className="text-black">Design System &amp; </span>
+                <span className="text-[#FF5B04]">Component Library</span>
+              </h1>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
-              Design System &amp;{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] via-orange-400 to-[#00E5BE]">
-                Component Library
-              </span>
-            </h1>
-
-            <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+            <p className="sub-header text-[#11181C] mx-auto">
               Browse our categorized collection of handcrafted React, Tailwind CSS, and Framer Motion components. Engineered with 3D tactile physics, glassmorphism, and pixel precision.
             </p>
 
             {/* Quick Metrics Bar */}
-            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-12 pt-4">
-              <div className="flex items-center gap-2.5">
-                <span className="text-2xl sm:text-3xl font-extrabold text-white font-jakarta">13+</span>
-                <span className="text-xs text-gray-400 font-mono text-left leading-tight">
-                  Buttons &amp;<br />CTAs
-                </span>
+            <div className="flex flex-wrap justify-center gap-8 max-md:gap-4 mt-6 autoShow">
+              <div className="text-center">
+                <p className="text-2xl max-md:text-lg font-black font-jetbrains-mono text-gray-900">
+                  18+
+                </p>
+                <p className="text-xs text-gray-500 font-jetbrains-mono uppercase">
+                  Master Components
+                </p>
               </div>
-              <div className="h-8 w-px bg-white/10" />
-              <div className="flex items-center gap-2.5">
-                <span className="text-2xl sm:text-3xl font-extrabold text-[#00E5BE] font-jakarta">100%</span>
-                <span className="text-xs text-gray-400 font-mono text-left leading-tight">
-                  Copy-Paste<br />Source Code
-                </span>
+              <div className="text-center">
+                <p className="text-2xl max-md:text-lg font-black font-jetbrains-mono text-[#FF5B04]">
+                  100%
+                </p>
+                <p className="text-xs text-gray-500 font-jetbrains-mono uppercase">
+                  Copy-Paste Code
+                </p>
               </div>
-              <div className="h-8 w-px bg-white/10" />
-              <div className="flex items-center gap-2.5">
-                <span className="text-2xl sm:text-3xl font-extrabold text-[#FF5B04] font-jakarta">0</span>
-                <span className="text-xs text-gray-400 font-mono text-left leading-tight">
-                  Design<br />Compromises
-                </span>
+              <div className="text-center">
+                <p className="text-2xl max-md:text-lg font-black font-jetbrains-mono text-gray-900">
+                  0
+                </p>
+                <p className="text-xs text-gray-500 font-jetbrains-mono uppercase">
+                  Compromises
+                </p>
               </div>
             </div>
           </div>
@@ -426,19 +490,19 @@ export default function UIComponentLibrary() {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-jakarta">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-950 tracking-tight font-jakarta">
                   Explore Component Categories
                 </h2>
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-gray-600 mt-1">
                   Select a category to view specialized live studios, props tables, and drop-in code.
                 </p>
               </div>
 
               <Link
                 href="/componentlab/tactile-pill-button"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 text-xs font-semibold text-orange-400 transition-colors self-start sm:self-auto"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-xs font-semibold text-[#FF5B04] transition-colors self-start sm:self-auto shadow-sm"
               >
-                <span>View All 13 Buttons</span>
+                <span>View All 18 Components</span>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -449,11 +513,11 @@ export default function UIComponentLibrary() {
               {CATEGORY_CARDS.map((cat) => (
                 <div
                   key={cat.id}
-                  className="group relative flex flex-col justify-between p-8 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden"
+                  className="group relative flex flex-col justify-between p-8 rounded-3xl bg-white border border-gray-200/90 hover:border-orange-500/40 transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] overflow-hidden"
                 >
                   {/* Background ambient accent */}
                   <div
-                    className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[90px] opacity-20 pointer-events-none transition-opacity duration-300 group-hover:opacity-40"
+                    className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-[90px] opacity-10 pointer-events-none transition-opacity duration-300 group-hover:opacity-25"
                     style={{ backgroundColor: cat.badgeColor }}
                   />
 
@@ -464,30 +528,38 @@ export default function UIComponentLibrary() {
                           className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider"
                           style={{
                             color: cat.badgeColor,
-                            backgroundColor: `${cat.badgeColor}15`,
-                            borderColor: `${cat.badgeColor}35`,
+                            backgroundColor: `${cat.badgeColor}12`,
+                            borderColor: `${cat.badgeColor}30`,
                           }}
                         >
                           {cat.badge}
                         </span>
-                        <span className="text-xs font-mono text-gray-400">• {cat.count}</span>
+                        <span className="text-xs font-mono text-gray-500">• {cat.count}</span>
                       </div>
 
-                      <span className="text-xs font-mono text-gray-500">Production Ready</span>
+                      <span className="text-xs font-mono text-gray-400 font-medium">Production Ready</span>
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-bold text-white group-hover:text-white transition-colors font-jakarta">
+                      <h3 className="text-2xl font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta">
                         {cat.title}
                       </h3>
-                      <p className="text-sm text-gray-400 mt-2 leading-relaxed">
+                      <p className="text-sm text-gray-600 mt-2 leading-relaxed">
                         {cat.description}
                       </p>
                     </div>
 
                     {/* Live Visual Feature Showcase */}
-                    <div className="p-6 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center min-h-[130px] overflow-hidden">
-                      {cat.featuredPreview}
+                    <div className="p-6 rounded-2xl bg-gradient-to-b from-[#F5F6F8] to-[#ECEEF2] border border-gray-200/90 flex items-center justify-center min-h-[140px] overflow-hidden shadow-inner relative">
+                      {/* Subtle dot pattern for preview clarity */}
+                      <div
+                        className="absolute inset-0 opacity-40 pointer-events-none"
+                        style={{
+                          backgroundImage: "radial-gradient(#94A3B8 1px, transparent 1px)",
+                          backgroundSize: "16px 16px",
+                        }}
+                      />
+                      <div className="relative z-10">{cat.featuredPreview}</div>
                     </div>
 
                     {/* Tags */}
@@ -495,7 +567,7 @@ export default function UIComponentLibrary() {
                       {cat.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/5"
+                          className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-gray-100 text-gray-700 border border-gray-200/70"
                         >
                           {tag}
                         </span>
@@ -503,10 +575,10 @@ export default function UIComponentLibrary() {
                     </div>
                   </div>
 
-                  <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between relative z-10">
+                  <div className="pt-6 mt-6 border-t border-gray-100 flex items-center justify-between relative z-10">
                     <Link
                       href={cat.href}
-                      className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:text-[#FF5B04] transition-colors"
+                      className="inline-flex items-center gap-2 text-sm font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors"
                     >
                       <span>Explore {cat.title}</span>
                       <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -514,7 +586,7 @@ export default function UIComponentLibrary() {
                       </svg>
                     </Link>
 
-                    <span className="text-xs font-mono text-gray-500">React + Tailwind</span>
+                    <span className="text-xs font-mono text-gray-400">React + Tailwind</span>
                   </div>
                 </div>
               ))}
@@ -524,24 +596,24 @@ export default function UIComponentLibrary() {
           {/* ─────────────────────────────────────────────────────────────
               QUICK INSTALLATION & SETUP GUIDE
              ───────────────────────────────────────────────────────────── */}
-          <div className="bg-[#121216] border border-white/10 rounded-3xl p-8 space-y-6 shadow-2xl">
+          <div className="bg-white border border-gray-200/90 rounded-3xl p-8 space-y-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl font-bold text-white font-jakarta">Peer Dependencies &amp; Setup</h2>
-                <p className="text-xs sm:text-sm text-gray-400 mt-1">
+                <h2 className="text-xl font-bold text-gray-900 font-jakarta">Peer Dependencies &amp; Setup</h2>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1">
                   Install peer dependencies to run any component in your Next.js or React application:
                 </p>
               </div>
 
               <button
                 onClick={handleCopyInstall}
-                className="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-colors cursor-pointer self-start md:self-auto"
+                className="px-4 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold transition-colors cursor-pointer self-start md:self-auto shadow-sm"
               >
                 {copiedInstall ? "✓ Command Copied!" : "Copy Install Command"}
               </button>
             </div>
 
-            <div className="bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400 overflow-x-auto">
+            <div className="bg-gray-950 border border-gray-800 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400 overflow-x-auto shadow-inner">
               <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
             </div>
           </div>
@@ -552,16 +624,16 @@ export default function UIComponentLibrary() {
           <div id="browser" className="space-y-8 scroll-mt-28">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-white font-jakarta">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-950 font-jakarta">
                   Component Catalog
                 </h2>
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-gray-600 mt-1">
                   Explore every individual component, inspect props, and copy drop-in snippets.
                 </p>
               </div>
 
               {/* Category Filter Tabs */}
-              <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-white/5 border border-white/10 text-xs font-mono">
+              <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl bg-gray-100 border border-gray-200 text-xs font-mono">
                 {[
                   { id: "all", label: "All Items" },
                   { id: "buttons", label: "Buttons & CTAs" },
@@ -574,8 +646,8 @@ export default function UIComponentLibrary() {
                     onClick={() => setSelectedCategory(tab.id as ComponentCategory)}
                     className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                       selectedCategory === tab.id
-                        ? "bg-[#FF5B04] text-white font-bold shadow-md shadow-[#FF5B04]/30"
-                        : "text-gray-400 hover:text-white"
+                        ? "bg-[#FF5B04] text-white font-bold shadow-md shadow-[#FF5B04]/25"
+                        : "text-gray-600 hover:text-gray-950 hover:bg-white/60"
                     }`}
                   >
                     {tab.label}
@@ -588,13 +660,13 @@ export default function UIComponentLibrary() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search components by name, feature, or keyword (e.g. 'isometric', 'matrix', 'glass')..."
+                placeholder="Search components by name, feature, or keyword (e.g. 'isometric', 'matrix', 'glass', 'neumorphic')..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#121216] border border-white/10 rounded-2xl px-5 py-3.5 pl-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5B04] transition-colors shadow-xl"
+                className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-3.5 pl-12 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#FF5B04] focus:ring-2 focus:ring-[#FF5B04]/10 transition-all shadow-sm"
               />
               <svg
-                className="w-5 h-5 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2"
+                className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -608,41 +680,43 @@ export default function UIComponentLibrary() {
               {filteredComponents.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col justify-between p-6 rounded-3xl bg-[#121216] border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl space-y-5"
+                  className="flex flex-col justify-between p-6 rounded-3xl bg-white border border-gray-200 hover:border-orange-500/40 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] space-y-5 group"
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-gray-300 border border-white/10">
+                      <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-gray-100 text-gray-700 border border-gray-200">
                         {item.categoryLabel}
                       </span>
                       {item.badge && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#FF5B04]/10 text-[#FF5B04] border border-[#FF5B04]/20">
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-orange-50 text-[#FF5B04] border border-orange-200 font-semibold">
                           {item.badge}
                         </span>
                       )}
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-bold text-white font-jakarta">{item.name}</h3>
-                      <p className="text-xs text-gray-400 mt-1.5 leading-relaxed line-clamp-2">
+                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#FF5B04] transition-colors font-jakarta">
+                        {item.name}
+                      </h3>
+                      <p className="text-xs text-gray-600 mt-1.5 leading-relaxed line-clamp-2">
                         {item.description}
                       </p>
                     </div>
 
-                    <ul className="space-y-1 text-xs text-gray-300">
+                    <ul className="space-y-1.5 text-xs text-gray-600">
                       {item.features.slice(0, 3).map((f) => (
                         <li key={f} className="flex items-center gap-2">
-                          <span className="text-[#00E5BE] text-xs">✓</span>
-                          <span className="text-gray-300 font-sans">{f}</span>
+                          <span className="text-[#00B894] font-bold text-xs">✓</span>
+                          <span className="text-gray-600 font-sans">{f}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="pt-4 border-t border-white/5 flex items-center justify-between gap-2">
+                  <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-2">
                     <Link
                       href={item.detailUrl}
-                      className="text-xs font-bold text-[#FF5B04] hover:text-orange-300 transition-colors flex items-center gap-1"
+                      className="text-xs font-bold text-[#FF5B04] hover:text-orange-600 transition-colors flex items-center gap-1"
                     >
                       <span>Studio &amp; Code</span>
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -652,7 +726,7 @@ export default function UIComponentLibrary() {
 
                     <button
                       onClick={() => handleCopyCode(item.id, item.codeSnippet)}
-                      className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-mono text-gray-300 hover:text-white transition-colors cursor-pointer"
+                      className="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-mono text-gray-700 hover:text-gray-900 border border-gray-200 transition-colors cursor-pointer"
                     >
                       {copiedId === item.id ? "✓ Copied" : "Copy Snippet"}
                     </button>

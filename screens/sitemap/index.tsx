@@ -68,7 +68,7 @@ const Sitemap = () => {
     <PageWrapper showFloatingButton={false}>
       <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 ">
         {/* Consistent Hero Component */}
-        <div className="flex flex-row items-center justify-center py-6 pt-10 w-full max-md:py-0 max-md:pt-4 relative ">
+        <div className="hero-wrapper">
           {/* Subtle Grid Background Pattern */}
           <div
             className="absolute pointer-events-none -mt-20 "

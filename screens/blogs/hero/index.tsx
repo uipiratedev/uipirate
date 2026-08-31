@@ -9,7 +9,7 @@ interface BlogsHeroProps {
 
 const BlogsHero = ({ searchQuery, onSearchChange }: BlogsHeroProps) => {
   return (
-    <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
+    <div className="hero-wrapper">
       {/* Subtle Grid Background Pattern */}
       <div
         className="absolute pointer-events-none -mt-20 "
