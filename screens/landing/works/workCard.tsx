@@ -12,7 +12,7 @@ const data = [
     subtitle:
       "Enterprise Saas App UI/UX Design on Figma & Development on Angular.js",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
-    url: "https://www.xperiti.com/",
+    url: "/case-studies",
   },
 
   {
@@ -20,7 +20,7 @@ const data = [
     heading1: "AI Trading Platform",
     subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Development",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
-    url: "https://arthalpha.in/",
+    url: "/case-studies",
   },
   {
     heading: "AI LegalTech Saas",
@@ -28,7 +28,7 @@ const data = [
     subtitle:
       "Designed a future-ready AI SaaS platform for lawyers and legal professionals ",
     img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771570379/Image_hzwg0d.svg",
-    url: "https://www.xperiti.com/",
+    url: "/case-studies",
   },
   // {
   //   heading: "Rings & I",
@@ -111,7 +111,6 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
             <LetsTalkButton
               children="View Project"
               href={item.url}
-              target="_blank"
               variant="light"
             />
           </div>

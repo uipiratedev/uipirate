@@ -88,11 +88,6 @@ const LandingMarquee = () => {
       alt: "Rings and I - Jewelry and lifestyle brand logo",
       link: "https://ringsandi.com/",
     },
-    {
-      url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513139/image_2_srxkyz.svg",
-      alt: "Partner company logo",
-      link: "",
-    },
   ];
 
   return (
@@ -124,11 +119,10 @@ const LandingMarquee = () => {
             whileInView="visible"
           >
             <h2 className="heading-center">
-              <span className="text-brand-orange">Trusted by Teams</span>
+              Trusted by <span className="text-brand-orange">40+</span> product teams
               <br />{" "}
               <span className="text-gray-900">
-                Building the Future of SaaS and{" "}
-                <span className="whitespace-nowrap">AI</span>
+                across the USA, UK, Singapore & India
               </span>
             </h2>
           </motion.div>
