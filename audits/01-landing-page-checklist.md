@@ -28,17 +28,15 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 2. SEO METADATA (❌ All items still open — 🔴 Fix now)
-
-All SEO metadata in `app/page.tsx` still references the old "AI-Driven" positioning. The page-level override actively conflicts with the correct `layout.tsx` defaults — highest-priority unfixed item on the page.
+## 2. SEO METADATA (✅ Section complete)
 
 | # | Item | Status | Location |
 |---|------|--------|----------|
-| 2a | **Title tag** — still reads: `UI Pirate — Designing AI-Driven SaaS Products That Convert` | ❌ Not done | `page.tsx` L15 |
-| 2b | **Meta description** — still starts: `We design and ship AI-driven SaaS products...` (234 chars, over limit) | ❌ Not done | `page.tsx` L16–18 |
-| 2c | **OG title** — still reads: `UI Pirate — Designing AI-Driven SaaS Products That Convert` | ❌ Not done | `page.tsx` L24 |
-| 2d | **Twitter title** — still reads: `UI Pirate — AI-Driven SaaS Products That Convert` | ❌ Not done | `page.tsx` L34 |
-| 2e | **Keywords** — still includes `AI-driven SaaS product design`; missing `SaaS design agency`, `product design and development agency` | ❌ Not done | `page.tsx` L19 |
+| 2a | **Title tag** — updated to: `UI Pirate — SaaS Product Design & Development Agency | Ship Faster` | ✅ Done | `page.tsx` |
+| 2b | **Meta description** — updated to: `We design and build SaaS products...` | ✅ Done | `page.tsx` |
+| 2c | **OG title** — updated to: `UI Pirate — SaaS Product Design & Development Agency` | ✅ Done | `page.tsx` |
+| 2d | **Twitter title** — updated to: `UI Pirate | Design & Dev for SaaS Teams That Need to Ship` | ✅ Done | `page.tsx` |
+| 2e | **Keywords** — removed `AI-driven`, added `product design and development agency` | ✅ Done | `page.tsx` |
 
 **Fixes to apply (`app/page.tsx`):**
 
@@ -281,7 +279,6 @@ We typically respond within one business day.
 
 | File | Item |
 |------|------|
-| `app/page.tsx` L15–37 | All metadata: title, meta desc, OG title, OG desc, Twitter title — all still "AI-Driven" |
 | `whoWeAre/index.tsx` L79 | Grammar error "products that ships faster" + "Studio" + "global" — one sentence replacement fixes all |
 | `servicesSection.tsx` L64 | `Saas & AI Development` → `SaaS & AI Development` |
 | `servicesSection.tsx` L152 | `AI Apps, Saas, Websites & More` → `AI Apps, SaaS & Business Websites` |
@@ -313,7 +310,6 @@ We typically respond within one business day.
 | `miniService.tsx` L11 | Replace "world-class" in section heading |
 | `data/testimonials.json` | Remove or reposition Kyle Drucker (YouTuber) testimonial |
 | `data/testimonials.json` | Request expanded P-S-O testimonials from 3 generic reviewers |
-| `app/page.tsx` L19 | Update keywords string — remove `AI-driven`, add `product design and development agency` |
 | `perfectFor/index.tsx` | Replace "FIT CHECK" badge with "WHO IT'S FOR" |
 | `featuredCaseStudy/index.tsx` | Add client industry tag + logo to the featured case study card |
 
