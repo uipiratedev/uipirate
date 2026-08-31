@@ -225,19 +225,19 @@ Current text at **L79** — renders at large animated size, most visible copy er
 
 ---
 
-## 11. PRICING SECTION (❌ All items still open — 🔴–🟡)
+## 11. PRICING SECTION (✅ Section complete)
 
 **File:** `screens/landing/pricing/index.tsx`  
 See `03-pricing-page.md` for full details.
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 11a | Section heading "Pricing That Makes Sense" — replace with outcome-focused heading | ❌ Not done | 🟠 Soon |
-| 11b | Monthly Retainer subtitle — lead with the pain, not the feature | ❌ Not done | 🟠 Soon |
-| 11c | 5-Day Pilot — fix broken sentence "shows you see our execution" | ❌ Not done | 🔴 Fix now |
-| 11d | Scarcity message "Only accepting 2 new clients this month" — make real or replace | ❌ Not done | 🟠 Soon |
-| 11e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ❌ Not done | 🟠 Soon |
-| 11f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ❌ Not done | 🟡 Consider |
+| 11a | Section heading "Pricing That Makes Sense" — replace with outcome-focused heading | ✅ Done | 🟠 Soon |
+| 11b | Monthly Retainer subtitle — lead with the pain, not the feature | ✅ Done | 🟠 Soon |
+| 11c | 5-Day Pilot — fix broken sentence "shows you see our execution" | ✅ Done | 🔴 Fix now |
+| 11d | Scarcity message "Only accepting 2 new clients this month" — make real or replace | ✅ Done | 🟠 Soon |
+| 11e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ✅ Kept as-is (per user request) | 🟠 Soon |
+| 11f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ✅ Done | 🟡 Consider |
 
 ---
 
@@ -319,7 +319,6 @@ We typically respond within one business day.
 
 | File | Item |
 |------|------|
-| `pricing/index.tsx` | "shows you see our execution" — broken sentence |
 
 ### 🟠 Soon — Conversion and positioning
 

@@ -1146,7 +1146,7 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 | 26 | Who We Are | Add primary keyword `product design and development agency` to rewritten text | `whoWeAre/index.tsx` | ✅ Done | ✓ |
 | 27 | PricingPerfectFor | Rewrite audience card descriptions (see v2 Section 3b) | `perfectFor/index.tsx` | 🟠 Soon | — |
 | 28 | PricingPerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" | `perfectFor/index.tsx` | 🟡 Consider | — |
-| 29 | Pricing | Fix remaining pricing section copy issues (see `03-pricing-page.md`) | `pricing/index.tsx` | 🟡 Consider | — |
+| 29 | Pricing | Fix remaining pricing section copy issues (see `03-pricing-page.md`) | `pricing/index.tsx` | ✅ Done | — |
 
 ---
 
