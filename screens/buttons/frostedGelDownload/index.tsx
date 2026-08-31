@@ -21,6 +21,7 @@ const FROSTED_GEL_ICON_OPTIONS: { value: FrostedGelIcon; label: string }[] = [
   { value: "package", label: "Package" },
   { value: "save", label: "Save" },
 ];
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -35,7 +36,6 @@ export default function FrostedGelDownloadScreen() {
   const [lastAction, setLastAction] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css" | "framer">("component");
-  const [stageBg, setStageBg] = useState<"light" | "diagonal-grid" | "dark">("light");
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
@@ -253,126 +253,62 @@ export default function Example() {
             </p>
           </header>
 
-        {/* 2. Interactive Studio Stage */}
-        <div className="flex flex-col gap-8 items-stretch">
-          {/* Main Visual Stage */}
-          <div className="space-y-4">
-            <div
-              className={`relative rounded-3xl border overflow-hidden shadow-2xl min-h-[380px] flex flex-col items-center justify-center p-8 transition-colors duration-300 ${
-                stageBg === "light"
-                  ? "bg-gradient-to-b from-white to-[#E7ECF1] border-black/10"
-                  : "bg-[#0F1116] border-white/10"
-              }`}
-            >
-              {/* Grid Canvas Texture */}
-              {stageBg === "diagonal-grid" && (
-                <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(45deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(-45deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                    backgroundSize: "28px 28px",
-                  }}
-                />
-              )}
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+          <StudioCanvas hint={clickCount > 0 ? `Triggered: ${lastAction} (${clickCount}x)` : "Hover or click pill / cloud icon"}>
+            <FrostedGelDownloadButton
+              label={labelText}
+              theme={theme}
+              size={size}
+              icon={icon}
+              stateMode={stateMode}
+              showCables={showCables}
+              onDownloadClick={() => {
+                setClickCount((c) => c + 1);
+                setLastAction("Downloaded package");
+              }}
+              onIconClick={() => {
+                setClickCount((c) => c + 1);
+                setLastAction("Opened cloud storage");
+              }}
+            />
+          </StudioCanvas>
+        </div>
 
-              {/* Live Interactive Button Component */}
-              <div className="relative z-10 py-6">
-                <FrostedGelDownloadButton
-                  label={labelText}
-                  theme={theme}
-                  size={size}
-                  icon={icon}
-                  stateMode={stateMode}
-                  showCables={showCables}
-                  onDownloadClick={() => {
-                    setClickCount((c) => c + 1);
-                    setLastAction("Downloaded package");
-                  }}
-                  onIconClick={() => {
-                    setClickCount((c) => c + 1);
-                    setLastAction("Opened cloud storage");
-                  }}
-                />
-              </div>
-
-              {/* Canvas Mode Switcher — independent of the page Light/Dark theme */}
-              <div
-                className={`absolute bottom-4 left-6 flex items-center gap-1.5 text-xs font-mono ${
-                  stageBg === "light" ? "text-gray-500" : "text-white/50"
-                }`}
-              >
-                <span className="mr-0.5">Canvas:</span>
-                {(
-                  [
-                    { value: "light", label: "Light" },
-                    { value: "diagonal-grid", label: "Grid" },
-                    { value: "dark", label: "Dark" },
-                  ] as const
-                ).map((mode) => {
-                  const active = stageBg === mode.value;
-                  return (
-                    <button
-                      key={mode.value}
-                      type="button"
-                      onClick={() => setStageBg(mode.value)}
-                      className={`px-2 py-1 rounded transition-colors ${
-                        active
-                          ? stageBg === "light"
-                            ? "bg-black/10 text-gray-900 font-bold"
-                            : "bg-white/20 text-white font-bold"
-                          : stageBg === "light"
-                          ? "hover:text-gray-900"
-                          : "hover:text-white"
-                      }`}
-                    >
-                      {mode.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Status readout */}
-              <div
-                className={`absolute bottom-4 right-6 text-xs font-mono ${
-                  stageBg === "light" ? "text-gray-400" : "text-white/40"
-                }`}
-              >
-                {clickCount > 0
-                  ? `Triggered: ${lastAction} (${clickCount}x)`
-                  : "Hover or click pill / cloud icon"}
-              </div>
-            </div>
-          </div>
-
-          {/* Controls Sidebar */}
+        {/* Customizer */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
               Customizer
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
+            {/* Label text input */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                Pill Label
+              </label>
+              <input
+                type="text"
+                value={labelText}
+                onChange={(e) => setLabelText(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+              />
+            </div>
+
             {/* State Mode Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                 State Preview
               </label>
-              <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/5">
-                {(["interactive", "standerd", "hover"] as FrostedGelStateMode[]).map((mode) => (
-                  <button
-                    key={mode}
-                    type="button"
-                    onClick={() => setStateMode(mode)}
-                    className={`flex-1 py-1.5 rounded-lg font-mono text-[11px] capitalize transition-all cursor-pointer ${
-                      stateMode === mode
-                        ? "bg-blue-600 text-white font-bold shadow"
-                        : "text-white/50 hover:text-white"
-                    }`}
-                  >
-                    {mode === "standerd" ? "Standard" : mode === "hover" ? "Hover" : "Interactive"}
-                  </button>
-                ))}
-              </div>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as FrostedGelStateMode)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+              >
+                <option value="interactive" className="bg-[#10131A] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#10131A] text-white">Standard</option>
+                <option value="hover" className="bg-[#10131A] text-white">Hover</option>
+              </select>
             </div>
 
             {/* Color Theme Selector */}
@@ -416,39 +352,20 @@ export default function Example() {
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                 Scale Size
               </label>
-              <div className="flex items-center gap-2">
-                {(["xs", "sm", "md", "lg", "xl"] as FrostedGelSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-1.5 rounded-xl font-mono text-xs uppercase border transition-all ${
-                      size === s
-                        ? "bg-blue-600 text-white font-bold border-blue-500"
-                        : "bg-white/5 text-white/60 border-white/5 hover:text-white"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Label text input */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Pill Label
-              </label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
+              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as FrostedGelSize)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              />
+              >
+                <option value="xs" className="bg-[#10131A] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#10131A] text-white">Small</option>
+                <option value="md" className="bg-[#10131A] text-white">Medium</option>
+                <option value="lg" className="bg-[#10131A] text-white">Large</option>
+                <option value="xl" className="bg-[#10131A] text-white">Extra Large</option>
+              </select>
             </div>
             </div>
           </div>
-        </div>
 
         {/* ─────────────────────────────────────────────────────────────
             ALL VARIANTS & THEMES PREVIEW CARD

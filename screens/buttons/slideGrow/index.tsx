@@ -9,6 +9,7 @@ import {
   SlideGrowInteractionMode,
   SlideGrowSize,
 } from "@/components/SlideGrowButton";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -186,8 +187,7 @@ export default function Example() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#13151D] to-[#0A0C10]">
-            <div className="relative z-10 flex flex-col items-center gap-6">
+          <StudioCanvas>
               <SlideGrowButton
                 startLabel={startLabel}
                 activeLabel={activeLabel}
@@ -203,26 +203,13 @@ export default function Example() {
                 <span>Completions:</span>
                 <span className="text-white font-semibold">{completeCount}</span>
               </div>
-            </div>
-          </div>
+          </StudioCanvas>
+        </div>
 
-          {/* Controls Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-6 border-t border-neutral-800 bg-neutral-900/40 text-xs">
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as SlideGrowTheme)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="silver" className="bg-neutral-900">Brushed Silver (Figma 1:1)</option>
-                <option value="uipirate" className="bg-neutral-900">UI Pirate Orange</option>
-                <option value="dark" className="bg-neutral-900">Obsidian Slate</option>
-                <option value="cyberpunk" className="bg-neutral-900">Cyberpunk Violet</option>
-                <option value="emerald" className="bg-neutral-900">Emerald</option>
-              </select>
-            </div>
-
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Resting Label</label>
               <input
@@ -244,21 +231,33 @@ export default function Example() {
             </div>
 
             <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
+              <select
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as SlideGrowTheme)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="silver" className="bg-neutral-900">Brushed Silver (Figma 1:1)</option>
+                <option value="uipirate" className="bg-neutral-900">UI Pirate Orange</option>
+                <option value="dark" className="bg-neutral-900">Obsidian Slate</option>
+                <option value="cyberpunk" className="bg-neutral-900">Cyberpunk Violet</option>
+                <option value="emerald" className="bg-neutral-900">Emerald</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-              <div className="flex gap-1">
-                {(["xs", "sm", "md", "lg", "xl"] as SlideGrowSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
-                      size === s ? "bg-blue-600 text-white font-bold" : "bg-neutral-800 text-gray-400"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+                            <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
             </div>
           </div>
         </div>

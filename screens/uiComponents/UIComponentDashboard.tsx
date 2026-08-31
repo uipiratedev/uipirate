@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import Link from "next/link";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import TactilePillButton from "@/components/TactilePillButton";
 import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
@@ -70,6 +71,13 @@ ${hexRule(LAB_LIGHT_PANEL_HEXES, "#ffffff")}
 .lab-embed-light [class*="text-white/"] { color: #5b6673 !important; }
 .lab-embed-light [class*="border-white/"] { border-color: rgba(15, 23, 42, 0.12) !important; }
 .lab-embed-light [class*="divide-white/"] > :not([hidden]) ~ :not([hidden]) { border-color: rgba(15, 23, 42, 0.1) !important; }
+`;
+
+/** Soft fade/slide-in for the embedded studio when switching components in the sidebar. */
+const LAB_SCREEN_SWAP_CSS = `
+@keyframes labScreenIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.lab-screen-swap { animation: labScreenIn 0.26s cubic-bezier(0.22, 1, 0.36, 1); will-change: opacity, transform; }
+@media (prefers-reduced-motion: reduce) { .lab-screen-swap { animation: none; } }
 `;
 
 // Icons
@@ -156,6 +164,11 @@ export default function UIComponentDashboard({
   // "On this page" entries auto-derived from the embedded studio screen's <h2> headings
   const [screenToc, setScreenToc] = useState<{ id: string; label: string }[]>([]);
 
+  // Keep-alive: every studio the user has opened stays mounted (just hidden), so
+  // switching back is instant with no unmount / lazy-load / flicker.
+  const [visitedScreenIds, setVisitedScreenIds] = useState<string[]>([]);
+  const activeScreenRef = React.useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (initialComponentId) {
       setSelectedComponentId(initialComponentId);
@@ -171,6 +184,11 @@ export default function UIComponentDashboard({
   // When present it fully replaces the bespoke playground/variants/code sections
   // so the Component Lab detail page is 1:1 with the standalone button page.
   const EmbeddedScreen = getComponentLabScreen(selectedComponent.id);
+
+  useEffect(() => {
+    if (!EmbeddedScreen) return;
+    setVisitedScreenIds((v) => (v.includes(selectedComponent.id) ? v : [...v, selectedComponent.id]));
+  }, [selectedComponent.id, EmbeddedScreen]);
 
   // Sync playground initial state when selected component changes
   useEffect(() => {
@@ -403,7 +421,9 @@ export default function Example() {
       window.history.pushState({}, "", `/componentlab/${id}`);
     }
     setMobileSidebarOpen(false);
-    centerScrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    // Jump instantly to the top (no smooth-scroll fighting the content swap);
+    // the incoming studio then fades in from a clean position.
+    centerScrollRef.current?.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, []);
 
   // Build the right-hand "On this page" rail from the embedded studio screen.
@@ -419,7 +439,7 @@ export default function Example() {
     let timer = 0;
     let attempts = 0;
     const scan = () => {
-      const root = centerScrollRef.current;
+      const root = activeScreenRef.current;
       const heads = root ? (Array.from(root.querySelectorAll("h2")) as HTMLElement[]) : [];
       if (heads.length === 0 && attempts < 40) {
         attempts += 1;
@@ -1001,12 +1021,27 @@ export default function Example() {
             {EmbeddedScreen ? (
               /* ── Embedded studio: identical to /buttons/<slug> ─────────── */
               <div className={`min-h-full ${isLightPage ? "lab-embed-light bg-[#F4F5F7]" : "bg-[#0A0A0C]"}`}>
+                <style dangerouslySetInnerHTML={{ __html: LAB_SCREEN_SWAP_CSS }} />
                 {isLightPage && <style dangerouslySetInnerHTML={{ __html: LAB_EMBED_LIGHT_CSS }} />}
                 <div className="px-6 sm:px-10 lg:px-12 pt-6">
                   <div className="max-w-5xl mx-auto">{breadcrumbNav}</div>
                 </div>
 
-                <EmbeddedScreen key={selectedComponent.id} />
+                {visitedScreenIds.map((id) => {
+                  const Screen = getComponentLabScreen(id);
+                  if (!Screen) return null;
+                  const active = id === selectedComponent.id;
+                  return (
+                    <div
+                      key={id}
+                      ref={active ? activeScreenRef : undefined}
+                      hidden={!active}
+                      className={active ? "lab-screen-swap" : undefined}
+                    >
+                      <Screen />
+                    </div>
+                  );
+                })}
 
                 <div className="px-6 sm:px-10 lg:px-12 pb-16 pt-4">
                   <div className="max-w-5xl mx-auto">{componentPagerNav}</div>
@@ -1069,124 +1104,30 @@ export default function Example() {
                   </div>
                 </div>
 
-                {/* Main Studio Frame */}
+                {/* Studio frame */}
                 <div
-                  className={`rounded-3xl overflow-hidden border shadow-2xl transition-all ${
+                  className={`rounded-3xl overflow-hidden border shadow-2xl ${
                     isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-[#121216]"
                   }`}
                 >
-                  {/* Studio Top Controls Toolbar */}
-                  <div
-                    className={`flex flex-wrap items-center justify-between gap-3 px-6 py-3 border-b ${
-                      isLightPage ? "bg-gray-50 border-gray-200" : "bg-[#14141A] border-white/8"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="w-3 h-3 rounded-full bg-red-500/70 inline-block" />
-                      <span className="w-3 h-3 rounded-full bg-yellow-500/70 inline-block" />
-                      <span className="w-3 h-3 rounded-full bg-green-500/70 inline-block" />
-                      <span className={`text-xs font-mono ml-2 font-bold ${isLightPage ? "text-gray-800" : "text-gray-300"}`}>
-                        interactive-playground.tsx
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      {/* Grid Toggle */}
-                      <button
-                        onClick={() => setShowGrid(!showGrid)}
-                        className={`text-xs font-mono px-2.5 py-1 rounded-lg border transition-all cursor-pointer ${
-                          showGrid
-                            ? isLightPage
-                              ? "bg-gray-200 text-gray-900 border-gray-300 font-bold"
-                              : "bg-white/10 text-white border-white/20 font-bold"
-                            : isLightPage
-                            ? "text-gray-500 border-gray-200 hover:bg-gray-100"
-                            : "text-gray-400 border-white/5 hover:bg-white/5"
-                        }`}
-                      >
-                        Grid: {showGrid ? "ON" : "OFF"}
-                      </button>
-
-                      {/* Canvas Theme Toggle */}
-                      <div
-                        className={`flex items-center gap-1 p-0.5 rounded-xl border ${
-                          isLightPage ? "bg-white border-gray-200 shadow-sm" : "bg-black/40 border-white/10"
-                        }`}
-                      >
-                        <button
-                          onClick={() => setCanvasTheme("light")}
-                          title="Render button in Light Canvas Studio"
-                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                            canvasTheme === "light"
-                              ? isLightPage
-                                ? "bg-gray-900 text-white font-bold shadow"
-                                : "bg-white text-gray-900 font-bold shadow"
-                              : isLightPage
-                              ? "text-gray-500 hover:text-gray-900"
-                              : "text-gray-400 hover:text-white"
-                          }`}
-                        >
-                          <SunIcon />
-                          <span>Light</span>
-                        </button>
-                        <button
-                          onClick={() => setCanvasTheme("dark")}
-                          title="Render button in Dark Canvas Studio"
-                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                            canvasTheme === "dark"
-                              ? isLightPage
-                                ? "bg-gray-900 text-white font-bold shadow"
-                                : "bg-[#1E1E28] text-white font-bold shadow border border-white/10"
-                              : isLightPage
-                              ? "text-gray-500 hover:text-gray-900"
-                              : "text-gray-400 hover:text-white"
-                          }`}
-                        >
-                          <MoonIcon />
-                          <span>Dark</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* ── Live Stage View ────────────────────────────────────────── */}
-                  <div
-                    className={`relative min-h-[300px] sm:min-h-[360px] flex items-center justify-center overflow-hidden transition-all duration-300 ${
-                      canvasTheme === "light"
-                        ? "bg-gradient-to-br from-[#FFFFFF] via-[#F4F5F7] to-[#E9ECEF]"
-                        : "bg-[#0A0A0E]"
-                    }`}
-                  >
-                    {/* Subtle Grid Pattern */}
-                    {showGrid && (
-                      <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                          backgroundImage:
-                            canvasTheme === "dark"
-                              ? "radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px)"
-                              : "radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px)",
-                          backgroundSize: "24px 24px",
-                        }}
-                      />
-                    )}
-
-                    <div className="relative z-10 w-full">
+                  <StudioCanvas title="interactive-playground.tsx">
+                    <div className="w-full flex items-center justify-center">
                       {renderInteractivePlaygroundComponent()}
                     </div>
-                  </div>
+                  </StudioCanvas>
+                </div>
 
-                  {/* ── Playground Interactive Customization Controls Bar ──────── */}
-                  <div
-                    className={`p-6 border-t space-y-4 ${
-                      isLightPage ? "bg-white border-gray-200" : "bg-[#101015] border-white/10"
-                    }`}
-                  >
+                {/* Customizer */}
+                <div
+                  className={`rounded-3xl border p-6 space-y-5 ${
+                    isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-white/[0.03]"
+                  }`}
+                >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <SparklesIcon />
                         <span className={`text-xs font-mono font-bold uppercase tracking-wider ${isLightPage ? "text-gray-900" : "text-white"}`}>
-                          Playground Prop Controls
+                          Customizer
                         </span>
                       </div>
                       <button
@@ -1286,7 +1227,6 @@ export default function Example() {
                       )}
 
                     </div>
-                  </div>
                 </div>
               </section>
 

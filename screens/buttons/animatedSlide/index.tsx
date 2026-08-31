@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AnimatedButton } from "@/components/AnimatedButton";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -131,7 +132,7 @@ export default function Example() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[320px] bg-[#121214]">
+          <StudioCanvas hint="Hover to trigger the dual-label slide">
             <div className="w-full max-w-[280px]">
               <AnimatedButton
                 primaryText={primaryText}
@@ -141,13 +142,13 @@ export default function Example() {
                 className="!mt-0"
               />
             </div>
-            <p className="text-xs font-mono text-gray-500 mt-6">
-              Hover over button to trigger dual-label slide transition
-            </p>
-          </div>
+          </StudioCanvas>
+        </div>
 
-          {/* Controls Bar */}
-          <div className="p-6 sm:p-8 bg-[#121215] border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
             <div className="space-y-2">
               <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block">
                 Primary Label

@@ -7,6 +7,7 @@ import {
   VintageLeatherTheme,
   VintageLeatherSize,
 } from "@/components/VintageLeatherCTA";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -156,8 +157,7 @@ export default function Example() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#181512] to-[#0E0C0A]">
-            <div className="relative z-10 flex flex-col items-center gap-6">
+          <StudioCanvas>
               <VintageLeatherCTA
                 label={labelText}
                 theme={theme}
@@ -171,11 +171,23 @@ export default function Example() {
                 <span>Interactions:</span>
                 <span className="text-white font-semibold">{clickCount}</span>
               </div>
-            </div>
-          </div>
+          </StudioCanvas>
+        </div>
 
-          {/* Controls Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 border-t border-white/10 bg-white/[0.01] text-xs">
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
+              <input
+                type="text"
+                value={labelText}
+                onChange={(e) => setLabelText(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              />
+            </div>
+
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
               <select
@@ -193,31 +205,18 @@ export default function Example() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              />
-            </div>
-
-            <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-              <div className="flex gap-1">
-                {(["xs", "sm", "md", "lg", "xl"] as VintageLeatherSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
-                      size === s ? "bg-amber-500 text-black font-bold" : "bg-white/5 text-gray-400"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+                            <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
             </div>
           </div>
         </div>
