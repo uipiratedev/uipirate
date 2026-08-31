@@ -20,6 +20,8 @@ export default function TactileNeumorphicSwitchScreen() {
   const [stateMode, setStateMode] = useState<TactileSwitchStateMode>("interactive");
   const [showGrid, setShowGrid] = useState(true);
   const [clickCount, setClickCount] = useState(0);
+  const [customActiveColor, setCustomActiveColor] = useState<string>("#10E599");
+  const [useCustomColor, setUseCustomColor] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"component" | "usage" | "css" | "framer">("component");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [copiedInstall, setCopiedInstall] = useState(false);
@@ -188,6 +190,7 @@ export const SWITCH_SPRING = {
                 size={size}
                 stateMode={stateMode}
                 showGrid={showGrid}
+                customActiveColor={useCustomColor ? customActiveColor : undefined}
                 onChange={() => setClickCount((c) => c + 1)}
               />
 
@@ -229,12 +232,15 @@ export const SWITCH_SPRING = {
               {/* Color Theme Selector */}
               <div className="space-y-1.5">
                 <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                  Theme &amp; Illumination
+                  Theme &amp; Chassis Preset
                 </label>
                 <select
                   value={theme}
-                  onChange={(e) => setTheme(e.target.value as TactileSwitchTheme)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  onChange={(e) => {
+                    setTheme(e.target.value as TactileSwitchTheme);
+                    setUseCustomColor(false);
+                  }}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
                 >
                   {(Object.keys(SWITCH_THEMES) as TactileSwitchTheme[]).map((key) => (
                     <option key={key} value={key} className="bg-[#12141A] text-white">
@@ -242,6 +248,101 @@ export const SWITCH_SPRING = {
                     </option>
                   ))}
                 </select>
+              </div>
+
+              {/* ON State Illumination Color Dropdown & Direct Picker */}
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                  ON State Accent Color
+                </label>
+                <div className="flex items-center gap-2">
+                  <select
+                    value={
+                      !useCustomColor
+                        ? "default"
+                        : [
+                            "#10E599",
+                            "#00E5FF",
+                            "#38BDF8",
+                            "#3B82F6",
+                            "#A855F7",
+                            "#FF5B04",
+                            "#F43F5E",
+                            "#84CC16",
+                            "#FBBF24",
+                          ].includes(customActiveColor)
+                        ? customActiveColor
+                        : "custom"
+                    }
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "default") {
+                        setUseCustomColor(false);
+                      } else if (val === "custom") {
+                        setUseCustomColor(true);
+                      } else {
+                        setCustomActiveColor(val);
+                        setUseCustomColor(true);
+                      }
+                    }}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer text-xs"
+                  >
+                    <option value="default" className="bg-[#12141A] text-white">
+                      Theme Default
+                    </option>
+                    <option value="#10E599" className="bg-[#12141A] text-white">
+                      🟢 Emerald (#10E599)
+                    </option>
+                    <option value="#00E5FF" className="bg-[#12141A] text-white">
+                      💎 Cyan (#00E5FF)
+                    </option>
+                    <option value="#38BDF8" className="bg-[#12141A] text-white">
+                      💠 Sky (#38BDF8)
+                    </option>
+                    <option value="#3B82F6" className="bg-[#12141A] text-white">
+                      🔷 Blue (#3B82F6)
+                    </option>
+                    <option value="#A855F7" className="bg-[#12141A] text-white">
+                      🟣 Violet (#A855F7)
+                    </option>
+                    <option value="#FF5B04" className="bg-[#12141A] text-white">
+                      🔥 Magma (#FF5B04)
+                    </option>
+                    <option value="#F43F5E" className="bg-[#12141A] text-white">
+                      🌸 Rose (#F43F5E)
+                    </option>
+                    <option value="#84CC16" className="bg-[#12141A] text-white">
+                      🍏 Lime (#84CC16)
+                    </option>
+                    <option value="#FBBF24" className="bg-[#12141A] text-white">
+                      ⭐ Gold (#FBBF24)
+                    </option>
+                  </select>
+
+                  {/* Direct Native Color Picker Input */}
+                  <div
+                    className="relative shrink-0 flex items-center justify-center w-9 h-9 rounded-xl border border-white/15 bg-white/5 overflow-hidden cursor-pointer hover:border-white/40 transition-colors"
+                    title="Click to pick any custom HEX color"
+                  >
+                    <input
+                      type="color"
+                      value={useCustomColor ? customActiveColor : SWITCH_THEMES[theme]?.accent || "#10E599"}
+                      onChange={(e) => {
+                        setCustomActiveColor(e.target.value);
+                        setUseCustomColor(true);
+                      }}
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span
+                      className="w-4 h-4 rounded-full shadow-sm border border-black/20"
+                      style={{
+                        backgroundColor: useCustomColor
+                          ? customActiveColor
+                          : SWITCH_THEMES[theme]?.accent || "#10E599",
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
 
               {/* Scale Size Selector */}
@@ -266,25 +367,35 @@ export const SWITCH_SPRING = {
                   ))}
                 </div>
               </div>
+            </div>
 
-              {/* Grid Canvas Texture Toggle */}
-              <div className="space-y-1.5">
-                <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                  Figma Canvas Mesh
-                </label>
+            {/* If Custom Color Active: Show Details & Reset */}
+            {useCustomColor && (
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-gray-400 uppercase tracking-wider">
+                    Active Custom Color:
+                  </span>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
+                    <span
+                      className="w-3.5 h-3.5 rounded-full shadow"
+                      style={{ backgroundColor: customActiveColor }}
+                    />
+                    <span className="font-mono text-xs text-white font-bold uppercase">
+                      {customActiveColor}
+                    </span>
+                  </div>
+                </div>
+
                 <button
                   type="button"
-                  onClick={() => setShowGrid(!showGrid)}
-                  className={`w-full py-2 px-3 rounded-xl border font-mono text-xs transition-all ${
-                    showGrid
-                      ? "bg-white/15 border-white/20 text-white font-bold"
-                      : "bg-white/5 border-white/5 text-white/40 hover:text-white"
-                  }`}
+                  onClick={() => setUseCustomColor(false)}
+                  className="text-xs font-mono text-white/40 hover:text-white transition-colors cursor-pointer"
                 >
-                  {showGrid ? "Mesh Grid: Visible" : "Mesh Grid: Hidden"}
+                  Reset to Theme Preset
                 </button>
               </div>
-            </div>
+            )}
           </div>
 
           {/* ─────────────────────────────────────────────────────────────
