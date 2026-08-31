@@ -48,6 +48,11 @@ export default function TestimonialCards() {
 
   return (
     <section className="w-full pt-6 max-md:pt-4 container mx-auto px-32 lg:px-20 max-md:px-4">
+      <div className="text-center mb-10 max-md:mb-8">
+        <h2 className="text-4xl max-md:text-3xl font-bold">
+          What <span className="text-brand-orange">Clients Say</span>
+        </h2>
+      </div>
       <div
         className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] max-md:h-[500px] overflow-hidden"}`}
       >
@@ -106,7 +111,10 @@ export default function TestimonialCards() {
                             )}
                           </div>
                         </div>
-                        <p className="mt-4 text-base font-[400]">
+                        <div className="flex text-amber-400 text-lg mt-4 mb-2 tracking-widest">
+                          ★★★★★
+                        </div>
+                        <p className="mt-2 text-base font-[400]">
                           {item.review || ""}
                         </p>
                       </div>

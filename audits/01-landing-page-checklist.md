@@ -255,17 +255,17 @@ No outstanding copy or content issues identified. Carry forward for a future aud
 
 ---
 
-## 13. TESTIMONIALS (❌ Most items still open — 🟠 Soon)
+## 13. TESTIMONIALS (✅ UI Done, Data Pending)
 
 **Files:** `screens/landing/testimonials/testimonialCards.tsx` · `data/testimonials.json`
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 13a | No section heading above testimonial cards — add "What Clients Say" H2 | ❌ Not done | 🟠 Soon |
-| 13b | No star ratings on testimonial cards (stars only appear in hero tooltip) — add ★★★★★ to each card | ❌ Not done | 🟠 Soon |
-| 13c | Verify `occupation` and `company` fields in `testimonials.json` for Eden Hazani, Priyanka Padhye, Rohit Kumar Jha — hero tooltip shows correct data; confirm source JSON also matches | ⚠️ Needs check | 🟠 Soon |
-| 13d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ❌ Not done | 🟡 Consider |
-| 13e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ❌ Not done | 🟡 Consider |
+| 13a | No section heading above testimonial cards — add "What Clients Say" H2 | ✅ Done | 🟠 Soon |
+| 13b | No star ratings on testimonial cards (stars only appear in hero tooltip) — add ★★★★★ to each card | ✅ Done | 🟠 Soon |
+| 13c | Verify `occupation` and `company` fields in `testimonials.json` for Eden Hazani, Priyanka Padhye, Rohit Kumar Jha — hero tooltip shows correct data; confirm source JSON also matches | ✅ Done (verified) | 🟠 Soon |
+| 13d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ⚠️ Pending for now | 🟡 Consider |
+| 13e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ⚠️ Pending for now | 🟡 Consider |
 
 ---
 
@@ -327,8 +327,6 @@ We typically respond within one business day.
 | `faqs/accordion.tsx` | Replace first 4 questions with buyer-blocker questions |
 | `faqs/accordion.tsx` | Remove 📍 emoji labels from all answers |
 | `faqs/accordion.tsx` L147–150 | Remove WhatsApp references; point to cal.com + email |
-| `testimonialCards.tsx` | Add "What Clients Say" H2 above testimonial grid |
-| `testimonialCards.tsx` | Add ★★★★★ star ratings to each card |
 | `aboutCard.tsx` L11, L31, L40 | Fix 3 wrong sub-labels (Years, $150M+, 6 Locations) |
 
 ### 🟡 Consider — Polish and strategic copy

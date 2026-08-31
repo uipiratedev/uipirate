@@ -1140,8 +1140,8 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 | 20 | MiniService | Replace "world-class" in section heading | `miniService/miniService.tsx` L11 | 🟡 Consider | ✓ |
 | 21 | Testimonials | Add section heading "What Clients Say" above cards | `testimonialCards.tsx` | 🟠 Soon | — |
 | 22 | Testimonials | Add star ratings to testimonial cards | `testimonialCards.tsx` | 🟠 Soon | — |
-| 23 | Testimonials | Verify testimonials.json occupation/company fields | `data/testimonials.json` | 🟠 Soon | — |
-| 24 | Testimonials | Remove or reposition Kyle Drucker (YouTuber) testimonial | `data/testimonials.json` | 🟡 Consider | — |
+| 23 | Testimonials | Verify testimonials.json occupation/company fields | `data/testimonials.json` | ✅ Done | — |
+| 24 | Testimonials | Remove or reposition Kyle Drucker (YouTuber) testimonial | `data/testimonials.json` | ⚠️ Pending for now | — |
 | 25 | Keywords | Remove `AI-driven SaaS product design` from keywords; add `product design and development agency`, `SaaS product development` | `app/page.tsx` L23-24 | 🟡 Consider | ✓ |
 | 26 | Who We Are | Add primary keyword `product design and development agency` to rewritten text | `whoWeAre/index.tsx` | ✅ Done | ✓ |
 | 27 | PricingPerfectFor | Rewrite audience card descriptions (see v2 Section 3b) | `perfectFor/index.tsx` | 🟠 Soon | — |
