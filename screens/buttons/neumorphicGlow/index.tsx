@@ -10,6 +10,7 @@ import {
   NeumorphicNeonPreset,
   NEON_PRESETS,
 } from "@/components/NeumorphicGlowCTA";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -43,7 +44,7 @@ import { motion } from "framer-motion";
 
 export type NeumorphicGlowShape = "pill" | "squircle";
 export type NeumorphicGlowTheme = "default" | "dark" | "uipirate" | "orange" | "cyberpunk";
-export type NeumorphicGlowSize = "sm" | "md" | "lg";
+export type NeumorphicGlowSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface NeumorphicGlowCTAProps {
   label?: string;
@@ -195,8 +196,7 @@ export default function Example() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#13151D] to-[#0A0C10]">
-            <div className="relative z-10 flex flex-col items-center gap-6">
+          <StudioCanvas>
               <NeumorphicGlowCTA
                 label={labelText}
                 variant={variant}
@@ -211,27 +211,33 @@ export default function Example() {
                 <span>Interactions:</span>
                 <span className="text-white font-semibold">{clickCount}</span>
               </div>
-            </div>
-          </div>
+          </StudioCanvas>
+        </div>
 
-          {/* Controls Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-6 border-t border-neutral-800 bg-neutral-900/40 text-xs">
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Button Label</label>
+              <input
+                type="text"
+                value={labelText}
+                onChange={(e) => setLabelText(e.target.value)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              />
+            </div>
+
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Shape</label>
-              <div className="flex gap-1">
-                {(["pill", "squircle"] as NeumorphicGlowShape[]).map((shp) => (
-                  <button
-                    key={shp}
-                    type="button"
-                    onClick={() => setVariant(shp)}
-                    className={`flex-1 py-2 rounded-xl capitalize font-mono transition-all ${
-                      variant === shp ? "bg-emerald-500 text-black font-bold" : "bg-neutral-800 text-gray-400"
-                    }`}
-                  >
-                    {shp}
-                  </button>
-                ))}
-              </div>
+              <select
+                value={variant}
+                onChange={(e) => setVariant(e.target.value as NeumorphicGlowShape)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="pill" className="bg-[#151518] text-white">Pill</option>
+                <option value="squircle" className="bg-[#151518] text-white">Squircle</option>
+              </select>
             </div>
 
             <div className="space-y-1.5">
@@ -249,31 +255,18 @@ export default function Example() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Button Label</label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
-              />
-            </div>
-
-            <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-              <div className="flex gap-1">
-                {(["sm", "md", "lg"] as NeumorphicGlowSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
-                      size === s ? "bg-emerald-500 text-black font-bold" : "bg-neutral-800 text-gray-400"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+                            <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
             </div>
           </div>
         </div>
@@ -526,7 +519,7 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-emerald-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
                   </tr>

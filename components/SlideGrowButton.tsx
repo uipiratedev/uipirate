@@ -6,7 +6,7 @@ import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 export type SlideGrowTheme = "uipirate" | "pirate" | "silver" | "dark" | "cyberpunk" | "emerald" | "orange";
 export type SlideGrowStateMode = "interactive" | "standerd" | "slid";
 export type SlideGrowInteractionMode = "both" | "drag" | "click" | "hover";
-export type SlideGrowSize = "sm" | "md" | "lg";
+export type SlideGrowSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface SlideGrowButtonProps {
   /** Initial label text when resting (default: "Get Started") */
@@ -52,6 +52,16 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   const trackRef = useRef<HTMLDivElement>(null);
 
   // Scaled dimensions matching exact Figma 247x76px chassis & 48px knob
+  // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
+  const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
+  const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
+  const __wrapSize = (node: React.ReactElement): React.ReactElement =>
+    __extraSizeScale === 1 ? node : (
+      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+        {node}
+      </span>
+    );
+
   const sizeConfig = {
     sm: {
       width: 200,
@@ -98,7 +108,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       radius: "rounded-[72px]",
       trackRadius: "rounded-[36px]",
     },
-  }[size];
+  }[__baseSize];
 
   // Drag position motion value
   const dragX = useMotionValue(stateMode === "slid" ? sizeConfig.maxDrag : 0);
@@ -324,7 +334,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
     }
   };
 
-  return (
+  return __wrapSize(
     <div
       className={`relative inline-flex select-none items-center justify-center ${className}`}
       style={{

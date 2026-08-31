@@ -6,13 +6,14 @@ import { motion } from "framer-motion";
 import ScalingCapsuleButton, {
   ScalingCapsuleVariant,
 } from "@/components/ScalingCapsuleButton";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
 export default function ScalingCapsuleButtonScreen() {
   const [label, setLabel] = useState("Scaling Workshop");
   const [variant, setVariant] = useState<ScalingCapsuleVariant>("dark");
-  const [size, setSize] = useState<"sm" | "md" | "lg">("md");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -40,7 +41,7 @@ export type ScalingCapsuleVariant = "dark" | "orange" | "light" | "cyberpunk";
 export interface ScalingCapsuleButtonProps {
   label?: string;
   variant?: ScalingCapsuleVariant;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   icon?: React.ReactNode;
   onClick?: () => void;
   className?: string;
@@ -339,67 +340,7 @@ export default function HeroSection() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          {/* Header bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-green-500/80 inline-block" />
-              </div>
-              <span className="text-sm font-semibold text-gray-300 font-mono">
-                Interactive Capsule Playground
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() =>
-                  handleCopy(
-                    activeCodeTab === "component"
-                      ? componentSourceCode
-                      : activeCodeTab === "usage"
-                      ? usageCode
-                      : cssOnlyCode,
-                    activeCodeTab
-                  )
-                }
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors"
-              >
-                {copiedCode === activeCodeTab ? (
-                  <>
-                    <svg className="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span>Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-3.5 h-3.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-                      <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
-                    </svg>
-                    <span>Copy Code</span>
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Interactive Playground Canvas */}
-          <div className="p-8 sm:p-14 flex flex-col items-center justify-center min-h-[380px] bg-gradient-to-b from-[#131316] to-[#0A0A0C] relative overflow-hidden">
-            {/* Background Grid Pattern */}
-            <div
-              className="absolute inset-0 opacity-15 pointer-events-none"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)",
-                backgroundSize: "24px 24px",
-              }}
-            />
-
-            {/* Live Component Instance */}
-            <div className="relative z-10 flex flex-col items-center gap-6">
+          <StudioCanvas>
               <ScalingCapsuleButton
                 label={label}
                 variant={variant}
@@ -413,70 +354,13 @@ export default function HeroSection() {
                 <span>Interactions:</span>
                 <span className="text-white font-semibold">{clickCount}</span>
               </div>
-            </div>
-          </div>
+          </StudioCanvas>
+        </div>
 
-          {/* Controls Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 p-6 border-t border-white/10 bg-white/[0.01]">
-            {/* Variant Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
-                Colorway Theme
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                {(["dark", "orange", "light", "cyberpunk"] as ScalingCapsuleVariant[]).map(
-                  (v) => (
-                    <button
-                      key={v}
-                      onClick={() => setVariant(v)}
-                      className={`px-3 py-2 rounded-xl text-xs font-medium capitalize border transition-all text-left flex items-center justify-between ${
-                        variant === v
-                          ? "bg-white/15 border-white/30 text-white shadow-lg"
-                          : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-gray-200"
-                      }`}
-                    >
-                      <span>{v}</span>
-                      <span
-                        className="w-2 h-2 rounded-full"
-                        style={{
-                          backgroundColor:
-                            v === "dark"
-                              ? "#343434"
-                              : v === "orange"
-                              ? "#FF5B04"
-                              : v === "light"
-                              ? "#FAFAFA"
-                              : "#00E5BE",
-                        }}
-                      />
-                    </button>
-                  )
-                )}
-              </div>
-            </div>
-
-            {/* Size Selector */}
-            <div className="space-y-2">
-              <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
-                Scale Size
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {(["sm", "md", "lg"] as const).map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setSize(s)}
-                    className={`py-2 rounded-xl text-xs font-medium uppercase border transition-all ${
-                      size === s
-                        ? "bg-white/15 border-white/30 text-white shadow-lg"
-                        : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-gray-200"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
             {/* Custom Label Input */}
             <div className="space-y-2">
               <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
@@ -490,6 +374,42 @@ export default function HeroSection() {
                 className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5B04] transition-colors font-mono"
               />
             </div>
+
+            {/* Variant Selector */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
+                Colorway Theme
+              </label>
+              <select
+                value={variant}
+                onChange={(e) => setVariant(e.target.value as ScalingCapsuleVariant)}
+                className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#FF5B04] font-mono"
+              >
+                <option value="dark" className="bg-[#151518] text-white">Dark</option>
+                <option value="orange" className="bg-[#151518] text-white">Orange</option>
+                <option value="light" className="bg-[#151518] text-white">Light</option>
+                <option value="cyberpunk" className="bg-[#151518] text-white">Cyberpunk</option>
+              </select>
+            </div>
+
+            {/* Size Selector */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
+                Scale Size
+              </label>
+              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#FF5B04] font-mono"
+              >
+                <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#151518] text-white">Small</option>
+                <option value="md" className="bg-[#151518] text-white">Medium</option>
+                <option value="lg" className="bg-[#151518] text-white">Large</option>
+                <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
+            </div>
+
           </div>
         </div>
 
@@ -726,7 +646,7 @@ export default function HeroSection() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-orange-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Physical scaling size scale</td>
                   </tr>

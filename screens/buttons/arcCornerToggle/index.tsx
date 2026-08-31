@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -160,54 +161,38 @@ export default function Example() {
             </p>
           </header>
 
-        {/* Main Interactive Stage */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-7 flex flex-col items-center justify-center min-h-[460px] p-8 rounded-3xl bg-[#151518] border border-white/10 shadow-2xl relative overflow-hidden">
-            <div className="relative z-10 scale-95 sm:scale-105 transition-transform">
-              <ArcCornerToggle
-                isActive={active}
-                onToggle={(next) => {
-                  setActive(next);
-                  setToggleCount((c) => c + 1);
-                }}
-                duration={speed}
-                showHeader={true}
-              />
-            </div>
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+          <StudioCanvas minHeight="min-h-[460px]" hint={`Toggle count: ${toggleCount}`}>
+            <ArcCornerToggle
+              isActive={active}
+              onToggle={(next) => {
+                setActive(next);
+                setToggleCount((c) => c + 1);
+              }}
+              duration={speed}
+              showHeader={true}
+            />
+          </StudioCanvas>
+        </div>
 
-            <div className="absolute bottom-4 left-6 text-xs text-gray-500 font-mono">
-              Toggle Count: {toggleCount}
-            </div>
-          </div>
-
-          {/* Controls Sidebar */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-[#151518] border border-white/10 rounded-3xl p-6 space-y-6">
-              <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
-                Interactive Controls
-              </h2>
-
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-gray-400 uppercase tracking-wider block">
-                  Animation Speed
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  {SPEED_PRESETS.map((p) => (
-                    <button
-                      key={p.value}
-                      type="button"
-                      onClick={() => setSpeed(p.value)}
-                      className={`px-3 py-2 rounded-xl text-xs font-mono border transition-all ${
-                        speed === p.value
-                          ? "bg-white/15 border-white/30 text-white font-bold"
-                          : "bg-white/5 border-white/10 text-gray-400 hover:text-white"
-                      }`}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Animation Speed</label>
+              <select
+                value={speed}
+                onChange={(e) => setSpeed(Number(e.target.value))}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                {SPEED_PRESETS.map((p) => (
+                  <option key={p.value} value={p.value} className="bg-[#151518] text-white">
+                    {p.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>

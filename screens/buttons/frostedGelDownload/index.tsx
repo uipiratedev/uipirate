@@ -8,14 +8,27 @@ import {
   FrostedGelTheme,
   FrostedGelSize,
   FrostedGelStateMode,
+  FrostedGelIcon,
   FROSTED_GEL_THEMES,
 } from "@/components/FrostedGelDownloadButton";
+
+const FROSTED_GEL_ICON_OPTIONS: { value: FrostedGelIcon; label: string }[] = [
+  { value: "cloud-download", label: "Cloud Download" },
+  { value: "download", label: "Download" },
+  { value: "arrow-down", label: "Arrow Down" },
+  { value: "upload", label: "Upload" },
+  { value: "folder", label: "Folder" },
+  { value: "package", label: "Package" },
+  { value: "save", label: "Save" },
+];
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
 export default function FrostedGelDownloadScreen() {
   const [theme, setTheme] = useState<FrostedGelTheme>("figma-blue");
   const [size, setSize] = useState<FrostedGelSize>("md");
+  const [icon, setIcon] = useState<FrostedGelIcon>("cloud-download");
   const [stateMode, setStateMode] = useState<FrostedGelStateMode>("interactive");
   const [labelText, setLabelText] = useState("Download now");
   const [showCables, setShowCables] = useState(true);
@@ -23,7 +36,6 @@ export default function FrostedGelDownloadScreen() {
   const [lastAction, setLastAction] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css" | "framer">("component");
-  const [stageBg, setStageBg] = useState<"light" | "diagonal-grid" | "dark">("diagonal-grid");
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
@@ -52,7 +64,7 @@ export type FrostedGelTheme =
   | "titanium-gold";
 
 export type FrostedGelStateMode = "interactive" | "standerd" | "hover";
-export type FrostedGelSize = "sm" | "md" | "lg";
+export type FrostedGelSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface FrostedGelButtonProps {
   label?: string;
@@ -153,10 +165,11 @@ export default function Example() {
         label="${labelText}"
         theme="${theme}"
         size="${size}"
+        icon="${icon}"
         stateMode="${stateMode}"
         showCables={${showCables}}
         onDownloadClick={() => console.log("Download clicked!")}
-        onIconClick={() => console.log("Cloud icon clicked!")}
+        onIconClick={() => console.log("Icon clicked!")}
       />
     </div>
   );
@@ -240,106 +253,62 @@ export default function Example() {
             </p>
           </header>
 
-        {/* 2. Interactive Studio Stage */}
-        <div className="flex flex-col gap-8 items-stretch">
-          {/* Main Visual Stage */}
-          <div className="space-y-4">
-            <div className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0F1116] min-h-[380px] flex flex-col items-center justify-center p-8">
-              {/* Grid Canvas Texture */}
-              {stageBg === "diagonal-grid" && (
-                <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(45deg, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(-45deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-                    backgroundSize: "28px 28px",
-                  }}
-                />
-              )}
+        {/* Live Interactive Studio / Sandbox */}
+        <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+          <StudioCanvas hint={clickCount > 0 ? `Triggered: ${lastAction} (${clickCount}x)` : "Hover or click pill / cloud icon"}>
+            <FrostedGelDownloadButton
+              label={labelText}
+              theme={theme}
+              size={size}
+              icon={icon}
+              stateMode={stateMode}
+              showCables={showCables}
+              onDownloadClick={() => {
+                setClickCount((c) => c + 1);
+                setLastAction("Downloaded package");
+              }}
+              onIconClick={() => {
+                setClickCount((c) => c + 1);
+                setLastAction("Opened cloud storage");
+              }}
+            />
+          </StudioCanvas>
+        </div>
 
-              {/* Live Interactive Button Component */}
-              <div className="relative z-10 py-6">
-                <FrostedGelDownloadButton
-                  label={labelText}
-                  theme={theme}
-                  size={size}
-                  stateMode={stateMode}
-                  showCables={showCables}
-                  onDownloadClick={() => {
-                    setClickCount((c) => c + 1);
-                    setLastAction("Downloaded package");
-                  }}
-                  onIconClick={() => {
-                    setClickCount((c) => c + 1);
-                    setLastAction("Opened cloud storage");
-                  }}
-                />
-              </div>
-
-              {/* Stage Background Switcher */}
-              <div className="absolute bottom-4 left-6 flex items-center gap-2 text-xs text-white/50 font-mono">
-                <span>Canvas:</span>
-                <button
-                  type="button"
-                  onClick={() => setStageBg("diagonal-grid")}
-                  className={`px-2 py-1 rounded ${
-                    stageBg === "diagonal-grid"
-                      ? "bg-white/20 text-white font-bold"
-                      : "hover:text-white"
-                  }`}
-                >
-                  Grid
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setStageBg("dark")}
-                  className={`px-2 py-1 rounded ${
-                    stageBg === "dark"
-                      ? "bg-white/20 text-white font-bold"
-                      : "hover:text-white"
-                  }`}
-                >
-                  Dark
-                </button>
-              </div>
-
-              {/* Status readout */}
-              <div className="absolute bottom-4 right-6 text-xs text-white/40 font-mono">
-                {clickCount > 0
-                  ? `Triggered: ${lastAction} (${clickCount}x)`
-                  : "Hover or click pill / cloud icon"}
-              </div>
-            </div>
-          </div>
-
-          {/* Controls Sidebar */}
+        {/* Customizer */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
               Customizer
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
+            {/* Label text input */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                Pill Label
+              </label>
+              <input
+                type="text"
+                value={labelText}
+                onChange={(e) => setLabelText(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+              />
+            </div>
+
             {/* State Mode Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                 State Preview
               </label>
-              <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/5">
-                {(["interactive", "standerd", "hover"] as FrostedGelStateMode[]).map((mode) => (
-                  <button
-                    key={mode}
-                    type="button"
-                    onClick={() => setStateMode(mode)}
-                    className={`flex-1 py-1.5 rounded-lg font-mono text-[11px] capitalize transition-all cursor-pointer ${
-                      stateMode === mode
-                        ? "bg-blue-600 text-white font-bold shadow"
-                        : "text-white/50 hover:text-white"
-                    }`}
-                  >
-                    {mode === "standerd" ? "Standard" : mode === "hover" ? "Hover" : "Interactive"}
-                  </button>
-                ))}
-              </div>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as FrostedGelStateMode)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+              >
+                <option value="interactive" className="bg-[#10131A] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#10131A] text-white">Standard</option>
+                <option value="hover" className="bg-[#10131A] text-white">Hover</option>
+              </select>
             </div>
 
             {/* Color Theme Selector */}
@@ -360,44 +329,43 @@ export default function Example() {
               </select>
             </div>
 
+            {/* Gel Tile Icon Selector */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                Tile Icon
+              </label>
+              <select
+                value={icon}
+                onChange={(e) => setIcon(e.target.value as FrostedGelIcon)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+              >
+                {FROSTED_GEL_ICON_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value} className="bg-[#10131A] text-white">
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Size Scale Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                 Scale Size
               </label>
-              <div className="flex items-center gap-2">
-                {(["sm", "md", "lg"] as FrostedGelSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-1.5 rounded-xl font-mono text-xs uppercase border transition-all ${
-                      size === s
-                        ? "bg-blue-600 text-white font-bold border-blue-500"
-                        : "bg-white/5 text-white/60 border-white/5 hover:text-white"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Label text input */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Pill Label
-              </label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
+              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as FrostedGelSize)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              />
+              >
+                <option value="xs" className="bg-[#10131A] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#10131A] text-white">Small</option>
+                <option value="md" className="bg-[#10131A] text-white">Medium</option>
+                <option value="lg" className="bg-[#10131A] text-white">Large</option>
+                <option value="xl" className="bg-[#10131A] text-white">Extra Large</option>
+              </select>
             </div>
             </div>
           </div>
-        </div>
 
         {/* ─────────────────────────────────────────────────────────────
             ALL VARIANTS & THEMES PREVIEW CARD
@@ -669,9 +637,15 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Physical scaling multiplier</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-6 text-blue-400 font-semibold">icon</td>
+                    <td className="py-3 px-6 text-blue-300">FrostedGelIcon</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;cloud-download&quot;</td>
+                    <td className="py-3 px-6 font-sans text-gray-300">Icon rendered in the frosted gel tile (cloud-download, download, arrow-down, upload, folder, package, save)</td>
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-blue-400 font-semibold">onDownloadClick</td>

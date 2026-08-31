@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
 import { useClickSound } from "@/hooks/useClickSound";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -133,20 +134,19 @@ export default function Example() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[360px] bg-[#0D0D10] relative">
+          <StudioCanvas hint={`Click to trigger sound · ${clickCount} click${clickCount === 1 ? "" : "s"}`}>
             <MagneticPulseCTA
               label={label}
               pulseColor={pulseColor}
               onClick={handleClick}
             />
+          </StudioCanvas>
+        </div>
 
-            <p className="absolute bottom-4 text-xs font-mono text-gray-500">
-              Click button to trigger sound feedback &bull; Clicked {clickCount} time{clickCount === 1 ? "" : "s"}
-            </p>
-          </div>
-
-          {/* Controls Bar */}
-          <div className="p-6 sm:p-8 bg-[#121215] border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
             <div className="space-y-2">
               <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
                 Button Label
@@ -163,28 +163,16 @@ export default function Example() {
               <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
                 Pulse Accent Color
               </label>
-              <div className="flex gap-2">
-                {[
-                  { label: "Orange", val: "#FF5B04" },
-                  { label: "Cyan", val: "#00E5BE" },
-                  { label: "Violet", val: "#8B5CF6" },
-                  { label: "Pink", val: "#F43F5E" },
-                ].map((c) => (
-                  <button
-                    key={c.val}
-                    type="button"
-                    onClick={() => setPulseColor(c.val)}
-                    className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                      pulseColor === c.val
-                        ? "ring-2 ring-white ring-offset-2 ring-offset-[#121215] font-bold"
-                        : "opacity-70 hover:opacity-100"
-                    }`}
-                    style={{ backgroundColor: c.val, color: "#FFFFFF" }}
-                  >
-                    {c.label}
-                  </button>
-                ))}
-              </div>
+              <select
+                value={pulseColor}
+                onChange={(e) => setPulseColor(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="#FF5B04" className="bg-[#151518] text-white">Orange</option>
+                <option value="#00E5BE" className="bg-[#151518] text-white">Cyan</option>
+                <option value="#8B5CF6" className="bg-[#151518] text-white">Violet</option>
+                <option value="#F43F5E" className="bg-[#151518] text-white">Pink</option>
+              </select>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@ export const siteConfig = {
           href: "/services/SaaS-&-AI-Development",
           isLargeCard: true,
           bgImage:
-            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164139/ChatGPT_Image_Aug_27_2026_03_35_38_PM_1_uyvn6s.svg",
         },
 
         {
@@ -32,12 +32,16 @@ export const siteConfig = {
           href: "/services/Landing-Pages-&-Business-Websites",
           isLargeCard: true,
           bgImage:
-            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670796/landing_skjuro.svg",
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164087/image_239_guz7zd.svg",
         },
         {
           category: "UX Audits & Consultation",
           icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
           href: "/services/UX-Audits-&-Consultation",
+          isLargeCard: true,
+          bgImage:
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164113/ChatGPT_Image_Aug_27_2026_03_37_27_PM_1_p1spkb.svg",
+
         },
       ],
     },

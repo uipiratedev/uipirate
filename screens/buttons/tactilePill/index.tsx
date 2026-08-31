@@ -7,6 +7,7 @@ import TactilePillButton, {
   TactileButtonVariant,
   TactileButtonState,
 } from "@/components/TactilePillButton";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -24,7 +25,7 @@ export default function TactilePillButtonScreen() {
   const [dotColor, setDotColor] = useState("#54EAD8");
   const [stateMode, setStateMode] = useState<TactileButtonState>("interactive");
   const [variant, setVariant] = useState<TactileButtonVariant>("default");
-  const [size, setSize] = useState<"sm" | "md" | "lg">("md");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [tiltAngle, setTiltAngle] = useState(-9.23);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -55,7 +56,7 @@ export interface TactilePillButtonProps {
   label?: string;
   dotColor?: string;
   variant?: TactileButtonVariant;
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   tiltAngle?: number;
   onClick?: () => void;
   className?: string;
@@ -166,8 +167,7 @@ export default function Example() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="p-12 sm:p-20 flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden bg-gradient-to-b from-[#EEEEEE] to-[#E0E0E0]">
-            <div className="relative z-10 flex flex-col items-center gap-6">
+          <StudioCanvas>
               <TactilePillButton
                 label={label}
                 dotColor={dotColor}
@@ -183,28 +183,13 @@ export default function Example() {
                 <span>Interactions:</span>
                 <span className="text-black font-semibold">{clickCount}</span>
               </div>
-            </div>
-          </div>
+          </StudioCanvas>
+        </div>
 
-          {/* Controls Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-6 border-t border-white/10 bg-[#121215] text-xs">
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Beacon Color</label>
-              <div className="flex gap-1.5">
-                {COLOR_PRESETS.map((p) => (
-                  <button
-                    key={p.value}
-                    type="button"
-                    onClick={() => setDotColor(p.value)}
-                    className={`w-7 h-7 rounded-full border transition-all ${
-                      dotColor === p.value ? "scale-110 border-white shadow-lg" : "border-transparent opacity-60"
-                    }`}
-                    style={{ backgroundColor: p.value }}
-                  />
-                ))}
-              </div>
-            </div>
-
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Button Label</label>
               <input
@@ -216,21 +201,33 @@ export default function Example() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-              <div className="flex gap-1">
-                {(["sm", "md", "lg"] as const).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
-                      size === s ? "bg-[#FF5B04] text-white font-bold" : "bg-black/40 text-gray-400"
-                    }`}
-                  >
-                    {s}
-                  </button>
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Beacon Color</label>
+              <select
+                value={dotColor}
+                onChange={(e) => setDotColor(e.target.value)}
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                {COLOR_PRESETS.map((p) => (
+                  <option key={p.value} value={p.value} className="bg-[#151518] text-white">
+                    {p.name}
+                  </option>
                 ))}
-              </div>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+                            <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
             </div>
           </div>
         </div>
@@ -484,7 +481,7 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-orange-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
                   </tr>

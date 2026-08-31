@@ -10,6 +10,7 @@ import {
   ElevatedUnderglowIconType,
   UNDERGLOW_THEMES,
 } from "@/components/ElevatedUnderglowCTA";
+import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -22,7 +23,6 @@ export default function ElevatedUnderglowScreen() {
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [stageBgDark, setStageBgDark] = useState(false);
   const [copiedInstall, setCopiedInstall] = useState(false);
 
   const handleCopy = (text: string, tabName: string) => {
@@ -53,7 +53,7 @@ export type ElevatedUnderglowTheme =
   | "amber"
   | "dark";
 
-export type ElevatedUnderglowSize = "sm" | "md" | "lg";
+export type ElevatedUnderglowSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type ElevatedUnderglowIconType = "phone" | "calendar" | "arrow" | "sparkle" | "mail" | "none";
 
 export interface ElevatedUnderglowCTAProps {
@@ -244,54 +244,40 @@ export default function Example() {
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-neutral-900/80 backdrop-blur-xl border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-neutral-800 bg-white/[0.02]">
-            <div className="flex items-center gap-3">
-              <div className="flex gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block" />
-                <span className="w-3 h-3 rounded-full bg-green-500/80 inline-block" />
-              </div>
-              <span className="text-sm font-semibold text-gray-300 font-mono">
-                Interactive 3D Underglow Canvas
-              </span>
-            </div>
+          <StudioCanvas>
+            <ElevatedUnderglowCTA
+              label={labelText}
+              theme={theme}
+              size={size}
+              stateMode={stateMode}
+              icon={iconType}
+              onClick={() => setClickCount((c) => c + 1)}
+            />
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setStageBgDark((p) => !p)}
-                className="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-xs font-mono text-neutral-300 transition-colors"
-              >
-                Canvas: {stageBgDark ? "Dark" : "Light"}
-              </button>
+            <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-black/10 px-3 py-1 rounded-full border border-black/5">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              <span>Interactions:</span>
+              <span className="text-gray-900 font-semibold">{clickCount}</span>
             </div>
-          </div>
+          </StudioCanvas>
+        </div>
 
-          <div
-            className={`p-12 sm:p-16 flex flex-col items-center justify-center min-h-[380px] transition-colors duration-500 relative overflow-hidden ${
-              stageBgDark ? "bg-[#0c0d12]" : "bg-[#F3F4F6]"
-            }`}
-          >
-            <div className="relative z-10 flex flex-col items-center gap-6">
-              <ElevatedUnderglowCTA
-                label={labelText}
-                theme={theme}
-                size={size}
-                stateMode={stateMode}
-                icon={iconType}
-                onClick={() => setClickCount((c) => c + 1)}
+        {/* Customizer */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                Button Label
+              </label>
+              <input
+                type="text"
+                value={labelText}
+                onChange={(e) => setLabelText(e.target.value)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
               />
-
-              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-black/10 px-3 py-1 rounded-full border border-black/5">
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                <span>Interactions:</span>
-                <span className="text-gray-900 font-semibold">{clickCount}</span>
-              </div>
             </div>
-          </div>
 
-          {/* Controls Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 p-6 border-t border-neutral-800 bg-neutral-900/60 text-xs">
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">
                 Theme Color
@@ -311,34 +297,19 @@ export default function Example() {
 
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                Button Label
-              </label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">
                 Scale Size
               </label>
-              <div className="flex gap-1">
-                {(["sm", "md", "lg"] as ElevatedUnderglowSize[]).map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => setSize(s)}
-                    className={`flex-1 py-2 rounded-xl uppercase font-mono transition-all ${
-                      size === s ? "bg-blue-600 text-white font-bold" : "bg-neutral-800 text-gray-400"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
+                            <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
             </div>
 
             <div className="space-y-1.5">
@@ -617,7 +588,7 @@ export default function Example() {
                   </tr>
                   <tr>
                     <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot;</td>
+                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                     <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Scale multiplier</td>
                   </tr>

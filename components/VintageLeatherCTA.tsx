@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type VintageLeatherTheme = "uipirate" | "pirate" | "heritage" | "obsidian" | "emerald" | "ruby" | "silver";
-export type VintageLeatherSize = "sm" | "md" | "lg";
+export type VintageLeatherSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface VintageLeatherCTAProps {
   /** Text label on the button */
@@ -242,6 +242,16 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
   }[theme];
 
   // Size specifications
+  // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
+  const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
+  const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
+  const __wrapSize = (node: React.ReactElement): React.ReactElement =>
+    __extraSizeScale === 1 ? node : (
+      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+        {node}
+      </span>
+    );
+
   const sizeConfig = {
     sm: {
       trayPadding: "pb-[5px] pt-[4px] px-[5px]",
@@ -261,9 +271,9 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
       fontSize: "text-[19px] tracking-[2px]",
       lipHeight: 8,
     },
-  }[size];
+  }[__baseSize];
 
-  return (
+  return __wrapSize(
     <motion.button
       type="button"
       onClick={onClick}

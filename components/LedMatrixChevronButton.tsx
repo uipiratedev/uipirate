@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export type LedMatrixTheme = "uipirate" | "pirate" | "monochrome" | "emerald" | "cyan" | "amber" | "crimson";
 export type LedMatrixStateMode = "interactive" | "standerd" | "hover";
 export type LedMatrixInteractionMode = "hover" | "click" | "both";
-export type LedMatrixSize = "sm" | "md" | "lg";
+export type LedMatrixSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface LedMatrixChevronButtonProps {
   /** Button label in resting state (default: "See Plans") */
@@ -64,6 +64,16 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       : isHovered || isToggled;
 
   // Scaled dimensions matching exact Figma 236x71px enclosure & 224x59px slab
+  // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
+  const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
+  const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
+  const __wrapSize = (node: React.ReactElement): React.ReactElement =>
+    __extraSizeScale === 1 ? node : (
+      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+        {node}
+      </span>
+    );
+
   const sizeConfig = {
     sm: {
       enclosureW: 194,
@@ -116,7 +126,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       slabRadius: "rounded-[12px]",
       badgeRadius: "rounded-[6px]",
     },
-  }[size];
+  }[__baseSize];
 
   const totalCols = isExpanded ? sizeConfig.expandedCols : sizeConfig.compactCols;
 
@@ -271,7 +281,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
     onClick?.();
   };
 
-  return (
+  return __wrapSize(
     <motion.button
       type="button"
       onClick={handleButtonClick}

@@ -14,7 +14,7 @@ import dynamic from "next/dynamic";
  */
 
 const StudioLoading = () => (
-  <div className="min-h-[70vh] w-full flex items-center justify-center bg-[#0E0E10]">
+  <div className="min-h-screen w-full flex items-center justify-center bg-[#0E0E10]">
     <div className="flex items-center gap-3 text-xs font-mono text-gray-400">
       <span className="w-2.5 h-2.5 rounded-full bg-[#FF5B04] animate-pulse" />
       <span>Loading studio…</span>

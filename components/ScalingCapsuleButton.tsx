@@ -11,7 +11,7 @@ export interface ScalingCapsuleButtonProps {
   /** Visual variant (default: "dark" from Figma 118:6091) */
   variant?: ScalingCapsuleVariant;
   /** Size scale */
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Optional custom icon element or SVG */
   icon?: React.ReactNode;
   /** Optional click handler */
@@ -71,6 +71,16 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
   const [isPressed, setIsPressed] = useState(false);
 
   // Exact Figma scales: Outer 223x61px, Cap 211x49px, Circle 45px, Inner Ellipse 26x26px
+  // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
+  const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
+  const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
+  const __wrapSize = (node: React.ReactElement): React.ReactElement =>
+    __extraSizeScale === 1 ? node : (
+      <span style={{ display: "inline-flex", transform: `scale(${__extraSizeScale})`, transformOrigin: "center center" }}>
+        {node}
+      </span>
+    );
+
   const sizeConfig = {
     sm: {
       outerPadding: "p-[5px]",
@@ -108,7 +118,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
       gap: "gap-[18px]",
       liftY: -5,
     },
-  }[size];
+  }[__baseSize];
 
   // Exact theme parameters matching Figma Node 118:6091
   const themeStyles = {
@@ -178,7 +188,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
     },
   }[variant];
 
-  return (
+  return __wrapSize(
     <div
       className={`relative inline-flex items-center justify-center select-none ${sizeConfig.outerPadding} ${sizeConfig.outerRadius} ${themeStyles.outerBg} ${themeStyles.outerShadow} transition-all duration-300 ${className}`}
       onMouseEnter={() => setIsHovered(true)}

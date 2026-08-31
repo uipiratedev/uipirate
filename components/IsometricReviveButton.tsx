@@ -21,7 +21,7 @@ export type IsometricReviveAngle =
   | "tilt-dynamic";
 
 export type IsometricReviveStateMode = "interactive" | "standerd" | "hover";
-export type IsometricReviveSize = "sm" | "md" | "lg";
+export type IsometricReviveSize = "xs" | "sm" | "md" | "lg" | "xl";
 export type IsometricGlowIntensity = "subtle" | "vibrant" | "hyper";
 
 export interface IsometricReviveThemeConfig {
@@ -284,9 +284,11 @@ export function IsometricReviveButton({
 
   // Scale factors
   const sizeScales = {
+    xs: 0.6,
     sm: 0.75,
     md: 1,
     lg: 1.25,
+    xl: 1.5,
   };
   const scaleFactor = sizeScales[size] || 1;
 
