@@ -61,7 +61,7 @@ const ServicesSection = () => {
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
-      title: "Saas & AI Development",
+      title: "SaaS & AI Development",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
@@ -149,7 +149,7 @@ const ServicesSection = () => {
                     verticalAlign: "middle",
                   }}
                 >
-                  AI Apps, Saas, Websites & More
+                  AI Apps, SaaS & Business Websites
                 </p>
 
                 {/* Right Circle */}
@@ -188,8 +188,8 @@ const ServicesSection = () => {
           >
             <CardBody className="p-8 max-md:p-6">
               <h3 className="text-2xl max-md:text-lg font-bold mb-6 text-white">
-                One-stop shop for{" "}
-                <span className="text-brand-orange">all your essentials</span>
+                Design and development,{" "}
+                <span className="text-brand-orange">handled by one team</span>
               </h3>
               <div className="gap-3 grid grid-cols-2 max-md:grid-cols-1">
                 {services.map((service, index) => (
@@ -225,8 +225,9 @@ const ServicesSection = () => {
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                 <LetsTalkButton
-                  children="Let's Talk"
+                  children="Tell Us What You Need →"
                   fullWidth
+                  href="/contact"
                   variant="light"
                 />
               </div>

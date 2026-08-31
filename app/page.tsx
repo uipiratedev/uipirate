@@ -12,18 +12,18 @@ const Landing = dynamic(() => import("@/screens/landing"), {
 
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
-  title: "UI Pirate — Designing AI-Driven SaaS Products That Convert",
+  title: "UI Pirate — SaaS Product Design & Development Agency | Ship Faster",
   description:
-    "We design and ship AI-driven SaaS products that convert, scale, and ship faster. Product thinking, competitive analysis, information architecture & UX/UI design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
+    "We design and build SaaS products from first wireframe to working software. 50+ products shipped across 6 countries. Book a free 15-minute consultation.",
   keywords:
-    "uipirate, uipirates, UI Pirate, AI-driven SaaS product design, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS product design, AI app design, enterprise UX design, conversion-focused design, simplify complex products, dashboard design, mobile app UI, web app UX, Vishal Anand",
+    "uipirate, uipirates, UI Pirate, SaaS design agency, product design and development agency, product design agency, UI UX design agency, idea to product, product thinking, competitive analysis, information architecture, UX design, UI design, SaaS product design, AI app design, enterprise UX design, conversion-focused design, simplify complex products, dashboard design, mobile app UI, web app UX, Vishal Anand",
   alternates: {
     canonical: "https://uipirate.com",
   },
   openGraph: {
-    title: "UI Pirate — Designing AI-Driven SaaS Products That Convert",
+    title: "UI Pirate — SaaS Product Design & Development Agency",
     description:
-      "We design and ship AI-driven SaaS products that convert, scale, and ship faster — product thinking, competitive analysis, information architecture & conversion-focused design for complex products.",
+      "We help SaaS founders and enterprise teams design, build, and ship products. 50+ shipped. Free 15-min call. uipirate.com",
     url: "https://uipirate.com",
     siteName: "UI Pirate",
     locale: "en_US",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI Pirate — AI-Driven SaaS Products That Convert",
+    title: "UI Pirate | Design & Dev for SaaS Teams That Need to Ship",
     description:
-      "Product thinking, competitive analysis & conversion-focused design for complex SaaS, AI apps & enterprise software. 50+ products shipped.",
+      "We help SaaS founders and enterprise teams design, build, and ship products. 50+ shipped. Free 15-min call. uipirate.com",
   },
 };
 
@@ -51,7 +51,19 @@ async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
     return p.metrics && p.metrics.length > 0 && heroImage && !isDataUri(heroImage);
   });
 
-  if (!candidate || !candidate.metrics?.[0]) return null;
+  if (!candidate || !candidate.metrics?.[0]) {
+    return {
+      slug: "xperiti",
+      client: "Xperiti",
+      title: "Comprehensive Research Platform",
+      excerpt: "Enterprise SaaS App UI/UX Design on Figma & Development on Angular.js. We overhauled their entire user experience to handle complex workflows.",
+      heroImage: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
+      metricLabel: "User Retention Increase",
+      metricValue: "40%",
+      clientLogo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
+      industry: "Research SaaS",
+    };
+  }
 
   const heroImage = candidate.featuredImage || candidate.bannerImage || "";
 
@@ -63,6 +75,8 @@ async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
     heroImage,
     metricLabel: candidate.metrics[0].label,
     metricValue: candidate.metrics[0].value,
+    clientLogo: candidate.clientLogo,
+    industry: candidate.tags?.[0],
   };
 }
 

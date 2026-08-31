@@ -29,7 +29,7 @@ const Pricing = () => {
     "Fast turnaround",
     "Unlimited requests within scope",
     "Expert project management",
-    "5/7 Communication",
+    "Mon–Fri communication, < 2hr response",
   ];
 
   const customProjectFeatures = [
@@ -39,7 +39,7 @@ const Pricing = () => {
     "No hidden costs",
     "Working with your team",
     "Experienced project ownership",
-    "5/7 Communication",
+    "Mon–Fri communication, < 2hr response",
   ];
 
   const customQuoteFeatures = [
@@ -49,7 +49,7 @@ const Pricing = () => {
     "Flexible engagement based on business needs",
     "Close collaboration with internal stakeholders",
     "Dedicated project ownership and planning",
-    "5/7 Communication",
+    "Mon–Fri communication, < 2hr response",
   ];
 
   const benefits = [
@@ -63,7 +63,7 @@ const Pricing = () => {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770115432/share_ljjrs4.svg",
       title: "5-DAY PILOT PROJECT",
       description:
-        "Big scope. Big budget. No blind trust. This 5-day pilot shows you see our execution before committing long term.",
+        "Big scope. Big budget. No blind trust. The 5-day pilot lets you see our execution quality before committing to a full engagement.",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770115432/value_jwko4r.svg",
@@ -86,7 +86,7 @@ const Pricing = () => {
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
-        <h2 className="heading-center">Pricing That Makes Sense</h2>
+        <h2 className="heading-center">Transparent Pricing for SaaS Teams</h2>
       </div>
 
       {/* Pricing Cards Grid */}
@@ -116,7 +116,7 @@ const Pricing = () => {
 
               {/* Subtitle */}
               <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm max-md:text-xs font- mb-6 uppercase tracking-wide font-mono">
-                For teams that need design & dev support, every month
+                Your dedicated design and development team — without the full-time headcount
               </p>
 
               {/* Features List */}
@@ -146,8 +146,11 @@ const Pricing = () => {
                 {/* Price with Anchor */}
                 <div className="mb-4">
                   <div className="flex items-baseline gap-2">
+                    <span className="text-2xl text-[#999999] font-jetbrains-mono font-medium">
+                      from
+                    </span>
                     <span className="text-5xl max-md:text-3xl font-black text-white font-jetbrains-mono">
-                      $2000
+                      $500
                     </span>
                     <span className="text-[#999999] text-lg font-jetbrains-mono">
                       /per month
@@ -162,15 +165,17 @@ const Pricing = () => {
                 <div className="flex items-center gap-2 mb-4 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
                   <div className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
                   <p className="text-brand-orange text-sm font-semibold">
-                    Only accepting 2 new clients this month
+                    To ensure quality, we only onboard 2 new clients per month
                   </p>
                 </div>
 
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3">
                   <LetsTalkButton
-                    children="Chat on WhatsApp"
+                    children="Get Started"
                     fullWidth
+                    href="https://cal.com/ui-pirate/15min"
+                    showArrow
                     variant="dark"
                   />
                 </div>
@@ -220,8 +225,10 @@ const Pricing = () => {
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3 max-md:hidden">
                   <LetsTalkButton
-                    children="Chat on WhatsApp"
+                    children="Book a Discovery Call"
                     fullWidth
+                    href="https://cal.com/ui-pirate/15min"
+                    showArrow
                     variant="dark"
                   />
                 </div>
@@ -251,8 +258,10 @@ const Pricing = () => {
               </div>
               <div className="grid grid-cols-1 gap-3 md:hidden">
                 <LetsTalkButton
-                  children="Chat on WhatsApp"
+                  children="Book a Discovery Call"
                   fullWidth
+                  href="https://cal.com/ui-pirate/15min"
+                  showArrow
                   variant="dark"
                 />
               </div>
@@ -307,7 +316,7 @@ const Pricing = () => {
         <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
           Not happy with the first milestone? We'll refund your deposit — no
           questions asked. We're confident in our work because we've done this
-          100+ times for companies like yours.
+          100+ times for companies like Ipsos, Khaitan & Co, and RevUp AI.
         </p>
       </div>
     </motion.div>

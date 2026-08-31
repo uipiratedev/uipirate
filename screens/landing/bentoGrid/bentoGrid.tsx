@@ -51,8 +51,7 @@ const BentoGrid = () => {
                       UX/UI Design
                     </h3>
                     <p className="text-gray-600 font-medium max-md:text-sm">
-                      User-centric interfaces that convert. We craft
-                      pixel-perfect experiences
+                      Interfaces your users stay in. We design flows that reduce friction and move people toward action.
                     </p>
                   </div>
                 </div>
@@ -323,7 +322,7 @@ const BentoGrid = () => {
                       Dashboards & SaaS UX
                     </h3>
                     <p className="text-gray-600 font-medium max-md:text-sm">
-                      Clean and data-driven
+                      Complex data made simple to read, act on, and present to stakeholders.
                     </p>
                   </div>
                 </div>
@@ -444,7 +443,7 @@ const BentoGrid = () => {
                       Websites & Landing Pages
                     </h3>
                     <p className="text-gray-600 font-medium max-md:text-sm">
-                      Fast, conversion-focused sites
+                      Pages built to convert visitors into leads — not just to look good on Awwwards.
                     </p>
                   </div>
                 </div>
@@ -468,7 +467,7 @@ const BentoGrid = () => {
                       Built With the Best
                     </h3>
                     <p className="text-gray-600 font-medium max-md:text-sm">
-                      Figma, React, Angular, Blender & more.
+                      React, Angular, Next.js, Figma, GSAP — we use what your product actually needs, not what's trending.
                     </p>
                   </div>
 

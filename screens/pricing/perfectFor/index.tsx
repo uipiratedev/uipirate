@@ -15,43 +15,43 @@ const PERFECT_FOR = [
   {
     title: "Funded Startups",
     description:
-      "Ship fast and impress investors with premium UI that stands out in competitive markets.",
+      "You raised a round. Now you need a product that looks as good as the idea you pitched. We help you ship it.",
     image:
       "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg",
   },
   {
     title: "SaaS Companies",
     description:
-      "Without in-house design teams, needing consistent updates and design system maintenance.",
+      "No in-house design team, but a product that needs to keep moving. We plug in as your design and dev partner.",
     image:
       "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg",
   },
   {
     title: "Agencies",
     description:
-      "White-label design support for client projects when your team is at capacity.",
+      "Your team is at capacity. We work as a white-label partner on client projects — no handoff friction, full execution.",
     image:
       "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771831381/creator_qzziot.svg",
   },
   {
     title: "Enterprise Teams",
     description:
-      "Overflow design capacity without the overhead of hiring full-time designers.",
+      "Overflow design capacity without the overhead of hiring. Plug us in when your team needs more bandwidth.",
     image:
       "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771831381/brand_qbdqtq.svg",
   },
 ];
 
 const NOT_FOR = [
-  { text: "Physical product design", icon: "📦" },
-  { text: "One-off logo or branding projects", icon: "🎨" },
-  { text: "24/7 instant turnaround expectations", icon: "⏰" },
+  { text: "Physical product design", icon: "✕" },
+  { text: "One-off logo or branding projects", icon: "✕" },
+  { text: "24/7 instant turnaround expectations", icon: "✕" },
 ];
 
 const PricingPerfectFor = () => {
   return (
     <motion.div
-      className="py-12 max-md:py-8"
+      className="py-12 max-md:py-8 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32"
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -60,7 +60,7 @@ const PricingPerfectFor = () => {
       {/* Header */}
       <div className="text-center mb-10">
         <div className="flex justify-center mb-4">
-          <GlassBadge variant="gradient">FIT CHECK</GlassBadge>
+          <GlassBadge variant="gradient">WHO IT'S FOR</GlassBadge>
         </div>
         <h2 className="heading-center">Is This Right For You?</h2>
         <p className="text-gray-500 mt-2">Perfect for</p>

@@ -4,22 +4,18 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 import GlassBadge from "@/components/GlassBadge";
-import { PROCESS_STEPS } from "@/data/process";
-
-// Condensed 3-step view of the real 6-step process (data/process.ts) — same
-// content, grouped, so the homepage and /process never say different things.
 const GROUPS = [
   {
     title: "Listen & Think",
-    steps: [PROCESS_STEPS[0], PROCESS_STEPS[1]],
+    description: "We start by understanding your vision, analyzing competitors, and defining the product strategy that will set you apart.",
   },
   {
     title: "Plan & Design",
-    steps: [PROCESS_STEPS[2], PROCESS_STEPS[3]],
+    description: "From user flows to high-fidelity prototypes, we design intuitive interfaces focused on driving user engagement.",
   },
   {
     title: "Build & Ship",
-    steps: [PROCESS_STEPS[4], PROCESS_STEPS[5]],
+    description: "We deliver production-ready code and handle deployment, ensuring your product scales seamlessly as you grow.",
   },
 ];
 
@@ -50,7 +46,7 @@ const MiniProcess = () => {
               {group.title}
             </h3>
             <p className="text-gray-500 text-sm leading-relaxed">
-              {group.steps.map((s) => s.description).join(" ")}
+              {group.description}
             </p>
           </motion.div>
         ))}
