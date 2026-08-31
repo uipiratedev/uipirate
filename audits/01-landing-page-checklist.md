@@ -182,16 +182,16 @@ Current text at **L79** — renders at large animated size, most visible copy er
 
 ---
 
-## 9. STATS / ABOUT CARDS (❌ Most sub-labels still wrong — 🟠 Soon)
+## 9. STATS / ABOUT CARDS (⚠️ Pending for now)
 
 **File:** `screens/landing/about/aboutCard.tsx`
 
 | # | Card | Current sub-label (in code) | Problem | Status |
 |---|------|----------------------------|---------|--------|
-| 9a | 9+ Years | `From MVPs to complex dashboards, shipped across 6 countries` (L11) | Belongs to the 6 Locations card | ❌ Not done |
+| 9a | 9+ Years | `From MVPs to complex dashboards, shipped across 6 countries` (L11) | Belongs to the 6 Locations card | ⚠️ Pending for now |
 | 9b | 50+ Projects | `Including AI tools, HR platforms, fintech apps, and B2B SaaS products` | Correct — keep as-is | ✅ Done |
-| 9c | $150M+ | `SaaS, EdTech, FinTech, HealthTech, LegalTech, Creator Economy, and more` (L31) | Lists industries, not what "$150M+ Made by our clients" actually means | ❌ Not done |
-| 9d | 6 Locations | `Built for scale, speed, and seamless handoff to developers` (L40) | Describes product quality, not geography | ❌ Not done |
+| 9c | $150M+ | `SaaS, EdTech, FinTech, HealthTech, LegalTech, Creator Economy, and more` (L31) | Lists industries, not what "$150M+ Made by our clients" actually means | ⚠️ Pending for now |
+| 9d | 6 Locations | `Built for scale, speed, and seamless handoff to developers` (L40) | Describes product quality, not geography | ⚠️ Pending for now |
 
 **Fixes:**
 - 9a → `Established 2015. Enterprise platforms, AI tools, fintech apps, SaaS dashboards — and everything in between.`

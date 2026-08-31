@@ -433,7 +433,7 @@ and hold up as they grow.
 
 **Sub-label:** `From MVPs to complex dashboards, shipped across 6 countries`
 
-**Status:** ⚠️ **Not fixed from v1.** "Shipped across 6 countries" belongs to the **6 Locations** card, not the **Years of Experience** card.
+**Status:** ⚠️ **Pending for now.** (Section skipped per user request, will address later).
 
 **Suggested fix:**
 ```
@@ -454,7 +454,7 @@ Established 2015. Enterprise platforms, AI tools, SaaS dashboards, and everythin
 
 **Sub-label:** `SaaS, EdTech, FinTech, HealthTech, LegalTech, Creator Economy, and more`
 
-**Status:** ⚠️ **Not fixed from v1.** The core problem remains: "Made by our clients" is undefined. Made how? Revenue? Funding raised? GMV? The sub-label still lists industries instead of explaining what the number means.
+**Status:** ⚠️ **Pending for now.** (Section skipped per user request, will address later).
 
 **Suggested fix:**
 ```
@@ -469,7 +469,7 @@ If this refers to revenue, say so. If funding rounds, say so. Specificity is cre
 
 **Sub-label:** `Built for scale, speed, and seamless handoff to developers`
 
-**Status:** ⚠️ **Not fixed from v1.** This sub-label describes product quality — completely unrelated to geographic reach. The stat is "6 locations" and the copy should name those locations.
+**Status:** ⚠️ **Pending for now.** (Section skipped per user request, will address later).
 
 **Suggested fix:**
 ```
@@ -712,9 +712,9 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 16 | Testimonials | Verify occupation/company fields in testimonials.json `[v1]` | `data/testimonials.json` | 🟠 Soon |
 | 18 | MiniProcess | Write bespoke 1-sentence summaries for the 3 step cards to avoid clunky concatenation `[NEW]` | `miniProcess/index.tsx` | ✅ Done |
 | 19 | Behance | Verify if portfolio links still point to external Behance URLs (conversion leak) `[v1]` | `behance/LandingBehance.tsx` | ⚠️ Needs review |
-| 19 | Stats | Fix "9+ Years of Experience" sub-label — cross-references wrong card `[v1]` | `about/aboutCard.tsx` | 🟡 Consider |
-| 20 | Stats | Clarify "$150M+ Made by clients" — specify what "made" means `[v1]` | `about/aboutCard.tsx` | 🟡 Consider |
-| 21 | Stats | Fix "6 Client Locations" sub-label — list the actual locations `[v1]` | `about/aboutCard.tsx` | 🟡 Consider |
+| 19 | Stats | Fix "9+ Years of Experience" sub-label — cross-references wrong card `[v1]` | `about/aboutCard.tsx` | ⚠️ Pending for now |
+| 20 | Stats | Clarify "$150M+ Made by clients" — specify what "made" means `[v1]` | `about/aboutCard.tsx` | ⚠️ Pending for now |
+| 21 | Stats | Fix "6 Client Locations" sub-label — list the actual locations `[v1]` | `about/aboutCard.tsx` | ⚠️ Pending for now |
 | 22 | BentoGrid | Rewrite service card descriptions — remove "pixel-perfect" and sparse labels `[NEW]` | `bentoGrid/bentoGrid.tsx` | 🟡 Consider |
 | 23 | Services | Replace "One-stop shop for all your essentials" `[v1]` | `servicesSection.tsx` | 🟡 Consider |
 | 24 | Services | Fix "Let's Talk" CTA — replace with "Tell Us What You Need — Free Consultation" `[v1]` | `servicesSection.tsx` | 🟡 Consider |
