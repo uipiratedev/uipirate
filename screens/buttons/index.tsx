@@ -15,6 +15,7 @@ import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -30,6 +31,17 @@ interface ButtonCatalogItem {
 }
 
 const BUTTON_CATALOG: ButtonCatalogItem[] = [
+  {
+    id: "tactile-neumorphic-switch",
+    name: "Tactile Neumorphic Dual-Dome Switch",
+    badge: "1:1 Figma (1:7 & 1:8)",
+    badgeColor: "#10E599",
+    tech: "React • Framer • Tailwind",
+    description:
+      "Photorealistic 3D neumorphic toggle switch directly from Figma (Nodes 1:7 & 1:8). Features outer recessed cavity, deep shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
+    href: "/buttons/tactile-neumorphic-switch",
+    features: ["Dual-dome sculpted knob", "Deep carved trench", "Illuminated emerald fill", "60fps Spring physics"],
+  },
   {
     id: "frosted-gel-download",
     name: "Frosted Gel Download Button",
@@ -244,6 +256,16 @@ export default function ButtonHubScreen() {
 
               {/* Live Preview Area */}
               <div className="bg-[#0B0B0D] rounded-2xl p-8 border border-white/5 flex items-center justify-center min-h-[180px] relative overflow-hidden">
+                {btn.id === "tactile-neumorphic-switch" && (
+                  <div className="scale-75 sm:scale-85 py-1">
+                    <TactileNeumorphicSwitch
+                      theme="figma-emerald"
+                      size="sm"
+                      defaultChecked={true}
+                    />
+                  </div>
+                )}
+
                 {btn.id === "frosted-gel-download" && (
                   <div className="scale-85 sm:scale-95 py-2">
                     <FrostedGelDownloadButton
