@@ -1124,8 +1124,8 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 | 4 | Who We Are | "products that ships faster" — grammar error in animated large type | `whoWeAre/index.tsx` L79 | ✅ Done | ✓ |
 | 5 | Who We Are | "Studio" → "agency" identity inconsistency | `whoWeAre/index.tsx` L79 | ✅ Done | ✓ |
 | 6 | Who We Are | "global" overclaim — no evidence of global office/team | `whoWeAre/index.tsx` L79 | ✅ Done | ✓ |
-| 7 | Services | "Saas" → "SaaS" in service list | `servicesSection.tsx` L64 | 🔴 Fix now | ✓ |
-| 8 | Services | "Saas" → "SaaS" in orange banner | `servicesSection.tsx` L152 | 🔴 Fix now | ✓ |
+| 7 | Services | "Saas" → "SaaS" in service list | `servicesSection.tsx` L64 | ✅ Done | ✓ |
+| 8 | Services | "Saas" → "SaaS" in orange banner | `servicesSection.tsx` L152 | ✅ Done | ✓ |
 | 9 | FAQs | Replace first 4 questions with buyer-blocker questions (Q&A text in NC2 above) | `faqs/accordion.tsx` | 🟠 Soon | ✓ |
 | 10 | FAQs | Remove 📍 emoji labels, replace with bold text | `faqs/accordion.tsx` | 🟠 Soon | ✓ |
 | 11 | FAQs | Remove WhatsApp reference from "How do we get started?" | `faqs/accordion.tsx` L147–150 | 🟠 Soon | ✓ |

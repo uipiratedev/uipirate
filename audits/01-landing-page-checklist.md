@@ -203,16 +203,16 @@ Current text at **L79** — renders at large animated size, most visible copy er
 
 ---
 
-## 10. SERVICES — BusinessHelp / ServicesSection (❌ All items still open)
+## 10. SERVICES — BusinessHelp / ServicesSection (✅ Section complete)
 
 **File:** `screens/landing/businessHelp/servicesSection.tsx`
 
 | # | Item | Current text in code | Status | Priority |
 |---|------|----------------------|--------|----------|
-| 10a | Service list — wrong casing | `Saas & AI Development` (L64) | ❌ Not done | 🔴 Fix now |
-| 10b | Orange banner header — wrong casing + filler phrase | `AI Apps, Saas, Websites & More` (L152) | ❌ Not done | 🔴 Fix now |
-| 10c | Black card heading — generic agency phrase | `One-stop shop for all your essentials` (L191) | ❌ Not done | 🟡 Consider |
-| 10d | Bottom CTA — vague, no action described | `Let's Talk` (L228) | ❌ Not done | 🟡 Consider |
+| 10a | Service list — wrong casing | `Saas & AI Development` (L64) | ✅ Done | 🔴 Fix now |
+| 10b | Orange banner header — wrong casing + filler phrase | `AI Apps, Saas, Websites & More` (L152) | ✅ Done | 🔴 Fix now |
+| 10c | Black card heading — generic agency phrase | `One-stop shop for all your essentials` (L191) | ✅ Done | 🟡 Consider |
+| 10d | Bottom CTA — vague, no action described | `Let's Talk` (L228) | ✅ Done | 🟡 Consider |
 
 **Fixes:**
 - 10a → `SaaS & AI Development`
@@ -319,8 +319,6 @@ We typically respond within one business day.
 
 | File | Item |
 |------|------|
-| `servicesSection.tsx` L64 | `Saas & AI Development` → `SaaS & AI Development` |
-| `servicesSection.tsx` L152 | `AI Apps, Saas, Websites & More` → `AI Apps, SaaS & Business Websites` |
 | `pricing/index.tsx` | "shows you see our execution" — broken sentence |
 
 ### 🟠 Soon — Conversion and positioning
@@ -338,8 +336,6 @@ We typically respond within one business day.
 
 | File | Item |
 |------|------|
-| `servicesSection.tsx` L191 | Replace "One-stop shop for all your essentials" heading |
-| `servicesSection.tsx` L228 | Replace "Let's Talk" CTA with "Tell Us What You Need →" |
 | `marquee/index.tsx` | Add company name text labels (⚠️ Needs rethink/confirmation) |
 | `data/testimonials.json` | Remove or reposition Kyle Drucker (YouTuber) testimonial |
 | `data/testimonials.json` | Request expanded P-S-O testimonials from 3 generic reviewers |
