@@ -1118,9 +1118,9 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 
 | # | Section | Issue | File | Priority | Code-Verified |
 |---|---|---|---|---|---|
-| 1 | SEO | Title tag (`page.tsx`) still says "AI-Driven" — conflicts with layout.tsx default | `app/page.tsx` L20 | 🔴 Fix now | ✓ |
-| 2 | SEO | Meta description still uses old "AI-Driven" positioning | `app/page.tsx` L21-23 | 🔴 Fix now | ✓ |
-| 3 | SEO | OG title and Twitter title still say "AI-Driven" | `app/page.tsx` L29, L39 | 🔴 Fix now | ✓ |
+| 1 | SEO | Title tag (`page.tsx`) still says "AI-Driven" — conflicts with layout.tsx default | `app/page.tsx` L20 | ✅ Done | ✓ |
+| 2 | SEO | Meta description still uses old "AI-Driven" positioning | `app/page.tsx` L21-23 | ✅ Done | ✓ |
+| 3 | SEO | OG title and Twitter title still say "AI-Driven" | `app/page.tsx` L29, L39 | ✅ Done | ✓ |
 | 4 | Who We Are | "products that ships faster" — grammar error in animated large type | `whoWeAre/index.tsx` L79 | ✅ Done | ✓ |
 | 5 | Who We Are | "Studio" → "agency" identity inconsistency | `whoWeAre/index.tsx` L79 | ✅ Done | ✓ |
 | 6 | Who We Are | "global" overclaim — no evidence of global office/team | `whoWeAre/index.tsx` L79 | ✅ Done | ✓ |
@@ -1129,24 +1129,27 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 | 9 | FAQs | Replace first 4 questions with buyer-blocker questions (Q&A text in NC2 above) | `faqs/accordion.tsx` | ✅ Done | ✓ |
 | 10 | FAQs | Remove 📍 emoji labels, replace with bold text | `faqs/accordion.tsx` | ✅ Done | ✓ |
 | 11 | FAQs | Remove WhatsApp reference from "How do we get started?" | `faqs/accordion.tsx` L147–150 | ✅ Done | ✓ |
-| 12 | Marquee | Update heading: remove "Building the Future", add quantity and geography | `marquee/index.tsx` L127-132 | 🟠 Soon | ✓ |
-| 13 | Marquee | Fix or remove placeholder logo entry (no alt text, no link) | `marquee/index.tsx` L92-95 | 🟠 Soon | ✓ |
-| 14 | Stats | Fix "9+ Years" sub-label — currently describes 6 Locations card | `aboutCard.tsx` L11 | 🟠 Soon | ✓ |
-| 15 | Stats | Fix "$150M+" sub-label — define what "made" means | `aboutCard.tsx` L31 | 🟠 Soon | ✓ |
-| 16 | Stats | Fix "6 Locations" sub-label — list actual locations | `aboutCard.tsx` L40 | 🟠 Soon | ✓ |
-| 17 | BentoGrid | Rewrite all 4 card descriptions (see NC1 above for full copy) | `bentoGrid/bentoGrid.tsx` | 🟠 Soon | ✓ |
-| 18 | Services | Replace "One-stop shop" black card heading | `servicesSection.tsx` L191 | 🟡 Consider | ✓ |
-| 19 | Services | Replace "Let's Talk" bottom CTA | `servicesSection.tsx` L228 | 🟡 Consider | ✓ |
-| 20 | MiniService | Replace "world-class" in section heading | `miniService/miniService.tsx` L11 | 🟡 Consider | ✓ |
-| 21 | Testimonials | Add section heading "What Clients Say" above cards | `testimonialCards.tsx` | 🟠 Soon | — |
-| 22 | Testimonials | Add star ratings to testimonial cards | `testimonialCards.tsx` | 🟠 Soon | — |
+| 12 | Marquee | Update heading: remove "Building the Future", add quantity and geography | `marquee/index.tsx` L127-132 | ✅ Done | ✓ |
+| 13 | Marquee | Fix or remove placeholder logo entry (no alt text, no link) | `marquee/index.tsx` L92-95 | ⚠️ Pending — needs confirmation of which logo to use | ✓ |
+| 14 | Stats | Fix "9+ Years" sub-label — currently describes 6 Locations card | `aboutCard.tsx` L11 | ⚠️ Pending for now | ✓ |
+| 15 | Stats | Fix "$150M+" sub-label — define what "made" means | `aboutCard.tsx` L31 | ⚠️ Pending for now | ✓ |
+| 16 | Stats | Fix "6 Locations" sub-label — list actual locations | `aboutCard.tsx` L40 | ⚠️ Pending for now | ✓ |
+| 17 | BentoGrid | Rewrite all 4 card descriptions (see NC1 above for full copy) | `bentoGrid/bentoGrid.tsx` | ✅ Done | ✓ |
+| 18 | Services | Replace "One-stop shop" black card heading | `servicesSection.tsx` L191 | ✅ Done | ✓ |
+| 19 | Services | Replace "Let's Talk" bottom CTA | `servicesSection.tsx` L228 | ✅ Done | ✓ |
+| 20 | MiniService | Replace "world-class" in section heading | `miniService/miniService.tsx` L11 | ✅ Done | ✓ |
+| 21 | Testimonials | Add section heading "What Clients Say" above cards | `testimonialCards.tsx` | ✅ Done | ✓ |
+| 22 | Testimonials | Add star ratings to testimonial cards | `testimonialCards.tsx` | ✅ Done | ✓ |
 | 23 | Testimonials | Verify testimonials.json occupation/company fields | `data/testimonials.json` | ✅ Done | — |
-| 24 | Testimonials | Remove or reposition Kyle Drucker (YouTuber) testimonial | `data/testimonials.json` | ⚠️ Pending for now | — |
-| 25 | Keywords | Remove `AI-driven SaaS product design` from keywords; add `product design and development agency`, `SaaS product development` | `app/page.tsx` L23-24 | 🟡 Consider | ✓ |
+| 24 | Testimonials | Remove or reposition Kyle Drucker (YouTuber) testimonial | `data/testimonials.json` | ⚠️ Pending for now — awaiting decision | ✓ |
+| 25 | Keywords | Remove `AI-driven SaaS product design` from keywords; add `product design and development agency`, `SaaS product development` | `app/page.tsx` L23-24 | ✅ Done | ✓ |
 | 26 | Who We Are | Add primary keyword `product design and development agency` to rewritten text | `whoWeAre/index.tsx` | ✅ Done | ✓ |
-| 27 | PricingPerfectFor | Rewrite audience card descriptions (see v2 Section 3b) | `perfectFor/index.tsx` | 🟠 Soon | — |
-| 28 | PricingPerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" | `perfectFor/index.tsx` | 🟡 Consider | — |
+| 27 | PricingPerfectFor | Rewrite audience card descriptions (see v2 Section 3b) | `perfectFor/index.tsx` | ✅ Done | ✓ |
+| 28 | PricingPerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" | `perfectFor/index.tsx` | ✅ Done | ✓ |
 | 29 | Pricing | Fix remaining pricing section copy issues (see `03-pricing-page.md`) | `pricing/index.tsx` | ✅ Done | — |
+| 30 | Pricing | `5/7 Communication` unexplained label — replace with `Mon–Fri communication, < 2hr response` | `pricing/index.tsx` L32,42,52 | ✅ Done | ✓ |
+| 31 | Pricing | Monthly Retainer CTA: "Chat on WhatsApp" — replace with "Get Started →" (cal.com) | `pricing/index.tsx` L175 | 🔴 Fix now | ✓ |
+| 32 | Pricing | Custom Quote CTAs (desktop + mobile): "Chat on WhatsApp" — replace with cal.com | `pricing/index.tsx` L226, L257 | 🔴 Fix now | ✓ |
 
 ---
 

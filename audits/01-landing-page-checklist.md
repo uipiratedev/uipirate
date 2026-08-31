@@ -48,7 +48,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 3. MARQUEE — CLIENT LOGOS (⚠️ Needs confirmation)
+## 3. MARQUEE — CLIENT LOGOS (⚠️ Partially done — placeholder logo pending confirmation)
 
 **File:** `screens/landing/marquee/index.tsx`
 
@@ -60,7 +60,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 4. FIT CHECK / PRICING PERFECT FOR (❌ All items still open — 🟠 Soon)
+## 4. FIT CHECK / PRICING PERFECT FOR (✅ Section complete)
 
 **File:** `screens/pricing/perfectFor/index.tsx`
 
@@ -76,7 +76,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ## 4. DESIGN & DEVELOPMENT (✅ Section complete)
 
-## 4a. SERVICES — BentoGrid
+## 4a. SERVICES — BentoGrid (✅ All 4 cards updated)
 
 **File:** `screens/landing/bentoGrid/bentoGrid.tsx`
 
@@ -99,7 +99,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 ---
 
 
-## 4b. SERVICES — MiniService Heading
+## 4b. SERVICES — MiniService Heading (✅ Done)
 
 **File:** `screens/landing/miniService/miniService.tsx`
 
@@ -238,6 +238,7 @@ See `03-pricing-page.md` for full details.
 | 11d | Scarcity message "Only accepting 2 new clients this month" — make real or replace | ✅ Done | 🟠 Soon |
 | 11e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ✅ Kept as-is (per user request) | 🟠 Soon |
 | 11f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ✅ Done | 🟡 Consider |
+| 11g | `5/7 Communication` unexplained label in feature lists — replace with `Mon–Fri communication, < 2hr response` | ✅ Done | 🟠 Soon |
 
 ---
 
@@ -315,28 +316,30 @@ We typically respond within one business day.
 
 ## Priority Summary
 
-### 🔴 Fix Now — Active trust damage (do these first)
+
+### ⚠️ Pending — Awaiting decision or instruction
+
+| File | Item | Reason |
+|------|------|--------|
+| `pricing/index.tsx` L175 | Monthly Retainer CTA — "Chat on WhatsApp" → "Get Started" (cal.com) | Not yet changed — 🔴 high priority |
+| `pricing/index.tsx` L226, L257 | Custom Quote CTA (desktop + mobile) — "Chat on WhatsApp" → "Book a Discovery Call" (cal.com) | Not yet changed — 🔴 high priority |
+| `marquee/index.tsx` L92-94 | Placeholder logo (alt: "Partner company logo", empty link) | Needs confirmation on which logo/company to replace it with |
+| `about/aboutCard.tsx` L11, L31, L40 | 3 wrong card sub-labels (Years, $150M+, 6 Locations) | User requested to leave Stats section as-is for now |
+| `data/testimonials.json` | Kyle Drucker (YouTuber) testimonial | Awaiting decision — doesn't fit B2B enterprise positioning |
+| `data/testimonials.json` | 3 generic one-liner testimonials | Awaiting expanded content from clients |
+| `marquee/index.tsx` | Company name text labels below logos | Needs rethink/confirmation per audit recommendation |
+
+### 🔴 Fix Now — Still open
 
 | File | Item |
 |------|------|
-
-### 🟠 Soon — Conversion and positioning
-
-| File | Item |
-|------|------|
-| `faqs/accordion.tsx` | Replace first 4 questions with buyer-blocker questions |
-| `faqs/accordion.tsx` | Remove 📍 emoji labels from all answers |
-| `faqs/accordion.tsx` L147–150 | Remove WhatsApp references; point to cal.com + email |
-| `aboutCard.tsx` L11, L31, L40 | Fix 3 wrong sub-labels (Years, $150M+, 6 Locations) |
-
-### 🟡 Consider — Polish and strategic copy
-
-| File | Item |
-|------|------|
-| `marquee/index.tsx` | Add company name text labels (⚠️ Needs rethink/confirmation) |
-| `data/testimonials.json` | Remove or reposition Kyle Drucker (YouTuber) testimonial |
-| `data/testimonials.json` | Request expanded P-S-O testimonials from 3 generic reviewers |
+| `pricing/index.tsx` L175, L226, L257 | 3x "Chat on WhatsApp" CTA on pricing cards — replace with cal.com booking link |
 
 ---
 
-*Last updated: 2026-08-31 — synced to `01-landing-page.md` v3. All ❌ statuses code-verified against live source files.*
+*Last updated: 2026-08-31 (v4) — Full code-verified sync. SEO confirmed fixed. Marquee heading updated. BentoGrid, Services, MiniService, Who We Are, Pricing copy, Testimonials, FAQs all complete. Remaining open: WhatsApp CTAs on pricing cards (🔴), Marquee placeholder logo, Stats sub-labels (pending), Kyle testimonial (pending).*
+
+
+---
+
+*Last updated: 2026-08-31 (v4) — Full code-verified sync. SEO confirmed fixed. Remaining open: Marquee placeholder logo, Stats sub-labels (pending), Kyle testimonial (pending). All other landing page sections complete.*

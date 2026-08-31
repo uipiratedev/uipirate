@@ -29,7 +29,7 @@ const Pricing = () => {
     "Fast turnaround",
     "Unlimited requests within scope",
     "Expert project management",
-    "5/7 Communication",
+    "Mon–Fri communication, < 2hr response",
   ];
 
   const customProjectFeatures = [
@@ -39,7 +39,7 @@ const Pricing = () => {
     "No hidden costs",
     "Working with your team",
     "Experienced project ownership",
-    "5/7 Communication",
+    "Mon–Fri communication, < 2hr response",
   ];
 
   const customQuoteFeatures = [
@@ -49,7 +49,7 @@ const Pricing = () => {
     "Flexible engagement based on business needs",
     "Close collaboration with internal stakeholders",
     "Dedicated project ownership and planning",
-    "5/7 Communication",
+    "Mon–Fri communication, < 2hr response",
   ];
 
   const benefits = [
