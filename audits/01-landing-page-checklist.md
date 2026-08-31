@@ -74,7 +74,9 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 5. SERVICES — BentoGrid (✅ Section complete)
+## 4. DESIGN & DEVELOPMENT (✅ Section complete)
+
+## 4a. SERVICES — BentoGrid
 
 **File:** `screens/landing/bentoGrid/bentoGrid.tsx`
 
@@ -96,7 +98,8 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 6. SERVICES — MiniService Heading (✅ Section complete)
+
+## 4b. SERVICES — MiniService Heading
 
 **File:** `screens/landing/miniService/miniService.tsx`
 
@@ -108,22 +111,49 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 7. SERVICES — BusinessHelp / ServicesSection (❌ All items still open)
 
-**File:** `screens/landing/businessHelp/servicesSection.tsx`
+---
 
-| # | Item | Current text in code | Status | Priority |
-|---|------|----------------------|--------|----------|
-| 7a | Service list — wrong casing | `Saas & AI Development` (L64) | ❌ Not done | 🔴 Fix now |
-| 7b | Orange banner header — wrong casing + filler phrase | `AI Apps, Saas, Websites & More` (L152) | ❌ Not done | 🔴 Fix now |
-| 7c | Black card heading — generic agency phrase | `One-stop shop for all your essentials` (L191) | ❌ Not done | 🟡 Consider |
-| 7d | Bottom CTA — vague, no action described | `Let's Talk` (L228) | ❌ Not done | 🟡 Consider |
+## 5. MINI PROCESS (✅ Section complete)
 
-**Fixes:**
-- 7a → `SaaS & AI Development`
-- 7b → `AI Apps, SaaS & Business Websites`
-- 7c → `Design and development, handled by one team`
-- 7d → `Tell Us What You Need →` (links to `/contact`)
+**File:** `screens/landing/miniProcess/index.tsx`
+
+| # | Item | Status |
+|---|------|--------|
+| 5a | Section heading "From Idea to Shipped, in 3 Steps" — correct and clear | ✅ Done |
+| 5b | Step descriptions: given bespoke 1-sentence summaries instead of concatenated text | ✅ Done |
+| 5c | "See the full process →" link goes to `/process` — confirm this page exists with real content before this link goes live | ⚠️ Needs check |
+
+---
+
+
+---
+
+## 6. BEHANCE / WORKS GALLERY (⚠️ Needs to be reviewed before working on them)
+
+**File:** `screens/landing/behance/LandingBehance.tsx`
+
+| # | Item | Status |
+|---|------|--------|
+| 6a | Portfolio links — still pointing to external Behance URLs | ⚠️ Needs to be reviewed before working on them |
+
+---
+
+
+---
+
+## 7. FEATURED CASE STUDY (⚠️ Needs check — 🟠 Soon)
+
+**File:** `screens/landing/featuredCaseStudy/index.tsx`
+
+| # | Item | Status |
+|---|------|--------|
+| 7a | Static copy ("featured case study" badge, "Read the full case study →") — clean and minimal | ✅ Done |
+| 7b | CMS: at least 1 case study must have a real metric (value + label) + a non-placeholder hero image. Without this the section renders null and the page skips from gallery to "Who We Are" with no case study proof | ⚠️ Needs CMS check |
+| 7c | Missing: client industry tag (e.g. "FinTech") and client logo on the featured card | ❌ Not done |
+
+---
+
 
 ---
 
@@ -149,6 +179,9 @@ Current text at **L79** — renders at large animated size, most visible copy er
 
 ---
 
+
+---
+
 ## 9. STATS / ABOUT CARDS (❌ Most sub-labels still wrong — 🟠 Soon)
 
 **File:** `screens/landing/about/aboutCard.tsx`
@@ -167,57 +200,51 @@ Current text at **L79** — renders at large animated size, most visible copy er
 
 ---
 
-## 10. MINI PROCESS (⚠️ Needs check — 🟠 Soon)
-
-**File:** `screens/landing/miniProcess/index.tsx`
-
-| # | Item | Status |
-|---|------|--------|
-| 10a | Section heading "From Idea to Shipped, in 3 Steps" — correct and clear | ✅ Done |
-| 10b | Step descriptions: joined from `data/process.ts` via `.join(" ")` — review rendered text to confirm joined sentences read naturally, not like two descriptions stapled together | ⚠️ Needs check |
-| 10c | "See the full process →" link goes to `/process` — confirm this page exists with real content before this link goes live (a 404 undermines the section's trust signal) | ⚠️ Needs check |
 
 ---
 
-## 11. BEHANCE / WORKS GALLERY (⚠️ Needs check — 🟠 Soon)
+## 10. SERVICES — BusinessHelp / ServicesSection (❌ All items still open)
 
-**File:** `screens/landing/behance/LandingBehance.tsx`
+**File:** `screens/landing/businessHelp/servicesSection.tsx`
 
-| # | Item | Status |
-|---|------|--------|
-| 11a | Portfolio links — still pointing to external Behance URLs (conversion leak — visitor leaves site, session lost), or updated to `/case-studies/[slug]`? | ⚠️ Needs check |
+| # | Item | Current text in code | Status | Priority |
+|---|------|----------------------|--------|----------|
+| 10a | Service list — wrong casing | `Saas & AI Development` (L64) | ❌ Not done | 🔴 Fix now |
+| 10b | Orange banner header — wrong casing + filler phrase | `AI Apps, Saas, Websites & More` (L152) | ❌ Not done | 🔴 Fix now |
+| 10c | Black card heading — generic agency phrase | `One-stop shop for all your essentials` (L191) | ❌ Not done | 🟡 Consider |
+| 10d | Bottom CTA — vague, no action described | `Let's Talk` (L228) | ❌ Not done | 🟡 Consider |
 
----
-
-## 12. FEATURED CASE STUDY (⚠️ Needs check — 🟠 Soon)
-
-**File:** `screens/landing/featuredCaseStudy/index.tsx`
-
-| # | Item | Status |
-|---|------|--------|
-| 12a | Static copy ("featured case study" badge, "Read the full case study →") — clean and minimal | ✅ Done |
-| 12b | CMS: at least 1 case study must have a real metric (value + label) + a non-placeholder hero image. Without this the section renders null and the page skips from gallery to "Who We Are" with no case study proof | ⚠️ Needs CMS check |
-| 12c | Missing: client industry tag (e.g. "FinTech") and client logo on the featured card | ❌ Not done |
+**Fixes:**
+- 10a → `SaaS & AI Development`
+- 10b → `AI Apps, SaaS & Business Websites`
+- 10c → `Design and development, handled by one team`
+- 10d → `Tell Us What You Need →` (links to `/contact`)
 
 ---
 
-## 13. PRICING SECTION (❌ All items still open — 🔴–🟡)
+
+---
+
+## 11. PRICING SECTION (❌ All items still open — 🔴–🟡)
 
 **File:** `screens/landing/pricing/index.tsx`  
 See `03-pricing-page.md` for full details.
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 13a | Section heading "Pricing That Makes Sense" — replace with outcome-focused heading | ❌ Not done | 🟠 Soon |
-| 13b | Monthly Retainer subtitle — lead with the pain, not the feature | ❌ Not done | 🟠 Soon |
-| 13c | 5-Day Pilot — fix broken sentence "shows you see our execution" | ❌ Not done | 🔴 Fix now |
-| 13d | Scarcity message "Only accepting 2 new clients this month" — make real or replace | ❌ Not done | 🟠 Soon |
-| 13e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ❌ Not done | 🟠 Soon |
-| 13f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ❌ Not done | 🟡 Consider |
+| 11a | Section heading "Pricing That Makes Sense" — replace with outcome-focused heading | ❌ Not done | 🟠 Soon |
+| 11b | Monthly Retainer subtitle — lead with the pain, not the feature | ❌ Not done | 🟠 Soon |
+| 11c | 5-Day Pilot — fix broken sentence "shows you see our execution" | ❌ Not done | 🔴 Fix now |
+| 11d | Scarcity message "Only accepting 2 new clients this month" — make real or replace | ❌ Not done | 🟠 Soon |
+| 11e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ❌ Not done | 🟠 Soon |
+| 11f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ❌ Not done | 🟡 Consider |
 
 ---
 
-## 14. TEAM SECTION (✅ No issues flagged)
+
+---
+
+## 12. TEAM SECTION (✅ No issues flagged)
 
 **File:** `screens/landing/theTeam/index.tsx`
 
@@ -225,29 +252,35 @@ No outstanding copy or content issues identified. Carry forward for a future aud
 
 ---
 
-## 15. TESTIMONIALS (❌ Most items still open — 🟠 Soon)
+
+---
+
+## 13. TESTIMONIALS (❌ Most items still open — 🟠 Soon)
 
 **Files:** `screens/landing/testimonials/testimonialCards.tsx` · `data/testimonials.json`
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 15a | No section heading above testimonial cards — add "What Clients Say" H2 | ❌ Not done | 🟠 Soon |
-| 15b | No star ratings on testimonial cards (stars only appear in hero tooltip) — add ★★★★★ to each card | ❌ Not done | 🟠 Soon |
-| 15c | Verify `occupation` and `company` fields in `testimonials.json` for Eden Hazani, Priyanka Padhye, Rohit Kumar Jha — hero tooltip shows correct data; confirm source JSON also matches | ⚠️ Needs check | 🟠 Soon |
-| 15d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ❌ Not done | 🟡 Consider |
-| 15e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ❌ Not done | 🟡 Consider |
+| 13a | No section heading above testimonial cards — add "What Clients Say" H2 | ❌ Not done | 🟠 Soon |
+| 13b | No star ratings on testimonial cards (stars only appear in hero tooltip) — add ★★★★★ to each card | ❌ Not done | 🟠 Soon |
+| 13c | Verify `occupation` and `company` fields in `testimonials.json` for Eden Hazani, Priyanka Padhye, Rohit Kumar Jha — hero tooltip shows correct data; confirm source JSON also matches | ⚠️ Needs check | 🟠 Soon |
+| 13d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ❌ Not done | 🟡 Consider |
+| 13e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ❌ Not done | 🟡 Consider |
 
 ---
 
-## 16. FAQs (❌ All items still open — 🟠 Soon)
+
+---
+
+## 14. FAQs (❌ All items still open — 🟠 Soon)
 
 **File:** `screens/landing/faqs/accordion.tsx`
 
 | # | Item | Current state | Status | Priority |
 |---|------|---------------|--------|----------|
-| 16a | First 4 FAQ questions — still about pricing model differences, hourly vs fixed, plan selection, and timelines. Need to be buyer-blocker questions | Operational questions | ❌ Not done | 🟠 Soon |
-| 16b | 📍 emoji labels in answers — `📍 Example Use Case`, `📍 Need Help Choosing?`, `📍 Getting in Touch`, etc. | Still present | ❌ Not done | 🟠 Soon |
-| 16c | WhatsApp references in "How do we get started?" — `email or WhatsApp us` + `reach out via WhatsApp` (L147–150) | Both still present | ❌ Not done | 🟠 Soon |
+| 14a | First 4 FAQ questions — still about pricing model differences, hourly vs fixed, plan selection, and timelines. Need to be buyer-blocker questions | Operational questions | ❌ Not done | 🟠 Soon |
+| 14b | 📍 emoji labels in answers — `📍 Example Use Case`, `📍 Need Help Choosing?`, `📍 Getting in Touch`, etc. | Still present | ❌ Not done | 🟠 Soon |
+| 14c | WhatsApp references in "How do we get started?" — `email or WhatsApp us` + `reach out via WhatsApp` (L147–150) | Both still present | ❌ Not done | 🟠 Soon |
 
 **Replacement buyer-blocker questions (full Q&A copy in `01-landing-page.md` section NC2):**
 
@@ -267,14 +300,18 @@ We typically respond within one business day.
 
 ---
 
-## 17. NEW SECTIONS — STRUCTURAL ISSUES (v2 additions, mostly unresolved)
+
+---
+
+## 15. NEW SECTIONS — STRUCTURAL ISSUES (v2 additions, mostly unresolved)
 
 | # | Issue | Status | Priority |
 |---|-------|--------|----------|
-| 17a | `/process` page — confirm it exists with real content before "See the full process →" link goes live | ⚠️ Needs check | 🟠 Soon |
-| 17b | `FeaturedCaseStudy` — populate at least 1 CMS case study with metric + valid image to prevent silent null render | ⚠️ Needs check | 🟠 Soon |
+| 15a | `/process` page — confirm it exists with real content before "See the full process →" link goes live | ⚠️ Needs check | 🟠 Soon |
+| 15b | `FeaturedCaseStudy` — populate at least 1 CMS case study with metric + valid image to prevent silent null render | ⚠️ Needs check | 🟠 Soon |
 
 ---
+
 
 ## Priority Summary
 

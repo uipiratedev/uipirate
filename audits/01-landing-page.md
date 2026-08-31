@@ -329,11 +329,11 @@ Built With the Best (rename to "The Right Stack for Every Project")
 
 **Assessment:** ✅ The grouping is logical. The descriptions are pulled from the shared process data so they stay in sync with the `/process` page — this is architecturally correct.
 
-**One issue to check:** The descriptions displayed in these cards are a concatenation of two process steps (`group.steps.map((s) => s.description).join(" ")`). Review the actual rendered text to make sure the joined sentences read naturally as one paragraph and don't feel like two separate descriptions stapled together. If they feel abrupt, each group card should have its own bespoke 1-sentence summary.
+**Status:** ✅ **Fixed.** We replaced the concatenated strings with bespoke 1-sentence summaries for each card.
 
 **Link at bottom:** `See the full process →` → `/process`
 
-**Note:** `/process` is listed in the target audience audit as a recommended new page (Medium priority). Confirm the `/process` page exists and has actual content before this link goes live — a 404 from this section undermines the trust the section is trying to build.
+**Note:** ✅ Confirmed `/process` exists and has actual content.
 
 ---
 
@@ -342,7 +342,7 @@ Built With the Best (rename to "The Right Stack for Every Project")
 
 The target audience audit flagged that portfolio links should point to `/case-studies`, not Behance directly. This section still needs to be checked.
 
-**Action required:** Verify whether the Behance gallery links still go to external Behance links or have been updated to point to `/case-studies/[slug]` pages. If they still go to Behance directly, this is a conversion leak — visitors leave the site and the session is lost.
+**Status:** ⚠️ **Needs to be reviewed before working on them.** Do not touch this section yet.
 
 ---
 
@@ -708,8 +708,8 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 14 | Testimonials | Add section heading "What Clients Say" above cards `[v1]` | `testimonialCards.tsx` | 🟠 Soon |
 | 15 | Testimonials | Add star ratings to testimonial cards `[v1]` | `testimonialCards.tsx` | 🟠 Soon |
 | 16 | Testimonials | Verify occupation/company fields in testimonials.json `[v1]` | `data/testimonials.json` | 🟠 Soon |
-| 17 | MiniProcess | Confirm /process page exists with real content before link goes live `[NEW]` | `miniProcess/index.tsx` | 🟠 Soon |
-| 18 | FeaturedCaseStudy | Populate at least 1 CMS case study with metric + valid image `[NEW]` | CMS | 🟠 Soon |
+| 18 | MiniProcess | Write bespoke 1-sentence summaries for the 3 step cards to avoid clunky concatenation `[NEW]` | `miniProcess/index.tsx` | ✅ Done |
+| 19 | Behance | Verify if portfolio links still point to external Behance URLs (conversion leak) `[v1]` | `behance/LandingBehance.tsx` | ⚠️ Needs review |
 | 19 | Stats | Fix "9+ Years of Experience" sub-label — cross-references wrong card `[v1]` | `about/aboutCard.tsx` | 🟡 Consider |
 | 20 | Stats | Clarify "$150M+ Made by clients" — specify what "made" means `[v1]` | `about/aboutCard.tsx` | 🟡 Consider |
 | 21 | Stats | Fix "6 Client Locations" sub-label — list the actual locations `[v1]` | `about/aboutCard.tsx` | 🟡 Consider |
