@@ -88,11 +88,6 @@ const LandingMarquee = () => {
       alt: "Rings and I - Jewelry and lifestyle brand logo",
       link: "https://ringsandi.com/",
     },
-    {
-      url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513139/image_2_srxkyz.svg",
-      alt: "Partner company logo",
-      link: "",
-    },
   ];
 
   return (

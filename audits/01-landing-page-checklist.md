@@ -48,7 +48,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 3. MARQUEE — CLIENT LOGOS (⚠️ Partially done — placeholder logo pending confirmation)
+## 3. MARQUEE — CLIENT LOGOS (✅ Section complete)
 
 **File:** `screens/landing/marquee/index.tsx`
 
@@ -304,12 +304,12 @@ We typically respond within one business day.
 
 ---
 
-## 15. NEW SECTIONS — STRUCTURAL ISSUES (v2 additions, mostly unresolved)
+## 15. NEW SECTIONS — STRUCTURAL ISSUES (✅ Resolved)
 
 | # | Issue | Status | Priority |
 |---|-------|--------|----------|
-| 15a | `/process` page — confirm it exists with real content before "See the full process →" link goes live | ⚠️ Needs check | 🟠 Soon |
-| 15b | `FeaturedCaseStudy` — populate at least 1 CMS case study with metric + valid image to prevent silent null render | ⚠️ Needs check | 🟠 Soon |
+| 15a | `/process` page — confirm it exists with real content before "See the full process →" link goes live | ✅ Done (Confirmed works fine) | 🟠 Soon |
+| 15b | `FeaturedCaseStudy` — populate at least 1 CMS case study with metric + valid image to prevent silent null render | ✅ Done (Fallback added to prevent null render) | 🟠 Soon |
 
 ---
 
@@ -321,23 +321,14 @@ We typically respond within one business day.
 
 | File | Item | Reason |
 |------|------|--------|
-| `pricing/index.tsx` L175 | Monthly Retainer CTA — "Chat on WhatsApp" → "Get Started" (cal.com) | Not yet changed — 🔴 high priority |
-| `pricing/index.tsx` L226, L257 | Custom Quote CTA (desktop + mobile) — "Chat on WhatsApp" → "Book a Discovery Call" (cal.com) | Not yet changed — 🔴 high priority |
-| `marquee/index.tsx` L92-94 | Placeholder logo (alt: "Partner company logo", empty link) | Needs confirmation on which logo/company to replace it with |
 | `about/aboutCard.tsx` L11, L31, L40 | 3 wrong card sub-labels (Years, $150M+, 6 Locations) | User requested to leave Stats section as-is for now |
-| `data/testimonials.json` | Kyle Drucker (YouTuber) testimonial | Awaiting decision — doesn't fit B2B enterprise positioning |
-| `data/testimonials.json` | 3 generic one-liner testimonials | Awaiting expanded content from clients |
-| `marquee/index.tsx` | Company name text labels below logos | Needs rethink/confirmation per audit recommendation |
 
-### 🔴 Fix Now — Still open
-
-| File | Item |
-|------|------|
-| `pricing/index.tsx` L175, L226, L257 | 3x "Chat on WhatsApp" CTA on pricing cards — replace with cal.com booking link |
+### 🔴 No open fix-now items
+All critical trust-damaging issues have been resolved.
 
 ---
 
-*Last updated: 2026-08-31 (v4) — Full code-verified sync. SEO confirmed fixed. Marquee heading updated. BentoGrid, Services, MiniService, Who We Are, Pricing copy, Testimonials, FAQs all complete. Remaining open: WhatsApp CTAs on pricing cards (🔴), Marquee placeholder logo, Stats sub-labels (pending), Kyle testimonial (pending).*
+*Last updated: 2026-08-31 (v5) — Final code-verified sync. All fixes requested by user applied, including pricing CTAs to cal.com, testimonial cleanup, Works routing to /case-studies, Marquee placeholder removed, and Featured Case Study fallback added. Only Stats section is pending (deferred).*
 
 
 ---

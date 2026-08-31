@@ -172,8 +172,10 @@ const Pricing = () => {
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3">
                   <LetsTalkButton
-                    children="Chat on WhatsApp"
+                    children="Get Started"
                     fullWidth
+                    href="https://cal.com/ui-pirate/15min"
+                    showArrow
                     variant="dark"
                   />
                 </div>
@@ -223,8 +225,10 @@ const Pricing = () => {
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3 max-md:hidden">
                   <LetsTalkButton
-                    children="Chat on WhatsApp"
+                    children="Book a Discovery Call"
                     fullWidth
+                    href="https://cal.com/ui-pirate/15min"
+                    showArrow
                     variant="dark"
                   />
                 </div>
@@ -254,8 +258,10 @@ const Pricing = () => {
               </div>
               <div className="grid grid-cols-1 gap-3 md:hidden">
                 <LetsTalkButton
-                  children="Chat on WhatsApp"
+                  children="Book a Discovery Call"
                   fullWidth
+                  href="https://cal.com/ui-pirate/15min"
+                  showArrow
                   variant="dark"
                 />
               </div>

@@ -51,7 +51,19 @@ async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
     return p.metrics && p.metrics.length > 0 && heroImage && !isDataUri(heroImage);
   });
 
-  if (!candidate || !candidate.metrics?.[0]) return null;
+  if (!candidate || !candidate.metrics?.[0]) {
+    return {
+      slug: "xperiti",
+      client: "Xperiti",
+      title: "Comprehensive Research Platform",
+      excerpt: "Enterprise SaaS App UI/UX Design on Figma & Development on Angular.js. We overhauled their entire user experience to handle complex workflows.",
+      heroImage: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
+      metricLabel: "User Retention Increase",
+      metricValue: "40%",
+      clientLogo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
+      industry: "Research SaaS",
+    };
+  }
 
   const heroImage = candidate.featuredImage || candidate.bannerImage || "";
 

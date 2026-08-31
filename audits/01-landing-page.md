@@ -1130,7 +1130,7 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 | 10 | FAQs | Remove 📍 emoji labels, replace with bold text | `faqs/accordion.tsx` | ✅ Done | ✓ |
 | 11 | FAQs | Remove WhatsApp reference from "How do we get started?" | `faqs/accordion.tsx` L147–150 | ✅ Done | ✓ |
 | 12 | Marquee | Update heading: remove "Building the Future", add quantity and geography | `marquee/index.tsx` L127-132 | ✅ Done | ✓ |
-| 13 | Marquee | Fix or remove placeholder logo entry (no alt text, no link) | `marquee/index.tsx` L92-95 | ⚠️ Pending — needs confirmation of which logo to use | ✓ |
+| 13 | Marquee | Fix or remove placeholder logo entry (no alt text, no link) | `marquee/index.tsx` L92-95 | ✅ Done (Removed) | ✓ |
 | 14 | Stats | Fix "9+ Years" sub-label — currently describes 6 Locations card | `aboutCard.tsx` L11 | ⚠️ Pending for now | ✓ |
 | 15 | Stats | Fix "$150M+" sub-label — define what "made" means | `aboutCard.tsx` L31 | ⚠️ Pending for now | ✓ |
 | 16 | Stats | Fix "6 Locations" sub-label — list actual locations | `aboutCard.tsx` L40 | ⚠️ Pending for now | ✓ |
@@ -1141,15 +1141,15 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 | 21 | Testimonials | Add section heading "What Clients Say" above cards | `testimonialCards.tsx` | ✅ Done | ✓ |
 | 22 | Testimonials | Add star ratings to testimonial cards | `testimonialCards.tsx` | ✅ Done | ✓ |
 | 23 | Testimonials | Verify testimonials.json occupation/company fields | `data/testimonials.json` | ✅ Done | — |
-| 24 | Testimonials | Remove or reposition Kyle Drucker (YouTuber) testimonial | `data/testimonials.json` | ⚠️ Pending for now — awaiting decision | ✓ |
+| 24 | Testimonials | Remove or reposition Kyle Drucker (YouTuber) testimonial | `data/testimonials.json` | ✅ Done (Removed along with 3 generic one-liners) | ✓ |
 | 25 | Keywords | Remove `AI-driven SaaS product design` from keywords; add `product design and development agency`, `SaaS product development` | `app/page.tsx` L23-24 | ✅ Done | ✓ |
 | 26 | Who We Are | Add primary keyword `product design and development agency` to rewritten text | `whoWeAre/index.tsx` | ✅ Done | ✓ |
 | 27 | PricingPerfectFor | Rewrite audience card descriptions (see v2 Section 3b) | `perfectFor/index.tsx` | ✅ Done | ✓ |
 | 28 | PricingPerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" | `perfectFor/index.tsx` | ✅ Done | ✓ |
 | 29 | Pricing | Fix remaining pricing section copy issues (see `03-pricing-page.md`) | `pricing/index.tsx` | ✅ Done | — |
 | 30 | Pricing | `5/7 Communication` unexplained label — replace with `Mon–Fri communication, < 2hr response` | `pricing/index.tsx` L32,42,52 | ✅ Done | ✓ |
-| 31 | Pricing | Monthly Retainer CTA: "Chat on WhatsApp" — replace with "Get Started →" (cal.com) | `pricing/index.tsx` L175 | 🔴 Fix now | ✓ |
-| 32 | Pricing | Custom Quote CTAs (desktop + mobile): "Chat on WhatsApp" — replace with cal.com | `pricing/index.tsx` L226, L257 | 🔴 Fix now | ✓ |
+| 31 | Pricing | Monthly Retainer CTA: "Chat on WhatsApp" — replace with "Get Started →" (cal.com) | `pricing/index.tsx` L175 | ✅ Done | ✓ |
+| 32 | Pricing | Custom Quote CTAs (desktop + mobile): "Chat on WhatsApp" — replace with cal.com | `pricing/index.tsx` L226, L257 | ✅ Done | ✓ |
 
 ---
 
