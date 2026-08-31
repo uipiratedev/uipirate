@@ -353,7 +353,7 @@ const BentoGrid = () => {
                     }}
                   />
                   {/* Website Preview Mockup */}
-                  <div className="flex-1 relative flex items-center justify-center scale-[0.88] origin-top -mb-2">
+                  <div className="flex-1 relative flex items-center justify-center scale-[0.78] origin-top -mb-6">
                     {/* Main Website Card - White Background with Padding */}
                     <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-xl w-[280px]">
                       {/* Gray Content Area */}
@@ -438,11 +438,11 @@ const BentoGrid = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="relative z-20 text-left pt-1">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
+                  <div className="relative z-20 text-left pt-0 pb-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
                       Websites & Landing Pages
                     </h3>
-                    <p className="text-gray-600 font-medium max-md:text-sm">
+                    <p className="text-gray-600 font-medium text-sm md:text-sm leading-snug">
                       Pages built to convert visitors into leads — not just to look good on Awwwards.
                     </p>
                   </div>
