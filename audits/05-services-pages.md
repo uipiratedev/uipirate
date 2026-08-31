@@ -49,7 +49,7 @@ Every recommendation in this document is grounded in the same cross-source princ
 
 ---
 
-## Scope Note — 4 pages vs 5 in the data
+## Scope Note — 4 pages in scope
 
 The brief covers **4** service pages:
 
@@ -58,14 +58,7 @@ The brief covers **4** service pages:
 3. Landing Pages & Business Websites
 4. UX Audits & Consultation
 
-`data/sericesDetailsList.json` actually contains **5** entries. The fifth is **Design System & Component Library**. It is:
-
-- **Still in the data file** and still routable at `/services/Design-System-&-Component-Library`
-- **Still in the SEO metadata map** (`SERVICE_META["design-system-component-library"]` in `page.tsx`)
-- **Still linked** from `app/layout.tsx` footer and `app/sitemap/page.tsx`
-- **Already removed** from the main navbar (`config/site.ts` lists only the 4 above) and from `components/footer.tsx`
-
-So it is in a half-killed state. **A decision is needed: fully kill it or fully rebuild it.** It is audited last (Section 6) because its content is currently the weakest of the five — most of its copy is pasted from other services. This audit assumes the likely intent is to **kill it** and fold "design tokens / component library" into the UX/UI Design page as a deliverable, but both paths are laid out.
+*(Note: A fifth service, Design System & Component Library, was previously in the data but has been fully killed and removed from scope).*
 
 ---
 
@@ -405,28 +398,6 @@ This page has the most content problems of the four in-scope services.
 
 ---
 
-## 5. Design System & Component Library  (`design-system-component-library`) — KILL or REBUILD
-
-Currently half-removed (in data/metadata/footer-in-layout/sitemap, absent from navbar and `components/footer.tsx`).
-
-### If killing (recommended):
-1. Remove the entry from `data/sericesDetailsList.json`.
-2. Remove `SERVICE_META["design-system-component-library"]` from `page.tsx`.
-3. Remove links in `app/layout.tsx:417`, `app/sitemap/page.tsx`, `screens/sitemap/index.tsx`, and any remaining nav/footer references.
-4. Add a 301 redirect from `/services/Design-System-&-Component-Library` → `/services/ux-ui-design` (or `/services`) so existing links / indexed URLs don't dead-end.
-5. Fold "design tokens, component library, documented handoff" in as a **deliverable bullet** on the UX/UI Design page (`whatYouGet` or a new card) — it's a real capability, it just doesn't need its own page at current demand.
-
-### If keeping, it needs a full content pass — current state:
-- 🔴 `hero.heading` = "Your Website Isn't a Brochure, It's a Sales Tool" (Landing Pages' headline).
-- 🔴 `hero.badge` = "Tokens to Components | Built for Scale | 1–4 Week Delivery" — actually fine, but mismatched with the wrong headline.
-- 🔴 `whoThisIsFor` = old **Graphic Design** copy (icon sets, pitch decks, logos, print-ready materials, "cohesive design language"). Nothing about design-system consumers (product teams scaling UI, multi-squad orgs, teams with drift between Figma and code).
-- 🔴 `streamlinedProcess` = generic website build steps, both groups badged "Design Workflow".
-- 🟡 `whatYouGet` uses key `img` not `image` (works via fallback, but inconsistent).
-- 🟡 `whyThisMatters` (Visual Inconsistency · Development Friction · Maintenance Debt) is **actually the only well-written block on this page** — keep it if rebuilding.
-- 🔴 `recommendedNextSteps.otherServices` slug `ux-ui-front-end-development` broken.
-
----
-
 ## Priority Fix Table
 
 | # | Scope | Issue | Priority |
@@ -435,9 +406,7 @@ Currently half-removed (in data/metadata/footer-in-layout/sitemap, absent from n
 | 2 | Nav | `/services` parent link 404s — no hub page exists | 🔴 Fix now |
 | 3 | UX Audits | `whyThisMatters` heading = "Why Most 3D On Websites Fails" (wrong service) | 🔴 Fix now |
 | 4 | UX Audits | `streamlinedProcess` = website-build steps + heading "Design System Roadmap" (entirely wrong) | 🔴 Fix now |
-| 5 | Design System | `hero.heading` = Landing Pages' headline; `whoThisIsFor` = old Graphic Design copy | 🔴 Fix now (or kill the page) |
 | 6 | All | `screens/serviceDetails/index.tsx` ships `<div>danis...</div>` as the no-data fallback | 🔴 Fix now |
-| 7 | Design System | Decide: kill (recommended) or fully rebuild — it's half-removed and half-live | 🔴 Decide now |
 | 8 | SaaS & AI Dev | 4 `whatYouGet` headings unmapped → mislabeled icons | 🟠 Soon |
 | 9 | All | `youWillGet` content block written but never rendered — wire in or delete (5 blocks) | 🟠 Soon |
 | 10 | UX/UI vs SaaS | Positioning overlap (front-end dev + strategy on both) — draw the boundary | 🟠 Soon |
@@ -594,14 +563,6 @@ This file also holds the `chip` arrays with `1-2 months`, timeline/deliverable t
 
 ---
 
-### NF6. `SERVICE_META` and `SERVICE_OG` still carry the half-killed Design System entry 🟡
-
-**Confirmed in:** `app/services/[id]/page.tsx` L52-59 (`SERVICE_META["design-system-component-library"]`) and `app/services/[id]/opengraph-image.tsx` (`SERVICE_OG["design-system-component-library"]`), plus `data/sericesDetailsList.json` still has the 5th entry and `generateStaticParams` (L6-8) still pre-renders it.
-
-The service is out of the navbar, the visual footer, and the sitemap — but still fully routable, statically generated, metadata-mapped, OG-imaged, and linked from `app/layout.tsx` L418. **The kill/rebuild decision (v2 §5, Priority #7) is still unmade** and the page is in the same half-dead state, now with the added inconsistency that its *content* was partially repaired in this cycle (headings) while its *hero.heading* still belongs to Landing Pages. Decide: kill (remove from JSON + both meta maps + `layout.tsx` + add a 301) or rebuild `hero.heading` + `whoThisIsFor` + `streamlinedProcess` badges.
-
----
-
 ## E-E-A-T Assessment (v3 — SEO Content Skill Applied)
 
 Scored across the 4 in-scope service pages as a set.
@@ -730,16 +691,6 @@ The `whyThisMatters` **cards** on this page (Unclear First Steps · Too Many Dec
 
 ---
 
-### NC3. Design System page — fix the stolen headline (or kill the page) 🔴
-
-**Confirmed in:** `data/sericesDetailsList.json`, `Design-System-&-Component-Library` → `hero.heading` still `Your Website Isn't a Brochure, It's a Sales Tool`.
-
-**If keeping:** `hero.heading` → `One UI Language, Every Squad, No Drift` (or similar); `streamlinedProcess.workflow[0].badge` / `[1].badge` → `Foundations` / `Build & Handoff` (currently both `Design Workflow`); replace `whoThisIsFor` (currently old Graphic Design copy — icon sets, pitch decks, logos, print) with design-system consumers: teams scaling UI across squads, orgs with Figma↔code drift, product teams standardizing components.
-
-**If killing (v2's recommendation, still unactioned):** remove the entry from `sericesDetailsList.json`, `SERVICE_META` (`page.tsx` L52-59), `SERVICE_OG` (`opengraph-image.tsx`), and `app/layout.tsx` L418; add a 301 from `/services/Design-System-&-Component-Library` → `/services/ux-ui-design`; add a `Design tokens & component library` card to the UX/UI Design `whatYouGet`.
-
----
-
 ### NC4. Fix the SEO-footer broken links 🔴
 
 **Confirmed in:** `app/layout.tsx` L416-419.
@@ -820,7 +771,6 @@ All v1/v2 items carried forward. New v3 items marked `[v3]`. "Verified" = code-c
 | 3 | SEO footer | `/services/SaaS-Web-&-Mobile-Apps` broken; Design System link still live — fix per NC4 | `app/layout.tsx` L416, L418 | 🔴 Fix now | ✓ |
 | 4 | Routing | Unknown slug returns 200 (soft 404); `<div>danis...</div>` still in prod — call `notFound()` per NF4 | `app/services/[id]/page.tsx` L108-115; `screens/serviceDetails/index.tsx` L16 | 🔴 Fix now `[v3]` | ✓ |
 | 5 | Nav | `/services` parent link 404s — build the hub page per NC8 | `config/site.ts` L9, L112 | 🔴 Fix now | ✓ |
-| 6 | Design System | `hero.heading` = Landing Pages' line; `whoThisIsFor` = old Graphic Design copy; process badges both `Design Workflow` — decide kill vs rebuild per NC3/NF6 | `data/sericesDetailsList.json` (Design-System entry); `app/services/[id]/page.tsx` L52-59; `opengraph-image.tsx`; `app/layout.tsx` L418 | 🔴 Decide now | ✓ |
 | 7 | UX Audits | `whoThisIsFor` = 2 lowercase cards → 3 Title Case per NC2 | `data/sericesDetailsList.json` (UX-Audits entry) | 🟠 Soon | ✓ |
 | 8 | All | Hero secondary CTA = WhatsApp; primary → `/contact` not cal.com; badge fallback string — fix per NC6 | `screens/serviceDetails/hero/index.tsx` L76, L105, L213, L220, L245 | 🟠 Soon | ✓ |
 | 9 | SaaS & AI Dev | 4 `whatYouGet` headings unmapped → mislabeled icons; add to map or add `visualKey` | `screens/serviceDetails/whatYouGetAnimations/index.tsx` L10-23 | 🟠 Soon | ✓ |
@@ -835,7 +785,6 @@ All v1/v2 items carried forward. New v3 items marked `[v3]`. "Verified" = code-c
 | 18 | SEO | `ux-ui-design` + `saas-ai-development` titles over-long (framework lists); move to description | `app/services/[id]/page.tsx` L28-43 | 🟡 Consider | ✓ |
 | 19 | SEO | `keywords` meta stuffed on all 5 — trim to 4-6 or remove | `app/services/[id]/page.tsx` L33-66 | 🟡 Consider | ✓ |
 | 20 | SEO | Fallback `description` asserts `trusted by Fortune 500 companies` — replace/remove | `app/services/[id]/page.tsx` L78 | 🟡 Consider | ✓ |
-| 21 | SEO | `design-system-component-library` still in `SERVICE_META` + `SERVICE_OG` + `generateStaticParams` | `app/services/[id]/page.tsx` L52-59; `opengraph-image.tsx` | 🟡 Consider `[v3]` | ✓ |
 | 22 | Data | `servicesTopList.json` duplicates the `model landing pages` typo; confirm whether the file is still used | `data/servicesTopList.json` | 🟡 Consider `[v3]` | ✓ |
 | 23 | All | `whatYouGet` heading→animation string coupling undocumented — add `visualKey` or document the 12 protected strings | `screens/serviceDetails/whatYouGetAnimations/index.tsx` | 🟡 Consider | ✓ |
 | 24 | Landing Pages | `whoThisIsFor` spans SaaS → café → personal portfolio — narrow to commercial audiences | `data/sericesDetailsList.json` (Landing-Pages entry) | 🟡 Consider | ✓ |
