@@ -49,9 +49,9 @@ const LAB_LIGHT_PAGE_HEXES = [
   "#0D0D10", "#0E0E10",
 ];
 const LAB_LIGHT_PANEL_HEXES = [
-  "#0B0B0D", "#0D1015", "#0F1116", "#101012", "#101014", "#10131A",
-  "#121214", "#121215", "#12141A", "#141417", "#151518", "#16181F",
-  "#181614", "#1a1c23", "#1B1C20", "#1C1815",
+  "#0B0B0D", "#0D1015", "#0E0F13", "#0F1116", "#101012", "#101014", "#10131A",
+  "#121214", "#121215", "#12141A", "#141417", "#141418", "#151518", "#16181F",
+  "#181614", "#1a1c23", "#1B1C20", "#1C1815", "#1E1E28",
 ];
 const hexRule = (hexes: string[], color: string) =>
   `${hexes.map((h) => `.lab-embed-light [class*="bg-[${h}]" i]`).join(",\n")} {\n  background-color: ${color} !important;\n  background-image: none !important;\n}`;
@@ -1048,7 +1048,8 @@ export default function Example() {
                 </div>
               </div>
             ) : (
-            <div className="max-w-4xl mx-auto space-y-12 pb-16">
+            <div className={`max-w-4xl mx-auto space-y-12 pb-16 ${isLightPage ? "lab-embed-light" : ""}`}>
+              {isLightPage && <style dangerouslySetInnerHTML={{ __html: LAB_EMBED_LIGHT_CSS }} />}
 
               {/* Breadcrumb Navigation */}
               {breadcrumbNav}
