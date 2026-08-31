@@ -720,7 +720,7 @@ export default function Example() {
         const validSwitchThemes = ["figma-emerald", "cyber-cyan", "magma-orange", "dark-obsidian", "hyper-violet", "amber-crt"];
         const switchTheme = safeTheme(customTheme, validSwitchThemes, "figma-emerald");
         return (
-          <div className="py-8 flex items-center justify-center">
+          <div className="py-12 flex items-center justify-center">
             <TactileNeumorphicSwitch
               theme={switchTheme as any}
               size={customSize}
