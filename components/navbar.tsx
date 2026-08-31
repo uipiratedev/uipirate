@@ -174,7 +174,7 @@ export const Navbar = () => {
         {!loading && (
           <div
             className={clsx(
-              "container mx-auto px-32 lg:px-20 max-md:px-0 pointer-events-auto",
+              "container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 max-md:px-0 pointer-events-auto",
             )}
           >
             <GlassSurface
