@@ -344,7 +344,6 @@ We typically respond within one business day.
 | `marquee/index.tsx` | Add company name text labels (⚠️ Needs rethink/confirmation) |
 | `data/testimonials.json` | Remove or reposition Kyle Drucker (YouTuber) testimonial |
 | `data/testimonials.json` | Request expanded P-S-O testimonials from 3 generic reviewers |
-| `featuredCaseStudy/index.tsx` | Add client industry tag + logo to the featured case study card |
 
 ---
 

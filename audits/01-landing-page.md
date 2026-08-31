@@ -378,6 +378,8 @@ Link: "Read the full case study →"
 
 Without this, the section will not render and the page will skip from the gallery directly to "Who We Are" with no case study proof in between — which is exactly the gap the target audience audit identified.
 
+**Status:** ✅ **Fixed.** Added `clientLogo` and `industry` fields to `FeaturedCaseStudyData` and implemented UI support for rendering the client logo (if available) and an industry tag alongside the client name.
+
 ---
 
 #### 7c. Missing: client logo or industry tag on the featured card
@@ -720,7 +722,7 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 26 | Testimonials | Remove/reposition Kyle Drucker (YouTuber) testimonial `[v1]` | `data/testimonials.json` | 🟡 Consider |
 | 27 | Testimonials | Request P-S-O expanded testimonials from 3 generic reviewers `[v1]` | `data/testimonials.json` | 🟡 Consider |
 | 28 | Pricing | Fix remaining pricing section copy issues (see 03-pricing-page.md) `[v1]` | `pricing/index.tsx` | 🟡 Consider |
-| 29 | FeaturedCaseStudy | Add client industry tag and logo to the featured case study card `[NEW]` | `featuredCaseStudy/index.tsx` | 🟡 Consider |
+| 20 | FeaturedCaseStudy | Add client industry tag and logo to the featured case study card `[NEW]` | `featuredCaseStudy/index.tsx` | ✅ Done |
 | 21 | PerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
 | 31 | MiniService | Consider replacing "world-class" in section heading `[NEW]` | `miniService/miniService.tsx` | 🟡 Consider |
 

@@ -63,6 +63,8 @@ async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
     heroImage,
     metricLabel: candidate.metrics[0].label,
     metricValue: candidate.metrics[0].value,
+    clientLogo: candidate.clientLogo,
+    industry: candidate.tags?.[0],
   };
 }
 

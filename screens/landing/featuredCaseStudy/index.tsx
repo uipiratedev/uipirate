@@ -13,6 +13,8 @@ export interface FeaturedCaseStudyData {
   heroImage: string;
   metricLabel: string;
   metricValue: string;
+  clientLogo?: string;
+  industry?: string;
 }
 
 interface FeaturedCaseStudyProps {
@@ -38,8 +40,22 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
           <GlassBadge className="text-white mb-6" variant="gradient">
             featured case study
           </GlassBadge>
-          <h2 className="text-3xl max-md:text-2xl font-bold text-white mb-3">
-            {study.client}
+          <h2 className="text-3xl max-md:text-2xl font-bold text-white mb-3 flex items-center gap-3">
+            {study.clientLogo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt={`${study.client} logo`}
+                className="h-8 w-auto object-contain brightness-0 invert"
+                src={study.clientLogo}
+              />
+            ) : (
+              study.client
+            )}
+            {study.industry && (
+              <span className="text-xs font-semibold px-2 py-1 bg-white/10 rounded-md text-gray-300 tracking-wider uppercase ml-2">
+                {study.industry}
+              </span>
+            )}
           </h2>
           {study.excerpt && (
             <p className="text-gray-500 mb-6 max-w-xl leading-relaxed">
