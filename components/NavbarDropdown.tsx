@@ -241,11 +241,17 @@ export const NavbarDropdown = ({
                                 >
                                   <div className="w-auto h-full aspect-square rounded-[8px] bg-white text-gray-700 flex items-center justify-center text-lg group-hover:bg-orange-50 group-hover:text-orange-600 border border-gray-200 group-hover:border-orange-200 transition-all shrink-0">
                                     {item.icon ? (
-                                      <img
-                                        alt={item.category}
-                                        className="w-4 h-4 invert"
-                                        src={item.icon}
-                                      />
+                                      item.icon.startsWith("http") || item.icon.startsWith("/") ? (
+                                        <img
+                                          alt={item.category}
+                                          className="w-4 h-4 invert"
+                                          src={item.icon}
+                                        />
+                                      ) : (
+                                        <span className="text-base leading-none select-none">
+                                          {item.icon}
+                                        </span>
+                                      )
                                     ) : (
                                       // Fallback if large card moved here and has no icon property suited for this view, or re-use existing logic
                                       <div className="w-4 h-4 bg-gray-400 rounded-full" />

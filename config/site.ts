@@ -78,21 +78,21 @@ export const siteConfig = {
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg",
         },
+        // {
+        //   category: "FAQs",
+        //   icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612676/circle-question-mark_1_sl0cgn.svg",
+        //   href: "/faqs",
+        //   isLargeCard: true,
+        //   bgImage:
+        //     "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670805/faq_gn5mmv.svg",
+        // },
         {
-          category: "FAQs",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770612676/circle-question-mark_1_sl0cgn.svg",
-          href: "/faqs",
-          isLargeCard: true,
-          bgImage:
-            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670805/faq_gn5mmv.svg",
-        },
-        {
-          category: "Free Tools",
+          category: "Tools",
           icon: "🛠️",
           href: "/tools",
           isLargeCard: true,
           bgImage:
-            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670797/saas_fb0ea1.svg",
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181141/tools_q1fxyd.svg",
         },
         {
           category: "Component Lab",
@@ -100,13 +100,13 @@ export const siteConfig = {
           href: "/componentlab",
           isLargeCard: true,
           bgImage:
-            "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
+            "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181120/componentlab_warfka.svg",
         },
-        {
-          category: "3D Tactile Buttons",
-          icon: "🔘",
-          href: "/buttons",
-        },
+        // {
+        //   category: "3D Tactile Buttons",
+        //   icon: "🔘",
+        //   href: "/buttons",
+        // },
       ],
     },
   ],
