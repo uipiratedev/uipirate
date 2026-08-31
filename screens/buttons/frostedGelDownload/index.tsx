@@ -10,6 +10,8 @@ import {
   FrostedGelStateMode,
   FROSTED_GEL_THEMES,
 } from "@/components/FrostedGelDownloadButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function FrostedGelDownloadScreen() {
   const [theme, setTheme] = useState<FrostedGelTheme>("figma-blue");
@@ -217,31 +219,32 @@ export default function Example() {
 </motion.div>`;
 
   return (
-    <div className="min-h-screen bg-[#07080A] text-white font-sans selection:bg-blue-600/30 selection:text-blue-200">
-      <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
-        {/* Header Section */}
-        <header className="space-y-4">
-          <div className="flex items-center gap-3">
-            <span className="px-2.5 py-0.5 rounded-md text-[11px] font-mono uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">
-              Glassmorphic CTA
-            </span>
-            <span className="text-xs text-white/40 font-mono">
-              React + Tailwind + Framer Motion
-            </span>
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Frosted Gel Dual-Pill Download Button
-          </h1>
-          <p className="text-base text-white/60 max-w-3xl leading-relaxed">
-            Dual-pill split CTA button featuring an elevated ceramic primary action, frosted glass cloud download tile, optical refraction rings, and volumetric blue underglow flare.
-          </p>
-        </header>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07080A] text-white font-sans selection:bg-blue-600/30 selection:text-blue-200 pt-6 pb-20">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+          {/* Header Section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-3 justify-center">
+              <span className="px-2.5 py-0.5 rounded-md text-[11px] font-mono uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                Glassmorphic CTA
+              </span>
+              <span className="text-xs text-white/40 font-mono">
+                React + Tailwind + Framer Motion
+              </span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Frosted Gel Dual-Pill Download Button
+            </h1>
+            <p className="text-base sm:text-lg text-white/60 max-w-3xl mx-auto leading-relaxed">
+              Dual-pill split CTA button featuring an elevated ceramic primary action, frosted glass cloud download tile, optical refraction rings, and volumetric blue underglow flare.
+            </p>
+          </header>
 
         {/* 2. Interactive Studio Stage */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="flex flex-col gap-8 items-stretch">
           {/* Main Visual Stage */}
-          <div className="lg:col-span-8 space-y-4">
-            <div className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0F1116] min-h-[460px] flex flex-col items-center justify-center p-8">
+          <div className="space-y-4">
+            <div className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0F1116] min-h-[380px] flex flex-col items-center justify-center p-8">
               {/* Grid Canvas Texture */}
               {stageBg === "diagonal-grid" && (
                 <div
@@ -310,11 +313,12 @@ export default function Example() {
           </div>
 
           {/* Controls Sidebar */}
-          <div className="lg:col-span-4 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+          <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
               Customizer
             </h2>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5">
             {/* State Mode Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
@@ -390,6 +394,124 @@ export default function Example() {
                 onChange={(e) => setLabelText(e.target.value)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
               />
+            </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#2626FF] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover &amp; click each variant to experience frosted gel optical effects
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Figma Blue */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Figma Electric Blue</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;figma-blue&quot;</span>
+                </div>
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                  <FrostedGelDownloadButton
+                    label="Download Package"
+                    theme="figma-blue"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma ceramic pill with volumetric blue flare</span>
+              </div>
+
+              {/* Cyber Violet */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyber Violet</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;cyber-violet&quot;</span>
+                </div>
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                  <FrostedGelDownloadButton
+                    label="Install Assets"
+                    theme="cyber-violet"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet refraction glow with tinted frosted gel</span>
+              </div>
+
+              {/* Emerald Matrix */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Emerald Matrix</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald-matrix&quot;</span>
+                </div>
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                  <FrostedGelDownloadButton
+                    label="Fetch Source"
+                    theme="emerald-matrix"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Cyberpunk reactor green glow with translucent glass tile</span>
+              </div>
+
+              {/* Magma Orange */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Magma Orange</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;magma-orange&quot;</span>
+                </div>
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                  <FrostedGelDownloadButton
+                    label="Get Bundle"
+                    theme="magma-orange"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">UI Pirate signature brand magma orange illumination</span>
+              </div>
+
+              {/* Dark Obsidian */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Dark Obsidian</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark-obsidian&quot;</span>
+                </div>
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                  <FrostedGelDownloadButton
+                    label="Download Code"
+                    theme="dark-obsidian"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight pill with smoked dark glass cloud tile</span>
+              </div>
+
+              {/* Titanium Gold */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Titanium Gold</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;titanium-gold&quot;</span>
+                </div>
+                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                  <FrostedGelDownloadButton
+                    label="Export Pro"
+                    theme="titanium-gold"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Luxury warm gold underglow with champagne ceramic pill</span>
+              </div>
             </div>
           </div>
         </div>
@@ -568,7 +690,11 @@ export default function Example() {
             </div>
           </div>
         </div>
-      </main>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="frosted glass CTA buttons or component libraries" />
+      </div>
     </div>
+  </PageWrapper>
   );
 }

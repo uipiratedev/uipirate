@@ -9,6 +9,8 @@ import {
   LedMatrixInteractionMode,
   LedMatrixSize,
 } from "@/components/LedMatrixChevronButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function LedMatrixChevronScreen() {
   const [theme, setTheme] = useState<LedMatrixTheme>("monochrome");
@@ -138,25 +140,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#070709] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-emerald-500/30 selection:text-emerald-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Cyberpunk LED Hardware</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-emerald-400">Expandable Dot Matrix</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#070709] text-white pt-6 pb-20 selection:bg-emerald-500/30 selection:text-emerald-200">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Cyberpunk LED Hardware</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-emerald-400">Expandable Dot Matrix</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            LED Matrix Chevron <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              LED Matrix Chevron <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Expandable phosphor LED dot-matrix chevron button featuring physical grid illumination, animated marquee shift loop, and specular bevel framing.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Expandable phosphor LED dot-matrix chevron button featuring physical grid illumination, animated marquee shift loop, and specular bevel framing.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -217,6 +220,123 @@ export default function Example() {
                     {s}
                   </button>
                 ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#10B981] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover over buttons to expand dot matrix screen &amp; trigger cascading chevrons
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Monochrome Figma */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Monochrome Figma</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;monochrome&quot;</span>
+                </div>
+                <div className="my-3">
+                  <LedMatrixChevronButton
+                    theme="monochrome"
+                    label="See Plans"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with white LED grid pixels</span>
+              </div>
+
+              {/* UI Pirate Orange */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Magma</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;uipirate&quot;</span>
+                </div>
+                <div className="my-3">
+                  <LedMatrixChevronButton
+                    theme="uipirate"
+                    label="Get Started"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange LED illumination wave</span>
+              </div>
+
+              {/* Neon Emerald Matrix */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Emerald</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald&quot;</span>
+                </div>
+                <div className="my-3">
+                  <LedMatrixChevronButton
+                    theme="emerald"
+                    label="Deploy App"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Cyberpunk reactor green LED matrix screen</span>
+              </div>
+
+              {/* Electric Cyan */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Electric Cyan</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">theme=&quot;cyan&quot;</span>
+                </div>
+                <div className="my-3">
+                  <LedMatrixChevronButton
+                    theme="cyan"
+                    label="Explore Tech"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Laser cyan glowing pixel chevrons</span>
+              </div>
+
+              {/* Amber Solar */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Amber Solar</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;amber&quot;</span>
+                </div>
+                <div className="my-3">
+                  <LedMatrixChevronButton
+                    theme="amber"
+                    label="View Matrix"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Warm golden amber retro terminal LED display</span>
+              </div>
+
+              {/* Crimson Laser */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Crimson Laser</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-rose-400">theme=&quot;crimson&quot;</span>
+                </div>
+                <div className="my-3">
+                  <LedMatrixChevronButton
+                    theme="crimson"
+                    label="Execute"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">High-intensity ruby red cascading chevron pulse</span>
               </div>
             </div>
           </div>
@@ -356,7 +476,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="LED dot-matrix buttons or custom hardware UI controls" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

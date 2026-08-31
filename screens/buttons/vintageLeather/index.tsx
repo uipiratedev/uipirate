@@ -7,6 +7,8 @@ import {
   VintageLeatherTheme,
   VintageLeatherSize,
 } from "@/components/VintageLeatherCTA";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function VintageLeatherScreen() {
   const [theme, setTheme] = useState<VintageLeatherTheme>("heritage");
@@ -131,25 +133,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#070709] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-amber-500/30 selection:text-amber-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-            <span>Artisanal Skeuomorphic Leather</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-amber-400">Heritage Brass & Saddle</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#070709] text-white pt-6 pb-20 selection:bg-amber-500/30 selection:text-amber-200">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs font-medium text-amber-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              <span>Artisanal Skeuomorphic Leather</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-amber-400">Heritage Brass &amp; Saddle</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Vintage Leather <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500">Heritage CTA Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Vintage Leather <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500">Heritage CTA Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Crafted skeuomorphic button featuring authentic saddle leather grain noise, engraved vector scrollwork flourishes, and rich brass bevel highlights.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Crafted skeuomorphic button featuring authentic saddle leather grain noise, engraved vector scrollwork flourishes, and rich brass bevel highlights.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#101014] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -214,6 +217,123 @@ export default function Example() {
                     {s}
                   </button>
                 ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#B4986C] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover &amp; click to preview heritage tactile embossed leather &amp; brass bevel flourishes
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Heritage Brass & Leather */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Heritage Brass</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-300">theme=&quot;heritage&quot;</span>
+                </div>
+                <div className="my-3">
+                  <VintageLeatherCTA
+                    theme="heritage"
+                    label="Contact Sales"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with embossed cowhide leather &amp; brass lip</span>
+              </div>
+
+              {/* UI Pirate Bronze */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Bronze</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;uipirate&quot;</span>
+                </div>
+                <div className="my-3">
+                  <VintageLeatherCTA
+                    theme="uipirate"
+                    label="Explore Ship"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange leather with filigree corner ornaments</span>
+              </div>
+
+              {/* Obsidian Platinum */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Obsidian Platinum</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;obsidian&quot;</span>
+                </div>
+                <div className="my-3">
+                  <VintageLeatherCTA
+                    theme="obsidian"
+                    label="Schedule Call"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight black leather with platinum bevel edging</span>
+              </div>
+
+              {/* Emerald Imperial */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Emerald Imperial</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald&quot;</span>
+                </div>
+                <div className="my-3">
+                  <VintageLeatherCTA
+                    theme="emerald"
+                    label="Claim Throne"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Royal jade leather with golden scrollwork corner flourishes</span>
+              </div>
+
+              {/* Ruby Royalty */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Ruby Royalty</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-rose-400">theme=&quot;ruby&quot;</span>
+                </div>
+                <div className="my-3">
+                  <VintageLeatherCTA
+                    theme="ruby"
+                    label="Join Order"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Deep burgundy wine leather with gilded golden tactile bevel</span>
+              </div>
+
+              {/* Silver Armour */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Silver Armour</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-300">theme=&quot;silver&quot;</span>
+                </div>
+                <div className="my-3">
+                  <VintageLeatherCTA
+                    theme="silver"
+                    label="View Armoury"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Medieval steel &amp; silver chassis with filigree corner ornaments</span>
               </div>
             </div>
           </div>
@@ -353,7 +473,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="skeuomorphic leather CTA buttons or luxury web design" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

@@ -10,11 +10,6 @@ const Landing = dynamic(() => import("@/screens/landing"), {
   loading: () => <Loader />,
 });
 
-// Client-only smooth scroll — doesn't block server rendering
-const SmoothScroll = dynamic(() => import("@/components/SmoothScroll"), {
-  ssr: false,
-});
-
 // Page-specific metadata (overrides layout defaults for the homepage)
 export const metadata: Metadata = {
   title: "UI Pirate — Designing AI-Driven SaaS Products That Convert",
@@ -74,10 +69,5 @@ async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
 export default async function Home() {
   const featuredCaseStudy = await getFeaturedCaseStudy();
 
-  return (
-    <>
-      <SmoothScroll />
-      <Landing featuredCaseStudy={featuredCaseStudy} />
-    </>
-  );
+  return <Landing featuredCaseStudy={featuredCaseStudy} />;
 }

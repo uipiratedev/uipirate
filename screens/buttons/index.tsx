@@ -15,6 +15,8 @@ import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 interface ButtonCatalogItem {
   id: string;
@@ -177,32 +179,33 @@ export default function ButtonHubScreen() {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Ambient Lighting */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[550px] bg-[#FF5B04]/10 rounded-full blur-[160px]" />
-        <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/10 rounded-full blur-[140px]" />
-        <div className="absolute top-2/3 right-1/12 w-[550px] h-[450px] bg-purple-600/10 rounded-full blur-[160px]" />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10 space-y-16">
-        {/* Header section */}
-        <div className="text-center space-y-5 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>Interactive Button Library</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">13 Dedicated Component Studios</span>
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
-            Handcrafted <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] via-orange-300 to-[#00E5BE]">Button Architecture</span>
-          </h1>
-
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Each button component below features its own interactive studio page with full customization sandboxes, props reference, design tokens, and copy-ready React & Tailwind code.
-          </p>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        {/* Ambient Lighting */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[550px] bg-[#FF5B04]/10 rounded-full blur-[160px]" />
+          <div className="absolute top-1/3 left-1/12 w-[450px] h-[450px] bg-[#00E5BE]/10 rounded-full blur-[140px]" />
+          <div className="absolute top-2/3 right-1/12 w-[550px] h-[450px] bg-purple-600/10 rounded-full blur-[160px]" />
         </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-16">
+          {/* Header section */}
+          <div className="text-center space-y-5 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
+              <span>Interactive Button Library</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#00E5BE]">13 Dedicated Component Studios</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white font-jakarta">
+              Handcrafted <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5B04] via-orange-300 to-[#00E5BE]">Button Architecture</span>
+            </h1>
+
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Each button component below features its own interactive studio page with full customization sandboxes, props reference, design tokens, and copy-ready React &amp; Tailwind code.
+            </p>
+          </div>
 
         {/* Buttons Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -406,7 +409,11 @@ export default function ButtonHubScreen() {
             </div>
           ))}
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="custom interactive buttons or UI components" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

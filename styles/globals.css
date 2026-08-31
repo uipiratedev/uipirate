@@ -865,23 +865,28 @@ body {
   transform: translateY(0) rotateX(0);
 }
 
+/* Was `animation-timeline: view(70% 5%)`: that inset shrinks the covered
+   range so far that the element stayed invisible (opacity: 0, 300px away)
+   for most of its scroll transit before a late, rushed reveal — the exact
+   "takes forever to show up" complaint. `entry 0% entry 60%` starts the
+   reveal the moment the element begins entering the viewport (matching
+   .autoShowBottom below), and the travel distance is now short enough to
+   feel snappy rather than a slow throw. */
 .autoShow {
   animation: autoShowAnimation both;
-  animation-timeline: view(70% 5%);
-  transition: ease-in-out;
+  animation-timeline: view();
+  animation-range: entry 0% entry 60%;
 }
 
 @keyframes autoShowAnimation {
   from {
     opacity: 0;
-    transform: translateY(300px) scale(0.3);
-    transition: ease-in-out;
+    transform: translateY(40px) scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translateY(-10px) scale(1);
-    transition: ease-in-out;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -1034,7 +1039,8 @@ reveal-text span {
 /* Scroll-based text reveal animation - light gray to original color */
 .text-reveal-scroll {
   animation: textRevealScroll both;
-  animation-timeline: view(70% 5%);
+  animation-timeline: view();
+  animation-range: entry 0% entry 60%;
 }
 
 @keyframes textRevealScroll {

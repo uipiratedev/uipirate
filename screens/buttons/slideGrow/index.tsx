@@ -9,6 +9,8 @@ import {
   SlideGrowInteractionMode,
   SlideGrowSize,
 } from "@/components/SlideGrowButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function SlideGrowScreen() {
   const [theme, setTheme] = useState<SlideGrowTheme>("silver");
@@ -161,25 +163,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#07080B] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-blue-500/30 selection:text-blue-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-            <span>Interactive Slide Action</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-blue-400">Swipe to Unlock</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07080B] text-white pt-6 pb-20 selection:bg-blue-500/30 selection:text-blue-200">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-medium text-blue-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span>Interactive Slide Action</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-blue-400">Swipe to Unlock</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Slide to Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Tactile Slider</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Slide to Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Tactile Slider</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Smooth gesture swipe-to-grow slider button featuring dynamic laser channel reveal, spring damping, and physical knob transformation.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Smooth gesture swipe-to-grow slider button featuring dynamic laser channel reveal, spring damping, and physical knob transformation.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
@@ -255,6 +258,129 @@ export default function Example() {
                     {s}
                   </button>
                 ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#468AFF] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Drag knob or click channel to trigger animated slider unlock
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Figma Metallic Silver */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Figma Silver</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;silver&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SlideGrowButton
+                    theme="silver"
+                    startLabel="Get Started"
+                    activeLabel="Lets Grow!"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with blue illuminated channel</span>
+              </div>
+
+              {/* UI Pirate Orange */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Magma</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;uipirate&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SlideGrowButton
+                    theme="uipirate"
+                    startLabel="Swipe to Unlock"
+                    activeLabel="Welcome!"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange beam channel fill</span>
+              </div>
+
+              {/* Dark Obsidian Matrix */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Dark Obsidian</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SlideGrowButton
+                    theme="dark"
+                    startLabel="Slide To Confirm"
+                    activeLabel="Confirmed"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight chassis with crisp white knob laser</span>
+              </div>
+
+              {/* Cyberpunk Violet */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyberpunk Violet</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;cyberpunk&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SlideGrowButton
+                    theme="cyberpunk"
+                    startLabel="Slide to Deploy"
+                    activeLabel="Deployed!"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet channel illumination with neon glow</span>
+              </div>
+
+              {/* Neon Emerald */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Emerald</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SlideGrowButton
+                    theme="emerald"
+                    startLabel="Swipe Access"
+                    activeLabel="Authorized"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Cyberpunk reactor green slider channel beam</span>
+              </div>
+
+              {/* Magma Flare */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Magma Flare</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;orange&quot;</span>
+                </div>
+                <div className="my-3 scale-90">
+                  <SlideGrowButton
+                    theme="orange"
+                    startLabel="Pay $49"
+                    activeLabel="Paid!"
+                    size="sm"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Warm golden orange sliding payment checkout pill</span>
               </div>
             </div>
           </div>
@@ -400,7 +526,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="gesture swipe sliders or interactive web controls" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

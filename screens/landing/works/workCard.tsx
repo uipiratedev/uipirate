@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { useIsMobile } from "@/hooks";
 import LetsTalkButton from "@/components/LetsTalkButton";
@@ -45,57 +44,32 @@ interface WorkCardItemProps {
   index: number;
 }
 
+// Reveal transitions once, triggered by IntersectionObserver (Framer Motion's
+// `whileInView`) instead of continuously tracking scroll position. The
+// previous version created two redundant `useScroll` listeners per card,
+// each feeding an 800-stiffness spring, over an artificially tiny 2%
+// scroll window — that's what made the reveal feel like it took forever
+// (it only fired inside a razor-thin trigger band) and jittery (two
+// independent scroll trackers plus stiff springs reacting to every frame).
+const revealTransition = { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } as const;
+const viewport = { once: true, margin: "-10% 0px -10% 0px" } as const;
+
 const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
-  const cardRef = useRef<HTMLDivElement>(null);
   const isEven = index % 2 === 0;
   const isMobile = useIsMobile();
 
-  // Scroll progress for image animation - Extremely tight offset for immediate trigger
-  const { scrollYProgress: imageScrollProgressRaw } = useScroll({
-    target: cardRef,
-    offset: ["start 100%", "start 98%"],
-  });
-
-  // Scroll progress for content animation
-  const { scrollYProgress: contentScrollProgressRaw } = useScroll({
-    target: cardRef,
-    offset: ["start 100%", "start 98%"],
-  });
-
-  // Hyper-fast physics for near-instant completion
-  const imageScrollProgress = useSpring(imageScrollProgressRaw, {
-    stiffness: 800,
-    damping: 50,
-    restDelta: 0.001,
-  });
-  const contentScrollProgress = useSpring(contentScrollProgressRaw, {
-    stiffness: 800,
-    damping: 50,
-    restDelta: 0.001,
-  });
-
-  // Image transforms: x and rotation
-  const imageX = useTransform(
-    imageScrollProgress,
-    [0, 1],
-    [isEven ? (isMobile ? "-10%" : "-25%") : isMobile ? "10%" : "25%", "0%"],
-  );
-  const imageRotate = useTransform(
-    imageScrollProgress,
-    [0, 1],
-    [isEven ? (isMobile ? -5 : -12) : isMobile ? 5 : 12, 0],
-  );
-
-  // Content transform: y position - much smaller on mobile for faster visibility
-  const contentY = useTransform(
-    contentScrollProgress,
-    [0, 1],
-    [isMobile ? 20 : 60, 0],
-  );
+  const imageStartX = isEven
+    ? isMobile
+      ? "-10%"
+      : "-25%"
+    : isMobile
+      ? "10%"
+      : "25%";
+  const imageStartRotate = isEven ? (isMobile ? -5 : -12) : isMobile ? 5 : 12;
+  const contentStartY = isMobile ? 20 : 60;
 
   return (
     <div
-      ref={cardRef}
       className={
         isEven
           ? "flex flex-row-reverse justify-between mb-0 max-md:mb-6 max-w-full max-md:flex-col-reverse"
@@ -108,7 +82,10 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
             ? "flex flex-row items-start md:justify-end w-[40%] text-end max-md:text-center max-md:w-[100%] max-md:px-0 max-md:justify-center"
             : "flex flex-row items-start justify-start w-[40%] max-md:text-center max-md:w-[100%] max-md:px-4"
         }
-        style={{ y: contentY }}
+        initial={{ y: contentStartY }}
+        transition={revealTransition}
+        viewport={viewport}
+        whileInView={{ y: 0 }}
       >
         <div>
           <h3 className="text-[2rem] max-md:text-xl mb-2 max-md:mb-1 font-[600] max-xl:text-[3.5rem] max-md:mt-6">
@@ -144,9 +121,12 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
         <motion.img
           alt={`${item.heading} - ${item.heading1} UI/UX design project showcase`}
           className="w-full rounded-3xl max-md:rounded-2xl md:-mt-12 max-md:mt-4"
+          initial={{ x: imageStartX, rotate: imageStartRotate }}
           loading="lazy"
           src={item.img}
-          style={{ x: imageX, rotate: imageRotate }}
+          transition={revealTransition}
+          viewport={viewport}
+          whileInView={{ x: "0%", rotate: 0 }}
         />
       </div>
     </div>

@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import ScalingCapsuleButton, {
   ScalingCapsuleVariant,
 } from "@/components/ScalingCapsuleButton";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function ScalingCapsuleButtonScreen() {
   const [label, setLabel] = useState("Scaling Workshop");
@@ -307,27 +309,28 @@ export default function HeroSection() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      {/* Background ambient lighting */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#FF5B04]/10 rounded-full blur-[140px]" />
-        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-[#00E5BE]/10 rounded-full blur-[120px]" />
-        <div className="absolute top-2/3 right-1/4 w-[500px] h-[400px] bg-purple-600/10 rounded-full blur-[140px]" />
-      </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        {/* Background ambient lighting */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[#FF5B04]/10 rounded-full blur-[140px]" />
+          <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-[#00E5BE]/10 rounded-full blur-[120px]" />
+          <div className="absolute top-2/3 right-1/4 w-[500px] h-[400px] bg-purple-600/10 rounded-full blur-[140px]" />
+        </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 space-y-12">
-        {/* Header section */}
-        <div className="text-center space-y-5 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
-            <span>Frosted Capsule CTA</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#00E5BE]">React + Multi-Shadow</span>
-          </div>
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+          {/* Header section */}
+          <div className="text-center space-y-5 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#FF5B04] animate-pulse" />
+              <span>Frosted Capsule CTA</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#00E5BE]">React + Multi-Shadow</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
-            Scaling Capsule <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Tactile Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white font-jakarta">
+              Scaling Capsule <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">Tactile Button</span>
+            </h1>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
             Interactive capsule button engineered with a frosted translucent glass cavity tray, multi-tier elevation drop shadows, specular bevel insets, and an embedded circular apex emblem badge.
@@ -486,6 +489,91 @@ export default function HeroSection() {
                 placeholder="Enter button text..."
                 className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5B04] transition-colors font-mono"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#FF5B04] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover over buttons to test frosted glass capsule elevation &amp; multi-tier shadow stacks
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Figma Dark Obsidian */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Figma Dark Obsidian</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">variant=&quot;dark&quot;</span>
+                </div>
+                <div className="my-3">
+                  <ScalingCapsuleButton
+                    variant="dark"
+                    label="Scaling Workshop"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with frosted translucent cavity tray</span>
+              </div>
+
+              {/* UI Pirate Magma */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Magma</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">variant=&quot;orange&quot;</span>
+                </div>
+                <div className="my-3">
+                  <ScalingCapsuleButton
+                    variant="orange"
+                    label="Start Building"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange glowing capsule with apex emblem</span>
+              </div>
+
+              {/* Titanium Light */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Titanium Light</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-300">variant=&quot;light&quot;</span>
+                </div>
+                <div className="my-3">
+                  <ScalingCapsuleButton
+                    variant="light"
+                    label="Join Waitlist"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Clean ceramic light pill with high-contrast ladder apex</span>
+              </div>
+
+              {/* Cyberpunk Neon */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyberpunk Neon</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">variant=&quot;cyberpunk&quot;</span>
+                </div>
+                <div className="my-3">
+                  <ScalingCapsuleButton
+                    variant="cyberpunk"
+                    label="Deploy Matrix"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet neon tray with cybernetic specular insets</span>
+              </div>
             </div>
           </div>
         </div>
@@ -677,7 +765,7 @@ export default function HeroSection() {
            ───────────────────────────────────────────────────────────── */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-white tracking-tight">Theme Presets</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
                 title: "Obsidian Core",
@@ -729,7 +817,11 @@ export default function HeroSection() {
             ))}
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="tactile capsule buttons or design systems" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

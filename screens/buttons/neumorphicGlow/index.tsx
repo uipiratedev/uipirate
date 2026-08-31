@@ -10,6 +10,8 @@ import {
   NeumorphicNeonPreset,
   NEON_PRESETS,
 } from "@/components/NeumorphicGlowCTA";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function NeumorphicGlowScreen() {
   const [variant, setVariant] = useState<NeumorphicGlowShape>("pill");
@@ -170,25 +172,26 @@ export default function Example() {
 }`;
 
   return (
-    <div className="min-h-screen bg-[#07080B] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 selection:bg-emerald-500/30 selection:text-emerald-200">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Neumorphic Clay + Neon Glow</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-emerald-400">Tactile Micro-Interactions</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#07080B] text-white pt-6 pb-20 selection:bg-emerald-500/30 selection:text-emerald-200">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Neumorphic Clay + Neon Glow</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-emerald-400">Tactile Micro-Interactions</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Neumorphic Glow <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile CTA Button</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Neumorphic Glow <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-300">Tactile CTA Button</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Multi-tier soft neumorphic clay button featuring dual convex lighting shadows, glowing neon arrow badge, and spring depth feedback.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Multi-tier soft neumorphic clay button featuring dual convex lighting shadows, glowing neon arrow badge, and spring depth feedback.
+            </p>
+          </header>
 
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
@@ -270,6 +273,129 @@ export default function Example() {
                     {s}
                   </button>
                 ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & THEMES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#10B981] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Hover over buttons to trigger specular clay elevation &amp; neon badge bloom
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Figma Neon Emerald Pill */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Emerald Pill</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">neonPreset=&quot;emerald&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="pill"
+                    neonPreset="emerald"
+                    label="Get Started"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with glowing emerald arrow badge</span>
+              </div>
+
+              {/* UI Pirate Magma Squircle */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">UI Pirate Squircle</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">neonPreset=&quot;uipirate&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="squircle"
+                    neonPreset="uipirate"
+                    label="Explore Tools"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Signature magma orange neumorphic clay squircle</span>
+              </div>
+
+              {/* Electric Cyan Pill */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Electric Cyan Pill</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">neonPreset=&quot;cyan&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="pill"
+                    neonPreset="cyan"
+                    label="Live Preview"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Cyan optical underglow badge with specular bevel lip</span>
+              </div>
+
+              {/* Neon Magenta Squircle */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Magenta Squircle</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-pink-400">neonPreset=&quot;magenta&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="squircle"
+                    neonPreset="magenta"
+                    label="Upgrade Pro"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Vivid magenta bloom badge with clay squircle chassis</span>
+              </div>
+
+              {/* Cyber Amber Pill */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Cyber Amber Pill</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">neonPreset=&quot;amber&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="pill"
+                    neonPreset="amber"
+                    label="View Matrix"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Warm golden amber indicator badge depth glow</span>
+              </div>
+
+              {/* Neon Violet Squircle */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Neon Violet Squircle</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">neonPreset=&quot;violet&quot;</span>
+                </div>
+                <div className="my-3">
+                  <NeumorphicGlowCTA
+                    variant="squircle"
+                    neonPreset="violet"
+                    label="Deploy Code"
+                    size="md"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet neon arrow badge with 3D drop shadows</span>
               </div>
             </div>
           </div>
@@ -415,7 +541,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="neumorphic buttons or modern clay UI components" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

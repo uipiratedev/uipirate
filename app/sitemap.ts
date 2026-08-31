@@ -38,7 +38,7 @@ const STATIC_PAGES: {
   { path: "/faqs", priority: 0.85, changeFrequency: "monthly" },
   { path: "/sitemap", priority: 0.5, changeFrequency: "monthly" },
   { path: "/apps4sale", priority: 0.7, changeFrequency: "monthly" },
-  { path: "/ui-components", priority: 0.9, changeFrequency: "weekly" },
+  { path: "/componentlab", priority: 0.9, changeFrequency: "weekly" },
   { path: "/components", priority: 0.9, changeFrequency: "weekly" },
   { path: "/buttons", priority: 0.9, changeFrequency: "weekly" },
   { path: "/buttons/tactile-pill-button", priority: 0.85, changeFrequency: "weekly" },

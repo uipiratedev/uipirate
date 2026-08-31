@@ -19,6 +19,7 @@ export const ConditionalNavbar = memo(function ConditionalNavbar() {
     const baseHide =
       pathname.startsWith("/pirateCOS") ||
       pathname.startsWith("/admin") ||
+      pathname.startsWith("/componentlab/") ||
       HIDDEN_NAVBAR_PATHS.includes(
         pathname as (typeof HIDDEN_NAVBAR_PATHS)[number],
       );

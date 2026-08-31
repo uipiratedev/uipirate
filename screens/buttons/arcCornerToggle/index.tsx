@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+import PageWrapper from "@/components/PageWrapper";
+import GlobalCTA from "@/components/GlobalCTA";
 
 export default function ArcCornerToggleScreen() {
   const [active, setActive] = useState(false);
@@ -137,25 +139,26 @@ export default function Example() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-28 pb-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-12">
-        {/* Header section */}
-        <header className="text-center space-y-4 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#FF4081] animate-pulse" />
-            <span>Radial Centerline Offset Path</span>
-            <span className="text-gray-500">•</span>
-            <span className="text-[#FF5B04]">React + Framer Motion</span>
-          </div>
+    <PageWrapper showFloatingButton={false}>
+      <div className="relative overflow-hidden min-h-screen bg-[#0E0E10] text-gray-100 selection:bg-[#FF5B04] selection:text-white pt-6 pb-20">
+        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+          {/* Header section */}
+          <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-gray-300 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-[#FF4081] animate-pulse" />
+              <span>Radial Centerline Offset Path</span>
+              <span className="text-gray-500">•</span>
+              <span className="text-[#FF5B04]">React + Framer Motion</span>
+            </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-            Arc Corner Slider <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-amber-300">Curved Toggle</span>
-          </h1>
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Arc Corner Slider <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-300 to-amber-300">Curved Toggle</span>
+            </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
-            Curved quadrant arc corner toggle button engineered with true 185.6px radial arc offset-path tracking, day/night gradient themes, and physical spring damping.
-          </p>
-        </header>
+            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+              Curved quadrant arc corner toggle button engineered with true 185.6px radial arc offset-path tracking, day/night gradient themes, and physical spring damping.
+            </p>
+          </header>
 
         {/* Main Interactive Stage */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -204,6 +207,75 @@ export default function Example() {
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─────────────────────────────────────────────────────────────
+            ALL VARIANTS & STYLES PREVIEW CARD
+           ───────────────────────────────────────────────────────────── */}
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#ED45BE] mb-1.5">
+                <span>PRESETS &amp; VARIATIONS</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+            </div>
+            <p className="text-xs text-gray-400 font-mono">
+              Click any toggle to test distinct interactive states &amp; speeds
+            </p>
+          </div>
+
+          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Light Mode Standard */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Light Mode (OFF)</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">themeMode=&quot;light&quot;</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle
+                    scale={0.82}
+                    duration={0.65}
+                    themeMode="light"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Clay light surface with matte dark track contour</span>
+              </div>
+
+              {/* Dark Mode Active */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Dark Mode (ON)</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">themeMode=&quot;dark&quot;</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle
+                    scale={0.82}
+                    duration={0.65}
+                    isActive={true}
+                    themeMode="dark"
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Obsidian chassis with glowing magenta laser flare</span>
+              </div>
+
+              {/* Snappy Spring */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">⚡ Snappy Response</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">duration=0.35s</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle
+                    scale={0.82}
+                    duration={0.35}
+                  />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">High-velocity snap transition for instant tactile feel</span>
               </div>
             </div>
           </div>
@@ -337,7 +409,11 @@ export default function Example() {
             </div>
           </div>
         </div>
+
+        {/* Website Global CTA */}
+        <GlobalCTA topic="arc corner toggles or micro-interaction controls" />
       </div>
     </div>
+  </PageWrapper>
   );
 }

@@ -280,8 +280,8 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="footer-text" href="/ui-components">
-                    UI Components
+                  <Link className="footer-text" href="/componentlab">
+                    Component Lab
                   </Link>
                 </li>
                 <li>
