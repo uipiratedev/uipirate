@@ -157,7 +157,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 8. WHO WE ARE (❌ All items still open — 🔴 Fix now)
+## 8. WHO WE ARE (✅ Section complete)
 
 **File:** `screens/landing/whoWeAre/index.tsx`
 
@@ -167,11 +167,11 @@ Current text at **L79** — renders at large animated size, most visible copy er
 
 | # | Problem | Status |
 |---|---------|--------|
-| 8a | `products that ships faster` — subject-verb disagreement | ❌ Not done |
-| 8b | `Studio` — identity inconsistency (every other section says "Agency") | ❌ Not done |
-| 8c | `global` — overstated claim, no evidence of a global office or team | ❌ Not done |
-| 8d | `design debt` — designer jargon, not buyer language | ❌ Not done |
-| 8e | Missing primary SEO keyword: `product design and development agency` | ❌ Not done |
+| 8a | `products that ships faster` — subject-verb disagreement | ✅ Done |
+| 8b | `Studio` — identity inconsistency (every other section says "Agency") | ✅ Done |
+| 8c | `global` — overstated claim, no evidence of a global office or team | ✅ Done |
+| 8d | `design debt` — designer jargon, not buyer language | ✅ Done |
+| 8e | Missing primary SEO keyword: `product design and development agency` | ✅ Done |
 
 **Recommended replacement — fixes all 5 issues and adds primary SEO keyword:**
 
@@ -319,7 +319,6 @@ We typically respond within one business day.
 
 | File | Item |
 |------|------|
-| `whoWeAre/index.tsx` L79 | Grammar error "products that ships faster" + "Studio" + "global" — one sentence replacement fixes all |
 | `servicesSection.tsx` L64 | `Saas & AI Development` → `SaaS & AI Development` |
 | `servicesSection.tsx` L152 | `AI Apps, Saas, Websites & More` → `AI Apps, SaaS & Business Websites` |
 | `pricing/index.tsx` | "shows you see our execution" — broken sentence |

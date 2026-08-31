@@ -76,7 +76,7 @@ const LandingWhoWeAre = () => {
   });
 
   const text =
-    "UI Pirate is a global UI/UX Design & Development Studio, helping SaaS founders & enterprise teams build high-performing products that ships faster, looks premium, and scales without design debt.";
+    "UI Pirate is a product design and development agency. We help SaaS founders and enterprise teams design, build, and ship products that look premium, perform well, and hold up as they grow.";
 
   // Memoize word splitting to prevent unnecessary recalculations
   const words = useMemo(() => text.split(" "), []);
