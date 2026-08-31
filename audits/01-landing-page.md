@@ -196,11 +196,11 @@ That's what we do.
 #### 3a. Section heading
 
 **Current:** `Is This Right For You?`
-**Badge:** `FIT CHECK`
+**Badge:** `WHO IT'S FOR`
 
 **Assessment:** ✅ The audience-filter concept is exactly right for conversion — it pre-qualifies visitors and reduces misfit leads. "Is This Right For You?" is direct and clear.
 
-**One issue:** "FIT CHECK" as the badge label is informal — it works on a consumer app but may register as slightly casual for enterprise decision-makers. Consider `WHO IT'S FOR` as an alternative that conveys the same function without the social media tone.
+**Status:** ✅ **Fixed.** Replaced "FIT CHECK" with "WHO IT'S FOR" for a more professional tone.
 
 ---
 
@@ -223,21 +223,7 @@ That's what we do.
 | Agencies | "White-label design support" is a legitimate service but positions UI Pirate as a subcontractor, not a primary agency | Weakens premium positioning when placed alongside enterprise-facing cards |
 | Enterprise Teams | "Overflow design capacity" accurately describes the pain. This is the strongest card. | ✅ Keep this framing |
 
-**Suggested rewrites:**
-
-```
-Funded Startups
-"You raised a round. Now you need a product that looks as good as the idea you pitched. We help you ship it."
-
-SaaS Companies
-"No in-house design team, but a product that needs to keep moving. We plug in as your design and dev partner."
-
-Agencies
-"Your team is at capacity. We work as a white-label partner on client projects — no handoff friction, full execution."
-
-Enterprise Teams
-"Overflow design capacity without the overhead of hiring. Plug us in when your team needs more bandwidth."
-```
+**Status:** ✅ **Fixed.** Copy updated to the suggested rewrites.
 
 ---
 
@@ -250,10 +236,13 @@ Enterprise Teams
 ⏰ 24/7 instant turnaround expectations
 ```
 
-**Assessment:** ✅ The concept is strong — being explicit about who you don't serve is a high-trust signal. However:
+**Status:** ✅ **Fixed.** Emoji icons replaced with clean `✕` icons.
 
-- **Emoji icons** in the dark card context look decorative, not functional. For this professional register, replace with a clean × or dash icon
-- The items are accurate and well-scoped. No content changes needed beyond the emoji → icon swap
+---
+
+#### 3a. Section placement
+
+**Status:** ✅ **Kept as-is.** Based on visual flow, the section remains immediately after the Marquee.
 
 ---
 
@@ -710,9 +699,9 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 5 | Metadata | Title tag and meta description updated to new positioning `[NEW]` | `app/page.tsx` | ✅ Done |
 | 6 | Marquee | Section heading still "Trusted by Teams Building the Future" — no quantity `[v1]` | `marquee/index.tsx` | ✅ Done |
 | 7 | Marquee | Placeholder logo entry (no name, no link) `[v1]` | `marquee/index.tsx` | ❌ Kept as-is |
-| 8 | PerfectFor | Move section to after Services, not before `[NEW]` | `screens/landing/index.tsx` | 🟠 Soon |
-| 9 | PerfectFor | Rewrite audience card descriptions (Funded Startups, SaaS Companies grammar) `[NEW]` | `perfectFor/index.tsx` | 🟠 Soon |
-| 10 | PerfectFor | Replace emoji icons in "Not the right fit" strip with clean icons `[NEW]` | `perfectFor/index.tsx` | 🟠 Soon |
+| 8 | PerfectFor | Move section to after Services, not before `[NEW]` | `screens/landing/index.tsx` | ✅ Kept in place |
+| 9 | PerfectFor | Rewrite audience card descriptions (Funded Startups, SaaS Companies grammar) `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
+| 10 | PerfectFor | Replace emoji icons in "Not the right fit" strip with clean icons `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
 | 11 | FAQs | Replace first 4 questions with buyer-blocker questions `[v1]` | `faqs/accordion.tsx` | 🟠 Soon |
 | 12 | FAQs | Remove WhatsApp from "How do we get started?" answer `[v1]` | `faqs/accordion.tsx` | 🟠 Soon |
 | 13 | FAQs | Remove 📍 emoji, replace with bold labels `[v1]` | `faqs/accordion.tsx` | 🟠 Soon |
@@ -732,7 +721,7 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 27 | Testimonials | Request P-S-O expanded testimonials from 3 generic reviewers `[v1]` | `data/testimonials.json` | 🟡 Consider |
 | 28 | Pricing | Fix remaining pricing section copy issues (see 03-pricing-page.md) `[v1]` | `pricing/index.tsx` | 🟡 Consider |
 | 29 | FeaturedCaseStudy | Add client industry tag and logo to the featured case study card `[NEW]` | `featuredCaseStudy/index.tsx` | 🟡 Consider |
-| 30 | PerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" `[NEW]` | `perfectFor/index.tsx` | 🟡 Consider |
+| 21 | PerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
 | 31 | MiniService | Consider replacing "world-class" in section heading `[NEW]` | `miniService/miniService.tsx` | 🟡 Consider |
 
 **Priority key:**

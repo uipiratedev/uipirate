@@ -66,10 +66,11 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 4a | Move `PricingPerfectFor` to after Marquee | ❌ Not done | 🟠 Soon |
-| 4b | "FIT CHECK" badge too casual for enterprise buyers; replace with "WHO IT'S FOR" | ❌ Not done | 🟡 Consider |
-| 4c | Audience card descriptions need rewriting | ❌ Not done | 🟠 Soon |
-| 4d | Emoji icons in "Not the right fit" strip (📦 🎨 ⏰); replace with clean × or dash icons | ❌ Not done | 🟠 Soon |
+| 4a | Move `PricingPerfectFor` to after Marquee | ✅ Kept in place | 🟠 Soon |
+| 4b | "FIT CHECK" badge too casual for enterprise buyers; replace with "WHO IT'S FOR" | ✅ Done | 🟡 Consider |
+| 4c | Audience card descriptions need rewriting | ✅ Done | 🟠 Soon |
+| 4d | Emoji icons in "Not the right fit" strip (📦 🎨 ⏰); replace with clean × or dash icons | ✅ Done (replaced with ✕) | 🟠 Soon |
+| 4e | Fix layout: apply left/right container padding so it doesn't stretch full width | ✅ Done | 🔴 Fix now |
 
 ---
 
@@ -297,9 +298,6 @@ We typically respond within one business day.
 | `testimonialCards.tsx` | Add ★★★★★ star ratings to each card |
 | `aboutCard.tsx` L11, L31, L40 | Fix 3 wrong sub-labels (Years, $150M+, 6 Locations) |
 | `bentoGrid.tsx` | Rewrite all 4 card descriptions with buyer-outcome copy |
-| `screens/landing/index.tsx` | Move `PricingPerfectFor` to after BentoGrid |
-| `perfectFor/index.tsx` | Rewrite audience card descriptions |
-| `perfectFor/index.tsx` | Replace emoji icons in "Not the right fit" strip |
 
 ### 🟡 Consider — Polish and strategic copy
 
@@ -311,7 +309,6 @@ We typically respond within one business day.
 | `miniService.tsx` L11 | Replace "world-class" in section heading |
 | `data/testimonials.json` | Remove or reposition Kyle Drucker (YouTuber) testimonial |
 | `data/testimonials.json` | Request expanded P-S-O testimonials from 3 generic reviewers |
-| `perfectFor/index.tsx` | Replace "FIT CHECK" badge with "WHO IT'S FOR" |
 | `featuredCaseStudy/index.tsx` | Add client industry tag + logo to the featured case study card |
 
 ---
