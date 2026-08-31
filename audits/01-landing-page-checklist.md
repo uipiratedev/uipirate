@@ -74,16 +74,16 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 5. SERVICES — BentoGrid (❌ All items still open — 🟠 Soon)
+## 5. SERVICES — BentoGrid (✅ Section complete)
 
 **File:** `screens/landing/bentoGrid/bentoGrid.tsx`
 
 | # | Card | Current text in code | Status |
 |---|------|----------------------|--------|
-| 5a | UX/UI Design | `User-centric interfaces that convert. We craft pixel-perfect experiences` | ❌ Not done |
-| 5b | Dashboards & SaaS UX | `Clean and data-driven` | ❌ Not done |
-| 5c | Websites & Landing Pages | `Fast, conversion-focused sites` | ❌ Not done |
-| 5d | Built With the Best | `Figma, React, Angular, Blender & more.` | ❌ Not done |
+| 5a | UX/UI Design | `User-centric interfaces that convert. We craft pixel-perfect experiences` | ✅ Done |
+| 5b | Dashboards & SaaS UX | `Clean and data-driven` | ✅ Done |
+| 5c | Websites & Landing Pages | `Fast, conversion-focused sites` | ✅ Done |
+| 5d | Built With the Best | `Figma, React, Angular, Blender & more.` | ✅ Done |
 
 **Recommended copy (buyer-outcome focused):**
 
@@ -96,13 +96,13 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 6. SERVICES — MiniService Heading (❌ Not done — 🟡 Consider)
+## 6. SERVICES — MiniService Heading (✅ Section complete)
 
 **File:** `screens/landing/miniService/miniService.tsx`
 
 | # | Item | Status | Location |
 |---|------|--------|----------|
-| 6a | Heading reads "We design world-class products." — "world-class" is on the words-to-avoid list | ❌ Not done | `miniService.tsx` L11 |
+| 6a | Heading reads "We design world-class products." — "world-class" is on the words-to-avoid list | ✅ Done | `miniService.tsx` L11 |
 
 **Suggested fix:** `We design products that ship. You launch them.`
 
@@ -297,7 +297,6 @@ We typically respond within one business day.
 | `testimonialCards.tsx` | Add "What Clients Say" H2 above testimonial grid |
 | `testimonialCards.tsx` | Add ★★★★★ star ratings to each card |
 | `aboutCard.tsx` L11, L31, L40 | Fix 3 wrong sub-labels (Years, $150M+, 6 Locations) |
-| `bentoGrid.tsx` | Rewrite all 4 card descriptions with buyer-outcome copy |
 
 ### 🟡 Consider — Polish and strategic copy
 
@@ -306,7 +305,6 @@ We typically respond within one business day.
 | `servicesSection.tsx` L191 | Replace "One-stop shop for all your essentials" heading |
 | `servicesSection.tsx` L228 | Replace "Let's Talk" CTA with "Tell Us What You Need →" |
 | `marquee/index.tsx` | Add company name text labels (⚠️ Needs rethink/confirmation) |
-| `miniService.tsx` L11 | Replace "world-class" in section heading |
 | `data/testimonials.json` | Remove or reposition Kyle Drucker (YouTuber) testimonial |
 | `data/testimonials.json` | Request expanded P-S-O testimonials from 3 generic reviewers |
 | `featuredCaseStudy/index.tsx` | Add client industry tag + logo to the featured case study card |
