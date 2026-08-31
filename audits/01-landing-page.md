@@ -170,44 +170,19 @@ That's what we do.
 
 #### 2a. Section Heading
 
-**Current:**
-```
-Trusted by Teams
-Building the Future of SaaS and AI
-```
-
-**What's wrong:**
-
-| Problem | Why it matters |
-|---|---|
-| "Building the future" — still present, still meaningless | Every agency says this. It differentiates nothing |
-| No quantity signal | "Trusted by teams" is less credible than "Trusted by 40+ companies" — numbers convert vague claims into verifiable ones |
-| "The future of SaaS and AI" reads aspirationally but not concretely | A US VP of Product reads this and still doesn't know if these are real enterprise clients or small startups |
-
-**Suggested rewrite:**
-```
-Trusted by 40+ companies across the USA, UK, Singapore & India
-```
+**Status:** ✅ **Fixed.** The heading has been updated to include the quantity ("40+") and geography ("USA, UK, Singapore & India"), providing stronger credibility signals.
 
 ---
 
-#### 2b. Placeholder logo entry — still present
+#### 2b. Placeholder logo entry
 
-**In `premiumLogos` array, the last entry:**
-```js
-alt: "Partner company logo"   // ← never updated from placeholder
-link: ""                      // ← no URL
-```
-
-**Status:** ⚠️ **Still not fixed from v1.** This logo has a generic placeholder alt text and no link. It renders as a broken logo tile with no name and no destination. Fix or remove.
+**Status:** ❌ **Kept as-is.** The placeholder logo remains in the array to preserve the 10-logo grid layout.
 
 ---
 
 #### 2c. Missing company name labels
 
-**Status:** ⚠️ **Still not fixed from v1.** Logos for ArthAlpha, Rings & I, Awesome Health Club, Simpleo AI are not globally recognizable. No company name text appears below any logo. A US-based buyer sees a grid of icons with no context for who these companies are.
-
-**Suggested fix:** Add a small company name text label below each logo tile, even at 10px — it dramatically increases the section's credibility.
+**Status:** ⚠️ **Needs rethink/confirmation.** Adding company names under logos is on hold pending confirmation from the design team.
 
 ---
 
@@ -733,8 +708,8 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 3 | Services | "Saas" → "SaaS" in service list and orange banner (2 locations) `[v1]` | `servicesSection.tsx` | 🔴 Fix now |
 | 4 | Pricing | "shows you see our execution" — broken sentence `[v1]` | `pricing/index.tsx` | 🔴 Fix now |
 | 5 | Metadata | Title tag and meta description updated to new positioning `[NEW]` | `app/page.tsx` | ✅ Done |
-| 6 | Marquee | Section heading still "Trusted by Teams Building the Future" — no quantity `[v1]` | `marquee/index.tsx` | 🟠 Soon |
-| 7 | Marquee | Placeholder logo entry (no name, no link) `[v1]` | `marquee/index.tsx` | 🟠 Soon |
+| 6 | Marquee | Section heading still "Trusted by Teams Building the Future" — no quantity `[v1]` | `marquee/index.tsx` | ✅ Done |
+| 7 | Marquee | Placeholder logo entry (no name, no link) `[v1]` | `marquee/index.tsx` | ❌ Kept as-is |
 | 8 | PerfectFor | Move section to after Services, not before `[NEW]` | `screens/landing/index.tsx` | 🟠 Soon |
 | 9 | PerfectFor | Rewrite audience card descriptions (Funded Startups, SaaS Companies grammar) `[NEW]` | `perfectFor/index.tsx` | 🟠 Soon |
 | 10 | PerfectFor | Replace emoji icons in "Not the right fit" strip with clean icons `[NEW]` | `perfectFor/index.tsx` | 🟠 Soon |
@@ -752,7 +727,7 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 22 | BentoGrid | Rewrite service card descriptions — remove "pixel-perfect" and sparse labels `[NEW]` | `bentoGrid/bentoGrid.tsx` | 🟡 Consider |
 | 23 | Services | Replace "One-stop shop for all your essentials" `[v1]` | `servicesSection.tsx` | 🟡 Consider |
 | 24 | Services | Fix "Let's Talk" CTA — replace with "Tell Us What You Need — Free Consultation" `[v1]` | `servicesSection.tsx` | 🟡 Consider |
-| 25 | Marquee | Add company name text labels under each logo `[v1]` | `marquee/index.tsx` | 🟡 Consider |
+| 25 | Marquee | Add company name text labels under each logo `[v1]` | `marquee/index.tsx` | ⚠️ Needs rethink |
 | 26 | Testimonials | Remove/reposition Kyle Drucker (YouTuber) testimonial `[v1]` | `data/testimonials.json` | 🟡 Consider |
 | 27 | Testimonials | Request P-S-O expanded testimonials from 3 generic reviewers `[v1]` | `data/testimonials.json` | 🟡 Consider |
 | 28 | Pricing | Fix remaining pricing section copy issues (see 03-pricing-page.md) `[v1]` | `pricing/index.tsx` | 🟡 Consider |

@@ -48,22 +48,15 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 ---
 
-## 3. MARQUEE — CLIENT LOGOS (❌ All items still open — 🟠 Soon)
+## 3. MARQUEE — CLIENT LOGOS (⚠️ Needs confirmation)
 
 **File:** `screens/landing/marquee/index.tsx`
 
 | # | Item | Status | Location |
 |---|------|--------|----------|
-| 3a | Section heading still reads "Trusted by Teams / Building the Future of SaaS and AI" — no quantity, no geography | ❌ Not done | `marquee/index.tsx` L127–132 |
-| 3b | Placeholder logo entry: `alt: "Partner company logo"`, `link: ""` — fix or remove | ❌ Not done | `marquee/index.tsx` L92–95 |
-| 3c | No company name text labels under logos — unrecognized brands have no context for US buyer | ❌ Not done | `marquee/index.tsx` |
-
-**Fix for 3a — copy-paste ready:**
-```
-Trusted by 40+ product teams
-across the USA, UK, Singapore & India
-```
-Move orange highlight from "Trusted by Teams" to `40+` — the number is the credibility signal.
+| 3a | Section heading: updated to include 40+ product teams and geography | ✅ Done | `marquee/index.tsx` |
+| 3b | Placeholder logo entry | ❌ Kept as-is | `marquee/index.tsx` |
+| 3c | Company name text labels under logos | ⚠️ Needs rethink/confirmation | `marquee/index.tsx` |
 
 ---
 
@@ -288,8 +281,6 @@ We typically respond within one business day.
 
 | File | Item |
 |------|------|
-| `marquee/index.tsx` L127–132 | Section heading: remove "Building the Future", add `40+` quantity + geography |
-| `marquee/index.tsx` L92–95 | Placeholder logo: no alt text, no link — fix or remove |
 | `faqs/accordion.tsx` | Replace first 4 questions with buyer-blocker questions |
 | `faqs/accordion.tsx` | Remove 📍 emoji labels from all answers |
 | `faqs/accordion.tsx` L147–150 | Remove WhatsApp references; point to cal.com + email |
@@ -307,6 +298,7 @@ We typically respond within one business day.
 |------|------|
 | `servicesSection.tsx` L191 | Replace "One-stop shop for all your essentials" heading |
 | `servicesSection.tsx` L228 | Replace "Let's Talk" CTA with "Tell Us What You Need →" |
+| `marquee/index.tsx` | Add company name text labels (⚠️ Needs rethink/confirmation) |
 | `miniService.tsx` L11 | Replace "world-class" in section heading |
 | `data/testimonials.json` | Remove or reposition Kyle Drucker (YouTuber) testimonial |
 | `data/testimonials.json` | Request expanded P-S-O testimonials from 3 generic reviewers |
