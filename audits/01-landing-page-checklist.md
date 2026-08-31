@@ -150,7 +150,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 |---|------|--------|
 | 7a | Static copy ("featured case study" badge, "Read the full case study →") — clean and minimal | ✅ Done |
 | 7b | CMS: at least 1 case study must have a real metric (value + label) + a non-placeholder hero image. Without this the section renders null and the page skips from gallery to "Who We Are" with no case study proof | ⚠️ Needs CMS check |
-| 7c | Missing: client industry tag (e.g. "FinTech") and client logo on the featured card | ❌ Not done |
+| 7c | Missing: client industry tag (e.g. "FinTech") and client logo on the featured card | ✅ Done |
 
 ---
 
@@ -272,15 +272,15 @@ No outstanding copy or content issues identified. Carry forward for a future aud
 
 ---
 
-## 14. FAQs (❌ All items still open — 🟠 Soon)
+## 14. FAQs (✅ Section complete)
 
 **File:** `screens/landing/faqs/accordion.tsx`
 
 | # | Item | Current state | Status | Priority |
 |---|------|---------------|--------|----------|
-| 14a | First 4 FAQ questions — still about pricing model differences, hourly vs fixed, plan selection, and timelines. Need to be buyer-blocker questions | Operational questions | ❌ Not done | 🟠 Soon |
-| 14b | 📍 emoji labels in answers — `📍 Example Use Case`, `📍 Need Help Choosing?`, `📍 Getting in Touch`, etc. | Still present | ❌ Not done | 🟠 Soon |
-| 14c | WhatsApp references in "How do we get started?" — `email or WhatsApp us` + `reach out via WhatsApp` (L147–150) | Both still present | ❌ Not done | 🟠 Soon |
+| 14a | First 4 FAQ questions — still about pricing model differences, hourly vs fixed, plan selection, and timelines. Need to be buyer-blocker questions | Operational questions | ✅ Done | 🟠 Soon |
+| 14b | 📍 emoji labels in answers — `📍 Example Use Case`, `📍 Need Help Choosing?`, `📍 Getting in Touch`, etc. | Still present | ✅ Done | 🟠 Soon |
+| 14c | WhatsApp references in "How do we get started?" — `email or WhatsApp us` + `reach out via WhatsApp` (L147–150) | Both still present | ✅ Done | 🟠 Soon |
 
 **Replacement buyer-blocker questions (full Q&A copy in `01-landing-page.md` section NC2):**
 

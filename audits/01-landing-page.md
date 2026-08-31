@@ -1126,9 +1126,9 @@ All items from v2 carried forward. New items marked `[v3]`. Items verified as st
 | 6 | Who We Are | "global" overclaim — no evidence of global office/team | `whoWeAre/index.tsx` L79 | ✅ Done | ✓ |
 | 7 | Services | "Saas" → "SaaS" in service list | `servicesSection.tsx` L64 | ✅ Done | ✓ |
 | 8 | Services | "Saas" → "SaaS" in orange banner | `servicesSection.tsx` L152 | ✅ Done | ✓ |
-| 9 | FAQs | Replace first 4 questions with buyer-blocker questions (Q&A text in NC2 above) | `faqs/accordion.tsx` | 🟠 Soon | ✓ |
-| 10 | FAQs | Remove 📍 emoji labels, replace with bold text | `faqs/accordion.tsx` | 🟠 Soon | ✓ |
-| 11 | FAQs | Remove WhatsApp reference from "How do we get started?" | `faqs/accordion.tsx` L147–150 | 🟠 Soon | ✓ |
+| 9 | FAQs | Replace first 4 questions with buyer-blocker questions (Q&A text in NC2 above) | `faqs/accordion.tsx` | ✅ Done | ✓ |
+| 10 | FAQs | Remove 📍 emoji labels, replace with bold text | `faqs/accordion.tsx` | ✅ Done | ✓ |
+| 11 | FAQs | Remove WhatsApp reference from "How do we get started?" | `faqs/accordion.tsx` L147–150 | ✅ Done | ✓ |
 | 12 | Marquee | Update heading: remove "Building the Future", add quantity and geography | `marquee/index.tsx` L127-132 | 🟠 Soon | ✓ |
 | 13 | Marquee | Fix or remove placeholder logo entry (no alt text, no link) | `marquee/index.tsx` L92-95 | 🟠 Soon | ✓ |
 | 14 | Stats | Fix "9+ Years" sub-label — currently describes 6 Locations card | `aboutCard.tsx` L11 | 🟠 Soon | ✓ |
