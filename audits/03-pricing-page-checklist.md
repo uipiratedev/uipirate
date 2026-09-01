@@ -167,6 +167,7 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 |---|------|--------|----------|
 | 10a | Placeholder logo (empty alt/link) removed from marquee array | ✅ Done | — |
 | 10b | Logo strip positioning — correct (after hero, before cards) | ✅ Done | — |
+| 10c | Replaced with landing page marquee component for consistency | ✅ Done | — |
 
 ---
 
