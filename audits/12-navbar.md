@@ -42,10 +42,7 @@
 
 **Assessment:**
 ✅ The `alt` text includes descriptive keywords ("Enterprise UI/UX Design Agency") — strong for SEO.
-❌ Missing `width` and `height` — causes Cumulative Layout Shift (CLS) on first paint.
-❌ Not using `next/image` with `priority`. For an above-the-fold asset present on every page, this is the highest ROI performance change on the site.
-
-**Suggested fix:** Replace `<img>` with `<Image>` from `next/image`, add explicit `width`, `height`, and `priority={true}`.
+✅ **Resolved:** Replaced standard `<img>` with `next/image`, adding explicit dimensions (`width={40} height={40}`) and `priority={true}` to prevent CLS.
 
 ---
 

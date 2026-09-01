@@ -29,8 +29,8 @@ Synced to **`05-navbar.md` v2 (2026-09-01)**.
 | # | Item | Status |
 |---|------|--------|
 | 1a | `alt` text is descriptive ("Enterprise UI/UX Design Agency") | ✅ Keep as-is |
-| 1b | `<img>` lacks `width` and `height` — causes Cumulative Layout Shift on every page load | ❌ Not done |
-| 1c | Replace `<img>` with `<Image>` from `next/image` with `priority={true}` | ❌ Not done |
+| 1b | `<img>` lacks `width` and `height` — causes Cumulative Layout Shift on every page load | ✅ Done |
+| 1c | Replace `<img>` with `<Image>` from `next/image` with `priority={true}` | ✅ Done |
 
 ---
 

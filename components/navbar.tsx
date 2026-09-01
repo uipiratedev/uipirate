@@ -11,6 +11,7 @@ import {
 import { Button } from "@heroui/button";
 import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
+import Image from "next/image";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 
@@ -243,10 +244,13 @@ export const Navbar = () => {
                       className="flex justify-start items-center gap-0 lg:-ml-7 max-lg:-ml-2 max-md:-ml-6"
                       href="/"
                     >
-                      <img
+                      <Image
                         alt="UI Pirate - Enterprise UI/UX Design Agency Logo"
                         className="mt-5"
                         src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1766234689/logo_lcn2cq.png"
+                        width={40}
+                        height={40}
+                        priority={true}
                       />
                       <p
                         className={clsx("font-bold text-inherit", {
