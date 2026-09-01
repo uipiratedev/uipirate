@@ -389,16 +389,16 @@ export default function AboutPage() {
                   desc: "Every section, CTA, and flow is strategically designed. We don't just make it look good — we design to convert visitors into users and users into revenue.",
                 },
                 {
-                  title: "Architecture to Code",
+                  title: "From Sketch to Working Code",
                   desc: "From vision to shipped product — IA, user flows, wireframes, UI, and production-ready React/Next.js code.",
                 },
                 {
-                  title: "Enterprise Specialist",
-                  desc: "Multi-role dashboards, data-heavy interfaces, complex flows. We handle the hard problems others avoid.",
+                  title: "We Work In Your Time Zone",
+                  desc: "We overlap with US Eastern and Pacific hours. No async-only communication.",
                 },
                 {
-                  title: "Idea to Shipped Product",
-                  desc: "Information architecture, wireframes, UI design, and production-ready React/Angular/Next.js code. We carry your idea all the way to launch.",
+                  title: "We've Done This 50+ Times",
+                  desc: "Not a boutique shop that treats every project as an experiment.",
                 },
               ].map((item, i) => (
                 <motion.div

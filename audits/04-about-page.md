@@ -213,7 +213,7 @@ Sub: Most agencies give you mockups. We give you a shipped product.
 
 **The pattern:** Cards 02 + 05 overlap, and Cards 04 + 06 overlap. Of 6 differentiation points, you effectively have 4 unique ideas. The redundancy makes the section feel padded and dilutes the impact of each individual point.
 
-**Suggested consolidation:**
+**Suggested consolidation: (✅ Applied)**
 ```
 01 Product Thinking First — keep as-is
 02 Simplify Complex Products — keep as-is (absorbs Enterprise Specialist)

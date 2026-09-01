@@ -63,10 +63,10 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 |---|------|--------|----------|
 | 3a | Card 01 `Product Thinking First` — strong, keep | ✅ Keep as-is | — |
 | 3b | Card 03 `Designed for Conversion` — strong, keep | ✅ Keep as-is | — |
-| 3c | Cards 04 `Architecture to Code` + 06 `Idea to Shipped Product` are near-duplicates — consolidate into one `From Sketch to Working Code` card (NC2) | ❌ Not done | 🟠 Soon |
-| 3d | Cards 02 `Simplify Complex Products` + 05 `Enterprise Specialist` overlap — absorb Card 05 into 02 (NC2) | ❌ Not done | 🟠 Soon |
-| 3e | Add new Card 05: `We Work in Your Time Zone` — US Eastern + Pacific overlap, real-time calls (NC2) | ❌ Not done | 🟠 Soon |
-| 3f | Add new Card 06: `We've Shipped This 50+ Times` — experience + proof signal (NC2) | ❌ Not done | 🟠 Soon |
+| 3c | Cards 04 `Architecture to Code` + 06 `Idea to Shipped Product` are near-duplicates — consolidate into one `From Sketch to Working Code` card (NC2) | ✅ Done | 🟠 Soon |
+| 3d | Cards 02 `Simplify Complex Products` + 05 `Enterprise Specialist` overlap — absorb Card 05 into 02 (NC2) | ✅ Done | 🟠 Soon |
+| 3e | Add new Card 05: `We Work in Your Time Zone` — US Eastern + Pacific overlap, real-time calls (NC2) | ✅ Done | 🟠 Soon |
+| 3f | Add new Card 06: `We've Shipped This 50+ Times` — experience + proof signal (NC2) | ✅ Done | 🟠 Soon |
 
 ---
 
