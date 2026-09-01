@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
 
 import testimonials from "@/data/testimonials.json";
@@ -15,8 +14,8 @@ const cardVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.08,
-      duration: 0.8,
+      delay: i * 0.05,
+      duration: 0.7,
       ease: [0.16, 1, 0.3, 1],
     },
   }),
@@ -38,13 +37,8 @@ export default function TestimonialCards() {
 
   // decide which testimonials to show
   const displayedTestimonials = isMobile
-    ? testimonials.slice(0, 7)
+    ? testimonials.slice(0, 6)
     : testimonials;
-
-  // split into 3 columns
-  const col1 = displayedTestimonials.filter((_, i) => i % 3 === 0);
-  const col2 = displayedTestimonials.filter((_, i) => i % 3 === 1);
-  const col3 = displayedTestimonials.filter((_, i) => i % 3 === 2);
 
   return (
     <section className="w-full pt-6 max-md:pt-4 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
@@ -54,82 +48,118 @@ export default function TestimonialCards() {
         </h2>
       </div>
       <div
-        className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[600px] max-md:h-[500px] overflow-hidden"}`}
+        className={`relative transition-all duration-700 ease-in-out ${isExpanded ? "h-auto" : "h-[580px] max-md:h-[480px] overflow-hidden"
+          }`}
       >
         {/* Gradient Mask for collapsed state */}
         {!isExpanded && (
-          <div className="absolute bottom-0 left-0 w-full h-[500px] bg-gradient-to-t from-white via-white/50 to-transparent z-20 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-full h-[240px] bg-gradient-to-t from-white via-white/80 to-transparent z-20 pointer-events-none" />
         )}
 
         <motion.div
           animate={isExpanded ? { y: 0 } : {}}
-          className="flex flex-col md:flex-row gap-4 md:gap-4"
+          className="columns-1 md:columns-2 lg:columns-3 gap-5 [column-fill:_balance]"
           initial={{ y: 0 }}
         >
-          {[col1, col2, col3].map((col, i) => (
-            <div key={i} className="flex flex-col gap-4 flex-1">
-              {col.map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  className="h-full"
-                  custom={idx + i * 3}
-                  initial="hidden"
-                  variants={cardVariants}
-                  viewport={{ once: true, amount: 0.3 }}
-                  whileInView="visible"
-                >
-                  <Card className="rounded-[24px] h-full transition-all duration-500 max-md:w-full shadow-none border-1 border-black/10 overflow-hidden group/card">
-                    <CardBody className="p-5 h-full">
-                      <div className="w-full h-full  bg-white   transition-all duration-500 shadow-sm flex flex-col">
-                        <div className="flex flex-row items-center justify-between gap-4 max-md:gap-2">
-                          <div className="flex flex-row max-md:flex-col gap-3 items-center max-md:text-center max-md:w-full">
-                            <Avatar
-                              avatar={item.profileImage}
-                              name={item.name}
-                              size={52}
-                            />
+          {displayedTestimonials.map((item, idx) => {
+            // Clean occupation title
+            const role = item.occupation
+              ? item.occupation.split(",").slice(0, -1).join(",").trim() ||
+              item.occupation
+              : "";
 
-                            <div className="max-md:mt-1">
-                              <p className="text-xl max-md:text-lg font-semibold">
-                                {item.name}
-                              </p>
-                              <p className="text-[#A2A2A2] text-sm -mt-1">
-                                {item.occupation || "occupation"}
-                              </p>
-                              <p className="text-[#A2A2A2] text-sm -mt-1">
-                                {item.company || "location"}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="max-md:hidden block">
-                            {item.logo && (
-                              <img
-                                alt={`${item.company || item.name} company logo`}
-                                className="max-w-[80px]"
-                                src={item.logo}
-                              />
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex text-amber-400 text-lg mt-4 mb-2 tracking-widest">
-                          ★★★★★
-                        </div>
-                        <p className="mt-2 text-base font-[400]">
-                          {item.review || ""}
+            return (
+              <motion.div
+                key={idx}
+                className="break-inside-avoid mb-5 inline-block w-full"
+                custom={idx}
+                initial="hidden"
+                variants={cardVariants}
+                viewport={{ once: true, amount: 0.2 }}
+                whileInView="visible"
+              >
+                <div className="group relative bg-white border border-[#E5E7EB] rounded-[24px] p-5 px-7 pt-12 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-300 flex flex-col justify-start gap-3.5 overflow-hidden">
+                  {/* Top Hanging Stars Badge */}
+                  <div className="absolute top-0 left-6 flex flex-col items-center">
+                    {/* Two suspension strings */}
+                    <div className="flex justify-between w-8 h-2.5 border-x border-[#FFD2BC]" />
+                    {/* Badge pill */}
+                    <div className="bg-[#FFEFE6] border border-[#FFD8C2]/70 rounded-md px-3 py-2 flex items-center gap-1 shadow-xs">
+                      {[...Array(5)].map((_, starIdx) => (
+                        <svg
+                          key={starIdx}
+                          className="w-3.5 h-3.5 fill-[#FF5B04]"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Review Quote Text */}
+                  <p className="text-[#334155] text-[13.5px] font-normal leading-relaxed text-left pt-4">
+                    {item.review}
+                  </p>
+
+                  {/* divider */}
+                  <div className="border-t border-[#E5E7EB] my-2" />
+
+                  {/* Header row: Avatar + Info + Company Logo */}
+                  <div className="flex items-center justify-between gap-2.5 ">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-gray-100 shadow-2xs">
+                        {item.profileImage ? (
+                          <img
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            src={item.profileImage}
+                          />
+                        ) : (
+                          <Avatar
+                            avatar={item.profileImage}
+                            name={item.name}
+                            size={40}
+                          />
+                        )}
+                      </div>
+
+                      <div className="text-left min-w-0">
+                        <h4 className="text-[15px] font-bold text-[#0F172A] leading-tight">
+                          {item.name}
+                        </h4>
+                        <p className="text-xs font-medium text-[#94A3B8] mt-0.5 leading-tight">
+                          {role}
+                        </p>
+                        <p className="text-xs font-medium text-[#94A3B8] leading-tight">
+                          {item.company}
                         </p>
                       </div>
-                    </CardBody>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          ))}
+                    </div>
+
+                    {/* Company Logo on Right */}
+                    {item.logo && (
+                      <div className="flex-shrink-0 max-w-[70px] pl-1">
+                        <img
+                          alt={`${item.company || item.name} company logo`}
+                          className="max-h-6 w-auto object-contain"
+                          src={item.logo}
+                        />
+                      </div>
+                    )}
+                  </div>
+
+
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
 
       {/* See More Button */}
       {!isExpanded && (
-        <div className="flex justify-center mt-8 max-md:mt-0 relative z-30 pb-1">
+        <div className="flex justify-center mt-10 relative z-30 pb-1">
           <LetsTalkButton variant="light" onClick={() => setIsExpanded(true)}>
             See More Testimonials
           </LetsTalkButton>
