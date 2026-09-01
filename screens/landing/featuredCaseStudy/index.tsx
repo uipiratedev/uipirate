@@ -13,6 +13,8 @@ export interface FeaturedCaseStudyData {
   heroImage: string;
   metricLabel: string;
   metricValue: string;
+  clientLogo?: string;
+  industry?: string;
 }
 
 interface FeaturedCaseStudyProps {
@@ -26,9 +28,9 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
   if (!study) return null;
 
   return (
-    <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
       <motion.div
-        className="flex flex-row max-md:flex-col-reverse items-center gap-10 max-md:gap-6 rounded-[32px] max-md:rounded-[20px] overflow-hidden bg-[#0A0A0A] p-12 max-md:p-6"
+        className="flex flex-row max-md:flex-col-reverse items-center gap-10 max-md:gap-6 rounded-[32px] max-md:rounded-[20px] overflow-hidden bg-[#0A0A0A] p-8 md:p-8 lg:p-12 max-md:p-6"
         initial={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -38,8 +40,22 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
           <GlassBadge className="text-white mb-6" variant="gradient">
             featured case study
           </GlassBadge>
-          <h2 className="text-3xl max-md:text-2xl font-bold text-white mb-3">
-            {study.client}
+          <h2 className="text-3xl max-md:text-2xl font-bold text-white mb-3 flex items-center gap-3">
+            {study.clientLogo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt={`${study.client} logo`}
+                className="h-8 w-auto object-contain brightness-0 invert"
+                src={study.clientLogo}
+              />
+            ) : (
+              study.client
+            )}
+            {study.industry && (
+              <span className="text-xs font-semibold px-2 py-1 bg-white/10 rounded-md text-gray-300 tracking-wider uppercase ml-2">
+                {study.industry}
+              </span>
+            )}
           </h2>
           {study.excerpt && (
             <p className="text-gray-500 mb-6 max-w-xl leading-relaxed">

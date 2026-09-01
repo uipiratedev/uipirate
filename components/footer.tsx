@@ -167,7 +167,7 @@ export const Footer: React.FC = () => {
 
         {/* Footer Navigation Grid */}
         <motion.div
-          className="container mx-auto px-32 lg:px-20 max-md:px-4 mt-20 max-md:mt-0 pb-16 max-md:pb-0"
+          className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 mt-20 max-md:mt-0 pb-16 max-md:pb-0"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}

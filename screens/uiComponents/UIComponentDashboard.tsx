@@ -18,6 +18,9 @@ import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
+import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
+import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
+import { GlossyGelButton } from "@/components/GlossyGelButton";
 import {
   ALL_DASHBOARD_COMPONENTS,
   ComponentCategory,
@@ -388,6 +391,34 @@ export default function Example() {
     />
   );
 }`;
+      case "tactile-neumorphic-toggle":
+        return `import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
+
+export default function Example() {
+  return (
+    <TactileNeumorphicToggle
+      theme="${customTheme}"
+      size="${customSize}"
+      label="${customLabel}"
+      defaultChecked={true}
+      onChange={(checked) => console.log("Toggle state:", checked)}
+    />
+  );
+}`;
+      case "glossy-gel-button":
+        return `import { GlossyGelButton } from "@/components/GlossyGelButton";
+
+export default function Example() {
+  return (
+    <GlossyGelButton
+      theme="${customTheme}"
+      size="${customSize}"
+      onClick={() => console.log("Clicked")}
+    >
+      ${customLabel || "Get Started"}
+    </GlossyGelButton>
+  );
+}`;
       default:
         return selectedComponent.jsxCode;
     }
@@ -670,6 +701,50 @@ export default function Example() {
             </div>
           </div>
         );
+      case "tactile-neumorphic-toggle": {
+        const validToggleThemes = ["figma-silver", "dark-obsidian", "cyber-cyan", "emerald-glow", "magma-orange", "hyper-violet"];
+        const toggleTheme = safeTheme(customTheme, validToggleThemes, "figma-silver");
+        return (
+          <div className="py-8 flex items-center justify-center">
+            <TactileNeumorphicToggle
+              theme={toggleTheme as any}
+              size={customSize}
+              label={customLabel || "Tactile Toggle"}
+              defaultChecked={true}
+              onChange={(st) => handleTriggerAction(`Toggle: ${st ? "ON" : "OFF"}`)}
+            />
+          </div>
+        );
+      }
+      case "tactile-neumorphic-switch": {
+        const validSwitchThemes = ["figma-emerald", "cyber-cyan", "magma-orange", "dark-obsidian", "hyper-violet", "amber-crt"];
+        const switchTheme = safeTheme(customTheme, validSwitchThemes, "figma-emerald");
+        return (
+          <div className="py-8 flex items-center justify-center">
+            <TactileNeumorphicSwitch
+              theme={switchTheme as any}
+              size={customSize}
+              defaultChecked={true}
+              onChange={(st) => handleTriggerAction(`Switch: ${st ? "ON" : "OFF"}`)}
+            />
+          </div>
+        );
+      }
+      case "glossy-gel-button": {
+        const validGelThemes = ["emerald-gel", "cyan-gel", "violet-gel", "magma-gel", "silver-glass", "obsidian-glass"];
+        const gelTheme = safeTheme(customTheme, validGelThemes, "emerald-gel");
+        return (
+          <div className="py-8 flex items-center justify-center">
+            <GlossyGelButton
+              theme={gelTheme as any}
+              size={customSize}
+              onClick={() => handleTriggerAction("Glossy Gel CTA Clicked")}
+            >
+              {customLabel || "Get Started"}
+            </GlossyGelButton>
+          </div>
+        );
+      }
       default:
         return canvasTheme === "light" ? selectedComponent.previewLight : selectedComponent.previewDark;
     }

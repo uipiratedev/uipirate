@@ -160,7 +160,7 @@ export const Navbar = () => {
     <>
       {/* ✅ Navbar */}
       <div
-        className="fixed top-3 left-0 right-0 z-[99999999] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
+        className="fixed top-3 left-0 right-0 z-[100000001] max-md:top-0 max-md:px-0 pointer-events-none transition-all duration-300 ease-in-out"
         style={{
           opacity: isFooterVisible ? 0 : 1,
           transform: isScrollHidden
@@ -174,7 +174,7 @@ export const Navbar = () => {
         {!loading && (
           <div
             className={clsx(
-              "container mx-auto px-32 lg:px-20 max-md:px-0 pointer-events-auto",
+              "section-container max-md:px-0 pointer-events-auto",
             )}
           >
             <GlassSurface
@@ -226,21 +226,21 @@ export const Navbar = () => {
               >
                 {/* --- Left Brand Section --- */}
                 <NavbarContent
-                  className="basis-1/5 md:basis-full px-0"
+                  className="basis-1/5 lg:basis-full px-0"
                   justify="start"
                 >
-                  {/* --- Mobile Section with Toggle --- */}
+                  {/* --- Mobile & Tablet Section with Toggle --- */}
 
                   <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="text-current md:hidden mr-4 max-md:-ml-2 max-md:mr-2"
+                    className="text-current lg:hidden mr-4 max-lg:mr-2 max-md:-ml-2"
                   />
                   <NavbarBrand
                     as="li"
                     className="gap-2 max-w-fit max-sm:!gap-0"
                   >
                     <NextLink
-                      className="flex justify-start items-center gap-0 md:-ml-7 max-md:-ml-6"
+                      className="flex justify-start items-center gap-0 lg:-ml-7 max-lg:-ml-2 max-md:-ml-6"
                       href="/"
                     >
                       <img
@@ -341,17 +341,17 @@ export const Navbar = () => {
         )}
       </div>
 
-      {/* --- Mobile Menu Overlay (rendered outside navbar hierarchy for independent scroll) --- */}
+      {/* --- Mobile & Tablet Menu Overlay (rendered outside navbar hierarchy for independent scroll) --- */}
       {isMenuOpen && (
         <div
-          className="fixed left-0 right-0 top-[52px] bottom-0 z-[100000000] bg-white overflow-y-auto pointer-events-auto"
+          className="fixed left-0 right-0 top-0 bottom-0 z-[100000000] bg-white overflow-y-auto pointer-events-auto"
           style={{
             touchAction: "pan-y",
             WebkitOverflowScrolling: "touch",
             overscrollBehavior: "contain",
           }}
         >
-          <div className="pt-4 pb-44 flex flex-col gap-0 px-4">
+          <div className="pt-20 md:pt-24 pb-44 flex flex-col gap-0 section-container max-w-4xl mx-auto">
             {siteConfig.navItems.map((item, index) => (
               <MobileMenuAccordionItem
                 key={`${item.href}-${index}`}

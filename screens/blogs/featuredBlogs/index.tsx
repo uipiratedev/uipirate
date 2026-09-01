@@ -103,7 +103,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
   }, [blogs, selectedPostType, selectedTag, searchQuery]);
 
   return (
-    <div className="pt-16 max-md:pt-10 pb-20 container mx-auto px-32 lg:px-20 max-md:px-4">
+    <div className="pt-16 max-md:pt-10 pb-20 section-container">
       {/* Section header */}
       <div className="flex items-center justify-between mb-8 max-md:mb-6">
         <h2 className="text-[22px] md:text-[28px] font-[700] tracking-tight text-[#111]">
@@ -190,7 +190,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
           <p className="text-gray-500 text-lg">No articles found.</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBlogs.map((blog) => {
             const image =
               blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;

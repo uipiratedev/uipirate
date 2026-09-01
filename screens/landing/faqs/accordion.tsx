@@ -21,68 +21,46 @@ const itemVariants = {
 
 const data = [
   {
+    heading: "What types of companies do you typically work with?",
+    title1:
+      "We work with SaaS startups from seed to Series B, enterprise product teams at companies like Ipsos, Khaitan & Co, and Biotex Medical, and agencies that need a white-label design partner. The common thread: a digital product that needs to ship and a team that doesn't have the full design-and-dev bandwidth to do it.",
+    list: [],
+  },
+  {
     heading:
-      "What’s the difference between design-only, dev-only, and design + development?",
-
-    title1: "Each option caters to different project needs and stages:",
-    list: [
-      "↳ Design-Only: This service focuses solely on the visual and user experience aspects. We provide wireframes, UI/UX design, branding, and interactive prototypes, ready for handoff to your development team. This is perfect if you have a development team in place and need design assets to start the build.",
-      "↳ Dev-Only: In this option, we handle the development based on your existing designs. Our team turns your design files into a live product, focusing on coding, testing, and deployment. This is ideal if you already have finalized designs and only need expert developers to bring them to life.",
-      "↳ Design + Development: This end-to-end option combines both services, taking your project from concept to a fully functional product. We manage the design, coding, testing, and launch, ensuring a seamless transition from visuals to a live website or app. Choose this option if you want a one-stop solution from our team, covering all aspects of your project.",
-    ],
-    title2:
-      "📍 Example Use Case: For a new mobile app, design-only provides the design assets for your team, dev-only builds from your provided designs, and design + development offers a complete, managed solution from initial design to launch.",
-  },
-  {
-    heading: "What’s the difference between hourly and fixed pricing?",
-
-    title1: "It depends on how you want to manage the project:",
-    list: [
-      "↳ Hourly Pricing: Flexible, ideal if you need more control over ongoing costs. You pay only for the hours used, and it’s perfect for projects that might change or grow in scope. Adjustments and extra work are billed transparently on an hourly basis.",
-      "↳ Fixed Pricing: Best if you have a well-defined project scope and prefer upfront budgeting. This option allows for a set cost for the entire project, helping with predictable expenses. Typically includes limited iterations to keep the timeline focused.",
-    ],
-    title2:
-      "📍 Example: If you need a landing page with multiple illustrations and animations, fixed pricing gives you a clear cost up front, while hourly pricing lets you add features as we go.",
-  },
-  {
-    heading: "How do I determine the right pricing plan for my project?",
-
+      "You're based in India — how does communication and time zone work for US/UK clients?",
     title1:
-      "It depends on the project’s scope, desired flexibility, and timeline.",
-    list: [
-      "↳ Fixed Pricing: Suitable for well-defined projects with a clear start and end, like landing pages or simple web apps. It’s easier to budget and track, with fewer variables.",
-      "↳ Hourly Pricing: Ideal if you need to adapt the scope as you go or want regular iterations. Perfect for complex projects with evolving requirements.",
-    ],
-    title2:
-      "📍 Need Help Choosing? Let’s have a quick call to go over your project details and pick the plan that aligns with your goals and budget.",
+      "Most of our active clients are in the USA, UK, and Singapore. We work on a structured async model with a 2–4 hour daily overlap window for calls and reviews. Projects are managed in Figma and Notion with clear weekly check-ins so nothing falls into a time-zone gap. Book a free 15-minute call to see how it works in practice: cal.com/ui-pirate/15min",
+    list: [],
   },
   {
-    heading: "How long does it take to complete a project?",
-
+    heading:
+      "What makes UI Pirate different from hiring from Toptal, Clutch, or a local agency?",
     title1:
-      "Project timelines vary based on scope and complexity. Here’s a general idea:",
-    list: [
-      "•	Landing Pages or Small Websites: Usually take 2-4 weeks, depending on specific features.",
-      "•	Web & Mobile Apps: Typically span 1-3 months, allowing for testing, user feedback, and adjustments.",
-      "•	Comprehensive Design Systems: Around 1-2 months, as they require in-depth planning, component library setup, and testing.",
-    ],
-    title2:
-      "📍 Case Example: A basic landing page could be ready in two weeks, while a full-featured mobile app may require at least two months to meet quality standards",
+      "Toptal and Clutch give you individual contractors or an agency directory — not a team that thinks through your product from scratch. Local agencies often charge 3–5× more for the same output. We give you a design-and-development team with 9+ years of SaaS product experience, a fixed process, and the ability to go from idea to shipped — not just from brief to Figma file.",
+    list: [],
+  },
+  {
+    heading: "What does the process look like after I reach out?",
+    title1:
+      "You book a 15-minute call (no commitment). We listen, ask the right questions, and send a scoped proposal within 48 hours. If the scope looks right, we kick off with a 5-Day Pilot so you can see exactly how we work before committing to a full project. No retainer lock-in, no surprise invoices.",
+    list: [],
   },
   {
     heading: "Do you offer post-launch support?",
-
     title1:
       "Yes! We offer post-launch support to ensure everything runs smoothly.",
     list: [
       "After the project is launched, we’ll be on standby to address any adjustments or unexpected issues. Whether it’s fixing minor bugs or refining some design elements, you’ll have peace of mind knowing we’re here to support your launch.",
     ],
-    title2:
-      "📍 What’s Included: Minor adjustments, bug fixes, and technical support for a set period. For ongoing support, we offer retainers for long-term collaboration.",
+    title2: (
+      <>
+        <span className="font-bold text-gray-900">What’s Included:</span> Minor adjustments, bug fixes, and technical support for a set period. For ongoing support, we offer retainers for long-term collaboration.
+      </>
+    ),
   },
   {
     heading: "What’s included in a web or mobile app project?",
-
     title1:
       "A typical web or mobile app project includes everything you need to launch a user-friendly and polished app:",
     list: [
@@ -90,35 +68,40 @@ const data = [
       "	•	Design & Development: Includes UX/UI design, coding, testing, and feedback rounds.",
       "•	Launch Support: We’ll assist you through deployment, ensuring the app performs well on all devices.",
     ],
-    title2:
-      "📍 Deliverables: You’ll receive the full app code, all design assets, documentation, and testing reports.",
+    title2: (
+      <>
+        <span className="font-bold text-gray-900">Deliverables:</span> You’ll receive the full app code, all design assets, documentation, and testing reports.
+      </>
+    ),
   },
   {
     heading: "Can I modify my project scope after starting?",
-
     title1: "Yes, we understand that needs can evolve.",
     list: [
       "If you need to add or change features midway, we’ll review the new scope and adjust the timeline and budget accordingly. Our team will work closely with you to keep everything on track while accommodating the changes.",
     ],
-    title2:
-      "📍 Flexibility: Additional features can be billed hourly or added to the fixed budget as an agreed scope extension.",
+    title2: (
+      <>
+        <span className="font-bold text-gray-900">Flexibility:</span> Additional features can be billed hourly or added to the fixed budget as an agreed scope extension.
+      </>
+    ),
   },
-
   {
     heading: "Can you help us set up a Design System and Component Library?",
-
     title1:
       "Yes, we specialize in creating scalable design systems and component libraries.",
     list: [
       "↳ Design Systems: A comprehensive setup of styles, colors, and typography for brand consistency.",
       "↳ Component Libraries: Reusable components for faster development and consistent design across pages.",
     ],
-    title2:
-      "📍 Benefits: A cohesive design system reduces redundancy and improves team efficiency by ensuring every design aligns with brand guidelines.",
+    title2: (
+      <>
+        <span className="font-bold text-gray-900">Benefits:</span> A cohesive design system reduces redundancy and improves team efficiency by ensuring every design aligns with brand guidelines.
+      </>
+    ),
   },
   {
     heading: "What does a UX Audit & Consultation involve?",
-
     title1:
       "Our UX audits provide actionable insights to improve your product’s usability.",
     list: [
@@ -126,28 +109,35 @@ const data = [
       "•	Consultation: A discussion to address the findings, offering recommendations tailored to your goals.",
       "•	Actionable Roadmap: A prioritized list of suggested changes to enhance the user experience.",
     ],
-    title2:
-      "📍 Deliverables: A detailed report, consultation call, and an improvement roadmap, focusing on ease of use and user satisfaction.",
+    title2: (
+      <>
+        <span className="font-bold text-gray-900">Deliverables:</span> A detailed report, consultation call, and an improvement roadmap, focusing on ease of use and user satisfaction.
+      </>
+    ),
   },
   {
     heading: "Do you work with existing designs or wireframes?",
-
     title1: "Absolutely. We can pick up from any stage you’re at.",
     list: [
       "Using your existing designs or wireframes, we can enhance the visual style, expand functionality, or build new features. Working from existing assets can save time and ensure we’re aligned with your vision from the start.",
     ],
-    title2:
-      "📍 Benefits: Faster turnaround and cost savings, while keeping your original vision intact.",
+    title2: (
+      <>
+        <span className="font-bold text-gray-900">Benefits:</span> Faster turnaround and cost savings, while keeping your original vision intact.
+      </>
+    ),
   },
   {
     heading: "How do we get started?",
-
     title1: "It’s easy!",
     list: [
-      "Start by booking a consultation with us. We’ll discuss your project, goals, and timeline, and recommend the best way forward. Alternatively, if you have a specific brief ready, email or WhatsApp us, and we’ll get back to you with a tailored proposal.",
+      "Start by booking a consultation with us at cal.com/ui-pirate/15min. We’ll discuss your project, goals, and timeline, and recommend the best way forward. Alternatively, if you have a specific brief ready, email us, and we’ll get back to you with a tailored proposal.",
     ],
-    title2:
-      "📍 Getting in Touch: Click on “Contact Us” to book a call or reach out via WhatsApp.",
+    title2: (
+      <>
+        <span className="font-bold text-gray-900">Getting in Touch:</span> Book a call directly or send us an email.
+      </>
+    ),
   },
 ];
 

@@ -12,7 +12,7 @@ const data = [
     subtitle:
       "Enterprise Saas App UI/UX Design on Figma & Development on Angular.js",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
-    url: "https://www.xperiti.com/",
+    url: "/case-studies",
   },
 
   {
@@ -20,7 +20,7 @@ const data = [
     heading1: "AI Trading Platform",
     subtitle: "Quant Trading App, Portfolio Website, UX Design, UI Development",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
-    url: "https://arthalpha.in/",
+    url: "/case-studies",
   },
   {
     heading: "AI LegalTech Saas",
@@ -28,7 +28,7 @@ const data = [
     subtitle:
       "Designed a future-ready AI SaaS platform for lawyers and legal professionals ",
     img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771570379/Image_hzwg0d.svg",
-    url: "https://www.xperiti.com/",
+    url: "/case-studies",
   },
   // {
   //   heading: "Rings & I",
@@ -79,8 +79,8 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
       <motion.div
         className={
           isEven
-            ? "flex flex-row items-start md:justify-end w-[40%] text-end max-md:text-center max-md:w-[100%] max-md:px-0 max-md:justify-center"
-            : "flex flex-row items-start justify-start w-[40%] max-md:text-center max-md:w-[100%] max-md:px-4"
+            ? "flex flex-row items-start md:justify-end w-[44%] lg:w-[42%] text-end max-md:text-center max-md:w-[100%] max-md:px-0 max-md:justify-center"
+            : "flex flex-row items-start justify-start w-[44%] lg:w-[42%] max-md:text-center max-md:w-[100%] max-md:px-4"
         }
         initial={{ y: contentStartY }}
         transition={revealTransition}
@@ -88,18 +88,18 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
         whileInView={{ y: 0 }}
       >
         <div>
-          <h3 className="text-[2rem] max-md:text-xl mb-2 max-md:mb-1 font-[600] max-xl:text-[3.5rem] max-md:mt-6">
+          <h3 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl max-md:text-2xl mb-2 max-md:mb-1 font-bold tracking-tight leading-tight max-md:mt-4">
             {item.heading}
           </h3>
-          <p className="text-[1rem] max-md:text-sm mb-3 max-md:mb-2 font-[600] max-xl:text-[1rem] text-gray-700">
+          <p className="text-sm md:text-base lg:text-lg mb-3 max-md:mb-2 font-semibold text-gray-700">
             {item.heading1}
           </p>
           <div className={isEven ? "flex flex-row items-end justify-end" : ""}>
             <p
               className={
                 isEven
-                  ? "text-base font-[400] max-w-[300px] max-md:text-sm text-gray-500 leading-relaxed"
-                  : "text-base font-[400] max-w-[400px] max-md:text-sm text-gray-500 leading-relaxed"
+                  ? "text-sm md:text-sm lg:text-base font-normal max-w-[340px] text-gray-500 leading-relaxed"
+                  : "text-sm md:text-sm lg:text-base font-normal max-w-[400px] text-gray-500 leading-relaxed"
               }
             >
               {item.subtitle}
@@ -111,16 +111,17 @@ const WorkCardItem = ({ item, index }: WorkCardItemProps) => {
             <LetsTalkButton
               children="View Project"
               href={item.url}
-              target="_blank"
               variant="light"
             />
           </div>
         </div>
       </motion.div>
-      <div className="w-[60%] max-w-full max-md:w-[100%]">
+      <div
+        className={`w-[52%] lg:w-[54%] max-md:w-full flex items-center ${isEven ? "justify-start" : "justify-end"} max-md:justify-center`}
+      >
         <motion.img
           alt={`${item.heading} - ${item.heading1} UI/UX design project showcase`}
-          className="w-full rounded-3xl max-md:rounded-2xl md:-mt-12 max-md:mt-4"
+          className="w-full max-w-[440px] md:max-w-[400px] lg:max-w-[480px] xl:max-w-[540px] rounded-3xl max-md:rounded-2xl md:-mt-8 max-md:mt-4 object-contain shadow-sm"
           initial={{ x: imageStartX, rotate: imageStartRotate }}
           loading="lazy"
           src={item.img}

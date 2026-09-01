@@ -109,36 +109,6 @@ export default function Breadcrumbs() {
         }}
         type="application/ld+json"
       />
-
-      {/* Visual breadcrumbs */}
-      <nav
-        aria-label="Breadcrumb"
-        className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-24 max-md:pt-20 pb-0"
-      >
-        <ol className="flex flex-wrap items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
-          {breadcrumbs.map((item, index) => (
-            <li key={item.href} className="flex items-center gap-1">
-              {index > 0 && (
-                <span aria-hidden="true" className="text-gray-400/60 dark:text-gray-600 mx-1">
-                  /
-                </span>
-              )}
-              {item.isCurrentPage ? (
-                <span aria-current="page" className="text-gray-900 dark:text-white font-medium">
-                  {item.label}
-                </span>
-              ) : (
-                <Link
-                  className="hover:text-[#FF5B04] dark:hover:text-[#FF5B04] transition-colors"
-                  href={item.href}
-                >
-                  {item.label}
-                </Link>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
     </>
   );
 }

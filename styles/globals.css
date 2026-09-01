@@ -2157,6 +2157,7 @@ body[data-transitioning="true"] [data-animate] {
 .phone-wrapper-custom .react-tel-input .form-control {
   @apply !w-full !h-[42px] !text-base !font-jakarta !rounded-lg !border-2 !border-gray-200;
 }
+
 .phone-wrapper-custom .react-tel-input .form-control:hover {
   @apply !border-gray-300;
 }
@@ -2164,6 +2165,7 @@ body[data-transitioning="true"] [data-animate] {
 .phone-wrapper-custom .react-tel-input .flag-dropdown {
   @apply !bg-transparent !border-r-0 !rounded-l-lg;
 }
+
 .phone-wrapper-custom .react-tel-input .flag-dropdown:hover {
   @apply !bg-gray-50;
 }
@@ -2187,6 +2189,7 @@ body[data-transitioning="true"] [data-animate] {
 .phone-wrapper-custom .react-tel-input .search-box {
   @apply !w-full !m-0 !px-3 !py-2 !text-sm !font-jakarta !border !border-gray-200 !rounded-lg;
 }
+
 .phone-wrapper-custom .react-tel-input .search-box:focus {
   @apply !border-[#FF5B04] !ring-0 !outline-none;
 }
@@ -2194,6 +2197,7 @@ body[data-transitioning="true"] [data-animate] {
 .phone-wrapper-custom .react-tel-input .country {
   @apply !px-3 !py-2.5 !transition-colors;
 }
+
 .phone-wrapper-custom .react-tel-input .country:hover {
   @apply !bg-gray-50;
 }
@@ -2276,6 +2280,22 @@ body.modal-open .main-navbar {
   }
 }
 
+.hero-wrapper {
+  @apply flex flex-row items-center justify-center pt-28 sm:pt-32 pb-6 max-md:pt-24 max-md:pb-0 w-full relative;
+}
+
+.hero-wrapper-col {
+  @apply flex flex-col items-center justify-center pt-28 sm:pt-32 pb-6 max-md:pt-24 max-md:pb-0 w-full relative;
+}
+
+.hero-page-container {
+  @apply pt-28 sm:pt-32 pb-20 relative overflow-hidden;
+}
+
+.section-container {
+  @apply container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32;
+}
+
 /* ========================================
    BLOG DETAIL PROSE STYLES
    ======================================== */
@@ -2295,7 +2315,7 @@ body.modal-open .main-navbar {
 }
 
 /* Editorial Drop Cap for First Paragraph */
-.blog-prose > p:first-of-type::first-letter {
+.blog-prose>p:first-of-type::first-letter {
   font-size: 3.5rem;
   font-weight: 700;
   float: left;
@@ -2464,7 +2484,7 @@ body.modal-open .main-navbar {
   clear: both;
   border: none;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(0,0,0,0.08) 15%, rgba(0,0,0,0.08) 85%, transparent);
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.08) 15%, rgba(0, 0, 0, 0.08) 85%, transparent);
   margin: 3.5rem 0;
 }
 
@@ -2474,7 +2494,7 @@ body.modal-open .main-navbar {
   height: auto;
   border-radius: 14px;
   margin: 2rem auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 /* Ensure paragraph wrapping an image acts as a flex column so margin:auto centers the img */
@@ -2486,8 +2506,10 @@ body.modal-open .main-navbar {
 /* Polished Interactive Table aesthetics matching Brand Design */
 .blog-prose table {
   width: 100%;
-  min-width: 100%;           /* guarantee table fills the column even when content is narrow */
-  border-collapse: separate; /* required for border-radius to apply to the table border */
+  min-width: 100%;
+  /* guarantee table fills the column even when content is narrow */
+  border-collapse: separate;
+  /* required for border-radius to apply to the table border */
   border-spacing: 0;
   margin: 2.5rem 0;
   font-size: 0.925rem;
@@ -2516,7 +2538,8 @@ body.modal-open .main-navbar {
 }
 
 .blog-prose th {
-  background-color: #FFF5F0; /* Soft warm Brand Orange tint */
+  background-color: #FFF5F0;
+  /* Soft warm Brand Orange tint */
   color: #1A1A1A;
   font-weight: 700;
   text-transform: uppercase;
@@ -2526,7 +2549,8 @@ body.modal-open .main-navbar {
 }
 
 .blog-prose tr:hover td {
-  background-color: rgba(255, 91, 4, 0.025); /* Faint brand orange glow on row hover */
+  background-color: rgba(255, 91, 4, 0.025);
+  /* Faint brand orange glow on row hover */
 }
 
 /* Call to Action (CTA) Button styles within blogs */
@@ -2622,6 +2646,7 @@ body.modal-open .main-navbar {
 .ProseMirror ::selection {
   background-color: rgba(255, 91, 4, 0.22) !important;
 }
+
 ::selection {
   background-color: rgba(255, 91, 4, 0.22) !important;
 }
@@ -2630,43 +2655,68 @@ body.modal-open .main-navbar {
    AI CHAT & REWRITE PROSE TYPOGRAPHY
    ======================================== */
 .ai-prose {
-  font-size: 0.75rem; /* text-xs */
+  font-size: 0.75rem;
+  /* text-xs */
   line-height: 1.6;
-  color: #374151; /* text-gray-700 */
+  color: #374151;
+  /* text-gray-700 */
 }
+
 .ai-prose p {
   margin-top: 0;
   margin-bottom: 0.75rem;
 }
+
 .ai-prose p:last-child {
   margin-bottom: 0;
 }
-.ai-prose h1, .ai-prose h2, .ai-prose h3, .ai-prose h4 {
+
+.ai-prose h1,
+.ai-prose h2,
+.ai-prose h3,
+.ai-prose h4 {
   font-family: var(--font-geist), var(--font-sans), sans-serif;
   font-weight: 700;
-  color: #111827; /* text-gray-900 */
+  color: #111827;
+  /* text-gray-900 */
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
-.ai-prose h1 { font-size: 1.125rem; }
-.ai-prose h2 { font-size: 1rem; }
-.ai-prose h3 { font-size: 0.875rem; }
-.ai-prose h4 { font-size: 0.75rem; }
+
+.ai-prose h1 {
+  font-size: 1.125rem;
+}
+
+.ai-prose h2 {
+  font-size: 1rem;
+}
+
+.ai-prose h3 {
+  font-size: 0.875rem;
+}
+
+.ai-prose h4 {
+  font-size: 0.75rem;
+}
 
 .ai-prose ul {
   list-style-type: disc;
   margin: 0.5rem 0 0.5rem 1.25rem;
 }
+
 .ai-prose ol {
   list-style-type: decimal;
   margin: 0.5rem 0 0.5rem 1.25rem;
 }
+
 .ai-prose li {
   margin-bottom: 0.25rem;
 }
+
 .ai-prose li:last-child {
   margin-bottom: 0;
 }
+
 .ai-prose blockquote {
   border-left: 2px solid #FF5B04;
   padding-left: 0.75rem;
@@ -2674,13 +2724,16 @@ body.modal-open .main-navbar {
   font-style: italic;
   margin: 0.75rem 0;
 }
+
 .ai-prose strong {
   font-weight: 600;
   color: #111827;
 }
+
 .ai-prose em {
   font-style: italic;
 }
+
 .ai-prose pre {
   background-color: #f3f4f6;
   padding: 0.5rem;
@@ -2689,6 +2742,7 @@ body.modal-open .main-navbar {
   font-family: monospace;
   margin: 0.75rem 0;
 }
+
 .ai-prose code {
   background-color: #f3f4f6;
   padding: 0.125rem 0.25rem;
@@ -2708,28 +2762,34 @@ body.modal-open .main-navbar {
   padding-left: 1.75rem;
   margin: 0.75rem 0;
 }
+
 .notion-editor-wrapper .ProseMirror ol {
   list-style-type: decimal !important;
   padding-left: 1.75rem;
   margin: 0.75rem 0;
 }
+
 .notion-editor-wrapper .ProseMirror li {
   display: list-item !important;
   margin: 0.35rem 0;
   line-height: 1.75;
 }
+
 .notion-editor-wrapper .ProseMirror ul ul {
   list-style-type: circle !important;
   margin: 0.25rem 0;
 }
+
 .notion-editor-wrapper .ProseMirror ul ul ul {
   list-style-type: square !important;
 }
+
 /* Keep task lists as plain flex rows (no bullet) */
 .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] {
   list-style: none !important;
   padding-left: 0;
 }
+
 .notion-editor-wrapper .ProseMirror ul[data-type="taskList"] li {
   display: flex !important;
 }

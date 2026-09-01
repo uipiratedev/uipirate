@@ -61,7 +61,7 @@ const ServicesSection = () => {
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
-      title: "Saas & AI Development",
+      title: "SaaS & AI Development",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
@@ -131,7 +131,7 @@ const ServicesSection = () => {
                 boxShadow: "0px 1.03px 1.44px 0px #FFFFFFA6 inset",
               }}
             >
-              <div className="bg-orange-500 text-white rounded-full max-md:rounded-[12px] w-full flex items-center justify-between px-6 max-md:px-4 py-2">
+              <div className="bg-orange-500 text-white rounded-full max-md:rounded-[12px] w-full flex items-center justify-between px-3 py-2">
                 {/* Left Circle */}
                 <div
                   className="w-6 h-6 bg-[#DE5005] rounded-full flex-shrink-0"
@@ -149,7 +149,7 @@ const ServicesSection = () => {
                     verticalAlign: "middle",
                   }}
                 >
-                  AI Apps, Saas, Websites & More
+                  AI Apps, SaaS & Business Websites
                 </p>
 
                 {/* Right Circle */}
@@ -188,8 +188,8 @@ const ServicesSection = () => {
           >
             <CardBody className="p-8 max-md:p-6">
               <h3 className="text-2xl max-md:text-lg font-bold mb-6 text-white">
-                One-stop shop for{" "}
-                <span className="text-brand-orange">all your essentials</span>
+                Design and development,{" "}
+                <span className="text-brand-orange">handled by one team</span>
               </h3>
               <div className="gap-3 grid grid-cols-2 max-md:grid-cols-1">
                 {services.map((service, index) => (
@@ -225,8 +225,9 @@ const ServicesSection = () => {
               </h3>
               <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
                 <LetsTalkButton
-                  children="Let's Talk"
+                  children="Tell Us What You Need →"
                   fullWidth
+                  href="/contact"
                   variant="light"
                 />
               </div>

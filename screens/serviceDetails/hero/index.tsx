@@ -7,7 +7,7 @@ import GlassSurface from "@/components/GlassSurface";
 const ServiceDetailsHero = ({ data }: any) => {
   return (
     <>
-      <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
+      <div className="hero-wrapper">
         {/* Subtle Grid Background Pattern */}
         <div
           className="absolute pointer-events-none -mt-20 "
@@ -42,7 +42,7 @@ const ServiceDetailsHero = ({ data }: any) => {
           }}
         />
         <div
-          className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto "
+          className="flex flex-col items-center justify-center w-full relative z-10 section-container"
           style={{ overflow: "visible" }}
         >
           {" "}

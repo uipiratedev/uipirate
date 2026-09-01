@@ -10,7 +10,7 @@ export default function GlobalCTA({ topic }: { topic?: string } = {}) {
     : "Let's Build It Together";
 
   return (
-    <section className="container mx-auto xl:px-40 2xl:px-48 max-xl:px-4 max-2xl:px-0 mb-16 mt-8">
+    <section className="section-container mb-16 mt-8">
       <div className="relative rounded-[28px] bg-gray-900 overflow-hidden px-10 py-12 max-md:px-6 max-md:py-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl">
         {/* Background accent */}
         <div

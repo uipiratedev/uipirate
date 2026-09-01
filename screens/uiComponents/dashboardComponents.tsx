@@ -14,6 +14,9 @@ import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
+import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
+import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
+import { GlossyGelButton } from "@/components/GlossyGelButton";
 
 export type ComponentCategory = "buttons" | "controls" | "badges" | "surfaces";
 
@@ -1474,4 +1477,270 @@ export default function Example() {
       { name: "blur", type: "number", defaultValue: "20", description: "Backdrop blur radius in px." },
     ],
   },
+  {
+    id: "tactile-neumorphic-toggle",
+    name: "Tactile Neumorphic Pill Toggle",
+    category: "controls",
+    categoryLabel: "Controls & Toggles",
+    badge: "1:1 Figma",
+    badgeColor: "#3B82F6",
+    description:
+      "Ultra-tactile debossed neumorphic pill switch directly from Figma (Nodes 1:7 & 1:8). Features 5-layer inset shadow groove, metallic sliding thumb with specular bevels, and etched status glyphs.",
+    detailUrl: "/componentlab/tactile-neumorphic-toggle",
+    defaultLabel: "Power State",
+    hasLabelControl: true,
+    hasSizeControl: true,
+    hasThemeControl: true,
+    defaultTheme: "figma-silver",
+    availableThemes: [
+      { value: "figma-silver", label: "Figma Silver (1:1)", color: "#94A3B8" },
+      { value: "dark-obsidian", label: "Dark Obsidian", color: "#1E293B" },
+      { value: "cyber-cyan", label: "Cyber Cyan", color: "#06B6D4" },
+      { value: "emerald-glow", label: "Emerald Matrix", color: "#10B981" },
+      { value: "magma-orange", label: "Magma Orange", color: "#FF5B04" },
+      { value: "hyper-violet", label: "Hyper Violet", color: "#A855F7" },
+    ],
+    features: [
+      "1:1 Figma fidelity from nodes 1:7 & 1:8",
+      "5-layer optical inset shadow track geometry",
+      "Brushed metallic gradient knob with bevel highlight",
+      "Smooth physics-based spring slide animation",
+    ],
+    previewLight: (
+      <div className="py-8 flex items-center justify-center">
+        <TactileNeumorphicToggle theme="figma-silver" size="md" defaultChecked={true} label="Active Setting" />
+      </div>
+    ),
+    previewDark: (
+      <div className="py-8 flex items-center justify-center">
+        <TactileNeumorphicToggle theme="figma-silver" size="md" defaultChecked={true} label="Active Setting" />
+      </div>
+    ),
+    jsxCode: `import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
+
+export default function Example() {
+  return (
+    <TactileNeumorphicToggle
+      theme="figma-silver"
+      size="md"
+      defaultChecked={true}
+      onChange={(checked) => console.log("State:", checked)}
+    />
+  );
+}`,
+    htmlCode: `<div role="switch" aria-checked="true" class="relative inline-flex items-center w-[98px] h-[38px] rounded-full bg-[#D8DDE5] shadow-[inset_1.8px_3.25px_2.89px_-1.08px_#8F9BAE,inset_-1.8px_-4.34px_2.89px_-1.08px_#ffffffb3]">
+  <span class="w-[46px] h-[30px] rounded-full bg-gradient-to-br from-[#F6F7F7] via-[#F5F6F8] to-[#A0ACC1] shadow-md transform translate-x-[44px]"></span>
+</div>`,
+    cssCode: `/* 5-Layer Neumorphic Track Shadows */
+.neumorphic-track {
+  background: #D8DDE5;
+  box-shadow:
+    inset 1.8px 3.25px 2.89px -1.08px rgba(144, 155, 176, 1),
+    inset -1.8px -4.34px 2.89px -1.08px rgba(255, 255, 255, 0.7),
+    inset 1.8px -4.34px 2.89px -1.08px rgba(255, 255, 255, 0.7),
+    inset -7.23px 6.14px 5.42px -7.23px rgba(215, 222, 230, 1),
+    inset 8.31px 6.14px 5.42px -7.23px rgba(215, 222, 230, 1);
+}`,
+    props: [
+      { name: "checked", type: "boolean", defaultValue: "false", description: "Controlled boolean checked state." },
+      { name: "theme", type: '"figma-silver" | "dark-obsidian" | "cyber-cyan" | "emerald-glow" | "magma-orange" | "hyper-violet"', defaultValue: '"figma-silver"', description: "Color theme palette." },
+      { name: "size", type: '"sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Button dimensions scale." },
+      { name: "showIcons", type: "boolean", defaultValue: "true", description: "Whether to show etched 0 / I glyphs." },
+    ],
+  },
+  {
+    id: "glossy-gel-button",
+    name: "Glossy Gel Glass Button",
+    category: "buttons",
+    categoryLabel: "Buttons & CTAs",
+    badge: "Liquid Glass",
+    badgeColor: "#10B981",
+    description:
+      "High-gloss skeuomorphic gel glass CTA button directly from Figma (Node 2:2). Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
+    detailUrl: "/componentlab/glossy-gel-button",
+    defaultLabel: "Get Started",
+    hasLabelControl: true,
+    hasSizeControl: true,
+    hasThemeControl: true,
+    defaultTheme: "emerald-gel",
+    availableThemes: [
+      { value: "emerald-gel", label: "Emerald Mint (1:1)", color: "#32E49D" },
+      { value: "cyan-gel", label: "Electric Cyan", color: "#38BDF8" },
+      { value: "violet-gel", label: "Cyber Violet", color: "#C084FC" },
+      { value: "magma-gel", label: "Magma Amber", color: "#FB923C" },
+      { value: "silver-glass", label: "Frosted Silver Glass", color: "#E2E8F0" },
+      { value: "obsidian-glass", label: "Dark Obsidian", color: "#1E293B" },
+    ],
+    features: [
+      "1:1 Figma fidelity from node 2:2 (Glossy Gel Button)",
+      "4-layer optical drop & inner shadow composite",
+      "Curved blurred top specular reflection capsule",
+      "Interactive spring depression & specular sheen animation",
+    ],
+    previewLight: (
+      <div className="py-8 flex items-center justify-center">
+        <GlossyGelButton theme="emerald-gel" size="md">Get Started</GlossyGelButton>
+      </div>
+    ),
+    previewDark: (
+      <div className="py-8 flex items-center justify-center">
+        <GlossyGelButton theme="emerald-gel" size="md">Get Started</GlossyGelButton>
+      </div>
+    ),
+    jsxCode: `import { GlossyGelButton } from "@/components/GlossyGelButton";
+
+export default function Example() {
+  return (
+    <GlossyGelButton theme="emerald-gel" size="md" onClick={() => console.log("Started")}>
+      Get Started
+    </GlossyGelButton>
+  );
+}`,
+    htmlCode: `<button class="relative px-7 py-3.5 rounded-[18px] font-semibold text-[#072B1F] bg-gradient-to-b from-[#32E49D] to-[#20C982] shadow-[3px_4px_6px_rgba(35,46,64,0.22),inset_0_-7px_8px_-6px_rgba(76,86,108,0.9)]">
+  <span class="relative z-10 [text-shadow:0_1px_0_rgba(255,255,255,0.4)]">Get Started</span>
+</button>`,
+    cssCode: `/* Skeuomorphic Gel Button Shadows */
+.glossy-gel-button {
+  background: linear-gradient(180deg, #32E49D 0%, #20C982 100%);
+  border-radius: 18px;
+  box-shadow:
+    3px 4px 6px rgba(35, 46, 64, 0.22),
+    inset 0 -7px 8px -6px rgba(76, 86, 108, 0.90),
+    inset 1px 1px 2px rgba(76, 86, 108, 0.80),
+    inset 0 -1px 3px rgba(255, 255, 255, 0.45);
+}`,
+    props: [
+      { name: "children", type: "ReactNode", defaultValue: '"Get Started"', description: "Button text or custom children." },
+      { name: "theme", type: '"emerald-gel" | "cyan-gel" | "violet-gel" | "magma-gel" | "silver-glass" | "obsidian-glass"', defaultValue: '"emerald-gel"', description: "Color theme preset." },
+      { name: "size", type: '"sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Button size scale." },
+      { name: "isLoading", type: "boolean", defaultValue: "false", description: "Displays loading spinner." },
+    ],
+  },
+  {
+    id: "tactile-neumorphic-switch",
+    name: "Tactile Neumorphic Dual-Dome Switch",
+    category: "controls",
+    categoryLabel: "Controls & Toggles",
+    badge: "1:1 Figma",
+    badgeColor: "#10E599",
+    description:
+      "Photorealistic 3D neumorphic toggle switch directly from Figma (Nodes 1:7 & 1:8). Features outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
+    detailUrl: "/componentlab/tactile-neumorphic-switch",
+    defaultLabel: "Power State",
+    hasLabelControl: true,
+    hasSizeControl: true,
+    hasThemeControl: true,
+    defaultTheme: "figma-emerald",
+    availableThemes: [
+      { value: "figma-emerald", label: "Figma Emerald (1:7 & 1:8)", color: "#10E599" },
+      { value: "cyber-cyan", label: "Cyber Laser Cyan", color: "#00E5FF" },
+      { value: "magma-orange", label: "UI Pirate Magma", color: "#FF5B04" },
+      { value: "dark-obsidian", label: "Dark Obsidian Stealth", color: "#38BDF8" },
+      { value: "hyper-violet", label: "Hyper Ultraviolet", color: "#C084FC" },
+      { value: "amber-crt", label: "Amber CRT Gold", color: "#FBBF24" },
+    ],
+    features: [
+      "1:1 Figma Master design from nodes 1:7 (OFF) & 1:8 (ON)",
+      "Dual-dome sculpted tactile thumb with spherical light highlights",
+      "Deep recessed shadow trench with illuminated emerald fill",
+      "Outer recessed bevel cavity with 3D inset lighting",
+      "60fps responsive spring motion physics",
+    ],
+    previewLight: (
+      <div className="py-8 flex items-center justify-center">
+        <TactileNeumorphicSwitch theme="figma-emerald" size="md" defaultChecked={true} />
+      </div>
+    ),
+    previewDark: (
+      <div className="py-8 flex items-center justify-center">
+        <TactileNeumorphicSwitch theme="figma-emerald" size="md" defaultChecked={true} />
+      </div>
+    ),
+    jsxCode: `import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
+
+export default function Example() {
+  return (
+    <TactileNeumorphicSwitch
+      theme="figma-emerald"
+      size="md"
+      defaultChecked={true}
+      onChange={(checked) => console.log("State:", checked)}
+    />
+  );
+}`,
+    htmlCode: `<div role="switch" aria-checked="true" class="relative w-[320px] h-[140px] rounded-[70px] bg-[#DFE3EB] shadow-[inset_5px_6px_12px_rgba(150,162,182,0.65),inset_-5px_-6px_12px_rgba(255,255,255,0.95)] flex items-center justify-center">
+  <div class="relative w-[276px] h-[84px] rounded-[42px] bg-gradient-to-b from-[#C2C9D6] to-[#E7ECF3] shadow-[inset_0_8px_12px_rgba(60,72,92,0.45)] overflow-hidden">
+    <div class="w-full h-full bg-gradient-to-r from-[#02B86E] via-[#0AD483] to-[#2BF3A4] shadow-[0_0_18px_rgba(16,229,153,0.35)]"></div>
+  </div>
+  <div class="absolute w-[136px] h-[96px] rounded-[48px] bg-white shadow-xl flex items-center justify-between px-2">
+    <div class="w-[60px] h-[60px] rounded-full bg-radial shadow-inner"></div>
+    <div class="w-[60px] h-[60px] rounded-full bg-radial shadow-inner"></div>
+  </div>
+</div>`,
+    cssCode: `/* 1:1 Figma Neumorphic Switch Tokens */
+:root {
+  --switch-outer-bg: linear-gradient(145deg, #DFE3EB 0%, #EAEEF5 100%);
+  --switch-outer-shadow: inset 5px 6px 12px rgba(150, 162, 182, 0.65), inset -5px -6px 12px #FFFFFF;
+  --switch-track-on: linear-gradient(90deg, #02B86E 0%, #0AD483 40%, #2BF3A4 85%, #56F8B6 100%);
+  --switch-knob-shadow: 0 16px 28px -3px rgba(35, 48, 70, 0.32), 0 8px 14px -2px rgba(35, 48, 70, 0.22);
+}`,
+    props: [
+      { name: "checked", type: "boolean", defaultValue: "false", description: "Controlled boolean state." },
+      { name: "stateMode", type: '"interactive" | "off" | "on"', defaultValue: '"interactive"', description: "Force static 1:7 OFF, 1:8 ON, or live toggle." },
+      { name: "theme", type: '"figma-emerald" | "cyber-cyan" | "magma-orange" | "dark-obsidian" | "hyper-violet" | "amber-crt"', defaultValue: '"figma-emerald"', description: "Illumination theme palette." },
+      { name: "size", type: '"sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Proportional scale size preset." },
+      { name: "showGrid", type: "boolean", defaultValue: "true", description: "Shows fine mesh canvas grid." },
+    ],
+    variantsList: [
+      {
+        title: "Figma OFF (Node 1:7)",
+        themeValue: "figma-emerald",
+        themeProp: 'stateMode="off"',
+        badgeColor: "#94A3B8",
+        description: "Resting neutral clay trench with dual-dome sculpted knob.",
+        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="figma-emerald" stateMode="off" size={sz} />,
+      },
+      {
+        title: "Figma ON (Node 1:8)",
+        themeValue: "figma-emerald",
+        themeProp: 'stateMode="on"',
+        badgeColor: "#10E599",
+        description: "Glowing emerald photon illumination channel with right dock.",
+        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="figma-emerald" stateMode="on" size={sz} />,
+      },
+      {
+        title: "Interactive Spring",
+        themeValue: "figma-emerald",
+        themeProp: 'theme="figma-emerald"',
+        badgeColor: "#10E599",
+        description: "Interactive 60fps spring toggle with dynamic channel fill.",
+        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="figma-emerald" stateMode="interactive" size={sz} />,
+      },
+      {
+        title: "Cyber Laser Cyan",
+        themeValue: "cyber-cyan",
+        themeProp: 'theme="cyber-cyan"',
+        badgeColor: "#00E5FF",
+        description: "High-voltage laser cyan glowing optical underlayer.",
+        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="cyber-cyan" stateMode="interactive" size={sz} />,
+      },
+      {
+        title: "UI Pirate Magma",
+        themeValue: "magma-orange",
+        themeProp: 'theme="magma-orange"',
+        badgeColor: "#FF5B04",
+        description: "Signature magma orange molten photon illumination.",
+        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="magma-orange" stateMode="interactive" size={sz} />,
+      },
+      {
+        title: "Dark Obsidian Stealth",
+        themeValue: "dark-obsidian",
+        themeProp: 'theme="dark-obsidian"',
+        badgeColor: "#38BDF8",
+        description: "Midnight dark clay chassis with glowing sapphire channel.",
+        renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="dark-obsidian" stateMode="interactive" size={sz} />,
+      },
+    ],
+  },
 ];
+

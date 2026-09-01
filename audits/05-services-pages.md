@@ -49,7 +49,7 @@ Every recommendation in this document is grounded in the same cross-source princ
 
 ---
 
-## Scope Note — 4 pages vs 5 in the data
+## Scope Note — 4 pages in scope
 
 The brief covers **4** service pages:
 
@@ -58,14 +58,7 @@ The brief covers **4** service pages:
 3. Landing Pages & Business Websites
 4. UX Audits & Consultation
 
-`data/sericesDetailsList.json` actually contains **5** entries. The fifth is **Design System & Component Library**. It is:
-
-- **Still in the data file** and still routable at `/services/Design-System-&-Component-Library`
-- **Still in the SEO metadata map** (`SERVICE_META["design-system-component-library"]` in `page.tsx`)
-- **Still linked** from `app/layout.tsx` footer and `app/sitemap/page.tsx`
-- **Already removed** from the main navbar (`config/site.ts` lists only the 4 above) and from `components/footer.tsx`
-
-So it is in a half-killed state. **A decision is needed: fully kill it or fully rebuild it.** It is audited last (Section 6) because its content is currently the weakest of the five — most of its copy is pasted from other services. This audit assumes the likely intent is to **kill it** and fold "design tokens / component library" into the UX/UI Design page as a deliverable, but both paths are laid out.
+*(Note: A fifth service, Design System & Component Library, was previously in the data but has been fully killed and removed from scope).*
 
 ---
 
@@ -405,28 +398,6 @@ This page has the most content problems of the four in-scope services.
 
 ---
 
-## 5. Design System & Component Library  (`design-system-component-library`) — KILL or REBUILD
-
-Currently half-removed (in data/metadata/footer-in-layout/sitemap, absent from navbar and `components/footer.tsx`).
-
-### If killing (recommended):
-1. Remove the entry from `data/sericesDetailsList.json`.
-2. Remove `SERVICE_META["design-system-component-library"]` from `page.tsx`.
-3. Remove links in `app/layout.tsx:417`, `app/sitemap/page.tsx`, `screens/sitemap/index.tsx`, and any remaining nav/footer references.
-4. Add a 301 redirect from `/services/Design-System-&-Component-Library` → `/services/ux-ui-design` (or `/services`) so existing links / indexed URLs don't dead-end.
-5. Fold "design tokens, component library, documented handoff" in as a **deliverable bullet** on the UX/UI Design page (`whatYouGet` or a new card) — it's a real capability, it just doesn't need its own page at current demand.
-
-### If keeping, it needs a full content pass — current state:
-- 🔴 `hero.heading` = "Your Website Isn't a Brochure, It's a Sales Tool" (Landing Pages' headline).
-- 🔴 `hero.badge` = "Tokens to Components | Built for Scale | 1–4 Week Delivery" — actually fine, but mismatched with the wrong headline.
-- 🔴 `whoThisIsFor` = old **Graphic Design** copy (icon sets, pitch decks, logos, print-ready materials, "cohesive design language"). Nothing about design-system consumers (product teams scaling UI, multi-squad orgs, teams with drift between Figma and code).
-- 🔴 `streamlinedProcess` = generic website build steps, both groups badged "Design Workflow".
-- 🟡 `whatYouGet` uses key `img` not `image` (works via fallback, but inconsistent).
-- 🟡 `whyThisMatters` (Visual Inconsistency · Development Friction · Maintenance Debt) is **actually the only well-written block on this page** — keep it if rebuilding.
-- 🔴 `recommendedNextSteps.otherServices` slug `ux-ui-front-end-development` broken.
-
----
-
 ## Priority Fix Table
 
 | # | Scope | Issue | Priority |
@@ -435,9 +406,7 @@ Currently half-removed (in data/metadata/footer-in-layout/sitemap, absent from n
 | 2 | Nav | `/services` parent link 404s — no hub page exists | 🔴 Fix now |
 | 3 | UX Audits | `whyThisMatters` heading = "Why Most 3D On Websites Fails" (wrong service) | 🔴 Fix now |
 | 4 | UX Audits | `streamlinedProcess` = website-build steps + heading "Design System Roadmap" (entirely wrong) | 🔴 Fix now |
-| 5 | Design System | `hero.heading` = Landing Pages' headline; `whoThisIsFor` = old Graphic Design copy | 🔴 Fix now (or kill the page) |
 | 6 | All | `screens/serviceDetails/index.tsx` ships `<div>danis...</div>` as the no-data fallback | 🔴 Fix now |
-| 7 | Design System | Decide: kill (recommended) or fully rebuild — it's half-removed and half-live | 🔴 Decide now |
 | 8 | SaaS & AI Dev | 4 `whatYouGet` headings unmapped → mislabeled icons | 🟠 Soon |
 | 9 | All | `youWillGet` content block written but never rendered — wire in or delete (5 blocks) | 🟠 Soon |
 | 10 | UX/UI vs SaaS | Positioning overlap (front-end dev + strategy on both) — draw the boundary | 🟠 Soon |
@@ -485,3 +454,385 @@ Currently half-removed (in data/metadata/footer-in-layout/sitemap, absent from n
 ---
 
 *Related audits: `01-landing-page.md` · `02-target-audience-audit.md` · `03-pricing-page.md` · `04-about-page.md`*
+
+---
+---
+
+# v3 Audit Update — Services Pages
+**Audited:** 2026-08-31
+**Audit basis:** Direct source-code inspection of `app/services/[id]/page.tsx`, `app/services/[id]/opengraph-image.tsx`, `data/sericesDetailsList.json` (BOM-encoded, 5 entries), `data/servicesTopList.json`, all 7 `screens/serviceDetails/*` components, `components/LetsTalkButton.tsx`, `config/site.ts`, `components/footer.tsx`, `app/layout.tsx`, `app/sitemap/page.tsx`, `screens/sitemap/index.tsx` + SEO Content skill (E-E-A-T framework, Google Helpful Content guidelines, AI Citation Readiness, service-page CRO lens)
+**Scope:** Copy, content, SEO metadata, JSON-LD copy, and internal-link integrity only. No UI/layout/animation changes evaluated.
+
+---
+
+## What Actually Changed Since v2 (Code-Verified)
+
+Every v1/v2 cross-cutting item (X1–X9) and the dev-hygiene notes were re-checked against the live source on 2026-08-31.
+
+| Item | v2 Status | v3 Code Reality |
+|---|---|---|
+| **X1** — broken cross-links | 🔴 | 🟡 **Partially fixed.** Navbar (`config/site.ts` L15-40), visual footer (`components/footer.tsx` L235-259), and both sitemap files now use resolvable slugs (`/services/UX-UI-Design` → normalizes to `ux-ui-design`). Design System removed from navbar, footer, and sitemap. **Still broken:** (a) `app/layout.tsx` L416 SEO footer still links `/services/SaaS-Web-&-Mobile-Apps` → normalizes to `saas-web-mobile-apps` → no match; (b) `app/layout.tsx` L418 still links the half-killed Design System page; (c) every in-JSON `recommendedNextSteps` slug pointing at the UX/UI service still reads `ux-ui-front-end-development` (Landing Pages, UX Audits, Design System) — see NF1. |
+| **X2** — no `/services` hub | 🔴 | ❌ **Not fixed.** `app/services/` contains only `[id]/`. Navbar "Services" parent (`config/site.ts` L9, L112) still points at `/services` → 404. No side-by-side comparison page exists. |
+| **X3** — placeholder / copy-paste content | 🔴 | 🟡 **Partially fixed — and the wrong page got the fix.** Design System now has correct `hero.description`, `whyThisMatters.heading` (`Why Most Design Systems Fail to Scale`), `streamlinedProcess.heading` (`Built for Consistency`), and `whatYouGet.heading` (`What This Service Includes`). **But UX Audits is untouched:** `whyThisMatters.heading` still `Why Most 3D On Websites Fails ` (trailing space and all), `streamlinedProcess.heading` still `Design System Roadmap`, `whatYouGet.heading` still `What All Will you get in return`. Design System `hero.heading` still `Your Website Isn't a Brochure, It's a Sales Tool` (Landing Pages' line). Both Design System and UX Audits `streamlinedProcess` still badge both workflow groups `Design Workflow`. Landing Pages `hero.description` still `We design model landing pages…corporations  that` (typo + double space). |
+| **X4** — heading↔animation string coupling | 🟠 | ❌ **Not fixed.** `whatYouGetAnimations/index.tsx` L10-23 still maps 12 exact heading strings. SaaS & AI Development's 4 `whatYouGet` headings (`Full-Stack Architecture`, `AI & LLM Integration`, `API & Third-Party Integrations`, `Cloud Deployment & Scaling`) are still absent from the map → still fall back to mislabeled `image` SVGs. No `visualKey` field added. |
+| **X5** — UX/UI vs SaaS boundary / one service, three names | 🟠 | ❌ **Not fixed.** UX/UI `hero.badge` still `SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT`; SERVICE_META title still `SaaS & Mobile App UX/UI Design | Idea to Product | Angular, React`; nav/footer label `UX/UI Design`; OG-image badge `UX/UI Design`. Four names, one service. |
+| **X6** — `WhoThisIsFor` inconsistency | 🟡 | ❌ **Not fixed.** UX Audits still has **2** cards with lowercase sentence-fragment headings (`Founders or startups who are just starting out`, `anyone looking to upgrade their product experience & conversions`). Every other service has 3 Title Case cards. **New:** section `heading` itself is inconsistent — `Does it sound like you?` (UX/UI, SaaS, Design System) vs `Does this sound like you?` (Landing Pages, UX Audits). See NF2. |
+| **X7** — generic social proof | 🟡 | ❌ **Not fixed.** `serviceDetails/index.tsx` L40 still renders a bare `<LandingWork />` — same portfolio on all 5 pages, no service filter, no metric, no service-specific testimonial. |
+| **X8** — no timeline / price signal | 🟡 | ❌ **Not fixed.** Only Design System's badge carries a delivery estimate. `data/servicesTopList.json` still holds unused timeline chips (`1-2 months`, `2-4 weeks`) that are never surfaced on the detail pages. |
+| **X9** — SEO metadata stuffed / stale | 🟡 | ❌ **Mostly not fixed.** `ux-ui-design` title still 3 pipe-separated value props (~64 chars). `keywords` meta still long on all 5 entries. `design-system-component-library` still in `SERVICE_META` (L52-59) and in `SERVICE_OG` (`opengraph-image.tsx`). Fallback branch still generates `…Enterprise-grade design trusted by Fortune 500 companies.` (`page.tsx` L78). JSON-LD `Service.name` still `service.data.hero.badge` (all-caps sentence) — `page.tsx` L125-126. |
+| Dev hygiene — `<div>danis...</div>` no-data fallback | 🔴 | 🟡 **Partially fixed.** `page.tsx` L108-115 now returns a real `Service not found` block. **But** `serviceDetails/index.tsx` L16 still ships `if (!data) return <div>danis...</div>;`, and `page.tsx` returns HTTP 200 for an unknown slug — a **soft 404** (no `notFound()` call). See NF4. |
+| Hero CTAs hardcoded + WhatsApp | 🟠 | ❌ **Not fixed.** `serviceDetails/hero/index.tsx` L105 primary CTA → `/contact` (not cal.com); L220 secondary CTA → `https://wa.link/i35lma`, label `Lets Talk via Whatsapp` (L245). Identical on all 5 pages. Contradicts the landing / pricing / about audits. |
+| Hero badge fallback string | 🟡 | ❌ **Not fixed.** `hero/index.tsx` L76 still `"EMPOWERING 40+ Business ACROSS 6 COUNTRIES"`. |
+| `youWillGet` block written but not rendered | 🟠 | ❌ **Not fixed.** All 5 entries still carry a full `youWillGet` block; `serviceDetails/index.tsx` never references it. |
+| OG images per service | (not in v2) | ✅ **New since v2 — good.** `app/services/[id]/opengraph-image.tsx` defines a per-service `SERVICE_OG` map with clean badge/title/description. This is the model the JSON-LD `name` should copy (NF3). |
+
+**Summary:** since v2, the only landed fixes are (1) navbar/visual-footer/sitemap slugs, (2) Design System's four section headings, (3) a real "Service not found" text block, and (4) per-service OG images. **Every 🔴 structural item that matters — the hub page, the UX Audits wrong-service content, the SEO-footer broken links, the in-JSON cross-links, the `danis` placeholder, the WhatsApp CTAs — is still open.** Six new findings below.
+
+---
+
+## New Findings (v3 — Not in v1/v2)
+
+### NF1. `RecommendedNextSteps` does no internal linking at all — every button is an undisclosed WhatsApp link 🔴
+
+**Confirmed in:** `screens/serviceDetails/recommendedNextSteps/index.tsx` L67-72 and L84-90, plus `components/LetsTalkButton.tsx` L34-35.
+
+The featured-service CTA renders `<LetsTalkButton children={data.featuredService.buttonText} .../>` with **no `href` prop**. Each "Other Services You May Need" item renders `<LetsTalkButton children={service.title} .../>` — also **no `href`**, and `service.slug` is **never read by the component**.
+
+`LetsTalkButton`'s default is `href = "https://wa.link/i35lma"` (its own JSDoc: *"Opens WhatsApp by default"*).
+
+**Consequences:**
+- The entire "Recommended Next Steps" section on all 5 service pages links to **WhatsApp**, not to the service being recommended. A visitor who clicks "Landing Pages & Business Websites" on the UX/UI page is dropped into a WhatsApp chat, not onto the Landing Pages page.
+- The broken `ux-ui-front-end-development` slugs flagged in v2 (X1) are **dead data** — they're in the JSON but the component ignores them. Fixing the slug strings alone changes nothing; the component has to be given `href={`/services/${slug}`}`.
+- This is the single largest internal-linking gap on the site: the one section explicitly designed to pass link equity and guide the journey between services passes none.
+
+**Fix:** in `recommendedNextSteps/index.tsx`, pass `href={`/services/${data.featuredService.slug}`}` on the featured CTA and `href={`/services/${service.slug}`}` on each other-service button, and correct the 4 stale slugs in the JSON (NF ref table below). Then these become real internal links.
+
+---
+
+### NF2. `WhoThisIsFor` section heading is inconsistent across services 🟡
+
+**Confirmed in:** `data/sericesDetailsList.json`
+
+| Service | `whoThisIsFor.heading` |
+|---|---|
+| UX/UI Design | `Does it sound like you?` |
+| SaaS & AI Development | `Does it sound like you?` |
+| Design System | `Does it sound like you?` |
+| Landing Pages & Business Websites | `Does this sound like you?` |
+| UX Audits & Consultation | `Does this sound like you?` |
+
+`it` vs `this` — two variants of the same heading. Pick one (`Does this sound like you?` reads slightly better) and apply to all 5. Minor, but it's the kind of drift a buyer comparing two service pages in adjacent tabs will notice.
+
+---
+
+### NF3. JSON-LD `Service` schema is low-quality — an OG map already exists to fix it 🟠
+
+**Confirmed in:** `app/services/[id]/page.tsx` L120-144.
+
+- `name` = `(service.data as any).hero?.badge` → for UX/UI Design the schema `name` is literally `"SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT"`. All-caps, sentence-shaped, not a service name. AI engines and rich-result parsers read this field first.
+- `areaServed` = `["United States", "United Kingdom", "Singapore", "India", "Australia"]` — this contradicts the `AboutPage`/`Organization` schema on `/about`, which lists `United States, India, France, Canada, United Kingdom, Singapore` (see `04-about-page.md` NF-set). The site asserts two different "countries served" lists in structured data. `app/layout.tsx` L172 agrees with the service-page list (USA/UK/SG/IN/AU), so **`/about` is the outlier** — flag cross-audit.
+- No `offers`, no `serviceType`, no `provider.description`.
+
+**Fix:** the clean per-service names already exist in `app/services/[id]/opengraph-image.tsx` → `SERVICE_OG[slug].badge` (`UX/UI Design`, `SaaS & AI Development`, etc.). Build a shared `SERVICE_NAME` map (or reuse `SERVICE_OG`) and set the JSON-LD `name` from it, with `serviceType` = the same string and `description` from `SERVICE_META[slug].description`. Reconcile `areaServed` to one canonical list across `page.tsx`, `layout.tsx`, and `/about`.
+
+---
+
+### NF4. Unknown service slug returns HTTP 200 (soft 404) 🟠
+
+**Confirmed in:** `app/services/[id]/page.tsx` L108-115.
+
+```tsx
+if (!service) {
+  return (
+    <div className="text-center py-24 text-gray-500">
+      <h1 className="text-3xl font-semibold">Service not found</h1>
+      ...
+```
+
+This renders a "not found" *page* but the response status stays `200 OK`. Google treats a 200 with thin "not found" content as a **soft 404** — it can index the URL, then flag it in Search Console. Any of the still-broken links (`/services/SaaS-Web-&-Mobile-Apps`, `/services/Design-System-&-Component-Library`) currently resolve to this soft-404 rather than a real 404.
+
+**Fix:** `import { notFound } from "next/navigation";` and `if (!service) notFound();` — Next renders the nearest `not-found.tsx` with a real 404 status. Separately, replace `serviceDetails/index.tsx` L16 `<div>danis...</div>` with `notFound()` or a proper empty state (it's a developer placeholder shipping to production).
+
+---
+
+### NF5. `data/servicesTopList.json` carries the same `model landing pages` typo — and it's the file with the timeline chips X8 wants surfaced 🟡
+
+**Confirmed in:** `data/servicesTopList.json` — entry 2 `description`: *"We design model landing pages & websites for small businesses to large corporations  that communicate your value, look stunning on every device…"* (same typo + double space as the detail-page copy).
+
+This file also holds the `chip` arrays with `1-2 months`, timeline/deliverable tags per service — the exact "scope signal near the hero" that X8 recommends adding to the detail pages. If X8 is actioned by piping these chips through, the typo needs fixing at the same time. If this file is now dead (only used by `screens/landing/miniService`?), confirm and consider deleting it so there aren't two sources of service copy drifting apart.
+
+---
+
+## E-E-A-T Assessment (v3 — SEO Content Skill Applied)
+
+Scored across the 4 in-scope service pages as a set.
+
+### Google's "Who / How / Why" Test
+
+| Question | Current state | Assessment |
+|---|---|---|
+| **Who** delivers this service? | JSON-LD `provider` = `UI Pirate by Vishal Anand`; no named practitioner, no "our team has shipped X" on the page body. | ⚠️ Entity only, no human signal |
+| **How** is it done? | `StreamlinedProcess` gives a real 2-phase workflow per service (strong on SaaS & AI Dev, UX/UI, Landing Pages; **wrong content on UX Audits** — website-build steps under a "Design System Roadmap" heading). | ⚠️ Good where the content is correct; actively misleading on UX Audits |
+| **Why** trust the outcome? | `WhyThisMatters` cards reframe real failure modes with quotable one-liners — genuinely strong on SaaS & AI Dev and UX/UI. Undercut by the generic portfolio (no metric), the `Fortune 500` unverifiable fallback, and the `Why Most 3D On Websites Fails` heading on the audit page. | ⚠️ Mixed |
+
+### E-E-A-T Breakdown
+
+| Factor | Score | Key Signals Present | Key Gaps |
+|---|---|---|---|
+| **Experience** | 9/20 | Detailed process phases; specific deliverables in `whatYouGet` (audit report, walkthrough video, prompt pipelines, CI/CD) | No service-specific case study, no result metric, no testimonial tied to a service; same `LandingWork` gallery on every page (X7) |
+| **Expertise** | 15/25 | `WhyThisMatters` cards on SaaS/Dev/UX-audit are sharp and category-aware; `StreamlinedProcess` correctly sequenced on 3 of 4 pages; framework names used correctly | UX Audits carries deleted-service headings (3D, Design System Roadmap); SaaS & AI Dev cards render mislabeled icons (X4); one service has 4 names (X5) |
+| **Authoritativeness** | 10/25 | JSON-LD `Service` type present on every page; per-service OG images; `provider` linked to org | `Service.name` = all-caps badge string; `areaServed` contradicts `/about` schema; `Fortune 500` fallback claim; no external validation (Clutch/case links) from any service page; no `/services` hub to concentrate authority |
+| **Trustworthiness** | 14/30 | HTTPS; consistent page skeleton; per-service metadata + canonical | Soft-404 on bad slugs (NF4); `<div>danis...</div>` in prod; broken links in the SEO footer (X1/NF1); `RecommendedNextSteps` + hero secondary CTA are undisclosed WhatsApp links (NF1); visible copy-paste headings on the UX Audits page; `keywords`-stuffed meta |
+
+**Total E-E-A-T Score: 48/100**
+
+The lowest of the four page-sets audited (landing 55-ish, pricing 60, about 63). The `WhyThisMatters` writing is the asset; the drags are structural — wrong-service content still live, no proof layer, no hub, and a cross-sell section that WhatsApps the visitor instead of linking.
+
+---
+
+## SEO Metadata — v3 Assessment
+
+### Per-service titles (`app/services/[id]/page.tsx` L28-67)
+
+| Slug | Current title | Assessment |
+|---|---|---|
+| `ux-ui-design` | `SaaS & Mobile App UX/UI Design \| Idea to Product \| Angular, React` | ⚠️ 3 value props, ~64 chars — truncates. Move `Angular, React` to the description. Also the title says "Design" while the badge/schema say "Front End Development" (X5). |
+| `saas-ai-development` | `SaaS & AI Development \| Full-Stack Engineering \| Angular, React, Node.js` | ⚠️ ~70 chars — trim the framework list. |
+| `landing-pages-business-websites` | `Landing Page & Website Design & Development \| Angular, React & Webflow` | ✅ Acceptable. |
+| `ux-audits-consultation` | `UX Audit & Consultation \| Improve Your Product's Usability` | ✅ Good — keep. |
+| `design-system-component-library` | `Design Systems & Component Libraries \| Scalable UI Kits` | ⚠️ Remove entirely if the service is killed (NF6). |
+| fallback | `…Enterprise-grade design trusted by Fortune 500 companies.` | ❌ Unverifiable claim shipping as a default `description`. Replace with a neutral line or drop the fallback. |
+
+### `keywords` meta
+
+Present and long on all 5 entries. Google has ignored the `keywords` meta for over a decade; some AI crawlers read it, but stuffed lists (`"SaaS product design, idea to product, product thinking, UX/UI design, mobile app design, competitive analysis, information architecture, complex enterprise application, MVP to product, startup product agency USA"`) read as spam. **Recommendation:** trim each to 4-6 phrases or remove.
+
+### OpenGraph
+
+`page.tsx` `generateMetadata` sets OG `title`/`description` from `SERVICE_META` and `siteName: "UI Pirate by Vishal Anand"`. The dedicated `opengraph-image.tsx` provides a clean per-service card. ✅ This layer is fine — no change beyond removing the Design System entry if killed.
+
+### JSON-LD
+
+See NF3. `name` and `areaServed` both need fixing; add `serviceType`, `provider.description`, and (if pricing allows) an `offers` stub.
+
+### Canonical
+
+`page.tsx` L94-96 builds `canonical` from `encodeURIComponent(urlSlug)` — the raw URL slug, not the normalized one. So `/services/UX-UI-Design`, `/services/ux-ui-design`, and `/services/ux%2Dui%2Ddesign` each self-canonicalize to a different string. **Recommendation:** canonicalize to one normalized form per service (`https://uipirate.com/services/${normalizedSlug}`) so duplicate-casing URLs collapse.
+
+---
+
+## Keyword Gap Analysis (v3 — New Finding)
+
+| Target phrase | Covered? | Gap |
+|---|---|---|
+| `product design and development services` | ❌ | No `/services` hub page to hold the head term (X2). Only long-tail per-service pages exist. |
+| `SaaS design and development agency` | Partially — in `ux-ui-design` + `saas-ai-development` bodies | ⚠️ Not in a single page's H1/title |
+| `hire full-stack developer for SaaS` | Partially — `saas-ai-development` title says "Full-Stack Engineering" | ✅ Reasonable |
+| `UX audit service` | ✅ — `ux-audits-consultation` title + keywords | ✅ Good |
+| `React landing page development` | ✅ — `landing-pages-business-websites` title | ✅ Good |
+| `AI integration agency` / `LLM integration service` | ✅ — `saas-ai-development` keywords + card | ✅ Good |
+| `design system agency` | Only on the half-killed page | ⚠️ If Design System is killed, fold `design tokens / component library` into the `ux-ui-design` page body so the phrase survives |
+| `how to choose a product design agency` | ❌ | A `/services` hub with a "which service do I need?" section is the natural home |
+
+**Key finding:** the missing `/services` hub costs the site the one page that could rank for the category head term and answer comparison-intent queries. Every current entry point is a deep link into a single service.
+
+---
+
+## AI Citation Readiness Assessment (v3 — New Finding)
+
+| Signal | State | Score |
+|---|---|---|
+| Quotable problem/solution statements | `WhyThisMatters` cards — strong on SaaS/Dev/UX-audit ("They didn't get stuck — they got confused. Confusion creates silent churn") | ✅ Strong |
+| Clean structured-data service name | `Service.name` = all-caps hero badge | ❌ Weak |
+| Consistent entity facts across pages | `areaServed` differs between service schema and `/about` schema | ❌ Weak |
+| Deliverables stated concretely | `whatYouGet` cards are specific | ✅ Good |
+| Price / timeline data | Absent on 3 of 4 pages (X8) | ❌ Gap |
+| Correct-topic headings | UX Audits page headed `Why Most 3D On Websites Fails` and `Design System Roadmap` | ❌ Weak |
+| Hub / overview page for the category | None (X2) | ❌ Gap |
+| Working internal links between related services | `RecommendedNextSteps` links to WhatsApp, not to services (NF1) | ❌ Weak |
+
+**AI Citation Readiness Score: 44/100**
+
+The card-level writing is citable; almost everything structural around it (schema name, cross-links, hub page, on-topic headings, price/timeline facts) is not.
+
+---
+
+## New Copy Recommendations (v3 — SEO Content Skill Applied)
+
+### NC1. UX Audits page — replace the three wrong-service strings 🔴
+
+**Confirmed in:** `data/sericesDetailsList.json`, `UX-Audits-&-Consultation` entry.
+
+| Field | Current | Recommended |
+|---|---|---|
+| `whyThisMatters.heading` + `heading2` | `Why Most 3D On Websites Fails ` / `(And How We Do It Right)` | `Why Products Stall After Launch` / `(And How an Audit Fixes It)` |
+| `streamlinedProcess.heading` | `Design System Roadmap` | `How a UX Audit Works` |
+| `streamlinedProcess.workflow[0].badge` / `[1].badge` | `Design Workflow` / `Design Workflow` | `Audit` / `Readout & Roadmap` |
+| `streamlinedProcess` steps | website-build steps (`CMS setup`, `Full Stack Development`, `QA & SEO Optimization`, `connect domains`) | `Scope & Access` → `Heuristic Evaluation` → `User Journey & Flow Analysis` → `Friction & Drop-Off Mapping` → `Prioritized Findings` → `Recommendations Roadmap + Walkthrough Call` |
+| `whatYouGet.heading` | `What All Will you get in return` | `What You Get` |
+
+The `whyThisMatters` **cards** on this page (Unclear First Steps · Too Many Decisions · Features Without Priority · Demo vs. Daily Use Gap · Silent Churn) are on-topic and strong — keep them verbatim; only the heading above them is wrong.
+
+---
+
+### NC2. UX Audits `whoThisIsFor` — 2 lowercase cards → 3 Title Case cards 🟠
+
+**Confirmed in:** `data/sericesDetailsList.json`, `UX-Audits-&-Consultation` → `whoThisIsFor.card` (2 entries).
+
+**Current headings:** `Founders or startups who are just starting out` · `anyone looking to upgrade their product experience & conversions`
+
+**Recommended (3, parallel to every other service page):**
+
+| Heading | Description |
+|---|---|
+| `Early-Stage Founders` | Just starting out and want to get the core flows right before spending on a full build. |
+| `Teams With Stalled Growth` | Activation or retention has flattened and it's not clear which part of the experience is the cause. |
+| `Pre-Redesign Product Leads` | About to invest in a redesign and want an evidence base for what to change and why. |
+
+---
+
+### NC4. Fix the SEO-footer broken links 🔴
+
+**Confirmed in:** `app/layout.tsx` L416-419.
+
+| Current | Recommended |
+|---|---|
+| `<a href="/services/SaaS-Web-&amp;-Mobile-Apps">SaaS Web &amp; Mobile App Design &amp; Development</a>` | `<a href="/services/UX-UI-Design">UX/UI Design</a>` **and** `<a href="/services/SaaS-&-AI-Development">SaaS &amp; AI Development</a>` (the offering split into two real services) |
+| `<a href="/services/Design-System-&amp;-Component-Library">Design Systems &amp; Component Libraries</a>` | Remove (align with navbar/footer/sitemap) unless the page is rebuilt |
+
+Then all four SEO-footer service links resolve and match the canonical slugs used everywhere else.
+
+---
+
+### NC5. `RecommendedNextSteps` — make it link to services, not WhatsApp 🔴
+
+**Confirmed in:** `screens/serviceDetails/recommendedNextSteps/index.tsx` L67-72, L84-90.
+
+1. Featured CTA: `<LetsTalkButton href={`/services/${data.featuredService.slug}`} children={data.featuredService.buttonText} showArrow ... />`
+2. Other-services list: wrap each as a link — `<LetsTalkButton key={service.slug} href={`/services/${service.slug}`} children={service.title} fullWidth variant="light" />`
+3. Correct the 4 stale slugs in `data/sericesDetailsList.json`:
+
+| Service | Field | Current slug | Correct slug |
+|---|---|---|---|
+| Landing Pages | `recommendedNextSteps.otherServices[0].slug` | `ux-ui-front-end-development` | `ux-ui-design` |
+| UX Audits | `recommendedNextSteps.featuredService.slug` | `ux-ui-front-end-development` | `ux-ui-design` |
+| UX Audits | `recommendedNextSteps.otherServices` — contains `ux-audits-consultation` (itself) | self-reference | replace with `saas-ai-development` |
+| Design System | `recommendedNextSteps.otherServices[0].slug` | `ux-ui-front-end-development` | `ux-ui-design` |
+
+Also update the stale display title on UX Audits' featured entry (`SaaS & AI Product UX/UI & Front End Development` → `UX/UI Design`) and Landing Pages' (`UX/UI & Front End Development` → `UX/UI Design`).
+
+---
+
+### NC6. Hero CTAs — cal.com primary, drop WhatsApp 🟠
+
+**Confirmed in:** `screens/serviceDetails/hero/index.tsx` L105 (`href="/contact"`), L213 (label), L220 (`href="https://wa.link/i35lma"`), L245 (`Lets Talk via Whatsapp`).
+
+| Element | Current | Recommended |
+|---|---|---|
+| Primary CTA link (L105) | `/contact` | `https://cal.com/ui-pirate/15min` (open in new tab) |
+| Primary CTA label (L213) | `Start Your Product Journey — Book a 15-Min Call` | `Book a Free 15-Min Call` (tighten) |
+| Secondary CTA (L218-249) | `Lets Talk via Whatsapp` → `wa.link` | `See Pricing` → `/pricing`, or `View Our Work` → the works section — anything but WhatsApp, consistent with the other three audits |
+| Badge fallback (L76) | `EMPOWERING 40+ Business ACROSS 6 COUNTRIES` | `50+ Products Shipped Across 6 Countries` (matches landing/about) — or remove the fallback since every entry sets `data.badge` |
+
+Since these are hardcoded, the CTAs cannot be tailored per service — acceptable for now, but note it if per-service CTA copy is ever wanted (would need a `hero.cta` field in the JSON).
+
+---
+
+### NC7. Standardize the service name — pick "UX/UI Design" everywhere 🟠
+
+**Confirmed drift:** badge `SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT` (`sericesDetailsList.json`), title `SaaS & Mobile App UX/UI Design | …` (`page.tsx` L30), nav/footer `UX/UI Design`, OG badge `UX/UI Design`.
+
+Pick **`UX/UI Design`** as the canonical name (or `Product Design`, if the intent is to signal more than UI). Apply to: `hero.badge` (→ `SAAS & AI PRODUCT DESIGN`), SERVICE_META title (`UX/UI Design for SaaS & Mobile Apps | UI Pirate`), JSON-LD `name`/`serviceType`, and add one explicit boundary line to the `whatYouGet` or `streamlinedProcess` copy stating where design ends and `SaaS & AI Development` begins (front-end build vs. back-end/infra).
+
+---
+
+### NC8. Build the `/services` hub page 🟠
+
+**Confirmed absent.** Recommended copy skeleton (content only — layout is a separate decision):
+
+- **H1:** `Product Design & Development Services`
+- **Intro (1-2 sentences):** `Four services, one path: design the product, build it, launch it, and pressure-test it. Most engagements use two or three.`
+- **One row per service:** name · one-line outcome · typical timeline (from `servicesTopList.json` chips) · `Best when…` line · link to the detail page
+- **"Which do I need?" block:** 3-4 if/then lines (`If you have an idea and no screens → UX/UI Design`; `If you have designs and no engineers → SaaS & AI Development`; `If traffic isn't converting → Landing Pages`; `If growth stalled after launch → UX Audits`)
+- **CTA:** `Book a Free 15-Min Call` → cal.com
+
+This gives the site a page for the head term and a genuine comparison surface, and fixes the navbar parent 404 (X2).
+
+---
+
+## Updated Priority Table (v3)
+
+All v1/v2 items carried forward. New v3 items marked `[v3]`. "Verified" = code-checked on 2026-08-31.
+
+| # | Scope | Issue | File + line | Priority | Verified |
+|---|---|---|---|---|---|
+| 1 | UX Audits | `whyThisMatters` heading `Why Most 3D On Websites Fails`; `streamlinedProcess` heading `Design System Roadmap` + website-build steps; `whatYouGet` heading `What All Will you get in return` — rewrite per NC1 | `data/sericesDetailsList.json` (UX-Audits entry) | 🔴 Fix now | ✓ |
+| 2 | RecommendedNextSteps | Section links to WhatsApp, not to services; `slug` never used; 4 stale slugs in JSON — rewire + fix slugs per NC5 | `screens/serviceDetails/recommendedNextSteps/index.tsx` L67-90; JSON | 🔴 Fix now `[v3]` | ✓ |
+| 3 | SEO footer | `/services/SaaS-Web-&-Mobile-Apps` broken; Design System link still live — fix per NC4 | `app/layout.tsx` L416, L418 | 🔴 Fix now | ✓ |
+| 4 | Routing | Unknown slug returns 200 (soft 404); `<div>danis...</div>` still in prod — call `notFound()` per NF4 | `app/services/[id]/page.tsx` L108-115; `screens/serviceDetails/index.tsx` L16 | 🔴 Fix now `[v3]` | ✓ |
+| 5 | Nav | `/services` parent link 404s — build the hub page per NC8 | `config/site.ts` L9, L112 | 🔴 Fix now | ✓ |
+| 7 | UX Audits | `whoThisIsFor` = 2 lowercase cards → 3 Title Case per NC2 | `data/sericesDetailsList.json` (UX-Audits entry) | 🟠 Soon | ✓ |
+| 8 | All | Hero secondary CTA = WhatsApp; primary → `/contact` not cal.com; badge fallback string — fix per NC6 | `screens/serviceDetails/hero/index.tsx` L76, L105, L213, L220, L245 | 🟠 Soon | ✓ |
+| 9 | SaaS & AI Dev | 4 `whatYouGet` headings unmapped → mislabeled icons; add to map or add `visualKey` | `screens/serviceDetails/whatYouGetAnimations/index.tsx` L10-23 | 🟠 Soon | ✓ |
+| 10 | UX/UI vs SaaS | One service, four names — standardize on `UX/UI Design` + add boundary line per NC7 | `sericesDetailsList.json`; `app/services/[id]/page.tsx` L30 | 🟠 Soon | ✓ |
+| 11 | Landing Pages | `hero.description` `model landing pages` typo + `corporations  that` double space; `whyThisMatters` still 6 cards (3 overlap) → 4 | `data/sericesDetailsList.json` (Landing-Pages entry) | 🟠 Soon | ✓ |
+| 12 | All | JSON-LD `Service.name` = all-caps badge; `areaServed` contradicts `/about` schema — fix per NF3 | `app/services/[id]/page.tsx` L125-126, L133-139 | 🟠 Soon `[v3]` | ✓ |
+| 13 | All | `youWillGet` block in all 5 entries, never rendered — wire in or delete | `data/sericesDetailsList.json`; `screens/serviceDetails/index.tsx` | 🟠 Soon | ✓ |
+| 14 | All | Canonical built from raw URL slug — casing variants self-canonicalize differently; normalize | `app/services/[id]/page.tsx` L94-96 | 🟠 Soon `[v3]` | ✓ |
+| 15 | All | Generic `LandingWork` gallery — no service-specific project / metric / testimonial | `screens/serviceDetails/index.tsx` L40 | 🟡 Consider | ✓ |
+| 16 | All | No timeline / price / engagement-model signal (except Design System badge); `servicesTopList.json` chips unused | `data/servicesTopList.json`; service pages | 🟡 Consider | ✓ |
+| 17 | All | `whoThisIsFor.heading` inconsistent — `Does it` vs `Does this` — standardize per NF2 | `data/sericesDetailsList.json` (all 5) | 🟡 Consider `[v3]` | ✓ |
+| 18 | SEO | `ux-ui-design` + `saas-ai-development` titles over-long (framework lists); move to description | `app/services/[id]/page.tsx` L28-43 | 🟡 Consider | ✓ |
+| 19 | SEO | `keywords` meta stuffed on all 5 — trim to 4-6 or remove | `app/services/[id]/page.tsx` L33-66 | 🟡 Consider | ✓ |
+| 20 | SEO | Fallback `description` asserts `trusted by Fortune 500 companies` — replace/remove | `app/services/[id]/page.tsx` L78 | 🟡 Consider | ✓ |
+| 22 | Data | `servicesTopList.json` duplicates the `model landing pages` typo; confirm whether the file is still used | `data/servicesTopList.json` | 🟡 Consider `[v3]` | ✓ |
+| 23 | All | `whatYouGet` heading→animation string coupling undocumented — add `visualKey` or document the 12 protected strings | `screens/serviceDetails/whatYouGetAnimations/index.tsx` | 🟡 Consider | ✓ |
+| 24 | Landing Pages | `whoThisIsFor` spans SaaS → café → personal portfolio — narrow to commercial audiences | `data/sericesDetailsList.json` (Landing-Pages entry) | 🟡 Consider | ✓ |
+| 25 | Data file | Filename misspelled `sericesDetailsList.json` | `data/sericesDetailsList.json` | 🟡 Consider | ✓ |
+
+**Priority key:** 🔴 Fix now — wrong-service content live, broken links, soft-404s, dev placeholders, WhatsApp-only cross-sell · 🟠 Soon — copy quality, naming, schema, and positioning with conversion impact · 🟡 Consider — polish, SEO hygiene, consistency.
+
+---
+
+## E-E-A-T Quick Wins (v3 Summary)
+
+The three highest-return changes across the service pages:
+
+1. **Fix the UX Audits page content (NC1).** It's the most visible trust failure on the site: an audit service whose "why this matters" heading reads *"Why Most 3D On Websites Fails"* and whose "process" is a website-build checklist titled *"Design System Roadmap."* Five string edits in one JSON entry. The cards underneath are already good.
+
+2. **Rewire `RecommendedNextSteps` to link to services (NC5).** Right now the one section built to guide the buyer between services sends them to WhatsApp instead. Add `href={`/services/${slug}`}` in two places, correct four stale slugs, and the site gains a working internal-linking layer between its money pages.
+
+3. **Fix the broken links + soft-404 (NC4, NF4).** `app/layout.tsx` SEO footer still points at a dead slug and the killed Design System page; unknown slugs return HTTP 200. `notFound()` plus two `<a href>` edits closes both, and stops Google indexing soft-404 URLs.
+
+---
+
+## Services Pages — What's Actually Working Well (v3 Recognitions)
+
+- ✅ **`WhyThisMatters` writing** on SaaS & AI Development and UX/UI Design — "AI That Doesn't Ship — integrating a model into a real product is a different problem than a prototype" is a genuine differentiator. Keep verbatim.
+- ✅ **SaaS & AI Development page overall** — badge, headline ("Build the engine behind your SaaS or AI product"), description ("We build what the interface runs on"), and process block all need essentially no copy work.
+- ✅ **Per-service OG images** (`opengraph-image.tsx`) — new since v2, clean names and descriptions. This map is the fix source for the JSON-LD `name` problem.
+- ✅ **The shared page skeleton** — hero → what you get → why it matters → process → proof → who it's for → next step → CTA is a sound service-page structure.
+- ✅ **Navbar / visual footer / sitemap slugs** — now resolve correctly and match each other (the SEO footer in `layout.tsx` is the one straggler).
+- ✅ **`whatYouGet` deliverables** on UX Audits (heuristic report, drop-off insights, flow review, walkthrough video) — concrete and buyer-legible; only the section heading is broken.
+
+---
+
+## Copy Tone Reference — v3 Additions (Services-Specific)
+
+*The v2 Copy Tone Reference above still applies. These additions target patterns confirmed in the v3 source read.*
+
+| ✅ Do | ❌ Avoid | Example from current code |
+|---|---|---|
+| Ship headings that match the page's topic | Leftover headings from deleted services | `Why Most 3D On Websites Fails` on the UX Audits page |
+| Cross-sell links that navigate to the service | Contact buttons disguised as navigation | `RecommendedNextSteps` items → `wa.link` |
+| One canonical service name, used in badge + title + schema + nav | Four names for one service | `UX/UI Design` / `…& FRONT END DEVELOPMENT` / `SaaS & Mobile App UX/UI Design` / `SaaS-Web-&-Mobile-Apps` |
+| Real 404 for unknown routes | 200 OK with "not found" text | `page.tsx` returns a `<div>` instead of `notFound()` |
+| Clean service name in structured data | Raw all-caps badge string as `Service.name` | `"SAAS & AI PRODUCT UX/UI & FRONT END DEVELOPMENT"` |
+| One "countries served" list across the whole site | Different `areaServed` per schema | service pages (US/UK/SG/IN/AU) vs `/about` (US/IN/FR/CA/UK/SG) |
+| Book-a-call CTAs via cal.com | WhatsApp as a service-page CTA | hero secondary CTA + every `LetsTalkButton` default |
+
+*Extended word removal list (v3 services additions):* `model landing pages` (→ modern), `Lets Talk via Whatsapp`, `What All Will you get in return`, `trusted by Fortune 500 companies` (unverifiable fallback), `EMPOWERING 40+ Business`.
+
+---
+
+*This file is the living audit for the services pages. v1/v2 (2026-08-27) → v3 (2026-08-31). Verify against current source before implementing — the code is the ground truth. The data file remains misspelled `sericesDetailsList.json`; all path references above use the real filename.*

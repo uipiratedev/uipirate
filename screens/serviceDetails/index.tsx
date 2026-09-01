@@ -21,13 +21,11 @@ const ServiceDetails = ({ data }: any) => {
         {data.hero && <ServiceDetailsHero data={data.hero} />}
 
         {data.whatYouGet && (
-          <div className="container mx-auto">
-            <WhatYouGetAnimations data={data.whatYouGet} />
-          </div>
+          <WhatYouGetAnimations data={data.whatYouGet} />
         )}
 
         {data.whyThisMatters && (
-          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <div className="section-container">
             <WhyThisMatters data={data.whyThisMatters} />
           </div>
         )}
@@ -36,18 +34,16 @@ const ServiceDetails = ({ data }: any) => {
           <StreamlinedProcess data={data.streamlinedProcess} />
         )}
 
-        <div className="container mx-auto">
-          <LandingWork />
-        </div>
+        <LandingWork />
 
         {data.whoThisIsFor && (
-          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <div className="section-container">
             <WhoThisIsFor data={data.whoThisIsFor} />
           </div>
         )}
 
         {data.recommendedNextSteps && (
-          <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+          <div className="section-container">
             <RecommendedNextSteps data={data.recommendedNextSteps} />
           </div>
         )}

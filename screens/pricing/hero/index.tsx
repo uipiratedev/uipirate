@@ -10,14 +10,14 @@ import {
 
 const TRUST_STATS = [
   { value: "50+", label: "Products Shipped" },
-  { value: "5.0★", label: "Average Rating" },
+  { value: "5.0", label: "★ Rating (50 Reviews)" },
   { value: "< 2hr", label: "Response Time" },
   { value: "9yr+", label: "In Business" },
 ];
 
 const PricingHero = () => {
   return (
-    <div className="flex flex-col items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative">
+    <div className="hero-wrapper-col">
       {/* Subtle Grid Background Pattern */}
       <div
         className="absolute pointer-events-none -mt-20"
@@ -101,7 +101,7 @@ const PricingHero = () => {
             <span className="font-semibold text-gray-900">Save 50-70%</span>{" "}
             compared to US agencies
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+
         </div>
 
         {/* Optimized Pricing CTAs */}
@@ -114,7 +114,9 @@ const PricingHero = () => {
           </Link>
           <Link
             className="px-6 py-3 rounded-full bg-brand-orange text-white font-bold hover:bg-[#e04e00] transition-all duration-300 text-sm shadow-md hover:shadow-lg whitespace-nowrap"
-            href="/contact"
+            href="https://cal.com/ui-pirate/15min"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Book a Call →
           </Link>

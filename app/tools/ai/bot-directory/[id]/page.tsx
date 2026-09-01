@@ -106,7 +106,7 @@ export default async function BotDetailPageNested({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-32 pb-20 relative z-10">
+      <div className="section-container pt-32 pb-20 relative z-10">
         {/* Hero Card */}
         <div className="bg-white/95 backdrop-blur-md border border-[#E5E7EB] rounded-3xl p-6 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.04)] mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

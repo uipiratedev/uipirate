@@ -120,7 +120,7 @@ export const NavbarDropdown = ({
                   <motion.div
                     key="dropdown-menu"
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    className="mx-auto px-32 lg:px-20 max-md:px-4"
+                    className="section-container"
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
@@ -156,7 +156,7 @@ export const NavbarDropdown = ({
                           showFourRow ? "md:flex-col" : "md:flex-row", // If 4-row, stack vertically (cards full width, list items below). Else side-by-side.
                         )}
                       >
-                        {/* Left Side - Main Feature Cards */}
+                        {/* Left Side - Main Feature Cards with 3D Flip */}
                         {displayLargeCards.length > 0 && (
                           <div
                             className={clsx(
@@ -169,36 +169,71 @@ export const NavbarDropdown = ({
                             )}
                           >
                             {displayLargeCards.map((item, index) => (
-                              <NextLink
+                              <div
                                 key={index}
                                 className={clsx(
-                                  "group relative rounded-[20px] overflow-hidden bg-white/5 backdrop-blur-md border border-gray-200 transition-all duration-500 hover:scale-[1.02] hover:border-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/10 h-full",
+                                  "group relative [perspective:1000px] h-full",
                                   showFourRow
                                     ? "aspect-[16/10]"
                                     : "aspect-[4/3]",
                                 )}
-                                href={item.href || "#"}
-                                onClick={() => setIsOpen(false)}
                               >
-                                {/* Background Image / Placeholder */}
-                                <div
-                                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                                  style={{
-                                    backgroundImage: item.bgImage
-                                      ? `url('${item.bgImage}')`
-                                      : "linear-gradient(340.36deg, #F5F5F5 39.57%, #E0E0E0 89.85%)",
-                                  }}
-                                />
+                                <NextLink
+                                  className="relative w-full h-full block rounded-[20px] transition-transform duration-400 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-[0_2px_12px_rgba(0,0,0,0.04)] group-hover:shadow-2xl group-hover:shadow-brand-orange/15 border border-gray-200 group-hover:border-brand-orange/40"
+                                  href={item.href || "#"}
+                                  onClick={() => setIsOpen(false)}
+                                >
+                                  {/* --- FRONT FACE --- */}
+                                  <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden]">
+                                    {/* Background Image / Placeholder */}
+                                    <div
+                                      className="absolute inset-0 bg-cover bg-center transition-transform duration-400 ease-out group-hover:scale-105"
+                                      style={{
+                                        backgroundImage: item.bgImage
+                                          ? `url('${item.bgImage}')`
+                                          : "linear-gradient(340.36deg, #F5F5F5 39.57%, #E0E0E0 89.85%)",
+                                      }}
+                                    />
 
-                                {/* White gradient overlay at bottom for text readability */}
-                                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white via-white/90 to-transparent" />
+                                    {/* White gradient overlay at bottom for text readability */}
+                                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white via-white/90 to-transparent" />
 
-                                <div className="absolute inset-0 p-5 flex flex-col justify-end">
-                                  <h3 className="text-gray-900 font-semibold text-base group-hover:text-brand-orange transition-colors duration-300">
-                                    {item.category}
-                                  </h3>
-                                </div>
-                              </NextLink>
+                                    <div className="absolute inset-0 p-5 flex flex-col justify-end">
+                                      <h3 className="text-gray-900 font-semibold text-base group-hover:text-brand-orange transition-colors duration-300">
+                                        {item.category}
+                                      </h3>
+                                    </div>
+                                  </div>
+
+                                  {/* --- BACK FACE (Flipped 180deg horizontally) --- */}
+                                  <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-white via-[#FFF9F5] to-[#FFF0E6] p-5 flex flex-col justify-between border border-[#FF5B04]/20 shadow-inner">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-2xl">{item.icon || "✨"}</span>
+                                      <span className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/10 px-2 py-0.5 rounded-full border border-[#FF5B04]/20">
+                                        Explore
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <h3 className="text-[#FF5B04] font-bold text-base md:text-lg mb-1 leading-snug font-jakarta">
+                                        {item.category}
+                                      </h3>
+                                      <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                                        {item.category === "Tools"
+                                          ? "Free diagnostics & SEO/GEO tools for SaaS teams."
+                                          : item.category === "Component Lab"
+                                            ? "Copy-paste 3D & tactile React components."
+                                            : item.category === "Blogs" || item.category === "Blog"
+                                              ? "Insights, tutorials & SaaS design stories."
+                                              : "Explore our latest resources & blueprints."}
+                                      </p>
+                                    </div>
+                                    <div className="pt-2 border-t border-orange-200/60 flex items-center justify-between text-xs font-bold text-[#FF5B04]">
+                                      <span>View Page</span>
+                                      <span className="transition-transform group-hover:translate-x-1">→</span>
+                                    </div>
+                                  </div>
+                                </NextLink>
+                              </div>
                             ))}
                           </div>
                         )}
@@ -241,11 +276,17 @@ export const NavbarDropdown = ({
                                 >
                                   <div className="w-auto h-full aspect-square rounded-[8px] bg-white text-gray-700 flex items-center justify-center text-lg group-hover:bg-orange-50 group-hover:text-orange-600 border border-gray-200 group-hover:border-orange-200 transition-all shrink-0">
                                     {item.icon ? (
-                                      <img
-                                        alt={item.category}
-                                        className="w-4 h-4 invert"
-                                        src={item.icon}
-                                      />
+                                      item.icon.startsWith("http") || item.icon.startsWith("/") ? (
+                                        <img
+                                          alt={item.category}
+                                          className="w-4 h-4 invert"
+                                          src={item.icon}
+                                        />
+                                      ) : (
+                                        <span className="text-base leading-none select-none">
+                                          {item.icon}
+                                        </span>
+                                      )
                                     ) : (
                                       // Fallback if large card moved here and has no icon property suited for this view, or re-use existing logic
                                       <div className="w-4 h-4 bg-gray-400 rounded-full" />
