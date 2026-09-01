@@ -134,8 +134,8 @@ const CloseIcon = () => (
 
 const SparklesIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-    <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+    <path d="M5 3v4" /><path d="M19 17v4" /><path d="M3 5h4" /><path d="M17 19h4" />
   </svg>
 );
 
@@ -428,8 +428,8 @@ export default function Example() {
     activeCodeTab === "jsx"
       ? dynamicJsxCode
       : activeCodeTab === "html"
-      ? selectedComponent.htmlCode
-      : selectedComponent.cssCode;
+        ? selectedComponent.htmlCode
+        : selectedComponent.cssCode;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -502,7 +502,7 @@ export default function Example() {
 
     switch (selectedComponent.id) {
       case "isometric-revive-button": {
-        const validIsoThemes = ["figma","amber","cyan","emerald","violet","crimson","uipirate","pearl-light","gold-luxury"];
+        const validIsoThemes = ["figma", "amber", "cyan", "emerald", "violet", "crimson", "uipirate", "pearl-light", "gold-luxury"];
         const isoTheme = safeTheme(customTheme, validIsoThemes, "figma");
         return (
           <div className="py-12 flex items-center justify-center">
@@ -516,7 +516,7 @@ export default function Example() {
         );
       }
       case "tactile-pill-button": {
-        const validTactileVariants = ["default","dark","orange","cyberpunk","minimal"];
+        const validTactileVariants = ["default", "dark", "orange", "cyberpunk", "minimal"];
         const tactileVariant = safeTheme(customTheme, validTactileVariants, "default");
         const tactileDotColorMap: Record<string, string> = {
           default: "#54EAD8",
@@ -538,7 +538,7 @@ export default function Example() {
         );
       }
       case "frosted-gel-download-button": {
-        const validGelThemes = ["figma-blue","cyber-violet","emerald-matrix","magma-orange","dark-obsidian","titanium-gold"];
+        const validGelThemes = ["figma-blue", "cyber-violet", "emerald-matrix", "magma-orange", "dark-obsidian", "titanium-gold"];
         const gelTheme = safeTheme(customTheme, validGelThemes, "figma-blue");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -552,7 +552,7 @@ export default function Example() {
         );
       }
       case "elevated-underglow-cta": {
-        const validUnderglowThemes = ["figma","emerald","amber"];
+        const validUnderglowThemes = ["figma", "emerald", "amber"];
         const underglowTheme = safeTheme(customTheme, validUnderglowThemes, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -567,7 +567,7 @@ export default function Example() {
         );
       }
       case "led-matrix-chevron": {
-        const validLedThemes = ["uipirate","pirate","monochrome","emerald","cyan","amber","crimson"];
+        const validLedThemes = ["uipirate", "pirate", "monochrome", "emerald", "cyan", "amber", "crimson"];
         const ledTheme = safeTheme(customTheme, validLedThemes, "monochrome");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -581,7 +581,7 @@ export default function Example() {
         );
       }
       case "slide-grow-button": {
-        const validSlideThemes = ["silver","dark","obsidian"];
+        const validSlideThemes = ["silver", "dark", "obsidian"];
         const slideTheme = safeTheme(customTheme, validSlideThemes, "silver");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -594,7 +594,7 @@ export default function Example() {
         );
       }
       case "vintage-leather-cta": {
-        const validLeatherThemes = ["heritage","noir","oxblood"];
+        const validLeatherThemes = ["heritage", "noir", "oxblood"];
         const leatherTheme = safeTheme(customTheme, validLeatherThemes, "heritage");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -635,7 +635,7 @@ export default function Example() {
         );
       }
       case "smash-tactile-button": {
-        const validSmashVariants = ["figma","cyber","dark"];
+        const validSmashVariants = ["figma", "cyber", "dark"];
         const smashVariant = safeTheme(customTheme, validSmashVariants, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -649,7 +649,7 @@ export default function Example() {
         );
       }
       case "scaling-capsule-button": {
-        const validCapsuleVariants = ["dark","light"];
+        const validCapsuleVariants = ["dark", "light"];
         const capsuleVariant = safeTheme(customTheme, validCapsuleVariants, "dark");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -682,7 +682,7 @@ export default function Example() {
           </div>
         );
       case "glass-badge": {
-        const validBadgeVariants = ["gradient","cyan","solid"];
+        const validBadgeVariants = ["gradient", "cyan", "solid"];
         const badgeVariant = safeTheme(customTheme, validBadgeVariants, "gradient");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -753,9 +753,8 @@ export default function Example() {
   // ── Shared shell chrome (used by both the embedded-screen and fallback views) ──
   const breadcrumbNav = (
     <nav
-      className={`flex items-center gap-2 text-xs font-mono ${
-        isLightPage ? "text-gray-400" : "text-gray-500"
-      }`}
+      className={`flex items-center gap-2 text-xs font-mono ${isLightPage ? "text-gray-400" : "text-gray-500"
+        }`}
     >
       <Link href="/componentlab" className={`transition-colors ${isLightPage ? "hover:text-gray-800" : "hover:text-gray-300"}`}>
         Component Lab
@@ -772,11 +771,10 @@ export default function Example() {
       {prevComponent ? (
         <button
           onClick={() => handleSelectComponent(prevComponent.id)}
-          className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${
-            isLightPage
+          className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${isLightPage
               ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
               : "bg-[#121216] border-white/10 hover:border-white/20"
-          }`}
+            }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
             ← Previous Component
@@ -792,11 +790,10 @@ export default function Example() {
       {nextComponent && (
         <button
           onClick={() => handleSelectComponent(nextComponent.id)}
-          className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${
-            isLightPage
+          className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${isLightPage
               ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
               : "bg-[#121216] border-white/10 hover:border-white/20"
-          }`}
+            }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
             Next Component →
@@ -812,29 +809,26 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div
-        className={`h-screen w-screen overflow-hidden flex flex-col font-sans transition-colors duration-300 ${
-          isLightPage
+        className={`h-screen w-screen overflow-hidden flex flex-col font-sans transition-colors duration-300 ${isLightPage
             ? "bg-[#F8F9FA] text-gray-900 selection:bg-[#FF5B04] selection:text-white"
             : "bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white"
-        }`}
+          }`}
       >
         {/* ── Fixed Documentation Top Bar ────────────────────────── */}
         <header
-          className={`h-14 shrink-0 border-b px-4 sm:px-6 flex items-center justify-between gap-4 z-30 transition-colors duration-300 ${
-            isLightPage
+          className={`h-14 shrink-0 border-b px-4 sm:px-6 flex items-center justify-between gap-4 z-30 transition-colors duration-300 ${isLightPage
               ? "bg-white/95 border-gray-200 shadow-sm"
               : "bg-[#0D0D11]/95 border-white/8 backdrop-blur-xl"
-          }`}
+            }`}
         >
           {/* Left Brand + Back to Library + Mobile Drawer Toggle */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-              className={`lg:hidden p-1.5 rounded-lg border transition-colors ${
-                isLightPage
+              className={`lg:hidden p-1.5 rounded-lg border transition-colors ${isLightPage
                   ? "bg-gray-100 border-gray-200 text-gray-700 hover:text-gray-900"
                   : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
-              }`}
+                }`}
               aria-label="Toggle Navigation"
             >
               {mobileSidebarOpen ? <CloseIcon /> : <MenuIcon />}
@@ -842,11 +836,10 @@ export default function Example() {
 
             <Link
               href="/componentlab"
-              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-xl border transition-all ${
-                isLightPage
+              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-xl border transition-all ${isLightPage
                   ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
                   : "bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border-white/10"
-              }`}
+                }`}
               title="Return to Component Library"
             >
               <span>←</span>
@@ -865,11 +858,10 @@ export default function Example() {
                 Component Lab
               </span>
               <span
-                className={`text-[10px] font-mono px-2 py-0.5 rounded-full border hidden md:inline ${
-                  isLightPage
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full border hidden md:inline ${isLightPage
                     ? "bg-gray-100 text-gray-600 border-gray-200"
                     : "bg-white/5 text-gray-400 border-white/10"
-                }`}
+                  }`}
               >
                 Studio &amp; Playground
               </span>
@@ -886,18 +878,16 @@ export default function Example() {
               placeholder="Search components, props, tokens... (Press ↑/↓ to navigate)"
               value={sidebarSearch}
               onChange={(e) => setSidebarSearch(e.target.value)}
-              className={`w-full rounded-xl pl-9 pr-12 py-1.5 text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${
-                isLightPage
+              className={`w-full rounded-xl pl-9 pr-12 py-1.5 text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
                   ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
                   : "bg-white/5 border border-white/10 text-white placeholder-gray-500"
-              }`}
+                }`}
             />
             <span
-              className={`absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono border px-1.5 py-0.5 rounded ${
-                isLightPage
+              className={`absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono border px-1.5 py-0.5 rounded ${isLightPage
                   ? "text-gray-500 border-gray-200 bg-white"
                   : "text-gray-500 border-white/10 bg-black/40"
-              }`}
+                }`}
             >
               ⌘K
             </span>
@@ -907,18 +897,16 @@ export default function Example() {
           <div className="flex items-center gap-2.5">
             {/* FULL PAGE Theme Switcher */}
             <div
-              className={`flex items-center gap-1 p-0.5 rounded-xl border ${
-                isLightPage ? "bg-gray-100 border-gray-200" : "bg-black/50 border-white/10"
-              }`}
+              className={`flex items-center gap-1 p-0.5 rounded-xl border ${isLightPage ? "bg-gray-100 border-gray-200" : "bg-black/50 border-white/10"
+                }`}
             >
               <button
                 onClick={() => setPageTheme("light")}
                 title="Switch entire page to Light Theme"
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  isLightPage
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${isLightPage
                     ? "bg-white text-gray-900 shadow font-semibold"
                     : "text-gray-400 hover:text-gray-200"
-                }`}
+                  }`}
               >
                 <SunIcon />
                 <span className="hidden sm:inline">Light</span>
@@ -926,11 +914,10 @@ export default function Example() {
               <button
                 onClick={() => setPageTheme("dark")}
                 title="Switch entire page to Dark Theme"
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${
-                  !isLightPage
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium transition-all cursor-pointer ${!isLightPage
                     ? "bg-[#1E1E28] text-white shadow border border-white/10 font-semibold"
                     : "text-gray-600 hover:text-gray-900"
-                }`}
+                  }`}
               >
                 <MoonIcon />
                 <span className="hidden sm:inline">Dark</span>
@@ -951,7 +938,7 @@ export default function Example() {
 
         {/* ── Fixed Body: Fixed Left Menu + Scrollable Center + Fixed Right TOC ──────── */}
         <div className="flex-1 flex overflow-hidden w-full min-h-0">
-          
+
           {/* ── Left Sidebar (Always Sticky / Fixed in Position) ─────────────────────────── */}
           <aside
             data-lenis-prevent="true"
@@ -969,9 +956,8 @@ export default function Example() {
           >
             {/* Mobile Sidebar Close Button */}
             <div
-              className={`p-3.5 border-b flex items-center justify-between lg:hidden ${
-                isLightPage ? "bg-white border-gray-200" : "bg-[#121216] border-white/8"
-              }`}
+              className={`p-3.5 border-b flex items-center justify-between lg:hidden ${isLightPage ? "bg-white border-gray-200" : "bg-[#121216] border-white/8"
+                }`}
             >
               <span className={`text-xs font-bold uppercase tracking-wider ${isLightPage ? "text-gray-900" : "text-white"}`}>
                 Components Menu
@@ -995,11 +981,10 @@ export default function Example() {
                   placeholder="Filter components..."
                   value={sidebarSearch}
                   onChange={(e) => setSidebarSearch(e.target.value)}
-                  className={`w-full rounded-xl pl-9 pr-3 py-1.5 text-xs ${
-                    isLightPage
+                  className={`w-full rounded-xl pl-9 pr-3 py-1.5 text-xs ${isLightPage
                       ? "bg-white border border-gray-200 text-gray-900 placeholder-gray-400"
                       : "bg-white/5 border border-white/10 text-white placeholder-gray-500"
-                  }`}
+                    }`}
                 />
               </div>
             </div>
@@ -1011,9 +996,8 @@ export default function Example() {
                 return (
                   <div key={groupTitle} className="space-y-1">
                     <div
-                      className={`px-2 text-[10px] font-mono font-bold uppercase tracking-widest flex items-center justify-between ${
-                        isLightPage ? "text-gray-500" : "text-gray-500"
-                      }`}
+                      className={`px-2 text-[10px] font-mono font-bold uppercase tracking-widest flex items-center justify-between ${isLightPage ? "text-gray-500" : "text-gray-500"
+                        }`}
                     >
                       <span>{groupTitle}</span>
                       <span className="text-[9px] text-gray-400 font-mono">{items.length}</span>
@@ -1026,13 +1010,12 @@ export default function Example() {
                           <button
                             key={item.id}
                             onClick={() => handleSelectComponent(item.id)}
-                            className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all flex items-center justify-between group cursor-pointer ${
-                              isSelected
+                            className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all flex items-center justify-between group cursor-pointer ${isSelected
                                 ? "bg-[#FF5B04] text-white shadow-md shadow-[#FF5B04]/25 font-bold"
                                 : isLightPage
-                                ? "text-gray-600 hover:text-gray-950 hover:bg-white"
-                                : "text-gray-400 hover:text-white hover:bg-white/5"
-                            }`}
+                                  ? "text-gray-600 hover:text-gray-950 hover:bg-white"
+                                  : "text-gray-400 hover:text-white hover:bg-white/5"
+                              }`}
                           >
                             <div className="flex items-center gap-2.5 truncate">
                               <span
@@ -1046,11 +1029,10 @@ export default function Example() {
 
                             {item.badge && !isSelected && (
                               <span
-                                className={`text-[9px] font-mono px-1.5 py-0.5 rounded border shrink-0 hidden sm:inline-block ${
-                                  isLightPage
+                                className={`text-[9px] font-mono px-1.5 py-0.5 rounded border shrink-0 hidden sm:inline-block ${isLightPage
                                     ? "bg-white text-gray-500 border-gray-200"
                                     : "bg-white/5 text-gray-400 border-white/5"
-                                }`}
+                                  }`}
                               >
                                 {item.badge}
                               </span>
@@ -1066,11 +1048,10 @@ export default function Example() {
 
             {/* Sidebar Bottom Status */}
             <div
-              className={`p-3.5 border-t text-[11px] flex items-center justify-between ${
-                isLightPage
+              className={`p-3.5 border-t text-[11px] flex items-center justify-between ${isLightPage
                   ? "bg-white/60 border-gray-200 text-gray-500"
                   : "bg-black/30 border-white/8 text-gray-400"
-              }`}
+                }`}
             >
               <span>Tailwind + Framer</span>
               <span className="text-[#00E5BE] font-mono font-bold">100% Ready</span>
@@ -1089,9 +1070,8 @@ export default function Example() {
           <main
             ref={centerScrollRef}
             data-lenis-prevent="true"
-            className={`flex-1 h-[calc(100vh-3.5rem)] overflow-y-auto min-w-0 min-h-0 scroll-smooth overscroll-contain scrollbar-thin ${
-              EmbeddedScreen ? "" : "p-6 sm:p-10 lg:p-12 space-y-12"
-            }`}
+            className={`flex-1 h-[calc(100vh-3.5rem)] overflow-y-auto min-w-0 min-h-0 scroll-smooth overscroll-contain scrollbar-thin ${EmbeddedScreen ? "" : "p-6 sm:p-10 lg:p-12 space-y-12"
+              }`}
           >
             {EmbeddedScreen ? (
               /* ── Embedded studio: identical to /buttons/<slug> ─────────── */
@@ -1123,82 +1103,79 @@ export default function Example() {
                 </div>
               </div>
             ) : (
-            <div className={`max-w-4xl mx-auto space-y-12 pb-16 ${isLightPage ? "lab-embed-light" : ""}`}>
-              {isLightPage && <style dangerouslySetInnerHTML={{ __html: LAB_EMBED_LIGHT_CSS }} />}
+              <div className={`max-w-4xl mx-auto space-y-12 pb-16 ${isLightPage ? "lab-embed-light" : ""}`}>
+                {isLightPage && <style dangerouslySetInnerHTML={{ __html: LAB_EMBED_LIGHT_CSS }} />}
 
-              {/* Breadcrumb Navigation */}
-              {breadcrumbNav}
+                {/* Breadcrumb Navigation */}
+                {breadcrumbNav}
 
-              {/* Header: Title & Badges */}
-              <div className="space-y-3">
-                <div className="flex flex-wrap items-center gap-3">
-                  <h1
-                    className={`text-3xl sm:text-4xl font-extrabold tracking-tight font-jakarta ${
-                      isLightPage ? "text-gray-950" : "text-white"
-                    }`}
-                  >
-                    {selectedComponent.name}
-                  </h1>
-                  {selectedComponent.badge && (
-                    <span
-                      className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider"
-                      style={{
-                        color: selectedComponent.badgeColor || "#FF5B04",
-                        backgroundColor: `${selectedComponent.badgeColor || "#FF5B04"}15`,
-                        borderColor: `${selectedComponent.badgeColor || "#FF5B04"}35`,
-                      }}
+                {/* Header: Title & Badges */}
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h1
+                      className={`text-3xl sm:text-4xl font-extrabold tracking-tight font-jakarta ${isLightPage ? "text-gray-950" : "text-white"
+                        }`}
                     >
-                      {selectedComponent.badge}
-                    </span>
-                  )}
-                </div>
-
-                <p className={`text-sm sm:text-base leading-relaxed ${isLightPage ? "text-gray-600" : "text-gray-300"}`}>
-                  {selectedComponent.description}
-                </p>
-              </div>
-
-              {/* ── 1. Interactive Playground Studio Canvas ─────────────────── */}
-              <section id="playground" className="space-y-4 scroll-mt-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#FF5B04] animate-pulse" />
-                    <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
-                      Interactive Playground &amp; Studio
-                    </h2>
-                    <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                      Live Controls
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-xs font-mono">
-                    {lastAction && (
-                      <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 animate-pulse">
-                        ✓ {lastAction}
+                      {selectedComponent.name}
+                    </h1>
+                    {selectedComponent.badge && (
+                      <span
+                        className="text-xs font-mono font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider"
+                        style={{
+                          color: selectedComponent.badgeColor || "#FF5B04",
+                          backgroundColor: `${selectedComponent.badgeColor || "#FF5B04"}15`,
+                          borderColor: `${selectedComponent.badgeColor || "#FF5B04"}35`,
+                        }}
+                      >
+                        {selectedComponent.badge}
                       </span>
                     )}
                   </div>
+
+                  <p className={`text-sm sm:text-base leading-relaxed ${isLightPage ? "text-gray-600" : "text-gray-300"}`}>
+                    {selectedComponent.description}
+                  </p>
                 </div>
 
-                {/* Studio frame */}
-                <div
-                  className={`rounded-3xl overflow-hidden border shadow-2xl ${
-                    isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-[#121216]"
-                  }`}
-                >
-                  <StudioCanvas title="interactive-playground.tsx">
-                    <div className="w-full flex items-center justify-center">
-                      {renderInteractivePlaygroundComponent()}
+                {/* ── 1. Interactive Playground Studio Canvas ─────────────────── */}
+                <section id="playground" className="space-y-4 scroll-mt-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5B04] animate-pulse" />
+                      <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
+                        Interactive Playground &amp; Studio
+                      </h2>
+                      <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                        Live Controls
+                      </span>
                     </div>
-                  </StudioCanvas>
-                </div>
 
-                {/* Customizer */}
-                <div
-                  className={`rounded-3xl border p-6 space-y-5 ${
-                    isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-white/[0.03]"
-                  }`}
-                >
+                    <div className="flex items-center gap-2 text-xs font-mono">
+                      {lastAction && (
+                        <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 animate-pulse">
+                          ✓ {lastAction}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Studio frame */}
+                  <div
+                    className={`rounded-3xl overflow-hidden border shadow-2xl ${isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-[#121216]"
+                      }`}
+                  >
+                    <StudioCanvas title="interactive-playground.tsx">
+                      <div className="w-full flex items-center justify-center">
+                        {renderInteractivePlaygroundComponent()}
+                      </div>
+                    </StudioCanvas>
+                  </div>
+
+                  {/* Customizer */}
+                  <div
+                    className={`rounded-3xl border p-6 space-y-5 ${isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-white/[0.03]"
+                      }`}
+                  >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <SparklesIcon />
@@ -1214,16 +1191,15 @@ export default function Example() {
                           setClickCount(0);
                           setLastAction(null);
                         }}
-                        className={`text-[11px] font-mono transition-colors cursor-pointer ${
-                          isLightPage ? "text-gray-500 hover:text-gray-900" : "text-gray-400 hover:text-white"
-                        }`}
+                        className={`text-[11px] font-mono transition-colors cursor-pointer ${isLightPage ? "text-gray-500 hover:text-gray-900" : "text-gray-400 hover:text-white"
+                          }`}
                       >
                         Reset Defaults
                       </button>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs font-mono">
-                      
+
                       {/* 1. Label Control */}
                       {selectedComponent.hasLabelControl && (
                         <div className="space-y-1.5">
@@ -1235,11 +1211,10 @@ export default function Example() {
                             value={customLabel}
                             onChange={(e) => setCustomLabel(e.target.value)}
                             placeholder="Type custom text..."
-                            className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${
-                              isLightPage
+                            className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
                                 ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
                                 : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
-                            }`}
+                              }`}
                           />
                         </div>
                       )}
@@ -1255,13 +1230,12 @@ export default function Example() {
                               <button
                                 key={s}
                                 onClick={() => setCustomSize(s)}
-                                className={`flex-1 py-2 rounded-xl uppercase font-bold text-xs transition-all cursor-pointer ${
-                                  customSize === s
+                                className={`flex-1 py-2 rounded-xl uppercase font-bold text-xs transition-all cursor-pointer ${customSize === s
                                     ? "bg-[#FF5B04] text-white shadow"
                                     : isLightPage
-                                    ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                    : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                                }`}
+                                      ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
+                                  }`}
                               >
                                 {s}
                               </button>
@@ -1281,13 +1255,12 @@ export default function Example() {
                               <button
                                 key={th.value}
                                 onClick={() => setCustomTheme(th.value)}
-                                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-                                  customTheme === th.value
+                                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${customTheme === th.value
                                     ? "bg-[#FF5B04] text-white font-bold shadow"
                                     : isLightPage
-                                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
-                                    : "bg-white/5 text-gray-300 hover:bg-white/10 border border-white/5"
-                                }`}
+                                      ? "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
+                                      : "bg-white/5 text-gray-300 hover:bg-white/10 border border-white/5"
+                                  }`}
                               >
                                 {th.color && (
                                   <span
@@ -1303,257 +1276,244 @@ export default function Example() {
                       )}
 
                     </div>
-                </div>
-              </section>
-
-              {/* ── 2. All Presets & Variants Showcase Card ────────────────── */}
-              {selectedComponent.variantsList && selectedComponent.variantsList.length > 0 && (
-                <section id="variants" className="space-y-4 scroll-mt-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#FFB020] mb-1.5">
-                        <span>PRESETS &amp; VARIATIONS</span>
-                      </div>
-                      <h2 className={`text-2xl font-bold tracking-tight font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
-                        All Variants &amp; Themes
-                      </h2>
-                    </div>
-                    <p className={`text-xs font-mono ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
-                      Click to test interactive spring physics on every theme
-                    </p>
                   </div>
+                </section>
 
-                  <div
-                    className={`border rounded-3xl p-6 sm:p-8 shadow-xl ${
-                      isLightPage ? "bg-white border-gray-200" : "bg-[#121216] border-white/10"
-                    }`}
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {selectedComponent.variantsList.map((variant) => (
-                        <div
-                          key={variant.title}
-                          className={`rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all border ${
-                            isLightPage
-                              ? "bg-[#F8F9FA] border-gray-200 hover:border-gray-300"
-                              : "bg-[#0E0E12] border-white/5 hover:border-white/15"
-                          }`}
-                        >
-                          <div className="w-full flex items-center justify-between text-xs font-mono mb-2">
-                            <span className={`font-bold truncate ${isLightPage ? "text-gray-900" : "text-white"}`}>
-                              {variant.title}
-                            </span>
-                            <span
-                              className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 ${
-                                isLightPage ? "bg-gray-200 text-gray-800 font-bold" : "bg-white/10 text-gray-300"
-                              }`}
-                              style={{ color: variant.badgeColor }}
-                            >
-                              {variant.themeProp}
-                            </span>
-                          </div>
-
-                          <div className="my-5 scale-90 transform-gpu flex items-center justify-center">
-                            {variant.renderPreview("sm")}
-                          </div>
-
-                          <p className={`text-[11px] font-mono text-center leading-relaxed ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
-                            {variant.description}
-                          </p>
+                {/* ── 2. All Presets & Variants Showcase Card ────────────────── */}
+                {selectedComponent.variantsList && selectedComponent.variantsList.length > 0 && (
+                  <section id="variants" className="space-y-4 scroll-mt-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#FFB020] mb-1.5">
+                          <span>PRESETS &amp; VARIATIONS</span>
                         </div>
-                      ))}
+                        <h2 className={`text-2xl font-bold tracking-tight font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
+                          All Variants &amp; Themes
+                        </h2>
+                      </div>
+                      <p className={`text-xs font-mono ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
+                        Click to test interactive spring physics on every theme
+                      </p>
                     </div>
-                  </div>
-                </section>
-              )}
 
-              {/* ── 3. Key Features & Highlights ────────────────────────── */}
-              <section id="features" className="space-y-4 scroll-mt-6">
-                <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
-                  Features &amp; Physics
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                  {selectedComponent.features.map((feature, idx) => (
                     <div
-                      key={idx}
-                      className={`p-4 rounded-2xl border flex items-center gap-3 transition-colors ${
-                        isLightPage ? "bg-white border-gray-200 shadow-sm text-gray-800" : "bg-[#121216] border-white/8 text-gray-200"
-                      }`}
+                      className={`border rounded-3xl p-6 sm:p-8 shadow-xl ${isLightPage ? "bg-white border-gray-200" : "bg-[#121216] border-white/10"
+                        }`}
                     >
-                      <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#00E5BE]/15 text-[#00BFA0] font-bold text-xs shrink-0">
-                        ✓
-                      </span>
-                      <span className="text-xs sm:text-sm font-medium">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* ── 4. Code Snippets & Drop-in Integration ─────────────── */}
-              <section id="code" className="space-y-4 scroll-mt-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
-                      Code &amp; Integration
-                    </h2>
-                    <p className={`text-xs mt-0.5 ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
-                      Customized live with your active playground prop settings:
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => handleCopy(activeCode, activeCodeTab)}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-[#FF5B04] border border-orange-500/30 text-xs font-mono font-bold transition-colors cursor-pointer self-start sm:self-auto"
-                  >
-                    {copiedTab === activeCodeTab ? <CheckIcon /> : <CopyIcon />}
-                    <span>{copiedTab === activeCodeTab ? "Copied to Clipboard!" : "Copy Active Code"}</span>
-                  </button>
-                </div>
-
-                <div
-                  className={`border rounded-3xl overflow-hidden shadow-2xl ${
-                    isLightPage ? "bg-[#1E1E28] border-gray-200" : "bg-[#0E0E12] border-white/10"
-                  }`}
-                >
-                  {/* Code Tabs Header */}
-                  <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-[#14141E]">
-                    <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/5 text-xs font-mono">
-                      <button
-                        onClick={() => setActiveCodeTab("jsx")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                          activeCodeTab === "jsx"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
-                        }`}
-                      >
-                        JSX / React
-                      </button>
-                      <button
-                        onClick={() => setActiveCodeTab("html")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                          activeCodeTab === "html"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
-                        }`}
-                      >
-                        HTML
-                      </button>
-                      <button
-                        onClick={() => setActiveCodeTab("css")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                          activeCodeTab === "css"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
-                        }`}
-                      >
-                        Tokens.css
-                      </button>
-                    </div>
-
-                    <span className="text-xs font-mono text-gray-400 hidden sm:inline-block">
-                      {activeCodeTab === "jsx" ? "React 18 / 19" : activeCodeTab === "html" ? "Semantic HTML" : "Tailwind / CSS Tokens"}
-                    </span>
-                  </div>
-
-                  {/* Code Block */}
-                  <div className="p-6 overflow-x-auto max-h-[460px] overflow-y-auto">
-                    <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed whitespace-pre">
-                      <code>{activeCode}</code>
-                    </pre>
-                  </div>
-                </div>
-              </section>
-
-              {/* ── 5. Peer Dependencies & Installation ────────────────── */}
-              <section
-                className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl transition-colors ${
-                  isLightPage ? "bg-white border-gray-200 text-gray-900" : "bg-[#121216] border-white/10 text-white"
-                }`}
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
-                    <h3 className={`text-base font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
-                      Peer Dependencies
-                    </h3>
-                    <p className={`text-xs mt-1 ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
-                      Requires Framer Motion and Tailwind CSS for spring physics and layout tokens:
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => handleCopy("npm install framer-motion clsx lucide-react tailwind-merge", "install")}
-                    className="px-3.5 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-500 border border-emerald-500/30 text-xs font-mono font-semibold transition-colors cursor-pointer self-start sm:self-auto"
-                  >
-                    {copiedTab === "install" ? "✓ Copied Command!" : "Copy Install Command"}
-                  </button>
-                </div>
-
-                <div
-                  className={`border rounded-2xl px-5 py-3.5 font-mono text-xs overflow-x-auto ${
-                    isLightPage ? "bg-gray-50 border-gray-200 text-emerald-600 font-semibold" : "bg-black/50 border-white/10 text-emerald-400"
-                  }`}
-                >
-                  <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
-                </div>
-              </section>
-
-              {/* ── 6. Component Props & API Reference ─────────────────── */}
-              {selectedComponent.props.length > 0 && (
-                <section id="api" className="space-y-4 scroll-mt-6">
-                  <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
-                    API &amp; Props Reference
-                  </h2>
-                  <div
-                    className={`border rounded-3xl overflow-hidden shadow-xl transition-colors ${
-                      isLightPage ? "bg-white border-gray-200" : "bg-[#121216] border-white/10"
-                    }`}
-                  >
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs sm:text-sm">
-                        <thead>
-                          <tr
-                            className={`border-b font-mono ${
-                              isLightPage ? "bg-gray-50 border-gray-200 text-gray-600" : "bg-white/[0.02] border-white/10 text-gray-400"
-                            }`}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {selectedComponent.variantsList.map((variant) => (
+                          <div
+                            key={variant.title}
+                            className={`rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all border ${isLightPage
+                                ? "bg-[#F8F9FA] border-gray-200 hover:border-gray-300"
+                                : "bg-[#0E0E12] border-white/5 hover:border-white/15"
+                              }`}
                           >
-                            <th className="py-3.5 px-6 font-semibold">Prop</th>
-                            <th className="py-3.5 px-6 font-semibold">Type</th>
-                            <th className="py-3.5 px-6 font-semibold">Default</th>
-                            <th className="py-3.5 px-6 font-semibold">Description</th>
-                          </tr>
-                        </thead>
-                        <tbody
-                          className={`divide-y font-mono text-xs ${
-                            isLightPage ? "divide-gray-200 text-gray-800" : "divide-white/5 text-gray-300"
+                            <div className="w-full flex items-center justify-between text-xs font-mono mb-2">
+                              <span className={`font-bold truncate ${isLightPage ? "text-gray-900" : "text-white"}`}>
+                                {variant.title}
+                              </span>
+                              <span
+                                className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 ${isLightPage ? "bg-gray-200 text-gray-800 font-bold" : "bg-white/10 text-gray-300"
+                                  }`}
+                                style={{ color: variant.badgeColor }}
+                              >
+                                {variant.themeProp}
+                              </span>
+                            </div>
+
+                            <div className="my-5 scale-90 transform-gpu flex items-center justify-center">
+                              {variant.renderPreview("sm")}
+                            </div>
+
+                            <p className={`text-[11px] font-mono text-center leading-relaxed ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
+                              {variant.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* ── 3. Key Features & Highlights ────────────────────────── */}
+                <section id="features" className="space-y-4 scroll-mt-6">
+                  <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
+                    Features &amp; Physics
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    {selectedComponent.features.map((feature, idx) => (
+                      <div
+                        key={idx}
+                        className={`p-4 rounded-2xl border flex items-center gap-3 transition-colors ${isLightPage ? "bg-white border-gray-200 shadow-sm text-gray-800" : "bg-[#121216] border-white/8 text-gray-200"
                           }`}
+                      >
+                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#00E5BE]/15 text-[#00BFA0] font-bold text-xs shrink-0">
+                          ✓
+                        </span>
+                        <span className="text-xs sm:text-sm font-medium">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* ── 4. Code Snippets & Drop-in Integration ─────────────── */}
+                <section id="code" className="space-y-4 scroll-mt-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                      <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
+                        Code &amp; Integration
+                      </h2>
+                      <p className={`text-xs mt-0.5 ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
+                        Customized live with your active playground prop settings:
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => handleCopy(activeCode, activeCodeTab)}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-[#FF5B04] border border-orange-500/30 text-xs font-mono font-bold transition-colors cursor-pointer self-start sm:self-auto"
+                    >
+                      {copiedTab === activeCodeTab ? <CheckIcon /> : <CopyIcon />}
+                      <span>{copiedTab === activeCodeTab ? "Copied to Clipboard!" : "Copy Active Code"}</span>
+                    </button>
+                  </div>
+
+                  <div
+                    className={`border rounded-3xl overflow-hidden shadow-2xl ${isLightPage ? "bg-[#1E1E28] border-gray-200" : "bg-[#0E0E12] border-white/10"
+                      }`}
+                  >
+                    {/* Code Tabs Header */}
+                    <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-[#14141E]">
+                      <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/5 text-xs font-mono">
+                        <button
+                          onClick={() => setActiveCodeTab("jsx")}
+                          className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "jsx"
+                              ? "bg-[#FF5B04] text-white font-bold shadow"
+                              : "text-gray-400 hover:text-white"
+                            }`}
                         >
-                          {selectedComponent.props.map((prop) => (
-                            <tr
-                              key={prop.name}
-                              className={`transition-colors ${isLightPage ? "hover:bg-gray-50" : "hover:bg-white/[0.02]"}`}
-                            >
-                              <td className="py-3.5 px-6 text-[#FF5B04] font-semibold">{prop.name}</td>
-                              <td className={`py-3.5 px-6 text-[11px] ${isLightPage ? "text-blue-600 font-semibold" : "text-blue-300"}`}>
-                                {prop.type}
-                              </td>
-                              <td className={`py-3.5 px-6 ${isLightPage ? "text-gray-600" : "text-gray-400"}`}>
-                                {prop.defaultValue}
-                              </td>
-                              <td className={`py-3.5 px-6 font-sans text-xs ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
-                                {prop.description}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          JSX / React
+                        </button>
+                        <button
+                          onClick={() => setActiveCodeTab("html")}
+                          className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "html"
+                              ? "bg-[#FF5B04] text-white font-bold shadow"
+                              : "text-gray-400 hover:text-white"
+                            }`}
+                        >
+                          HTML
+                        </button>
+                        <button
+                          onClick={() => setActiveCodeTab("css")}
+                          className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "css"
+                              ? "bg-[#FF5B04] text-white font-bold shadow"
+                              : "text-gray-400 hover:text-white"
+                            }`}
+                        >
+                          Tokens.css
+                        </button>
+                      </div>
+
+                      <span className="text-xs font-mono text-gray-400 hidden sm:inline-block">
+                        {activeCodeTab === "jsx" ? "React 18 / 19" : activeCodeTab === "html" ? "Semantic HTML" : "Tailwind / CSS Tokens"}
+                      </span>
+                    </div>
+
+                    {/* Code Block */}
+                    <div className="p-6 overflow-x-auto max-h-[460px] overflow-y-auto">
+                      <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed whitespace-pre">
+                        <code>{activeCode}</code>
+                      </pre>
                     </div>
                   </div>
                 </section>
-              )}
 
-              {/* ── 7. Next & Previous Component Navigation ────────────── */}
-              {componentPagerNav}
+                {/* ── 5. Peer Dependencies & Installation ────────────────── */}
+                <section
+                  className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl transition-colors ${isLightPage ? "bg-white border-gray-200 text-gray-900" : "bg-[#121216] border-white/10 text-white"
+                    }`}
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h3 className={`text-base font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
+                        Peer Dependencies
+                      </h3>
+                      <p className={`text-xs mt-1 ${isLightPage ? "text-gray-500" : "text-gray-400"}`}>
+                        Requires Framer Motion and Tailwind CSS for spring physics and layout tokens:
+                      </p>
+                    </div>
 
-            </div>
+                    <button
+                      onClick={() => handleCopy("npm install framer-motion clsx lucide-react tailwind-merge", "install")}
+                      className="px-3.5 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-500 border border-emerald-500/30 text-xs font-mono font-semibold transition-colors cursor-pointer self-start sm:self-auto"
+                    >
+                      {copiedTab === "install" ? "✓ Copied Command!" : "Copy Install Command"}
+                    </button>
+                  </div>
+
+                  <div
+                    className={`border rounded-2xl px-5 py-3.5 font-mono text-xs overflow-x-auto ${isLightPage ? "bg-gray-50 border-gray-200 text-emerald-600 font-semibold" : "bg-black/50 border-white/10 text-emerald-400"
+                      }`}
+                  >
+                    <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
+                  </div>
+                </section>
+
+                {/* ── 6. Component Props & API Reference ─────────────────── */}
+                {selectedComponent.props.length > 0 && (
+                  <section id="api" className="space-y-4 scroll-mt-6">
+                    <h2 className={`text-lg font-bold font-jakarta ${isLightPage ? "text-gray-950" : "text-white"}`}>
+                      API &amp; Props Reference
+                    </h2>
+                    <div
+                      className={`border rounded-3xl overflow-hidden shadow-xl transition-colors ${isLightPage ? "bg-white border-gray-200" : "bg-[#121216] border-white/10"
+                        }`}
+                    >
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs sm:text-sm">
+                          <thead>
+                            <tr
+                              className={`border-b font-mono ${isLightPage ? "bg-gray-50 border-gray-200 text-gray-600" : "bg-white/[0.02] border-white/10 text-gray-400"
+                                }`}
+                            >
+                              <th className="py-3.5 px-6 font-semibold">Prop</th>
+                              <th className="py-3.5 px-6 font-semibold">Type</th>
+                              <th className="py-3.5 px-6 font-semibold">Default</th>
+                              <th className="py-3.5 px-6 font-semibold">Description</th>
+                            </tr>
+                          </thead>
+                          <tbody
+                            className={`divide-y font-mono text-xs ${isLightPage ? "divide-gray-200 text-gray-800" : "divide-white/5 text-gray-300"
+                              }`}
+                          >
+                            {selectedComponent.props.map((prop) => (
+                              <tr
+                                key={prop.name}
+                                className={`transition-colors ${isLightPage ? "hover:bg-gray-50" : "hover:bg-white/[0.02]"}`}
+                              >
+                                <td className="py-3.5 px-6 text-[#FF5B04] font-semibold">{prop.name}</td>
+                                <td className={`py-3.5 px-6 text-[11px] ${isLightPage ? "text-blue-600 font-semibold" : "text-blue-300"}`}>
+                                  {prop.type}
+                                </td>
+                                <td className={`py-3.5 px-6 ${isLightPage ? "text-gray-600" : "text-gray-400"}`}>
+                                  {prop.defaultValue}
+                                </td>
+                                <td className={`py-3.5 px-6 font-sans text-xs ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                                  {prop.description}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </section>
+                )}
+
+                {/* ── 7. Next & Previous Component Navigation ────────────── */}
+                {componentPagerNav}
+
+              </div>
             )}
           </main>
 
@@ -1562,9 +1522,8 @@ export default function Example() {
             screenToc.length > 0 && (
               <aside
                 data-lenis-prevent="true"
-                className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${
-                  isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
-                }`}
+                className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
+                  }`}
               >
                 <div className={`text-[11px] font-bold uppercase tracking-wider ${isLightPage ? "text-gray-700" : "text-gray-400"}`}>
                   On this page
@@ -1588,80 +1547,79 @@ export default function Example() {
               </aside>
             )
           ) : (
-          <aside
-            data-lenis-prevent="true"
-            className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${
-              isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
-            }`}
-          >
-            <div className={`text-[11px] font-bold uppercase tracking-wider ${isLightPage ? "text-gray-700" : "text-gray-400"}`}>
-              On this page
-            </div>
-            <ul className={`space-y-2.5 ${isLightPage ? "text-gray-600" : "text-gray-500"}`}>
-              <li>
-                <a
-                  href="#playground"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("playground")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
-                >
-                  • Playground &amp; Studio
-                </a>
-              </li>
-              {selectedComponent.variantsList && (
+            <aside
+              data-lenis-prevent="true"
+              className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
+                }`}
+            >
+              <div className={`text-[11px] font-bold uppercase tracking-wider ${isLightPage ? "text-gray-700" : "text-gray-400"}`}>
+                On this page
+              </div>
+              <ul className={`space-y-2.5 ${isLightPage ? "text-gray-600" : "text-gray-500"}`}>
                 <li>
                   <a
-                    href="#variants"
+                    href="#playground"
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById("variants")?.scrollIntoView({ behavior: "smooth" });
+                      document.getElementById("playground")?.scrollIntoView({ behavior: "smooth" });
                     }}
                     className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
                   >
-                    • All Variants &amp; Themes
+                    • Playground &amp; Studio
                   </a>
                 </li>
-              )}
-              <li>
-                <a
-                  href="#features"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
-                >
-                  • Features &amp; Physics
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#code"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("code")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
-                >
-                  • Code &amp; Integration
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#api"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("api")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
-                >
-                  • API Reference
-                </a>
-              </li>
-            </ul>
-          </aside>
+                {selectedComponent.variantsList && (
+                  <li>
+                    <a
+                      href="#variants"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById("variants")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
+                    >
+                      • All Variants &amp; Themes
+                    </a>
+                  </li>
+                )}
+                <li>
+                  <a
+                    href="#features"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById("features")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
+                  >
+                    • Features &amp; Physics
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#code"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById("code")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
+                  >
+                    • Code &amp; Integration
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#api"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById("api")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`block transition-colors ${isLightPage ? "hover:text-gray-950" : "hover:text-white"}`}
+                  >
+                    • API Reference
+                  </a>
+                </li>
+              </ul>
+            </aside>
           )}
 
         </div>
