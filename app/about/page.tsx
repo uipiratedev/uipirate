@@ -63,53 +63,68 @@ const ABOUT_FAQS = [
   },
 ];
 
-// Premium enterprise client logos from landing page
-const premiumLogos = [
+const clientLogos = [
   {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
-    alt: "Ipsos - Global market research and consulting firm logo",
-    link: "https://www.ipsos.com/en/ipsos-acquires-xperiti-strengthen-its-b2b-research-capabilities-global",
+    name: "Pivot Bits",
+    logo: "/assets/logos/pivotbits.png",
+    desc: "Enterprise Security Software",
+    isUS: true,
+    invertColor: true,
   },
   {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp",
-    alt: "Biotex Medical - Healthcare technology solutions logo",
-    link: "https://biotexmedical.com/",
+    name: "Ipsos",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513137/image_1_hxpv8e.svg",
+    desc: "Global Market Research",
+    isUS: false,
   },
   {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png",
-    alt: "Khaitan & Co - APAC's largest leading law firm ",
-    link: "https://www.khaitanco.com/",
+    name: "Biotex Medical",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1764586282/logo_qpyrhf.webp",
+    desc: "MedTech",
+    isUS: true,
   },
   {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
-    alt: "RevUp AI - AI-powered business solutions logo",
-    link: "https://revupai.com/",
+    name: "Khaitan & Co",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1753093876/logo_r097ja.png",
+    desc: "Asia's Largest Law Firm",
+    isUS: false,
   },
   {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682148/Group-2_uduxpp.svg",
-    alt: "Simpleo AI - Artificial intelligence platform logo",
-    link: "https://www.simpleo.ai/",
+    name: "RevUp AI",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Frame_1984078729_meav44.svg",
+    desc: "AI Platform",
+    isUS: true,
   },
   {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
-    alt: "Arth Alpha - Financial technology and investment platform logo",
-    link: "https://www.arthalpha.in/",
+    name: "Simpleo AI",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682148/Group-2_uduxpp.svg",
+    desc: "AI Solutions",
+    isUS: true,
   },
   {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg",
-    alt: "Sarge - AI-powered business solutions logo",
-    link: "https://sarge.com/",
+    name: "Sarge",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770706789/sarge_hewzwz.svg",
+    desc: "AI Police Tech Platform",
+    isUS: true,
   },
   {
-    url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg",
-    alt: "Awesome Health Club - Fitness and wellness platform logo",
-    link: "https://awesomehealthclub.com/",
+    name: "Awesome Health",
+    logo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg",
+    desc: "HealthTech",
+    isUS: true,
   },
   {
-    url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Rings_I_eyrgog.svg",
-    alt: "Rings and I - Jewelry and lifestyle brand logo",
-    link: "https://ringsandi.com/",
+    name: "Rings & I",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1729682150/Rings_I_eyrgog.svg",
+    desc: "E-commerce",
+    isUS: true,
   },
+  {
+    name: "Arth Alpha",
+    logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
+    desc: "Quant Trading Startup",
+    isUS: false,
+  }
 ];
 
 const logoContainerVariants: Variants = {
@@ -643,21 +658,16 @@ export default function AboutPage() {
 
       {/* Trusted By Clients Grid - Logo-based */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-12">
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">OUR CLIENTS</GlassBadge>
           </div>
-          <h2 className="heading-center">Companies That Trusted Us With Their Products</h2>
+          <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 tracking-tight">
+            Trusted by Teams Worldwide
+          </h2>
           <p className="text-gray-500 mt-2">
             60% of our clients are US-based startups and enterprises
           </p>
-          <Link
-            className="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-brand-orange hover:underline"
-            href="https://clutch.co/profile/ui-pirate-vishal-anand"
-            target="_blank"
-          >
-            See our reviews on Clutch →
-          </Link>
         </div>
 
         <div className="w-full mt-6">
@@ -668,16 +678,10 @@ export default function AboutPage() {
             viewport={{ once: true, amount: 0.3 }}
             whileInView="visible"
           >
-            {premiumLogos.map((logo, index) => (
-              <motion.a
+            {clientLogos.map((logo, index) => (
+              <motion.div
                 key={index}
-                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden ${
-                  logo.link
-                    ? "cursor-pointer hover:brightness-105"
-                    : "cursor-default"
-                }`}
-                href={logo.link || undefined}
-                rel={logo.link ? "noopener noreferrer" : undefined}
+                className="logo-item group flex flex-col items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden cursor-default"
                 style={{
                   background:
                     "linear-gradient(142deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0.55) 100%)",
@@ -688,7 +692,6 @@ export default function AboutPage() {
                   boxShadow:
                     "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
                 }}
-                target={logo.link ? "_blank" : undefined}
                 variants={logoItemVariants}
                 onHoverEnd={() => setHoveredIndex(null)}
                 onHoverStart={() => setHoveredIndex(index)}
@@ -721,14 +724,23 @@ export default function AboutPage() {
                 />
 
                 <motion.img
-                  alt={logo.alt}
+                  alt={logo.name}
                   animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}
-                  className="h-[40px] max-h-[40px] max-md:h-[24px] max-md:max-h-[24px] w-auto object-contain relative z-10"
+                  className="h-[32px] max-h-[32px] max-md:h-[24px] max-md:max-h-[24px] w-auto object-contain relative z-10"
                   loading="lazy"
-                  src={logo.url}
+                  src={logo.logo}
+                  style={logo.invertColor ? { filter: 'invert(1) sepia(1) saturate(5) hue-rotate(180deg) brightness(0.7)' } : undefined}
                   transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 />
-              </motion.a>
+                <span className="mt-3 text-[11px] text-gray-500 font-medium relative z-10 text-center uppercase tracking-wide leading-tight group-hover:text-gray-700 transition-colors">
+                  {logo.desc}
+                </span>
+                {logo.isUS && (
+                  <span className="mt-1 text-[10px] text-brand-orange font-bold relative z-10">
+                    🇺🇸 US
+                  </span>
+                )}
+              </motion.div>
             ))}
           </motion.div>
         </div>
