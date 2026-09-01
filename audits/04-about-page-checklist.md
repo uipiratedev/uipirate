@@ -133,10 +133,10 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status |
 |---|------|--------|
-| 8a | H2 `Trusted by Teams Worldwide` — too generic; rename to `Companies That Trusted Us With Their Products` | ✅ Done |
-| 8b | Client grid shows company names + industries + US flags — strong, keep | ✅ Keep as-is |
-| 8c | `See our reviews on Clutch →` link — strong trust signal, keep | ✅ Keep as-is |
-| 8d | US flag emoji `🇺🇸 US` — replace with `• Based in USA` text label for professional register | ✅ Done |
+| 8a | H2 `Trusted by Teams Worldwide` — too generic; rename to `Companies That Trusted Us With Their Products` | ✅ Reverted (per user) |
+| 8b | Client grid shows company names + industries + US flags — strong, keep | ✅ Kept |
+| 8c | `See our reviews on Clutch →` link — strong trust signal, keep | ✅ Removed (per user screenshot revert) |
+| 8d | US flag emoji `🇺🇸 US` — replace with `• Based in USA` text label for professional register | ✅ Reverted (flag emoji restored) |
 | 8e | `Awesome Health Club` (schema) vs `Awesome Health` (grid) — align entity names (NF9) | ✅ Done |
 
 ---

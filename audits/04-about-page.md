@@ -1002,7 +1002,7 @@ All v2 items carried forward. New items marked `[v3]`. "Verified" = code-checked
 | 6 | Differentiation | Cards 04+06 duplicate; cards 02+05 duplicate — consolidate + add 2 unique cards per NC2 | `app/about/page.tsx` L379-403 | 🟠 Soon | ✓ |
 | 7 | Design Style | `Pixel-Perfect Execution` jargon — rewrite per NC3 | `app/about/page.tsx` L450-453 | 🟠 Soon | ✓ |
 | 8 | Industries | Trim 8 → 5 client-backed verticals, rename 2 labels per NC5 | `app/about/page.tsx` L37-46 | 🟠 Soon | ✓ |
-| 9 | Client Logos | H2 `Trusted by Teams Worldwide` — too generic; → `Companies That Trusted Us With Their Products` | `app/about/page.tsx` L591 | 🟠 Soon | ✓ |
+| 9 | Client Logos | H2 `Trusted by Teams Worldwide` — too generic; → `Companies That Trusted Us With Their Products` | `app/about/page.tsx` L591 | 🟠 Soon | ✅ Reverted (kept original) |
 | 10 | Stats | `5.0 Client Rating` — add source label + schema `aggregateRating`, or remove, per NC4 | `app/about/page.tsx` L22 | 🟠 Soon | ✓ |
 | 11 | Team / Schema | Kartik / Priyagni / Aman titled for trimmed services (Graphics / Motion / Video) — re-title or remove per NF3 | `app/about/page.tsx` L153-171; `screens/landing/theTeam/index.tsx` L33-56 | 🟠 Soon `[v3]` | ✓ |
 | 12 | OG Image | Renders a 3rd tagline (`We Design, Build & Ship Products.`) — match H1 per NC8 | `app/about/opengraph-image.tsx` L14-16 | 🟠 Soon `[v3]` | ✓ |

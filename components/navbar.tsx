@@ -313,17 +313,21 @@ export const Navbar = () => {
                   <NavbarItem>
                     <Button
                       as={NextLink}
-                      className=" text-sm font-[500] text-white bg-black border-brand-orange border-2 pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem]"
-                      data-back="Let's Talk"
-                      data-front="Have an Idea?"
+                      className="group relative overflow-hidden text-sm font-[500] text-white bg-black border-[#FF5B04] border-2 pt-0 dark:bg-white dark:text-black -mr-4 mt-[0.1rem] px-5 min-w-[135px] hover:!opacity-100 data-[hover=true]:!opacity-100"
                       href="/contact"
                       style={{ paddingTop: 0 }}
                       variant="solid"
                     >
-                      <svg className="w-4 h-4 text-[#FF5B04]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                      Let's Talk
+                      {/* Animated Background Mask (sweeps in from bottom to top) */}
+                      <span className="absolute inset-0 bg-[#FF5B04] translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0" />
+
+                      {/* Static Foreground Content */}
+                      <span className="relative z-10 flex items-center justify-center gap-2">
+                        <svg className="w-4 h-4 text-[#FF5B04] group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        Let's Talk
+                      </span>
                     </Button>
                   </NavbarItem>
                 </NavbarContent>
