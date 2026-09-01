@@ -78,7 +78,7 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 |---|------|--------|----------|
 | 4a | Card 01 `Dashboards & SaaS UX` — strong, keep | ✅ Keep as-is | — |
 | 4b | Card 02 `Websites & Landing Pages` — strong, keep | ✅ Keep as-is | — |
-| 4c | Card 03 `Pixel-Perfect Execution` — jargon; rewrite to `Design That Holds Up in Code` (NC3) | ❌ Not done | 🟠 Soon |
+| 4c | Card 03 `Pixel-Perfect Execution` — jargon; rewrite to `Design That Holds Up in Code` (NC3) | ✅ Done | 🟠 Soon |
 
 **NC3 Recommended rewrite (for 4c):**
 > Title: Design That Holds Up in Code

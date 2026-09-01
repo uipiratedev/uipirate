@@ -245,7 +245,7 @@ These two replacement cards add differentiation that doesn't exist anywhere else
 |---|---|
 | Card 03 "Pixel-Perfect Execution" | "Pixel-perfect" is on the copy words-to-avoid list — it's designer jargon. A VP of Engineering or a VP of Product doesn't evaluate agencies on pixel precision. They evaluate on whether the final product works the way users need it to. |
 
-**Suggested fix for Card 03:**
+**Suggested fix for Card 03: (✅ Applied)**
 ```
 Heading: "Design That Holds Up in Code"
 Description: "From Figma to production — the final product matches the design exactly, works as intended, and is built for real-world use."

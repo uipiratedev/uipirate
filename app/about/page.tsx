@@ -447,8 +447,8 @@ export default function AboutPage() {
               desc: "Fast and conversion-focused. Every section guides users toward the CTA.",
             },
             {
-              title: "Pixel-Perfect Execution",
-              desc: "From Figma to code — the final product matches the vision exactly.",
+              title: "Design That Holds Up in Code",
+              desc: "From Figma to production — the shipped product matches the design, behaves the way users expect, and is built to maintain.",
             },
           ].map((item, i) => (
             <motion.div
