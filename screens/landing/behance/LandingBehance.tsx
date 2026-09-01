@@ -153,7 +153,7 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
         id="info"
       >
         <p className="heading-center  mb-6 mt-6 max-md:text-2xl autoShow">
-          Recent Works
+          Recent <span className="text-brand-orange">Works</span>
         </p>
         <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12  w-1/2 max-md:text-base autoShow">
           Explore our diverse portfolio of projects that highlight our

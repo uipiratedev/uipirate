@@ -54,7 +54,7 @@ const PricingPerfectFor = () => {
         <div className="flex justify-center mb-4">
           <GlassBadge variant="gradient">WHO IT'S FOR</GlassBadge>
         </div>
-        <h2 className="heading-center">Is This Right For You?</h2>
+        <h2 className="heading-center">Is This Right For <span className="text-brand-orange">You?</span></h2>
       </div>
 
       {/* Perfect For Cards */}
@@ -92,36 +92,40 @@ const PricingPerfectFor = () => {
 
       {/* Not For Section - Premium Dark Card */}
       <motion.div
-        className="bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] border border-gray-800 rounded-2xl p-6 relative overflow-hidden"
+        className="bg-gradient-to-br from-[#212121] to-[#151514] noise-texture border border-white/10 rounded-[24px] p-6 md:p-8 relative overflow-hidden shadow-xl"
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.4, delay: 0.5 }}
         viewport={{ once: true }}
         whileInView={{ opacity: 1, y: 0 }}
       >
         {/* Subtle glow */}
-        <div className="absolute top-0 right-0 w-48 h-48 bg-red-500/5 blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/10 blur-3xl pointer-events-none" />
 
-        <p className="text-gray-500 font-medium text-xs uppercase tracking-wider mb-5 flex items-center gap-2">
-          <span className="w-5 h-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 text-[10px]">
+        <div className="flex items-center gap-2.5 mb-5 relative z-10">
+          <span className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 text-xs font-bold">
             ✕
           </span>
-          Not the right fit
-        </p>
+          <p className="text-red-400 font-bold text-xs uppercase tracking-wider">
+            Not the right fit
+          </p>
+        </div>
 
-        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
           {NOT_FOR.map((item, index) => (
             <motion.div
               key={index}
-              className="flex items-center gap-3 bg-white/[0.03] border border-white/5 rounded-xl px-4 py-3 hover:bg-white/[0.05] transition-colors"
+              className="flex items-center gap-3.5 bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3.5 hover:bg-white/[0.1] transition-colors"
               initial={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
               viewport={{ once: true }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <span className="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-base flex-shrink-0">
+              <span className="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">
                 {item.icon}
               </span>
-              <span className="text-gray-500 text-sm">{item.text}</span>
+              <span className="text-white/90 text-sm font-medium leading-snug">
+                {item.text}
+              </span>
             </motion.div>
           ))}
         </div>
