@@ -64,13 +64,13 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 **File:** `screens/pricing/perfectFor/index.tsx`
 
-| # | Item | Status | Priority |
-|---|------|--------|----------|
-| 4a | Move `PricingPerfectFor` to after Marquee | ✅ Kept in place | 🟠 Soon |
-| 4b | "FIT CHECK" badge too casual for enterprise buyers; replace with "WHO IT'S FOR" | ✅ Done | 🟡 Consider |
-| 4c | Audience card descriptions need rewriting | ✅ Done | 🟠 Soon |
-| 4d | Emoji icons in "Not the right fit" strip (📦 🎨 ⏰); replace with clean × or dash icons | ✅ Done (replaced with ✕) | 🟠 Soon |
-| 4e | Fix layout: apply left/right container padding so it doesn't stretch full width | ✅ Done | 🔴 Fix now |
+| # | Item | Status |
+|---|------|--------|
+| 4a | Move `PricingPerfectFor` to after Marquee | ✅ Kept in place |
+| 4b | "FIT CHECK" badge too casual for enterprise buyers; replace with "WHO IT'S FOR" | ✅ Done |
+| 4c | Audience card descriptions need rewriting | ✅ Done |
+| 4d | Emoji icons in "Not the right fit" strip (📦 🎨 ⏰); replace with clean × or dash icons | ✅ Done (replaced with ✕) |
+| 4e | Fix layout: apply left/right container padding so it doesn't stretch full width | ✅ Done |
 
 ---
 
@@ -207,12 +207,12 @@ Current text at **L79** — renders at large animated size, most visible copy er
 
 **File:** `screens/landing/businessHelp/servicesSection.tsx`
 
-| # | Item | Current text in code | Status | Priority |
-|---|------|----------------------|--------|----------|
-| 10a | Service list — wrong casing | `Saas & AI Development` (L64) | ✅ Done | 🔴 Fix now |
-| 10b | Orange banner header — wrong casing + filler phrase | `AI Apps, Saas, Websites & More` (L152) | ✅ Done | 🔴 Fix now |
-| 10c | Black card heading — generic agency phrase | `One-stop shop for all your essentials` (L191) | ✅ Done | 🟡 Consider |
-| 10d | Bottom CTA — vague, no action described | `Let's Talk` (L228) | ✅ Done | 🟡 Consider |
+| # | Item | Current text in code | Status |
+|---|------|----------------------|--------|
+| 10a | Service list — wrong casing | `Saas & AI Development` (L64) | ✅ Done |
+| 10b | Orange banner header — wrong casing + filler phrase | `AI Apps, Saas, Websites & More` (L152) | ✅ Done |
+| 10c | Black card heading — generic agency phrase | `One-stop shop for all your essentials` (L191) | ✅ Done |
+| 10d | Bottom CTA — vague, no action described | `Let's Talk` (L228) | ✅ Done |
 
 **Fixes:**
 - 10a → `SaaS & AI Development`
@@ -230,15 +230,15 @@ Current text at **L79** — renders at large animated size, most visible copy er
 **File:** `screens/landing/pricing/index.tsx`  
 See `03-pricing-page.md` for full details.
 
-| # | Item | Status | Priority |
-|---|------|--------|----------|
-| 11a | Section heading "Pricing That Makes Sense" — replace with outcome-focused heading | ✅ Done | 🟠 Soon |
-| 11b | Monthly Retainer subtitle — lead with the pain, not the feature | ✅ Done | 🟠 Soon |
-| 11c | 5-Day Pilot — fix broken sentence "shows you see our execution" | ✅ Done | 🔴 Fix now |
-| 11d | Scarcity message "Only accepting 2 new clients this month" — make real or replace | ✅ Done | 🟠 Soon |
-| 11e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ✅ Kept as-is (per user request) | 🟠 Soon |
-| 11f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ✅ Done | 🟡 Consider |
-| 11g | `5/7 Communication` unexplained label in feature lists — replace with `Mon–Fri communication, < 2hr response` | ✅ Done | 🟠 Soon |
+| # | Item | Status |
+|---|------|--------|
+| 11a | Section heading "Pricing That Makes Sense" — replace with outcome-focused heading | ✅ Done |
+| 11b | Monthly Retainer subtitle — lead with the pain, not the feature | ✅ Done |
+| 11c | 5-Day Pilot — fix broken sentence "shows you see our execution" | ✅ Done |
+| 11d | Scarcity message "Only accepting 2 new clients this month" — make real or replace | ✅ Done |
+| 11e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ✅ Kept as-is (per user request) |
+| 11f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ✅ Done |
+| 11g | `5/7 Communication` unexplained label in feature lists — replace with `Mon–Fri communication, < 2hr response` | ✅ Done |
 
 ---
 
@@ -260,13 +260,13 @@ No outstanding copy or content issues identified. Carry forward for a future aud
 
 **Files:** `screens/landing/testimonials/testimonialCards.tsx` · `data/testimonials.json`
 
-| # | Item | Status | Priority |
-|---|------|--------|----------|
-| 13a | No section heading above testimonial cards — add "What Clients Say" H2 | ✅ Done | 🟠 Soon |
-| 13b | No star ratings on testimonial cards (stars only appear in hero tooltip) — add ★★★★★ to each card | ✅ Done | 🟠 Soon |
-| 13c | Verify `occupation` and `company` fields in `testimonials.json` for Eden Hazani, Priyanka Padhye, Rohit Kumar Jha — hero tooltip shows correct data; confirm source JSON also matches | ✅ Done (verified) | 🟠 Soon |
-| 13d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ✅ Done (Removed) | ✅ Resolved |
-| 13e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ✅ Done (Removed) | ✅ Resolved |
+| # | Item | Status |
+|---|------|--------|
+| 13a | No section heading above testimonial cards — add "What Clients Say" H2 | ✅ Done |
+| 13b | No star ratings on testimonial cards (stars only appear in hero tooltip) — add ★★★★★ to each card | ✅ Done |
+| 13c | Verify `occupation` and `company` fields in `testimonials.json` for Eden Hazani, Priyanka Padhye, Rohit Kumar Jha — hero tooltip shows correct data; confirm source JSON also matches | ✅ Done (verified) |
+| 13d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ✅ Done (Removed) |
+| 13e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ✅ Done (Removed) |
 
 ---
 
@@ -277,11 +277,11 @@ No outstanding copy or content issues identified. Carry forward for a future aud
 
 **File:** `screens/landing/faqs/accordion.tsx`
 
-| # | Item | Current state | Status | Priority |
-|---|------|---------------|--------|----------|
-| 14a | First 4 FAQ questions — still about pricing model differences, hourly vs fixed, plan selection, and timelines. Need to be buyer-blocker questions | Operational questions | ✅ Done | 🟠 Soon |
-| 14b | 📍 emoji labels in answers — `📍 Example Use Case`, `📍 Need Help Choosing?`, `📍 Getting in Touch`, etc. | Still present | ✅ Done | 🟠 Soon |
-| 14c | WhatsApp references in "How do we get started?" — `email or WhatsApp us` + `reach out via WhatsApp` (L147–150) | Both still present | ✅ Done | 🟠 Soon |
+| # | Item | Current state | Status |
+|---|------|---------------|--------|
+| 14a | First 4 FAQ questions — still about pricing model differences, hourly vs fixed, plan selection, and timelines. Need to be buyer-blocker questions | Operational questions | ✅ Done |
+| 14b | 📍 emoji labels in answers — `📍 Example Use Case`, `📍 Need Help Choosing?`, `📍 Getting in Touch`, etc. | Still present | ✅ Done |
+| 14c | WhatsApp references in "How do we get started?" — `email or WhatsApp us` + `reach out via WhatsApp` (L147–150) | Both still present | ✅ Done |
 
 **Replacement buyer-blocker questions (full Q&A copy in `01-landing-page.md` section NC2):**
 
@@ -306,29 +306,9 @@ We typically respond within one business day.
 
 ## 15. NEW SECTIONS — STRUCTURAL ISSUES (✅ Resolved)
 
-| # | Issue | Status | Priority |
-|---|-------|--------|----------|
-| 15a | `/process` page — confirm it exists with real content before "See the full process →" link goes live | ✅ Done (Confirmed works fine) | 🟠 Soon |
-| 15b | `FeaturedCaseStudy` — populate at least 1 CMS case study with metric + valid image to prevent silent null render | ✅ Done (Fallback added to prevent null render) | 🟠 Soon |
-
----
-
-
-## Priority Summary
-
-
-### ⚠️ Pending — Awaiting decision or instruction
-
-| File | Item | Reason |
-|------|------|--------|
-| `about/aboutCard.tsx` L11, L31, L40 | 3 wrong card sub-labels (Years, $150M+, 6 Locations) | User requested to leave Stats section as-is for now |
-
-### 🔴 No open fix-now items
-All critical trust-damaging issues have been resolved.
-
----
-
-*Last updated: 2026-08-31 (v5) — Final code-verified sync. All fixes requested by user applied, including pricing CTAs to cal.com, testimonial cleanup, Works routing to /case-studies, Marquee placeholder removed, and Featured Case Study fallback added. Only Stats section is pending (deferred).*
-
+| # | Issue | Status |
+|---|-------|--------|
+| 15a | `/process` page — confirm it exists with real content before "See the full process →" link goes live | ✅ Done (Confirmed works fine) |
+| 15b | `FeaturedCaseStudy` — populate at least 1 CMS case study with metric + valid image to prevent silent null render | ✅ Done (Fallback added to prevent null render) |
 
 ---
