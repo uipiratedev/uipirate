@@ -154,15 +154,16 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 ---
 
-## 10. CTA SECTION (✅ No changes needed)
+## 10. CTA SECTION (✅ Updated per user request)
 
 **File:** `app/about/page.tsx` L649–696
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
 | 10a | H2 `Ready to Turn Your Idea Into a Product?` | ✅ Keep as-is | — |
-| 10b | `Book a Free Call` → cal.com | ✅ Keep as-is | — |
-| 10c | Trust row: `No commitment`, `Response within 2 hours`, `US timezone friendly` | ✅ Keep as-is | — |
+| 10b | Subheadline grammar tighten | ✅ Done (removed "we'll show you how we can") | 🟡 Polish |
+| 10c | `Book a Free Call` → cal.com link | ✅ Done (updated to vishal-anand-3w8233) | 🔴 Fix now |
+| 10d | Trust row: `No commitment`, `Response within 2 hours`, `US timezone friendly` | ✅ Keep as-is | — |
 
 ---
 

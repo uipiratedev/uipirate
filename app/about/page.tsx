@@ -746,13 +746,12 @@ export default function AboutPage() {
                 <span className="text-brand-orange">Product</span>?
               </h2>
               <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-                Book a free 15-minute call. Tell us your vision — we'll show you
-                how we can bring it to life.
+                Book a free 15-minute call. Tell us your vision — we'll bring it to life.
               </p>
               <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
                 <Link
                   className="bg-brand-orange text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-300"
-                  href="https://cal.com/ui-pirate/15min"
+                  href="https://cal.com/vishal-anand-3w8233/15min"
                   target="_blank"
                 >
                   Book a Free Call
