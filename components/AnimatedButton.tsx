@@ -1,13 +1,20 @@
 import React from "react";
 import Link from "next/link";
 
-interface AnimatedButtonProps {
+export type AnimatedButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type AnimatedButtonStateMode = "interactive" | "standerd" | "hover";
+
+export interface AnimatedButtonProps {
   /** Primary text to display */
   primaryText: string;
   /** Text to show on hover (default: "See More") */
   hoverText?: string;
+  /** Optional custom text color */
+  textColor?: string;
   /** Optional href for Link wrapper */
   href?: string;
+  /** State preview mode: "interactive" | "standerd" | "hover" */
+  stateMode?: AnimatedButtonStateMode;
   /** Optional onClick handler */
   onClick?: () => void;
   /** Additional CSS classes */
@@ -16,6 +23,8 @@ interface AnimatedButtonProps {
   fullWidth?: boolean;
   /** Button variant */
   variant?: "primary" | "secondary";
+  /** Size scale multiplier */
+  size?: AnimatedButtonSize;
 }
 
 /**
@@ -25,14 +34,27 @@ interface AnimatedButtonProps {
 export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
   primaryText,
   hoverText = "See More",
+  textColor,
   href,
+  stateMode = "interactive",
   onClick,
   className = "",
-  fullWidth = true,
+  fullWidth = false,
   variant = "primary",
+  size = "md",
 }) => {
-  const baseClasses = `mt-6 px-[40px] max-md:px-6 py-[16px] max-md:py-[12px] rounded-[20px] max-md:rounded-[12px] group transition-all duration-300 ${
-    fullWidth ? "w-full" : ""
+  const sizeScales: Record<AnimatedButtonSize, number> = {
+    xs: 0.7,
+    sm: 0.85,
+    md: 1,
+    lg: 1.18,
+    xl: 1.35,
+  };
+  const scaleFactor = sizeScales[size] || 1;
+  const isVisualHover = stateMode === "hover";
+
+  const baseClasses = `px-8 max-md:px-6 py-4 max-md:py-3 rounded-[20px] max-md:rounded-[12px] group transition-all duration-300 ${
+    fullWidth ? "w-full" : "w-auto max-w-full inline-flex"
   }`;
 
   const variantClasses =
@@ -40,30 +62,49 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
       ? "bg-black text-white hover:bg-gray-800"
       : "bg-white text-black border-2 border-black hover:bg-gray-100";
 
+  const textStyle = textColor ? { color: textColor } : undefined;
+
   const buttonContent = (
-    <div className="flex flex-col items-center justify-center max-h-[24px] max-md:max-h-[20px] overflow-hidden">
-      <span className="text-lg max-md:text-sm transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-x-3 group-hover:translate-y-[50px] translate-y-3 max-md:translate-y-2.5">
+    <div className="relative overflow-hidden h-[1.5em] grid grid-cols-1 grid-rows-1 items-center justify-center font-medium text-lg max-md:text-sm px-2">
+      <span
+        style={textStyle}
+        className={`col-start-1 row-start-1 block transition-transform duration-300 ease-in-out transform ${
+          isVisualHover ? "-translate-y-full opacity-0" : "group-hover:-translate-y-full group-hover:opacity-0"
+        } flex flex-row items-center justify-center gap-x-3 whitespace-nowrap`}
+      >
         {primaryText}
       </span>
-      <span className="text-lg max-md:text-sm transition-transform duration-300 ease-in-out transform flex flex-row items-center gap-3 translate-y-[50px] group-hover:-translate-y-3 max-md:group-hover:-translate-y-2.5">
+      <span
+        style={textStyle}
+        className={`col-start-1 row-start-1 block transition-transform duration-300 ease-in-out transform ${
+          isVisualHover ? "translate-y-0 font-bold opacity-100" : "translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 font-bold"
+        } flex flex-row items-center justify-center gap-x-3 whitespace-nowrap`}
+      >
         {hoverText}
       </span>
     </div>
   );
 
   const buttonElement = (
-    <button
-      className={`${baseClasses} ${variantClasses} ${className}`}
-      type="button"
-      onClick={onClick}
+    <div
+      className={`inline-flex items-center justify-center ${fullWidth ? "w-full" : "w-auto"}`}
+      style={scaleFactor !== 1 ? ({ zoom: scaleFactor } as React.CSSProperties) : undefined}
     >
-      {buttonContent}
-    </button>
+      <button
+        className={`${baseClasses} ${variantClasses} ${className}`}
+        type="button"
+        onClick={onClick}
+      >
+        {buttonContent}
+      </button>
+    </div>
   );
 
   if (href) {
-    return <Link href={href}>{buttonElement}</Link>;
+    return <Link href={href} className={fullWidth ? "w-full" : "w-auto"}>{buttonElement}</Link>;
   }
 
   return buttonElement;
 };
+
+export default AnimatedButton;

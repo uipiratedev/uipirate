@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ScalingCapsuleButton, {
   ScalingCapsuleVariant,
+  ScalingCapsuleStateMode,
 } from "@/components/ScalingCapsuleButton";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
@@ -12,8 +13,19 @@ import GlobalCTA from "@/components/GlobalCTA";
 
 export default function ScalingCapsuleButtonScreen() {
   const [label, setLabel] = useState("Scaling Workshop");
+  const [textColor, setTextColor] = useState("#FFFFFF");
   const [variant, setVariant] = useState<ScalingCapsuleVariant>("dark");
+
+  const textColorOptions = [
+    { label: "Pure White", value: "#FFFFFF" },
+    { label: "Cyan Ice", value: "#E0F2FE" },
+    { label: "Magma Orange", value: "#FF5B04" },
+    { label: "Electric Aqua", value: "#00E5BE" },
+    { label: "Neon Pink", value: "#F472B6" },
+    { label: "Dark Charcoal", value: "#1E293B" },
+  ];
   const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
+  const [stateMode, setStateMode] = useState<ScalingCapsuleStateMode>("interactive");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -40,6 +52,7 @@ export type ScalingCapsuleVariant = "dark" | "orange" | "light" | "cyberpunk";
 
 export interface ScalingCapsuleButtonProps {
   label?: string;
+  textColor?: string;
   variant?: ScalingCapsuleVariant;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   icon?: React.ReactNode;
@@ -69,6 +82,7 @@ export const ApexEmblemIcon: React.FC<{ className?: string }> = ({
 
 export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
   label = "Scaling Workshop",
+  textColor,
   variant = "dark",
   size = "md",
   icon,
@@ -212,15 +226,16 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
           damping: 24,
           mass: 0.7,
         }}
-        className={\`relative flex items-center \${sizeConfig.gap} \${sizeConfig.innerPadding} \${sizeConfig.innerRadius} \${themeStyles.capBg} cursor-pointer focus:outline-none overflow-hidden\`}
+        className="relative flex items-center cursor-pointer focus:outline-none overflow-hidden"
         style={{
           filter: isHovered ? themeStyles.hoverShadow : themeStyles.restingShadow,
           willChange: "transform",
         }}
       >
         <span
-          className={\`font-semibold \${sizeConfig.fontSize} \${themeStyles.textColor} whitespace-nowrap tracking-[-0.2px] leading-none select-none\`}
+          className="font-semibold whitespace-nowrap tracking-[-0.2px] leading-none select-none"
           style={{
+            color: textColor || undefined,
             textShadow: themeStyles.textShadow,
           }}
         >
@@ -300,13 +315,6 @@ export default function HeroSection() {
   height: 45px;
   border-radius: 50%;
   background: linear-gradient(180deg, #1B1B1B 0%, #343434 100%);
-}
-
-.capsule-inner-black-ellipse {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #000000;
 }`;
 
   return (
@@ -343,8 +351,10 @@ export default function HeroSection() {
           <StudioCanvas>
               <ScalingCapsuleButton
                 label={label}
+                textColor={textColor}
                 variant={variant}
                 size={size}
+                stateMode={stateMode}
                 onClick={() => setClickCount((c) => c + 1)}
               />
 
@@ -373,6 +383,40 @@ export default function HeroSection() {
                 placeholder="Enter button text..."
                 className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5B04] transition-colors font-mono"
               />
+            </div>
+
+            {/* Text Color Selector */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
+                Text Color
+              </label>
+              <select
+                value={textColor}
+                onChange={(e) => setTextColor(e.target.value)}
+                className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#FF5B04] font-mono"
+              >
+                {textColorOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value} className="bg-[#151518] text-white">
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* State Mode Selector */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
+                State Preview
+              </label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as ScalingCapsuleStateMode)}
+                className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#FF5B04] font-mono"
+              >
+                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
+                <option value="hover" className="bg-[#151518] text-white">Hover</option>
+              </select>
             </div>
 
             {/* Variant Selector */}

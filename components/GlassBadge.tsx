@@ -9,6 +9,11 @@ interface GlassBadgeProps {
   children: React.ReactNode;
 
   /**
+   * Optional custom text color for badge
+   */
+  textColor?: string;
+
+  /**
    * Optional custom className for additional styling
    */
   className?: string;
@@ -34,22 +39,10 @@ interface GlassBadgeProps {
 
 /**
  * GlassBadge - A reusable glass morphism badge component
- *
- * Features:
- * - Premium glass effect with gradient background
- * - Multiple variants (gradient, solid, cyan)
- * - Responsive sizing
- * - Customizable styling
- *
- * @example
- * ```tsx
- * <GlassBadge>Design & Development</GlassBadge>
- * <GlassBadge variant="cyan" size="sm">Services</GlassBadge>
- * <GlassBadge variant="solid" uppercase={false}>Custom Text</GlassBadge>
- * ```
  */
 const GlassBadge: React.FC<GlassBadgeProps> = ({
   children,
+  textColor,
   className = "",
   variant = "gradient",
   size = "md",
@@ -133,11 +126,11 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
 
           {/* Text on top */}
           <span
-            className={`relative z-10 font-jetbrains-mono font-medium leading-none ${textColorClass} ${
-              uppercase ? "uppercase" : ""
-            }`}
+            className={`relative z-10 font-jetbrains-mono font-medium text-black ${uppercase ? "uppercase" : ""
+              } ${className}`}
             style={{
               fontVariantNumeric: "slashed-zero",
+              color: textColor || undefined,
             }}
           >
             {children}

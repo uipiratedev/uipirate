@@ -13,6 +13,8 @@ export interface SlideGrowButtonProps {
   startLabel?: string;
   /** Active label text revealed when slid (default: "Lets Grow!") */
   activeLabel?: string;
+  /** Optional custom text color for label */
+  textColor?: string;
   /** Visual theme preset (default: "silver" from Figma) */
   theme?: SlideGrowTheme;
   /** Size scale: "sm" | "md" | "lg" */
@@ -38,6 +40,7 @@ export interface SlideGrowButtonProps {
 export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   startLabel = "Get Started",
   activeLabel = "Lets Grow!",
+  textColor,
   theme = "silver",
   size = "md",
   stateMode = "interactive",
@@ -110,26 +113,38 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
     },
   }[__baseSize];
 
+  // Dynamic horizontal expansion based on startLabel & activeLabel text lengths
+  const textLength = Math.max(
+    startLabel ? startLabel.trim().length : 0,
+    activeLabel ? activeLabel.trim().length : 0
+  );
+  const baseLabelLen = 11;
+  const extraWidth = textLength > baseLabelLen ? (textLength - baseLabelLen) * 13 : 0;
+
+  const dynamicWidth = sizeConfig.width + extraWidth;
+  const dynamicTrackW = sizeConfig.trackW + extraWidth;
+  const dynamicMaxDrag = dynamicTrackW - sizeConfig.knobSize;
+
   // Drag position motion value
-  const dragX = useMotionValue(stateMode === "slid" ? sizeConfig.maxDrag : 0);
+  const dragX = useMotionValue(stateMode === "slid" ? dynamicMaxDrag : 0);
 
   // Sync forced stateMode changes
   useEffect(() => {
     if (stateMode === "slid") {
-      animate(dragX, sizeConfig.maxDrag, { type: "spring", stiffness: 400, damping: 30 });
+      animate(dragX, dynamicMaxDrag, { type: "spring", stiffness: 400, damping: 30 });
       setIsCompleted(true);
     } else if (stateMode === "standerd") {
       animate(dragX, 0, { type: "spring", stiffness: 400, damping: 30 });
       setIsCompleted(false);
     }
-  }, [stateMode, sizeConfig.maxDrag, dragX]);
+  }, [stateMode, dynamicMaxDrag, dragX]);
 
-  // Transform values based on drag progress (0 to maxDrag)
-  const startTextOpacity = useTransform(dragX, [0, sizeConfig.maxDrag * 0.4], [1, 0]);
-  const activeTextOpacity = useTransform(dragX, [sizeConfig.maxDrag * 0.4, sizeConfig.maxDrag], [0, 1]);
-  const beamOpacity = useTransform(dragX, [0, sizeConfig.maxDrag * 0.7], [0, 1]);
-  const dotOpacity = useTransform(dragX, [0, sizeConfig.maxDrag * 0.3], [1, 0]);
-  const arrowOpacity = useTransform(dragX, [sizeConfig.maxDrag * 0.3, sizeConfig.maxDrag], [0, 1]);
+  // Transform values based on drag progress (0 to dynamicMaxDrag)
+  const startTextOpacity = useTransform(dragX, [0, dynamicMaxDrag * 0.4], [1, 0]);
+  const activeTextOpacity = useTransform(dragX, [dynamicMaxDrag * 0.4, dynamicMaxDrag], [0, 1]);
+  const beamOpacity = useTransform(dragX, [0, dynamicMaxDrag * 0.7], [0, 1]);
+  const dotOpacity = useTransform(dragX, [0, dynamicMaxDrag * 0.3], [1, 0]);
+  const arrowOpacity = useTransform(dragX, [dynamicMaxDrag * 0.3, dynamicMaxDrag], [0, 1]);
 
   // Themes configurations
   const themeStyles = {
@@ -254,8 +269,8 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   // Handle drag end snapping and callbacks
   const handleDragEnd = () => {
     const currentX = dragX.get();
-    if (currentX > sizeConfig.maxDrag * 0.5) {
-      animate(dragX, sizeConfig.maxDrag, {
+    if (currentX > dynamicMaxDrag * 0.5) {
+      animate(dragX, dynamicMaxDrag, {
         type: "spring",
         stiffness: 450,
         damping: 30,
@@ -291,7 +306,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         },
       });
     } else {
-      animate(dragX, sizeConfig.maxDrag, {
+      animate(dragX, dynamicMaxDrag, {
         type: "spring",
         stiffness: 400,
         damping: 30,
@@ -307,7 +322,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   const handleHoverStart = () => {
     setIsHovered(true);
     if (isHoverMode) {
-      animate(dragX, sizeConfig.maxDrag, {
+      animate(dragX, dynamicMaxDrag, {
         type: "spring",
         stiffness: 400,
         damping: 30,
@@ -356,7 +371,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
           canClick ? "cursor-pointer" : ""
         }`}
         style={{
-          width: sizeConfig.width,
+          width: dynamicWidth,
           height: sizeConfig.height,
           backgroundImage: themeStyles.chassisBg,
           borderColor: themeStyles.chassisBorder,
@@ -370,7 +385,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
           ref={trackRef}
           className={`relative flex items-center ${sizeConfig.trackRadius} overflow-hidden`}
           style={{
-            width: sizeConfig.trackW,
+            width: dynamicTrackW,
             height: sizeConfig.trackH,
             backgroundColor: themeStyles.trackBg,
             boxShadow: "inset 0px 2px 4px rgba(0,0,0,0.35)",
@@ -392,7 +407,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
             className={`absolute inset-y-0 left-4 flex items-center justify-center font-['Figtree'],sans-serif font-normal capitalize whitespace-nowrap pointer-events-none ${sizeConfig.fontSize}`}
             style={{
               right: sizeConfig.knobSize,
-              color: themeStyles.activeTextColor,
+              color: textColor || themeStyles.activeTextColor,
               textShadow: themeStyles.activeTextGlow,
               opacity: activeTextOpacity,
             }}
@@ -405,7 +420,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
             className={`absolute inset-y-0 right-4 flex items-center justify-center font-['Figtree'],sans-serif font-normal capitalize whitespace-nowrap pointer-events-none ${sizeConfig.fontSize}`}
             style={{
               left: sizeConfig.knobSize,
-              color: themeStyles.startTextColor,
+              color: textColor || themeStyles.startTextColor,
               opacity: startTextOpacity,
             }}
           >
@@ -418,7 +433,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
            ───────────────────────────────────────────────────────────── */}
         <motion.div
           drag={canDrag ? "x" : false}
-          dragConstraints={{ left: 0, right: sizeConfig.maxDrag }}
+          dragConstraints={{ left: 0, right: dynamicMaxDrag }}
           dragElastic={0.08}
           dragMomentum={false}
           onDragEnd={handleDragEnd}

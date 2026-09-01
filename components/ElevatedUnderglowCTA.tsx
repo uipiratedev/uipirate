@@ -26,6 +26,8 @@ export type ElevatedUnderglowIconType =
 export interface ElevatedUnderglowCTAProps {
   /** Text label inside the button (default: "Book A Call") */
   label?: string;
+  /** Optional custom text color */
+  textColor?: string;
   /** Built-in icon type or custom ReactNode (default: "phone" from Figma 55:14/55:31) */
   icon?: ElevatedUnderglowIconType | React.ReactNode;
   /** Visual state mode: 'interactive' (hover to lift), 'standerd' (55:37 fixed), 'hover' (55:40 fixed) */
@@ -304,6 +306,7 @@ const MailIcon: React.FC<{ stroke?: string; className?: string }> = ({
  */
 export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
   label = "Book A Call",
+  textColor,
   icon = "phone",
   stateMode = "interactive",
   theme = "figma",
@@ -335,31 +338,31 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
 
   const sizeConfig = {
     sm: {
-      width: 154,
+      minWidth: 154,
       height: 48,
       radius: "rounded-[24px]",
       fontSize: "text-[15px]",
-      padding: "px-[16px] py-[8px]",
+      padding: "px-6 py-2.5",
       gap: "gap-[8px]",
       iconSize: "size-[14px]",
       liftOffset: liftAmount * 0.8,
     },
     md: {
-      width: 184,
+      minWidth: 184,
       height: 56,
       radius: "rounded-[35px]",
       fontSize: "text-[18px]",
-      padding: "px-[22px] py-[10px]",
+      padding: "px-8 py-3",
       gap: "gap-[10px]",
       iconSize: "size-[16px]",
       liftOffset: liftAmount,
     },
     lg: {
-      width: 220,
+      minWidth: 220,
       height: 64,
       radius: "rounded-[40px]",
       fontSize: "text-[20px]",
-      padding: "px-[26px] py-[12px]",
+      padding: "px-10 py-3.5",
       gap: "gap-[12px]",
       iconSize: "size-[18px]",
       liftOffset: liftAmount * 1.2,
@@ -396,9 +399,9 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
 
   return __wrapSize(
     <div
-      className={`relative inline-flex items-center justify-center select-none ${className}`}
+      className={`relative inline-flex items-center justify-center w-auto max-w-full select-none ${className}`}
       style={{
-        width: sizeConfig.width,
+        minWidth: sizeConfig.minWidth,
         height: sizeConfig.height + sizeConfig.liftOffset,
       }}
     >
@@ -406,7 +409,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
           1. AMBIENT BASE LAYER / GLOWING 3D EXTRUSION (Figma 55:23)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
-        className={`absolute bottom-0 left-0 right-0 ${sizeConfig.radius} ${t.baseBg}`}
+        className={`absolute bottom-0 inset-x-0 ${sizeConfig.radius} ${t.baseBg}`}
         style={{
           height: sizeConfig.height,
         }}
@@ -464,7 +467,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
         onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
         onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
         onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
-        className={`absolute bottom-0 left-0 right-0 flex items-center justify-center ${sizeConfig.gap} ${sizeConfig.padding} ${sizeConfig.radius} ${t.capBg} border ${t.capBorder} ${t.capText} font-medium outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed z-10`}
+        className={`relative flex items-center justify-center w-auto min-w-full max-w-full ${sizeConfig.gap} ${sizeConfig.padding} ${sizeConfig.radius} ${t.capBg} border ${t.capBorder} ${t.capText} font-medium outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed z-10`}
         style={{
           height: sizeConfig.height,
         }}
@@ -504,8 +507,8 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
 
         {/* Button Content: Label + Icon */}
         <span
-          className={`relative z-10 capitalize tracking-tight select-none font-['Figtree',sans-serif] ${sizeConfig.fontSize}`}
-          style={{ letterSpacing: "-0.01em" }}
+          className={`relative z-10 capitalize tracking-tight select-none whitespace-nowrap font-['Figtree',sans-serif] ${sizeConfig.fontSize}`}
+          style={{ letterSpacing: "-0.01em", color: textColor || undefined }}
         >
           {label}
         </span>

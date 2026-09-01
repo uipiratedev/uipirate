@@ -8,12 +8,12 @@
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593627/eden_ts51gy.svg"
   },
   {
-    "name": "Yadin Soffer",
-    "occupation": "CEO & Founder, Xperiti",
-    "company": "New York, US",
-    "review": "Vishal\u2019s work stood out, even when we were comparing multiple options. Clean design, great responsiveness, and he easily adapted to our Angular setup without any fuss. The quality showed, and it was clear he knew his craft.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
-    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593626/yadin_bxb9rm.svg"
+    "name": "Nipun Sharma",
+    "occupation": "CEO, RevUp AI",
+    "company": "Dallas, Texas, US",
+    "review": "Vishal and his team have been our go-to star design partner from day one. We call him our UI/UX doctor for a reason. Every single project, from the first SaaS flow to our full design overhaul, was crisp, scalable, and aligned with our business. Would work with them again in a heartbeat.",
+    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/revup_bvnmip.svg",
+    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg"
   },
   {
     "name": "Priyanka Padhye",
@@ -48,20 +48,20 @@
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593620/shirina_adl1fh.svg"
   },
   {
-    "name": "Nipun Sharma",
-    "occupation": "CEO, RevUp AI",
-    "company": "Dallas, Texas, US",
-    "review": "Vishal and his team have been our go-to star design partner from day one. We call him our UI/UX doctor for a reason. Every single project, from the first SaaS flow to our full design overhaul, was crisp, scalable, and aligned with our business. Would work with them again in a heartbeat.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/revup_bvnmip.svg",
-    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg"
-  },
-  {
     "name": "Aman Sharma",
     "occupation": "Design Head",
     "company": "New Delhi, India",
     "review": "Turned our messy Shopify wishlist into a clean, functional store. Currently working on a redesign for our SaaS app, and it\u2019s shaping up perfectly. Scalable, easy to manage, and they kept it quick and simple. Huge win for us.",
     "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593620/godrice_vshi5n.svg",
     "profileImage": ""
+  },
+  {
+    "name": "Yadin Soffer",
+    "occupation": "CEO & Founder, Xperiti",
+    "company": "New York, US",
+    "review": "Vishal\u2019s work stood out, even when we were comparing multiple options. Clean design, great responsiveness, and he easily adapted to our Angular setup without any fuss. The quality showed, and it was clear he knew his craft.",
+    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
+    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593626/yadin_bxb9rm.svg"
   },
   {
     "name": "Sharmin",
