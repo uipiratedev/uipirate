@@ -129,7 +129,7 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 | 7b | `5-Day Pilot Project` heading — direct and clear | ✅ Done | — |
 | 7c | Pilot description: `...fully deductible from the final project invoice` | ✅ Done | — |
 | 7d | CTA: `Start Your Pilot Project` → cal.com | ✅ Done | — |
-| 7e | Pilot tier descriptions — still placeholder labels (`UI/UX design sprint`, `Code implementation`, `Full-stack delivery`) | ❌ Not done | 🟠 Soon |
+| 7e | Pilot tier descriptions — still placeholder labels (`UI/UX design sprint`, `Code implementation`, `Full-stack delivery`) | ✅ Done — rewritten to outcomes | 🟠 Soon |
 
 ---
 

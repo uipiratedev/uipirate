@@ -600,13 +600,13 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | NEW | Comparison table price anchor updated to `from $500` | ✅ Done |
 | NEW | In-house turnaround updated to `Slow (1-3 weeks)` | ✅ Done |
 | 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | ✅ Done |
+| 14 | Pilot tier descriptions rewritten to outcomes | ✅ Done |
 
 ## What Is Still Open (as of v4)
 
 | # | Item | File | Priority |
 |---|------|------|----------|
 | 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | `pricing/perfectFor/index.tsx` | 🟠 Soon |
-| 14 | Pilot tier descriptions still placeholder labels | `tryBeforeCommit/index.tsx` L18-21 | 🟠 Soon |
 | 15 | Missing FAQ: `How much does UI/UX design cost?` | `pricing/faq/index.tsx` | 🟠 Soon |
 | 16 | FAQ CTA `Chat With Us` — replace with cal.com CTA | `pricing/faq/index.tsx` L101 | 🟠 Soon |
 | 19 | SEO keywords: remove `cheap UI design agency`, `affordable UX design` | `app/pricing/page.tsx` | 🟡 Consider |
