@@ -192,7 +192,7 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 12a | OG image renders `We Design, Build & Ship Products.` — a third tagline not used on the page (NF4) | ❌ Not done | 🟠 Soon |
+| 12a | OG image renders `We Design, Build & Ship Products.` — a third tagline not used on the page (NF4) | ⚠️ Skipped for now (Visual change, will do later) | 🟠 Soon |
 
 **NC8 Recommended fix:** Update to `title="We Turn Ideas Into"` `titleHighlight="Shipped Products."` to match the H1.
 
