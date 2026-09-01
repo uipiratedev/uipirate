@@ -31,8 +31,8 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 |---|------|--------|----------|
 | 1a | Badge: `ABOUT US` — clear and functional | ✅ Keep as-is | — |
 | 1b | H1: `We Turn Ideas Into Shipped Products` — strongest H1 on site | ✅ Keep as-is | — |
-| 1c | Subheadline opens with `Not just a design agency` (negation-first) — rewrite per NC1 | ❌ Not done | 🔴 Fix now |
-| 1d | Subheadline repeats `From idea to shipped product` from H1 — remove repetition (NC1) | ❌ Not done | 🔴 Fix now |
+| 1c | Subheadline opens with `Not just a design agency` (negation-first) — rewrite per NC1 | ✅ Done | 🔴 Fix now |
+| 1d | Subheadline repeats `From idea to shipped product` from H1 — remove repetition (NC1) | ✅ Done | 🔴 Fix now |
 | 1e | US Timezone badge `🟢 US Timezone Friendly — EST & PST hours` — keep | ✅ Keep as-is | — |
 
 **NC1 Recommended rewrite (for 1c & 1d):**

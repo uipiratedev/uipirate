@@ -135,10 +135,11 @@ and ship production-ready code. From idea to shipped product.
 | "competitive analysis, simplify complex products, design for conversion, and ship production-ready code" | A list of four services in a subheadline is too much. The headline already communicates the outcome; the subheadline should reinforce the transformation, not re-list the services |
 | "From idea to shipped product" | This exact phrase already appears at the end of the H1 ("We Turn Ideas Into Shipped Products") — repeating it in the subheadline within 2 seconds of reading is redundant |
 
-**Suggested rewrite:**
+**Suggested rewrite: (✅ Applied)**
 ```
 We're a product design and development agency. We work alongside SaaS founders
-and enterprise teams — from the first sketch through to working software.
+and enterprise teams — from the first wireframe through to working,
+production-ready software.
 ```
 
 ---

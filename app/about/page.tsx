@@ -313,10 +313,9 @@ export default function AboutPage() {
 
             {/* Subheading */}
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
-              Not just a design agency — we're your product partner. We help you
-              think through competitive analysis, simplify complex products,
-              design for conversion, and ship production-ready code. From idea
-              to shipped product.
+              We're a product design and development agency. We work alongside SaaS founders
+              and enterprise teams — from the first wireframe through to working,
+              production-ready software.
             </p>
 
             {/* US Market Badge */}
