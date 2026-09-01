@@ -121,9 +121,9 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | # | Item | Status | Priority |
 |---|------|--------|----------|
 | 7a | Tech stack: Angular, React, Next.js, TypeScript, Tailwind, Framer, Figma, GSAP — correct | ✅ Keep as-is | — |
-| 7b | Industries list has 8 items — trim to 5 client-backed verticals, remove E-commerce / EdTech / PropTech (NC5) | ❌ Not done | 🟠 Soon |
-| 7c | Rename `Fintech & Banking` → `FinTech & Quant Trading` to map to ArthAlpha | ❌ Not done | 🟠 Soon |
-| 7d | Rename `AI & Machine Learning` → `AI Products & Platforms` to map to RevUp AI, Sarge | ❌ Not done | 🟠 Soon |
+| 7b | Industries list has 8 items — trim to 5 client-backed verticals, remove E-commerce / EdTech / PropTech (NC5) | ✅ Done | 🟠 Soon |
+| 7c | Rename `Fintech & Banking` → `FinTech & Quant Trading` to map to ArthAlpha | ✅ Done | 🟠 Soon |
+| 7d | Rename `AI & Machine Learning` → `AI Products & Platforms` to map to RevUp AI, Sarge | ✅ Done | 🟠 Soon |
 
 ---
 

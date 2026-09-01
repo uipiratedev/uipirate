@@ -314,7 +314,7 @@ AI & Machine Learning
 
 The target audience audit recommended narrowing the industries list to the core 4–5 where the best work has been done and the clearest value proposition exists. At 8 items, the list implies the agency works with anyone in any vertical — which, from a US buyer's perspective, signals a lack of specialization.
 
-**Suggested trim (keep the verified client-backed industries):**
+**Suggested trim (keep the verified client-backed industries): (✅ Applied)**
 ```
 SaaS & Enterprise Software   — (core, backed by most clients)
 AI Products & Platforms      — (RevUp AI, Simpleo AI, Sarge)

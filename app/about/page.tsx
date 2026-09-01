@@ -36,13 +36,10 @@ const technologies = [
 
 const industries = [
   "SaaS & Enterprise Software",
-  "Fintech & Banking",
+  "FinTech & Quant Trading",
   "HealthTech & MedTech",
   "LegalTech",
-  "E-commerce",
-  "EdTech",
-  "PropTech",
-  "AI & Machine Learning",
+  "AI Products & Platforms",
 ];
 
 // Client logos from cloudinary - matching marquee section
