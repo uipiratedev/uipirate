@@ -92,14 +92,14 @@ const Pricing = () => {
       {/* Pricing Cards Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 autoShowBottom">
         {/* Monthly Retainer Card */}
-        <div>
+        <div className="h-full">
           <Card
             className="rounded-[20px] max-md:rounded-[12px]  bg-gradient-to-br from-[#212121] to-[#151514] border-1 border-gray-800 shadow-lg h-full noise-texture "
             style={{
               boxShadow: "0px 3.79px 2.53px 0px #FFFFFF73 inset",
             }}
           >
-            <CardBody className="p-8 max-md:p-6">
+            <CardBody className="p-8 max-md:p-6 flex flex-col h-full">
               {/* Icon and Title aligned together on mobile */}
               <div className="flex items-center gap-4 max-md:gap-3 mb-6">
                 <div className="w-12 h-12 max-md:w-10 max-md:h-10 rounded-lg flex items-center justify-center">
@@ -163,7 +163,7 @@ const Pricing = () => {
 
                 {/* Scarcity */}
                 <div className="flex items-center gap-2 mb-4 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
-                  <div className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
+
                   <p className="text-brand-orange text-sm font-semibold">
                     We keep our client load small. Every project gets our full attention.
                   </p>
@@ -196,34 +196,36 @@ const Pricing = () => {
           <CardBody className="p-8 max-md:p-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Side */}
-              <div>
-                <div className="flex items-center gap-4 max-md:gap-3 mb-6">
-                  {/* Icon */}
-                  <div className="w-12 h-12 max-md:w-10 max-md:h-10 flex items-center justify-center">
-                    <img
-                      alt="Custom quote plan icon"
-                      aria-hidden="true"
-                      src="/assets/gif/headquater.gif"
-                    />
+              <div className="flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-4 max-md:gap-3 mb-6">
+                    {/* Icon */}
+                    <div className="w-12 h-12 max-md:w-10 max-md:h-10 flex items-center justify-center">
+                      <img
+                        alt="Custom quote plan icon"
+                        aria-hidden="true"
+                        src="/assets/gif/headquater.gif"
+                      />
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
+                      Custom <span className="text-brand-orange">Quote</span>
+                    </h3>
                   </div>
+                  {/* Subtitle */}
+                  <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm max-md:text-xs mb-6 uppercase tracking-wide font-mono">
+                    For organizations with complex products and custom delivery requirements
+                  </p>
 
-                  {/* Title */}
-                  <h3 className="text-3xl max-md:text-xl max-lg:text-xl font-bold">
-                    Custom <span className="text-brand-orange">Quote</span>
-                  </h3>
+                  {/* Description */}
+                  <p className="text-[#161616] mb-6 max-md:mb-0 text-base max-md:text-sm font-jakarta">
+                    Best suited for products that don't fit into standard plans.
+                  </p>
                 </div>
-                {/* Subtitle */}
-                <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm max-md:text-xs mb-6 uppercase tracking-wide font-mono">
-                  For organizations with complex products and custom delivery requirements
-                </p>
-
-                {/* Description */}
-                <p className="text-[#161616] mb-6 max-md:mb-0 text-base max-md:text-sm font-jakarta">
-                  Best suited for products that don't fit into standard plans.
-                </p>
 
                 {/* Buttons */}
-                <div className="grid grid-cols-1 gap-3 max-md:hidden">
+                <div className="grid grid-cols-1 gap-3 max-md:hidden mt-auto pt-6">
                   <LetsTalkButton
                     children="Book a Discovery Call"
                     fullWidth
@@ -235,7 +237,7 @@ const Pricing = () => {
               </div>
 
               {/* Right Side - Features */}
-              <div>
+              <div className="flex flex-col justify-between">
                 <ul className="space-y-3">
                   {customQuoteFeatures.map((feature, index) => (
                     <li
