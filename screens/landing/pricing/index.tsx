@@ -140,7 +140,7 @@ const Pricing = () => {
               {/* Footer */}
               <div className="mt-auto">
                 <p className="text-[#777777] text-base max-md:text-sm mb-4 italic font-jakarta">
-                  One subscription, endless possibilities
+                  One team, one subscription, no headcount overhead
                 </p>
 
                 {/* Price with Anchor */}
@@ -165,7 +165,7 @@ const Pricing = () => {
                 <div className="flex items-center gap-2 mb-4 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
                   <div className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
                   <p className="text-brand-orange text-sm font-semibold">
-                    To ensure quality, we only onboard 2 new clients per month
+                    We keep our client load small. Every project gets our full attention.
                   </p>
                 </div>
 
@@ -214,7 +214,7 @@ const Pricing = () => {
                 </div>
                 {/* Subtitle */}
                 <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm max-md:text-xs mb-6 uppercase tracking-wide font-mono">
-                  For complex products, enterprise needs & startups
+                  For organizations with complex products and custom delivery requirements
                 </p>
 
                 {/* Description */}

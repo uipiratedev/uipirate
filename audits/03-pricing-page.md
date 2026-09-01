@@ -592,25 +592,25 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | 6 | Hero `Book a Call →` changed to cal.com | ✅ Done |
 | 23 | Meta description and OG title savings claim aligned to `50-70%` | ✅ Done |
 | NEW | SEO title/meta/schema price updated to `from $500` | ✅ Done |
+| 9 | Scarcity updated to dynamic/always-true copy | ✅ Done |
+| 10 | Custom Quote subtitle updated to target one audience | ✅ Done |
+| 18 | `One subscription, endless possibilities` replaced with B2B copy | ✅ Done |
+| 26 | Two scarcity signals unified | ✅ Done |
 
 ## What Is Still Open (as of v4)
 
 | # | Item | File | Priority |
 |---|------|------|----------|
-| 9 | Scarcity still static (only copy changed, not made dynamic) | `landing/pricing/index.tsx` L168 | 🟠 Soon |
-| 10 | Custom Quote subtitle still `For complex products, enterprise needs & startups` | `landing/pricing/index.tsx` L217 | 🟠 Soon |
 | 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | `pricing/perfectFor/index.tsx` | 🟠 Soon |
 | 14 | Pilot tier descriptions still placeholder labels | `tryBeforeCommit/index.tsx` L18-21 | 🟠 Soon |
 | 15 | Missing FAQ: `How much does UI/UX design cost?` | `pricing/faq/index.tsx` | 🟠 Soon |
 | 16 | FAQ CTA `Chat With Us` — replace with cal.com CTA | `pricing/faq/index.tsx` L101 | 🟠 Soon |
-| 18 | `One subscription, endless possibilities` still present | `landing/pricing/index.tsx` L143 | 🟡 Consider |
 | 19 | SEO keywords: remove `cheap UI design agency`, `affordable UX design` | `app/pricing/page.tsx` | 🟡 Consider |
 | 20 | SEO keywords: add `design subscription agency`, `SaaS design retainer`, etc. | `app/pricing/page.tsx` | 🟡 Consider |
 | 21 | `priceValidUntil: "2026-12-31"` in JSON-LD — update before expiry | `app/pricing/page.tsx` | 🟡 Consider |
 | 22 | `reviewCount: 50` not verifiable on-page | `app/pricing/page.tsx` | 🟡 Consider |
 | 24 | `5.0★` trust stat — star glyph in numeric causes parsing ambiguity | `pricing/hero/index.tsx` | 🟡 Consider |
 | 25 | `Enterprise` quality claim in comparison table is self-assessed | `pricing/comparison/index.tsx` | 🟡 Consider |
-| 26 | Two scarcity signals (`Only 2 new clients` + `Limited slots`) — unify | Multiple files | 🟡 Consider |
 
 ---
 

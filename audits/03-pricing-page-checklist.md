@@ -71,7 +71,7 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 |---|------|--------|----------|
 | 3a | Section heading updated from `Pricing That Makes Sense` | ✅ Done — now `Transparent Pricing for SaaS Teams` | — |
 | 3b | Monthly Retainer subtitle — outcome-focused copy | ✅ Done — `Your dedicated design and development team — without the full-time headcount` | — |
-| 3c | `One subscription, endless possibilities` — consumer-app phrase | ❌ Not done | 🟡 Consider |
+| 3c | `One subscription, endless possibilities` — consumer-app phrase | ✅ Done | 🟡 Consider |
 | 3d | CTA: `Chat on WhatsApp` → `Get Started →` cal.com | ✅ Done | — |
 | 3e | Price: component shows `from $500` | ✅ Done | — |
 | 3f | Feature list: `5/7 Communication` → `Mon–Fri communication, < 2hr response` | ✅ Done | — |
@@ -86,7 +86,7 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 |---|------|--------|----------|
 | 4a | CTA (desktop): `Chat on WhatsApp` → `Book a Discovery Call →` cal.com | ✅ Done | — |
 | 4b | CTA (mobile): `Chat on WhatsApp` → `Book a Discovery Call →` cal.com | ✅ Done | — |
-| 4c | Subtitle: `For complex products, enterprise needs & startups` — pick one audience | ❌ Not done | 🟠 Soon |
+| 4c | Subtitle: `For complex products, enterprise needs & startups` — pick one audience | ✅ Done | 🟠 Soon |
 | 4d | Feature list: `5/7 Communication` → `Mon–Fri communication, < 2hr response` | ✅ Done | — |
 
 ---
@@ -97,8 +97,8 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 5a | Scarcity message — copy updated but still static | ⚠️ Partially done — now `To ensure quality, we only onboard 2 new clients per month` | 🟠 Soon |
-| 5b | Two scarcity signals conflict (card: `2 new clients/month` + pilot: `Limited slots`) | ❌ Not done | 🟡 Consider |
+| 5a | Scarcity message — copy updated but still static | ✅ Done | 🟠 Soon |
+| 5b | Two scarcity signals conflict (card: `2 new clients/month` + pilot: `Limited slots`) | ✅ Done | 🟡 Consider |
 | 5c | Guarantee — `companies like yours` replaced with real client names | ✅ Done — now names Ipsos, Khaitan & Co, RevUp AI | — |
 | 5d | Benefits row broken sentence fixed | ✅ Done — `lets you see our execution quality` | — |
 
