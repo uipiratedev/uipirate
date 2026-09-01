@@ -40,10 +40,10 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 | 1e | Twitter title — still says `$2000/mo` | `UI/UX Design \| from $500/mo Unlimited · 48hr Turnaround` | ✅ Done | — |
 | 1f | JSON-LD offer price — still "price": "2000" for Monthly Retainer | `price: "500"` in schema | ✅ Done | — |
 | 1g | Savings % inconsistency — meta says 60%, hero says 50-70% | Aligned to 50-70% | ✅ Done | — |
-| 1h | Keyword: remove `cheap UI design agency` and `affordable UX design` | Present in keywords array | ❌ Not done | 🟡 Consider |
-| 1i | Keywords: add `design subscription agency`, `SaaS design retainer`, `unlimited design requests pricing` | Missing | ❌ Not done | 🟡 Consider |
-| 1j | `priceValidUntil: "2026-12-31"` in JSON-LD — update before Dec 31 2026 | Static date | ❌ Not done | 🟡 Consider |
-| 1k | `reviewCount: 50` in schema not verifiable on-page (no visible count for users) | Not visible | ❌ Not done | 🟡 Consider |
+| 1h | Keyword: remove `cheap UI design agency` and `affordable UX design` | Removed | ✅ Done | 🟡 Consider |
+| 1i | Keywords: add `design subscription agency`, `SaaS design retainer`, `unlimited design requests pricing` | Added | ✅ Done | 🟡 Consider |
+| 1j | `priceValidUntil: "2026-12-31"` in JSON-LD — update before Dec 31 2026 | Updated to 2027 | ✅ Done | 🟡 Consider |
+| 1k | `reviewCount: 50` in schema not verifiable on-page (no visible count for users) | Verifiable in Hero | ✅ Done | 🟡 Consider |
 
 ---
 
@@ -59,7 +59,7 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 | 2d | `Save 50-70%` pill — price anchoring before cards | ✅ Done | — |
 | 2e | `Book a Call →` links to `/contact` — should be `cal.com/ui-pirate/15min` | ✅ Done | — |
 | 2f | PDF download confirmed at `/public/uipirate-pricing-2026.pdf` | ✅ Done | — |
-| 2g | `5.0★` — star glyph in numeric value, parsing ambiguity | ❌ Not done | 🟡 Consider |
+| 2g | `5.0★` — star glyph in numeric value, parsing ambiguity | ✅ Done | 🟡 Consider |
 
 ---
 

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "UI/UX design from $500/mo — unlimited requests, 48hr turnaround. Save 50-70% vs US agencies. No contracts, pause anytime.",
   keywords:
-    "UI UX design pricing 2026, design subscription cost, unlimited design requests, SaaS design pricing, design agency monthly cost, hire UI designer cost, design retainer pricing, $2000 design subscription, cheap UI design agency, affordable UX design, design agency vs freelancer cost",
+    "UI UX design pricing 2026, design subscription cost, unlimited design requests, SaaS design pricing, design agency monthly cost, hire UI designer cost, design retainer pricing, $2000 design subscription, design subscription agency, SaaS design retainer, unlimited design requests pricing, design agency vs freelancer cost",
   openGraph: {
     title: "UI/UX Design Pricing | from $500/mo Unlimited · Save 50-70% vs Agencies",
     description:
@@ -52,7 +52,7 @@ const pricingSchema = {
         "Unlimited design requests, fast turnaround, 1 active request at a time",
       price: "500",
       priceCurrency: "USD",
-      priceValidUntil: "2026-12-31",
+      priceValidUntil: "2027-12-31",
       availability: "https://schema.org/LimitedAvailability",
       url: "https://uipirate.com/pricing",
     },

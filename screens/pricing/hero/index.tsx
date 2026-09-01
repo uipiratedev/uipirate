@@ -10,7 +10,7 @@ import {
 
 const TRUST_STATS = [
   { value: "50+", label: "Products Shipped" },
-  { value: "5.0★", label: "Average Rating" },
+  { value: "5.0", label: "★ Rating (50 Reviews)" },
   { value: "< 2hr", label: "Response Time" },
   { value: "9yr+", label: "In Business" },
 ];

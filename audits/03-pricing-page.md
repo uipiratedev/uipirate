@@ -603,17 +603,17 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | 14 | Pilot tier descriptions rewritten to outcomes | ✅ Done |
 | 15 | Added `How much does UI/UX design cost?` FAQ | ✅ Done |
 | 16 | FAQ CTA updated to cal.com link | ✅ Done |
+| 19 | SEO keywords updated to target subscriptions | ✅ Done |
+| 21 | `priceValidUntil: "2027-12-31"` in JSON-LD updated | ✅ Done |
+| 22 | `reviewCount: 50` made verifiable on-page | ✅ Done |
+| 24 | `5.0★` trust stat parsing ambiguity resolved | ✅ Done |
 
 ## What Is Still Open (as of v4)
 
 | # | Item | File | Priority |
 |---|------|------|----------|
 | 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | `pricing/perfectFor/index.tsx` | 🟠 Soon |
-| 19 | SEO keywords: remove `cheap UI design agency`, `affordable UX design` | `app/pricing/page.tsx` | 🟡 Consider |
 | 20 | SEO keywords: add `design subscription agency`, `SaaS design retainer`, etc. | `app/pricing/page.tsx` | 🟡 Consider |
-| 21 | `priceValidUntil: "2026-12-31"` in JSON-LD — update before expiry | `app/pricing/page.tsx` | 🟡 Consider |
-| 22 | `reviewCount: 50` not verifiable on-page | `app/pricing/page.tsx` | 🟡 Consider |
-| 24 | `5.0★` trust stat — star glyph in numeric causes parsing ambiguity | `pricing/hero/index.tsx` | 🟡 Consider |
 
 ---
 
