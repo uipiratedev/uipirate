@@ -416,6 +416,8 @@ All copy issues with this component are documented in the pricing page audit (v2
 - ⚠️ "SaaS Companies" card — grammar
 - ⚠️ Emoji icons in "Not the right fit" strip
 
+*(✅ Confirmed: Kept `PricingPerfectFor` exactly as it is to match the 'Is this the right fit for you' section on the landing page, per user request.)*
+
 ---
 
 ### 10. CTA SECTION

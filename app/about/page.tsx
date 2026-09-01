@@ -319,9 +319,10 @@ export default function AboutPage() {
 
             {/* Subheading */}
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
-              We're a product design and development agency. We work alongside SaaS founders
-              and enterprise teams — from the first wireframe through to working,
-              production-ready software.
+              Not just a design agency — we're your product partner. We help you
+              think through competitive analysis, simplify complex products,
+              design for conversion, and ship production-ready code. From idea
+              to shipped product.
             </p>
 
             {/* US Market Badge */}
@@ -395,16 +396,16 @@ export default function AboutPage() {
                   desc: "Every section, CTA, and flow is strategically designed. We don't just make it look good — we design to convert visitors into users and users into revenue.",
                 },
                 {
-                  title: "From Sketch to Working Code",
+                  title: "Architecture to Code",
                   desc: "From vision to shipped product — IA, user flows, wireframes, UI, and production-ready React/Next.js code.",
                 },
                 {
-                  title: "We Work In Your Time Zone",
-                  desc: "We overlap with US Eastern and Pacific hours. No async-only communication.",
+                  title: "Enterprise Specialist",
+                  desc: "Multi-role dashboards, data-heavy interfaces, complex flows. We handle the hard problems others avoid.",
                 },
                 {
-                  title: "We've Done This 50+ Times",
-                  desc: "Not a boutique shop that treats every project as an experiment.",
+                  title: "Idea to Shipped Product",
+                  desc: "Information architecture, wireframes, UI design, and production-ready React/Angular/Next.js code. We carry your idea all the way to launch.",
                 },
               ].map((item, i) => (
                 <motion.div
@@ -453,8 +454,8 @@ export default function AboutPage() {
               desc: "Fast and conversion-focused. Every section guides users toward the CTA.",
             },
             {
-              title: "Design That Holds Up in Code",
-              desc: "From Figma to production — the shipped product matches the design, behaves the way users expect, and is built to maintain.",
+              title: "Pixel-Perfect Execution",
+              desc: "From Figma to code — the final product matches the vision exactly.",
             },
           ].map((item, i) => (
             <motion.div
@@ -729,10 +730,8 @@ export default function AboutPage() {
         }
       `}</style>
 
-      {/* Who We Work Best With - reuses the exact same fit-check content from /pricing */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
-        <PricingPerfectFor />
-      </section>
+      {/* Who We Work Best With - Landing Page Component */}
+      <PricingPerfectFor />
 
       {/* CTA Section - Dark Card */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16 mb-8">
