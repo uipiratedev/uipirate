@@ -62,12 +62,12 @@ Synced to **`05-navbar.md` v2 (2026-09-01)**.
 
 | # | Item | Status |
 |---|------|--------|
-| 3a | Card front shows image + title only — no context | ❌ Not done |
-| 3b | No 3D flip animation on hover exists for large cards | ❌ Not done |
-| 3c | Implement back face for Card 1 — UX/UI Design | ❌ Not done |
-| 3d | Implement back face for Card 2 — SaaS & AI Development | ❌ Not done |
-| 3e | Implement back face for Card 3 — Landing Pages & Business Websites | ❌ Not done |
-| 3f | Implement back face for Card 4 — UX Audits & Consultation | ❌ Not done |
+| 3a | Card front shows image + title only — no context | ✅ Done (Added description on flip) |
+| 3b | No 3D flip animation on hover exists for large cards | ✅ Done (Flip animation already exists in codebase) |
+| 3c | Implement back face for Card 1 — UX/UI Design | ✅ Done |
+| 3d | Implement back face for Card 2 — SaaS & AI Development | ✅ Done |
+| 3e | Implement back face for Card 3 — Landing Pages & Business Websites | ✅ Done |
+| 3f | Implement back face for Card 4 — UX Audits & Consultation | ✅ Done |
 
 ### Back Face Copy (add a `description` field to each item in `config/site.ts`)
 
@@ -97,12 +97,12 @@ Synced to **`05-navbar.md` v2 (2026-09-01)**.
 
 | # | Item | Status |
 |---|------|--------|
-| 4a | No 3D flip animation on hover exists for large cards | ❌ Not done |
+| 4a | No 3D flip animation on hover exists for large cards | ✅ Done (Flip animation already exists in codebase) |
 | 4b | Emoji icons — inconsistent with SVG icons used in Services dropdown | ❌ Not done |
-| 4c | Implement back face for Card 1 — Blog & Tutorials | ❌ Not done |
-| 4d | Implement back face for Card 2 — Case Studies | ❌ Not done |
-| 4e | Implement back face for Card 3 — Tools | ❌ Not done |
-| 4f | Implement back face for Card 4 — Component Lab | ❌ Not done |
+| 4c | Implement back face for Card 1 — Blog & Tutorials | ✅ Done |
+| 4d | Implement back face for Card 2 — Case Studies | ✅ Done |
+| 4e | Implement back face for Card 3 — Tools | ✅ Done |
+| 4f | Implement back face for Card 4 — Component Lab | ✅ Done |
 
 ### Back Face Copy
 

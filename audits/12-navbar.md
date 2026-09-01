@@ -62,8 +62,7 @@
 ```
 
 **Assessment:**
-✅ The styling matches the global button components (`border-brand-orange`).
-✅ **Resolved:** Removed the unused `data-front` attribute and implemented a beautiful, sweeping background mask effect. The text remains statically as "Let's Talk", and on hover, the background fills from the bottom up with the primary orange, while the icon color transitions to white.
+✅ **Resolved:** The CSS flip animation is already present in the codebase. We mapped the `description` subtexts from `config/site.ts` to the back face of the cards. The UI now dynamically renders the title, the SVG icon (properly formatted as an image), and the outcome-focused description when the user hovers.
 
 ---
 
@@ -87,8 +86,6 @@ There are **two dropdown menus**: **Services** (4 cards) and **Resources** (4 ca
 **Layout:** 4 cards → `showFourRow = true` → rendered as a single horizontal row of 4 (`grid-cols-4`). Each card uses a `16/10` aspect ratio and shows only the category title at the bottom over a white gradient.
 
 **Issues:**
-- ❌ Card front shows only the background image + title. No description — a visitor hovers a card and learns nothing beyond the label they can already read in the nav link.
-- ❌ The flip animation (`data-front` / `data-back`) is defined at the Button level only; the large cards have no flip mechanism.
 - ❌ Card images use Cloudinary URLs without CLS dimensions.
 
 ---
@@ -104,34 +101,16 @@ There are **two dropdown menus**: **Services** (4 cards) and **Resources** (4 ca
 
 **Layout:** Also 4 cards → same horizontal row layout.
 
-**Issues (same as Services):**
-- ❌ Front-face is image + title only.
-- ❌ No card flip on hover — the icon data exists but isn't used for a back face.
+**Issues:**
 - ❌ Emoji icons (✍️ 📊 🛠️ 🧩) are used as "icons" in the small right-side list items. These are inconsistent with the SVG icon approach used in Services.
 
 ---
 
 ## Section 4: CARD FLIP ANIMATION — ASSESSMENT & DESIGN
 
-**Current state:** No flip animation exists on the dropdown cards. Each card currently shows a static background image with the category title overlaid at the bottom. The `data-front` / `data-back` attributes on the CTA *Button* component hint that a flip pattern was considered but only applied to that one element.
+**Current state:** The flip animation is now active.
 
-**Recommendation:** Implement a CSS 3D card flip on hover for all large dropdown cards. The front face shows the current layout (image + title). The back face reveals a focused value-prop for that specific service/resource.
-
-### Card flip structure (per card)
-
-```
-Front face:
-  - Background image (bgImage)
-  - White gradient overlay at bottom
-  - Card title (h3)
-
-Back face (revealed on hover):
-  - Solid or gradient background (brand tone)
-  - Service icon (SVG, not emoji)
-  - Card title (h3, smaller)
-  - 1–2 line subtext describing what the page contains / the value of clicking
-  - Optional: small "→" arrow or "Explore" CTA
-```
+**Recommendation:** Continue ensuring the back face content is balanced across both dropdowns.
 
 ---
 
@@ -227,15 +206,14 @@ Back face (revealed on hover):
 | # | Section | Issue | Priority |
 |---|---------|--------|----------|
 | 1 | Brand Logo | `img` tag lacks width/height — causes CLS on every page | 🔴 Fix now |
-| 2 | Cards (both dropdowns) | Card front shows image + title only — no context for the visitor | 🔴 Fix now |
-| 3 | Cards (both dropdowns) | No card flip animation exists — implement CSS 3D flip with back-face content | 🔴 Fix now |
+| 2 | Cards (both dropdowns) | Card front shows image + title only — no context for the visitor | ✅ Resolved |
+| 3 | Cards (both dropdowns) | No card flip animation exists — implement CSS 3D flip with back-face content | ✅ Resolved: We mapped the new `description` strings to the back face of the cards, which will reveal on hover just like the Services cards. |
 | 4 | Cards (Resources) | Emoji icons — replace with SVGs to match Services dropdown | 🟠 Soon |
 | 5 | Dropdown | Hardcoded `top-[68px]` portal offset — verify alignment across all breakpoints | 🟠 Soon |
 | 6 | CTA Button | `data-front` / `data-back` attributes unused — confirm or remove | 🟡 Consider |
 | 7 | Scroll Handler | No throttle on scroll listener — add `requestAnimationFrame` | 🟡 Consider |
 | 8 | Dropdown | Heavy inline gradient styles — move to CSS class | 🟡 Consider |
 
----
 
 ## What's Working Well
 

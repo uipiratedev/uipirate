@@ -16,6 +16,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670802/ux_vyujds.svg",
+          description: "From first sketch to Figma handoff — IA, user flows, and high-fidelity UI for SaaS and enterprise products.",
         },
         {
           category: "Saas & AI Development",
@@ -24,6 +25,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164139/ChatGPT_Image_Aug_27_2026_03_35_38_PM_1_uyvn6s.svg",
+          description: "Design and code under one roof. React, Next.js, and Angular — no hand-off gaps, no lost design intent.",
         },
 
         {
@@ -33,6 +35,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164087/image_239_guz7zd.svg",
+          description: "Pages built around one action. Every section placed where conversion research says it belongs.",
         },
         {
           category: "UX Audits & Consultation",
@@ -41,7 +44,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788164113/ChatGPT_Image_Aug_27_2026_03_37_27_PM_1_p1spkb.svg",
-
+          description: "Already have a product? We find where users drop off and give you a prioritised fix list — not just a report.",
         },
       ],
     },
@@ -69,6 +72,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670800/blog_v5hfmy.svg",
+          description: "Practical articles on product design and SaaS UX — written by the team that ships the work, not a content agency.",
         },
         {
           category: "Case Studies",
@@ -77,6 +81,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/q_auto/f_auto/v1776670794/casestudy_czsny0.svg",
+          description: "The full story of how we worked. Real briefs, real constraints, real shipped products — with before and after.",
         },
         // {
         //   category: "FAQs",
@@ -93,6 +98,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181141/tools_q1fxyd.svg",
+          description: "Calculators and generators we built for our own projects — now free for anyone who finds them useful.",
         },
         {
           category: "Component Lab",
@@ -101,6 +107,7 @@ export const siteConfig = {
           isLargeCard: true,
           bgImage:
             "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788181120/componentlab_warfka.svg",
+          description: "Live, interactive React components. Copy the code, test the interactions, drop them into your project.",
         },
         // {
         //   category: "3D Tactile Buttons",

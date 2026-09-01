@@ -208,7 +208,13 @@ export const NavbarDropdown = ({
                                   {/* --- BACK FACE (Flipped 180deg horizontally) --- */}
                                   <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-white via-[#FFF9F5] to-[#FFF0E6] p-5 flex flex-col justify-between border border-[#FF5B04]/20 shadow-inner">
                                     <div className="flex items-center justify-between">
-                                      <span className="text-2xl">{item.icon || "✨"}</span>
+                                      <span className="text-2xl">
+                                        {typeof item.icon === 'string' && item.icon.startsWith('http') ? (
+                                          <img src={item.icon} alt={`${item.category} icon`} className="w-8 h-8 object-contain" />
+                                        ) : (
+                                          item.icon || "✨"
+                                        )}
+                                      </span>
                                       <span className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/10 px-2 py-0.5 rounded-full border border-[#FF5B04]/20">
                                         Explore
                                       </span>
@@ -217,14 +223,9 @@ export const NavbarDropdown = ({
                                       <h3 className="text-[#FF5B04] font-bold text-base md:text-lg mb-1 leading-snug font-jakarta">
                                         {item.category}
                                       </h3>
-                                      <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
-                                        {item.category === "Tools"
-                                          ? "Free diagnostics & SEO/GEO tools for SaaS teams."
-                                          : item.category === "Component Lab"
-                                            ? "Copy-paste 3D & tactile React components."
-                                            : item.category === "Blogs" || item.category === "Blog"
-                                              ? "Insights, tutorials & SaaS design stories."
-                                              : "Explore our latest resources & blueprints."}
+                                      <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                                        {/* @ts-ignore - description added directly in siteConfig */}
+                                        {item.description || "Explore our latest resources & blueprints."}
                                       </p>
                                     </div>
                                     <div className="pt-2 border-t border-orange-200/60 flex items-center justify-between text-xs font-bold text-[#FF5B04]">
