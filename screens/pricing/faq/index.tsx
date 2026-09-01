@@ -46,7 +46,7 @@ const PRICING_FAQS = [
 const PricingFAQ = () => {
   return (
     <motion.div
-      className="py-12 max-md:py-8"
+      className="section-container pb-16 max-md:pb-12"
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true, amount: 0.2 }}

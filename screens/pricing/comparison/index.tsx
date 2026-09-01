@@ -53,7 +53,7 @@ const COMPARISON_DATA = [
 const PricingComparison = () => {
   return (
     <motion.div
-      className="py-12 max-md:py-8"
+      className="section-container"
       id="compare"
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6 }}

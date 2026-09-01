@@ -43,7 +43,7 @@ const NOT_FOR = [
 const PricingPerfectFor = () => {
   return (
     <motion.div
-      className="py-12 max-md:py-8 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32"
+      className="section-container"
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true, amount: 0.2 }}

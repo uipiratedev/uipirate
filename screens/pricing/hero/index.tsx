@@ -101,7 +101,7 @@ const PricingHero = () => {
             <span className="font-semibold text-gray-900">Save 50-70%</span>{" "}
             compared to US agencies
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+
         </div>
 
         {/* Optimized Pricing CTAs */}
