@@ -109,8 +109,8 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | 6c | Aman titled `Video Editing` in schema + team — retitle or remove (NF3) | ✅ Keep as-is (per user) | 🟠 Soon |
 | 6d | No founder origin story / bio — add 2–3 sentence founder note above team grid (NC10) | ✅ Done | 🟡 Consider |
 
-**NC10 Recommended founder note:**
-> UI Pirate started in 2015 when Vishal Anand — a product designer who also writes production code — got tired of design hand-offs that fell apart in engineering. The agency is built around one idea: the people who design the product should be able to ship it.
+**NC10 Recommended founder note (Applied):**
+> "UI Pirate started in 2015 when I got tired of design hand-offs that fell apart in engineering. We are built around one idea: the people who design the product should be able to ship it."
 
 ---
 
@@ -133,11 +133,11 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 8a | H2 `Trusted by Teams Worldwide` — too generic; rename to `Companies That Trusted Us With Their Products` | ❌ Not done | 🟠 Soon |
+| 8a | H2 `Trusted by Teams Worldwide` — too generic; rename to `Companies That Trusted Us With Their Products` | ✅ Done | 🟠 Soon |
 | 8b | Client grid shows company names + industries + US flags — strong, keep | ✅ Keep as-is | — |
 | 8c | `See our reviews on Clutch →` link — strong trust signal, keep | ✅ Keep as-is | — |
-| 8d | US flag emoji `🇺🇸 US` — replace with `• Based in USA` text label for professional register | ❌ Not done | 🟡 Consider |
-| 8e | `Awesome Health Club` (schema) vs `Awesome Health` (grid) — align entity names (NF9) | ❌ Not done | 🟡 Consider |
+| 8d | US flag emoji `🇺🇸 US` — replace with `• Based in USA` text label for professional register | ✅ Done | 🟡 Consider |
+| 8e | `Awesome Health Club` (schema) vs `Awesome Health` (grid) — align entity names (NF9) | ✅ Done | 🟡 Consider |
 
 ---
 

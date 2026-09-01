@@ -351,6 +351,7 @@ Sub: 60% of our clients are US-based startups and enterprises
 ```
 H2: Companies That Trusted Us With Their Products
 ```
+*(✅ Applied)*
 
 ---
 
@@ -363,6 +364,7 @@ H2: Companies That Trusted Us With Their Products
 - US flag for US clients
 
 This is exactly what the landing page marquee section is missing. The About page client grid is the reference implementation for how client logos should be displayed across the site.
+*(✅ Applied per User request: Completely replaced the card grid with the `<LandingMarquee>` style grid from the landing page, using premium client logos and hover styling)*
 
 ---
 
@@ -385,6 +387,7 @@ See our reviews on Clutch →
 **Assessment:** The concept (flagging US clients for US buyers) is correct and smart. However, using an emoji flag in a professional B2B context can register as informal.
 
 **Suggested alternative:** A subtle `US Client` badge with a small outlined box, or a simple `•  Based in USA` text label. Either preserves the information without the emoji visual.
+*(✅ Applied: Used `• Based in USA`)*
 
 ---
 
@@ -397,6 +400,8 @@ The target audience audit removed Graphic Design, Motion Graphics from the servi
 **Suggested fix:** Update Kartik Kumar's `jobTitle` in the schema to reflect a service still offered:
 - "Lead Visual Designer" — if Kartik works on product UI/visual design
 - Remove the entry — if Motion/Graphics was truly removed from scope
+*(✅ Rejected per user request: Team roles will remain as-is)*
+*(✅ Applied: Awesome Health Club was renamed to Awesome Health in schema to match grid)*
 
 ---
 
