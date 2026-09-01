@@ -167,17 +167,17 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 ---
 
-## 11. SEO METADATA (🔴 Title + description issues)
+## 11. SEO METADATA (✅ Resolved)
 
 **File:** `app/about/layout.tsx`
 
 | # | Item | Current Value | Status | Priority |
 |---|------|---------------|--------|----------|
-| 11a | Page title opens with `About \|` — no brand name (NF6) | `About \| Product Design Agency — From Idea to Shipped Product` | ❌ Not done | 🔴 Fix now |
-| 11b | Meta description ~270 chars — truncates before key differentiators (NF5) | Buried `50+ products`, `US timezone` | ❌ Not done | 🔴 Fix now |
+| 11a | Page title opens with `About \|` — no brand name (NF6) | `About UI Pirate — Product Design & Development Agency` | ✅ Done | 🔴 Fix now |
+| 11b | Meta description ~270 chars — truncates before key differentiators (NF5) | Optimized to ~160 chars | ✅ Done | 🔴 Fix now |
 | 11c | OG title — functional, brand name present | `About UI Pirate \| Product Design — From Idea to Shipped Product` | ✅ Keep as-is | — |
 | 11d | Twitter card — functional and on-message | `summary_large_image` | ✅ Keep as-is | — |
-| 11e | Add dev-side keywords: `product design and development agency`, `hire Next.js agency`, `AI product design agency` | Missing | ❌ Not done | 🟡 Consider |
+| 11e | Add dev-side keywords: `product design and development agency`, `hire Next.js agency`, `AI product design agency` | Added | ✅ Done | 🟡 Consider |
 
 **NC6 Recommended title:** `About UI Pirate — Product Design & Development Agency`
 
