@@ -32,9 +32,7 @@ const Pricing = () => {
       </div>
 
       {/* Perfect For Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
-        <PricingPerfectFor />
-      </div>
+      <PricingPerfectFor />
 
       {/* 5-Day Pilot CTA */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 mb-8">

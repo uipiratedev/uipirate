@@ -599,6 +599,7 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | 25 | `Enterprise` quality claim replaced with `50+ Shipped Products` | ✅ Done |
 | NEW | Comparison table price anchor updated to `from $500` | ✅ Done |
 | NEW | In-house turnaround updated to `Slow (1-3 weeks)` | ✅ Done |
+| 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | ✅ Done |
 
 ## What Is Still Open (as of v4)
 
@@ -1095,7 +1096,7 @@ All items from v2 carried forward. New items marked `[v3]`. Items code-verified 
 | 8 | Pricing Cards | Monthly Retainer subtitle — lead with buyer outcome (see NC4) | `landing/pricing/index.tsx` L119 | ✅ Done | ✓ |
 | 9 | Pricing Cards | Scarcity message — replace static `Only 2 new clients` (see NC5) | `landing/pricing/index.tsx` L165 | 🟠 Soon | ✓ |
 | 10 | Pricing Cards | Custom Quote subtitle — `enterprise needs & startups` → pick one (see NC6) | `landing/pricing/index.tsx` L212 | 🟠 Soon | ✓ |
-| 11 | PerfectFor | Rewrite Funded Startups + SaaS Companies cards (see NC9) | `pricing/perfectFor/index.tsx` L17-25 | 🟠 Soon | ✓ |
+| 11 | PerfectFor | Rewrite Funded Startups + SaaS Companies cards (see NC9) | `pricing/perfectFor/index.tsx` L17-25 | ✅ Done | ✓ |
 | 12 | PerfectFor | Replace `FIT CHECK` badge with `WHO IT'S FOR` | `pricing/perfectFor/index.tsx` L63 | ✅ Done | ✓ |
 | 13 | PerfectFor | Replace emoji icons in "Not the right fit" strip with `✕` text icon | `pricing/perfectFor/index.tsx` L46-49 | ✅ Done | ✓ |
 | 14 | TryBeforeCommit | Pilot tier descriptions — rewrite to outcomes (see NC8) | `tryBeforeCommit/index.tsx` L18-21 | 🟠 Soon | ✓ |

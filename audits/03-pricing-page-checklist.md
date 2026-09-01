@@ -112,9 +112,9 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 |---|------|--------|----------|
 | 6a | `FIT CHECK` badge → `WHO IT'S FOR` | ✅ Done | — |
 | 6b | Emoji icons in "Not the right fit" strip → ✕ icons | ✅ Done | — |
-| 6c | `Funded Startups` card — `Ship fast and impress investors...` | ❌ Not done | 🟠 Soon |
-| 6d | `SaaS Companies` card — `Without in-house design teams, needing...` (dependent clause, no subject) | ❌ Not done | 🟠 Soon |
-| 6e | `Agencies` card — passive, needs active rewrite | ❌ Not done | 🟠 Soon |
+| 6c | `Funded Startups` card — `Ship fast and impress investors...` | ✅ Done | 🟠 Soon |
+| 6d | `SaaS Companies` card — `Without in-house design teams, needing...` (dependent clause, no subject) | ✅ Done | 🟠 Soon |
+| 6e | `Agencies` card — passive, needs active rewrite | ✅ Done | 🟠 Soon |
 | 6f | `Enterprise Teams` card — already strong | ✅ Keep as-is | — |
 
 ---

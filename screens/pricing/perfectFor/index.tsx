@@ -14,14 +14,14 @@ const PERFECT_FOR = [
   {
     title: "SAAS COMPANIES",
     description:
-      "No in-house design team, but a product that needs to keep moving. We plug in as your design and dev partner.",
+      "You lack an in-house design team, but your product needs to keep moving. We plug in as your dedicated design and dev partner.",
     image:
       "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788206599/saascom_f00rd5.svg",
   },
   {
     title: "AGENCIES",
     description:
-      "Your team is at capacity. We work as a white-label partner on client projects — no handoff friction, full execution.",
+      "When your team reaches capacity, we step in as your white-label execution partner. We handle the design and dev so you can deliver.",
     image:
       "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788206602/agencise_z7olwt.svg",
   },
