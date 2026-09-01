@@ -266,6 +266,7 @@ Sub: Simple: you share your vision. We do the rest.
 ```
 
 **Assessment:** ✅ The sub-copy "Simple: you share your vision. We do the rest." is strong — it removes process anxiety with a single sentence. Keep.
+*(✅ Applied: Redesigned the dark cards to match the light "How It Works" card design from the landing page per user request, featuring 6 cards with SVG icons and watermark numbers)*
 
 **Same risk as landing page MiniProcess:** The section ends with `See our full process in detail →` linking to `/process`. If this page doesn't exist yet, this link will 404. Verify the `/process` page is live before the About page launches with this link.
 

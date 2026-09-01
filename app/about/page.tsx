@@ -475,57 +475,72 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Process - Dark Section */}
-      <section className="bg-[#0A0A0A] text-white py-16 relative overflow-hidden rounded-[32px] max-md:rounded-[20px] mx-4 sm:mx-6 lg:mx-20 xl:mx-32 mb-16">
-        {/* Subtle background glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-gradient-to-b from-brand-orange/10 to-transparent blur-3xl pointer-events-none" />
-
-        <div className="px-8 max-md:px-5 relative z-10">
-          <div className="text-center mb-10">
-            <div className="flex justify-center mb-4">
-              <GlassBadge className="text-white" variant="gradient">
-                THE PROCESS
-              </GlassBadge>
-            </div>
-            <h2 className="text-3xl max-md:text-2xl font-bold tracking-tight text-white mb-3">
-              Our Approach
-            </h2>
-            <p className="text-gray-500 max-w-xl mx-auto">
-              Simple: you share your vision. We do the rest.
-            </p>
+      {/* Our Process - Light Section */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16 mb-16">
+        <div className="text-center mb-12 max-md:mb-8">
+          <div className="flex justify-center mb-4">
+            <GlassBadge variant="gradient">THE PROCESS</GlassBadge>
           </div>
+          <h2 className="heading-center">Our Approach</h2>
+          <p className="text-gray-500 max-w-xl mx-auto mt-2">
+            Simple: you share your vision. We do the rest.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4">
-            {PROCESS_STEPS.map((step, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {PROCESS_STEPS.map((step, i) => {
+            const icons = [
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg"
+            ];
+            return (
               <motion.div
-                key={step.step}
-                className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
+                key={step.title}
+                className="group relative bg-white border border-[#E5E7EB] rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-300 overflow-hidden flex flex-col justify-between"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-brand-orange/20 text-brand-orange font-mono font-bold text-xs mb-4">
+                {/* Step watermark touching top-right */}
+                <span className="absolute -top-3 md:-top-3 -right-1 text-[72px] md:text-[84px] font-bold text-[#ECEEF1] select-none leading-none tracking-tight font-jakarta pointer-events-none">
                   {step.step}
                 </span>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">
-                  {step.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
 
-          <div className="flex justify-center mt-10 relative z-10">
-            <Link
-              className="text-brand-orange font-semibold text-sm hover:underline"
-              href="/process"
-            >
-              See our full process in detail →
-            </Link>
-          </div>
+                {/* SVG Icon */}
+                <div className="w-12 h-12 mb-6 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                  <img
+                    alt={step.title}
+                    className="w-full h-full object-contain"
+                    src={icons[i]}
+                  />
+                </div>
+
+                {/* Title & Description */}
+                <div>
+                  <h3 className="text-xl md:text-[22px] font-bold text-[#0F172A] mb-2 tracking-tight">
+                    {step.title}
+                  </h3>
+                  <p className="text-[#64748B] font-normal text-sm md:text-[15px] leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="flex justify-center mt-10">
+          <Link
+            className="text-brand-orange font-semibold text-sm hover:underline flex items-center gap-1.5 transition-all hover:gap-2.5"
+            href="/process"
+          >
+            See our full process in detail <span>→</span>
+          </Link>
         </div>
       </section>
 
