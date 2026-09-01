@@ -965,11 +965,11 @@ Add a small FAQ block (same pattern as the pricing FAQ component) before the CTA
 
 | Question | Answer (draft) |
 |---|---|
-| Who is UI Pirate? | A product design and development agency founded by Vishal Anand in 2015. A seven-person team of designers and engineers who take products from first wireframe to shipped code. |
+| What is UI Pirate? | A product design and development agency founded by Vishal Anand in 2017. A seven-person team of designers and engineers who take products from first wireframe to shipped code. |
 | Where is the team based? | The core team is in India. We keep US Eastern and Pacific business hours, and 60% of our clients are US-based startups and enterprises. |
 | Do you only design, or do you build too? | Both. We handle product thinking, UX/UI design, and production-ready front-end code in React, Angular, and Next.js — the same team, start to finish. |
 
-**Why:** directly answers the three queries the keyword-gap and AI-citation sections flag as missing (who / where / scope), and gives AI engines quotable `Question`/`Answer` pairs. Confirm each answer against the founding-year decision in NF7 and the team count in NF1 before shipping.
+**Why:** directly answers the three queries the keyword-gap and AI-citation sections flag as missing (what / where / scope), and gives AI engines quotable `Question`/`Answer` pairs. Confirm each answer against the founding-year decision in NF7 and the team count in NF1 before shipping.
 
 ---
 

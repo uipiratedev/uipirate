@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody, Accordion, AccordionItem } from "@heroui/react";
 
 import GlassSurface from "@/components/GlassSurface";
 import GlassBadge from "@/components/GlassBadge";
@@ -43,6 +43,24 @@ const industries = [
   "HealthTech & MedTech",
   "LegalTech",
   "AI Products & Platforms",
+];
+
+const ABOUT_FAQS = [
+  {
+    question: "What is UI Pirate?",
+    answer:
+      "A product design and development agency founded by Vishal Anand in 2017. A seven-person team of designers and engineers who take products from first wireframe to shipped code.",
+  },
+  {
+    question: "Where is the team based?",
+    answer:
+      "The core team is in India. We keep US Eastern and Pacific business hours, and 60% of our clients are US-based startups and enterprises.",
+  },
+  {
+    question: "Do you only design, or do you build too?",
+    answer:
+      "Both. We handle product thinking, UX/UI design, and production-ready front-end code in React, Angular, and Next.js — the same team, start to finish.",
+  },
 ];
 
 // Premium enterprise client logos from landing page
@@ -274,6 +292,24 @@ export default function AboutPage() {
               ],
               slogan: "From Idea to Shipped Product",
             },
+          }),
+        }}
+      />
+      
+      {/* About FAQ JSON-LD */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: ABOUT_FAQS.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
           }),
         }}
         type="application/ld+json"
@@ -734,6 +770,52 @@ export default function AboutPage() {
 
       {/* Who We Work Best With - Landing Page Component */}
       <PricingPerfectFor />
+
+      {/* About FAQ Section */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="flex justify-center mb-4">
+              <GlassBadge variant="gradient">FAQS</GlassBadge>
+            </div>
+            <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 tracking-tight">
+              Everything you need to know
+            </h2>
+          </div>
+          <Accordion
+            className="mb-0 p-0"
+            defaultExpandedKeys={["0"]}
+            selectionMode="multiple"
+            variant="splitted"
+          >
+            {ABOUT_FAQS.map((faq, index) => (
+              <AccordionItem
+                key={String(index)}
+                aria-label={faq.question}
+                className="shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:border-l-[3px] data-[open=true]:border-l-brand-orange data-[open=true]:border-gray-200 data-[open=true]:shadow-sm"
+                indicator={({ isOpen }) => (
+                  <img
+                    alt="icon"
+                    className={`transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}
+                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
+                  />
+                )}
+                title={
+                  <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug text-gray-900">
+                    {faq.question}
+                  </p>
+                }
+              >
+                <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
+                  <p className="text-[15px] text-gray-600 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
 
       {/* CTA Section - Dark Card */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16 mb-8">

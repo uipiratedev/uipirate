@@ -220,8 +220,8 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 14a | No FAQ block — add 3-question FAQ: `Who is UI Pirate?`, `Where is the team based?`, `Do you only design or do you build too?` (NC9) | ❌ Not done | 🟠 Soon |
-| 14b | Add `FAQPage` / `Question[]` JSON-LD schema to back the FAQ block | ❌ Not done | 🟠 Soon |
+| 14a | No FAQ block — add 3-question FAQ: `What is UI Pirate?`, `Where is the team based?`, `Do you only design or do you build too?` (NC9) | ✅ Done | 🟠 Soon |
+| 14b | Add `FAQPage` / `Question[]` JSON-LD schema to back the FAQ block | ✅ Done | 🟠 Soon |
 
 ---
 
