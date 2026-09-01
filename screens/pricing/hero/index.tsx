@@ -17,7 +17,7 @@ const TRUST_STATS = [
 
 const PricingHero = () => {
   return (
-    <div className="flex flex-col items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative">
+    <div className="hero-wrapper-col">
       {/* Subtle Grid Background Pattern */}
       <div
         className="absolute pointer-events-none -mt-20"

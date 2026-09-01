@@ -131,7 +131,7 @@ const ServicesSection = () => {
                 boxShadow: "0px 1.03px 1.44px 0px #FFFFFFA6 inset",
               }}
             >
-              <div className="bg-orange-500 text-white rounded-full max-md:rounded-[12px] w-full flex items-center justify-between px-6 max-md:px-4 py-2">
+              <div className="bg-orange-500 text-white rounded-full max-md:rounded-[12px] w-full flex items-center justify-between px-3 py-2">
                 {/* Left Circle */}
                 <div
                   className="w-6 h-6 bg-[#DE5005] rounded-full flex-shrink-0"

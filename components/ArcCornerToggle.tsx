@@ -4,6 +4,15 @@ import React, { useState } from "react";
 import { motion, Transition } from "framer-motion";
 
 export type ArcToggleTheme = "light" | "dark";
+export type ArcToggleSize = "xs" | "sm" | "md" | "lg" | "xl";
+
+const ARC_SIZE_SCALE: Record<ArcToggleSize, number> = {
+  xs: 0.7,
+  sm: 0.85,
+  md: 1,
+  lg: 1.15,
+  xl: 1.3,
+};
 
 export interface ArcCornerToggleProps {
   /** Controlled active state (false = Light/STANDERD, true = Dark/CLICK) */
@@ -12,7 +21,9 @@ export interface ArcCornerToggleProps {
   onToggle?: (active: boolean) => void;
   /** Force specific theme or let state dictate ("auto" | "light" | "dark") */
   themeMode?: "auto" | "light" | "dark";
-  /** Size scale multiplier */
+  /** Named size preset (multiplies with `scale`) */
+  size?: ArcToggleSize;
+  /** Fine-grained size scale multiplier (combined with `size`) */
   scale?: number;
   /** Animation duration in seconds (default: 0.65) */
   duration?: number;
@@ -22,7 +33,14 @@ export interface ArcCornerToggleProps {
   className?: string;
   /** Whether to show header line ("STANDERD ———" / "CLICK ———") */
   showHeader?: boolean;
+  /** Track geometry: curved corner arc (default) or a horizontal straight line */
+  track?: "arc" | "line";
 }
+
+/** Straight horizontal track (pill outline + centerline) for the "line" variant */
+const LINE_TRACK_PILL =
+  "M42 8H278C296.778 8 312 23.2223 312 42C312 60.7777 296.778 76 278 76H42C23.2223 76 8 60.7777 8 42C8 23.2223 23.2223 8 42 8Z";
+const LINE_CENTERLINE_PATH = "M 42 42 H 278";
 
 /**
  * Exact Figma Track Outer Contour SVG Path (Node 75:5088 & 75:5138)
@@ -44,12 +62,15 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   isActive: controlledActive,
   onToggle,
   themeMode = "auto",
+  size = "md",
   scale = 1,
   duration = 0.65,
   transition: customTransition,
   className = "",
   showHeader = true,
+  track = "arc",
 }) => {
+  const effectiveScale = scale * (ARC_SIZE_SCALE[size] ?? 1);
   const [internalActive, setInternalActive] = useState(false);
   const active = controlledActive !== undefined ? controlledActive : internalActive;
 
@@ -57,6 +78,8 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
     themeMode === "auto" ? (active ? "dark" : "light") : themeMode;
 
   const isLight = currentTheme === "light";
+  const isLine = track === "line";
+  const centerline = isLine ? LINE_CENTERLINE_PATH : FIGMA_CENTERLINE_PATH;
 
   const handleToggle = () => {
     const nextState = !active;
@@ -75,10 +98,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   return (
     <div
       className={`relative inline-flex flex-col select-none ${className}`}
-      style={{
-        transform: scale !== 1 ? `scale(${scale})` : undefined,
-        transformOrigin: "top left",
-      }}
+      style={{ zoom: effectiveScale !== 1 ? effectiveScale : undefined } as React.CSSProperties}
     >
       {/* ─────────────────────────────────────────────────────────────
           MAIN 600×600 STAGE CONTAINER (Exact Figma Frame 1000003154 / 3155)
@@ -124,6 +144,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             FOREGROUND SLAB (Exact Figma Node 75:5130 / 75:5180)
             Left: -879px, Top: 205px, Width: 1260px, Height: 666px, Radius: 150px
            ───────────────────────────────────────────────────────────── */}
+        {!isLine && (
         <motion.div
           className="absolute pointer-events-none z-10"
           animate={{
@@ -141,32 +162,31 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             borderRadius: 150,
           }}
         />
+        )}
 
         {/* ─────────────────────────────────────────────────────────────
-            EXACT FIGMA CORNER ARC TRACK & MATTE VIOLET-PURPLE TRAIL
-            Left: 203px, Top: 132px, Size: 266px × 267px
+            TRACK & MATTE VIOLET-PURPLE TRAIL — corner arc OR straight line
            ───────────────────────────────────────────────────────────── */}
         <div
           className="absolute z-20"
-          style={{
-            left: 203,
-            top: 132,
-            width: 266,
-            height: 267,
-          }}
+          style={
+            isLine
+              ? { left: 140, top: 258, width: 320, height: 84 }
+              : { left: 203, top: 132, width: 266, height: 267 }
+          }
         >
           {/* TRACK SVG BASE & MATTE UNDERGLOW TRAIL */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="266"
-            height="267"
-            viewBox="0 0 266 267"
+            width={isLine ? "320" : "266"}
+            height={isLine ? "84" : "267"}
+            viewBox={isLine ? "0 0 320 84" : "0 0 266 267"}
             fill="none"
             className="absolute inset-0 size-full overflow-visible pointer-events-none"
           >
             <defs>
               <clipPath id="trackInnerClip">
-                <path d={FIGMA_TRACK_PATH} />
+                <path d={isLine ? LINE_TRACK_PILL : FIGMA_TRACK_PATH} />
               </clipPath>
 
               {/* Exact Figma Matte Violet/Purple Underglow Gradient */}
@@ -232,20 +252,28 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             </defs>
 
             {/* 1. Base Channel Track Path */}
-            <g filter={isLight ? "url(#filter0_dd_75_5088)" : "url(#filter0_dd_75_5138)"}>
+            <g filter={isLine ? undefined : isLight ? "url(#filter0_dd_75_5088)" : "url(#filter0_dd_75_5138)"}>
               <path
-                d={FIGMA_TRACK_PATH}
+                d={isLine ? LINE_TRACK_PILL : FIGMA_TRACK_PATH}
                 fill={isLight ? "#C0C0C0" : "#404C66"}
                 fillOpacity={isLight ? "0.07" : "0.1"}
                 shapeRendering="crispEdges"
               />
+              {isLine && (
+                <path
+                  d={LINE_TRACK_PILL}
+                  fill="none"
+                  stroke={isLight ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.14)"}
+                  strokeWidth="2"
+                />
+              )}
             </g>
 
             {/* 2. MATTE VOLUMETRIC VIOLET-PURPLE UNDERGLOW ANIMATING IN SYNC WITH THE SWITCH */}
             <g clipPath="url(#trackInnerClip)">
               {/* Wide ambient matte diffusion */}
               <motion.path
-                d={FIGMA_CENTERLINE_PATH}
+                d={centerline}
                 stroke="url(#matteTrailGrad)"
                 strokeWidth="46"
                 strokeLinecap="round"
@@ -261,7 +289,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
 
               {/* Core matte body fill */}
               <motion.path
-                d={FIGMA_CENTERLINE_PATH}
+                d={centerline}
                 stroke="url(#matteTrailGrad)"
                 strokeWidth="32"
                 strokeLinecap="round"
@@ -293,7 +321,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             style={{
               width: 96,
               height: 71,
-              offsetPath: `path("${FIGMA_CENTERLINE_PATH}")`,
+              offsetPath: `path("${centerline}")`,
               offsetRotate: "auto 0deg",
               offsetAnchor: "36.47px 35.48px",
             }}

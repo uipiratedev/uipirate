@@ -10,6 +10,8 @@ import GlobalCTA from "@/components/GlobalCTA";
 export default function ArcCornerToggleScreen() {
   const [active, setActive] = useState(false);
   const [speed, setSpeed] = useState(0.65);
+  const [trackStyle, setTrackStyle] = useState<"arc" | "line">("arc");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
   const [toggleCount, setToggleCount] = useState(0);
@@ -170,7 +172,10 @@ export default function Example() {
                 setActive(next);
                 setToggleCount((c) => c + 1);
               }}
+              scale={0.62}
+              size={size}
               duration={speed}
+              track={trackStyle}
               showHeader={true}
             />
           </StudioCanvas>
@@ -180,6 +185,31 @@ export default function Example() {
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
           <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Size</label>
+              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#151518] text-white">Small</option>
+                <option value="md" className="bg-[#151518] text-white">Medium</option>
+                <option value="lg" className="bg-[#151518] text-white">Large</option>
+                <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
+            </div>
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Track Style</label>
+              <select
+                value={trackStyle}
+                onChange={(e) => setTrackStyle(e.target.value as "arc" | "line")}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="arc" className="bg-[#151518] text-white">Corner Arc</option>
+                <option value="line" className="bg-[#151518] text-white">Straight Line</option>
+              </select>
+            </div>
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Animation Speed</label>
               <select
@@ -223,7 +253,7 @@ export default function Example() {
                 </div>
                 <div className="flex items-center justify-center my-2">
                   <ArcCornerToggle
-                    scale={0.82}
+                    scale={0.5}
                     duration={0.65}
                     themeMode="light"
                   />
@@ -239,7 +269,7 @@ export default function Example() {
                 </div>
                 <div className="flex items-center justify-center my-2">
                   <ArcCornerToggle
-                    scale={0.82}
+                    scale={0.5}
                     duration={0.65}
                     isActive={true}
                     themeMode="dark"
@@ -256,11 +286,59 @@ export default function Example() {
                 </div>
                 <div className="flex items-center justify-center my-2">
                   <ArcCornerToggle
-                    scale={0.82}
+                    scale={0.5}
                     duration={0.35}
                   />
                 </div>
                 <span className="text-[11px] font-mono text-gray-500 text-center">High-velocity snap transition for instant tactile feel</span>
+              </div>
+
+              {/* Straight Line — Light */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Straight Line (OFF)</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-[#ED45BE]">track=&quot;line&quot;</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle scale={0.5} duration={0.6} track="line" themeMode="light" />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Linear horizontal groove — knob slides left ➜ right, no rotation</span>
+              </div>
+
+              {/* Straight Line — Dark Active */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Straight Line (ON)</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-[#ED45BE]">track=&quot;line&quot;</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle scale={0.5} duration={0.6} track="line" isActive={true} themeMode="dark" />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Straight track with the magenta matte laser trail filled</span>
+              </div>
+
+              {/* Cinematic Slow */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">🎬 Cinematic Glide</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">duration=1.8s</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle scale={0.5} duration={1.8} />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Long, weighty easing for a dramatic slow-motion sweep</span>
+              </div>
+
+              {/* Headless */}
+              <div className="bg-[#101012] border border-white/5 rounded-2xl p-5 flex flex-col items-center justify-between min-h-[360px] overflow-x-clip transition-all hover:border-white/15">
+                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                  <span className="text-white font-semibold">Minimal (no header)</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-400">showHeader={"{false}"}</span>
+                </div>
+                <div className="flex items-center justify-center my-2">
+                  <ArcCornerToggle scale={0.5} duration={0.65} showHeader={false} />
+                </div>
+                <span className="text-[11px] font-mono text-gray-500 text-center">Bare toggle with the STANDERD / CLICK label row hidden</span>
               </div>
             </div>
           </div>

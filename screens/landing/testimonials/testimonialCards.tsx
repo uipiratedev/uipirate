@@ -47,7 +47,7 @@ export default function TestimonialCards() {
   const col3 = displayedTestimonials.filter((_, i) => i % 3 === 2);
 
   return (
-    <section className="w-full pt-6 max-md:pt-4 container mx-auto px-32 lg:px-20 max-md:px-4">
+    <section className="w-full pt-6 max-md:pt-4 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
       <div className="text-center mb-10 max-md:mb-8">
         <h2 className="text-4xl max-md:text-3xl font-bold">
           What <span className="text-brand-orange">Clients Say</span>

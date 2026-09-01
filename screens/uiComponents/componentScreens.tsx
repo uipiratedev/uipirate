@@ -39,6 +39,7 @@ export const COMPONENT_LAB_SCREENS: Record<string, React.ComponentType> = {
   "magnetic-pulse-cta": studio(() => import("@/screens/buttons/magneticPulse")),
   "arc-corner-toggle": studio(() => import("@/screens/buttons/arcCornerToggle")),
   "animated-slide-button": studio(() => import("@/screens/buttons/animatedSlide")),
+  "tactile-neumorphic-switch": studio(() => import("@/screens/buttons/tactileNeumorphicSwitch")),
 };
 
 export const getComponentLabScreen = (id: string): React.ComponentType | undefined =>

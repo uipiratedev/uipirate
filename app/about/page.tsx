@@ -272,7 +272,7 @@ export default function AboutPage() {
       />
 
       {/* Hero Section - Consistent with other pages */}
-      <section className="relative pt-8 pb-12 max-md:pt-4">
+      <section className="hero-page-container pb-12">
         {/* Grid Background */}
         <div
           className="absolute pointer-events-none inset-0"
