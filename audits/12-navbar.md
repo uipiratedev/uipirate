@@ -42,7 +42,10 @@
 
 **Assessment:**
 ✅ The `alt` text includes descriptive keywords ("Enterprise UI/UX Design Agency") — strong for SEO.
-✅ **Resolved:** Replaced standard `<img>` with `next/image`, adding explicit dimensions (`width={40} height={40}`) and `priority={true}` to prevent CLS.
+❌ Missing `width` and `height` — causes Cumulative Layout Shift (CLS) on first paint. (Note: Attempted to fix with `next/image` but reverted due to layout/rendering issues).
+❌ Not using `next/image` with `priority`. For an above-the-fold asset present on every page, this is the highest ROI performance change on the site.
+
+**Suggested fix:** Address the layout issues preventing `next/image` usage, or at minimum, add explicit `width` and `height` to the `<img>` tag.
 
 ---
 
@@ -59,8 +62,8 @@
 ```
 
 **Assessment:**
-✅ Clear intent, routes correctly to `/contact`.
-⚠️ `data-front` and `data-back` attributes suggest a flip/reveal animation was planned. The inner text "Let's Talk" renders as static copy. Unless a global CSS rule targets `[data-front]` and `[data-back]` to animate, these attributes do nothing and can be removed.
+✅ The styling matches the global button components (`border-brand-orange`).
+✅ **Resolved:** Removed the unused `data-front` attribute and implemented a beautiful, sweeping background mask effect. The text remains statically as "Let's Talk", and on hover, the background fills from the bottom up with the primary orange, while the icon color transitions to white.
 
 ---
 

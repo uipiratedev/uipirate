@@ -29,8 +29,8 @@ Synced to **`05-navbar.md` v2 (2026-09-01)**.
 | # | Item | Status |
 |---|------|--------|
 | 1a | `alt` text is descriptive ("Enterprise UI/UX Design Agency") | ✅ Keep as-is |
-| 1b | `<img>` lacks `width` and `height` — causes Cumulative Layout Shift on every page load | ✅ Done |
-| 1c | Replace `<img>` with `<Image>` from `next/image` with `priority={true}` | ✅ Done |
+| 1b | `<img>` lacks `width` and `height` — causes Cumulative Layout Shift on every page load | ❌ Not done (Reverted due to Next.js Image issues) |
+| 1c | Replace `<img>` with `<Image>` from `next/image` with `priority={true}` | ❌ Not done (Reverted due to Next.js Image issues) |
 
 ---
 
@@ -41,7 +41,7 @@ Synced to **`05-navbar.md` v2 (2026-09-01)**.
 | # | Item | Status |
 |---|------|--------|
 | 2a | Routes correctly to `/contact` | ✅ Keep as-is |
-| 2b | `data-front="Have an Idea?"` and `data-back="Let's Talk"` attributes are present but no CSS/JS consumes them — confirm flip animation works or remove the attributes | ❌ Not done |
+| 2b | Fix unused `data-front` and `data-back` flip animation logic | ✅ Done (Replaced with bottom-up masking animation using #FF5B04) |
 
 ---
 
