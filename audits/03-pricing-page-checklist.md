@@ -153,9 +153,9 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 |---|------|--------|----------|
 | 9a | Heading `How We Stack Up` — clear and direct | ✅ Done | — |
 | 9b | Subtext — benefit-framed, references 50+ companies | ✅ Done | — |
-| 9c | Monthly cost row still shows `$2,000` — update to `from $500` | ❌ Not done | 🔴 Fix now |
-| 9d | `Enterprise` quality claim is self-assessed — link to case studies | ❌ Not done | 🟡 Consider |
-| 9e | `Slow` for In-House — add timeframe for credibility: `Slow (1-3 weeks)` | ❌ Not done | 🟡 Consider |
+| 9c | Monthly cost row still shows `$2,000` — update to `from $500` | ✅ Done | 🔴 Fix now |
+| 9d | `Enterprise` quality claim is self-assessed — link to case studies | ✅ Done — replaced with '50+ Shipped Products' | 🟡 Consider |
+| 9e | `Slow` for In-House — add timeframe for credibility: `Slow (1-3 weeks)` | ✅ Done | 🟡 Consider |
 
 ---
 

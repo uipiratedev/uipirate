@@ -596,6 +596,9 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | 10 | Custom Quote subtitle updated to target one audience | ✅ Done |
 | 18 | `One subscription, endless possibilities` replaced with B2B copy | ✅ Done |
 | 26 | Two scarcity signals unified | ✅ Done |
+| 25 | `Enterprise` quality claim replaced with `50+ Shipped Products` | ✅ Done |
+| NEW | Comparison table price anchor updated to `from $500` | ✅ Done |
+| NEW | In-house turnaround updated to `Slow (1-3 weeks)` | ✅ Done |
 
 ## What Is Still Open (as of v4)
 
@@ -610,7 +613,6 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | 21 | `priceValidUntil: "2026-12-31"` in JSON-LD — update before expiry | `app/pricing/page.tsx` | 🟡 Consider |
 | 22 | `reviewCount: 50` not verifiable on-page | `app/pricing/page.tsx` | 🟡 Consider |
 | 24 | `5.0★` trust stat — star glyph in numeric causes parsing ambiguity | `pricing/hero/index.tsx` | 🟡 Consider |
-| 25 | `Enterprise` quality claim in comparison table is self-assessed | `pricing/comparison/index.tsx` | 🟡 Consider |
 
 ---
 
