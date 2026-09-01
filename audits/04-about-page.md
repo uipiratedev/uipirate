@@ -453,18 +453,16 @@ Sub: "Book a free 15-minute call. Tell us your vision — we'll show you how we 
 
 ---
 
-### 11. SEO — Missing: `layout.tsx` for the About page
+### 11. SEO METADATA
 
-The About page does not appear to have a `layout.tsx` with `<head>` metadata (title, description, Open Graph). The JSON-LD schema is implemented inline in `page.tsx`, but there's no exported `metadata` object.
+**File:** `app/about/layout.tsx`
 
-**Check:** Does the About page have a `metadata` export in `page.tsx`? If not, it's inheriting the root layout's generic metadata — meaning Google may index it with the homepage title and description, which wastes ranking potential for "product design agency," "about us," and related search terms.
+**Check:** The metadata object was checked against SEO best practices.
+- The Page Title lacked the brand name ("About | Product Design Agency..."). 
+- The Meta Description was too long (~270 chars) and buried the most important differentiators (50+ products, US timezone).
+- The keywords lacked specific dev-side and hiring search terms.
 
-**Suggested title:** `About UI Pirate — Product Design & Development Agency Since 2015`
-
-**Suggested description:**
-```
-We're a product design and development agency. 9+ years, 50+ products shipped across 6 countries. SaaS, AI platforms, FinTech, HealthTech — from first wireframe to working software.
-```
+*(✅ Applied: Optimized Page Title to `About UI Pirate — Product Design & Development Agency`, shortened Meta Description to ~160 characters while front-loading key metrics, and appended new search keywords.)*
 
 ---
 
@@ -967,11 +965,11 @@ Add a small FAQ block (same pattern as the pricing FAQ component) before the CTA
 
 | Question | Answer (draft) |
 |---|---|
-| Who is UI Pirate? | A product design and development agency founded by Vishal Anand in 2015. A seven-person team of designers and engineers who take products from first wireframe to shipped code. |
+| What is UI Pirate? | A product design and development agency founded by Vishal Anand in 2017. A seven-person team of designers and engineers who take products from first wireframe to shipped code. |
 | Where is the team based? | The core team is in India. We keep US Eastern and Pacific business hours, and 60% of our clients are US-based startups and enterprises. |
 | Do you only design, or do you build too? | Both. We handle product thinking, UX/UI design, and production-ready front-end code in React, Angular, and Next.js — the same team, start to finish. |
 
-**Why:** directly answers the three queries the keyword-gap and AI-citation sections flag as missing (who / where / scope), and gives AI engines quotable `Question`/`Answer` pairs. Confirm each answer against the founding-year decision in NF7 and the team count in NF1 before shipping.
+**Why:** directly answers the three queries the keyword-gap and AI-citation sections flag as missing (what / where / scope), and gives AI engines quotable `Question`/`Answer` pairs. Confirm each answer against the founding-year decision in NF7 and the team count in NF1 before shipping.
 
 ---
 

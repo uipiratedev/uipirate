@@ -20,7 +20,7 @@ We specialize in **complex enterprise SaaS and AI applications** — the kind wi
 **Founder**: Vishal Anand — 9+ years of experience in product design & full-stack software development
 **Team**: Vishal Anand (Founder & Lead Designer), Danish Ansari (Lead Frontend Developer), Syed Musaddiq (Lead UX Designer), Kartik Kumar (Lead Graphics & Motion), Aniket (Lead Backend Developer)
 **Headquarters**: India (serving clients globally)
-**Founded**: 2015
+**Founded**: 2017
 **Projects Shipped**: 50+ products with 5.0 rating
 
 ## Services

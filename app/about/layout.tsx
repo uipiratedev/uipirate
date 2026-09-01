@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About | Product Design Agency — From Idea to Shipped Product",
+  title: "About UI Pirate — Product Design & Development Agency",
   description:
-    "We turn product ideas into shipped products. Product thinking, competitive analysis, information architecture & conversion-focused UX/UI design. We simplify complex SaaS, AI apps & enterprise software. 9+ years, 50+ products shipped. EST/PST timezone friendly for US clients.",
+    "UI Pirate is a product design and development agency — 50+ products shipped across SaaS, AI, FinTech and HealthTech. US timezone friendly. From first wireframe to working software.",
   keywords:
-    "uipirate, uipirates, UI Pirate, about UI Pirate, product design agency USA, idea to product, product thinking agency, competitive analysis design, information architecture, conversion focused UX, simplify complex products, SaaS product design, AI app design, enterprise UX design, hire product designer USA, Vishal Anand",
+    "uipirate, uipirates, UI Pirate, about UI Pirate, product design agency USA, idea to product, product thinking agency, competitive analysis design, information architecture, conversion focused UX, simplify complex products, SaaS product design, AI app design, enterprise UX design, hire product designer USA, Vishal Anand, product design and development agency, hire Next.js agency, AI product design agency",
   openGraph: {
     title: "About UI Pirate | Product Design — From Idea to Shipped Product",
     description:

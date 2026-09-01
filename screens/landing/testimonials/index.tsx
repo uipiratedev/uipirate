@@ -49,12 +49,6 @@ function LandingTestimonials() {
         <div className=" flex flex-col items-center justify-center pb-4 max-md:pb-4">
           <GlassBadge variant="gradient">testimonials</GlassBadge>
         </div>
-
-        <h2 className="heading-center">
-          <span className="text-gray-900">Loved by SaaS Founders &</span>
-          <br className="max-md:hidden" />{" "}
-          <span className="text-brand-orange">Product Teams</span>
-        </h2>
       </div>
       <div className="autoShowBottom">
         <TestimonialCards />
