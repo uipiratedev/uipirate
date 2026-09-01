@@ -3,7 +3,8 @@
 **Files in scope:** `app/pricing/page.tsx` · `screens/pricing/` · `screens/landing/pricing/index.tsx`
 **Focus:** Copy, messaging, positioning, conversion logic, SEO metadata, and structural decisions
 **Research basis:** Apple HIG, Google Material UX Writing, Nielsen Norman Group, Copyhackers JTBD, E-E-A-T guidelines, CRO research, B2B pricing psychology (Predictably Irrational — Ariely, Influence — Cialdini), agency pricing studies, SaaS pricing benchmark data
-**Last audited:** 2026-08-27 (v2 — post-target-audience restructure)
+**Last audited:** 2026-08-27 (v2) → v3 (2026-08-31) → **v4 sync (2026-09-01)**
+**v4 note:** Synced with landing page pricing changes. Price updated to "from $500". CTAs, copy, and features updated. See "What's Done vs Open" below.
 
 ---
 
@@ -66,13 +67,23 @@ Between the first audit and this one, the pricing page was significantly rebuilt
 - Badge changed to "ZERO RISK"
 - CTA updated to "Start Your Pilot Project" linking to cal.com
 
-**Still present from v1 (unresolved):**
-- Monthly Retainer subtitle still "For teams that need design & dev support, every month"
-- Monthly Retainer CTA is still "Chat on WhatsApp" — not fixed
+**Fixed since v2 (updated in v4 sync):**
+- Monthly Retainer subtitle updated to: "Your dedicated design and development team — without the full-time headcount" ✅
+- Monthly Retainer CTA now "Get Started →" → cal.com ✅
+- Custom Quote CTAs (desktop + mobile) now "Book a Discovery Call →" → cal.com ✅
+- Satisfaction Guarantee now names Ipsos, Khaitan & Co, RevUp AI ✅
+- Benefits broken sentence fixed: "The 5-day pilot lets you see our execution quality" ✅
+- 5/7 Communication replaced with "Mon–Fri communication, < 2hr response" on all plans ✅
+- FIT CHECK badge changed to "WHO IT'S FOR" ✅
+- Emoji icons in "Not the right fit" strip replaced with ✕ ✅
+- Price updated to "from $500/per month" on the Monthly Retainer card ✅
+
+**Still open (as of v4 sync — 2026-09-01):**
 - Custom Quote subtitle still "For complex products, enterprise needs & startups"
-- Scarcity message still "Only accepting 2 new clients this month"
-- Satisfaction Guarantee still "companies like yours"
-- Benefits section still contains the broken 5-Day Pilot sentence
+- Scarcity message still static ("To ensure quality, we only onboard 2 new clients per month")
+- "One subscription, endless possibilities" still present (L143)
+- Hero "Book a Call →" still links to /contact not cal.com
+- SEO title/meta still says "$2000/mo" but component now shows "from $500"
 
 ---
 
@@ -541,6 +552,68 @@ The core formula for fixing this page is straightforward:
 
 ---
 
+
+---
+
+# v4 Sync Update — 2026-09-01
+
+**Purpose:** Sync pricing page MD with changes made during the landing page audit session.
+
+## Price Change: $2,000 → from $500/month
+
+The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $500/per month`** (L153). This is a significant change that affects:
+
+| Location | Status | Action Needed |
+|----------|--------|---------------|
+| Pricing card component (`landing/pricing/index.tsx` L153) | ✅ Done — shows `from $500` | None |
+| Page title (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo Unlimited` | Update to `from $500/mo` |
+| Meta description (`app/pricing/page.tsx`) | ❌ Still says `UI/UX design from $2000/mo` | Update to `from $500/mo` |
+| OG title (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo Unlimited` | Update to `from $500/mo` |
+| OG description (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo` | Update |
+| Twitter title (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo Unlimited` | Update |
+| JSON-LD schema offer price (`app/pricing/page.tsx`) | ❌ Still says `"price": "2000"` | Update to `"500"` |
+| Comparison table (`pricing/comparison/index.tsx`) | ❌ Still shows `$2,000` | Update to `from $500` |
+| "How much does UI/UX design cost?" FAQ (NC10) | ❌ Still references `$2,000/month` | Update |
+
+## What Is Done (Code-Verified as of v4)
+
+| # | Item | Status |
+|---|------|--------|
+| 1 | Monthly Retainer CTA: `Get Started →` → cal.com | ✅ Done |
+| 2 | Custom Quote CTA (desktop): `Book a Discovery Call →` → cal.com | ✅ Done |
+| 3 | Custom Quote CTA (mobile): `Book a Discovery Call →` → cal.com | ✅ Done |
+| 4 | Benefits broken sentence fixed | ✅ Done |
+| 5 | `5/7 Communication` → `Mon–Fri communication, < 2hr response` (all 3 plans) | ✅ Done |
+| 7 | Section H2 updated to `Transparent Pricing for SaaS Teams` | ✅ Done |
+| 8 | Monthly Retainer subtitle updated to outcome-focused copy | ✅ Done |
+| 12 | `FIT CHECK` → `WHO IT'S FOR` | ✅ Done |
+| 13 | Emoji icons in "Not the right fit" strip → ✕ | ✅ Done |
+| 17 | Guarantee `companies like yours` → named clients (Ipsos, Khaitan & Co, RevUp AI) | ✅ Done |
+
+## What Is Still Open (as of v4)
+
+| # | Item | File | Priority |
+|---|------|------|----------|
+| 6 | Hero `Book a Call →` still links to `/contact` — change to cal.com | `pricing/hero/index.tsx` L117 | 🟠 Soon |
+| 9 | Scarcity still static (only copy changed, not made dynamic) | `landing/pricing/index.tsx` L168 | 🟠 Soon |
+| 10 | Custom Quote subtitle still `For complex products, enterprise needs & startups` | `landing/pricing/index.tsx` L217 | 🟠 Soon |
+| 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | `pricing/perfectFor/index.tsx` | 🟠 Soon |
+| 14 | Pilot tier descriptions still placeholder labels | `tryBeforeCommit/index.tsx` L18-21 | 🟠 Soon |
+| 15 | Missing FAQ: `How much does UI/UX design cost?` | `pricing/faq/index.tsx` | 🟠 Soon |
+| 16 | FAQ CTA `Chat With Us` — replace with cal.com CTA | `pricing/faq/index.tsx` L101 | 🟠 Soon |
+| 18 | `One subscription, endless possibilities` still present | `landing/pricing/index.tsx` L143 | 🟡 Consider |
+| 19 | SEO keywords: remove `cheap UI design agency`, `affordable UX design` | `app/pricing/page.tsx` | 🟡 Consider |
+| 20 | SEO keywords: add `design subscription agency`, `SaaS design retainer`, etc. | `app/pricing/page.tsx` | 🟡 Consider |
+| 21 | `priceValidUntil: "2026-12-31"` in JSON-LD — update before expiry | `app/pricing/page.tsx` | 🟡 Consider |
+| 22 | `reviewCount: 50` not verifiable on-page | `app/pricing/page.tsx` | 🟡 Consider |
+| 23 | Meta description and OG title: align `60%` → `50-70%` savings claim | `app/pricing/page.tsx` | 🟡 Consider |
+| 24 | `5.0★` trust stat — star glyph in numeric causes parsing ambiguity | `pricing/hero/index.tsx` | 🟡 Consider |
+| 25 | `Enterprise` quality claim in comparison table is self-assessed | `pricing/comparison/index.tsx` | 🟡 Consider |
+| 26 | Two scarcity signals (`Only 2 new clients` + `Limited slots`) — unify | Multiple files | 🟡 Consider |
+| NEW | SEO title/meta/schema price still says `$2000` — update to `from $500` | `app/pricing/page.tsx` | 🔴 Fix now |
+
+---
+
 # v3 Audit Update — Pricing Page
 **Audited:** 2026-08-31
 **Audit basis:** Direct source-code inspection of all flagged components + SEO Content skill (E-E-A-T framework, Google Helpful Content guidelines, AI Citation Readiness, pricing psychology lens)
@@ -563,23 +636,23 @@ Every item from v2 was verified against the live source files.
 | TryBeforeCommit — `Start Your Pilot Project` → cal.com | ✅ Fixed | ✅ Correctly links to `https://cal.com/ui-pirate/15min` — L113 |
 | PDF file exists | 🟠 Verify | ✅ **Confirmed** — `uipirate-pricing-2026.pdf` exists in `/public/` |
 | Pricing FAQ — buyer-blocker questions | ⚠️ Not checked in v2 | ✅ **New finding — actually good.** Pricing FAQ has 6 buyer-blocker questions (pause, satisfaction, turnaround, exclusions, pilot, switching). This is better than the landing page FAQ. |
-| Monthly Retainer CTA — WhatsApp | 🔴 Not fixed | ❌ **Still reads:** `Chat on WhatsApp` — `landing/pricing/index.tsx` L172 |
-| Custom Quote CTA (desktop) — WhatsApp | 🔴 Not fixed | ❌ **Still reads:** `Chat on WhatsApp` — `landing/pricing/index.tsx` L223 |
-| Custom Quote CTA (mobile) — WhatsApp | 🔴 Not fixed | ❌ **Still reads:** `Chat on WhatsApp` — `landing/pricing/index.tsx` L253 |
-| Benefits row — broken sentence | 🔴 Not fixed | ❌ **Still reads:** `shows you see our execution` — `landing/pricing/index.tsx` L66 |
-| Hero `Book a Call →` → `/contact` | 🟠 Not fixed | ❌ **Still links to:** `/contact` — `pricing/hero/index.tsx` L117 — should be `cal.com/ui-pirate/15min` |
-| `Pricing That Makes Sense` H2 | 🟠 Not fixed | ❌ **Still present** — `landing/pricing/index.tsx` L89 |
-| Monthly Retainer subtitle | 🟠 Not fixed | ❌ **Still reads:** `For teams that need design & dev support, every month` — L119 |
-| Scarcity message | 🟠 Not fixed | ❌ **Still reads:** `Only accepting 2 new clients this month` — L165 |
+| Monthly Retainer CTA — WhatsApp | 🔴 Not fixed | ✅ **Fixed (v4)** — now reads `Get Started →` → cal.com — `landing/pricing/index.tsx` L174 |
+| Custom Quote CTA (desktop) — WhatsApp | 🔴 Not fixed | ✅ **Fixed (v4)** — now reads `Book a Discovery Call →` → cal.com — `landing/pricing/index.tsx` L227 |
+| Custom Quote CTA (mobile) — WhatsApp | 🔴 Not fixed | ✅ **Fixed (v4)** — now reads `Book a Discovery Call →` → cal.com — `landing/pricing/index.tsx` L260 |
+| Benefits row — broken sentence | 🔴 Not fixed | ✅ **Fixed (v4)** — now reads `lets you see our execution quality` — `landing/pricing/index.tsx` L66 |
+| Hero `Book a Call →` → `/contact` | 🟠 Not fixed | ❌ **Still open** — `pricing/hero/index.tsx` L117 still links to `/contact` |
+| Section H2 copy | 🟠 Not fixed | ✅ **Fixed (v4)** — now reads `Transparent Pricing for SaaS Teams` — `landing/pricing/index.tsx` L89 |
+| Monthly Retainer subtitle | 🟠 Not fixed | ✅ **Fixed (v4)** — now reads `Your dedicated design and development team — without the full-time headcount` — L119 |
+| Scarcity message | 🟠 Not fixed | ⚠️ **Partially done (v4)** — now reads `To ensure quality, we only onboard 2 new clients per month` — still static, consider a dynamic approach |
 | Custom Quote subtitle | 🟠 Not fixed | ❌ **Still reads:** `For complex products, enterprise needs & startups` — L212 |
-| PerfectFor — `FIT CHECK` badge | 🟠 Not fixed | ❌ **Still reads:** `FIT CHECK` — `pricing/perfectFor/index.tsx` L63 |
+| PerfectFor — `FIT CHECK` badge | 🟠 Not fixed | ✅ **Fixed (v4)** — now reads `WHO IT'S FOR` |
 | PerfectFor — `impress investors` card | 🟠 Not fixed | ❌ **Still reads:** `Ship fast and impress investors...` — L17-18 |
 | PerfectFor — SaaS Companies grammar | 🟠 Not fixed | ❌ **Still reads:** `Without in-house design teams, needing...` — L24-25 |
-| PerfectFor — emoji in "Not the right fit" | 🟠 Not fixed | ❌ `📦 🎨 ⏰` still present — L46-49 |
+| PerfectFor — emoji in "Not the right fit" | 🟠 Not fixed | ✅ **Fixed (v4)** — replaced with ✕ icons |
 | Pilot tier descriptions — placeholder labels | 🟠 Not fixed | ❌ **Still reads:** `UI/UX design sprint`, `Code implementation`, `Full-stack delivery` — L18-21 |
-| `One subscription, endless possibilities` | 🟡 Not fixed | ❌ **Still present** — L143 |
-| `companies like yours` guarantee | 🟡 Not fixed | ❌ **Still reads:** `companies like yours` — L310 |
-| `5/7 Communication` feature label | ⚠️ Not flagged in v2 | ❌ **New finding** — appears in `monthlyRetainerFeatures`, `customProjectFeatures`, and `customQuoteFeatures` arrays. Unexplained abbreviation. |
+| `One subscription, endless possibilities` | 🟡 Not fixed | ❌ **Still open** — L143 |
+| `companies like yours` guarantee | 🟡 Not fixed | ✅ **Fixed (v4)** — now names Ipsos, Khaitan & Co, RevUp AI — L319 |
+| `5/7 Communication` feature label | ⚠️ Not flagged in v2 | ✅ **Fixed (v4)** — all 3 plans now read `Mon–Fri communication, < 2hr response` |
 | Pricing FAQ CTA — `Chat With Us` | ⚠️ Not flagged in v2 | ❌ **New finding** — `pricing/faq/index.tsx` L101. `LetsTalkButton` with no `href` — unclear where this goes. |
 
 **Summary:** Zero copy changes have been made since v2. All 🔴 and 🟠 items remain open. Two new issues found.
@@ -1010,23 +1083,23 @@ All items from v2 carried forward. New items marked `[v3]`. Items code-verified 
 
 | # | Section | Issue | File | Priority | Verified |
 |---|---|---|---|---|---|
-| 1 | Pricing Cards | Monthly Retainer CTA: `Chat on WhatsApp` → `Get Started →` (cal.com) | `landing/pricing/index.tsx` L172 | 🔴 Fix now | ✓ |
-| 2 | Pricing Cards | Custom Quote CTA (desktop): `Chat on WhatsApp` → `Book a Discovery Call →` (cal.com) | `landing/pricing/index.tsx` L223 | 🔴 Fix now | ✓ |
-| 3 | Pricing Cards | Custom Quote CTA (mobile): `Chat on WhatsApp` → same as #2 | `landing/pricing/index.tsx` L253 | 🔴 Fix now | ✓ |
-| 4 | Benefits Row | `shows you see our execution` — fix broken sentence (see NC2) | `landing/pricing/index.tsx` L66 | 🔴 Fix now | ✓ |
-| 5 | Feature Lists | `5/7 Communication` → `Mon–Fri communication, <2hr response` (all 3 plans) | `landing/pricing/index.tsx` L33, L43, L52 | 🟠 Soon `[v3]` | ✓ |
+| 1 | Pricing Cards | Monthly Retainer CTA: `Chat on WhatsApp` → `Get Started →` (cal.com) | `landing/pricing/index.tsx` L174 | ✅ Done | ✓ |
+| 2 | Pricing Cards | Custom Quote CTA (desktop): `Chat on WhatsApp` → `Book a Discovery Call →` (cal.com) | `landing/pricing/index.tsx` L227 | ✅ Done | ✓ |
+| 3 | Pricing Cards | Custom Quote CTA (mobile): `Chat on WhatsApp` → same as #2 | `landing/pricing/index.tsx` L260 | ✅ Done | ✓ |
+| 4 | Benefits Row | `shows you see our execution` — fix broken sentence (see NC2) | `landing/pricing/index.tsx` L66 | ✅ Done | ✓ |
+| 5 | Feature Lists | `5/7 Communication` → `Mon–Fri communication, <2hr response` (all 3 plans) | `landing/pricing/index.tsx` L32, L42, L52 | ✅ Done | ✓ |
 | 6 | Hero CTA | `Book a Call →` links to `/contact` — change to `cal.com/ui-pirate/15min` | `pricing/hero/index.tsx` L117 | 🟠 Soon | ✓ |
-| 7 | Pricing Cards | `Pricing That Makes Sense` H2 — replace with `Choose Your Plan` | `landing/pricing/index.tsx` L89 | 🟠 Soon | ✓ |
-| 8 | Pricing Cards | Monthly Retainer subtitle — lead with buyer outcome (see NC4) | `landing/pricing/index.tsx` L119 | 🟠 Soon | ✓ |
+| 7 | Pricing Cards | Section H2 — replaced generic copy | `landing/pricing/index.tsx` L89 | ✅ Done — now `Transparent Pricing for SaaS Teams` | ✓ |
+| 8 | Pricing Cards | Monthly Retainer subtitle — lead with buyer outcome (see NC4) | `landing/pricing/index.tsx` L119 | ✅ Done | ✓ |
 | 9 | Pricing Cards | Scarcity message — replace static `Only 2 new clients` (see NC5) | `landing/pricing/index.tsx` L165 | 🟠 Soon | ✓ |
 | 10 | Pricing Cards | Custom Quote subtitle — `enterprise needs & startups` → pick one (see NC6) | `landing/pricing/index.tsx` L212 | 🟠 Soon | ✓ |
 | 11 | PerfectFor | Rewrite Funded Startups + SaaS Companies cards (see NC9) | `pricing/perfectFor/index.tsx` L17-25 | 🟠 Soon | ✓ |
-| 12 | PerfectFor | Replace `FIT CHECK` badge with `WHO IT'S FOR` | `pricing/perfectFor/index.tsx` L63 | 🟠 Soon | ✓ |
-| 13 | PerfectFor | Replace emoji icons in "Not the right fit" strip with `✕` text icon | `pricing/perfectFor/index.tsx` L46-49 | 🟠 Soon | ✓ |
+| 12 | PerfectFor | Replace `FIT CHECK` badge with `WHO IT'S FOR` | `pricing/perfectFor/index.tsx` L63 | ✅ Done | ✓ |
+| 13 | PerfectFor | Replace emoji icons in "Not the right fit" strip with `✕` text icon | `pricing/perfectFor/index.tsx` L46-49 | ✅ Done | ✓ |
 | 14 | TryBeforeCommit | Pilot tier descriptions — rewrite to outcomes (see NC8) | `tryBeforeCommit/index.tsx` L18-21 | 🟠 Soon | ✓ |
 | 15 | Pricing FAQ | Add `How much does UI/UX design cost?` as first FAQ item (see NC10) | `pricing/faq/index.tsx` | 🟠 Soon `[v3]` | ✓ |
 | 16 | Pricing FAQ | Replace `Chat With Us` CTA with `Book a Free 15-Min Call →` (cal.com) | `pricing/faq/index.tsx` L101 | 🟠 Soon `[v3]` | ✓ |
-| 17 | Guarantee | Replace `companies like yours` with real client names (see NC7) | `landing/pricing/index.tsx` L310 | 🟡 Consider | ✓ |
+| 17 | Guarantee | Replace `companies like yours` with real client names (see NC7) | `landing/pricing/index.tsx` L319 | ✅ Done — now names Ipsos, Khaitan & Co, RevUp AI | ✓ |
 | 18 | Pricing Cards | `One subscription, endless possibilities` → specific line (see NC4) | `landing/pricing/index.tsx` L143 | 🟡 Consider | ✓ |
 | 19 | SEO Keywords | Remove `cheap UI design agency`, `affordable UX design` — wrong audience signal | `app/pricing/page.tsx` L10 | 🟡 Consider `[v3]` | ✓ |
 | 20 | SEO Keywords | Add `design subscription agency`, `SaaS design retainer`, `unlimited design requests pricing` | `app/pricing/page.tsx` L10 | 🟡 Consider `[v3]` | ✓ |
