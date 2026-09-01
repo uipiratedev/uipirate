@@ -104,10 +104,10 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 6a | Kartik Kumar titled `Lead Graphics & Motion` in schema + team — retitle to reflect current services (NF3) | ❌ Not done | 🟠 Soon |
-| 6b | Priyagni titled `Graphic Designer` in schema + team — retitle or remove (NF3) | ❌ Not done | 🟠 Soon |
-| 6c | Aman titled `Video Editing` in schema + team — retitle or remove (NF3) | ❌ Not done | 🟠 Soon |
-| 6d | No founder origin story / bio — add 2–3 sentence founder note above team grid (NC10) | ❌ Not done | 🟡 Consider |
+| 6a | Kartik Kumar titled `Lead Graphics & Motion` in schema + team — retitle to reflect current services (NF3) | ✅ Keep as-is (per user) | 🟠 Soon |
+| 6b | Priyagni titled `Graphic Designer` in schema + team — retitle or remove (NF3) | ✅ Keep as-is (per user) | 🟠 Soon |
+| 6c | Aman titled `Video Editing` in schema + team — retitle or remove (NF3) | ✅ Keep as-is (per user) | 🟠 Soon |
+| 6d | No founder origin story / bio — add 2–3 sentence founder note above team grid (NC10) | ✅ Done | 🟡 Consider |
 
 **NC10 Recommended founder note:**
 > UI Pirate started in 2015 when Vishal Anand — a product designer who also writes production code — got tired of design hand-offs that fell apart in engineering. The agency is built around one idea: the people who design the product should be able to ship it.

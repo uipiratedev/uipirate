@@ -276,6 +276,7 @@ Sub: Simple: you share your vision. We do the rest.
 **File:** `screens/landing/theTeam/index.tsx` (shared component)
 
 Not audited here — tracked in the landing page audit. No content changes specific to the About page placement.
+*(✅ Applied: Kept team roles as-is per user request. Added a stylized 'founder note' above the team grid.)*
 
 ---
 
