@@ -109,7 +109,7 @@ const PricingClientLogos = () => {
         }}
       />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 flex flex-col items-center justify-center relative z-10">
+      <div className="section-container flex flex-col items-center justify-center relative z-10">
         {/* Section heading with enhanced styling */}
         <div className="mb-6 max-md:mb-6 text-center max-w-4xl mx-auto px-8 max-md:px-0">
           <motion.div

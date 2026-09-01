@@ -75,7 +75,7 @@ const Pricing = () => {
 
   return (
     <motion.div
-      className="py-12 max-md:py-8 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32"
+      className="section-container"
       initial="hidden"
       variants={containerVariants}
       viewport={{ once: true, amount: 0.1 }}
