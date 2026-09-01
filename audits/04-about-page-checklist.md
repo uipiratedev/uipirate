@@ -204,13 +204,13 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status | Priority |
 |---|------|--------|----------|
-| 13a | `numberOfEmployees: "9"` — contradicts 7-person team grid and 6-person employee array; set to `"7"` (NF1) | ❌ Not done | 🔴 Fix now |
-| 13b | `Syed Musaddiq` (schema) vs `Musuddiq` (team component) — standardize spelling (NF2) | ❌ Not done | 🔴 Fix now |
-| 13c | Employee job titles for trimmed services (Kartik, Priyagni, Aman) — update or remove (NF3) | ❌ Not done | 🟠 Soon |
-| 13d | Schema description claims `Node.js and Python` — not shown in visible tech stack (NF8) | ❌ Not done | 🟡 Consider |
-| 13e | `foundingDate: "2015"` vs `9+ Years` stat — 2026−2015=11 years; reconcile (NF7) | ❌ Not done | 🟡 Consider |
-| 13f | `customer[]` name `Awesome Health Club` vs grid `Awesome Health` — align (NF9) | ❌ Not done | 🟡 Consider |
-| 13g | `aggregateRating` absent for `5.0 Client Rating` stat — add with Clutch `url` (NC4) | ❌ Not done | 🟠 Soon |
+| 13a | `numberOfEmployees: "9"` — contradicts 7-person team grid and 6-person employee array; set to `"7"` (NF1) | ✅ Done | 🔴 Fix now |
+| 13b | `Syed Musaddiq` (schema) vs `Musuddiq` (team component) — standardize spelling (NF2) | ✅ Done | 🔴 Fix now |
+| 13c | Employee job titles for trimmed services (Kartik, Priyagni, Aman) — update or remove (NF3) | ✅ Keep as-is (per user) | 🟠 Soon |
+| 13d | Schema description claims `Node.js and Python` — not shown in visible tech stack (NF8) | ✅ Done (added + 2017 applied) | 🟡 Consider |
+| 13e | `foundingDate: "2015"` vs `9+ Years` stat — 2026−2015=11 years; reconcile (NF7) | ✅ Done (changed to 2017) | 🟡 Consider |
+| 13f | `customer[]` name `Awesome Health Club` vs grid `Awesome Health` — align (NF9) | ✅ Done (kept as Awesome Health Club) | 🟡 Consider |
+| 13g | `aggregateRating` absent for `5.0 Client Rating` stat — add with Clutch `url` (NC4) | ✅ Keep as-is (add URL later) | 🟠 Soon |
 
 ---
 

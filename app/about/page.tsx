@@ -28,6 +28,8 @@ const technologies = [
   { name: "Angular", logo: "/assets/logos/angular.svg" },
   { name: "React", logo: "/assets/logos/react.svg" },
   { name: "Next.js", logo: "/assets/logos/next js.svg" },
+  { name: "Node.js", logo: "/assets/logos/nodejs.svg" },
+  { name: "Python", logo: "/assets/logos/python.svg" },
   { name: "TypeScript", logo: "/assets/logos/typescript.svg" },
   { name: "Tailwind CSS", logo: "/assets/logos/tailwind.svg" },
   { name: "Framer", logo: "/assets/logos/framer.svg" },
@@ -135,8 +137,8 @@ export default function AboutPage() {
               name: "UI Pirate by Vishal Anand",
               description:
                 "Full-service product design and development agency specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python.",
-              foundingDate: "2015",
-              numberOfEmployees: "9",
+              foundingDate: "2017",
+              numberOfEmployees: "7",
               founder: {
                 "@type": "Person",
                 name: "Vishal Anand",
@@ -243,7 +245,7 @@ export default function AboutPage() {
                 },
                 {
                   "@type": "Organization",
-                  name: "Awesome Health",
+                  name: "Awesome Health Club",
                   url: "https://awesomehealthclub.com/",
                   description:
                     "HealthTech and wellness platform based in California, USA",

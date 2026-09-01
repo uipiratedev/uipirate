@@ -23,9 +23,9 @@ const TheTeam = () => {
       bgColor: "bg-gradient-to-br from-green-400 to-green-600",
     },
     {
-      name: "Musuddiq",
+      name: "Musaddiq",
       role: "Lead UX Designer",
-      quote: "I’m Musuddiq. I design how the product works.",
+      quote: "I’m Musaddiq. I design how the product works.",
       image: "/assets/teams/musaddiq.svg",
       bgColor: "bg-gradient-to-br from-blue-400 to-blue-600",
     },
