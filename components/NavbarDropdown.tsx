@@ -206,31 +206,24 @@ export const NavbarDropdown = ({
                                   </div>
 
                                   {/* --- BACK FACE (Flipped 180deg horizontally) --- */}
-                                  <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-white via-[#FFF9F5] to-[#FFF0E6] p-5 flex flex-col justify-between border border-[#FF5B04]/20 shadow-inner">
-                                    <div className="flex items-center justify-between">
-                                      <span className="text-2xl">
+                                  <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-white p-5 flex flex-col justify-start border border-gray-200">
+                                    <div className="flex items-center justify-start mb-3">
+                                      <span className="text-xl">
                                         {typeof item.icon === 'string' && item.icon.startsWith('http') ? (
-                                          <img src={item.icon} alt={`${item.category} icon`} className="w-8 h-8 object-contain" />
+                                          <img src={item.icon} alt={`${item.category} icon`} className="w-6 h-6 object-contain filter invert opacity-80" />
                                         ) : (
                                           item.icon || "✨"
                                         )}
                                       </span>
-                                      <span className="text-[10px] font-bold font-jetbrains-mono uppercase tracking-wider text-[#FF5B04] bg-[#FF5B04]/10 px-2 py-0.5 rounded-full border border-[#FF5B04]/20">
-                                        Explore
-                                      </span>
                                     </div>
                                     <div>
-                                      <h3 className="text-[#FF5B04] font-bold text-base md:text-lg mb-1 leading-snug font-jakarta">
+                                      <h3 className="text-gray-900 font-bold text-xs md:text-sm mb-1.5 leading-snug font-jakarta">
                                         {item.category}
                                       </h3>
-                                      <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                                      <p className="text-[11px] text-gray-500 line-clamp-4 leading-relaxed">
                                         {/* @ts-ignore - description added directly in siteConfig */}
                                         {item.description || "Explore our latest resources & blueprints."}
                                       </p>
-                                    </div>
-                                    <div className="pt-2 border-t border-orange-200/60 flex items-center justify-between text-xs font-bold text-[#FF5B04]">
-                                      <span>View Page</span>
-                                      <span className="transition-transform group-hover:translate-x-1">→</span>
                                     </div>
                                   </div>
                                 </NextLink>

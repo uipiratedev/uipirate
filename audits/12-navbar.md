@@ -207,8 +207,9 @@ There are **two dropdown menus**: **Services** (4 cards) and **Resources** (4 ca
 |---|---------|--------|----------|
 | 1 | Brand Logo | `img` tag lacks width/height — causes CLS on every page | 🔴 Fix now |
 | 2 | Cards (both dropdowns) | Card front shows image + title only — no context for the visitor | ✅ Resolved |
-| 3 | Cards (both dropdowns) | No card flip animation exists — implement CSS 3D flip with back-face content | ✅ Resolved: We mapped the new `description` strings to the back face of the cards, which will reveal on hover just like the Services cards. |
-| 4 | Cards (Resources) | Emoji icons — replace with SVGs to match Services dropdown | 🟠 Soon |
+| 3 | Cards (both dropdowns) | No card flip animation exists — implement CSS 3D flip with back-face content | ✅ Resolved: We mapped the new `description` strings to the back face of the cards, which will reveal on hover just like the Services cards.
+✅ **Resolved (Styling Updates):** Adjusted the back face to have a pure white background with a light grey border, removed the "Explore" chip and the "View Page" footer link, moved the icon to the top left, and tightened the title sizing while keeping it bold. All descriptions were shortened for better fit.
+⚠️ **Pending (4b):** The icons are currently just basic emojis (✍️, 📊, 🛠️, 🧩). We left these as emojis for now but they should be replaced with SVG URLs from Cloudinary for consistency with the Services dropdown. | 🟠 Soon |
 | 5 | Dropdown | Hardcoded `top-[68px]` portal offset — verify alignment across all breakpoints | 🟠 Soon |
 | 6 | CTA Button | `data-front` / `data-back` attributes unused — confirm or remove | 🟡 Consider |
 | 7 | Scroll Handler | No throttle on scroll listener — add `requestAnimationFrame` | 🟡 Consider |
