@@ -52,7 +52,7 @@ const CaseStudiesFAQ = () => {
 
   return (
     <section className="py-16 max-md:py-12 -mt-52">
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+      <div className="section-container">
         <motion.div
           className="text-center mb-12 max-md:mb-8"
           initial={{ opacity: 0, y: 20 }}

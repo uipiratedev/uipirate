@@ -135,10 +135,11 @@ and ship production-ready code. From idea to shipped product.
 | "competitive analysis, simplify complex products, design for conversion, and ship production-ready code" | A list of four services in a subheadline is too much. The headline already communicates the outcome; the subheadline should reinforce the transformation, not re-list the services |
 | "From idea to shipped product" | This exact phrase already appears at the end of the H1 ("We Turn Ideas Into Shipped Products") — repeating it in the subheadline within 2 seconds of reading is redundant |
 
-**Suggested rewrite:**
+**Suggested rewrite: (✅ Applied)**
 ```
 We're a product design and development agency. We work alongside SaaS founders
-and enterprise teams — from the first sketch through to working software.
+and enterprise teams — from the first wireframe through to working,
+production-ready software.
 ```
 
 ---
@@ -172,6 +173,7 @@ and enterprise teams — from the first sketch through to working software.
 **One issue:** `5.0 Client Rating` — where does this come from? Without a source attribution (Upwork, Clutch, Google), this is an unverifiable self-claim. The pricing hero attributes it to a general "Average Rating" which is equally unsourced.
 
 **Suggested fix:** Add a source: `5.0 on Upwork` or `5.0 ★ Clutch rating`. This makes the same number significantly more credible.
+*(⚠️ Pending — on hold until actual source URLs are available from Clutch/Upwork to link to)*
 
 ---
 
@@ -211,7 +213,7 @@ Sub: Most agencies give you mockups. We give you a shipped product.
 
 **The pattern:** Cards 02 + 05 overlap, and Cards 04 + 06 overlap. Of 6 differentiation points, you effectively have 4 unique ideas. The redundancy makes the section feel padded and dilutes the impact of each individual point.
 
-**Suggested consolidation:**
+**Suggested consolidation: (✅ Applied)**
 ```
 01 Product Thinking First — keep as-is
 02 Simplify Complex Products — keep as-is (absorbs Enterprise Specialist)
@@ -243,7 +245,7 @@ These two replacement cards add differentiation that doesn't exist anywhere else
 |---|---|
 | Card 03 "Pixel-Perfect Execution" | "Pixel-perfect" is on the copy words-to-avoid list — it's designer jargon. A VP of Engineering or a VP of Product doesn't evaluate agencies on pixel precision. They evaluate on whether the final product works the way users need it to. |
 
-**Suggested fix for Card 03:**
+**Suggested fix for Card 03: (✅ Applied)**
 ```
 Heading: "Design That Holds Up in Code"
 Description: "From Figma to production — the final product matches the design exactly, works as intended, and is built for real-world use."
@@ -264,6 +266,7 @@ Sub: Simple: you share your vision. We do the rest.
 ```
 
 **Assessment:** ✅ The sub-copy "Simple: you share your vision. We do the rest." is strong — it removes process anxiety with a single sentence. Keep.
+*(✅ Applied: Redesigned the dark cards to match the light "How It Works" card design from the landing page per user request, featuring 6 cards with SVG icons and watermark numbers)*
 
 **Same risk as landing page MiniProcess:** The section ends with `See our full process in detail →` linking to `/process`. If this page doesn't exist yet, this link will 404. Verify the `/process` page is live before the About page launches with this link.
 
@@ -273,6 +276,7 @@ Sub: Simple: you share your vision. We do the rest.
 **File:** `screens/landing/theTeam/index.tsx` (shared component)
 
 Not audited here — tracked in the landing page audit. No content changes specific to the About page placement.
+*(✅ Applied: Kept team roles as-is per user request. Added a stylized 'founder note' above the team grid.)*
 
 ---
 
@@ -310,7 +314,7 @@ AI & Machine Learning
 
 The target audience audit recommended narrowing the industries list to the core 4–5 where the best work has been done and the clearest value proposition exists. At 8 items, the list implies the agency works with anyone in any vertical — which, from a US buyer's perspective, signals a lack of specialization.
 
-**Suggested trim (keep the verified client-backed industries):**
+**Suggested trim (keep the verified client-backed industries): (✅ Applied)**
 ```
 SaaS & Enterprise Software   — (core, backed by most clients)
 AI Products & Platforms      — (RevUp AI, Simpleo AI, Sarge)
@@ -347,6 +351,7 @@ Sub: 60% of our clients are US-based startups and enterprises
 ```
 H2: Companies That Trusted Us With Their Products
 ```
+*(✅ Applied)*
 
 ---
 
@@ -359,6 +364,7 @@ H2: Companies That Trusted Us With Their Products
 - US flag for US clients
 
 This is exactly what the landing page marquee section is missing. The About page client grid is the reference implementation for how client logos should be displayed across the site.
+*(✅ Applied per User request: Completely replaced the card grid with the `<LandingMarquee>` style grid from the landing page, using premium client logos and hover styling)*
 
 ---
 
@@ -381,6 +387,7 @@ See our reviews on Clutch →
 **Assessment:** The concept (flagging US clients for US buyers) is correct and smart. However, using an emoji flag in a professional B2B context can register as informal.
 
 **Suggested alternative:** A subtle `US Client` badge with a small outlined box, or a simple `•  Based in USA` text label. Either preserves the information without the emoji visual.
+*(✅ Applied: Used `• Based in USA`)*
 
 ---
 
@@ -393,6 +400,8 @@ The target audience audit removed Graphic Design, Motion Graphics from the servi
 **Suggested fix:** Update Kartik Kumar's `jobTitle` in the schema to reflect a service still offered:
 - "Lead Visual Designer" — if Kartik works on product UI/visual design
 - Remove the entry — if Motion/Graphics was truly removed from scope
+*(✅ Rejected per user request: Team roles will remain as-is)*
+*(✅ Applied: Awesome Health Club was renamed to Awesome Health in schema to match grid)*
 
 ---
 
@@ -406,6 +415,8 @@ All copy issues with this component are documented in the pricing page audit (v2
 - ⚠️ "Funded Startups" card — "impress investors" claim
 - ⚠️ "SaaS Companies" card — grammar
 - ⚠️ Emoji icons in "Not the right fit" strip
+
+*(✅ Confirmed: Kept `PricingPerfectFor` exactly as it is to match the 'Is this the right fit for you' section on the landing page, per user request.)*
 
 ---
 

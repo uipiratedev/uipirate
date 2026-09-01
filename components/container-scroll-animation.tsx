@@ -12,29 +12,51 @@ export const ContainerScroll = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
+    offset: ["start end", "center center"],
   });
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [deviceType, setDeviceType] = React.useState<
+    "mobile" | "tablet" | "desktop"
+  >("desktop");
 
   React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const checkDevice = () => {
+      const width = window.innerWidth;
+
+      if (width <= 640) {
+        setDeviceType("mobile");
+      } else if (width <= 1024) {
+        setDeviceType("tablet");
+      } else {
+        setDeviceType("desktop");
+      }
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
 
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("resize", checkDevice);
     };
   }, []);
 
   const scaleDimensions = () => {
-    return isMobile ? [0.7, 0.9] : [1.05, 1];
+    if (deviceType === "mobile") return [0.85, 1];
+    if (deviceType === "tablet") return [1.02, 1];
+
+    return [1.05, 1];
   };
 
-  const rotate = useTransform(scrollYProgress, [0, 1], [18, 0]);
+  const isMobile = deviceType === "mobile";
+  const rotateValues =
+    deviceType === "mobile" ? [0, 0] : [18, 0];
+  const translateValues =
+    deviceType === "mobile"
+      ? [0, 0]
+      : [0, -100];
+
+  const rotate = useTransform(scrollYProgress, [0, 1], rotateValues);
   const scale = useTransform(scrollYProgress, [0, 1], scaleDimensions());
-  const translate = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const translate = useTransform(scrollYProgress, [0, 1], translateValues);
 
   return (
     <div
@@ -42,7 +64,7 @@ export const ContainerScroll = ({
       className="flex items-center justify-center relative"
     >
       <div
-        className="py-10 md:py-40 w-full relative"
+        className="py-10 md:py-24 lg:py-40 w-full relative"
         style={{
           perspective: isMobile ? "none" : "1000px",
         }}

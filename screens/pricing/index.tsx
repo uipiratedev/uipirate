@@ -13,37 +13,35 @@ import PageWrapper from "@/components/PageWrapper";
 const Pricing = () => {
   return (
     <PageWrapper showFloatingButton={false}>
-      {/* Hero Section */}
-      <PricingHero />
+      <div className="space-y-20 max-md:space-y-16">
+        {/* Hero Section */}
+        <PricingHero />
 
-      {/* Client Logos - Social Proof */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
+        {/* Client Logos - Social Proof */}
         <PricingClientLogos />
-      </div>
 
-      {/* Main Pricing Cards */}
-      <div className="mt-4">
-        <LandingPricing />
-      </div>
+        {/* Main Pricing Cards */}
+        <div id="plans">
+          <LandingPricing />
+        </div>
 
-      {/* Comparison Table */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
-        <PricingComparison />
-      </div>
+        {/* Comparison Table */}
+        <div id="compare">
+          <PricingComparison />
+        </div>
 
-      {/* Perfect For Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
+        {/* Perfect For Section */}
         <PricingPerfectFor />
-      </div>
 
-      {/* 5-Day Pilot CTA */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 mb-8">
-        <TryBeforeCommit />
-      </div>
+        {/* 5-Day Pilot CTA */}
+        <div id="pilot">
+          <TryBeforeCommit />
+        </div>
 
-      {/* FAQ Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 mb-16">
-        <PricingFAQ />
+        {/* FAQ Section */}
+        <div id="faqs">
+          <PricingFAQ />
+        </div>
       </div>
     </PageWrapper>
   );

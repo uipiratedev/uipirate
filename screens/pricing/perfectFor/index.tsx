@@ -3,42 +3,34 @@ import { motion } from "framer-motion";
 
 import GlassBadge from "@/components/GlassBadge";
 
-// Pattern backgrounds matching service pages
-const patternBackgrounds = [
-  "bg-[repeating-linear-gradient(135deg,#E4F7E9,#E4F7E9_12px,#F7FFF9_12px,#F7FFF9_24px)]", // Green
-  "bg-[repeating-linear-gradient(135deg,#FFF1C9,#FFF1C9_12px,#FFFBEA_12px,#FFFBEA_24px)]", // Yellow
-  "bg-[repeating-linear-gradient(135deg,#EDE8FF,#EDE8FF_12px,#F7F5FF_12px,#F7F5FF_24px)]", // Purple
-  "bg-[repeating-linear-gradient(135deg,#FFE8E0,#FFE8E0_12px,#FFF5F2_12px,#FFF5F2_24px)]", // Orange/Peach
-];
-
 const PERFECT_FOR = [
   {
-    title: "Funded Startups",
+    title: "FUNDED STARTUPS",
     description:
       "You raised a round. Now you need a product that looks as good as the idea you pitched. We help you ship it.",
     image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/sass_em8jqs.svg",
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788206604/founder_gnnfbf.svg",
   },
   {
-    title: "SaaS Companies",
+    title: "SAAS COMPANIES",
     description:
-      "No in-house design team, but a product that needs to keep moving. We plug in as your design and dev partner.",
+      "You lack an in-house design team, but your product needs to keep moving. We plug in as your dedicated design and dev partner.",
     image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771828331/tems_mhv5e9.svg",
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788206599/saascom_f00rd5.svg",
   },
   {
-    title: "Agencies",
+    title: "AGENCIES",
     description:
-      "Your team is at capacity. We work as a white-label partner on client projects — no handoff friction, full execution.",
+      "When your team reaches capacity, we step in as your white-label execution partner. We handle the design and dev so you can deliver.",
     image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771831381/creator_qzziot.svg",
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788206602/agencise_z7olwt.svg",
   },
   {
-    title: "Enterprise Teams",
+    title: "ENTERPRISE TEAMS",
     description:
       "Overflow design capacity without the overhead of hiring. Plug us in when your team needs more bandwidth.",
     image:
-      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1771831381/brand_qbdqtq.svg",
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788206597/enterpriseteams_kx1dw5.svg",
   },
 ];
 
@@ -51,50 +43,46 @@ const NOT_FOR = [
 const PricingPerfectFor = () => {
   return (
     <motion.div
-      className="py-12 max-md:py-8 container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32"
+      className="section-container"
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true, amount: 0.2 }}
       whileInView={{ opacity: 1, y: 0 }}
     >
       {/* Header */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-12 max-md:mb-8">
         <div className="flex justify-center mb-4">
           <GlassBadge variant="gradient">WHO IT'S FOR</GlassBadge>
         </div>
         <h2 className="heading-center">Is This Right For You?</h2>
-        <p className="text-gray-500 mt-2">Perfect for</p>
       </div>
 
-      {/* Perfect For Cards - Service Page Style */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 max-md:grid-cols-1 gap-5 mb-8">
+      {/* Perfect For Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         {PERFECT_FOR.map((item, index) => (
           <motion.div
             key={item.title}
-            className="group flex flex-col overflow-hidden rounded-[20px] max-md:rounded-[12px] bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] border border-[#0000000f] hover:shadow-xl transition-shadow duration-300"
+            className="group flex flex-col overflow-hidden rounded-[24px] bg-white border border-[#E5E7EB] shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
             viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            {/* Illustration area with pattern */}
-            <div
-              className={`relative h-36 ${patternBackgrounds[index % patternBackgrounds.length]}`}
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0,#ffffff,transparent_55%)] opacity-60" />
+            {/* Top 3D Illustration Area */}
+            <div className="relative w-full h-[180px] md:h-[195px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white flex items-center justify-center">
               <img
                 alt={item.title}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-auto group-hover:scale-110 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 src={item.image}
               />
             </div>
 
             {/* Content */}
-            <div className="flex flex-1 flex-col px-5 py-5">
-              <h3 className="text-base font-bold text-black leading-snug uppercase tracking-[0.04em]">
+            <div className="flex flex-1 flex-col p-6 pt-5">
+              <h3 className="text-lg md:text-[19px] font-bold text-[#0F172A] uppercase tracking-tight mb-2.5">
                 {item.title}
               </h3>
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              <p className="text-sm md:text-[14.5px] text-[#64748B] font-normal leading-relaxed">
                 {item.description}
               </p>
             </div>

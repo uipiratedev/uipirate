@@ -28,9 +28,9 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
   if (!study) return null;
 
   return (
-    <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32">
       <motion.div
-        className="flex flex-row max-md:flex-col-reverse items-center gap-10 max-md:gap-6 rounded-[32px] max-md:rounded-[20px] overflow-hidden bg-[#0A0A0A] p-12 max-md:p-6"
+        className="flex flex-row max-md:flex-col-reverse items-center gap-10 max-md:gap-6 rounded-[32px] max-md:rounded-[20px] overflow-hidden bg-[#0A0A0A] p-8 md:p-8 lg:p-12 max-md:p-6"
         initial={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, amount: 0.3 }}

@@ -417,7 +417,7 @@ const ProjectEstimate = ({
   return (
     <div className={`h-full ${className}`}>
       <Card className="rounded-[20px] max-md:rounded-[12px] bg-white border-1 border-gray-200 shadow-sm h-full">
-        <CardBody className="p-8 max-md:p-6">
+        <CardBody className="p-8 max-md:p-6 h-full flex flex-col">
           {/* @ts-ignore */}
           <AnimatePresence mode="wait">
             {/* Initial State */}
@@ -425,6 +425,7 @@ const ProjectEstimate = ({
               <motion.div
                 key="initial"
                 animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col h-full flex-1"
                 exit={{ opacity: 0, y: -20 }}
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.3 }}

@@ -7,6 +7,11 @@ import LetsTalkButton from "@/components/LetsTalkButton";
 
 const PRICING_FAQS = [
   {
+    question: "How much does UI/UX design cost?",
+    answer:
+      "Our UI/UX design services start from $500/month for our retainer plan, giving you a dedicated design team without the full-time headcount. For specific scopes, we offer custom project estimates, and a $150-$350 pilot option to test our execution with zero risk.",
+  },
+  {
     question: "Can I pause my subscription?",
     answer:
       "Yes! You can pause your subscription at any time with no penalty. Your billing pauses immediately, and you can resume whenever you're ready. This is perfect for teams with fluctuating design needs.",
@@ -41,7 +46,7 @@ const PRICING_FAQS = [
 const PricingFAQ = () => {
   return (
     <motion.div
-      className="py-12 max-md:py-8"
+      className="section-container pb-16 max-md:pb-12"
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -98,7 +103,9 @@ const PricingFAQ = () => {
         whileInView={{ opacity: 1, y: 0 }}
       >
         <p className="text-gray-500 text-sm">Still have questions?</p>
-        <LetsTalkButton variant="light">Chat With Us</LetsTalkButton>
+        <LetsTalkButton href="https://cal.com/ui-pirate/15min" variant="light">
+          Book a Free 15-Min Call →
+        </LetsTalkButton>
       </motion.div>
     </motion.div>
   );

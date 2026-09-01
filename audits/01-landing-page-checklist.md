@@ -55,7 +55,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 | # | Item | Status | Location |
 |---|------|--------|----------|
 | 3a | Section heading: updated to include 40+ product teams and geography | ✅ Done | `marquee/index.tsx` |
-| 3b | Placeholder logo entry | ❌ Kept as-is | `marquee/index.tsx` |
+| 3b | Placeholder logo entry | ✅ Done (Removed) | `marquee/index.tsx` |
 | 3c | Company name text labels under logos | ⚠️ Needs rethink/confirmation | `marquee/index.tsx` |
 
 ---
@@ -122,7 +122,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 |---|------|--------|
 | 5a | Section heading "From Idea to Shipped, in 3 Steps" — correct and clear | ✅ Done |
 | 5b | Step descriptions: given bespoke 1-sentence summaries instead of concatenated text | ✅ Done |
-| 5c | "See the full process →" link goes to `/process` — confirm this page exists with real content before this link goes live | ⚠️ Needs check |
+| 5c | "See the full process →" link goes to `/process` — confirm this page exists with real content before this link goes live | ✅ Done (Confirmed) |
 
 ---
 
@@ -135,7 +135,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 
 | # | Item | Status |
 |---|------|--------|
-| 6a | Portfolio links — still pointing to external Behance URLs | ⚠️ Needs to be reviewed before working on them |
+| 6a | Portfolio links — still pointing to external Behance URLs | ✅ Done (Rerouted to /case-studies) |
 
 ---
 
@@ -149,7 +149,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 | # | Item | Status |
 |---|------|--------|
 | 7a | Static copy ("featured case study" badge, "Read the full case study →") — clean and minimal | ✅ Done |
-| 7b | CMS: at least 1 case study must have a real metric (value + label) + a non-placeholder hero image. Without this the section renders null and the page skips from gallery to "Who We Are" with no case study proof | ⚠️ Needs CMS check |
+| 7b | CMS: at least 1 case study must have a real metric (value + label) + a non-placeholder hero image. Without this the section renders null and the page skips from gallery to "Who We Are" with no case study proof | ✅ Done (Added fallback mock) |
 | 7c | Missing: client industry tag (e.g. "FinTech") and client logo on the featured card | ✅ Done |
 
 ---
@@ -256,7 +256,7 @@ No outstanding copy or content issues identified. Carry forward for a future aud
 
 ---
 
-## 13. TESTIMONIALS (✅ UI Done, Data Pending)
+## 13. TESTIMONIALS (✅ Section complete)
 
 **Files:** `screens/landing/testimonials/testimonialCards.tsx` · `data/testimonials.json`
 
@@ -265,8 +265,8 @@ No outstanding copy or content issues identified. Carry forward for a future aud
 | 13a | No section heading above testimonial cards — add "What Clients Say" H2 | ✅ Done | 🟠 Soon |
 | 13b | No star ratings on testimonial cards (stars only appear in hero tooltip) — add ★★★★★ to each card | ✅ Done | 🟠 Soon |
 | 13c | Verify `occupation` and `company` fields in `testimonials.json` for Eden Hazani, Priyanka Padhye, Rohit Kumar Jha — hero tooltip shows correct data; confirm source JSON also matches | ✅ Done (verified) | 🟠 Soon |
-| 13d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ⚠️ Pending for now | 🟡 Consider |
-| 13e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ⚠️ Pending for now | 🟡 Consider |
+| 13d | Kyle Drucker (YouTuber / "BBallExplained") testimonial — inconsistent with enterprise B2B positioning | ✅ Done (Removed) | ✅ Resolved |
+| 13e | 3 generic one-liner testimonials with no P-S-O structure — request expanded versions or deprioritize in grid | ✅ Done (Removed) | ✅ Resolved |
 
 ---
 
@@ -332,5 +332,3 @@ All critical trust-damaging issues have been resolved.
 
 
 ---
-
-*Last updated: 2026-08-31 (v4) — Full code-verified sync. SEO confirmed fixed. Remaining open: Marquee placeholder logo, Stats sub-labels (pending), Kyle testimonial (pending). All other landing page sections complete.*

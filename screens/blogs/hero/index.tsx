@@ -44,7 +44,7 @@ const BlogsHero = ({ searchQuery, onSearchChange }: BlogsHeroProps) => {
         }}
       />
       <div
-        className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto px-32 lg:px-20 max-md:px-4  "
+        className="flex flex-col items-center justify-center w-full relative z-10 section-container"
         style={{ overflow: "visible" }}
       >
         {" "}
