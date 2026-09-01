@@ -711,20 +711,20 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 15 | Testimonials | Add star ratings to testimonial cards `[v1]` | `testimonialCards.tsx` | 🟠 Soon |
 | 16 | Testimonials | Verify occupation/company fields in testimonials.json `[v1]` | `data/testimonials.json` | 🟠 Soon |
 | 18 | MiniProcess | Write bespoke 1-sentence summaries for the 3 step cards to avoid clunky concatenation `[NEW]` | `miniProcess/index.tsx` | ✅ Done |
-| 19 | Behance | Verify if portfolio links still point to external Behance URLs (conversion leak) `[v1]` | `behance/LandingBehance.tsx` | ⚠️ Needs review |
+| 19 | Behance | Verify if portfolio links still point to external Behance URLs (conversion leak) `[v1]` | `behance/LandingBehance.tsx` | ✅ Done (Rerouted to /case-studies) |
 | 19 | Stats | Fix "9+ Years of Experience" sub-label — cross-references wrong card `[v1]` | `about/aboutCard.tsx` | ⚠️ Pending for now |
 | 20 | Stats | Clarify "$150M+ Made by clients" — specify what "made" means `[v1]` | `about/aboutCard.tsx` | ⚠️ Pending for now |
 | 21 | Stats | Fix "6 Client Locations" sub-label — list the actual locations `[v1]` | `about/aboutCard.tsx` | ⚠️ Pending for now |
-| 22 | BentoGrid | Rewrite service card descriptions — remove "pixel-perfect" and sparse labels `[NEW]` | `bentoGrid/bentoGrid.tsx` | 🟡 Consider |
-| 23 | Services | Replace "One-stop shop for all your essentials" `[v1]` | `servicesSection.tsx` | 🟡 Consider |
-| 24 | Services | Fix "Let's Talk" CTA — replace with "Tell Us What You Need — Free Consultation" `[v1]` | `servicesSection.tsx` | 🟡 Consider |
-| 25 | Marquee | Add company name text labels under each logo `[v1]` | `marquee/index.tsx` | ⚠️ Needs rethink |
-| 26 | Testimonials | Remove/reposition Kyle Drucker (YouTuber) testimonial `[v1]` | `data/testimonials.json` | 🟡 Consider |
-| 27 | Testimonials | Request P-S-O expanded testimonials from 3 generic reviewers `[v1]` | `data/testimonials.json` | 🟡 Consider |
-| 28 | Pricing | Fix remaining pricing section copy issues (see 03-pricing-page.md) `[v1]` | `pricing/index.tsx` | 🟡 Consider |
+| 22 | BentoGrid | Rewrite service card descriptions — remove "pixel-perfect" and sparse labels `[NEW]` | `bentoGrid/bentoGrid.tsx` | ✅ Done |
+| 23 | Services | Replace "One-stop shop for all your essentials" `[v1]` | `servicesSection.tsx` | ✅ Done |
+| 24 | Services | Fix "Let's Talk" CTA — replace with "Tell Us What You Need — Free Consultation" `[v1]` | `servicesSection.tsx` | ✅ Done |
+| 25 | Marquee | Add company name text labels under each logo `[v1]` | `marquee/index.tsx` | ✅ Done (Discarded per user) |
+| 26 | Testimonials | Remove/reposition Kyle Drucker (YouTuber) testimonial `[v1]` | `data/testimonials.json` | ✅ Done |
+| 27 | Testimonials | Request P-S-O expanded testimonials from 3 generic reviewers `[v1]` | `data/testimonials.json` | ✅ Done |
+| 28 | Pricing | Fix remaining pricing section copy issues (see 03-pricing-page.md) `[v1]` | `pricing/index.tsx` | ✅ Done |
 | 20 | FeaturedCaseStudy | Add client industry tag and logo to the featured case study card `[NEW]` | `featuredCaseStudy/index.tsx` | ✅ Done |
 | 21 | PerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
-| 31 | MiniService | Consider replacing "world-class" in section heading `[NEW]` | `miniService/miniService.tsx` | 🟡 Consider |
+| 31 | MiniService | Consider replacing "world-class" in section heading `[NEW]` | `miniService/miniService.tsx` | ✅ Done |
 
 **Priority key:**
 - 🔴 **Fix now** — Errors or broken data actively damaging trust and credibility with every visitor
