@@ -173,6 +173,7 @@ production-ready software.
 **One issue:** `5.0 Client Rating` — where does this come from? Without a source attribution (Upwork, Clutch, Google), this is an unverifiable self-claim. The pricing hero attributes it to a general "Average Rating" which is equally unsourced.
 
 **Suggested fix:** Add a source: `5.0 on Upwork` or `5.0 ★ Clutch rating`. This makes the same number significantly more credible.
+*(⚠️ Pending — on hold until actual source URLs are available from Clutch/Upwork to link to)*
 
 ---
 

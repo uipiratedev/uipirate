@@ -48,10 +48,10 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 |---|------|--------|----------|
 | 2a | `9+` Years of Experience — verifiable stat | ✅ Keep as-is | — |
 | 2b | `50+` Products Shipped — verifiable stat | ✅ Keep as-is | — |
-| 2c | `5.0 Client Rating` — no source attribution (Clutch/Upwork/Google) | ❌ Not done | 🟠 Soon |
+| 2c | `5.0 Client Rating` — no source attribution (Clutch/Upwork/Google) | ⚠️ Pending (no source URL yet) | 🟠 Soon |
 | 2d | `6` Countries Served — verifiable stat | ✅ Keep as-is | — |
 
-**NC4 Recommended fix (for 2c):** Change label to `Rating on Clutch & Upwork` and add `aggregateRating` to JSON-LD with a `url` to the Clutch profile.
+**NC4 Recommended fix (for 2c):** Change label to `Rating on Clutch & Upwork` and add `aggregateRating` to JSON-LD with a `url` to the Clutch profile. (Currently on hold until source URLs are available)
 
 ---
 
