@@ -46,8 +46,10 @@ export interface ComponentDetail {
   hasLabelControl?: boolean;
   hasSizeControl?: boolean;
   hasThemeControl?: boolean;
+  hasTextColorControl?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
+  availableTextColors?: Array<{ value: string; label: string; color: string }>;
   features: string[];
   previewLight: React.ReactNode;
   previewDark: React.ReactNode;
@@ -1245,7 +1247,7 @@ export default function Example() {
     detailUrl: "/componentlab/animated-slide-button",
     defaultLabel: "Explore Services",
     hasLabelControl: true,
-    hasSizeControl: false,
+    hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "primary",
     availableThemes: [
@@ -1276,6 +1278,7 @@ export default function Example() {
       primaryText="Explore Services"
       hoverText="See More →"
       variant="primary"
+      size="md"
     />
   );
 }`,
@@ -1292,6 +1295,7 @@ export default function Example() {
       { name: "primaryText", type: "string", defaultValue: "—", description: "Label shown in the resting state." },
       { name: "hoverText", type: "string", defaultValue: '"See More"', description: "Label rolled in on hover." },
       { name: "variant", type: '"primary" | "secondary"', defaultValue: '"primary"', description: "Colour style of the pill." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls scale matrix factor." },
     ],
   },
   {
@@ -1359,11 +1363,22 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
     defaultTheme: "gradient",
     availableThemes: [
       { value: "gradient", label: "Vibrant Gradient", color: "#8B5CF6" },
       { value: "cyan", label: "Laser Cyan", color: "#06B6D4" },
       { value: "solid", label: "Obsidian Solid", color: "#64748B" },
+    ],
+    availableTextColors: [
+      { value: "#000000", label: "Dark Obsidian", color: "#000000" },
+      { value: "#FFFFFF", label: "Pure White", color: "#FFFFFF" },
+      { value: "#FF5B04", label: "UI Pirate Magma", color: "#FF5B04" },
+      { value: "#06B6D4", label: "Electric Cyan", color: "#06B6D4" },
+      { value: "#10B981", label: "Emerald Green", color: "#10B981" },
+      { value: "#8B5CF6", label: "Neon Violet", color: "#8B5CF6" },
+      { value: "#F59E0B", label: "Cyber Amber", color: "#F59E0B" },
+      { value: "#EF4444", label: "Crimson Red", color: "#EF4444" },
     ],
     features: [
       "Multi-layer backdrop filter blur",

@@ -4,10 +4,15 @@ import React, { useState } from "react";
 import { motion, Transition } from "framer-motion";
 
 export type ArcToggleTheme = "light" | "dark";
+export type ArcCornerToggleStateMode = "interactive" | "standard" | "standerd" | "click";
 
 export interface ArcCornerToggleProps {
-  /** Controlled active state (false = Light/STANDERD, true = Dark/CLICK) */
+  /** Controlled active state (false = Light/STANDARD, true = Dark/CLICK) */
   isActive?: boolean;
+  /** Optional custom text color for header label */
+  textColor?: string;
+  /** State preview mode: "interactive" | "standard" | "click" */
+  stateMode?: ArcCornerToggleStateMode;
   /** Toggle event handler */
   onToggle?: (active: boolean) => void;
   /** Force specific theme or let state dictate ("auto" | "light" | "dark") */
@@ -20,7 +25,7 @@ export interface ArcCornerToggleProps {
   transition?: Transition;
   /** Additional CSS class names */
   className?: string;
-  /** Whether to show header line ("STANDERD ———" / "CLICK ———") */
+  /** Whether to show header line ("STANDARD ———" / "CLICK ———") */
   showHeader?: boolean;
 }
 
@@ -42,6 +47,8 @@ const FIGMA_CENTERLINE_PATH =
  */
 export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   isActive: controlledActive,
+  textColor,
+  stateMode = "interactive",
   onToggle,
   themeMode = "auto",
   scale = 1,
@@ -51,7 +58,14 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   showHeader = true,
 }) => {
   const [internalActive, setInternalActive] = useState(false);
-  const active = controlledActive !== undefined ? controlledActive : internalActive;
+  const active =
+    stateMode === "standerd" || stateMode === "standard"
+      ? false
+      : stateMode === "click"
+      ? true
+      : controlledActive !== undefined
+      ? controlledActive
+      : internalActive;
 
   const currentTheme: ArcToggleTheme =
     themeMode === "auto" ? (active ? "dark" : "light") : themeMode;
@@ -74,51 +88,60 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
 
   return (
     <div
-      className={`relative inline-flex flex-col select-none ${className}`}
+      className={`relative inline-block select-none overflow-hidden rounded-3xl ${className}`}
       style={{
-        transform: scale !== 1 ? `scale(${scale})` : undefined,
-        transformOrigin: "top left",
+        width: 600 * scale,
+        height: 600 * scale,
+        maxWidth: "100%",
       }}
     >
-      {/* ─────────────────────────────────────────────────────────────
-          MAIN 600×600 STAGE CONTAINER (Exact Figma Frame 1000003154 / 3155)
-         ───────────────────────────────────────────────────────────── */}
-      <motion.div
-        className="relative w-[600px] h-[600px] overflow-hidden"
-        animate={{
-          background: isLight
-            ? "linear-gradient(149.54deg, rgb(240, 240, 240) 16.26%, rgb(163, 163, 161) 183.63%)"
-            : "linear-gradient(149.54deg, rgb(68, 81, 109) 16.26%, rgb(22, 27, 37) 183.63%)",
+      <div
+        style={{
+          width: 600,
+          height: 600,
+          transform: `scale(${scale})`,
+          transformOrigin: "top left",
         }}
-        transition={{ duration: duration * 0.9, ease: "easeInOut" }}
       >
         {/* ─────────────────────────────────────────────────────────────
-            HEADER BAR: "STANDERD ——————————" / "CLICK ——————————"
+            MAIN 600×600 STAGE CONTAINER (Exact Figma Frame 1000003154 / 3155)
            ───────────────────────────────────────────────────────────── */}
-        {showHeader && (
-          <div className="absolute top-[48px] left-[50px] right-[50px] flex items-center gap-4 z-30">
-            <motion.span
-              className="text-[26px] font-black tracking-tight uppercase"
-              animate={{
-                color: isLight ? "#2B2B2B" : "#FFFFFF",
-              }}
-              transition={{ duration: duration * 0.7 }}
-              style={{
-                fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
-              }}
-            >
-              {active ? "CLICK" : "STANDERD"}
-            </motion.span>
-            <motion.div
-              className="flex-1 h-[2px]"
-              animate={{
-                backgroundColor: isLight ? "#2B2B2B" : "#FFFFFF",
-                opacity: isLight ? 0.75 : 0.85,
-              }}
-              transition={{ duration: duration * 0.7 }}
-            />
-          </div>
-        )}
+        <motion.div
+          className="relative w-[600px] h-[600px] overflow-hidden"
+          animate={{
+            background: isLight
+              ? "linear-gradient(149.54deg, rgb(240, 240, 240) 16.26%, rgb(163, 163, 161) 183.63%)"
+              : "linear-gradient(149.54deg, rgb(68, 81, 109) 16.26%, rgb(22, 27, 37) 183.63%)",
+          }}
+          transition={{ duration: duration * 0.9, ease: "easeInOut" }}
+        >
+          {/* ─────────────────────────────────────────────────────────────
+              HEADER BAR: "STANDERD ——————————" / "CLICK ——————————"
+             ───────────────────────────────────────────────────────────── */}
+          {showHeader && (
+            <div className="absolute top-[48px] left-[50px] right-[50px] flex items-center gap-4 z-30">
+              <motion.span
+                className="text-[26px] font-black tracking-tight uppercase"
+                animate={{
+                  color: textColor || (isLight ? "#2B2B2B" : "#FFFFFF"),
+                }}
+                transition={{ duration: duration * 0.7 }}
+                style={{
+                  fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
+                }}
+              >
+                {active ? "CLICK" : "STANDERD"}
+              </motion.span>
+              <motion.div
+                className="flex-1 h-[2px]"
+                animate={{
+                  backgroundColor: isLight ? "#2B2B2B" : "#FFFFFF",
+                  opacity: isLight ? 0.75 : 0.85,
+                }}
+                transition={{ duration: duration * 0.7 }}
+              />
+            </div>
+          )}
 
         {/* ─────────────────────────────────────────────────────────────
             FOREGROUND SLAB (Exact Figma Node 75:5130 / 75:5180)
@@ -545,6 +568,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
           </motion.div>
         </div>
       </motion.div>
+      </div>
     </div>
   );
 };

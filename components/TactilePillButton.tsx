@@ -9,6 +9,8 @@ export type TactileButtonState = "interactive" | "resting" | "tilted";
 export interface TactilePillButtonProps {
   /** Text label inside the button */
   label?: string;
+  /** Optional custom text color (hex / CSS color string) */
+  textColor?: string;
   /** Status dot indicator color (default: #54EAD8 from Figma) */
   dotColor?: string;
   /** Force a specific visual state: 'interactive' (default hover tilt), 'resting' (75:1201), 'tilted' (75:1206) */
@@ -27,6 +29,7 @@ export interface TactilePillButtonProps {
 
 export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
   label = "Get Started",
+  textColor,
   dotColor = "#54EAD8",
   stateMode = "interactive",
   variant = "default",
@@ -53,39 +56,39 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
     sm: {
       wrapperW: 152,
       wrapperH: 42,
-      slotW: "w-[146px]",
+      slotW: "w-full",
       slotH: "h-[37px]",
-      capPadding: "pt-[5px] pb-[10px] pl-[13px] pr-[18px]",
+      capPadding: "py-2.5 px-6",
       radius: "rounded-[13px]",
       fontSize: "text-[16px]",
       dotRadius: 5,
-      gap: "gap-[14px]",
+      gap: "gap-[12px]",
       liftY: -11,
       liftX: -3,
     },
     md: {
       wrapperW: 184,
       wrapperH: 52,
-      slotW: "w-[176px]",
+      slotW: "w-full",
       slotH: "h-[45px]",
-      capPadding: "pt-[6px] pb-[13px] pl-[16px] pr-[22px]",
+      capPadding: "py-3 px-8",
       radius: "rounded-[16px]",
-      fontSize: "text-[20px]",
+      fontSize: "text-[18px]",
       dotRadius: 6,
-      gap: "gap-[17px]",
+      gap: "gap-[14px]",
       liftY: -14,
       liftX: -4,
     },
     lg: {
       wrapperW: 220,
       wrapperH: 60,
-      slotW: "w-[212px]",
+      slotW: "w-full",
       slotH: "h-[54px]",
-      capPadding: "pt-[8px] pb-[16px] pl-[20px] pr-[26px]",
+      capPadding: "py-3.5 px-10",
       radius: "rounded-[20px]",
-      fontSize: "text-[24px]",
+      fontSize: "text-[22px]",
       dotRadius: 7,
-      gap: "gap-[20px]",
+      gap: "gap-[16px]",
       liftY: -18,
       liftX: -5,
     },
@@ -189,7 +192,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
 
   return __wrapSize(
     <div
-      className={`relative inline-flex items-center justify-center select-none ${className}`}
+      className={`relative inline-flex items-center justify-center w-auto max-w-full select-none ${className}`}
       style={{ minHeight: sizeConfig.wrapperH }}
       onMouseEnter={() => {
         if (stateMode === "interactive") setIsHovered(true);
@@ -238,7 +241,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
           damping: 25,
           mass: 0.8,
         }}
-        className={`relative z-10 flex items-center justify-center ${sizeConfig.gap} ${sizeConfig.capPadding} ${sizeConfig.radius} ${themeStyles.capBg} cursor-pointer focus:outline-none`}
+        className={`relative z-10 flex items-center justify-center w-auto max-w-full ${sizeConfig.gap} ${sizeConfig.capPadding} ${sizeConfig.radius} ${themeStyles.capBg} cursor-pointer focus:outline-none`}
         style={{
           filter: isTilted ? themeStyles.tiltedFilter : themeStyles.restingFilter,
           transformOrigin: "center center",
@@ -285,6 +288,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
         <p
           className={`font-medium ${sizeConfig.fontSize} ${themeStyles.capText} whitespace-nowrap leading-[31px] not-italic select-none`}
           style={{
+            color: textColor || undefined,
             textShadow: themeStyles.capTextShadow,
             fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
             transform: "translateZ(0)",

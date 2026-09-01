@@ -230,13 +230,15 @@ export const ANGLE_TRANSFORMS: Record<
 };
 
 export interface IsometricReviveButtonProps {
-  /** Text label displayed inside the button face (default: "Revive Now") */
+  /** Text label inside button (default: "Revive Now") */
   label?: string;
-  /** Visual state mode: 'interactive' (hover to depress & illuminate), 'standerd' (Figma 115:5957 fixed), 'hover' (Figma 115:6002 fixed) */
+  /** Optional custom text color */
+  textColor?: string;
+  /** Visual state mode override: 'interactive' (default hover press), 'standerd' (Figma 115:5984 resting), 'hover' (Figma 115:6030 active) */
   stateMode?: IsometricReviveStateMode;
   /** Theme preset */
   theme?: IsometricReviveTheme;
-  /** Perspective / Rotation Angle */
+  /** 3D Isometric View Angle */
   angle?: IsometricReviveAngle;
   /** Glow intensity */
   intensity?: IsometricGlowIntensity;
@@ -259,6 +261,7 @@ const ISO_TIMESTAMP_TRANSFORM = "rotate(-30deg) skewX(30deg) scaleY(0.866025)";
 
 export function IsometricReviveButton({
   label = "Revive Now",
+  textColor,
   stateMode = "interactive",
   theme = "figma",
   angle = "iso-left",
@@ -381,11 +384,10 @@ export function IsometricReviveButton({
         <div className="absolute flex h-[166.704px] items-center justify-center left-[150px] top-[222px] w-[288.739px] pointer-events-none z-0">
           <div style={{ transform: ISO_TRANSFORM }} className="flex-none">
             <div
-              className={`h-[114.411px] overflow-hidden relative rounded-[20px] w-[218.996px] ${
-                t.isLightMode
-                  ? "bg-[rgba(255,255,255,0.4)] border-[0.5px] border-[rgba(0,0,0,0.15)]"
-                  : "bg-[rgba(255,255,255,0.01)] border-[0.5px] border-[rgba(255,255,255,0.3)]"
-              } border-solid transition-shadow duration-500`}
+              className={`h-[114.411px] overflow-hidden relative rounded-[20px] w-[218.996px] ${t.isLightMode
+                ? "bg-[rgba(255,255,255,0.4)] border-[0.5px] border-[rgba(0,0,0,0.15)]"
+                : "bg-[rgba(255,255,255,0.01)] border-[0.5px] border-[rgba(255,255,255,0.3)]"
+                } border-solid transition-shadow duration-500`}
               style={{
                 boxShadow: isVisualHover
                   ? "0px -1px 24px 0px rgba(255,255,255,0.1), 0px -1px 4px 0px rgba(255,255,255,0.15)"
@@ -394,9 +396,8 @@ export function IsometricReviveButton({
             >
               {/* Internal cast shadow of floating button on idle */}
               <div
-                className={`absolute flex items-center justify-center size-[268.729px] transition-opacity duration-500 ${
-                  isVisualHover ? "opacity-10" : "opacity-80"
-                }`}
+                className={`absolute flex items-center justify-center size-[268.729px] transition-opacity duration-500 ${isVisualHover ? "opacity-10" : "opacity-80"
+                  }`}
                 style={{ left: isVisualHover ? "-15.23px" : "4.77px", top: isVisualHover ? "-67.77px" : "-47.77px" }}
               >
                 <div style={{ transform: "rotate(-45deg) scaleX(0.82) scaleY(1.41)" }} className="flex-none">
@@ -411,11 +412,10 @@ export function IsometricReviveButton({
         <div className="absolute flex h-[166.704px] items-center justify-center left-[150px] top-[219px] w-[288.739px] pointer-events-none z-0">
           <div style={{ transform: ISO_TRANSFORM }} className="flex-none">
             <div
-              className={`border-[0.5px] border-solid h-[114.411px] relative rounded-[20px] w-[218.996px] ${
-                t.isLightMode
-                  ? "bg-[rgba(255,255,255,0.2)] border-black/20"
-                  : "bg-[rgba(255,255,255,0.03)] border-white/40"
-              }`}
+              className={`border-[0.5px] border-solid h-[114.411px] relative rounded-[20px] w-[218.996px] ${t.isLightMode
+                ? "bg-[rgba(255,255,255,0.2)] border-black/20"
+                : "bg-[rgba(255,255,255,0.03)] border-white/40"
+                }`}
             />
           </div>
         </div>
@@ -511,7 +511,7 @@ export function IsometricReviveButton({
             </div>
 
             {/* Right 3D Extrusion Solid Bevel Wall & Front Corner (Figma 115:5998 / 115:6040) */}
-            <div className="absolute h-[48.728px] left-[140.29px] top-[90px] w-[75.744px] pointer-events-none z-10">
+            <div className="absolute h-[48.728px] right-[9.13px] top-[90px] w-[75.744px] pointer-events-none z-10">
               <svg width="75.744" height="48.728" viewBox="0 0 75.744 48.728" fill="none" className="block size-full">
                 <path
                   d="M31.1807 45C22.5714 49.9706 8.60927 49.9706 0 45V31C8.60927 35.9706 22.5714 35.9706 31.1807 31V45ZM69.2861 23L31.1816 45V31L69.2861 9V23ZM75.7441 14C75.7441 17.5147 73.2765 20.6967 69.2871 23V9C73.2765 6.6967 75.7441 3.51468 75.7441 0V14Z"
@@ -521,10 +521,10 @@ export function IsometricReviveButton({
             </div>
 
             {/* Button Base Face Cavity (Figma 115:5984 / 115:6030) */}
-            <div className="absolute flex h-[130px] items-center justify-center left-0 top-0 w-[225.167px] pointer-events-none z-10">
+            <div className="absolute flex h-[130px] items-center justify-center left-0 top-0 min-w-[225.167px] w-full pointer-events-none z-10">
               <div style={{ transform: ISO_TRANSFORM }} className="flex-none">
                 <div
-                  className="border-[0.5px] border-solid h-[80px] relative rounded-[18px] w-[180px]"
+                  className="border-[0.5px] border-solid h-[80px] relative rounded-[18px] min-w-[180px] px-8 flex items-center justify-center"
                   style={{
                     borderColor: t.bodyBorder,
                     backgroundColor: t.bodyBg,
@@ -543,9 +543,9 @@ export function IsometricReviveButton({
             </div>
 
             {/* Button Top Face Surface (Figma 115:5985 / 115:6031 - Z-INDEX 20) */}
-            <div className="absolute flex h-[129.674px] items-center justify-center left-0 top-[0.21px] w-[224.602px] pointer-events-none z-20">
+            <div className="absolute flex h-[129.674px] items-center justify-center left-0 top-[0.21px] min-w-[224.602px] w-full pointer-events-none z-20">
               <div style={{ transform: ISO_TRANSFORM }} className="flex-none">
-                <div className="h-[79.582px] overflow-hidden relative rounded-[18px] w-[179.766px]">
+                <div className="h-[79.582px] relative rounded-[18px] min-w-[179.766px] px-8 flex items-center justify-center">
                   {/* Obsidian/Chassis Background */}
                   <div
                     className="absolute inset-0 pointer-events-none rounded-[18px]"
@@ -553,11 +553,11 @@ export function IsometricReviveButton({
                   />
 
                   {/* Text: Revive Now (Figma 115:5986 & 115:6032) */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+                  <div className="relative z-10 flex items-center justify-center pointer-events-none select-none">
                     <p
                       className="capitalize font-sans font-medium italic text-[20px] whitespace-nowrap transition-all duration-300"
                       style={{
-                        color: t.textColor,
+                        color: textColor || t.textColor,
                         opacity: isVisualHover ? 1 : 0.35,
                         textShadow: isVisualHover
                           ? `0px 0px 8px ${t.textGlow}, 0px 0px 18px ${t.textGlow}`
@@ -572,11 +572,10 @@ export function IsometricReviveButton({
 
                   {/* Specular Diagonal Sheen (Figma 115:5987 / Vector 8) */}
                   <div
-                    className={`absolute inset-0 pointer-events-none opacity-80 ${
-                      t.isLightMode
-                        ? "bg-gradient-to-br from-white/80 via-white/20 to-transparent"
-                        : "bg-gradient-to-br from-white/[0.16] via-white/[0.02] to-transparent"
-                    }`}
+                    className={`absolute inset-0 pointer-events-none opacity-80 ${t.isLightMode
+                      ? "bg-gradient-to-br from-white/80 via-white/20 to-transparent"
+                      : "bg-gradient-to-br from-white/[0.16] via-white/[0.02] to-transparent"
+                      }`}
                   />
 
                   {/* Amber Chevron (Figma 115:5988 / 115:6034) */}

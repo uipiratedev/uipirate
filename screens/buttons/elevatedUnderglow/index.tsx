@@ -20,6 +20,17 @@ export default function ElevatedUnderglowScreen() {
   const [stateMode, setStateMode] = useState<ElevatedUnderglowStateMode>("interactive");
   const [iconType, setIconType] = useState<ElevatedUnderglowIconType>("phone");
   const [labelText, setLabelText] = useState("Book A Call");
+  const [textColor, setTextColor] = useState("#353535");
+
+  const textColorOptions = [
+    { label: "Dark Charcoal", value: "#353535" },
+    { label: "Pure White", value: "#FFFFFF" },
+    { label: "Electric Blue", value: "#0077FF" },
+    { label: "Magma Orange", value: "#FF5B04" },
+    { label: "Obsidian Cyan", value: "#06B6D4" },
+    { label: "Neon Emerald", value: "#10B981" },
+    { label: "Cyberpunk Violet", value: "#8B5CF6" },
+  ];
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -58,6 +69,7 @@ export type ElevatedUnderglowIconType = "phone" | "calendar" | "arrow" | "sparkl
 
 export interface ElevatedUnderglowCTAProps {
   label?: string;
+  textColor?: string;
   icon?: ElevatedUnderglowIconType | React.ReactNode;
   theme?: ElevatedUnderglowTheme;
   size?: ElevatedUnderglowSize;
@@ -92,6 +104,7 @@ export const UNDERGLOW_THEMES = {
 
 export function ElevatedUnderglowCTA({
   label = "Book A Call",
+  textColor,
   icon = "phone",
   theme = "figma",
   size = "md",
@@ -149,7 +162,7 @@ export function ElevatedUnderglowCTA({
         className={\`relative flex items-center justify-center gap-3 px-6 py-3.5 rounded-[35px] \${t.capBg} \${t.capBorder} border \${t.capText} font-semibold text-sm cursor-pointer shadow-lg\`}
       >
         {renderIcon()}
-        <span>{label}</span>
+        <span style={{ color: textColor }}>{label}</span>
       </motion.button>
     </div>
   );
@@ -247,6 +260,7 @@ export default function Example() {
           <StudioCanvas>
             <ElevatedUnderglowCTA
               label={labelText}
+              textColor={textColor}
               theme={theme}
               size={size}
               stateMode={stateMode}
@@ -276,6 +290,38 @@ export default function Example() {
                 onChange={(e) => setLabelText(e.target.value)}
                 className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
               />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                State Preview
+              </label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as ElevatedUnderglowStateMode)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="interactive" className="bg-neutral-900">Interactive</option>
+                <option value="standerd" className="bg-neutral-900">Standard</option>
+                <option value="hover" className="bg-neutral-900">Hover</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                Text Color
+              </label>
+              <select
+                value={textColor}
+                onChange={(e) => setTextColor(e.target.value)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                {textColorOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value} className="bg-neutral-900">
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="space-y-1.5">
