@@ -3,15 +3,15 @@ import { Metadata } from "next";
 import Pricing from "@/screens/pricing";
 
 export const metadata: Metadata = {
-  title: "UI/UX Design Pricing | $2000/mo Unlimited",
+  title: "UI/UX Design Pricing | from $500/mo Unlimited",
   description:
-    "UI/UX design from $2000/mo — unlimited requests, 48hr turnaround. Save 60% vs US agencies. No contracts, pause anytime.",
+    "UI/UX design from $500/mo — unlimited requests, 48hr turnaround. Save 50-70% vs US agencies. No contracts, pause anytime.",
   keywords:
     "UI UX design pricing 2026, design subscription cost, unlimited design requests, SaaS design pricing, design agency monthly cost, hire UI designer cost, design retainer pricing, $2000 design subscription, cheap UI design agency, affordable UX design, design agency vs freelancer cost",
   openGraph: {
-    title: "UI/UX Design Pricing | $2000/mo Unlimited · Save 60% vs Agencies",
+    title: "UI/UX Design Pricing | from $500/mo Unlimited · Save 50-70% vs Agencies",
     description:
-      "Unlimited design requests from $2000/mo. 48hr turnaround, no contracts. Or try $350 pilot first. 100% satisfaction guarantee.",
+      "Unlimited design requests from $500/mo. 48hr turnaround, no contracts. Or try $350 pilot first. 100% satisfaction guarantee.",
     url: "https://uipirate.com/pricing",
     siteName: "UI Pirate",
     locale: "en_US",
@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "UI/UX Design | $2000/mo Unlimited · 48hr Turnaround",
+    title: "UI/UX Design | from $500/mo Unlimited · 48hr Turnaround",
     description:
-      "Save 60% vs US agencies. No contracts, pause anytime. Try $350 pilot first. 100% satisfaction guarantee.",
+      "Save 50-70% vs US agencies. No contracts, pause anytime. Try $350 pilot first. 100% satisfaction guarantee.",
   },
   alternates: {
     canonical: "https://uipirate.com/pricing",
@@ -50,7 +50,7 @@ const pricingSchema = {
       name: "Monthly Retainer",
       description:
         "Unlimited design requests, fast turnaround, 1 active request at a time",
-      price: "2000",
+      price: "500",
       priceCurrency: "USD",
       priceValidUntil: "2026-12-31",
       availability: "https://schema.org/LimitedAvailability",

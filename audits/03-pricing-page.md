@@ -77,13 +77,13 @@ Between the first audit and this one, the pricing page was significantly rebuilt
 - FIT CHECK badge changed to "WHO IT'S FOR" ✅
 - Emoji icons in "Not the right fit" strip replaced with ✕ ✅
 - Price updated to "from $500/per month" on the Monthly Retainer card ✅
+- Hero "Book a Call →" now links directly to cal.com ✅
+- SEO title, meta, and schema price updated to "from $500" ✅
 
 **Still open (as of v4 sync — 2026-09-01):**
 - Custom Quote subtitle still "For complex products, enterprise needs & startups"
 - Scarcity message still static ("To ensure quality, we only onboard 2 new clients per month")
 - "One subscription, endless possibilities" still present (L143)
-- Hero "Book a Call →" still links to /contact not cal.com
-- SEO title/meta still says "$2000/mo" but component now shows "from $500"
 
 ---
 
@@ -566,12 +566,12 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | Location | Status | Action Needed |
 |----------|--------|---------------|
 | Pricing card component (`landing/pricing/index.tsx` L153) | ✅ Done — shows `from $500` | None |
-| Page title (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo Unlimited` | Update to `from $500/mo` |
-| Meta description (`app/pricing/page.tsx`) | ❌ Still says `UI/UX design from $2000/mo` | Update to `from $500/mo` |
-| OG title (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo Unlimited` | Update to `from $500/mo` |
-| OG description (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo` | Update |
-| Twitter title (`app/pricing/page.tsx`) | ❌ Still says `$2000/mo Unlimited` | Update |
-| JSON-LD schema offer price (`app/pricing/page.tsx`) | ❌ Still says `"price": "2000"` | Update to `"500"` |
+| Page title (`app/pricing/page.tsx`) | ✅ Done — says `from $500/mo` | — |
+| Meta description (`app/pricing/page.tsx`) | ✅ Done — says `from $500/mo` | — |
+| OG title (`app/pricing/page.tsx`) | ✅ Done — says `from $500/mo` | — |
+| OG description (`app/pricing/page.tsx`) | ✅ Done — says `from $500/mo` | — |
+| Twitter title (`app/pricing/page.tsx`) | ✅ Done — says `from $500/mo` | — |
+| JSON-LD schema offer price (`app/pricing/page.tsx`) | ✅ Done — says `"500"` | — |
 | Comparison table (`pricing/comparison/index.tsx`) | ❌ Still shows `$2,000` | Update to `from $500` |
 | "How much does UI/UX design cost?" FAQ (NC10) | ❌ Still references `$2,000/month` | Update |
 
@@ -589,12 +589,14 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | 12 | `FIT CHECK` → `WHO IT'S FOR` | ✅ Done |
 | 13 | Emoji icons in "Not the right fit" strip → ✕ | ✅ Done |
 | 17 | Guarantee `companies like yours` → named clients (Ipsos, Khaitan & Co, RevUp AI) | ✅ Done |
+| 6 | Hero `Book a Call →` changed to cal.com | ✅ Done |
+| 23 | Meta description and OG title savings claim aligned to `50-70%` | ✅ Done |
+| NEW | SEO title/meta/schema price updated to `from $500` | ✅ Done |
 
 ## What Is Still Open (as of v4)
 
 | # | Item | File | Priority |
 |---|------|------|----------|
-| 6 | Hero `Book a Call →` still links to `/contact` — change to cal.com | `pricing/hero/index.tsx` L117 | 🟠 Soon |
 | 9 | Scarcity still static (only copy changed, not made dynamic) | `landing/pricing/index.tsx` L168 | 🟠 Soon |
 | 10 | Custom Quote subtitle still `For complex products, enterprise needs & startups` | `landing/pricing/index.tsx` L217 | 🟠 Soon |
 | 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | `pricing/perfectFor/index.tsx` | 🟠 Soon |
@@ -606,11 +608,9 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | 20 | SEO keywords: add `design subscription agency`, `SaaS design retainer`, etc. | `app/pricing/page.tsx` | 🟡 Consider |
 | 21 | `priceValidUntil: "2026-12-31"` in JSON-LD — update before expiry | `app/pricing/page.tsx` | 🟡 Consider |
 | 22 | `reviewCount: 50` not verifiable on-page | `app/pricing/page.tsx` | 🟡 Consider |
-| 23 | Meta description and OG title: align `60%` → `50-70%` savings claim | `app/pricing/page.tsx` | 🟡 Consider |
 | 24 | `5.0★` trust stat — star glyph in numeric causes parsing ambiguity | `pricing/hero/index.tsx` | 🟡 Consider |
 | 25 | `Enterprise` quality claim in comparison table is self-assessed | `pricing/comparison/index.tsx` | 🟡 Consider |
 | 26 | Two scarcity signals (`Only 2 new clients` + `Limited slots`) — unify | Multiple files | 🟡 Consider |
-| NEW | SEO title/meta/schema price still says `$2000` — update to `from $500` | `app/pricing/page.tsx` | 🔴 Fix now |
 
 ---
 

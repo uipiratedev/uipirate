@@ -114,7 +114,9 @@ const PricingHero = () => {
           </Link>
           <Link
             className="px-6 py-3 rounded-full bg-brand-orange text-white font-bold hover:bg-[#e04e00] transition-all duration-300 text-sm shadow-md hover:shadow-lg whitespace-nowrap"
-            href="/contact"
+            href="https://cal.com/ui-pirate/15min"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Book a Call →
           </Link>

@@ -33,13 +33,13 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 
 | # | Item | Current value | Status | Priority |
 |---|------|---------------|--------|----------|
-| 1a | Page title — still says `$2000/mo` | `UI/UX Design Pricing \| $2000/mo Unlimited` | ❌ Not done | 🔴 Fix now |
-| 1b | Meta description — still says `$2000/mo` | `UI/UX design from $2000/mo...` | ❌ Not done | 🔴 Fix now |
-| 1c | OG title — still says `$2000/mo` | `UI/UX Design Pricing \| $2000/mo Unlimited · Save 60% vs Agencies` | ❌ Not done | 🔴 Fix now |
-| 1d | OG description — still says `$2000/mo` | `Unlimited design requests from $2000/mo...` | ❌ Not done | 🟠 Soon |
-| 1e | Twitter title — still says `$2000/mo` | `UI/UX Design \| $2000/mo Unlimited · 48hr Turnaround` | ❌ Not done | 🟠 Soon |
-| 1f | JSON-LD offer price — still "price": "2000" for Monthly Retainer | `price: "2000"` in schema | ❌ Not done | 🔴 Fix now |
-| 1g | Savings % inconsistency — meta says 60%, hero says 50-70% | Two different claims | ❌ Not done | 🟡 Consider |
+| 1a | Page title — still says `$2000/mo` | `UI/UX Design Pricing \| from $500/mo Unlimited` | ✅ Done | — |
+| 1b | Meta description — still says `$2000/mo` | `UI/UX design from $500/mo...` | ✅ Done | — |
+| 1c | OG title — still says `$2000/mo` | `UI/UX Design Pricing \| from $500/mo Unlimited · Save 50-70% vs Agencies` | ✅ Done | — |
+| 1d | OG description — still says `$2000/mo` | `Unlimited design requests from $500/mo...` | ✅ Done | — |
+| 1e | Twitter title — still says `$2000/mo` | `UI/UX Design \| from $500/mo Unlimited · 48hr Turnaround` | ✅ Done | — |
+| 1f | JSON-LD offer price — still "price": "2000" for Monthly Retainer | `price: "500"` in schema | ✅ Done | — |
+| 1g | Savings % inconsistency — meta says 60%, hero says 50-70% | Aligned to 50-70% | ✅ Done | — |
 | 1h | Keyword: remove `cheap UI design agency` and `affordable UX design` | Present in keywords array | ❌ Not done | 🟡 Consider |
 | 1i | Keywords: add `design subscription agency`, `SaaS design retainer`, `unlimited design requests pricing` | Missing | ❌ Not done | 🟡 Consider |
 | 1j | `priceValidUntil: "2026-12-31"` in JSON-LD — update before Dec 31 2026 | Static date | ❌ Not done | 🟡 Consider |
@@ -57,7 +57,7 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 | 2b | Subheadline: `No hidden fees. No surprise invoices...` | ✅ Done | — |
 | 2c | Trust stats: `50+`, `5.0★`, `<2hr`, `9yr+` | ✅ Done | — |
 | 2d | `Save 50-70%` pill — price anchoring before cards | ✅ Done | — |
-| 2e | `Book a Call →` links to `/contact` — should be `cal.com/ui-pirate/15min` | ❌ Not done | 🟠 Soon |
+| 2e | `Book a Call →` links to `/contact` — should be `cal.com/ui-pirate/15min` | ✅ Done | — |
 | 2f | PDF download confirmed at `/public/uipirate-pricing-2026.pdf` | ✅ Done | — |
 | 2g | `5.0★` — star glyph in numeric value, parsing ambiguity | ❌ Not done | 🟡 Consider |
 
@@ -176,17 +176,12 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 
 | # | Item | File |
 |---|------|------|
-| 1a | Page title still says `$2000/mo` — update to `from $500/mo` | `app/pricing/page.tsx` |
-| 1b | Meta description still says `$2000/mo` | `app/pricing/page.tsx` |
-| 1c | OG title still says `$2000/mo` | `app/pricing/page.tsx` |
-| 1f | JSON-LD schema offer price still `"price": "2000"` | `app/pricing/page.tsx` |
 | 9c | Comparison table monthly cost row still shows `$2,000` — update to `from $500` | `pricing/comparison/index.tsx` |
 
 ### 🟠 Soon — Conversion improvements
 
 | # | Item | File |
 |---|------|------|
-| 2e | Hero `Book a Call →` still links to `/contact` — change to cal.com | `pricing/hero/index.tsx` |
 | 4c | Custom Quote subtitle — pick one audience | `landing/pricing/index.tsx` |
 | 5a | Scarcity message — make dynamic or replace with always-true copy | `landing/pricing/index.tsx` |
 | 6c | `Funded Startups` card rewrite | `pricing/perfectFor/index.tsx` |
@@ -195,8 +190,6 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 | 7e | Pilot tier descriptions — outcome-based rewrites | `tryBeforeCommit/index.tsx` |
 | 8b | Add `How much does UI/UX design cost?` FAQ | `pricing/faq/index.tsx` |
 | 8c | Replace `Chat With Us` FAQ CTA with cal.com | `pricing/faq/index.tsx` |
-| 1d | OG description — update price from `$2000` | `app/pricing/page.tsx` |
-| 1e | Twitter title — update price from `$2000` | `app/pricing/page.tsx` |
 
 ### 🟡 Consider — Polish
 
@@ -204,7 +197,6 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 |---|------|------|
 | 3c | `One subscription, endless possibilities` → specific copy | `landing/pricing/index.tsx` |
 | 5b | Unify dual scarcity signals | Multiple files |
-| 1g | Align `60%` → `50-70%` savings claim in meta | `app/pricing/page.tsx` |
 | 1h | Remove `cheap UI design agency` keyword | `app/pricing/page.tsx` |
 | 1i | Add `design subscription agency`, `SaaS design retainer` keywords | `app/pricing/page.tsx` |
 | 1j | Update `priceValidUntil` before Dec 31 | `app/pricing/page.tsx` |
