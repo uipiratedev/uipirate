@@ -63,7 +63,7 @@ const WhatYouGetCard = ({ heading, description, image, img }: any) => {
 
 const WhatYouGetAnimations = ({ data }: any) => {
   return (
-    <div className="mx-auto px-32 lg:px-20 max-md:px-4 overflow-hidden">
+    <div className="section-container">
       {/* Cards grid with ContainerScroll */}
       <ContainerScroll
         titleComponent={

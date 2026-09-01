@@ -50,7 +50,7 @@ const ClientLogosMarquee = () => {
       viewport={{ once: true }}
       whileInView={{ opacity: 1, y: 0 }}
     >
-      <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+      <div className="section-container">
         <p className="text-center text-sm text-gray-500 uppercase tracking-wider mb-8 max-md:mb-6 font-medium">
           Trusted by teams at
         </p>
