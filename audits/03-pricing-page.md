@@ -601,14 +601,14 @@ The Monthly Retainer card in `landing/pricing/index.tsx` now displays **`from $5
 | NEW | In-house turnaround updated to `Slow (1-3 weeks)` | ✅ Done |
 | 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | ✅ Done |
 | 14 | Pilot tier descriptions rewritten to outcomes | ✅ Done |
+| 15 | Added `How much does UI/UX design cost?` FAQ | ✅ Done |
+| 16 | FAQ CTA updated to cal.com link | ✅ Done |
 
 ## What Is Still Open (as of v4)
 
 | # | Item | File | Priority |
 |---|------|------|----------|
 | 11 | PerfectFor card rewrites (Funded Startups, SaaS Companies, Agencies) | `pricing/perfectFor/index.tsx` | 🟠 Soon |
-| 15 | Missing FAQ: `How much does UI/UX design cost?` | `pricing/faq/index.tsx` | 🟠 Soon |
-| 16 | FAQ CTA `Chat With Us` — replace with cal.com CTA | `pricing/faq/index.tsx` L101 | 🟠 Soon |
 | 19 | SEO keywords: remove `cheap UI design agency`, `affordable UX design` | `app/pricing/page.tsx` | 🟡 Consider |
 | 20 | SEO keywords: add `design subscription agency`, `SaaS design retainer`, etc. | `app/pricing/page.tsx` | 🟡 Consider |
 | 21 | `priceValidUntil: "2026-12-31"` in JSON-LD — update before expiry | `app/pricing/page.tsx` | 🟡 Consider |

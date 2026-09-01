@@ -140,8 +140,8 @@ Synced to **`03-pricing-page.md` v4 (2026-09-01)** — all statuses are code-ver
 | # | Item | Status | Priority |
 |---|------|--------|----------|
 | 8a | 6 buyer-blocker questions present (pause, satisfaction, turnaround, exclusions, pilot, switching) | ✅ Done | — |
-| 8b | Missing FAQ: `How much does UI/UX design cost?` — highest-volume transactional query | ❌ Not done | 🟠 Soon |
-| 8c | FAQ CTA: `Chat With Us` has no href — replace with `Book a Free 15-Min Call →` cal.com | ❌ Not done | 🟠 Soon |
+| 8b | Missing FAQ: `How much does UI/UX design cost?` — highest-volume transactional query | ✅ Done | 🟠 Soon |
+| 8c | FAQ CTA: `Chat With Us` has no href — replace with `Book a Free 15-Min Call →` cal.com | ✅ Done | 🟠 Soon |
 
 ---
 
