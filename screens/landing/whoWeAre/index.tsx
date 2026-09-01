@@ -85,7 +85,7 @@ const LandingWhoWeAre = () => {
   return (
     <section
       ref={containerRef}
-      className="relative py-24 md:py-32 lg:py-40 overflow-hidden"
+      className="relative py-16 md:py-24 lg:py-28 overflow-hidden"
     >
       {/* Subtle background gradient for depth */}
       <div className="absolute inset-0 pointer-events-none" />

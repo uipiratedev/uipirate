@@ -5,6 +5,13 @@ import { motion, Transition } from "framer-motion";
 
 export type ArcToggleTheme = "light" | "dark";
 export type ArcCornerToggleStateMode = "interactive" | "standard" | "standerd" | "click";
+export type ArcToggleSize = "sm" | "md" | "lg";
+
+export const ARC_SIZE_SCALE: Record<ArcToggleSize, number> = {
+  sm: 0.75,
+  md: 1,
+  lg: 1.25,
+};
 
 export interface ArcCornerToggleProps {
   /** Controlled active state (false = Light/STANDARD, true = Dark/CLICK) */

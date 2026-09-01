@@ -91,26 +91,7 @@ const TheTeam = () => {
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">THE TEAM</GlassBadge>
         </div>
-        <h2 className="heading-center">Meet The Crew On Board</h2>
-
-        {/* Founder Note (Paper Style) */}
-        <div className="mt-10 mb-12 max-w-2xl mx-auto">
-          <div className="relative p-6 md:p-8 bg-[#FDFBF7] border border-[#E6E4DD] rounded shadow-[2px_4px_12px_rgba(0,0,0,0.04)] transform -rotate-1 hover:rotate-0 transition-transform duration-300">
-            {/* Tape effect */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-20 h-7 bg-white/60 backdrop-blur-md shadow-sm border border-white/20 transform -rotate-2"></div>
-            
-            <p className="relative z-10 text-gray-700 text-lg md:text-[22px] leading-relaxed font-serif italic text-center">
-              "UI Pirate started in 2015 when I got tired of design hand-offs that fell apart in engineering. We are built around one idea: the people who design the product should be able to ship it."
-            </p>
-            <div className="relative z-10 mt-6 flex justify-end items-center gap-3">
-              <div className="w-10 h-[1px] bg-brand-orange/50"></div>
-              <div className="flex flex-col text-right">
-                <span className="font-semibold text-gray-900 font-sans text-sm">Vishal Anand</span>
-                <span className="text-gray-500 font-sans text-xs uppercase tracking-wider">Founder</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h2 className="heading-center">Meet The <span className="text-brand-orange">Crew </span>On Board</h2>
       </div>
       <div className="autoShowBottom">
         {/* Team Grid */}

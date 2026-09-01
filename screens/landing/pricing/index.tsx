@@ -86,7 +86,7 @@ const Pricing = () => {
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
-        <h2 className="heading-center">Transparent Pricing for SaaS Teams</h2>
+        <h2 className="heading-center">Transparent Pricing for <span className="text-brand-orange">SaaS Teams</span> </h2>
       </div>
 
       {/* Pricing Cards Grid */}
