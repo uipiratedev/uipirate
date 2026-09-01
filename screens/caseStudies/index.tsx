@@ -147,17 +147,15 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
         type="application/ld+json"
       />
 
-      <div className="mb-12">
+      <div>
         {/* Hero — portfolio + case studies positioning */}
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <CaseStudiesHero />
-        </div>
+        <CaseStudiesHero />
 
         {/* Client Logos Marquee */}
         <ClientLogosMarquee />
 
         {/* Featured deep-dive case studies (from the CMS) */}
-        <section className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-12 max-md:pt-6">
+        <section className="section-container pt-12 max-md:pt-6">
           <div className="autoShow">
             <div className="mb-6 flex flex-row items-center justify-center">
               <GlassBadge variant="gradient">case studies</GlassBadge>
@@ -403,7 +401,7 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
         </section>
 
         {/* What's Next CTA */}
-        <section className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-12 max-md:pt-6">
+        <section className="section-container pt-12 max-md:pt-6">
           <div className="relative rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-[#212121] to-[#151514] noise-texture px-12 py-20 max-md:px-6 max-md:py-12 text-center">
             <p className="text-[11px] font-jetbrains-mono uppercase tracking-[0.18em] text-[#FF5B04] mb-3">
               What&apos;s next
@@ -434,21 +432,16 @@ const CaseStudies = ({ cmsCaseStudies = [] }: CaseStudiesProps) => {
         </section>
 
         {/* Client Testimonials */}
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          <LandingTestimonials />
-        </div>
+        <LandingTestimonials />
 
         {/* Why Choose Us */}
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
-          \
-          <WhyChooseUs />
-        </div>
+        <WhyChooseUs />
 
         {/* FAQ Section */}
         <CaseStudiesFAQ />
 
         {/* Pricing CTA */}
-        <div className="container mx-auto px-32 lg:px-20 max-md:px-4">
+        <div className="section-container pb-16">
           <div className="mb-12">
             <div className="autoShow">
               <div className="mb-6 flex flex-row items-center justify-center">

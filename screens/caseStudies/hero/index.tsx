@@ -74,7 +74,7 @@ const CaseStudiesHero = () => {
         }}
       />
       <div
-        className="flex flex-col items-center justify-center w-full relative z-10 container mx-auto "
+        className="flex flex-col items-center justify-center w-full relative z-10 section-container"
         style={{ overflow: "visible" }}
       >
         {" "}
