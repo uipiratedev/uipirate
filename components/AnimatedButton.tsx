@@ -54,7 +54,7 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
   const isVisualHover = stateMode === "hover";
 
   const baseClasses = `px-8 max-md:px-6 py-4 max-md:py-3 rounded-[20px] max-md:rounded-[12px] group transition-all duration-300 ${
-    fullWidth ? "w-full" : "w-auto max-w-full inline-flex"
+    fullWidth ? "w-full" : "w-max min-w-fit inline-flex"
   }`;
 
   const variantClasses =
@@ -65,12 +65,12 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
   const textStyle = textColor ? { color: textColor } : undefined;
 
   const buttonContent = (
-    <div className="relative overflow-hidden h-[1.5em] grid grid-cols-1 grid-rows-1 items-center justify-center font-medium text-lg max-md:text-sm px-2">
+    <div className="relative overflow-hidden h-[1.5em] w-full grid grid-cols-1 grid-rows-1 items-center justify-center font-medium text-lg max-md:text-sm px-2">
       <span
         style={textStyle}
         className={`col-start-1 row-start-1 block transition-transform duration-300 ease-in-out transform ${
           isVisualHover ? "-translate-y-full opacity-0" : "group-hover:-translate-y-full group-hover:opacity-0"
-        } flex flex-row items-center justify-center gap-x-3 whitespace-nowrap`}
+        } flex flex-row items-center justify-center gap-x-3 whitespace-nowrap text-center`}
       >
         {primaryText}
       </span>
@@ -78,7 +78,7 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
         style={textStyle}
         className={`col-start-1 row-start-1 block transition-transform duration-300 ease-in-out transform ${
           isVisualHover ? "translate-y-0 font-bold opacity-100" : "translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 font-bold"
-        } flex flex-row items-center justify-center gap-x-3 whitespace-nowrap`}
+        } flex flex-row items-center justify-center gap-x-3 whitespace-nowrap text-center`}
       >
         {hoverText}
       </span>

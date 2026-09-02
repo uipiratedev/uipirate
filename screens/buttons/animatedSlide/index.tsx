@@ -2,7 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { AnimatedButton } from "@/components/AnimatedButton";
+import {
+  AnimatedButton,
+  AnimatedButtonSize,
+  AnimatedButtonStateMode,
+} from "@/components/AnimatedButton";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
@@ -11,6 +15,8 @@ export default function AnimatedSlideButtonScreen() {
   const [primaryText, setPrimaryText] = useState("Explore Services");
   const [hoverText, setHoverText] = useState("See More →");
   const [variant, setVariant] = useState<"primary" | "secondary">("primary");
+  const [size, setSize] = useState<AnimatedButtonSize>("md");
+  const [stateMode, setStateMode] = useState<AnimatedButtonStateMode>("interactive");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
   const [copiedInstall, setCopiedInstall] = useState(false);
@@ -133,12 +139,14 @@ export default function Example() {
         {/* Live Interactive Studio / Sandbox */}
         <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
           <StudioCanvas hint="Hover to trigger the dual-label slide">
-            <div className="w-full max-w-[280px]">
+            <div className="w-full flex items-center justify-center">
               <AnimatedButton
                 primaryText={primaryText}
                 hoverText={hoverText}
                 variant={variant}
-                fullWidth={true}
+                size={size}
+                stateMode={stateMode}
+                fullWidth={false}
                 className="!mt-0"
               />
             </div>
@@ -174,16 +182,34 @@ export default function Example() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block">
-                Style Variant
+              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
+                Scale Size
               </label>
               <select
-                value={variant}
-                onChange={(e) => setVariant(e.target.value as "primary" | "secondary")}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-[#FF5B04] font-mono"
+                value={size}
+                onChange={(e) => setSize(e.target.value as AnimatedButtonSize)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="primary" className="bg-[#18181B] text-white">Primary Dark</option>
-                <option value="secondary" className="bg-[#18181B] text-white">Secondary Light</option>
+                <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#151518] text-white">Small</option>
+                <option value="md" className="bg-[#151518] text-white">Medium</option>
+                <option value="lg" className="bg-[#151518] text-white">Large</option>
+                <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
+                State Preview
+              </label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as AnimatedButtonStateMode)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
+                <option value="hover" className="bg-[#151518] text-white">Hover</option>
               </select>
             </div>
           </div>

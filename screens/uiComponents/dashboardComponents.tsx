@@ -1319,7 +1319,7 @@ export default function Example() {
     detailUrl: "/componentlab/animated-slide-button",
     defaultLabel: "Explore Services",
     hasLabelControl: true,
-    hasSizeControl: false,
+    hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "primary",
     availableThemes: [

@@ -602,11 +602,13 @@ export default function Example() {
         );
       case "animated-slide-button":
         return (
-          <div className="py-8 flex items-center justify-center w-full max-w-[260px] mx-auto">
+          <div className="py-8 flex items-center justify-center w-full mx-auto">
             <AnimatedButton
               primaryText={customLabel || "Explore Services"}
               hoverText="See More →"
               variant={customTheme === "secondary" ? "secondary" : "primary"}
+              size={customSize}
+              stateMode={customStateMode}
               className="!mt-0"
               fullWidth={false}
               onClick={() => handleTriggerAction("Slide Button Clicked")}
@@ -1155,6 +1157,7 @@ export default function Example() {
                       "smash-tactile-button",
                       "scaling-capsule-button",
                       "magnetic-pulse-cta",
+                      "animated-slide-button",
                     ].includes(selectedComponent.id) && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
