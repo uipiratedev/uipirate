@@ -169,7 +169,7 @@ export default function FaqsAccordion() {
               <AccordionItem
                 key={String(index)}
                 aria-label={item.heading}
-                className="shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:border-l-[3px] data-[open=true]:border-l-brand-orange data-[open=true]:border-gray-200 data-[open=true]:shadow-sm"
+                className="px-4 md:px-6 shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:shadow-sm"
                 indicator={({ isOpen }) =>
                   isOpen ? (
                     <img
@@ -186,12 +186,12 @@ export default function FaqsAccordion() {
                   )
                 }
                 title={
-                  <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug text-gray-900">
+                  <p className="font-semibold pr-12 max-md:pr-6 md:py-2  text-[16px] leading-snug text-gray-900">
                     {item.heading}
                   </p>
                 }
               >
-                <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
+                <div className="pb-5 md:pb-6 pt-0">
                   <p className="mb-5 text-[15px] text-gray-600">
                     {item.title1}
                   </p>

@@ -69,9 +69,8 @@ const AboutCardItem = ({
 
   return (
     <motion.div
-      className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
-        isEven ? "lg:-mt-32" : "lg:mt-0"
-      } hover:ease-in-out`}
+      className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${isEven ? "lg:-mt-32" : "lg:mt-0"
+        } hover:ease-in-out`}
       // Reveals once via IntersectionObserver (`whileInView`) instead of the
       // previous per-card `useScroll` tied to a ~1% viewport window on
       // desktop — that tiny window was the same "takes forever to trigger"
@@ -94,7 +93,7 @@ const AboutCardItem = ({
     >
       <div className="flex flex-col justify-between h-full">
         <div>
-          <p className="text-8xl max-md:text-5xl overflow-hidden font-[500] max-md:font-[500]">
+          <p className="text-7xl max-md:text-5xl overflow-hidden font-[500] max-md:font-[500]">
             {item.heading.split("").map((letter, i) => (
               <motion.span
                 key={`${index}-${i}`}

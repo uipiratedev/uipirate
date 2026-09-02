@@ -210,7 +210,7 @@ const TheTeam = () => {
                     transition: { duration: 0.3, ease: "easeOut" },
                   }}
                 >
-                  <Card className="rounded-[32px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
+                  <Card className="rounded-[30px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
                     <CardBody className="p-0">
                       <div
                         className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}

@@ -78,7 +78,7 @@ export default function TestimonialCards() {
                 viewport={{ once: true, amount: 0.2 }}
                 whileInView="visible"
               >
-                <div className="group relative bg-white border border-[#E5E7EB] rounded-[24px] p-5 px-7 pt-12 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-300 flex flex-col justify-start gap-3.5 overflow-hidden">
+                <div className="group relative bg-white border border-[#E5E7EB] rounded-[20px] p-5 px-7 pt-12 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-300 flex flex-col justify-start gap-3.5 overflow-hidden">
                   {/* Top Hanging Stars Badge */}
                   <div className="absolute top-0 left-6 flex flex-col items-center">
                     {/* Two suspension strings */}

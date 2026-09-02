@@ -2117,7 +2117,7 @@ body[data-transitioning="true"] [data-animate] {
 /* Reusable animated top border with smooth hover */
 .premium-card {
   position: relative;
-  border-radius: 22px;
+  border-radius: 20px;
   background: #ffffff;
   padding: 2px;
   /* border thickness */
@@ -2127,7 +2127,7 @@ body[data-transitioning="true"] [data-animate] {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 22px;
+  border-radius: 20px;
   background: linear-gradient(to bottom,
       #FF5B04 0%,
       #FF5B04 12%,
@@ -2145,7 +2145,7 @@ body[data-transitioning="true"] [data-animate] {
 .premium-card-inner {
   position: relative;
   z-index: 1;
-  border-radius: 19px;
+  border-radius: 17px;
   background: #f8f9fc;
   height: 100%;
   width: 100%;
