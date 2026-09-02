@@ -282,7 +282,7 @@ export const GlossyGelButton = React.forwardRef<
 
         {/* Content Layer with Crisp Depth Text Shadow */}
         <span
-          className="relative z-10 inline-flex items-center gap-2 font-semibold tracking-tight"
+          className="relative z-10 inline-flex items-center gap-2 font-semibold tracking-tight whitespace-nowrap"
           style={{
             textShadow: themeConfig.textShadow,
           }}

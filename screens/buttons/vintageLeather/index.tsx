@@ -6,6 +6,7 @@ import {
   VintageLeatherCTA,
   VintageLeatherTheme,
   VintageLeatherSize,
+  VintageLeatherStateMode,
 } from "@/components/VintageLeatherCTA";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
@@ -14,6 +15,7 @@ import GlobalCTA from "@/components/GlobalCTA";
 export default function VintageLeatherScreen() {
   const [theme, setTheme] = useState<VintageLeatherTheme>("heritage");
   const [size, setSize] = useState<VintageLeatherSize>("md");
+  const [stateMode, setStateMode] = useState<VintageLeatherStateMode>("interactive");
   const [showOrnaments, setShowOrnaments] = useState(true);
   const [labelText, setLabelText] = useState("Shop ties");
   const [clickCount, setClickCount] = useState(0);
@@ -162,6 +164,7 @@ export default function Example() {
                 label={labelText}
                 theme={theme}
                 size={size}
+                stateMode={stateMode}
                 showOrnaments={showOrnaments}
                 onClick={() => setClickCount((c) => c + 1)}
               />
@@ -206,16 +209,29 @@ export default function Example() {
 
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-                            <select
+              <select
                 value={size}
                 onChange={(e) => setSize(e.target.value as typeof size)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
-                  <option value="sm" className="bg-[#151518] text-white">Small</option>
-                  <option value="md" className="bg-[#151518] text-white">Medium</option>
-                  <option value="lg" className="bg-[#151518] text-white">Large</option>
-                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+                <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#151518] text-white">Small</option>
+                <option value="md" className="bg-[#151518] text-white">Medium</option>
+                <option value="lg" className="bg-[#151518] text-white">Large</option>
+                <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as VintageLeatherStateMode)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="interactive" className="bg-[#101014]">Interactive</option>
+                <option value="standerd" className="bg-[#101014]">Standard</option>
+                <option value="hover" className="bg-[#101014]">Hover</option>
               </select>
             </div>
           </div>

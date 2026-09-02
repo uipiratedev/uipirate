@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 
 export type VintageLeatherTheme = "uipirate" | "pirate" | "heritage" | "obsidian" | "emerald" | "ruby" | "silver";
 export type VintageLeatherSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type VintageLeatherStateMode = "interactive" | "standerd" | "hover";
 
 export interface VintageLeatherCTAProps {
   /** Text label on the button */
@@ -13,6 +14,8 @@ export interface VintageLeatherCTAProps {
   theme?: VintageLeatherTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: VintageLeatherSize;
+  /** Visual state mode: 'interactive' (default hover lift), 'standerd', 'hover' */
+  stateMode?: VintageLeatherStateMode;
   /** Whether to show the decorative surface scrollwork patterns (default: true) */
   showOrnaments?: boolean;
   /** Click event handler */
@@ -145,6 +148,7 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
   label = "Shop ties",
   theme = "heritage",
   size = "md",
+  stateMode = "interactive",
   showOrnaments = true,
   onClick,
   scale = 1,
@@ -152,6 +156,13 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
   children,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const isLifted =
+    stateMode === "hover"
+      ? true
+      : stateMode === "standerd"
+      ? false
+      : isHovered;
 
   // Theme palettes and lighting
   const themeStyles = {
@@ -277,10 +288,13 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
     <motion.button
       type="button"
       onClick={onClick}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98, y: 2 }}
+      onHoverStart={() => stateMode === "interactive" && setIsHovered(true)}
+      onHoverEnd={() => stateMode === "interactive" && setIsHovered(false)}
+      animate={{
+        scale: isLifted ? 1.02 : 1,
+      }}
+      whileHover={stateMode === "interactive" ? { scale: 1.02 } : undefined}
+      whileTap={stateMode === "interactive" ? { scale: 0.98, y: 2 } : undefined}
       transition={{ type: "spring", stiffness: 450, damping: 28 }}
       className={`relative inline-flex items-center justify-center select-none cursor-pointer outline-none ${className}`}
       style={{
