@@ -109,7 +109,7 @@ const LandingWhoWeAre = () => {
         >
           <h2
             className="
-              text-center font-semibold tracking-tight leading-snug
+              text-center font-medium tracking-tight leading-snug
               text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[42px]
               md:leading-[1.35] lg:leading-[1.4] xl:leading-[1.35]
             "
@@ -125,17 +125,6 @@ const LandingWhoWeAre = () => {
             ))}
           </h2>
         </div>
-
-        {/* Decorative elements for enterprise feel */}
-        <motion.div
-          className="flex justify-center mt-12 md:mt-16 lg:mt-20"
-          initial={{ opacity: 0, scaleX: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.8 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-        >
-          <div className="h-[2px] w-16 md:w-24 bg-gradient-to-r from-transparent via-brand-orange/40 to-transparent rounded-full" />
-        </motion.div>
       </div>
     </section>
   );

@@ -62,14 +62,14 @@ const PricingPerfectFor = () => {
         {PERFECT_FOR.map((item, index) => (
           <motion.div
             key={item.title}
-            className="group flex flex-col overflow-hidden rounded-[24px] bg-white border border-[#E5E7EB] shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300"
+            className="group flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
             viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
           >
             {/* Top 3D Illustration Area */}
-            <div className="relative w-full h-[180px] md:h-[195px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white flex items-center justify-center">
+            <div className="relative w-full h-[180px] md:h-[195px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white dark:from-[#26201D] dark:to-[#1A1A1A] flex items-center justify-center">
               <img
                 alt={item.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -79,10 +79,10 @@ const PricingPerfectFor = () => {
 
             {/* Content */}
             <div className="flex flex-1 flex-col p-6 pt-5">
-              <h3 className="text-lg md:text-[19px] font-bold text-[#0F172A] uppercase tracking-tight mb-2.5">
+              <h3 className="text-lg md:text-[19px] font-bold text-slate-900 dark:text-white uppercase tracking-tight mb-2.5">
                 {item.title}
               </h3>
-              <p className="text-sm md:text-[14.5px] text-[#64748B] font-normal leading-relaxed">
+              <p className="text-sm md:text-[14.5px] text-slate-500 dark:text-slate-400 font-normal leading-relaxed">
                 {item.description}
               </p>
             </div>
@@ -90,22 +90,22 @@ const PricingPerfectFor = () => {
         ))}
       </div>
 
-      {/* Not For Section - Premium Dark Card */}
+      {/* Not For Section - Theme Compatible Card */}
       <motion.div
-        className="bg-gradient-to-br from-[#212121] to-[#151514] noise-texture border border-white/10 rounded-[24px] p-6 md:p-8 relative overflow-hidden shadow-xl"
+        className="bg-gradient-to-br from-[#FFF5F5] via-[#FFF8F8] to-[#FFF0F0] dark:bg-gradient-to-br dark:from-[#212121] dark:to-[#151514] noise-texture border border-red-100/90 dark:border-white/10 rounded-[24px] p-6 md:p-8 relative overflow-hidden shadow-[0_4px_24px_rgba(239,68,68,0.03)] dark:shadow-xl"
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.4, delay: 0.5 }}
         viewport={{ once: true }}
         whileInView={{ opacity: 1, y: 0 }}
       >
         {/* Subtle glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 dark:bg-red-500/10 blur-3xl pointer-events-none" />
 
         <div className="flex items-center gap-2.5 mb-5 relative z-10">
-          <span className="w-5 h-5 rounded-full bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 text-xs font-bold">
+          <span className="w-5 h-5 rounded-full bg-red-100 dark:bg-red-500/20 border border-red-200 dark:border-red-500/30 flex items-center justify-center text-red-600 dark:text-red-400 text-xs font-bold">
             ✕
           </span>
-          <p className="text-red-400 font-bold text-xs uppercase tracking-wider">
+          <p className="text-red-600 dark:text-red-400 font-bold text-xs uppercase tracking-wider">
             Not the right fit
           </p>
         </div>
@@ -114,16 +114,16 @@ const PricingPerfectFor = () => {
           {NOT_FOR.map((item, index) => (
             <motion.div
               key={index}
-              className="flex items-center gap-3.5 bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3.5 hover:bg-white/[0.1] transition-colors"
+              className="flex items-center gap-3.5 bg-white/90 dark:bg-white/[0.06] border border-red-100/80 dark:border-white/10 rounded-xl px-4 py-3.5 hover:border-red-200 dark:hover:bg-white/[0.1] shadow-sm dark:shadow-none backdrop-blur-sm transition-all"
               initial={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
               viewport={{ once: true }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <span className="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-sm flex-shrink-0">
+              <span className="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-500/15 border border-red-200/70 dark:border-red-500/30 flex items-center justify-center text-red-500 dark:text-red-400 font-bold text-sm flex-shrink-0">
                 {item.icon}
               </span>
-              <span className="text-white/90 text-sm font-medium leading-snug">
+              <span className="text-slate-800 dark:text-white/90 text-sm font-medium leading-snug">
                 {item.text}
               </span>
             </motion.div>

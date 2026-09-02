@@ -39,13 +39,13 @@ const MiniProcess = () => {
         <h2 className="heading-center">From Idea to Shipped, <span className="text-brand-orange">in 3 Steps</span></h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {GROUPS.map((group, i) => (
           <motion.div
             key={group.title}
             className={`group relative bg-white border border-[#E5E7EB] rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-300 overflow-hidden flex flex-col justify-between ${i === 2
-                ? "md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto md:w-full lg:max-w-none"
-                : "md:col-span-1"
+              ? "md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto md:w-full lg:max-w-none"
+              : "md:col-span-1"
               }`}
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: i * 0.1 }}
