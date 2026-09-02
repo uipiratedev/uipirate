@@ -156,6 +156,9 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           transition-all duration-300 ease-in-out
           ${className}
         `}
+        style={{
+          color: textColor || undefined,
+        }}
         height="auto"
         opacity={0.93}
         saturation={1.5}
@@ -177,7 +180,10 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
         transition-all duration-300 ease-in-out
         ${className}
       `}
-      style={variantStyles[variant]}
+      style={{
+        ...variantStyles[variant],
+        color: textColor || undefined,
+      }}
     >
       {children}
     </span>

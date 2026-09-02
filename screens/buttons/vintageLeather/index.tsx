@@ -255,11 +255,11 @@ export default function Example() {
                   onChange={(e) => setSize(e.target.value as typeof size)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
                 >
-                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
-                  <option value="sm" className="bg-[#151518] text-white">Small</option>
-                  <option value="md" className="bg-[#151518] text-white">Medium</option>
-                  <option value="lg" className="bg-[#151518] text-white">Large</option>
-                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small (xs)</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small (sm)</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium (md)</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large (lg)</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large (xl)</option>
                 </select>
               </div>
             </div>
