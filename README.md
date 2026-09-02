@@ -222,9 +222,7 @@ uipirate/
 │   ├── contact/             # Contact page
 │   ├── faqs/                # FAQs page
 │   ├── ourTeam/             # Team page
-│   ├── ourWorks/            # Portfolio page
 │   ├── pricing/             # Pricing page
-│   ├── privacy-policy/      # Privacy policy
 │   ├── resources/           # Resources section
 │   ├── services/            # Services pages
 │   ├── layout.tsx           # Root layout with metadata
@@ -244,7 +242,6 @@ uipirate/
 │   ├── blogsDetails/        # Blog detail components
 │   ├── faqs/                # FAQ components
 │   ├── ourTeam/             # Team page components
-│   ├── ourWorks/            # Portfolio components
 │   ├── pricing/             # Pricing components
 │   ├── service/             # Service page components
 │   └── serviceDetails/      # Service detail components

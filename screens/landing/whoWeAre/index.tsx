@@ -76,7 +76,7 @@ const LandingWhoWeAre = () => {
   });
 
   const text =
-    "UI Pirate is a global UI/UX Design & Development Studio, helping SaaS founders & enterprise teams build high-performing products that ships faster, looks premium, and scales without design debt.";
+    "UI Pirate is a product design and development agency. We help SaaS founders and enterprise teams design, build, and ship products that look premium, perform well, and hold up as they grow.";
 
   // Memoize word splitting to prevent unnecessary recalculations
   const words = useMemo(() => text.split(" "), []);
@@ -85,7 +85,7 @@ const LandingWhoWeAre = () => {
   return (
     <section
       ref={containerRef}
-      className="relative py-24 md:py-32 lg:py-40 overflow-hidden"
+      className="relative py-16 md:py-24 lg:py-28 overflow-hidden"
     >
       {/* Subtle background gradient for depth */}
       <div className="absolute inset-0 pointer-events-none" />
@@ -109,7 +109,7 @@ const LandingWhoWeAre = () => {
         >
           <h2
             className="
-              text-center font-semibold tracking-tight leading-snug
+              text-center font-medium tracking-tight leading-snug
               text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[42px]
               md:leading-[1.35] lg:leading-[1.4] xl:leading-[1.35]
             "
@@ -125,17 +125,6 @@ const LandingWhoWeAre = () => {
             ))}
           </h2>
         </div>
-
-        {/* Decorative elements for enterprise feel */}
-        <motion.div
-          className="flex justify-center mt-12 md:mt-16 lg:mt-20"
-          initial={{ opacity: 0, scaleX: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.8 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-        >
-          <div className="h-[2px] w-16 md:w-24 bg-gradient-to-r from-transparent via-brand-orange/40 to-transparent rounded-full" />
-        </motion.div>
       </div>
     </section>
   );

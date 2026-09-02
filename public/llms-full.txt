@@ -3,7 +3,7 @@
 # Full AI Context Document (llms-full.txt)
 # Last updated: 2026-08-21
 
-> UI Pirate is a full-service product design and development agency founded by Vishal Anand in 2015.
+> UI Pirate is a full-service product design and development agency founded by Vishal Anand in 2017.
 > We turn product ideas into fully functional shipped products — handling everything from product thinking and
 > competitive analysis to UX/UI design and end-to-end full-stack software development in Angular,
 > React, Next.js, Node.js, and Python. We serve Fortune 500 companies and high-growth startups across USA, UK, Singapore,
@@ -14,7 +14,7 @@
 ## Company Overview
 
 **Name**: UI Pirate (also known as UI Pirate by Vishal Anand)
-**Founded**: 2015
+**Founded**: 2017
 **Founder**: Vishal Anand (9+ years experience in product design & full-stack software engineering)
 **Headquarters**: India (remote-first, serving clients globally)
 **Rating**: 5.0 stars across Clutch, Upwork, and Google
@@ -58,21 +58,9 @@ and performance optimization.
 Custom design tokens, branded UI kits, documented and dev-ready Angular/React component libraries
 for scalable product teams. Timeline: 1-4 weeks.
 
-### 5. Graphic Design
-Brand identity, infographics, newsletters, website graphics, social media visuals, and
-print-ready marketing materials.
-
-### 6. Motion Graphics & Video Editing
-2D/3D animations, social media reels and ads, explainer videos, sound design, color grading,
-and motion graphics for web and product.
-
-### 7. UX Audits & Consultation
+### 5. UX Audits & Consultation
 Heuristic analysis, usability testing, friction point identification, and strategic UX
 recommendations for existing products.
-
-### 8. 3D Animation & Rendering
-3D product visualization, architectural rendering, and animated 3D assets for marketing and
-product use.
 
 ---
 

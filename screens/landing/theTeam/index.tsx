@@ -23,9 +23,9 @@ const TheTeam = () => {
       bgColor: "bg-gradient-to-br from-green-400 to-green-600",
     },
     {
-      name: "Musuddiq",
+      name: "Musaddiq",
       role: "Lead UX Designer",
-      quote: "I’m Musuddiq. I design how the product works.",
+      quote: "I’m Musaddiq. I design how the product works.",
       image: "/assets/teams/musaddiq.svg",
       bgColor: "bg-gradient-to-br from-blue-400 to-blue-600",
     },
@@ -87,11 +87,11 @@ const TheTeam = () => {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative">
       {/* Header */}
-      <div className="text-center mb-6 max-md:mb-4 autoShow">
+      <div className="text-center mb-8 max-md:mb-4 autoShow">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">THE TEAM</GlassBadge>
         </div>
-        <h2 className="heading-center">Meet The Crew On Board</h2>
+        <h2 className="heading-center">Meet The <span className="text-brand-orange">Crew </span>On Board</h2>
       </div>
       <div className="autoShowBottom">
         {/* Team Grid */}
@@ -210,7 +210,7 @@ const TheTeam = () => {
                     transition: { duration: 0.3, ease: "easeOut" },
                   }}
                 >
-                  <Card className="rounded-[32px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
+                  <Card className="rounded-[30px] max-md:rounded-[24px] overflow-hidden border-none shadow-lg transition-shadow duration-300 group-hover:shadow-2xl">
                     <CardBody className="p-0">
                       <div
                         className={`relative w-full aspect-[4/3] ${member.bgColor} flex items-center justify-center overflow-hidden`}

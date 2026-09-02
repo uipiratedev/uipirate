@@ -20,7 +20,7 @@ We specialize in **complex enterprise SaaS and AI applications** — the kind wi
 **Founder**: Vishal Anand — 9+ years of experience in product design & full-stack software development
 **Team**: Vishal Anand (Founder & Lead Designer), Danish Ansari (Lead Frontend Developer), Syed Musaddiq (Lead UX Designer), Kartik Kumar (Lead Graphics & Motion), Aniket (Lead Backend Developer)
 **Headquarters**: India (serving clients globally)
-**Founded**: 2015
+**Founded**: 2017
 **Projects Shipped**: 50+ products with 5.0 rating
 
 ## Services
@@ -29,10 +29,7 @@ We specialize in **complex enterprise SaaS and AI applications** — the kind wi
 - **Landing Pages & Business Websites**: High-converting marketing websites and corporate web platforms designed for maximum conversion and developed with modern Next.js/React engineering. Timeline: 2-4 weeks.
 - **Full-Stack Software Engineering & UI Development**: Production-ready software development in Angular (v14+), React, Next.js, and backend API services. Specializing in data-heavy enterprise platforms, real-time analytics dashboards, AI model integrations, and performance engineering.
 - **Design Systems & Component Libraries**: Custom design tokens, branded UI kits, documented and dev-ready Angular/React component libraries for scalable product teams. Timeline: 1-4 weeks.
-- **Graphic Design**: Brand identity, infographics, newsletters, website graphics, social media visuals, and print-ready marketing materials.
-- **Motion Graphics & Video Editing**: 2D/3D animations, social media reels/ads, explainer videos, sound design, color grading, and motion graphics for web and product.
 - **UX Audits & Consultation**: Heuristic analysis, usability testing, friction point identification, and strategic UX recommendations for existing products.
-- **3D Animation & Rendering**: 3D product visualization, architectural rendering, and animated 3D assets for marketing and product use.
 
 ## Our Approach
 
@@ -89,13 +86,10 @@ SaaS, Fintech, HealthTech, LegalTech, E-commerce, EdTech, PropTech, AI/ML Applic
   - Cloud Shift — Cloud Migration Platform: https://uipirate.com/case-studies/cloud-shift
   - StayRealtor — Property Management App: https://uipirate.com/case-studies/stayrealtor
   - OLSO — Peer-to-Peer Sharing Platform: https://uipirate.com/case-studies/olso
-- SaaS Web & Mobile App Design & Development: https://uipirate.com/services/SaaS-Web-&-Mobile-Apps
+- UX/UI Design (SaaS, AI & Mobile Apps): https://uipirate.com/services/UX-UI-Design
 - Landing Pages & Business Websites: https://uipirate.com/services/Landing-Pages-&-Business-Websites
 - Design Systems & Component Libraries: https://uipirate.com/services/Design-System-&-Component-Library
-- Graphic Design: https://uipirate.com/services/Graphic-Design
-- Motion Graphics & Video Editing: https://uipirate.com/services/Motion-Graphics-&-Video-Editing
 - UX Audits & Consultation: https://uipirate.com/services/UX-Audits-&-Consultation
-- 3D Animation & Rendering: https://uipirate.com/services/3D-Animation-&-Rendering
 - Pricing: https://uipirate.com/pricing
 - Blog: https://uipirate.com/blogs
 - FAQs: https://uipirate.com/faqs

@@ -1,18 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Card, CardBody } from "@heroui/react";
+import { motion, Variants } from "framer-motion";
+import { Card, CardBody, Accordion, AccordionItem } from "@heroui/react";
 
 import GlassSurface from "@/components/GlassSurface";
 import GlassBadge from "@/components/GlassBadge";
 import { CheckIcon } from "@/components/icons";
 import TheTeam from "@/screens/landing/theTeam";
+import PricingPerfectFor from "@/screens/pricing/perfectFor";
 import {
   HERO_BADGE_PRESET,
   HERO_BADGE_CLASSNAME,
   HERO_BADGE_ANIMATION_STYLE,
 } from "@/config/glassSurfacePresets";
+import { PROCESS_STEPS } from "@/data/process";
 
 const stats = [
   { number: "9+", label: "Years of Experience" },
@@ -21,49 +24,12 @@ const stats = [
   { number: "6", label: "Countries Served" },
 ];
 
-const process = [
-  {
-    step: "01",
-    title: "Listen",
-    description:
-      "You share your product vision — even if it's just a few lines of an idea. We listen deeply to understand your goals, users, and constraints.",
-  },
-  {
-    step: "02",
-    title: "Think",
-    description:
-      "We do competitive analysis, market research, and product thinking. We study what exists, find gaps, and define what will make your product stand out.",
-  },
-  {
-    step: "03",
-    title: "Plan",
-    description:
-      "Information architecture, user flows, feature prioritization, and product roadmap. We structure your product so it's intuitive from day one.",
-  },
-  {
-    step: "04",
-    title: "Design",
-    description:
-      "Wireframes → High-fidelity UI → Interactive prototypes. Every pixel is deliberate, every interaction is designed to drive user engagement.",
-  },
-  {
-    step: "05",
-    title: "Build",
-    description:
-      "Production-ready frontend code in Angular, React, or Next.js. Component-based architecture, API integration, responsive layouts, and performance optimization.",
-  },
-  {
-    step: "06",
-    title: "Ship & Scale",
-    description:
-      "Deployment, documentation, design system handoff, and ongoing support. We stay with you as your product grows and evolves.",
-  },
-];
-
 const technologies = [
   { name: "Angular", logo: "/assets/logos/angular.svg" },
   { name: "React", logo: "/assets/logos/react.svg" },
   { name: "Next.js", logo: "/assets/logos/next js.svg" },
+  { name: "Node.js", logo: "/assets/logos/nodejs.svg" },
+  { name: "Python", logo: "/assets/logos/python.svg" },
   { name: "TypeScript", logo: "/assets/logos/typescript.svg" },
   { name: "Tailwind CSS", logo: "/assets/logos/tailwind.svg" },
   { name: "Framer", logo: "/assets/logos/framer.svg" },
@@ -73,16 +39,30 @@ const technologies = [
 
 const industries = [
   "SaaS & Enterprise Software",
-  "Fintech & Banking",
+  "FinTech & Quant Trading",
   "HealthTech & MedTech",
   "LegalTech",
-  "E-commerce",
-  "EdTech",
-  "PropTech",
-  "AI & Machine Learning",
+  "AI Products & Platforms",
 ];
 
-// Client logos from cloudinary - matching marquee section
+const ABOUT_FAQS = [
+  {
+    question: "What is UI Pirate?",
+    answer:
+      "A product design and development agency founded by Vishal Anand in 2017. A seven-person team of designers and engineers who take products from first wireframe to shipped code.",
+  },
+  {
+    question: "Where is the team based?",
+    answer:
+      "The core team is in India. We keep US Eastern and Pacific business hours, and 60% of our clients are US-based startups and enterprises.",
+  },
+  {
+    question: "Do you only design, or do you build too?",
+    answer:
+      "Both. We handle product thinking, UX/UI design, and production-ready front-end code in React, Angular, and Next.js — the same team, start to finish.",
+  },
+];
+
 const clientLogos = [
   {
     name: "Pivot Bits",
@@ -144,10 +124,34 @@ const clientLogos = [
     logo: "https://res.cloudinary.com/damm9iwho/image/upload/v1730790130/728_x_90_copy_6x_uft7ai.svg",
     desc: "Quant Trading Startup",
     isUS: false,
-  },
+  }
 ];
 
+const logoContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const logoItemVariants: Variants = {
+  hidden: { opacity: 0, y: 40, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: [0.33, 1, 0.68, 1],
+    },
+  },
+};
+
 export default function AboutPage() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
   return (
     <div className="bg-[#fafafa] overflow-hidden">
       {/* About page JSON-LD */}
@@ -166,8 +170,8 @@ export default function AboutPage() {
               name: "UI Pirate by Vishal Anand",
               description:
                 "Full-service product design and development agency specializing in product thinking, competitive analysis, information architecture, UX/UI design, and end-to-end full-stack software development in Angular, React, Next.js, Node.js, and Python.",
-              foundingDate: "2015",
-              numberOfEmployees: "9",
+              foundingDate: "2017",
+              numberOfEmployees: "7",
               founder: {
                 "@type": "Person",
                 name: "Vishal Anand",
@@ -305,11 +309,29 @@ export default function AboutPage() {
             },
           }),
         }}
+      />
+      
+      {/* About FAQ JSON-LD */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: ABOUT_FAQS.map((faq) => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.answer,
+              },
+            })),
+          }),
+        }}
         type="application/ld+json"
       />
 
       {/* Hero Section - Consistent with other pages */}
-      <section className="relative pt-8 pb-12 max-md:pt-4">
+      <section className="hero-page-container pb-12">
         {/* Grid Background */}
         <div
           className="absolute pointer-events-none inset-0"
@@ -513,48 +535,72 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Process - Dark Section */}
-      <section className="bg-[#0A0A0A] text-white py-16 relative overflow-hidden rounded-[32px] max-md:rounded-[20px] mx-4 sm:mx-6 lg:mx-20 xl:mx-32 mb-16">
-        {/* Subtle background glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-gradient-to-b from-brand-orange/10 to-transparent blur-3xl pointer-events-none" />
-
-        <div className="px-8 max-md:px-5 relative z-10">
-          <div className="text-center mb-10">
-            <div className="flex justify-center mb-4">
-              <GlassBadge className="text-white" variant="gradient">
-                THE PROCESS
-              </GlassBadge>
-            </div>
-            <h2 className="text-3xl max-md:text-2xl font-bold tracking-tight text-white mb-3">
-              Our Approach
-            </h2>
-            <p className="text-gray-500 max-w-xl mx-auto">
-              Simple: you share your vision. We do the rest.
-            </p>
+      {/* Our Process - Light Section */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16 mb-16">
+        <div className="text-center mb-12 max-md:mb-8">
+          <div className="flex justify-center mb-4">
+            <GlassBadge variant="gradient">THE PROCESS</GlassBadge>
           </div>
+          <h2 className="heading-center">Our Approach</h2>
+          <p className="text-gray-500 max-w-xl mx-auto mt-2">
+            Simple: you share your vision. We do the rest.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-4">
-            {process.map((step, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {PROCESS_STEPS.map((step, i) => {
+            const icons = [
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/listen_ylvngt.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/plan_mhuu0h.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg",
+              "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788205201/build_nq0h2a.svg"
+            ];
+            return (
               <motion.div
-                key={step.step}
-                className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
+                key={step.title}
+                className="group relative bg-white border border-[#E5E7EB] rounded-[24px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-all duration-300 overflow-hidden flex flex-col justify-between"
                 initial={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-brand-orange/20 text-brand-orange font-mono font-bold text-xs mb-4">
+                {/* Step watermark touching top-right */}
+                <span className="absolute -top-3 md:-top-3 -right-1 text-[72px] md:text-[84px] font-bold text-[#ECEEF1] select-none leading-none tracking-tight font-jakarta pointer-events-none">
                   {step.step}
                 </span>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">
-                  {step.description}
-                </p>
+
+                {/* SVG Icon */}
+                <div className="w-12 h-12 mb-6 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                  <img
+                    alt={step.title}
+                    className="w-full h-full object-contain"
+                    src={icons[i]}
+                  />
+                </div>
+
+                {/* Title & Description */}
+                <div>
+                  <h3 className="text-xl md:text-[22px] font-bold text-[#0F172A] mb-2 tracking-tight">
+                    {step.title}
+                  </h3>
+                  <p className="text-[#64748B] font-normal text-sm md:text-[15px] leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
+        </div>
+
+        <div className="flex justify-center mt-10">
+          <Link
+            className="text-brand-orange font-semibold text-sm hover:underline flex items-center gap-1.5 transition-all hover:gap-2.5"
+            href="/process"
+          >
+            See our full process in detail <span>→</span>
+          </Link>
         </div>
       </section>
 
@@ -612,53 +658,174 @@ export default function AboutPage() {
 
       {/* Trusted By Clients Grid - Logo-based */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-12">
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">OUR CLIENTS</GlassBadge>
           </div>
-          <h2 className="heading-center">Trusted by Teams Worldwide</h2>
+          <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 tracking-tight">
+            Trusted by Teams Worldwide
+          </h2>
           <p className="text-gray-500 mt-2">
             60% of our clients are US-based startups and enterprises
           </p>
         </div>
 
-        <div className="grid grid-cols-5 max-lg:grid-cols-3 max-md:grid-cols-2 gap-4">
-          {clientLogos.map((client, i) => (
-            <motion.div
-              key={client.name}
-              className={`border rounded-xl p-5 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-brand-orange/40 hover:shadow-lg group ${
-                client.isUS
-                  ? "bg-brand-orange/5 border-brand-orange/20"
-                  : "bg-white border-gray-200"
-              }`}
-              initial={{ opacity: 0, y: 15 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-              viewport={{ once: true }}
-              whileInView={{ opacity: 1, y: 0 }}
-            >
-              <img
-                alt={client.name}
-                className="h-8 w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                src={client.logo}
-                style={
-                  client.invertColor
-                    ? {
-                        filter:
-                          "invert(1) sepia(1) saturate(5) hue-rotate(180deg) brightness(0.7)",
-                      }
-                    : undefined
-                }
-              />
-              <span className="mt-2 text-xs text-gray-500 font-medium">
-                {client.desc}
-              </span>
-              {client.isUS && (
-                <span className="mt-1 text-[10px] text-brand-orange font-semibold">
-                  🇺🇸 US
+        <div className="w-full mt-6">
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center justify-items-center"
+            initial="hidden"
+            variants={logoContainerVariants}
+            viewport={{ once: true, amount: 0.3 }}
+            whileInView="visible"
+          >
+            {clientLogos.map((logo, index) => (
+              <motion.div
+                key={index}
+                className="logo-item group flex flex-col items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden cursor-default"
+                style={{
+                  background:
+                    "linear-gradient(142deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.65) 50%, rgba(255, 255, 255, 0.55) 100%)",
+                  backdropFilter: "blur(32px) saturate(120%) brightness(100%)",
+                  WebkitBackdropFilter:
+                    "blur(32px) saturate(120%) brightness(100%)",
+                  border: "2px solid rgba(255, 255, 255, 0.12)",
+                  boxShadow:
+                    "0 4px 16px 0 rgba(31, 38, 135, 0.08), inset 1px 1px 2px 0 rgba(255, 255, 255, 0.3), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.05)",
+                }}
+                variants={logoItemVariants}
+                onHoverEnd={() => setHoveredIndex(null)}
+                onHoverStart={() => setHoveredIndex(index)}
+              >
+                {/* Brand Orange Border - appears on hover */}
+                <motion.div
+                  animate={{
+                    opacity: hoveredIndex === index ? 1 : 0,
+                    boxShadow:
+                      hoveredIndex === index
+                        ? "0 0 20px rgba(255, 91, 4, 0.3), 0 0 40px rgba(255, 91, 4, 0.1)"
+                        : "0 0 0px rgba(255, 91, 4, 0)",
+                  }}
+                  className="brand-border"
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    borderRadius: "0.75rem",
+                    padding: "2px",
+                    background:
+                      "linear-gradient(135deg, #FF5B04 0%, #FF7B34 50%, #FF5B04 100%)",
+                    WebkitMask:
+                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                    pointerEvents: "none",
+                    zIndex: 1,
+                  }}
+                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+                />
+
+                <motion.img
+                  alt={logo.name}
+                  animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}
+                  className="h-[32px] max-h-[32px] max-md:h-[24px] max-md:max-h-[24px] w-auto object-contain relative z-10"
+                  loading="lazy"
+                  src={logo.logo}
+                  style={logo.invertColor ? { filter: 'invert(1) sepia(1) saturate(5) hue-rotate(180deg) brightness(0.7)' } : undefined}
+                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+                />
+                <span className="mt-3 text-[11px] text-gray-500 font-medium relative z-10 text-center uppercase tracking-wide leading-tight group-hover:text-gray-700 transition-colors">
+                  {logo.desc}
                 </span>
-              )}
-            </motion.div>
-          ))}
+                {logo.isUS && (
+                  <span className="mt-1 text-[10px] text-brand-orange font-bold relative z-10">
+                    🇺🇸 US
+                  </span>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <style jsx>{`
+        @media (prefers-reduced-motion: reduce) {
+          .logo-item,
+          .logo-item img,
+          .brand-border {
+            transition: none !important;
+            animation: none !important;
+          }
+        }
+
+        .logo-item {
+          position: relative;
+        }
+
+        .logo-item::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 0.75rem;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 91, 4, 0.06),
+            rgba(255, 123, 52, 0.04)
+          );
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          z-index: 0;
+        }
+
+        .logo-item:hover::before {
+          opacity: 1;
+        }
+      `}</style>
+
+      {/* Who We Work Best With - Landing Page Component */}
+      <PricingPerfectFor />
+
+      {/* About FAQ Section */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="flex justify-center mb-4">
+              <GlassBadge variant="gradient">FAQS</GlassBadge>
+            </div>
+            <h2 className="text-3xl max-md:text-2xl font-bold text-gray-900 tracking-tight">
+              Everything you need to know
+            </h2>
+          </div>
+          <Accordion
+            className="mb-0 p-0"
+            defaultExpandedKeys={["0"]}
+            selectionMode="multiple"
+            variant="splitted"
+          >
+            {ABOUT_FAQS.map((faq, index) => (
+              <AccordionItem
+                key={String(index)}
+                aria-label={faq.question}
+                className="shadow-none border border-gray-200 rounded-2xl mt-3 max-md:mt-2 items-center bg-white hover:border-brand-orange/40 transition-all duration-300 data-[open=true]:border-l-[3px] data-[open=true]:border-l-brand-orange data-[open=true]:border-gray-200 data-[open=true]:shadow-sm"
+                indicator={({ isOpen }) => (
+                  <img
+                    alt="icon"
+                    className={`transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}
+                    src="https://res.cloudinary.com/damm9iwho/image/upload/v1731050216/plus_dia0bt.svg"
+                  />
+                )}
+                title={
+                  <p className="font-semibold pr-12 max-md:pr-6 md:py-2 md:px-1 text-[16px] leading-snug text-gray-900">
+                    {faq.question}
+                  </p>
+                }
+              >
+                <div className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
+                  <p className="text-[15px] text-gray-600 leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 
@@ -675,13 +842,12 @@ export default function AboutPage() {
                 <span className="text-brand-orange">Product</span>?
               </h2>
               <p className="text-gray-500 mb-8 max-w-xl mx-auto">
-                Book a free 15-minute call. Tell us your vision — we'll show you
-                how we can bring it to life.
+                Book a free 15-minute call. Tell us your vision — we'll bring it to life.
               </p>
               <div className="flex flex-row max-md:flex-col items-center justify-center gap-4">
                 <Link
                   className="bg-brand-orange text-white px-8 py-4 rounded-xl font-bold hover:bg-orange-600 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-300"
-                  href="https://cal.com/ui-pirate/15min"
+                  href="https://cal.com/vishal-anand-3w8233/15min"
                   target="_blank"
                 >
                   Book a Free Call

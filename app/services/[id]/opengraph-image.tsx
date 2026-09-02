@@ -14,12 +14,19 @@ interface ServiceMeta {
 }
 
 const SERVICE_OG: Record<string, ServiceMeta> = {
-  "saas-web-mobile-apps": {
-    badge: "SaaS & AI Development",
+  "ux-ui-design": {
+    badge: "UX/UI Design",
     title: "From Vision to",
     titleHighlight: "Shipped SaaS Product",
     description:
-      "Product thinking, competitive analysis, IA, UX/UI design & React/Angular development. We take your idea and ship it.",
+      "Product thinking, competitive analysis, IA, and UX/UI design for SaaS & mobile apps. We take your idea and design it right.",
+  },
+  "saas-ai-development": {
+    badge: "SaaS & AI Development",
+    title: "Full-Stack Engineering",
+    titleHighlight: "for SaaS & AI Products",
+    description:
+      "Backend architecture, APIs, database design, and AI/LLM integration in Angular, React, Next.js & Node.js. We build what the interface runs on.",
   },
   "landing-pages-business-websites": {
     badge: "Landing Pages & Websites",
@@ -35,33 +42,12 @@ const SERVICE_OG: Record<string, ServiceMeta> = {
     description:
       "Custom design tokens, branded UI kits, and dev-ready component libraries for Angular, React & beyond.",
   },
-  "graphic-design": {
-    badge: "Graphic Design",
-    title: "Brand Identity &",
-    titleHighlight: "Marketing Visuals",
-    description:
-      "Infographics, newsletters, social media assets, and marketing materials — consistent brand across all channels.",
-  },
-  "motion-graphics-video-editing": {
-    badge: "Motion Graphics",
-    title: "Motion Graphics &",
-    titleHighlight: "Explainer Videos",
-    description:
-      "2D/3D animations, product demos, social reels. Sound design, color grading & captions included.",
-  },
   "ux-audits-consultation": {
     badge: "UX Audits",
     title: "UX Audit —",
     titleHighlight: "Find & Fix Friction",
     description:
       "Heuristic analysis, usability testing & actionable recommendations. Improve conversion rates in your SaaS product.",
-  },
-  "3d-animation-rendering": {
-    badge: "3D Assets & Animation",
-    title: "3D Animation &",
-    titleHighlight: "Product Rendering",
-    description:
-      "High-quality 3D assets, product visualization, and architectural rendering for marketing and brand storytelling.",
   },
 };
 

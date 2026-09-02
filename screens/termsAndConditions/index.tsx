@@ -22,10 +22,7 @@ const termsSections = [
       "SaaS Web & Mobile App Design",
       "Landing Pages & Corporate Websites",
       "Design Systems & Component Libraries",
-      "Graphic Design & Brand Identity",
-      "Motion Graphics & Video Editing",
       "UX Audits & Consultation",
-      "3D Animation & Rendering",
     ],
   },
   {
@@ -135,7 +132,7 @@ const TermsAndConditionsScreen = () => {
     <PageWrapper showFloatingButton={false}>
       <div className="relative min-h-screen bg-white">
         {/* Consistent Hero Component */}
-        <div className="flex flex-row items-center justify-center py-6 pt-20 w-full max-md:py-0 max-md:pt-16 relative ">
+        <div className="hero-wrapper">
           {/* Subtle Grid Background Pattern */}
           <div
             className="absolute pointer-events-none -mt-20 "

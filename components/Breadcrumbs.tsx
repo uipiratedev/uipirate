@@ -14,25 +14,20 @@ const SEGMENT_LABELS: Record<string, string> = {
   contact: "Contact",
   about: "About",
   privacy: "Privacy Policy",
-  "privacy-policy": "Privacy Policy",
   terms: "Terms & Conditions",
-  community: "Community",
   resources: "Resources",
-  "mini-saas-apps": "Mini SaaS Apps",
   apps4sale: "Apps for Sale",
-  "saas-apps": "SaaS Apps",
-  "ai-calling": "AI Calling",
+  componentlab: "Component Lab",
+  buttons: "Buttons",
 };
 
 // Service detail page slug labels
 const SERVICE_LABELS: Record<string, string> = {
-  "SaaS-Web-&-Mobile-Apps": "SaaS Web & Mobile Apps",
+  "UX-UI-Design": "UX/UI Design",
+  "SaaS-&-AI-Development": "SaaS & AI Development",
   "Landing-Pages-&-Business-Websites": "Landing Pages & Business Websites",
   "Design-System-&-Component-Library": "Design System & Component Library",
-  "Graphic-Design": "Graphic Design",
-  "Motion-Graphics-&-Video-Editing": "Motion Graphics & Video Editing",
   "UX-Audits-&-Consultation": "UX Audits & Consultation",
-  "3D-Animation-&-Rendering": "3D Animation & Rendering",
 };
 
 interface BreadcrumbItem {
@@ -54,6 +49,8 @@ export default function Breadcrumbs() {
       pathname === "/" ||
       pathname.startsWith("/admin") ||
       pathname.startsWith("/tools") ||
+      pathname.startsWith("/componentlab") ||
+      pathname.startsWith("/buttons") ||
       /^\/blogs\/[^/]+/.test(pathname) ||
       /^\/case-studies\/[^/]+/.test(pathname) ||
       (segments.length === 1 && !SEGMENT_LABELS[segments[0]])
@@ -112,36 +109,6 @@ export default function Breadcrumbs() {
         }}
         type="application/ld+json"
       />
-
-      {/* Visual breadcrumbs */}
-      <nav
-        aria-label="Breadcrumb"
-        className="container mx-auto px-32 lg:px-20 max-md:px-4 pt-24 max-md:pt-20 pb-0"
-      >
-        <ol className="flex flex-wrap items-center gap-1 text-sm text-gray-500">
-          {breadcrumbs.map((item, index) => (
-            <li key={item.href} className="flex items-center gap-1">
-              {index > 0 && (
-                <span aria-hidden="true" className="text-gray-300 mx-1">
-                  /
-                </span>
-              )}
-              {item.isCurrentPage ? (
-                <span aria-current="page" className="text-gray-900 font-medium">
-                  {item.label}
-                </span>
-              ) : (
-                <Link
-                  className="hover:text-[#FF5B04] transition-colors"
-                  href={item.href}
-                >
-                  {item.label}
-                </Link>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
     </>
   );
 }

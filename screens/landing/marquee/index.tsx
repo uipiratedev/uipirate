@@ -38,7 +38,6 @@ const logoItemVariants: Variants = {
 };
 
 const LandingMarquee = () => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   // Curated selection of premium enterprise client logos
   const premiumLogos = [
     {
@@ -88,10 +87,11 @@ const LandingMarquee = () => {
       alt: "Rings and I - Jewelry and lifestyle brand logo",
       link: "https://ringsandi.com/",
     },
+
     {
-      url: "https://res.cloudinary.com/damm9iwho/image/upload/v1729513139/image_2_srxkyz.svg",
-      alt: "Partner company logo",
-      link: "",
+      url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788341201/pivotbitslogo_vgkhnp.svg",
+      alt: "Pivotbits - AI-powered business solutions logo",
+      link: "https://pivotbits.com/",
     },
   ];
 
@@ -124,11 +124,10 @@ const LandingMarquee = () => {
             whileInView="visible"
           >
             <h2 className="heading-center">
-              <span className="text-brand-orange">Trusted by Teams</span>
+              Trusted by <span className="text-brand-orange">40+</span> product teams
               <br />{" "}
               <span className="text-gray-900">
-                Building the Future of SaaS and{" "}
-                <span className="whitespace-nowrap">AI</span>
+                across the USA, UK, Singapore & India
               </span>
             </h2>
           </motion.div>
@@ -146,11 +145,8 @@ const LandingMarquee = () => {
             {premiumLogos.map((logo, index) => (
               <motion.a
                 key={index}
-                className={`logo-item group flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden ${
-                  logo.link
-                    ? "cursor-pointer hover:brightness-105"
-                    : "cursor-default"
-                }`}
+                className={`logo-item flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden ${logo.link ? "cursor-pointer" : "cursor-default"
+                  }`}
                 href={logo.link || undefined}
                 rel={logo.link ? "noopener noreferrer" : undefined}
                 style={{
@@ -165,83 +161,18 @@ const LandingMarquee = () => {
                 }}
                 target={logo.link ? "_blank" : undefined}
                 variants={logoItemVariants}
-                onHoverEnd={() => setHoveredIndex(null)}
-                onHoverStart={() => setHoveredIndex(index)}
               >
-                {/* Brand Orange Border - appears on hover */}
-                <motion.div
-                  animate={{
-                    opacity: hoveredIndex === index ? 1 : 0,
-                    boxShadow:
-                      hoveredIndex === index
-                        ? "0 0 20px rgba(255, 91, 4, 0.3), 0 0 40px rgba(255, 91, 4, 0.1)"
-                        : "0 0 0px rgba(255, 91, 4, 0)",
-                  }}
-                  className="brand-border"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    borderRadius: "0.75rem",
-                    padding: "2px",
-                    background:
-                      "linear-gradient(135deg, #FF5B04 0%, #FF7B34 50%, #FF5B04 100%)",
-                    WebkitMask:
-                      "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    WebkitMaskComposite: "xor",
-                    maskComposite: "exclude",
-                    pointerEvents: "none",
-                    zIndex: 1,
-                  }}
-                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                />
-
-                <motion.img
+                <img
                   alt={logo.alt}
-                  animate={{ scale: hoveredIndex === index ? 1.1 : 1 }}
                   className="h-[40px] max-h-[40px] max-md:h-[24px] max-md:max-h-[24px] w-auto object-contain relative z-10"
                   loading="lazy"
                   src={logo.url}
-                  transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 />
               </motion.a>
             ))}
           </motion.div>
         </div>
       </div>
-
-      <style jsx>{`
-        @media (prefers-reduced-motion: reduce) {
-          .logo-item,
-          .logo-item img,
-          .brand-border {
-            transition: none !important;
-            animation: none !important;
-          }
-        }
-
-        .logo-item {
-          position: relative;
-        }
-
-        .logo-item::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          border-radius: 0.75rem;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 91, 4, 0.06),
-            rgba(255, 123, 52, 0.04)
-          );
-          opacity: 0;
-          transition: opacity 0.4s ease;
-          z-index: 0;
-        }
-
-        .logo-item:hover::before {
-          opacity: 1;
-        }
-      `}</style>
     </div>
   );
 };

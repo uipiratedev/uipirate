@@ -167,7 +167,7 @@ export const Footer: React.FC = () => {
 
         {/* Footer Navigation Grid */}
         <motion.div
-          className="container mx-auto px-32 lg:px-20 max-md:px-4 mt-20 max-md:mt-0 pb-16 max-md:pb-0"
+          className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 mt-20 max-md:mt-0 pb-16 max-md:pb-0"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
@@ -209,6 +209,19 @@ export const Footer: React.FC = () => {
                     About
                   </Link>
                 </li>
+                <li>
+                  <Link className="footer-text" href="/process">
+                    Our Process
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="footer-text"
+                    href="https://propirates.com"
+                  >
+                    ProPirates
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -219,7 +232,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     className="footer-text"
-                    href="/services/SaaS-Web-&-Mobile-Apps"
+                    href="/services/UX-UI-Design"
                   >
                     UX/UI Design
                   </Link>
@@ -227,7 +240,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <Link
                     className="footer-text"
-                    href="/services/SaaS-Web-&-Mobile-Apps"
+                    href="/services/SaaS-&-AI-Development"
                   >
                     SaaS & AI Development
                   </Link>
@@ -241,32 +254,11 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="footer-text" href="/services/Graphic-Design">
-                    Graphic Design
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="footer-text"
-                    href="/services/Motion-Graphics-&-Video-Editing"
-                  >
-                    Motion Graphics
-                  </Link>
-                </li>
-                <li>
                   <Link
                     className="footer-text"
                     href="/services/UX-Audits-&-Consultation"
                   >
                     UX Audits
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="footer-text"
-                    href="/services/3D-Animation-&-Rendering"
-                  >
-                    3D Assets & Animation
                   </Link>
                 </li>
               </ul>
@@ -283,18 +275,18 @@ export const Footer: React.FC = () => {
                 </li>
                 {/* <li><Link href="/case-studies" className="footer-text">Case Studies</Link></li> */}
                 <li>
-                  <Link className="footer-text" href="/community">
-                    Community Insights
-                  </Link>
-                </li>
-                <li>
                   <Link className="footer-text" href="/apps4sale">
                     Apps 4 Sale
                   </Link>
                 </li>
                 <li>
-                  <Link className="footer-text" href="/mini-saas-apps">
-                    Mini SaaS Apps
+                  <Link className="footer-text" href="/componentlab">
+                    Component Lab
+                  </Link>
+                </li>
+                <li>
+                  <Link className="footer-text" href="/buttons">
+                    3D Tactile Buttons
                   </Link>
                 </li>
                 <li>

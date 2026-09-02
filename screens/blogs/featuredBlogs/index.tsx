@@ -26,15 +26,20 @@ const POST_TYPE_LABELS: Record<string, string> = {
 interface FeaturedBlogsProps {
   blogs: ReaderPost[];
   searchQuery?: string;
-  selectedCategory?: string;
 }
+
+// How many of the most-used real tags to surface as filter pills. Tags are
+// freeform CMS text (no controlled vocabulary), so this shows actual tags
+// ranked by usage rather than a fixed category list that could drift out of
+// sync with what's actually published (see the same issue on /case-studies).
+const MAX_TAG_TABS = 8;
 
 const FeaturedBlogs = memo(function FeaturedBlogs({
   blogs,
   searchQuery = "",
-  selectedCategory = "All",
 }: FeaturedBlogsProps) {
   const [selectedPostType, setSelectedPostType] = useState("All");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   // Only show tabs for post types that actually have published posts.
   const postTypeTabs = useMemo(() => {
@@ -56,6 +61,22 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
     ];
   }, [blogs]);
 
+  // Real tags ranked by how many posts use them, most-used first.
+  const tagTabs = useMemo(() => {
+    const counts = new Map<string, number>();
+
+    blogs.forEach((b) => {
+      b.tags?.forEach((tag) => {
+        counts.set(tag, (counts.get(tag) || 0) + 1);
+      });
+    });
+
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, MAX_TAG_TABS)
+      .map(([tag, count]) => ({ tag, count }));
+  }, [blogs]);
+
   const filteredBlogs = useMemo(() => {
     let result = blogs;
 
@@ -64,12 +85,8 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
         (b) => (b.postType || "blog") === selectedPostType,
       );
     }
-    if (
-      selectedCategory &&
-      selectedCategory !== "All" &&
-      selectedCategory !== "general"
-    ) {
-      result = result.filter((b) => b.tags?.includes(selectedCategory));
+    if (selectedTag) {
+      result = result.filter((b) => b.tags?.includes(selectedTag));
     }
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
@@ -83,20 +100,16 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
     }
 
     return result;
-  }, [blogs, selectedPostType, selectedCategory, searchQuery]);
+  }, [blogs, selectedPostType, selectedTag, searchQuery]);
 
   return (
-    <div className="pt-16 max-md:pt-10 pb-20 container mx-auto px-32 lg:px-20 max-md:px-4">
+    <div className="pt-16 max-md:pt-10 pb-20 section-container">
       {/* Section header */}
       <div className="flex items-center justify-between mb-8 max-md:mb-6">
         <h2 className="text-[22px] md:text-[28px] font-[700] tracking-tight text-[#111]">
           {searchQuery
             ? `Results for "${searchQuery}"`
-            : selectedCategory &&
-                selectedCategory !== "All" &&
-                selectedCategory !== "general"
-              ? selectedCategory
-              : "All Articles"}
+            : selectedTag || "All Articles"}
         </h2>
         {filteredBlogs.length > 0 && (
           <span className="text-sm text-gray-500 font-medium">
@@ -104,6 +117,44 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
           </span>
         )}
       </div>
+
+      {/* Topic filter — real CMS tags ranked by usage, not a fixed category list */}
+      {tagTabs.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <button
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              selectedTag === null
+                ? "bg-black text-white shadow-md"
+                : "bg-white text-gray-700 border border-gray-200 hover:border-black/30"
+            }`}
+            onClick={() => setSelectedTag(null)}
+          >
+            All Topics
+          </button>
+          {tagTabs.map(({ tag, count }) => (
+            <button
+              key={tag}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                selectedTag === tag
+                  ? "bg-black text-white shadow-md"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-black/30"
+              }`}
+              onClick={() => setSelectedTag(tag)}
+            >
+              {tag}
+              <span
+                className={`text-xs px-1.5 py-0.5 rounded-full ${
+                  selectedTag === tag
+                    ? "bg-white/20 text-white"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Post type filter — CMS postType categories (blog, tutorial, listicle, etc.) */}
       {postTypeTabs.length > 2 && (
@@ -139,7 +190,7 @@ const FeaturedBlogs = memo(function FeaturedBlogs({
           <p className="text-gray-500 text-lg">No articles found.</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBlogs.map((blog) => {
             const image =
               blog.bannerImage || blog.featuredImage || DEFAULT_BANNER;

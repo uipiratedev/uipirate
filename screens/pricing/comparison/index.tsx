@@ -8,7 +8,7 @@ import { CheckIcon } from "@/components/icons";
 const COMPARISON_DATA = [
   {
     label: "Monthly Cost",
-    uipirate: "$2,000",
+    uipirate: "from $500",
     agency: "$8-15k",
     freelancer: "$3-5k",
     inhouse: "$8-12k",
@@ -18,11 +18,11 @@ const COMPARISON_DATA = [
     uipirate: "48-72hr",
     agency: "1-2 weeks",
     freelancer: "Variable",
-    inhouse: "Slow",
+    inhouse: "Slow (1-3 weeks)",
   },
   {
     label: "Quality",
-    uipirate: "Enterprise",
+    uipirate: "50+ Shipped Products",
     agency: "Enterprise",
     freelancer: "Variable",
     inhouse: "Variable",
@@ -53,7 +53,7 @@ const COMPARISON_DATA = [
 const PricingComparison = () => {
   return (
     <motion.div
-      className="py-12 max-md:py-8"
+      className="section-container"
       id="compare"
       initial={{ opacity: 0, y: 30 }}
       transition={{ duration: 0.6 }}

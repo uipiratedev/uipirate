@@ -9,7 +9,7 @@ const LandingBusinessHelp = () => {
         <div className="flex flex-row items-center justify-center mb-6">
           <GlassBadge variant="gradient">SERVICES</GlassBadge>
         </div>
-        <h2 className="heading-center">What We Design, Build, & Scale</h2>
+        <h2 className="heading-center">What We <span className="text-brand-orange"> Design, Build, & Scale</span></h2>
       </div>
       <div className="autoShowBottom">
         <ServicesSection />

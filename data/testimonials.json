@@ -8,20 +8,12 @@
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593627/eden_ts51gy.svg"
   },
   {
-    "name": "Yadin Soffer",
-    "occupation": "CEO & Founder, Xperiti",
-    "company": "New York, US",
-    "review": "Vishal’s work stood out, even when we were comparing multiple options. Clean design, great responsiveness, and he easily adapted to our Angular setup without any fuss. The quality showed, and it was clear he knew his craft.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
-    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593626/yadin_bxb9rm.svg"
-  },
-  {
-    "name": "Kaivan Dave",
-    "occupation": "Seed Investor, Awesome Health Club",
-    "company": "California, US",
-    "review": "Vishal is great to work with and will ensure you’re happy with his work. I enjoyed working with him.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760598018/healt_nvmdpw.svg",
-    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/kaivan_z5mbdp.svg"
+    "name": "Nipun Sharma",
+    "occupation": "CEO, RevUp AI",
+    "company": "Dallas, Texas, US",
+    "review": "Vishal and his team have been our go-to star design partner from day one. We call him our UI/UX doctor for a reason. Every single project, from the first SaaS flow to our full design overhaul, was crisp, scalable, and aligned with our business. Would work with them again in a heartbeat.",
+    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/revup_bvnmip.svg",
+    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg"
   },
   {
     "name": "Priyanka Padhye",
@@ -31,12 +23,11 @@
     "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593621/rings_zwpnqc.svg",
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593627/priynaka_djaqd5.svg"
   },
-
   {
     "name": "Rohit Kumar Jha",
     "occupation": "Co-Founder , ArthAlpha",
     "company": "Bangalore, India",
-    "review": "I’m amazed at how the team brought our complex AI trading vision to life. Not only did they nail the website design, but their work on dashboards — our AI integration systems — was outstanding. Their deep understanding of both design and technical requirements helped create a sophisticated tool that makes data-heavy dashboards seamless for users. Vishal’s team never backed down from the complex data visualization challenge, and the multiple iterations really perfected the user experience.",
+    "review": "I\u2019m amazed at how the team brought our complex AI trading vision to life. Not only did they nail the website design, but their work on dashboards \u2014 our AI integration systems \u2014 was outstanding. Their deep understanding of both design and technical requirements helped create a sophisticated tool that makes data-heavy dashboards seamless for users. Vishal\u2019s team never backed down from the complex data visualization challenge, and the multiple iterations really perfected the user experience.",
     "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593621/artha_dl8bqi.svg",
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593621/rohit_vo3c4g.svg"
   },
@@ -49,46 +40,28 @@
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593624/teri_os6bhp.svg"
   },
   {
-    "name": "Kyle Drucker",
-    "occupation": "Youtuber - BBallExplained",
-    "company": "New Jersey, US",
-    "review": "Great to work with, professional, responsive, and handled exactly what I needed. Changes and iterations were always welcomed. Would happily work with them again.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593628/kyleicon_fzwink.svg",
-    "profileImage": ""
-  },
-  {
     "name": "Shirina Arora",
     "occupation": "Product manager",
     "company": "APACS Largest Law,  New Delhi, India",
-    "review": "Vishal’s exceptional design talent consistently transforms complex requirements into intuitive, visually striking solutions. His creative vision and technical skill have significantly elevated our product quality. Working with him has been both productive and inspiring — a true asset to any project.",
+    "review": "Vishal\u2019s exceptional design talent consistently transforms complex requirements into intuitive, visually striking solutions. His creative vision and technical skill have significantly elevated our product quality. Working with him has been both productive and inspiring \u2014 a true asset to any project.",
     "logo": "",
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593620/shirina_adl1fh.svg"
   },
-
-  {
-    "name": "Nipun Sharma",
-    "occupation": "CEO, RevUp AI",
-    "company": "Dallas, Texas, US",
-    "review": "Vishal and his team have been our go-to star design partner from day one. We call him our UI/UX doctor for a reason. Every single project, from the first SaaS flow to our full design overhaul, was crisp, scalable, and aligned with our business. Would work with them again in a heartbeat.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/revup_bvnmip.svg",
-    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593623/nipun_tqwxmz.svg"
-  },
-
   {
     "name": "Aman Sharma",
     "occupation": "Design Head",
     "company": "New Delhi, India",
-    "review": "Turned our messy Shopify wishlist into a clean, functional store. Currently working on a redesign for our SaaS app, and it’s shaping up perfectly. Scalable, easy to manage, and they kept it quick and simple. Huge win for us.",
+    "review": "Turned our messy Shopify wishlist into a clean, functional store. Currently working on a redesign for our SaaS app, and it\u2019s shaping up perfectly. Scalable, easy to manage, and they kept it quick and simple. Huge win for us.",
     "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593620/godrice_vshi5n.svg",
     "profileImage": ""
   },
   {
-    "name": "Miriam Sugarman",
-    "occupation": "CEO - Chloe Wigs ",
+    "name": "Yadin Soffer",
+    "occupation": "CEO & Founder, Xperiti",
     "company": "New York, US",
-    "review": "They nailed the vibe for Chloë Wigs. Elegant, on-brand posters that got compliments the same day I put them up.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593621/chloe_k7x6jm.svg",
-    "profileImage": ""
+    "review": "Vishal\u2019s work stood out, even when we were comparing multiple options. Clean design, great responsiveness, and he easily adapted to our Angular setup without any fuss. The quality showed, and it was clear he knew his craft.",
+    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
+    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593626/yadin_bxb9rm.svg"
   },
   {
     "name": "Sharmin",
@@ -102,20 +75,10 @@
     "name": "Pankaj Soni",
     "occupation": "NGO President , Mission Blue Foundation",
     "company": "India",
-    "review": "They didn’t just build us a site, the winter campaign designs helped us reach people we’d never reached before. You can feel the heart in the details.",
+    "review": "They didn\u2019t just build us a site, the winter campaign designs helped us reach people we\u2019d never reached before. You can feel the heart in the details.",
     "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593629/mission_v8uehd.svg",
     "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593629/pankaj_dtrdun.svg"
   },
-
-  {
-    "name": "Akash Pandey",
-    "occupation": "Chairman, Yuva Sadan",
-    "company": "India",
-    "review": "They put real care into getting every detail right. The new identity finally feels like us.",
-    "logo": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593624/uva_poku8h.svg",
-    "profileImage": "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593626/akash_p9yoeo.svg"
-  },
-
   {
     "name": "Nidhi Lal",
     "occupation": "CEO and Co-Founder ,NIYA",

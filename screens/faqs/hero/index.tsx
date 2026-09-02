@@ -20,10 +20,8 @@ const FaqsHero = ({
   const tabs = [
     "general",
     "SaaS Web & Mobile Apps",
-    "Motion Graphics & Video Editing",
     "Services",
     "UX Audits & Consultation",
-    "Graphic Design",
     "Landing Pages & Business Websites",
   ];
 
@@ -35,7 +33,7 @@ const FaqsHero = ({
   };
 
   return (
-    <div className="flex flex-row items-center justify-center py-6 w-full max-md:py-0 max-md:pt-1 relative ">
+    <div className="hero-wrapper">
       {/* Subtle Grid Background Pattern */}
       <div
         className="absolute pointer-events-none -mt-20 "

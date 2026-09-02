@@ -13,7 +13,7 @@ const RecommendedNextSteps = ({ data }: any) => {
 
       {/* Content row */}
       <div className=" max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-6 md:gap-8 items-stretch autoShowBottom">
-        {/* Left: Motion Graphic feature card */}
+        {/* Left: Featured service card */}
         <div className="rounded-[20px] max-md:rounded-[12px]  bg-white border border-[#E2E8F0] shadow-[0_20px_45px_rgba(15,23,42,0.06)]">
           <div className="bg-orange-500 text-white rounded-full max-md:rounded-xl w-full flex items-center justify-between px-2 max-md:px-4 py-2">
             {/* Left Circle */}

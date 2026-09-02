@@ -10,27 +10,27 @@ const data = [
   {
     heading: "heading 1",
     subtitle: "subtitle 1",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025336/xperiti_ptjxaa.svg",
+    img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788377123/sarge_ubnqrv.svg",
   },
   {
     heading: "heading 2",
     subtitle: "subtitle 2",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025188/frytx_mo0frx.svg",
+    img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788377114/asia_hxumos.svg",
   },
   {
     heading: "heading 3",
     subtitle: "subtitle 3",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025189/brahma_zbxs7g.svg",
-  },
-  {
-    heading: "heading 3",
-    subtitle: "subtitle 3",
-    img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025336/olso_rgvl9a.svg",
+    img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788377122/nxvoy_up1xur.svg",
   },
   {
     heading: "heading 3",
     subtitle: "subtitle 3",
     img: "https://res.cloudinary.com/damm9iwho/image/upload/v1730025333/rings_gnmm1x.svg",
+  },
+  {
+    heading: "heading 3",
+    subtitle: "subtitle 3",
+    img: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788377123/psp_msjchp.svg",
   },
   {
     heading: "heading 2",
@@ -153,7 +153,7 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
         id="info"
       >
         <p className="heading-center  mb-6 mt-6 max-md:text-2xl autoShow">
-          Recent Works
+          Recent <span className="text-brand-orange">Works</span>
         </p>
         <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12  w-1/2 max-md:text-base autoShow">
           Explore our diverse portfolio of projects that highlight our

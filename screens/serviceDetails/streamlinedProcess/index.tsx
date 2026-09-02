@@ -141,7 +141,7 @@ const StreamlinedProcess = ({ data }: any) => {
             </div>
 
             {/* Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 container gap-6 md:gap-12 relative z-10 pt-1 md:pt-0 mx-auto xl:px-24 md:mb-32">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 section-container gap-4 md:gap-6 relative z-10 pt-1 md:pt-0 md:mb-32">
               {row.map((card, colIdx) => (
                 <div
                   key={card.index}
@@ -151,7 +151,7 @@ const StreamlinedProcess = ({ data }: any) => {
                   }
                 >
                   {/* Swing Wrapper - Now only wraps the card to exclude knots from animation */}
-                  <div className="w-full h-full relative px-4 pl-8">
+                  <div className="w-full h-full relative px-1 md:px-2 max-md:pl-6">
                     {/* Clip/Knot Section - Desktop (Fixed) */}
                     <div className="hidden md:block absolute inset-x-0 z-20 pointer-events-none">
                       {/* Left Knot */}

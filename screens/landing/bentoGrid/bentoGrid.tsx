@@ -23,12 +23,12 @@ const BentoGrid = () => {
     <>
       <div className="container mx-auto pt-2 max-md:pt-4 autoShowBottom">
         {/* Bento Grid */}
-        <div className="px-32 lg:px-20 max-md:px-4 pb-20">
+        <div className="px-4 sm:px-6 lg:px-20 xl:px-32 pb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
             {/* UX/UI Design Card - Tall */}
             <div className="premium-card md:row-span-2">
               <motion.div
-                className="premium-card-inner rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 md:row-span-2 group overflow-hidden"
+                className="premium-card-inner rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden h-full"
                 custom={0}
                 initial="hidden"
                 variants={cardVariants}
@@ -51,17 +51,16 @@ const BentoGrid = () => {
                       UX/UI Design
                     </h3>
                     <p className="text-gray-600 font-medium max-md:text-sm">
-                      User-centric interfaces that convert. We craft
-                      pixel-perfect experiences
+                      Interfaces your users stay in. We design flows that reduce friction and move people toward action.
                     </p>
                   </div>
                 </div>
               </motion.div>
             </div>
             {/* Dashboards & SaaS UX Card */}
-            <div className="premium-card md:col-span-2">
+            <div className="premium-card md:col-span-2 h-[320px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl md:col-span-2 p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[295px] overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[320px] overflow-hidden"
                 custom={2}
                 initial="hidden"
                 variants={cardVariants}
@@ -323,7 +322,7 @@ const BentoGrid = () => {
                       Dashboards & SaaS UX
                     </h3>
                     <p className="text-gray-600 font-medium max-md:text-sm">
-                      Clean and data-driven
+                      Complex data made simple to read, act on, and present to stakeholders.
                     </p>
                   </div>
                 </div>
@@ -331,9 +330,9 @@ const BentoGrid = () => {
             </div>
 
             {/* Websites & Landing Pages Card */}
-            <div className="premium-card">
+            <div className="premium-card h-[320px]">
               <motion.div
-                className="premium-card-inner rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden relative h-[295px]"
+                className="premium-card-inner rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group overflow-hidden relative h-[320px]"
                 custom={3}
                 initial="hidden"
                 style={{
@@ -344,19 +343,19 @@ const BentoGrid = () => {
                 viewport={{ once: true, amount: 0.3 }}
                 whileInView="visible"
               >
-                <div className="h-full flex flex-col relative">
+                <div className="h-full flex flex-col justify-between relative">
                   {/* White Gradient Overlay */}
                   <div
-                    className="absolute inset-0 pointer-events-none z-10 "
+                    className="absolute inset-0 pointer-events-none z-10"
                     style={{
                       background:
-                        "linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 60%, rgba(255, 255, 255, 0.9) 80%, rgba(255, 255, 255, 1) 95%)",
+                        "linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.85) 65%, rgba(255, 255, 255, 1) 85%)",
                     }}
                   />
                   {/* Website Preview Mockup */}
-                  <div className="flex-1 mb-1 relative flex items-center justify-center">
+                  <div className="flex-1 relative flex items-center justify-center scale-[0.78] origin-top -mb-6">
                     {/* Main Website Card - White Background with Padding */}
-                    <div className="bg-white/90 backdrop-blur-sm rounded-xl  border border-gray-200/50 shadow-xl w-[280px]">
+                    <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-gray-200/50 shadow-xl w-[280px]">
                       {/* Gray Content Area */}
                       <div className="bg-gray-100/60 rounded-lg p-2">
                         {/* Header with Logo and Menu */}
@@ -416,7 +415,7 @@ const BentoGrid = () => {
                     </div>
 
                     {/* Floating Mobile Mockup */}
-                    <div className="absolute bottom-0 right-8 bg-white rounded-[14px] p-2 pb-4 shadow-xl border border-gray-200/50 w-20">
+                    <div className="absolute bottom-0 right-6 bg-white rounded-[14px] p-2 pb-4 shadow-xl border border-gray-200/50 w-20">
                       {/* Gray Content Area */}
                       <div className="bg-gray-100/60 rounded-lg p-1.5 space-y-1.5">
                         {/* Profile Image Card */}
@@ -439,12 +438,12 @@ const BentoGrid = () => {
                   </div>
 
                   {/* Content */}
-                  <div className="relative z-20 text-left">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
+                  <div className="relative z-20 text-left pt-0 pb-1">
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
                       Websites & Landing Pages
                     </h3>
-                    <p className="text-gray-600 font-medium max-md:text-sm">
-                      Fast, conversion-focused sites
+                    <p className="text-gray-600 font-medium text-sm md:text-sm leading-snug">
+                      Pages built to convert visitors into leads — not just to look good on Awwwards.
                     </p>
                   </div>
                 </div>
@@ -452,9 +451,9 @@ const BentoGrid = () => {
             </div>
 
             {/* Built With the Best Card */}
-            <div className="premium-card h-[295px]">
+            <div className="premium-card h-[320px]">
               <motion.div
-                className="premium-card-inner bg-gradient-to-br hover-arc-border from-white to-gray-50 rounded-2xl pt-8 pb-0 p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[295px] overflow-hidden"
+                className="premium-card-inner bg-gradient-to-br hover-arc-border from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[320px] overflow-hidden"
                 custom={4}
                 initial="hidden"
                 variants={cardVariants}
@@ -463,19 +462,19 @@ const BentoGrid = () => {
               >
                 <div className="h-full flex flex-col">
                   {/* Content */}
-                  <div className="mb-4 text-left">
+                  <div className="mb-2 text-left">
                     <h3 className="text-2xl font-bold text-gray-900 mb-2 max-md:text-lg max-md:font-semibold ">
                       Built With the Best
                     </h3>
                     <p className="text-gray-600 font-medium max-md:text-sm">
-                      Figma, React, Angular, Blender & more.
+                      React, Angular, Next.js, Figma, GSAP — we use what your product actually needs, not what's trending.
                     </p>
                   </div>
 
                   {/* Concentric Circles with Tech Icons */}
-                  <div className="flex-1 flex items-end justify-end relative pb-6 pt-2 pr-0 ">
+                  <div className="flex-1 flex items-end justify-center relative -mx-6 -mb-6 overflow-hidden pt-1">
                     {/* Concentric Circles with Gradients and Shadows - Rotating */}
-                    <div className="relative flex items-center justify-center">
+                    <div className="relative flex items-center justify-center translate-y-44 scale-[0.85] origin-bottom">
                       {/* Outer Circle - Largest - Slow rotation */}
                       <div className="w-96 h-96 rounded-full absolute bg-gradient-to-br from-orange-50/30 via-amber-50/20 to-yellow-50/10 shadow-[0_0_40px_rgba(255,91,4,0.08)] animate-[spin_20s_linear_infinite]" />
 
@@ -647,151 +646,6 @@ const BentoGrid = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-          {/* Bottom Card Grid (User Provided Format) */}
-          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-6 mt-6">
-            {/* <!-- Card 6: UX Consultation (NEW) --> */}
-
-            <div className="premium-card h-[350px]">
-              <motion.div
-                className="bg-gradient-to-br premium-card-inner from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[350px] overflow-hidden relative before:absolute before:inset-x-0 before:top-0 before:h-1 before:bg-brand-orange before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-300 before:content-['']"
-                custom={5}
-                initial="hidden"
-                variants={cardVariants}
-                viewport={{ once: true, amount: 0.3 }}
-                whileInView="visible"
-              >
-                <div className="h-full flex flex-col justify-between relative z-10">
-                  {/* Visual Section - Integrated without extra wrappers */}
-                  <div className="flex-1 relative flex items-center justify-center w-full mb-4">
-                    <div className="absolute inset-0 flex items-center justify-center opacity-40">
-                      <svg className="w-full h-full" viewBox="0 0 200 200">
-                        <path
-                          d="M100,60 L100,90"
-                          fill="none"
-                          stroke="#CBD5E1"
-                          strokeDasharray="4 4"
-                          strokeWidth="2"
-                        />
-                        <path
-                          d="M100,90 L60,130"
-                          fill="none"
-                          stroke="#CBD5E1"
-                          strokeDasharray="4 4"
-                          strokeWidth="2"
-                        />
-                        <path
-                          d="M100,90 L140,130"
-                          fill="none"
-                          stroke="#CBD5E1"
-                          strokeDasharray="4 4"
-                          strokeWidth="2"
-                        />
-                      </svg>
-                    </div>
-
-                    <div className="flex flex-col items-center w-full z-10 gap-6 mt-6">
-                      {/* Top Flow Node */}
-                      <div className="w-24 bg-white/80 backdrop-blur-md p-2.5 rounded-xl border border-white shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex flex-col gap-1.5 items-center">
-                        <div className="w-8 h-1.5 bg-gray-200 rounded-full" />
-                        <div className="w-12 h-1 bg-gray-100 rounded-full" />
-                      </div>
-
-                      {/* Branching Flow Nodes */}
-                      <div className="flex gap-8 w-full justify-center">
-                        {/* Left Node */}
-                        <div className="w-20 bg-white/80 backdrop-blur-md p-2.5 rounded-xl border border-white shadow-[0_4px_12px_rgba(0,0,0,0.03)] flex flex-col gap-1.5 items-center">
-                          <div className="w-4 h-4 rounded-full bg-gray-200" />
-                          <div className="w-10 h-1 bg-gray-100 rounded-full" />
-                        </div>
-
-                        {/* Right Node (Highlighted/Active) */}
-                        <div className="w-20 bg-white p-2.5 rounded-xl border border-brand-orange/20 shadow-[0_4px_16px_rgba(255,91,4,0.08)] flex flex-col gap-1.5 items-center transform scale-105">
-                          <div className="w-4 h-4 rounded-full bg-brand-orange shadow-sm shadow-brand-orange/30" />
-                          <div className="w-10 h-1 bg-gray-100 rounded-full" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content Section */}
-                  <div className="text-left">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
-                      UX Consultation
-                    </h3>
-                    <p className="text-gray-600 font-medium max-md:text-sm">
-                      Expert guidance on user flows, wireframes, and design
-                      strategy.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-            {/* <!-- Card 7: Apps4Sale (NEW) --> */}
-            <div className="premium-card h-[350px]">
-              <motion.div
-                className="premium-card-inner bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 group h-[350px] overflow-hidden relative"
-                custom={6}
-                initial="hidden"
-                variants={cardVariants}
-                viewport={{ once: true, amount: 0.3 }}
-                whileInView="visible"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50/40 via-amber-50/30 to-yellow-50/20 rounded-2xl" />
-
-                <div className="h-full flex flex-col justify-between relative z-10">
-                  {/* Visual Section - Integrated without extra wrappers */}
-                  <div className="flex-1 w-full relative overflow-hidden flex items-end justify-center pt-8 mb-4">
-                    {/* Mini App Store Interface Mockup */}
-                    <div className="w-[85%] h-full bg-white rounded-t-xl border-t border-x border-gray-100 shadow-[0_-8px_24px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden">
-                      {/* Mock Browser/OS Header */}
-                      <div className="h-6 border-b border-gray-50 flex items-center px-3 justify-between">
-                        <div className="flex gap-1.5">
-                          <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
-                          <div className="w-1.5 h-1.5 rounded-full bg-gray-200" />
-                        </div>
-                        <div className="w-12 h-1.5 bg-gray-100 rounded-full" />
-                      </div>
-
-                      {/* Mock App Marketplace Grid */}
-                      <div className="flex-1 p-3 grid grid-cols-2 gap-3 bg-gray-50/50">
-                        {/* App Card 1 */}
-                        <div className="bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm flex flex-col gap-2.5 relative group-hover:border-orange-100 transition-colors">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-orange-600 shadow-inner flex items-center justify-center">
-                            <div className="w-3.5 h-3.5 bg-white/90 rounded-sm" />
-                          </div>
-                          <div className="w-12 h-1.5 bg-gray-200 rounded-full" />
-                          <div className="absolute top-2.5 right-2 px-1.5 py-0.5 bg-gray-50 border border-gray-100 text-[8px] font-bold text-gray-600 rounded">
-                            $99
-                          </div>
-                        </div>
-
-                        {/* App Card 2 */}
-                        <div className="bg-white p-2.5 rounded-lg border border-gray-100 shadow-sm flex flex-col gap-2.5 relative group-hover:border-amber-100 transition-colors">
-                          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 shadow-inner flex items-center justify-center">
-                            <div className="w-3.5 h-3.5 bg-white/90 rounded-full" />
-                          </div>
-                          <div className="w-8 h-1.5 bg-gray-200 rounded-full" />
-                          <div className="absolute top-2.5 right-2 px-1.5 py-0.5 bg-gray-50 border border-gray-100 text-[8px] font-bold text-gray-600 rounded">
-                            $149
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content Section */}
-                  <div className="text-left">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-1 max-md:text-lg max-md:font-semibold">
-                      Apps4Sale
-                    </h3>
-                    <p className="text-gray-600 font-medium max-md:text-sm">
-                      Ready-to-deploy apps and tools. Fully functional.
-                    </p>
                   </div>
                 </div>
               </motion.div>

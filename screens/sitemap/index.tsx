@@ -9,6 +9,7 @@ const Sitemap = () => {
     main: [
       { label: "Home", href: "/" },
       { label: "About Us", href: "/about" },
+      { label: "Our Process", href: "/process" },
       { label: "Case Studies & Portfolio", href: "/case-studies" },
       { label: "Pricing", href: "/pricing" },
       { label: "Contact", href: "/contact" },
@@ -16,12 +17,12 @@ const Sitemap = () => {
     services: [
       {
         label: "UX/UI Design",
-        href: "/services/SaaS-Web-&-Mobile-Apps",
+        href: "/services/UX-UI-Design",
         desc: "SaaS, AI & mobile app design",
       },
       {
         label: "SaaS & AI Development",
-        href: "/services/SaaS-Web-&-Mobile-Apps",
+        href: "/services/SaaS-&-AI-Development",
         desc: "Angular, React & Next.js frontend",
       },
       {
@@ -30,32 +31,15 @@ const Sitemap = () => {
         desc: "Conversion-focused marketing pages",
       },
       {
-        label: "Graphic Design",
-        href: "/services/Graphic-Design",
-        desc: "Brand visuals & illustrations",
-      },
-      {
-        label: "Motion Graphics & Video Editing",
-        href: "/services/Motion-Graphics-&-Video-Editing",
-        desc: "Animation, reels & video",
-      },
-      {
         label: "UX Audits & Consultation",
         href: "/services/UX-Audits-&-Consultation",
         desc: "Heuristic evaluation & UX strategy",
-      },
-      {
-        label: "3D Animation & Rendering",
-        href: "/services/3D-Animation-&-Rendering",
-        desc: "3D assets, animation & renders",
       },
     ],
     resources: [
       { label: "Blogs & Tutorials", href: "/blogs" },
       { label: "FAQs", href: "/faqs" },
-      { label: "Community Insights", href: "/community" },
       { label: "Apps 4 Sale", href: "/apps4sale" },
-      { label: "Mini SaaS Apps", href: "/mini-saas-apps" },
     ],
     tools: [
       { label: "Tools Main Hub", href: "/tools", desc: "16+ Free Tools Suite" },
@@ -84,7 +68,7 @@ const Sitemap = () => {
     <PageWrapper showFloatingButton={false}>
       <div className="container mx-auto xl:px-32 max-md:px-4 max-xl:px-4 max-2xl:px-0 ">
         {/* Consistent Hero Component */}
-        <div className="flex flex-row items-center justify-center py-6 pt-10 w-full max-md:py-0 max-md:pt-4 relative ">
+        <div className="hero-wrapper">
           {/* Subtle Grid Background Pattern */}
           <div
             className="absolute pointer-events-none -mt-20 "

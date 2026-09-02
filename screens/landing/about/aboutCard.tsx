@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 import { useIsMobile } from "@/hooks";
 
@@ -64,48 +64,36 @@ const AboutCardItem = ({
   onHoverEnd,
   isMobile,
 }: AboutCardItemProps) => {
-  const cardRef = useRef<HTMLDivElement>(null);
   const isEven = index % 2 === 0;
   const isHovered = hoveredIndex === index;
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: isMobile ? ["start 160%", "end 120%"] : ["start 99%", "end 100%"],
-  });
-
-  // Transform scroll progress to animation values
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [isEven ? "-30%" : "30%", "0%"],
-  );
-  const rotate = useTransform(scrollYProgress, [0, 1], [isEven ? -15 : 15, 0]);
-  const opacity = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [isMobile ? 0 : 0.2, 1],
-  );
-
   return (
     <motion.div
-      ref={cardRef}
-      className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${
-        isEven ? "lg:-mt-32" : "lg:mt-0"
-      } hover:ease-in-out`}
+      className={`bg-[#ffffff] shadow-lg border-1 rounded-[40px] max-md:rounded-[20px] p-8 max-md:px-6 w-full h-[350px] max-md:h-[250px] ${isEven ? "lg:-mt-32" : "lg:mt-0"
+        } hover:ease-in-out`}
+      // Reveals once via IntersectionObserver (`whileInView`) instead of the
+      // previous per-card `useScroll` tied to a ~1% viewport window on
+      // desktop — that tiny window was the same "takes forever to trigger"
+      // anti-pattern found in workCard.tsx.
+      initial={{
+        x: isEven ? "-30%" : "30%",
+        rotate: isEven ? -15 : 15,
+        opacity: isMobile ? 0 : 0.2,
+      }}
       style={{
-        x,
-        rotate,
-        opacity,
         backgroundColor: isHovered ? item.hoverBg : "#ffffff",
         color: isHovered ? item.textHover : "#000",
         transition: "background-color 0.6s ease, color 0.6s ease",
       }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+      whileInView={{ x: "0%", rotate: 0, opacity: 1 }}
       onHoverEnd={onHoverEnd}
       onHoverStart={onHoverStart}
     >
       <div className="flex flex-col justify-between h-full">
         <div>
-          <p className="text-8xl max-md:text-5xl overflow-hidden font-[500] max-md:font-[500]">
+          <p className="text-7xl max-md:text-5xl overflow-hidden font-[500] max-md:font-[500]">
             {item.heading.split("").map((letter, i) => (
               <motion.span
                 key={`${index}-${i}`}

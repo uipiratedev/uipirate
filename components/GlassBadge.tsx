@@ -9,6 +9,11 @@ interface GlassBadgeProps {
   children: React.ReactNode;
 
   /**
+   * Optional custom text color for badge
+   */
+  textColor?: string;
+
+  /**
    * Optional custom className for additional styling
    */
   className?: string;
@@ -23,7 +28,7 @@ interface GlassBadgeProps {
    * Size of the badge
    * @default "md"
    */
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
 
   /**
    * Whether to uppercase the text
@@ -34,22 +39,10 @@ interface GlassBadgeProps {
 
 /**
  * GlassBadge - A reusable glass morphism badge component
- *
- * Features:
- * - Premium glass effect with gradient background
- * - Multiple variants (gradient, solid, cyan)
- * - Responsive sizing
- * - Customizable styling
- *
- * @example
- * ```tsx
- * <GlassBadge>Design & Development</GlassBadge>
- * <GlassBadge variant="cyan" size="sm">Services</GlassBadge>
- * <GlassBadge variant="solid" uppercase={false}>Custom Text</GlassBadge>
- * ```
  */
 const GlassBadge: React.FC<GlassBadgeProps> = ({
   children,
+  textColor,
   className = "",
   variant = "gradient",
   size = "md",
@@ -57,17 +50,21 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
 }) => {
   // Size classes - responsive: smaller on mobile, normal on desktop
   const sizeClasses = {
+    xs: "px-2 py-0.5 text-[9px] sm:px-2.5 sm:py-1 sm:text-[10px]",
     sm: "px-2.5 py-1 text-[10px] sm:px-3 sm:py-1.5 sm:text-xs",
     md: "px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm",
     lg: "px-4 py-2 text-sm sm:px-5 sm:py-2.5 sm:text-base",
+    xl: "px-5 py-2.5 text-base sm:px-6 sm:py-3 sm:text-lg",
   };
 
   // For the gradient variant, we want it to be slightly more premium (larger) on desktop
   // but still responsive for mobile.
   const gradientSizeClasses = {
+    xs: "px-2 py-0.5 text-[9px] sm:px-2.5 sm:py-1 sm:text-[10px]",
     sm: "px-2.5 py-1 text-[10px] sm:px-3 sm:py-1.5 sm:text-xs",
     md: "px-3 py-1.5 text-xs sm:px-5 sm:py-2.5 sm:text-[15px]",
     lg: "px-4 py-2 text-sm sm:px-7 sm:py-3.5 sm:text-[18px]",
+    xl: "px-5 py-2.5 text-base sm:px-9 sm:py-4 sm:text-[22px]",
   };
 
   // Variant styles
@@ -95,10 +92,13 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
 
   // For gradient variant, use GlassSurface with decorative dots
   if (variant === "gradient") {
+    const isWhiteText = className.includes("text-white");
+    const textColorClass = isWhiteText ? "!text-white" : "text-black";
+
     return (
       <div className={`relative z-10 inline-block ${className}`}>
         <GlassSurface
-          backgroundOpacity={0.1}
+          backgroundOpacity={isWhiteText ? 0.25 : 0.1}
           blueOffset={8}
           blur={11}
           borderRadius={10}
@@ -107,7 +107,7 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           className={`!flex !items-center !justify-center ${gradientSizeClasses[size]}`}
           displace={0.5}
           distortionScale={-180}
-          forceLightMode={true}
+          forceLightMode={!isWhiteText}
           greenOffset={4}
           height="auto"
           opacity={0.93}
@@ -126,11 +126,11 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
 
           {/* Text on top */}
           <span
-            className={`relative z-10 font-jetbrains-mono font-medium text-black ${
-              uppercase ? "uppercase" : ""
-            } ${className}`}
+            className={`relative z-10 font-jetbrains-mono font-medium text-black ${uppercase ? "uppercase" : ""
+              } ${className}`}
             style={{
               fontVariantNumeric: "slashed-zero",
+              color: textColor || undefined,
             }}
           >
             {children}
@@ -156,6 +156,9 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
           transition-all duration-300 ease-in-out
           ${className}
         `}
+        style={{
+          color: textColor || undefined,
+        }}
         height="auto"
         opacity={0.93}
         saturation={1.5}
@@ -177,7 +180,10 @@ const GlassBadge: React.FC<GlassBadgeProps> = ({
         transition-all duration-300 ease-in-out
         ${className}
       `}
-      style={variantStyles[variant]}
+      style={{
+        ...variantStyles[variant],
+        color: textColor || undefined,
+      }}
     >
       {children}
     </span>

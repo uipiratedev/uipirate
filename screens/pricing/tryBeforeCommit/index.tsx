@@ -15,15 +15,15 @@ const fadeUp = {
 };
 
 const PILOT_OPTIONS = [
-  { type: "Design", price: "150", description: "UI/UX design sprint" },
-  { type: "Development", price: "250", description: "Code implementation" },
-  { type: "Design + Dev", price: "350", description: "Full-stack delivery" },
+  { type: "Design", price: "150", description: "5 screens or 1 full user flow — polished Figma file, ready for dev" },
+  { type: "Development", price: "250", description: "Working component or feature, production-ready code" },
+  { type: "Design + Dev", price: "350", description: "Designed and built in 5 days — you own all the files and code" },
 ];
 
 const TryBeforeCommit = () => {
   return (
     <motion.div
-      className="mt-8"
+      className="section-container"
       initial="hidden"
       variants={fadeUp}
       viewport={{ once: true, amount: 0.2 }}
@@ -108,11 +108,14 @@ const TryBeforeCommit = () => {
 
           {/* CTA */}
           <div className="flex flex-col items-center gap-4">
-            <LetsTalkButton className="px-8" variant="color">
+            <LetsTalkButton
+              className="px-8"
+              href="https://cal.com/ui-pirate/15min"
+              variant="color"
+            >
               Start Your Pilot Project
             </LetsTalkButton>
             <p className="text-gray-500 text-sm flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               Limited slots available each month
             </p>
           </div>
