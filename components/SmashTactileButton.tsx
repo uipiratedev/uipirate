@@ -4,19 +4,14 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type SmashButtonVariant = "figma" | "dark" | "orange" | "cyberpunk";
-export type SmashButtonStateMode = "interactive" | "standerd" | "hover";
 
 export interface SmashTactileButtonProps {
   /** Text label inside the button (default: "Smash the button") */
   label?: string;
-  /** Optional custom text color */
-  textColor?: string;
   /** Visual variant (default: "figma" matching Figma Node 17:1480) */
   variant?: SmashButtonVariant;
   /** Size scale (default: "md") */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
-  /** State preview mode: "interactive" | "standerd" | "hover" */
-  stateMode?: SmashButtonStateMode;
   /** Optional click handler */
   onClick?: () => void;
   /** Additional CSS class names */
@@ -76,17 +71,14 @@ const FIGMA_STROKE_PATH =
  */
 export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   label = "Smash the button",
-  textColor,
   variant = "figma",
   size = "md",
-  stateMode = "interactive",
   onClick,
   className = "",
   disabled = false,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
-  const isVisualHover = stateMode === "hover" || (stateMode === "interactive" && isHovered);
 
   // Scaled dimensions with uniform, perfectly even padding where Layer 3.5 evenly contains Layer 4
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
@@ -162,18 +154,8 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
     },
   }[__baseSize];
 
-  // Dynamic horizontal expansion based on text label length
-  const textLength = label ? label.trim().length : 0;
-  const baseLabelLen = 16;
-  const charPadRate = sizeConfig.fontSize.includes("20px") ? 14 : sizeConfig.fontSize.includes("28px") ? 18 : 22;
-  const textExtraWidth = textLength > baseLabelLen ? (textLength - baseLabelLen) * charPadRate : 0;
-
-  const dynamicCoreW = sizeConfig.coreW + textExtraWidth;
-  const dynamicTrayW = sizeConfig.trayW + textExtraWidth;
-  const dynamicDeckW = sizeConfig.deckW + textExtraWidth;
-
   // Derived cradle dimensions: core dimensions + 2 * even cradle padding
-  const cradleW = dynamicCoreW + sizeConfig.cradlePad * 2;
+  const cradleW = sizeConfig.coreW + sizeConfig.cradlePad * 2;
   const cradleH = sizeConfig.coreH + sizeConfig.cradlePad * 2;
 
   // Theme palettes matching Figma Node 17:1480 & variants
@@ -244,7 +226,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
     },
   }[variant];
 
-  const W = dynamicCoreW;
+  const W = sizeConfig.coreW;
   const H = sizeConfig.coreH;
 
   return __wrapSize(
@@ -256,7 +238,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       <div
         className="relative flex items-center justify-center transition-all duration-300"
         style={{
-          width: dynamicDeckW,
+          width: sizeConfig.deckW,
           height: sizeConfig.deckH,
           borderRadius: 30,
           border: `1.5px solid ${themeStyles.deckBorder}`,
@@ -329,7 +311,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
         <div
           className="relative flex flex-col items-center justify-between py-[16px] px-[16px]"
           style={{
-            width: dynamicTrayW,
+            width: sizeConfig.trayW,
             height: sizeConfig.trayH,
             borderRadius: 24,
             backgroundColor: themeStyles.trayBg,
@@ -338,7 +320,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
           }}
         >
           {/* Top Double-Row Dot Matrix Array */}
-          <DotMatrixRow count={sizeConfig.dotsCount + Math.floor(textExtraWidth / 24)} color={themeStyles.trayDotsColor} />
+          <DotMatrixRow count={sizeConfig.dotsCount} color={themeStyles.trayDotsColor} />
 
           {/* ─────────────────────────────────────────────────────────────
               LAYER 3.5: Intermediate Cushion Cradle Plate (Node 17:1701)
@@ -361,8 +343,8 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                ───────────────────────────────────────────────────────────── */}
             <motion.div
               animate={{
-                opacity: isVisualHover ? 1 : 0.85,
-                scale: isPressed ? 0.95 : isVisualHover ? 1.15 : 1,
+                opacity: isHovered ? 1 : 0.85,
+                scale: isPressed ? 0.95 : isHovered ? 1.15 : 1,
               }}
               transition={{ duration: 0.2 }}
               className="absolute pointer-events-none z-10"
@@ -442,7 +424,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
               onTouchStart={() => setIsPressed(true)}
               onTouchEnd={() => setIsPressed(false)}
               animate={{
-                y: isPressed ? 2 : isVisualHover ? sizeConfig.liftY : 0,
+                y: isPressed ? 2 : isHovered ? sizeConfig.liftY : 0,
                 scale: isPressed ? 0.985 : 1,
               }}
               transition={{
@@ -462,7 +444,6 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                 width={W}
                 height={H}
                 viewBox="0 0 578 148"
-                preserveAspectRatio="none"
                 className="absolute inset-0 size-full pointer-events-none"
               >
                 <defs>
@@ -536,7 +517,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
               <span
                 className={`relative z-10 font-medium ${sizeConfig.fontSize} tracking-tight whitespace-nowrap leading-none select-none`}
                 style={{
-                  color: textColor || themeStyles.textColor,
+                  color: themeStyles.textColor,
                   textShadow: "0px 1px 2px rgba(0,0,0,0.8)",
                   fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
                 }}

@@ -7,7 +7,6 @@ import {
   NeumorphicGlowShape,
   NeumorphicGlowTheme,
   NeumorphicGlowSize,
-  NeumorphicGlowStateMode,
   NeumorphicNeonPreset,
   NEON_PRESETS,
 } from "@/components/NeumorphicGlowCTA";
@@ -19,20 +18,8 @@ export default function NeumorphicGlowScreen() {
   const [variant, setVariant] = useState<NeumorphicGlowShape>("pill");
   const [theme, setTheme] = useState<NeumorphicGlowTheme>("default");
   const [size, setSize] = useState<NeumorphicGlowSize>("md");
-  const [stateMode, setStateMode] = useState<NeumorphicGlowStateMode>("interactive");
   const [neonPreset, setNeonPreset] = useState<NeumorphicNeonPreset | "auto">("auto");
   const [labelText, setLabelText] = useState("Learn more");
-  const [textColor, setTextColor] = useState("#000000");
-
-  const textColorOptions = [
-    { label: "Obsidian Black", value: "#000000" },
-    { label: "Dark Slate", value: "#1E293B" },
-    { label: "Pure White", value: "#FFFFFF" },
-    { label: "Brand Orange", value: "#FF5B04" },
-    { label: "Electric Cyan", value: "#00E5BE" },
-    { label: "Neon Emerald", value: "#49C33E" },
-    { label: "Cyber Violet", value: "#C084FC" },
-  ];
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -61,7 +48,6 @@ export type NeumorphicGlowSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface NeumorphicGlowCTAProps {
   label?: string;
-  textColor?: string;
   shape?: NeumorphicGlowShape;
   theme?: NeumorphicGlowTheme;
   size?: NeumorphicGlowSize;
@@ -71,7 +57,6 @@ export interface NeumorphicGlowCTAProps {
 
 export function NeumorphicGlowCTA({
   label = "Learn more",
-  textColor,
   shape = "pill",
   theme = "default",
   size = "md",
@@ -135,7 +120,7 @@ export function NeumorphicGlowCTA({
       transition={{ type: "spring", stiffness: 450, damping: 25 }}
       className={\`relative flex items-center justify-between gap-4 px-6 py-3.5 \${rounded} \${themeConfig.bg} \${themeConfig.border} border shadow-lg \${themeConfig.text} font-bold text-sm cursor-pointer select-none focus:outline-none \${className}\`}
     >
-      <span style={{ color: textColor }}>{label}</span>
+      <span>{label}</span>
 
       {/* Radiant Glowing Neon Arrow Knob */}
       <div
@@ -213,13 +198,11 @@ export default function Example() {
         <div className="bg-neutral-900/80 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
           <StudioCanvas>
               <NeumorphicGlowCTA
+                label={labelText}
                 variant={variant}
                 theme={theme}
                 size={size}
-                stateMode={stateMode}
                 neonPreset={neonPreset === "auto" ? undefined : neonPreset}
-                label={labelText}
-                textColor={textColor}
                 onClick={() => setClickCount((c) => c + 1)}
               />
 
@@ -243,34 +226,6 @@ export default function Example() {
                 onChange={(e) => setLabelText(e.target.value)}
                 className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
               />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
-              <select
-                value={stateMode}
-                onChange={(e) => setStateMode(e.target.value as NeumorphicGlowStateMode)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
-                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
-                <option value="hover" className="bg-[#151518] text-white">Hover</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Text Color</label>
-              <select
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                {textColorOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value} className="bg-[#151518] text-white">
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
             </div>
 
             <div className="space-y-1.5">
@@ -306,11 +261,11 @@ export default function Example() {
                 onChange={(e) => setSize(e.target.value as typeof size)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                  <option value="xs" className="bg-[#151518] text-white">Extra Small (xs)</option>
-                  <option value="sm" className="bg-[#151518] text-white">Small (sm)</option>
-                  <option value="md" className="bg-[#151518] text-white">Medium (md)</option>
-                  <option value="lg" className="bg-[#151518] text-white">Large (lg)</option>
-                  <option value="xl" className="bg-[#151518] text-white">Extra Large (xl)</option>
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
               </select>
             </div>
           </div>

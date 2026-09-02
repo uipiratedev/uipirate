@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 export type NeumorphicGlowShape = "pill" | "squircle";
 export type NeumorphicGlowTheme = "uipirate" | "pirate" | "default" | "dark" | "orange" | "cyberpunk" | "minimal";
 export type NeumorphicGlowSize = "xs" | "sm" | "md" | "lg" | "xl";
-export type NeumorphicGlowStateMode = "interactive" | "standerd" | "hover";
 export type NeumorphicNeonPreset =
   | "uipirate"
   | "pirate"
@@ -110,14 +109,10 @@ export interface NeumorphicGlowCTAProps {
   theme?: NeumorphicGlowTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: NeumorphicGlowSize;
-  /** State preview mode: "interactive" | "standerd" | "hover" */
-  stateMode?: NeumorphicGlowStateMode;
   /** Neon glow preset for arrow circle */
   neonPreset?: NeumorphicNeonPreset;
   /** Text label on the button */
   label?: string;
-  /** Optional custom text color */
-  textColor?: string;
   /** Click event handler */
   onClick?: () => void;
   /** Custom scale factor */
@@ -142,10 +137,8 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
   variant = "pill",
   theme = "default",
   size = "md",
-  stateMode = "interactive",
   neonPreset,
   label,
-  textColor,
   onClick,
   scale = 1,
   badgeColor: customBadgeColor,
@@ -155,7 +148,6 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
   children,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const isVisualHover = stateMode === "hover" || (stateMode === "interactive" && isHovered);
   const isPill = variant === "pill";
   const defaultLabel = isPill ? "Learn more" : "Get more info";
   const displayText = label !== undefined ? label : defaultLabel;
@@ -348,7 +340,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
       onClick={onClick}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      animate={isVisualHover ? { scale: 1.025 } : { scale: 1 }}
+      whileHover={{ scale: 1.025 }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       className={`relative inline-flex items-center select-none cursor-pointer outline-none ${className}`}
@@ -380,7 +372,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
           <motion.div
             className={`relative flex items-center justify-center ${sizeConfig.pillBadgePadding} ${sizeConfig.pillBadgeRadius} shrink-0 overflow-hidden`}
             animate={{
-              boxShadow: isVisualHover
+              boxShadow: isHovered
                 ? `0px 0px 32px 4px ${activeGlowColor}, 0px 1.3px 1.3px 0px rgba(255,255,255,0.95), 0px -1.3px 1.3px 0px rgba(0,0,0,0.1)`
                 : `0px 0px 26px 0px ${activeGlowColor}, 0px 1.3px 1.3px 0px rgba(255,255,255,0.85), 0px -1.3px 1.3px 0px rgba(0,0,0,0.1)`,
             }}
@@ -430,7 +422,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
               className={`capitalize ${sizeConfig.pillFontSize} font-normal whitespace-nowrap`}
               style={{
                 fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
-                color: textColor || currentTheme.textColor,
+                color: currentTheme.textColor,
                 textShadow: currentTheme.textShadow,
               }}
             >
@@ -455,7 +447,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
               className={`capitalize ${sizeConfig.squircleFontSize} font-normal whitespace-nowrap`}
               style={{
                 fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
-                color: textColor || currentTheme.textColor,
+                color: currentTheme.textColor,
                 textShadow: currentTheme.textShadow,
               }}
             >
@@ -467,7 +459,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
           <motion.div
             className={`relative flex items-center justify-center ${sizeConfig.squircleBadgePadding} ${sizeConfig.squircleBadgeRadius} shrink-0 overflow-hidden`}
             animate={{
-              boxShadow: isVisualHover
+              boxShadow: isHovered
                 ? `0px 0px 24px 3px ${activeGlowColor}, 0px 1px 1px 0px rgba(255,255,255,0.95), 0px -1px 1px 0px rgba(0,0,0,0.1)`
                 : `0px 0px 20px 0px ${activeGlowColor}, 0px 1px 1px 0px rgba(255,255,255,0.85), 0px -1px 1px 0px rgba(0,0,0,0.1)`,
             }}

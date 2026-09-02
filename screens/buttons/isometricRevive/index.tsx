@@ -29,17 +29,6 @@ export default function IsometricReviveScreen() {
   const [size, setSize] = useState<IsometricReviveSize>("md");
   const [stateMode, setStateMode] = useState<IsometricReviveStateMode>("interactive");
   const [labelText, setLabelText] = useState("Revive Now");
-  const [textColor, setTextColor] = useState("#FFFFFF");
-
-  const textColorOptions = [
-    { label: "Pure White", value: "#FFFFFF" },
-    { label: "Dark Obsidian", value: "#12141A" },
-    { label: "Brand Orange", value: "#FF5B04" },
-    { label: "Amber Yellow", value: "#FFB020" },
-    { label: "Cyan Aqua", value: "#00E5BE" },
-    { label: "Emerald Green", value: "#10B981" },
-    { label: "Cyber Pink", value: "#EC4899" },
-  ];
   const [showGrid, setShowGrid] = useState(true);
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -69,7 +58,6 @@ export type IsometricReviveSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface IsometricReviveButtonProps {
   label?: string;
-  textColor?: string;
   theme?: IsometricReviveTheme;
   size?: IsometricReviveSize;
   onClick?: () => void;
@@ -79,7 +67,6 @@ export interface IsometricReviveButtonProps {
 
 export function IsometricReviveButton({
   label = "Revive Now",
-  textColor,
   theme = "figma",
   size = "md",
   onClick,
@@ -118,7 +105,7 @@ export function IsometricReviveButton({
         className="relative px-8 py-4 rounded-2xl bg-[#0D1015] border border-white/20 text-white font-bold text-sm shadow-[0_20px_40px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.4)] cursor-pointer focus:outline-none flex items-center gap-3"
       >
         <span className="w-2 h-2 rounded-full bg-[#FFA000] shadow-[0_0_8px_#FFA000] animate-pulse" />
-        <span className="tracking-wide uppercase text-xs font-mono" style={{ color: textColor }}>{label}</span>
+        <span className="tracking-wide uppercase text-xs font-mono">{label}</span>
       </motion.button>
     </div>
   );
@@ -192,169 +179,82 @@ export default function Example() {
           {/* Interactive Studio Stage */}
           <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
             <StudioCanvas minHeight="min-h-[420px]">
-              <IsometricReviveButton
-                label={labelText}
-                textColor={textColor}
-                theme={theme}
-                angle={angle}
-                intensity={intensity}
-                size={size}
-                stateMode={stateMode}
-                showGrid={showGrid}
-                onClick={() => setClickCount((c) => c + 1)}
-              />
+                <IsometricReviveButton
+                  label={labelText}
+                  theme={theme}
+                  angle={angle}
+                  intensity={intensity}
+                  size={size}
+                  stateMode={stateMode}
+                  showGrid={showGrid}
+                  onClick={() => setClickCount((c) => c + 1)}
+                />
 
-              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-                <span>Interactions:</span>
-                <span className="text-white font-semibold">{clickCount}</span>
-              </div>
+                <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+                  <span>Interactions:</span>
+                  <span className="text-white font-semibold">{clickCount}</span>
+                </div>
             </StudioCanvas>
           </div>
 
           {/* Customizer */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
-              Customizer
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
-              {/* Button Label Input */}
+            <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
               <div className="space-y-1.5">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  Button Label
-                </label>
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
                 <input
                   type="text"
                   value={labelText}
                   onChange={(e) => setLabelText(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
                 />
               </div>
 
-              {/* Text Color Selector */}
               <div className="space-y-1.5">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  Text Color
-                </label>
-                <select
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
-                >
-                  {textColorOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value} className="bg-[#12141A] text-white">
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* State Mode Selector */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  State Preview
-                </label>
-                <select
-                  value={stateMode}
-                  onChange={(e) => setStateMode(e.target.value as IsometricReviveStateMode)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
-                >
-                  <option value="interactive" className="bg-[#12141A] text-white">Interactive</option>
-                  <option value="standerd" className="bg-[#12141A] text-white">Standard</option>
-                  <option value="hover" className="bg-[#12141A] text-white">Hover</option>
-                </select>
-              </div>
-
-              {/* Color Theme Selector */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  Color &amp; Style Theme
-                </label>
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
                 <select
                   value={theme}
                   onChange={(e) => setTheme(e.target.value as IsometricReviveTheme)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
                 >
                   {(Object.keys(ISOMETRIC_REVIVE_THEMES) as IsometricReviveTheme[]).map((k) => (
-                    <option key={k} value={k} className="bg-[#12141A] text-white">
+                    <option key={k} value={k} className="bg-[#12141A]">
                       {ISOMETRIC_REVIVE_THEMES[k].name}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Glow Intensity Selector */}
               <div className="space-y-1.5">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  Underglow Intensity
-                </label>
-                <select
-                  value={intensity}
-                  onChange={(e) => setIntensity(e.target.value as IsometricGlowIntensity)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
-                >
-                  <option value="subtle" className="bg-[#12141A] text-white">Subtle Glow</option>
-                  <option value="vibrant" className="bg-[#12141A] text-white">Vibrant Glow</option>
-                  <option value="hyper" className="bg-[#12141A] text-white">Hyper Glow</option>
-                </select>
-              </div>
-
-              {/* 3D Axonometric Angle Selector */}
-              <div className="space-y-1.5">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  3D Projection Angle
-                </label>
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Angle</label>
                 <select
                   value={angle}
                   onChange={(e) => setAngle(e.target.value as IsometricReviveAngle)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
                 >
                   {(Object.keys(ANGLE_TRANSFORMS) as IsometricReviveAngle[]).map((a) => (
-                    <option key={a} value={a} className="bg-[#12141A] text-white">
+                    <option key={a} value={a} className="bg-[#12141A]">
                       {ANGLE_TRANSFORMS[a]?.label || a}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Size Scale Selector */}
               <div className="space-y-1.5">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  Size Scale
-                </label>
-                <select
-                  value={size}
-                  onChange={(e) => setSize(e.target.value as IsometricReviveSize)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500 font-mono"
-                >
-                  <option value="xs" className="bg-[#12141A] text-white">Extra Small (xs)</option>
-                  <option value="sm" className="bg-[#12141A] text-white">Small (sm)</option>
-                  <option value="md" className="bg-[#12141A] text-white">Medium (md)</option>
-                  <option value="lg" className="bg-[#12141A] text-white">Large (lg)</option>
-                  <option value="xl" className="bg-[#12141A] text-white">Extra Large (xl)</option>
-                </select>
-              </div>
-
-              {/* Technical Grid Overlay Toggle */}
-              <div className="space-y-1.5 sm:col-span-2 lg:col-span-3">
-                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                  Technical Grid Overlay
-                </label>
-                <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5">
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={showGrid}
-                      onChange={(e) => setShowGrid(e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-9 h-5 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-500" />
-                  </label>
-                  <span className="text-xs text-white font-mono">
-                    {showGrid ? "Technical Axonometric Grid & Timestamp Visible" : "Hidden (Clean Glass Stage)"}
-                  </span>
-                </div>
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+                              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value as typeof size)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
               </div>
             </div>
           </div>

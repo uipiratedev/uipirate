@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { MagneticPulseCTA, MagneticPulseSize, MagneticPulseStateMode } from "@/components/MagneticPulseCTA";
+import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
 import { useClickSound } from "@/hooks/useClickSound";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
@@ -11,20 +11,7 @@ import GlobalCTA from "@/components/GlobalCTA";
 
 export default function MagneticPulseButtonScreen() {
   const [label, setLabel] = useState("Let's Venture");
-  const [textColor, setTextColor] = useState("#FFFFFF");
   const [pulseColor, setPulseColor] = useState("#FF5B04");
-  const [size, setSize] = useState<MagneticPulseSize>("md");
-
-  const textColorOptions = [
-    { label: "Pure White", value: "#FFFFFF" },
-    { label: "Obsidian Black", value: "#000000" },
-    { label: "Cyan Aqua", value: "#00E5BE" },
-    { label: "Brand Orange", value: "#FF5B04" },
-    { label: "Electric Blue", value: "#3B82F6" },
-    { label: "Emerald Green", value: "#10B981" },
-    { label: "Cyber Pink", value: "#EC4899" },
-  ];
-  const [stateMode, setStateMode] = useState<MagneticPulseStateMode>("interactive");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -55,7 +42,6 @@ import { motion } from "framer-motion";
 
 export interface MagneticPulseCTAProps {
   label?: string;
-  textColor?: string;
   pulseColor?: string;
   onClick?: () => void;
   className?: string;
@@ -63,7 +49,6 @@ export interface MagneticPulseCTAProps {
 
 export function MagneticPulseCTA({
   label = "Let's Venture",
-  textColor,
   pulseColor = "#FF5B04",
   onClick,
   className = "",
@@ -92,7 +77,7 @@ export function MagneticPulseCTA({
           boxShadow: \`0 0 35px \${pulseColor}80\`,
         }}
       >
-        <span style={{ color: textColor }}>{label}</span>
+        <span>{label}</span>
         <span className="w-2 h-2 rounded-full bg-white animate-ping" />
       </motion.button>
     </div>
@@ -152,10 +137,7 @@ export default function Example() {
           <StudioCanvas hint={`Click to trigger sound · ${clickCount} click${clickCount === 1 ? "" : "s"}`}>
             <MagneticPulseCTA
               label={label}
-              textColor={textColor}
               pulseColor={pulseColor}
-              stateMode={stateMode}
-              size={size}
               onClick={handleClick}
             />
           </StudioCanvas>
@@ -179,38 +161,6 @@ export default function Example() {
 
             <div className="space-y-2">
               <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
-                Text Color
-              </label>
-              <select
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                {textColorOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value} className="bg-[#151518] text-white">
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
-                State Preview
-              </label>
-              <select
-                value={stateMode}
-                onChange={(e) => setStateMode(e.target.value as MagneticPulseStateMode)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
-                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
-                <option value="hover" className="bg-[#151518] text-white">Hover</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
                 Pulse Accent Color
               </label>
               <select
@@ -222,23 +172,6 @@ export default function Example() {
                 <option value="#00E5BE" className="bg-[#151518] text-white">Cyan</option>
                 <option value="#8B5CF6" className="bg-[#151518] text-white">Violet</option>
                 <option value="#F43F5E" className="bg-[#151518] text-white">Pink</option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
-                Scale
-              </label>
-              <select
-                value={size}
-                onChange={(e) => setSize(e.target.value as MagneticPulseSize)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="xs" className="bg-[#151518] text-white">Extra Small (xs)</option>
-                <option value="sm" className="bg-[#151518] text-white">Small (sm)</option>
-                <option value="md" className="bg-[#151518] text-white">Medium (md)</option>
-                <option value="lg" className="bg-[#151518] text-white">Large (lg)</option>
-                <option value="xl" className="bg-[#151518] text-white">Extra Large (xl)</option>
               </select>
             </div>
           </div>

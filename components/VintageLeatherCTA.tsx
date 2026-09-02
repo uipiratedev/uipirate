@@ -5,19 +5,14 @@ import { motion } from "framer-motion";
 
 export type VintageLeatherTheme = "uipirate" | "pirate" | "heritage" | "obsidian" | "emerald" | "ruby" | "silver";
 export type VintageLeatherSize = "xs" | "sm" | "md" | "lg" | "xl";
-export type VintageLeatherStateMode = "interactive" | "standerd" | "hover";
 
 export interface VintageLeatherCTAProps {
   /** Text label on the button */
   label?: string;
-  /** Optional custom text color */
-  textColor?: string;
   /** Visual luxury theme preset */
   theme?: VintageLeatherTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: VintageLeatherSize;
-  /** Visual state mode preview */
-  stateMode?: VintageLeatherStateMode;
   /** Whether to show the decorative surface scrollwork patterns (default: true) */
   showOrnaments?: boolean;
   /** Click event handler */
@@ -148,10 +143,8 @@ const VintageSlabFlourish: React.FC<{ color: string }> = ({ color }) => {
  */
 export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
   label = "Shop ties",
-  textColor,
   theme = "heritage",
   size = "md",
-  stateMode = "interactive",
   showOrnaments = true,
   onClick,
   scale = 1,
@@ -159,7 +152,6 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
   children,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const isVisualHover = stateMode === "hover" || (stateMode === "interactive" && isHovered);
 
   // Theme palettes and lighting
   const themeStyles = {
@@ -287,7 +279,7 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
       onClick={onClick}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      animate={isVisualHover ? { scale: 1.02, y: -2 } : { scale: 1, y: 0 }}
+      whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98, y: 2 }}
       transition={{ type: "spring", stiffness: 450, damping: 28 }}
       className={`relative inline-flex items-center justify-center select-none cursor-pointer outline-none ${className}`}
@@ -328,7 +320,7 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
               className={`relative z-10 font-medium uppercase ${sizeConfig.fontSize} text-center whitespace-nowrap`}
               style={{
                 fontFamily: "var(--font-jakarta), var(--font-sans), 'Avenir Next', sans-serif",
-                color: textColor || themeStyles.textColor,
+                color: themeStyles.textColor,
                 textShadow: themeStyles.textShadow,
               }}
             >

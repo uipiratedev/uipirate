@@ -194,11 +194,9 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
 };
 
 export interface FrostedGelDownloadButtonProps {
-  /** Main button text label */
+  /** Text label in pill (default: "Download now") */
   label?: string;
-  /** Optional custom text color */
-  textColor?: string;
-  /** State mode override: 'interactive' (default hover), 'standerd' (fixed resting), 'hover' (fixed hover) */
+  /** Visual state mode: 'interactive' (cohesive group hover), 'standerd' (Figma 4604:126), 'hover' (Figma 4604:152) */
   stateMode?: FrostedGelStateMode;
   /** Theme preset */
   theme?: FrostedGelTheme;
@@ -222,7 +220,6 @@ export interface FrostedGelDownloadButtonProps {
 
 export function FrostedGelDownloadButton({
   label = "Download now",
-  textColor,
   stateMode = "interactive",
   theme = "figma-blue",
   size = "md",
@@ -405,7 +402,7 @@ export function FrostedGelDownloadButton({
               <p
                 className="relative z-10 font-sans font-medium text-[20px] tracking-tight whitespace-nowrap capitalize transition-colors duration-200"
                 style={{
-                  color: textColor || t.textColor,
+                  color: t.textColor,
                   textShadow: isVisualHover
                     ? `0px 0px 10px ${t.glowPrimary}`
                     : "none",

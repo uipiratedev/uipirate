@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import SmashTactileButton, {
   SmashButtonVariant,
-  SmashButtonStateMode,
 } from "@/components/SmashTactileButton";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
@@ -12,19 +11,8 @@ import GlobalCTA from "@/components/GlobalCTA";
 
 export default function SmashTactileButtonScreen() {
   const [label, setLabel] = useState("Smash the button");
-  const [textColor, setTextColor] = useState("#FFFFFF");
   const [variant, setVariant] = useState<SmashButtonVariant>("figma");
-
-  const textColorOptions = [
-    { label: "Pure White", value: "#FFFFFF" },
-    { label: "Dark Obsidian", value: "#161A34" },
-    { label: "Brand Orange", value: "#FF5B04" },
-    { label: "Cyan Aqua", value: "#00E5BE" },
-    { label: "Neon Pink", value: "#F472B6" },
-    { label: "Purple Glow", value: "#CB97FF" },
-  ];
   const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl" | "hero">("md");
-  const [stateMode, setStateMode] = useState<SmashButtonStateMode>("interactive");
   const [smashCount, setSmashCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -51,7 +39,6 @@ export type SmashButtonVariant = "figma" | "dark" | "orange" | "cyberpunk";
 
 export interface SmashTactileButtonProps {
   label?: string;
-  textColor?: string;
   variant?: SmashButtonVariant;
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
   onClick?: () => void;
@@ -61,7 +48,6 @@ export interface SmashTactileButtonProps {
 
 export function SmashTactileButton({
   label = "Smash the button",
-  textColor,
   variant = "figma",
   size = "md",
   onClick,
@@ -94,7 +80,7 @@ export function SmashTactileButton({
           transition={{ type: "spring", stiffness: 500, damping: 22 }}
           className="relative px-10 py-4 rounded-[20px] bg-gradient-to-br from-[#1C182F] via-[#161326] to-[#0E0C18] text-white font-bold text-sm tracking-wide cursor-pointer focus:outline-none shadow-xl"
         >
-          <span style={{ color: textColor }}>{label}</span>
+          <span>{label}</span>
         </motion.button>
       </div>
     </div>
@@ -157,10 +143,8 @@ export default function Example() {
           <StudioCanvas>
               <SmashTactileButton
                 label={label}
-                textColor={textColor}
                 variant={variant}
                 size={size}
-                stateMode={stateMode}
                 onClick={() => setSmashCount((c) => c + 1)}
               />
 
@@ -187,34 +171,6 @@ export default function Example() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
-              <select
-                value={stateMode}
-                onChange={(e) => setStateMode(e.target.value as SmashButtonStateMode)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
-                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
-                <option value="hover" className="bg-[#151518] text-white">Hover</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-mono text-gray-400 uppercase tracking-wider block">Text Color</label>
-              <select
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
-                {textColorOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value} className="bg-[#151518] text-white">
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
               <select
                 value={variant}
@@ -235,11 +191,11 @@ export default function Example() {
                 onChange={(e) => setSize(e.target.value as typeof size)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                  <option value="xs" className="bg-[#151518] text-white">Extra Small (xs)</option>
-                  <option value="sm" className="bg-[#151518] text-white">Small (sm)</option>
-                  <option value="md" className="bg-[#151518] text-white">Medium (md)</option>
-                  <option value="lg" className="bg-[#151518] text-white">Large (lg)</option>
-                  <option value="xl" className="bg-[#151518] text-white">Extra Large (xl)</option>
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
                   <option value="hero" className="bg-[#151518] text-white">Hero</option>
               </select>
             </div>

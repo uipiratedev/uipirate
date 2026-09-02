@@ -31,17 +31,7 @@ export default function FrostedGelDownloadScreen() {
   const [icon, setIcon] = useState<FrostedGelIcon>("cloud-download");
   const [stateMode, setStateMode] = useState<FrostedGelStateMode>("interactive");
   const [labelText, setLabelText] = useState("Download now");
-  const [textColor, setTextColor] = useState("#2626FF");
   const [showCables, setShowCables] = useState(true);
-
-  const textColorOptions = [
-    { label: "Figma Electric Blue", value: "#2626FF" },
-    { label: "Obsidian Black", value: "#10131A" },
-    { label: "Pure White", value: "#FFFFFF" },
-    { label: "Magma Orange", value: "#FF5B04" },
-    { label: "Cyber Violet", value: "#8B5CF6" },
-    { label: "Matrix Emerald", value: "#10B981" },
-  ];
   const [clickCount, setClickCount] = useState(0);
   const [lastAction, setLastAction] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -78,7 +68,6 @@ export type FrostedGelSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface FrostedGelButtonProps {
   label?: string;
-  textColor?: string;
   stateMode?: FrostedGelStateMode;
   theme?: FrostedGelTheme;
   size?: FrostedGelSize;
@@ -91,7 +80,6 @@ export interface FrostedGelButtonProps {
 
 export function FrostedGelDownloadButton({
   label = "Download now",
-  textColor,
   stateMode = "interactive",
   theme = "figma-blue",
   size = "md",
@@ -144,7 +132,7 @@ export function FrostedGelDownloadButton({
             transition={{ type: "spring", stiffness: 450, damping: 25 }}
             className="relative px-8 py-4 rounded-[16.5px] bg-[#F9F9F9] border border-white/90 shadow-[0px_1px_0px_#002AFE,0px_8px_16px_rgba(0,42,254,0.18),inset_0px_3.3px_0px_1.2px_white] text-[#2626FF] font-bold text-sm flex items-center gap-2 cursor-pointer focus:outline-none"
           >
-            <span style={{ color: textColor }}>{label}</span>
+            <span>{label}</span>
           </motion.button>
 
           {/* Frosted Glass Gel Tile */}
@@ -270,7 +258,6 @@ export default function Example() {
           <StudioCanvas hint={clickCount > 0 ? `Triggered: ${lastAction} (${clickCount}x)` : "Hover or click pill / cloud icon"}>
             <FrostedGelDownloadButton
               label={labelText}
-              textColor={textColor}
               theme={theme}
               size={size}
               icon={icon}
@@ -324,24 +311,6 @@ export default function Example() {
               </select>
             </div>
 
-            {/* Text Color Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Text Color
-              </label>
-              <select
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              >
-                {textColorOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value} className="bg-[#10131A] text-white">
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             {/* Color Theme Selector */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
@@ -388,11 +357,11 @@ export default function Example() {
                 onChange={(e) => setSize(e.target.value as FrostedGelSize)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
               >
-                <option value="xs" className="bg-[#10131A] text-white">Extra Small (xs)</option>
-                <option value="sm" className="bg-[#10131A] text-white">Small (sm)</option>
-                <option value="md" className="bg-[#10131A] text-white">Medium (md)</option>
-                <option value="lg" className="bg-[#10131A] text-white">Large (lg)</option>
-                <option value="xl" className="bg-[#10131A] text-white">Extra Large (xl)</option>
+                <option value="xs" className="bg-[#10131A] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#10131A] text-white">Small</option>
+                <option value="md" className="bg-[#10131A] text-white">Medium</option>
+                <option value="lg" className="bg-[#10131A] text-white">Large</option>
+                <option value="xl" className="bg-[#10131A] text-white">Extra Large</option>
               </select>
             </div>
             </div>

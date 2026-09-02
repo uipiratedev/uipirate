@@ -11,8 +11,6 @@ export type LedMatrixSize = "xs" | "sm" | "md" | "lg" | "xl";
 export interface LedMatrixChevronButtonProps {
   /** Button label in resting state (default: "See Plans") */
   label?: string;
-  /** Optional custom text color */
-  textColor?: string;
   /** Visual theme preset */
   theme?: LedMatrixTheme;
   /** Size scale: "sm" | "md" | "lg" */
@@ -40,7 +38,6 @@ export interface LedMatrixChevronButtonProps {
  */
 export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
   label = "See Plans",
-  textColor,
   theme = "monochrome",
   size = "md",
   stateMode = "interactive",
@@ -322,7 +319,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
         <div
           className={`relative flex items-center justify-between overflow-hidden border p-[5px] ${sizeConfig.slabRadius}`}
           style={{
-            minWidth: sizeConfig.slabW,
+            width: sizeConfig.slabW,
             height: sizeConfig.slabH,
             backgroundImage: themeStyles.slabBg,
             borderColor: themeStyles.chassisBorder,
@@ -416,7 +413,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
               className={`relative z-10 flex-1 text-center font-normal whitespace-nowrap px-4 select-none ${sizeConfig.fontSize}`}
               style={{
                 fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",
-                color: textColor || themeStyles.textColor,
+                color: themeStyles.textColor,
                 letterSpacing: "-0.2px",
               }}
             >

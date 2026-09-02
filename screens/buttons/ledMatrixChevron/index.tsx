@@ -19,16 +19,6 @@ export default function LedMatrixChevronScreen() {
   const [stateMode, setStateMode] = useState<LedMatrixStateMode>("interactive");
   const [interactionMode, setInteractionMode] = useState<LedMatrixInteractionMode>("hover");
   const [label, setLabel] = useState("See Plans");
-  const [textColor, setTextColor] = useState("#FFFFFF");
-
-  const textColorOptions = [
-    { label: "Pure White", value: "#FFFFFF" },
-    { label: "Dark Slate", value: "#1E293B" },
-    { label: "Brand Orange", value: "#FF5B04" },
-    { label: "Cyan Aqua", value: "#00E5BE" },
-    { label: "Emerald Green", value: "#10B981" },
-    { label: "Cyber Pink", value: "#EC4899" },
-  ];
   const [enableMovingLoop, setEnableMovingLoop] = useState(true);
   const [stepSpeedMs, setStepSpeedMs] = useState(110);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -57,7 +47,6 @@ export type LedMatrixSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface LedMatrixChevronButtonProps {
   label?: string;
-  textColor?: string;
   theme?: LedMatrixTheme;
   size?: LedMatrixSize;
   onClick?: () => void;
@@ -66,7 +55,6 @@ export interface LedMatrixChevronButtonProps {
 
 export function LedMatrixChevronButton({
   label = "See Plans",
-  textColor,
   theme = "monochrome",
   size = "md",
   onClick,
@@ -118,7 +106,7 @@ export function LedMatrixChevronButton({
             />
           ))}
         </div>
-        <span style={{ color: textColor }}>{label}</span>
+        <span>{label}</span>
       </motion.button>
     </div>
   );
@@ -179,7 +167,6 @@ export default function Example() {
           <StudioCanvas>
               <LedMatrixChevronButton
                 label={label}
-                textColor={textColor}
                 theme={theme}
                 size={size}
                 stateMode={stateMode}
@@ -192,146 +179,47 @@ export default function Example() {
 
         {/* Customizer */}
         <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
-            Customizer
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
-            {/* Button Label Input */}
+          <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
             <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Button Label
-              </label>
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Label</label>
               <input
                 type="text"
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               />
             </div>
 
-            {/* Text Color Selector */}
             <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Text Color
-              </label>
-              <select
-                value={textColor}
-                onChange={(e) => setTextColor(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
-              >
-                {textColorOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value} className="bg-[#101014] text-white">
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* State Mode Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                State Preview
-              </label>
-              <select
-                value={stateMode}
-                onChange={(e) => setStateMode(e.target.value as LedMatrixStateMode)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
-              >
-                <option value="interactive" className="bg-[#101014] text-white">Interactive</option>
-                <option value="standerd" className="bg-[#101014] text-white">Standard</option>
-                <option value="hover" className="bg-[#101014] text-white">Hover</option>
-              </select>
-            </div>
-
-            {/* Color Theme Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Color &amp; Style Theme
-              </label>
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme</label>
               <select
                 value={theme}
                 onChange={(e) => setTheme(e.target.value as LedMatrixTheme)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="monochrome" className="bg-[#101014] text-white">Monochrome (Figma 1:1)</option>
-                <option value="uipirate" className="bg-[#101014] text-white">UI Pirate Magma</option>
-                <option value="emerald" className="bg-[#101014] text-white">Phosphor Emerald</option>
-                <option value="cyan" className="bg-[#101014] text-white">Electric Cyan</option>
-                <option value="amber" className="bg-[#101014] text-white">Vintage Amber</option>
-                <option value="crimson" className="bg-[#101014] text-white">Cyber Crimson</option>
+                <option value="monochrome" className="bg-[#101014]">Monochrome (Figma 1:1)</option>
+                <option value="uipirate" className="bg-[#101014]">UI Pirate Orange</option>
+                <option value="emerald" className="bg-[#101014]">Phosphor Emerald</option>
+                <option value="cyan" className="bg-[#101014]">Electric Cyan</option>
+                <option value="amber" className="bg-[#101014]">Vintage Amber</option>
+                <option value="crimson" className="bg-[#101014]">Cyber Crimson</option>
               </select>
             </div>
 
-            {/* Interaction Trigger Mode Selector */}
             <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Interaction Trigger
-              </label>
-              <select
-                value={interactionMode}
-                onChange={(e) => setInteractionMode(e.target.value as LedMatrixInteractionMode)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
-              >
-                <option value="hover" className="bg-[#101014] text-white">Hover (Expand on Hover)</option>
-                <option value="click" className="bg-[#101014] text-white">Click (Toggle Screen)</option>
-                <option value="both" className="bg-[#101014] text-white">Both (Hover &amp; Click)</option>
-              </select>
-            </div>
-
-            {/* LED Shift Speed Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                LED Shift Speed
-              </label>
-              <select
-                value={stepSpeedMs}
-                onChange={(e) => setStepSpeedMs(parseInt(e.target.value, 10))}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
-              >
-                <option value={80} className="bg-[#101014] text-white">Fast (80ms)</option>
-                <option value={110} className="bg-[#101014] text-white">Normal (110ms)</option>
-                <option value={160} className="bg-[#101014] text-white">Slow (160ms)</option>
-              </select>
-            </div>
-
-            {/* Size Scale Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Size Scale
-              </label>
-              <select
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+                            <select
                 value={size}
                 onChange={(e) => setSize(e.target.value as typeof size)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400 font-mono"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="xs" className="bg-[#101014] text-white">Extra Small (xs)</option>
-                <option value="sm" className="bg-[#101014] text-white">Small (sm)</option>
-                <option value="md" className="bg-[#101014] text-white">Medium (md)</option>
-                <option value="lg" className="bg-[#101014] text-white">Large (lg)</option>
-                <option value="xl" className="bg-[#101014] text-white">Extra Large (xl)</option>
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
               </select>
-            </div>
-
-            {/* LED Moving Loop Toggle */}
-            <div className="space-y-1.5 sm:col-span-2 lg:col-span-3">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                LED Chevron Wave Shift
-              </label>
-              <div className="flex items-center gap-4 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5">
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={enableMovingLoop}
-                    onChange={(e) => setEnableMovingLoop(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-9 h-5 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500" />
-                </label>
-                <span className="text-xs text-white font-mono">
-                  {enableMovingLoop ? "Active (Chevrons Shift Continuously Across Matrix Grid)" : "Paused (Static LED Grid)"}
-                </span>
-              </div>
             </div>
           </div>
         </div>
