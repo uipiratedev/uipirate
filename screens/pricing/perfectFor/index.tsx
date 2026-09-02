@@ -34,10 +34,12 @@ const PERFECT_FOR = [
   },
 ];
 
+const NOT_RIGHT_FIT_RED = "#F5333F";
+
 const NOT_FOR = [
-  { text: "Physical product design", icon: "✕" },
-  { text: "One-off logo or branding projects", icon: "✕" },
-  { text: "24/7 instant turnaround expectations", icon: "✕" },
+  { text: "Physical product design", icon: "ti ti-package" },
+  { text: "One-off logo or branding projects", icon: "ti ti-palette" },
+  { text: "24/7 instant turnaround expectations", icon: "ti ti-hours-24" },
 ];
 
 const PricingPerfectFor = () => {
@@ -54,7 +56,9 @@ const PricingPerfectFor = () => {
         <div className="flex justify-center mb-4">
           <GlassBadge variant="gradient">WHO IT'S FOR</GlassBadge>
         </div>
-        <h2 className="heading-center">Is This Right For <span className="text-brand-orange">You?</span></h2>
+        <h2 className="heading-center">
+          Is This Right For <span className="text-brand-orange">You?</span>
+        </h2>
       </div>
 
       {/* Perfect For Cards */}
@@ -69,7 +73,6 @@ const PricingPerfectFor = () => {
             whileInView={{ opacity: 1, y: 0 }}
           >
             <div className="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]">
-
               {/* FRONT FACE */}
               <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10">
                 <div className="relative w-full h-[180px] md:h-[220px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white dark:from-[#26201D] dark:to-[#1A1A1A] flex items-center justify-center">
@@ -95,64 +98,76 @@ const PricingPerfectFor = () => {
                   {item.description}
                 </p>
               </div>
-
             </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Premium Not For Section */}
+      {/* Not The Right Fit Section */}
       <motion.div
-        className=" relative w-full overflow-hidden rounded-[32px] bg-slate-50 dark:bg-[#121212] border border-slate-200/60 dark:border-white/[0.05]"
+        className="relative w-full overflow-hidden rounded-[20px] border border-slate-200/70 dark:border-white/[0.05]"
         initial={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.5, delay: 0.3 }}
         viewport={{ once: true }}
         whileInView={{ opacity: 1, y: 0 }}
       >
-        {/* Subtle Background Glows */}
-        <div className="absolute -top-[100px] -right-[100px] w-[300px] h-[300px] bg-red-500/10 dark:bg-red-500/[0.03] blur-[100px] rounded-full pointer-events-none" />
-        <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] bg-orange-500/10 dark:bg-orange-500/[0.03] blur-[100px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col lg:flex-row p-8 md:p-12 gap-10 lg:gap-16 items-start lg:items-center">
-
+        <div className="relative z-10 flex flex-col lg:flex-row p-8 md:p-10 gap-10 lg:gap-16 items-start lg:items-center">
           {/* Left Side: Title */}
-          <div className="lg:w-2/5 flex flex-col gap-5">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm">
-              <span className="text-red-500 text-xl font-medium">✕</span>
-            </div>
-            <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-3">
-                Not the right fit
-              </h3>
-              <p className="text-slate-500 dark:text-slate-400 text-[15px] font-normal leading-relaxed">
-                We're a highly specialized team, not a generalist agency. If you need any of these, we recommend looking elsewhere.
-              </p>
-            </div>
+          <div className="lg:w-2/5 shrink-0">
+            <img src="https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348516/not_sysbyc.svg" alt="" />
+            <h3 className="text-[26px] md:text-[30px] leading-tight font-semibold tracking-tight text-slate-900 dark:text-white mt-8">
+              <span style={{ color: NOT_RIGHT_FIT_RED }}>NOT</span> the right
+              fit
+            </h3>
+            <p className="mt-3 max-w-[340px] text-[#777777] dark:text-slate-400 text-[15px] font-normal leading-relaxed">
+              We're a highly specialized team, not a generalist agency. If you
+              need any of these, we recommend looking elsewhere.
+            </p>
           </div>
 
           {/* Right Side: List */}
-          <div className="flex-1 w-full flex flex-col gap-3">
+          <div className="flex-1 w-full">
             {NOT_FOR.map((item, index) => (
               <motion.div
-                key={index}
-                className="flex items-center gap-4 p-4 md:p-5 rounded-2xl bg-white dark:bg-white/[0.02] border border-slate-100 dark:border-white/[0.05] hover:border-slate-200 dark:hover:border-white/[0.1] transition-all shadow-sm shadow-slate-100/50 dark:shadow-none"
+                key={item.text}
                 initial={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, y: 0 }}
               >
-                <div className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-red-50 dark:bg-red-500/10 text-red-500 text-[11px] font-bold">
-                  ✕
+                {index > 0 && (
+                  <div
+                    className="h-px w-full"
+                    style={{
+                      background:
+                        index === 2
+                          ? "linear-gradient(90deg, rgba(255,150,120,0.5) 0%, rgba(203,213,225,0.45) 42%, rgba(203,213,225,0) 100%)"
+                          : "linear-gradient(90deg, rgba(203,213,225,0.8) 0%, rgba(203,213,225,0.45) 55%, rgba(203,213,225,0) 100%)",
+                    }}
+                  />
+                )}
+                <div className="flex items-center gap-4 py-3">
+                  <span
+                    className="shrink-0 flex items-center justify-center text-base md:text-lg font-bold"
+                    style={{ color: NOT_RIGHT_FIT_RED }}
+                  >
+                    <i className="ti ti-x" />
+                  </span>
+                  <span className="flex-1 text-slate-700 dark:text-slate-200 text-[15px] md:text-base font-medium tracking-tight">
+                    {item.text}
+                  </span>
+                  <span
+                    className="shrink-0 inline-flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-full bg-white dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/10 shadow-[0_1px_2px_rgba(0,0,0,0.04)] text-lg md:text-xl"
+                    style={{ color: NOT_RIGHT_FIT_RED }}
+                  >
+                    <i className={item.icon} />
+                  </span>
                 </div>
-                <span className="text-slate-700 dark:text-slate-200 text-[15px] font-medium tracking-tight">
-                  {item.text}
-                </span>
               </motion.div>
             ))}
           </div>
         </div>
       </motion.div>
-
     </motion.div>
   );
 };

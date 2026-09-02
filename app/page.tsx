@@ -1,9 +1,10 @@
+import type { FeaturedCaseStudyData } from "@/screens/landing/featuredCaseStudy";
+
 import dynamic from "next/dynamic";
 import { Metadata } from "next";
 
 import Loader from "@/components/loader";
 import { listPosts } from "@/lib/pirateCOS/public-client";
-import type { FeaturedCaseStudyData } from "@/screens/landing/featuredCaseStudy";
 
 // SSR-enabled dynamic import — Google can now crawl the full page content
 const Landing = dynamic(() => import("@/screens/landing"), {
@@ -44,39 +45,23 @@ function isDataUri(url?: string) {
 }
 
 async function getFeaturedCaseStudy(): Promise<FeaturedCaseStudyData | null> {
-  const posts = await listPosts({ postType: "case-study", limit: 20 });
-  const candidate = posts.find((p) => {
-    const heroImage = p.featuredImage || p.bannerImage;
-
-    return p.metrics && p.metrics.length > 0 && heroImage && !isDataUri(heroImage);
-  });
-
-  if (!candidate || !candidate.metrics?.[0]) {
-    return {
-      slug: "xperiti",
-      client: "Xperiti",
-      title: "Comprehensive Research Platform",
-      excerpt: "Enterprise SaaS App UI/UX Design on Figma & Development on Angular.js. We overhauled their entire user experience to handle complex workflows.",
-      heroImage: "https://res.cloudinary.com/damm9iwho/image/upload/v1731155233/xperiti_psd_file_1_cvfkqh.svg",
-      metricLabel: "User Retention Increase",
-      metricValue: "40%",
-      clientLogo: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
-      industry: "Research SaaS",
-    };
-  }
-
-  const heroImage = candidate.featuredImage || candidate.bannerImage || "";
-
   return {
-    slug: candidate.slug,
-    client: candidate.client || candidate.title,
-    title: candidate.title,
-    excerpt: candidate.excerpt,
-    heroImage,
-    metricLabel: candidate.metrics[0].label,
-    metricValue: candidate.metrics[0].value,
-    clientLogo: candidate.clientLogo,
-    industry: candidate.tags?.[0],
+    slug: "xperiti",
+    client: "Xperiti",
+    title: "Platform Redesign and Development",
+    excerpt:
+      "Xperiti needed a market research enterprise SaaS platform serving researchers, coordinators, clients, and experts, without anyone feeling completely overlooked.",
+    heroImage:
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788348051/xperiti_gkefw0.svg",
+    highlights: [
+      "UI/UX",
+      "Market Research SaaS",
+      "Multi-role enterprise SaaS",
+      "Angular and Tailwind",
+    ],
+    clientLogo:
+      "https://res.cloudinary.com/dvk9ttiym/image/upload/v1760593625/xperiti_shp94q.svg",
+    industry: "Research SaaS",
   };
 }
 
