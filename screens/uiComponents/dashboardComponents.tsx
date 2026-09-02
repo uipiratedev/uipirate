@@ -50,9 +50,11 @@ export interface ComponentDetail {
   hasSizeControl?: boolean;
   hasThemeControl?: boolean;
   hasTextColorControl?: boolean;
+  hasStateControl?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   availableTextColors?: Array<{ value: string; label: string; color: string }>;
+  availableStates?: Array<{ value: string; label: string }>;
   features: string[];
   previewLight: React.ReactNode;
   previewDark: React.ReactNode;
@@ -1491,7 +1493,13 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasStateControl: true,
     defaultTheme: "figma-silver",
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "off", label: "Standard (OFF)" },
+      { value: "on", label: "Click (ON)" },
+    ],
     availableThemes: [
       { value: "figma-silver", label: "Figma Silver (1:1)", color: "#94A3B8" },
       { value: "dark-obsidian", label: "Dark Obsidian", color: "#1E293B" },

@@ -5,6 +5,15 @@ import { motion, Transition } from "framer-motion";
 
 export type ArcToggleTheme = "light" | "dark";
 export type ArcCornerToggleStateMode = "interactive" | "standard" | "standerd" | "click";
+export type ArcToggleSize = "xs" | "sm" | "md" | "lg" | "xl";
+
+export const ARC_SIZE_SCALE: Record<ArcToggleSize, number> = {
+  xs: 0.7,
+  sm: 0.85,
+  md: 1.0,
+  lg: 1.15,
+  xl: 1.3,
+};
 
 export interface ArcCornerToggleProps {
   /** Controlled active state (false = Light/STANDARD, true = Dark/CLICK) */
@@ -104,8 +113,8 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
     <div
       className={`relative inline-block select-none overflow-hidden rounded-3xl ${className}`}
       style={{
-        width: 600 * scale,
-        height: 600 * scale,
+        width: 600 * effectiveScale,
+        height: 600 * effectiveScale,
         maxWidth: "100%",
       }}
     >
@@ -113,7 +122,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
         style={{
           width: 600,
           height: 600,
-          transform: `scale(${scale})`,
+          transform: `scale(${effectiveScale})`,
           transformOrigin: "top left",
         }}
       >

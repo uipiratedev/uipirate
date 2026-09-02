@@ -160,6 +160,8 @@ export default function UIComponentDashboard({
   const [customLabel, setCustomLabel] = useState<string>("");
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
+  const [customTextColor, setCustomTextColor] = useState<string>("");
+  const [customStateMode, setCustomStateMode] = useState<string>("interactive");
   const [showGrid, setShowGrid] = useState<boolean>(true);
   const [clickCount, setClickCount] = useState<number>(0);
   const [lastAction, setLastAction] = useState<string | null>(null);
@@ -198,6 +200,8 @@ export default function UIComponentDashboard({
     setCustomLabel(selectedComponent.defaultLabel || "Button");
     setCustomSize("md");
     setCustomTheme(selectedComponent.defaultTheme || "default");
+    setCustomTextColor(selectedComponent.availableTextColors?.[0]?.value || "");
+    setCustomStateMode("interactive");
     setClickCount(0);
     setLastAction(null);
   }, [selectedComponent]);
@@ -398,7 +402,7 @@ export default function Example() {
   return (
     <TactileNeumorphicToggle
       theme="${customTheme}"
-      size="${customSize}"
+      size="${customSize}"${customStateMode !== "interactive" ? `\n      stateMode="${customStateMode}"` : ""}
       label="${customLabel}"
       defaultChecked={true}
       onChange={(checked) => console.log("Toggle state:", checked)}
@@ -419,10 +423,23 @@ export default function Example() {
     </GlossyGelButton>
   );
 }`;
+      case "glass-badge":
+        return `import GlassBadge from "@/components/GlassBadge";
+
+export default function Example() {
+  return (
+    <GlassBadge
+      variant="${customTheme || "gradient"}"
+      size="${customSize}"${customTextColor ? `\n      textColor="${customTextColor}"` : ""}
+    >
+      ${customLabel || "PROPRIETARY COMPONENT"}
+    </GlassBadge>
+  );
+}`;
       default:
         return selectedComponent.jsxCode;
     }
-  }, [selectedComponent, customLabel, customTheme, customSize]);
+  }, [selectedComponent, customLabel, customTheme, customSize, customTextColor, customStateMode]);
 
   const activeCode =
     activeCodeTab === "jsx"
@@ -686,7 +703,7 @@ export default function Example() {
         const badgeVariant = safeTheme(customTheme, validBadgeVariants, "gradient");
         return (
           <div className="py-8 flex items-center justify-center">
-            <GlassBadge variant={badgeVariant as any} size={customSize}>
+            <GlassBadge variant={badgeVariant as any} size={customSize} textColor={customTextColor || undefined}>
               {customLabel || "PROPRIETARY COMPONENT"}
             </GlassBadge>
           </div>
@@ -709,6 +726,7 @@ export default function Example() {
             <TactileNeumorphicToggle
               theme={toggleTheme as any}
               size={customSize}
+              stateMode={customStateMode as any}
               label={customLabel || "Tactile Toggle"}
               defaultChecked={true}
               onChange={(st) => handleTriggerAction(`Toggle: ${st ? "ON" : "OFF"}`)}
@@ -1188,6 +1206,8 @@ export default function Example() {
                           setCustomLabel(selectedComponent.defaultLabel || "Button");
                           setCustomSize("md");
                           setCustomTheme(selectedComponent.defaultTheme || "default");
+                          setCustomTextColor(selectedComponent.availableTextColors?.[0]?.value || "");
+                          setCustomStateMode("interactive");
                           setClickCount(0);
                           setLastAction(null);
                         }}
@@ -1198,13 +1218,13 @@ export default function Example() {
                       </button>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs font-mono">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-xs font-mono">
 
                       {/* 1. Label Control */}
                       {selectedComponent.hasLabelControl && (
                         <div className="space-y-1.5">
                           <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
-                            Button Label Text:
+                            Label Text:
                           </label>
                           <input
                             type="text"
@@ -1219,59 +1239,108 @@ export default function Example() {
                         </div>
                       )}
 
-                      {/* 2. Scale / Size Control */}
-                      {selectedComponent.hasSizeControl && (
+                      {/* 2. State Mode Control */}
+                      {(selectedComponent.hasStateControl || selectedComponent.availableStates) && (
                         <div className="space-y-1.5">
                           <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
-                            Size Scale:
+                            State Preview:
                           </label>
-                          <div className="flex items-center gap-1">
-                            {(["xs", "sm", "md", "lg", "xl"] as const).map((s) => (
-                              <button
-                                key={s}
-                                onClick={() => setCustomSize(s)}
-                                className={`flex-1 py-2 rounded-xl uppercase font-bold text-xs transition-all cursor-pointer ${customSize === s
-                                    ? "bg-[#FF5B04] text-white shadow"
-                                    : isLightPage
-                                      ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                                  }`}
-                              >
-                                {s}
-                              </button>
+                          <select
+                            value={customStateMode}
+                            onChange={(e) => setCustomStateMode(e.target.value)}
+                            className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                                ? "bg-gray-100 border border-gray-200 text-gray-900"
+                                : "bg-white/5 border border-white/10 text-white"
+                              }`}
+                          >
+                            {(selectedComponent.availableStates || [
+                              { value: "interactive", label: "Interactive" },
+                              { value: "off", label: "Standard (OFF)" },
+                              { value: "on", label: "Click (ON)" },
+                            ]).map((st) => (
+                              <option key={st.value} value={st.value} className="bg-[#151518] text-white">
+                                {st.label}
+                              </option>
                             ))}
-                          </div>
+                          </select>
                         </div>
                       )}
 
-                      {/* 3. Theme / Variant Chips */}
+                      {/* 3. Scale / Size Control */}
+                      {selectedComponent.hasSizeControl && (
+                        <div className="space-y-1.5">
+                          <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                            Scale:
+                          </label>
+                          <select
+                            value={customSize}
+                            onChange={(e) => setCustomSize(e.target.value as any)}
+                            className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                                ? "bg-gray-100 border border-gray-200 text-gray-900"
+                                : "bg-white/5 border border-white/10 text-white"
+                              }`}
+                          >
+                            <option value="xs" className="bg-[#151518] text-white">Extra Small (xs)</option>
+                            <option value="sm" className="bg-[#151518] text-white">Small (sm)</option>
+                            <option value="md" className="bg-[#151518] text-white">Medium (md)</option>
+                            <option value="lg" className="bg-[#151518] text-white">Large (lg)</option>
+                            <option value="xl" className="bg-[#151518] text-white">Extra Large (xl)</option>
+                          </select>
+                        </div>
+                      )}
+
+                      {/* 4. Theme / Variant Dropdown */}
                       {selectedComponent.hasThemeControl && selectedComponent.availableThemes && (
-                        <div className="space-y-1.5 sm:col-span-2 lg:col-span-1">
+                        <div className="space-y-1.5">
                           <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
                             Variant Theme:
                           </label>
-                          <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+                          <select
+                            value={customTheme}
+                            onChange={(e) => setCustomTheme(e.target.value)}
+                            className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                                ? "bg-gray-100 border border-gray-200 text-gray-900"
+                                : "bg-white/5 border border-white/10 text-white"
+                              }`}
+                          >
                             {selectedComponent.availableThemes.map((th) => (
-                              <button
-                                key={th.value}
-                                onClick={() => setCustomTheme(th.value)}
-                                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${customTheme === th.value
-                                    ? "bg-[#FF5B04] text-white font-bold shadow"
-                                    : isLightPage
-                                      ? "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
-                                      : "bg-white/5 text-gray-300 hover:bg-white/10 border border-white/5"
-                                  }`}
-                              >
-                                {th.color && (
-                                  <span
-                                    className="w-2 h-2 rounded-full shrink-0"
-                                    style={{ backgroundColor: th.color }}
-                                  />
-                                )}
-                                <span>{th.label}</span>
-                              </button>
+                              <option key={th.value} value={th.value} className="bg-[#151518] text-white">
+                                {th.label}
+                              </option>
                             ))}
-                          </div>
+                          </select>
+                        </div>
+                      )}
+
+                      {/* 5. Text Color Dropdown */}
+                      {(selectedComponent.hasTextColorControl || selectedComponent.availableTextColors) && (
+                        <div className="space-y-1.5">
+                          <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                            Text Color:
+                          </label>
+                          <select
+                            value={customTextColor}
+                            onChange={(e) => setCustomTextColor(e.target.value)}
+                            className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                                ? "bg-gray-100 border border-gray-200 text-gray-900"
+                                : "bg-white/5 border border-white/10 text-white"
+                              }`}
+                          >
+                            {(selectedComponent.availableTextColors || [
+                              { label: "Dark Obsidian", value: "#000000" },
+                              { label: "Pure White", value: "#FFFFFF" },
+                              { label: "UI Pirate Magma", value: "#FF5B04" },
+                              { label: "Electric Cyan", value: "#06B6D4" },
+                              { label: "Emerald Green", value: "#10B981" },
+                              { label: "Neon Violet", value: "#8B5CF6" },
+                              { label: "Cyber Amber", value: "#F59E0B" },
+                              { label: "Crimson Red", value: "#EF4444" },
+                            ]).map((tc) => (
+                              <option key={tc.value} value={tc.value} className="bg-[#151518] text-white">
+                                {tc.label}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       )}
 

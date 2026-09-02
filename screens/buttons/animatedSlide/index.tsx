@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { AnimatedButton, AnimatedButtonStateMode } from "@/components/AnimatedButton";
+import { AnimatedButton, AnimatedButtonSize, AnimatedButtonStateMode } from "@/components/AnimatedButton";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
@@ -12,6 +12,7 @@ export default function AnimatedSlideButtonScreen() {
   const [hoverText, setHoverText] = useState("See More →");
   const [textColor, setTextColor] = useState("#FFFFFF");
   const [variant, setVariant] = useState<"primary" | "secondary">("primary");
+  const [size, setSize] = useState<AnimatedButtonSize>("md");
   const [stateMode, setStateMode] = useState<AnimatedButtonStateMode>("interactive");
 
   const textColorOptions = [
@@ -159,6 +160,7 @@ export default function Example() {
                 hoverText={hoverText}
                 textColor={textColor}
                 variant={variant}
+                size={size}
                 stateMode={stateMode}
                 fullWidth={false}
                 className="!mt-0"
@@ -238,6 +240,23 @@ export default function Example() {
                 >
                   <option value="primary" className="bg-[#18181B] text-white">Primary Dark</option>
                   <option value="secondary" className="bg-[#18181B] text-white">Secondary Light</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
+                  Scale
+                </label>
+                <select
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as AnimatedButtonSize)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/10 text-white text-sm focus:outline-none focus:border-[#FF5B04] font-mono"
+                >
+                  <option value="xs" className="bg-[#18181B] text-white">Extra Small (xs)</option>
+                  <option value="sm" className="bg-[#18181B] text-white">Small (sm)</option>
+                  <option value="md" className="bg-[#18181B] text-white">Medium (md)</option>
+                  <option value="lg" className="bg-[#18181B] text-white">Large (lg)</option>
+                  <option value="xl" className="bg-[#18181B] text-white">Extra Large (xl)</option>
                 </select>
               </div>
             </div>
