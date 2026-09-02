@@ -57,6 +57,10 @@ const TopThree = dynamic(() => import("./top3/topThree"), {
   loading: () => <div className="min-h-[400px]" />,
 });
 
+const PricingFlip = dynamic(() => import("./pricingFlip"), {
+  loading: () => <div className="min-h-[600px]" />,
+});
+
 interface LandingProps {
   featuredCaseStudy?: FeaturedCaseStudyData | null;
 }
@@ -99,6 +103,9 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
         <div id="pricing">
           <Pricing />
         </div>
+
+        <PricingFlip />
+
         <TheTeam />
 
         {/* <BoreYouCommit /> */}
