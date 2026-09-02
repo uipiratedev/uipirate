@@ -121,8 +121,8 @@ const ScannerIndicator = () => {
             reduce
               ? { opacity: 0.3 }
               : {
-                opacity: [0.25, 0.95, 0.25],
-              }
+                  opacity: [0.25, 0.95, 0.25],
+                }
           }
           className={`w-[22px] bg-gray-900 dark:bg-white ${seg.rounded}`}
           initial={{ opacity: 0.28 }}
@@ -131,12 +131,12 @@ const ScannerIndicator = () => {
             reduce
               ? undefined
               : {
-                duration: 1.6,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut",
-                delay: i * 0.12,
-              }
+                  duration: 1.6,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  delay: i * 0.12,
+                }
           }
         />
       ))}
@@ -255,38 +255,40 @@ const PricingFlip = () => {
 
       {/* Tabs */}
       <div className="mb-8 flex justify-center max-md:mb-6">
-        <div className="flex items-center gap-1 rounded-full border border-black/5 bg-gray-100 p-1.5 dark:border-white/10 dark:bg-white/5">
+        <div className="flex items-center gap-1.5 rounded-[22px] border border-black/[0.08] bg-[#EFEFEF] p-1.5 dark:border-white/10 dark:bg-[#1C1C1C]">
           {TABS.map((tab) => {
             const isActive = tab.id === active;
 
             return (
               <button
                 key={tab.id}
-                className="relative rounded-full px-5 py-2.5 outline-none transition-colors max-md:px-4"
+                className="relative rounded-[16px] px-6 py-2.5 outline-none transition-colors sm:px-8 sm:py-3"
                 type="button"
                 onClick={() => setActive(tab.id)}
               >
                 {isActive && (
                   <motion.span
-                    className="absolute inset-0 rounded-full bg-white shadow-[0_4px_14px_rgba(0,0,0,0.1)] dark:bg-white/15"
+                    className="absolute inset-0 rounded-[16px] border border-black/[0.06] bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)] dark:border-white/10 dark:bg-[#282828]"
                     layoutId="pricing-flip-pill"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                <span className="relative z-10 flex items-baseline gap-1.5 whitespace-nowrap">
+                <span className="relative z-10 flex items-center gap-2 whitespace-nowrap">
                   <span
-                    className={`font-jakarta text-sm font-semibold ${isActive
-                        ? "text-gray-900 dark:text-white"
-                        : "text-gray-500 dark:text-gray-400"
-                      }`}
+                    className={`font-jakarta text-[15px] sm:text-[16px] ${
+                      isActive
+                        ? "font-semibold text-gray-950 dark:text-white"
+                        : "font-medium text-gray-700 dark:text-gray-300"
+                    }`}
                   >
                     {tab.label}
                   </span>
                   <span
-                    className={`font-jetbrains text-xs ${isActive
-                        ? "text-brand-orange"
-                        : "text-gray-400 dark:text-gray-500"
-                      }`}
+                    className={`font-jakarta text-[15px] sm:text-[16px] ${
+                      isActive
+                        ? "font-normal text-gray-500 dark:text-gray-400"
+                        : "font-normal text-gray-400 dark:text-gray-500"
+                    }`}
                   >
                     {tab.hint}
                   </span>
@@ -318,10 +320,11 @@ const PricingFlip = () => {
             {/* LEFT page — Monthly's identity. Stays put; the leaf covers it
                 once Custom is open. Only casts shadow when uncovered. */}
             <div
-              className={`absolute inset-y-0 left-0 w-1/2 rounded-l-[16px] ${!isCustom
+              className={`absolute inset-y-0 left-0 w-1/2 rounded-l-[16px] ${
+                !isCustom
                   ? "shadow-[-6px_8px_16px_rgba(0,0,0,0.14),-2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[-6px_10px_20px_rgba(0,0,0,0.65)]"
                   : ""
-                }`}
+              }`}
             >
               <LeftSection plan={PLANS.monthly} />
             </div>
@@ -329,10 +332,11 @@ const PricingFlip = () => {
             {/* RIGHT page — Custom's checklist. Stays put; the leaf covers it
                 while Monthly is open. Only casts shadow when uncovered (isCustom). */}
             <div
-              className={`absolute inset-y-0 right-0 w-1/2 rounded-r-[16px] ${isCustom
+              className={`absolute inset-y-0 right-0 w-1/2 rounded-r-[16px] ${
+                isCustom
                   ? "shadow-[6px_8px_16px_rgba(0,0,0,0.14),2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[6px_10px_20px_rgba(0,0,0,0.65)]"
                   : ""
-                }`}
+              }`}
             >
               <RightSection plan={PLANS.custom} />
             </div>
@@ -347,25 +351,25 @@ const PricingFlip = () => {
             >
               {/* Front of leaf: Monthly checklist (on right side when !isCustom) */}
               <div
-                className={`absolute inset-0 rounded-r-[16px] [backface-visibility:hidden] ${!isCustom
+                className={`absolute inset-0 rounded-r-[16px] [backface-visibility:hidden] ${
+                  !isCustom
                     ? "shadow-[6px_8px_16px_rgba(0,0,0,0.14),2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[6px_10px_20px_rgba(0,0,0,0.65)]"
                     : ""
-                  }`}
+                }`}
               >
                 <RightSection plan={PLANS.monthly} />
-                <span className="pointer-events-none absolute inset-0 rounded-r-[16px] bg-gradient-to-l from-white/40 via-transparent to-black/[0.07]" />
               </div>
 
               {/* Back of leaf: Custom identity (on left side when isCustom) */}
               <div
-                className={`absolute inset-0 rounded-l-[16px] [backface-visibility:hidden] ${isCustom
+                className={`absolute inset-0 rounded-l-[16px] [backface-visibility:hidden] ${
+                  isCustom
                     ? "shadow-[-6px_8px_16px_rgba(0,0,0,0.14),-2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[-6px_10px_20px_rgba(0,0,0,0.65)]"
                     : ""
-                  }`}
+                }`}
                 style={{ transform: "rotateY(180deg)" }}
               >
                 <LeftSection plan={PLANS.custom} />
-                <span className="pointer-events-none absolute inset-0 rounded-l-[16px] bg-gradient-to-r from-white/40 via-transparent to-black/[0.07]" />
               </div>
             </motion.div>
 
