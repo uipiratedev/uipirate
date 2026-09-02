@@ -446,14 +446,13 @@ const ProjectEstimate = ({
                 </div>
 
                 {/* Subtitle */}
-                <p className="text-black w-fit p-2 rounded-lg bg-black/5 text-sm max-md:text-xs mb-6 uppercase tracking-wide font-jetbrains-mono">
+                <p className="text-black w-fit px-3 py-1.5 rounded-lg bg-black/5 text-xs mb-6 uppercase tracking-wider font-jetbrains-mono">
                   Get a quick ballpark before committing
                 </p>
 
                 {/* Description */}
-                <p className="text-[#161616] mb-6 text-lg max-md:text-base">
-                  Pick your priorities, choose what you need, and get a
-                  realistic range in seconds.
+                <p className="text-[#555555] mb-6 text-base max-md:text-sm">
+                  Pick your priorities, tell us what you need, and get a realistic estimate in seconds.
                 </p>
 
                 {/* Features List */}
@@ -483,9 +482,9 @@ const ProjectEstimate = ({
 
                 {/* Footer */}
                 <div className="mt-auto">
-                  <p className="text-gray-500 max-md:text-sm text-base mb-4 italic">
-                    Clarity before commitment
-                  </p>
+                  <p className="text-gray-500 max-md:text-sm text-sm mb-4 italic">
+                  Clarity before commitment.
+                </p>
 
                   {/* Buttons */}
                   <div className="grid grid-cols-1 gap-3">

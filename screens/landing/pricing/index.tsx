@@ -23,13 +23,12 @@ const Pricing = () => {
   };
 
   const monthlyRetainerFeatures = [
-    "Access to our full design & development stack",
-    "1 Active request at a time",
-    "Weekly Progress Meeting",
+    "Full design & development stack",
+    "1 active request at a time",
+    "Weekly progress sync",
     "Fast turnaround",
     "Unlimited requests within scope",
-    "Expert project management",
-    "Mon–Fri communication, < 2hr response",
+    "Mon–Fri, < 2hr response",
   ];
 
   const customProjectFeatures = [
@@ -38,18 +37,17 @@ const Pricing = () => {
     "Fully custom scope",
     "No hidden costs",
     "Working with your team",
-    "Experienced project ownership",
-    "Mon–Fri communication, < 2hr response",
+    "Mon–Fri, < 2hr response",
   ];
 
   const customQuoteFeatures = [
-    "Full access to design, development & product support",
-    "Priority handling for complex scopes and timelines",
-    "Fully customized project scope and delivery plan",
-    "Flexible engagement based on business needs",
-    "Close collaboration with internal stakeholders",
-    "Dedicated project ownership and planning",
-    "Mon–Fri communication, < 2hr response",
+    "Full design, development & product support",
+    "Priority handling for complex scopes",
+    "Custom project scope & delivery plan",
+    "Flexible engagement based on your needs",
+    "Close collaboration with stakeholders",
+    "Dedicated project ownership",
+    "Mon–Fri, < 2hr response",
   ];
 
   const benefits = [
@@ -57,19 +55,19 @@ const Pricing = () => {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770115432/pause_nod3oq.svg",
       title: "PAUSE ANYTIME",
       description:
-        "You can easily pause your subscription whenever you need to, without any worries or hassle.",
+        "Pause your subscription anytime. No penalties, no lock-ins.",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770115432/share_ljjrs4.svg",
       title: "5-DAY PILOT PROJECT",
       description:
-        "Big scope. Big budget. No blind trust. The 5-day pilot lets you see our execution quality before committing to a full engagement.",
+        "Test our execution quality before committing to a full engagement.",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770115432/value_jwko4r.svg",
       title: "LOW-RISK, HIGH-VALUE",
       description:
-        "Your fee is fully deductible from the final invoice if you move forward with a full project.",
+        "Pilot fee fully deductible from the final invoice if you move forward.",
     },
   ];
 
@@ -115,8 +113,13 @@ const Pricing = () => {
               </div>
 
               {/* Subtitle */}
-              <p className="bg-[#262626] text-white w-fit p-2 rounded-lg text-sm max-md:text-xs font- mb-6 uppercase tracking-wide font-mono">
-                Your dedicated design and development team — without the full-time headcount
+              <p className="bg-[#262626] text-white w-fit px-3 py-1.5 rounded-lg text-xs mb-4 uppercase tracking-wider font-mono">
+                Dedicated design &amp; dev team, no full-time headcount
+              </p>
+
+              {/* Description - mirrors right card structure */}
+              <p className="text-[#999999] text-sm mb-6 font-jakarta">
+                Small client load. Every project gets our full attention.
               </p>
 
               {/* Features List */}
@@ -139,10 +142,6 @@ const Pricing = () => {
 
               {/* Footer */}
               <div className="mt-auto">
-                <p className="text-[#777777] text-base max-md:text-sm mb-4 italic font-jakarta">
-                  One team, one subscription, no headcount overhead
-                </p>
-
                 {/* Price with Anchor */}
                 <div className="mb-4">
                   <div className="flex items-baseline gap-2">
@@ -156,18 +155,11 @@ const Pricing = () => {
                       /per month
                     </span>
                   </div>
-                  <p className="text-[#666666] text-sm mt-1 font-jakarta">
+                  <p className="text-[#666666] text-xs mt-1 font-jakarta">
                     vs $8-15k/mo for a typical agency retainer
                   </p>
                 </div>
 
-                {/* Scarcity */}
-                <div className="flex items-center gap-2 mb-4 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
-
-                  <p className="text-brand-orange text-sm font-semibold">
-                    We keep our client load small. Every project gets our full attention.
-                  </p>
-                </div>
 
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3">
@@ -214,13 +206,13 @@ const Pricing = () => {
                     </h3>
                   </div>
                   {/* Subtitle */}
-                  <p className="bg-black/5 text-black w-fit p-2 rounded-lg text-sm max-md:text-xs mb-6 uppercase tracking-wide font-mono">
-                    For organizations with complex products and custom delivery requirements
+                  <p className="bg-black/5 text-black w-fit px-3 py-1.5 rounded-lg text-xs mb-6 uppercase tracking-wider font-mono">
+                    Complex products & custom delivery
                   </p>
 
                   {/* Description */}
-                  <p className="text-[#161616] mb-6 max-md:mb-0 text-base max-md:text-sm font-jakarta">
-                    Best suited for products that don't fit into standard plans.
+                  <p className="text-[#555555] mb-6 max-md:mb-0 text-sm font-jakarta">
+                    For products that don't fit into standard plans.
                   </p>
                 </div>
 
@@ -254,8 +246,8 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <p className="text-[#777777] text-base max-md:text-sm mt-6 italic font-jakarta">
-                  Built around your product, not templates
+                <p className="text-[#777777] text-sm mt-6 italic font-jakarta">
+                  Built around your product, not a template.
                 </p>
               </div>
               <div className="grid grid-cols-1 gap-3 md:hidden">
@@ -316,9 +308,7 @@ const Pricing = () => {
           </h4>
         </div>
         <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-          Not happy with the first milestone? We'll refund your deposit — no
-          questions asked. We're confident in our work because we've done this
-          100+ times for companies like Ipsos, Khaitan & Co, and RevUp AI.
+          Not happy with the first milestone? We'll refund your deposit, no questions asked. 100+ projects delivered for companies like Ipsos, Khaitan &amp; Co, and RevUp AI.
         </p>
       </div>
     </motion.div>

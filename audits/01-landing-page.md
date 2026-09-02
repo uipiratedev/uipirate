@@ -723,6 +723,7 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 26 | Testimonials | Remove/reposition Kyle Drucker (YouTuber) testimonial `[v1]` | `data/testimonials.json` | ✅ Done |
 | 27 | Testimonials | Request P-S-O expanded testimonials from 3 generic reviewers `[v1]` | `data/testimonials.json` | ✅ Done |
 | 28 | Pricing | Fix remaining pricing section copy issues (see 03-pricing-page.md) `[v1]` | `pricing/index.tsx` | ✅ Done |
+| 28a | Pricing | Trim verbose text across all pricing cards for cleaner, less text-heavy layout `[NEW]` | `pricing/index.tsx`, `ProjectEstimate.tsx` | ✅ Done |
 | 20 | FeaturedCaseStudy | Add client industry tag and logo to the featured case study card `[NEW]` | `featuredCaseStudy/index.tsx` | ✅ Done |
 | 20a | FeaturedCaseStudy | Redesign component for a premium light/dark aesthetic `[NEW]` | `featuredCaseStudy/index.tsx` | ✅ Done |
 | 21 | PerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" `[NEW]` | `perfectFor/index.tsx` | ✅ Done |

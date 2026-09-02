@@ -242,6 +242,7 @@ See `03-pricing-page.md` for full details.
 | 11e | Custom Quote audience — "enterprise needs & startups" — pick one specific audience | ✅ Kept as-is (per user request) |
 | 11f | Satisfaction Guarantee — replace "companies like yours" with actual client names | ✅ Done |
 | 11g | `5/7 Communication` unexplained label in feature lists — replace with `Mon–Fri communication, < 2hr response` | ✅ Done |
+| 11h | Trim all verbose copy across pricing cards — subtitle chips, feature lists, benefit cards, and guarantee strip | ✅ Done |
 
 ---
 
