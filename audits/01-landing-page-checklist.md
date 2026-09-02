@@ -152,6 +152,7 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 | 7a | Static copy ("featured case study" badge, "Read the full case study →") — clean and minimal | ✅ Done |
 | 7b | CMS: at least 1 case study must have a real metric (value + label) + a non-placeholder hero image. Without this the section renders null and the page skips from gallery to "Who We Are" with no case study proof | ✅ Done (Added fallback mock) |
 | 7c | Missing: client industry tag (e.g. "FinTech") and client logo on the featured card | ✅ Done |
+| 7d | Redesign component for a premium light/dark aesthetic to match the rest of the site | ✅ Done |
 
 ---
 
