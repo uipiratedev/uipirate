@@ -594,6 +594,8 @@ export default function Example() {
             <MagneticPulseCTA
               label={customLabel || "Let's Venture"}
               pulseColor={customTheme || "#FF5B04"}
+              size={customSize}
+              stateMode={customStateMode}
               onClick={() => handleTriggerAction("Magnetic Pulse Fired")}
             />
           </div>
@@ -1152,6 +1154,7 @@ export default function Example() {
                       "neumorphic-glow-cta",
                       "smash-tactile-button",
                       "scaling-capsule-button",
+                      "magnetic-pulse-cta",
                     ].includes(selectedComponent.id) && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>

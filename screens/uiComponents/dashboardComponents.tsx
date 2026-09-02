@@ -1226,7 +1226,7 @@ export default function Example() {
     detailUrl: "/componentlab/magnetic-pulse-cta",
     defaultLabel: "Let's Venture",
     hasLabelControl: true,
-    hasSizeControl: false,
+    hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "#FF5B04",
     availableThemes: [
