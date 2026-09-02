@@ -50,9 +50,11 @@ export interface ComponentDetail {
   hasSizeControl?: boolean;
   hasThemeControl?: boolean;
   hasTextColorControl?: boolean;
+  hasStateControl?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   availableTextColors?: Array<{ value: string; label: string; color: string }>;
+  availableStates?: Array<{ value: string; label: string }>;
   features: string[];
   previewLight: React.ReactNode;
   previewDark: React.ReactNode;
@@ -78,6 +80,8 @@ export const ALL_DASHBOARD_COMPONENTS: ComponentDetail[] = [
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Obsidian", color: "#FFA000" },
@@ -88,6 +92,17 @@ export const ALL_DASHBOARD_COMPONENTS: ComponentDetail[] = [
       { value: "gold-luxury", label: "Gold Luxury", color: "#EAB308" },
       { value: "emerald", label: "Emerald Pulse", color: "#10B981" },
       { value: "crimson", label: "Crimson Reactor", color: "#EF4444" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Amber Glow", value: "#F59E0B", color: "#F59E0B" },
+      { label: "Cyan Glow", value: "#06B6D4", color: "#06B6D4" },
+      { label: "Dark Charcoal", value: "#1E2024", color: "#1E2024" },
     ],
     features: [
       "Authentic 30° isometric matrix projection",
@@ -215,6 +230,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "default",
     availableThemes: [
       { value: "default", label: "Figma Cyan", color: "#54EAD8" },
@@ -222,6 +239,17 @@ export default function Example() {
       { value: "dark", label: "Dark Obsidian", color: "#A78BFA" },
       { value: "cyberpunk", label: "Cyberpunk Matrix", color: "#10B981" },
       { value: "minimal", label: "Minimal Clean", color: "#3B82F6" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Dark Obsidian", value: "#0A0A0E", color: "#0A0A0E" },
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Beacon Cyan", value: "#54EAD8", color: "#54EAD8" },
+      { label: "Magma Orange", value: "#FF5B04", color: "#FF5B04" },
     ],
     features: [
       "Recessed cavity slot with 3D depth shadows",
@@ -335,6 +363,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "figma-blue",
     availableThemes: [
       { value: "figma-blue", label: "Figma Blue", color: "#38BDF8" },
@@ -343,6 +373,17 @@ export default function Example() {
       { value: "magma-orange", label: "Magma Orange", color: "#FF5B04" },
       { value: "dark-obsidian", label: "Dark Obsidian", color: "#64748B" },
       { value: "titanium-gold", label: "Titanium Gold", color: "#EAB308" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Dark Slate", value: "#0F172A", color: "#0F172A" },
+      { label: "Sky Blue", value: "#38BDF8", color: "#38BDF8" },
+      { label: "Mint Emerald", value: "#34D399", color: "#34D399" },
     ],
     features: [
       "Dual-pill split layout with independently elevated ceramic base",
@@ -457,6 +498,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Electric Blue", color: "#38BDF8" },
@@ -465,6 +508,17 @@ export default function Example() {
       { value: "violet", label: "Cyber Violet", color: "#A855F7" },
       { value: "crimson", label: "Crimson Ember", color: "#EF4444" },
       { value: "dark", label: "Dark Obsidian", color: "#64748B" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Dark Obsidian", value: "#000000", color: "#000000" },
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Solar Amber", value: "#F59E0B", color: "#F59E0B" },
+      { label: "Neon Cyan", value: "#00E5FF", color: "#00E5FF" },
     ],
     features: [
       "13px dynamic vertical spring elevation on hover",
@@ -578,6 +632,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "monochrome",
     availableThemes: [
       { value: "monochrome", label: "Monochrome White", color: "#F8FAFC" },
@@ -586,6 +642,17 @@ export default function Example() {
       { value: "cyan", label: "Laser Cyan", color: "#06B6D4" },
       { value: "uipirate", label: "UI Pirate Orange", color: "#FF5B04" },
       { value: "crimson", label: "Crimson Red", color: "#EF4444" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Phosphor White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Emerald Matrix", value: "#10B981", color: "#10B981" },
+      { label: "Cyber Cyan", value: "#00E5FF", color: "#00E5FF" },
+      { label: "Molten Magma", value: "#FF5B04", color: "#FF5B04" },
     ],
     features: [
       "Expandable 7×7 pixel dot matrix screen",
@@ -696,11 +763,24 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "silver",
     availableThemes: [
       { value: "silver", label: "Silver Steel", color: "#CBD5E1" },
       { value: "dark", label: "Dark Metal", color: "#3B82F6" },
       { value: "obsidian", label: "Obsidian Matte", color: "#1E293B" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Dark Charcoal", value: "#111827", color: "#111827" },
+      { label: "Laser Blue", value: "#3B82F6", color: "#3B82F6" },
+      { label: "Electric Cyan", value: "#06B6D4", color: "#06B6D4" },
     ],
     features: [
       "Gesture-driven draggable capsule knob physics",
@@ -763,6 +843,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "heritage",
     availableThemes: [
       { value: "heritage", label: "Heritage Brass", color: "#D97706" },
@@ -771,6 +853,17 @@ export default function Example() {
       { value: "emerald", label: "Emerald Imperial", color: "#10B981" },
       { value: "ruby", label: "Ruby Royalty", color: "#BE123C" },
       { value: "silver", label: "Silver Armour", color: "#CBD5E1" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Gilded Gold", value: "#F59E0B", color: "#F59E0B" },
+      { label: "Ivory Cream", value: "#FEF3C7", color: "#FEF3C7" },
+      { label: "Midnight Black", value: "#000000", color: "#000000" },
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
     ],
     features: [
       "Embossed heritage leather texture with brass lip",
@@ -872,6 +965,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "emerald-pill",
     availableThemes: [
       { value: "emerald-pill", label: "Figma Emerald Pill", color: "#10B981" },
@@ -882,6 +977,17 @@ export default function Example() {
       { value: "magenta-squircle", label: "Neon Magenta Squircle", color: "#EC4899" },
       { value: "amber-pill", label: "Cyber Amber (Pill)", color: "#F59E0B" },
       { value: "violet-squircle", label: "Neon Violet Squircle", color: "#8B5CF6" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Neon Emerald", value: "#10E599", color: "#10E599" },
+      { label: "Electric Cyan", value: "#00E5FF", color: "#00E5FF" },
+      { label: "Magma Orange", value: "#FF5B04", color: "#FF5B04" },
     ],
     features: [
       "Authentic claymorphic multi-tier drop shadow stacks",
@@ -1015,12 +1121,25 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Neo-Brutalist", color: "#EC4899" },
       { value: "orange", label: "UI Pirate Magma", color: "#FF5B04" },
       { value: "dark", label: "Dark Obsidian Core", color: "#64748B" },
       { value: "cyberpunk", label: "Cyberpunk Violet", color: "#A855F7" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Dark Slate", value: "#0F172A", color: "#0F172A" },
+      { label: "Cyberpunk Pink", value: "#F43F5E", color: "#F43F5E" },
+      { label: "Electric Cyan", value: "#06B6D4", color: "#06B6D4" },
     ],
     features: [
       "Industrial outer enclosure frame",
@@ -1104,12 +1223,25 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "dark",
     availableThemes: [
       { value: "dark", label: "Figma Dark Obsidian", color: "#38BDF8" },
       { value: "orange", label: "UI Pirate Magma", color: "#FF5B04" },
       { value: "light", label: "Titanium Light", color: "#E2E8F0" },
       { value: "cyberpunk", label: "Cyberpunk Neon", color: "#A855F7" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Dark Obsidian", value: "#0A0A0E", color: "#0A0A0E" },
+      { label: "Cyber Cyan", value: "#00E5FF", color: "#00E5FF" },
+      { label: "Magma Orange", value: "#FF5B04", color: "#FF5B04" },
     ],
     features: [
       "Frosted outer glass tray",
@@ -1191,8 +1323,10 @@ export default function Example() {
     detailUrl: "/componentlab/magnetic-pulse-cta",
     defaultLabel: "Let's Venture",
     hasLabelControl: true,
-    hasSizeControl: false,
+    hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "#FF5B04",
     availableThemes: [
       { value: "#FF5B04", label: "Magma Orange", color: "#FF5B04" },
@@ -1200,6 +1334,17 @@ export default function Example() {
       { value: "#38BDF8", label: "Sky Blue", color: "#38BDF8" },
       { value: "#8B5CF6", label: "Electric Purple", color: "#8B5CF6" },
       { value: "#EC4899", label: "Hot Pink", color: "#EC4899" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Dark Obsidian", value: "#0A0A0E", color: "#0A0A0E" },
+      { label: "Golden Yellow", value: "#FBBF24", color: "#FBBF24" },
+      { label: "Cyan Ice", value: "#A5F3FC", color: "#A5F3FC" },
     ],
     features: [
       "Ambient concentric pulse waves",
@@ -1252,10 +1397,23 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "primary",
     availableThemes: [
       { value: "primary", label: "Primary", color: "#8B5CF6" },
       { value: "secondary", label: "Secondary", color: "#64748B" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Dark Obsidian", value: "#0A0A0E", color: "#0A0A0E" },
+      { label: "Electric Purple", value: "#A855F7", color: "#A855F7" },
+      { label: "Neon Cyan", value: "#00E5FF", color: "#00E5FF" },
     ],
     features: [
       "Dual text vertical roll on hover",
@@ -1312,10 +1470,29 @@ export default function Example() {
       "Interactive corner arc slider toggle with light and dark mode states, rotating capsule knob along a 90° circular track, sunken sunburst dial, and glowing magenta laser beam.",
     detailUrl: "/componentlab/arc-corner-toggle",
     defaultLabel: "Arc Switch",
-    hasLabelControl: false,
+    hasLabelControl: true,
     hasSizeControl: true,
-    hasThemeControl: false,
-    defaultTheme: "default",
+    hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
+    defaultTheme: "auto",
+    availableThemes: [
+      { value: "auto", label: "Auto Theme Sync", color: "#38BDF8" },
+      { value: "arc", label: "Arc Corner Geometry", color: "#10B981" },
+      { value: "line", label: "Straight Line Track", color: "#FF5B04" },
+      { value: "dark", label: "Obsidian Track", color: "#1E293B" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "off", label: "Standard (OFF)" },
+      { value: "on", label: "Click (ON)" },
+    ],
+    availableTextColors: [
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Dark Slate", value: "#0F172A", color: "#0F172A" },
+      { label: "Sky Blue", value: "#38BDF8", color: "#38BDF8" },
+      { label: "Amber Flare", value: "#F59E0B", color: "#F59E0B" },
+    ],
     features: [
       "90° circular arc track calculation",
       "Dual state toggle with angle physics",
@@ -1367,6 +1544,7 @@ export default function Example() {
     hasSizeControl: true,
     hasThemeControl: true,
     hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "gradient",
     availableThemes: [
       { value: "gradient", label: "Vibrant Gradient", color: "#8B5CF6" },
@@ -1382,6 +1560,11 @@ export default function Example() {
       { value: "#8B5CF6", label: "Neon Violet", color: "#8B5CF6" },
       { value: "#F59E0B", label: "Cyber Amber", color: "#F59E0B" },
       { value: "#EF4444", label: "Crimson Red", color: "#EF4444" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
     ],
     features: [
       "Multi-layer backdrop filter blur",
@@ -1429,9 +1612,28 @@ export default function Example() {
     detailUrl: "/componentlab/glass-surface",
     defaultLabel: "Content inside glass surface container",
     hasLabelControl: true,
-    hasSizeControl: false,
-    hasThemeControl: false,
-    defaultTheme: "default",
+    hasSizeControl: true,
+    hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
+    defaultTheme: "frosted",
+    availableThemes: [
+      { value: "frosted", label: "Frosted Glass", color: "#E2E8F0" },
+      { value: "obsidian", label: "Obsidian Deep", color: "#1E293B" },
+      { value: "magma", label: "Molten Magma", color: "#FF5B04" },
+      { value: "cyan", label: "Cyber Cyan", color: "#06B6D4" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Cyan Glow", value: "#38BDF8", color: "#38BDF8" },
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Muted Silver", value: "#94A3B8", color: "#94A3B8" },
+      { label: "Gold Amber", value: "#FBBF24", color: "#FBBF24" },
+    ],
     features: [
       "Gaussian blur backdrop filter",
       "Dynamic specular border sheen",
@@ -1491,7 +1693,14 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "figma-silver",
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "off", label: "Standard (OFF)" },
+      { value: "on", label: "Click (ON)" },
+    ],
     availableThemes: [
       { value: "figma-silver", label: "Figma Silver (1:1)", color: "#94A3B8" },
       { value: "dark-obsidian", label: "Dark Obsidian", color: "#1E293B" },
@@ -1499,6 +1708,12 @@ export default function Example() {
       { value: "emerald-glow", label: "Emerald Matrix", color: "#10B981" },
       { value: "magma-orange", label: "Magma Orange", color: "#FF5B04" },
       { value: "hyper-violet", label: "Hyper Violet", color: "#A855F7" },
+    ],
+    availableTextColors: [
+      { label: "Dark Charcoal", value: "#1E293B", color: "#1E293B" },
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Emerald Glow", value: "#10B981", color: "#10B981" },
+      { label: "Electric Cyan", value: "#06B6D4", color: "#06B6D4" },
     ],
     features: [
       "1:1 Figma fidelity from nodes 1:7 & 1:8",
@@ -1562,6 +1777,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "emerald-gel",
     availableThemes: [
       { value: "emerald-gel", label: "Emerald Mint (1:1)", color: "#32E49D" },
@@ -1570,6 +1787,18 @@ export default function Example() {
       { value: "magma-gel", label: "Magma Amber", color: "#FB923C" },
       { value: "silver-glass", label: "Frosted Silver Glass", color: "#E2E8F0" },
       { value: "obsidian-glass", label: "Dark Obsidian", color: "#1E293B" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "standerd", label: "Standard" },
+      { value: "hover", label: "Hover" },
+    ],
+    availableTextColors: [
+      { label: "Obsidian Deep", value: "#072B1F", color: "#072B1F" },
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Deep Navy", value: "#082F49", color: "#082F49" },
+      { label: "Deep Violet", value: "#2E1065", color: "#2E1065" },
+      { label: "Dark Amber", value: "#431407", color: "#431407" },
     ],
     features: [
       "1:1 Figma fidelity from node 2:2 (Glossy Gel Button)",
@@ -1630,6 +1859,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasTextColorControl: true,
+    hasStateControl: true,
     defaultTheme: "figma-emerald",
     availableThemes: [
       { value: "figma-emerald", label: "Figma Emerald (1:7 & 1:8)", color: "#10E599" },
@@ -1638,6 +1869,17 @@ export default function Example() {
       { value: "dark-obsidian", label: "Dark Obsidian Stealth", color: "#38BDF8" },
       { value: "hyper-violet", label: "Hyper Ultraviolet", color: "#C084FC" },
       { value: "amber-crt", label: "Amber CRT Gold", color: "#FBBF24" },
+    ],
+    availableStates: [
+      { value: "interactive", label: "Interactive" },
+      { value: "off", label: "Standard (OFF)" },
+      { value: "on", label: "Click (ON)" },
+    ],
+    availableTextColors: [
+      { label: "Phosphor Emerald", value: "#10E599", color: "#10E599" },
+      { label: "Pure White", value: "#FFFFFF", color: "#FFFFFF" },
+      { label: "Laser Cyan", value: "#00E5FF", color: "#00E5FF" },
+      { label: "Molten Orange", value: "#FF5B04", color: "#FF5B04" },
     ],
     features: [
       "1:1 Figma Master design from nodes 1:7 (OFF) & 1:8 (ON)",

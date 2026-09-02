@@ -179,12 +179,12 @@ export const NavbarDropdown = ({
                                 )}
                               >
                                 <NextLink
-                                  className="relative w-full h-full block rounded-[20px] transition-transform duration-400 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-[0_2px_12px_rgba(0,0,0,0.04)] group-hover:shadow-2xl group-hover:shadow-brand-orange/15 border border-gray-200 group-hover:border-brand-orange/40"
+                                  className="relative w-full h-full block rounded-[24px] transition-transform duration-400 ease-out [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-[0_2px_12px_rgba(0,0,0,0.04)] group-hover:shadow-2xl group-hover:shadow-brand-orange/15 border border-gray-200 group-hover:border-brand-orange/40"
                                   href={item.href || "#"}
                                   onClick={() => setIsOpen(false)}
                                 >
                                   {/* --- FRONT FACE --- */}
-                                  <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden]">
+                                  <div className="absolute inset-0 w-full h-full rounded-[24px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden]">
                                     {/* Background Image / Placeholder */}
                                     <div
                                       className="absolute inset-0 bg-cover bg-center transition-transform duration-400 ease-out group-hover:scale-105"
@@ -206,25 +206,23 @@ export const NavbarDropdown = ({
                                   </div>
 
                                   {/* --- BACK FACE (Flipped 180deg horizontally) --- */}
-                                  <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-white p-5 flex flex-col justify-start border border-gray-200">
-                                    <div className="flex items-center justify-start mb-3">
-                                      <span className="text-xl">
+                                  <div className="absolute inset-0 w-full h-full rounded-[24px] overflow-hidden [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-white p-5 flex flex-col justify-start border border-gray-200">
+                                    <div className="flex items-center gap-2.5 mb-2">
+                                      <span className="text-xl flex-shrink-0 flex items-center">
                                         {typeof item.icon === 'string' && item.icon.startsWith('http') ? (
-                                          <img src={item.icon} alt={`${item.category} icon`} className="w-6 h-6 object-contain filter invert opacity-80" />
+                                          <img src={item.icon} alt={`${item.category} icon`} className="w-8 h-8 object-contain" />
                                         ) : (
                                           item.icon || "✨"
                                         )}
                                       </span>
-                                    </div>
-                                    <div>
-                                      <h3 className="text-gray-900 font-bold text-xs md:text-sm mb-1.5 leading-snug font-jakarta">
+                                      <h3 className="text-gray-900 font-bold text-xs md:text-sm leading-snug font-jakarta">
                                         {item.category}
                                       </h3>
-                                      <p className="text-[11px] text-gray-500 line-clamp-4 leading-relaxed">
-                                        {/* @ts-ignore - description added directly in siteConfig */}
-                                        {item.description || "Explore our latest resources & blueprints."}
-                                      </p>
                                     </div>
+                                    <p className="text-[11px] text-gray-500 line-clamp-4 leading-relaxed">
+                                      {/* @ts-ignore - description added directly in siteConfig */}
+                                      {item.description || "Explore our latest resources & blueprints."}
+                                    </p>
                                   </div>
                                 </NextLink>
                               </div>

@@ -12,12 +12,15 @@ export type NeumorphicToggleTheme =
   | "hyper-violet";
 
 export type NeumorphicToggleSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type TactileToggleStateMode = "interactive" | "off" | "on";
 
 export interface TactileNeumorphicToggleProps {
   /** Controlled active state (true = ON, false = OFF) */
   checked?: boolean;
   /** Initial state if uncontrolled */
   defaultChecked?: boolean;
+  /** Fixed state mode preview: 'interactive' (default), 'off' (Figma 1:7), 'on' (Figma 1:8) */
+  stateMode?: TactileToggleStateMode;
   /** Change event handler */
   onChange?: (checked: boolean) => void;
   /** Visual color theme preset */
@@ -232,6 +235,7 @@ const SPRING_TRANSITION: Transition = {
 export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = ({
   checked: controlledChecked,
   defaultChecked = false,
+  stateMode = "interactive",
   onChange,
   theme = "figma-silver",
   size = "md",
@@ -242,7 +246,14 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
 }) => {
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const isControlled = controlledChecked !== undefined;
-  const isChecked = isControlled ? controlledChecked : internalChecked;
+  const isChecked =
+    stateMode === "off"
+      ? false
+      : stateMode === "on"
+        ? true
+        : isControlled
+          ? controlledChecked
+          : internalChecked;
 
   const config = SIZE_CONFIG[size];
   const themeStyle = THEME_STYLES[theme];
@@ -275,9 +286,8 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
         tabIndex={disabled ? -1 : 0}
         onClick={handleToggle}
         onKeyDown={handleKeyDown}
-        className={`relative inline-flex items-center cursor-pointer transition-opacity outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 rounded-full ${
-          disabled ? "opacity-45 cursor-not-allowed" : "active:scale-[0.98]"
-        }`}
+        className={`relative inline-flex items-center cursor-pointer transition-opacity outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 rounded-full ${disabled ? "opacity-45 cursor-not-allowed" : "active:scale-[0.98]"
+          }`}
         style={{
           width: config.width,
           height: config.height,
@@ -410,11 +420,10 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
       {label && (
         <span
           onClick={handleToggle}
-          className={`font-medium cursor-pointer ${config.fontSize} ${
-            disabled
+          className={`font-medium cursor-pointer ${config.fontSize} ${disabled
               ? "text-slate-400 cursor-not-allowed"
               : "text-slate-700 dark:text-slate-200"
-          }`}
+            }`}
         >
           {label}
         </span>

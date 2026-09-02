@@ -388,11 +388,11 @@ export default function Example() {
                 onChange={(e) => setSize(e.target.value as FrostedGelSize)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
               >
-                <option value="xs" className="bg-[#10131A] text-white">Extra Small</option>
-                <option value="sm" className="bg-[#10131A] text-white">Small</option>
-                <option value="md" className="bg-[#10131A] text-white">Medium</option>
-                <option value="lg" className="bg-[#10131A] text-white">Large</option>
-                <option value="xl" className="bg-[#10131A] text-white">Extra Large</option>
+                <option value="xs" className="bg-[#10131A] text-white">Extra Small (xs)</option>
+                <option value="sm" className="bg-[#10131A] text-white">Small (sm)</option>
+                <option value="md" className="bg-[#10131A] text-white">Medium (md)</option>
+                <option value="lg" className="bg-[#10131A] text-white">Large (lg)</option>
+                <option value="xl" className="bg-[#10131A] text-white">Extra Large (xl)</option>
               </select>
             </div>
             </div>

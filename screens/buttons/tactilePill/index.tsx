@@ -11,6 +11,14 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
+const THEME_PRESETS: { label: string; value: TactileButtonVariant; desc: string }[] = [
+  { label: "Silver Light (1:1 Figma)", value: "default", desc: "1:1 Figma light grey embossed cap with debossed slot" },
+  { label: "Dark Titanium", value: "dark", desc: "Sleek dark zinc chassis with deep cavity shadow" },
+  { label: "Molten Orange", value: "orange", desc: "UI Pirate vibrant orange tactile cap with bright highlight" },
+  { label: "Cyberpunk Cyan", value: "cyberpunk", desc: "Neon cyan glow with deep dark mechanical slot" },
+  { label: "Minimalist Mono", value: "minimal", desc: "Clean monochromatic high-contrast matte finish" },
+];
+
 const COLOR_PRESETS = [
   { label: "Figma Aqua", value: "#54EAD8", name: "Aqua" },
   { label: "Brand Orange", value: "#FF5B04", name: "Orange" },
@@ -21,8 +29,8 @@ const COLOR_PRESETS = [
 ];
 
 const TEXT_COLOR_PRESETS = [
-  { name: "Pure White", value: "#FFFFFF" },
   { name: "Dark Obsidian", value: "#18181B" },
+  { name: "Pure White", value: "#FFFFFF" },
   { name: "Cyan Aqua", value: "#00E5BE" },
   { name: "Brand Orange", value: "#FF5B04" },
   { name: "Electric Blue", value: "#3B82F6" },
@@ -203,15 +211,30 @@ export default function Example() {
           {/* Customizer */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-x-6 gap-y-5 text-xs">
               <div className="space-y-1.5">
                 <label className="font-mono text-gray-400 uppercase tracking-wider block">Button Label</label>
                 <input
                   type="text"
                   value={label}
                   onChange={(e) => setLabel(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-white/30"
                 />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Theme Preset</label>
+                <select
+                  value={variant}
+                  onChange={(e) => setVariant(e.target.value as TactileButtonVariant)}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
+                >
+                  {THEME_PRESETS.map((t) => (
+                    <option key={t.value} value={t.value} className="bg-[#151518] text-white">
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="space-y-1.5">
@@ -219,7 +242,7 @@ export default function Example() {
                 <select
                   value={stateMode}
                   onChange={(e) => setStateMode(e.target.value as TactileButtonState)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
                 >
                   <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
                   <option value="resting" className="bg-[#151518] text-white">Standard</option>
@@ -232,7 +255,7 @@ export default function Example() {
                 <select
                   value={textColor}
                   onChange={(e) => setTextColor(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
                 >
                   {TEXT_COLOR_PRESETS.map((p) => (
                     <option key={p.value} value={p.value} className="bg-[#151518] text-white">
@@ -247,7 +270,7 @@ export default function Example() {
                 <select
                   value={dotColor}
                   onChange={(e) => setDotColor(e.target.value)}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
                 >
                   {COLOR_PRESETS.map((p) => (
                     <option key={p.value} value={p.value} className="bg-[#151518] text-white">
@@ -262,13 +285,13 @@ export default function Example() {
                 <select
                   value={size}
                   onChange={(e) => setSize(e.target.value as typeof size)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
                 >
-                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
-                  <option value="sm" className="bg-[#151518] text-white">Small</option>
-                  <option value="md" className="bg-[#151518] text-white">Medium</option>
-                  <option value="lg" className="bg-[#151518] text-white">Large</option>
-                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small (xs)</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small (sm)</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium (md)</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large (lg)</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large (xl)</option>
                 </select>
               </div>
             </div>
@@ -511,6 +534,18 @@ export default function Example() {
                       <td className="py-3 px-6 text-blue-300">string</td>
                       <td className="py-3 px-6 text-gray-400">undefined</td>
                       <td className="py-3 px-6 font-sans text-gray-300">Optional custom CSS/hex color for label text</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-orange-400 font-semibold">variant</td>
+                      <td className="py-3 px-6 text-blue-300">&quot;default&quot; | &quot;dark&quot; | &quot;orange&quot; | &quot;cyberpunk&quot; | &quot;minimal&quot;</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;default&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Visual theme styling preset</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-orange-400 font-semibold">stateMode</td>
+                      <td className="py-3 px-6 text-blue-300">&quot;interactive&quot; | &quot;resting&quot; | &quot;tilted&quot;</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;interactive&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">State mode preview (Interactive / Standard / Hover)</td>
                     </tr>
                     <tr>
                       <td className="py-3 px-6 text-orange-400 font-semibold">dotColor</td>

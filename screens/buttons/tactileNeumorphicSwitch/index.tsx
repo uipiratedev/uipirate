@@ -45,7 +45,7 @@ export interface TactileNeumorphicSwitchProps {
   defaultChecked?: boolean;
   onChange?: (checked: boolean) => void;
   theme?: "figma-emerald" | "cyber-cyan" | "magma-orange" | "dark-obsidian" | "hyper-violet" | "amber-crt";
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
   label?: string;
   showGrid?: boolean;
@@ -215,27 +215,20 @@ export const SWITCH_SPRING = {
                 Customizer
               </h2>
 
-              {/* State Mode Selector (Interactive, OFF 1:7, ON 1:8) */}
+              {/* State Mode Selector */}
               <div className="space-y-1.5">
                 <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                   State Mode
                 </label>
-                <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/5">
-                  {(["interactive", "off", "on"] as TactileSwitchStateMode[]).map((mode) => (
-                    <button
-                      key={mode}
-                      type="button"
-                      onClick={() => setStateMode(mode)}
-                      className={`flex-1 py-1.5 rounded-lg font-mono text-[11px] uppercase transition-all cursor-pointer ${
-                        stateMode === mode
-                          ? "bg-emerald-500 text-black font-bold shadow"
-                          : "text-white/50 hover:text-white"
-                      }`}
-                    >
-                      {mode === "off" ? "OFF (1:7)" : mode === "on" ? "ON (1:8)" : "Live"}
-                    </button>
-                  ))}
-                </div>
+                <select
+                  value={stateMode}
+                  onChange={(e) => setStateMode(e.target.value as TactileSwitchStateMode)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono cursor-pointer"
+                >
+                  <option value="interactive" className="bg-[#10131A] text-white">Interactive</option>
+                  <option value="off" className="bg-[#10131A] text-white">Standard (OFF)</option>
+                  <option value="on" className="bg-[#10131A] text-white">Click (ON)</option>
+                </select>
               </div>
 
               {/* Color Theme Selector */}
@@ -261,22 +254,17 @@ export const SWITCH_SPRING = {
                 <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                   Scale Size
                 </label>
-                <div className="flex items-center gap-2">
-                  {(["sm", "md", "lg", "xl"] as TactileSwitchSize[]).map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => setSize(s)}
-                      className={`flex-1 py-1.5 rounded-xl font-mono text-xs uppercase border transition-all ${
-                        size === s
-                          ? "bg-emerald-500 text-black font-bold border-emerald-400"
-                          : "bg-white/5 text-white/60 border-white/5 hover:text-white"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
+                <select
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as TactileSwitchSize)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono cursor-pointer"
+                >
+                  <option value="xs" className="bg-[#10131A] text-white">Extra Small (xs)</option>
+                  <option value="sm" className="bg-[#10131A] text-white">Small (sm)</option>
+                  <option value="md" className="bg-[#10131A] text-white">Medium (md)</option>
+                  <option value="lg" className="bg-[#10131A] text-white">Large (lg)</option>
+                  <option value="xl" className="bg-[#10131A] text-white">Extra Large (xl)</option>
+                </select>
               </div>
 
               {/* Grid Canvas Texture Toggle */}
@@ -285,9 +273,8 @@ export const SWITCH_SPRING = {
                 <button
                   type="button"
                   onClick={() => setShowGrid(!showGrid)}
-                  className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors ${
-                    showGrid ? "bg-white/20 text-white font-bold" : "bg-white/5 text-white/40"
-                  }`}
+                  className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors ${showGrid ? "bg-white/20 text-white font-bold" : "bg-white/5 text-white/40"
+                    }`}
                 >
                   {showGrid ? "Enabled" : "Hidden"}
                 </button>
@@ -472,10 +459,10 @@ export const SWITCH_SPRING = {
                     activeTab === "component"
                       ? componentSourceCode
                       : activeTab === "usage"
-                      ? usageCode
-                      : activeTab === "css"
-                      ? cssTokensCode
-                      : framerPhysicsCode,
+                        ? usageCode
+                        : activeTab === "css"
+                          ? cssTokensCode
+                          : framerPhysicsCode,
                     activeTab
                   )
                 }
@@ -492,10 +479,10 @@ export const SWITCH_SPRING = {
                     {activeTab === "component"
                       ? "TactileNeumorphicSwitch.tsx"
                       : activeTab === "usage"
-                      ? "Usage.tsx"
-                      : activeTab === "css"
-                      ? "Tokens.css"
-                      : "Physics.ts"}
+                        ? "Usage.tsx"
+                        : activeTab === "css"
+                          ? "Tokens.css"
+                          : "Physics.ts"}
                   </span>
                   <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
                 </div>
@@ -503,41 +490,37 @@ export const SWITCH_SPRING = {
                 <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
                   <button
                     onClick={() => setActiveTab("component")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                      activeTab === "component"
-                        ? "bg-emerald-500 text-black font-bold"
-                        : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeTab === "component"
+                      ? "bg-emerald-500 text-black font-bold"
+                      : "text-gray-400 hover:text-white"
+                      }`}
                   >
                     Component.tsx
                   </button>
                   <button
                     onClick={() => setActiveTab("usage")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                      activeTab === "usage"
-                        ? "bg-emerald-500 text-black font-bold"
-                        : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeTab === "usage"
+                      ? "bg-emerald-500 text-black font-bold"
+                      : "text-gray-400 hover:text-white"
+                      }`}
                   >
                     Usage.tsx
                   </button>
                   <button
                     onClick={() => setActiveTab("css")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                      activeTab === "css"
-                        ? "bg-emerald-500 text-black font-bold"
-                        : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeTab === "css"
+                      ? "bg-emerald-500 text-black font-bold"
+                      : "text-gray-400 hover:text-white"
+                      }`}
                   >
                     Tokens.css
                   </button>
                   <button
                     onClick={() => setActiveTab("framer")}
-                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                      activeTab === "framer"
-                        ? "bg-emerald-500 text-black font-bold"
-                        : "text-gray-400 hover:text-white"
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeTab === "framer"
+                      ? "bg-emerald-500 text-black font-bold"
+                      : "text-gray-400 hover:text-white"
+                      }`}
                   >
                     Physics.ts
                   </button>
@@ -550,10 +533,10 @@ export const SWITCH_SPRING = {
                     {activeTab === "component"
                       ? componentSourceCode
                       : activeTab === "usage"
-                      ? usageCode
-                      : activeTab === "css"
-                      ? cssTokensCode
-                      : framerPhysicsCode}
+                        ? usageCode
+                        : activeTab === "css"
+                          ? cssTokensCode
+                          : framerPhysicsCode}
                   </code>
                 </pre>
               </div>
@@ -611,7 +594,7 @@ export const SWITCH_SPRING = {
                     </tr>
                     <tr>
                       <td className="py-3 px-6 text-emerald-400 font-semibold">size</td>
-                      <td className="py-3 px-6 text-blue-300">&quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
+                      <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
                       <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
                       <td className="py-3 px-6 font-sans text-gray-300">
                         Proportional scaling dimension preset

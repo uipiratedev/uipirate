@@ -12,6 +12,7 @@ export type GlossyGelTheme =
   | "obsidian-glass";
 
 export type GlossyGelSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type GlossyGelStateMode = "interactive" | "resting" | "hover";
 
 export interface GlossyGelButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -19,8 +20,12 @@ export interface GlossyGelButtonProps
   children?: React.ReactNode;
   /** Visual color theme preset */
   theme?: GlossyGelTheme;
+  /** Optional custom text color */
+  textColor?: string;
   /** Size variant */
   size?: GlossyGelSize;
+  /** Fixed state preview mode */
+  stateMode?: GlossyGelStateMode;
   /** Optional icon rendered before label */
   iconLeft?: React.ReactNode;
   /** Optional icon rendered after label */
@@ -194,7 +199,9 @@ export const GlossyGelButton = React.forwardRef<
     {
       children = "Get Started",
       theme = "emerald-gel",
+      textColor,
       size = "md",
+      stateMode = "interactive",
       iconLeft,
       iconRight,
       isLoading = false,
@@ -207,6 +214,8 @@ export const GlossyGelButton = React.forwardRef<
   ) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isPressed, setIsPressed] = useState(false);
+
+    const effectiveHovered = stateMode === "hover" ? true : stateMode === "resting" ? false : isHovered;
 
     const themeConfig = GEL_THEMES[theme] || GEL_THEMES["emerald-gel"];
     const sizeConfig = SIZE_STYLES[size] || SIZE_STYLES.md;
@@ -224,8 +233,11 @@ export const GlossyGelButton = React.forwardRef<
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         onClick={onClick}
-        whileHover={{ scale: 1.025 }}
-        whileTap={{ scale: 0.97 }}
+        whileHover={stateMode === "interactive" ? { scale: 1.025 } : undefined}
+        whileTap={stateMode === "interactive" ? { scale: 0.97 } : undefined}
+        animate={{
+          scale: isPressed ? 0.97 : effectiveHovered ? 1.025 : 1,
+        }}
         transition={{ type: "spring", stiffness: 450, damping: 25 }}
         className={`relative inline-flex items-center justify-center font-semibold select-none cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 overflow-hidden ${
           sizeConfig.padding
@@ -238,7 +250,7 @@ export const GlossyGelButton = React.forwardRef<
           borderRadius: sizeConfig.borderRadius,
           background: themeConfig.gelBg,
           boxShadow: themeConfig.shadowLayer,
-          color: themeConfig.textColor,
+          color: textColor || themeConfig.textColor,
         }}
         {...(restProps as any)}
       >
@@ -248,7 +260,7 @@ export const GlossyGelButton = React.forwardRef<
           style={{
             background: themeConfig.ambientGlow,
             filter: "blur(10px)",
-            opacity: isHovered ? 0.75 : 0.35,
+            opacity: effectiveHovered ? 0.75 : 0.35,
           }}
         />
 
@@ -258,7 +270,7 @@ export const GlossyGelButton = React.forwardRef<
           style={{
             background: themeConfig.highlightGradient,
             filter: "blur(3px)",
-            opacity: isPressed ? 0.6 : isHovered ? 1 : 0.85,
+            opacity: isPressed ? 0.6 : effectiveHovered ? 1 : 0.85,
             transition: "opacity 0.2s ease",
           }}
         />
@@ -266,11 +278,11 @@ export const GlossyGelButton = React.forwardRef<
         {/* Specular Interactive Sheen Wave on Hover */}
         <motion.div
           animate={{
-            x: isHovered ? ["-120%", "150%"] : "-120%",
+            x: effectiveHovered ? ["-120%", "150%"] : "-120%",
           }}
           transition={{
             duration: 1.1,
-            repeat: isHovered ? Infinity : 0,
+            repeat: effectiveHovered ? Infinity : 0,
             repeatDelay: 1.8,
             ease: "easeInOut",
           }}

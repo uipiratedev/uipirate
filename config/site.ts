@@ -11,7 +11,7 @@ export const siteConfig = {
       dropdownItems: [
         {
           category: "UX/UI Design",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334904/ux_uiflip_gzvs0w.svg",
           href: "/services/UX-UI-Design",
           isLargeCard: true,
           bgImage:
@@ -20,7 +20,7 @@ export const siteConfig = {
         },
         {
           category: "Saas & AI Development",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334941/saasflip_rhxxax.svg",
           href: "/services/SaaS-&-AI-Development",
           isLargeCard: true,
           bgImage:
@@ -30,7 +30,7 @@ export const siteConfig = {
 
         {
           category: "Landing Pages & Business Websites",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334378/landingflip_duapct.svg",
           href: "/services/Landing-Pages-&-Business-Websites",
           isLargeCard: true,
           bgImage:
@@ -39,7 +39,7 @@ export const siteConfig = {
         },
         {
           category: "UX Audits & Consultation",
-          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788334378/uxauditflip_tklwsu.svg",
           href: "/services/UX-Audits-&-Consultation",
           isLargeCard: true,
           bgImage:
@@ -67,7 +67,7 @@ export const siteConfig = {
       dropdownItems: [
         {
           category: "Blog & Tutorials",
-          icon: "✍️",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335243/blogflip_sdbmgs.svg",
           href: "/blogs",
           isLargeCard: true,
           bgImage:
@@ -76,7 +76,7 @@ export const siteConfig = {
         },
         {
           category: "Case Studies",
-          icon: "📊",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/casestudyflip_p3vfp3.svg",
           href: "/case-studies",
           isLargeCard: true,
           bgImage:
@@ -93,7 +93,7 @@ export const siteConfig = {
         // },
         {
           category: "Tools",
-          icon: "🛠️",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/toolsflip_n5bwmt.svg",
           href: "/tools",
           isLargeCard: true,
           bgImage:
@@ -102,7 +102,7 @@ export const siteConfig = {
         },
         {
           category: "Component Lab",
-          icon: "🧩",
+          icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788335244/componentlabflip_npeu0s.svg",
           href: "/componentlab",
           isLargeCard: true,
           bgImage:

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArcCornerToggle, ArcCornerToggleStateMode } from "@/components/ArcCornerToggle";
+import { ArcCornerToggle, ArcCornerToggleStateMode, ArcToggleSize } from "@/components/ArcCornerToggle";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
@@ -11,6 +11,7 @@ export default function ArcCornerToggleScreen() {
   const [active, setActive] = useState(false);
   const [textColor, setTextColor] = useState("#2B2B2B");
   const [speed, setSpeed] = useState(0.65);
+  const [size, setSize] = useState<ArcToggleSize>("md");
 
   const textColorOptions = [
     { label: "Dark Charcoal", value: "#2B2B2B" },
@@ -187,6 +188,7 @@ export default function Example() {
                   }}
                   duration={speed}
                   showHeader={true}
+                  size={size}
                   scale={0.85}
                 />
               </div>
@@ -196,7 +198,7 @@ export default function Example() {
           {/* Customizer */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5 text-xs">
               <div className="space-y-1.5">
                 <label className="font-mono text-gray-400 uppercase tracking-wider block font-mono">
                   Header Text Color
@@ -222,7 +224,7 @@ export default function Example() {
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
                 >
                   <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
-                  <option value="standerd" className="bg-[#151518] text-white">Standerd (OFF)</option>
+                  <option value="standerd" className="bg-[#151518] text-white">Standard (OFF)</option>
                   <option value="click" className="bg-[#151518] text-white">Click (ON)</option>
                 </select>
               </div>
@@ -239,6 +241,21 @@ export default function Example() {
                       {p.label}
                     </option>
                   ))}
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
+                <select
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as ArcToggleSize)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                >
+                  <option value="xs" className="bg-[#151518] text-white">Extra Small (xs)</option>
+                  <option value="sm" className="bg-[#151518] text-white">Small (sm)</option>
+                  <option value="md" className="bg-[#151518] text-white">Medium (md)</option>
+                  <option value="lg" className="bg-[#151518] text-white">Large (lg)</option>
+                  <option value="xl" className="bg-[#151518] text-white">Extra Large (xl)</option>
                 </select>
               </div>
             </div>
