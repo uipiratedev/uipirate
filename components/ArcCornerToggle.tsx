@@ -5,18 +5,21 @@ import { motion, Transition } from "framer-motion";
 
 export type ArcToggleTheme = "light" | "dark";
 export type ArcToggleSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type ArcToggleStateMode = "interactive" | "standerd" | "hover";
 
 const ARC_SIZE_SCALE: Record<ArcToggleSize, number> = {
-  xs: 0.7,
-  sm: 0.85,
-  md: 1,
-  lg: 1.15,
-  xl: 1.3,
+  xs: 0.55,
+  sm: 0.72,
+  md: 0.88,
+  lg: 1.05,
+  xl: 1.25,
 };
 
 export interface ArcCornerToggleProps {
   /** Controlled active state (false = Light/STANDERD, true = Dark/CLICK) */
   isActive?: boolean;
+  /** State preview mode: "interactive" | "standerd" | "hover" */
+  stateMode?: ArcToggleStateMode;
   /** Toggle event handler */
   onToggle?: (active: boolean) => void;
   /** Force specific theme or let state dictate ("auto" | "light" | "dark") */
@@ -60,6 +63,7 @@ const FIGMA_CENTERLINE_PATH =
  */
 export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   isActive: controlledActive,
+  stateMode = "interactive",
   onToggle,
   themeMode = "auto",
   size = "md",
@@ -70,9 +74,16 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   showHeader = true,
   track = "arc",
 }) => {
-  const effectiveScale = scale * (ARC_SIZE_SCALE[size] ?? 1);
+  const effectiveScale = scale * (ARC_SIZE_SCALE[size] ?? 0.88);
   const [internalActive, setInternalActive] = useState(false);
-  const active = controlledActive !== undefined ? controlledActive : internalActive;
+  const active =
+    stateMode === "hover"
+      ? true
+      : stateMode === "standerd"
+      ? false
+      : controlledActive !== undefined
+      ? controlledActive
+      : internalActive;
 
   const currentTheme: ArcToggleTheme =
     themeMode === "auto" ? (active ? "dark" : "light") : themeMode;
@@ -82,6 +93,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   const centerline = isLine ? LINE_CENTERLINE_PATH : FIGMA_CENTERLINE_PATH;
 
   const handleToggle = () => {
+    if (stateMode !== "interactive") return;
     const nextState = !active;
     if (controlledActive === undefined) {
       setInternalActive(nextState);

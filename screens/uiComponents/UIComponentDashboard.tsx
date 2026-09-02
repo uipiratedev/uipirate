@@ -621,7 +621,8 @@ export default function Example() {
         return (
           <div className="py-8 flex items-center justify-center">
             <ArcCornerToggle
-              scale={customSize === "sm" ? 0.75 : customSize === "lg" ? 1.05 : 0.88}
+              size={customSize}
+              stateMode={customStateMode}
               onToggle={(st) => handleTriggerAction(`Arc Toggled: ${st ? "ON" : "OFF"}`)}
             />
           </div>
@@ -1163,6 +1164,7 @@ export default function Example() {
                       "animated-slide-button",
                       "glossy-gel-button",
                       "slide-grow-button",
+                      "arc-corner-toggle",
                     ].includes(selectedComponent.id) && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
