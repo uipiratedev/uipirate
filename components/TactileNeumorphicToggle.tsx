@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, Transition } from "framer-motion";
 
 export type NeumorphicToggleTheme =
-  | "figma-silver"
+  | "brushed-silver"
   | "dark-obsidian"
   | "cyber-cyan"
   | "emerald-glow"
@@ -106,7 +106,7 @@ interface ThemeColors {
 }
 
 const THEME_STYLES: Record<NeumorphicToggleTheme, ThemeColors> = {
-  "figma-silver": {
+  "brushed-silver": {
     trackBg: "#D8DDE5",
     trackShadow:
       "inset 1.8px 3.25px 2.89px -1.08px rgba(144, 155, 176, 1), " +
@@ -227,13 +227,13 @@ const SPRING_TRANSITION: Transition = {
 
 /**
  * Tactile Neumorphic Pill Toggle Switch
- * 1:1 Pixel-Accurate Implementation from Figma Nodes (1:7 & 1:8 / Frame 47723 & 47727)
+ * Debossed neumorphic pill with a brushed metallic sliding thumb.
  */
 export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = ({
   checked: controlledChecked,
   defaultChecked = false,
   onChange,
-  theme = "figma-silver",
+  theme = "brushed-silver",
   size = "md",
   disabled = false,
   label,

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, Transition } from "framer-motion";
 
 export type TactileSwitchTheme =
-  | "figma-emerald"
+  | "emerald-photon"
   | "cyber-cyan"
   | "magma-orange"
   | "dark-obsidian"
@@ -19,7 +19,7 @@ export interface TactileNeumorphicSwitchProps {
   checked?: boolean;
   /** Initial state if uncontrolled */
   defaultChecked?: boolean;
-  /** Fixed state mode: 'interactive' (default), 'off' (Figma 1:7), 'on' (Figma 1:8) */
+  /** Fixed state mode: 'interactive' (default), 'off' (static OFF), 'on' (static ON) */
   stateMode?: TactileSwitchStateMode;
   /** Change event handler */
   onChange?: (checked: boolean) => void;
@@ -59,7 +59,7 @@ function adjustHex(hex: string, percent: number): string {
   return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 }
 
-// 1:1 Figma Master Render Vector Assets (Zero External Network Requests)
+// Inline Vector Render Assets (Zero External Network Requests)
 const ELLIPSE_1624_URI =
   "data:image/png;base64,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";
 
@@ -167,8 +167,8 @@ export interface SwitchThemeColors {
 }
 
 export const SWITCH_THEMES: Record<TactileSwitchTheme, SwitchThemeColors> = {
-  "figma-emerald": {
-    name: "Figma Emerald (1:7 & 1:8)",
+  "emerald-photon": {
+    name: "Emerald Photon",
     accent: "#10E599",
     glowColor: "rgba(16, 229, 153, 0.45)",
     canvasBg: "#E3E7EE",
@@ -316,14 +316,14 @@ const SPRING_PHYSICS: Transition = {
 
 /**
  * Tactile Neumorphic Dual-Dome Switch
- * Exact 1:1 Vector & Asset Implementation of Figma Nodes 20:7232 (OFF) & 20:7248 (ON)
+ * Photorealistic vector implementation with sculpted dual-dome handle and OFF / ON states.
  */
 export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = ({
   checked: controlledChecked,
   defaultChecked = false,
   stateMode = "interactive",
   onChange,
-  theme = "figma-emerald",
+  theme = "emerald-photon",
   size = "md",
   disabled = false,
   label,
@@ -343,7 +343,7 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
           : internalChecked;
 
   const cfg = SIZES[size] || SIZES.md;
-  const t = SWITCH_THEMES[theme] || SWITCH_THEMES["figma-emerald"];
+  const t = SWITCH_THEMES[theme] || SWITCH_THEMES["emerald-photon"];
 
   const activeGradient = customActiveColor
     ? `linear-gradient(180deg, ${adjustHex(customActiveColor, -25)} 0%, ${customActiveColor} 45%, ${adjustHex(
@@ -436,7 +436,7 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
           </motion.div>
         </div>
 
-        {/* ── 1:1 Figma Master Sculpted Dual-Dome Handle ─────────────── */}
+        {/* ── Sculpted Dual-Dome Handle ─────────────── */}
         {/* Dark Obsidian Precision Color Matrix Shader */}
         <svg className="absolute w-0 h-0 pointer-events-none opacity-0" aria-hidden="true">
           <filter id="obsidian-dome-filter" colorInterpolationFilters="sRGB">
@@ -482,14 +482,14 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
             filter: t.knobFilter || "none",
           }}
         >
-          {/* Symmetrical Dual-Dome Pads (1:1 Figma Master Assets) */}
+          {/* Symmetrical Dual-Dome Pads */}
           <div
             className="flex items-center justify-center w-full h-full select-none"
             style={{
               gap: `${cfg.gap}px`,
             }}
           >
-            {/* Left Dome Asset (Figma Node 20:7246) */}
+            {/* Left Dome Asset */}
             <div
               className="relative shrink-0 flex items-center justify-center select-none"
               style={{
@@ -509,7 +509,7 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
               />
             </div>
 
-            {/* Right Dome Asset (Figma Node 20:7247) */}
+            {/* Right Dome Asset */}
             <div
               className="relative shrink-0 flex items-center justify-center select-none"
               style={{

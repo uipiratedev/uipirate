@@ -630,8 +630,8 @@ export default function Example() {
           </div>
         );
       case "tactile-neumorphic-toggle": {
-        const validToggleThemes = ["figma-silver", "dark-obsidian", "cyber-cyan", "emerald-glow", "magma-orange", "hyper-violet"];
-        const toggleTheme = safeTheme(customTheme, validToggleThemes, "figma-silver");
+        const validToggleThemes = ["brushed-silver", "dark-obsidian", "cyber-cyan", "emerald-glow", "magma-orange", "hyper-violet"];
+        const toggleTheme = safeTheme(customTheme, validToggleThemes, "brushed-silver");
         return (
           <div className="py-8 flex items-center justify-center">
             <TactileNeumorphicToggle
@@ -645,8 +645,8 @@ export default function Example() {
         );
       }
       case "tactile-neumorphic-switch": {
-        const validSwitchThemes = ["figma-emerald", "cyber-cyan", "magma-orange", "dark-obsidian", "hyper-violet", "amber-crt"];
-        const switchTheme = safeTheme(customTheme, validSwitchThemes, "figma-emerald");
+        const validSwitchThemes = ["emerald-photon", "cyber-cyan", "magma-orange", "dark-obsidian", "hyper-violet", "amber-crt"];
+        const switchTheme = safeTheme(customTheme, validSwitchThemes, "emerald-photon");
         return (
           <div className="py-12 flex items-center justify-center">
             <TactileNeumorphicSwitch

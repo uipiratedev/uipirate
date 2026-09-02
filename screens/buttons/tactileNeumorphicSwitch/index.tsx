@@ -15,7 +15,7 @@ import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
 export default function TactileNeumorphicSwitchScreen() {
-  const [theme, setTheme] = useState<TactileSwitchTheme>("figma-emerald");
+  const [theme, setTheme] = useState<TactileSwitchTheme>("emerald-photon");
   const [size, setSize] = useState<TactileSwitchSize>("md");
   const [stateMode, setStateMode] = useState<TactileSwitchStateMode>("interactive");
   const [showGrid, setShowGrid] = useState(true);
@@ -47,7 +47,7 @@ export interface TactileNeumorphicSwitchProps {
   checked?: boolean;
   defaultChecked?: boolean;
   onChange?: (checked: boolean) => void;
-  theme?: "figma-emerald" | "cyber-cyan" | "magma-orange" | "dark-obsidian" | "hyper-violet" | "amber-crt";
+  theme?: "emerald-photon" | "cyber-cyan" | "magma-orange" | "dark-obsidian" | "hyper-violet" | "amber-crt";
   size?: "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
   label?: string;
@@ -58,7 +58,7 @@ export function TactileNeumorphicSwitch({
   checked: controlledChecked,
   defaultChecked = false,
   onChange,
-  theme = "figma-emerald",
+  theme = "emerald-photon",
   size = "md",
   disabled = false,
   label,
@@ -124,7 +124,7 @@ export default function Example() {
   );
 }`;
 
-  const cssTokensCode = `/* 1:1 Figma Neumorphic Switch Design Tokens (Node 1:7 & 1:8) */
+  const cssTokensCode = `/* Neumorphic Switch Design Tokens */
 :root {
   /* 1. Outer Recessed Bevel Cavity */
   --switch-outer-bg: linear-gradient(145deg, #DFE3EB 0%, #EAEEF5 100%);
@@ -136,7 +136,7 @@ export default function Example() {
   --switch-track-shadow: inset 0 8px 12px rgba(60, 72, 92, 0.45),
                          inset 0 -2px 4px rgba(255, 255, 255, 0.85);
 
-  /* 3. Illuminated Emerald Fill (ON state 1:8) */
+  /* 3. Illuminated Emerald Fill (ON state) */
   --switch-track-on: linear-gradient(90deg, #02B86E 0%, #0AD483 40%, #2BF3A4 85%, #56F8B6 100%);
   --switch-track-on-glow: inset 0 7px 10px rgba(0, 85, 48, 0.55),
                           0 0 18px rgba(16, 229, 153, 0.35);
@@ -170,7 +170,7 @@ export const SWITCH_SPRING = {
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>1:1 Figma Master • Node 1:7 &amp; 1:8</span>
+              <span>Dual-Dome Neumorphic Switch • OFF &amp; ON</span>
               <span className="text-gray-500">•</span>
               <span className="text-emerald-400">React + Tailwind + Framer Motion</span>
             </div>
@@ -223,7 +223,7 @@ export const SWITCH_SPRING = {
                           : "text-white/50 hover:text-white"
                       }`}
                     >
-                      {mode === "off" ? "OFF (1:7)" : mode === "on" ? "ON (1:8)" : "Live"}
+                      {mode === "off" ? "OFF" : mode === "on" ? "ON" : "Live"}
                     </button>
                   ))}
                 </div>
@@ -405,7 +405,7 @@ export const SWITCH_SPRING = {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-emerald-400 mb-1.5">
-                  <span>FIGMA MASTER SPEC &amp; PRESETS</span>
+                  <span>ALL VARIANTS &amp; PRESETS</span>
                 </div>
                 <h2 className="text-2xl font-bold text-white tracking-tight">
                   All Variants &amp; States
@@ -418,17 +418,17 @@ export const SWITCH_SPRING = {
 
             <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* 1. Figma OFF State (1:7) */}
+                {/* 1. OFF State */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[260px] transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">Figma OFF (Node 1:7)</span>
+                    <span className="text-white font-semibold">Off State</span>
                     <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">
                       state=&quot;off&quot;
                     </span>
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="figma-emerald"
+                      theme="emerald-photon"
                       stateMode="off"
                       size="sm"
                     />
@@ -438,17 +438,17 @@ export const SWITCH_SPRING = {
                   </span>
                 </div>
 
-                {/* 2. Figma ON State (1:8) */}
+                {/* 2. ON State */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[260px] transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">Figma ON (Node 1:8)</span>
+                    <span className="text-white font-semibold">On State</span>
                     <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">
                       state=&quot;on&quot;
                     </span>
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="figma-emerald"
+                      theme="emerald-photon"
                       stateMode="on"
                       size="sm"
                     />
@@ -468,7 +468,7 @@ export const SWITCH_SPRING = {
                   </div>
                   <div className="my-2">
                     <TactileNeumorphicSwitch
-                      theme="figma-emerald"
+                      theme="emerald-photon"
                       stateMode="interactive"
                       size="sm"
                     />
@@ -701,13 +701,13 @@ export const SWITCH_SPRING = {
                       <td className="py-3 px-6 text-blue-300">&quot;interactive&quot; | &quot;off&quot; | &quot;on&quot;</td>
                       <td className="py-3 px-6 text-gray-400">&quot;interactive&quot;</td>
                       <td className="py-3 px-6 font-sans text-gray-300">
-                        Force static Figma 1:7 (OFF) or 1:8 (ON) state, or interactive toggle
+                        Force a static OFF or ON state, or interactive toggle
                       </td>
                     </tr>
                     <tr>
                       <td className="py-3 px-6 text-emerald-400 font-semibold">theme</td>
                       <td className="py-3 px-6 text-blue-300">TactileSwitchTheme</td>
-                      <td className="py-3 px-6 text-gray-400">&quot;figma-emerald&quot;</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;emerald-photon&quot;</td>
                       <td className="py-3 px-6 font-sans text-gray-300">
                         Color scheme for illuminated channel and shadow aesthetics
                       </td>

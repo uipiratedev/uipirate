@@ -316,7 +316,7 @@ export default function ButtonHubScreen() {
                     {btn.id === "tactile-neumorphic-switch" && (
                       <div className="scale-75 sm:scale-85 py-1">
                         <TactileNeumorphicSwitch
-                          theme="figma-emerald"
+                          theme="emerald-photon"
                           size="sm"
                           defaultChecked={true}
                         />

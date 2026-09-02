@@ -102,13 +102,13 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     name: "Tactile Neumorphic Dual-Dome Switch",
     category: "controls",
     categoryLabel: "Controls & Toggles",
-    badge: "1:1 Figma",
+    badge: "Photon Channel",
     badgeVariant: "gradient",
     description:
-      "Photorealistic 3D neumorphic toggle switch directly from Figma nodes 1:7 & 1:8. Features outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
+      "Photorealistic 3D neumorphic toggle switch with an outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.",
     detailUrl: "/componentlab/tactile-neumorphic-switch",
-    features: ["1:1 Figma master fidelity", "Dual-dome tactile thumb", "Illuminated emerald trench", "Outer recessed bevel cavity"],
-    codeSnippet: `<TactileNeumorphicSwitch\n  theme="figma-emerald"\n  size="md"\n  defaultChecked={true}\n/>`,
+    features: ["Pixel-accurate OFF & ON states", "Dual-dome tactile thumb", "Illuminated emerald trench", "Outer recessed bevel cavity"],
+    codeSnippet: `<TactileNeumorphicSwitch\n  theme="emerald-photon"\n  size="md"\n  defaultChecked={true}\n/>`,
   },
   {
     id: "glossy-gel-button",
@@ -128,13 +128,13 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     name: "Tactile Neumorphic Pill Toggle",
     category: "controls",
     categoryLabel: "Controls & Toggles",
-    badge: "1:1 Figma",
+    badge: "Debossed Neumorphic",
     badgeVariant: "solid",
     description:
-      "Ultra-tactile debossed neumorphic pill switch directly from Figma nodes 1:7 & 1:8. Features 5-layer inset shadow groove, metallic sliding thumb with specular bevels, and etched status glyphs.",
+      "Ultra-tactile debossed neumorphic pill switch with a 5-layer inset shadow groove, brushed metallic sliding thumb with specular bevels, and etched status glyphs.",
     detailUrl: "/componentlab/tactile-neumorphic-toggle",
-    features: ["1:1 Figma fidelity", "5-layer optical inset groove", "Brushed metallic knob", "Spring motion physics"],
-    codeSnippet: `<TactileNeumorphicToggle\n  theme="figma-silver"\n  size="md"\n  defaultChecked={true}\n/>`,
+    features: ["Pixel-accurate debossed geometry", "5-layer optical inset groove", "Brushed metallic knob", "Spring motion physics"],
+    codeSnippet: `<TactileNeumorphicToggle\n  theme="brushed-silver"\n  size="md"\n  defaultChecked={true}\n/>`,
   },
   {
     id: "led-matrix-chevron",
@@ -327,7 +327,7 @@ export default function UIComponentLibrary() {
       id: "controls",
       title: "Interactive Controls & Toggles",
       count: "4 Components",
-      badge: "1:1 Figma Toggles",
+      badge: "Neumorphic Toggles",
       badgeColor: "#00B894",
       description:
         "Photorealistic 3D neumorphic switches, 90° radial arc corner toggles, swipe-to-unlock capsule sliders, and tactile smash buttons.",
@@ -335,7 +335,7 @@ export default function UIComponentLibrary() {
       href: "/componentlab/tactile-neumorphic-switch",
       featuredPreview: (
         <div className="scale-90 transform-gpu py-2 flex items-center justify-center">
-          <TactileNeumorphicSwitch theme="figma-emerald" size="sm" defaultChecked={true} />
+          <TactileNeumorphicSwitch theme="emerald-photon" size="sm" defaultChecked={true} />
         </div>
       ),
     },
