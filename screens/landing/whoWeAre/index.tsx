@@ -83,14 +83,11 @@ const LandingWhoWeAre = () => {
   const totalWords = words.length;
 
   return (
-    <section
-      ref={containerRef}
-      className="relative py-16 md:py-24 lg:py-28 overflow-hidden"
-    >
+    <section ref={containerRef} className="relative overflow-hidden">
       {/* Subtle background gradient for depth */}
       <div className="absolute inset-0 pointer-events-none" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-16 2xl:px-24 relative z-10">
+      <div className="section-container relative z-10">
         {/* Badge with Framer Motion animation */}
         <motion.div
           className="flex justify-center mb-10 md:mb-14 lg:mb-16"

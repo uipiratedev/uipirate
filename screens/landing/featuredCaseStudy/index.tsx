@@ -28,7 +28,7 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
   if (!study) return null;
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-16 xl:px-24">
+    <div className="section-container">
       <motion.div
         className="relative overflow-hidden rounded-[20px] sm:rounded-[20px] bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] dark:bg-[#141414] dark:shadow-none"
         initial={{ opacity: 0, y: 30 }}
@@ -46,7 +46,6 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
               <div className="relative mb-6 flex items-center justify-between gap-4">
                 <GlassBadge variant="gradient">FEATURED CASE STUDY</GlassBadge>
                 {study.clientLogo && (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     alt={`${study.client} logo`}
                     className="h-7 sm:h-8 w-auto shrink-0 object-contain dark:brightness-0 dark:invert"
@@ -76,7 +75,7 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
                         aria-hidden="true"
                         className="text-brand-orange text-base font-bold"
                       >
-                        <i className="ti ti-arrow-right"></i>
+                        <i className="ti ti-arrow-right" />
                       </span>
                       <span>{highlight}</span>
                     </li>
@@ -98,7 +97,6 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
 
           {/* Right Side Image - 50% width, seamless blend */}
           <div className="relative w-full lg:w-1/2 self-stretch flex items-center justify-end overflow-hidden min-h-[340px] sm:min-h-[420px] lg:min-h-full">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               alt={`${study.client} — ${study.title}`}
               className="w-full h-full object-cover object-left select-none"
@@ -113,4 +111,3 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
 };
 
 export default FeaturedCaseStudy;
-
