@@ -724,6 +724,8 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 28 | Pricing | Fix remaining pricing section copy issues (see 03-pricing-page.md) `[v1]` | `pricing/index.tsx` | ✅ Done |
 | 20 | FeaturedCaseStudy | Add client industry tag and logo to the featured case study card `[NEW]` | `featuredCaseStudy/index.tsx` | ✅ Done |
 | 21 | PerfectFor | Replace "FIT CHECK" badge with "WHO IT'S FOR" `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
+| 21a | PerfectFor | Redesign cards with hover flip effect (left & top aligned back) `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
+| 21b | PerfectFor | Refine "Not the right fit" section for an ultra-premium aesthetic `[NEW]` | `perfectFor/index.tsx` | ✅ Done |
 | 31 | MiniService | Consider replacing "world-class" in section heading `[NEW]` | `miniService/miniService.tsx` | ✅ Done |
 
 **Priority key:**

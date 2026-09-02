@@ -71,7 +71,8 @@ Synced to **`01-landing-page.md` v3 (2026-08-31)** — all statuses are code-ver
 | 4c | Audience card descriptions need rewriting | ✅ Done |
 | 4d | Emoji icons in "Not the right fit" strip (📦 🎨 ⏰); replace with clean × or dash icons | ✅ Done (replaced with ✕) |
 | 4e | Fix layout: apply left/right container padding so it doesn't stretch full width | ✅ Done |
-
+| 4f | Re-design cards with hover flip effect (left & top aligned back) | ✅ Done |
+| 4g | Refine "Not the right fit" section for an ultra-premium aesthetic | ✅ Done |
 ---
 
 ## 4. DESIGN & DEVELOPMENT (✅ Section complete)

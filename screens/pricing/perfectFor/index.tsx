@@ -62,74 +62,97 @@ const PricingPerfectFor = () => {
         {PERFECT_FOR.map((item, index) => (
           <motion.div
             key={item.title}
-            className="group flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)] hover:-translate-y-1 transition-all duration-300"
+            className="group relative h-[280px] md:h-[300px] w-full [perspective:1000px]"
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
             viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            {/* Top 3D Illustration Area */}
-            <div className="relative w-full h-[180px] md:h-[195px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white dark:from-[#26201D] dark:to-[#1A1A1A] flex items-center justify-center">
-              <img
-                alt={item.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                src={item.image}
-              />
-            </div>
+            <div className="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]">
+              
+              {/* FRONT FACE */}
+              <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10">
+                <div className="relative w-full h-[180px] md:h-[200px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white dark:from-[#26201D] dark:to-[#1A1A1A] flex items-center justify-center">
+                  <img
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    src={item.image}
+                  />
+                </div>
+                <div className="flex flex-1 flex-col justify-center items-center p-6">
+                  <h3 className="text-lg md:text-[19px] font-bold text-slate-900 dark:text-white uppercase tracking-tight text-center">
+                    {item.title}
+                  </h3>
+                </div>
+              </div>
 
-            {/* Content */}
-            <div className="flex flex-1 flex-col p-6 pt-5">
-              <h3 className="text-lg md:text-[19px] font-bold text-slate-900 dark:text-white uppercase tracking-tight mb-2.5">
-                {item.title}
-              </h3>
-              <p className="text-sm md:text-[14.5px] text-slate-500 dark:text-slate-400 font-normal leading-relaxed">
-                {item.description}
-              </p>
+              {/* BACK FACE */}
+              <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col justify-start items-start p-8 rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10 text-left">
+                <h3 className="text-lg md:text-[20px] font-bold text-slate-900 dark:text-white uppercase tracking-tight mb-4 mt-2">
+                  {item.title}
+                </h3>
+                <p className="text-sm md:text-[14.5px] text-slate-500 dark:text-slate-400 font-normal leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+
             </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Not For Section - Theme Compatible Card */}
+      {/* Premium Not For Section */}
       <motion.div
-        className="bg-gradient-to-br from-[#FFF5F5] via-[#FFF8F8] to-[#FFF0F0] dark:bg-gradient-to-br dark:from-[#212121] dark:to-[#151514] noise-texture border border-red-100/90 dark:border-white/10 rounded-[24px] p-6 md:p-8 relative overflow-hidden shadow-[0_4px_24px_rgba(239,68,68,0.03)] dark:shadow-xl"
-        initial={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.4, delay: 0.5 }}
+        className="mt-16 relative w-full overflow-hidden rounded-[32px] bg-slate-50 dark:bg-[#121212] border border-slate-200/60 dark:border-white/[0.05]"
+        initial={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
         viewport={{ once: true }}
         whileInView={{ opacity: 1, y: 0 }}
       >
-        {/* Subtle glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 dark:bg-red-500/10 blur-3xl pointer-events-none" />
+        {/* Subtle Background Glows */}
+        <div className="absolute -top-[100px] -right-[100px] w-[300px] h-[300px] bg-red-500/10 dark:bg-red-500/[0.03] blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] bg-orange-500/10 dark:bg-orange-500/[0.03] blur-[100px] rounded-full pointer-events-none" />
 
-        <div className="flex items-center gap-2.5 mb-5 relative z-10">
-          <span className="w-5 h-5 rounded-full bg-red-100 dark:bg-red-500/20 border border-red-200 dark:border-red-500/30 flex items-center justify-center text-red-600 dark:text-red-400 text-xs font-bold">
-            ✕
-          </span>
-          <p className="text-red-600 dark:text-red-400 font-bold text-xs uppercase tracking-wider">
-            Not the right fit
-          </p>
-        </div>
+        <div className="relative z-10 flex flex-col lg:flex-row p-8 md:p-12 gap-10 lg:gap-16 items-start lg:items-center">
+          
+          {/* Left Side: Title */}
+          <div className="lg:w-2/5 flex flex-col gap-5">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm">
+              <span className="text-red-500 text-xl font-medium">✕</span>
+            </div>
+            <div>
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-3">
+                Not the right fit
+              </h3>
+              <p className="text-slate-500 dark:text-slate-400 text-[15px] font-normal leading-relaxed">
+                We're a highly specialized team, not a generalist agency. If you need any of these, we recommend looking elsewhere.
+              </p>
+            </div>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
-          {NOT_FOR.map((item, index) => (
-            <motion.div
-              key={index}
-              className="flex items-center gap-3.5 bg-white/90 dark:bg-white/[0.06] border border-red-100/80 dark:border-white/10 rounded-xl px-4 py-3.5 hover:border-red-200 dark:hover:bg-white/[0.1] shadow-sm dark:shadow-none backdrop-blur-sm transition-all"
-              initial={{ opacity: 0, x: -10 }}
-              transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
-              viewport={{ once: true }}
-              whileInView={{ opacity: 1, x: 0 }}
-            >
-              <span className="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-500/15 border border-red-200/70 dark:border-red-500/30 flex items-center justify-center text-red-500 dark:text-red-400 font-bold text-sm flex-shrink-0">
-                {item.icon}
-              </span>
-              <span className="text-slate-800 dark:text-white/90 text-sm font-medium leading-snug">
-                {item.text}
-              </span>
-            </motion.div>
-          ))}
+          {/* Right Side: List */}
+          <div className="flex-1 w-full flex flex-col gap-3">
+            {NOT_FOR.map((item, index) => (
+              <motion.div
+                key={index}
+                className="flex items-center gap-4 p-4 md:p-5 rounded-2xl bg-white dark:bg-white/[0.02] border border-slate-100 dark:border-white/[0.05] hover:border-slate-200 dark:hover:border-white/[0.1] transition-all shadow-sm shadow-slate-100/50 dark:shadow-none"
+                initial={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
+                viewport={{ once: true }}
+                whileInView={{ opacity: 1, y: 0 }}
+              >
+                <div className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-red-50 dark:bg-red-500/10 text-red-500 text-[11px] font-bold">
+                  ✕
+                </div>
+                <span className="text-slate-700 dark:text-slate-200 text-[15px] font-medium tracking-tight">
+                  {item.text}
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.div>
+
     </motion.div>
   );
 };
