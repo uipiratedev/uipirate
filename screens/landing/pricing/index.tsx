@@ -33,8 +33,7 @@ const Pricing = () => {
 
   const customProjectFeatures = [
     "Access to all services",
-    "Priority support",
-    "Fully custom scope",
+    "Priority support & Fully custom scope",
     "No hidden costs",
     "Working with your team",
     "Mon–Fri, < 2hr response",
@@ -159,7 +158,11 @@ const Pricing = () => {
                     vs $8-15k/mo for a typical agency retainer
                   </p>
                 </div>
-
+                <div className="mt-auto">
+                  <p className="text-gray-500 max-md:text-sm text-sm mb-4 italic">
+                    One subscription, endless possibilities
+                  </p>
+                </div>
 
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3">
@@ -218,6 +221,9 @@ const Pricing = () => {
 
                 {/* Buttons */}
                 <div className="grid grid-cols-1 gap-3 max-md:hidden mt-auto pt-6">
+                  <p className="text-gray-500 max-md:text-sm text-sm mb-2 italic">
+                    Built around your product, not a template.
+                  </p>
                   <LetsTalkButton
                     children="Book a Discovery Call"
                     fullWidth
@@ -246,9 +252,7 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <p className="text-[#777777] text-sm mt-6 italic font-jakarta">
-                  Built around your product, not a template.
-                </p>
+
               </div>
               <div className="grid grid-cols-1 gap-3 md:hidden">
                 <LetsTalkButton

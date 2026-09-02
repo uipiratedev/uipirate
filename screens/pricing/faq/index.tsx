@@ -85,7 +85,7 @@ const PricingFAQ = () => {
               </p>
             }
           >
-            <div className=" pb-5 md:pb-6 pt-0">
+            <div className="pt-0">
               <p className="text-[15px] text-gray-600 leading-relaxed">
                 {faq.answer}
               </p>

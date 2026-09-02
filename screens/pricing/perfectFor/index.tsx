@@ -58,29 +58,29 @@ const PricingPerfectFor = () => {
       </div>
 
       {/* Perfect For Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {PERFECT_FOR.map((item, index) => (
           <motion.div
             key={item.title}
-            className="group relative h-[280px] md:h-[300px] w-full [perspective:1000px]"
+            className="group relative h-[240px] md:h-[280px] w-full [perspective:1000px]"
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
             viewport={{ once: true }}
             whileInView={{ opacity: 1, y: 0 }}
           >
             <div className="relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.03)] group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] dark:group-hover:shadow-[0_16px_36px_rgba(0,0,0,0.4)]">
-              
+
               {/* FRONT FACE */}
               <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] flex flex-col overflow-hidden rounded-[24px] bg-white dark:bg-[#1A1A1A] border border-gray-200/80 dark:border-white/10">
-                <div className="relative w-full h-[180px] md:h-[200px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white dark:from-[#26201D] dark:to-[#1A1A1A] flex items-center justify-center">
+                <div className="relative w-full h-[180px] md:h-[220px] overflow-hidden bg-gradient-to-b from-[#FFF5EE] to-white dark:from-[#26201D] dark:to-[#1A1A1A] flex items-center justify-center">
                   <img
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     src={item.image}
                   />
                 </div>
-                <div className="flex flex-1 flex-col justify-center items-center p-6">
-                  <h3 className="text-lg md:text-[19px] font-bold text-slate-900 dark:text-white uppercase tracking-tight text-center">
+                <div className="flex flex-1 flex-col justify-start items-start p-3 pb-0">
+                  <h3 className="text-lg md:text-[19px] font-bold text-slate-900 dark:text-white uppercase tracking-tight">
                     {item.title}
                   </h3>
                 </div>
@@ -103,7 +103,7 @@ const PricingPerfectFor = () => {
 
       {/* Premium Not For Section */}
       <motion.div
-        className="mt-16 relative w-full overflow-hidden rounded-[32px] bg-slate-50 dark:bg-[#121212] border border-slate-200/60 dark:border-white/[0.05]"
+        className=" relative w-full overflow-hidden rounded-[32px] bg-slate-50 dark:bg-[#121212] border border-slate-200/60 dark:border-white/[0.05]"
         initial={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.5, delay: 0.3 }}
         viewport={{ once: true }}
@@ -114,7 +114,7 @@ const PricingPerfectFor = () => {
         <div className="absolute -bottom-[100px] -left-[100px] w-[300px] h-[300px] bg-orange-500/10 dark:bg-orange-500/[0.03] blur-[100px] rounded-full pointer-events-none" />
 
         <div className="relative z-10 flex flex-col lg:flex-row p-8 md:p-12 gap-10 lg:gap-16 items-start lg:items-center">
-          
+
           {/* Left Side: Title */}
           <div className="lg:w-2/5 flex flex-col gap-5">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-sm">

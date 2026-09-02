@@ -89,7 +89,7 @@ const LandingMarquee = () => {
     },
 
     {
-      url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788268155/pivotbits_g8c3rk.png",
+      url: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1788341201/pivotbitslogo_vgkhnp.svg",
       alt: "Pivotbits - AI-powered business solutions logo",
       link: "https://pivotbits.com/",
     },
@@ -145,9 +145,8 @@ const LandingMarquee = () => {
             {premiumLogos.map((logo, index) => (
               <motion.a
                 key={index}
-                className={`logo-item flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden ${
-                  logo.link ? "cursor-pointer" : "cursor-default"
-                }`}
+                className={`logo-item flex items-center justify-center w-full h-full p-6 max-md:p-4 rounded-[10px] relative overflow-hidden ${logo.link ? "cursor-pointer" : "cursor-default"
+                  }`}
                 href={logo.link || undefined}
                 rel={logo.link ? "noopener noreferrer" : undefined}
                 style={{

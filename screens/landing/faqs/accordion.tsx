@@ -191,7 +191,7 @@ export default function FaqsAccordion() {
                   </p>
                 }
               >
-                <div className="pb-5 md:pb-6 pt-0">
+                <div className="pt-0">
                   <p className="mb-5 text-[15px] text-gray-600">
                     {item.title1}
                   </p>
