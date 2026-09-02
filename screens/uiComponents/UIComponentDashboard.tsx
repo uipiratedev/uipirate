@@ -1073,55 +1073,59 @@ export default function Example() {
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
                           Size Scale:
                         </label>
-                        <div className="flex items-center gap-1">
-                          {(["xs", "sm", "md", "lg", "xl"] as const).map((s) => (
-                            <button
-                              key={s}
-                              onClick={() => setCustomSize(s)}
-                              className={`flex-1 py-2 rounded-xl uppercase font-bold text-xs transition-all cursor-pointer ${
-                                customSize === s
-                                  ? "bg-[#FF5B04] text-white shadow"
-                                  : isLightPage
-                                  ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                  : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                              }`}
-                            >
-                              {s}
-                            </button>
-                          ))}
-                        </div>
+                        <select
+                          value={customSize}
+                          onChange={(e) => setCustomSize(e.target.value as "xs" | "sm" | "md" | "lg" | "xl")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${
+                            isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                          }`}
+                        >
+                          <option value="xs" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Extra Small (XS)
+                          </option>
+                          <option value="sm" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Small (SM)
+                          </option>
+                          <option value="md" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Medium (MD)
+                          </option>
+                          <option value="lg" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Large (LG)
+                          </option>
+                          <option value="xl" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Extra Large (XL)
+                          </option>
+                        </select>
                       </div>
                     )}
 
-                    {/* 3. Theme / Variant Chips */}
+                    {/* 3. Theme / Variant Dropdown */}
                     {selectedComponent.hasThemeControl && selectedComponent.availableThemes && (
-                      <div className="space-y-1.5 sm:col-span-2 lg:col-span-1">
+                      <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
                           Variant Theme:
                         </label>
-                        <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-1 scrollbar-thin">
+                        <select
+                          value={customTheme}
+                          onChange={(e) => setCustomTheme(e.target.value)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${
+                            isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                          }`}
+                        >
                           {selectedComponent.availableThemes.map((th) => (
-                            <button
+                            <option
                               key={th.value}
-                              onClick={() => setCustomTheme(th.value)}
-                              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
-                                customTheme === th.value
-                                  ? "bg-[#FF5B04] text-white font-bold shadow"
-                                  : isLightPage
-                                  ? "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
-                                  : "bg-white/5 text-gray-300 hover:bg-white/10 border border-white/5"
-                              }`}
+                              value={th.value}
+                              className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}
                             >
-                              {th.color && (
-                                <span
-                                  className="w-2 h-2 rounded-full shrink-0"
-                                  style={{ backgroundColor: th.color }}
-                                />
-                              )}
-                              <span>{th.label}</span>
-                            </button>
+                              {th.label}
+                            </option>
                           ))}
-                        </div>
+                        </select>
                       </div>
                     )}
                   </div>
