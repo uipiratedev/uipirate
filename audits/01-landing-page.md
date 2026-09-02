@@ -718,6 +718,7 @@ Ordered by visibility, severity, and impact on trust. Items carried from v1 that
 | 22 | BentoGrid | Rewrite service card descriptions — remove "pixel-perfect" and sparse labels `[NEW]` | `bentoGrid/bentoGrid.tsx` | ✅ Done |
 | 23 | Services | Replace "One-stop shop for all your essentials" `[v1]` | `servicesSection.tsx` | ✅ Done |
 | 24 | Services | Fix "Let's Talk" CTA — replace with "Tell Us What You Need — Free Consultation" `[v1]` | `servicesSection.tsx` | ✅ Done |
+| 24a | Services | Broke the 4 core services down into 6 subsidiary services (including Full Stack Development) to fill visual empty space `[NEW]` | `servicesSection.tsx` | ✅ Done |
 | 25 | Marquee | Add company name text labels under each logo `[v1]` | `marquee/index.tsx` | ✅ Done (Discarded per user) |
 | 26 | Testimonials | Remove/reposition Kyle Drucker (YouTuber) testimonial `[v1]` | `data/testimonials.json` | ✅ Done |
 | 27 | Testimonials | Request P-S-O expanded testimonials from 3 generic reviewers `[v1]` | `data/testimonials.json` | ✅ Done |

@@ -57,15 +57,23 @@ const ServicesSection = () => {
   const services = [
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/uxui_qjw76q.svg",
-      title: "UX/UI DESIGN",
+      title: "UX & UI DESIGN",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
-      title: "SaaS & AI Development",
+      title: "FULL STACK DEVELOPMENT",
+    },
+    {
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
+      title: "SaaS DEVELOPMENT",
+    },
+    {
+      icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113550/code_h8gq63.svg",
+      title: "AI INTEGRATIONS",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/landing_jirsl5.svg",
-      title: "LANDING PAGES & BUSINESS WEBSITES",
+      title: "LANDING PAGES & WEBSITES",
     },
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770113288/ux_biqghx.svg",
