@@ -239,7 +239,7 @@ export default function Example() {
               >
                 <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
                 <option value="standerd" className="bg-[#151518] text-white">Standard</option>
-                <option value="hover" className="bg-[#151518] text-white">Hover</option>
+                <option value="hover" className="bg-[#151518] text-white">Click</option>
               </select>
             </div>
           </div>

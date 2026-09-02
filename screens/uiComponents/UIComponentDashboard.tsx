@@ -655,6 +655,7 @@ export default function Example() {
             <TactileNeumorphicToggle
               theme={toggleTheme as any}
               size={customSize}
+              stateMode={customStateMode}
               label={customLabel || "Tactile Toggle"}
               defaultChecked={true}
               onChange={(st) => handleTriggerAction(`Toggle: ${st ? "ON" : "OFF"}`)}
@@ -670,6 +671,7 @@ export default function Example() {
             <TactileNeumorphicSwitch
               theme={switchTheme as any}
               size={customSize}
+              stateMode={customStateMode}
               defaultChecked={true}
               onChange={(st) => handleTriggerAction(`Switch: ${st ? "ON" : "OFF"}`)}
             />
@@ -1165,6 +1167,8 @@ export default function Example() {
                       "glossy-gel-button",
                       "slide-grow-button",
                       "arc-corner-toggle",
+                      "tactile-neumorphic-toggle",
+                      "tactile-neumorphic-switch",
                     ].includes(selectedComponent.id) && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
@@ -1186,7 +1190,13 @@ export default function Example() {
                             Standard
                           </option>
                           <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Hover
+                            {[
+                              "arc-corner-toggle",
+                              "tactile-neumorphic-toggle",
+                              "tactile-neumorphic-switch",
+                            ].includes(selectedComponent.id)
+                              ? "Click"
+                              : "Hover"}
                           </option>
                         </select>
                       </div>
