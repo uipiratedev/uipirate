@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-import GlassBadge from "@/components/GlassBadge";
 import LetsTalkButton from "@/components/LetsTalkButton";
 
 type PlanId = "monthly" | "custom";
@@ -146,7 +145,7 @@ const ScannerIndicator = () => {
 
 // Left half of the card — identity, price + scanner indicator.
 const LeftSection = ({ plan }: { plan: Plan }) => (
-  <div className="relative flex h-full min-h-[200px] flex-col justify-between overflow-hidden rounded-l-[16px] bg-[#ECECEC] p-6 sm:p-8 dark:bg-[#181818]">
+  <div className="relative flex h-full min-h-[200px] flex-col justify-between overflow-hidden rounded-[16px] md:rounded-r-none md:rounded-l-[16px] bg-[#ECECEC] p-6 sm:p-8 dark:bg-[#181818]">
     {/* Square box at the top corner, right side */}
     <div
       aria-hidden="true"
@@ -188,7 +187,7 @@ const LeftSection = ({ plan }: { plan: Plan }) => (
 
 // Right half of the card — what's included + CTA.
 const RightSection = ({ plan }: { plan: Plan }) => (
-  <div className="flex h-full flex-col overflow-hidden rounded-r-[16px] bg-white p-6 sm:p-8 dark:bg-[#141414]">
+  <div className="flex h-full flex-col overflow-hidden rounded-[16px] md:rounded-l-none md:rounded-r-[16px] bg-white p-6 sm:p-8 dark:bg-[#141414]">
     <span className="mb-4 inline-flex w-fit items-center rounded-full border border-brand-orange/40 px-3 py-1 font-jetbrains text-[11px] font-semibold uppercase tracking-wider text-brand-orange">
       What&apos;s included
     </span>
@@ -243,16 +242,6 @@ const PricingFlip = () => {
 
   return (
     <section className="section-container">
-      <div className="autoShow mb-8 text-center max-md:mb-6">
-        <div className="mb-6 flex justify-center">
-          <GlassBadge variant="gradient">PRICING</GlassBadge>
-        </div>
-        <h2 className="heading-center">
-          One page, two ways to{" "}
-          <span className="text-brand-orange">work together</span>
-        </h2>
-      </div>
-
       {/* Tabs */}
       <div className="mb-8 flex justify-center max-md:mb-6">
         <div className="flex items-center gap-1.5 rounded-[22px] border border-black/[0.08] bg-[#EFEFEF] p-1.5 dark:border-white/10 dark:bg-[#1C1C1C]">
@@ -387,11 +376,11 @@ const PricingFlip = () => {
             initial={{ opacity: 0, y: 6 }}
             transition={{ duration: reduce ? 0 : 0.25, ease: "easeOut" }}
           >
-            <div className="rounded-[16px] shadow-[-6px_8px_16px_rgba(0,0,0,0.14),-2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[-6px_10px_20px_rgba(0,0,0,0.65)]">
-              <LeftSection plan={PLANS[active]} />
-            </div>
-            <div className="rounded-[16px] shadow-[6px_8px_16px_rgba(0,0,0,0.14),2px_4px_6px_rgba(0,0,0,0.06)] dark:shadow-[6px_10px_20px_rgba(0,0,0,0.65)]">
+            <div className="overflow-hidden rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
               <RightSection plan={PLANS[active]} />
+            </div>
+            <div className="overflow-hidden rounded-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+              <LeftSection plan={PLANS[active]} />
             </div>
           </motion.div>
         </div>

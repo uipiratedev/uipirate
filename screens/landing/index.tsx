@@ -104,8 +104,6 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
           <Pricing />
         </div>
 
-        <PricingFlip />
-
         <TheTeam />
 
         {/* <BoreYouCommit /> */}
