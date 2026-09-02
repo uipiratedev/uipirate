@@ -10,7 +10,6 @@ import {
   TactileSwitchStateMode,
   SWITCH_THEMES,
 } from "@/components/TactileNeumorphicSwitch";
-import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
@@ -20,8 +19,6 @@ export default function TactileNeumorphicSwitchScreen() {
   const [stateMode, setStateMode] = useState<TactileSwitchStateMode>("interactive");
   const [showGrid, setShowGrid] = useState(true);
   const [clickCount, setClickCount] = useState(0);
-  const [customActiveColor, setCustomActiveColor] = useState<string>("#10E599");
-  const [useCustomColor, setUseCustomColor] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<"component" | "usage" | "css" | "framer">("component");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [copiedInstall, setCopiedInstall] = useState(false);
@@ -101,8 +98,11 @@ export function TactileNeumorphicSwitch({
         transition={{ type: "spring", stiffness: 380, damping: 26 }}
         className="absolute z-20 w-[136px] h-[96px] rounded-[48px] bg-gradient-to-br from-white via-[#F5F7FA] to-[#DFE4EC] shadow-[0_16px_28px_-3px_rgba(35,48,70,0.32),0_8px_14px_-2px_rgba(35,48,70,0.22),inset_0_2px_3px_white,inset_0_-3px_4px_rgba(150,162,180,0.35)] flex items-center justify-between px-2"
       >
+        {/* Left Dome */}
         <div className="w-[60px] h-[60px] rounded-full bg-[radial-gradient(circle_at_35%_32%,white_0%,rgba(255,255,255,0.75)_35%,rgba(185,195,212,0.7)_100%)] shadow-[inset_0_2px_3px_rgba(255,255,255,0.95),inset_0_-2px_3px_rgba(140,152,172,0.4)]" />
+        {/* Concave Valley */}
         <div className="w-[2px] h-[55%] rounded-full bg-gradient-to-b from-white via-slate-400 to-white opacity-35" />
+        {/* Right Dome */}
         <div className="w-[60px] h-[60px] rounded-full bg-[radial-gradient(circle_at_35%_32%,white_0%,rgba(255,255,255,0.75)_35%,rgba(185,195,212,0.7)_100%)] shadow-[inset_0_2px_3px_rgba(255,255,255,0.95),inset_0_-2px_3px_rgba(140,152,172,0.4)]" />
       </motion.div>
     </div>
@@ -164,189 +164,94 @@ export const SWITCH_SPRING = {
 
   return (
     <PageWrapper showFloatingButton={false}>
-      <div className="relative overflow-hidden min-h-screen bg-[#0C0D12] text-white pt-6 pb-20 selection:bg-emerald-500/30 selection:text-emerald-200">
-        <div className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+      <div className="relative overflow-hidden min-h-screen bg-[#0A0B0E] text-white font-sans selection:bg-emerald-500/30 selection:text-emerald-200 pt-6 pb-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-12">
           {/* Header Section */}
           <header className="text-center space-y-4 max-w-3xl mx-auto pt-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-300 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>1:1 Figma Master • Node 1:7 &amp; 1:8</span>
-              <span className="text-gray-500">•</span>
-              <span className="text-emerald-400">React + Tailwind + Framer Motion</span>
+            <div className="inline-flex items-center gap-3 justify-center">
+              <span className="px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                1:1 Figma Master • Node 1:7 &amp; 1:8
+              </span>
+              <span className="text-xs text-white/40 font-mono">
+                React + Tailwind + Framer Motion
+              </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-white font-jakarta">
-              Tactile Neumorphic <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Dual-Dome Switch</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-jakarta">
+              Tactile Neumorphic Dual-Dome Switch
             </h1>
-            <p className="text-gray-400 text-base sm:text-lg leading-relaxed">
+            <p className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
               Photorealistic skeuomorphic switch featuring an outer recessed bevel cavity, deep carved shadow trench, illuminated emerald photon channel, and dual-dome sculpted tactile thumb.
             </p>
           </header>
 
           {/* Interactive Studio Stage */}
-          <div className="bg-[#12141A] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-            <StudioCanvas minHeight="min-h-[420px]">
-              <TactileNeumorphicSwitch
-                theme={theme}
-                size={size}
-                stateMode={stateMode}
-                showGrid={showGrid}
-                customActiveColor={useCustomColor ? customActiveColor : undefined}
-                onChange={() => setClickCount((c) => c + 1)}
-              />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Main Canvas Viewport */}
+            <div className="lg:col-span-8 space-y-4">
+              <div className="relative rounded-3xl border border-white/10 overflow-hidden shadow-2xl bg-[#0F1116] min-h-[460px] flex flex-col items-center justify-center p-8">
+                {/* Live Interactive Switch Component */}
+                <div className="relative z-10 py-6">
+                  <TactileNeumorphicSwitch
+                    theme={theme}
+                    size={size}
+                    stateMode={stateMode}
+                    showGrid={showGrid}
+                    onChange={() => setClickCount((c) => c + 1)}
+                  />
+                </div>
 
-              <div className="flex items-center gap-2 text-xs font-mono text-gray-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>Interactions:</span>
-                <span className="text-white font-semibold">{clickCount}</span>
+                {/* Status Bar */}
+                <div className="absolute bottom-4 right-6 text-xs text-white/40 font-mono">
+                  {clickCount > 0
+                    ? `Interactions: ${clickCount} clicks`
+                    : "Click or press Space to toggle"}
+                </div>
               </div>
-            </StudioCanvas>
-          </div>
+            </div>
 
-          {/* Customizer */}
-          <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">Customizer</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-5 text-xs">
+            {/* Customizer Sidebar */}
+            <div className="lg:col-span-4 bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
+                Customizer
+              </h2>
+
               {/* State Mode Selector */}
               <div className="space-y-1.5">
-                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                   State Mode
                 </label>
-                <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/5">
-                  {(["interactive", "off", "on"] as TactileSwitchStateMode[]).map((mode) => (
-                    <button
-                      key={mode}
-                      type="button"
-                      onClick={() => setStateMode(mode)}
-                      className={`flex-1 py-1.5 rounded-lg font-mono text-[11px] uppercase transition-all cursor-pointer ${stateMode === mode
-                        ? "bg-emerald-500 text-black font-bold shadow"
-                        : "text-white/50 hover:text-white"
-                        }`}
-                    >
-                      {mode === "off" ? "OFF (1:7)" : mode === "on" ? "ON (1:8)" : "Live"}
-                    </button>
-                  ))}
-                </div>
+                <select
+                  value={stateMode}
+                  onChange={(e) => setStateMode(e.target.value as TactileSwitchStateMode)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono cursor-pointer"
+                >
+                  <option value="interactive" className="bg-[#10131A] text-white">Interactive</option>
+                  <option value="off" className="bg-[#10131A] text-white">Standard (OFF)</option>
+                  <option value="on" className="bg-[#10131A] text-white">Click (ON)</option>
+                </select>
               </div>
 
               {/* Color Theme Selector */}
               <div className="space-y-1.5">
-                <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                  Theme &amp; Chassis Preset
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                  Color &amp; Illumination Theme
                 </label>
                 <select
                   value={theme}
-                  onChange={(e) => {
-                    setTheme(e.target.value as TactileSwitchTheme);
-                    setUseCustomColor(false);
-                  }}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer"
+                  onChange={(e) => setTheme(e.target.value as TactileSwitchTheme)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
                 >
                   {(Object.keys(SWITCH_THEMES) as TactileSwitchTheme[]).map((key) => (
-                    <option key={key} value={key} className="bg-[#12141A] text-white">
+                    <option key={key} value={key} className="bg-[#10131A] text-white">
                       {SWITCH_THEMES[key].name}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* ON State Illumination Color Dropdown & Direct Picker */}
-              <div className="space-y-1.5">
-                <label className="font-mono text-gray-400 uppercase tracking-wider block">
-                  ON State Accent Color
-                </label>
-                <div className="flex items-center gap-2">
-                  <select
-                    value={
-                      !useCustomColor
-                        ? "default"
-                        : [
-                          "#10E599",
-                          "#00E5FF",
-                          "#38BDF8",
-                          "#3B82F6",
-                          "#A855F7",
-                          "#FF5B04",
-                          "#F43F5E",
-                          "#84CC16",
-                          "#FBBF24",
-                        ].includes(customActiveColor)
-                          ? customActiveColor
-                          : "custom"
-                    }
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      if (val === "default") {
-                        setUseCustomColor(false);
-                      } else if (val === "custom") {
-                        setUseCustomColor(true);
-                      } else {
-                        setCustomActiveColor(val);
-                        setUseCustomColor(true);
-                      }
-                    }}
-                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono cursor-pointer text-xs"
-                  >
-                    <option value="default" className="bg-[#12141A] text-white">
-                      Theme Default
-                    </option>
-                    <option value="#10E599" className="bg-[#12141A] text-white">
-                      🟢 Emerald (#10E599)
-                    </option>
-                    <option value="#00E5FF" className="bg-[#12141A] text-white">
-                      💎 Cyan (#00E5FF)
-                    </option>
-                    <option value="#38BDF8" className="bg-[#12141A] text-white">
-                      💠 Sky (#38BDF8)
-                    </option>
-                    <option value="#3B82F6" className="bg-[#12141A] text-white">
-                      🔷 Blue (#3B82F6)
-                    </option>
-                    <option value="#A855F7" className="bg-[#12141A] text-white">
-                      🟣 Violet (#A855F7)
-                    </option>
-                    <option value="#FF5B04" className="bg-[#12141A] text-white">
-                      🔥 Magma (#FF5B04)
-                    </option>
-                    <option value="#F43F5E" className="bg-[#12141A] text-white">
-                      🌸 Rose (#F43F5E)
-                    </option>
-                    <option value="#84CC16" className="bg-[#12141A] text-white">
-                      🍏 Lime (#84CC16)
-                    </option>
-                    <option value="#FBBF24" className="bg-[#12141A] text-white">
-                      ⭐ Gold (#FBBF24)
-                    </option>
-                  </select>
-
-                  {/* Direct Native Color Picker Input */}
-                  <div
-                    className="relative shrink-0 flex items-center justify-center w-9 h-9 rounded-xl border border-white/15 bg-white/5 overflow-hidden cursor-pointer hover:border-white/40 transition-colors"
-                    title="Click to pick any custom HEX color"
-                  >
-                    <input
-                      type="color"
-                      value={useCustomColor ? customActiveColor : SWITCH_THEMES[theme]?.accent || "#10E599"}
-                      onChange={(e) => {
-                        setCustomActiveColor(e.target.value);
-                        setUseCustomColor(true);
-                      }}
-                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                    />
-                    <span
-                      className="w-4 h-4 rounded-full shadow-sm border border-black/20"
-                      style={{
-                        backgroundColor: useCustomColor
-                          ? customActiveColor
-                          : SWITCH_THEMES[theme]?.accent || "#10E599",
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-
               {/* Scale Size Selector */}
               <div className="space-y-1.5">
-                <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
                   Scale Size
                 </label>
                 <select
@@ -362,16 +267,19 @@ export const SWITCH_SPRING = {
                 </select>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setShowGrid(!showGrid)}
-                className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors ${showGrid ? "bg-white/20 text-white font-bold" : "bg-white/5 text-white/40"
-                  }`}
-              >
-                {showGrid ? "Enabled" : "Hidden"}
-              </button>
+              {/* Grid Canvas Texture Toggle */}
+              <div className="flex items-center justify-between pt-2 border-t border-white/5">
+                <span className="text-xs font-mono text-white/60">Figma Mesh Grid</span>
+                <button
+                  type="button"
+                  onClick={() => setShowGrid(!showGrid)}
+                  className={`px-3 py-1 rounded-lg text-xs font-mono transition-colors ${showGrid ? "bg-white/20 text-white font-bold" : "bg-white/5 text-white/40"
+                    }`}
+                >
+                  {showGrid ? "Enabled" : "Hidden"}
+                </button>
+              </div>
             </div>
-            )}
           </div>
 
           {/* ─────────────────────────────────────────────────────────────

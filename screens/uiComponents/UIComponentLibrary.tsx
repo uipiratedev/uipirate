@@ -431,7 +431,7 @@ export default function UIComponentLibrary() {
           <div className="absolute top-2/3 right-1/12 w-[550px] h-[500px] bg-purple-500/5 rounded-full blur-[160px]" />
         </div>
 
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10 space-y-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative z-10 space-y-20">
           {/* Top Hero Section */}
           <div className="flex flex-col items-center justify-center text-center space-y-3 max-w-4xl mx-auto pt-6">
             <GlassSurface
