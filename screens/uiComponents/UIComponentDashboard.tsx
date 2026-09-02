@@ -508,8 +508,10 @@ export default function Example() {
         return (
           <div className="py-8 flex items-center justify-center">
             <SlideGrowButton
+              startLabel={customLabel || "Get Started"}
               theme={slideTheme as any}
               size={customSize}
+              stateMode={customStateMode}
               onComplete={() => handleTriggerAction("Swipe Gesture Completed")}
             />
           </div>
@@ -681,6 +683,7 @@ export default function Example() {
             <GlossyGelButton
               theme={gelTheme as any}
               size={customSize}
+              stateMode={customStateMode}
               onClick={() => handleTriggerAction("Glossy Gel CTA Clicked")}
             >
               {customLabel || "Get Started"}
@@ -1158,6 +1161,8 @@ export default function Example() {
                       "scaling-capsule-button",
                       "magnetic-pulse-cta",
                       "animated-slide-button",
+                      "glossy-gel-button",
+                      "slide-grow-button",
                     ].includes(selectedComponent.id) && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>

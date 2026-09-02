@@ -12,6 +12,7 @@ export type GlossyGelTheme =
   | "obsidian-glass";
 
 export type GlossyGelSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type GlossyGelStateMode = "interactive" | "standerd" | "hover";
 
 export interface GlossyGelButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -21,6 +22,8 @@ export interface GlossyGelButtonProps
   theme?: GlossyGelTheme;
   /** Size variant */
   size?: GlossyGelSize;
+  /** State preview mode: "interactive" | "standerd" | "hover" */
+  stateMode?: GlossyGelStateMode;
   /** Optional icon rendered before label */
   iconLeft?: React.ReactNode;
   /** Optional icon rendered after label */
@@ -195,6 +198,7 @@ export const GlossyGelButton = React.forwardRef<
       children = "Get Started",
       theme = "emerald-gel",
       size = "md",
+      stateMode = "interactive",
       iconLeft,
       iconRight,
       isLoading = false,
@@ -208,6 +212,14 @@ export const GlossyGelButton = React.forwardRef<
     const [isHovered, setIsHovered] = useState(false);
     const [isPressed, setIsPressed] = useState(false);
 
+    const activeHover =
+      stateMode === "hover"
+        ? true
+        : stateMode === "standerd"
+        ? false
+        : isHovered;
+    const activePressed = stateMode === "interactive" ? isPressed : false;
+
     const themeConfig = GEL_THEMES[theme] || GEL_THEMES["emerald-gel"];
     const sizeConfig = SIZE_STYLES[size] || SIZE_STYLES.md;
 
@@ -216,16 +228,19 @@ export const GlossyGelButton = React.forwardRef<
         ref={ref}
         type="button"
         disabled={disabled || isLoading}
-        onMouseEnter={() => setIsHovered(true)}
+        onMouseEnter={() => stateMode === "interactive" && setIsHovered(true)}
         onMouseLeave={() => {
-          setIsHovered(false);
-          setIsPressed(false);
+          if (stateMode === "interactive") {
+            setIsHovered(false);
+            setIsPressed(false);
+          }
         }}
-        onMouseDown={() => setIsPressed(true)}
-        onMouseUp={() => setIsPressed(false)}
+        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
+        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
         onClick={onClick}
-        whileHover={{ scale: 1.025 }}
-        whileTap={{ scale: 0.97 }}
+        animate={{ scale: activePressed ? 0.97 : activeHover ? 1.025 : 1 }}
+        whileHover={stateMode === "interactive" ? { scale: 1.025 } : undefined}
+        whileTap={stateMode === "interactive" ? { scale: 0.97 } : undefined}
         transition={{ type: "spring", stiffness: 450, damping: 25 }}
         className={`relative inline-flex items-center justify-center font-semibold select-none cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-500 overflow-hidden ${
           sizeConfig.padding
@@ -248,7 +263,7 @@ export const GlossyGelButton = React.forwardRef<
           style={{
             background: themeConfig.ambientGlow,
             filter: "blur(10px)",
-            opacity: isHovered ? 0.75 : 0.35,
+            opacity: activeHover ? 0.75 : 0.35,
           }}
         />
 
@@ -258,7 +273,7 @@ export const GlossyGelButton = React.forwardRef<
           style={{
             background: themeConfig.highlightGradient,
             filter: "blur(3px)",
-            opacity: isPressed ? 0.6 : isHovered ? 1 : 0.85,
+            opacity: activePressed ? 0.6 : activeHover ? 1 : 0.85,
             transition: "opacity 0.2s ease",
           }}
         />
@@ -266,11 +281,11 @@ export const GlossyGelButton = React.forwardRef<
         {/* Specular Interactive Sheen Wave on Hover */}
         <motion.div
           animate={{
-            x: isHovered ? ["-120%", "150%"] : "-120%",
+            x: activeHover ? ["-120%", "150%"] : "-120%",
           }}
           transition={{
             duration: 1.1,
-            repeat: isHovered ? Infinity : 0,
+            repeat: activeHover ? Infinity : 0,
             repeatDelay: 1.8,
             ease: "easeInOut",
           }}
