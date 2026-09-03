@@ -4,33 +4,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import SmashTactileButton, {
   SmashButtonVariant,
+  SmashTactileButtonState,
 } from "@/components/SmashTactileButton";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function SmashTactileButtonScreen() {
-  const [label, setLabel] = useState("Smash the button");
-  const [variant, setVariant] = useState<SmashButtonVariant>("figma");
-  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl" | "hero">("md");
-  const [smashCount, setSmashCount] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const SMASH_BUTTON_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -89,6 +69,30 @@ export function SmashTactileButton({
 
 export default SmashTactileButton;`;
 
+export default function SmashTactileButtonScreen() {
+  const [label, setLabel] = useState("Smash the button");
+  const [variant, setVariant] = useState<SmashButtonVariant>("figma");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl" | "hero">("md");
+  const [stateMode, setStateMode] = useState<SmashTactileButtonState>("interactive");
+  const [smashCount, setSmashCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = SMASH_BUTTON_COMPONENT_SOURCE;
+
   const usageCode = `import { SmashTactileButton } from "@/components/SmashTactileButton";
 
 export default function Example() {
@@ -145,6 +149,7 @@ export default function Example() {
                 label={label}
                 variant={variant}
                 size={size}
+                stateMode={stateMode}
                 onClick={() => setSmashCount((c) => c + 1)}
               />
 
@@ -186,17 +191,30 @@ export default function Example() {
 
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-                            <select
+              <select
                 value={size}
                 onChange={(e) => setSize(e.target.value as typeof size)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                  <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
-                  <option value="sm" className="bg-[#151518] text-white">Small</option>
-                  <option value="md" className="bg-[#151518] text-white">Medium</option>
-                  <option value="lg" className="bg-[#151518] text-white">Large</option>
-                  <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
-                  <option value="hero" className="bg-[#151518] text-white">Hero</option>
+                <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#151518] text-white">Small</option>
+                <option value="md" className="bg-[#151518] text-white">Medium</option>
+                <option value="lg" className="bg-[#151518] text-white">Large</option>
+                <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+                <option value="hero" className="bg-[#151518] text-white">Hero</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as SmashTactileButtonState)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
+                <option value="hover" className="bg-[#151518] text-white">Hover</option>
               </select>
             </div>
           </div>

@@ -2,34 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+import {
+  ArcCornerToggle,
+  ArcToggleStateMode,
+} from "@/components/ArcCornerToggle";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function ArcCornerToggleScreen() {
-  const [active, setActive] = useState(false);
-  const [speed, setSpeed] = useState(0.65);
-  const [trackStyle, setTrackStyle] = useState<"arc" | "line">("arc");
-  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [toggleCount, setToggleCount] = useState(0);
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const ARC_CORNER_TOGGLE_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -105,6 +86,31 @@ export function ArcCornerToggle({
 
 export default ArcCornerToggle;`;
 
+export default function ArcCornerToggleScreen() {
+  const [active, setActive] = useState(false);
+  const [speed, setSpeed] = useState(0.65);
+  const [trackStyle, setTrackStyle] = useState<"arc" | "line">("arc");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
+  const [stateMode, setStateMode] = useState<ArcToggleStateMode>("interactive");
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [toggleCount, setToggleCount] = useState(0);
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = ARC_CORNER_TOGGLE_COMPONENT_SOURCE;
+
   const usageCode = `import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 
 export default function Example() {
@@ -168,6 +174,7 @@ export default function Example() {
           <StudioCanvas minHeight="min-h-[460px]" hint={`Toggle count: ${toggleCount}`}>
             <ArcCornerToggle
               isActive={active}
+              stateMode={stateMode}
               onToggle={(next) => {
                 setActive(next);
                 setToggleCount((c) => c + 1);
@@ -222,6 +229,19 @@ export default function Example() {
                     {p.label}
                   </option>
                 ))}
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as ArcToggleStateMode)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
+                <option value="hover" className="bg-[#151518] text-white">Click</option>
               </select>
             </div>
           </div>

@@ -3,11 +3,9 @@
 import { Card, CardBody } from "@heroui/react";
 import { motion } from "framer-motion";
 
-import GlassBadge from "@/components/GlassBadge";
-import { CheckIcon } from "@/components/icons";
-import LetsTalkButton from "@/components/LetsTalkButton";
-import ProjectEstimate from "@/components/ProjectEstimate";
 import PricingFlip from "../pricingFlip";
+
+import GlassBadge from "@/components/GlassBadge";
 
 const Pricing = () => {
   // Subtle animation for the main container
@@ -84,7 +82,10 @@ const Pricing = () => {
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">PRICING</GlassBadge>
         </div>
-        <h2 className="heading-center">Transparent Pricing for <span className="text-brand-orange">SaaS Teams</span> </h2>
+        <h2 className="heading-center">
+          Transparent Pricing for{" "}
+          <span className="text-brand-orange">SaaS Teams</span>{" "}
+        </h2>
       </div>
 
       <PricingFlip />
@@ -132,7 +133,9 @@ const Pricing = () => {
           </h4>
         </div>
         <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-          Not happy with the first milestone? We'll refund your deposit, no questions asked. 100+ projects delivered for companies like Ipsos, Khaitan &amp; Co, and RevUp AI.
+          Not happy with the first milestone? We&apos;ll refund your deposit, no
+          questions asked. 100+ projects delivered for companies like Ipsos,
+          Khaitan &amp; Co, and RevUp AI.
         </p>
       </div>
     </motion.div>

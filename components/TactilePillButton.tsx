@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type TactileButtonVariant = "default" | "dark" | "orange" | "cyberpunk" | "minimal";
-export type TactileButtonState = "interactive" | "resting" | "tilted";
+export type TactileButtonState = "interactive" | "resting" | "tilted" | "standerd" | "hover";
 
 export interface TactilePillButtonProps {
   /** Text label inside the button */
   label?: string;
   /** Status dot indicator color (default: #54EAD8 from Figma) */
   dotColor?: string;
-  /** Force a specific visual state: 'interactive' (default hover tilt), 'resting' (75:1201), 'tilted' (75:1206) */
+  /** Force a specific visual state: 'interactive' (default hover tilt), 'resting'/'standerd' (75:1201), 'tilted'/'hover' (75:1206) */
   stateMode?: TactileButtonState;
   /** Visual theme variant */
   variant?: TactileButtonVariant;
@@ -183,6 +183,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
   // Lift state determination
   const isTilted =
     stateMode === "tilted" ||
+    stateMode === "hover" ||
     (stateMode === "interactive" && isHovered && !isPressed);
 
   const dotSize = sizeConfig.dotRadius * 2;

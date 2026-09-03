@@ -38,7 +38,7 @@ const reviewSchema = {
 
 function LandingTestimonials() {
   return (
-    <div className=" pt-20 max-md:pt-12 ">
+    <div className="w-full">
       {/* Review schema for Google rich results */}
       <script
         dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}

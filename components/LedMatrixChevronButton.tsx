@@ -309,6 +309,8 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       <div
         className={`relative flex items-center justify-center ${sizeConfig.enclosurePadding} ${sizeConfig.enclosureRadius}`}
         style={{
+          minWidth: sizeConfig.enclosureW,
+          width: "auto",
           backgroundColor: themeStyles.enclosureBg,
           boxShadow: "0px 1.5px 0px rgba(255, 255, 255, 0.1), inset 0px 0px 2px 0px rgba(0, 0, 0, 0.08)",
         }}
@@ -319,7 +321,8 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
         <div
           className={`relative flex items-center justify-between overflow-hidden border p-[5px] ${sizeConfig.slabRadius}`}
           style={{
-            width: sizeConfig.slabW,
+            minWidth: sizeConfig.slabW,
+            width: "max-content",
             height: sizeConfig.slabH,
             backgroundImage: themeStyles.slabBg,
             borderColor: themeStyles.chassisBorder,

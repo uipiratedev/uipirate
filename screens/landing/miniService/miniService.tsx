@@ -2,7 +2,7 @@ import GlassBadge from "@/components/GlassBadge";
 
 const MiniService = () => {
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-16 pt-4 max-md:pt-0">
+    <div className="section-container">
       <div className="autoShow">
         <div className="flex flex-row items-center justify-center mb-6">
           <GlassBadge variant="gradient">Design & Development</GlassBadge>

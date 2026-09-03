@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type SmashButtonVariant = "figma" | "dark" | "orange" | "cyberpunk";
+export type SmashTactileButtonState = "interactive" | "standerd" | "hover";
 
 export interface SmashTactileButtonProps {
   /** Text label inside the button (default: "Smash the button") */
@@ -12,6 +13,8 @@ export interface SmashTactileButtonProps {
   variant?: SmashButtonVariant;
   /** Size scale (default: "md") */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
+  /** State preview mode: 'interactive' | 'standerd' | 'hover' */
+  stateMode?: SmashTactileButtonState;
   /** Optional click handler */
   onClick?: () => void;
   /** Additional CSS class names */
@@ -73,12 +76,21 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   label = "Smash the button",
   variant = "figma",
   size = "md",
+  stateMode = "interactive",
   onClick,
   className = "",
   disabled = false,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+
+  const activeHover =
+    stateMode === "hover"
+      ? true
+      : stateMode === "standerd"
+      ? false
+      : isHovered;
+  const activePressed = stateMode === "interactive" ? isPressed : false;
 
   // Scaled dimensions with uniform, perfectly even padding where Layer 3.5 evenly contains Layer 4
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
@@ -100,7 +112,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       cradlePad: 10,
       coreW: 340,
       coreH: 87,
-      fontSize: "text-[20px]",
+      baseFontSizePx: 20,
       dotsCount: 17,
       ticksCount: 10,
       flareSize: 76,
@@ -115,7 +127,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       cradlePad: 14,
       coreW: 474,
       coreH: 121,
-      fontSize: "text-[28px] sm:text-[32px]",
+      baseFontSizePx: 28,
       dotsCount: 21,
       ticksCount: 12,
       flareSize: 103,
@@ -130,7 +142,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       cradlePad: 16,
       coreW: 578,
       coreH: 148,
-      fontSize: "text-[36px] sm:text-[40px]",
+      baseFontSizePx: 36,
       dotsCount: 25,
       ticksCount: 14,
       flareSize: 124,
@@ -145,7 +157,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       cradlePad: 18,
       coreW: 694,
       coreH: 178,
-      fontSize: "text-[42px] sm:text-[48px]",
+      baseFontSizePx: 44,
       dotsCount: 29,
       ticksCount: 16,
       flareSize: 150,
@@ -153,6 +165,11 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       liftY: -8,
     },
   }[__baseSize];
+
+  const dynamicFontSize =
+    label.length <= 16
+      ? `${sizeConfig.baseFontSizePx}px`
+      : `${Math.max(11, +(sizeConfig.baseFontSizePx * (16 / label.length)).toFixed(1))}px`;
 
   // Derived cradle dimensions: core dimensions + 2 * even cradle padding
   const cradleW = sizeConfig.coreW + sizeConfig.cradlePad * 2;
@@ -343,8 +360,8 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                ───────────────────────────────────────────────────────────── */}
             <motion.div
               animate={{
-                opacity: isHovered ? 1 : 0.85,
-                scale: isPressed ? 0.95 : isHovered ? 1.15 : 1,
+                opacity: activeHover ? 1 : 0.85,
+                scale: activePressed ? 0.95 : activeHover ? 1.15 : 1,
               }}
               transition={{ duration: 0.2 }}
               className="absolute pointer-events-none z-10"
@@ -414,18 +431,20 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
               type="button"
               disabled={disabled}
               onClick={onClick}
-              onMouseEnter={() => setIsHovered(true)}
+              onMouseEnter={() => stateMode === "interactive" && setIsHovered(true)}
               onMouseLeave={() => {
-                setIsHovered(false);
-                setIsPressed(false);
+                if (stateMode === "interactive") {
+                  setIsHovered(false);
+                  setIsPressed(false);
+                }
               }}
-              onMouseDown={() => setIsPressed(true)}
-              onMouseUp={() => setIsPressed(false)}
-              onTouchStart={() => setIsPressed(true)}
-              onTouchEnd={() => setIsPressed(false)}
+              onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
+              onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
+              onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
+              onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
               animate={{
-                y: isPressed ? 2 : isHovered ? sizeConfig.liftY : 0,
-                scale: isPressed ? 0.985 : 1,
+                y: activePressed ? 2 : activeHover ? sizeConfig.liftY : 0,
+                scale: activePressed ? 0.985 : 1,
               }}
               transition={{
                 type: "spring",
@@ -515,8 +534,9 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
 
               {/* Typography Label (node 17:1703) */}
               <span
-                className={`relative z-10 font-medium ${sizeConfig.fontSize} tracking-tight whitespace-nowrap leading-none select-none`}
+                className="relative z-10 font-medium tracking-tight whitespace-nowrap leading-none select-none max-w-[92%] px-3 text-center overflow-hidden text-ellipsis"
                 style={{
+                  fontSize: dynamicFontSize,
                   color: themeStyles.textColor,
                   textShadow: "0px 1px 2px rgba(0,0,0,0.8)",
                   fontFamily: "var(--font-jakarta), var(--font-sans), sans-serif",

@@ -241,7 +241,7 @@ const PricingFlip = () => {
     : { type: "spring" as const, stiffness: 50, damping: 11, mass: 1.1 };
 
   return (
-    <section className="section-container">
+    <div className="w-full">
       {/* Tabs */}
       <div className="mb-8 flex justify-center max-md:mb-6">
         <div className="flex items-center gap-1.5 rounded-[22px] border border-black/[0.08] bg-[#EFEFEF] p-1.5 dark:border-white/10 dark:bg-[#1C1C1C]">
@@ -385,7 +385,7 @@ const PricingFlip = () => {
           </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

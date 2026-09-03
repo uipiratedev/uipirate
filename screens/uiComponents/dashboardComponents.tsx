@@ -49,6 +49,13 @@ export interface ComponentDetail {
   hasLabelControl?: boolean;
   hasSizeControl?: boolean;
   hasThemeControl?: boolean;
+  hasIconControl?: boolean;
+  defaultIcon?: string;
+  availableIcons?: Array<{ value: string; label: string }>;
+  hasCablesControl?: boolean;
+  defaultShowCables?: boolean;
+  hasIntensityControl?: boolean;
+  defaultIntensity?: string;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -76,6 +83,8 @@ export const ALL_DASHBOARD_COMPONENTS: ComponentDetail[] = [
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasIntensityControl: true,
+    defaultIntensity: "vibrant",
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Obsidian", color: "#FFA000" },
@@ -333,6 +342,19 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasIconControl: true,
+    defaultIcon: "cloud-download",
+    availableIcons: [
+      { value: "cloud-download", label: "Cloud Download" },
+      { value: "download", label: "Download" },
+      { value: "arrow-down", label: "Arrow Down" },
+      { value: "upload", label: "Upload" },
+      { value: "folder", label: "Folder" },
+      { value: "package", label: "Package" },
+      { value: "save", label: "Save" },
+    ],
+    hasCablesControl: true,
+    defaultShowCables: true,
     defaultTheme: "figma-blue",
     availableThemes: [
       { value: "figma-blue", label: "Figma Blue", color: "#38BDF8" },
@@ -1226,7 +1248,7 @@ export default function Example() {
     detailUrl: "/componentlab/magnetic-pulse-cta",
     defaultLabel: "Let's Venture",
     hasLabelControl: true,
-    hasSizeControl: false,
+    hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "#FF5B04",
     availableThemes: [
@@ -1319,7 +1341,7 @@ export default function Example() {
     detailUrl: "/componentlab/animated-slide-button",
     defaultLabel: "Explore Services",
     hasLabelControl: true,
-    hasSizeControl: false,
+    hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "primary",
     availableThemes: [

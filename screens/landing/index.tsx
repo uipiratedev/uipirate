@@ -57,10 +57,6 @@ const TopThree = dynamic(() => import("./top3/topThree"), {
   loading: () => <div className="min-h-[400px]" />,
 });
 
-const PricingFlip = dynamic(() => import("./pricingFlip"), {
-  loading: () => <div className="min-h-[600px]" />,
-});
-
 interface LandingProps {
   featuredCaseStudy?: FeaturedCaseStudyData | null;
 }
@@ -74,7 +70,7 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
 
         <PricingPerfectFor />
 
-        <div className="pt-20 max-md:pt-16">
+        <div>
           <MiniService />
           <BentoGrid />
         </div>

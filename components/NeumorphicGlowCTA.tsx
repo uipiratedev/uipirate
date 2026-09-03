@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 export type NeumorphicGlowShape = "pill" | "squircle";
 export type NeumorphicGlowTheme = "uipirate" | "pirate" | "default" | "dark" | "orange" | "cyberpunk" | "minimal";
 export type NeumorphicGlowSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type NeumorphicGlowStateMode = "interactive" | "standerd" | "hover";
 export type NeumorphicNeonPreset =
   | "uipirate"
   | "pirate"
@@ -17,6 +18,7 @@ export type NeumorphicNeonPreset =
   | "crimson"
   | "orange"
   | "electricBlue"
+  | "blue"
   | "white";
 
 export const NEON_PRESETS: Record<
@@ -86,6 +88,13 @@ export const NEON_PRESETS: Record<
     glowColor: "rgba(255, 91, 4, 0.45)",
     innerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.35)",
   },
+  blue: {
+    name: "Electric Blue",
+    badgeBg: "#DBEAFE",
+    arrowColor: "#3B82F6",
+    glowColor: "rgba(59, 130, 246, 0.45)",
+    innerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(59, 130, 246, 0.35)",
+  },
   electricBlue: {
     name: "Electric Blue",
     badgeBg: "#DBEAFE",
@@ -109,6 +118,8 @@ export interface NeumorphicGlowCTAProps {
   theme?: NeumorphicGlowTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: NeumorphicGlowSize;
+  /** Visual state mode: 'interactive' (default hover glow), 'standerd', 'hover' */
+  stateMode?: NeumorphicGlowStateMode;
   /** Neon glow preset for arrow circle */
   neonPreset?: NeumorphicNeonPreset;
   /** Text label on the button */
@@ -137,6 +148,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
   variant = "pill",
   theme = "default",
   size = "md",
+  stateMode = "interactive",
   neonPreset,
   label,
   onClick,
@@ -151,6 +163,13 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
   const isPill = variant === "pill";
   const defaultLabel = isPill ? "Learn more" : "Get more info";
   const displayText = label !== undefined ? label : defaultLabel;
+
+  const isLifted =
+    stateMode === "hover"
+      ? true
+      : stateMode === "standerd"
+      ? false
+      : isHovered;
 
   // Theme configuration definitions
   const themeConfig = {
@@ -338,10 +357,13 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
     <motion.button
       type="button"
       onClick={onClick}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      whileHover={{ scale: 1.025 }}
-      whileTap={{ scale: 0.97 }}
+      onHoverStart={() => stateMode === "interactive" && setIsHovered(true)}
+      onHoverEnd={() => stateMode === "interactive" && setIsHovered(false)}
+      animate={{
+        scale: isLifted ? 1.025 : 1,
+      }}
+      whileHover={stateMode === "interactive" ? { scale: 1.025 } : undefined}
+      whileTap={stateMode === "interactive" ? { scale: 0.97 } : undefined}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       className={`relative inline-flex items-center select-none cursor-pointer outline-none ${className}`}
       style={{
@@ -372,7 +394,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
           <motion.div
             className={`relative flex items-center justify-center ${sizeConfig.pillBadgePadding} ${sizeConfig.pillBadgeRadius} shrink-0 overflow-hidden`}
             animate={{
-              boxShadow: isHovered
+              boxShadow: isLifted
                 ? `0px 0px 32px 4px ${activeGlowColor}, 0px 1.3px 1.3px 0px rgba(255,255,255,0.95), 0px -1.3px 1.3px 0px rgba(0,0,0,0.1)`
                 : `0px 0px 26px 0px ${activeGlowColor}, 0px 1.3px 1.3px 0px rgba(255,255,255,0.85), 0px -1.3px 1.3px 0px rgba(0,0,0,0.1)`,
             }}
@@ -459,7 +481,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
           <motion.div
             className={`relative flex items-center justify-center ${sizeConfig.squircleBadgePadding} ${sizeConfig.squircleBadgeRadius} shrink-0 overflow-hidden`}
             animate={{
-              boxShadow: isHovered
+              boxShadow: isLifted
                 ? `0px 0px 24px 3px ${activeGlowColor}, 0px 1px 1px 0px rgba(255,255,255,0.95), 0px -1px 1px 0px rgba(0,0,0,0.1)`
                 : `0px 0px 20px 0px ${activeGlowColor}, 0px 1px 1px 0px rgba(255,255,255,0.85), 0px -1px 1px 0px rgba(0,0,0,0.1)`,
             }}

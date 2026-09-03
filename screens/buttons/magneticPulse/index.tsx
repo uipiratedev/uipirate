@@ -2,40 +2,17 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
+import {
+  MagneticPulseCTA,
+  MagneticPulseSize,
+  MagneticPulseStateMode,
+} from "@/components/MagneticPulseCTA";
 import { useClickSound } from "@/hooks/useClickSound";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function MagneticPulseButtonScreen() {
-  const [label, setLabel] = useState("Let's Venture");
-  const [pulseColor, setPulseColor] = useState("#FF5B04");
-  const [clickCount, setClickCount] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-  const playClickSound = useClickSound();
-
-  const handleClick = () => {
-    playClickSound();
-    setClickCount((prev) => prev + 1);
-  };
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const MAGNETIC_PULSE_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -85,6 +62,36 @@ export function MagneticPulseCTA({
 }
 
 export default MagneticPulseCTA;`;
+
+export default function MagneticPulseButtonScreen() {
+  const [label, setLabel] = useState("Let's Venture");
+  const [pulseColor, setPulseColor] = useState("#FF5B04");
+  const [size, setSize] = useState<MagneticPulseSize>("md");
+  const [stateMode, setStateMode] = useState<MagneticPulseStateMode>("interactive");
+  const [clickCount, setClickCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+  const playClickSound = useClickSound();
+
+  const handleClick = () => {
+    playClickSound();
+    setClickCount((prev) => prev + 1);
+  };
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = MAGNETIC_PULSE_COMPONENT_SOURCE;
 
   const usageCode = `import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
 
@@ -138,6 +145,8 @@ export default function Example() {
             <MagneticPulseCTA
               label={label}
               pulseColor={pulseColor}
+              size={size}
+              stateMode={stateMode}
               onClick={handleClick}
             />
           </StudioCanvas>
@@ -161,17 +170,33 @@ export default function Example() {
 
             <div className="space-y-2">
               <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
-                Pulse Accent Color
+                Scale Size
               </label>
               <select
-                value={pulseColor}
-                onChange={(e) => setPulseColor(e.target.value)}
+                value={size}
+                onChange={(e) => setSize(e.target.value as MagneticPulseSize)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="#FF5B04" className="bg-[#151518] text-white">Orange</option>
-                <option value="#00E5BE" className="bg-[#151518] text-white">Cyan</option>
-                <option value="#8B5CF6" className="bg-[#151518] text-white">Violet</option>
-                <option value="#F43F5E" className="bg-[#151518] text-white">Pink</option>
+                <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
+                <option value="sm" className="bg-[#151518] text-white">Small</option>
+                <option value="md" className="bg-[#151518] text-white">Medium</option>
+                <option value="lg" className="bg-[#151518] text-white">Large</option>
+                <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider block font-mono">
+                State Preview
+              </label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as MagneticPulseStateMode)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
+                <option value="hover" className="bg-[#151518] text-white">Hover</option>
               </select>
             </div>
           </div>

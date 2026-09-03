@@ -12,10 +12,13 @@ export type NeumorphicToggleTheme =
   | "hyper-violet";
 
 export type NeumorphicToggleSize = "xs" | "sm" | "md" | "lg" | "xl";
+export type TactileNeumorphicStateMode = "interactive" | "standerd" | "hover";
 
 export interface TactileNeumorphicToggleProps {
   /** Controlled active state (true = ON, false = OFF) */
   checked?: boolean;
+  /** State preview mode: 'interactive' | 'standerd' | 'hover' */
+  stateMode?: TactileNeumorphicStateMode;
   /** Initial state if uncontrolled */
   defaultChecked?: boolean;
   /** Change event handler */
@@ -232,6 +235,7 @@ const SPRING_TRANSITION: Transition = {
 export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = ({
   checked: controlledChecked,
   defaultChecked = false,
+  stateMode = "interactive",
   onChange,
   theme = "brushed-silver",
   size = "md",
@@ -242,7 +246,14 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
 }) => {
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
   const isControlled = controlledChecked !== undefined;
-  const isChecked = isControlled ? controlledChecked : internalChecked;
+  const isChecked =
+    stateMode === "hover"
+      ? true
+      : stateMode === "standerd"
+      ? false
+      : isControlled
+      ? controlledChecked
+      : internalChecked;
 
   const config = SIZE_CONFIG[size];
   const themeStyle = THEME_STYLES[theme];
@@ -250,7 +261,7 @@ export const TactileNeumorphicToggle: React.FC<TactileNeumorphicToggleProps> = (
   const travelDistance = config.width - config.thumbWidth - config.padding * 2;
 
   const handleToggle = () => {
-    if (disabled) return;
+    if (disabled || stateMode !== "interactive") return;
     const nextVal = !isChecked;
     if (!isControlled) {
       setInternalChecked(nextVal);

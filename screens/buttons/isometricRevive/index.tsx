@@ -22,33 +22,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function IsometricReviveScreen() {
-  const [theme, setTheme] = useState<IsometricReviveTheme>("figma");
-  const [angle, setAngle] = useState<IsometricReviveAngle>("iso-left");
-  const [intensity, setIntensity] = useState<IsometricGlowIntensity>("vibrant");
-  const [size, setSize] = useState<IsometricReviveSize>("md");
-  const [stateMode, setStateMode] = useState<IsometricReviveStateMode>("interactive");
-  const [labelText, setLabelText] = useState("Revive Now");
-  const [showGrid, setShowGrid] = useState(true);
-  const [clickCount, setClickCount] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css" | "framer">("component");
-  const [stageBg, setStageBg] = useState<"dark" | "charcoal" | "light">("dark");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const ISOMETRIC_REVIVE_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -111,6 +85,49 @@ export function IsometricReviveButton({
   );
 }`;
 
+export const ISOMETRIC_REVIVE_PHYSICS = `// Spring Isometric Transforms
+<motion.button
+  animate={{
+    rotateX: 25,
+    rotateY: -20,
+    rotateZ: 10,
+    y: isPressed ? 4 : isHovered ? -8 : 0,
+  }}
+  transition={{
+    type: "spring",
+    stiffness: 400,
+    damping: 25,
+  }}
+/>`;
+
+export default function IsometricReviveScreen() {
+  const [theme, setTheme] = useState<IsometricReviveTheme>("figma");
+  const [angle, setAngle] = useState<IsometricReviveAngle>("iso-left");
+  const [intensity, setIntensity] = useState<IsometricGlowIntensity>("vibrant");
+  const [size, setSize] = useState<IsometricReviveSize>("md");
+  const [stateMode, setStateMode] = useState<IsometricReviveStateMode>("interactive");
+  const [labelText, setLabelText] = useState("Revive Now");
+  const [showGrid, setShowGrid] = useState(true);
+  const [clickCount, setClickCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css" | "framer">("component");
+  const [stageBg, setStageBg] = useState<"dark" | "charcoal" | "light">("dark");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = ISOMETRIC_REVIVE_COMPONENT_SOURCE;
+
   const usageCode = `import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 
 export default function Example() {
@@ -139,20 +156,7 @@ export default function Example() {
               0px 15px 30px rgba(0, 0, 0, 0.7);
 }`;
 
-  const framerCode = `// Spring Isometric Transforms
-<motion.button
-  animate={{
-    rotateX: 25,
-    rotateY: -20,
-    rotateZ: 10,
-    y: isPressed ? 4 : isHovered ? -8 : 0,
-  }}
-  transition={{
-    type: "spring",
-    stiffness: 400,
-    damping: 25,
-  }}
-/>`;
+  const framerCode = ISOMETRIC_REVIVE_PHYSICS;
 
   return (
     <PageWrapper showFloatingButton={false}>
@@ -244,17 +248,30 @@ export default function Example() {
 
               <div className="space-y-1.5">
                 <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-                              <select
-                value={size}
-                onChange={(e) => setSize(e.target.value as typeof size)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
+                <select
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as typeof size)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                >
                   <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
                   <option value="sm" className="bg-[#151518] text-white">Small</option>
                   <option value="md" className="bg-[#151518] text-white">Medium</option>
                   <option value="lg" className="bg-[#151518] text-white">Large</option>
                   <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
-              </select>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
+                <select
+                  value={stateMode}
+                  onChange={(e) => setStateMode(e.target.value as IsometricReviveStateMode)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                >
+                  <option value="interactive" className="bg-[#12141A]">Interactive</option>
+                  <option value="standerd" className="bg-[#12141A]">Standard</option>
+                  <option value="hover" className="bg-[#12141A]">Hover</option>
+                </select>
               </div>
             </div>
           </div>

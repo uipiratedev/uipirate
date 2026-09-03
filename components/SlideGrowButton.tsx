@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 
 export type SlideGrowTheme = "uipirate" | "pirate" | "silver" | "dark" | "cyberpunk" | "emerald" | "orange";
-export type SlideGrowStateMode = "interactive" | "standerd" | "slid";
+export type SlideGrowStateMode = "interactive" | "standerd" | "hover" | "slid";
 export type SlideGrowInteractionMode = "both" | "drag" | "click" | "hover";
 export type SlideGrowSize = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -17,7 +17,7 @@ export interface SlideGrowButtonProps {
   theme?: SlideGrowTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: SlideGrowSize;
-  /** Visual state mode: 'interactive' (swipeable/clickable), 'standerd' (17:1222), 'slid' (17:1240) */
+  /** Visual state mode: 'interactive' (swipeable/clickable), 'standerd' (17:1222), 'hover' / 'slid' (17:1240) */
   stateMode?: SlideGrowStateMode;
   /** Interaction trigger mode: 'both' (slide & click), 'drag' (slide only), 'click' (click only), 'hover' */
   interactionMode?: SlideGrowInteractionMode;
@@ -47,7 +47,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   scale = 1,
   className = "",
 }) => {
-  const [isCompleted, setIsCompleted] = useState(stateMode === "slid");
+  const [isCompleted, setIsCompleted] = useState(stateMode === "slid" || stateMode === "hover");
   const [isHovered, setIsHovered] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -111,11 +111,11 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   }[__baseSize];
 
   // Drag position motion value
-  const dragX = useMotionValue(stateMode === "slid" ? sizeConfig.maxDrag : 0);
+  const dragX = useMotionValue(stateMode === "slid" || stateMode === "hover" ? sizeConfig.maxDrag : 0);
 
   // Sync forced stateMode changes
   useEffect(() => {
-    if (stateMode === "slid") {
+    if (stateMode === "slid" || stateMode === "hover") {
       animate(dragX, sizeConfig.maxDrag, { type: "spring", stiffness: 400, damping: 30 });
       setIsCompleted(true);
     } else if (stateMode === "standerd") {
@@ -352,9 +352,8 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         whileHover={{ scale: 1.02 }}
         whileTap={canClick ? { scale: 0.972, y: 1.5 } : undefined}
         transition={{ type: "spring", stiffness: 500, damping: 28 }}
-        className={`relative flex items-center justify-center border-[1.5px] backdrop-blur-md ${sizeConfig.radius} overflow-hidden ${
-          canClick ? "cursor-pointer" : ""
-        }`}
+        className={`relative flex items-center justify-center border-[1.5px] backdrop-blur-md ${sizeConfig.radius} overflow-hidden ${canClick ? "cursor-pointer" : ""
+          }`}
         style={{
           width: sizeConfig.width,
           height: sizeConfig.height,
