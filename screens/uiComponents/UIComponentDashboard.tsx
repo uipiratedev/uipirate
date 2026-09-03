@@ -881,7 +881,7 @@ export default function Example() {
             </div>
           </div>
 
-          {/* Right Controls: Keyboard Shortcuts + Canvas Theme + Page Theme */}
+          {/* Right Controls: Keyboard Shortcuts + Page Theme */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Keyboard hint */}
             <div className="hidden xl:flex items-center gap-1 text-[10px] font-mono text-gray-400 mr-1">
@@ -889,19 +889,6 @@ export default function Example() {
               <kbd className={`px-1.5 py-0.5 rounded border ${isLightPage ? "bg-gray-100 border-gray-300 text-gray-600" : "bg-white/5 border-white/10 text-gray-400"}`}>K</kbd>
               <span>navigate</span>
             </div>
-
-            {/* Canvas Stage Theme Toggle */}
-            <button
-              onClick={() => setCanvasTheme(canvasTheme === "dark" ? "light" : "dark")}
-              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-xl border transition-all cursor-pointer ${isLightPage
-                  ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-700"
-                  : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-300"
-                }`}
-              title="Toggle playground canvas theme"
-            >
-              <span className="text-[10px] opacity-70">Canvas:</span>
-              <span className="font-bold text-[11px] capitalize">{canvasTheme}</span>
-            </button>
 
             {/* Page Theme Toggle */}
             <button
@@ -1085,6 +1072,8 @@ export default function Example() {
                   <StudioCanvas
                     theme={canvasTheme}
                     showGrid={showGrid}
+                    onThemeChange={setCanvasTheme}
+                    onGridChange={setShowGrid}
                     title={`${selectedComponent.id}.tsx`}
                   >
                     <div className="w-full flex items-center justify-center">
