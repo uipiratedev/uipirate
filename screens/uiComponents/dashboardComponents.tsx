@@ -64,6 +64,8 @@ export interface ComponentDetail {
   defaultInteractionMode?: "hover" | "click" | "both";
   hasStepSpeedControl?: boolean;
   defaultStepSpeedMs?: number;
+  hasOrnamentsControl?: boolean;
+  defaultShowOrnaments?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -853,6 +855,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasOrnamentsControl: true,
+    defaultShowOrnaments: true,
     defaultTheme: "heritage",
     availableThemes: [
       { value: "heritage", label: "Heritage Brass", color: "#D97706" },
@@ -881,7 +885,15 @@ export default function Example() {
     jsxCode: `import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 
 export default function Example() {
-  return <VintageLeatherCTA theme="heritage" size="md" label="Shop ties" />;
+  return (
+    <VintageLeatherCTA
+      theme="heritage"
+      size="md"
+      label="Shop ties"
+      showOrnaments={true}
+      onClick={() => console.log("Clicked")}
+    />
+  );
 }`,
     htmlCode: `<button class="px-8 py-3.5 rounded-xl bg-gradient-to-b from-[#8B4513] to-[#5C2E0B] text-[#F5DEB3] font-serif border-2 border-[#DAA520] shadow-[0_6px_0_#3A1D07,0_10px_20px_rgba(0,0,0,0.5)]">
   Shop ties
@@ -896,6 +908,7 @@ export default function Example() {
       { name: "label", type: "string", defaultValue: '"Shop ties"', description: "Artisanal CTA label." },
       { name: "theme", type: '"heritage" | "uipirate" | "obsidian" | "emerald" | "ruby" | "silver"', defaultValue: '"heritage"', description: "Leather color palette." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions." },
+      { name: "showOrnaments", type: "boolean", defaultValue: "true", description: "Whether to display the decorative filigree scrollwork corner flourishes." },
     ],
     variantsList: [
       {
