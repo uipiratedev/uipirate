@@ -1604,7 +1604,12 @@ export default function Example() {
                             <span
                               className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 ${isLightPage ? "bg-gray-200 text-gray-800 font-bold" : "bg-white/10 text-gray-300"
                                 }`}
-                              style={{ color: variant.badgeColor }}
+                              style={{
+                                color:
+                                  !isLightPage && (!variant.badgeColor || variant.badgeColor === "#1E293B" || variant.badgeColor === "#0E0E12" || variant.badgeColor === "#000000")
+                                    ? "#94A3B8"
+                                    : variant.badgeColor,
+                              }}
                             >
                               {variant.themeProp}
                             </span>
