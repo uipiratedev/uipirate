@@ -68,6 +68,8 @@ export interface ComponentDetail {
   defaultLedInteractionMode?: "hover" | "click" | "both";
   hasLedSpeedControl?: boolean;
   defaultLedSpeedMs?: number;
+  hasOrnamentsControl?: boolean;
+  defaultShowOrnaments?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -859,6 +861,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasOrnamentsControl: true,
+    defaultShowOrnaments: true,
     defaultTheme: "heritage",
     availableThemes: [
       { value: "heritage", label: "Heritage Brass", color: "#D97706" },

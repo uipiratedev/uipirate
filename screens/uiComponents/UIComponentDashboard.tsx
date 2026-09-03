@@ -111,6 +111,7 @@ export default function UIComponentDashboard({
   const [customInteractionMode, setCustomInteractionMode] = useState<LedMatrixInteractionMode>("hover");
   const [customStepSpeedMs, setCustomStepSpeedMs] = useState<number>(110);
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
+  const [customShowOrnaments, setCustomShowOrnaments] = useState<boolean>(true);
   const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
   const [showGrid, setShowGrid] = useState<boolean>(true);
@@ -142,6 +143,7 @@ export default function UIComponentDashboard({
     setCustomInteractionMode((selectedComponent.defaultLedInteractionMode as LedMatrixInteractionMode) || "hover");
     setCustomStepSpeedMs(selectedComponent.defaultLedSpeedMs ?? 110);
     setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+    setCustomShowOrnaments(selectedComponent.defaultShowOrnaments !== undefined ? selectedComponent.defaultShowOrnaments : true);
     setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
     setCustomStateMode("interactive");
     setClickCount(0);
@@ -310,6 +312,7 @@ export default function Example() {
       label="${customLabel}"
       theme="${customTheme}"
       size="${customSize}"
+      showOrnaments={${customShowOrnaments}}
       onClick={() => console.log("Leather button pressed")}
     />
   );
@@ -560,7 +563,7 @@ export default function Example() {
         );
       }
       case "vintage-leather-cta": {
-        const validLeatherThemes = ["heritage", "noir", "oxblood", "royal-navy", "emerald-gilded"];
+        const validLeatherThemes = ["heritage", "uipirate", "obsidian", "emerald", "ruby", "silver", "noir", "oxblood", "royal-navy", "emerald-gilded"];
         const leatherTheme = safeTheme(customTheme, validLeatherThemes, "heritage");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -569,6 +572,7 @@ export default function Example() {
               theme={leatherTheme as any}
               size={customSize}
               stateMode={customStateMode}
+              showOrnaments={customShowOrnaments}
               onClick={() => handleTriggerAction("Leather Button Pressed")}
             />
           </div>
@@ -1087,6 +1091,7 @@ export default function Example() {
                         setCustomInteractionMode((selectedComponent.defaultLedInteractionMode as LedMatrixInteractionMode) || "hover");
                         setCustomStepSpeedMs(selectedComponent.defaultLedSpeedMs ?? 110);
                         setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+                        setCustomShowOrnaments(selectedComponent.defaultShowOrnaments !== undefined ? selectedComponent.defaultShowOrnaments : true);
                         setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
                         setCustomStateMode("interactive");
                         setClickCount(0);
@@ -1396,6 +1401,30 @@ export default function Example() {
                           </option>
                           <option value="250" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             250ms — Slow Retro CRT
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3j. Surface Ornaments Toggle */}
+                    {selectedComponent.hasOrnamentsControl && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Filigree Ornaments:
+                        </label>
+                        <select
+                          value={customShowOrnaments ? "true" : "false"}
+                          onChange={(e) => setCustomShowOrnaments(e.target.value === "true")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Visible (Show Scrollwork)
+                          </option>
+                          <option value="false" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hidden (Clean Leather)
                           </option>
                         </select>
                       </div>
