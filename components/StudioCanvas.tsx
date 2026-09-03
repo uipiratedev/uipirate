@@ -115,29 +115,29 @@ export default function StudioCanvas({
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          {/* Grid on/off */}
+          {/* Grid on/off — fixed width so ON/OFF never reflows the row */}
           <button
             type="button"
             onClick={handleToggleGrid}
-            className={`text-[11px] font-mono px-2.5 py-1.5 rounded-lg border transition-colors ${
+            className={`h-8 inline-flex items-center text-[11px] font-mono font-bold px-3 rounded-lg border transition-colors ${
               activeGrid
-                ? "bg-white/10 text-white border-white/20 font-bold"
+                ? "bg-white/10 text-white border-white/20"
                 : "text-gray-400 border-white/10 hover:bg-white/5"
             }`}
           >
-            Grid: {activeGrid ? "ON" : "OFF"}
+            Grid:&nbsp;<span className="inline-block w-7 text-left">{activeGrid ? "ON" : "OFF"}</span>
           </button>
 
-          {/* Light / Dark */}
-          <div className="flex items-center gap-0.5 rounded-lg bg-black/40 border border-white/10 p-0.5 text-[11px] font-mono">
+          {/* Light / Dark — both segments identical box model so toggling never shifts layout */}
+          <div className="h-8 flex items-center gap-0.5 rounded-lg bg-black/40 border border-white/10 p-0.5 text-[11px] font-mono">
             <button
               type="button"
               onClick={() => {
                 if (controlledTheme === undefined) setInternalTheme("light");
                 onThemeChange?.("light");
               }}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-colors ${
-                light ? "bg-white text-gray-900 font-bold" : "text-gray-400 hover:text-white"
+              className={`flex items-center gap-1.5 h-full px-2.5 rounded-md font-bold transition-colors ${
+                light ? "bg-white text-gray-900" : "text-gray-400 hover:text-white"
               }`}
             >
               <SunIcon />
@@ -149,8 +149,8 @@ export default function StudioCanvas({
                 if (controlledTheme === undefined) setInternalTheme("dark");
                 onThemeChange?.("dark");
               }}
-              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-colors ${
-                !light ? "bg-[#1E1E28] text-white font-bold border border-white/10" : "text-gray-400 hover:text-white"
+              className={`flex items-center gap-1.5 h-full px-2.5 rounded-md font-bold transition-colors ${
+                !light ? "bg-[#1E1E28] text-white" : "text-gray-400 hover:text-white"
               }`}
             >
               <MoonIcon />

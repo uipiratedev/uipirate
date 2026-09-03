@@ -12,35 +12,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function MagneticPulseButtonScreen() {
-  const [label, setLabel] = useState("Let's Venture");
-  const [pulseColor, setPulseColor] = useState("#FF5B04");
-  const [size, setSize] = useState<MagneticPulseSize>("md");
-  const [stateMode, setStateMode] = useState<MagneticPulseStateMode>("interactive");
-  const [clickCount, setClickCount] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-  const playClickSound = useClickSound();
-
-  const handleClick = () => {
-    playClickSound();
-    setClickCount((prev) => prev + 1);
-  };
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const MAGNETIC_PULSE_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -90,6 +62,36 @@ export function MagneticPulseCTA({
 }
 
 export default MagneticPulseCTA;`;
+
+export default function MagneticPulseButtonScreen() {
+  const [label, setLabel] = useState("Let's Venture");
+  const [pulseColor, setPulseColor] = useState("#FF5B04");
+  const [size, setSize] = useState<MagneticPulseSize>("md");
+  const [stateMode, setStateMode] = useState<MagneticPulseStateMode>("interactive");
+  const [clickCount, setClickCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+  const playClickSound = useClickSound();
+
+  const handleClick = () => {
+    playClickSound();
+    setClickCount((prev) => prev + 1);
+  };
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = MAGNETIC_PULSE_COMPONENT_SOURCE;
 
   const usageCode = `import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
 

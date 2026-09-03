@@ -14,30 +14,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function ElevatedUnderglowScreen() {
-  const [theme, setTheme] = useState<ElevatedUnderglowTheme>("figma");
-  const [size, setSize] = useState<ElevatedUnderglowSize>("md");
-  const [stateMode, setStateMode] = useState<ElevatedUnderglowStateMode>("interactive");
-  const [iconType, setIconType] = useState<ElevatedUnderglowIconType>("phone");
-  const [labelText, setLabelText] = useState("Book A Call");
-  const [clickCount, setClickCount] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx lucide-react");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const ELEVATED_UNDERGLOW_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -154,6 +131,31 @@ export function ElevatedUnderglowCTA({
     </div>
   );
 }`;
+
+export default function ElevatedUnderglowScreen() {
+  const [theme, setTheme] = useState<ElevatedUnderglowTheme>("figma");
+  const [size, setSize] = useState<ElevatedUnderglowSize>("md");
+  const [stateMode, setStateMode] = useState<ElevatedUnderglowStateMode>("interactive");
+  const [iconType, setIconType] = useState<ElevatedUnderglowIconType>("phone");
+  const [labelText, setLabelText] = useState("Book A Call");
+  const [clickCount, setClickCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx lucide-react");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = ELEVATED_UNDERGLOW_COMPONENT_SOURCE;
 
   const usageCode = `import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 

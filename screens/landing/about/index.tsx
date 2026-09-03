@@ -5,14 +5,14 @@ import GlassBadge from "@/components/GlassBadge";
 const LandingAbout = () => {
   return (
     <section className="overflow-x-hidden">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 pt-12 max-md:pt-6">
+      <div className="section-container">
         <div className="autoShow">
-          <div className="flex flex-row items-center justify-center">
+          <div className="flex flex-row items-center justify-center mb-6">
             <GlassBadge variant="gradient">Our journey so far</GlassBadge>
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 max-md:pt-8 xl:px-32 autoShowBottom">
+      <div className="section-container autoShowBottom">
         <AboutCardAnimation />
       </div>
     </section>

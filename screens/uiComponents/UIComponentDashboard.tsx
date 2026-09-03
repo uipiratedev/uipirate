@@ -30,8 +30,54 @@ import {
   PresetVariant,
 } from "./dashboardComponents";
 
+// Full component source + Framer physics excerpts, re-used verbatim from the
+// dedicated /buttons/<slug> studio screens so the Component Lab code panel shows
+// the exact same files without a second copy.
+import { ISOMETRIC_REVIVE_COMPONENT_SOURCE, ISOMETRIC_REVIVE_PHYSICS } from "@/screens/buttons/isometricRevive";
+import { TACTILE_PILL_COMPONENT_SOURCE } from "@/screens/buttons/tactilePill";
+import { FROSTED_GEL_DOWNLOAD_COMPONENT_SOURCE, FROSTED_GEL_DOWNLOAD_PHYSICS } from "@/screens/buttons/frostedGelDownload";
+import { ELEVATED_UNDERGLOW_COMPONENT_SOURCE } from "@/screens/buttons/elevatedUnderglow";
+import { LED_MATRIX_CHEVRON_COMPONENT_SOURCE } from "@/screens/buttons/ledMatrixChevron";
+import { SLIDE_GROW_COMPONENT_SOURCE } from "@/screens/buttons/slideGrow";
+import { VINTAGE_LEATHER_COMPONENT_SOURCE } from "@/screens/buttons/vintageLeather";
+import { NEUMORPHIC_GLOW_COMPONENT_SOURCE } from "@/screens/buttons/neumorphicGlow";
+import { SMASH_BUTTON_COMPONENT_SOURCE } from "@/screens/buttons/smashButton";
+import { SCALING_CAPSULE_COMPONENT_SOURCE } from "@/screens/buttons/scalingCapsule";
+import { MAGNETIC_PULSE_COMPONENT_SOURCE } from "@/screens/buttons/magneticPulse";
+import { ANIMATED_SLIDE_COMPONENT_SOURCE } from "@/screens/buttons/animatedSlide";
+import { ARC_CORNER_TOGGLE_COMPONENT_SOURCE } from "@/screens/buttons/arcCornerToggle";
+import { TACTILE_NEUMORPHIC_SWITCH_COMPONENT_SOURCE, TACTILE_NEUMORPHIC_SWITCH_PHYSICS } from "@/screens/buttons/tactileNeumorphicSwitch";
+
 export { ALL_DASHBOARD_COMPONENTS };
 export type { ComponentCategory, PropRow, ComponentDetail, PresetVariant };
+
+type CodeTab = "component" | "jsx" | "html" | "css" | "physics";
+
+interface ButtonCodeEntry {
+  /** File name shown in the code tab header. */
+  file: string;
+  /** Full drop-in component source (Component.tsx tab). */
+  componentCode: string;
+  /** Optional Framer Motion spring excerpt (Physics.ts tab). */
+  physicsCode?: string;
+}
+
+const BUTTON_CODE: Record<string, ButtonCodeEntry> = {
+  "isometric-revive-button": { file: "IsometricReviveButton.tsx", componentCode: ISOMETRIC_REVIVE_COMPONENT_SOURCE, physicsCode: ISOMETRIC_REVIVE_PHYSICS },
+  "tactile-pill-button": { file: "TactilePillButton.tsx", componentCode: TACTILE_PILL_COMPONENT_SOURCE },
+  "frosted-gel-download-button": { file: "FrostedGelDownloadButton.tsx", componentCode: FROSTED_GEL_DOWNLOAD_COMPONENT_SOURCE, physicsCode: FROSTED_GEL_DOWNLOAD_PHYSICS },
+  "elevated-underglow-cta": { file: "ElevatedUnderglowCTA.tsx", componentCode: ELEVATED_UNDERGLOW_COMPONENT_SOURCE },
+  "led-matrix-chevron": { file: "LedMatrixChevronButton.tsx", componentCode: LED_MATRIX_CHEVRON_COMPONENT_SOURCE },
+  "slide-grow-button": { file: "SlideGrowButton.tsx", componentCode: SLIDE_GROW_COMPONENT_SOURCE },
+  "vintage-leather-cta": { file: "VintageLeatherCTA.tsx", componentCode: VINTAGE_LEATHER_COMPONENT_SOURCE },
+  "neumorphic-glow-cta": { file: "NeumorphicGlowCTA.tsx", componentCode: NEUMORPHIC_GLOW_COMPONENT_SOURCE },
+  "smash-tactile-button": { file: "SmashTactileButton.tsx", componentCode: SMASH_BUTTON_COMPONENT_SOURCE },
+  "scaling-capsule-button": { file: "ScalingCapsuleButton.tsx", componentCode: SCALING_CAPSULE_COMPONENT_SOURCE },
+  "magnetic-pulse-cta": { file: "MagneticPulseCTA.tsx", componentCode: MAGNETIC_PULSE_COMPONENT_SOURCE },
+  "animated-slide-button": { file: "AnimatedButton.tsx", componentCode: ANIMATED_SLIDE_COMPONENT_SOURCE },
+  "arc-corner-toggle": { file: "ArcCornerToggle.tsx", componentCode: ARC_CORNER_TOGGLE_COMPONENT_SOURCE },
+  "tactile-neumorphic-switch": { file: "TactileNeumorphicSwitch.tsx", componentCode: TACTILE_NEUMORPHIC_SWITCH_COMPONENT_SOURCE, physicsCode: TACTILE_NEUMORPHIC_SWITCH_PHYSICS },
+};
 
 // Icons
 const SunIcon = () => (
@@ -96,7 +142,7 @@ export default function UIComponentDashboard({
   const [sidebarSearch, setSidebarSearch] = useState("");
   const [pageTheme, setPageTheme] = useState<"dark" | "light">("dark");
   const [canvasTheme, setCanvasTheme] = useState<"dark" | "light">("dark");
-  const [activeCodeTab, setActiveCodeTab] = useState<"jsx" | "html" | "css">("jsx");
+  const [activeCodeTab, setActiveCodeTab] = useState<CodeTab>("component");
   const [copiedTab, setCopiedTab] = useState<string | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
@@ -130,6 +176,16 @@ export default function UIComponentDashboard({
     () => ALL_DASHBOARD_COMPONENTS.find((c) => c.id === selectedComponentId) ?? ALL_DASHBOARD_COMPONENTS[0],
     [selectedComponentId]
   );
+
+  // Drop-in source + physics excerpt for this component, straight from its button screen.
+  const codeEntry = BUTTON_CODE[selectedComponent.id];
+
+  // Fall back to a valid tab: not every component ships a Component.tsx / Physics.ts.
+  const effectiveCodeTab: CodeTab =
+    (activeCodeTab === "component" && !codeEntry?.componentCode) ||
+    (activeCodeTab === "physics" && !codeEntry?.physicsCode)
+      ? "jsx"
+      : activeCodeTab;
 
   // Sync playground initial state when selected component changes
   useEffect(() => {
@@ -443,11 +499,15 @@ export default function Example() {
   }, [selectedComponent, customLabel, customTheme, customSize]);
 
   const activeCode =
-    activeCodeTab === "jsx"
-      ? dynamicJsxCode
-      : activeCodeTab === "html"
-        ? selectedComponent.htmlCode
-        : selectedComponent.cssCode;
+    effectiveCodeTab === "component"
+      ? codeEntry?.componentCode ?? dynamicJsxCode
+      : effectiveCodeTab === "physics"
+        ? codeEntry?.physicsCode ?? ""
+        : effectiveCodeTab === "jsx"
+          ? dynamicJsxCode
+          : effectiveCodeTab === "html"
+            ? selectedComponent.htmlCode
+            : selectedComponent.cssCode;
 
   const isLightPage = pageTheme === "light";
 
@@ -855,7 +915,7 @@ export default function Example() {
             </div>
           </div>
 
-          {/* Right Controls: Keyboard Shortcuts + Canvas Theme + Page Theme */}
+          {/* Right Controls: Keyboard Shortcuts + Page Theme */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Keyboard hint */}
             <div className="hidden xl:flex items-center gap-1 text-[10px] font-mono text-gray-400 mr-1">
@@ -863,19 +923,6 @@ export default function Example() {
               <kbd className={`px-1.5 py-0.5 rounded border ${isLightPage ? "bg-gray-100 border-gray-300 text-gray-600" : "bg-white/5 border-white/10 text-gray-400"}`}>K</kbd>
               <span>navigate</span>
             </div>
-
-            {/* Canvas Stage Theme Toggle */}
-            <button
-              onClick={() => setCanvasTheme(canvasTheme === "dark" ? "light" : "dark")}
-              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-xl border transition-all cursor-pointer ${isLightPage
-                  ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-700"
-                  : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-300"
-                }`}
-              title="Toggle playground canvas theme"
-            >
-              <span className="text-[10px] opacity-70">Canvas:</span>
-              <span className="font-bold text-[11px] capitalize">{canvasTheme}</span>
-            </button>
 
             {/* Page Theme Toggle */}
             <button
@@ -1059,6 +1106,8 @@ export default function Example() {
                   <StudioCanvas
                     theme={canvasTheme}
                     showGrid={showGrid}
+                    onThemeChange={setCanvasTheme}
+                    onGridChange={setShowGrid}
                     title={`${selectedComponent.id}.tsx`}
                   >
                     <div className="w-full flex items-center justify-center">
@@ -1574,30 +1623,41 @@ export default function Example() {
                   </div>
 
                   <button
-                    onClick={() => handleCopy(activeCode, activeCodeTab)}
+                    onClick={() => handleCopy(activeCode, effectiveCodeTab)}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-[#FF5B04] border border-orange-500/30 text-xs font-mono font-bold transition-colors cursor-pointer self-start sm:self-auto"
                   >
-                    {copiedTab === activeCodeTab ? <CheckIcon /> : <CopyIcon />}
-                    <span>{copiedTab === activeCodeTab ? "Copied to Clipboard!" : "Copy Active Code"}</span>
+                    {copiedTab === effectiveCodeTab ? <CheckIcon /> : <CopyIcon />}
+                    <span>{copiedTab === effectiveCodeTab ? "Copied to Clipboard!" : "Copy Active Code"}</span>
                   </button>
                 </div>
 
                 <div className="border border-white/10 rounded-3xl overflow-hidden shadow-2xl bg-[#0E0E12]">
                   {/* Code Tabs Header */}
                   <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-[#14141E]">
-                    <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/5 text-xs font-mono">
+                    <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/5 text-xs font-mono">
+                      {codeEntry?.componentCode && (
+                        <button
+                          onClick={() => setActiveCodeTab("component")}
+                          className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "component"
+                              ? "bg-[#FF5B04] text-white font-bold shadow"
+                              : "text-gray-400 hover:text-white"
+                            }`}
+                        >
+                          Component.tsx
+                        </button>
+                      )}
                       <button
                         onClick={() => setActiveCodeTab("jsx")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "jsx"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "jsx"
                             ? "bg-[#FF5B04] text-white font-bold shadow"
                             : "text-gray-400 hover:text-white"
                           }`}
                       >
-                        JSX / React
+                        Usage.tsx
                       </button>
                       <button
                         onClick={() => setActiveCodeTab("html")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "html"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "html"
                             ? "bg-[#FF5B04] text-white font-bold shadow"
                             : "text-gray-400 hover:text-white"
                           }`}
@@ -1606,17 +1666,36 @@ export default function Example() {
                       </button>
                       <button
                         onClick={() => setActiveCodeTab("css")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "css"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "css"
                             ? "bg-[#FF5B04] text-white font-bold shadow"
                             : "text-gray-400 hover:text-white"
                           }`}
                       >
                         Tokens.css
                       </button>
+                      {codeEntry?.physicsCode && (
+                        <button
+                          onClick={() => setActiveCodeTab("physics")}
+                          className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "physics"
+                              ? "bg-[#FF5B04] text-white font-bold shadow"
+                              : "text-gray-400 hover:text-white"
+                            }`}
+                        >
+                          Physics.ts
+                        </button>
+                      )}
                     </div>
 
                     <span className="text-xs font-mono text-gray-400 hidden sm:inline-block">
-                      {activeCodeTab === "jsx" ? "React 18 / 19" : activeCodeTab === "html" ? "Semantic HTML" : "Tailwind / CSS Tokens"}
+                      {effectiveCodeTab === "component"
+                        ? codeEntry?.file ?? "Component.tsx"
+                        : effectiveCodeTab === "physics"
+                          ? "Framer Motion / Spring"
+                          : effectiveCodeTab === "jsx"
+                            ? "React 18 / 19"
+                            : effectiveCodeTab === "html"
+                              ? "Semantic HTML"
+                              : "Tailwind / CSS Tokens"}
                     </span>
                   </div>
 

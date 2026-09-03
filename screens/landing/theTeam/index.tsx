@@ -85,13 +85,15 @@ const TheTeam = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 relative">
+    <div className="section-container relative">
       {/* Header */}
       <div className="text-center mb-8 max-md:mb-4 autoShow">
         <div className="flex justify-center mb-6">
           <GlassBadge variant="gradient">THE TEAM</GlassBadge>
         </div>
-        <h2 className="heading-center">Meet The <span className="text-brand-orange">Crew </span>On Board</h2>
+        <h2 className="heading-center">
+          Meet The <span className="text-brand-orange">Crew </span>On Board
+        </h2>
       </div>
       <div className="autoShowBottom">
         {/* Team Grid */}

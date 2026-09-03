@@ -13,31 +13,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function SlideGrowScreen() {
-  const [theme, setTheme] = useState<SlideGrowTheme>("silver");
-  const [size, setSize] = useState<SlideGrowSize>("md");
-  const [stateMode, setStateMode] = useState<SlideGrowStateMode>("interactive");
-  const [interactionMode, setInteractionMode] = useState<SlideGrowInteractionMode>("both");
-  const [startLabel, setStartLabel] = useState("Get Started");
-  const [activeLabel, setActiveLabel] = useState("Lets Grow!");
-  const [completeCount, setCompleteCount] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const SLIDE_GROW_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -133,6 +109,32 @@ export function SlideGrowButton({
     </div>
   );
 }`;
+
+export default function SlideGrowScreen() {
+  const [theme, setTheme] = useState<SlideGrowTheme>("silver");
+  const [size, setSize] = useState<SlideGrowSize>("md");
+  const [stateMode, setStateMode] = useState<SlideGrowStateMode>("interactive");
+  const [interactionMode, setInteractionMode] = useState<SlideGrowInteractionMode>("both");
+  const [startLabel, setStartLabel] = useState("Get Started");
+  const [activeLabel, setActiveLabel] = useState("Lets Grow!");
+  const [completeCount, setCompleteCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = SLIDE_GROW_COMPONENT_SOURCE;
 
   const usageCode = `import { SlideGrowButton } from "@/components/SlideGrowButton";
 

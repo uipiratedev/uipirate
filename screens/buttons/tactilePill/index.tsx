@@ -20,31 +20,7 @@ const COLOR_PRESETS = [
   { label: "Neon Pink", value: "#F43F5E", name: "Pink" },
 ];
 
-export default function TactilePillButtonScreen() {
-  const [label, setLabel] = useState("Get Started");
-  const [dotColor, setDotColor] = useState("#54EAD8");
-  const [stateMode, setStateMode] = useState<TactileButtonState>("interactive");
-  const [variant, setVariant] = useState<TactileButtonVariant>("default");
-  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
-  const [tiltAngle, setTiltAngle] = useState(-9.23);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [clickCount, setClickCount] = useState(0);
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const TACTILE_PILL_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -114,6 +90,32 @@ export function TactilePillButton({
 }
 
 export default TactilePillButton;`;
+
+export default function TactilePillButtonScreen() {
+  const [label, setLabel] = useState("Get Started");
+  const [dotColor, setDotColor] = useState("#54EAD8");
+  const [stateMode, setStateMode] = useState<TactileButtonState>("interactive");
+  const [variant, setVariant] = useState<TactileButtonVariant>("default");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
+  const [tiltAngle, setTiltAngle] = useState(-9.23);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [clickCount, setClickCount] = useState(0);
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = TACTILE_PILL_COMPONENT_SOURCE;
 
   const usageCode = `import { TactilePillButton } from "@/components/TactilePillButton";
 

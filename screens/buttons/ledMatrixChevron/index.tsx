@@ -13,31 +13,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function LedMatrixChevronScreen() {
-  const [theme, setTheme] = useState<LedMatrixTheme>("monochrome");
-  const [size, setSize] = useState<LedMatrixSize>("md");
-  const [stateMode, setStateMode] = useState<LedMatrixStateMode>("interactive");
-  const [interactionMode, setInteractionMode] = useState<LedMatrixInteractionMode>("hover");
-  const [label, setLabel] = useState("See Plans");
-  const [enableMovingLoop, setEnableMovingLoop] = useState(true);
-  const [stepSpeedMs, setStepSpeedMs] = useState(110);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const LED_MATRIX_CHEVRON_COMPONENT_SOURCE = `"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -111,6 +87,32 @@ export function LedMatrixChevronButton({
     </div>
   );
 }`;
+
+export default function LedMatrixChevronScreen() {
+  const [theme, setTheme] = useState<LedMatrixTheme>("monochrome");
+  const [size, setSize] = useState<LedMatrixSize>("md");
+  const [stateMode, setStateMode] = useState<LedMatrixStateMode>("interactive");
+  const [interactionMode, setInteractionMode] = useState<LedMatrixInteractionMode>("hover");
+  const [label, setLabel] = useState("See Plans");
+  const [enableMovingLoop, setEnableMovingLoop] = useState(true);
+  const [stepSpeedMs, setStepSpeedMs] = useState(110);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = LED_MATRIX_CHEVRON_COMPONENT_SOURCE;
 
   const usageCode = `import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
 

@@ -70,7 +70,7 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
 
         <PricingPerfectFor />
 
-        <div className="pt-20 max-md:pt-16">
+        <div>
           <MiniService />
           <BentoGrid />
         </div>
@@ -99,6 +99,7 @@ const Landing = memo(function Landing({ featuredCaseStudy }: LandingProps) {
         <div id="pricing">
           <Pricing />
         </div>
+
         <TheTeam />
 
         {/* <BoreYouCommit /> */}

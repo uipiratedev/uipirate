@@ -15,31 +15,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function NeumorphicGlowScreen() {
-  const [variant, setVariant] = useState<NeumorphicGlowShape>("pill");
-  const [theme, setTheme] = useState<NeumorphicGlowTheme>("default");
-  const [size, setSize] = useState<NeumorphicGlowSize>("md");
-  const [stateMode, setStateMode] = useState<NeumorphicGlowStateMode>("interactive");
-  const [neonPreset, setNeonPreset] = useState<NeumorphicNeonPreset | "auto">("auto");
-  const [labelText, setLabelText] = useState("Learn more");
-  const [clickCount, setClickCount] = useState(0);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const NEUMORPHIC_GLOW_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -144,6 +120,32 @@ export function NeumorphicGlowCTA({
     </motion.button>
   );
 }`;
+
+export default function NeumorphicGlowScreen() {
+  const [variant, setVariant] = useState<NeumorphicGlowShape>("pill");
+  const [theme, setTheme] = useState<NeumorphicGlowTheme>("default");
+  const [size, setSize] = useState<NeumorphicGlowSize>("md");
+  const [stateMode, setStateMode] = useState<NeumorphicGlowStateMode>("interactive");
+  const [neonPreset, setNeonPreset] = useState<NeumorphicNeonPreset | "auto">("auto");
+  const [labelText, setLabelText] = useState("Learn more");
+  const [clickCount, setClickCount] = useState(0);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = NEUMORPHIC_GLOW_COMPONENT_SOURCE;
 
   const usageCode = `import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 
