@@ -1207,6 +1207,16 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasIconControl: true,
+    defaultIcon: "apex",
+    availableIcons: [
+      { value: "apex", label: "Apex Ladder Emblem" },
+      { value: "arrow", label: "Arrow Right" },
+      { value: "sparkle", label: "Sparkle Star" },
+      { value: "zap", label: "Lightning Zap" },
+      { value: "rocket", label: "Rocket Launch" },
+      { value: "check", label: "Checkmark" },
+    ],
     defaultTheme: "dark",
     availableThemes: [
       { value: "dark", label: "Figma Dark Obsidian", color: "#38BDF8" },
@@ -1246,6 +1256,8 @@ export default function Example() {
     props: [
       { name: "label", type: "string", defaultValue: '"Scaling Workshop"', description: "Text label." },
       { name: "variant", type: '"dark" | "orange" | "light" | "cyberpunk"', defaultValue: '"dark"', description: "Appearance style." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Proportional scaling dimensions." },
+      { name: "icon", type: "React.ReactNode", defaultValue: "<ApexEmblemIcon />", description: "Custom icon element displayed inside the 26px black circle." },
     ],
     variantsList: [
       {

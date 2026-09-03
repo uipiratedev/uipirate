@@ -5,7 +5,7 @@ import Link from "next/link";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import TactilePillButton from "@/components/TactilePillButton";
-import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
+import ScalingCapsuleButton, { ApexEmblemIcon } from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
 import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
@@ -152,6 +152,7 @@ export default function UIComponentDashboard({
   const [customTheme, setCustomTheme] = useState<string>("");
   const [customDotColor, setCustomDotColor] = useState<string>("#54EAD8");
   const [customIcon, setCustomIcon] = useState<string>("cloud-download");
+  const [customCapsuleIcon, setCustomCapsuleIcon] = useState<string>("apex");
   const [customLiftAmount, setCustomLiftAmount] = useState<number>(13);
   const [customInteractionMode, setCustomInteractionMode] = useState<LedMatrixInteractionMode>("hover");
   const [customStepSpeedMs, setCustomStepSpeedMs] = useState<number>(110);
@@ -195,6 +196,9 @@ export default function UIComponentDashboard({
     setCustomIcon(
       (selectedComponent.defaultIcon as string) ||
       (selectedComponent.id === "elevated-underglow-cta" ? "phone" : "cloud-download")
+    );
+    setCustomCapsuleIcon(
+      (selectedComponent.id === "scaling-capsule-button" && (selectedComponent.defaultIcon as string)) || "apex"
     );
     setCustomLiftAmount(
       selectedComponent.defaultLiftAmount !== undefined
@@ -697,8 +701,47 @@ export default function Example() {
         );
       }
       case "scaling-capsule-button": {
-        const validCapsuleVariants = ["dark", "light"];
+        const validCapsuleVariants = ["dark", "orange", "light", "cyberpunk"];
         const capsuleVariant = safeTheme(customTheme, validCapsuleVariants, "dark");
+
+        const renderCapsuleIcon = () => {
+          switch (customCapsuleIcon) {
+            case "arrow":
+              return (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              );
+            case "sparkle":
+              return (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z" />
+                </svg>
+              );
+            case "zap":
+              return (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+              );
+            case "rocket":
+              return (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.84 2.58m-.12-8.54a2 2 0 112.83 2.83" />
+                </svg>
+              );
+            case "check":
+              return (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              );
+            case "apex":
+            default:
+              return <ApexEmblemIcon className="w-4 h-4" />;
+          }
+        };
+
         return (
           <div className="py-8 flex items-center justify-center">
             <ScalingCapsuleButton
@@ -706,6 +749,7 @@ export default function Example() {
               variant={capsuleVariant as any}
               size={customSize}
               stateMode={customStateMode}
+              icon={renderCapsuleIcon()}
               onClick={() => handleTriggerAction("Scaling Capsule Clicked")}
             />
           </div>
@@ -1153,6 +1197,7 @@ export default function Example() {
                           (selectedComponent.defaultIcon as string) ||
                           (selectedComponent.id === "elevated-underglow-cta" ? "phone" : "cloud-download")
                         );
+                        setCustomCapsuleIcon("apex");
                         setCustomLiftAmount(
                           selectedComponent.defaultLiftAmount !== undefined
                             ? selectedComponent.defaultLiftAmount
@@ -1336,7 +1381,7 @@ export default function Example() {
                     )}
 
                     {/* 3b. Icon Control Dropdown */}
-                    {selectedComponent.hasIconControl && selectedComponent.availableIcons && (
+                    {selectedComponent.hasIconControl && selectedComponent.id !== "scaling-capsule-button" && selectedComponent.availableIcons && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
                           {selectedComponent.id === "elevated-underglow-cta" ? "Button Icon:" : "Tile Icon:"}
@@ -1539,6 +1584,33 @@ export default function Example() {
                           <option value="false" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             Hidden (Clean Leather)
                           </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3i. Capsule Icon Dropdown */}
+                    {(selectedComponent.hasIconControl && selectedComponent.id === "scaling-capsule-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Capsule Icon:
+                        </label>
+                        <select
+                          value={customCapsuleIcon}
+                          onChange={(e) => setCustomCapsuleIcon(e.target.value)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          {selectedComponent.availableIcons?.map((ic) => (
+                            <option
+                              key={ic.value}
+                              value={ic.value}
+                              className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}
+                            >
+                              {ic.label}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     )}
