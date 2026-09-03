@@ -11,7 +11,7 @@ import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { FrostedGelDownloadButton, FrostedGelIcon } from "@/components/FrostedGelDownloadButton";
-import { IsometricReviveButton } from "@/components/IsometricReviveButton";
+import { IsometricReviveButton, IsometricGlowIntensity } from "@/components/IsometricReviveButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
 import { SlideGrowButton } from "@/components/SlideGrowButton";
@@ -106,6 +106,7 @@ export default function UIComponentDashboard({
   const [customTheme, setCustomTheme] = useState<string>("");
   const [customIcon, setCustomIcon] = useState<FrostedGelIcon>("cloud-download");
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
+  const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
   const [showGrid, setShowGrid] = useState<boolean>(true);
   const [clickCount, setClickCount] = useState<number>(0);
@@ -131,6 +132,7 @@ export default function UIComponentDashboard({
     setCustomTheme(selectedComponent.defaultTheme || "default");
     setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
     setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+    setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
     setCustomStateMode("interactive");
     setClickCount(0);
     setLastAction(null);
@@ -213,6 +215,7 @@ export default function Example() {
       label="${customLabel}"
       theme="${customTheme}"
       size="${customSize}"
+      intensity="${customIntensity}"
       onClick={() => console.log("Revive triggered!")}
     />
   );
@@ -433,6 +436,7 @@ export default function Example() {
               label={customLabel || "Revive Now"}
               theme={isoTheme as any}
               size={customSize}
+              intensity={customIntensity}
               stateMode={customStateMode}
               onClick={() => handleTriggerAction("Revive 3D Pressed")}
             />
@@ -1048,6 +1052,7 @@ export default function Example() {
                         setCustomTheme(selectedComponent.defaultTheme || "default");
                         setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
                         setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+                        setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
                         setCustomStateMode("interactive");
                         setClickCount(0);
                         setLastAction(null);
@@ -1185,6 +1190,33 @@ export default function Example() {
                           </option>
                           <option value="false" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             Hidden (No Cables)
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3d. Glow Intensity Dropdown */}
+                    {selectedComponent.hasIntensityControl && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Glow Intensity:
+                        </label>
+                        <select
+                          value={customIntensity}
+                          onChange={(e) => setCustomIntensity(e.target.value as IsometricGlowIntensity)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="subtle" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Subtle (Soft Glow)
+                          </option>
+                          <option value="vibrant" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Vibrant (Standard Glow)
+                          </option>
+                          <option value="hyper" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hyper (Max Radiation)
                           </option>
                         </select>
                       </div>

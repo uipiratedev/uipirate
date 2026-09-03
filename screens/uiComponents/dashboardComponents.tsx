@@ -54,6 +54,8 @@ export interface ComponentDetail {
   availableIcons?: Array<{ value: string; label: string }>;
   hasCablesControl?: boolean;
   defaultShowCables?: boolean;
+  hasIntensityControl?: boolean;
+  defaultIntensity?: string;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -81,6 +83,8 @@ export const ALL_DASHBOARD_COMPONENTS: ComponentDetail[] = [
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasIntensityControl: true,
+    defaultIntensity: "vibrant",
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Obsidian", color: "#FFA000" },
