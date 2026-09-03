@@ -398,10 +398,29 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
     <div
       className={`relative inline-flex items-center justify-center select-none ${className}`}
       style={{
-        width: sizeConfig.width,
+        minWidth: sizeConfig.width,
+        width: "max-content",
         height: sizeConfig.height + sizeConfig.liftOffset,
       }}
     >
+      {/* Invisible flex sizer ensuring the container auto-expands with custom label text */}
+      <div
+        className={`invisible flex items-center justify-center opacity-0 pointer-events-none select-none h-0 ${sizeConfig.gap} ${sizeConfig.padding}`}
+        aria-hidden="true"
+      >
+        <span
+          className={`capitalize tracking-tight whitespace-nowrap font-['Figtree',sans-serif] ${sizeConfig.fontSize}`}
+          style={{ letterSpacing: "-0.01em" }}
+        >
+          {label}
+        </span>
+        {renderIcon() && (
+          <span className="shrink-0 flex items-center justify-center">
+            {renderIcon()}
+          </span>
+        )}
+      </div>
+
       {/* ─────────────────────────────────────────────────────────────
           1. AMBIENT BASE LAYER / GLOWING 3D EXTRUSION (Figma 55:23)
          ───────────────────────────────────────────────────────────── */}
@@ -504,7 +523,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
 
         {/* Button Content: Label + Icon */}
         <span
-          className={`relative z-10 capitalize tracking-tight select-none font-['Figtree',sans-serif] ${sizeConfig.fontSize}`}
+          className={`relative z-10 capitalize tracking-tight select-none whitespace-nowrap font-['Figtree',sans-serif] ${sizeConfig.fontSize}`}
           style={{ letterSpacing: "-0.01em" }}
         >
           {label}

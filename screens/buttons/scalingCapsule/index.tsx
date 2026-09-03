@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import ScalingCapsuleButton, {
   ScalingCapsuleVariant,
+  ScalingCapsuleStateMode,
 } from "@/components/ScalingCapsuleButton";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
@@ -14,6 +15,7 @@ export default function ScalingCapsuleButtonScreen() {
   const [label, setLabel] = useState("Scaling Workshop");
   const [variant, setVariant] = useState<ScalingCapsuleVariant>("dark");
   const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
+  const [stateMode, setStateMode] = useState<ScalingCapsuleStateMode>("interactive");
   const [clickCount, setClickCount] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
@@ -345,6 +347,7 @@ export default function HeroSection() {
                 label={label}
                 variant={variant}
                 size={size}
+                stateMode={stateMode}
                 onClick={() => setClickCount((c) => c + 1)}
               />
 
@@ -410,6 +413,21 @@ export default function HeroSection() {
               </select>
             </div>
 
+            {/* State Preview Selector */}
+            <div className="space-y-2">
+              <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block">
+                State Preview
+              </label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as ScalingCapsuleStateMode)}
+                className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#FF5B04] font-mono"
+              >
+                <option value="interactive" className="bg-[#151518] text-white">Interactive</option>
+                <option value="standerd" className="bg-[#151518] text-white">Standard</option>
+                <option value="hover" className="bg-[#151518] text-white">Hover</option>
+              </select>
+            </div>
           </div>
         </div>
 

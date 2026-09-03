@@ -244,17 +244,30 @@ export default function Example() {
 
               <div className="space-y-1.5">
                 <label className="font-mono text-gray-400 uppercase tracking-wider block">Scale</label>
-                              <select
-                value={size}
-                onChange={(e) => setSize(e.target.value as typeof size)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
-              >
+                <select
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as typeof size)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                >
                   <option value="xs" className="bg-[#151518] text-white">Extra Small</option>
                   <option value="sm" className="bg-[#151518] text-white">Small</option>
                   <option value="md" className="bg-[#151518] text-white">Medium</option>
                   <option value="lg" className="bg-[#151518] text-white">Large</option>
                   <option value="xl" className="bg-[#151518] text-white">Extra Large</option>
-              </select>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="font-mono text-gray-400 uppercase tracking-wider block">State Preview</label>
+                <select
+                  value={stateMode}
+                  onChange={(e) => setStateMode(e.target.value as IsometricReviveStateMode)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
+                >
+                  <option value="interactive" className="bg-[#12141A]">Interactive</option>
+                  <option value="standerd" className="bg-[#12141A]">Standard</option>
+                  <option value="hover" className="bg-[#12141A]">Hover</option>
+                </select>
               </div>
             </div>
           </div>

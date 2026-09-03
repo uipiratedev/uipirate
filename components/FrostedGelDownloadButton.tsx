@@ -252,8 +252,12 @@ export function FrostedGelDownloadButton({
 
   return (
     <div
-      className={`relative select-none inline-flex items-center justify-center ${className}`}
-      style={{ zoom: scaleFactor } as React.CSSProperties}
+      className={`relative select-none inline-flex items-center justify-center isolate ${className}`}
+      style={
+        scaleFactor !== 1
+          ? { transform: `scale(${scaleFactor})`, transformOrigin: "center center" }
+          : undefined
+      }
     >
       <div className="relative min-w-[560px] h-[240px] flex items-center justify-center flex-none">
 
@@ -341,10 +345,11 @@ export function FrostedGelDownloadButton({
                 scale: isPressed ? 0.98 : isVisualHover ? 1.05 : 0.95,
               }}
               transition={{ duration: 0.28, ease: "easeOut" }}
-              className="absolute inset-0 -bottom-[14px] rounded-[24px] pointer-events-none"
+              className="absolute inset-0 -bottom-[14px] rounded-[24px] pointer-events-none transform-gpu"
               style={{
                 background: `radial-gradient(ellipse at 50% 90%, ${t.glowPrimary} 0%, ${t.glowSecondary} 60%, transparent 80%)`,
                 filter: "blur(20px)",
+                willChange: "transform, opacity",
               }}
             />
 
@@ -425,10 +430,11 @@ export function FrostedGelDownloadButton({
                 scale: isPressed ? 0.95 : isVisualHover ? 1.12 : 0.95,
               }}
               transition={{ duration: 0.28, ease: "easeOut" }}
-              className="absolute inset-0 -bottom-[12px] rounded-[22px] pointer-events-none"
+              className="absolute inset-0 -bottom-[12px] rounded-[22px] pointer-events-none transform-gpu"
               style={{
                 background: `radial-gradient(circle, ${t.glowPrimary} 0%, ${t.glowSecondary} 60%, transparent 80%)`,
                 filter: "blur(18px)",
+                willChange: "transform, opacity",
               }}
             />
 

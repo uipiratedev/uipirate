@@ -314,6 +314,21 @@ export default function Example() {
 
             <div className="space-y-1.5">
               <label className="font-mono text-gray-400 uppercase tracking-wider block">
+                State Preview
+              </label>
+              <select
+                value={stateMode}
+                onChange={(e) => setStateMode(e.target.value as ElevatedUnderglowStateMode)}
+                className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
+              >
+                <option value="interactive">Interactive</option>
+                <option value="standerd">Standard</option>
+                <option value="hover">Hover</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="font-mono text-gray-400 uppercase tracking-wider block">
                 Icon
               </label>
               <select

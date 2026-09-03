@@ -21,6 +21,14 @@ const FROSTED_GEL_ICON_OPTIONS: { value: FrostedGelIcon; label: string }[] = [
   { value: "package", label: "Package" },
   { value: "save", label: "Save" },
 ];
+
+const FROSTED_GEL_SIZE_OPTIONS: { value: FrostedGelSize; label: string }[] = [
+  { value: "xs", label: "Extra Small" },
+  { value: "sm", label: "Small" },
+  { value: "md", label: "Medium" },
+  { value: "lg", label: "Large" },
+  { value: "xl", label: "Extra Large" },
+];
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
@@ -253,422 +261,418 @@ export default function Example() {
             </p>
           </header>
 
-        {/* Live Interactive Studio / Sandbox */}
-        <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <StudioCanvas hint={clickCount > 0 ? `Triggered: ${lastAction} (${clickCount}x)` : "Hover or click pill / cloud icon"}>
-            <FrostedGelDownloadButton
-              label={labelText}
-              theme={theme}
-              size={size}
-              icon={icon}
-              stateMode={stateMode}
-              showCables={showCables}
-              onDownloadClick={() => {
-                setClickCount((c) => c + 1);
-                setLastAction("Downloaded package");
-              }}
-              onIconClick={() => {
-                setClickCount((c) => c + 1);
-                setLastAction("Opened cloud storage");
-              }}
-            />
-          </StudioCanvas>
-        </div>
+          {/* Live Interactive Studio / Sandbox */}
+          <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+            <StudioCanvas hint={clickCount > 0 ? `Triggered: ${lastAction} (${clickCount}x)` : "Hover or click pill / cloud icon"}>
+              <FrostedGelDownloadButton
+                label={labelText}
+                theme={theme}
+                size={size}
+                icon={icon}
+                stateMode={stateMode}
+                showCables={showCables}
+                onDownloadClick={() => {
+                  setClickCount((c) => c + 1);
+                  setLastAction("Downloaded package");
+                }}
+                onIconClick={() => {
+                  setClickCount((c) => c + 1);
+                  setLastAction("Opened cloud storage");
+                }}
+              />
+            </StudioCanvas>
+          </div>
 
-        {/* Customizer */}
+          {/* Customizer */}
           <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-6 space-y-6">
             <h2 className="text-sm font-bold uppercase tracking-wider text-white/70 font-mono">
               Customizer
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-5">
-            {/* Label text input */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Pill Label
-              </label>
-              <input
-                type="text"
-                value={labelText}
-                onChange={(e) => setLabelText(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              />
-            </div>
+              {/* Label text input */}
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                  Pill Label
+                </label>
+                <input
+                  type="text"
+                  value={labelText}
+                  onChange={(e) => setLabelText(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                />
+              </div>
 
-            {/* State Mode Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                State Preview
-              </label>
-              <select
-                value={stateMode}
-                onChange={(e) => setStateMode(e.target.value as FrostedGelStateMode)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              >
-                <option value="interactive" className="bg-[#10131A] text-white">Interactive</option>
-                <option value="standerd" className="bg-[#10131A] text-white">Standard</option>
-                <option value="hover" className="bg-[#10131A] text-white">Hover</option>
-              </select>
-            </div>
+              {/* State Mode Selector */}
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                  State Preview
+                </label>
+                <select
+                  value={stateMode}
+                  onChange={(e) => setStateMode(e.target.value as FrostedGelStateMode)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                >
+                  <option value="interactive" className="bg-[#10131A] text-white">Interactive</option>
+                  <option value="standerd" className="bg-[#10131A] text-white">Standard</option>
+                  <option value="hover" className="bg-[#10131A] text-white">Hover</option>
+                </select>
+              </div>
 
-            {/* Color Theme Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Color &amp; Style Theme
-              </label>
-              <select
-                value={theme}
-                onChange={(e) => setTheme(e.target.value as FrostedGelTheme)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              >
-                {(Object.keys(FROSTED_GEL_THEMES) as FrostedGelTheme[]).map((key) => (
-                  <option key={key} value={key} className="bg-[#10131A] text-white">
-                    {FROSTED_GEL_THEMES[key].name}
-                  </option>
-                ))}
-              </select>
-            </div>
+              {/* Color Theme Selector */}
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                  Color &amp; Style Theme
+                </label>
+                <select
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value as FrostedGelTheme)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                >
+                  {(Object.keys(FROSTED_GEL_THEMES) as FrostedGelTheme[]).map((key) => (
+                    <option key={key} value={key} className="bg-[#10131A] text-white">
+                      {FROSTED_GEL_THEMES[key].name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            {/* Gel Tile Icon Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Tile Icon
-              </label>
-              <select
-                value={icon}
-                onChange={(e) => setIcon(e.target.value as FrostedGelIcon)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              >
-                {FROSTED_GEL_ICON_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value} className="bg-[#10131A] text-white">
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+              {/* Gel Tile Icon Selector */}
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                  Tile Icon
+                </label>
+                <select
+                  value={icon}
+                  onChange={(e) => setIcon(e.target.value as FrostedGelIcon)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                >
+                  {FROSTED_GEL_ICON_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value} className="bg-[#10131A] text-white">
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            {/* Size Scale Selector */}
-            <div className="space-y-1.5">
-              <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
-                Scale Size
-              </label>
-              <select
-                value={size}
-                onChange={(e) => setSize(e.target.value as FrostedGelSize)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
-              >
-                <option value="xs" className="bg-[#10131A] text-white">Extra Small</option>
-                <option value="sm" className="bg-[#10131A] text-white">Small</option>
-                <option value="md" className="bg-[#10131A] text-white">Medium</option>
-                <option value="lg" className="bg-[#10131A] text-white">Large</option>
-                <option value="xl" className="bg-[#10131A] text-white">Extra Large</option>
-              </select>
-            </div>
+              {/* Size Scale Selector */}
+              <div className="space-y-1.5">
+                <label className="text-[11px] font-mono text-white/50 uppercase tracking-wider block">
+                  Scale Size
+                </label>
+                <select
+                  value={size}
+                  onChange={(e) => setSize(e.target.value as FrostedGelSize)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500 font-mono"
+                >
+                  {FROSTED_GEL_SIZE_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value} className="bg-[#10131A] text-white">
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             ALL VARIANTS & THEMES PREVIEW CARD
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#2626FF] mb-1.5">
-                <span>PRESETS &amp; VARIATIONS</span>
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-[#2626FF] mb-1.5">
+                  <span>PRESETS &amp; VARIATIONS</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
               </div>
-              <h2 className="text-2xl font-bold text-white tracking-tight">All Variants Preview</h2>
+              <p className="text-xs text-gray-400 font-mono">
+                Hover &amp; click each variant to experience frosted gel optical effects
+              </p>
             </div>
-            <p className="text-xs text-gray-400 font-mono">
-              Hover &amp; click each variant to experience frosted gel optical effects
-            </p>
+
+            <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Figma Blue */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Figma Electric Blue</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;figma-blue&quot;</span>
+                  </div>
+                  <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                    <FrostedGelDownloadButton
+                      label="Download Package"
+                      theme="figma-blue"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma ceramic pill with volumetric blue flare</span>
+                </div>
+
+                {/* Cyber Violet */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Cyber Violet</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;cyber-violet&quot;</span>
+                  </div>
+                  <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                    <FrostedGelDownloadButton
+                      label="Install Assets"
+                      theme="cyber-violet"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet refraction glow with tinted frosted gel</span>
+                </div>
+
+                {/* Emerald Matrix */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Emerald Matrix</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald-matrix&quot;</span>
+                  </div>
+                  <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                    <FrostedGelDownloadButton
+                      label="Fetch Source"
+                      theme="emerald-matrix"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Cyberpunk reactor green glow with translucent glass tile</span>
+                </div>
+
+                {/* Magma Orange */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Magma Orange</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;magma-orange&quot;</span>
+                  </div>
+                  <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                    <FrostedGelDownloadButton
+                      label="Get Bundle"
+                      theme="magma-orange"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">UI Pirate signature brand magma orange illumination</span>
+                </div>
+
+                {/* Dark Obsidian */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Dark Obsidian</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark-obsidian&quot;</span>
+                  </div>
+                  <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                    <FrostedGelDownloadButton
+                      label="Download Code"
+                      theme="dark-obsidian"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight pill with smoked dark glass cloud tile</span>
+                </div>
+
+                {/* Titanium Gold */}
+                <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
+                  <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
+                    <span className="text-white font-semibold">Titanium Gold</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;titanium-gold&quot;</span>
+                  </div>
+                  <div className="my-3 scale-[0.68] sm:scale-[0.8]">
+                    <FrostedGelDownloadButton
+                      label="Export Pro"
+                      theme="titanium-gold"
+                      size="sm"
+                    />
+                  </div>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">Luxury warm gold underglow with champagne ceramic pill</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Figma Blue */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Figma Electric Blue</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;figma-blue&quot;</span>
-                </div>
-                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
-                  <FrostedGelDownloadButton
-                    label="Download Package"
-                    theme="figma-blue"
-                    size="sm"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma ceramic pill with volumetric blue flare</span>
-              </div>
-
-              {/* Cyber Violet */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Cyber Violet</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-400">theme=&quot;cyber-violet&quot;</span>
-                </div>
-                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
-                  <FrostedGelDownloadButton
-                    label="Install Assets"
-                    theme="cyber-violet"
-                    size="sm"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Ultraviolet refraction glow with tinted frosted gel</span>
-              </div>
-
-              {/* Emerald Matrix */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Emerald Matrix</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-emerald-400">theme=&quot;emerald-matrix&quot;</span>
-                </div>
-                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
-                  <FrostedGelDownloadButton
-                    label="Fetch Source"
-                    theme="emerald-matrix"
-                    size="sm"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Cyberpunk reactor green glow with translucent glass tile</span>
-              </div>
-
-              {/* Magma Orange */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Magma Orange</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-orange-400">theme=&quot;magma-orange&quot;</span>
-                </div>
-                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
-                  <FrostedGelDownloadButton
-                    label="Get Bundle"
-                    theme="magma-orange"
-                    size="sm"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">UI Pirate signature brand magma orange illumination</span>
-              </div>
-
-              {/* Dark Obsidian */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Dark Obsidian</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;dark-obsidian&quot;</span>
-                </div>
-                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
-                  <FrostedGelDownloadButton
-                    label="Download Code"
-                    theme="dark-obsidian"
-                    size="sm"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Stealth midnight pill with smoked dark glass cloud tile</span>
-              </div>
-
-              {/* Titanium Gold */}
-              <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
-                <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Titanium Gold</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-amber-400">theme=&quot;titanium-gold&quot;</span>
-                </div>
-                <div className="my-3 scale-[0.68] sm:scale-[0.8]">
-                  <FrostedGelDownloadButton
-                    label="Export Pro"
-                    theme="titanium-gold"
-                    size="sm"
-                  />
-                </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">Luxury warm gold underglow with champagne ceramic pill</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             INSTALLATION & SETUP
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
-          <div className="bg-[#151518] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Install the required dependencies for spring animations and styling:
-            </p>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Installation &amp; Setup</h2>
+            <div className="bg-[#151518] border border-white/10 rounded-3xl p-6 sm:p-8 space-y-6">
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Install the required dependencies for spring animations and styling:
+              </p>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
-              <span>npm install framer-motion clsx</span>
-              <button
-                onClick={handleCopyInstall}
-                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
-              >
-                {copiedInstall ? "Copied Command!" : "Copy Command"}
-              </button>
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-black/60 border border-white/10 rounded-2xl px-5 py-3.5 font-mono text-xs text-emerald-400">
+                <span>npm install framer-motion clsx</span>
+                <button
+                  onClick={handleCopyInstall}
+                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-sans transition-colors cursor-pointer"
+                >
+                  {copiedInstall ? "Copied Command!" : "Copy Command"}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             CODE EXPORT TABS
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
-            <button
-              onClick={() =>
-                handleCopy(
-                  activeCodeTab === "component"
-                    ? componentSourceCode
-                    : activeCodeTab === "usage"
-                    ? usageCode
-                    : activeCodeTab === "css"
-                    ? cssOnlyCode
-                    : framerCode,
-                  activeCodeTab
-                )
-              }
-              className="text-xs font-mono text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
-            </button>
-          </div>
-
-          <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden">
-            <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-white font-mono">
-                  {activeCodeTab === "component"
-                    ? "FrostedGelDownloadButton.tsx"
-                    : activeCodeTab === "usage"
-                    ? "Usage.tsx"
-                    : activeCodeTab === "css"
-                    ? "Tokens.css"
-                    : "Physics.ts"}
-                </span>
-                <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
-              </div>
-
-              <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
-                <button
-                  onClick={() => setActiveCodeTab("component")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white tracking-tight">Code &amp; Integration</h2>
+              <button
+                onClick={() =>
+                  handleCopy(
                     activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : activeCodeTab === "css"
+                          ? cssOnlyCode
+                          : framerCode,
+                    activeCodeTab
+                  )
+                }
+                className="text-xs font-mono text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                {copiedCode === activeCodeTab ? "✓ Copied to Clipboard" : "Copy Active Tab Code"}
+              </button>
+            </div>
+
+            <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-white font-mono">
+                    {activeCodeTab === "component"
+                      ? "FrostedGelDownloadButton.tsx"
+                      : activeCodeTab === "usage"
+                        ? "Usage.tsx"
+                        : activeCodeTab === "css"
+                          ? "Tokens.css"
+                          : "Physics.ts"}
+                  </span>
+                  <span className="text-xs text-gray-500 font-mono">• Production Ready</span>
+                </div>
+
+                <div className="flex items-center bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                  <button
+                    onClick={() => setActiveCodeTab("component")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "component"
                       ? "bg-blue-600 text-white"
                       : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Component.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("usage")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "usage"
+                      }`}
+                  >
+                    Component.tsx
+                  </button>
+                  <button
+                    onClick={() => setActiveCodeTab("usage")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "usage"
                       ? "bg-blue-600 text-white"
                       : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Usage.tsx
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("css")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "css"
+                      }`}
+                  >
+                    Usage.tsx
+                  </button>
+                  <button
+                    onClick={() => setActiveCodeTab("css")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "css"
                       ? "bg-blue-600 text-white"
                       : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Tokens.css
-                </button>
-                <button
-                  onClick={() => setActiveCodeTab("framer")}
-                  className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${
-                    activeCodeTab === "framer"
+                      }`}
+                  >
+                    Tokens.css
+                  </button>
+                  <button
+                    onClick={() => setActiveCodeTab("framer")}
+                    className={`px-3 py-1.5 rounded-lg transition-colors font-medium ${activeCodeTab === "framer"
                       ? "bg-blue-600 text-white"
                       : "text-gray-400 hover:text-white"
-                  }`}
-                >
-                  Physics.ts
-                </button>
+                      }`}
+                  >
+                    Physics.ts
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-6 bg-[#0B0B0D] overflow-x-auto max-h-[550px]">
+                <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
+                  <code>
+                    {activeCodeTab === "component"
+                      ? componentSourceCode
+                      : activeCodeTab === "usage"
+                        ? usageCode
+                        : activeCodeTab === "css"
+                          ? cssOnlyCode
+                          : framerCode}
+                  </code>
+                </pre>
               </div>
             </div>
-
-            <div className="p-6 bg-[#0B0B0D] overflow-x-auto max-h-[550px]">
-              <pre className="text-xs sm:text-sm font-mono text-gray-300 leading-relaxed">
-                <code>
-                  {activeCodeTab === "component"
-                    ? componentSourceCode
-                    : activeCodeTab === "usage"
-                    ? usageCode
-                    : activeCodeTab === "css"
-                    ? cssOnlyCode
-                    : framerCode}
-                </code>
-              </pre>
-            </div>
           </div>
-        </div>
 
-        {/* ─────────────────────────────────────────────────────────────
+          {/* ─────────────────────────────────────────────────────────────
             PROPS & API REFERENCE TABLE
            ───────────────────────────────────────────────────────────── */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
-          <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
-                    <th className="py-3.5 px-6 font-semibold">Prop</th>
-                    <th className="py-3.5 px-6 font-semibold">Type</th>
-                    <th className="py-3.5 px-6 font-semibold">Default</th>
-                    <th className="py-3.5 px-6 font-semibold">Description</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">label</td>
-                    <td className="py-3 px-6 text-blue-300">string</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;Download now&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the primary ceramic pill</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">theme</td>
-                    <td className="py-3 px-6 text-blue-300">FrostedGelTheme</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;figma-blue&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Color scheme preset (Electric Blue, Ultraviolet, Emerald, etc.)</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
-                    <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Physical scaling multiplier</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">icon</td>
-                    <td className="py-3 px-6 text-blue-300">FrostedGelIcon</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;cloud-download&quot;</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Icon rendered in the frosted gel tile (cloud-download, download, arrow-down, upload, folder, package, save)</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">onDownloadClick</td>
-                    <td className="py-3 px-6 text-blue-300">(e) =&gt; void</td>
-                    <td className="py-3 px-6 text-gray-400">undefined</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Callback fired when the pill button is clicked</td>
-                  </tr>
-                  <tr>
-                    <td className="py-3 px-6 text-blue-400 font-semibold">onIconClick</td>
-                    <td className="py-3 px-6 text-blue-300">(e) =&gt; void</td>
-                    <td className="py-3 px-6 text-gray-400">undefined</td>
-                    <td className="py-3 px-6 font-sans text-gray-300">Callback fired when the frosted glass cloud tile is clicked</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white tracking-tight">Component API Reference</h2>
+            <div className="bg-[#151518] border border-white/10 rounded-3xl overflow-hidden shadow-xl">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs sm:text-sm">
+                  <thead>
+                    <tr className="border-b border-white/10 bg-white/[0.02] text-gray-400 font-mono">
+                      <th className="py-3.5 px-6 font-semibold">Prop</th>
+                      <th className="py-3.5 px-6 font-semibold">Type</th>
+                      <th className="py-3.5 px-6 font-semibold">Default</th>
+                      <th className="py-3.5 px-6 font-semibold">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5 text-gray-300 font-mono text-xs">
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">label</td>
+                      <td className="py-3 px-6 text-blue-300">string</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;Download now&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Text displayed on the primary ceramic pill</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">theme</td>
+                      <td className="py-3 px-6 text-blue-300">FrostedGelTheme</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;figma-blue&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Color scheme preset (Electric Blue, Ultraviolet, Emerald, etc.)</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">size</td>
+                      <td className="py-3 px-6 text-blue-300">&quot;xs&quot; | &quot;sm&quot; | &quot;md&quot; | &quot;lg&quot; | &quot;xl&quot;</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;md&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Physical scaling multiplier</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">icon</td>
+                      <td className="py-3 px-6 text-blue-300">FrostedGelIcon</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;cloud-download&quot;</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Icon rendered in the frosted gel tile (cloud-download, download, arrow-down, upload, folder, package, save)</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">onDownloadClick</td>
+                      <td className="py-3 px-6 text-blue-300">(e) =&gt; void</td>
+                      <td className="py-3 px-6 text-gray-400">undefined</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Callback fired when the pill button is clicked</td>
+                    </tr>
+                    <tr>
+                      <td className="py-3 px-6 text-blue-400 font-semibold">onIconClick</td>
+                      <td className="py-3 px-6 text-blue-300">(e) =&gt; void</td>
+                      <td className="py-3 px-6 text-gray-400">undefined</td>
+                      <td className="py-3 px-6 font-sans text-gray-300">Callback fired when the frosted glass cloud tile is clicked</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Website Global CTA */}
-        <GlobalCTA topic="frosted glass CTA buttons or component libraries" />
+          {/* Website Global CTA */}
+          <GlobalCTA topic="frosted glass CTA buttons or component libraries" />
+        </div>
       </div>
-    </div>
-  </PageWrapper>
+    </PageWrapper>
   );
 }

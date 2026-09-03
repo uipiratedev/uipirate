@@ -381,11 +381,10 @@ export function IsometricReviveButton({
         <div className="absolute flex h-[166.704px] items-center justify-center left-[150px] top-[222px] w-[288.739px] pointer-events-none z-0">
           <div style={{ transform: ISO_TRANSFORM }} className="flex-none">
             <div
-              className={`h-[114.411px] overflow-hidden relative rounded-[20px] w-[218.996px] ${
-                t.isLightMode
+              className={`h-[114.411px] overflow-hidden relative rounded-[20px] w-[218.996px] ${t.isLightMode
                   ? "bg-[rgba(255,255,255,0.4)] border-[0.5px] border-[rgba(0,0,0,0.15)]"
                   : "bg-[rgba(255,255,255,0.01)] border-[0.5px] border-[rgba(255,255,255,0.3)]"
-              } border-solid transition-shadow duration-500`}
+                } border-solid transition-shadow duration-500`}
               style={{
                 boxShadow: isVisualHover
                   ? "0px -1px 24px 0px rgba(255,255,255,0.1), 0px -1px 4px 0px rgba(255,255,255,0.15)"
@@ -394,9 +393,8 @@ export function IsometricReviveButton({
             >
               {/* Internal cast shadow of floating button on idle */}
               <div
-                className={`absolute flex items-center justify-center size-[268.729px] transition-opacity duration-500 ${
-                  isVisualHover ? "opacity-10" : "opacity-80"
-                }`}
+                className={`absolute flex items-center justify-center size-[268.729px] transition-opacity duration-500 ${isVisualHover ? "opacity-10" : "opacity-80"
+                  }`}
                 style={{ left: isVisualHover ? "-15.23px" : "4.77px", top: isVisualHover ? "-67.77px" : "-47.77px" }}
               >
                 <div style={{ transform: "rotate(-45deg) scaleX(0.82) scaleY(1.41)" }} className="flex-none">
@@ -411,11 +409,10 @@ export function IsometricReviveButton({
         <div className="absolute flex h-[166.704px] items-center justify-center left-[150px] top-[219px] w-[288.739px] pointer-events-none z-0">
           <div style={{ transform: ISO_TRANSFORM }} className="flex-none">
             <div
-              className={`border-[0.5px] border-solid h-[114.411px] relative rounded-[20px] w-[218.996px] ${
-                t.isLightMode
+              className={`border-[0.5px] border-solid h-[114.411px] relative rounded-[20px] w-[218.996px] ${t.isLightMode
                   ? "bg-[rgba(255,255,255,0.2)] border-black/20"
                   : "bg-[rgba(255,255,255,0.03)] border-white/40"
-              }`}
+                }`}
             />
           </div>
         </div>
@@ -553,16 +550,17 @@ export function IsometricReviveButton({
                   />
 
                   {/* Text: Revive Now (Figma 115:5986 & 115:6032) */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none px-3">
                     <p
-                      className="capitalize font-sans font-medium italic text-[20px] whitespace-nowrap transition-all duration-300"
+                      className="capitalize font-sans font-medium italic whitespace-nowrap transition-all duration-300 max-w-full text-center"
                       style={{
+                        fontSize: `${label.length <= 10 ? 20 : Math.max(9, +(20 * (10 / label.length)).toFixed(1))}px`,
                         color: t.textColor,
                         opacity: isVisualHover ? 1 : 0.35,
                         textShadow: isVisualHover
                           ? `0px 0px 8px ${t.textGlow}, 0px 0px 18px ${t.textGlow}`
                           : `0px 0px 6px ${t.textGlow}`,
-                        letterSpacing: "0.01em",
+                        letterSpacing: label.length > 14 ? "-0.01em" : "0.01em",
                         transform: angleConfig.textFlip,
                       }}
                     >
@@ -572,11 +570,10 @@ export function IsometricReviveButton({
 
                   {/* Specular Diagonal Sheen (Figma 115:5987 / Vector 8) */}
                   <div
-                    className={`absolute inset-0 pointer-events-none opacity-80 ${
-                      t.isLightMode
+                    className={`absolute inset-0 pointer-events-none opacity-80 ${t.isLightMode
                         ? "bg-gradient-to-br from-white/80 via-white/20 to-transparent"
                         : "bg-gradient-to-br from-white/[0.16] via-white/[0.02] to-transparent"
-                    }`}
+                      }`}
                   />
 
                   {/* Amber Chevron (Figma 115:5988 / 115:6034) */}

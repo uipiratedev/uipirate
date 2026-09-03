@@ -12,7 +12,7 @@ export type TactileSwitchTheme =
   | "amber-crt";
 
 export type TactileSwitchSize = "xs" | "sm" | "md" | "lg" | "xl";
-export type TactileSwitchStateMode = "interactive" | "off" | "on";
+export type TactileSwitchStateMode = "interactive" | "off" | "on" | "standerd" | "hover";
 
 export interface TactileNeumorphicSwitchProps {
   /** Controlled active state (true = ON, false = OFF) */
@@ -334,9 +334,9 @@ export const TactileNeumorphicSwitch: React.FC<TactileNeumorphicSwitchProps> = (
   const [internalChecked, setInternalChecked] = useState(defaultChecked);
 
   const isChecked =
-    stateMode === "off"
+    stateMode === "off" || stateMode === "standerd"
       ? false
-      : stateMode === "on"
+      : stateMode === "on" || stateMode === "hover"
         ? true
         : controlledChecked !== undefined
           ? controlledChecked

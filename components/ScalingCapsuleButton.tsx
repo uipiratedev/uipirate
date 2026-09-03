@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type ScalingCapsuleVariant = "dark" | "orange" | "light" | "cyberpunk";
+export type ScalingCapsuleStateMode = "interactive" | "standerd" | "hover";
 
 export interface ScalingCapsuleButtonProps {
   /** Main button label (default: "Scaling Workshop") */
@@ -12,6 +13,8 @@ export interface ScalingCapsuleButtonProps {
   variant?: ScalingCapsuleVariant;
   /** Size scale */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** State preview mode: 'interactive' | 'standerd' | 'hover' */
+  stateMode?: ScalingCapsuleStateMode;
   /** Optional custom icon element or SVG */
   icon?: React.ReactNode;
   /** Optional click handler */
@@ -62,6 +65,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
   label = "Scaling Workshop",
   variant = "dark",
   size = "md",
+  stateMode = "interactive",
   icon,
   onClick,
   className = "",
@@ -69,6 +73,14 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+
+  const activeHover =
+    stateMode === "hover"
+      ? true
+      : stateMode === "standerd"
+      ? false
+      : isHovered;
+  const activePressed = stateMode === "interactive" ? isPressed : false;
 
   // Exact Figma scales: Outer 223x61px, Cap 211x49px, Circle 45px, Inner Ellipse 26x26px
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
@@ -191,10 +203,12 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
   return __wrapSize(
     <div
       className={`relative inline-flex items-center justify-center select-none ${sizeConfig.outerPadding} ${sizeConfig.outerRadius} ${themeStyles.outerBg} ${themeStyles.outerShadow} transition-all duration-300 ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => stateMode === "interactive" && setIsHovered(true)}
       onMouseLeave={() => {
-        setIsHovered(false);
-        setIsPressed(false);
+        if (stateMode === "interactive") {
+          setIsHovered(false);
+          setIsPressed(false);
+        }
       }}
     >
       {/* 1. Interactive Button Cap (Frame 11 - 118:6174) */}
@@ -202,13 +216,13 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
         type="button"
         disabled={disabled}
         onClick={onClick}
-        onMouseDown={() => setIsPressed(true)}
-        onMouseUp={() => setIsPressed(false)}
-        onTouchStart={() => setIsPressed(true)}
-        onTouchEnd={() => setIsPressed(false)}
+        onMouseDown={() => stateMode === "interactive" && setIsPressed(true)}
+        onMouseUp={() => stateMode === "interactive" && setIsPressed(false)}
+        onTouchStart={() => stateMode === "interactive" && setIsPressed(true)}
+        onTouchEnd={() => stateMode === "interactive" && setIsPressed(false)}
         animate={{
-          y: isPressed ? 1.5 : isHovered ? sizeConfig.liftY : 0,
-          scale: isPressed ? 0.985 : 1,
+          y: activePressed ? 1.5 : activeHover ? sizeConfig.liftY : 0,
+          scale: activePressed ? 0.985 : 1,
         }}
         transition={{
           type: "spring",
@@ -218,7 +232,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
         }}
         className={`relative flex items-center ${sizeConfig.gap} ${sizeConfig.innerPadding} ${sizeConfig.innerRadius} ${themeStyles.capBg} cursor-pointer focus:outline-none overflow-hidden`}
         style={{
-          filter: isHovered ? themeStyles.hoverShadow : themeStyles.restingShadow,
+          filter: activeHover ? themeStyles.hoverShadow : themeStyles.restingShadow,
           willChange: "transform",
           WebkitFontSmoothing: "subpixel-antialiased",
         }}
