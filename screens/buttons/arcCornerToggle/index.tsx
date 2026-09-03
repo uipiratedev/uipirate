@@ -10,30 +10,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function ArcCornerToggleScreen() {
-  const [active, setActive] = useState(false);
-  const [speed, setSpeed] = useState(0.65);
-  const [trackStyle, setTrackStyle] = useState<"arc" | "line">("arc");
-  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
-  const [stateMode, setStateMode] = useState<ArcToggleStateMode>("interactive");
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [toggleCount, setToggleCount] = useState(0);
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const ARC_CORNER_TOGGLE_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -108,6 +85,31 @@ export function ArcCornerToggle({
 }
 
 export default ArcCornerToggle;`;
+
+export default function ArcCornerToggleScreen() {
+  const [active, setActive] = useState(false);
+  const [speed, setSpeed] = useState(0.65);
+  const [trackStyle, setTrackStyle] = useState<"arc" | "line">("arc");
+  const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
+  const [stateMode, setStateMode] = useState<ArcToggleStateMode>("interactive");
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [toggleCount, setToggleCount] = useState(0);
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = ARC_CORNER_TOGGLE_COMPONENT_SOURCE;
 
   const usageCode = `import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 

@@ -33,32 +33,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function FrostedGelDownloadScreen() {
-  const [theme, setTheme] = useState<FrostedGelTheme>("figma-blue");
-  const [size, setSize] = useState<FrostedGelSize>("md");
-  const [icon, setIcon] = useState<FrostedGelIcon>("cloud-download");
-  const [stateMode, setStateMode] = useState<FrostedGelStateMode>("interactive");
-  const [labelText, setLabelText] = useState("Download now");
-  const [showCables, setShowCables] = useState(true);
-  const [clickCount, setClickCount] = useState(0);
-  const [lastAction, setLastAction] = useState<string | null>(null);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css" | "framer">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const FROSTED_GEL_DOWNLOAD_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -164,6 +139,49 @@ export function FrostedGelDownloadButton({
   );
 }`;
 
+export const FROSTED_GEL_DOWNLOAD_PHYSICS = `// Cohesive Spring Physics & Elevation
+<motion.div
+  animate={{
+    y: isPressed ? 2 : isHovered ? -4 : 0,
+    scale: isPressed ? 0.98 : 1,
+  }}
+  transition={{
+    type: "spring",
+    stiffness: 450,
+    damping: 26,
+    mass: 0.8,
+  }}
+>
+  {/* Dual Pill Split Assembly */}
+</motion.div>`;
+
+export default function FrostedGelDownloadScreen() {
+  const [theme, setTheme] = useState<FrostedGelTheme>("figma-blue");
+  const [size, setSize] = useState<FrostedGelSize>("md");
+  const [icon, setIcon] = useState<FrostedGelIcon>("cloud-download");
+  const [stateMode, setStateMode] = useState<FrostedGelStateMode>("interactive");
+  const [labelText, setLabelText] = useState("Download now");
+  const [showCables, setShowCables] = useState(true);
+  const [clickCount, setClickCount] = useState(0);
+  const [lastAction, setLastAction] = useState<string | null>(null);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css" | "framer">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = FROSTED_GEL_DOWNLOAD_COMPONENT_SOURCE;
+
   const usageCode = `import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
 
 export default function Example() {
@@ -223,21 +241,7 @@ export default function Example() {
   filter: blur(32px);
 }`;
 
-  const framerCode = `// Cohesive Spring Physics & Elevation
-<motion.div
-  animate={{
-    y: isPressed ? 2 : isHovered ? -4 : 0,
-    scale: isPressed ? 0.98 : 1,
-  }}
-  transition={{
-    type: "spring",
-    stiffness: 450,
-    damping: 26,
-    mass: 0.8,
-  }}
->
-  {/* Dual Pill Split Assembly */}
-</motion.div>`;
+  const framerCode = FROSTED_GEL_DOWNLOAD_PHYSICS;
 
   return (
     <PageWrapper showFloatingButton={false}>

@@ -11,29 +11,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function AnimatedSlideButtonScreen() {
-  const [primaryText, setPrimaryText] = useState("Explore Services");
-  const [hoverText, setHoverText] = useState("See More →");
-  const [variant, setVariant] = useState<"primary" | "secondary">("primary");
-  const [size, setSize] = useState<AnimatedButtonSize>("md");
-  const [stateMode, setStateMode] = useState<AnimatedButtonStateMode>("interactive");
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install clsx tailwind-merge");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const ANIMATED_SLIDE_COMPONENT_SOURCE = `"use client";
 
 import React from "react";
 
@@ -76,6 +54,30 @@ export function AnimatedSlideButton({
 }
 
 export default AnimatedSlideButton;`;
+
+export default function AnimatedSlideButtonScreen() {
+  const [primaryText, setPrimaryText] = useState("Explore Services");
+  const [hoverText, setHoverText] = useState("See More →");
+  const [variant, setVariant] = useState<"primary" | "secondary">("primary");
+  const [size, setSize] = useState<AnimatedButtonSize>("md");
+  const [stateMode, setStateMode] = useState<AnimatedButtonStateMode>("interactive");
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeCodeTab, setActiveCodeTab] = useState<"component" | "usage" | "css">("component");
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install clsx tailwind-merge");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = ANIMATED_SLIDE_COMPONENT_SOURCE;
 
   const usageCode = `import { AnimatedButton } from "@/components/AnimatedButton";
 

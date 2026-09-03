@@ -14,31 +14,7 @@ import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
-export default function TactileNeumorphicSwitchScreen() {
-  const [theme, setTheme] = useState<TactileSwitchTheme>("emerald-photon");
-  const [size, setSize] = useState<TactileSwitchSize>("md");
-  const [stateMode, setStateMode] = useState<TactileSwitchStateMode>("interactive");
-  const [showGrid, setShowGrid] = useState(true);
-  const [clickCount, setClickCount] = useState(0);
-  const [customActiveColor, setCustomActiveColor] = useState<string>("#10E599");
-  const [useCustomColor, setUseCustomColor] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<"component" | "usage" | "css" | "framer">("component");
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [copiedInstall, setCopiedInstall] = useState(false);
-
-  const handleCopy = (text: string, tabName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedCode(tabName);
-    setTimeout(() => setCopiedCode(null), 2500);
-  };
-
-  const handleCopyInstall = () => {
-    navigator.clipboard.writeText("npm install framer-motion clsx");
-    setCopiedInstall(true);
-    setTimeout(() => setCopiedInstall(false), 2000);
-  };
-
-  const componentSourceCode = `"use client";
+export const TACTILE_NEUMORPHIC_SWITCH_COMPONENT_SOURCE = `"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -109,6 +85,45 @@ export function TactileNeumorphicSwitch({
   );
 }`;
 
+export const TACTILE_NEUMORPHIC_SWITCH_PHYSICS = `// 60fps Spring Motion Physics
+export const SWITCH_SPRING = {
+  type: "spring",
+  stiffness: 380,
+  damping: 26,
+  mass: 0.85,
+};
+
+<motion.div
+  animate={{ x: isChecked ? 70 : -70 }}
+  transition={SWITCH_SPRING}
+/>`;
+
+export default function TactileNeumorphicSwitchScreen() {
+  const [theme, setTheme] = useState<TactileSwitchTheme>("emerald-photon");
+  const [size, setSize] = useState<TactileSwitchSize>("md");
+  const [stateMode, setStateMode] = useState<TactileSwitchStateMode>("interactive");
+  const [showGrid, setShowGrid] = useState(true);
+  const [clickCount, setClickCount] = useState(0);
+  const [customActiveColor, setCustomActiveColor] = useState<string>("#10E599");
+  const [useCustomColor, setUseCustomColor] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<"component" | "usage" | "css" | "framer">("component");
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [copiedInstall, setCopiedInstall] = useState(false);
+
+  const handleCopy = (text: string, tabName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedCode(tabName);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText("npm install framer-motion clsx");
+    setCopiedInstall(true);
+    setTimeout(() => setCopiedInstall(false), 2000);
+  };
+
+  const componentSourceCode = TACTILE_NEUMORPHIC_SWITCH_COMPONENT_SOURCE;
+
   const usageCode = `import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 
 export default function Example() {
@@ -149,18 +164,7 @@ export default function Example() {
                         inset 0 -3px 4px rgba(150, 162, 180, 0.35);
 }`;
 
-  const framerPhysicsCode = `// 60fps Spring Motion Physics
-export const SWITCH_SPRING = {
-  type: "spring",
-  stiffness: 380,
-  damping: 26,
-  mass: 0.85,
-};
-
-<motion.div
-  animate={{ x: isChecked ? 70 : -70 }}
-  transition={SWITCH_SPRING}
-/>`;
+  const framerPhysicsCode = TACTILE_NEUMORPHIC_SWITCH_PHYSICS;
 
   return (
     <PageWrapper showFloatingButton={false}>
