@@ -56,6 +56,8 @@ export interface ComponentDetail {
   defaultShowCables?: boolean;
   hasIntensityControl?: boolean;
   defaultIntensity?: string;
+  hasDotColorControl?: boolean;
+  defaultDotColor?: string;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -222,6 +224,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasDotColorControl: true,
+    defaultDotColor: "#54EAD8",
     defaultTheme: "default",
     availableThemes: [
       { value: "default", label: "Figma Cyan", color: "#54EAD8" },

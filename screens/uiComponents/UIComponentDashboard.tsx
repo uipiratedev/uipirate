@@ -150,6 +150,7 @@ export default function UIComponentDashboard({
   const [customLabel, setCustomLabel] = useState<string>("");
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
+  const [customDotColor, setCustomDotColor] = useState<string>("#54EAD8");
   const [customIcon, setCustomIcon] = useState<FrostedGelIcon>("cloud-download");
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
   const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
@@ -186,6 +187,7 @@ export default function UIComponentDashboard({
     setCustomLabel(selectedComponent.defaultLabel || "Button");
     setCustomSize("md");
     setCustomTheme(selectedComponent.defaultTheme || "default");
+    setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
     setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
     setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
     setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
@@ -283,6 +285,7 @@ export default function Example() {
   return (
     <TactilePillButton
       label="${customLabel}"
+      dotColor="${customDotColor || "#54EAD8"}"
       variant="${customTheme}"
       size="${customSize}"
       onClick={() => console.log("Clicked")}
@@ -518,7 +521,7 @@ export default function Example() {
             <TactilePillButton
               label={customLabel || "Get Started"}
               variant={tactileVariant as any}
-              dotColor={tactileDotColorMap[tactileVariant] || "#54EAD8"}
+              dotColor={customDotColor || tactileDotColorMap[tactileVariant] || "#54EAD8"}
               size={customSize}
               stateMode={customStateMode}
               onClick={() => handleTriggerAction("Tactile Pill Clicked")}
@@ -1099,6 +1102,7 @@ export default function Example() {
                         setCustomLabel(selectedComponent.defaultLabel || "Button");
                         setCustomSize("md");
                         setCustomTheme(selectedComponent.defaultTheme || "default");
+                        setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
                         setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
                         setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
                         setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
@@ -1174,7 +1178,22 @@ export default function Example() {
                         </label>
                         <select
                           value={customTheme}
-                          onChange={(e) => setCustomTheme(e.target.value)}
+                          onChange={(e) => {
+                            const newTheme = e.target.value;
+                            setCustomTheme(newTheme);
+                            if (selectedComponent.id === "tactile-pill-button") {
+                              const tactileDotColorMap: Record<string, string> = {
+                                default: "#54EAD8",
+                                orange: "#FF5B04",
+                                dark: "#A78BFA",
+                                cyberpunk: "#10B981",
+                                minimal: "#3B82F6",
+                              };
+                              if (tactileDotColorMap[newTheme]) {
+                                setCustomDotColor(tactileDotColorMap[newTheme]);
+                              }
+                            }
+                          }}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
                               ? "bg-gray-100 border border-gray-200 text-gray-900"
                               : "bg-black/50 border border-white/10 text-white"
@@ -1190,6 +1209,33 @@ export default function Example() {
                             </option>
                           ))}
                         </select>
+                      </div>
+                    )}
+
+                    {/* 3a. Beacon Dot Color Control */}
+                    {(selectedComponent.hasDotColorControl || selectedComponent.id === "tactile-pill-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Beacon Dot Color:
+                        </label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="color"
+                            value={customDotColor && customDotColor.startsWith("#") && customDotColor.length === 7 ? customDotColor : "#54EAD8"}
+                            onChange={(e) => setCustomDotColor(e.target.value)}
+                            className="w-9 h-[34px] rounded-xl cursor-pointer border border-white/10 bg-transparent p-1 shrink-0"
+                          />
+                          <input
+                            type="text"
+                            value={customDotColor}
+                            onChange={(e) => setCustomDotColor(e.target.value)}
+                            placeholder="#54EAD8"
+                            className={`w-full px-3.5 py-2 rounded-xl text-xs font-mono transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
+                                ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                                : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
+                              }`}
+                          />
+                        </div>
                       </div>
                     )}
 
