@@ -29,6 +29,7 @@ import {
   ComponentDetail,
   PresetVariant,
 } from "./dashboardComponents";
+import { getComponentLabScreen } from "./componentScreens";
 
 export { ALL_DASHBOARD_COMPONENTS };
 export type { ComponentCategory, PropRow, ComponentDetail, PresetVariant };
@@ -124,6 +125,12 @@ export default function UIComponentDashboard({
     () => ALL_DASHBOARD_COMPONENTS.find((c) => c.id === selectedComponentId) ?? ALL_DASHBOARD_COMPONENTS[0],
     [selectedComponentId]
   );
+
+  // The dedicated /buttons/<slug> studio screen for this component, if one exists.
+  // When present we render it verbatim inside the Lab shell so the playground,
+  // presets, code tabs (Component.tsx / Usage.tsx / Tokens.css / Physics.ts) and
+  // API table stay 1:1 with the standalone button page — no duplicated content.
+  const EmbeddedStudioScreen = getComponentLabScreen(selectedComponent.id);
 
   // Sync playground initial state when selected component changes
   useEffect(() => {
@@ -963,10 +970,20 @@ export default function Example() {
             data-lenis-prevent="true"
             className="flex-1 h-[calc(100vh-3.5rem)] overflow-y-auto min-w-0 min-h-0 p-6 sm:p-10 lg:p-12 space-y-12 scroll-smooth overscroll-contain scrollbar-thin"
           >
-            <div className="max-w-5xl mx-auto space-y-12 pb-16">
+            <div className={EmbeddedStudioScreen ? "space-y-8 pb-16" : "max-w-5xl mx-auto space-y-12 pb-16"}>
               {/* Breadcrumb Navigation */}
               {breadcrumbNav}
 
+              {EmbeddedStudioScreen ? (
+                <>
+                  {/* Verbatim /buttons/<slug> studio screen — single source of truth */}
+                  <div className="-mx-6 sm:-mx-10 lg:-mx-12">
+                    <EmbeddedStudioScreen />
+                  </div>
+                  {componentPagerNav}
+                </>
+              ) : (
+                <>
               {/* Header: Title & Badges */}
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
@@ -1505,10 +1522,13 @@ export default function Example() {
 
               {/* ── 7. Next & Previous Component Navigation ────────────── */}
               {componentPagerNav}
+                </>
+              )}
             </div>
           </main>
 
           {/* ── Right Table of Contents (Sticky On This Page) ──────────────── */}
+          {!EmbeddedStudioScreen && (
           <aside
             data-lenis-prevent="true"
             className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
@@ -1582,6 +1602,7 @@ export default function Example() {
               </li>
             </ul>
           </aside>
+          )}
         </div>
       </div>
     </PageWrapper>
