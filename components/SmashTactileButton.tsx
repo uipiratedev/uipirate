@@ -176,7 +176,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   const cradleH = sizeConfig.coreH + sizeConfig.cradlePad * 2;
 
   // Theme palettes matching Figma Node 17:1480 & variants
-  const themeStyles = {
+  const themeStylesMap = {
     figma: {
       deckBorder: "rgba(255, 255, 255, 0.85)",
       glassAccentColor: "#F3F3FE", // Glass deck ticks and dots matching #F3F3FE
@@ -241,7 +241,12 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
       softDropShadow:
         "drop-shadow(0px 3px 4px rgba(2,4,10,0.6)) drop-shadow(0px 8px 12px rgba(244,63,94,0.25)) drop-shadow(0px 16px 22px rgba(0,229,190,0.2))",
     },
-  }[variant];
+  };
+
+  const themeStyles =
+    (variant && themeStylesMap[variant]) ||
+    ((variant as string) === "cyber" ? themeStylesMap.cyberpunk : null) ||
+    themeStylesMap.figma;
 
   const W = sizeConfig.coreW;
   const H = sizeConfig.coreH;

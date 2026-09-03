@@ -682,7 +682,7 @@ export default function Example() {
         );
       }
       case "smash-tactile-button": {
-        const validSmashVariants = ["figma", "cyber", "dark"];
+        const validSmashVariants = ["figma", "dark", "orange", "cyberpunk"];
         const smashVariant = safeTheme(customTheme, validSmashVariants, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
