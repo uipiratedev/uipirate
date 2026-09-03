@@ -56,6 +56,9 @@ export interface ComponentDetail {
   defaultShowCables?: boolean;
   hasIntensityControl?: boolean;
   defaultIntensity?: string;
+  hasDotColorControl?: boolean;
+  defaultDotColor?: string;
+  availableDotColors?: Array<{ value: string; label: string; color?: string }>;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -222,6 +225,17 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasDotColorControl: true,
+    defaultDotColor: "#54EAD8",
+    availableDotColors: [
+      { value: "#54EAD8", label: "Figma Aqua (#54EAD8)", color: "#54EAD8" },
+      { value: "#FF5B04", label: "Brand Orange (#FF5B04)", color: "#FF5B04" },
+      { value: "#10B981", label: "Emerald Green (#10B981)", color: "#10B981" },
+      { value: "#8B5CF6", label: "Electric Violet (#8B5CF6)", color: "#8B5CF6" },
+      { value: "#F59E0B", label: "Amber Glow (#F59E0B)", color: "#F59E0B" },
+      { value: "#F43F5E", label: "Neon Pink (#F43F5E)", color: "#F43F5E" },
+      { value: "#3B82F6", label: "Sapphire Blue (#3B82F6)", color: "#3B82F6" },
+    ],
     defaultTheme: "default",
     availableThemes: [
       { value: "default", label: "Figma Cyan", color: "#54EAD8" },
