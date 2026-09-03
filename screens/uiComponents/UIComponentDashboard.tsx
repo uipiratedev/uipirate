@@ -182,7 +182,7 @@ export default function UIComponentDashboard({
   // Fall back to a valid tab: not every component ships a Component.tsx / Physics.ts.
   const effectiveCodeTab: CodeTab =
     (activeCodeTab === "component" && !codeEntry?.componentCode) ||
-    (activeCodeTab === "physics" && !codeEntry?.physicsCode)
+      (activeCodeTab === "physics" && !codeEntry?.physicsCode)
       ? "jsx"
       : activeCodeTab;
 
@@ -843,8 +843,8 @@ export default function Example() {
         <button
           onClick={() => handleSelectComponent(prevComponent.id)}
           className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${isLightPage
-              ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
-              : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
+            ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
+            : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
             }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
@@ -862,8 +862,8 @@ export default function Example() {
         <button
           onClick={() => handleSelectComponent(nextComponent.id)}
           className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${isLightPage
-              ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
-              : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
+            ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
+            : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
             }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
@@ -881,15 +881,15 @@ export default function Example() {
     <PageWrapper showFloatingButton={false}>
       <div
         className={`h-screen w-screen overflow-hidden flex flex-col font-sans transition-colors duration-300 ${isLightPage
-            ? "bg-[#F8F9FA] text-gray-900 selection:bg-[#FF5B04] selection:text-white"
-            : "bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white"
+          ? "bg-[#F8F9FA] text-gray-900 selection:bg-[#FF5B04] selection:text-white"
+          : "bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white"
           }`}
       >
         {/* ── Fixed Documentation Top Bar ────────────────────────── */}
         <header
           className={`h-14 shrink-0 border-b px-4 sm:px-6 flex items-center justify-between gap-4 z-30 transition-colors duration-300 ${isLightPage
-              ? "bg-white/95 border-gray-200 shadow-sm"
-              : "bg-[#0D0D11]/95 border-white/8 backdrop-blur-xl"
+            ? "bg-white/95 border-gray-200 shadow-sm"
+            : "bg-[#0D0D11]/95 border-white/8 backdrop-blur-xl"
             }`}
         >
           {/* Left Brand + Back to Library + Mobile Drawer Toggle */}
@@ -897,8 +897,8 @@ export default function Example() {
             <button
               onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
               className={`lg:hidden p-1.5 rounded-lg border transition-colors ${isLightPage
-                  ? "bg-gray-100 border-gray-200 text-gray-700 hover:text-gray-900"
-                  : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
+                ? "bg-gray-100 border-gray-200 text-gray-700 hover:text-gray-900"
+                : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
                 }`}
               aria-label="Toggle Navigation"
             >
@@ -908,8 +908,8 @@ export default function Example() {
             <Link
               href="/componentlab"
               className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-xl border transition-all ${isLightPage
-                  ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
-                  : "bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border-white/10"
+                ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
+                : "bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border-white/10"
                 }`}
               title="Return to Component Library"
             >
@@ -943,8 +943,8 @@ export default function Example() {
             <button
               onClick={() => setPageTheme(pageTheme === "dark" ? "light" : "dark")}
               className={`p-1.5 rounded-xl border transition-all cursor-pointer ${isLightPage
-                  ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-800"
-                  : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-200 hover:text-white"
+                ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-800"
+                : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-200 hover:text-white"
                 }`}
               title="Toggle page light / dark mode"
               aria-label="Toggle page theme"
@@ -960,8 +960,8 @@ export default function Example() {
           <aside
             data-lenis-prevent="true"
             className={`w-72 shrink-0 border-r flex flex-col transition-all duration-300 z-40 ${isLightPage
-                ? "bg-white/80 border-gray-200 backdrop-blur-xl"
-                : "bg-[#0D0D11]/90 border-white/8 backdrop-blur-xl"
+              ? "bg-white/80 border-gray-200 backdrop-blur-xl"
+              : "bg-[#0D0D11]/90 border-white/8 backdrop-blur-xl"
               } ${mobileSidebarOpen
                 ? "fixed inset-y-14 left-0 w-72 shadow-2xl z-50 bg-inherit"
                 : "hidden lg:flex"
@@ -977,8 +977,8 @@ export default function Example() {
                   value={sidebarSearch}
                   onChange={(e) => setSidebarSearch(e.target.value)}
                   className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs font-mono transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
-                      ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
-                      : "bg-white/5 border border-white/10 text-white placeholder-gray-500"
+                    ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                    : "bg-white/5 border border-white/10 text-white placeholder-gray-500"
                     }`}
                 />
               </div>
@@ -1003,22 +1003,22 @@ export default function Example() {
                             key={item.id}
                             onClick={() => handleSelectComponent(item.id)}
                             className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center justify-between group cursor-pointer ${isSelected
-                                ? isLightPage
-                                  ? "bg-orange-50 border border-orange-200 text-[#FF5B04] font-bold shadow-sm"
-                                  : "bg-[#FF5B04]/15 border border-[#FF5B04]/30 text-[#FF5B04] font-bold shadow-sm"
-                                : isLightPage
-                                  ? "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                  : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
+                              ? isLightPage
+                                ? "bg-orange-50 border border-orange-200 text-[#FF5B04] font-bold shadow-sm"
+                                : "bg-[#FF5B04]/15 border border-[#FF5B04]/30 text-[#FF5B04] font-bold shadow-sm"
+                              : isLightPage
+                                ? "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
                               }`}
                           >
                             <span className="truncate">{item.name}</span>
                             {item.badge && (
                               <span
                                 className={`text-[10px] font-mono px-1.5 py-0.5 rounded border shrink-0 ${isSelected
-                                    ? "bg-[#FF5B04]/20 border-[#FF5B04]/40 text-[#FF5B04]"
-                                    : isLightPage
-                                      ? "bg-white text-gray-500 border-gray-200"
-                                      : "bg-white/5 text-gray-400 border-white/5"
+                                  ? "bg-[#FF5B04]/20 border-[#FF5B04]/40 text-[#FF5B04]"
+                                  : isLightPage
+                                    ? "bg-white text-gray-500 border-gray-200"
+                                    : "bg-white/5 text-gray-400 border-white/5"
                                   }`}
                               >
                                 {item.badge}
@@ -1036,8 +1036,8 @@ export default function Example() {
             {/* Sidebar Bottom Status */}
             <div
               className={`p-3.5 border-t text-[11px] flex items-center justify-between ${isLightPage
-                  ? "bg-white/60 border-gray-200 text-gray-500"
-                  : "bg-black/30 border-white/8 text-gray-400"
+                ? "bg-white/60 border-gray-200 text-gray-500"
+                : "bg-black/30 border-white/8 text-gray-400"
                 }`}
             >
               <span>Tailwind + Framer</span>
@@ -1197,8 +1197,8 @@ export default function Example() {
                           onChange={(e) => setCustomLabel(e.target.value)}
                           placeholder="Type custom text..."
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
-                              : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                            : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
                             }`}
                         />
                       </div>
@@ -1214,8 +1214,8 @@ export default function Example() {
                           value={customSize}
                           onChange={(e) => setCustomSize(e.target.value as "xs" | "sm" | "md" | "lg" | "xl")}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="xs" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1262,8 +1262,8 @@ export default function Example() {
                             }
                           }}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           {selectedComponent.availableThemes.map((th) => (
@@ -1279,30 +1279,59 @@ export default function Example() {
                       </div>
                     )}
 
-                    {/* 3a. Beacon Dot Color Control */}
+                    {/* 3a. Beacon Dot Color Dropdown */}
                     {(selectedComponent.hasDotColorControl || selectedComponent.id === "tactile-pill-button") && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
                           Beacon Dot Color:
                         </label>
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="color"
-                            value={customDotColor && customDotColor.startsWith("#") && customDotColor.length === 7 ? customDotColor : "#54EAD8"}
-                            onChange={(e) => setCustomDotColor(e.target.value)}
-                            className="w-9 h-[34px] rounded-xl cursor-pointer border border-white/10 bg-transparent p-1 shrink-0"
-                          />
-                          <input
-                            type="text"
-                            value={customDotColor}
-                            onChange={(e) => setCustomDotColor(e.target.value)}
-                            placeholder="#54EAD8"
-                            className={`w-full px-3.5 py-2 rounded-xl text-xs font-mono transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
-                                ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
-                                : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
-                              }`}
-                          />
-                        </div>
+                        <select
+                          value={customDotColor}
+                          onChange={(e) => setCustomDotColor(e.target.value)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="#54EAD8" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Figma Cyan
+                          </option>
+                          <option value="#FF5B04" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Magma Orange
+                          </option>
+                          <option value="#A78BFA" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Obsidian Violet
+                          </option>
+                          <option value="#10B981" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Matrix Emerald
+                          </option>
+                          <option value="#3B82F6" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Electric Blue
+                          </option>
+                          <option value="#EC4899" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Neon Pink
+                          </option>
+                          <option value="#F59E0B" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Amber Gold
+                          </option>
+                          <option value="#EF4444" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Crimson Red
+                          </option>
+                          {![
+                            "#54EAD8",
+                            "#FF5B04",
+                            "#A78BFA",
+                            "#10B981",
+                            "#3B82F6",
+                            "#EC4899",
+                            "#F59E0B",
+                            "#EF4444",
+                          ].includes(customDotColor) && customDotColor && (
+                              <option value={customDotColor} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                                Custom ({customDotColor})
+                              </option>
+                            )}
+                        </select>
                       </div>
                     )}
 
@@ -1316,8 +1345,8 @@ export default function Example() {
                           value={customIcon}
                           onChange={(e) => setCustomIcon(e.target.value)}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           {selectedComponent.availableIcons.map((ic) => (
@@ -1343,8 +1372,8 @@ export default function Example() {
                           value={customShowCables ? "true" : "false"}
                           onChange={(e) => setCustomShowCables(e.target.value === "true")}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1367,8 +1396,8 @@ export default function Example() {
                           value={customIntensity}
                           onChange={(e) => setCustomIntensity(e.target.value as IsometricGlowIntensity)}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="subtle" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1394,8 +1423,8 @@ export default function Example() {
                           value={customLiftAmount}
                           onChange={(e) => setCustomLiftAmount(Number(e.target.value))}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value={0} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1435,8 +1464,8 @@ export default function Example() {
                           value={customInteractionMode}
                           onChange={(e) => setCustomInteractionMode(e.target.value as LedMatrixInteractionMode)}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1462,8 +1491,8 @@ export default function Example() {
                           value={customStepSpeedMs}
                           onChange={(e) => setCustomStepSpeedMs(Number(e.target.value))}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value={60} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1500,8 +1529,8 @@ export default function Example() {
                           value={customShowOrnaments ? "true" : "false"}
                           onChange={(e) => setCustomShowOrnaments(e.target.value === "true")}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1541,8 +1570,8 @@ export default function Example() {
                             value={customStateMode}
                             onChange={(e) => setCustomStateMode(e.target.value as "interactive" | "standerd" | "hover")}
                             className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                                ? "bg-gray-100 border border-gray-200 text-gray-900"
-                                : "bg-black/50 border border-white/10 text-white"
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
                               }`}
                           >
                             <option value="interactive" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1593,8 +1622,8 @@ export default function Example() {
                         <div
                           key={variant.title}
                           className={`rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all border ${isLightPage
-                              ? "bg-[#F8F9FA] border-gray-200 hover:border-gray-300"
-                              : "bg-[#0E0E12] border-white/5 hover:border-white/15"
+                            ? "bg-[#F8F9FA] border-gray-200 hover:border-gray-300"
+                            : "bg-[#0E0E12] border-white/5 hover:border-white/15"
                             }`}
                         >
                           <div className="w-full flex items-center justify-between text-xs font-mono mb-2">
@@ -1679,8 +1708,8 @@ export default function Example() {
                         <button
                           onClick={() => setActiveCodeTab("component")}
                           className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "component"
-                              ? "bg-[#FF5B04] text-white font-bold shadow"
-                              : "text-gray-400 hover:text-white"
+                            ? "bg-[#FF5B04] text-white font-bold shadow"
+                            : "text-gray-400 hover:text-white"
                             }`}
                         >
                           Component.tsx
@@ -1689,8 +1718,8 @@ export default function Example() {
                       <button
                         onClick={() => setActiveCodeTab("jsx")}
                         className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "jsx"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
+                          ? "bg-[#FF5B04] text-white font-bold shadow"
+                          : "text-gray-400 hover:text-white"
                           }`}
                       >
                         Usage.tsx
@@ -1698,8 +1727,8 @@ export default function Example() {
                       <button
                         onClick={() => setActiveCodeTab("html")}
                         className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "html"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
+                          ? "bg-[#FF5B04] text-white font-bold shadow"
+                          : "text-gray-400 hover:text-white"
                           }`}
                       >
                         HTML
@@ -1707,8 +1736,8 @@ export default function Example() {
                       <button
                         onClick={() => setActiveCodeTab("css")}
                         className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "css"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
+                          ? "bg-[#FF5B04] text-white font-bold shadow"
+                          : "text-gray-400 hover:text-white"
                           }`}
                       >
                         Tokens.css
@@ -1717,8 +1746,8 @@ export default function Example() {
                         <button
                           onClick={() => setActiveCodeTab("physics")}
                           className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "physics"
-                              ? "bg-[#FF5B04] text-white font-bold shadow"
-                              : "text-gray-400 hover:text-white"
+                            ? "bg-[#FF5B04] text-white font-bold shadow"
+                            : "text-gray-400 hover:text-white"
                             }`}
                         >
                           Physics.ts
