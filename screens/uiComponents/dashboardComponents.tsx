@@ -52,6 +52,8 @@ export interface ComponentDetail {
   hasIconControl?: boolean;
   defaultIcon?: string;
   availableIcons?: Array<{ value: string; label: string }>;
+  hasCablesControl?: boolean;
+  defaultShowCables?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -347,6 +349,8 @@ export default function Example() {
       { value: "package", label: "Package" },
       { value: "save", label: "Save" },
     ],
+    hasCablesControl: true,
+    defaultShowCables: true,
     defaultTheme: "figma-blue",
     availableThemes: [
       { value: "figma-blue", label: "Figma Blue", color: "#38BDF8" },

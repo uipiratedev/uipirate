@@ -105,6 +105,7 @@ export default function UIComponentDashboard({
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
   const [customIcon, setCustomIcon] = useState<FrostedGelIcon>("cloud-download");
+  const [customShowCables, setCustomShowCables] = useState<boolean>(true);
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
   const [showGrid, setShowGrid] = useState<boolean>(true);
   const [clickCount, setClickCount] = useState<number>(0);
@@ -129,6 +130,7 @@ export default function UIComponentDashboard({
     setCustomSize("md");
     setCustomTheme(selectedComponent.defaultTheme || "default");
     setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
+    setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
     setCustomStateMode("interactive");
     setClickCount(0);
     setLastAction(null);
@@ -238,6 +240,7 @@ export default function Example() {
       theme="${customTheme}"
       size="${customSize}"
       icon="${customIcon}"
+      showCables={${customShowCables}}
       onDownload={() => console.log("Download started")}
     />
   );
@@ -469,6 +472,7 @@ export default function Example() {
               theme={gelTheme as any}
               size={customSize}
               icon={customIcon}
+              showCables={customShowCables}
               stateMode={customStateMode}
               onClick={() => handleTriggerAction("Gel Download Triggered")}
             />
@@ -1043,6 +1047,7 @@ export default function Example() {
                         setCustomSize("md");
                         setCustomTheme(selectedComponent.defaultTheme || "default");
                         setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
+                        setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
                         setCustomStateMode("interactive");
                         setClickCount(0);
                         setLastAction(null);
@@ -1157,6 +1162,30 @@ export default function Example() {
                               {ic.label}
                             </option>
                           ))}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3c. Technical Cables Toggle */}
+                    {selectedComponent.hasCablesControl && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Trace Cables:
+                        </label>
+                        <select
+                          value={customShowCables ? "true" : "false"}
+                          onChange={(e) => setCustomShowCables(e.target.value === "true")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Visible (Show Cables)
+                          </option>
+                          <option value="false" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hidden (No Cables)
+                          </option>
                         </select>
                       </div>
                     )}
