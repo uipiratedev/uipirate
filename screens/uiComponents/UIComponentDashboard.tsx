@@ -161,6 +161,7 @@ export default function UIComponentDashboard({
   const [customStepSpeedMs, setCustomStepSpeedMs] = useState<number>(110);
   const [customShowOrnaments, setCustomShowOrnaments] = useState<boolean>(true);
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
+  const [customShowIcons, setCustomShowIcons] = useState<boolean>(true);
   const [customThemeMode, setCustomThemeMode] = useState<"auto" | "light" | "dark">("auto");
   const [customDuration, setCustomDuration] = useState<number>(0.65);
   const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
@@ -236,6 +237,9 @@ export default function UIComponentDashboard({
     );
     setCustomDuration(
       selectedComponent.defaultDuration !== undefined ? selectedComponent.defaultDuration : 0.65
+    );
+    setCustomShowIcons(
+      selectedComponent.defaultShowIcons !== undefined ? selectedComponent.defaultShowIcons : true
     );
     setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
     setCustomStateMode("interactive");
@@ -514,6 +518,7 @@ export default function Example() {
       theme="${customTheme}"
       size="${customSize}"
       label="${customLabel}"
+      showIcons={${customShowIcons}}
       defaultChecked={true}
       onChange={(checked) => console.log("Toggle state:", checked)}
     />
@@ -860,6 +865,7 @@ export default function Example() {
               size={customSize}
               stateMode={customStateMode}
               label={customLabel || "Tactile Toggle"}
+              showIcons={customShowIcons}
               defaultChecked={true}
               onChange={(st) => handleTriggerAction(`Toggle: ${st ? "ON" : "OFF"}`)}
             />
@@ -1265,6 +1271,9 @@ export default function Example() {
                         );
                         setCustomDuration(
                           selectedComponent.defaultDuration !== undefined ? selectedComponent.defaultDuration : 0.65
+                        );
+                        setCustomShowIcons(
+                          selectedComponent.defaultShowIcons !== undefined ? selectedComponent.defaultShowIcons : true
                         );
                         setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
                         setCustomStateMode("interactive");
@@ -1793,6 +1802,30 @@ export default function Example() {
                               Custom ({customDuration}s)
                             </option>
                           )}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3m. Show Track Icons Dropdown */}
+                    {(selectedComponent.hasShowIconsControl || selectedComponent.id === "tactile-neumorphic-toggle") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Track Icons:
+                        </label>
+                        <select
+                          value={customShowIcons ? "true" : "false"}
+                          onChange={(e) => setCustomShowIcons(e.target.value === "true")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Visible (Show Glyphs)
+                          </option>
+                          <option value="false" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hidden (Clean Track)
+                          </option>
                         </select>
                       </div>
                     )}

@@ -76,6 +76,8 @@ export interface ComponentDetail {
   defaultThemeMode?: "auto" | "light" | "dark";
   hasDurationControl?: boolean;
   defaultDuration?: number;
+  hasShowIconsControl?: boolean;
+  defaultShowIcons?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -1749,6 +1751,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasShowIconsControl: true,
+    defaultShowIcons: true,
     defaultTheme: "brushed-silver",
     availableThemes: [
       { value: "brushed-silver", label: "Brushed Silver", color: "#94A3B8" },
