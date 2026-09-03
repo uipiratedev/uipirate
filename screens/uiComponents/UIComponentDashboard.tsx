@@ -161,6 +161,8 @@ export default function UIComponentDashboard({
   const [customStepSpeedMs, setCustomStepSpeedMs] = useState<number>(110);
   const [customShowOrnaments, setCustomShowOrnaments] = useState<boolean>(true);
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
+  const [customThemeMode, setCustomThemeMode] = useState<"auto" | "light" | "dark">("auto");
+  const [customDuration, setCustomDuration] = useState<number>(0.65);
   const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
   const [showGrid, setShowGrid] = useState<boolean>(true);
@@ -229,6 +231,12 @@ export default function UIComponentDashboard({
         : true
     );
     setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+    setCustomThemeMode(
+      (selectedComponent.defaultThemeMode as "auto" | "light" | "dark") || "auto"
+    );
+    setCustomDuration(
+      selectedComponent.defaultDuration !== undefined ? selectedComponent.defaultDuration : 0.65
+    );
     setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
     setCustomStateMode("interactive");
     setClickCount(0);
@@ -481,6 +489,19 @@ export default function Example() {
       primaryText="${customLabel || "Explore Services"}"
       hoverText="${customHoverText || "See More →"}"
       variant="${customTheme === "secondary" ? "secondary" : "primary"}"
+    />
+  );
+}`;
+      case "arc-corner-toggle":
+        return `import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+
+export default function Example() {
+  return (
+    <ArcCornerToggle
+      size="${customSize}"
+      themeMode="${customThemeMode}"
+      duration={${customDuration}}
+      onToggle={(active) => console.log("Arc toggled:", active)}
     />
   );
 }`;
@@ -802,6 +823,8 @@ export default function Example() {
           <div className="py-8 flex items-center justify-center">
             <ArcCornerToggle
               size={customSize}
+              themeMode={customThemeMode}
+              duration={customDuration}
               stateMode={customStateMode}
               onToggle={(st) => handleTriggerAction(`Arc Toggled: ${st ? "ON" : "OFF"}`)}
             />
@@ -1237,6 +1260,12 @@ export default function Example() {
                             : true
                         );
                         setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+                        setCustomThemeMode(
+                          (selectedComponent.defaultThemeMode as "auto" | "light" | "dark") || "auto"
+                        );
+                        setCustomDuration(
+                          selectedComponent.defaultDuration !== undefined ? selectedComponent.defaultDuration : 0.65
+                        );
                         setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
                         setCustomStateMode("interactive");
                         setClickCount(0);
@@ -1699,6 +1728,71 @@ export default function Example() {
                           <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             Hover (Auto-Slide on Hover)
                           </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3k. Theme Mode Dropdown */}
+                    {(selectedComponent.hasThemeModeControl || selectedComponent.id === "arc-corner-toggle") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Theme Mode:
+                        </label>
+                        <select
+                          value={customThemeMode}
+                          onChange={(e) => setCustomThemeMode(e.target.value as "auto" | "light" | "dark")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="auto" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Auto (State-Driven)
+                          </option>
+                          <option value="light" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Force Light Mode
+                          </option>
+                          <option value="dark" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Force Dark Mode
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3l. Animation Duration Dropdown */}
+                    {(selectedComponent.hasDurationControl || selectedComponent.id === "arc-corner-toggle") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Animation Duration:
+                        </label>
+                        <select
+                          value={customDuration}
+                          onChange={(e) => setCustomDuration(Number(e.target.value))}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value={0.35} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Fast Snap (0.35s)
+                          </option>
+                          <option value={0.5} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Smooth (0.50s)
+                          </option>
+                          <option value={0.65} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Default (0.65s)
+                          </option>
+                          <option value={0.9} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Slow Motion (0.90s)
+                          </option>
+                          <option value={1.2} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Cinematic (1.20s)
+                          </option>
+                          {![0.35, 0.5, 0.65, 0.9, 1.2].includes(customDuration) && (
+                            <option value={customDuration} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Custom ({customDuration}s)
+                            </option>
+                          )}
                         </select>
                       </div>
                     )}

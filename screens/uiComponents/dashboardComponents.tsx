@@ -72,6 +72,10 @@ export interface ComponentDetail {
   defaultActiveLabel?: string;
   hasSlideInteractionModeControl?: boolean;
   defaultSlideInteractionMode?: "both" | "drag" | "click" | "hover";
+  hasThemeModeControl?: boolean;
+  defaultThemeMode?: "auto" | "light" | "dark";
+  hasDurationControl?: boolean;
+  defaultDuration?: number;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -1498,6 +1502,10 @@ export default function Example() {
     hasLabelControl: false,
     hasSizeControl: true,
     hasThemeControl: false,
+    hasThemeModeControl: true,
+    defaultThemeMode: "auto",
+    hasDurationControl: true,
+    defaultDuration: 0.65,
     defaultTheme: "default",
     features: [
       "90° circular arc track calculation",
@@ -1518,7 +1526,14 @@ export default function Example() {
     jsxCode: `import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 
 export default function Example() {
-  return <ArcCornerToggle scale={0.88} />;
+  return (
+    <ArcCornerToggle
+      size="md"
+      themeMode="auto"
+      duration={0.65}
+      onToggle={(active) => console.log("Toggled:", active)}
+    />
+  );
 }`,
     htmlCode: `<div class="relative w-48 h-48 rounded-full border border-purple-500/20 bg-[#0E0E12]">
   <!-- 90 Degree Circular Track -->
@@ -1531,18 +1546,38 @@ export default function Example() {
   --arc-laser-glow: 0 0 16px rgba(192, 132, 252, 0.7);
 }`,
     props: [
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Named size preset." },
+      { name: "themeMode", type: '"auto" | "light" | "dark"', defaultValue: '"auto"', description: "Force specific theme or let state dictate." },
+      { name: "duration", type: "number", defaultValue: "0.65", description: "Animation duration in seconds." },
       { name: "scale", type: "number", defaultValue: "1", description: "CSS transform scale multiplier for responsive fitting." },
       { name: "onToggle", type: "(state: boolean) => void", defaultValue: "undefined", description: "State change listener." },
     ],
     variantsList: [
       {
-        title: "Sunburst Dial Mode",
+        title: "Sunburst Dial (Interactive)",
         themeValue: "default",
-        themeProp: "scale={0.88}",
+        themeProp: 'themeMode="auto"',
         badgeColor: "#C084FC",
         description: "90° circular corner arc track with rotating capsule knob and laser beam flare.",
-        renderPreview: () => <ArcCornerToggle scale={0.78} />,
+        renderPreview: () => <ArcCornerToggle scale={0.75} />,
       },
+      {
+        title: "Light Mode (Clay Matte)",
+        themeValue: "light",
+        themeProp: 'themeMode="light"',
+        badgeColor: "#E2E8F0",
+        description: "Clay light surface with matte dark track contour and sunburst dial.",
+        renderPreview: () => <ArcCornerToggle scale={0.75} themeMode="light" />,
+      },
+      {
+        title: "⚡ Snappy Response (0.35s)",
+        themeValue: "snappy",
+        themeProp: "duration={0.35}",
+        badgeColor: "#F59E0B",
+        description: "High-velocity snap transition for instant tactile feedback.",
+        renderPreview: () => <ArcCornerToggle scale={0.75} duration={0.35} />,
+      },
+
     ],
   },
   {
