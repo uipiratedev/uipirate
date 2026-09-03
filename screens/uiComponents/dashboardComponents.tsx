@@ -64,6 +64,10 @@ export interface ComponentDetail {
   availableUnderglowIcons?: Array<{ value: string; label: string }>;
   hasLiftControl?: boolean;
   defaultLiftAmount?: number;
+  hasLedInteractionModeControl?: boolean;
+  defaultLedInteractionMode?: "hover" | "click" | "both";
+  hasLedSpeedControl?: boolean;
+  defaultLedSpeedMs?: number;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -629,6 +633,10 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasLedInteractionModeControl: true,
+    defaultLedInteractionMode: "hover",
+    hasLedSpeedControl: true,
+    defaultLedSpeedMs: 110,
     defaultTheme: "monochrome",
     availableThemes: [
       { value: "monochrome", label: "Monochrome White", color: "#F8FAFC" },
