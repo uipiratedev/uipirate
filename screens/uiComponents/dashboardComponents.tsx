@@ -60,6 +60,10 @@ export interface ComponentDetail {
   defaultDotColor?: string;
   hasLiftControl?: boolean;
   defaultLiftAmount?: number;
+  hasInteractionModeControl?: boolean;
+  defaultInteractionMode?: "hover" | "click" | "both";
+  hasStepSpeedControl?: boolean;
+  defaultStepSpeedMs?: number;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -617,6 +621,10 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasInteractionModeControl: true,
+    defaultInteractionMode: "hover",
+    hasStepSpeedControl: true,
+    defaultStepSpeedMs: 110,
     defaultTheme: "monochrome",
     availableThemes: [
       { value: "monochrome", label: "Monochrome White", color: "#F8FAFC" },
@@ -647,9 +655,12 @@ export default function Example() {
 export default function Example() {
   return (
     <LedMatrixChevronButton
+      label="See Plans"
       theme="monochrome"
       size="md"
-      onTrigger={() => console.log("Matrix sequence activated")}
+      interactionMode="hover"
+      stepSpeedMs={110}
+      onClick={() => console.log("LED Matrix Clicked")}
     />
   );
 }`,
@@ -666,9 +677,12 @@ export default function Example() {
   --matrix-bg: #0d0d11;
 }`,
     props: [
+      { name: "label", type: "string", defaultValue: '"See Plans"', description: "Button label in resting state." },
       { name: "theme", type: '"monochrome" | "uipirate" | "emerald" | "cyan" | "amber" | "crimson"', defaultValue: '"monochrome"', description: "Phosphor color for the LED dot grid." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls pixel scale and chassis padding." },
-      { name: "onTrigger", type: "() => void", defaultValue: "undefined", description: "Fired when the chevron sequence reaches climax." },
+      { name: "interactionMode", type: '"hover" | "click" | "both"', defaultValue: '"hover"', description: "Interaction trigger mode: expands LED screen on hover, click, or both." },
+      { name: "stepSpeedMs", type: "number", defaultValue: "110", description: "LED shift speed in milliseconds per column step." },
+      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Click event handler." },
     ],
     variantsList: [
       {

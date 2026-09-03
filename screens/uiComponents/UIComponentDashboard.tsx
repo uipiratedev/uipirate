@@ -13,7 +13,7 @@ import { AnimatedButton } from "@/components/AnimatedButton";
 import { FrostedGelDownloadButton, FrostedGelIcon } from "@/components/FrostedGelDownloadButton";
 import { IsometricReviveButton, IsometricGlowIntensity } from "@/components/IsometricReviveButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
-import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
+import { LedMatrixChevronButton, LedMatrixInteractionMode } from "@/components/LedMatrixChevronButton";
 import { SlideGrowButton } from "@/components/SlideGrowButton";
 import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
@@ -153,6 +153,8 @@ export default function UIComponentDashboard({
   const [customDotColor, setCustomDotColor] = useState<string>("#54EAD8");
   const [customIcon, setCustomIcon] = useState<string>("cloud-download");
   const [customLiftAmount, setCustomLiftAmount] = useState<number>(13);
+  const [customInteractionMode, setCustomInteractionMode] = useState<LedMatrixInteractionMode>("hover");
+  const [customStepSpeedMs, setCustomStepSpeedMs] = useState<number>(110);
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
   const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
@@ -197,6 +199,14 @@ export default function UIComponentDashboard({
       selectedComponent.defaultLiftAmount !== undefined
         ? selectedComponent.defaultLiftAmount
         : 13
+    );
+    setCustomInteractionMode(
+      (selectedComponent.defaultInteractionMode as LedMatrixInteractionMode) || "hover"
+    );
+    setCustomStepSpeedMs(
+      selectedComponent.defaultStepSpeedMs !== undefined
+        ? selectedComponent.defaultStepSpeedMs
+        : 110
     );
     setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
     setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
@@ -328,6 +338,21 @@ export default function Example() {
       icon="${customIcon || "phone"}"
       liftAmount={${customLiftAmount}}
       onClick={() => console.log("Call triggered")}
+    />
+  );
+}`;
+      case "led-matrix-chevron":
+        return `import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
+
+export default function Example() {
+  return (
+    <LedMatrixChevronButton
+      label="${customLabel || "See Plans"}"
+      theme="${customTheme || "monochrome"}"
+      size="${customSize}"
+      interactionMode="${customInteractionMode}"
+      stepSpeedMs={${customStepSpeedMs}}
+      onClick={() => console.log("LED Matrix Clicked")}
     />
   );
 }`;
@@ -583,6 +608,8 @@ export default function Example() {
               theme={ledTheme as any}
               size={customSize}
               stateMode={customStateMode}
+              interactionMode={customInteractionMode}
+              stepSpeedMs={customStepSpeedMs}
               onClick={() => handleTriggerAction("LED Matrix Clicked")}
             />
           </div>
@@ -1123,6 +1150,14 @@ export default function Example() {
                             ? selectedComponent.defaultLiftAmount
                             : 13
                         );
+                        setCustomInteractionMode(
+                          (selectedComponent.defaultInteractionMode as LedMatrixInteractionMode) || "hover"
+                        );
+                        setCustomStepSpeedMs(
+                          selectedComponent.defaultStepSpeedMs !== undefined
+                            ? selectedComponent.defaultStepSpeedMs
+                            : 110
+                        );
                         setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
                         setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
                         setCustomStateMode("interactive");
@@ -1371,6 +1406,71 @@ export default function Example() {
                           {![0, 6, 10, 13, 18, 24].includes(customLiftAmount) && (
                             <option value={customLiftAmount} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                               Custom ({customLiftAmount}px)
+                            </option>
+                          )}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3f. Interaction Trigger Dropdown */}
+                    {(selectedComponent.hasInteractionModeControl || selectedComponent.id === "led-matrix-chevron") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Interaction Trigger:
+                        </label>
+                        <select
+                          value={customInteractionMode}
+                          onChange={(e) => setCustomInteractionMode(e.target.value as LedMatrixInteractionMode)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hover (Expand on Hover)
+                          </option>
+                          <option value="click" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Click (Expand on Click)
+                          </option>
+                          <option value="both" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Both (Hover &amp; Click)
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3g. LED Shift Speed Dropdown */}
+                    {(selectedComponent.hasStepSpeedControl || selectedComponent.id === "led-matrix-chevron") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          LED Shift Speed:
+                        </label>
+                        <select
+                          value={customStepSpeedMs}
+                          onChange={(e) => setCustomStepSpeedMs(Number(e.target.value))}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value={60} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Turbo (60ms)
+                          </option>
+                          <option value={80} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Fast (80ms)
+                          </option>
+                          <option value={110} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Standard (110ms - Figma)
+                          </option>
+                          <option value={160} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Relaxed (160ms)
+                          </option>
+                          <option value={220} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Slow Wave (220ms)
+                          </option>
+                          {![60, 80, 110, 160, 220].includes(customStepSpeedMs) && (
+                            <option value={customStepSpeedMs} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Custom ({customStepSpeedMs}ms)
                             </option>
                           )}
                         </select>
