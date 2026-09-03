@@ -10,7 +10,7 @@ import SmashTactileButton from "@/components/SmashTactileButton";
 import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
 import { AnimatedButton } from "@/components/AnimatedButton";
-import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
+import { FrostedGelDownloadButton, FrostedGelIcon } from "@/components/FrostedGelDownloadButton";
 import { IsometricReviveButton } from "@/components/IsometricReviveButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
@@ -78,8 +78,8 @@ const CloseIcon = () => (
 
 const SparklesIcon = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-    <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+    <path d="M5 3v4" /><path d="M19 17v4" /><path d="M3 5h4" /><path d="M17 19h4" />
   </svg>
 );
 
@@ -104,6 +104,7 @@ export default function UIComponentDashboard({
   const [customLabel, setCustomLabel] = useState<string>("");
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
+  const [customIcon, setCustomIcon] = useState<FrostedGelIcon>("cloud-download");
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
   const [showGrid, setShowGrid] = useState<boolean>(true);
   const [clickCount, setClickCount] = useState<number>(0);
@@ -127,6 +128,7 @@ export default function UIComponentDashboard({
     setCustomLabel(selectedComponent.defaultLabel || "Button");
     setCustomSize("md");
     setCustomTheme(selectedComponent.defaultTheme || "default");
+    setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
     setCustomStateMode("interactive");
     setClickCount(0);
     setLastAction(null);
@@ -235,6 +237,7 @@ export default function Example() {
       label="${customLabel}"
       theme="${customTheme}"
       size="${customSize}"
+      icon="${customIcon}"
       onDownload={() => console.log("Download started")}
     />
   );
@@ -407,8 +410,8 @@ export default function Example() {
     activeCodeTab === "jsx"
       ? dynamicJsxCode
       : activeCodeTab === "html"
-      ? selectedComponent.htmlCode
-      : selectedComponent.cssCode;
+        ? selectedComponent.htmlCode
+        : selectedComponent.cssCode;
 
   const isLightPage = pageTheme === "light";
 
@@ -419,7 +422,7 @@ export default function Example() {
 
     switch (selectedComponent.id) {
       case "isometric-revive-button": {
-        const validIsoThemes = ["figma","amber","cyan","emerald","violet","crimson","uipirate","pearl-light","gold-luxury"];
+        const validIsoThemes = ["figma", "amber", "cyan", "emerald", "violet", "crimson", "uipirate", "pearl-light", "gold-luxury"];
         const isoTheme = safeTheme(customTheme, validIsoThemes, "figma");
         return (
           <div className="py-12 flex items-center justify-center">
@@ -434,7 +437,7 @@ export default function Example() {
         );
       }
       case "tactile-pill-button": {
-        const validTactileVariants = ["default","dark","orange","cyberpunk","minimal"];
+        const validTactileVariants = ["default", "dark", "orange", "cyberpunk", "minimal"];
         const tactileVariant = safeTheme(customTheme, validTactileVariants, "default");
         const tactileDotColorMap: Record<string, string> = {
           default: "#54EAD8",
@@ -457,7 +460,7 @@ export default function Example() {
         );
       }
       case "frosted-gel-download-button": {
-        const validGelThemes = ["figma-blue","cyber-violet","emerald-matrix","magma-orange","dark-obsidian","titanium-gold"];
+        const validGelThemes = ["figma-blue", "cyber-violet", "emerald-matrix", "magma-orange", "dark-obsidian", "titanium-gold"];
         const gelTheme = safeTheme(customTheme, validGelThemes, "figma-blue");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -465,6 +468,7 @@ export default function Example() {
               label={customLabel || "Download now"}
               theme={gelTheme as any}
               size={customSize}
+              icon={customIcon}
               stateMode={customStateMode}
               onClick={() => handleTriggerAction("Gel Download Triggered")}
             />
@@ -472,7 +476,7 @@ export default function Example() {
         );
       }
       case "elevated-underglow-cta": {
-        const validUnderglowThemes = ["figma","emerald","amber"];
+        const validUnderglowThemes = ["figma", "emerald", "amber"];
         const underglowTheme = safeTheme(customTheme, validUnderglowThemes, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -488,7 +492,7 @@ export default function Example() {
         );
       }
       case "led-matrix-chevron": {
-        const validLedThemes = ["uipirate","pirate","monochrome","emerald","cyan","amber","crimson"];
+        const validLedThemes = ["uipirate", "pirate", "monochrome", "emerald", "cyan", "amber", "crimson"];
         const ledTheme = safeTheme(customTheme, validLedThemes, "monochrome");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -503,7 +507,7 @@ export default function Example() {
         );
       }
       case "slide-grow-button": {
-        const validSlideThemes = ["silver","dark","uipirate","cyberpunk","emerald","orange"];
+        const validSlideThemes = ["silver", "dark", "uipirate", "cyberpunk", "emerald", "orange"];
         const slideTheme = safeTheme(customTheme, validSlideThemes, "silver");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -518,7 +522,7 @@ export default function Example() {
         );
       }
       case "vintage-leather-cta": {
-        const validLeatherThemes = ["heritage","noir","oxblood","royal-navy","emerald-gilded"];
+        const validLeatherThemes = ["heritage", "noir", "oxblood", "royal-navy", "emerald-gilded"];
         const leatherTheme = safeTheme(customTheme, validLeatherThemes, "heritage");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -561,7 +565,7 @@ export default function Example() {
         );
       }
       case "smash-tactile-button": {
-        const validSmashVariants = ["figma","cyber","dark"];
+        const validSmashVariants = ["figma", "cyber", "dark"];
         const smashVariant = safeTheme(customTheme, validSmashVariants, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -576,7 +580,7 @@ export default function Example() {
         );
       }
       case "scaling-capsule-button": {
-        const validCapsuleVariants = ["dark","light"];
+        const validCapsuleVariants = ["dark", "light"];
         const capsuleVariant = safeTheme(customTheme, validCapsuleVariants, "dark");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -628,7 +632,7 @@ export default function Example() {
           </div>
         );
       case "glass-badge": {
-        const validBadgeVariants = ["gradient","cyan","solid"];
+        const validBadgeVariants = ["gradient", "cyan", "solid"];
         const badgeVariant = safeTheme(customTheme, validBadgeVariants, "gradient");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -702,9 +706,8 @@ export default function Example() {
   // Breadcrumbs
   const breadcrumbNav = (
     <nav
-      className={`flex items-center gap-2 text-xs font-mono ${
-        isLightPage ? "text-gray-500" : "text-gray-400"
-      }`}
+      className={`flex items-center gap-2 text-xs font-mono ${isLightPage ? "text-gray-500" : "text-gray-400"
+        }`}
     >
       <Link href="/componentlab" className={`transition-colors ${isLightPage ? "hover:text-gray-900" : "hover:text-white"}`}>
         Component Lab
@@ -722,11 +725,10 @@ export default function Example() {
       {prevComponent ? (
         <button
           onClick={() => handleSelectComponent(prevComponent.id)}
-          className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${
-            isLightPage
+          className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${isLightPage
               ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
               : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
-          }`}
+            }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
             ← Previous Component
@@ -742,11 +744,10 @@ export default function Example() {
       {nextComponent && (
         <button
           onClick={() => handleSelectComponent(nextComponent.id)}
-          className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${
-            isLightPage
+          className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${isLightPage
               ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
               : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
-          }`}
+            }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
             Next Component →
@@ -762,29 +763,26 @@ export default function Example() {
   return (
     <PageWrapper showFloatingButton={false}>
       <div
-        className={`h-screen w-screen overflow-hidden flex flex-col font-sans transition-colors duration-300 ${
-          isLightPage
+        className={`h-screen w-screen overflow-hidden flex flex-col font-sans transition-colors duration-300 ${isLightPage
             ? "bg-[#F8F9FA] text-gray-900 selection:bg-[#FF5B04] selection:text-white"
             : "bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white"
-        }`}
+          }`}
       >
         {/* ── Fixed Documentation Top Bar ────────────────────────── */}
         <header
-          className={`h-14 shrink-0 border-b px-4 sm:px-6 flex items-center justify-between gap-4 z-30 transition-colors duration-300 ${
-            isLightPage
+          className={`h-14 shrink-0 border-b px-4 sm:px-6 flex items-center justify-between gap-4 z-30 transition-colors duration-300 ${isLightPage
               ? "bg-white/95 border-gray-200 shadow-sm"
               : "bg-[#0D0D11]/95 border-white/8 backdrop-blur-xl"
-          }`}
+            }`}
         >
           {/* Left Brand + Back to Library + Mobile Drawer Toggle */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-              className={`lg:hidden p-1.5 rounded-lg border transition-colors ${
-                isLightPage
+              className={`lg:hidden p-1.5 rounded-lg border transition-colors ${isLightPage
                   ? "bg-gray-100 border-gray-200 text-gray-700 hover:text-gray-900"
                   : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
-              }`}
+                }`}
               aria-label="Toggle Navigation"
             >
               {mobileSidebarOpen ? <CloseIcon /> : <MenuIcon />}
@@ -792,11 +790,10 @@ export default function Example() {
 
             <Link
               href="/componentlab"
-              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-xl border transition-all ${
-                isLightPage
+              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-xl border transition-all ${isLightPage
                   ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
                   : "bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border-white/10"
-              }`}
+                }`}
               title="Return to Component Library"
             >
               <span>←</span>
@@ -828,11 +825,10 @@ export default function Example() {
             {/* Canvas Stage Theme Toggle */}
             <button
               onClick={() => setCanvasTheme(canvasTheme === "dark" ? "light" : "dark")}
-              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-xl border transition-all cursor-pointer ${
-                isLightPage
+              className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-xl border transition-all cursor-pointer ${isLightPage
                   ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-700"
                   : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-300"
-              }`}
+                }`}
               title="Toggle playground canvas theme"
             >
               <span className="text-[10px] opacity-70">Canvas:</span>
@@ -842,11 +838,10 @@ export default function Example() {
             {/* Page Theme Toggle */}
             <button
               onClick={() => setPageTheme(pageTheme === "dark" ? "light" : "dark")}
-              className={`p-1.5 rounded-xl border transition-all cursor-pointer ${
-                isLightPage
+              className={`p-1.5 rounded-xl border transition-all cursor-pointer ${isLightPage
                   ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-800"
                   : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-200 hover:text-white"
-              }`}
+                }`}
               title="Toggle page light / dark mode"
               aria-label="Toggle page theme"
             >
@@ -860,15 +855,13 @@ export default function Example() {
           {/* ── Left Component Selector Sidebar ────────────────────────── */}
           <aside
             data-lenis-prevent="true"
-            className={`w-72 shrink-0 border-r flex flex-col transition-all duration-300 z-40 ${
-              isLightPage
+            className={`w-72 shrink-0 border-r flex flex-col transition-all duration-300 z-40 ${isLightPage
                 ? "bg-white/80 border-gray-200 backdrop-blur-xl"
                 : "bg-[#0D0D11]/90 border-white/8 backdrop-blur-xl"
-            } ${
-              mobileSidebarOpen
+              } ${mobileSidebarOpen
                 ? "fixed inset-y-14 left-0 w-72 shadow-2xl z-50 bg-inherit"
                 : "hidden lg:flex"
-            }`}
+              }`}
           >
             {/* Sidebar Search */}
             <div className="p-3 border-b border-inherit">
@@ -879,11 +872,10 @@ export default function Example() {
                   placeholder="Filter components..."
                   value={sidebarSearch}
                   onChange={(e) => setSidebarSearch(e.target.value)}
-                  className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs font-mono transition-colors focus:outline-none focus:border-[#FF5B04] ${
-                    isLightPage
+                  className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs font-mono transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
                       ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
                       : "bg-white/5 border border-white/10 text-white placeholder-gray-500"
-                  }`}
+                    }`}
                 />
               </div>
             </div>
@@ -906,26 +898,24 @@ export default function Example() {
                           <button
                             key={item.id}
                             onClick={() => handleSelectComponent(item.id)}
-                            className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center justify-between group cursor-pointer ${
-                              isSelected
+                            className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center justify-between group cursor-pointer ${isSelected
                                 ? isLightPage
                                   ? "bg-orange-50 border border-orange-200 text-[#FF5B04] font-bold shadow-sm"
                                   : "bg-[#FF5B04]/15 border border-[#FF5B04]/30 text-[#FF5B04] font-bold shadow-sm"
                                 : isLightPage
-                                ? "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
-                            }`}
+                                  ? "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                  : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
+                              }`}
                           >
                             <span className="truncate">{item.name}</span>
                             {item.badge && (
                               <span
-                                className={`text-[10px] font-mono px-1.5 py-0.5 rounded border shrink-0 ${
-                                  isSelected
+                                className={`text-[10px] font-mono px-1.5 py-0.5 rounded border shrink-0 ${isSelected
                                     ? "bg-[#FF5B04]/20 border-[#FF5B04]/40 text-[#FF5B04]"
                                     : isLightPage
-                                    ? "bg-white text-gray-500 border-gray-200"
-                                    : "bg-white/5 text-gray-400 border-white/5"
-                                }`}
+                                      ? "bg-white text-gray-500 border-gray-200"
+                                      : "bg-white/5 text-gray-400 border-white/5"
+                                  }`}
                               >
                                 {item.badge}
                               </span>
@@ -941,11 +931,10 @@ export default function Example() {
 
             {/* Sidebar Bottom Status */}
             <div
-              className={`p-3.5 border-t text-[11px] flex items-center justify-between ${
-                isLightPage
+              className={`p-3.5 border-t text-[11px] flex items-center justify-between ${isLightPage
                   ? "bg-white/60 border-gray-200 text-gray-500"
                   : "bg-black/30 border-white/8 text-gray-400"
-              }`}
+                }`}
             >
               <span>Tailwind + Framer</span>
               <span className="text-[#00E5BE] font-mono font-bold">100% Ready</span>
@@ -974,9 +963,8 @@ export default function Example() {
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-3">
                   <h1
-                    className={`text-3xl sm:text-4xl font-extrabold tracking-tight font-jakarta ${
-                      isLightPage ? "text-gray-950" : "text-white"
-                    }`}
+                    className={`text-3xl sm:text-4xl font-extrabold tracking-tight font-jakarta ${isLightPage ? "text-gray-950" : "text-white"
+                      }`}
                   >
                     {selectedComponent.name}
                   </h1>
@@ -1023,9 +1011,8 @@ export default function Example() {
 
                 {/* Studio frame */}
                 <div
-                  className={`rounded-3xl overflow-hidden border shadow-2xl transition-colors ${
-                    isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-[#121216]"
-                  }`}
+                  className={`rounded-3xl overflow-hidden border shadow-2xl transition-colors ${isLightPage ? "border-gray-200 bg-white" : "border-white/10 bg-[#121216]"
+                    }`}
                 >
                   <StudioCanvas
                     theme={canvasTheme}
@@ -1040,9 +1027,8 @@ export default function Example() {
 
                 {/* Customizer */}
                 <div
-                  className={`rounded-3xl border p-6 space-y-5 transition-colors ${
-                    isLightPage ? "border-gray-200 bg-white shadow-sm" : "border-white/10 bg-white/[0.03]"
-                  }`}
+                  className={`rounded-3xl border p-6 space-y-5 transition-colors ${isLightPage ? "border-gray-200 bg-white shadow-sm" : "border-white/10 bg-white/[0.03]"
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -1056,13 +1042,13 @@ export default function Example() {
                         setCustomLabel(selectedComponent.defaultLabel || "Button");
                         setCustomSize("md");
                         setCustomTheme(selectedComponent.defaultTheme || "default");
+                        setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
                         setCustomStateMode("interactive");
                         setClickCount(0);
                         setLastAction(null);
                       }}
-                      className={`text-[11px] font-mono transition-colors cursor-pointer ${
-                        isLightPage ? "text-gray-500 hover:text-gray-900" : "text-gray-400 hover:text-white"
-                      }`}
+                      className={`text-[11px] font-mono transition-colors cursor-pointer ${isLightPage ? "text-gray-500 hover:text-gray-900" : "text-gray-400 hover:text-white"
+                        }`}
                     >
                       Reset Defaults
                     </button>
@@ -1080,11 +1066,10 @@ export default function Example() {
                           value={customLabel}
                           onChange={(e) => setCustomLabel(e.target.value)}
                           placeholder="Type custom text..."
-                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${
-                            isLightPage
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
                               ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
                               : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
-                          }`}
+                            }`}
                         />
                       </div>
                     )}
@@ -1098,26 +1083,25 @@ export default function Example() {
                         <select
                           value={customSize}
                           onChange={(e) => setCustomSize(e.target.value as "xs" | "sm" | "md" | "lg" | "xl")}
-                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${
-                            isLightPage
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
                               ? "bg-gray-100 border border-gray-200 text-gray-900"
                               : "bg-black/50 border border-white/10 text-white"
-                          }`}
+                            }`}
                         >
                           <option value="xs" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Extra Small (XS)
+                            Extra Small (xs)
                           </option>
                           <option value="sm" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Small (SM)
+                            Small (sm)
                           </option>
                           <option value="md" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Medium (MD)
+                            Medium (md)
                           </option>
                           <option value="lg" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Large (LG)
+                            Large (lg)
                           </option>
                           <option value="xl" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Extra Large (XL)
+                            Extra Large (xl)
                           </option>
                         </select>
                       </div>
@@ -1132,11 +1116,10 @@ export default function Example() {
                         <select
                           value={customTheme}
                           onChange={(e) => setCustomTheme(e.target.value)}
-                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${
-                            isLightPage
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
                               ? "bg-gray-100 border border-gray-200 text-gray-900"
                               : "bg-black/50 border border-white/10 text-white"
-                          }`}
+                            }`}
                         >
                           {selectedComponent.availableThemes.map((th) => (
                             <option
@@ -1145,6 +1128,33 @@ export default function Example() {
                               className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}
                             >
                               {th.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3b. Icon Control Dropdown */}
+                    {selectedComponent.hasIconControl && selectedComponent.availableIcons && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Tile Icon:
+                        </label>
+                        <select
+                          value={customIcon}
+                          onChange={(e) => setCustomIcon(e.target.value as FrostedGelIcon)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          {selectedComponent.availableIcons.map((ic) => (
+                            <option
+                              key={ic.value}
+                              value={ic.value}
+                              className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}
+                            >
+                              {ic.label}
                             </option>
                           ))}
                         </select>
@@ -1170,37 +1180,36 @@ export default function Example() {
                       "tactile-neumorphic-toggle",
                       "tactile-neumorphic-switch",
                     ].includes(selectedComponent.id) && (
-                      <div className="space-y-1.5">
-                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
-                          State Preview:
-                        </label>
-                        <select
-                          value={customStateMode}
-                          onChange={(e) => setCustomStateMode(e.target.value as "interactive" | "standerd" | "hover")}
-                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${
-                            isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
-                          }`}
-                        >
-                          <option value="interactive" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Interactive
-                          </option>
-                          <option value="standerd" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Standard
-                          </option>
-                          <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            {[
-                              "arc-corner-toggle",
-                              "tactile-neumorphic-toggle",
-                              "tactile-neumorphic-switch",
-                            ].includes(selectedComponent.id)
-                              ? "Click"
-                              : "Hover"}
-                          </option>
-                        </select>
-                      </div>
-                    )}
+                        <div className="space-y-1.5">
+                          <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                            State Preview:
+                          </label>
+                          <select
+                            value={customStateMode}
+                            onChange={(e) => setCustomStateMode(e.target.value as "interactive" | "standerd" | "hover")}
+                            className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                                ? "bg-gray-100 border border-gray-200 text-gray-900"
+                                : "bg-black/50 border border-white/10 text-white"
+                              }`}
+                          >
+                            <option value="interactive" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Interactive
+                            </option>
+                            <option value="standerd" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Standard
+                            </option>
+                            <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              {[
+                                "arc-corner-toggle",
+                                "tactile-neumorphic-toggle",
+                                "tactile-neumorphic-switch",
+                              ].includes(selectedComponent.id)
+                                ? "Click"
+                                : "Hover"}
+                            </option>
+                          </select>
+                        </div>
+                      )}
                   </div>
                 </div>
               </section>
@@ -1223,28 +1232,25 @@ export default function Example() {
                   </div>
 
                   <div
-                    className={`border rounded-3xl p-6 sm:p-8 shadow-xl transition-colors ${
-                      isLightPage ? "bg-white border-gray-200 shadow-sm" : "bg-[#121216] border-white/10"
-                    }`}
+                    className={`border rounded-3xl p-6 sm:p-8 shadow-xl transition-colors ${isLightPage ? "bg-white border-gray-200 shadow-sm" : "bg-[#121216] border-white/10"
+                      }`}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {selectedComponent.variantsList.map((variant) => (
                         <div
                           key={variant.title}
-                          className={`rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all border ${
-                            isLightPage
+                          className={`rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all border ${isLightPage
                               ? "bg-[#F8F9FA] border-gray-200 hover:border-gray-300"
                               : "bg-[#0E0E12] border-white/5 hover:border-white/15"
-                          }`}
+                            }`}
                         >
                           <div className="w-full flex items-center justify-between text-xs font-mono mb-2">
                             <span className={`font-bold truncate ${isLightPage ? "text-gray-900" : "text-white"}`}>
                               {variant.title}
                             </span>
                             <span
-                              className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 ${
-                                isLightPage ? "bg-gray-200 text-gray-800 font-bold" : "bg-white/10 text-gray-300"
-                              }`}
+                              className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 ${isLightPage ? "bg-gray-200 text-gray-800 font-bold" : "bg-white/10 text-gray-300"
+                                }`}
                               style={{ color: variant.badgeColor }}
                             >
                               {variant.themeProp}
@@ -1274,9 +1280,8 @@ export default function Example() {
                   {selectedComponent.features.map((feature, idx) => (
                     <div
                       key={idx}
-                      className={`p-4 rounded-2xl border flex items-center gap-3 transition-colors ${
-                        isLightPage ? "bg-white border-gray-200 shadow-sm text-gray-800" : "bg-[#121216] border-white/8 text-gray-200"
-                      }`}
+                      className={`p-4 rounded-2xl border flex items-center gap-3 transition-colors ${isLightPage ? "bg-white border-gray-200 shadow-sm text-gray-800" : "bg-[#121216] border-white/8 text-gray-200"
+                        }`}
                     >
                       <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#00E5BE]/15 text-[#00BFA0] font-bold text-xs shrink-0">
                         ✓
@@ -1314,31 +1319,28 @@ export default function Example() {
                     <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/5 text-xs font-mono">
                       <button
                         onClick={() => setActiveCodeTab("jsx")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                          activeCodeTab === "jsx"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "jsx"
                             ? "bg-[#FF5B04] text-white font-bold shadow"
                             : "text-gray-400 hover:text-white"
-                        }`}
+                          }`}
                       >
                         JSX / React
                       </button>
                       <button
                         onClick={() => setActiveCodeTab("html")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                          activeCodeTab === "html"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "html"
                             ? "bg-[#FF5B04] text-white font-bold shadow"
                             : "text-gray-400 hover:text-white"
-                        }`}
+                          }`}
                       >
                         HTML
                       </button>
                       <button
                         onClick={() => setActiveCodeTab("css")}
-                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
-                          activeCodeTab === "css"
+                        className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeCodeTab === "css"
                             ? "bg-[#FF5B04] text-white font-bold shadow"
                             : "text-gray-400 hover:text-white"
-                        }`}
+                          }`}
                       >
                         Tokens.css
                       </button>
@@ -1360,9 +1362,8 @@ export default function Example() {
 
               {/* ── 5. Peer Dependencies & Installation ────────────────── */}
               <section
-                className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl transition-colors ${
-                  isLightPage ? "bg-white border-gray-200 text-gray-900 shadow-sm" : "bg-[#121216] border-white/10 text-white"
-                }`}
+                className={`border rounded-3xl p-6 sm:p-8 space-y-4 shadow-xl transition-colors ${isLightPage ? "bg-white border-gray-200 text-gray-900 shadow-sm" : "bg-[#121216] border-white/10 text-white"
+                  }`}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
@@ -1383,9 +1384,8 @@ export default function Example() {
                 </div>
 
                 <div
-                  className={`border rounded-2xl px-5 py-3.5 font-mono text-xs overflow-x-auto ${
-                    isLightPage ? "bg-gray-50 border-gray-200 text-emerald-600 font-semibold" : "bg-black/50 border-white/10 text-emerald-400"
-                  }`}
+                  className={`border rounded-2xl px-5 py-3.5 font-mono text-xs overflow-x-auto ${isLightPage ? "bg-gray-50 border-gray-200 text-emerald-600 font-semibold" : "bg-black/50 border-white/10 text-emerald-400"
+                    }`}
                 >
                   <code>npm install framer-motion clsx lucide-react tailwind-merge</code>
                 </div>
@@ -1398,17 +1398,15 @@ export default function Example() {
                     API &amp; Props Reference
                   </h2>
                   <div
-                    className={`border rounded-3xl overflow-hidden shadow-xl transition-colors ${
-                      isLightPage ? "bg-white border-gray-200 shadow-sm" : "bg-[#121216] border-white/10"
-                    }`}
+                    className={`border rounded-3xl overflow-hidden shadow-xl transition-colors ${isLightPage ? "bg-white border-gray-200 shadow-sm" : "bg-[#121216] border-white/10"
+                      }`}
                   >
                     <div className="overflow-x-auto scrollbar-thin">
                       <table className="w-full text-left text-xs sm:text-sm">
                         <thead>
                           <tr
-                            className={`border-b font-mono ${
-                              isLightPage ? "bg-gray-50 border-gray-200 text-gray-600" : "bg-white/[0.02] border-white/10 text-gray-400"
-                            }`}
+                            className={`border-b font-mono ${isLightPage ? "bg-gray-50 border-gray-200 text-gray-600" : "bg-white/[0.02] border-white/10 text-gray-400"
+                              }`}
                           >
                             <th className="py-3.5 px-6 font-semibold">Prop</th>
                             <th className="py-3.5 px-6 font-semibold">Type</th>
@@ -1417,9 +1415,8 @@ export default function Example() {
                           </tr>
                         </thead>
                         <tbody
-                          className={`divide-y font-mono text-xs ${
-                            isLightPage ? "divide-gray-200 text-gray-800" : "divide-white/5 text-gray-300"
-                          }`}
+                          className={`divide-y font-mono text-xs ${isLightPage ? "divide-gray-200 text-gray-800" : "divide-white/5 text-gray-300"
+                            }`}
                         >
                           {selectedComponent.props.map((prop) => (
                             <tr
@@ -1453,9 +1450,8 @@ export default function Example() {
           {/* ── Right Table of Contents (Sticky On This Page) ──────────────── */}
           <aside
             data-lenis-prevent="true"
-            className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${
-              isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
-            }`}
+            className={`hidden xl:block w-56 shrink-0 h-[calc(100vh-3.5rem)] overflow-y-auto min-h-0 p-6 border-l text-xs font-mono space-y-4 transition-colors ${isLightPage ? "border-gray-200 text-gray-500 bg-[#F8F9FA]" : "border-white/8 text-gray-500 bg-[#0A0A0C]"
+              }`}
           >
             <div className={`text-[11px] font-bold uppercase tracking-wider ${isLightPage ? "text-gray-700" : "text-gray-400"}`}>
               On this page
