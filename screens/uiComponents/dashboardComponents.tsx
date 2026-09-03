@@ -59,6 +59,11 @@ export interface ComponentDetail {
   hasDotColorControl?: boolean;
   defaultDotColor?: string;
   availableDotColors?: Array<{ value: string; label: string; color?: string }>;
+  hasUnderglowIconControl?: boolean;
+  defaultUnderglowIcon?: string;
+  availableUnderglowIcons?: Array<{ value: string; label: string }>;
+  hasLiftControl?: boolean;
+  defaultLiftAmount?: number;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -491,6 +496,18 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasUnderglowIconControl: true,
+    defaultUnderglowIcon: "phone",
+    availableUnderglowIcons: [
+      { value: "phone", label: "Phone (Call)" },
+      { value: "calendar", label: "Calendar (Booking)" },
+      { value: "arrow", label: "Arrow (Next)" },
+      { value: "sparkle", label: "Sparkle (Magic)" },
+      { value: "mail", label: "Mail (Contact)" },
+      { value: "none", label: "None (Text Only)" },
+    ],
+    hasLiftControl: true,
+    defaultLiftAmount: 13,
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Electric Blue", color: "#38BDF8" },
