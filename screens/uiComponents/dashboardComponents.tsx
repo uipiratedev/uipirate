@@ -58,6 +58,8 @@ export interface ComponentDetail {
   defaultIntensity?: string;
   hasDotColorControl?: boolean;
   defaultDotColor?: string;
+  hasLiftControl?: boolean;
+  defaultLiftAmount?: number;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -481,6 +483,18 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasIconControl: true,
+    defaultIcon: "phone",
+    availableIcons: [
+      { value: "phone", label: "Phone Call" },
+      { value: "calendar", label: "Calendar Event" },
+      { value: "arrow", label: "Arrow Action" },
+      { value: "sparkle", label: "Sparkle Magic" },
+      { value: "mail", label: "Direct Mail" },
+      { value: "none", label: "None (Text Only)" },
+    ],
+    hasLiftControl: true,
+    defaultLiftAmount: 13,
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Electric Blue", color: "#38BDF8" },
@@ -533,7 +547,8 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Book A Call"', description: "Text displayed on the elevated button face." },
-      { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
+      { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail" | "none"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
+      { name: "liftAmount", type: "number", defaultValue: "13", description: "Optional lift distance in pixels on hover (default: 13 matching Figma 55:40)." },
       { name: "theme", type: '"figma" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"', defaultValue: '"figma"', description: "Color theme for the underglow beam and reflection rim." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions of the pill." },
     ],

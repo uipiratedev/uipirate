@@ -151,7 +151,8 @@ export default function UIComponentDashboard({
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
   const [customDotColor, setCustomDotColor] = useState<string>("#54EAD8");
-  const [customIcon, setCustomIcon] = useState<FrostedGelIcon>("cloud-download");
+  const [customIcon, setCustomIcon] = useState<string>("cloud-download");
+  const [customLiftAmount, setCustomLiftAmount] = useState<number>(13);
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
   const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
@@ -188,7 +189,15 @@ export default function UIComponentDashboard({
     setCustomSize("md");
     setCustomTheme(selectedComponent.defaultTheme || "default");
     setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
-    setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
+    setCustomIcon(
+      (selectedComponent.defaultIcon as string) ||
+      (selectedComponent.id === "elevated-underglow-cta" ? "phone" : "cloud-download")
+    );
+    setCustomLiftAmount(
+      selectedComponent.defaultLiftAmount !== undefined
+        ? selectedComponent.defaultLiftAmount
+        : 13
+    );
     setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
     setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
     setCustomStateMode("interactive");
@@ -316,7 +325,8 @@ export default function Example() {
       label="${customLabel}"
       theme="${customTheme}"
       size="${customSize}"
-      icon="phone"
+      icon="${customIcon || "phone"}"
+      liftAmount={${customLiftAmount}}
       onClick={() => console.log("Call triggered")}
     />
   );
@@ -538,7 +548,7 @@ export default function Example() {
               label={customLabel || "Download now"}
               theme={gelTheme as any}
               size={customSize}
-              icon={customIcon}
+              icon={customIcon as FrostedGelIcon}
               showCables={customShowCables}
               stateMode={customStateMode}
               onClick={() => handleTriggerAction("Gel Download Triggered")}
@@ -547,7 +557,7 @@ export default function Example() {
         );
       }
       case "elevated-underglow-cta": {
-        const validUnderglowThemes = ["figma", "emerald", "amber"];
+        const validUnderglowThemes = ["figma", "uipirate", "emerald", "violet", "crimson", "dark"];
         const underglowTheme = safeTheme(customTheme, validUnderglowThemes, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -556,7 +566,8 @@ export default function Example() {
               theme={underglowTheme as any}
               size={customSize}
               stateMode={customStateMode}
-              icon="phone"
+              icon={(customIcon as any) || "phone"}
+              liftAmount={customLiftAmount}
               onClick={() => handleTriggerAction("Elevated Call Triggered")}
             />
           </div>
@@ -1103,7 +1114,15 @@ export default function Example() {
                         setCustomSize("md");
                         setCustomTheme(selectedComponent.defaultTheme || "default");
                         setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
-                        setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
+                        setCustomIcon(
+                          (selectedComponent.defaultIcon as string) ||
+                          (selectedComponent.id === "elevated-underglow-cta" ? "phone" : "cloud-download")
+                        );
+                        setCustomLiftAmount(
+                          selectedComponent.defaultLiftAmount !== undefined
+                            ? selectedComponent.defaultLiftAmount
+                            : 13
+                        );
                         setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
                         setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
                         setCustomStateMode("interactive");
@@ -1243,11 +1262,11 @@ export default function Example() {
                     {selectedComponent.hasIconControl && selectedComponent.availableIcons && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
-                          Tile Icon:
+                          {selectedComponent.id === "elevated-underglow-cta" ? "Button Icon:" : "Tile Icon:"}
                         </label>
                         <select
                           value={customIcon}
-                          onChange={(e) => setCustomIcon(e.target.value as FrostedGelIcon)}
+                          onChange={(e) => setCustomIcon(e.target.value)}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
                               ? "bg-gray-100 border border-gray-200 text-gray-900"
                               : "bg-black/50 border border-white/10 text-white"
@@ -1313,6 +1332,47 @@ export default function Example() {
                           <option value="hyper" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             Hyper (Max Radiation)
                           </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3e. Lift Elevation Dropdown */}
+                    {(selectedComponent.hasLiftControl || selectedComponent.id === "elevated-underglow-cta") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Lift Elevation:
+                        </label>
+                        <select
+                          value={customLiftAmount}
+                          onChange={(e) => setCustomLiftAmount(Number(e.target.value))}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value={0} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Flat (0px)
+                          </option>
+                          <option value={6} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Subtle (6px)
+                          </option>
+                          <option value={10} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Medium (10px)
+                          </option>
+                          <option value={13} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Default (13px - Figma)
+                          </option>
+                          <option value={18} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            High (18px)
+                          </option>
+                          <option value={24} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Floating (24px)
+                          </option>
+                          {![0, 6, 10, 13, 18, 24].includes(customLiftAmount) && (
+                            <option value={customLiftAmount} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Custom ({customLiftAmount}px)
+                            </option>
+                          )}
                         </select>
                       </div>
                     )}
