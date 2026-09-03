@@ -148,6 +148,7 @@ export default function UIComponentDashboard({
 
   // ── Playground Dynamic State ──────────────────────────────────────────
   const [customLabel, setCustomLabel] = useState<string>("");
+  const [customHoverText, setCustomHoverText] = useState<string>("See More →");
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
   const [customDotColor, setCustomDotColor] = useState<string>("#54EAD8");
@@ -190,6 +191,7 @@ export default function UIComponentDashboard({
   // Sync playground initial state when selected component changes
   useEffect(() => {
     setCustomLabel(selectedComponent.defaultLabel || "Button");
+    setCustomHoverText(selectedComponent.defaultHoverText || "See More →");
     setCustomSize("md");
     setCustomTheme(selectedComponent.defaultTheme || "default");
     setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
@@ -466,7 +468,7 @@ export default function Example() {
   return (
     <AnimatedButton
       primaryText="${customLabel || "Explore Services"}"
-      hoverText="See More →"
+      hoverText="${customHoverText || "See More →"}"
       variant="${customTheme === "secondary" ? "secondary" : "primary"}"
     />
   );
@@ -772,7 +774,7 @@ export default function Example() {
           <div className="py-8 flex items-center justify-center w-full mx-auto">
             <AnimatedButton
               primaryText={customLabel || "Explore Services"}
-              hoverText="See More →"
+              hoverText={customHoverText || "See More →"}
               variant={customTheme === "secondary" ? "secondary" : "primary"}
               size={customSize}
               stateMode={customStateMode}
@@ -1190,6 +1192,7 @@ export default function Example() {
                     <button
                       onClick={() => {
                         setCustomLabel(selectedComponent.defaultLabel || "Button");
+                        setCustomHoverText(selectedComponent.defaultHoverText || "See More →");
                         setCustomSize("md");
                         setCustomTheme(selectedComponent.defaultTheme || "default");
                         setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
@@ -1241,6 +1244,25 @@ export default function Example() {
                           value={customLabel}
                           onChange={(e) => setCustomLabel(e.target.value)}
                           placeholder="Type custom text..."
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                            : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
+                            }`}
+                        />
+                      </div>
+                    )}
+
+                    {/* 1b. Hover Text Control */}
+                    {(selectedComponent.hasHoverTextControl || selectedComponent.id === "animated-slide-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Hover Text:
+                        </label>
+                        <input
+                          type="text"
+                          value={customHoverText}
+                          onChange={(e) => setCustomHoverText(e.target.value)}
+                          placeholder="See More →"
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
                             ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
                             : "bg-black/50 border border-white/10 text-white placeholder-gray-500"

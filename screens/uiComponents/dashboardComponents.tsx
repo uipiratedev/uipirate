@@ -66,6 +66,8 @@ export interface ComponentDetail {
   defaultStepSpeedMs?: number;
   hasOrnamentsControl?: boolean;
   defaultShowOrnaments?: boolean;
+  hasHoverTextControl?: boolean;
+  defaultHoverText?: string;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -1399,6 +1401,8 @@ export default function Example() {
     detailUrl: "/componentlab/animated-slide-button",
     defaultLabel: "Explore Services",
     hasLabelControl: true,
+    hasHoverTextControl: true,
+    defaultHoverText: "See More →",
     hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "primary",
