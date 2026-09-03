@@ -68,6 +68,10 @@ export interface ComponentDetail {
   defaultShowOrnaments?: boolean;
   hasHoverTextControl?: boolean;
   defaultHoverText?: string;
+  hasActiveLabelControl?: boolean;
+  defaultActiveLabel?: string;
+  hasSlideInteractionModeControl?: boolean;
+  defaultSlideInteractionMode?: "both" | "drag" | "click" | "hover";
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -749,8 +753,12 @@ export default function Example() {
     description:
       "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
     detailUrl: "/componentlab/slide-grow-button",
-    defaultLabel: "Slide to Unlock",
+    defaultLabel: "Get Started",
     hasLabelControl: true,
+    hasActiveLabelControl: true,
+    defaultActiveLabel: "Lets Grow!",
+    hasSlideInteractionModeControl: true,
+    defaultSlideInteractionMode: "both",
     hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "silver",
@@ -783,8 +791,11 @@ export default function Example() {
 export default function Example() {
   return (
     <SlideGrowButton
+      startLabel="Get Started"
+      activeLabel="Lets Grow!"
       theme="silver"
       size="md"
+      interactionMode="both"
       onComplete={() => alert("Action unlocked!")}
     />
   );
@@ -804,8 +815,11 @@ export default function Example() {
   --slider-fill-color: #38bdf8;
 }`,
     props: [
+      { name: "startLabel", type: "string", defaultValue: '"Get Started"', description: "Resting text before slider interaction." },
+      { name: "activeLabel", type: "string", defaultValue: '"Lets Grow!"', description: "Revealed label when slid to completion." },
       { name: "theme", type: '"silver" | "dark" | "uipirate" | "cyberpunk" | "emerald" | "orange"', defaultValue: '"silver"', description: "Metallic finish for the capsule track." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Width and height scaling dimensions." },
+      { name: "interactionMode", type: '"both" | "drag" | "click" | "hover"', defaultValue: '"both"', description: "Interaction trigger mode: drag, click, hover, or both." },
       { name: "onComplete", type: "() => void", defaultValue: "undefined", description: "Called when swipe reaches 100% threshold." },
     ],
     variantsList: [

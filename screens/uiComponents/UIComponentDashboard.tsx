@@ -14,7 +14,7 @@ import { FrostedGelDownloadButton, FrostedGelIcon } from "@/components/FrostedGe
 import { IsometricReviveButton, IsometricGlowIntensity } from "@/components/IsometricReviveButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
 import { LedMatrixChevronButton, LedMatrixInteractionMode } from "@/components/LedMatrixChevronButton";
-import { SlideGrowButton } from "@/components/SlideGrowButton";
+import { SlideGrowButton, SlideGrowInteractionMode } from "@/components/SlideGrowButton";
 import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
@@ -149,6 +149,7 @@ export default function UIComponentDashboard({
   // ── Playground Dynamic State ──────────────────────────────────────────
   const [customLabel, setCustomLabel] = useState<string>("");
   const [customHoverText, setCustomHoverText] = useState<string>("See More →");
+  const [customActiveLabel, setCustomActiveLabel] = useState<string>("Lets Grow!");
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
   const [customDotColor, setCustomDotColor] = useState<string>("#54EAD8");
@@ -156,6 +157,7 @@ export default function UIComponentDashboard({
   const [customCapsuleIcon, setCustomCapsuleIcon] = useState<string>("apex");
   const [customLiftAmount, setCustomLiftAmount] = useState<number>(13);
   const [customInteractionMode, setCustomInteractionMode] = useState<LedMatrixInteractionMode>("hover");
+  const [customSlideInteractionMode, setCustomSlideInteractionMode] = useState<SlideGrowInteractionMode>("both");
   const [customStepSpeedMs, setCustomStepSpeedMs] = useState<number>(110);
   const [customShowOrnaments, setCustomShowOrnaments] = useState<boolean>(true);
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
@@ -209,6 +211,12 @@ export default function UIComponentDashboard({
     );
     setCustomInteractionMode(
       (selectedComponent.defaultInteractionMode as LedMatrixInteractionMode) || "hover"
+    );
+    setCustomActiveLabel(
+      selectedComponent.defaultActiveLabel || "Lets Grow!"
+    );
+    setCustomSlideInteractionMode(
+      (selectedComponent.defaultSlideInteractionMode as SlideGrowInteractionMode) || "both"
     );
     setCustomStepSpeedMs(
       selectedComponent.defaultStepSpeedMs !== undefined
@@ -374,8 +382,11 @@ export default function Example() {
 export default function Example() {
   return (
     <SlideGrowButton
-      theme="${customTheme}"
+      startLabel="${customLabel || "Get Started"}"
+      activeLabel="${customActiveLabel || "Lets Grow!"}"
+      theme="${customTheme || "silver"}"
       size="${customSize}"
+      interactionMode="${customSlideInteractionMode}"
       onComplete={() => alert("Action unlocked!")}
     />
   );
@@ -635,9 +646,11 @@ export default function Example() {
           <div className="py-8 flex items-center justify-center">
             <SlideGrowButton
               startLabel={customLabel || "Get Started"}
+              activeLabel={customActiveLabel || "Lets Grow!"}
               theme={slideTheme as any}
               size={customSize}
               stateMode={customStateMode}
+              interactionMode={customSlideInteractionMode}
               onComplete={() => handleTriggerAction("Swipe Gesture Completed")}
             />
           </div>
@@ -1209,6 +1222,10 @@ export default function Example() {
                         setCustomInteractionMode(
                           (selectedComponent.defaultInteractionMode as LedMatrixInteractionMode) || "hover"
                         );
+                        setCustomActiveLabel(selectedComponent.defaultActiveLabel || "Lets Grow!");
+                        setCustomSlideInteractionMode(
+                          (selectedComponent.defaultSlideInteractionMode as SlideGrowInteractionMode) || "both"
+                        );
                         setCustomStepSpeedMs(
                           selectedComponent.defaultStepSpeedMs !== undefined
                             ? selectedComponent.defaultStepSpeedMs
@@ -1263,6 +1280,25 @@ export default function Example() {
                           value={customHoverText}
                           onChange={(e) => setCustomHoverText(e.target.value)}
                           placeholder="See More →"
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                            : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
+                            }`}
+                        />
+                      </div>
+                    )}
+
+                    {/* 1c. Slid Active Label Control */}
+                    {(selectedComponent.hasActiveLabelControl || selectedComponent.id === "slide-grow-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Slid Active Label:
+                        </label>
+                        <input
+                          type="text"
+                          value={customActiveLabel}
+                          onChange={(e) => setCustomActiveLabel(e.target.value)}
+                          placeholder="Lets Grow!"
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
                             ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
                             : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
@@ -1633,6 +1669,36 @@ export default function Example() {
                               {ic.label}
                             </option>
                           ))}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3j. Slide Trigger Mode Dropdown */}
+                    {(selectedComponent.hasSlideInteractionModeControl || selectedComponent.id === "slide-grow-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Slide Trigger Mode:
+                        </label>
+                        <select
+                          value={customSlideInteractionMode}
+                          onChange={(e) => setCustomSlideInteractionMode(e.target.value as SlideGrowInteractionMode)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="both" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Both (Swipe &amp; Click)
+                          </option>
+                          <option value="drag" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Drag Only (Swipe Gesture)
+                          </option>
+                          <option value="click" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Click Only (Tap to Slide)
+                          </option>
+                          <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hover (Auto-Slide on Hover)
+                          </option>
                         </select>
                       </div>
                     )}
