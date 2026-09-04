@@ -39,7 +39,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type FrostedGelTheme =
-  | "figma-blue"
+  | "default-blue"
   | "cyber-violet"
   | "emerald-matrix"
   | "magma-orange"
@@ -64,7 +64,7 @@ export interface FrostedGelButtonProps {
 export function FrostedGelDownloadButton({
   label = "Download now",
   stateMode = "interactive",
-  theme = "figma-blue",
+  theme = "default-blue",
   size = "md",
   showCables = true,
   onDownloadClick,
@@ -156,7 +156,7 @@ export const FROSTED_GEL_DOWNLOAD_PHYSICS = `// Cohesive Spring Physics & Elevat
 </motion.div>`;
 
 export default function FrostedGelDownloadScreen() {
-  const [theme, setTheme] = useState<FrostedGelTheme>("figma-blue");
+  const [theme, setTheme] = useState<FrostedGelTheme>("default-blue");
   const [size, setSize] = useState<FrostedGelSize>("md");
   const [icon, setIcon] = useState<FrostedGelIcon>("cloud-download");
   const [stateMode, setStateMode] = useState<FrostedGelStateMode>("interactive");
@@ -397,20 +397,20 @@ export default function Example() {
 
             <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Figma Blue */}
+                {/* Default Blue */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">Figma Electric Blue</span>
-                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;figma-blue&quot;</span>
+                    <span className="text-white font-semibold">Default Electric Blue</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;default-blue&quot;</span>
                   </div>
                   <div className="my-3 scale-[0.68] sm:scale-[0.8]">
                     <FrostedGelDownloadButton
                       label="Download Package"
-                      theme="figma-blue"
+                      theme="default-blue"
                       size="sm"
                     />
                   </div>
-                  <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma ceramic pill with volumetric blue flare</span>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">1:1 spec ceramic pill with volumetric blue flare</span>
                 </div>
 
                 {/* Cyber Violet */}
@@ -640,7 +640,7 @@ export default function Example() {
                     <tr>
                       <td className="py-3 px-6 text-blue-400 font-semibold">theme</td>
                       <td className="py-3 px-6 text-blue-300">FrostedGelTheme</td>
-                      <td className="py-3 px-6 text-gray-400">&quot;figma-blue&quot;</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;default-blue&quot;</td>
                       <td className="py-3 px-6 font-sans text-gray-300">Color scheme preset (Electric Blue, Ultraviolet, Emerald, etc.)</td>
                     </tr>
                     <tr>

@@ -15,7 +15,7 @@ export interface LedMatrixChevronButtonProps {
   theme?: LedMatrixTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: LedMatrixSize;
-  /** Visual state mode: 'interactive' (responds to interaction), 'standerd' (Figma 19:6101), 'hover' (Figma 19:6495) */
+  /** Visual state mode: 'interactive' (responds to interaction), 'standerd' (Spec 19:6101), 'hover' (Spec 19:6495) */
   stateMode?: LedMatrixStateMode;
   /** Interaction trigger mode: 'hover' (default, expands on hover) | 'click' | 'both' */
   interactionMode?: LedMatrixInteractionMode;
@@ -32,7 +32,7 @@ export interface LedMatrixChevronButtonProps {
 }
 
 /**
- * 1:1 Pixel-Accurate Implementation of Figma Nodes 19:6101 & 19:6495
+ * 1:1 Pixel-Accurate Implementation of Spec Nodes 19:6101 & 19:6495
  * Master Button Collection - Expandable LED Dot Matrix Chevron Button
  * Features a FIXED physical LED square grid with shifting illuminated chevron patterns
  */
@@ -63,7 +63,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       ? isHovered
       : isHovered || isToggled;
 
-  // Scaled dimensions matching exact Figma 236x71px enclosure & 224x59px slab
+  // Scaled dimensions matching exact spec 236x71px enclosure & 224x59px slab
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
@@ -139,7 +139,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
     return () => clearInterval(timer);
   }, [enableMovingLoop, stepSpeedMs]);
 
-  // Theme palettes & lighting configurations (1:1 Exact Figma Nodes 19:6101 & 19:6495)
+  // Theme palettes & lighting configurations (1:1 Exact Spec Nodes 19:6101 & 19:6495)
   const themeStyles = {
     uipirate: {
       ledColor: "#FF5B04",
@@ -304,7 +304,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
       }}
     >
       {/* ─────────────────────────────────────────────────────────────
-          OUTER RECESSED ENCLOSURE TRAY (Figma Node 19:6440 / 19:6560)
+          OUTER RECESSED ENCLOSURE TRAY (Spec Node 19:6440 / 19:6560)
          ───────────────────────────────────────────────────────────── */}
       <div
         className={`relative flex items-center justify-center ${sizeConfig.enclosurePadding} ${sizeConfig.enclosureRadius}`}
@@ -316,7 +316,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
         }}
       >
         {/* ─────────────────────────────────────────────────────────────
-            TACTILE CARBON-FIBER SLAB (Figma Node 19:6441 / 19:6561)
+            TACTILE CARBON-FIBER SLAB (Spec Node 19:6441 / 19:6561)
            ───────────────────────────────────────────────────────────── */}
         <div
           className={`relative flex items-center justify-between overflow-hidden border p-[5px] ${sizeConfig.slabRadius}`}
@@ -405,7 +405,7 @@ export const LedMatrixChevronButton: React.FC<LedMatrixChevronButtonProps> = ({
           </motion.div>
 
           {/* ─────────────────────────────────────────────────────────────
-              TEXT LABEL (Figma Node 19:6493 - "See Plans")
+              TEXT LABEL (Spec Node 19:6493 - "See Plans")
              ───────────────────────────────────────────────────────────── */}
           {!isExpanded && (
             <motion.span

@@ -9,7 +9,7 @@ export type TactileButtonState = "interactive" | "resting" | "tilted" | "stander
 export interface TactilePillButtonProps {
   /** Text label inside the button */
   label?: string;
-  /** Status dot indicator color (default: #54EAD8 from Figma) */
+  /** Status dot indicator color (default: #54EAD8 from spec) */
   dotColor?: string;
   /** Force a specific visual state: 'interactive' (default hover tilt), 'resting'/'standerd' (75:1201), 'tilted'/'hover' (75:1206) */
   stateMode?: TactileButtonState;
@@ -38,7 +38,7 @@ export const TactilePillButton: React.FC<TactilePillButtonProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
-  // Scaled dimensions matching exact Figma 182x50px cap & 176x45px slot
+  // Scaled dimensions matching exact spec 182x50px cap & 176x45px slot
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;

@@ -335,7 +335,7 @@ export default function ButtonHubScreen() {
                       <div className="scale-85 sm:scale-95 py-2">
                         <FrostedGelDownloadButton
                           label="Download now"
-                          theme="figma-blue"
+                          theme="default-blue"
                           size="md"
                           stateMode="interactive"
                         />
@@ -346,7 +346,7 @@ export default function ButtonHubScreen() {
                       <div className="scale-75 sm:scale-85 py-1">
                         <IsometricReviveButton
                           label="Revive Now"
-                          theme="figma"
+                          theme="default"
                           size="sm"
                           stateMode="interactive"
                           showGrid={false}
@@ -359,7 +359,7 @@ export default function ButtonHubScreen() {
                         <ElevatedUnderglowCTA
                           label="Book A Call"
                           icon="phone"
-                          theme="figma"
+                          theme="default"
                           size="md"
                           stateMode="interactive"
                         />
@@ -415,7 +415,7 @@ export default function ButtonHubScreen() {
                       <div className="scale-90 sm:scale-95">
                         <SmashTactileButton
                           label="Smash the button"
-                          variant="figma"
+                          variant="default"
                           size="sm"
                         />
                       </div>

@@ -9,7 +9,7 @@ export type ScalingCapsuleStateMode = "interactive" | "standerd" | "hover";
 export interface ScalingCapsuleButtonProps {
   /** Main button label (default: "Scaling Workshop") */
   label?: string;
-  /** Visual variant (default: "dark" from Figma 118:6091) */
+  /** Visual variant (default: "dark" from spec 118:6091) */
   variant?: ScalingCapsuleVariant;
   /** Size scale */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
@@ -26,7 +26,7 @@ export interface ScalingCapsuleButtonProps {
 }
 
 /**
- * Exact Ladder-Rung "A" Icon matching Figma Node 118:6177
+ * Exact Ladder-Rung "A" Icon matching Spec Node 118:6177
  */
 export const ApexEmblemIcon: React.FC<{ className?: string }> = ({
   className = "w-[16px] h-[16px]",
@@ -82,7 +82,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
       : isHovered;
   const activePressed = stateMode === "interactive" ? isPressed : false;
 
-  // Exact Figma scales: Outer 223x61px, Cap 211x49px, Circle 45px, Inner Ellipse 26x26px
+  // Exact spec scales: Outer 223x61px, Cap 211x49px, Circle 45px, Inner Ellipse 26x26px
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
@@ -113,7 +113,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
       innerPadding: "pl-[30px] pr-[1px] pt-[1px] pb-[3px]",
       fontSize: "text-[15px]",
       outerCircleSize: "w-[45px] h-[45px]",
-      innerCircleSize: "w-[26px] h-[26px]", // Exact 26x26px from Figma Node 118:6177
+      innerCircleSize: "w-[26px] h-[26px]", // Exact 26x26px from Spec Node 118:6177
       iconSize: "w-[16px] h-[16px]",
       gap: "gap-[15px]",
       liftY: -4,
@@ -132,7 +132,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
     },
   }[__baseSize];
 
-  // Exact theme parameters matching Figma Node 118:6091
+  // Exact theme parameters matching Spec Node 118:6091
   const themeStyles = {
     dark: {
       outerBg: "bg-[rgba(209,213,236,0.14)]",
@@ -262,7 +262,7 @@ export const ScalingCapsuleButton: React.FC<ScalingCapsuleButtonProps> = ({
           </div>
         </div>
 
-        {/* 5. Figma Exact Specular Bevel Overlay (Spans entire Frame 11) */}
+        {/* 5. Spec Exact Specular Bevel Overlay (Spans entire Frame 11) */}
         <div
           className={`absolute inset-0 pointer-events-none ${sizeConfig.innerRadius} ${themeStyles.capBevel}`}
         />

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type ElevatedUnderglowTheme =
-  | "figma"
+  | "default"
   | "uipirate"
   | "cyan"
   | "emerald"
@@ -26,7 +26,7 @@ export type ElevatedUnderglowIconType =
 export interface ElevatedUnderglowCTAProps {
   /** Text label inside the button (default: "Book A Call") */
   label?: string;
-  /** Built-in icon type or custom ReactNode (default: "phone" from Figma 55:14/55:31) */
+  /** Built-in icon type or custom ReactNode (default: "phone" from spec 55:14/55:31) */
   icon?: ElevatedUnderglowIconType | React.ReactNode;
   /** Visual state mode: 'interactive' (hover to lift), 'standerd' (55:37 fixed), 'hover' (55:40 fixed) */
   stateMode?: ElevatedUnderglowStateMode;
@@ -36,7 +36,7 @@ export interface ElevatedUnderglowCTAProps {
   size?: ElevatedUnderglowSize;
   /** Optional click handler */
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  /** Optional lift distance in pixels (default: 13 matching Figma 55:40) */
+  /** Optional lift distance in pixels (default: 13 matching spec 55:40) */
   liftAmount?: number;
   /** Disabled state */
   disabled?: boolean;
@@ -61,9 +61,9 @@ export const UNDERGLOW_THEMES: Record<
     iconStroke: string;
   }
 > = {
-  figma: {
-    name: "Figma Electric Blue (1:1)",
-    badge: "Figma Master",
+  default: {
+    name: "Default Electric Blue (1:1)",
+    badge: "Default",
     primaryColor: "#0077FF",
     baseBg: "bg-[#07f]",
     baseShadow:
@@ -184,7 +184,7 @@ export const UNDERGLOW_THEMES: Record<
 };
 
 /**
- * 1:1 Pixel-Accurate Phone Icon from Figma Node 55:14 / 55:31
+ * 1:1 Pixel-Accurate Phone Icon from Spec Node 55:14 / 55:31
  */
 export const PhoneCallIcon: React.FC<{ stroke?: string; className?: string }> = ({
   stroke = "currentColor",
@@ -299,14 +299,14 @@ const MailIcon: React.FC<{ stroke?: string; className?: string }> = ({
 );
 
 /**
- * Pixel-Accurate 1:1 Implementation of Figma Nodes 55:37 & 55:40
+ * Pixel-Accurate 1:1 Implementation of Spec Nodes 55:37 & 55:40
  * Elevated 3D Underglow Pill Button
  */
 export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
   label = "Book A Call",
   icon = "phone",
   stateMode = "interactive",
-  theme = "figma",
+  theme = "default",
   size = "md",
   onClick,
   liftAmount = 13,
@@ -316,13 +316,13 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
-  const t = UNDERGLOW_THEMES[theme] || UNDERGLOW_THEMES.figma;
+  const t = UNDERGLOW_THEMES[theme] || UNDERGLOW_THEMES.default;
 
   // Evaluate active visual state
   const isLifted =
     stateMode === "hover" ? true : stateMode === "standerd" ? false : isHovered;
 
-  // Scaled dimensions matching exact Figma 184x56px pill chassis
+  // Scaled dimensions matching exact spec 184x56px pill chassis
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
@@ -366,10 +366,10 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
     },
   }[__baseSize];
 
-  // Resting shadow stack (1:1 from Figma 55:9)
+  // Resting shadow stack (1:1 from spec 55:9)
   const restingShadowStack = `0px 2px 0px 0px ${t.capRim}, 0px 87px 24px 0px rgba(0,0,0,0), 0px 55px 22px 0px rgba(0,0,0,0.01), 0px 31px 19px 0px rgba(0,0,0,0.05), 0px 14px 14px 0px rgba(0,0,0,0.09), 0px 3px 8px 0px rgba(0,0,0,0.1)`;
 
-  // Hover elevated shadow stack (1:1 from Figma 55:26)
+  // Hover elevated shadow stack (1:1 from spec 55:26)
   const hoverShadowStack = `${t.capHoverShadow}, 0px 2px 0px 0px ${t.capRim}, 0px 87px 24px 0px rgba(0,0,0,0), 0px 55px 22px 0px rgba(0,0,0,0.01), 0px 31px 19px 0px rgba(0,0,0,0.05), 0px 14px 14px 0px rgba(0,0,0,0.09), 0px 3px 8px 0px rgba(0,0,0,0.1)`;
 
   // Render icon based on type
@@ -422,7 +422,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          1. AMBIENT BASE LAYER / GLOWING 3D EXTRUSION (Figma 55:23)
+          1. AMBIENT BASE LAYER / GLOWING 3D EXTRUSION (Spec 55:23)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
         className={`absolute bottom-0 left-0 right-0 ${sizeConfig.radius} ${t.baseBg}`}
@@ -441,7 +441,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
           damping: 26,
         }}
       >
-        {/* Internal Blur Highlight Mask (Figma 55:25) */}
+        {/* Internal Blur Highlight Mask (Spec 55:25) */}
         <div
           className="absolute inset-0 bg-white/20 blur-[12px] pointer-events-none rounded-[inherit] overflow-hidden"
           style={{
@@ -452,7 +452,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
       </motion.div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. RESTING AMBIENT SHADOW BACKDROP (Figma 55:3 / 55:20)
+          2. RESTING AMBIENT SHADOW BACKDROP (Spec 55:3 / 55:20)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-[20px] bg-black/10 blur-[12px] rounded-full pointer-events-none"
@@ -466,7 +466,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
       />
 
       {/* ─────────────────────────────────────────────────────────────
-          3. ELEVATED CAP / INTERACTIVE BUTTON FACE (Figma 55:9 & 55:26)
+          3. ELEVATED CAP / INTERACTIVE BUTTON FACE (Spec 55:9 & 55:26)
          ───────────────────────────────────────────────────────────── */}
       <motion.button
         type="button"
@@ -504,7 +504,7 @@ export const ElevatedUnderglowCTA: React.FC<ElevatedUnderglowCTAProps> = ({
           damping: 24,
         }}
       >
-        {/* Bottom Inner Reflection Glow on Cap (Figma 55:28 inner shadow) */}
+        {/* Bottom Inner Reflection Glow on Cap (Spec 55:28 inner shadow) */}
         <motion.div
           className="absolute inset-0 pointer-events-none rounded-[inherit]"
           initial={false}

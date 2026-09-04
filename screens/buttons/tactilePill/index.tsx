@@ -12,7 +12,7 @@ import PageWrapper from "@/components/PageWrapper";
 import GlobalCTA from "@/components/GlobalCTA";
 
 const COLOR_PRESETS = [
-  { label: "Figma Aqua", value: "#54EAD8", name: "Aqua" },
+  { label: "Default Aqua", value: "#54EAD8", name: "Aqua" },
   { label: "Brand Orange", value: "#FF5B04", name: "Orange" },
   { label: "Emerald Green", value: "#10B981", name: "Emerald" },
   { label: "Electric Violet", value: "#8B5CF6", name: "Violet" },
@@ -265,10 +265,10 @@ export default function Example() {
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Figma Master Default */}
+              {/* Default preset */}
               <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Figma Cyan Beacon</span>
+                  <span className="text-white font-semibold">Default Cyan Beacon</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-cyan-400">variant=&quot;default&quot;</span>
                 </div>
                 <div className="my-3">
@@ -279,7 +279,7 @@ export default function Example() {
                     size="md"
                   />
                 </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with turquoise indicator dot</span>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with turquoise indicator dot</span>
               </div>
 
               {/* UI Pirate Magma */}

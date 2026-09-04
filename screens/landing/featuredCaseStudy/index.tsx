@@ -30,7 +30,7 @@ const FeaturedCaseStudy = ({ study }: FeaturedCaseStudyProps) => {
   return (
     <div className="section-container">
       <motion.div
-        className="relative overflow-hidden rounded-[20px] sm:rounded-[20px] bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] dark:bg-[#141414] dark:shadow-none"
+        className="relative overflow-hidden rounded-[20px] sm:rounded-[20px] bg-white border border-gray-200/80 dark:border-white/10 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06)] dark:bg-[#141414] dark:shadow-none"
         initial={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true, amount: 0.3 }}

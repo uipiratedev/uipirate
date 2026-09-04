@@ -47,7 +47,7 @@ interface ThemeConfig {
 
 const GEL_THEMES: Record<GlossyGelTheme, ThemeConfig> = {
   "emerald-gel": {
-    name: "Emerald Mint Gel (1:1 Figma)",
+    name: "Emerald Mint Gel (1:1)",
     gelBg: "linear-gradient(180deg, #32E49D 0%, #20C982 100%)",
     textColor: "#072B1F",
     textShadow: "0 1px 0 rgba(255, 255, 255, 0.4)",
@@ -187,7 +187,7 @@ const SIZE_STYLES: Record<
 
 /**
  * Glossy Gel Button (Skeuomorphic Liquid Glass CTA)
- * 1:1 Pixel-Accurate Implementation from Figma Node (2:2 / Glossy Gel Button)
+ * 1:1 Pixel-Accurate Implementation from Spec Node (2:2 / Glossy Gel Button)
  */
 export const GlossyGelButton = React.forwardRef<
   HTMLButtonElement,
@@ -267,7 +267,7 @@ export const GlossyGelButton = React.forwardRef<
           }}
         />
 
-        {/* Curved Organic Top Gloss Highlight (Figma Node 2:4) */}
+        {/* Curved Organic Top Gloss Highlight (Spec Node 2:4) */}
         <div
           className="absolute inset-x-2 top-1 h-[65%] pointer-events-none rounded-[14px]"
           style={{

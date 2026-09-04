@@ -20,7 +20,6 @@ import StickyMobileCTA from "@/components/StickyMobileCTA";
 import { ConditionalNavbar } from "@/components/ConditionalNavbar";
 import { ConditionalFooter } from "@/components/ConditionalFooter";
 import PageLoader from "@/components/PageLoader";
-import PageTransition from "@/components/PageTransition";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -443,7 +442,6 @@ export default async function RootLayout({
 
           <div className="relative flex flex-col min-h-screen">
             <SmoothScroll />
-            <PageTransition />
             <PageLoader>
               <header>
                 <ConditionalNavbar />

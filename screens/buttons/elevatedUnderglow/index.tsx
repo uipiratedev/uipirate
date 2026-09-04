@@ -21,7 +21,7 @@ import { motion } from "framer-motion";
 import { Phone, Calendar, ArrowRight, Sparkles, Mail } from "lucide-react";
 
 export type ElevatedUnderglowTheme =
-  | "figma"
+  | "default"
   | "uipirate"
   | "cyan"
   | "emerald"
@@ -44,7 +44,7 @@ export interface ElevatedUnderglowCTAProps {
 }
 
 export const UNDERGLOW_THEMES = {
-  figma: {
+  default: {
     primaryColor: "#0077FF",
     baseBg: "bg-[#0077FF]",
     capBg: "bg-[#e8e8e8]",
@@ -70,7 +70,7 @@ export const UNDERGLOW_THEMES = {
 export function ElevatedUnderglowCTA({
   label = "Book A Call",
   icon = "phone",
-  theme = "figma",
+  theme = "default",
   size = "md",
   onClick,
   disabled = false,
@@ -79,7 +79,7 @@ export function ElevatedUnderglowCTA({
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
-  const t = UNDERGLOW_THEMES[theme as keyof typeof UNDERGLOW_THEMES] || UNDERGLOW_THEMES.figma;
+  const t = UNDERGLOW_THEMES[theme as keyof typeof UNDERGLOW_THEMES] || UNDERGLOW_THEMES.default;
 
   const renderIcon = () => {
     if (typeof icon !== "string") return icon;
@@ -133,7 +133,7 @@ export function ElevatedUnderglowCTA({
 }`;
 
 export default function ElevatedUnderglowScreen() {
-  const [theme, setTheme] = useState<ElevatedUnderglowTheme>("figma");
+  const [theme, setTheme] = useState<ElevatedUnderglowTheme>("default");
   const [size, setSize] = useState<ElevatedUnderglowSize>("md");
   const [stateMode, setStateMode] = useState<ElevatedUnderglowStateMode>("interactive");
   const [iconType, setIconType] = useState<ElevatedUnderglowIconType>("phone");
@@ -367,21 +367,21 @@ export default function Example() {
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Figma Electric Blue */}
+              {/* Default Electric Blue */}
               <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Figma Electric Blue</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;figma&quot;</span>
+                  <span className="text-white font-semibold">Default Electric Blue</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;default&quot;</span>
                 </div>
                 <div className="my-3">
                   <ElevatedUnderglowCTA
-                    theme="figma"
+                    theme="default"
                     label="Book A Call"
                     icon="phone"
                     size="md"
                   />
                 </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with blue extruded sub-chassis</span>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with blue extruded sub-chassis</span>
               </div>
 
               {/* UI Pirate Orange */}
@@ -600,7 +600,7 @@ export default function Example() {
                   <tr>
                     <td className="py-3 px-6 text-blue-400 font-semibold">theme</td>
                     <td className="py-3 px-6 text-blue-300">ElevatedUnderglowTheme</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;figma&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;default&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Colorway theme preset (Electric Blue, Orange, Cyan, etc.)</td>
                   </tr>
                   <tr>

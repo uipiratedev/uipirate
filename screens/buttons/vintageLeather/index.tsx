@@ -200,7 +200,7 @@ export default function Example() {
                 onChange={(e) => setTheme(e.target.value as VintageLeatherTheme)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="heritage" className="bg-[#101014]">Brass & Saddle (Figma 1:1)</option>
+                <option value="heritage" className="bg-[#101014]">Brass & Saddle (1:1 spec)</option>
                 <option value="uipirate" className="bg-[#101014]">UI Pirate Burnt Orange</option>
                 <option value="obsidian" className="bg-[#101014]">Obsidian Gold</option>
                 <option value="emerald" className="bg-[#101014]">British Racing Green</option>
@@ -270,7 +270,7 @@ export default function Example() {
                     size="md"
                   />
                 </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with embossed cowhide leather &amp; brass lip</span>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with embossed cowhide leather &amp; brass lip</span>
               </div>
 
               {/* UI Pirate Bronze */}

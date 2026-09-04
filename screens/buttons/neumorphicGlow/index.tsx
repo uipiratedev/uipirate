@@ -252,7 +252,7 @@ export default function Example() {
                 onChange={(e) => setTheme(e.target.value as NeumorphicGlowTheme)}
                 className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="default" className="bg-neutral-900">Clay Light (Figma 1:1)</option>
+                <option value="default" className="bg-neutral-900">Clay Light (1:1 spec)</option>
                 <option value="uipirate" className="bg-neutral-900">UI Pirate Orange</option>
                 <option value="dark" className="bg-neutral-900">Obsidian Slate</option>
                 <option value="cyberpunk" className="bg-neutral-900">Cyberpunk Violet</option>
@@ -307,7 +307,7 @@ export default function Example() {
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Figma Neon Emerald Pill */}
+              {/* Neon Emerald Pill */}
               <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
                   <span className="text-white font-semibold">Neon Emerald Pill</span>
@@ -321,7 +321,7 @@ export default function Example() {
                     size="md"
                   />
                 </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with glowing emerald arrow badge</span>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with glowing emerald arrow badge</span>
               </div>
 
               {/* UI Pirate Magma Squircle */}
