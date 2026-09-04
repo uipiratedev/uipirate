@@ -67,13 +67,10 @@ const getRowConfig = (index: number, isMobile: boolean) => {
   // Rotation: only on desktop
   const rotateTarget = isMobile ? 0 : isEven ? -45 : 45;
 
-  // Staggered scroll ranges for smooth "flower blooming" effect
-  // Rows overlap slightly for smoother transition
-  // Row 0: 0.00 - 0.50
-  // Row 1: 0.20 - 0.70
-  // Row 2: 0.40 - 0.90
-  const staggerDelay = 0.2; // 20% delay between each row starting
-  const animationDuration = 0.5; // Each row animates over 50% of scroll (slower)
+  // Mobile animates faster so images clear out quickly, revealing the text below
+  // Desktop keeps the slower "flower blooming" stagger
+  const staggerDelay = isMobile ? 0.1 : 0.2;
+  const animationDuration = isMobile ? 0.25 : 0.5;
 
   const scrollStart = row * staggerDelay;
   const scrollEnd = scrollStart + animationDuration;
@@ -147,15 +144,15 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
 
   return (
     <div className="relative 3xl:container 3xl:mx-auto">
-      {/* Centered Info */}
+      {/* Centered Info - absolutely centered on both mobile and desktop */}
       <div
         className="absolute inset-1 flex flex-col items-center justify-center text-center z-[1]"
         id="info"
       >
-        <p className="heading-center  mb-6 mt-6 max-md:text-2xl autoShow">
+        <p className="heading-center mb-6 mt-6 max-md:text-2xl autoShow">
           Recent <span className="text-brand-orange">Works</span>
         </p>
-        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12  w-1/2 max-md:text-base autoShow">
+        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12 w-1/2  max-md:text-base autoShow">
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
@@ -172,7 +169,7 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
       {/* Image Grid with Overlap */}
       <div
         ref={containerRef}
-        className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-20 pb-0 max-md:py-12 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4"
+        className="relative grid grid-cols-2 gap-12 max-md:gap-4 overflow-x-hidden overflow-y-auto py-20 pb-0 max-md:py-4 max-lg:py-40 max-md:grid-cols-1 hide-scrollbar px-32 max-md:px-4"
       >
         {visibleData.map((item, index) => (
           <BehanceImage
