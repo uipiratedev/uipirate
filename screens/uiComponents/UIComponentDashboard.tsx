@@ -22,6 +22,7 @@ import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
 import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
 import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 import { GlossyGelButton } from "@/components/GlossyGelButton";
+import { LuminousShelfCard, LUMINOUS_SHELF_CARD_COMPONENT_SOURCE } from "@/components/LuminousShelfCard";
 import {
   ALL_DASHBOARD_COMPONENTS,
   ComponentCategory,
@@ -77,6 +78,7 @@ const BUTTON_CODE: Record<string, ButtonCodeEntry> = {
   "animated-slide-button": { file: "AnimatedButton.tsx", componentCode: ANIMATED_SLIDE_COMPONENT_SOURCE },
   "arc-corner-toggle": { file: "ArcCornerToggle.tsx", componentCode: ARC_CORNER_TOGGLE_COMPONENT_SOURCE },
   "tactile-neumorphic-switch": { file: "TactileNeumorphicSwitch.tsx", componentCode: TACTILE_NEUMORPHIC_SWITCH_COMPONENT_SOURCE, physicsCode: TACTILE_NEUMORPHIC_SWITCH_PHYSICS },
+  "luminous-shelf-card": { file: "LuminousShelfCard.tsx", componentCode: LUMINOUS_SHELF_CARD_COMPONENT_SOURCE },
 };
 
 // Icons
@@ -463,6 +465,21 @@ export default function Example() {
     </GlossyGelButton>
   );
 }`;
+      case "luminous-shelf-card":
+        return `import { LuminousShelfCard } from "@/components/LuminousShelfCard";
+
+export default function Example() {
+  return (
+    <LuminousShelfCard
+      title="${customLabel || "Light Work"}"
+      subtitle="Life life on easy mode by UI Pirate"
+      theme="${customTheme || "white"}"
+      size="${["sm", "md", "lg"].includes(customSize) ? customSize : "md"}"
+      stateMode="interactive"
+      onClick={() => console.log("Card lit")}
+    />
+  );
+}`;
       default:
         return selectedComponent.jsxCode;
     }
@@ -763,6 +780,23 @@ export default function Example() {
             >
               {customLabel || "Get Started"}
             </GlossyGelButton>
+          </div>
+        );
+      }
+      case "luminous-shelf-card": {
+        const validCardThemes = ["white", "warm", "arctic", "amber", "emerald", "magenta"];
+        const cardTheme = safeTheme(customTheme, validCardThemes, "white");
+        const cardSize = (["sm", "md", "lg"].includes(customSize) ? customSize : "md") as "sm" | "md" | "lg";
+        return (
+          <div className="py-6 flex items-center justify-center">
+            <LuminousShelfCard
+              title={customLabel || "Light Work"}
+              subtitle="Life life on easy mode by UI Pirate"
+              theme={cardTheme as any}
+              size={cardSize}
+              stateMode={customStateMode}
+              onClick={() => handleTriggerAction("Luminous Shelf Card lit")}
+            />
           </div>
         );
       }

@@ -17,6 +17,7 @@ import { MagneticPulseCTA } from "@/components/MagneticPulseCTA";
 import { TactileNeumorphicToggle } from "@/components/TactileNeumorphicToggle";
 import { TactileNeumorphicSwitch } from "@/components/TactileNeumorphicSwitch";
 import { GlossyGelButton } from "@/components/GlossyGelButton";
+import { LuminousShelfCard } from "@/components/LuminousShelfCard";
 
 export type ComponentCategory = "buttons" | "controls" | "badges" | "surfaces";
 
@@ -1986,6 +1987,211 @@ export default function Example() {
         badgeColor: "#38BDF8",
         description: "Midnight dark clay chassis with glowing sapphire channel.",
         renderPreview: (sz = "sm") => <TactileNeumorphicSwitch theme="dark-obsidian" stateMode="interactive" size={sz} />,
+      },
+    ],
+  },
+  {
+    id: "luminous-shelf-card",
+    name: "Luminous Shelf Card",
+    category: "surfaces",
+    categoryLabel: "Surfaces & Glass",
+    badge: "Hover Lighting",
+    badgeColor: "#E6E8F0",
+    description:
+      "Dark product card with an under-shelf light that strikes on hover — a volumetric cone washes up the wall, the shelf edge becomes a hot filament, and the feather pin is lit from below while casting a soft shadow upward.",
+    detailUrl: "/componentlab/luminous-shelf-card",
+    defaultLabel: "Light Work",
+    hasLabelControl: true,
+    hasSizeControl: true,
+    hasThemeControl: true,
+    defaultTheme: "white",
+    availableThemes: [
+      { value: "white", label: "Studio White", color: "#E6E8F5" },
+      { value: "warm", label: "Incandescent", color: "#FFD69E" },
+      { value: "arctic", label: "Arctic Cyan", color: "#AAE2FF" },
+      { value: "amber", label: "Amber Sodium", color: "#FFBE70" },
+      { value: "emerald", label: "Emerald Lab", color: "#A2F0CA" },
+      { value: "magenta", label: "Neon Magenta", color: "#FFB0E2" },
+    ],
+    features: [
+      "Volumetric upward light cone (screen-blended layers)",
+      "Shelf edge strikes into a hot filament line",
+      "Feather pin lit from below, casts shadow upward",
+      "Fluorescent-tube flicker on turn-on",
+    ],
+    previewLight: (
+      <div className="py-8 flex items-center justify-center">
+        <LuminousShelfCard title="Light Work" subtitle="Life life on easy mode." stateMode="interactive" />
+      </div>
+    ),
+    previewDark: (
+      <div className="py-8 flex items-center justify-center">
+        <LuminousShelfCard title="Light Work" subtitle="Life life on easy mode." stateMode="interactive" />
+      </div>
+    ),
+    jsxCode: `import { LuminousShelfCard } from "@/components/LuminousShelfCard";
+
+export default function Example() {
+  return (
+    <LuminousShelfCard
+      title="Light Work"
+      subtitle="Life life on easy mode by UI Pirate"
+      theme="white"
+      size="md"
+      stateMode="interactive"
+      onClick={() => console.log("Card lit")}
+    />
+  );
+}`,
+    htmlCode: `<!-- Structure only — the light layers need the component's motion + blend modes -->
+<article class="lsc">
+  <div class="lsc__frame"></div>
+  <div class="lsc__body">
+    <div class="lsc__wash"></div>      <!-- volumetric cone, opacity 0 -> 1 on hover -->
+    <div class="lsc__pin"><svg><!-- feather --></svg></div>
+    <div class="lsc__shelf"><span class="lsc__filament"></span></div>
+    <div class="lsc__text">
+      <h3>Light Work</h3>
+      <p>Life life on easy mode by UI Pirate</p>
+    </div>
+    <div class="lsc__pill"></div>
+  </div>
+</article>`,
+    cssCode: `/* Luminous Shelf Card — design tokens */
+:root {
+  --lsc-w: 340px;
+  --lsc-h: 460px;
+  --lsc-radius: 28px;
+  --lsc-shelf-top: 286px;
+
+  /* light colour (Studio White) */
+  --lsc-wash: 236, 238, 245;
+  --lsc-core: #ffffff;
+  --lsc-bloom: 255, 255, 255;
+  --lsc-lit-tint: 244, 247, 255;
+}
+
+.lsc__body {
+  border-radius: var(--lsc-radius);
+  background: linear-gradient(180deg, #212226 0%, #171719 52%, #0b0b0d 100%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 0.7),
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+/* volumetric wash — hidden until hover */
+.lsc__wash {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--lsc-h) - var(--lsc-shelf-top) - 26px);
+  width: 460px;
+  height: 330px;
+  transform: translateX(-50%);
+  mix-blend-mode: screen;
+  filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(ellipse 56% 92% at 50% 100%,
+              rgba(var(--lsc-wash), 0.34) 0%,
+              rgba(var(--lsc-wash), 0.12) 42%,
+              rgba(var(--lsc-wash), 0) 76%);
+}
+.lsc:hover .lsc__wash { opacity: 1; }
+
+/* shelf edge filament */
+.lsc__filament {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--lsc-core);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  box-shadow: 0 0 10px 1px rgba(var(--lsc-bloom), 0.95),
+              0 0 26px 6px rgba(var(--lsc-wash), 0.6);
+}
+.lsc:hover .lsc__filament { opacity: 1; }
+
+/* feather pin — teardrop */
+.lsc__pin {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  width: 128px;
+  height: 128px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 50% 10px;
+  background: linear-gradient(145deg, #d4d4d4 0%, #a2a2a2 55%, #8a8a8a 100%);
+  box-shadow: 0 22px 42px -14px rgba(0, 0, 0, 0.6),
+              inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  transition: box-shadow 0.45s ease;
+}
+.lsc:hover .lsc__pin {
+  /* lit from below: kill the downward drop, add an underglow rim */
+  box-shadow: 0 -2px 26px -6px rgba(255, 255, 255, 0.14),
+              inset 0 -9px 16px rgba(255, 255, 255, 0.22),
+              inset 0 9px 16px rgba(0, 0, 0, 0.32);
+}`,
+    props: [
+      { name: "title", type: "string", defaultValue: '"Light Work"', description: "Large heading, bottom-left." },
+      { name: "subtitle", type: "string", defaultValue: '"Life life on easy mode by UI Pirate"', description: "One-line sub-text; clips at the card edge like the reference." },
+      { name: "stateMode", type: '"interactive" | "standerd" | "hover"', defaultValue: '"interactive"', description: '"standerd" = light off · "hover" = light on · "interactive" = follows pointer / focus.' },
+      { name: "size", type: '"sm" | "md" | "lg"', defaultValue: '"md"', description: "Uniform scale of the whole card." },
+      { name: "theme", type: '"white" | "warm" | "arctic" | "amber" | "emerald" | "magenta"', defaultValue: '"white"', description: "Colour of the light that strikes on hover." },
+      { name: "icon", type: "React.ReactNode", defaultValue: "<Feather />", description: "Glyph inside the pin." },
+      { name: "showDeviceFrame", type: "boolean", defaultValue: "true", description: "Faint blueprint frame + corner brackets behind the card." },
+      { name: "showPeekPill", type: "boolean", defaultValue: "true", description: "White pill peeking up from the bottom-right edge." },
+      { name: "flicker", type: "boolean", defaultValue: "true", description: "Fluorescent-tube strike flicker when the light turns on." },
+      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Fired on click / Enter / Space when set." },
+    ],
+    variantsList: [
+      {
+        title: "Studio White",
+        themeValue: "white",
+        themeProp: 'theme="white"',
+        badgeColor: "#E6E8F5",
+        description: "Neutral broadcast key-light — the reference look.",
+        renderPreview: (sz = "sm") => <LuminousShelfCard theme="white" size={sz} stateMode="hover" subtitle="Life life on easy mode." />,
+      },
+      {
+        title: "Incandescent",
+        themeValue: "warm",
+        themeProp: 'theme="warm"',
+        badgeColor: "#FFD69E",
+        description: "Tungsten bulb warmth pooling up the wall.",
+        renderPreview: (sz = "sm") => <LuminousShelfCard theme="warm" size={sz} stateMode="hover" subtitle="Warm tungsten glow." />,
+      },
+      {
+        title: "Arctic Cyan",
+        themeValue: "arctic",
+        themeProp: 'theme="arctic"',
+        badgeColor: "#AAE2FF",
+        description: "Cold clean-room strip lighting.",
+        renderPreview: (sz = "sm") => <LuminousShelfCard theme="arctic" size={sz} stateMode="hover" subtitle="Cold clean-room light." />,
+      },
+      {
+        title: "Amber Sodium",
+        themeValue: "amber",
+        themeProp: 'theme="amber"',
+        badgeColor: "#FFBE70",
+        description: "Street-lamp sodium orange bloom.",
+        renderPreview: (sz = "sm") => <LuminousShelfCard theme="amber" size={sz} stateMode="hover" subtitle="Sodium street glow." />,
+      },
+      {
+        title: "Emerald Lab",
+        themeValue: "emerald",
+        themeProp: 'theme="emerald"',
+        badgeColor: "#A2F0CA",
+        description: "Phosphor reactor green wash.",
+        renderPreview: (sz = "sm") => <LuminousShelfCard theme="emerald" size={sz} stateMode="hover" subtitle="Phosphor reactor wash." />,
+      },
+      {
+        title: "Neon Magenta",
+        themeValue: "magenta",
+        themeProp: 'theme="magenta"',
+        badgeColor: "#FFB0E2",
+        description: "Nightclub magenta tube strike.",
+        renderPreview: (sz = "sm") => <LuminousShelfCard theme="magenta" size={sz} stateMode="hover" subtitle="Nightclub tube strike." />,
       },
     ],
   },
