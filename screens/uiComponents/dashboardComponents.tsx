@@ -57,6 +57,28 @@ export interface ComponentDetail {
   defaultShowCables?: boolean;
   hasIntensityControl?: boolean;
   defaultIntensity?: string;
+  hasDotColorControl?: boolean;
+  defaultDotColor?: string;
+  hasLiftControl?: boolean;
+  defaultLiftAmount?: number;
+  hasInteractionModeControl?: boolean;
+  defaultInteractionMode?: "hover" | "click" | "both";
+  hasStepSpeedControl?: boolean;
+  defaultStepSpeedMs?: number;
+  hasOrnamentsControl?: boolean;
+  defaultShowOrnaments?: boolean;
+  hasHoverTextControl?: boolean;
+  defaultHoverText?: string;
+  hasActiveLabelControl?: boolean;
+  defaultActiveLabel?: string;
+  hasSlideInteractionModeControl?: boolean;
+  defaultSlideInteractionMode?: "both" | "drag" | "click" | "hover";
+  hasThemeModeControl?: boolean;
+  defaultThemeMode?: "auto" | "light" | "dark";
+  hasDurationControl?: boolean;
+  defaultDuration?: number;
+  hasShowIconsControl?: boolean;
+  defaultShowIcons?: boolean;
   defaultTheme: string;
   availableThemes?: Array<{ value: string; label: string; color?: string }>;
   features: string[];
@@ -223,6 +245,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasDotColorControl: true,
+    defaultDotColor: "#54EAD8",
     defaultTheme: "default",
     availableThemes: [
       { value: "default", label: "Figma Cyan", color: "#54EAD8" },
@@ -478,6 +502,18 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasIconControl: true,
+    defaultIcon: "phone",
+    availableIcons: [
+      { value: "phone", label: "Phone Call" },
+      { value: "calendar", label: "Calendar Event" },
+      { value: "arrow", label: "Arrow Action" },
+      { value: "sparkle", label: "Sparkle Magic" },
+      { value: "mail", label: "Direct Mail" },
+      { value: "none", label: "None (Text Only)" },
+    ],
+    hasLiftControl: true,
+    defaultLiftAmount: 13,
     defaultTheme: "figma",
     availableThemes: [
       { value: "figma", label: "Figma Electric Blue", color: "#38BDF8" },
@@ -530,7 +566,8 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Book A Call"', description: "Text displayed on the elevated button face." },
-      { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
+      { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail" | "none"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
+      { name: "liftAmount", type: "number", defaultValue: "13", description: "Optional lift distance in pixels on hover (default: 13 matching Figma 55:40)." },
       { name: "theme", type: '"figma" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"', defaultValue: '"figma"', description: "Color theme for the underglow beam and reflection rim." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions of the pill." },
     ],
@@ -599,6 +636,10 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasInteractionModeControl: true,
+    defaultInteractionMode: "hover",
+    hasStepSpeedControl: true,
+    defaultStepSpeedMs: 110,
     defaultTheme: "monochrome",
     availableThemes: [
       { value: "monochrome", label: "Monochrome White", color: "#F8FAFC" },
@@ -629,9 +670,12 @@ export default function Example() {
 export default function Example() {
   return (
     <LedMatrixChevronButton
+      label="See Plans"
       theme="monochrome"
       size="md"
-      onTrigger={() => console.log("Matrix sequence activated")}
+      interactionMode="hover"
+      stepSpeedMs={110}
+      onClick={() => console.log("LED Matrix Clicked")}
     />
   );
 }`,
@@ -648,9 +692,12 @@ export default function Example() {
   --matrix-bg: #0d0d11;
 }`,
     props: [
+      { name: "label", type: "string", defaultValue: '"See Plans"', description: "Button label in resting state." },
       { name: "theme", type: '"monochrome" | "uipirate" | "emerald" | "cyan" | "amber" | "crimson"', defaultValue: '"monochrome"', description: "Phosphor color for the LED dot grid." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls pixel scale and chassis padding." },
-      { name: "onTrigger", type: "() => void", defaultValue: "undefined", description: "Fired when the chevron sequence reaches climax." },
+      { name: "interactionMode", type: '"hover" | "click" | "both"', defaultValue: '"hover"', description: "Interaction trigger mode: expands LED screen on hover, click, or both." },
+      { name: "stepSpeedMs", type: "number", defaultValue: "110", description: "LED shift speed in milliseconds per column step." },
+      { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Click event handler." },
     ],
     variantsList: [
       {
@@ -713,8 +760,12 @@ export default function Example() {
     description:
       "Interactive metallic capsule slider button with draggable glowing electric blue knob, illuminated neon channel fill, and dynamic masked text reveal.",
     detailUrl: "/componentlab/slide-grow-button",
-    defaultLabel: "Slide to Unlock",
+    defaultLabel: "Get Started",
     hasLabelControl: true,
+    hasActiveLabelControl: true,
+    defaultActiveLabel: "Lets Grow!",
+    hasSlideInteractionModeControl: true,
+    defaultSlideInteractionMode: "both",
     hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "silver",
@@ -747,8 +798,11 @@ export default function Example() {
 export default function Example() {
   return (
     <SlideGrowButton
+      startLabel="Get Started"
+      activeLabel="Lets Grow!"
       theme="silver"
       size="md"
+      interactionMode="both"
       onComplete={() => alert("Action unlocked!")}
     />
   );
@@ -768,8 +822,11 @@ export default function Example() {
   --slider-fill-color: #38bdf8;
 }`,
     props: [
+      { name: "startLabel", type: "string", defaultValue: '"Get Started"', description: "Resting text before slider interaction." },
+      { name: "activeLabel", type: "string", defaultValue: '"Lets Grow!"', description: "Revealed label when slid to completion." },
       { name: "theme", type: '"silver" | "dark" | "uipirate" | "cyberpunk" | "emerald" | "orange"', defaultValue: '"silver"', description: "Metallic finish for the capsule track." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Width and height scaling dimensions." },
+      { name: "interactionMode", type: '"both" | "drag" | "click" | "hover"', defaultValue: '"both"', description: "Interaction trigger mode: drag, click, hover, or both." },
       { name: "onComplete", type: "() => void", defaultValue: "undefined", description: "Called when swipe reaches 100% threshold." },
     ],
     variantsList: [
@@ -821,6 +878,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasOrnamentsControl: true,
+    defaultShowOrnaments: true,
     defaultTheme: "heritage",
     availableThemes: [
       { value: "heritage", label: "Heritage Brass", color: "#D97706" },
@@ -849,7 +908,15 @@ export default function Example() {
     jsxCode: `import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 
 export default function Example() {
-  return <VintageLeatherCTA theme="heritage" size="md" label="Shop ties" />;
+  return (
+    <VintageLeatherCTA
+      theme="heritage"
+      size="md"
+      label="Shop ties"
+      showOrnaments={true}
+      onClick={() => console.log("Clicked")}
+    />
+  );
 }`,
     htmlCode: `<button class="px-8 py-3.5 rounded-xl bg-gradient-to-b from-[#8B4513] to-[#5C2E0B] text-[#F5DEB3] font-serif border-2 border-[#DAA520] shadow-[0_6px_0_#3A1D07,0_10px_20px_rgba(0,0,0,0.5)]">
   Shop ties
@@ -864,6 +931,7 @@ export default function Example() {
       { name: "label", type: "string", defaultValue: '"Shop ties"', description: "Artisanal CTA label." },
       { name: "theme", type: '"heritage" | "uipirate" | "obsidian" | "emerald" | "ruby" | "silver"', defaultValue: '"heritage"', description: "Leather color palette." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions." },
+      { name: "showOrnaments", type: "boolean", defaultValue: "true", description: "Whether to display the decorative filigree scrollwork corner flourishes." },
     ],
     variantsList: [
       {
@@ -1162,6 +1230,16 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasIconControl: true,
+    defaultIcon: "apex",
+    availableIcons: [
+      { value: "apex", label: "Apex Ladder Emblem" },
+      { value: "arrow", label: "Arrow Right" },
+      { value: "sparkle", label: "Sparkle Star" },
+      { value: "zap", label: "Lightning Zap" },
+      { value: "rocket", label: "Rocket Launch" },
+      { value: "check", label: "Checkmark" },
+    ],
     defaultTheme: "dark",
     availableThemes: [
       { value: "dark", label: "Figma Dark Obsidian", color: "#38BDF8" },
@@ -1201,6 +1279,8 @@ export default function Example() {
     props: [
       { name: "label", type: "string", defaultValue: '"Scaling Workshop"', description: "Text label." },
       { name: "variant", type: '"dark" | "orange" | "light" | "cyberpunk"', defaultValue: '"dark"', description: "Appearance style." },
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Proportional scaling dimensions." },
+      { name: "icon", type: "React.ReactNode", defaultValue: "<ApexEmblemIcon />", description: "Custom icon element displayed inside the 26px black circle." },
     ],
     variantsList: [
       {
@@ -1342,6 +1422,8 @@ export default function Example() {
     detailUrl: "/componentlab/animated-slide-button",
     defaultLabel: "Explore Services",
     hasLabelControl: true,
+    hasHoverTextControl: true,
+    defaultHoverText: "See More →",
     hasSizeControl: true,
     hasThemeControl: true,
     defaultTheme: "primary",
@@ -1423,6 +1505,10 @@ export default function Example() {
     hasLabelControl: false,
     hasSizeControl: true,
     hasThemeControl: false,
+    hasThemeModeControl: true,
+    defaultThemeMode: "auto",
+    hasDurationControl: true,
+    defaultDuration: 0.65,
     defaultTheme: "default",
     features: [
       "90° circular arc track calculation",
@@ -1443,7 +1529,14 @@ export default function Example() {
     jsxCode: `import { ArcCornerToggle } from "@/components/ArcCornerToggle";
 
 export default function Example() {
-  return <ArcCornerToggle scale={0.88} />;
+  return (
+    <ArcCornerToggle
+      size="md"
+      themeMode="auto"
+      duration={0.65}
+      onToggle={(active) => console.log("Toggled:", active)}
+    />
+  );
 }`,
     htmlCode: `<div class="relative w-48 h-48 rounded-full border border-purple-500/20 bg-[#0E0E12]">
   <!-- 90 Degree Circular Track -->
@@ -1456,18 +1549,38 @@ export default function Example() {
   --arc-laser-glow: 0 0 16px rgba(192, 132, 252, 0.7);
 }`,
     props: [
+      { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Named size preset." },
+      { name: "themeMode", type: '"auto" | "light" | "dark"', defaultValue: '"auto"', description: "Force specific theme or let state dictate." },
+      { name: "duration", type: "number", defaultValue: "0.65", description: "Animation duration in seconds." },
       { name: "scale", type: "number", defaultValue: "1", description: "CSS transform scale multiplier for responsive fitting." },
       { name: "onToggle", type: "(state: boolean) => void", defaultValue: "undefined", description: "State change listener." },
     ],
     variantsList: [
       {
-        title: "Sunburst Dial Mode",
+        title: "Sunburst Dial (Interactive)",
         themeValue: "default",
-        themeProp: "scale={0.88}",
+        themeProp: 'themeMode="auto"',
         badgeColor: "#C084FC",
         description: "90° circular corner arc track with rotating capsule knob and laser beam flare.",
-        renderPreview: () => <ArcCornerToggle scale={0.78} />,
+        renderPreview: () => <ArcCornerToggle scale={0.75} />,
       },
+      {
+        title: "Light Mode (Clay Matte)",
+        themeValue: "light",
+        themeProp: 'themeMode="light"',
+        badgeColor: "#E2E8F0",
+        description: "Clay light surface with matte dark track contour and sunburst dial.",
+        renderPreview: () => <ArcCornerToggle scale={0.75} themeMode="light" />,
+      },
+      {
+        title: "⚡ Snappy Response (0.35s)",
+        themeValue: "snappy",
+        themeProp: "duration={0.35}",
+        badgeColor: "#F59E0B",
+        description: "High-velocity snap transition for instant tactile feedback.",
+        renderPreview: () => <ArcCornerToggle scale={0.75} duration={0.35} />,
+      },
+
     ],
   },
   {
@@ -1639,6 +1752,8 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
+    hasShowIconsControl: true,
+    defaultShowIcons: true,
     defaultTheme: "brushed-silver",
     availableThemes: [
       { value: "brushed-silver", label: "Brushed Silver", color: "#94A3B8" },
@@ -1708,7 +1823,7 @@ export default function Example() {
         title: "Dark Obsidian",
         themeValue: "dark-obsidian",
         themeProp: 'theme="dark-obsidian"',
-        badgeColor: "#1E293B",
+        badgeColor: "#94A3B8",
         description: "Midnight dark clay chassis with deep carved shadow trench and illuminated LED.",
         renderPreview: (sz = "sm") => <TactileNeumorphicToggle theme="dark-obsidian" size={sz} defaultChecked={true} />,
       },
@@ -1858,7 +1973,7 @@ export default function Example() {
         title: "Dark Obsidian Glass",
         themeValue: "obsidian-glass",
         themeProp: 'theme="obsidian-glass"',
-        badgeColor: "#1E293B",
+        badgeColor: "#94A3B8",
         description: "Stealth obsidian glass with glowing cyan accent text and specular shine.",
         renderPreview: (sz = "sm") => <GlossyGelButton theme="obsidian-glass" size={sz}>Start Free</GlossyGelButton>,
       },

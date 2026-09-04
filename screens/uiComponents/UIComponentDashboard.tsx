@@ -5,7 +5,7 @@ import Link from "next/link";
 import StudioCanvas from "@/components/StudioCanvas";
 import PageWrapper from "@/components/PageWrapper";
 import TactilePillButton from "@/components/TactilePillButton";
-import ScalingCapsuleButton from "@/components/ScalingCapsuleButton";
+import ScalingCapsuleButton, { ApexEmblemIcon } from "@/components/ScalingCapsuleButton";
 import SmashTactileButton from "@/components/SmashTactileButton";
 import GlassBadge from "@/components/GlassBadge";
 import GlassSurface from "@/components/GlassSurface";
@@ -13,8 +13,8 @@ import { AnimatedButton } from "@/components/AnimatedButton";
 import { FrostedGelDownloadButton, FrostedGelIcon } from "@/components/FrostedGelDownloadButton";
 import { IsometricReviveButton, IsometricGlowIntensity } from "@/components/IsometricReviveButton";
 import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
-import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
-import { SlideGrowButton } from "@/components/SlideGrowButton";
+import { LedMatrixChevronButton, LedMatrixInteractionMode } from "@/components/LedMatrixChevronButton";
+import { SlideGrowButton, SlideGrowInteractionMode } from "@/components/SlideGrowButton";
 import { VintageLeatherCTA } from "@/components/VintageLeatherCTA";
 import { NeumorphicGlowCTA } from "@/components/NeumorphicGlowCTA";
 import { ArcCornerToggle } from "@/components/ArcCornerToggle";
@@ -150,10 +150,22 @@ export default function UIComponentDashboard({
 
   // ── Playground Dynamic State ──────────────────────────────────────────
   const [customLabel, setCustomLabel] = useState<string>("");
+  const [customHoverText, setCustomHoverText] = useState<string>("See More →");
+  const [customActiveLabel, setCustomActiveLabel] = useState<string>("Lets Grow!");
   const [customSize, setCustomSize] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
   const [customTheme, setCustomTheme] = useState<string>("");
-  const [customIcon, setCustomIcon] = useState<FrostedGelIcon>("cloud-download");
+  const [customDotColor, setCustomDotColor] = useState<string>("#54EAD8");
+  const [customIcon, setCustomIcon] = useState<string>("cloud-download");
+  const [customCapsuleIcon, setCustomCapsuleIcon] = useState<string>("apex");
+  const [customLiftAmount, setCustomLiftAmount] = useState<number>(13);
+  const [customInteractionMode, setCustomInteractionMode] = useState<LedMatrixInteractionMode>("hover");
+  const [customSlideInteractionMode, setCustomSlideInteractionMode] = useState<SlideGrowInteractionMode>("both");
+  const [customStepSpeedMs, setCustomStepSpeedMs] = useState<number>(110);
+  const [customShowOrnaments, setCustomShowOrnaments] = useState<boolean>(true);
   const [customShowCables, setCustomShowCables] = useState<boolean>(true);
+  const [customShowIcons, setCustomShowIcons] = useState<boolean>(true);
+  const [customThemeMode, setCustomThemeMode] = useState<"auto" | "light" | "dark">("auto");
+  const [customDuration, setCustomDuration] = useState<number>(0.65);
   const [customIntensity, setCustomIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [customStateMode, setCustomStateMode] = useState<"interactive" | "standerd" | "hover">("interactive");
   const [showGrid, setShowGrid] = useState<boolean>(true);
@@ -179,17 +191,58 @@ export default function UIComponentDashboard({
   // Fall back to a valid tab: not every component ships a Component.tsx / Physics.ts.
   const effectiveCodeTab: CodeTab =
     (activeCodeTab === "component" && !codeEntry?.componentCode) ||
-    (activeCodeTab === "physics" && !codeEntry?.physicsCode)
+      (activeCodeTab === "physics" && !codeEntry?.physicsCode)
       ? "jsx"
       : activeCodeTab;
 
   // Sync playground initial state when selected component changes
   useEffect(() => {
     setCustomLabel(selectedComponent.defaultLabel || "Button");
+    setCustomHoverText(selectedComponent.defaultHoverText || "See More →");
     setCustomSize("md");
     setCustomTheme(selectedComponent.defaultTheme || "default");
-    setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
+    setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
+    setCustomIcon(
+      (selectedComponent.defaultIcon as string) ||
+      (selectedComponent.id === "elevated-underglow-cta" ? "phone" : "cloud-download")
+    );
+    setCustomCapsuleIcon(
+      (selectedComponent.id === "scaling-capsule-button" && (selectedComponent.defaultIcon as string)) || "apex"
+    );
+    setCustomLiftAmount(
+      selectedComponent.defaultLiftAmount !== undefined
+        ? selectedComponent.defaultLiftAmount
+        : 13
+    );
+    setCustomInteractionMode(
+      (selectedComponent.defaultInteractionMode as LedMatrixInteractionMode) || "hover"
+    );
+    setCustomActiveLabel(
+      selectedComponent.defaultActiveLabel || "Lets Grow!"
+    );
+    setCustomSlideInteractionMode(
+      (selectedComponent.defaultSlideInteractionMode as SlideGrowInteractionMode) || "both"
+    );
+    setCustomStepSpeedMs(
+      selectedComponent.defaultStepSpeedMs !== undefined
+        ? selectedComponent.defaultStepSpeedMs
+        : 110
+    );
+    setCustomShowOrnaments(
+      selectedComponent.defaultShowOrnaments !== undefined
+        ? selectedComponent.defaultShowOrnaments
+        : true
+    );
     setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+    setCustomThemeMode(
+      (selectedComponent.defaultThemeMode as "auto" | "light" | "dark") || "auto"
+    );
+    setCustomDuration(
+      selectedComponent.defaultDuration !== undefined ? selectedComponent.defaultDuration : 0.65
+    );
+    setCustomShowIcons(
+      selectedComponent.defaultShowIcons !== undefined ? selectedComponent.defaultShowIcons : true
+    );
     setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
     setCustomStateMode("interactive");
     setClickCount(0);
@@ -285,6 +338,7 @@ export default function Example() {
   return (
     <TactilePillButton
       label="${customLabel}"
+      dotColor="${customDotColor || "#54EAD8"}"
       variant="${customTheme}"
       size="${customSize}"
       onClick={() => console.log("Clicked")}
@@ -315,8 +369,24 @@ export default function Example() {
       label="${customLabel}"
       theme="${customTheme}"
       size="${customSize}"
-      icon="phone"
+      icon="${customIcon || "phone"}"
+      liftAmount={${customLiftAmount}}
       onClick={() => console.log("Call triggered")}
+    />
+  );
+}`;
+      case "led-matrix-chevron":
+        return `import { LedMatrixChevronButton } from "@/components/LedMatrixChevronButton";
+
+export default function Example() {
+  return (
+    <LedMatrixChevronButton
+      label="${customLabel || "See Plans"}"
+      theme="${customTheme || "monochrome"}"
+      size="${customSize}"
+      interactionMode="${customInteractionMode}"
+      stepSpeedMs={${customStepSpeedMs}}
+      onClick={() => console.log("LED Matrix Clicked")}
     />
   );
 }`;
@@ -326,8 +396,11 @@ export default function Example() {
 export default function Example() {
   return (
     <SlideGrowButton
-      theme="${customTheme}"
+      startLabel="${customLabel || "Get Started"}"
+      activeLabel="${customActiveLabel || "Lets Grow!"}"
+      theme="${customTheme || "silver"}"
       size="${customSize}"
+      interactionMode="${customSlideInteractionMode}"
       onComplete={() => alert("Action unlocked!")}
     />
   );
@@ -338,9 +411,10 @@ export default function Example() {
 export default function Example() {
   return (
     <VintageLeatherCTA
-      label="${customLabel}"
+      label="${customLabel || "Shop ties"}"
       theme="${customTheme}"
       size="${customSize}"
+      showOrnaments={${customShowOrnaments}}
       onClick={() => console.log("Leather button pressed")}
     />
   );
@@ -419,8 +493,21 @@ export default function Example() {
   return (
     <AnimatedButton
       primaryText="${customLabel || "Explore Services"}"
-      hoverText="See More →"
+      hoverText="${customHoverText || "See More →"}"
       variant="${customTheme === "secondary" ? "secondary" : "primary"}"
+    />
+  );
+}`;
+      case "arc-corner-toggle":
+        return `import { ArcCornerToggle } from "@/components/ArcCornerToggle";
+
+export default function Example() {
+  return (
+    <ArcCornerToggle
+      size="${customSize}"
+      themeMode="${customThemeMode}"
+      duration={${customDuration}}
+      onToggle={(active) => console.log("Arc toggled:", active)}
     />
   );
 }`;
@@ -433,6 +520,7 @@ export default function Example() {
       theme="${customTheme}"
       size="${customSize}"
       label="${customLabel}"
+      showIcons={${customShowIcons}}
       defaultChecked={true}
       onChange={(checked) => console.log("Toggle state:", checked)}
     />
@@ -535,7 +623,7 @@ export default function Example() {
             <TactilePillButton
               label={customLabel || "Get Started"}
               variant={tactileVariant as any}
-              dotColor={tactileDotColorMap[tactileVariant] || "#54EAD8"}
+              dotColor={customDotColor || tactileDotColorMap[tactileVariant] || "#54EAD8"}
               size={customSize}
               stateMode={customStateMode}
               onClick={() => handleTriggerAction("Tactile Pill Clicked")}
@@ -552,7 +640,7 @@ export default function Example() {
               label={customLabel || "Download now"}
               theme={gelTheme as any}
               size={customSize}
-              icon={customIcon}
+              icon={customIcon as FrostedGelIcon}
               showCables={customShowCables}
               stateMode={customStateMode}
               onClick={() => handleTriggerAction("Gel Download Triggered")}
@@ -561,7 +649,7 @@ export default function Example() {
         );
       }
       case "elevated-underglow-cta": {
-        const validUnderglowThemes = ["figma", "emerald", "amber"];
+        const validUnderglowThemes = ["figma", "uipirate", "emerald", "violet", "crimson", "dark"];
         const underglowTheme = safeTheme(customTheme, validUnderglowThemes, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -570,7 +658,8 @@ export default function Example() {
               theme={underglowTheme as any}
               size={customSize}
               stateMode={customStateMode}
-              icon="phone"
+              icon={(customIcon as any) || "phone"}
+              liftAmount={customLiftAmount}
               onClick={() => handleTriggerAction("Elevated Call Triggered")}
             />
           </div>
@@ -586,6 +675,8 @@ export default function Example() {
               theme={ledTheme as any}
               size={customSize}
               stateMode={customStateMode}
+              interactionMode={customInteractionMode}
+              stepSpeedMs={customStepSpeedMs}
               onClick={() => handleTriggerAction("LED Matrix Clicked")}
             />
           </div>
@@ -598,16 +689,18 @@ export default function Example() {
           <div className="py-8 flex items-center justify-center">
             <SlideGrowButton
               startLabel={customLabel || "Get Started"}
+              activeLabel={customActiveLabel || "Lets Grow!"}
               theme={slideTheme as any}
               size={customSize}
               stateMode={customStateMode}
+              interactionMode={customSlideInteractionMode}
               onComplete={() => handleTriggerAction("Swipe Gesture Completed")}
             />
           </div>
         );
       }
       case "vintage-leather-cta": {
-        const validLeatherThemes = ["heritage", "noir", "oxblood", "royal-navy", "emerald-gilded"];
+        const validLeatherThemes = ["heritage", "uipirate", "obsidian", "emerald", "ruby", "silver", "pirate"];
         const leatherTheme = safeTheme(customTheme, validLeatherThemes, "heritage");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -616,6 +709,7 @@ export default function Example() {
               theme={leatherTheme as any}
               size={customSize}
               stateMode={customStateMode}
+              showOrnaments={customShowOrnaments}
               onClick={() => handleTriggerAction("Leather Button Pressed")}
             />
           </div>
@@ -650,7 +744,7 @@ export default function Example() {
         );
       }
       case "smash-tactile-button": {
-        const validSmashVariants = ["figma", "cyber", "dark"];
+        const validSmashVariants = ["figma", "dark", "orange", "cyberpunk"];
         const smashVariant = safeTheme(customTheme, validSmashVariants, "figma");
         return (
           <div className="py-8 flex items-center justify-center">
@@ -665,8 +759,47 @@ export default function Example() {
         );
       }
       case "scaling-capsule-button": {
-        const validCapsuleVariants = ["dark", "light"];
+        const validCapsuleVariants = ["dark", "orange", "light", "cyberpunk"];
         const capsuleVariant = safeTheme(customTheme, validCapsuleVariants, "dark");
+
+        const renderCapsuleIcon = () => {
+          switch (customCapsuleIcon) {
+            case "arrow":
+              return (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              );
+            case "sparkle":
+              return (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z" />
+                </svg>
+              );
+            case "zap":
+              return (
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+              );
+            case "rocket":
+              return (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.84 2.58m-.12-8.54a2 2 0 112.83 2.83" />
+                </svg>
+              );
+            case "check":
+              return (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              );
+            case "apex":
+            default:
+              return <ApexEmblemIcon className="w-4 h-4" />;
+          }
+        };
+
         return (
           <div className="py-8 flex items-center justify-center">
             <ScalingCapsuleButton
@@ -674,6 +807,7 @@ export default function Example() {
               variant={capsuleVariant as any}
               size={customSize}
               stateMode={customStateMode}
+              icon={renderCapsuleIcon()}
               onClick={() => handleTriggerAction("Scaling Capsule Clicked")}
             />
           </div>
@@ -696,7 +830,7 @@ export default function Example() {
           <div className="py-8 flex items-center justify-center w-full mx-auto">
             <AnimatedButton
               primaryText={customLabel || "Explore Services"}
-              hoverText="See More →"
+              hoverText={customHoverText || "See More →"}
               variant={customTheme === "secondary" ? "secondary" : "primary"}
               size={customSize}
               stateMode={customStateMode}
@@ -711,6 +845,8 @@ export default function Example() {
           <div className="py-8 flex items-center justify-center">
             <ArcCornerToggle
               size={customSize}
+              themeMode={customThemeMode}
+              duration={customDuration}
               stateMode={customStateMode}
               onToggle={(st) => handleTriggerAction(`Arc Toggled: ${st ? "ON" : "OFF"}`)}
             />
@@ -746,6 +882,7 @@ export default function Example() {
               size={customSize}
               stateMode={customStateMode}
               label={customLabel || "Tactile Toggle"}
+              showIcons={customShowIcons}
               defaultChecked={true}
               onChange={(st) => handleTriggerAction(`Toggle: ${st ? "ON" : "OFF"}`)}
             />
@@ -828,8 +965,8 @@ export default function Example() {
         <button
           onClick={() => handleSelectComponent(prevComponent.id)}
           className={`p-5 rounded-2xl border text-left transition-all group cursor-pointer ${isLightPage
-              ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
-              : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
+            ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
+            : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
             }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
@@ -847,8 +984,8 @@ export default function Example() {
         <button
           onClick={() => handleSelectComponent(nextComponent.id)}
           className={`p-5 rounded-2xl border text-right transition-all group sm:col-start-2 cursor-pointer ${isLightPage
-              ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
-              : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
+            ? "bg-white border-gray-200 hover:border-gray-300 shadow-sm"
+            : "bg-[#121216] border-white/10 hover:border-white/20 shadow-lg"
             }`}
         >
           <div className="text-[11px] font-mono text-gray-400 group-hover:text-[#FF5B04] transition-colors">
@@ -866,15 +1003,15 @@ export default function Example() {
     <PageWrapper showFloatingButton={false}>
       <div
         className={`h-screen w-screen overflow-hidden flex flex-col font-sans transition-colors duration-300 ${isLightPage
-            ? "bg-[#F8F9FA] text-gray-900 selection:bg-[#FF5B04] selection:text-white"
-            : "bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white"
+          ? "bg-[#F8F9FA] text-gray-900 selection:bg-[#FF5B04] selection:text-white"
+          : "bg-[#0A0A0C] text-gray-100 selection:bg-[#FF5B04] selection:text-white"
           }`}
       >
         {/* ── Fixed Documentation Top Bar ────────────────────────── */}
         <header
           className={`h-14 shrink-0 border-b px-4 sm:px-6 flex items-center justify-between gap-4 z-30 transition-colors duration-300 ${isLightPage
-              ? "bg-white/95 border-gray-200 shadow-sm"
-              : "bg-[#0D0D11]/95 border-white/8 backdrop-blur-xl"
+            ? "bg-white/95 border-gray-200 shadow-sm"
+            : "bg-[#0D0D11]/95 border-white/8 backdrop-blur-xl"
             }`}
         >
           {/* Left Brand + Back to Library + Mobile Drawer Toggle */}
@@ -882,8 +1019,8 @@ export default function Example() {
             <button
               onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
               className={`lg:hidden p-1.5 rounded-lg border transition-colors ${isLightPage
-                  ? "bg-gray-100 border-gray-200 text-gray-700 hover:text-gray-900"
-                  : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
+                ? "bg-gray-100 border-gray-200 text-gray-700 hover:text-gray-900"
+                : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
                 }`}
               aria-label="Toggle Navigation"
             >
@@ -893,8 +1030,8 @@ export default function Example() {
             <Link
               href="/componentlab"
               className={`flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-xl border transition-all ${isLightPage
-                  ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
-                  : "bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border-white/10"
+                ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200"
+                : "bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border-white/10"
                 }`}
               title="Return to Component Library"
             >
@@ -928,8 +1065,8 @@ export default function Example() {
             <button
               onClick={() => setPageTheme(pageTheme === "dark" ? "light" : "dark")}
               className={`p-1.5 rounded-xl border transition-all cursor-pointer ${isLightPage
-                  ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-800"
-                  : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-200 hover:text-white"
+                ? "bg-gray-100 hover:bg-gray-200 border-gray-200 text-gray-800"
+                : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-200 hover:text-white"
                 }`}
               title="Toggle page light / dark mode"
               aria-label="Toggle page theme"
@@ -945,8 +1082,8 @@ export default function Example() {
           <aside
             data-lenis-prevent="true"
             className={`w-72 shrink-0 border-r flex flex-col transition-all duration-300 z-40 ${isLightPage
-                ? "bg-white/80 border-gray-200 backdrop-blur-xl"
-                : "bg-[#0D0D11]/90 border-white/8 backdrop-blur-xl"
+              ? "bg-white/80 border-gray-200 backdrop-blur-xl"
+              : "bg-[#0D0D11]/90 border-white/8 backdrop-blur-xl"
               } ${mobileSidebarOpen
                 ? "fixed inset-y-14 left-0 w-72 shadow-2xl z-50 bg-inherit"
                 : "hidden lg:flex"
@@ -962,8 +1099,8 @@ export default function Example() {
                   value={sidebarSearch}
                   onChange={(e) => setSidebarSearch(e.target.value)}
                   className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs font-mono transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
-                      ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
-                      : "bg-white/5 border border-white/10 text-white placeholder-gray-500"
+                    ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                    : "bg-white/5 border border-white/10 text-white placeholder-gray-500"
                     }`}
                 />
               </div>
@@ -988,22 +1125,22 @@ export default function Example() {
                             key={item.id}
                             onClick={() => handleSelectComponent(item.id)}
                             className={`w-full text-left px-3 py-2 rounded-xl text-xs transition-all flex items-center justify-between group cursor-pointer ${isSelected
-                                ? isLightPage
-                                  ? "bg-orange-50 border border-orange-200 text-[#FF5B04] font-bold shadow-sm"
-                                  : "bg-[#FF5B04]/15 border border-[#FF5B04]/30 text-[#FF5B04] font-bold shadow-sm"
-                                : isLightPage
-                                  ? "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                  : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
+                              ? isLightPage
+                                ? "bg-orange-50 border border-orange-200 text-[#FF5B04] font-bold shadow-sm"
+                                : "bg-[#FF5B04]/15 border border-[#FF5B04]/30 text-[#FF5B04] font-bold shadow-sm"
+                              : isLightPage
+                                ? "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                : "text-gray-400 hover:bg-white/5 hover:text-gray-200"
                               }`}
                           >
                             <span className="truncate">{item.name}</span>
                             {item.badge && (
                               <span
                                 className={`text-[10px] font-mono px-1.5 py-0.5 rounded border shrink-0 ${isSelected
-                                    ? "bg-[#FF5B04]/20 border-[#FF5B04]/40 text-[#FF5B04]"
-                                    : isLightPage
-                                      ? "bg-white text-gray-500 border-gray-200"
-                                      : "bg-white/5 text-gray-400 border-white/5"
+                                  ? "bg-[#FF5B04]/20 border-[#FF5B04]/40 text-[#FF5B04]"
+                                  : isLightPage
+                                    ? "bg-white text-gray-500 border-gray-200"
+                                    : "bg-white/5 text-gray-400 border-white/5"
                                   }`}
                               >
                                 {item.badge}
@@ -1021,8 +1158,8 @@ export default function Example() {
             {/* Sidebar Bottom Status */}
             <div
               className={`p-3.5 border-t text-[11px] flex items-center justify-between ${isLightPage
-                  ? "bg-white/60 border-gray-200 text-gray-500"
-                  : "bg-black/30 border-white/8 text-gray-400"
+                ? "bg-white/60 border-gray-200 text-gray-500"
+                : "bg-black/30 border-white/8 text-gray-400"
                 }`}
             >
               <span>Tailwind + Framer</span>
@@ -1131,10 +1268,47 @@ export default function Example() {
                     <button
                       onClick={() => {
                         setCustomLabel(selectedComponent.defaultLabel || "Button");
+                        setCustomHoverText(selectedComponent.defaultHoverText || "See More →");
                         setCustomSize("md");
                         setCustomTheme(selectedComponent.defaultTheme || "default");
-                        setCustomIcon((selectedComponent.defaultIcon as FrostedGelIcon) || "cloud-download");
+                        setCustomDotColor(selectedComponent.defaultDotColor || "#54EAD8");
+                        setCustomIcon(
+                          (selectedComponent.defaultIcon as string) ||
+                          (selectedComponent.id === "elevated-underglow-cta" ? "phone" : "cloud-download")
+                        );
+                        setCustomCapsuleIcon("apex");
+                        setCustomLiftAmount(
+                          selectedComponent.defaultLiftAmount !== undefined
+                            ? selectedComponent.defaultLiftAmount
+                            : 13
+                        );
+                        setCustomInteractionMode(
+                          (selectedComponent.defaultInteractionMode as LedMatrixInteractionMode) || "hover"
+                        );
+                        setCustomActiveLabel(selectedComponent.defaultActiveLabel || "Lets Grow!");
+                        setCustomSlideInteractionMode(
+                          (selectedComponent.defaultSlideInteractionMode as SlideGrowInteractionMode) || "both"
+                        );
+                        setCustomStepSpeedMs(
+                          selectedComponent.defaultStepSpeedMs !== undefined
+                            ? selectedComponent.defaultStepSpeedMs
+                            : 110
+                        );
+                        setCustomShowOrnaments(
+                          selectedComponent.defaultShowOrnaments !== undefined
+                            ? selectedComponent.defaultShowOrnaments
+                            : true
+                        );
                         setCustomShowCables(selectedComponent.defaultShowCables !== undefined ? selectedComponent.defaultShowCables : true);
+                        setCustomThemeMode(
+                          (selectedComponent.defaultThemeMode as "auto" | "light" | "dark") || "auto"
+                        );
+                        setCustomDuration(
+                          selectedComponent.defaultDuration !== undefined ? selectedComponent.defaultDuration : 0.65
+                        );
+                        setCustomShowIcons(
+                          selectedComponent.defaultShowIcons !== undefined ? selectedComponent.defaultShowIcons : true
+                        );
                         setCustomIntensity((selectedComponent.defaultIntensity as IsometricGlowIntensity) || "vibrant");
                         setCustomStateMode("interactive");
                         setClickCount(0);
@@ -1160,8 +1334,46 @@ export default function Example() {
                           onChange={(e) => setCustomLabel(e.target.value)}
                           placeholder="Type custom text..."
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
-                              : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                            : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
+                            }`}
+                        />
+                      </div>
+                    )}
+
+                    {/* 1b. Hover Text Control */}
+                    {(selectedComponent.hasHoverTextControl || selectedComponent.id === "animated-slide-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Hover Text:
+                        </label>
+                        <input
+                          type="text"
+                          value={customHoverText}
+                          onChange={(e) => setCustomHoverText(e.target.value)}
+                          placeholder="See More →"
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                            : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
+                            }`}
+                        />
+                      </div>
+                    )}
+
+                    {/* 1c. Slid Active Label Control */}
+                    {(selectedComponent.hasActiveLabelControl || selectedComponent.id === "slide-grow-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Slid Active Label:
+                        </label>
+                        <input
+                          type="text"
+                          value={customActiveLabel}
+                          onChange={(e) => setCustomActiveLabel(e.target.value)}
+                          placeholder="Lets Grow!"
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900 placeholder-gray-400"
+                            : "bg-black/50 border border-white/10 text-white placeholder-gray-500"
                             }`}
                         />
                       </div>
@@ -1177,8 +1389,8 @@ export default function Example() {
                           value={customSize}
                           onChange={(e) => setCustomSize(e.target.value as "xs" | "sm" | "md" | "lg" | "xl")}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="xs" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1208,10 +1420,25 @@ export default function Example() {
                         </label>
                         <select
                           value={customTheme}
-                          onChange={(e) => setCustomTheme(e.target.value)}
+                          onChange={(e) => {
+                            const newTheme = e.target.value;
+                            setCustomTheme(newTheme);
+                            if (selectedComponent.id === "tactile-pill-button") {
+                              const tactileDotColorMap: Record<string, string> = {
+                                default: "#54EAD8",
+                                orange: "#FF5B04",
+                                dark: "#A78BFA",
+                                cyberpunk: "#10B981",
+                                minimal: "#3B82F6",
+                              };
+                              if (tactileDotColorMap[newTheme]) {
+                                setCustomDotColor(tactileDotColorMap[newTheme]);
+                              }
+                            }
+                          }}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           {selectedComponent.availableThemes.map((th) => (
@@ -1227,18 +1454,74 @@ export default function Example() {
                       </div>
                     )}
 
-                    {/* 3b. Icon Control Dropdown */}
-                    {selectedComponent.hasIconControl && selectedComponent.availableIcons && (
+                    {/* 3a. Beacon Dot Color Dropdown */}
+                    {(selectedComponent.hasDotColorControl || selectedComponent.id === "tactile-pill-button") && (
                       <div className="space-y-1.5">
                         <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
-                          Tile Icon:
+                          Beacon Dot Color:
+                        </label>
+                        <select
+                          value={customDotColor}
+                          onChange={(e) => setCustomDotColor(e.target.value)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="#54EAD8" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Figma Cyan
+                          </option>
+                          <option value="#FF5B04" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Magma Orange
+                          </option>
+                          <option value="#A78BFA" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Obsidian Violet
+                          </option>
+                          <option value="#10B981" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Matrix Emerald
+                          </option>
+                          <option value="#3B82F6" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Electric Blue
+                          </option>
+                          <option value="#EC4899" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Neon Pink
+                          </option>
+                          <option value="#F59E0B" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Amber Gold
+                          </option>
+                          <option value="#EF4444" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Crimson Red
+                          </option>
+                          {![
+                            "#54EAD8",
+                            "#FF5B04",
+                            "#A78BFA",
+                            "#10B981",
+                            "#3B82F6",
+                            "#EC4899",
+                            "#F59E0B",
+                            "#EF4444",
+                          ].includes(customDotColor) && customDotColor && (
+                              <option value={customDotColor} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                                Custom ({customDotColor})
+                              </option>
+                            )}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3b. Icon Control Dropdown */}
+                    {selectedComponent.hasIconControl && selectedComponent.id !== "scaling-capsule-button" && selectedComponent.availableIcons && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          {selectedComponent.id === "elevated-underglow-cta" ? "Button Icon:" : "Tile Icon:"}
                         </label>
                         <select
                           value={customIcon}
-                          onChange={(e) => setCustomIcon(e.target.value as FrostedGelIcon)}
+                          onChange={(e) => setCustomIcon(e.target.value)}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           {selectedComponent.availableIcons.map((ic) => (
@@ -1264,8 +1547,8 @@ export default function Example() {
                           value={customShowCables ? "true" : "false"}
                           onChange={(e) => setCustomShowCables(e.target.value === "true")}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1288,8 +1571,8 @@ export default function Example() {
                           value={customIntensity}
                           onChange={(e) => setCustomIntensity(e.target.value as IsometricGlowIntensity)}
                           className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                              ? "bg-gray-100 border border-gray-200 text-gray-900"
-                              : "bg-black/50 border border-white/10 text-white"
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
                             }`}
                         >
                           <option value="subtle" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1300,6 +1583,282 @@ export default function Example() {
                           </option>
                           <option value="hyper" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             Hyper (Max Radiation)
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3e. Lift Elevation Dropdown */}
+                    {(selectedComponent.hasLiftControl || selectedComponent.id === "elevated-underglow-cta") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Lift Elevation:
+                        </label>
+                        <select
+                          value={customLiftAmount}
+                          onChange={(e) => setCustomLiftAmount(Number(e.target.value))}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value={0} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Flat (0px)
+                          </option>
+                          <option value={6} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Subtle (6px)
+                          </option>
+                          <option value={10} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Medium (10px)
+                          </option>
+                          <option value={13} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Default (13px - Figma)
+                          </option>
+                          <option value={18} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            High (18px)
+                          </option>
+                          <option value={24} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Floating (24px)
+                          </option>
+                          {![0, 6, 10, 13, 18, 24].includes(customLiftAmount) && (
+                            <option value={customLiftAmount} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Custom ({customLiftAmount}px)
+                            </option>
+                          )}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3f. Interaction Trigger Dropdown */}
+                    {(selectedComponent.hasInteractionModeControl || selectedComponent.id === "led-matrix-chevron") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Interaction Trigger:
+                        </label>
+                        <select
+                          value={customInteractionMode}
+                          onChange={(e) => setCustomInteractionMode(e.target.value as LedMatrixInteractionMode)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hover (Expand on Hover)
+                          </option>
+                          <option value="click" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Click (Expand on Click)
+                          </option>
+                          <option value="both" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Both (Hover &amp; Click)
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3g. LED Shift Speed Dropdown */}
+                    {(selectedComponent.hasStepSpeedControl || selectedComponent.id === "led-matrix-chevron") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          LED Shift Speed:
+                        </label>
+                        <select
+                          value={customStepSpeedMs}
+                          onChange={(e) => setCustomStepSpeedMs(Number(e.target.value))}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value={60} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Turbo (60ms)
+                          </option>
+                          <option value={80} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Fast (80ms)
+                          </option>
+                          <option value={110} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Standard (110ms - Figma)
+                          </option>
+                          <option value={160} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Relaxed (160ms)
+                          </option>
+                          <option value={220} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Slow Wave (220ms)
+                          </option>
+                          {![60, 80, 110, 160, 220].includes(customStepSpeedMs) && (
+                            <option value={customStepSpeedMs} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Custom ({customStepSpeedMs}ms)
+                            </option>
+                          )}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3h. Filigree Corner Ornaments Dropdown */}
+                    {(selectedComponent.hasOrnamentsControl || selectedComponent.id === "vintage-leather-cta") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Filigree Ornaments:
+                        </label>
+                        <select
+                          value={customShowOrnaments ? "true" : "false"}
+                          onChange={(e) => setCustomShowOrnaments(e.target.value === "true")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Visible (Show Scrollwork)
+                          </option>
+                          <option value="false" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hidden (Clean Leather)
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3i. Capsule Icon Dropdown */}
+                    {(selectedComponent.hasIconControl && selectedComponent.id === "scaling-capsule-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Capsule Icon:
+                        </label>
+                        <select
+                          value={customCapsuleIcon}
+                          onChange={(e) => setCustomCapsuleIcon(e.target.value)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          {selectedComponent.availableIcons?.map((ic) => (
+                            <option
+                              key={ic.value}
+                              value={ic.value}
+                              className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}
+                            >
+                              {ic.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3j. Slide Trigger Mode Dropdown */}
+                    {(selectedComponent.hasSlideInteractionModeControl || selectedComponent.id === "slide-grow-button") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Slide Trigger Mode:
+                        </label>
+                        <select
+                          value={customSlideInteractionMode}
+                          onChange={(e) => setCustomSlideInteractionMode(e.target.value as SlideGrowInteractionMode)}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="both" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Both (Swipe &amp; Click)
+                          </option>
+                          <option value="drag" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Drag Only (Swipe Gesture)
+                          </option>
+                          <option value="click" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Click Only (Tap to Slide)
+                          </option>
+                          <option value="hover" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hover (Auto-Slide on Hover)
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3k. Theme Mode Dropdown */}
+                    {(selectedComponent.hasThemeModeControl || selectedComponent.id === "arc-corner-toggle") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Theme Mode:
+                        </label>
+                        <select
+                          value={customThemeMode}
+                          onChange={(e) => setCustomThemeMode(e.target.value as "auto" | "light" | "dark")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="auto" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Auto (State-Driven)
+                          </option>
+                          <option value="light" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Force Light Mode
+                          </option>
+                          <option value="dark" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Force Dark Mode
+                          </option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3l. Animation Duration Dropdown */}
+                    {(selectedComponent.hasDurationControl || selectedComponent.id === "arc-corner-toggle") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Animation Duration:
+                        </label>
+                        <select
+                          value={customDuration}
+                          onChange={(e) => setCustomDuration(Number(e.target.value))}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value={0.35} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Fast Snap (0.35s)
+                          </option>
+                          <option value={0.5} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Smooth (0.50s)
+                          </option>
+                          <option value={0.65} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Default (0.65s)
+                          </option>
+                          <option value={0.9} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Slow Motion (0.90s)
+                          </option>
+                          <option value={1.2} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Cinematic (1.20s)
+                          </option>
+                          {![0.35, 0.5, 0.65, 0.9, 1.2].includes(customDuration) && (
+                            <option value={customDuration} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                              Custom ({customDuration}s)
+                            </option>
+                          )}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* 3m. Show Track Icons Dropdown */}
+                    {(selectedComponent.hasShowIconsControl || selectedComponent.id === "tactile-neumorphic-toggle") && (
+                      <div className="space-y-1.5">
+                        <label className={`block font-bold ${isLightPage ? "text-gray-700" : "text-gray-300"}`}>
+                          Track Icons:
+                        </label>
+                        <select
+                          value={customShowIcons ? "true" : "false"}
+                          onChange={(e) => setCustomShowIcons(e.target.value === "true")}
+                          className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
+                            ? "bg-gray-100 border border-gray-200 text-gray-900"
+                            : "bg-black/50 border border-white/10 text-white"
+                            }`}
+                        >
+                          <option value="true" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Visible (Show Glyphs)
+                          </option>
+                          <option value="false" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
+                            Hidden (Clean Track)
                           </option>
                         </select>
                       </div>
@@ -1332,8 +1891,8 @@ export default function Example() {
                             value={customStateMode}
                             onChange={(e) => setCustomStateMode(e.target.value as "interactive" | "standerd" | "hover")}
                             className={`w-full px-3.5 py-2 rounded-xl text-xs transition-colors focus:outline-none focus:border-[#FF5B04] font-mono cursor-pointer ${isLightPage
-                                ? "bg-gray-100 border border-gray-200 text-gray-900"
-                                : "bg-black/50 border border-white/10 text-white"
+                              ? "bg-gray-100 border border-gray-200 text-gray-900"
+                              : "bg-black/50 border border-white/10 text-white"
                               }`}
                           >
                             <option value="interactive" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
@@ -1384,8 +1943,8 @@ export default function Example() {
                         <div
                           key={variant.title}
                           className={`rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] transition-all border ${isLightPage
-                              ? "bg-[#F8F9FA] border-gray-200 hover:border-gray-300"
-                              : "bg-[#0E0E12] border-white/5 hover:border-white/15"
+                            ? "bg-[#F8F9FA] border-gray-200 hover:border-gray-300"
+                            : "bg-[#0E0E12] border-white/5 hover:border-white/15"
                             }`}
                         >
                           <div className="w-full flex items-center justify-between text-xs font-mono mb-2">
@@ -1395,7 +1954,12 @@ export default function Example() {
                             <span
                               className={`px-2 py-0.5 rounded text-[10px] font-mono shrink-0 ${isLightPage ? "bg-gray-200 text-gray-800 font-bold" : "bg-white/10 text-gray-300"
                                 }`}
-                              style={{ color: variant.badgeColor }}
+                              style={{
+                                color:
+                                  !isLightPage && (!variant.badgeColor || variant.badgeColor === "#1E293B" || variant.badgeColor === "#0E0E12" || variant.badgeColor === "#000000")
+                                    ? "#94A3B8"
+                                    : variant.badgeColor,
+                              }}
                             >
                               {variant.themeProp}
                             </span>
@@ -1465,8 +2029,8 @@ export default function Example() {
                         <button
                           onClick={() => setActiveCodeTab("component")}
                           className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "component"
-                              ? "bg-[#FF5B04] text-white font-bold shadow"
-                              : "text-gray-400 hover:text-white"
+                            ? "bg-[#FF5B04] text-white font-bold shadow"
+                            : "text-gray-400 hover:text-white"
                             }`}
                         >
                           Component.tsx
@@ -1475,8 +2039,8 @@ export default function Example() {
                       <button
                         onClick={() => setActiveCodeTab("jsx")}
                         className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "jsx"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
+                          ? "bg-[#FF5B04] text-white font-bold shadow"
+                          : "text-gray-400 hover:text-white"
                           }`}
                       >
                         Usage.tsx
@@ -1484,8 +2048,8 @@ export default function Example() {
                       <button
                         onClick={() => setActiveCodeTab("html")}
                         className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "html"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
+                          ? "bg-[#FF5B04] text-white font-bold shadow"
+                          : "text-gray-400 hover:text-white"
                           }`}
                       >
                         HTML
@@ -1493,8 +2057,8 @@ export default function Example() {
                       <button
                         onClick={() => setActiveCodeTab("css")}
                         className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "css"
-                            ? "bg-[#FF5B04] text-white font-bold shadow"
-                            : "text-gray-400 hover:text-white"
+                          ? "bg-[#FF5B04] text-white font-bold shadow"
+                          : "text-gray-400 hover:text-white"
                           }`}
                       >
                         Tokens.css
@@ -1503,8 +2067,8 @@ export default function Example() {
                         <button
                           onClick={() => setActiveCodeTab("physics")}
                           className={`px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${effectiveCodeTab === "physics"
-                              ? "bg-[#FF5B04] text-white font-bold shadow"
-                              : "text-gray-400 hover:text-white"
+                            ? "bg-[#FF5B04] text-white font-bold shadow"
+                            : "text-gray-400 hover:text-white"
                             }`}
                         >
                           Physics.ts
