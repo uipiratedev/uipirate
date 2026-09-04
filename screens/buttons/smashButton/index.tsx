@@ -15,7 +15,7 @@ export const SMASH_BUTTON_COMPONENT_SOURCE = `"use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-export type SmashButtonVariant = "figma" | "dark" | "orange" | "cyberpunk";
+export type SmashButtonVariant = "default" | "dark" | "orange" | "cyberpunk";
 
 export interface SmashTactileButtonProps {
   label?: string;
@@ -28,7 +28,7 @@ export interface SmashTactileButtonProps {
 
 export function SmashTactileButton({
   label = "Smash the button",
-  variant = "figma",
+  variant = "default",
   size = "md",
   onClick,
   className = "",
@@ -71,7 +71,7 @@ export default SmashTactileButton;`;
 
 export default function SmashTactileButtonScreen() {
   const [label, setLabel] = useState("Smash the button");
-  const [variant, setVariant] = useState<SmashButtonVariant>("figma");
+  const [variant, setVariant] = useState<SmashButtonVariant>("default");
   const [size, setSize] = useState<"xs" | "sm" | "md" | "lg" | "xl" | "hero">("md");
   const [stateMode, setStateMode] = useState<SmashTactileButtonState>("interactive");
   const [smashCount, setSmashCount] = useState(0);
@@ -182,7 +182,7 @@ export default function Example() {
                 onChange={(e) => setVariant(e.target.value as SmashButtonVariant)}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="figma" className="bg-[#151518]">Figma Master (1:1)</option>
+                <option value="default" className="bg-[#151518]">Default (1:1)</option>
                 <option value="dark" className="bg-[#151518]">Dark Cyan</option>
                 <option value="orange" className="bg-[#151518]">UI Pirate Orange</option>
                 <option value="cyberpunk" className="bg-[#151518]">Cyberpunk Pink</option>
@@ -238,20 +238,20 @@ export default function Example() {
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Figma Master Neo-Brutalist */}
+              {/* Default Neo-Brutalist */}
               <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Figma Neo-Brutalist</span>
-                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-300">variant=&quot;figma&quot;</span>
+                  <span className="text-white font-semibold">Default Neo-Brutalist</span>
+                  <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-purple-300">variant=&quot;default&quot;</span>
                 </div>
                 <div className="my-3 scale-[0.68]">
                   <SmashTactileButton
-                    variant="figma"
+                    variant="default"
                     label="Smash the button"
                     size="sm"
                   />
                 </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with porcelain enclosure tray &amp; dot matrix</span>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with porcelain enclosure tray &amp; dot matrix</span>
               </div>
 
               {/* UI Pirate Magma */}
@@ -419,7 +419,7 @@ export default function Example() {
                   <tr>
                     <td className="py-3 px-6 text-purple-400 font-semibold">variant</td>
                     <td className="py-3 px-6 text-blue-300">SmashButtonVariant</td>
-                    <td className="py-3 px-6 text-gray-400">&quot;figma&quot;</td>
+                    <td className="py-3 px-6 text-gray-400">&quot;default&quot;</td>
                     <td className="py-3 px-6 font-sans text-gray-300">Color scheme theme preset</td>
                   </tr>
                   <tr>

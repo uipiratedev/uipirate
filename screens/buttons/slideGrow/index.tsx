@@ -239,7 +239,7 @@ export default function Example() {
                 onChange={(e) => setTheme(e.target.value as SlideGrowTheme)}
                 className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-3 py-2 text-white font-mono"
               >
-                <option value="silver" className="bg-neutral-900">Brushed Silver (Figma 1:1)</option>
+                <option value="silver" className="bg-neutral-900">Brushed Silver (1:1 spec)</option>
                 <option value="uipirate" className="bg-neutral-900">UI Pirate Orange</option>
                 <option value="dark" className="bg-neutral-900">Obsidian Slate</option>
                 <option value="cyberpunk" className="bg-neutral-900">Cyberpunk Violet</option>
@@ -295,10 +295,10 @@ export default function Example() {
 
           <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Figma Metallic Silver */}
+              {/* Brushed Silver */}
               <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                 <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                  <span className="text-white font-semibold">Figma Silver</span>
+                  <span className="text-white font-semibold">Brushed Silver</span>
                   <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-blue-400">theme=&quot;silver&quot;</span>
                 </div>
                 <div className="my-3 scale-90">
@@ -309,7 +309,7 @@ export default function Example() {
                     size="sm"
                   />
                 </div>
-                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma Master design with blue illuminated channel</span>
+                <span className="text-[11px] font-mono text-gray-500 text-center">1:1 reference design with blue illuminated channel</span>
               </div>
 
               {/* UI Pirate Orange */}

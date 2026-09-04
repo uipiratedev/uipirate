@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-export type SmashButtonVariant = "figma" | "dark" | "orange" | "cyberpunk";
+export type SmashButtonVariant = "default" | "dark" | "orange" | "cyberpunk";
 export type SmashTactileButtonState = "interactive" | "standerd" | "hover";
 
 export interface SmashTactileButtonProps {
   /** Text label inside the button (default: "Smash the button") */
   label?: string;
-  /** Visual variant (default: "figma" matching Figma Node 17:1480) */
+  /** Visual variant (default: "default" matching Spec Node 17:1480) */
   variant?: SmashButtonVariant;
   /** Size scale (default: "md") */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "hero";
@@ -24,7 +24,7 @@ export interface SmashTactileButtonProps {
 }
 
 /**
- * 21-Dot Double Matrix Array matching Figma Node 17:1529 & 17:1572
+ * 21-Dot Double Matrix Array matching Spec Node 17:1529 & 17:1572
  */
 const DotMatrixRow: React.FC<{ count?: number; color?: string }> = ({
   count = 21,
@@ -53,28 +53,28 @@ const DotMatrixRow: React.FC<{ count?: number; color?: string }> = ({
 );
 
 /**
- * Dynamic mathematical continuous path from Figma Node 17:1702 normalized to 0 0 w 148
+ * Dynamic mathematical continuous path from Spec Node 17:1702 normalized to 0 0 w 148
  */
-const getFigmaCorePath = (w: number) =>
+const getSpecCorePath = (w: number) =>
   `M 0 15 C 0 6.71573 6.71573 0 15 0 H ${w - 15} C ${w - 6.716} 0 ${w} 6.71573 ${w} 15 V 133 C ${w} 141.284 ${w - 6.716} 148 ${w - 15} 148 H 53.2132 C 49.235 148 45.4196 146.42 42.6066 143.607 L 4.3934 105.393 C 1.5804 102.58 0 98.765 0 94.7868 V 15 Z`;
 
-const getFigmaStrokePath = (w: number) =>
+const getSpecStrokePath = (w: number) =>
   `M 15 1 H ${w - 15} C ${w - 7.268} 1 ${w - 1} 7.26801 ${w - 1} 15 V 133 C ${w - 1} 140.732 ${w - 7.268} 147 ${w - 15} 147 H 53.2129 C 49.5 147 45.9389 145.525 43.3135 142.899 L 5.1006 104.687 C 2.4751 102.061 1 98.5 1 94.7871 V 15 C 1 7.26801 7.268 1 15 1 Z`;
 
 /**
  * SmashTactileButton
  *
- * 1:1 Pixel-Accurate 5-Tier Layer Architecture from Figma Master Button Collection (Node 17:1480):
+ * 1:1 Pixel-Accurate 5-Tier Layer Architecture from Master Button Collection (Node 17:1480):
  * - LAYER 1: Background Canvas (diagonal pinstripes)
  * - LAYER 2: Crystal Glass Deck (Frame 280, node 17:1481) - 100% transparent glass enclosure with #F3F3FE laser ticks & dots
  * - LAYER 3: Porcelain Cushion Tray (Frame 11, node 17:1527) - Lavender-white plate (#F3F3FE) with dot matrix arrays
  * - LAYER 3.5: Intermediate Cushion Cradle Plate (node 17:1701) - Lavender-blue plate (#D9DCF1) containing Layer 4 with perfectly EVEN padding
  * - LAYER 4: Exact Dark Tactile Core Cap (Node 17:1702/17:1703) with realistic soft Gaussian tactile shadow & glowing chamfer
- * - LIGHT FLARE (Node 17:1704) - Exact 45° rotated purplish (#D7B0FF) radial elliptical spotlight SVG from Figma
+ * - LIGHT FLARE (Node 17:1704) - Exact 45° rotated purplish (#D7B0FF) radial elliptical spotlight SVG from spec
  */
 export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   label = "Smash the button",
-  variant = "figma",
+  variant = "default",
   size = "md",
   stateMode = "interactive",
   onClick,
@@ -202,12 +202,12 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   const extraDots = Math.floor(extraW / 24) * 2;
   const computedDotsCount = sizeConfig.dotsCount + extraDots;
 
-  const corePath = getFigmaCorePath(viewBoxW);
-  const strokePath = getFigmaStrokePath(viewBoxW);
+  const corePath = getSpecCorePath(viewBoxW);
+  const strokePath = getSpecStrokePath(viewBoxW);
 
-  // Theme palettes matching Figma Node 17:1480 & variants
+  // Theme palettes matching Spec Node 17:1480 & variants
   const themeStylesMap = {
-    figma: {
+    default: {
       deckBorder: "rgba(255, 255, 255, 0.85)",
       glassAccentColor: "#F3F3FE", // Glass deck ticks and dots matching #F3F3FE
       trayDotsColor: "#CEC9F1",
@@ -276,7 +276,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
   const themeStyles =
     (variant && themeStylesMap[variant]) ||
     ((variant as string) === "cyber" ? themeStylesMap.cyberpunk : null) ||
-    themeStylesMap.figma;
+    themeStylesMap.default;
 
   const W = computedCoreW;
   const H = sizeConfig.coreH;
@@ -403,7 +403,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
             }}
           >
             {/* ─────────────────────────────────────────────────────────────
-                EXACT FIGMA GLOW FLARE (Node 17:1704)
+                EXACT SPEC GLOW FLARE (Node 17:1704)
                 Purplish (#D7B0FF) 45° Rotated Elliptical Spotlight with Gaussian Blur
                ───────────────────────────────────────────────────────────── */}
             <motion.div
@@ -472,7 +472,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
             </motion.div>
 
             {/* ─────────────────────────────────────────────────────────────
-                LAYER 4: EXACT FIGMA CORE BUTTON CAP (Node 17:1702/17:1703)
+                LAYER 4: EXACT SPEC CORE BUTTON CAP (Node 17:1702/17:1703)
                 Clean continuous path with natural multi-tier tactile drop shadow
                ───────────────────────────────────────────────────────────── */}
             <motion.button
@@ -514,13 +514,13 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                 className="absolute inset-0 size-full pointer-events-none"
               >
                 <defs>
-                  {/* Ultra-Fine Stippled Noise Filter matching Figma pattern0_17_1702 */}
+                  {/* Ultra-Fine Stippled Noise Filter matching spec pattern0_17_1702 */}
                   <filter id={`stippleNoise-${variant}`} x="0" y="0" width="100%" height="100%">
                     <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
                     <feColorMatrix type="matrix" values="1 0 0 0 1   0 1 0 0 1   0 0 1 0 1  0 0 0 0.08 0" />
                   </filter>
 
-                  {/* Exact Figma 17:1702 Radial Gradient */}
+                  {/* Exact spec 17:1702 Radial Gradient */}
                   <radialGradient
                     id={`paint0_radial_17_1702_${variant}`}
                     cx="0"
@@ -533,7 +533,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                     <stop offset="1" stopColor={themeStyles.gradEnd} />
                   </radialGradient>
 
-                  {/* Exact Figma 17:1702 Chamfer Stroke Glow Gradient */}
+                  {/* Exact spec 17:1702 Chamfer Stroke Glow Gradient */}
                   <radialGradient
                     id={`paint1_radial_17_1702_${variant}`}
                     cx="0"
@@ -548,7 +548,7 @@ export const SmashTactileButton: React.FC<SmashTactileButtonProps> = ({
                   </radialGradient>
                 </defs>
 
-                {/* 1. Main Dark Button Cap Body with Exact Figma Radial Gradient */}
+                {/* 1. Main Dark Button Cap Body with Exact spec Radial Gradient */}
                 <path d={corePath} fill={`url(#paint0_radial_17_1702_${variant})`} />
 
                 {/* 2. Fine Stippled Grain Texture Overlay */}

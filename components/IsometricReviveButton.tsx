@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type IsometricReviveTheme =
-  | "figma"
+  | "default"
   | "amber"
   | "cyan"
   | "emerald"
@@ -47,9 +47,9 @@ export const ISOMETRIC_REVIVE_THEMES: Record<
   IsometricReviveTheme,
   IsometricReviveThemeConfig
 > = {
-  figma: {
-    name: "Figma Master Obsidian (1:1)",
-    badge: "1:1 Figma",
+  default: {
+    name: "Default Obsidian (1:1)",
+    badge: "1:1 Spec",
     bodyBg: "#0D1015",
     bodyBorder: "rgba(255, 255, 255, 0.2)",
     textColor: "#FFFFFF",
@@ -210,7 +210,7 @@ export const ANGLE_TRANSFORMS: Record<
   "iso-left": {
     stageTransform: "",
     textFlip: "",
-    label: "30° Isometric Left (Figma 1:1)",
+    label: "30° Isometric Left (1:1)",
   },
   "iso-right": {
     stageTransform: "scaleX(-1)",
@@ -232,7 +232,7 @@ export const ANGLE_TRANSFORMS: Record<
 export interface IsometricReviveButtonProps {
   /** Text label displayed inside the button face (default: "Revive Now") */
   label?: string;
-  /** Visual state mode: 'interactive' (hover to depress & illuminate), 'standerd' (Figma 115:5957 fixed), 'hover' (Figma 115:6002 fixed) */
+  /** Visual state mode: 'interactive' (hover to depress & illuminate), 'standerd' (Spec 115:5957 fixed), 'hover' (Spec 115:6002 fixed) */
   stateMode?: IsometricReviveStateMode;
   /** Theme preset */
   theme?: IsometricReviveTheme;
@@ -242,7 +242,7 @@ export interface IsometricReviveButtonProps {
   intensity?: IsometricGlowIntensity;
   /** Scale sizing */
   size?: IsometricReviveSize;
-  /** Display isometric grid guidelines and metadata timestamp (as in Figma artboard) */
+  /** Display isometric grid guidelines and metadata timestamp (as in spec artboard) */
   showGrid?: boolean;
   /** Optional custom date/time timestamp string */
   timestampText?: string;
@@ -260,7 +260,7 @@ const ISO_TIMESTAMP_TRANSFORM = "rotate(-30deg) skewX(30deg) scaleY(0.866025)";
 export function IsometricReviveButton({
   label = "Revive Now",
   stateMode = "interactive",
-  theme = "figma",
+  theme = "default",
   angle = "iso-left",
   intensity = "vibrant",
   size = "md",
@@ -273,7 +273,7 @@ export function IsometricReviveButton({
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
-  const t = ISOMETRIC_REVIVE_THEMES[theme] || ISOMETRIC_REVIVE_THEMES.figma;
+  const t = ISOMETRIC_REVIVE_THEMES[theme] || ISOMETRIC_REVIVE_THEMES.default;
   const angleConfig = ANGLE_TRANSFORMS[angle] || ANGLE_TRANSFORMS["iso-left"];
   const isMirrored = angle === "iso-right";
 
@@ -300,7 +300,7 @@ export function IsometricReviveButton({
   };
   const activeIntensity = intensityMap[intensity] || intensityMap.vibrant;
 
-  // Exact vertical coordinates from Figma artboard (580x580):
+  // Exact vertical coordinates from spec artboard (580x580):
   // STANDERD (115:5957): top is 186px
   // HOVER (115:6002): top is 216px (+30px down)
   const standerdTop = 186;
@@ -335,7 +335,7 @@ export function IsometricReviveButton({
   const estimatedTextW = Math.ceil((label || "").length * 11.8);
   const effectiveTextW = Math.max(measuredTextW, estimatedTextW);
 
-  // Default text slot available inside 1:1 Figma 180px face (with chevron & margins)
+  // Default text slot available inside 1:1 spec 180px face (with chevron & margins)
   const defaultTextSlot = 120;
   const extraW = Math.max(0, effectiveTextW - defaultTextSlot);
 
@@ -375,7 +375,7 @@ export function IsometricReviveButton({
         }}
       >
         {/* ================================================================= */}
-        {/* 1. Background Technical Grid & Timestamp (Figma Node 115:5958)    */}
+        {/* 1. Background Technical Grid & Timestamp (Spec Node 115:5958)    */}
         {/* ================================================================= */}
         {showGrid && (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -416,7 +416,7 @@ export function IsometricReviveButton({
         )}
 
         {/* ================================================================= */}
-        {/* 2. Base Glass Surface Tray (Figma 115:5967 / 115:6012)            */}
+        {/* 2. Base Glass Surface Tray (Spec 115:5967 / 115:6012)            */}
         {/* ================================================================= */}
         <div
           className="absolute flex items-center justify-center pointer-events-none z-0"
@@ -462,7 +462,7 @@ export function IsometricReviveButton({
           </div>
         </div>
 
-        {/* Base Glass Rim Stroke (Figma 115:5978 / 115:6023) */}
+        {/* Base Glass Rim Stroke (Spec 115:5978 / 115:6023) */}
         <div
           className="absolute flex items-center justify-center pointer-events-none z-0"
           style={{
@@ -484,7 +484,7 @@ export function IsometricReviveButton({
         </div>
 
         {/* ================================================================= */}
-        {/* 3. Underglow Light Bed Layer (Figma Node 115:6026 - Z-INDEX 1)     */}
+        {/* 3. Underglow Light Bed Layer (Spec Node 115:6026 - Z-INDEX 1)     */}
         {/* Sits at left: 182px, top: 246.21px BEHIND the 3D button solid body */}
         {/* ================================================================= */}
         <motion.div
@@ -575,7 +575,7 @@ export function IsometricReviveButton({
               </defs>
             </svg>
 
-            {/* Left/Front 3D Extrusion Solid Bevel Wall (Figma 115:5995 / 115:6037) */}
+            {/* Left/Front 3D Extrusion Solid Bevel Wall (Spec 115:5995 / 115:6037) */}
             <div
               className="absolute pointer-events-none z-10"
               style={{
@@ -593,7 +593,7 @@ export function IsometricReviveButton({
               </svg>
             </div>
 
-            {/* Right 3D Extrusion Solid Bevel Wall & Front Corner (Figma 115:5998 / 115:6040) */}
+            {/* Right 3D Extrusion Solid Bevel Wall & Front Corner (Spec 115:5998 / 115:6040) */}
             <div
               className="absolute pointer-events-none z-10"
               style={{
@@ -611,7 +611,7 @@ export function IsometricReviveButton({
               </svg>
             </div>
 
-            {/* Button Base Face Cavity (Figma 115:5984 / 115:6030) */}
+            {/* Button Base Face Cavity (Spec 115:5984 / 115:6030) */}
             <div
               className="absolute flex items-center justify-center pointer-events-none z-10"
               style={{
@@ -642,7 +642,7 @@ export function IsometricReviveButton({
               </div>
             </div>
 
-            {/* Button Top Face Surface (Figma 115:5985 / 115:6031 - Z-INDEX 20) */}
+            {/* Button Top Face Surface (Spec 115:5985 / 115:6031 - Z-INDEX 20) */}
             <div
               className="absolute flex items-center justify-center pointer-events-none z-20"
               style={{
@@ -665,7 +665,7 @@ export function IsometricReviveButton({
                     style={{ backgroundColor: t.bodyBg }}
                   />
 
-                  {/* Text: Revive Now (Figma 115:5986 & 115:6032) */}
+                  {/* Text: Revive Now (Spec 115:5986 & 115:6032) */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none px-3">
                     <p
                       className="capitalize font-sans font-medium italic whitespace-nowrap text-center"
@@ -684,7 +684,7 @@ export function IsometricReviveButton({
                     </p>
                   </div>
 
-                  {/* Specular Diagonal Sheen (Figma 115:5987 / Vector 8) */}
+                  {/* Specular Diagonal Sheen (Spec 115:5987 / Vector 8) */}
                   <div
                     className={`absolute inset-0 pointer-events-none opacity-80 ${t.isLightMode
                       ? "bg-gradient-to-br from-white/80 via-white/20 to-transparent"
@@ -692,7 +692,7 @@ export function IsometricReviveButton({
                       }`}
                   />
 
-                  {/* Amber Chevron (Figma 115:5988 / 115:6034) */}
+                  {/* Amber Chevron (Spec 115:5988 / 115:6034) */}
                   <div
                     className="absolute top-[18.95px] pointer-events-none"
                     style={{

@@ -593,8 +593,8 @@ export default function Example() {
 
     switch (selectedComponent.id) {
       case "isometric-revive-button": {
-        const validIsoThemes = ["figma", "amber", "cyan", "emerald", "violet", "crimson", "uipirate", "pearl-light", "gold-luxury"];
-        const isoTheme = safeTheme(customTheme, validIsoThemes, "figma");
+        const validIsoThemes = ["default", "amber", "cyan", "emerald", "violet", "crimson", "uipirate", "pearl-light", "gold-luxury"];
+        const isoTheme = safeTheme(customTheme, validIsoThemes, "default");
         return (
           <div className="py-12 flex items-center justify-center">
             <IsometricReviveButton
@@ -632,8 +632,8 @@ export default function Example() {
         );
       }
       case "frosted-gel-download-button": {
-        const validGelThemes = ["figma-blue", "cyber-violet", "emerald-matrix", "magma-orange", "dark-obsidian", "titanium-gold"];
-        const gelTheme = safeTheme(customTheme, validGelThemes, "figma-blue");
+        const validGelThemes = ["default-blue", "cyber-violet", "emerald-matrix", "magma-orange", "dark-obsidian", "titanium-gold"];
+        const gelTheme = safeTheme(customTheme, validGelThemes, "default-blue");
         return (
           <div className="py-8 flex items-center justify-center">
             <FrostedGelDownloadButton
@@ -649,8 +649,8 @@ export default function Example() {
         );
       }
       case "elevated-underglow-cta": {
-        const validUnderglowThemes = ["figma", "uipirate", "emerald", "violet", "crimson", "dark"];
-        const underglowTheme = safeTheme(customTheme, validUnderglowThemes, "figma");
+        const validUnderglowThemes = ["default", "uipirate", "emerald", "violet", "crimson", "dark"];
+        const underglowTheme = safeTheme(customTheme, validUnderglowThemes, "default");
         return (
           <div className="py-8 flex items-center justify-center">
             <ElevatedUnderglowCTA
@@ -744,8 +744,8 @@ export default function Example() {
         );
       }
       case "smash-tactile-button": {
-        const validSmashVariants = ["figma", "dark", "orange", "cyberpunk"];
-        const smashVariant = safeTheme(customTheme, validSmashVariants, "figma");
+        const validSmashVariants = ["default", "dark", "orange", "cyberpunk"];
+        const smashVariant = safeTheme(customTheme, validSmashVariants, "default");
         return (
           <div className="py-8 flex items-center justify-center">
             <SmashTactileButton
@@ -1469,7 +1469,7 @@ export default function Example() {
                             }`}
                         >
                           <option value="#54EAD8" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Figma Cyan
+                            Default Cyan
                           </option>
                           <option value="#FF5B04" className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             Magma Orange
@@ -1612,7 +1612,7 @@ export default function Example() {
                             Medium (10px)
                           </option>
                           <option value={13} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Default (13px - Figma)
+                            Default (13px)
                           </option>
                           <option value={18} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             High (18px)
@@ -1677,7 +1677,7 @@ export default function Example() {
                             Fast (80ms)
                           </option>
                           <option value={110} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
-                            Standard (110ms - Figma)
+                            Standard (110ms)
                           </option>
                           <option value={160} className={isLightPage ? "bg-white text-gray-900" : "bg-[#151518] text-white"}>
                             Relaxed (160ms)

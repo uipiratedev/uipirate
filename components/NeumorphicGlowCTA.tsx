@@ -40,7 +40,7 @@ export const NEON_PRESETS: Record<
     innerShadow: "inset 2.6px 5.2px 6.5px 0px rgba(255, 91, 4, 0.4)",
   },
   emerald: {
-    name: "Neon Emerald (Figma)",
+    name: "Neon Emerald",
     badgeBg: "#CBF0CD",
     arrowColor: "#49C33E",
     glowColor: "rgba(90, 255, 75, 0.35)",
@@ -141,7 +141,7 @@ export interface NeumorphicGlowCTAProps {
 }
 
 /**
- * 1:1 Pixel-Accurate Implementation of Figma Nodes 14:642 & 14:669
+ * 1:1 Pixel-Accurate Implementation of Spec Nodes 14:642 & 14:669
  * Master Button Collection - Claymorphic / Neumorphic Glow CTA with full Themes, Neon Presets & Sizes
  */
 export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
@@ -372,7 +372,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
       }}
     >
       {/* ─────────────────────────────────────────────────────────────
-          PILL VARIANT (Figma Node 14:642 / 14:647)
+          PILL VARIANT (Spec Node 14:642 / 14:647)
          ───────────────────────────────────────────────────────────── */}
       {isPill ? (
         <div
@@ -454,7 +454,7 @@ export const NeumorphicGlowCTA: React.FC<NeumorphicGlowCTAProps> = ({
         </div>
       ) : (
         /* ─────────────────────────────────────────────────────────────
-            SQUIRCLE / CHAMFER VARIANT (Figma Node 14:669 / 14:671)
+            SQUIRCLE / CHAMFER VARIANT (Spec Node 14:669 / 14:671)
            ───────────────────────────────────────────────────────────── */
         <div
           className={`relative flex items-center justify-center ${sizeConfig.squircleGap} ${sizeConfig.squirclePadding} ${sizeConfig.squircleRadius} overflow-hidden`}

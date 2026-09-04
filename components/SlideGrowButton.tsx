@@ -13,7 +13,7 @@ export interface SlideGrowButtonProps {
   startLabel?: string;
   /** Active label text revealed when slid (default: "Lets Grow!") */
   activeLabel?: string;
-  /** Visual theme preset (default: "silver" from Figma) */
+  /** Visual theme preset (default: "silver" from spec) */
   theme?: SlideGrowTheme;
   /** Size scale: "sm" | "md" | "lg" */
   size?: SlideGrowSize;
@@ -32,7 +32,7 @@ export interface SlideGrowButtonProps {
 }
 
 /**
- * 1:1 Pixel-Accurate Implementation of Figma Nodes 17:1222 & 17:1240
+ * 1:1 Pixel-Accurate Implementation of Spec Nodes 17:1222 & 17:1240
  * Master Button Collection - Interactive Swipe to Grow / Slide to Unlock Slider Button
  */
 export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
@@ -51,7 +51,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Scaled dimensions matching exact Figma 247x76px chassis & 48px knob
+  // Scaled dimensions matching exact spec 247x76px chassis & 48px knob
   // 5-tier sizing (xs | sm | md | lg | xl): xs renders the sm layout at 0.8x, xl renders lg at 1.2x.
   const __baseSize = size === "xs" ? "sm" : size === "xl" ? "lg" : size;
   const __extraSizeScale = size === "xs" ? 0.8 : size === "xl" ? 1.2 : 1;
@@ -129,7 +129,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
   const estimatedTextW = Math.ceil(Math.max((startLabel || "").length, (activeLabel || "").length) * fontCharWidth);
   const effectiveTextW = Math.max(measuredTextW, estimatedTextW);
 
-  // Default available text slot inside standard Figma track
+  // Default available text slot inside standard Spec track
   // sm: 165 - 38 - 22 = 105; md: 204 - 48 - 28 = 128; lg: 248 - 58 - 34 = 156
   const defaultTextSlot = {
     sm: 105,
@@ -400,7 +400,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          METALLIC CHASSIS CAPSULE (Figma Nodes 17:1226 / 17:1227)
+          METALLIC CHASSIS CAPSULE (Spec Nodes 17:1226 / 17:1227)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
         onMouseEnter={handleHoverStart}
@@ -420,7 +420,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         }}
       >
         {/* ─────────────────────────────────────────────────────────────
-            RECESSED TRACK CAVITY (Figma Nodes 17:1229 / 17:1258)
+            RECESSED TRACK CAVITY (Spec Nodes 17:1229 / 17:1258)
            ───────────────────────────────────────────────────────────── */}
         <div
           ref={trackRef}
@@ -470,7 +470,7 @@ export const SlideGrowButton: React.FC<SlideGrowButtonProps> = ({
         </div>
 
         {/* ─────────────────────────────────────────────────────────────
-            GLOWING BLUE SLIDER KNOB (Figma Nodes 17:1235 / 17:1263)
+            GLOWING BLUE SLIDER KNOB (Spec Nodes 17:1235 / 17:1263)
            ───────────────────────────────────────────────────────────── */}
         <motion.div
           drag={canDrag ? "x" : false}

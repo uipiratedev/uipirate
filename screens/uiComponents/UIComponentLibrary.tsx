@@ -69,7 +69,7 @@ export const UI_COMPONENTS: UIComponentItem[] = [
       "Dual-pill neumorphic split button with elevated ceramic pill, frosted glass gel download tile, optical refraction rings, and volumetric blue underglow flare.",
     detailUrl: "/componentlab/frosted-gel-download-button",
     features: ["Elevated ceramic pill", "Frosted glass cloud tile", "Volumetric blue underglow", "Interactive hover lift"],
-    codeSnippet: `<FrostedGelDownloadButton\n  label="Download now"\n  theme="figma-blue"\n  size="md"\n/>`,
+    codeSnippet: `<FrostedGelDownloadButton\n  label="Download now"\n  theme="default-blue"\n  size="md"\n/>`,
   },
   {
     id: "isometric-revive-button",
@@ -82,7 +82,7 @@ export const UI_COMPONENTS: UIComponentItem[] = [
       "Authentic 30° isometric 3D extruded button featuring dynamic spring depression, obsidian bevel walls, amber indicator flare, and blinding optical neon underglow.",
     detailUrl: "/componentlab/isometric-revive-button",
     features: ["30° Isometric matrix", "Multi-layer 3D extrusion", "Optical neon underglow", "Dynamic spring physics"],
-    codeSnippet: `<IsometricReviveButton\n  label="Revive Now"\n  theme="figma"\n  size="sm"\n/>`,
+    codeSnippet: `<IsometricReviveButton\n  label="Revive Now"\n  theme="default"\n  size="sm"\n/>`,
   },
   {
     id: "elevated-underglow-cta",
@@ -95,7 +95,7 @@ export const UI_COMPONENTS: UIComponentItem[] = [
       "Interactive 3D tactile pill button that elevates 13px on hover to reveal a glowing electric blue extruded sub-chassis, bottom reflection rim, and realistic clay elevation physics.",
     detailUrl: "/componentlab/elevated-underglow-cta",
     features: ["13px Spring lift", "Electric blue 3D underlayer", "Interactive states", "Phone call icon"],
-    codeSnippet: `<ElevatedUnderglowCTA\n  label="Book A Call"\n  icon="phone"\n  theme="figma"\n  size="md"\n/>`,
+    codeSnippet: `<ElevatedUnderglowCTA\n  label="Book A Call"\n  icon="phone"\n  theme="default"\n  size="md"\n/>`,
   },
   {
     id: "tactile-neumorphic-switch",
@@ -118,9 +118,9 @@ export const UI_COMPONENTS: UIComponentItem[] = [
     badge: "Liquid Glass",
     badgeVariant: "cyan",
     description:
-      "High-gloss skeuomorphic gel glass CTA button directly from Figma node 2:2. Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
+      "High-gloss skeuomorphic gel glass CTA button directly from spec node 2:2. Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
     detailUrl: "/componentlab/glossy-gel-button",
-    features: ["1:1 Figma fidelity", "4-layer optical drop & inner shadow", "Curved blurred top specular capsule", "Interactive spring depression"],
+    features: ["1:1 spec fidelity", "4-layer optical drop & inner shadow", "Curved blurred top specular capsule", "Interactive spring depression"],
     codeSnippet: `<GlossyGelButton\n  theme="emerald-gel"\n  size="md"\n>\n  Get Started\n</GlossyGelButton>`,
   },
   {
@@ -212,7 +212,7 @@ export const UI_COMPONENTS: UIComponentItem[] = [
       "Neo-brutalist tech button with outer enclosure frame, cushion cooling tray, obsidian core slab, and glowing neon reactor underglow.",
     detailUrl: "/componentlab/smash-tactile-button",
     features: ["Tech enclosure frame", "Cushion cooling tray", "Obsidian core slab", "Reactor underglow"],
-    codeSnippet: `<SmashTactileButton\n  label="Smash the button"\n  variant="figma"\n  size="md"\n/>`,
+    codeSnippet: `<SmashTactileButton\n  label="Smash the button"\n  variant="default"\n  size="md"\n/>`,
   },
   {
     id: "scaling-capsule-button",
@@ -319,7 +319,7 @@ export default function UIComponentLibrary() {
       href: "/componentlab/tactile-pill-button",
       featuredPreview: (
         <div className="scale-90 transform-gpu py-2 flex items-center justify-center">
-          <ElevatedUnderglowCTA label="Book A Call" theme="figma" size="sm" />
+          <ElevatedUnderglowCTA label="Book A Call" theme="default" size="sm" />
         </div>
       ),
     },

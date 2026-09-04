@@ -27,7 +27,7 @@ export const ISOMETRIC_REVIVE_COMPONENT_SOURCE = `"use client";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-export type IsometricReviveTheme = "figma" | "amber" | "cyan" | "emerald" | "violet" | "crimson" | "uipirate";
+export type IsometricReviveTheme = "default" | "amber" | "cyan" | "emerald" | "violet" | "crimson" | "uipirate";
 export type IsometricReviveSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 export interface IsometricReviveButtonProps {
@@ -41,7 +41,7 @@ export interface IsometricReviveButtonProps {
 
 export function IsometricReviveButton({
   label = "Revive Now",
-  theme = "figma",
+  theme = "default",
   size = "md",
   onClick,
   disabled = false,
@@ -101,7 +101,7 @@ export const ISOMETRIC_REVIVE_PHYSICS = `// Spring Isometric Transforms
 />`;
 
 export default function IsometricReviveScreen() {
-  const [theme, setTheme] = useState<IsometricReviveTheme>("figma");
+  const [theme, setTheme] = useState<IsometricReviveTheme>("default");
   const [angle, setAngle] = useState<IsometricReviveAngle>("iso-left");
   const [intensity, setIntensity] = useState<IsometricGlowIntensity>("vibrant");
   const [size, setSize] = useState<IsometricReviveSize>("md");
@@ -294,20 +294,20 @@ export default function Example() {
 
             <div className="bg-[#151518]/90 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Figma Master Obsidian */}
+                {/* Default Obsidian */}
                 <div className="bg-[#101012] border border-white/5 rounded-2xl p-6 flex flex-col items-center justify-between min-h-[220px] overflow-x-clip transition-all hover:border-white/15">
                   <div className="w-full flex items-center justify-between text-xs font-mono text-gray-400 mb-2">
-                    <span className="text-white font-semibold">Figma Master Obsidian</span>
-                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;figma&quot;</span>
+                    <span className="text-white font-semibold">Default Obsidian</span>
+                    <span className="px-2 py-0.5 rounded bg-white/5 text-[10px] text-gray-300">theme=&quot;default&quot;</span>
                   </div>
                   <div className="my-4 scale-90">
                     <IsometricReviveButton
-                      theme="figma"
+                      theme="default"
                       label="Revive"
                       size="sm"
                     />
                   </div>
-                  <span className="text-[11px] font-mono text-gray-500 text-center">1:1 Figma extruded obsidian bevels with amber flare</span>
+                  <span className="text-[11px] font-mono text-gray-500 text-center">1:1 spec extruded obsidian bevels with amber flare</span>
                 </div>
 
                 {/* Amber Solar Flare */}
@@ -529,7 +529,7 @@ export default function Example() {
                     <tr>
                       <td className="py-3 px-6 text-orange-400 font-semibold">theme</td>
                       <td className="py-3 px-6 text-blue-300">IsometricReviveTheme</td>
-                      <td className="py-3 px-6 text-gray-400">&quot;figma&quot;</td>
+                      <td className="py-3 px-6 text-gray-400">&quot;default&quot;</td>
                       <td className="py-3 px-6 font-sans text-gray-300">Color scheme preset (Obsidian, Amber, Cyan, etc.)</td>
                     </tr>
                     <tr>

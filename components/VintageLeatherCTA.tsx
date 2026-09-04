@@ -29,7 +29,7 @@ export interface VintageLeatherCTAProps {
 }
 
 /**
- * Exact Random Small Square Pixel Noise Tile (Figma Nodes 14:304 & 14:332)
+ * Exact Random Small Square Pixel Noise Tile (Spec Nodes 14:304 & 14:332)
  */
 const RandomSquareGrain: React.FC<{ color?: string }> = ({ color = "#78562B" }) => (
   <svg
@@ -56,7 +56,7 @@ const RandomSquareGrain: React.FC<{ color?: string }> = ({ color = "#78562B" }) 
 );
 
 /**
- * 1:1 Pixel-Exact Vector Tracing of Rumble Brave Ornaments from Figma (Nodes 14:334 - 14:338)
+ * 1:1 Pixel-Exact Vector Tracing of Rumble Brave Ornaments from spec (Nodes 14:334 - 14:338)
  */
 const VintageSlabFlourish: React.FC<{ color: string }> = ({ color }) => {
   return (
@@ -141,7 +141,7 @@ const VintageSlabFlourish: React.FC<{ color: string }> = ({ color }) => {
 };
 
 /**
- * 1:1 Pixel-Accurate Implementation of Figma Node 14:304
+ * 1:1 Pixel-Accurate Implementation of Spec Node 14:304
  * Master Button Collection - Vintage Leather & Brass Heritage Embossed Button
  */
 export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
@@ -303,7 +303,7 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
       }}
     >
       {/* ─────────────────────────────────────────────────────────────
-          OUTER RECESSED ENCLOSURE TRAY (Figma Node 14:331)
+          OUTER RECESSED ENCLOSURE TRAY (Spec Node 14:331)
          ───────────────────────────────────────────────────────────── */}
       <div
         className={`relative flex flex-col items-center justify-center ${sizeConfig.trayPadding} rounded-[1px]`}
@@ -313,7 +313,7 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
         }}
       >
         {/* ─────────────────────────────────────────────────────────────
-            TACTILE EMBOSSED BRASS/LEATHER SLAB (Figma Node 14:332)
+            TACTILE EMBOSSED BRASS/LEATHER SLAB (Spec Node 14:332)
            ───────────────────────────────────────────────────────────── */}
         <div
           className={`relative flex items-center justify-center ${sizeConfig.capPadding} rounded-[2px] overflow-hidden transition-shadow duration-200`}
@@ -325,7 +325,7 @@ export const VintageLeatherCTA: React.FC<VintageLeatherCTAProps> = ({
           {/* Exact Random Small Square Pixel Noise Texture */}
           <RandomSquareGrain color={themeStyles.grainColor} />
 
-          {/* EXACT FIGMA ORNAMENTAL SCROLLWORK FLOURISH OVERLAY */}
+          {/* EXACT SPEC ORNAMENTAL SCROLLWORK FLOURISH OVERLAY */}
           {showOrnaments && <VintageSlabFlourish color={themeStyles.flourishColor} />}
 
           {/* Letterpress Etched Text Label */}

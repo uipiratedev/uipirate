@@ -108,9 +108,9 @@ export const ALL_DASHBOARD_COMPONENTS: ComponentDetail[] = [
     hasThemeControl: true,
     hasIntensityControl: true,
     defaultIntensity: "vibrant",
-    defaultTheme: "figma",
+    defaultTheme: "default",
     availableThemes: [
-      { value: "figma", label: "Figma Obsidian", color: "#FFA000" },
+      { value: "default", label: "Default Obsidian", color: "#FFA000" },
       { value: "amber", label: "Amber Flare", color: "#F59E0B" },
       { value: "cyan", label: "Electric Cyan", color: "#06B6D4" },
       { value: "violet", label: "Cyber Violet", color: "#A855F7" },
@@ -127,12 +127,12 @@ export const ALL_DASHBOARD_COMPONENTS: ComponentDetail[] = [
     ],
     previewLight: (
       <div className="py-12 flex items-center justify-center">
-        <IsometricReviveButton label="Revive Now" theme="figma" size="md" />
+        <IsometricReviveButton label="Revive Now" theme="default" size="md" />
       </div>
     ),
     previewDark: (
       <div className="py-12 flex items-center justify-center">
-        <IsometricReviveButton label="Revive Now" theme="figma" size="md" />
+        <IsometricReviveButton label="Revive Now" theme="default" size="md" />
       </div>
     ),
     jsxCode: `import { IsometricReviveButton } from "@/components/IsometricReviveButton";
@@ -141,7 +141,7 @@ export default function Example() {
   return (
     <IsometricReviveButton
       label="Revive Now"
-      theme="figma"
+      theme="default"
       size="md"
       onClick={() => console.log("Revive triggered")}
     />
@@ -160,18 +160,18 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Revive Now"', description: "Text rendered on the isometric faceplate." },
-      { name: "theme", type: '"figma" | "amber" | "cyan" | "violet" | "uipirate" | "gold-luxury" | "emerald" | "crimson"', defaultValue: '"figma"', description: "Color theme for the isometric bevel extrusion." },
+      { name: "theme", type: '"default" | "amber" | "cyan" | "violet" | "uipirate" | "gold-luxury" | "emerald" | "crimson"', defaultValue: '"default"', description: "Color theme for the isometric bevel extrusion." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls scale matrix factor." },
       { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Action callback on 3D button press." },
     ],
     variantsList: [
       {
-        title: "Figma Master Obsidian",
-        themeValue: "figma",
-        themeProp: 'theme="figma"',
+        title: "Default Obsidian",
+        themeValue: "default",
+        themeProp: 'theme="default"',
         badgeColor: "#FFA000",
-        description: "1:1 Figma extruded obsidian bevels with amber indicator flare.",
-        renderPreview: (sz = "sm") => <IsometricReviveButton theme="figma" label="Revive" size={sz} />,
+        description: "1:1 spec extruded obsidian bevels with amber indicator flare.",
+        renderPreview: (sz = "sm") => <IsometricReviveButton theme="default" label="Revive" size={sz} />,
       },
       {
         title: "Amber Solar Flare",
@@ -249,7 +249,7 @@ export default function Example() {
     defaultDotColor: "#54EAD8",
     defaultTheme: "default",
     availableThemes: [
-      { value: "default", label: "Figma Cyan", color: "#54EAD8" },
+      { value: "default", label: "Default Cyan", color: "#54EAD8" },
       { value: "orange", label: "Magma Orange", color: "#FF5B04" },
       { value: "dark", label: "Dark Obsidian", color: "#A78BFA" },
       { value: "cyberpunk", label: "Cyberpunk Matrix", color: "#10B981" },
@@ -304,11 +304,11 @@ export default function Example() {
     ],
     variantsList: [
       {
-        title: "Figma Cyan Beacon",
+        title: "Default Cyan Beacon",
         themeValue: "default",
         themeProp: 'variant="default"',
         badgeColor: "#54EAD8",
-        description: "1:1 Figma Master design with turquoise indicator dot.",
+        description: "1:1 reference design with turquoise indicator dot.",
         renderPreview: (sz = "sm") => <TactilePillButton variant="default" dotColor="#54EAD8" label="Get Started" size={sz} />,
       },
       {
@@ -380,9 +380,9 @@ export default function Example() {
     ],
     hasCablesControl: true,
     defaultShowCables: true,
-    defaultTheme: "figma-blue",
+    defaultTheme: "default-blue",
     availableThemes: [
-      { value: "figma-blue", label: "Figma Blue", color: "#38BDF8" },
+      { value: "default-blue", label: "Default Blue", color: "#38BDF8" },
       { value: "cyber-violet", label: "Cyber Violet", color: "#A855F7" },
       { value: "emerald-matrix", label: "Bio Emerald", color: "#10B981" },
       { value: "magma-orange", label: "Magma Orange", color: "#FF5B04" },
@@ -397,12 +397,12 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <FrostedGelDownloadButton label="Download now" theme="figma-blue" size="md" />
+        <FrostedGelDownloadButton label="Download now" theme="default-blue" size="md" />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <FrostedGelDownloadButton label="Download now" theme="figma-blue" size="md" />
+        <FrostedGelDownloadButton label="Download now" theme="default-blue" size="md" />
       </div>
     ),
     jsxCode: `import { FrostedGelDownloadButton } from "@/components/FrostedGelDownloadButton";
@@ -411,7 +411,7 @@ export default function Example() {
   return (
     <FrostedGelDownloadButton
       label="Download now"
-      theme="figma-blue"
+      theme="default-blue"
       size="md"
       onClick={() => alert("Downloading asset...")}
     />
@@ -433,18 +433,18 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Download now"', description: "Text label displayed inside the elevated ceramic pill." },
-      { name: "theme", type: '"figma-blue" | "cyber-violet" | "emerald-matrix" | "magma-orange" | "dark-obsidian" | "titanium-gold"', defaultValue: '"figma-blue"', description: "Color palette theme for the frosted gel tile and underglow." },
+      { name: "theme", type: '"default-blue" | "cyber-violet" | "emerald-matrix" | "magma-orange" | "dark-obsidian" | "titanium-gold"', defaultValue: '"default-blue"', description: "Color palette theme for the frosted gel tile and underglow." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Controls dimensions and padding scale." },
       { name: "onClick", type: "() => void", defaultValue: "undefined", description: "Triggered on clicking the gel download button." },
     ],
     variantsList: [
       {
-        title: "Figma Electric Blue",
-        themeValue: "figma-blue",
-        themeProp: 'theme="figma-blue"',
+        title: "Default Electric Blue",
+        themeValue: "default-blue",
+        themeProp: 'theme="default-blue"',
         badgeColor: "#38BDF8",
-        description: "1:1 Figma ceramic pill with volumetric blue flare.",
-        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="figma-blue" label="Download Package" size={sz} />,
+        description: "1:1 spec ceramic pill with volumetric blue flare.",
+        renderPreview: (sz = "sm") => <FrostedGelDownloadButton theme="default-blue" label="Download Package" size={sz} />,
       },
       {
         title: "Cyber Violet",
@@ -514,9 +514,9 @@ export default function Example() {
     ],
     hasLiftControl: true,
     defaultLiftAmount: 13,
-    defaultTheme: "figma",
+    defaultTheme: "default",
     availableThemes: [
-      { value: "figma", label: "Figma Electric Blue", color: "#38BDF8" },
+      { value: "default", label: "Default Electric Blue", color: "#38BDF8" },
       { value: "uipirate", label: "UI Pirate Magma", color: "#FF5B04" },
       { value: "emerald", label: "Neon Emerald", color: "#10B981" },
       { value: "violet", label: "Cyber Violet", color: "#A855F7" },
@@ -531,12 +531,12 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <ElevatedUnderglowCTA label="Book A Call" icon="phone" theme="figma" size="md" />
+        <ElevatedUnderglowCTA label="Book A Call" icon="phone" theme="default" size="md" />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <ElevatedUnderglowCTA label="Book A Call" icon="phone" theme="figma" size="md" />
+        <ElevatedUnderglowCTA label="Book A Call" icon="phone" theme="default" size="md" />
       </div>
     ),
     jsxCode: `import { ElevatedUnderglowCTA } from "@/components/ElevatedUnderglowCTA";
@@ -546,7 +546,7 @@ export default function Example() {
     <ElevatedUnderglowCTA
       label="Book A Call"
       icon="phone"
-      theme="figma"
+      theme="default"
       size="md"
       onClick={() => window.open("/contact", "_blank")}
     />
@@ -567,18 +567,18 @@ export default function Example() {
     props: [
       { name: "label", type: "string", defaultValue: '"Book A Call"', description: "Text displayed on the elevated button face." },
       { name: "icon", type: '"phone" | "calendar" | "arrow" | "sparkle" | "mail" | "none"', defaultValue: '"phone"', description: "Leading icon displayed next to the label." },
-      { name: "liftAmount", type: "number", defaultValue: "13", description: "Optional lift distance in pixels on hover (default: 13 matching Figma 55:40)." },
-      { name: "theme", type: '"figma" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"', defaultValue: '"figma"', description: "Color theme for the underglow beam and reflection rim." },
+      { name: "liftAmount", type: "number", defaultValue: "13", description: "Optional lift distance in pixels on hover (default: 13 matching spec 55:40)." },
+      { name: "theme", type: '"default" | "uipirate" | "emerald" | "violet" | "crimson" | "dark"', defaultValue: '"default"', description: "Color theme for the underglow beam and reflection rim." },
       { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"', defaultValue: '"md"', description: "Size dimensions of the pill." },
     ],
     variantsList: [
       {
-        title: "Figma Electric Blue",
-        themeValue: "figma",
-        themeProp: 'theme="figma"',
+        title: "Default Electric Blue",
+        themeValue: "default",
+        themeProp: 'theme="default"',
         badgeColor: "#38BDF8",
-        description: "1:1 Figma Master design with blue extruded sub-chassis.",
-        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="figma" label="Book A Call" icon="phone" size={sz} />,
+        description: "1:1 reference design with blue extruded sub-chassis.",
+        renderPreview: (sz = "sm") => <ElevatedUnderglowCTA theme="default" label="Book A Call" icon="phone" size={sz} />,
       },
       {
         title: "UI Pirate Magma",
@@ -701,11 +701,11 @@ export default function Example() {
     ],
     variantsList: [
       {
-        title: "Monochrome Figma",
+        title: "Monochrome",
         themeValue: "monochrome",
         themeProp: 'theme="monochrome"',
         badgeColor: "#F8FAFC",
-        description: "1:1 Figma Master design with white LED grid pixels.",
+        description: "1:1 reference design with white LED grid pixels.",
         renderPreview: (sz = "sm") => <LedMatrixChevronButton theme="monochrome" label="See Plans" size={sz} />,
       },
       {
@@ -939,7 +939,7 @@ export default function Example() {
         themeValue: "heritage",
         themeProp: 'theme="heritage"',
         badgeColor: "#D97706",
-        description: "1:1 Figma Master design with embossed cowhide leather & brass lip.",
+        description: "1:1 reference design with embossed cowhide leather & brass lip.",
         renderPreview: (sz = "sm") => <VintageLeatherCTA theme="heritage" label="Contact Sales" size={sz} />,
       },
       {
@@ -1000,8 +1000,8 @@ export default function Example() {
     hasThemeControl: true,
     defaultTheme: "emerald-pill",
     availableThemes: [
-      { value: "emerald-pill", label: "Figma Emerald Pill", color: "#10B981" },
-      { value: "squircle-emerald", label: "Figma Emerald Squircle", color: "#10B981" },
+      { value: "emerald-pill", label: "Default Emerald Pill", color: "#10B981" },
+      { value: "squircle-emerald", label: "Default Emerald Squircle", color: "#10B981" },
       { value: "uipirate", label: "UI Pirate Magma (Pill)", color: "#FF5B04" },
       { value: "squircle-uipirate", label: "UI Pirate Squircle", color: "#FF5B04" },
       { value: "cyan-pill", label: "Electric Cyan (Pill)", color: "#06B6D4" },
@@ -1012,7 +1012,7 @@ export default function Example() {
     features: [
       "Authentic claymorphic multi-tier drop shadow stacks",
       "Radiant glowing neon arrow indicator badge depth",
-      "Pill (Figma Node 14:642) & Squircle (Node 14:669) geometry",
+      "Pill (Spec Node 14:642) & Squircle (Node 14:669) geometry",
       "Interactive 60fps spring press micro-interactions",
     ],
     previewLight: (
@@ -1039,7 +1039,7 @@ export default function Example() {
     />
   );
 }`,
-    htmlCode: `<!-- Figma Node 14:642 / 14:669 Neumorphic Clay CTA -->
+    htmlCode: `<!-- Spec Node 14:642 / 14:669 Neumorphic Clay CTA -->
 <div class="relative inline-flex items-center justify-between gap-4 px-6 py-3.5 rounded-full bg-[#E6E8ED] border border-white/80 text-[#3D4450] font-bold text-sm shadow-[8px_8px_16px_rgba(166,171,189,0.5),-8px_-8px_16px_rgba(255,255,255,0.9)] cursor-pointer select-none">
   <span>Learn more</span>
   <div class="relative w-8 h-8 rounded-full bg-[#CBF0CD] flex items-center justify-center shadow-[0_0_12px_rgba(73,195,62,0.4)]">
@@ -1066,11 +1066,11 @@ export default function Example() {
     ],
     variantsList: [
       {
-        title: "Figma Emerald Pill",
+        title: "Default Emerald Pill",
         themeValue: "emerald-pill",
         themeProp: 'variant="pill" neonPreset="emerald"',
         badgeColor: "#10B981",
-        description: "1:1 Figma Master design with glowing emerald arrow badge and clay drop shadows.",
+        description: "1:1 reference design with glowing emerald arrow badge and clay drop shadows.",
         renderPreview: (sz = "sm") => (
           <NeumorphicGlowCTA variant="pill" neonPreset="emerald" theme="default" label="Get Started" size={sz} />
         ),
@@ -1141,9 +1141,9 @@ export default function Example() {
     hasLabelControl: true,
     hasSizeControl: true,
     hasThemeControl: true,
-    defaultTheme: "figma",
+    defaultTheme: "default",
     availableThemes: [
-      { value: "figma", label: "Figma Neo-Brutalist", color: "#EC4899" },
+      { value: "default", label: "Default Neo-Brutalist", color: "#EC4899" },
       { value: "orange", label: "UI Pirate Magma", color: "#FF5B04" },
       { value: "dark", label: "Dark Obsidian Core", color: "#64748B" },
       { value: "cyberpunk", label: "Cyberpunk Violet", color: "#A855F7" },
@@ -1156,18 +1156,18 @@ export default function Example() {
     ],
     previewLight: (
       <div className="py-6 flex items-center justify-center">
-        <SmashTactileButton label="Smash the button" variant="figma" size="md" />
+        <SmashTactileButton label="Smash the button" variant="default" size="md" />
       </div>
     ),
     previewDark: (
       <div className="py-6 flex items-center justify-center">
-        <SmashTactileButton label="Smash the button" variant="figma" size="md" />
+        <SmashTactileButton label="Smash the button" variant="default" size="md" />
       </div>
     ),
     jsxCode: `import SmashTactileButton from "@/components/SmashTactileButton";
 
 export default function Example() {
-  return <SmashTactileButton label="Smash the button" variant="figma" size="md" />;
+  return <SmashTactileButton label="Smash the button" variant="default" size="md" />;
 }`,
     htmlCode: `<div class="p-2 bg-gray-900 border-2 border-black rounded-2xl shadow-[6px_6px_0_#000]">
   <button class="px-8 py-3 bg-pink-500 text-white font-black uppercase text-xs">Smash the button</button>
@@ -1179,16 +1179,16 @@ export default function Example() {
 }`,
     props: [
       { name: "label", type: "string", defaultValue: '"Smash the button"', description: "Button text." },
-      { name: "variant", type: '"figma" | "orange" | "dark" | "cyberpunk"', defaultValue: '"figma"', description: "Industrial theme variant." },
+      { name: "variant", type: '"default" | "orange" | "dark" | "cyberpunk"', defaultValue: '"default"', description: "Industrial theme variant." },
     ],
     variantsList: [
       {
-        title: "Figma Neo-Brutalist",
-        themeValue: "figma",
-        themeProp: 'variant="figma"',
+        title: "Default Neo-Brutalist",
+        themeValue: "default",
+        themeProp: 'variant="default"',
         badgeColor: "#EC4899",
-        description: "1:1 Figma Master design with porcelain enclosure tray & dot matrix.",
-        renderPreview: (sz = "sm") => <SmashTactileButton variant="figma" label="Smash the button" size={sz} />,
+        description: "1:1 reference design with porcelain enclosure tray & dot matrix.",
+        renderPreview: (sz = "sm") => <SmashTactileButton variant="default" label="Smash the button" size={sz} />,
       },
       {
         title: "UI Pirate Magma",
@@ -1242,7 +1242,7 @@ export default function Example() {
     ],
     defaultTheme: "dark",
     availableThemes: [
-      { value: "dark", label: "Figma Dark Obsidian", color: "#38BDF8" },
+      { value: "dark", label: "Default Dark Obsidian", color: "#38BDF8" },
       { value: "orange", label: "UI Pirate Magma", color: "#FF5B04" },
       { value: "light", label: "Titanium Light", color: "#E2E8F0" },
       { value: "cyberpunk", label: "Cyberpunk Neon", color: "#A855F7" },
@@ -1284,11 +1284,11 @@ export default function Example() {
     ],
     variantsList: [
       {
-        title: "Figma Dark Obsidian",
+        title: "Default Dark Obsidian",
         themeValue: "dark",
         themeProp: 'variant="dark"',
         badgeColor: "#38BDF8",
-        description: "1:1 Figma Master design with frosted translucent cavity tray.",
+        description: "1:1 reference design with frosted translucent cavity tray.",
         renderPreview: (sz = "sm") => <ScalingCapsuleButton variant="dark" label="Scaling Workshop" size={sz} />,
       },
       {
@@ -1651,7 +1651,7 @@ export default function Example() {
         themeProp: 'variant="cyan"',
         badgeColor: "#06B6D4",
         description: "Electric cyan status badge with frosted glass diffusion and glowing beacon.",
-        renderPreview: (sz = "sm") => <GlassBadge variant="cyan" size={sz}>1:1 FIGMA</GlassBadge>,
+        renderPreview: (sz = "sm") => <GlassBadge variant="cyan" size={sz}>1:1 SPEC</GlassBadge>,
       },
       {
         title: "Obsidian Solid",
@@ -1869,7 +1869,7 @@ export default function Example() {
     badge: "Liquid Glass",
     badgeColor: "#10B981",
     description:
-      "High-gloss skeuomorphic gel glass CTA button directly from Figma (Node 2:2). Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
+      "High-gloss skeuomorphic gel glass CTA button directly from spec (Node 2:2). Multi-layer inner shadow depth, organic specular blurred highlight capsule, and crisp text drop shadow.",
     detailUrl: "/componentlab/glossy-gel-button",
     defaultLabel: "Get Started",
     hasLabelControl: true,
@@ -1885,7 +1885,7 @@ export default function Example() {
       { value: "obsidian-glass", label: "Dark Obsidian", color: "#1E293B" },
     ],
     features: [
-      "1:1 Figma fidelity from node 2:2 (Glossy Gel Button)",
+      "1:1 spec fidelity from node 2:2 (Glossy Gel Button)",
       "4-layer optical drop & inner shadow composite",
       "Curved blurred top specular reflection capsule",
       "Interactive spring depression & specular sheen animation",
@@ -1934,7 +1934,7 @@ export default function Example() {
         themeValue: "emerald-gel",
         themeProp: 'theme="emerald-gel"',
         badgeColor: "#32E49D",
-        description: "1:1 Figma fidelity skeuomorphic gel glass button with curved top specular highlight.",
+        description: "1:1 spec fidelity skeuomorphic gel glass button with curved top specular highlight.",
         renderPreview: (sz = "sm") => <GlossyGelButton theme="emerald-gel" size={sz}>Get Started</GlossyGelButton>,
       },
       {

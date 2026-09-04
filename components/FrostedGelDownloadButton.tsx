@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 export type FrostedGelTheme =
-  | "figma-blue"
+  | "default-blue"
   | "cyber-violet"
   | "emerald-matrix"
   | "magma-orange"
@@ -89,9 +89,9 @@ export interface FrostedGelThemeConfig {
 }
 
 export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> = {
-  "figma-blue": {
-    name: "Figma Electric Blue (1:1)",
-    badge: "1:1 Figma",
+  "default-blue": {
+    name: "Default Electric Blue (1:1)",
+    badge: "1:1 Spec",
     isDark: false,
     accentColor: "#2626FF",
     textColor: "#2626FF",
@@ -196,7 +196,7 @@ export const FROSTED_GEL_THEMES: Record<FrostedGelTheme, FrostedGelThemeConfig> 
 export interface FrostedGelDownloadButtonProps {
   /** Text label in pill (default: "Download now") */
   label?: string;
-  /** Visual state mode: 'interactive' (cohesive group hover), 'standerd' (Figma 4604:126), 'hover' (Figma 4604:152) */
+  /** Visual state mode: 'interactive' (cohesive group hover), 'standerd' (Spec 4604:126), 'hover' (Spec 4604:152) */
   stateMode?: FrostedGelStateMode;
   /** Theme preset */
   theme?: FrostedGelTheme;
@@ -221,7 +221,7 @@ export interface FrostedGelDownloadButtonProps {
 export function FrostedGelDownloadButton({
   label = "Download now",
   stateMode = "interactive",
-  theme = "figma-blue",
+  theme = "default-blue",
   size = "md",
   icon = "cloud-download",
   showCables = true,
@@ -234,7 +234,7 @@ export function FrostedGelDownloadButton({
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
-  const t = FROSTED_GEL_THEMES[theme] || FROSTED_GEL_THEMES["figma-blue"];
+  const t = FROSTED_GEL_THEMES[theme] || FROSTED_GEL_THEMES["default-blue"];
 
   const sizeScales = {
     xs: 0.64,
@@ -262,7 +262,7 @@ export function FrostedGelDownloadButton({
       <div className="relative min-w-[560px] h-[240px] flex items-center justify-center flex-none">
 
         {/* ================================================================= */}
-        {/* 1. Background Technical Trace Cable Lines (Figma 4604:153-156)    */}
+        {/* 1. Background Technical Trace Cable Lines (Spec 4604:153-156)    */}
         {/* ================================================================= */}
         {showCables && (
           <div className="absolute inset-0 pointer-events-none overflow-visible flex items-center justify-center">
@@ -334,10 +334,10 @@ export function FrostedGelDownloadButton({
           className="relative flex items-center justify-center cursor-pointer group"
         >
           {/* =============================================================== */}
-          {/* Main "Download Now" Ceramic Pill Button (Figma 4604:158/160)     */}
+          {/* Main "Download Now" Ceramic Pill Button (Spec 4604:158/160)     */}
           {/* =============================================================== */}
           <div className="relative mr-[14px] flex items-center justify-center">
-            {/* Volumetric Underglow Flare (Figma 4604:152) */}
+            {/* Volumetric Underglow Flare (Spec 4604:152) */}
             <motion.div
               initial={false}
               animate={{
@@ -353,7 +353,7 @@ export function FrostedGelDownloadButton({
               }}
             />
 
-            {/* Blue Gradient Base Bevel / Tray Layer (Figma 4604:158) */}
+            {/* Blue Gradient Base Bevel / Tray Layer (Spec 4604:158) */}
             <div
               className="absolute -inset-x-[1px] bottom-[-6px] h-[61px] rounded-[16.5px] pointer-events-none"
               style={{
@@ -372,7 +372,7 @@ export function FrostedGelDownloadButton({
               />
             </div>
 
-            {/* Elevated Ceramic Pill Surface (Figma 4604:160) */}
+            {/* Elevated Ceramic Pill Surface (Spec 4604:160) */}
             <motion.button
               type="button"
               disabled={disabled}
@@ -419,7 +419,7 @@ export function FrostedGelDownloadButton({
           </div>
 
           {/* =============================================================== */}
-          {/* Frosted Glass Cloud Download Tile (Figma 4604:172 / 4604:140)    */}
+          {/* Frosted Glass Cloud Download Tile (Spec 4604:172 / 4604:140)    */}
           {/* =============================================================== */}
           <div className="relative flex items-center justify-center">
             {/* Volumetric Cyan/Blue Flare under Gel Tile */}
@@ -466,7 +466,7 @@ export function FrostedGelDownloadButton({
               }}
               aria-label="Download Cloud Icon"
             >
-              {/* Multi-layered Internal Glass Refraction Rings (Figma 4604:173-176) */}
+              {/* Multi-layered Internal Glass Refraction Rings (Spec 4604:173-176) */}
               <div
                 className="absolute -top-[10px] left-[6px] w-[56px] h-[116px] rounded-full pointer-events-none opacity-40 mix-blend-overlay"
                 style={{
@@ -483,7 +483,7 @@ export function FrostedGelDownloadButton({
                 }}
               />
 
-              {/* Gel Tile Icon (Figma 4604:180) — configurable via `icon` prop */}
+              {/* Gel Tile Icon (Spec 4604:180) — configurable via `icon` prop */}
               <div className="relative z-10 flex items-center justify-center">
                 <svg
                   width="30"

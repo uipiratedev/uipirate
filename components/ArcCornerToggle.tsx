@@ -46,20 +46,20 @@ const LINE_TRACK_PILL =
 const LINE_CENTERLINE_PATH = "M 42 42 H 278";
 
 /**
- * Exact Figma Track Outer Contour SVG Path (Node 75:5088 & 75:5138)
+ * Exact Spec Track Outer Contour SVG Path (Node 75:5088 & 75:5138)
  */
-const FIGMA_TRACK_PATH =
+const SPEC_TRACK_PATH =
   "M34.5 8C19.8644 8 8 19.8645 8 34.5C8 49.1355 19.8645 61 34.5 61H46.3838C135.642 61 208 133.358 208 222.616V234.5C208 249.136 219.864 261 234.5 261C249.136 261 261 249.136 261 234.5V220.089C261 102.956 166.044 8 48.9106 8H34.5Z";
 
 /**
  * Mathematically Exact Centerline Vector Path of the 53px-wide track groove
  * Radius = 185.589px around Center (48.91, 220.089)
  */
-const FIGMA_CENTERLINE_PATH =
+const SPEC_CENTERLINE_PATH =
   "M 34.5 34.5 H 48.91 A 185.589 185.589 0 0 1 234.5 220.089 V 234.5";
 
 /**
- * 1:1 Pixel-Accurate Implementation of Figma Nodes 75:5084 & 75:5131
+ * 1:1 Pixel-Accurate Implementation of Spec Nodes 75:5084 & 75:5131
  */
 export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
   isActive: controlledActive,
@@ -90,7 +90,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
 
   const isLight = currentTheme === "light";
   const isLine = track === "line";
-  const centerline = isLine ? LINE_CENTERLINE_PATH : FIGMA_CENTERLINE_PATH;
+  const centerline = isLine ? LINE_CENTERLINE_PATH : SPEC_CENTERLINE_PATH;
 
   const handleToggle = () => {
     if (stateMode !== "interactive") return;
@@ -113,7 +113,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
       style={{ zoom: effectiveScale !== 1 ? effectiveScale : undefined } as React.CSSProperties}
     >
       {/* ─────────────────────────────────────────────────────────────
-          MAIN 600×600 STAGE CONTAINER (Exact Figma Frame 1000003154 / 3155)
+          MAIN 600×600 STAGE CONTAINER (Exact Spec Frame 1000003154 / 3155)
          ───────────────────────────────────────────────────────────── */}
       <motion.div
         className="relative w-[600px] h-[600px] overflow-hidden"
@@ -153,7 +153,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
         )}
 
         {/* ─────────────────────────────────────────────────────────────
-            FOREGROUND SLAB (Exact Figma Node 75:5130 / 75:5180)
+            FOREGROUND SLAB (Exact Spec Node 75:5130 / 75:5180)
             Left: -879px, Top: 205px, Width: 1260px, Height: 666px, Radius: 150px
            ───────────────────────────────────────────────────────────── */}
         {!isLine && (
@@ -198,10 +198,10 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
           >
             <defs>
               <clipPath id="trackInnerClip">
-                <path d={isLine ? LINE_TRACK_PILL : FIGMA_TRACK_PATH} />
+                <path d={isLine ? LINE_TRACK_PILL : SPEC_TRACK_PATH} />
               </clipPath>
 
-              {/* Exact Figma Matte Violet/Purple Underglow Gradient */}
+              {/* Exact spec Matte Violet/Purple Underglow Gradient */}
               <linearGradient id="matteTrailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#3E2C4D" stopOpacity="0" />
                 <stop offset="35%" stopColor="#553065" stopOpacity="0.3" />
@@ -266,7 +266,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             {/* 1. Base Channel Track Path */}
             <g filter={isLine ? undefined : isLight ? "url(#filter0_dd_75_5088)" : "url(#filter0_dd_75_5138)"}>
               <path
-                d={isLine ? LINE_TRACK_PILL : FIGMA_TRACK_PATH}
+                d={isLine ? LINE_TRACK_PILL : SPEC_TRACK_PATH}
                 fill={isLight ? "#C0C0C0" : "#404C66"}
                 fillOpacity={isLight ? "0.07" : "0.1"}
                 shapeRendering="crispEdges"
@@ -339,7 +339,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
             }}
           >
             {/* ─────────────────────────────────────────────────────────────
-                EXACT FIGMA NODE 75:5090 & 75:5140 GLASS PILL BUTTON
+                EXACT SPEC NODE 75:5090 & 75:5140 GLASS PILL BUTTON
                ───────────────────────────────────────────────────────────── */}
             <div
               className="relative w-[96px] h-[71px] rounded-[70px]"
@@ -355,7 +355,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                   : "0px 1px 0px 0px rgba(167,170,183,0.2), 151px 153px 60px 0px rgba(0,0,0,0.01), 97px 98px 55px 0px rgba(0,0,0,0.04), 55px 55px 46px 0px rgba(0,0,0,0.15), 24px 24px 34px 0px rgba(0,0,0,0.26), inset 0px 1px 1px 0px rgba(255, 255, 255, 0.35), inset 0px -1px 1px 0px rgba(0, 0, 0, 0.35)",
               }}
             >
-              {/* EXACT FIGMA SVG FOR BUTTON (75:5090 for Light, 75:5140 for Dark) */}
+              {/* EXACT SPEC SVG FOR BUTTON (75:5090 for Light, 75:5140 for Dark) */}
               <svg
                 width="96"
                 height="71"
@@ -364,19 +364,19 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
                 className="absolute inset-0 size-full overflow-visible"
               >
                 <defs>
-                  {/* Amber Flame Linear (Figma paint2_linear_10020_2778 for Light Mode) */}
+                  {/* Amber Flame Linear (spec paint2_linear_10020_2778 for Light Mode) */}
                   <linearGradient id="amberFlameGrad" x1="20" y1="35.7441" x2="83" y2="35.7441" gradientUnits="userSpaceOnUse">
                     <stop stopColor="#ED45BE" stopOpacity="0" />
                     <stop offset="1" stopColor="#FFA449" />
                   </linearGradient>
 
-                  {/* Magenta Flame Linear (Figma paint2_linear_10016_2400 for Dark Mode) */}
+                  {/* Magenta Flame Linear (spec paint2_linear_10016_2400 for Dark Mode) */}
                   <linearGradient id="magentaFlameGrad" x1="20" y1="35.7441" x2="83" y2="35.7441" gradientUnits="userSpaceOnUse">
                     <stop stopColor="#ED45BE" stopOpacity="0" />
                     <stop offset="1" stopColor="#ED45BE" />
                   </linearGradient>
 
-                  {/* Flame Blur Filter (Figma filter0_f_10016_2400 / filter1_f_10020_2778) */}
+                  {/* Flame Blur Filter (spec filter0_f_10016_2400 / filter1_f_10020_2778) */}
                   <filter id="filter0_f_flame" x="-2" y="-3.75586" width="107" height="79" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
@@ -482,7 +482,7 @@ export const ArcCornerToggle: React.FC<ArcCornerToggleProps> = ({
               </svg>
 
               {/* ─────────────────────────────────────────────────────────────
-                  EXACT FIGMA SPECULAR GLARE & LIGHT RAYS (Node 75:5107 / 75:5157)
+                  EXACT SPEC SPECULAR GLARE & LIGHT RAYS (Node 75:5107 / 75:5157)
                   Anchored at top-left rim of capsule knob
                  ───────────────────────────────────────────────────────────── */}
               <div
