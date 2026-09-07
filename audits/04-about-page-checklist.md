@@ -106,7 +106,7 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 | # | Item | Status |
 |---|------|--------|
-| 5a | Sub-copy `Simple: you share your vision. We do the rest.` — keep | ✅ Keep as-is |
+| 5a | Sub-copy `Simple: you share your vision. We do the rest.` — keep | ✅ Removed per user request |
 | 5b | `/process` page link would 404 | ✅ Resolved — `/process` page now exists |
 | 5c | Redesign process cards to match landing page 'How It Works' light cards (6 steps) | ✅ Done |
 

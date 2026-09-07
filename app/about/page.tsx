@@ -643,9 +643,6 @@ export default function AboutPage() {
             <GlassBadge variant="gradient">THE PROCESS</GlassBadge>
           </div>
           <h2 className="heading-center">Our Approach</h2>
-          <p className="text-gray-500 max-w-xl mx-auto mt-2">
-            Simple: you share your vision. We do the rest.
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
