@@ -559,29 +559,22 @@ export default function AboutPage() {
             {
               title: "Dashboards & SaaS UX",
               desc: "Data-heavy flows and multi-role dashboards, simplified into interfaces that are fast to learn.",
-              icon: (className: string) => (
-                <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-                  <path d="M11 10.6C11 12.4 10.4 14.1 8.9 15.6L7.1 14.2C8.1 13.1 8.6 12 8.6 10.9H5V5.6H11V10.6ZM20 10.6C20 12.4 19.4 14.1 17.9 15.6L16.1 14.2C17.1 13.1 17.6 12 17.6 10.9H14V5.6H20V10.6Z" />
-                </svg>
+              icon: () => (
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 2v12h5V6H4zm7 0v5h9V6h-9zm0 7v5h9v-5h-9z" />
               ),
             },
             {
               title: "Websites & Landing Pages",
               desc: "Conversion-focused layouts where every section moves visitors toward the next step.",
-              icon: (className: string) => (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                </svg>
+              icon: () => (
+                <path d="M4 4C2.895 4 2 4.895 2 6v12c0 1.105.895 2 2 2h16c1.105 0 2-.895 2-2V6c0-1.105-.895-2-2-2H4zm0 2h16v3H4V6zm0 5h16v7H4v-7z" />
               ),
             },
             {
               title: "Design That Holds Up in Code",
               desc: "From Figma to production-ready code. The shipped product matches the design, exactly.",
-              icon: (className: string) => (
-                <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-                  <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" />
-                </svg>
+              icon: () => (
+                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
               ),
             },
           ].map((item, i) => (
@@ -593,13 +586,44 @@ export default function AboutPage() {
               viewport={{ once: true }}
               whileInView={{ opacity: 1, y: 0 }}
             >
-              {/* Icon Container (Rounded rectangle with light border) */}
-              <div className="w-[52px] h-[34px] bg-white rounded-xl border-[1.5px] border-gray-200/70 shadow-[0_2px_8px_rgb(0,0,0,0.04)] flex items-center justify-center mb-6">
-                <div className="relative flex items-center justify-center">
-                  {/* Glowing Blur Layer */}
-                  {item.icon("w-5 h-5 text-[#3b9cff] absolute blur-[3px] opacity-60")}
-                  {/* Crisp Top Layer */}
-                  {item.icon("w-5 h-5 text-[#3b9cff] relative z-10")}
+              {/* Icon Container - Exact Reference Match (Outer gray pill, inner white pill) */}
+              <div className="w-[74px] h-[50px] bg-[#F3F4F6] rounded-[20px] p-[5px] mb-6 flex-shrink-0">
+                <div className="w-full h-full bg-white rounded-[15px] shadow-[0_2px_8px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,1)] flex items-center justify-center">
+                  
+                  {/* 3D Glossy Orange Icon */}
+                  <div className="relative flex items-center justify-center">
+                    {/* Blurred Drop Shadow */}
+                    <svg 
+                      viewBox="0 0 24 24" 
+                      fill="#ff7a2e" 
+                      className="w-[24px] h-[24px] absolute blur-[3px] opacity-60 translate-y-[2px]"
+                    >
+                      {item.icon()}
+                    </svg>
+                    
+                    {/* Main Glossy Icon */}
+                    <svg 
+                      viewBox="0 0 24 24" 
+                      fill="url(#orange-gloss)" 
+                      className="w-[24px] h-[24px] relative z-10"
+                    >
+                      <defs>
+                        <linearGradient id="orange-gloss" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#ffb885" /> {/* Light orange top */}
+                          <stop offset="100%" stopColor="#ff5e00" /> {/* Vibrant orange bottom */}
+                        </linearGradient>
+                      </defs>
+                      
+                      {/* Base Shape */}
+                      {item.icon()}
+                      
+                      {/* Inner White Highlight (Glass effect) */}
+                      <g fill="none" stroke="white" strokeWidth="0.8" strokeOpacity="0.7" style={{ transform: 'translateY(0.5px)' }}>
+                        {item.icon()}
+                      </g>
+                    </svg>
+                  </div>
+                  
                 </div>
               </div>
               
