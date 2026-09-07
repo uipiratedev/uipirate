@@ -137,9 +137,9 @@ and ship production-ready code. From idea to shipped product.
 
 **Suggested rewrite: (✅ Applied)**
 ```
-We're a product design and development agency. We work alongside SaaS founders
-and enterprise teams — from the first wireframe through to working,
-production-ready software.
+We are a product design and development studio. We help SaaS founders and enterprise teams
+think through the product, design for real users, and ship production-ready code.
+No hand-offs, no gaps.
 ```
 
 ---
@@ -187,7 +187,9 @@ H2: What Makes Us Different
 Sub: Most agencies give you mockups. We give you a shipped product.
 ```
 
-**Assessment:** ✅ Badge and heading are strong. "Most agencies give you mockups. We give you a shipped product." is excellent — it's the clearest competitive contrast statement on the site. Keep everything here.
+**Assessment:** ✅ Badge and heading are strong. "Most agencies give you mockups. We give you a shipped product." is the clearest competitive contrast statement on the site.
+
+**Decision (✅ Applied in MD):** Remove the subtext entirely. Per user direction, no section heading should have a subtext — keep it consistent across the page. The heading alone is strong enough to stand.
 
 ---
 
@@ -837,33 +839,42 @@ to shipped product.
 
 **Recommended:**
 ```
-We're a product design and development agency. We work alongside SaaS
-founders and enterprise teams — from the first wireframe through to
-working, production-ready software.
+We are a product design and development studio. We help SaaS founders
+and enterprise teams think through the product, design for real users,
+and ship production-ready code. No hand-offs, no gaps.
 ```
 
-**Why:** opens with a quotable "we are X" sentence (fixes the AI-citation and keyword gaps), removes the negation-first frame, cuts the 4-item service list the H1 already implies, and drops the `From idea to shipped product` repeat. Keeps "SaaS founders and enterprise teams" as the audience signal.
+**Why:** opens with a quotable "we are X" sentence (fixes the AI-citation and keyword gaps), removes the negation-first frame, cuts the 4-item service list the H1 already implies, drops the `From idea to shipped product` repeat, and has zero em dashes. Keeps "SaaS founders and enterprise teams" as the audience signal.
 
 ---
 
-### NC2. "What Makes Us Different" — consolidate the two duplicate pairs, fill the freed slots
+### NC2. "What Makes Us Different" — consolidate duplicates, sharpen titles, trim descriptions
 
 **Confirmed in:** `app/about/page.tsx` L379-403 (the 6-object array)
 
 **Current cards:** `01 Product Thinking First` · `02 Simplify Complex Products` · `03 Designed for Conversion` · `04 Architecture to Code` · `05 Enterprise Specialist` · `06 Idea to Shipped Product`
 
-**Recommended array (keep the section, swap 2 objects):**
+**Problems (updated assessment):**
+- Cards 04 + 06 are near-duplicates (both describe IA → wireframes → UI → code → launch)
+- Cards 02 + 05 overlap (both open with "Multi-role dashboards, data-heavy…")
+- Titles are generic and flat — not punchy or hook-driven
+- Descriptions are too long, inconsistent in length, and use em dashes
+- Section subtext ("Most agencies give you mockups...") should be removed (per user direction — no subtext on any heading)
+
+**Recommended array (✅ Applied in MD):**
+
+All descriptions are 1–2 lines, consistent in length, no em dashes.
 
 | Slot | Title | Description |
 |---|---|---|
-| 01 | Product Thinking First | *(keep L381-382 verbatim)* |
-| 02 | We Simplify Complex Products | `Multi-role dashboards, data-heavy flows, enterprise systems — the hard problems other agencies avoid. We break complexity into interfaces people actually understand.` *(absorbs old Card 05)* |
-| 03 | Designed for Conversion | *(keep L389-390 verbatim)* |
-| 04 | From Sketch to Working Code | `Information architecture, user flows, wireframes, UI, and production-ready React / Angular / Next.js code. One team carries your idea all the way to launch.` *(merges old 04 + 06)* |
-| 05 | We Work in Your Time Zone | `We overlap with US Eastern and Pacific business hours. Real-time calls, not async-only hand-offs across a 12-hour gap.` *(new — no other card says this)* |
-| 06 | We've Shipped This 50+ Times | `Not a boutique shop treating every project as an experiment. 50+ products across SaaS, AI, FinTech, HealthTech, and LegalTech.` *(new — differentiation + proof)* |
+| 01 | Strategy Before Pixels | Before the first screen, we map your product: competitive positioning, user flows, and what actually needs to be built. |
+| 02 | Complex Made Simple | We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use. |
+| 03 | Built to Convert | Every layout, CTA, and flow is designed to move users forward. Conversion is not an afterthought — it is the brief. |
+| 04 | Design Through to Code | One team takes you from wireframes and UI to production-ready React, Angular, and Next.js. No hand-offs, no gaps. |
+| 05 | Same Hours as Your Team | We keep US Eastern and Pacific business hours. Real-time calls, not async messages across a 12-hour gap. |
+| 06 | 50+ Products, Not Guesses | Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before. |
 
-**Why:** removes the "4 ideas dressed as 6" padding v2 identified, and the two new cards address the exact US-buyer concerns (time-zone risk, "are they experienced or improvising?") that the section currently doesn't touch.
+**Why:** removes duplicate ideas, gives each card a distinct hook (strategy / simplification / conversion / execution / timezone / proof), descriptions are balanced at 1–2 lines each, and zero em dashes. SEO signal words (SaaS, AI, FinTech, HealthTech, LegalTech, React, Angular, Next.js, enterprise) are preserved naturally in the copy.
 
 ---
 
