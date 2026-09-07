@@ -554,40 +554,59 @@ export default function AboutPage() {
           <h2 className="heading-center">Our Design Style</h2>
         </div>
 
-        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-4">
+        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-6">
           {[
             {
               title: "Dashboards & SaaS UX",
-              desc: "Clean, intuitive, data-driven. We tame complexity into clear, actionable interfaces.",
+              desc: "Data-heavy flows and multi-role dashboards, simplified into interfaces that are fast to learn.",
+              icon: (className: string) => (
+                <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+                  <path d="M11 10.6C11 12.4 10.4 14.1 8.9 15.6L7.1 14.2C8.1 13.1 8.6 12 8.6 10.9H5V5.6H11V10.6ZM20 10.6C20 12.4 19.4 14.1 17.9 15.6L16.1 14.2C17.1 13.1 17.6 12 17.6 10.9H14V5.6H20V10.6Z" />
+                </svg>
+              ),
             },
             {
               title: "Websites & Landing Pages",
-              desc: "Fast and conversion-focused. Every section guides users toward the CTA.",
+              desc: "Conversion-focused layouts where every section moves visitors toward the next step.",
+              icon: (className: string) => (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                </svg>
+              ),
             },
             {
-              title: "Pixel-Perfect Execution",
-              desc: "From Figma to code — the final product matches the vision exactly.",
+              title: "Design That Holds Up in Code",
+              desc: "From Figma to production-ready code. The shipped product matches the design, exactly.",
+              icon: (className: string) => (
+                <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+                  <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" />
+                </svg>
+              ),
             },
           ].map((item, i) => (
             <motion.div
               key={item.title}
-              className="premium-card"
+              className="bg-white rounded-[20px] p-7 border border-gray-100 shadow-[0_4px_16px_rgb(0,0,0,0.03)] hover:-translate-y-1.5 hover:shadow-[0_8px_24px_rgb(0,0,0,0.08)] transition-all duration-300 h-full flex flex-col"
               initial={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
               viewport={{ once: true }}
               whileInView={{ opacity: 1, y: 0 }}
             >
-              <div className="premium-card-inner bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] rounded-[20px] p-6 border border-gray-200 h-full">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-brand-orange">
-                    <CheckIcon />
-                  </span>
-                  <h3 className="font-semibold text-gray-900">{item.title}</h3>
+              {/* Icon Container (Rounded rectangle with light border) */}
+              <div className="w-[52px] h-[34px] bg-white rounded-xl border-[1.5px] border-gray-200/70 shadow-[0_2px_8px_rgb(0,0,0,0.04)] flex items-center justify-center mb-6">
+                <div className="relative flex items-center justify-center">
+                  {/* Glowing Blur Layer */}
+                  {item.icon("w-5 h-5 text-[#3b9cff] absolute blur-[3px] opacity-60")}
+                  {/* Crisp Top Layer */}
+                  {item.icon("w-5 h-5 text-[#3b9cff] relative z-10")}
                 </div>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {item.desc}
-                </p>
               </div>
+              
+              <h3 className="font-semibold text-lg text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed flex-1">
+                {item.desc}
+              </p>
             </motion.div>
           ))}
         </div>

@@ -234,11 +234,11 @@ These two replacement cards add differentiation that doesn't exist anywhere else
 ### 4. "OUR DESIGN STYLE"
 **File:** `app/about/page.tsx` (lines ~431–477)
 
-**Current cards:**
+**Current cards (applied):**
 ```
-01 Dashboards & SaaS UX — "Clean, intuitive, data-driven. We tame complexity into clear, actionable interfaces."
-02 Websites & Landing Pages — "Fast and conversion-focused. Every section guides users toward the CTA."
-03 Pixel-Perfect Execution — "From Figma to code — the final product matches the vision exactly."
+01 Dashboards & SaaS UX — "Data-heavy flows and multi-role dashboards, simplified into interfaces that are fast to learn."
+02 Websites & Landing Pages — "Conversion-focused layouts where every section moves visitors toward the next step."
+03 Design That Holds Up in Code — "From Figma to production-ready code. The shipped product matches the design, exactly."
 ```
 
 **What's wrong:**

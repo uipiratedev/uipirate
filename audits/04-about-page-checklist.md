@@ -83,12 +83,13 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 ---
 
-## 4. "OUR DESIGN STYLE" (🟠 Jargon fix)
+## 4. "OUR DESIGN STYLE" (✅ Redesigned & Rewrite applied)
 
-**File:** `app/about/page.tsx` L431–477
+**File:** `app/about/page.tsx` L553–600
 
 | # | Item | Status |
 |---|------|--------|
+| 4-ui | Redesign cards to white layout with glowing custom SVGs (Quote, Link, Zap) and clean hover effect | ✅ Done |
 | 4a | Card 01 `Dashboards & SaaS UX` — strong, keep | ✅ Keep as-is |
 | 4b | Card 02 `Websites & Landing Pages` — strong, keep | ✅ Keep as-is |
 | 4c | Card 03 `Pixel-Perfect Execution` — jargon; rewrite to `Design That Holds Up in Code` (NC3) | ✅ Done |
