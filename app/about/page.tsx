@@ -8,7 +8,7 @@ import { Card, CardBody, Accordion, AccordionItem } from "@heroui/react";
 import GlassSurface from "@/components/GlassSurface";
 import GlassBadge from "@/components/GlassBadge";
 import { CheckIcon } from "@/components/icons";
-import TheTeam from "@/screens/landing/theTeam";
+import LandingWhoWeAre from "@/screens/landing/whoWeAre";
 import PricingPerfectFor from "@/screens/pricing/perfectFor";
 import {
   HERO_BADGE_PRESET,
@@ -702,9 +702,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Shared TheTeam Component */}
+      {/* Shared WhoWeAre / Team Component from Home Page */}
       <section className="mb-16">
-        <TheTeam />
+        <LandingWhoWeAre />
       </section>
 
       {/* Technology Stack & Industries */}

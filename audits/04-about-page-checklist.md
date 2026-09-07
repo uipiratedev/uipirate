@@ -122,9 +122,9 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | 6a | Kartik Kumar titled `Lead Graphics & Motion` in schema + team — retitle to reflect current services (NF3) | ✅ Keep as-is (per user) |
 | 6b | Priyagni titled `Graphic Designer` in schema + team — retitle or remove (NF3) | ✅ Keep as-is (per user) |
 | 6c | Aman titled `Video Editing` in schema + team — retitle or remove (NF3) | ✅ Keep as-is (per user) |
-| 6d | No founder origin story / bio — add 2–3 sentence founder note above team grid (NC10) | ✅ Done |
+| 6d | No founder origin story / bio — add 2–3 sentence founder note above team grid (NC10) | ✅ Replaced entire section with home page `LandingWhoWeAre` component per user request |
 
-**NC10 Recommended founder note (Applied):**
+**NC10 Recommended founder note (Status: Replaced by home page WhoWeAre card):**
 > "UI Pirate started in 2015 when I got tired of design hand-offs that fell apart in engineering. We are built around one idea: the people who design the product should be able to ship it."
 
 ---
