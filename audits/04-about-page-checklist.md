@@ -77,7 +77,7 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | 01 | Strategy Before Pixels | Positioning, user flows, and scope mapped before any screen is touched. |
 | 02 | Complex Made Simple | We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use. |
 | 03 | Built to Convert | Every flow is built to move users forward. Conversion is the brief. |
-| 04 | Design Through to Code | Wireframes to production React and Next.js. One team, no hand-offs. |
+| 04 | Design Through to Code | Wireframes to React, Angular, and Next.js. One team, no hand-offs. |
 | 05 | Same Hours as Your Team | US Eastern and Pacific hours. Real-time calls, no time zone gaps. |
 | 06 | 50+ Products, Not Guesses | Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before. |
 
@@ -109,6 +109,7 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 | 5a | Sub-copy `Simple: you share your vision. We do the rest.` — keep | ✅ Removed per user request |
 | 5b | `/process` page link would 404 | ✅ Resolved — `/process` page now exists |
 | 5c | Redesign process cards to match landing page 'How It Works' light cards (6 steps) | ✅ Done |
+| 5d | All 6 step descriptions trimmed to ~12 words each — no em dashes, SEO preserved (`data/process.ts`) | ✅ Done |
 
 ---
 

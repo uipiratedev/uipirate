@@ -499,7 +499,7 @@ export default function AboutPage() {
               <div className="z-10 relative">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Design Through to Code</h3>
                 <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                  Wireframes to production React and Next.js. One team, no hand-offs.
+                  Wireframes to React, Angular, and Next.js. One team, no hand-offs.
                 </p>
               </div>
             </motion.div>
