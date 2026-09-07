@@ -372,10 +372,9 @@ export default function AboutPage() {
 
             {/* Subheading */}
             <p className="max-w-[720px] text-center text-lg max-md:text-sm mt-4 leading-relaxed text-gray-600">
-              Not just a design agency — we're your product partner. We help you
-              think through competitive analysis, simplify complex products,
-              design for conversion, and ship production-ready code. From idea
-              to shipped product.
+              We are a product design and development studio. We help SaaS founders
+              and enterprise teams think through the product, design for real users,
+              and ship production-ready code. No hand-offs, no gaps.
             </p>
 
             {/* US Market Badge */}
@@ -426,9 +425,6 @@ export default function AboutPage() {
             <GlassBadge variant="gradient">OUR DNA</GlassBadge>
           </div>
           <h2 className="heading-center">What Makes Us Different</h2>
-          <p className="text-gray-500 mt-2 max-w-xl mx-auto">
-            Most agencies give you mockups. We give you a shipped product.
-          </p>
         </div>
 
         {/* Dark Card Grid */}
@@ -437,28 +433,28 @@ export default function AboutPage() {
             <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6">
               {[
                 {
-                  title: "Product Thinking First",
-                  desc: "Before a single pixel, we do competitive analysis, market positioning, and product strategy. We help you make the right decisions, not just design ones.",
+                  title: "Strategy Before Pixels",
+                  desc: "Before the first screen, we map your product: competitive positioning, user flows, and what actually needs to be built.",
                 },
                 {
-                  title: "Simplify Complex Products",
-                  desc: "Multi-role dashboards, data-heavy flows, enterprise systems — we break down complexity into intuitive, user-friendly interfaces that people actually understand.",
+                  title: "Complex Made Simple",
+                  desc: "We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use.",
                 },
                 {
-                  title: "Designed for Conversion",
-                  desc: "Every section, CTA, and flow is strategically designed. We don't just make it look good — we design to convert visitors into users and users into revenue.",
+                  title: "Built to Convert",
+                  desc: "Every layout, CTA, and flow is designed to move users forward. Conversion is not an afterthought — it is the brief.",
                 },
                 {
-                  title: "Architecture to Code",
-                  desc: "From vision to shipped product — IA, user flows, wireframes, UI, and production-ready React/Next.js code.",
+                  title: "Design Through to Code",
+                  desc: "One team takes you from wireframes and UI to production-ready React, Angular, and Next.js. No hand-offs, no gaps.",
                 },
                 {
-                  title: "Enterprise Specialist",
-                  desc: "Multi-role dashboards, data-heavy interfaces, complex flows. We handle the hard problems others avoid.",
+                  title: "Same Hours as Your Team",
+                  desc: "We keep US Eastern and Pacific business hours. Real-time calls, not async messages across a 12-hour gap.",
                 },
                 {
-                  title: "Idea to Shipped Product",
-                  desc: "Information architecture, wireframes, UI design, and production-ready React/Angular/Next.js code. We carry your idea all the way to launch.",
+                  title: "50+ Products, Not Guesses",
+                  desc: "Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before.",
                 },
               ].map((item, i) => (
                 <motion.div
