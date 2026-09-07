@@ -55,29 +55,30 @@ Synced to **`04-about-page.md` v3 (2026-08-31)** — all statuses are code-verif
 
 ---
 
-## 3. "WHAT MAKES US DIFFERENT" (🟠 Rewrite required)
+## 3. "WHAT MAKES US DIFFERENT" (✅ Rewrite & Redesign applied)
 
-**File:** `app/about/page.tsx` L422–487
+**File:** `app/about/page.tsx` L421–550
 
 | # | Item | Status |
 |---|------|---------|
-| 3-sub | Section subtext `Most agencies give you mockups. We give you a shipped product.` — remove entirely (per user: no subtext under any heading) | ⚠️ Pending — remove from code |
-| 3a | Card 01 — new title + description per NC2 rewrite | ⚠️ Pending — apply in code |
-| 3b | Card 02 — new title + description per NC2 rewrite | ⚠️ Pending — apply in code |
-| 3c | Card 03 — new title + description per NC2 rewrite | ⚠️ Pending — apply in code |
-| 3d | Card 04 — new title + description per NC2 rewrite (merges old 04 + 06) | ⚠️ Pending — apply in code |
-| 3e | Card 05 — new title + description per NC2 rewrite (replaces Enterprise Specialist) | ⚠️ Pending — apply in code |
-| 3f | Card 06 — new title + description per NC2 rewrite (new proof card) | ⚠️ Pending — apply in code |
+| 3-sub | Section subtext `Most agencies give you mockups. We give you a shipped product.` — remove entirely (per user: no subtext under any heading) | ✅ Done |
+| 3-ui | Redesign section from a dark grid to a light Bento Grid matching the homepage style | ✅ Done |
+| 3a | Card 01 — new title + description per NC2 rewrite | ✅ Done |
+| 3b | Card 02 — new title + description per NC2 rewrite | ✅ Done |
+| 3c | Card 03 — new title + description per NC2 rewrite | ✅ Done |
+| 3d | Card 04 — new title + description per NC2 rewrite (merges old 04 + 06) | ✅ Done |
+| 3e | Card 05 — new title + description per NC2 rewrite (replaces Enterprise Specialist) | ✅ Done |
+| 3f | Card 06 — new title + description per NC2 rewrite (new proof card) | ✅ Done |
 
 **NC2 Approved card copy (apply verbatim when editing code):**
 
 | # | Title | Description |
 |---|---|---|
-| 01 | Strategy Before Pixels | Before the first screen, we map your product: competitive positioning, user flows, and what actually needs to be built. |
+| 01 | Strategy Before Pixels | Positioning, user flows, and scope mapped before any screen is touched. |
 | 02 | Complex Made Simple | We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use. |
-| 03 | Built to Convert | Every layout, CTA, and flow is designed to move users forward. Conversion is not an afterthought — it is the brief. |
-| 04 | Design Through to Code | One team takes you from wireframes and UI to production-ready React, Angular, and Next.js. No hand-offs, no gaps. |
-| 05 | Same Hours as Your Team | We keep US Eastern and Pacific business hours. Real-time calls, not async messages across a 12-hour gap. |
+| 03 | Built to Convert | Every flow is built to move users forward. Conversion is the brief. |
+| 04 | Design Through to Code | Wireframes to production React and Next.js. One team, no hand-offs. |
+| 05 | Same Hours as Your Team | US Eastern and Pacific hours. Real-time calls, no time zone gaps. |
 | 06 | 50+ Products, Not Guesses | Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before. |
 
 ---

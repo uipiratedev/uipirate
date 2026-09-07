@@ -418,69 +418,131 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* What Makes Us Different - Dark Card Style */}
+      {/* What Makes Us Different - Bento Grid Style */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-20 xl:px-32 py-16">
         <div className="text-center mb-10">
           <div className="flex justify-center mb-4">
             <GlassBadge variant="gradient">OUR DNA</GlassBadge>
           </div>
-          <h2 className="heading-center">What Makes Us Different</h2>
+          <h2 className="heading-center mb-8">What Makes Us Different</h2>
         </div>
 
-        {/* Dark Card Grid */}
-        <Card className="rounded-[24px] max-md:rounded-[16px] bg-gradient-to-br from-[#212121] to-[#151514] border border-gray-800 shadow-xl noise-texture">
-          <CardBody className="p-8 max-md:p-5">
-            <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6">
-              {[
-                {
-                  title: "Strategy Before Pixels",
-                  desc: "Before the first screen, we map your product: competitive positioning, user flows, and what actually needs to be built.",
-                },
-                {
-                  title: "Complex Made Simple",
-                  desc: "We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use.",
-                },
-                {
-                  title: "Built to Convert",
-                  desc: "Every layout, CTA, and flow is designed to move users forward. Conversion is not an afterthought — it is the brief.",
-                },
-                {
-                  title: "Design Through to Code",
-                  desc: "One team takes you from wireframes and UI to production-ready React, Angular, and Next.js. No hand-offs, no gaps.",
-                },
-                {
-                  title: "Same Hours as Your Team",
-                  desc: "We keep US Eastern and Pacific business hours. Real-time calls, not async messages across a 12-hour gap.",
-                },
-                {
-                  title: "50+ Products, Not Guesses",
-                  desc: "Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before.",
-                },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-orange/30 transition-all duration-300"
-                  initial={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                >
-                  <div className="w-10 h-10 rounded-lg bg-brand-orange/20 flex items-center justify-center mb-4">
-                    <span className="text-brand-orange font-bold font-mono text-sm">
-                      0{i + 1}
-                    </span>
-                  </div>
-                  <h3 className="text-white font-semibold text-lg mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">
-                    {item.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: Tall */}
+          <div className="premium-card md:row-span-2">
+            <motion.div
+              className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between overflow-hidden relative"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[160px]" />
+              <div className="z-10 relative">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Strategy Before Pixels</h3>
+                <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                  Positioning, user flows, and scope mapped before any screen is touched.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Card 2: Wide */}
+          <div className="premium-card md:col-span-2 h-full min-h-[240px]">
+            <motion.div
+              className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[120px]" />
+              <div className="z-10 relative">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Complex Made Simple</h3>
+                <p className="text-sm text-gray-500 font-medium leading-relaxed max-w-xl">
+                  We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Card 3: Standard */}
+          <div className="premium-card md:col-span-1 h-full min-h-[240px]">
+            <motion.div
+              className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
+              <div className="z-10 relative">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Built to Convert</h3>
+                <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                  Every flow is built to move users forward. Conversion is the brief.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Card 4: Standard */}
+          <div className="premium-card md:col-span-1 h-full min-h-[240px]">
+            <motion.div
+              className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
+              <div className="z-10 relative">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Design Through to Code</h3>
+                <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                  Wireframes to production React and Next.js. One team, no hand-offs.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Card 5: Standard */}
+          <div className="premium-card md:col-span-1 h-full min-h-[240px]">
+            <motion.div
+              className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[100px]" />
+              <div className="z-10 relative">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Same Hours as Your Team</h3>
+                <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                  US Eastern and Pacific hours. Real-time calls, no time zone gaps.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Card 6: Wide */}
+          <div className="premium-card md:col-span-2 h-full min-h-[240px]">
+            <motion.div
+              className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 group h-full flex flex-col justify-between relative overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <div className="flex-1 bg-gray-50/50 rounded-xl mb-6 border border-gray-100 border-dashed min-h-[120px]" />
+              <div className="z-10 relative">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">50+ Products, Not Guesses</h3>
+                <p className="text-sm text-gray-500 font-medium leading-relaxed max-w-xl">
+                  Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* Design Style & Approach */}

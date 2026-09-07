@@ -48,7 +48,7 @@ The About page was significantly rebuilt. The previous version was primarily a s
 **Structure added:**
 - Hero section with H1, subheadline, and "US Timezone Friendly" trust badge
 - Stats strip (4 cards: 9+ Years, 50+ Products, 5.0 Rating, 6 Countries)
-- "What Makes Us Different" dark card grid (6 cards)
+- "What Makes Us Different" light bento grid (6 cards)
 - "Our Design Style" section (3 cards)
 - "Our Process" dark section (6 steps from shared PROCESS_STEPS data) with link to `/process`
 - Team section (shared `TheTeam` component)
@@ -71,7 +71,7 @@ The About page was significantly rebuilt. The previous version was primarily a s
 ```
 1.  Hero (H1, subheadline, timezone badge)
 2.  Stats strip (4 cards)
-3.  "What Makes Us Different" (6 dark cards)
+3.  "What Makes Us Different" (6-card light bento grid)
 4.  "Our Design Style" (3 light cards)
 5.  "Our Process" (6 steps, dark section, links to /process)
 6.  Team section (shared TheTeam component)
@@ -867,11 +867,11 @@ All descriptions are 1–2 lines, consistent in length, no em dashes.
 
 | Slot | Title | Description |
 |---|---|---|
-| 01 | Strategy Before Pixels | Before the first screen, we map your product: competitive positioning, user flows, and what actually needs to be built. |
+| 01 | Strategy Before Pixels | Positioning, user flows, and scope mapped before any screen is touched. |
 | 02 | Complex Made Simple | We turn multi-role dashboards, data-heavy flows, and enterprise systems into interfaces that are fast to learn and easy to use. |
-| 03 | Built to Convert | Every layout, CTA, and flow is designed to move users forward. Conversion is not an afterthought — it is the brief. |
-| 04 | Design Through to Code | One team takes you from wireframes and UI to production-ready React, Angular, and Next.js. No hand-offs, no gaps. |
-| 05 | Same Hours as Your Team | We keep US Eastern and Pacific business hours. Real-time calls, not async messages across a 12-hour gap. |
+| 03 | Built to Convert | Every flow is built to move users forward. Conversion is the brief. |
+| 04 | Design Through to Code | Wireframes to production React and Next.js. One team, no hand-offs. |
+| 05 | Same Hours as Your Team | US Eastern and Pacific hours. Real-time calls, no time zone gaps. |
 | 06 | 50+ Products, Not Guesses | Across SaaS, AI, FinTech, HealthTech, and LegalTech. We have solved this type of problem before. |
 
 **Why:** removes duplicate ideas, gives each card a distinct hook (strategy / simplification / conversion / execution / timezone / proof), descriptions are balanced at 1–2 lines each, and zero em dashes. SEO signal words (SaaS, AI, FinTech, HealthTech, LegalTech, React, Angular, Next.js, enterprise) are preserved naturally in the copy.
