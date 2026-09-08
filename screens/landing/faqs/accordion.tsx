@@ -1,23 +1,9 @@
 "use client";
 
 import { Accordion, AccordionItem } from "@heroui/react";
-import { motion } from "framer-motion";
 
 import LetsTalkButton from "@/components/LetsTalkButton";
-
-// Smooth animation variants for accordion items
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.08,
-      duration: 0.8,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  }),
-};
+import { Reveal } from "@/components/motion";
 
 const data = [
   {
@@ -157,12 +143,7 @@ export default function FaqsAccordion() {
   return (
     <>
       <div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true, amount: 0.2 }}
-          whileInView={{ opacity: 1, y: 0 }}
-        >
+        <Reveal distance="sm" variant="up">
           <Accordion
             className="mb-0 p-0 -px-2"
             defaultExpandedKeys={["0"]} // ✅ opens first accordion by default
@@ -217,20 +198,16 @@ export default function FaqsAccordion() {
               </AccordionItem>
             ))}
           </Accordion>
-        </motion.div>
-        <motion.div
-          custom={4}
-          initial="hidden"
-          variants={itemVariants}
-          viewport={{ once: true, amount: 0.3 }}
-          whileInView="visible"
+        </Reveal>
+        <Reveal
+          className="mt-6 flex flex-row items-center justify-center"
+          delay={0.1}
+          variant="fade"
         >
-          <div className="flex flex-row items-center justify-center mt-6">
-            <LetsTalkButton href="/faqs" target="_self" variant="light">
-              See all FAQ’s
-            </LetsTalkButton>
-          </div>
-        </motion.div>
+          <LetsTalkButton href="/faqs" target="_self" variant="light">
+            See all FAQ’s
+          </LetsTalkButton>
+        </Reveal>
       </div>
     </>
   );

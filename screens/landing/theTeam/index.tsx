@@ -1,6 +1,8 @@
 import { Card, CardBody, Tooltip } from "@heroui/react";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
+
+import { Reveal, RevealGroup } from "@/components/motion";
 
 const TheTeam = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -58,38 +60,13 @@ const TheTeam = () => {
     },
   ];
 
-  // Animation variants for Framer Motion
-  const containerVariants: Variants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.07,
-      },
-    },
-  };
-
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.45,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    },
-  };
-
   return (
     <div className="section-container relative">
       <div>
         {/* Team Grid */}
-        <motion.div
-          className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 max-md:gap-4 relative "
-          initial="hidden"
-          variants={containerVariants}
-          viewport={{ once: true, amount: 0.2 }}
-          whileInView="visible"
+        <RevealGroup
+          className="relative grid grid-cols-3 gap-4 max-md:gap-4 md:grid-cols-4 lg:grid-cols-7"
+          stagger="base"
         >
           {teamMembers.map((member, index) => (
             <Tooltip
@@ -181,9 +158,10 @@ const TheTeam = () => {
               offset={12}
               placement="top"
             >
-              <motion.div
-                className={`group cursor-pointer relative ${hoveredIndex === index ? "z-[100]" : "z-10"}`}
-                variants={cardVariants}
+              <Reveal
+                className={`group relative cursor-pointer ${hoveredIndex === index ? "z-[100]" : "z-10"}`}
+                distance="sm"
+                variant="up"
                 onClick={() =>
                   setHoveredIndex(hoveredIndex === index ? null : index)
                 }
@@ -223,10 +201,10 @@ const TheTeam = () => {
                     </CardBody>
                   </Card>
                 </motion.div>
-              </motion.div>
+              </Reveal>
             </Tooltip>
           ))}
-        </motion.div>
+        </RevealGroup>
       </div>
     </div>
   );

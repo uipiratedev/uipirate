@@ -9,6 +9,7 @@ import LeadCaptureModal from "./LeadCaptureModal";
 
 import JoinTactileButton from "@/components/JoinTactileButton";
 import { useClickSound } from "@/hooks/useClickSound";
+import { Magnetic, TextReveal } from "@/components/motion";
 
 const footerSocialLinks = [
   {
@@ -17,13 +18,18 @@ const footerSocialLinks = [
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/in_ucqlrn.svg",
   },
   {
-    name: "twitter",
-    url: "https://twitter.com/ui_pirate",
+    name: "X",
+    url: "https://x.com/UI_Pirate",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/x_n6sgau.svg",
   },
   {
     name: "Dribbble",
     url: "https://dribbble.com/vishalanandUIUX",
+    icon: "/assets/icons/dribbble.svg",
+  },
+  {
+    name: "Reddit",
+    url: "https://www.reddit.com/user/UI-Pirate/",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/redit_v3rdpt.svg",
   },
   {
@@ -39,7 +45,7 @@ const footerSocialLinks = [
 
   {
     name: "Clutch",
-    url: "https://clutch.co/profile/ui-pirate-vishal-anand",
+    url: "https://clutch.co/profile/ui-pirate",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280807/cl_zlzmht.svg",
   },
 ];
@@ -85,23 +91,46 @@ export const Footer: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
         >
           {/* Heading */}
-          <h2 className="footer-heading">If you scrolled this far,</h2>
+          <TextReveal
+            as="h2"
+            className="footer-heading justify-center"
+            text="If you scrolled this far,"
+          />
           <h2 className="footer-heading">
             It’s time to{" "}
             <span className="text-orange-500">Build Something Together</span>
           </h2>
 
           {/* "Lets Venture" button — opens lead capture modal */}
-          <div className="flex justify-center mb-16 max-md:mb-0 mt-6">
-            <div className="w-[660px] max-xl:w-[500px] max-md:w-[320px]">
-              <JoinTactileButton
-                label="LETS VENTURE"
-                size="xl"
-                variant="orange"
-                onClick={handleClick}
-              />
-            </div>
-          </div>
+          <Magnetic className="flex justify-center" radius={220} strength={22}>
+            <motion.div
+              className="flex flex-col items-center mb-16 max-md:mb-0 mt-6 relative group cursor-pointer w-fit"
+              style={{ perspective: "1000px" }}
+              onClick={handleClick}
+              onMouseDown={() => setIsPressed(true)}
+              onMouseLeave={() => setIsPressed(false)}
+              onMouseUp={() => setIsPressed(false)}
+              onTouchEnd={() => setIsPressed(false)}
+              onTouchStart={() => setIsPressed(true)}
+            >
+              <div className="block relative mt-6">
+                {/* Reflection Sweep Effect (Floating Layer) */}
+                <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-[32px]">
+                  <div className="absolute inset-x-0 top-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full -skew-x-20 group-hover:animate-sheen" />
+                </div>
+
+                {/* Icon Container with Lighting Glow */}
+                <div className="flex items-center justify-center w-[600px] max-xl:w-[400px] max-md:w-[250px] z-[999999999999999999] transition-all duration-300 group-hover:drop-shadow-[0_0_35px_rgba(255,100,0,0.8)]">
+                  <JoinButtonIcon
+                    className="w-full h-auto"
+                    isActive={isActive}
+                    isPressed={isPressed}
+                    text="lets venture"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </Magnetic>
 
           {/* Lead Capture Modal */}
           <LeadCaptureModal
@@ -262,11 +291,6 @@ export const Footer: React.FC = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link className="footer-text" href="/buttons">
-                    3D Tactile Buttons
-                  </Link>
-                </li>
-                <li>
                   <Link className="footer-text" href="/faqs">
                     FAQ’s
                   </Link>
@@ -300,7 +324,8 @@ export const Footer: React.FC = () => {
           {/* Copyright Strip */}
           <div className="mt-24 max-md:mt-12 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[13px] text-white/30 font-medium">
-              Copyright©2023 UI Pirate. All Rights Reserved.
+              Copyright©{new Date().getFullYear()} UI Pirate. All Rights
+              Reserved.
             </p>
             {/* Social Links Sub-section */}
             <div className="flex items-center gap-4 mt-2">

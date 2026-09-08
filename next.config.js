@@ -46,6 +46,31 @@ const nextConfig = {
     optimizePackageImports: ["@heroui/react", "framer-motion"],
   },
 
+  // Permanent redirects for consolidated / renamed routes
+  async redirects() {
+    return [
+      // /components was a duplicate of /componentlab (same screen, orphaned —
+      // no internal links point to it). Consolidate to avoid cannibalization.
+      {
+        source: "/components",
+        destination: "/componentlab",
+        permanent: true,
+      },
+      // /buttons and every /buttons/<slug> studio page were merged into Component
+      // Lab; the detail slugs match 1:1 with /componentlab/<slug>.
+      {
+        source: "/buttons",
+        destination: "/componentlab",
+        permanent: true,
+      },
+      {
+        source: "/buttons/:slug",
+        destination: "/componentlab/:slug",
+        permanent: true,
+      },
+    ];
+  },
+
   // Add security headers, and only add long-term static caching in production
   async headers() {
     const headers = [

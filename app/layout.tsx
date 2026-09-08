@@ -236,8 +236,9 @@ export default function RootLayout({
                 "https://www.behance.net/UI-Pirate",
                 "https://dribbble.com/vishalanandUIUX",
                 "https://www.upwork.com/agencies/1837026757439552424/",
-                "https://clutch.co/profile/ui-pirate-vishal-anand",
+                "https://clutch.co/profile/ui-pirate",
                 "https://x.com/UI_Pirate",
+                "https://www.reddit.com/user/UI-Pirate/",
                 "https://maps.app.goo.gl/tcp9QiMqsUmN7xoY8",
               ],
             }),
@@ -380,7 +381,7 @@ export default function RootLayout({
         <link href="https://dribbble.com/vishalanandUIUX" rel="me" />
         <link href="https://x.com/UI_Pirate" rel="me" />
         <link
-          href="https://clutch.co/profile/ui-pirate-vishal-anand"
+          href="https://clutch.co/profile/ui-pirate"
           rel="me"
         />
 

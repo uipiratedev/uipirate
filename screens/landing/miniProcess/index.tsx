@@ -1,9 +1,11 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useTransform } from "framer-motion";
 
 import SectionHeader from "@/components/SectionHeader";
+import { Reveal, RevealGroup, useSectionProgress } from "@/components/motion";
 
 const GROUPS = [
   {
@@ -30,62 +32,84 @@ const GROUPS = [
 ];
 
 const MiniProcess = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const progress = useSectionProgress(sectionRef);
+
+  // Scroll-linked connector: the line behind the 3 cards draws left→right
+  // as the section transits the middle of the viewport. Desktop only.
+  const lineScaleX = useTransform(progress, [0.15, 0.55], [0, 1]);
+
   return (
-    <div className="section-container">
-      <SectionHeader chip="how it works">
-        From Idea to Shipped,{" "}
-        <span className="text-brand-orange">in 3 Steps</span>
-      </SectionHeader>
+    <div ref={sectionRef} className="section-container">
+      <Reveal variant="up">
+        <SectionHeader chip="how it works">
+          From Idea to Shipped,{" "}
+          <span className="text-brand-orange">in 3 Steps</span>
+        </SectionHeader>
+      </Reveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {GROUPS.map((group, i) => (
+      <div className="relative">
+        {/* Connector line (behind cards) */}
+        {!reduced && (
           <motion.div
-            key={group.title}
-            className={`group relative bg-white border border-[#E5E7EB] rounded-[20px] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] hover:border-gray-300 transition-[border-color,box-shadow] duration-300 overflow-hidden flex flex-col justify-between ${
-              i === 2
-                ? "md:col-span-2 lg:col-span-1 md:max-w-md md:mx-auto md:w-full lg:max-w-none"
-                : "md:col-span-1"
-            }`}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.4, delay: i * 0.1 }}
-            viewport={{ once: true }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
-            {/* Step watermark touching top-right */}
-            <span className="absolute -top-3 md:-top-3 -right-1 text-[72px] md:text-[84px] font-bold text-[#ECEEF1] select-none leading-none tracking-tight font-jakarta pointer-events-none">
-              {group.step}
-            </span>
+            aria-hidden
+            className="pointer-events-none absolute left-0 right-0 top-[76px] hidden h-px origin-left bg-gradient-to-r from-transparent via-[#E5E7EB] to-transparent lg:block"
+            style={{ scaleX: lineScaleX }}
+          />
+        )}
 
-            {/* SVG Icon */}
-            <div className="w-12 h-12 mb-6 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-              <img
-                alt={group.title}
-                className="w-full h-full object-contain"
-                src={group.icon}
-              />
-            </div>
+        <RevealGroup
+          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+          stagger="loose"
+        >
+          {GROUPS.map((group, i) => (
+            <Reveal
+              key={group.title}
+              as="article"
+              className={`group relative flex flex-col justify-between overflow-hidden rounded-[20px] border border-[#E5E7EB] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-[border-color,box-shadow] duration-300 hover:border-gray-300 hover:shadow-[0_12px_32px_rgba(0,0,0,0.06)] ${
+                i === 2
+                  ? "md:col-span-2 md:mx-auto md:w-full md:max-w-md lg:col-span-1 lg:max-w-none"
+                  : "md:col-span-1"
+              }`}
+              variant="bloom"
+            >
+              {/* Step watermark touching top-right */}
+              <span className="pointer-events-none absolute -right-1 -top-3 select-none font-jakarta text-[72px] font-bold leading-none tracking-tight text-[#ECEEF1] md:-top-3 md:text-[84px]">
+                {group.step}
+              </span>
 
-            {/* Title & Description */}
-            <div>
-              <h3 className="text-xl md:text-[22px] font-bold text-[#0F172A] mb-2 tracking-tight">
-                {group.title}
-              </h3>
-              <p className="text-[#64748B] font-normal text-sm md:text-[15px] leading-relaxed">
-                {group.description}
-              </p>
-            </div>
-          </motion.div>
-        ))}
+              {/* SVG Icon */}
+              <div className="mb-6 flex h-12 w-12 items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                <img
+                  alt={group.title}
+                  className="h-full w-full object-contain"
+                  src={group.icon}
+                />
+              </div>
+
+              {/* Title & Description */}
+              <div>
+                <h3 className="mb-2 text-xl font-bold tracking-tight text-[#0F172A] md:text-[22px]">
+                  {group.title}
+                </h3>
+                <p className="text-sm font-normal leading-relaxed text-[#64748B] md:text-[15px]">
+                  {group.description}
+                </p>
+              </div>
+            </Reveal>
+          ))}
+        </RevealGroup>
       </div>
 
-      <div className="flex justify-center mt-10">
+      <Reveal className="mt-10 flex justify-center" delay={0.15} variant="fade">
         <Link
-          className="text-brand-orange font-semibold text-sm hover:underline flex items-center gap-1.5 transition-all hover:gap-2.5"
+          className="flex items-center gap-1.5 text-sm font-semibold text-brand-orange transition-[gap] hover:gap-2.5 hover:underline"
           href="/process"
         >
           See the full process <span>→</span>
         </Link>
-      </div>
+      </Reveal>
     </div>
   );
 };

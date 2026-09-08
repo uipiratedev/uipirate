@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useInView, Variants } from "framer-motion";
+import { motion, useReducedMotion, useTransform } from "framer-motion";
+
+import { useSectionProgress } from "@/components/motion";
 
 interface DataPoint {
   x: number;
@@ -9,13 +11,16 @@ interface DataPoint {
 }
 
 const AnimatedAnalyticsChart = () => {
-  const chartRef = useRef<SVGSVGElement>(null);
-  const [lineLength, setLineLength] = useState(0);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const linePathRef = useRef<SVGPathElement>(null);
-  // once:true — re-running the stroke-dash draw + blur glow every time the
-  // card scrolls back into view was compounding with the card's own slide
-  // animation and causing visible jank.
-  const isInView = useInView(chartRef, { once: true, amount: 0.3 });
+  const [lineLength, setLineLength] = useState(0);
+  const reduced = useReducedMotion();
+
+  // Scrubbed: the line draws itself as this card transits the viewport,
+  // instead of a one-shot on enter.
+  const progress = useSectionProgress(wrapRef, ["start 0.85", "start 0.35"]);
+  const dashoffset = useTransform(progress, [0, 1], [lineLength, 0]);
+  const areaOpacity = useTransform(progress, [0.25, 1], [0, 1]);
 
   // Data points for the chart
   const dataPoints: DataPoint[] = [
@@ -36,7 +41,6 @@ const AnimatedAnalyticsChart = () => {
   const getCatmullRomPath = (points: DataPoint[], tension = 0.5): string => {
     if (points.length < 2) return "";
 
-    // Add phantom points at the beginning and end for better edge handling
     const extendedPoints = [
       { x: points[0].x - (points[1].x - points[0].x), y: points[0].y },
       ...points,
@@ -56,7 +60,6 @@ const AnimatedAnalyticsChart = () => {
       const p2 = extendedPoints[i + 1];
       const p3 = extendedPoints[i + 2];
 
-      // Calculate control points using Catmull-Rom formula
       const cp1x = p1.x + ((p2.x - p0.x) / 6) * tension;
       const cp1y = p1.y + ((p2.y - p0.y) / 6) * tension;
       const cp2x = p2.x - ((p3.x - p1.x) / 6) * tension;
@@ -71,102 +74,63 @@ const AnimatedAnalyticsChart = () => {
   const linePath = getCatmullRomPath(dataPoints, 0.5);
   const areaPath = `${linePath} L 98,100 L 2,100 Z`;
 
-  // Get line length for the drawing animation
   useEffect(() => {
     if (linePathRef.current) {
       setLineLength(linePathRef.current.getTotalLength());
     }
   }, []);
 
-  // Animation variants for the line drawing effect
-  const lineVariants: Variants = {
-    hidden: {
-      strokeDashoffset: lineLength,
-    },
-    visible: {
-      strokeDashoffset: 0,
-      transition: {
-        duration: 1.8,
-        // Wait for the bento card's slide-in to settle before the
-        // stroke-dash draw starts, so the two repaints don't overlap.
-        delay: 0.45,
-        ease: [0.42, 0, 0.58, 1], // power1.inOut equivalent
-      },
-    },
-  };
-
-  // Area fade in variant
-  const areaVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 1.2,
-        delay: 0.5,
-        ease: [0.33, 1, 0.68, 1], // power2.out equivalent
-      },
-    },
-  };
-
   return (
-    <svg
-      ref={chartRef}
-      className="w-full h-full"
-      preserveAspectRatio="none"
-      style={{ overflow: "visible" }}
-      viewBox="0 0 100 100"
-    >
-      <defs>
-        {/* Enhanced gradient for the line with brand-aligned warm tones */}
-        <linearGradient id="lineGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-          <stop offset="0%" stopColor="#FF5B04" stopOpacity="1" />
-          <stop offset="50%" stopColor="#F59E0B" stopOpacity="1" />
-          <stop offset="100%" stopColor="#FF7B34" stopOpacity="1" />
-        </linearGradient>
+    <div ref={wrapRef} className="h-full w-full">
+      <svg
+        className="w-full h-full"
+        preserveAspectRatio="none"
+        style={{ overflow: "visible" }}
+        viewBox="0 0 100 100"
+      >
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" stopColor="#FF5B04" stopOpacity="1" />
+            <stop offset="50%" stopColor="#F59E0B" stopOpacity="1" />
+            <stop offset="100%" stopColor="#FF7B34" stopOpacity="1" />
+          </linearGradient>
 
-        {/* Enhanced gradient for the area fill with smoother transition */}
-        <linearGradient id="areaGradient" x1="0%" x2="0%" y1="0%" y2="100%">
-          <stop offset="0%" stopColor="#FF5B04" stopOpacity="0.35" />
-          <stop offset="40%" stopColor="#F59E0B" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#FF7B34" stopOpacity="0.02" />
-        </linearGradient>
+          <linearGradient id="areaGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" stopColor="#FF5B04" stopOpacity="0.35" />
+            <stop offset="40%" stopColor="#F59E0B" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#FF7B34" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
 
-      </defs>
+        {/* Area fill */}
+        <motion.path
+          d={areaPath}
+          fill="url(#areaGradient)"
+          style={{ opacity: reduced ? 1 : areaOpacity }}
+        />
 
-      {/* Area fill — no mix-blend-mode: blend modes break layer isolation
-          and force a repaint of everything behind the chart every frame
-          while the bento card is sliding in. */}
-      <motion.path
-        animate={isInView ? "visible" : "hidden"}
-        d={areaPath}
-        fill="url(#areaGradient)"
-        initial="hidden"
-        variants={areaVariants}
-      />
+        {/* Invisible reference for measuring length */}
+        <path
+          ref={linePathRef}
+          d={linePath}
+          fill="none"
+          stroke="transparent"
+          strokeWidth="0"
+        />
 
-      {/* Main line - invisible reference for measuring length */}
-      <path
-        ref={linePathRef}
-        d={linePath}
-        fill="none"
-        stroke="transparent"
-        strokeWidth="0"
-      />
-
-      {/* Main line (animated) */}
-      <motion.path
-        animate={isInView ? "visible" : "hidden"}
-        d={linePath}
-        fill="none"
-        initial="hidden"
-        stroke="url(#lineGradient)"
-        strokeDasharray={lineLength}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        variants={lineVariants}
-      />
-    </svg>
+        {/* Main line — drawn by strokeDashoffset scrubbed on scroll */}
+        <motion.path
+          d={linePath}
+          fill="none"
+          stroke="url(#lineGradient)"
+          strokeDasharray={lineLength}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          style={{ strokeDashoffset: reduced ? 0 : dashoffset }}
+        />
+      </svg>
+    </div>
   );
 };
 
