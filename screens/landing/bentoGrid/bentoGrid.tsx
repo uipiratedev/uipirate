@@ -1,46 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 import AnimatedAnalyticsChart from "./AnimatedAnalyticsChart";
 
-import { useIsMobile } from "@/hooks";
-
-// Animation variants for bento cards - smooth and buttery.
-// On mobile the cards are large, gradient- and shadow-heavy subtrees;
-// animating `y` promotes 4 big GPU layers at once and stutters on
-// low-end devices, so mobile fades only (no transform) and the stagger
-// is spread wider so the reveals don't all fire on the same frame.
-const getCardVariants = (isMobile: boolean) => ({
-  hidden: { opacity: 0, y: isMobile ? 0 : 16 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * (isMobile ? 0.1 : 0.06),
-      duration: isMobile ? 0.4 : 0.45,
-      ease: [0.16, 1, 0.3, 1], // Custom ease-out expo for smooth deceleration
-    },
-  }),
-});
+import { CountUp, Reveal, RevealGroup } from "@/components/motion";
 
 const BentoGrid = () => {
-  const isMobile = useIsMobile();
-  const cardVariants = getCardVariants(isMobile);
-
   return (
     <div className="section-container">
-      {/* Bento Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Bento Grid — <Reveal> auto-degrades to opacity-only on mobile, so the
+          4 gradient-heavy card subtrees don't all transform at once there. */}
+      <RevealGroup className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* UX/UI Design Card - Tall */}
         <div className="premium-card md:row-span-2">
-          <motion.div
-            className="premium-card-inner rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 group overflow-hidden h-full"
-            custom={0}
-            initial="hidden"
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+          <Reveal
+            className="premium-card-inner group h-full overflow-hidden rounded-2xl shadow-md transition-shadow duration-300 hover:shadow-lg"
+            distance="sm"
+            variant="bloom"
           >
             <div className="h-full flex flex-col justify-between">
               {/* Chart Visualization */}
@@ -63,17 +38,14 @@ const BentoGrid = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
         {/* Dashboards & SaaS UX Card */}
         <div className="premium-card md:col-span-2 h-[320px]">
-          <motion.div
-            className="premium-card-inner bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 group h-[320px] overflow-hidden"
-            custom={1}
-            initial="hidden"
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+          <Reveal
+            className="premium-card-inner group h-[320px] overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+            distance="sm"
+            variant="bloom"
           >
             <div className="h-full flex flex-col">
               <div className="flex-1 mb-2 overflow-hidden">
@@ -106,7 +78,7 @@ const BentoGrid = () => {
                         </div>
                       </div>
                       <div className="text-xs font-bold text-gray-900">
-                        $54k
+                        <CountUp value="$54k" />
                       </div>
                       {/* Dollar Sign SVG */}
                       <svg
@@ -139,7 +111,7 @@ const BentoGrid = () => {
                         </div>
                       </div>
                       <div className="text-xs font-bold text-gray-900">
-                        12.8k
+                        <CountUp value="12.8k" />
                       </div>
                       {/* Users SVG */}
                       <svg
@@ -172,7 +144,7 @@ const BentoGrid = () => {
                         </div>
                       </div>
                       <div className="text-xs font-bold text-gray-900">
-                        3.2%
+                        <CountUp value="3.2%" />
                       </div>
                       {/* Target/Conversion SVG */}
                       <svg
@@ -315,22 +287,19 @@ const BentoGrid = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
 
         {/* Websites & Landing Pages Card */}
         <div className="premium-card h-[320px]">
-          <motion.div
-            className="premium-card-inner rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 group overflow-hidden relative h-[320px]"
-            custom={2}
-            initial="hidden"
+          <Reveal
+            className="premium-card-inner group relative h-[320px] overflow-hidden rounded-2xl border border-gray-200 p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+            distance="sm"
             style={{
               background:
                 "linear-gradient(184deg, rgba(255, 255, 255, 0.00) 30%, #FFF 70%), linear-gradient(90deg, rgba(255, 235, 210, 0.50) 0.07%, rgba(255, 220, 180, 0.40) 40.93%, rgba(255, 245, 230, 0.30) 97.76%), #FFF",
             }}
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+            variant="bloom"
           >
             <div className="h-full flex flex-col justify-between relative">
               {/* White Gradient Overlay */}
@@ -437,18 +406,15 @@ const BentoGrid = () => {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
 
         {/* Built With the Best Card */}
         <div className="premium-card h-[320px]">
-          <motion.div
-            className="premium-card-inner bg-gradient-to-br hover-arc-border from-white to-gray-50 rounded-2xl p-6 border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 group h-[320px] overflow-hidden"
-            custom={3}
-            initial="hidden"
-            variants={cardVariants}
-            viewport={{ once: true, amount: 0.3 }}
-            whileInView="visible"
+          <Reveal
+            className="premium-card-inner hover-arc-border group h-[320px] overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+            distance="sm"
+            variant="bloom"
           >
             <div className="h-full flex flex-col">
               {/* Content */}
@@ -639,9 +605,9 @@ const BentoGrid = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
-      </div>
+      </RevealGroup>
     </div>
   );
 };

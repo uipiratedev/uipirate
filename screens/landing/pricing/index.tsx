@@ -1,26 +1,13 @@
 "use client";
 
 import { Card, CardBody } from "@heroui/react";
-import { motion } from "framer-motion";
 
 import PricingFlip from "../pricingFlip";
 
 import SectionHeader from "@/components/SectionHeader";
+import { Reveal, RevealGroup } from "@/components/motion";
 
 const Pricing = () => {
-  // Subtle animation for the main container
-  const containerVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
-  };
-
   const benefits = [
     {
       icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770115432/pause_nod3oq.svg",
@@ -43,48 +30,49 @@ const Pricing = () => {
   ];
 
   return (
-    <motion.div
-      className="section-container"
-      initial="hidden"
-      variants={containerVariants}
-      viewport={{ once: true, amount: 0.1 }}
-      whileInView="show"
-    >
-      {/* Header */}
-      <SectionHeader chip="PRICING">
-        Transparent Pricing for{" "}
-        <span className="text-brand-orange">SaaS Teams</span>{" "}
-      </SectionHeader>
+    <div className="section-container">
+      <Reveal variant="up">
+        <SectionHeader chip="PRICING">
+          Transparent Pricing for{" "}
+          <span className="text-brand-orange">SaaS Teams</span>{" "}
+        </SectionHeader>
+      </Reveal>
 
-      <PricingFlip />
+      <Reveal variant="up" distance="lg">
+        <PricingFlip />
+      </Reveal>
+
       {/* Benefits Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
+      <RevealGroup className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
         {benefits.map((benefit, index) => (
-          <div key={index}>
-            <Card className="rounded-[20px] max-md:rounded-[12px] bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] border-1 border-gray-200 shadow-sm h-full">
+          <Reveal key={index} variant="up">
+            <Card className="h-full rounded-[20px] border-1 border-gray-200 bg-gradient-to-br from-[#EDEDED] via-[#FFFFFF] to-[#EDEDED] shadow-sm max-md:rounded-[12px]">
               <CardBody className="p-6 max-md:p-5">
-                <h4 className="text-xl max-md:text-lg max-md:font-semibold font-bold mb-3 tracking-wide flex items-center  gap-2 font-mono max-md:text-center">
+                <h4 className="mb-3 flex items-center gap-2 font-mono text-xl font-bold tracking-wide max-md:text-center max-md:text-lg max-md:font-semibold">
                   <img
                     alt={benefit.title}
-                    className="w-4 h-4 mb-1 max-md:w-6 max-md:h-6"
+                    className="mb-1 h-4 w-4 max-md:h-6 max-md:w-6"
                     src={benefit.icon}
                   />{" "}
                   {benefit.title}
                 </h4>
-                <p className="text-sm text-[#555555] leading-relaxed font-jakarta">
+                <p className="font-jakarta text-sm leading-relaxed text-[#555555]">
                   {benefit.description}
                 </p>
               </CardBody>
             </Card>
-          </div>
+          </Reveal>
         ))}
-      </div>
+      </RevealGroup>
 
       {/* Risk Reversal / Guarantee Section */}
-      <div className="mt-8 p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white rounded-2xl border border-gray-200 text-center">
-        <div className="flex items-center justify-center gap-3 mb-3">
+      <Reveal
+        className="mt-8 rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-6 text-center md:p-8"
+        variant="up"
+      >
+        <div className="mb-3 flex items-center justify-center gap-3">
           <svg
-            className="w-8 h-8 text-green-500"
+            className="h-8 w-8 text-green-500"
             fill="none"
             stroke="currentColor"
             strokeWidth={2}
@@ -96,17 +84,17 @@ const Pricing = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <h4 className="text-xl md:text-2xl font-bold text-gray-900">
+          <h4 className="text-xl font-bold text-gray-900 md:text-2xl">
             100% Satisfaction Guarantee
           </h4>
         </div>
-        <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+        <p className="mx-auto max-w-2xl text-sm leading-relaxed text-gray-600 md:text-base">
           Not happy with the first milestone? We&apos;ll refund your deposit, no
           questions asked. 100+ projects delivered for companies like Ipsos,
           Khaitan &amp; Co, and RevUp AI.
         </p>
-      </div>
-    </motion.div>
+      </Reveal>
+    </div>
   );
 };
 

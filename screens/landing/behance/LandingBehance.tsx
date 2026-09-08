@@ -208,14 +208,17 @@ const LandingBehanceFramor = memo(function LandingBehanceFramor() {
         className="absolute inset-1 flex flex-col items-center justify-center text-center z-[1]"
         id="info"
       >
-        <h2 className="heading-center mb-4 max-md:text-2xl autoShow">
+        {/* Revealed progressively by the images blooming away on scroll —
+            no separate entrance animation here (it would play while the
+            images still cover this block). */}
+        <h2 className="heading-center mb-4 max-md:text-2xl">
           Recent <span className="text-brand-orange">Works</span>
         </h2>
-        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12 w-1/2  max-md:text-base autoShow">
+        <p className="text-center text-lg px-32 font-[500] max-md:px-0 max-lg:px-12 mb-12 w-1/2  max-md:text-base">
           Explore our diverse portfolio of projects that highlight our
           creativity and craftsmanship.
         </p>
-        <div className="autoShow">
+        <div>
           <LetsTalkButton fullWidth href="/case-studies" variant="dark">
             Explore All Work
           </LetsTalkButton>
