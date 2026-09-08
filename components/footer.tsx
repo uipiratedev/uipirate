@@ -18,13 +18,18 @@ const footerSocialLinks = [
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/in_ucqlrn.svg",
   },
   {
-    name: "twitter",
-    url: "https://twitter.com/ui_pirate",
+    name: "X",
+    url: "https://x.com/UI_Pirate",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/x_n6sgau.svg",
   },
   {
     name: "Dribbble",
     url: "https://dribbble.com/vishalanandUIUX",
+    icon: "/assets/icons/dribbble.svg",
+  },
+  {
+    name: "Reddit",
+    url: "https://www.reddit.com/user/UI-Pirate/",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280207/redit_v3rdpt.svg",
   },
   {
@@ -40,7 +45,7 @@ const footerSocialLinks = [
 
   {
     name: "Clutch",
-    url: "https://clutch.co/profile/ui-pirate-vishal-anand",
+    url: "https://clutch.co/profile/ui-pirate",
     icon: "https://res.cloudinary.com/dvk9ttiym/image/upload/v1770280807/cl_zlzmht.svg",
   },
 ];
@@ -322,7 +327,8 @@ export const Footer: React.FC = () => {
           {/* Copyright Strip */}
           <div className="mt-24 max-md:mt-12 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-[13px] text-white/30 font-medium">
-              Copyright©2023 UI Pirate. All Rights Reserved.
+              Copyright©{new Date().getFullYear()} UI Pirate. All Rights
+              Reserved.
             </p>
             {/* Social Links Sub-section */}
             <div className="flex items-center gap-4 mt-2">
