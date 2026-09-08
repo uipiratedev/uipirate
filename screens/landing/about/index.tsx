@@ -11,7 +11,7 @@ const LandingAbout = () => {
           <span className="text-brand-orange"> Design, Build, & Scale</span>
         </SectionHeader>
       </div>
-      <div className="section-container autoShowBottom">
+      <div className="section-container">
         <AboutCardAnimation />
       </div>
     </section>

@@ -44,7 +44,7 @@ const AnimatedHeadline = () => {
   ];
 
   return (
-    <h1 className="text-[40px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600]  max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative">
+    <h1 className="text-[40px] max-md:text-[35px] 3xl:text-[80px] 2xl:text-[74px] xl:text-[61px] lg:text-[48px] px-4 text-center font-[700] max-md:font-[600]  max-md:leading-[1.08] max-md:px-1 tracking-[-1.5px] leading-[1.1] relative">
       {words.map((word, index) => (
         <span key={index}>
           {word.newLine && <br className="max-md:block hidden" />}
@@ -63,7 +63,8 @@ const AnimatedHeadline = () => {
       <span className="text-brand-orange">
         {highlightWords.map((word, index) => (
           <span key={index}>
-            {index === 1 && <br className="max-md:block hidden" />}
+            {/* Mobile-only break before "That" — keeps "SaaS Teams" together
+                on one line on mobile. Desktop/tablet render no break here. */}
             {index === 2 && <br className="max-md:block hidden" />}
             <motion.span
               animate={revealed ? "visible" : "hidden"}

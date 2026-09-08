@@ -51,7 +51,7 @@ const Pricing = () => {
       whileInView="show"
     >
       {/* Header */}
-      <SectionHeader chip="PRICING" className="autoShow">
+      <SectionHeader chip="PRICING">
         Transparent Pricing for{" "}
         <span className="text-brand-orange">SaaS Teams</span>{" "}
       </SectionHeader>
