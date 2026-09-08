@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 
 import apps4saleProducts from "@/data/apps4sale.json";
 import { DETAILED_BOTS } from "@/data/bots";
+import { ALL_DASHBOARD_COMPONENTS } from "@/screens/uiComponents/dashboardComponents";
 
 /**
  * Dynamic sitemap generation for Next.js App Router.
@@ -265,7 +266,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
-  // 4. Apps4sale products
+  // 4. Component Lab detail pages — one canonical URL per component.
+  // Each /componentlab/[slug] page has unique server-rendered spec content,
+  // so they belong in the sitemap as first-class indexable URLs.
+  const componentLabEntries: MetadataRoute.Sitemap = ALL_DASHBOARD_COMPONENTS.map(
+    (component) => ({
+      url: `${BASE_URL}/componentlab/${component.id}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }),
+  );
+
+  // 5. Apps4sale products
   const apps4saleEntries: MetadataRoute.Sitemap = apps4saleProducts.map(
     (product) => ({
       url: `${BASE_URL}/apps4sale/${product.slug}`,
@@ -275,7 +288,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  // 5. Blog posts and CMS case studies from API
+  // 6. Blog posts and CMS case studies from API
   // CMS posts tagged postType "case-study" live under /case-studies, not /[slug] —
   // route their sitemap entries there instead of listing them as blog posts.
   // (Previously skipped this fetch during `next build` via a NEXT_PHASE check,
@@ -321,6 +334,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries,
     ...botEntries,
     ...serviceEntries,
+    ...componentLabEntries,
     ...cmsCaseStudyEntries,
     ...blogEntries,
     ...apps4saleEntries,

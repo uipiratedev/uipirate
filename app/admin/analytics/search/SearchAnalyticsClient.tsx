@@ -1,9 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Chip } from "@heroui/react";
+import { Chip, DateRangePicker } from "@heroui/react";
+import { parseDate } from "@internationalized/date";
 
 import { useApi } from "@/lib/admin/useApi";
+import { useDashboard } from "@/lib/admin/DashboardContext";
+import { PRESET_LABELS, type RangePreset } from "@/lib/admin/dateRange";
 import { PageHeader, Card, StatePanel } from "@/components/admin/ui";
 import { KpiRow, type Kpi } from "@/components/admin/KpiRow";
 import { DataTable, type Column } from "@/components/admin/DataTable";
@@ -18,10 +21,33 @@ import {
 } from "@/lib/analytics/searchConsole";
 
 export default function SearchAnalyticsClient() {
+  const { range, setPreset, setCustomRange } = useDashboard();
   const [engine, setEngine] = useState<"all" | "google" | "bing">("all");
   const [activeTab, setActiveTab] = useState<"queries" | "countries" | "pages">("queries");
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [q, setQ] = useState("");
+
+  const DATE_PRESETS: Array<{ key: RangePreset; label: string }> = [
+    { key: "7d", label: "7D" },
+    { key: "28d", label: "28D" },
+    { key: "90d", label: "3M" },
+    { key: "12m", label: "12M" },
+    { key: "24h", label: "24H" },
+  ];
+
+  const parsedDateValue = useMemo(() => {
+    try {
+      if (range.from && range.to) {
+        return {
+          start: parseDate(range.from.slice(0, 10)),
+          end: parseDate(range.to.slice(0, 10)),
+        };
+      }
+    } catch {
+      // ignore parse error
+    }
+    return undefined;
+  }, [range.from, range.to]);
 
   const { data, loading, error, refetch } = useApi<SearchAnalyticsResult>(
     "/api/admin/analytics/search",
@@ -362,6 +388,50 @@ export default function SearchAnalyticsClient() {
             >
               {data?.mocked ? "⚠️ Dev Preview Data" : "🟢 Live GSC / Bing Data"}
             </Chip>
+
+            {/* Date Range Selector */}
+            <div className="flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white p-1 shadow-sm">
+              <span className="flex items-center gap-1 pl-2 pr-1 text-[11px] font-semibold text-gray-400">
+                <Icon.calendar className="h-3.5 w-3.5 text-gray-400" />
+              </span>
+              {DATE_PRESETS.map((p) => (
+                <button
+                  key={p.key}
+                  className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all ${
+                    range.preset === p.key
+                      ? "bg-gray-900 text-white shadow-sm"
+                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  }`}
+                  onClick={() => setPreset(p.key)}
+                >
+                  {p.label}
+                </button>
+              ))}
+
+              <div className="h-4 w-px bg-gray-200 mx-0.5" />
+
+              {/* HeroUI DateRangePicker Component */}
+              <DateRangePicker
+                aria-label="Date Range Picker"
+                className="w-auto min-w-[210px]"
+                classNames={{
+                  inputWrapper:
+                    "h-7 bg-transparent border-none shadow-none text-xs hover:bg-gray-100/60 rounded-lg",
+                  segment: "text-xs font-mono",
+                }}
+                maxValue={parseDate(new Date().toISOString().slice(0, 10))}
+                size="sm"
+                value={parsedDateValue}
+                variant="flat"
+                onChange={(val) => {
+                  if (val?.start && val?.end) {
+                    setCustomRange(val.start.toString(), val.end.toString());
+                  }
+                }}
+              />
+            </div>
+
+            {/* Search Engine Switcher */}
             <div className="flex items-center gap-1.5 rounded-xl border border-gray-200/80 bg-white p-1 shadow-sm">
               {(
                 [
